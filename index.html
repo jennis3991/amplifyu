@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AmplifyU</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Playfair Display: editorial display face — the voice of authority -->
+    <!-- DM Sans: warm editorial body — lighter than Inter, more human -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      /* ── Reset ─────────────────────────────────────────────────────────── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        scroll-behavior: smooth;
+      }
+
+      /* ── Soho Home base ─────────────────────────────────────────────────── */
+      /* The body is always warm linen — never white, never cold */
+      body {
+        background: #EDE8DF;
+        font-family: 'DM Sans', 'Inter', -apple-system, sans-serif;
+        font-weight: 300;
+        color: #2C2720;
+      }
+
+      /* ── Precision scrollbar ────────────────────────────────────────────── */
+      ::-webkit-scrollbar { width: 3px; height: 3px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(176,139,82,0.2); border-radius: 2px; }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(176,139,82,0.4); }
+
+      /* ── Selection ──────────────────────────────────────────────────────── */
+      ::selection { background: rgba(176,139,82,0.18); color: inherit; }
+
+      /* ── Inputs — warm, not clinical ────────────────────────────────────── */
+      input, textarea {
+        font-family: 'DM Sans', 'Inter', -apple-system, sans-serif;
+        font-weight: 300;
+        color: #2C2720;
+      }
+      input::placeholder, textarea::placeholder {
+        color: #B8AFA4;
+        font-style: italic;
+        font-weight: 300;
+      }
+      input:focus, textarea:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(176,139,82,0.2);
+      }
+
+      /* ── Buttons — warm, never generic ──────────────────────────────────── */
+      button { cursor: pointer; font-family: 'DM Sans', 'Inter', -apple-system, sans-serif; }
+      * { -webkit-tap-highlight-color: transparent; }
+
+      /* ── Cinematic grain overlay ────────────────────────────────────────── */
+      .au-grain-wrap::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 9000;
+        pointer-events: none;
+        opacity: 0.022;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 200px 200px;
+      }
+
+      /* ── Warm shadow system ─────────────────────────────────────────────── */
+      /* Shadows use warm walnut tones, not cold grey */
+      .au-shadow-sm  { box-shadow: 0 1px 4px rgba(44,39,32,0.06), 0 1px 2px rgba(44,39,32,0.04); }
+      .au-shadow-md  { box-shadow: 0 4px 16px rgba(44,39,32,0.08), 0 1px 4px rgba(44,39,32,0.04); }
+      .au-shadow-lg  { box-shadow: 0 8px 32px rgba(44,39,32,0.10), 0 2px 8px rgba(44,39,32,0.06); }
+      .au-shadow-xl  { box-shadow: 0 16px 48px rgba(44,39,32,0.12), 0 4px 12px rgba(44,39,32,0.06); }
+      .au-shadow-gold{ box-shadow: 0 4px 24px rgba(176,139,82,0.28); }
+
+      /* ── Animation library ──────────────────────────────────────────────── */
+      @keyframes fadeIn      { from { opacity: 0; }                              to { opacity: 1; } }
+      @keyframes fadeUp      { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes fadeDown    { from { opacity: 0; transform: translateY(-16px); }to { opacity: 1; transform: translateY(0); } }
+      @keyframes slideUp     { from { transform: translateY(100%); }             to { transform: translateY(0); } }
+      @keyframes heroPan     { from { transform: scale(1.04); }                  to { transform: scale(1); } }
+      @keyframes sectionFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes glowPulse   { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.6; } }
+      @keyframes shimmer     { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+      @keyframes breathe     { 0%, 100% { opacity: 0.4; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } }
+      @keyframes coachReveal { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+      /* ── Utility classes ────────────────────────────────────────────────── */
+      .au-page        { animation: fadeIn 0.45s ease both; }
+      .au-hero-scene  { animation: heroPan 14s ease both; transform-origin: center; }
+      .au-step-enter  { animation: fadeUp 0.5s cubic-bezier(0.25,0.46,0.45,0.94) both; }
+
+      /* Card hover — warm lift, warm shadow */
+      .au-lift {
+        transition: transform 0.28s cubic-bezier(0.25,0.46,0.45,0.94),
+                    box-shadow 0.28s ease;
+      }
+      .au-lift:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(44,39,32,0.1), 0 2px 6px rgba(44,39,32,0.06);
+      }
+
+      /* Row hover — warm background wash */
+      .au-row { transition: background 0.18s ease; }
+      .au-row:hover { background: rgba(176,139,82,0.04) !important; }
+
+      /* Nav button */
+      .au-nav-btn { transition: color 0.18s ease, background 0.18s ease; }
+
+      /* Step enter */
+      .au-step-enter { animation: fadeUp 0.5s cubic-bezier(0.25,0.46,0.45,0.94) both; }
+
+      /* Primary CTA */
+      .au-cta {
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+      .au-cta:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 24px rgba(176,139,82,0.38) !important;
+      }
+      .au-cta:active { transform: scale(0.98); }
+
+      /* Coach widget — entry animation */
+      .au-coach-enter { animation: coachReveal 0.5s cubic-bezier(0.25,0.46,0.45,0.94) both; }
+
+      /* Warm card base — the foundation of all cards */
+      .au-card {
+        background: #F5F0E8;
+        border: 1px solid rgba(44,39,32,0.08);
+        border-radius: 6px;
+        box-shadow: 0 2px 12px rgba(44,39,32,0.06), 0 1px 3px rgba(44,39,32,0.03);
+      }
+
+      /* Dark warm card — like a private study */
+      .au-card-dark {
+        background: #231E18;
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 6px;
+      }
+
+      /* Soho-style input — warm, clean, editorial */
+      .au-input {
+        background: #F5F0E8;
+        border: 1px solid rgba(44,39,32,0.12);
+        border-radius: 4px;
+        padding: 12px 16px;
+        font-family: 'DM Sans', 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+        color: #2C2720;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        resize: none;
+        width: 100%;
+      }
+      .au-input:focus {
+        border-color: rgba(176,139,82,0.5);
+        box-shadow: 0 0 0 3px rgba(176,139,82,0.1);
+      }
+
+      /* Primary button — aged brass */
+      .au-btn-primary {
+        background: #B08B52;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 11px 24px;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        font-family: 'DM Sans', 'Inter', sans-serif;
+        box-shadow: 0 2px 12px rgba(176,139,82,0.3);
+        transition: all 0.2s ease;
+      }
+      .au-btn-primary:hover {
+        background: #9A7844;
+        box-shadow: 0 4px 20px rgba(176,139,82,0.4);
+        transform: translateY(-1px);
+      }
+
+      /* Secondary button — warm ghost */
+      .au-btn-secondary {
+        background: transparent;
+        color: #7A6E62;
+        border: 1px solid rgba(44,39,32,0.15);
+        border-radius: 4px;
+        padding: 10px 22px;
+        font-size: 13px;
+        font-weight: 400;
+        cursor: pointer;
+        font-family: 'DM Sans', 'Inter', sans-serif;
+        transition: all 0.2s ease;
+      }
+      .au-btn-secondary:hover {
+        border-color: rgba(44,39,32,0.3);
+        color: #2C2720;
+        background: rgba(44,39,32,0.03);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
