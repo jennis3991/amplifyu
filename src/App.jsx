@@ -3201,60 +3201,52 @@ setAmbitionSaved(true); } catch {}
           const done2 = i < idx;
           const active = i === idx;
           const locked = i > idx && !isDone;
+          // Colours per state
+          const circleBg    = done2 ? "#8A9E84" : active ? "#F5EFE6" : "rgba(255,255,255,0.15)";
+          const circleBorder= done2 ? "#8A9E84" : active ? "#F5EFE6" : "rgba(255,255,255,0.3)";
+          const numColor    = done2 ? "white"   : active ? "#2C2416" : "rgba(255,255,255,0.55)";
+          const labelColor  = active ? "#F5EFE6" : done2 ? "rgba(255,255,255,0.65)" : "rgba(255,255,255,0.38)";
           return (
             <div key={s} style={{ display: "flex", alignItems: "center" }}>
-              {/* Step button */}
               <button
                 onClick={() => !locked ? setIdx(i) : null}
                 style={{
-                  display: "flex", alignItems: "center", gap: 8,
-                  padding: "6px 14px", borderRadius: 6, border: "none",
-                  background: active
-                    ? "rgba(138,158,132,0.15)"
-                    : "transparent",
+                  display: "flex", alignItems: "center", gap: 9,
+                  padding: "8px 14px", borderRadius: 6, border: "none",
+                  background: active ? "rgba(245,239,230,0.08)" : "transparent",
                   cursor: locked ? "default" : "pointer",
                   transition: "background 0.2s ease",
                 }}>
-                {/* Step marker */}
+                {/* Circle marker — 26px, clearly filled */}
                 <div style={{
-                  width: 22, height: 22, borderRadius: "50%", flexShrink: 0,
+                  width: 26, height: 26, borderRadius: "50%", flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  background: done2
-                    ? "rgba(138,158,132,0.2)"
-                    : active
-                    ? T.gold
-                    : "rgba(255,255,255,0.06)",
-                  border: "1px solid " + (done2 ? T.gold : active ? T.gold : "rgba(255,255,255,0.12)"),
+                  background: circleBg,
+                  border: "1.5px solid " + circleBorder,
                   transition: "all 0.3s ease",
+                  boxShadow: active ? "0 0 0 3px rgba(245,239,230,0.12)" : "none",
                 }}>
                   {done2 ? (
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path d="M2 5l2.5 2.5 4-4" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                      <path d="M2 5.5l2.5 2.5 4.5-4.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   ) : (
-                    <span style={{
-                      fontSize: 9, fontWeight: 700, lineHeight: 1,
-                      color: active ? "white" : "rgba(255,255,255,0.3)",
-                      fontFamily: T.sans,
-                    }}>{i + 1}</span>
+                    <span style={{ fontSize: 10, fontWeight: 700, lineHeight: 1, color: numColor, fontFamily: T.sans }}>{i + 1}</span>
                   )}
                 </div>
                 {/* Step name */}
                 <span style={{
-                  fontSize: 11, fontWeight: active ? 600 : 400,
-                  color: active ? T.gold : done2 ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.22)",
-                  fontFamily: T.sans, letterSpacing: "0.2px",
-                  transition: "color 0.3s",
-                  whiteSpace: "nowrap",
+                  fontSize: 12, fontWeight: active ? 700 : 400,
+                  color: labelColor,
+                  fontFamily: T.sans, letterSpacing: "0.3px",
+                  transition: "color 0.3s", whiteSpace: "nowrap",
                 }}>{s}</span>
               </button>
-              {/* Connector line between steps */}
+              {/* Connector — clearly visible */}
               {i < SESSION_STEPS.length - 1 && (
                 <div style={{
-                  width: 20, height: 1, flexShrink: 0,
-                  background: i < idx
-                    ? "rgba(138,158,132,0.4)"
-                    : "rgba(255,255,255,0.1)",
+                  width: 18, height: 1.5, flexShrink: 0,
+                  background: i < idx ? "#8A9E84" : "rgba(255,255,255,0.22)",
                   transition: "background 0.4s ease",
                 }}/>
               )}
@@ -3317,8 +3309,8 @@ setAmbitionSaved(true); } catch {}
               {/* Light gradient only at the bottom to keep caption label readable */}
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.55) 0%, rgba(10,8,5,0.1) 30%, transparent 55%)" }}/>
               <div style={{ position: "absolute", bottom: 44, left: 48, zIndex: 2, animation: "fadeUp 0.7s ease both", maxWidth: 360 }}>
-                <div style={{ ...LP_LABEL, marginBottom: 14 }}>The Science</div>
-                <p style={{ ...LP_BODY, fontSize: 20, margin: 0 }}>{theoryImg.captionText}</p>
+                <div style={{ ...LP_LABEL, fontSize: 13, color: "#F5EFE6", marginBottom: 14 }}>The Science</div>
+                <p style={{ fontFamily: T.serif, fontSize: 28, fontWeight: 600, fontStyle: "normal", color: "#F5EFE6", lineHeight: 1.2, margin: 0 }}>{theoryImg.captionText}</p>
               </div>
             </div>
           );
@@ -3326,8 +3318,8 @@ setAmbitionSaved(true); } catch {}
         return (
           <div style={{ background: "#131009", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "48px 40px", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: -80, left: -80, width: 400, height: 400, background: "radial-gradient(ellipse, rgba(138,158,132,0.1) 0%, transparent 60%)", pointerEvents: "none" }}/>
-            <div style={{ ...LP_LABEL, marginBottom: 28, alignSelf: "flex-start", animation: "fadeDown 0.6s ease both" }}>The Science</div>
-            <div style={{ transform: "scale(1.4)", transformOrigin: "center", animation: "fadeIn 0.8s ease 0.1s both", opacity: 0 }}>
+            <div style={{ ...LP_LABEL, fontSize: 13, color: "#F5EFE6", marginBottom: 28, alignSelf: "flex-start", animation: "fadeDown 0.6s ease both" }}>The Science</div>
+            <div style={{ transform: "scale(1.4)", transformOrigin: "top center", animation: "fadeIn 0.8s ease 0.1s both", opacity: 0 }}>
               {Diagram ? <Diagram/> : null}
             </div>
           </div>
@@ -3586,12 +3578,12 @@ setAmbitionSaved(true); } catch {}
               style={{
                 position: "absolute", top: NAV_H + 16, left: 24,
                 display: "flex", alignItems: "center", gap: 6,
-                background: "rgba(10,8,5,0.55)", backdropFilter: "blur(8px)",
-                border: "1px solid rgba(255,255,255,0.1)", borderRadius: 40,
-                padding: "6px 14px 6px 10px", cursor: "pointer", zIndex: 10,
+                background: "#F5EFE6",
+                border: "1px solid rgba(44,36,22,0.18)", borderRadius: 4,
+                padding: "8px 16px 8px 12px", cursor: "pointer", zIndex: 10,
               }}>
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              <span style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontFamily: T.sans }}>{idx === 0 ? "Exit" : "Exit session"}</span>
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <span style={{ fontSize: 14, color: "#2C2416", fontFamily: T.sans, fontWeight: 500 }}>← Exit</span>
             </button>
           </div>
 
@@ -3785,22 +3777,19 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
           style={{
             position:"absolute",top:52,left:20,
-            height:32,
-            padding:"0 12px 0 10px",
-            borderRadius:16,border:"none",
-            background:"rgba(0,0,0,0.4)",
-            color:"white",
+            height:36,
+            padding:"0 14px 0 12px",
+            borderRadius:4,border:"1px solid rgba(44,36,22,0.18)",
+            background:"#F5EFE6",
+            color:"#2C2416",
             display:"flex",alignItems:"center",gap:6,
             cursor:"pointer",
-            backdropFilter:"blur(4px)",
           }}>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M9 2L4 7l5 5" stroke="white" strokeWidth="1.6" 
-strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          <span 
-style={{fontSize:11,fontWeight:600,letterSpacing:"0.3px"}}>
-            {idx === 0 ? "Exit" : "Exit session"}
+          <span style={{fontSize:14,fontWeight:500,fontFamily:"'Inter',sans-serif"}}>
+            ← Exit
           </span>
         </button>
         {isDone && <div 
