@@ -3543,7 +3543,7 @@ setAmbitionSaved(true); } catch {}
 
     // ── Main studio render ────────────────────────────────────────────────
     return (
-      <div style={{ height: "100vh", display: "flex", flexDirection: "column", overflow: "hidden", background: "#131009" }}>
+      <div style={{ height: "100vh", paddingTop: NAV_H, display: "flex", flexDirection: "column", overflow: "hidden", background: "#131009" }}>
         {/* Exit confirmation modal */}
         {exitConfirm && (
           <div style={{ position: "fixed", inset: 0, zIndex: 400, background: "rgba(8,6,4,0.85)", backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "center" }}>
