@@ -3279,12 +3279,22 @@ setAmbitionSaved(true); } catch {}
 
     const LeftPanel = () => {
       // ── Insight — cinematic scene hero ──────────────────────────────────────
+      // Day 1 uses a custom lounge photo. All other days use the SVG Scene.
+      // BACKUP: revert to commit db934d3 to remove Day 1 photo entirely.
       if (step === "Insight") return (
         <div style={{ position: "relative", height: "100%", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-          <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
-            <Scene name={lesson.scene} height={900} day={lesson.day}/>
-          </div>
-          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.5)" }}/>
+          {/* Background: custom photo for Day 1, SVG scene for all others */}
+          {lesson.day === 1 ? (
+            <img src="/day1-lounge.jpg" alt=""
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
+            />
+          ) : (
+            <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
+              <Scene name={lesson.scene} height={900} day={lesson.day}/>
+            </div>
+          )}
+          {/* Day 1: 50% veil so the terracotta and interior warmth show through */}
+          <div style={{ position: "absolute", inset: 0, background: lesson.day === 1 ? "rgba(10,8,5,0.50)" : "rgba(10,8,5,0.5)" }}/>
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.5) 40%, transparent 75%)" }}/>
           <div style={{ position: "relative", zIndex: 2, padding: "40px 48px", animation: "fadeUp 0.7s ease both" }}>
             <div style={{ ...LP_LABEL, marginBottom: 20 }}>Day {lesson.day} · {lesson.tag}</div>
@@ -3590,7 +3600,18 @@ setAmbitionSaved(true); } catch {}
             overflowY: "auto", position: "relative",
             borderLeft: "1px solid " + T2.divider,
           }}>
-            <RightContent/>
+            {/* Day 1 only: very subtle lounge image at 7% — warmth without distraction */}
+            {lesson.day === 1 && step === "Insight" && (
+              <img src="/day1-lounge.jpg" alt="" style={{
+                position: "absolute", inset: 0, width: "100%", height: "100%",
+                objectFit: "cover", objectPosition: "center 30%",
+                opacity: 0.07, pointerEvents: "none", zIndex: 0,
+                mixBlendMode: "multiply",
+              }}/>
+            )}
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <RightContent/>
+            </div>
           </div>
         </div>
 
