@@ -69,9 +69,19 @@ s[i]; } else break; }
 }
 
 function useIsDesktop() {
-  const [v, setV] = useState(() => typeof window !== "undefined" && window.innerWidth >= 900);
+  const [v, setV] = useState(() => typeof window !== "undefined" && window.innerWidth >= 1024);
   useEffect(() => {
-    const fn = () => setV(window.innerWidth >= 900);
+    const fn = () => setV(window.innerWidth >= 1024);
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
+  }, []);
+  return v;
+}
+
+function useIsMobile() {
+  const [v, setV] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
+  useEffect(() => {
+    const fn = () => setV(window.innerWidth < 768);
     window.addEventListener("resize", fn);
     return () => window.removeEventListener("resize", fn);
   }, []);
@@ -1481,68 +1491,47 @@ function PBar({pct, h=2, color=T.gold}) {
   );
 }
 
-function TabBar({tab, setTab, dark=false}) {
-  const T2 = Object.assign({}, T, 
-dark?{surface:"#111C2E",border:"rgba(255,255,255,0.1)",text4:"rgba(255,255,255,0.3)"}:{});
+function TabBar({tab, setTab}) {
   const tabs = [
-    {id:"home",label:"Home"},
-    {id:"sessions",label:"Sessions"},
-    {id:"progress",label:"Progress"},
-    {id:"toolkit",label:"Toolkit"},
+    { id:"home", label:"Home",
+      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 9L10 3l7 6v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-5h4v5" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    },
+    { id:"sessions", label:"Programme",
+      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="1.5" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5"/><path d="M3 8h14M7 2v4M13 2v4" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5" strokeLinecap="round"/></svg>
+    },
+    { id:"progress", label:"Progress",
+      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15l4-5 3 3 4-6 3 3" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    },
+    { id:"toolkit", label:"Toolkit",
+      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="8" width="14" height="9" rx="1" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5"/><path d="M7 8V6a3 3 0 016 0v2" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5" strokeLinecap="round"/></svg>
+    },
   ];
-  const HomeIco = ({a}) => <svg width="18" height="18" viewBox="0 0 18 18" 
-fill="none"><path d="M2 8L9 2l7 6v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-4h4v4" 
-stroke={a?T.navy:"#9BA5AF"} strokeWidth="1.4" strokeLinecap="round" 
-strokeLinejoin="round"/></svg>;
-  const CalIco = ({a}) => <svg width="18" height="18" viewBox="0 0 18 18" 
-fill="none"><rect x="2" y="3" width="14" height="12" rx="1" 
-stroke={a?T.navy:"#9BA5AF"} strokeWidth="1.4"/><path d="M2 7h14M6 1v4M12 
-1v4" stroke={a?T.navy:"#9BA5AF"} strokeWidth="1.4" 
-strokeLinecap="round"/></svg>;
-  const ChartIco = ({a}) => <svg width="18" height="18" viewBox="0 0 18 
-18" fill="none"><path d="M2 14l4-4 3 3 5-6 2 2" 
-stroke={a?T.navy:"#9BA5AF"} strokeWidth="1.4" strokeLinecap="round" 
-strokeLinejoin="round"/></svg>;
-  const ToolIco = ({a}) => <svg width="18" height="18" viewBox="0 0 18 18" 
-fill="none"><path d="M3 9h12M9 3v12" stroke={a?T.navy:"#9BA5AF"} 
-strokeWidth="1.4" strokeLinecap="round"/></svg>;
-  const icons = [HomeIco, CalIco, ChartIco, ToolIco];
   return (
-    <div 
-style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:430,background:T2.surface,borderTop:"1px solid "+T2.border,display:"flex",alignItems:"center",zIndex:100}}>
-      {[0,1].map(i => {
-        const t = tabs[i];
-        const Ico = icons[i];
-        const active = tab===t.id;
+    <div style={{
+      position:"fixed", bottom:0, left:0, right:0,
+      background:"#2C2416",
+      borderTop:"1px solid rgba(255,255,255,0.08)",
+      display:"flex", alignItems:"stretch",
+      zIndex:100,
+      paddingBottom:"env(safe-area-inset-bottom,0px)",
+    }}>
+      {tabs.map(({ id, label, Icon }) => {
+        const active = tab === id;
         return (
-          <button key={t.id} onClick={()=>setTab(t.id)} 
-style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",padding:"10px 0 16px",border:"none",background:"transparent",gap:4}}>
-            <Ico a={active}/>
-            <span 
-style={{fontSize:9,fontWeight:active?600:400,color:active?T.navy:T.text4}}>{t.label}</span>
-            {active && <div 
-style={{width:14,height:1,background:T.gold,marginTop:1}}/>}
-          </button>
-        );
-      })}
-      <button onClick={()=>setTab("sessions")} 
-style={{width:44,height:44,borderRadius:0,background:T.navy,border:"none",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:2}}>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path 
-d="M7 1v12M1 7h12" stroke="white" strokeWidth="1.8" 
-strokeLinecap="round"/></svg>
-      </button>
-      {[2,3].map(i => {
-        const t = tabs[i];
-        const Ico = icons[i];
-        const active = tab===t.id;
-        return (
-          <button key={t.id} onClick={()=>setTab(t.id)} 
-style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",padding:"10px 0 16px",border:"none",background:"transparent",gap:4}}>
-            <Ico a={active}/>
-            <span 
-style={{fontSize:9,fontWeight:active?600:400,color:active?T.navy:T.text4}}>{t.label}</span>
-            {active && <div 
-style={{width:14,height:1,background:T.gold,marginTop:1}}/>}
+          <button key={id} onClick={() => setTab(id)} style={{
+            flex:1, display:"flex", flexDirection:"column",
+            alignItems:"center", justifyContent:"center",
+            gap:4, minHeight:56, border:"none",
+            background:"transparent", cursor:"pointer",
+            padding:"10px 4px 10px",
+          }}>
+            <Icon a={active}/>
+            <span style={{
+              fontSize:10, fontWeight: active ? 600 : 400,
+              color: active ? "#8A9E84" : "rgba(247,243,236,0.45)",
+              fontFamily:"'Inter',sans-serif", letterSpacing:"0.01em",
+            }}>{label}</span>
+            {active && <div style={{width:20,height:2,background:"#8A9E84",borderRadius:1,marginTop:1}}/>}
           </button>
         );
       })}
@@ -4014,19 +4003,20 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         </div>
       )}
 
-      <div style={{position:"relative"}}>
+      <div style={{position:"relative",maxHeight:250,overflow:"hidden"}}>
         <Scene name={lesson.scene} height={240} day={lesson.day}/>
         <button
           onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
           style={{
-            position:"absolute",top:52,left:20,
-            height:36,
-            padding:"0 14px 0 12px",
+            position:"absolute",top:16,left:16,
+            height:44,
+            padding:"0 16px 0 12px",
             borderRadius:4,border:"1px solid rgba(44,36,22,0.18)",
             background:"#F5EFE6",
             color:"#2C2416",
             display:"flex",alignItems:"center",gap:6,
             cursor:"pointer",
+            zIndex:10,
           }}>
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
             <path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -4046,15 +4036,15 @@ style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1
         </div>
       </div>
 
-      {/* Session Arc — connected journey indicator */}
+      {/* Session Arc — horizontally scrollable on mobile */}
       {(()=>{
         const icons = ["◎","✦","←→","▶","◈","✓"];
         const colors2 = [T.navy, T.gold, T.navy, T.navy, T.navy, T.green];
         return (
-          <div style={{padding:"14px 20px 0",userSelect:"none"}}>
-            {/* Connected arc row */}
-            <div 
-style={{display:"flex",alignItems:"center",position:"relative"}}>
+          <div style={{padding:"14px 0 0",userSelect:"none",overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
+            {/* Connected arc row — min-width so all 6 steps always show */}
+            <div
+style={{display:"flex",alignItems:"center",position:"relative",minWidth:"max-content",padding:"0 20px"}}>
               {SESSION_STEPS.map((s,i) => {
                 const done2 = i < idx;
                 const active = i === idx;
@@ -4456,22 +4446,60 @@ tomorrow?"
               />
             </div>
 
-            <div 
-style={{background:T2.cardDark,borderRadius:16,padding:"18px 20px"}}>
-              <div 
-style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Your 
-promise for tomorrow</div>
-              <p 
-style={{fontSize:14,color:"rgba(255,255,255,0.8)",lineHeight:1.6}}>{lesson.promise}</p>
+            {/* Closing reflection card */}
+            <div style={{background:T.cardDark,borderRadius:2,padding:"24px 20px",position:"relative",overflow:"hidden"}}>
+              <div style={{fontSize:10,letterSpacing:"0.15em",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,fontWeight:500,marginBottom:14}}>Day {lesson.day} · {lesson.title}</div>
+              <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,marginBottom:16}}>{REVIEW_CLOSING[lesson.day-1]}</p>
+              <div style={{width:40,height:1.5,background:T.gold,opacity:0.6}}/>
+            </div>
+
+            {/* Session summary bullets */}
+            <div style={{background:T2.surface,borderRadius:2,padding:"18px 20px"}}>
+              <div style={{fontSize:10,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>What You Practised</div>
+              {REVIEW_BULLETS[lesson.day-1].map((b,i) => (
+                <div key={i} style={{display:"flex",alignItems:"flex-start",gap:12,padding:"10px 0",borderBottom:i<2?"0.5px solid "+T2.divider:"none"}}>
+                  <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                    <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.6,fontWeight:300,margin:0}}>{b}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Further reading — stacked book cards */}
+            {(() => {
+              const fr = FURTHER_READING[lesson.day-1];
+              if (!fr) return null;
+              return (
+                <div style={{background:T2.bg,border:"0.5px solid "+T2.border,borderRadius:2,borderTop:"3px solid "+T.gold,overflow:"hidden"}}>
+                  <div style={{padding:"18px 20px 4px"}}>
+                    <p style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,letterSpacing:"-0.2px",marginBottom:2}}>Go Deeper</p>
+                    <p style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.15em",textTransform:"uppercase",color:T2.text3,marginBottom:16}}>Recommended for this session</p>
+                  </div>
+                  {fr.books.map((book,bi) => (
+                    <div key={bi} style={{padding:"0 20px 18px",borderTop:bi>0?"0.5px solid "+T2.divider:"none"}}>
+                      {bi>0 && <div style={{height:18}}/>}
+                      <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,marginBottom:2}}>{book.title}</p>
+                      <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginBottom:8}}>{book.author}</p>
+                      <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.goldDark,lineHeight:1.5,marginBottom:10}}>{book.connection}</p>
+                      <a href={book.amazon} target="_blank" rel="noreferrer" style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:T.gold,textDecoration:"none"}}>Get the book →</a>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
+
+            <div style={{background:T2.cardDark,borderRadius:2,padding:"18px 20px"}}>
+              <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Your promise for tomorrow</div>
+              <p style={{fontSize:14,color:"rgba(255,255,255,0.8)",lineHeight:1.6}}>{lesson.promise}</p>
             </div>
             {!isDone ? (
-              <button onClick={onComplete} 
-style={{width:"100%",padding:"16px",borderRadius:0,border:"none",background:T.navy,color:"white",fontSize:15,fontWeight:700}}>Mark 
-Complete</button>
+              <button onClick={onComplete} style={{width:"100%",padding:"18px",borderRadius:0,border:"none",background:"#2C2416",color:"#F7F3EC",fontSize:15,fontWeight:600,fontFamily:T.sans,minHeight:56}}>
+                Mark Complete & Continue →
+              </button>
             ) : (
-              <div style={{padding:"14px 20px",borderRadius:2,background:T2.card,border:"1px solid "+T2.border,textAlign:"center"}}>
-                <span style={{fontSize:14,color:T2.text2}}>Complete — 
-practise again anytime</span>
+              <div style={{padding:"16px 20px",borderRadius:2,background:T2.card,border:"1px solid "+T2.border,textAlign:"center"}}>
+                <span style={{fontSize:14,color:T2.text2}}>Complete — practise again anytime</span>
               </div>
             )}
           </>
@@ -6029,8 +6057,7 @@ lsSet("au1_dark",d); }
     setCel(d);
   }
 
-  const wrapStyle =
-{minHeight:"100vh",background:dark?"#0B0D10":T.bg,fontFamily:T.sans,maxWidth:isDesktop?undefined:430,margin:isDesktop?undefined:"0 auto",position:"relative"};
+  const wrapStyle = {minHeight:"100vh",background:dark?"#0B0D10":T.bg,fontFamily:T.sans,position:"relative",overflowX:"hidden"};
   // Dark mode token overrides — passed as context via inline vars
   // Dark mode: warm espresso palette (NOT cold blue — Soho House, not fintech)
   const DK = dark ? {
@@ -6126,7 +6153,7 @@ reset</button>
         </div>
       )}
       {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole}/>}
-      <div className="au-grain-wrap" style={{flex:1,overflowY:"auto",marginLeft:0,paddingTop:isDesktop?0:0,paddingBottom:isDesktop?0:90,background:dark?"#19160F":T.bg}}>
+      <div className="au-grain-wrap" style={{flex:1,overflowY:"auto",marginLeft:0,paddingBottom:isDesktop?0:"calc(64px + env(safe-area-inset-bottom, 0px))",background:dark?"#19160F":T.bg}}>
         {tab==="home" && <HomeScreen done={done} cur={cur} streak={streak} onStart={startSession} roleId={roleId} activeRole={activeRole} dark={dark} DK={DK} showNudge={showNudge} onDismissNudge={()=>setShowNudge(false)} isDesktop={isDesktop}/>}
         {tab==="sessions" && <SessionsScreen done={done} cur={cur} onStart={startSession} roleId={roleId} dark={dark} DK={DK} isDesktop={isDesktop}/>}
         {tab==="progress" && <ProgressScreen done={done} cur={cur} streak={streak} roleId={roleId} activeRole={activeRole} onChangeRole={(r)=>{setRoleId(r);lsSet("au1_role",r);}} dark={dark} toggleDark={toggleDark} DK={DK} onReset={()=>setConfirmReset(true)} isDesktop={isDesktop}/>}
