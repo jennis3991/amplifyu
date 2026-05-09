@@ -841,6 +841,41 @@ const FURTHER_READING = [
   ]},
 ];
 
+// ─── REVIEW STEP DATA — closing statements and session bullets per module
+const REVIEW_CLOSING = [
+  "The simplest words carry the furthest.",
+  "Slow down. The room will follow.",
+  "In silence, authority lives.",
+  "Cut everything that doesn't earn its place.",
+  "A well-built sentence is a well-built argument.",
+  "The story you tell becomes the one they remember.",
+  "Performance is invisible until someone sees it.",
+  "Presence is a choice made before you speak.",
+  "The most persuasive people ask the best questions.",
+  "The conversation you avoid is the one that matters most.",
+  "What you stand for is more powerful than what you do.",
+  "Every relationship begins with genuine curiosity.",
+  "Leaders speak from who they are, not what they want.",
+  "Prepare so thoroughly that the pressure becomes fuel.",
+];
+
+const REVIEW_BULLETS = [
+  ["Complexity signals confusion — simplicity signals mastery", "If you can't explain it simply, you haven't finished thinking", "Every unnecessary word costs you credibility with your listener"],
+  ["Speed signals anxiety; deliberate pace signals authority", "Cognitive load collapses comprehension — give listeners space to absorb", "Three seconds of intentional silence communicates more than ten words"],
+  ["Filler words reduce perceived competence by up to 22%", "A pause is not weakness — it is thought made visible", "Replace 'um' and 'er' with breath, intention, and the next word"],
+  ["One idea per sentence — always, without exception", "Short sentences land harder and are remembered longer", "Miller's Law: your listener's brain holds seven items at once — respect that"],
+  ["Lead with your conclusion, then earn it with evidence", "Point → Reason → Example: the fastest path from idea to understanding", "Structure is a gift to your listener, not a constraint on your thinking"],
+  ["Stories move people to places that facts cannot reach", "Every great professional story has a before, a shift, and an after", "Narrative transportation changes minds without triggering resistance"],
+  ["Performance alone does not build careers — visibility multiplies it", "Image and exposure are not vanity — they are strategy", "Being known for the right things in the right rooms is a learnable skill"],
+  ["Presence begins in the body before a single word is spoken", "How you enter a room communicates authority before you speak", "Confidence is a decision made in private, before the public moment"],
+  ["Real influence is built on empathy, not on argument", "People agree when they feel understood, not when they feel correct", "Reciprocity, commitment, and social proof are the levers of human agreement"],
+  ["Difficult conversations require psychological safety for both people", "Care personally and challenge directly — that is the only honest path", "The goal of every hard conversation is shared meaning, not victory"],
+  ["Your brand is what people say about you when you leave the room", "Consistency of voice and presence builds trust over years, not weeks", "You cannot be known for everything — choose your niche deliberately"],
+  ["Give first, always — generosity is the foundation of every lasting network", "People remember how you made them feel, never just what you said", "A warm, curious introduction is worth ten cold connections"],
+  ["A leadership voice is earned through vulnerability, not volume", "Brave language builds the psychological safety that makes teams great", "The words you choose every day define the culture around you"],
+  ["Thorough preparation turns high stakes into high performance", "The Talk Like TED method: emotional, novel, and always memorable", "Your best performance lives on the other side of genuine preparation"],
+];
+
 // ─── LESSON DATA
 const LESSONS = [
   // ── WEEK 1 
@@ -3654,52 +3689,173 @@ setAmbitionSaved(true); } catch {}
           </div>
         )}
 
-        {/* ── Split-panel studio ── */}
-        <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+        {/* ── Split-panel studio / Review 3-panel ── */}
+        {step === "Review" ? (
+          /* ── REVIEW: 3-column full-viewport layout ── */
+          <div key="review-3col" className="au-step-enter" style={{ flex: 1, display: "flex", overflow: "hidden" }}>
 
-          {/* LEFT PANEL — Primary stage: visual atmosphere + theory diagram (60%) */}
-          <div style={{
-            width: "60%", flexShrink: 0,
-            position: "relative", overflow: "hidden",
-          }}>
-            <div key={idx} className="au-step-enter" style={{ height: "100%" }}>
-              <LeftPanel/>
-            </div>
-            {/* Back button — floats over left panel */}
-            <button
-              onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
-              style={{
-                position: "absolute", top: NAV_H + 16, left: 24,
+            {/* COL 1 — Dark cinematic closing */}
+            <div style={{ width: "33.33%", flexShrink: 0, position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+              {/* Background scene */}
+              {lesson.day === 1 ? (
+                <img src="/day1-lounge.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}/>
+              ) : (
+                <div style={{ position: "absolute", inset: 0 }}><Scene name={lesson.scene} height={900} day={lesson.day}/></div>
+              )}
+              <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.52)" }}/>
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.3) 50%, transparent 75%)" }}/>
+              {/* Exit button */}
+              <button onClick={() => setExitConfirm(true)} style={{
+                position: "absolute", top: 24, left: 24, zIndex: 10,
                 display: "flex", alignItems: "center", gap: 6,
-                background: "#F5EFE6",
-                border: "1px solid rgba(44,36,22,0.18)", borderRadius: 4,
-                padding: "8px 16px 8px 12px", cursor: "pointer", zIndex: 10,
+                background: "#F5EFE6", border: "1px solid rgba(44,36,22,0.18)", borderRadius: 4,
+                padding: "8px 16px 8px 12px", cursor: "pointer",
               }}>
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              <span style={{ fontSize: 14, color: "#2C2416", fontFamily: T.sans, fontWeight: 500 }}>← Exit</span>
-            </button>
-          </div>
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <span style={{ fontSize: 14, color: "#2C2416", fontFamily: T.sans, fontWeight: 500 }}>← Exit</span>
+              </button>
+              {/* Content */}
+              <div style={{ position: "relative", zIndex: 2, padding: "40px 40px 44px", animation: "fadeUp 0.6s ease both" }}>
+                <div style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, fontWeight: 500, marginBottom: 20 }}>Day {lesson.day} · {lesson.title}</div>
+                <p style={{ fontFamily: T.serif, fontWeight: 600, color: "#F5EFE6", fontSize: "clamp(24px,2vw,32px)", lineHeight: 1.2, letterSpacing: "-0.3px", marginBottom: 24, maxWidth: 320 }}>{REVIEW_CLOSING[lesson.day - 1]}</p>
+                <div style={{ width: 48, height: 1.5, background: T.gold, opacity: 0.6, marginBottom: 20 }}/>
+                <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,239,230,0.5)", fontFamily: T.sans }}>Day {lesson.day} Complete</div>
+              </div>
+            </div>
 
-          {/* RIGHT PANEL — Supporting content (40%) */}
-          <div style={{
-            flex: 1, background: T2.bg,
-            overflowY: "auto", position: "relative",
-            borderLeft: "1px solid " + T2.divider,
-          }}>
-            {/* Day 1 only: very subtle lounge image at 7% — warmth without distraction */}
-            {lesson.day === 1 && step === "Insight" && (
-              <img src="/day1-lounge.jpg" alt="" style={{
-                position: "absolute", inset: 0, width: "100%", height: "100%",
-                objectFit: "cover", objectPosition: "center 30%",
-                opacity: 0.07, pointerEvents: "none", zIndex: 0,
-                mixBlendMode: "multiply",
-              }}/>
-            )}
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <RightContent/>
+            {/* COL 2 — Parchment session summary */}
+            <div style={{ width: "33.34%", flexShrink: 0, background: T2.bg, borderLeft: "1px solid " + T2.divider, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+              <div style={{ flex: 1, padding: "40px 36px 28px", display: "flex", flexDirection: "column", gap: 0, overflow: "hidden" }}>
+                <div style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: T.sans, fontWeight: 500, color: T2.text3, marginBottom: 14 }}>What You Practised Today</div>
+                <h3 style={{ fontFamily: T.serif, fontSize: 24, fontWeight: 600, color: T2.text, letterSpacing: "-0.3px", lineHeight: 1.2, marginBottom: 24 }}>{lesson.title}</h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: 0, marginBottom: 24 }}>
+                  {REVIEW_BULLETS[lesson.day - 1].map((b, i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "12px 0", borderBottom: i < 2 ? "0.5px solid " + T2.divider : "none" }}>
+                      <div style={{ width: 20, height: 20, borderRadius: "50%", background: "rgba(138,158,132,0.12)", border: "1px solid rgba(138,158,132,0.25)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                        <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </div>
+                      <p style={{ fontFamily: T.sans, fontSize: 13, color: T2.text, lineHeight: 1.65, fontWeight: 300, margin: 0 }}>{b}</p>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ borderTop: "0.5px solid " + T2.divider, paddingTop: 20, marginBottom: 0 }}>
+                  <div style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: T.sans, fontWeight: 500, color: T2.text3, marginBottom: 12 }}>From Your Coach</div>
+                  <p style={{ fontFamily: T.serif, fontSize: 15, fontStyle: "italic", color: T2.text2, lineHeight: 1.65 }}>
+                    "Your coach is ready when you are. Return to any session to practise with the AI coach."
+                  </p>
+                </div>
+              </div>
+              {/* Complete button pinned to bottom */}
+              <div style={{ padding: "0 36px 36px", flexShrink: 0 }}>
+                {!isDone ? (
+                  <button onClick={onComplete} style={{
+                    width: "100%", padding: "14px 24px",
+                    background: T2.ink, color: T2.bg, border: "none", borderRadius: 4,
+                    fontFamily: T.sans, fontSize: 14, fontWeight: 600, cursor: "pointer",
+                    letterSpacing: "0.02em", display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+                    transition: "opacity 0.2s ease",
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}
+                    onMouseLeave={e => e.currentTarget.style.opacity = "1"}
+                  >
+                    Mark Complete & Continue
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </button>
+                ) : (
+                  <div style={{ width: "100%", padding: "14px 24px", background: "rgba(82,112,96,0.1)", border: "1px solid rgba(82,112,96,0.3)", borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                    <svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={T.green} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <span style={{ fontSize: 13, color: T.green, fontFamily: T.sans, fontWeight: 500 }}>Session Complete — revisit anytime</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* COL 3 — Go Deeper: further reading */}
+            {(() => {
+              const fr = FURTHER_READING[lesson.day - 1];
+              return (
+                <div style={{ flex: 1, background: T2.bg, borderLeft: "1px solid " + T2.divider, borderTop: "3px solid " + T.gold, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+                  <div style={{ flex: 1, padding: "32px 32px 20px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+                    <h3 style={{ fontFamily: T.serif, fontSize: 22, fontWeight: 600, color: T2.text, letterSpacing: "-0.2px", marginBottom: 4 }}>Go Deeper</h3>
+                    <div style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: T.sans, fontWeight: 500, color: T2.text3, marginBottom: 28 }}>Recommended for this session</div>
+                    {fr && fr.books.map((book, bi) => (
+                      <div key={bi}>
+                        {bi > 0 && <div style={{ height: "0.5px", background: T2.divider, margin: "20px 0" }}/>}
+                        <p style={{ fontFamily: T.serif, fontSize: 16, fontWeight: 600, color: T2.text, letterSpacing: "-0.2px", marginBottom: 3 }}>{book.title}</p>
+                        <p style={{ fontFamily: T.sans, fontSize: 11, color: T2.text3, marginBottom: 10 }}>{book.author}</p>
+                        <p style={{ fontFamily: T.serif, fontSize: 13, fontStyle: "italic", color: T.goldDark, lineHeight: 1.55, marginBottom: 12 }}>{book.connection}</p>
+                        <a href={book.amazon} target="_blank" rel="noreferrer" style={{
+                          fontFamily: T.sans, fontSize: 12, fontWeight: 500,
+                          color: T.gold, textDecoration: "none", letterSpacing: "0.01em",
+                        }}
+                          onMouseEnter={e => e.currentTarget.style.textDecoration = "underline"}
+                          onMouseLeave={e => e.currentTarget.style.textDecoration = "none"}
+                        >Get the book →</a>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ padding: "0 32px 32px", flexShrink: 0 }}>
+                    <div style={{ height: "0.5px", background: T2.divider, marginBottom: 16 }}/>
+                    <button onClick={() => { onBack(); /* TODO: open toolkit reading tab */ }} style={{
+                      background: "none", border: "none", cursor: "pointer", padding: 0,
+                      fontFamily: T.sans, fontSize: 12, color: T2.text3, letterSpacing: "0.01em",
+                    }}
+                      onMouseEnter={e => e.currentTarget.style.color = T2.text}
+                      onMouseLeave={e => e.currentTarget.style.color = T2.text3}
+                    >View full reading list →</button>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        ) : (
+          /* ── Standard 60/40 split for all other steps ── */
+          <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+
+            {/* LEFT PANEL — Primary stage: visual atmosphere + theory diagram (60%) */}
+            <div style={{
+              width: "60%", flexShrink: 0,
+              position: "relative", overflow: "hidden",
+            }}>
+              <div key={idx} className="au-step-enter" style={{ height: "100%" }}>
+                <LeftPanel/>
+              </div>
+              {/* Back button — floats over left panel */}
+              <button
+                onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
+                style={{
+                  position: "absolute", top: NAV_H + 16, left: 24,
+                  display: "flex", alignItems: "center", gap: 6,
+                  background: "#F5EFE6",
+                  border: "1px solid rgba(44,36,22,0.18)", borderRadius: 4,
+                  padding: "8px 16px 8px 12px", cursor: "pointer", zIndex: 10,
+                }}>
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <span style={{ fontSize: 14, color: "#2C2416", fontFamily: T.sans, fontWeight: 500 }}>← Exit</span>
+              </button>
+            </div>
+
+            {/* RIGHT PANEL — Supporting content (40%) */}
+            <div style={{
+              flex: 1, background: T2.bg,
+              overflowY: "auto", position: "relative",
+              borderLeft: "1px solid " + T2.divider,
+            }}>
+              {/* Day 1 only: very subtle lounge image at 7% — warmth without distraction */}
+              {lesson.day === 1 && step === "Insight" && (
+                <img src="/day1-lounge.jpg" alt="" style={{
+                  position: "absolute", inset: 0, width: "100%", height: "100%",
+                  objectFit: "cover", objectPosition: "center 30%",
+                  opacity: 0.07, pointerEvents: "none", zIndex: 0,
+                  mixBlendMode: "multiply",
+                }}/>
+              )}
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <RightContent/>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* ── Chapter navigation bar — visible, numbered, clearly labelled ── */}
         <div style={{
@@ -3739,24 +3895,8 @@ setAmbitionSaved(true); } catch {}
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
             )}
-            {idx === SESSION_STEPS.length - 1 && !isDone && (
-              <button onClick={onComplete} className="au-cta" style={{
-                display: "flex", alignItems: "center", gap: 10,
-                padding: "9px 24px", borderRadius: 5,
-                background: T.green, border: "none",
-                color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer",
-                fontFamily: T.sans,
-                boxShadow: "0 2px 16px rgba(61,107,79,0.3)",
-              }}>
-                Mark Complete
-                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </button>
-            )}
-            {idx === SESSION_STEPS.length - 1 && isDone && (
-              <div style={{ padding: "8px 16px", borderRadius: 5, background: "rgba(61,107,79,0.2)", border: "1px solid rgba(61,107,79,0.3)" }}>
-                <span style={{ fontSize: 12, color: T.green, fontFamily: T.sans }}>✓ Complete — revisit anytime</span>
-              </div>
-            )}
+            {/* Mark Complete lives in the center panel on Review step — hidden from nav bar */}
+            {idx < SESSION_STEPS.length - 1 || step !== "Review" ? null : null}
           </div>
         </div>
       </div>
