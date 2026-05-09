@@ -3313,8 +3313,9 @@ setAmbitionSaved(true); } catch {}
           return (
             <div style={{ height: "100%", position: "relative", overflow: "hidden" }}>
               <img src={theoryImg.image} alt={theoryImg.alt || ""} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}/>
-              <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.35)" }}/>
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.9) 0%, transparent 55%)" }}/>
+              {/* No base veil — image shows at full brightness */}
+              {/* Light gradient only at the bottom to keep caption label readable */}
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.55) 0%, rgba(10,8,5,0.1) 30%, transparent 55%)" }}/>
               <div style={{ position: "absolute", bottom: 44, left: 48, zIndex: 2, animation: "fadeUp 0.7s ease both", maxWidth: 360 }}>
                 <div style={{ ...LP_LABEL, marginBottom: 14 }}>The Science</div>
                 <p style={{ ...LP_BODY, fontSize: 20, margin: 0 }}>{theoryImg.captionText}</p>
