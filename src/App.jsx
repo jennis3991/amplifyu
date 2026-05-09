@@ -3438,10 +3438,10 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      // ── Practice — commanding prompt on left ─────────────────────────────────
+      // ── Practice — practice-bg.jpg provides the atmosphere from the outer wrapper
       if (step === "Practice") return (
         <div style={{ position: "relative", height: "100%", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-          <div style={{ position: "absolute", inset: 0 }}><Scene name={lesson.scene} height={900}/></div>
+          {/* No Scene — practice-bg.jpg shows through from the parent split wrapper */}
           <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.65)" }}/>
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.98) 0%, transparent 60%)" }}/>
           <div style={{ position: "relative", zIndex: 2, padding: "40px 48px", animation: "fadeUp 0.6s ease both" }}>
@@ -3810,12 +3810,21 @@ setAmbitionSaved(true); } catch {}
           </div>
         ) : (
           /* ── Standard 60/40 split for all other steps ── */
-          <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+          <div style={{ flex: 1, display: "flex", overflow: "hidden", position: "relative" }}>
+
+            {/* Practice step: full-bleed background image behind both panels */}
+            {step === "Practice" && (
+              <img src="/practice-bg.jpg" alt="" style={{
+                position: "absolute", inset: 0, width: "100%", height: "100%",
+                objectFit: "cover", objectPosition: "center 30%",
+                zIndex: 0, pointerEvents: "none",
+              }}/>
+            )}
 
             {/* LEFT PANEL — Primary stage: visual atmosphere + theory diagram (60%) */}
             <div style={{
               width: "60%", flexShrink: 0,
-              position: "relative", overflow: "hidden",
+              position: "relative", overflow: "hidden", zIndex: 1,
             }}>
               <div key={idx} className="au-step-enter" style={{ height: "100%" }}>
                 <LeftPanel/>
@@ -3837,8 +3846,9 @@ setAmbitionSaved(true); } catch {}
 
             {/* RIGHT PANEL — Supporting content (40%) */}
             <div style={{
-              flex: 1, background: T2.bg,
-              overflowY: "auto", position: "relative",
+              flex: 1,
+              background: step === "Practice" ? "rgba(247,243,236,0.92)" : T2.bg,
+              overflowY: "auto", position: "relative", zIndex: 1,
               borderLeft: "1px solid " + T2.divider,
             }}>
               {/* Day 1 only: very subtle lounge image at 7% — warmth without distraction */}
