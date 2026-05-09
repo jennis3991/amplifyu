@@ -4808,23 +4808,50 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
     return (
       <div style={{ background: T2.bg, minHeight: "100vh" }} className="au-page">
 
-        {/* ── Cinematic Programme Hero ── */}
+        {/* ── Programme Hero — photo banner ── */}
+        {/* REPLACES: <Scene name="structure" height={500}/> SVG illustration */}
+        {/* TO REVERT: swap img back to <div className="au-hero-scene"><Scene name="structure" height={500}/></div> and restore overlays to rgba(10,8,5,0.55) / rgba(10,8,5,0.95) */}
         <div style={{
           position: "relative", height: 420, overflow: "hidden",
           display: "flex", flexDirection: "column", justifyContent: "flex-end",
+          paddingTop: NAV_H,
         }}>
-          <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
-            <Scene name="structure" height={500}/>
-          </div>
-          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.55)" }}/>
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.95) 0%, rgba(10,8,5,0.4) 50%, transparent 100%)" }}/>
+          {/* Full-bleed photo */}
+          <img
+            src="/programme-hero.jpg"
+            alt="Warm coaching lounge interior"
+            style={{
+              position: "absolute", inset: 0,
+              width: "100%", height: "100%",
+              objectFit: "cover", objectPosition: "center 40%",
+            }}
+          />
+          {/* Subtle dark veil — 35% so the image breathes */}
+          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.35)" }}/>
+          {/* Bottom gradient — keeps text sharp without killing the image */}
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.75) 0%, rgba(10,8,5,0.2) 45%, transparent 100%)" }}/>
+
+          {/* Text overlay */}
           <div style={{ position: "relative", zIndex: 2, padding: "0 88px 52px", animation: "fadeUp 0.7s ease both" }}>
-            <div style={{ fontSize: 9, letterSpacing: "4px", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", fontFamily: T.sans, marginBottom: 12 }}>14 Sessions · 6 Steps Each</div>
-            <h1 style={{ fontFamily: T.serif, fontSize: 72, fontWeight: 600, color: "rgba(255,255,255,0.95)", letterSpacing: "-3px", lineHeight: 0.92, marginBottom: 16 }}>Your Programme</h1>
+            <div style={{
+              fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase",
+              color: "rgba(245,239,230,0.55)", fontFamily: T.sans,
+              fontWeight: 500, marginBottom: 14,
+            }}>14 Sessions — 6 Steps Each</div>
+            <h1 style={{
+              fontFamily: T.serif, fontSize: 72, fontWeight: 600,
+              color: "#F5EFE6", letterSpacing: "-3px", lineHeight: 0.92,
+              marginBottom: 20,
+            }}>Your Programme</h1>
             {roleId && (() => { const r = ROLES.find(x => x.id === roleId); return r ? (
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 14px", background: "rgba(138,158,132,0.15)", borderRadius: 4, border: "1px solid rgba(138,158,132,0.28)" }}>
-                <span style={{ fontSize: 12 }}>{r.icon}</span>
-                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", fontFamily: T.sans }}>{r.label} · Scenarios tailored</span>
+              <div style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                padding: "7px 16px",
+                background: "rgba(10,8,5,0.45)", backdropFilter: "blur(8px)",
+                borderRadius: 40, border: "1px solid rgba(245,239,230,0.18)",
+              }}>
+                <span style={{ color: T.gold, fontSize: 13 }}>◆</span>
+                <span style={{ fontSize: 12, color: "rgba(245,239,230,0.75)", fontFamily: T.sans, fontWeight: 400 }}>{r.label}</span>
               </div>
             ) : null; })()}
           </div>
