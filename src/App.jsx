@@ -781,7 +781,67 @@ const THEORY_DATA = [
 ];
 
 
-// ─── LESSON DATA 
+// ─── FURTHER READING DATA
+const FURTHER_READING = [
+  { books: [
+    { title: "Simply Said", author: "Jay Sullivan", connection: "The practical companion to Speak Clearly — a manual for audience-centred communication.", summary: "Sullivan distils decades of coaching Fortune 500 leaders into a repeatable framework. Every chapter delivers a technique you can use in your next meeting.", amazon: "https://www.amazon.co.uk/s?k=Simply+Said+Jay+Sullivan" },
+    { title: "The Pyramid Principle", author: "Barbara Minto", connection: "Minto's top-down structure is the intellectual backbone of simple, decisive communication.", summary: "The foundational text used by McKinsey and consulting firms worldwide. Lead with the answer, then support it — a discipline that transforms how you speak and write.", amazon: "https://www.amazon.co.uk/s?k=The+Pyramid+Principle+Barbara+Minto" },
+  ]},
+  { books: [
+    { title: "Speak with No Fear", author: "Mike Acker", connection: "Goes deep on the inner work of confident delivery — the mindset behind voice control.", summary: "Acker's six-step system dismantles the fear response and replaces it with presence. Practical, honest, and grounded in real speaking experience.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
+    { title: "Talk Like TED", author: "Carmine Gallo", connection: "Analyses the world's most-watched talks to reveal what commanding speakers do differently.", summary: "Gallo reverse-engineers 500 TED talks to extract nine secrets of great public speaking — from emotional storytelling to novelty and genuine mastery.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
+  ]},
+  { books: [
+    { title: "The Art of Communicating", author: "Thich Nhat Hanh", connection: "Teaches the stillness and presence that make space — the antidote to nervous filler words.", summary: "A powerful guide to mindful communication: deep listening, loving speech, and the practice of silence as a tool rather than a void to fill.", amazon: "https://www.amazon.co.uk/s?k=The+Art+of+Communicating+Thich+Nhat+Hanh" },
+    { title: "Just Listen", author: "Mark Goulston", connection: "Reframes pauses as a gift to your listener — the counterintuitive power of saying less.", summary: "Goulston shows how the most effective communicators lead with listening, not talking. A practical guide to getting through to anyone, in any situation.", amazon: "https://www.amazon.co.uk/s?k=Just+Listen+Mark+Goulston" },
+  ]},
+  { books: [
+    { title: "On Writing Well", author: "William Zinsser", connection: "The timeless authority on cutting clutter — every principle applies equally to your spoken sentences.", summary: "Zinsser's classic guide to non-fiction writing is equally a guide to speaking. Clutter is the enemy; clarity is the goal. Thirty years on, every word still holds.", amazon: "https://www.amazon.co.uk/s?k=On+Writing+Well+William+Zinsser" },
+    { title: "Writing Without Bullshit", author: "Josh Bernoff", connection: "A direct challenge to corporate jargon — read it to hear your own filler language clearly.", summary: "Bernoff's Iron Imperative — treat the reader's time as more valuable than your own — applies to every email, report, and presentation you will ever give.", amazon: "https://www.amazon.co.uk/s?k=Writing+Without+Bullshit+Josh+Bernoff" },
+  ]},
+  { books: [
+    { title: "The McKinsey Way", author: "Ethan Rasiel", connection: "The operating manual for the structured thinking that PRE is built on.", summary: "Rasiel reveals how McKinsey consultants frame problems, communicate findings, and structure recommendations under pressure. Immediately usable in any professional context.", amazon: "https://www.amazon.co.uk/s?k=The+McKinsey+Way+Ethan+Rasiel" },
+    { title: "The Minto Pyramid Principle", author: "Barbara Minto", connection: "The full method behind structured communication — go deeper into the framework PRE draws from.", summary: "Minto's complete system for structuring thinking and writing so leaders can communicate ideas clearly and persuasively every single time.", amazon: "https://www.amazon.co.uk/s?k=The+Minto+Pyramid+Principle+Barbara+Minto" },
+  ]},
+  { books: [
+    { title: "The Storyteller's Secret", author: "Carmine Gallo", connection: "Reveals how the world's most inspiring communicators use story as their primary instrument.", summary: "Gallo interviews over 50 successful leaders to uncover the stories that changed careers, companies, and cultures. Practical, energising, and full of usable craft.", amazon: "https://www.amazon.co.uk/s?k=The+Storyteller%27s+Secret+Carmine+Gallo" },
+    { title: "Building a StoryBrand", author: "Donald Miller", connection: "Miller's SB7 framework shows how to make your audience the hero — essential for professional storytelling.", summary: "A seven-part framework that clarifies your message by positioning yourself as the guide. Used by thousands of companies and communicators worldwide.", amazon: "https://www.amazon.co.uk/s?k=Building+a+StoryBrand+Donald+Miller" },
+  ]},
+  { books: [
+    { title: "Promoting Yourself", author: "Harvey Mackay", connection: "The definitive guide to making your value visible — the heart of the PIE Framework.", summary: "Mackay's practical strategies for building the relationships and reputation that create career momentum, without ever feeling inauthentic or self-promotional.", amazon: "https://www.amazon.co.uk/s?k=Promoting+Yourself+Harvey+Mackay" },
+    { title: "The 2-Hour Job Search", author: "Steve Dalton", connection: "A methodical approach to being known before you need to be — exactly what PIE is about.", summary: "Dalton's evidence-based system for prioritising and approaching contacts efficiently. Counterintuitive and remarkably effective for anyone building professional visibility.", amazon: "https://www.amazon.co.uk/s?k=The+2-Hour+Job+Search+Steve+Dalton" },
+  ]},
+  { books: [
+    { title: "Presence", author: "Amy Cuddy", connection: "The science of how body and mind interact to create — or undermine — executive presence.", summary: "Cuddy's research into posture, power, and confidence shows how small physical changes can dramatically shift how you feel and how others perceive you.", amazon: "https://www.amazon.co.uk/s?k=Presence+Amy+Cuddy" },
+    { title: "The Executive Presence Playbook", author: "Carol Kinsey Goman", connection: "A practical field guide to the non-verbal signals that communicate authority and credibility.", summary: "Goman translates body language research into concrete strategies for projecting confidence, warmth, and leadership in any professional setting.", amazon: "https://www.amazon.co.uk/s?k=The+Executive+Presence+Playbook+Carol+Kinsey+Goman" },
+  ]},
+  { books: [
+    { title: "Never Split the Difference", author: "Chris Voss", connection: "FBI hostage negotiation tactics that reveal how real influence is built on empathy, not argument.", summary: "Voss upends everything you thought you knew about negotiation. Tactical empathy, mirroring, and the power of 'no' make this one of the most practically useful books on communication.", amazon: "https://www.amazon.co.uk/s?k=Never+Split+the+Difference+Chris+Voss" },
+    { title: "Influence", author: "Robert Cialdini", connection: "The foundational text on the six universal principles that drive human agreement.", summary: "Cialdini's landmark research on reciprocity, commitment, social proof, authority, liking, and scarcity remains the most cited work in persuasion science.", amazon: "https://www.amazon.co.uk/s?k=Influence+Robert+Cialdini" },
+  ]},
+  { books: [
+    { title: "Crucial Conversations", author: "Patterson, Grenny, McMillan & Switzler", connection: "The essential toolkit for high-stakes dialogue — the direct companion to this module.", summary: "A proven method for holding conversations that matter: staying safe, listening to understand, and creating shared meaning even when stakes are high and emotions run hot.", amazon: "https://www.amazon.co.uk/s?k=Crucial+Conversations+Patterson+Grenny" },
+    { title: "Radical Candor", author: "Kim Scott", connection: "The operating framework for feedback that is both honest and kind — care personally, challenge directly.", summary: "Scott's 2×2 model gives managers and colleagues a vocabulary for honest, constructive conversation that builds trust rather than eroding it.", amazon: "https://www.amazon.co.uk/s?k=Radical+Candor+Kim+Scott" },
+  ]},
+  { books: [
+    { title: "Crushing It!", author: "Gary Vaynerchuk", connection: "The energetic case for showing up consistently and building a brand around your authentic voice.", summary: "Vaynerchuk's handbook for building a personal brand through content, consistency, and genuine value creation — on any platform, at any stage of your career.", amazon: "https://www.amazon.co.uk/s?k=Crushing+It+Gary+Vaynerchuk" },
+    { title: "Known", author: "Mark Schaefer", connection: "A methodical, research-backed roadmap to becoming known in your field — less hustle, more strategy.", summary: "Schaefer's four-step framework shows how to identify your place to be known, develop a content engine, and build the audience that creates real career leverage.", amazon: "https://www.amazon.co.uk/s?k=Known+Mark+Schaefer" },
+  ]},
+  { books: [
+    { title: "Never Eat Alone", author: "Keith Ferrazzi", connection: "The generosity-first philosophy of relationship building that makes networking feel natural.", summary: "Ferrazzi argues that the most connected people succeed not by using relationships but by genuinely investing in them. A practical guide to building a network that matters.", amazon: "https://www.amazon.co.uk/s?k=Never+Eat+Alone+Keith+Ferrazzi" },
+    { title: "How to Win Friends and Influence People", author: "Dale Carnegie", connection: "Still the most proven book on making people feel valued — the foundation of every lasting professional relationship.", summary: "Carnegie's 1936 classic remains the most widely read book on human relations. Genuine interest, remembering names, making others feel important — timeless principles that never age.", amazon: "https://www.amazon.co.uk/s?k=How+to+Win+Friends+and+Influence+People+Dale+Carnegie" },
+  ]},
+  { books: [
+    { title: "Dare to Lead", author: "Brené Brown", connection: "The research behind brave, vulnerable leadership communication — what a leadership voice really sounds like.", summary: "Brown's framework for courageous leadership — embracing vulnerability, building trust, and leading with values — is grounded in a decade of rigorous research.", amazon: "https://www.amazon.co.uk/s?k=Dare+to+Lead+Bren%C3%A9+Brown" },
+    { title: "Leaders Eat Last", author: "Simon Sinek", connection: "Sinek's case for why the best leaders communicate safety, purpose, and meaning above all else.", summary: "Drawing on biology and military examples, Sinek shows how the greatest leaders prioritise their people — creating the trust and cooperation that drives exceptional, lasting results.", amazon: "https://www.amazon.co.uk/s?k=Leaders+Eat+Last+Simon+Sinek" },
+  ]},
+  { books: [
+    { title: "Talk Like TED", author: "Carmine Gallo", connection: "The framework for peak performance in your most important professional moments.", summary: "Gallo's analysis of the world's greatest talks reveals the nine habits that make speakers magnetic under pressure — passion, brevity, and unforgettable stories.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
+    { title: "The Art of Explanation", author: "Lee LeFever", connection: "LeFever's method for making complex ideas land clearly — essential for any high-stakes presentation.", summary: "A practical guide to the most underrated communication skill: making hard things simple. LeFever's techniques transform how you prepare and deliver in critical moments.", amazon: "https://www.amazon.co.uk/s?k=The+Art+of+Explanation+Lee+LeFever" },
+  ]},
+];
+
+// ─── LESSON DATA
 const LESSONS = [
   // ── WEEK 1 
   {day:1,week:1,title:"Speak Simply",tag:"Clarity",scene:"clarity",
@@ -3539,6 +3599,39 @@ setAmbitionSaved(true); } catch {}
                 placeholder="What's one thing you'll take into tomorrow?"
                 rows={3} style={{ width: "100%", padding: "11px 14px", border: "0.5px solid " + T2.border, borderRadius: 4, outline: "none", resize: "none", background: T2.surface, fontSize: 14, color: T2.text, lineHeight: 1.6, fontFamily: T.sans, fontWeight: 300 }}/>
             </div>
+            {/* ── Further Reading ── */}
+            {(() => {
+              const fr = FURTHER_READING[lesson.day - 1];
+              if (!fr) return null;
+              return (
+                <div style={{ borderTop: "0.5px solid " + T2.divider, paddingTop: 28 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+                    <div style={{ ...RP_LABEL, color: T.goldDark }}>Further Reading</div>
+                    <div style={{ flex: 1, height: "0.5px", background: T2.divider }}/>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                    {fr.books.map((book, bi) => (
+                      <div key={bi} style={{ background: T2.bg, border: "0.5px solid " + T2.border, borderRadius: 4, padding: "20px 22px" }}>
+                        <p style={{ fontFamily: T.serif, fontSize: 17, fontWeight: 600, color: T2.text, letterSpacing: "-0.2px", marginBottom: 2 }}>{book.title}</p>
+                        <p style={{ fontFamily: T.sans, fontSize: 12, color: T2.text3, fontWeight: 400, marginBottom: 12 }}>{book.author}</p>
+                        <p style={{ fontFamily: T.serif, fontSize: 14, fontStyle: "italic", color: T.goldDark, lineHeight: 1.5, marginBottom: 10 }}>{book.connection}</p>
+                        <p style={{ fontFamily: T.sans, fontSize: 13, color: T2.text2, lineHeight: 1.7, fontWeight: 300, marginBottom: 16 }}>{book.summary}</p>
+                        <a href={book.amazon} target="_blank" rel="noreferrer" style={{
+                          display: "inline-flex", alignItems: "center", gap: 6,
+                          padding: "8px 16px", background: T2.ink, color: T2.bg,
+                          borderRadius: 3, fontSize: 12, fontFamily: T.sans, fontWeight: 500,
+                          letterSpacing: "0.02em", textDecoration: "none",
+                          transition: "opacity 0.2s ease",
+                        }}
+                          onMouseEnter={e => e.currentTarget.style.opacity = "0.8"}
+                          onMouseLeave={e => e.currentTarget.style.opacity = "1"}
+                        >Get the book →</a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         )}
       </div>
@@ -5318,6 +5411,7 @@ function ToolkitScreen({onQuickPrep, dark=false, DK={}, isDesktop=false}) {
   const [tab, setTab] = useState("sayThis");
   const [openCat, setOpenCat] = useState(0);
   const [copied, setCopied] = useState(null);
+  const [openMod, setOpenMod] = useState(null);
   const [saved, setSaved] = useState(() => {
     try { return JSON.parse(localStorage.getItem("au1_saved_phrases") || 
 "[]"); } catch { return []; }
@@ -5331,7 +5425,7 @@ p];
     try { localStorage.setItem("au1_saved_phrases", JSON.stringify(next)); 
 } catch {}
   }
-  const toolkitTabs = [["story","My Story"],["sayThis","Say This Instead"],["phrases","Phrases"],["saved","♥ Saved"+(saved.length>0?" ("+saved.length+")":"")],["prep","Quick Prep"]];
+  const toolkitTabs = [["story","My Story"],["sayThis","Say This Instead"],["phrases","Phrases"],["saved","♥ Saved"+(saved.length>0?" ("+saved.length+")":"")],["reading","Reading List"],["prep","Quick Prep"]];
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}}>
       {!isDesktop && (<div style={{position:"relative",height:160}}>
@@ -5575,11 +5669,59 @@ style={{padding:"5px 10px",borderRadius:8,border:"1px solid rgba(138,158,132,0.3
           )}
         </div>
       )}
+      {tab==="reading" && (
+        <div style={isDesktop ? {padding:"32px 0"} : {padding:"16px 20px 0"}}>
+          {(() => {
+            const MODULE_TITLES = ["Speak Clearly","Voice Control","Eliminate Fillers","Short Sentences","PRE Structure","Storytelling","PIE Framework","Executive Presence","Influence","Difficult Conversations","Personal Brand","Networking","Leadership Voice","High Stakes Moments"];
+            return (
+              <>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300,marginBottom:isDesktop?28:20}}>28 books across 14 modules</p>
+                <div style={{display:"flex",flexDirection:"column",gap:isDesktop?2:8}}>
+                  {FURTHER_READING.map((mod, mi) => {
+                    const isOpen = openMod === mi;
+                    return (
+                      <div key={mi} style={{border:"0.5px solid "+T2.border,borderRadius:4,overflow:"hidden",background:isOpen?T2.bg:T2.surface}}>
+                        <button onClick={() => setOpenMod(isOpen ? null : mi)} style={{
+                          width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",
+                          padding:isDesktop?"18px 24px":"14px 18px",
+                          border:"none",background:"transparent",cursor:"pointer",textAlign:"left",
+                        }}>
+                          <div style={{display:"flex",alignItems:"center",gap:14}}>
+                            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4,fontWeight:500,width:24,flexShrink:0}}>{"0"+(mi+1)}</span>
+                            <span style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,letterSpacing:"-0.2px"}}>{MODULE_TITLES[mi]}</span>
+                          </div>
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{transform:isOpen?"rotate(180deg)":"none",transition:"transform 0.2s ease",flexShrink:0}}>
+                            <path d="M3 5l4 4 4-4" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </button>
+                        {isOpen && (
+                          <div style={{borderTop:"0.5px solid "+T2.border,padding:isDesktop?"24px 24px 28px":"16px 18px 20px",display:"flex",flexDirection:"column",gap:16}}>
+                            {mod.books.map((book, bi) => (
+                              <div key={bi} style={{paddingBottom:bi<mod.books.length-1?16:0,borderBottom:bi<mod.books.length-1?"0.5px solid "+T2.divider:"none"}}>
+                                <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,letterSpacing:"-0.2px",marginBottom:2}}>{book.title}</p>
+                                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginBottom:10}}>{book.author}</p>
+                                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.goldDark,lineHeight:1.5,marginBottom:10}}>{book.connection}</p>
+                                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text2,lineHeight:1.7,fontWeight:300,marginBottom:14}}>{book.summary}</p>
+                                <a href={book.amazon} target="_blank" rel="noreferrer" style={{display:"inline-flex",alignItems:"center",gap:6,padding:"7px 14px",background:T2.ink,color:T2.bg,borderRadius:3,fontSize:12,fontFamily:T.sans,fontWeight:500,letterSpacing:"0.02em",textDecoration:"none"}}>Get the book →</a>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            );
+          })()}
+        </div>
+      )}
+
       {tab==="prep" && (
         <div style={{padding:"16px 20px 0",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{background:T2.navyLight,border:"1px solid "+T.accentMd,borderRadius:16,padding:"14px 16px"}}>
-            <div 
-style={{fontSize:14,fontWeight:700,color:T.accent,marginBottom:3}}>Pre-Meeting 
+            <div
+style={{fontSize:14,fontWeight:700,color:T.accent,marginBottom:3}}>Pre-Meeting
 Ritual</div>
             <div style={{fontSize:13,color:T.accent,opacity:0.8}}>2 
 minutes before any important conversation</div>
