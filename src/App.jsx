@@ -1,66 +1,54 @@
 import { useState, useEffect, useRef } from "react";
 
 // ═══════════════════════════════════════════════════════════════════════════
-// SOHO HOME DESIGN SYSTEM — "A beautifully curated space for personal growth"
+// SOHO HOME DESIGN SYSTEM — v2
+// Palette: Warm Parchment · Deep Charcoal · Sage Green · Linen Borders
 // ═══════════════════════════════════════════════════════════════════════════
-//
-// PALETTE STORY: Plaster walls · Walnut shelves · Linen throws ·
-//                Aged brass · Terracotta ceramics · Muted sage ·
-//                Smoked glass · Warm candlelight
-//
-// EMOTIONAL REGISTER: Warm · Intelligent · Residential · Premium
-//                     Editorial · Calm confidence · Human
-//
 const T = {
-  // ── Warm Grounds (backgrounds) ──────────────────────────────────────────
-  // Like plaster walls and linen — never white, always warm
-  bg:      "#EDE8DF",    // Plaster linen — main background
-  surface: "#F5F0E8",    // Warm parchment — card surfaces
-  card:    "#E8E2D8",    // Aged stock — nested cards
-  cardDark:"#231E18",    // Walnut dark — dark cards, dark surfaces
+  // ── Backgrounds ─────────────────────────────────────────────────────────
+  bg:      "#F7F3EC",    // Warm parchment — main background
+  surface: "#EDE8DF",    // Linen — card surfaces
+  card:    "#EDE8DF",    // Linen — nested cards
+  cardDark:"#231E18",    // Walnut dark — cinematic dark surfaces
 
-  // ── Ink (typography) ────────────────────────────────────────────────────
-  // Warm near-blacks — never cold/blue
-  ink:   "#2C2720",      // Walnut ink — primary text
-  text:  "#2C2720",
-  text2: "#4A4238",      // Warm dark mid
-  text3: "#7A6E62",      // Warm stone
-  text4: "#B8AFA4",      // Warm pebble — placeholder, meta
+  // ── Ink ──────────────────────────────────────────────────────────────────
+  ink:   "#2C2416",      // Deep charcoal brown — primary text
+  text:  "#2C2416",
+  text2: "#6B5E44",      // Warm muted brown — secondary text
+  text3: "#8A7B66",      // Warm stone — tertiary
+  text4: "#B8AFA4",      // Warm pebble — meta / placeholder
 
-  // ── Walnut (structural dark) ─────────────────────────────────────────────
-  // Replaces cold navy entirely — warm walnut throughout
-  navy:      "#2C2720",  // Walnut — buttons, dark UI
-  navyLight: "#E8E2D8",  // Warm light — hover states
+  // ── Structural dark (buttons, dark UI) ───────────────────────────────────
+  navy:      "#2C2416",  // Deep charcoal — button backgrounds
+  navyLight: "#EDE8DF",  // Linen light — hover states
 
-  // ── Aged Brass (accent) ──────────────────────────────────────────────────
-  // The signature material — warm brass, not bright gold
-  gold:      "#B08B52",  // Aged brass — primary accent
-  goldLight: "#F0E6D0",  // Pale brass wash — tinted backgrounds
-  goldDark:  "#86663A",  // Deep brass — text on light, darker states
+  // ── Sage Green (primary accent — replaces brass) ─────────────────────────
+  gold:      "#8A9E84",  // Muted sage green — primary accent
+  goldLight: "#EBF0EB",  // Pale sage wash — tinted backgrounds
+  goldDark:  "#527060",  // Deep sage — text on light, icons
 
-  // ── Warm Edges ───────────────────────────────────────────────────────────
-  border:  "#D0C9BE",    // Warm stone border
-  divider: "#E2DDD5",    // Warm hairline
+  // ── Borders ──────────────────────────────────────────────────────────────
+  border:  "#DDD5C4",    // Warm linen border
+  divider: "#DDD5C4",    // Thin warm hairline
 
-  // ── Status tones — desaturated, warm ─────────────────────────────────────
-  green:   "#527060",    // Sage green — success
-  greenBg: "#EAF0EB",    // Sage wash
-  red:     "#8B4A38",    // Terracotta — error / warning
+  // ── Status ───────────────────────────────────────────────────────────────
+  green:   "#527060",    // Deep sage — success
+  greenBg: "#EBF0EB",    // Sage wash
+  red:     "#8B4A38",    // Terracotta — error
 
-  // ── New accent: Terracotta ────────────────────────────────────────────────
-  // Ceramic warmth — used sparingly for contrast moments
+  // ── Terracotta accent ────────────────────────────────────────────────────
   terracotta:  "#C07055",
   terracottaBg:"#F5EDE8",
 
-  // ── New accent: Muted Sage ────────────────────────────────────────────────
-  sage:   "#7A9480",
+  // ── Unified sage aliases ─────────────────────────────────────────────────
+  sage:   "#8A9E84",
   sageBg: "#EBF0EB",
 
   // ── Typography ────────────────────────────────────────────────────────────
-  // Display: Playfair Display — editorial gravitas
-  // UI body: Inter 300/400 — clean, never heavy
-  serif: "'Playfair Display','Georgia',serif",
-  sans:  "'DM Sans','Inter',-apple-system,sans-serif",
+  // Headings: Cormorant Garamond — warm editorial authority
+  // UI body:  Inter 300/400 — precise and readable
+  serif: "'Cormorant Garamond','Georgia',serif",
+  sans:  "'Inter',-apple-system,sans-serif",
 
   accentMd: "#C4B9AC",
 };
@@ -107,7 +95,7 @@ nodes=angles.map(a=>({x:cx+r*Math.cos(a*Math.PI/180),y:cy+r*Math.sin(a*Math.PI/1
   const labels=["Pick a\nconcept","Teach it\nsimply","Find the\ngaps","Simplify\n& repeat"];
   const cols=[C.gold,C.teal,C.red,C.navyLight];
   const 
-bgs=["rgba(183,154,107,0.18)","rgba(123,169,154,0.18)","rgba(196,122,122,0.18)","rgba(232,235,240,0.12)"];
+bgs=["rgba(138,158,132,0.18)","rgba(123,169,154,0.18)","rgba(196,122,122,0.18)","rgba(232,235,240,0.12)"];
   function arc(i) {
     const f=nodes[i], t=nodes[(i+1)%4];
     const dx=t.x-f.x, dy=t.y-f.y, d=Math.sqrt(dx*dx+dy*dy);
@@ -345,7 +333,7 @@ listener inside their capacity.</text>
 }
 
 function D7() {
-  const nodes = [{x:80,y:50,l:"Cue",sub:"Senior room",col:C.gold,bg:"rgba(183,154,107,0.18)"},{x:196,y:110,l:"Routine",sub:"Speak clearly",col:C.teal,bg:"rgba(123,169,154,0.18)"},{x:80,y:170,l:"Reward",sub:"Credibility",col:C.gold,bg:"rgba(183,154,107,0.18)"}];
+  const nodes = [{x:80,y:50,l:"Cue",sub:"Senior room",col:C.gold,bg:"rgba(138,158,132,0.18)"},{x:196,y:110,l:"Routine",sub:"Speak clearly",col:C.teal,bg:"rgba(123,169,154,0.18)"},{x:80,y:170,l:"Reward",sub:"Credibility",col:C.gold,bg:"rgba(138,158,132,0.18)"}];
   return (
     <svg width="280" height="202" viewBox="0 0 280 202" fill="none">
       <defs>
@@ -406,7 +394,7 @@ fillOpacity="0.09"/>
       <text x="210" y="30" textAnchor="middle" fontSize="9" 
 fontWeight="700" fill={C.gold} fontFamily="Inter,sans-serif">STORY</text>
       <rect x="160" y="36" width="108" height="58" rx="1" 
-fill="rgba(183,154,107,0.08)" stroke={C.gold} strokeWidth="0.8" 
+fill="rgba(138,158,132,0.08)" stroke={C.gold} strokeWidth="0.8" 
 strokeOpacity="0.4"/>
       <text x="164" y="51" fontSize="8" fill={C.gold} 
 fontFamily="Inter,sans-serif">Verbal + visual</text>
@@ -444,7 +432,7 @@ strokeWidth="1" strokeOpacity="0.5"/>
       <text x="0" y="12" fontSize="8" fill={C.dim} 
 fontFamily="Inter,sans-serif" letterSpacing="1.5">THE SAR FRAMEWORK</text>
       
-{[{l:"S",title:"Situation",col:C.dim,bg:C.faint,x:0},{l:"A",title:"Action",col:C.teal,bg:"rgba(123,169,154,0.12)",x:88},{l:"R",title:"Result",col:C.gold,bg:"rgba(183,154,107,0.2)",x:176}].map(b => (
+{[{l:"S",title:"Situation",col:C.dim,bg:C.faint,x:0},{l:"A",title:"Action",col:C.teal,bg:"rgba(123,169,154,0.12)",x:88},{l:"R",title:"Result",col:C.gold,bg:"rgba(138,158,132,0.2)",x:176}].map(b => (
         <g key={b.l}>
           <rect x={b.x} y="20" width="80" height="56" rx="1" fill={b.bg} 
 stroke={b.l==="R"?C.gold:b.l==="A"?C.teal:"rgba(255,255,255,0.1)"} 
@@ -485,7 +473,7 @@ ICEBERG</text>
 strokeWidth="1" strokeOpacity="0.6"/>
       <text x="218" y="74" fontSize="7" fill={C.teal} 
 fontFamily="Inter,sans-serif" fillOpacity="0.6">WATERLINE</text>
-      <polygon points="128,20 174,76 82,76" fill="rgba(183,154,107,0.2)" 
+      <polygon points="128,20 174,76 82,76" fill="rgba(138,158,132,0.2)" 
 stroke={C.gold} strokeWidth="1.2" strokeOpacity="0.9"/>
       <text x="128" y="52" textAnchor="middle" fontSize="8" 
 fontWeight="700" fill={C.gold} 
@@ -521,7 +509,7 @@ function D11() {
 fontFamily="Inter,sans-serif" letterSpacing="1.5">THE HALO EFFECT</text>
       <circle cx="64" cy="84" r="50" fill="none" stroke={C.gold} 
 strokeWidth="0.7" strokeDasharray="3 4" strokeOpacity="0.45"/>
-      <circle cx="64" cy="84" r="36" fill="rgba(183,154,107,0.12)" 
+      <circle cx="64" cy="84" r="36" fill="rgba(138,158,132,0.12)" 
 stroke={C.gold} strokeWidth="1.2" strokeOpacity="0.9"/>
       <text x="64" y="81" textAnchor="middle" fontSize="8" 
 fontWeight="700" fill={C.gold} fontFamily="Inter,sans-serif">FIRST</text>
@@ -566,10 +554,10 @@ y2={o.y} stroke={C.gold} strokeWidth="0.5" strokeOpacity="0.18"/>)}
       {inner.map((n,i) => <line key={i} x1={ctr.x} y1={ctr.y} x2={n.x} 
 y2={n.y} stroke={C.gold} strokeWidth="1" strokeOpacity="0.48"/>)}
       {outer.map((o,i) => <circle key={i} cx={o.x} cy={o.y} r="7" 
-fill="rgba(183,154,107,0.08)" stroke={C.gold} strokeWidth="0.7" 
+fill="rgba(138,158,132,0.08)" stroke={C.gold} strokeWidth="0.7" 
 strokeOpacity="0.38"/>)}
       {inner.map((n,i) => <circle key={i} cx={n.x} cy={n.y} r="12" 
-fill="rgba(183,154,107,0.12)" stroke={C.gold} strokeWidth="1" 
+fill="rgba(138,158,132,0.12)" stroke={C.gold} strokeWidth="1" 
 strokeOpacity="0.65"/>)}
       <circle cx={ctr.x} cy={ctr.y} r="22" fill="rgba(183,154,107,0.22)" 
 stroke={C.gold} strokeWidth="1.5" strokeOpacity="0.9"/>
@@ -631,7 +619,7 @@ strokeWidth="1" strokeOpacity="0.8"/></marker>
       <text x="0" y="12" fontSize="8" fill={C.dim} 
 fontFamily="Inter,sans-serif" letterSpacing="1.5">THE 
 COMPETENCE-CONFIDENCE LOOP</text>
-      <circle cx="80" cy="100" r="52" fill="rgba(183,154,107,0.1)" 
+      <circle cx="80" cy="100" r="52" fill="rgba(138,158,132,0.1)" 
 stroke={C.gold} strokeWidth="1.2" strokeOpacity="0.9"/>
       <text x="80" y="96" textAnchor="middle" fontSize="9" 
 fontWeight="700" fill={C.gold} 
@@ -669,7 +657,7 @@ function D_StoryKillers() {
 white:"rgba(255,255,255,0.88)",dim:"rgba(255,255,255,0.38)",faint:"rgba(255,255,255,0.07)"};
   const killers = [
     {num:"1",label:"Too much setup",fix:"Situation = 1 sentence max",col:C2.red,bg:"rgba(196,122,122,0.12)",bar:0.7},
-    {num:"2",label:"Too many characters",fix:"Cut anyone not essential",col:C2.gold,bg:"rgba(183,154,107,0.12)",bar:0.45},
+    {num:"2",label:"Too many characters",fix:"Cut anyone not essential",col:C2.gold,bg:"rgba(138,158,132,0.12)",bar:0.45},
     {num:"3",label:"Vague Result",fix:"One number. One specific change.",col:C2.teal,bg:"rgba(123,169,154,0.12)",bar:0.15},
   ];
   return (
@@ -1492,10 +1480,18 @@ function FloatingNav({ tab, setTab, streak, done, dark, activeRole }) {
     { id: "toolkit",  label: "Toolkit" },
   ];
 
-  // Always partially dark so white text is readable over any background
-  const navBg = scrolled
-    ? "rgba(18,15,11,0.82)"
-    : "rgba(18,15,11,0.28)";
+  // Parchment when scrolled (light screens), dark glass over hero (top of home)
+  const onHero = !scrolled && tab === "home";
+  const navBg = onHero
+    ? "rgba(18,15,11,0.32)"
+    : "rgba(247,243,236,0.94)";
+  const navBorder = onHero
+    ? "0.5px solid transparent"
+    : "0.5px solid #DDD5C4";
+  const logoColor  = onHero ? "rgba(255,255,255,0.92)" : T.text;
+  const linkActive = onHero ? "rgba(255,255,255,0.92)" : T.text;
+  const linkInact  = onHero ? "rgba(255,255,255,0.42)" : T.text3;
+  const linkActiveBg = onHero ? "rgba(255,255,255,0.12)" : "rgba(138,158,132,0.12)";
 
   return (
     <div style={{
@@ -1504,17 +1500,18 @@ function FloatingNav({ tab, setTab, streak, done, dark, activeRole }) {
       background: navBg,
       backdropFilter: "blur(24px) saturate(180%)",
       WebkitBackdropFilter: "blur(24px) saturate(180%)",
-      borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent",
-      transition: "background 0.5s ease, border-color 0.4s ease",
+      borderBottom: navBorder,
+      transition: "background 0.45s ease, border-color 0.4s ease",
       display: "flex", alignItems: "center",
       padding: "0 56px",
     }}>
-      {/* Logo */}
+      {/* Logo — always Cormorant Garamond */}
       <button onClick={() => setTab("home")} style={{
         background: "none", border: "none", padding: 0,
-        fontFamily: T.serif, fontSize: 19, fontWeight: 600,
-        color: "rgba(255,255,255,0.92)", letterSpacing: "-0.3px",
+        fontFamily: T.serif, fontSize: 20, fontWeight: 600,
+        color: logoColor, letterSpacing: "-0.2px",
         cursor: "pointer", marginRight: 48, flexShrink: 0,
+        transition: "color 0.4s ease",
       }}>
         Amplify<span style={{ color: T.gold }}>U</span>
       </button>
@@ -1527,34 +1524,35 @@ function FloatingNav({ tab, setTab, streak, done, dark, activeRole }) {
             <button key={id} onClick={() => setTab(id)}
               className="au-nav-btn"
               style={{
-                padding: "7px 16px", borderRadius: 40, border: "none",
-                background: a ? "rgba(255,255,255,0.11)" : "transparent",
+                padding: "7px 16px", borderRadius: 4, border: "none",
+                background: a ? linkActiveBg : "transparent",
                 fontSize: 13, fontWeight: a ? 500 : 400,
-                color: a ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.38)",
-                letterSpacing: "-0.1px", fontFamily: T.sans,
-                cursor: "pointer",
+                color: a ? (onHero ? linkActive : T.gold) : linkInact,
+                letterSpacing: "0px", fontFamily: T.sans,
+                cursor: "pointer", transition: "all 0.2s ease",
               }}>{label}</button>
           );
         })}
       </nav>
 
-      {/* Right: streak + progress hairline */}
+      {/* Right: streak + progress */}
       <div style={{ display: "flex", alignItems: "center", gap: 20, flexShrink: 0 }}>
         {streak > 0 && (
           <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
             <span style={{
-              fontFamily: T.serif, fontSize: 17, fontWeight: 500,
+              fontFamily: T.serif, fontSize: 17, fontWeight: 600,
               color: T.gold, lineHeight: 1, letterSpacing: "-0.5px",
+              transition: "color 0.4s ease",
             }}>{streak}</span>
             <span style={{
-              fontSize: 9, color: "rgba(255,255,255,0.28)",
+              fontSize: 9, color: onHero ? "rgba(255,255,255,0.3)" : T.text3,
               textTransform: "uppercase", letterSpacing: "2px", fontFamily: T.sans,
+              transition: "color 0.4s ease",
             }}>streak</span>
           </div>
         )}
-        {/* Progress hairline */}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 80, height: 1.5, background: "rgba(255,255,255,0.1)", borderRadius: 1, overflow: "hidden" }}>
+          <div style={{ width: 80, height: 1, background: onHero ? "rgba(255,255,255,0.12)" : T.divider, borderRadius: 1, overflow: "hidden" }}>
             <div style={{
               width: pct + "%", height: "100%",
               background: "linear-gradient(90deg," + T.goldDark + "," + T.gold + ")",
@@ -1620,7 +1618,7 @@ clearInterval(ref.current); }, [totalSecs]);
           <button onClick={() => setOn(o => !o)} style={{
             flex: 1, padding: "10px", borderRadius: 4,
             border: "1px solid " + (on ? T.gold : T.border),
-            background: on ? "rgba(176,139,82,0.08)" : "transparent",
+            background: on ? "rgba(138,158,132,0.08)" : "transparent",
             color: on ? T.goldDark : T.text, fontSize: 13, fontWeight: 500,
             cursor: "pointer", fontFamily: T.sans, transition: "all 0.2s ease",
           }}>
@@ -1770,7 +1768,7 @@ function ReflectionScreen({ answers, onContinue }) {
             Your Profile
           </div>
           {role && (
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 14px", background: "rgba(192,154,94,0.08)", borderRadius: 5, border: "1px solid rgba(192,154,94,0.18)", marginBottom: 8 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 14px", background: "rgba(138,158,132,0.08)", borderRadius: 5, border: "1px solid rgba(138,158,132,0.18)", marginBottom: 8 }}>
               <span style={{ fontSize: 14 }}>{role.icon}</span>
               <span style={{ fontFamily: T.serif, fontSize: 14, color: T.text, letterSpacing: "-0.2px" }}>{role.label}</span>
             </div>
@@ -1779,7 +1777,7 @@ function ReflectionScreen({ answers, onContinue }) {
 
         {/* Communication Tendency */}
         <div style={{ padding: "20px 22px", background: T.cardDark, borderRadius: 8, position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg," + T.gold + " 0%, rgba(192,154,94,0.1) 100%)" }}/>
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg," + T.gold + " 0%, rgba(138,158,132,0.1) 100%)" }}/>
           <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 10, fontFamily: T.sans }}>Communication Style</div>
           <div style={{ fontFamily: T.serif, fontSize: 16, fontWeight: 500, color: "rgba(255,255,255,0.92)", marginBottom: 6, letterSpacing: "-0.2px" }}>{tendency.label}</div>
           <div style={{ fontSize: 12, color: "rgba(255,255,255,0.42)", lineHeight: 1.55, fontFamily: T.sans }}>{tendency.sub}</div>
@@ -1811,8 +1809,8 @@ function ReflectionScreen({ answers, onContinue }) {
               return (
                 <div key={p} style={{
                   flex: 1, padding: "10px 8px", textAlign: "center",
-                  background: isKey ? "rgba(192,154,94,0.1)" : "transparent",
-                  border: "1px solid " + (isKey ? "rgba(192,154,94,0.3)" : T.border),
+                  background: isKey ? "rgba(138,158,132,0.1)" : "transparent",
+                  border: "1px solid " + (isKey ? "rgba(138,158,132,0.3)" : T.border),
                   borderRadius: 5,
                 }}>
                   <div style={{ fontFamily: T.serif, fontSize: 17, fontWeight: 500, color: isKey ? T.gold : T.text3, lineHeight: 1 }}>{p[0]}</div>
@@ -1863,7 +1861,7 @@ function ReflectionScreen({ answers, onContinue }) {
               {[[92,20],[78,16],[85,16],[60,16]].map(([w,h],i) => (
                 <div key={i} style={{
                   height: h, borderRadius: 4, width: w + "%",
-                  background: "linear-gradient(90deg, rgba(192,154,94,0.06) 0%, rgba(192,154,94,0.12) 50%, rgba(192,154,94,0.06) 100%)",
+                  background: "linear-gradient(90deg, rgba(138,158,132,0.06) 0%, rgba(138,158,132,0.12) 50%, rgba(138,158,132,0.06) 100%)",
                   backgroundSize: "400px 100%",
                   animation: `shimmer 1.8s ease ${i * 0.15}s infinite`,
                 }}/>
@@ -1913,8 +1911,8 @@ function ReflectionScreen({ answers, onContinue }) {
           {section >= 2 && reflection && (
             <div style={{ marginBottom: 40, animation: "fadeUp 0.7s ease both", position: "relative" }}>
               {/* Large decorative mark */}
-              <div style={{ fontFamily: T.serif, fontSize: 96, lineHeight: 0.6, color: "rgba(192,154,94,0.1)", position: "absolute", top: -8, left: -12, userSelect: "none" }}>"</div>
-              <div style={{ borderLeft: "2px solid rgba(192,154,94,0.3)", paddingLeft: 28, position: "relative", zIndex: 1 }}>
+              <div style={{ fontFamily: T.serif, fontSize: 96, lineHeight: 0.6, color: "rgba(138,158,132,0.1)", position: "absolute", top: -8, left: -12, userSelect: "none" }}>"</div>
+              <div style={{ borderLeft: "2px solid rgba(138,158,132,0.3)", paddingLeft: 28, position: "relative", zIndex: 1 }}>
                 <p style={{ fontFamily: T.serif, fontSize: "clamp(14px, 1.5vw, 17px)", fontStyle: "italic", color: "rgba(255,255,255,0.55)", lineHeight: 1.75, maxWidth: 520, margin: 0, letterSpacing: "-0.1px" }}>
                   {reflection.motivation}
                 </p>
@@ -1935,7 +1933,7 @@ function ReflectionScreen({ answers, onContinue }) {
           {/* Section 4 — CTA */}
           {section >= 4 && (
             <div style={{ animation: "fadeUp 0.7s ease both", marginTop: "auto", paddingTop: 16 }}>
-              <div style={{ height: 1, background: "linear-gradient(90deg, rgba(192,154,94,0.3) 0%, transparent 100%)", marginBottom: 36 }}/>
+              <div style={{ height: 1, background: "linear-gradient(90deg, rgba(138,158,132,0.3) 0%, transparent 100%)", marginBottom: 36 }}/>
               <p style={{ fontFamily: T.serif, fontSize: 19, fontWeight: 500, color: "rgba(255,255,255,0.85)", lineHeight: 1.4, marginBottom: 32, letterSpacing: "-0.3px" }}>
                 This is your moment.{" "}<span style={{ color: T.gold }}>AmplifyU.</span>
               </p>
@@ -1946,7 +1944,7 @@ function ReflectionScreen({ answers, onContinue }) {
                   background: T.gold, color: "white",
                   fontSize: 14, fontWeight: 600, cursor: "pointer",
                   fontFamily: T.sans, letterSpacing: "0.2px",
-                  boxShadow: "0 4px 24px rgba(192,154,94,0.35)",
+                  boxShadow: "0 4px 24px rgba(138,158,132,0.35)",
                 }}>
                   <span>Begin Day 1</span>
                   <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -1978,7 +1976,7 @@ function ReflectionScreen({ answers, onContinue }) {
             <p style={{ fontSize:14,color:"rgba(255,255,255,0.4)",lineHeight:1.6 }}>Building your personalised profile.</p>
             <div style={{ marginTop:28,display:"flex",flexDirection:"column",gap:10 }}>
               {[1,0.7,0.5].map((op,i) => (
-                <div key={i} style={{ height:6,borderRadius:3,background:"linear-gradient(90deg,rgba(183,154,107,0.15) 0%,rgba(183,154,107,0.35) 50%,rgba(183,154,107,0.15) 100%)",backgroundSize:"400px 100%",animation:"shimmer 1.6s ease infinite",animationDelay:i*0.2+"s",opacity:op,width:["80%","60%","40%"][i] }}/>
+                <div key={i} style={{ height:6,borderRadius:3,background:"linear-gradient(90deg,rgba(138,158,132,0.15) 0%,rgba(138,158,132,0.35) 50%,rgba(138,158,132,0.15) 100%)",backgroundSize:"400px 100%",animation:"shimmer 1.6s ease infinite",animationDelay:i*0.2+"s",opacity:op,width:["80%","60%","40%"][i] }}/>
               ))}
             </div>
             <div style={{ display:"flex",gap:6,marginTop:20 }}>
@@ -1989,7 +1987,7 @@ function ReflectionScreen({ answers, onContinue }) {
           <div>
             <div style={{ fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1.2,marginBottom:6 }}>Your profile,<br/>in focus.</div>
             <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginTop:12 }}>
-              {role && (<div style={{ display:"flex",alignItems:"center",gap:6,padding:"5px 12px",background:"rgba(183,154,107,0.12)",border:"1px solid rgba(183,154,107,0.25)",borderRadius:20 }}><span style={{ fontSize:12,color:T.gold }}>{role.icon}</span><span style={{ fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.8)" }}>{role.label}</span></div>)}
+              {role && (<div style={{ display:"flex",alignItems:"center",gap:6,padding:"5px 12px",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.25)",borderRadius:20 }}><span style={{ fontSize:12,color:T.gold }}>{role.icon}</span><span style={{ fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.8)" }}>{role.label}</span></div>)}
             </div>
           </div>
         )}
@@ -2003,8 +2001,8 @@ function ReflectionScreen({ answers, onContinue }) {
             </div>
           </div>)}
           {section >= 2 && (<div style={{ animation:"sectionFade 0.6s ease both" }}>
-            <div style={{ background:"linear-gradient(135deg,rgba(17,28,46,0.9) 0%,rgba(30,45,69,0.7) 100%)",border:"1px solid rgba(183,154,107,0.2)",borderRadius:16,padding:"22px 20px",position:"relative",overflow:"hidden" }}>
-              <div style={{ position:"absolute",top:-20,right:-10,fontSize:120,lineHeight:1,color:"rgba(183,154,107,0.04)",fontFamily:T.serif,userSelect:"none" }}>"</div>
+            <div style={{ background:"linear-gradient(135deg,rgba(17,28,46,0.9) 0%,rgba(30,45,69,0.7) 100%)",border:"1px solid rgba(138,158,132,0.2)",borderRadius:16,padding:"22px 20px",position:"relative",overflow:"hidden" }}>
+              <div style={{ position:"absolute",top:-20,right:-10,fontSize:120,lineHeight:1,color:"rgba(138,158,132,0.04)",fontFamily:T.serif,userSelect:"none" }}>"</div>
               <p style={{ fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:"rgba(255,255,255,0.82)",lineHeight:1.75,margin:0 }}>{reflection.motivation}</p>
             </div>
           </div>)}
@@ -2015,9 +2013,9 @@ function ReflectionScreen({ answers, onContinue }) {
             </div>
           </div>)}
           {section >= 4 && (<div style={{ animation:"sectionFade 0.6s ease both",paddingBottom:48 }}>
-            <div style={{ height:1,background:"linear-gradient(90deg,"+T.gold+",rgba(183,154,107,0.1))",marginBottom:20 }}/>
+            <div style={{ height:1,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.1))",marginBottom:20 }}/>
             <p style={{ fontFamily:T.serif,fontSize:17,fontWeight:700,color:"rgba(255,255,255,0.9)",lineHeight:1.5,marginBottom:28,letterSpacing:"-0.2px" }}>This is your moment.{" "}<span style={{ color:T.gold }}>AmplifyU.</span></p>
-            <button onClick={onContinue} style={{ width:"100%",padding:"18px 24px",borderRadius:14,border:"none",background:"linear-gradient(135deg,"+T.gold+" 0%,"+T.goldDark+" 100%)",color:"white",fontSize:16,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:12,boxShadow:"0 8px 32px rgba(183,154,107,0.35)",letterSpacing:"0.2px" }}>
+            <button onClick={onContinue} style={{ width:"100%",padding:"18px 24px",borderRadius:14,border:"none",background:"linear-gradient(135deg,"+T.gold+" 0%,"+T.goldDark+" 100%)",color:"white",fontSize:16,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:12,boxShadow:"0 8px 32px rgba(138,158,132,0.35)",letterSpacing:"0.2px" }}>
               <span>Start Day 1</span>
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
@@ -2134,7 +2132,7 @@ function Onboarding({onDone}) {
             <OBScene name="presence" height={900}/>
           </div>
           {/* Depth layers */}
-          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 40%, rgba(192,154,94,0.06) 0%, transparent 60%)" }}/>
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 40%, rgba(138,158,132,0.06) 0%, transparent 60%)" }}/>
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(10,8,5,0.6) 0%, rgba(10,8,5,0.3) 50%, rgba(10,8,5,0.8) 100%)" }}/>
           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(6,5,3,0.5) 100%)" }}/>
 
@@ -2257,7 +2255,7 @@ function Onboarding({onDone}) {
 
           {/* RIGHT: Question content — editorial, spacious */}
           <div style={{
-            flex: 1, background: "#FAF6F0",
+            flex: 1, background: "#F7F3EC",
             display: "flex", flexDirection: "column", justifyContent: "center",
             padding: "80px 72px",
             position: "relative",
@@ -2290,13 +2288,13 @@ function Onboarding({onDone}) {
                         borderTop: i === 0 ? "1px solid " + T.divider : "none",
                         borderBottom: "1px solid " + T.divider,
                         borderLeft: isSelected ? "2px solid " + T.gold : "2px solid transparent",
-                        background: isSelected ? "rgba(192,154,94,0.04)" : "transparent",
+                        background: isSelected ? "rgba(138,158,132,0.04)" : "transparent",
                         cursor: "pointer",
                         transition: "all 0.2s ease",
                       }}
                       onMouseEnter={e => {
                         if (!entering) {
-                          e.currentTarget.style.borderLeftColor = "rgba(192,154,94,0.4)";
+                          e.currentTarget.style.borderLeftColor = "rgba(138,158,132,0.4)";
                           e.currentTarget.style.background = "rgba(192,154,94,0.02)";
                         }
                       }}
@@ -2347,7 +2345,7 @@ function Onboarding({onDone}) {
           </div>
 
           {/* RIGHT: Role selection — editorial */}
-          <div style={{ flex: 1, background: "#FAF6F0", display: "flex", flexDirection: "column", justifyContent: "center", padding: "80px 72px" }}>
+          <div style={{ flex: 1, background: "#F7F3EC", display: "flex", flexDirection: "column", justifyContent: "center", padding: "80px 72px" }}>
             <div style={{ maxWidth: 520 }} className="au-step-enter">
               <div style={{ fontSize: 9, color: T.text3, letterSpacing: "3px", textTransform: "uppercase", marginBottom: 32, fontFamily: T.sans }}>Your Practice</div>
               <h2 style={{ fontFamily: T.serif, fontSize: "clamp(26px, 2.8vw, 40px)", fontWeight: 500, lineHeight: 1.15, color: T.text, letterSpacing: "-1px", marginBottom: 12 }}>
@@ -2589,7 +2587,7 @@ function Celebrate({day, onClose}) {
       }}>
         {/* Gold top rule */}
         <div 
-style={{height:3,background:"linear-gradient(90deg,"+T.gold+",rgba(183,154,107,0.3))"}}/>
+style={{height:3,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.3))"}}/>
 
         {/* Confetti only on day 14 */}
         {isComplete && phase==="burst" && <Confetti/>}
@@ -2608,7 +2606,7 @@ style={{width:36,height:3,borderRadius:2,background:isComplete?"rgba(255,255,255
         }}>
           {isComplete ? (
             <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
-              <circle cx="36" cy="36" r="32" fill="rgba(183,154,107,0.15)" 
+              <circle cx="36" cy="36" r="32" fill="rgba(138,158,132,0.15)" 
 stroke={T.gold} strokeWidth="1.5"/>
               <path d="M20 36l12 12 20-20" stroke={T.gold} strokeWidth="3" 
 strokeLinecap="round" strokeLinejoin="round"/>
@@ -2758,7 +2756,7 @@ Date().getFullYear(),0,0))/86400000)) % POWER_PHRASES.length;
         }
         @keyframes stripPulse {
           0%   { box-shadow: inset 0 0 0 0 rgba(183,154,107,0); }
-          40%  { box-shadow: inset 0 0 0 1px rgba(183,154,107,0.35); }
+          40%  { box-shadow: inset 0 0 0 1px rgba(138,158,132,0.35); }
           100% { box-shadow: inset 0 0 0 0 rgba(183,154,107,0); }
         }
       `}</style>
@@ -2767,13 +2765,13 @@ Date().getFullYear(),0,0))/86400000)) % POWER_PHRASES.length;
         style={{
           width:"100%",
           background:"linear-gradient(180deg,#111C2E 0%,#0D1626 100%)",
-          borderBottom:"1px solid rgba(183,154,107,0.2)",
+          borderBottom:"1px solid rgba(138,158,132,0.2)",
           cursor:"pointer",
           paddingTop:44,
           animation: pulsed ? "none" : "stripPulse 1.8s ease 0.4s 1",
         }}>
         {/* Gold top gradient rule */}
-        <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+" 0%,rgba(183,154,107,0.15) 100%)"}}/>
+        <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+" 0%,rgba(138,158,132,0.15) 100%)"}}/>
 
         {/* Category label row */}
         <div style={{
@@ -2797,10 +2795,10 @@ strokeLinecap="square"/>
           <span style={{
             fontSize:7,fontWeight:700,
             color:"rgba(183,154,107,0.7)",
-            background:"rgba(183,154,107,0.1)",
+            background:"rgba(138,158,132,0.1)",
             padding:"2px 8px",borderRadius:10,
             textTransform:"uppercase",letterSpacing:"1px",
-            border:"1px solid rgba(183,154,107,0.2)",
+            border:"1px solid rgba(138,158,132,0.2)",
           }}>{p.category}</span>
         </div>
 
@@ -2838,7 +2836,7 @@ onClick={()=>setExpanded(false)}>
           <div onClick={e=>e.stopPropagation()} 
 style={{width:"100%",maxWidth:430,background:T.navy,borderRadius:"20px 20px 0 0",overflow:"hidden",animation:"slideUp 0.32s cubic-bezier(0.22,1,0.36,1)"}}>
             <div 
-style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(183,154,107,0.3))"}}/>
+style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.3))"}}/>
             <div 
 style={{display:"flex",justifyContent:"center",padding:"12px 0 0"}}><div 
 style={{width:36,height:3,borderRadius:2,background:"rgba(255,255,255,0.15)"}}/></div>
@@ -2961,11 +2959,11 @@ function CoachWidget({ lesson, scenario }) {
         background: T.cardDark,
         padding: "18px 24px 16px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        borderBottom: "1px solid rgba(176,139,82,0.15)",
+        borderBottom: "1px solid rgba(138,158,132,0.15)",
         position: "relative", overflow: "hidden",
       }}>
         {/* Subtle ambient glow */}
-        <div style={{ position: "absolute", top: -20, right: -20, width: 120, height: 80, background: "radial-gradient(ellipse, rgba(176,139,82,0.08) 0%, transparent 70%)", pointerEvents: "none" }}/>
+        <div style={{ position: "absolute", top: -20, right: -20, width: 120, height: 80, background: "radial-gradient(ellipse, rgba(138,158,132,0.08) 0%, transparent 70%)", pointerEvents: "none" }}/>
         <div style={{ position: "relative", zIndex: 1 }}>
           <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3.5px", fontFamily: T.sans, marginBottom: 3 }}>
             Your Coach
@@ -2977,8 +2975,8 @@ function CoachWidget({ lesson, scenario }) {
         {/* Brass monogram */}
         <div style={{
           width: 34, height: 34, borderRadius: "50%",
-          border: "1px solid rgba(176,139,82,0.35)",
-          background: "rgba(176,139,82,0.1)",
+          border: "1px solid rgba(138,158,132,0.35)",
+          background: "rgba(138,158,132,0.1)",
           display: "flex", alignItems: "center", justifyContent: "center",
           flexShrink: 0,
         }}>
@@ -3033,7 +3031,7 @@ function CoachWidget({ lesson, scenario }) {
                   fontSize: 12, fontWeight: 500, cursor: draft.trim() && !busy ? "pointer" : "default",
                   fontFamily: T.sans, letterSpacing: "0.2px",
                   transition: "all 0.2s ease",
-                  boxShadow: draft.trim() && !busy ? "0 2px 10px rgba(176,139,82,0.25)" : "none",
+                  boxShadow: draft.trim() && !busy ? "0 2px 10px rgba(138,158,132,0.25)" : "none",
                 }}>
                 {busy ? "Reading…" : "Refine"}
               </button>
@@ -3077,7 +3075,7 @@ function CoachWidget({ lesson, scenario }) {
 
           {/* The coach's version — the centrepiece */}
           <div style={{ background: T.cardDark, padding: "24px 24px 20px", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1.5, background: "linear-gradient(90deg," + T.gold + " 0%, rgba(176,139,82,0.15) 100%)" }}/>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1.5, background: "linear-gradient(90deg," + T.gold + " 0%, rgba(138,158,132,0.15) 100%)" }}/>
             {/* Large decorative mark */}
             <div style={{ position: "absolute", top: 4, right: 18, fontFamily: T.serif, fontSize: 72, lineHeight: 1, color: "rgba(176,139,82,0.06)", userSelect: "none" }}>"</div>
             <div style={{ position: "relative", zIndex: 1 }}>
@@ -3086,7 +3084,7 @@ function CoachWidget({ lesson, scenario }) {
                 <button onClick={copyIt} style={{
                   padding: "3px 12px", borderRadius: 3,
                   border: "1px solid " + (didCopy ? "rgba(176,139,82,0.5)" : "rgba(255,255,255,0.12)"),
-                  background: didCopy ? "rgba(176,139,82,0.12)" : "transparent",
+                  background: didCopy ? "rgba(138,158,132,0.12)" : "transparent",
                   color: didCopy ? T.gold : "rgba(255,255,255,0.35)",
                   fontSize: 10, cursor: "pointer", fontFamily: T.sans,
                   transition: "all 0.2s ease",
@@ -3106,7 +3104,7 @@ function CoachWidget({ lesson, scenario }) {
           {coaching.insight && (
             <div style={{
               background: T.goldLight, padding: "14px 24px",
-              borderTop: "1px solid rgba(176,139,82,0.15)",
+              borderTop: "1px solid rgba(138,158,132,0.15)",
               display: "flex", alignItems: "flex-start", gap: 12,
             }}>
               <div style={{ width: 1, background: T.gold, alignSelf: "stretch", flexShrink: 0, opacity: 0.6 }}/>
@@ -3212,7 +3210,7 @@ setAmbitionSaved(true); } catch {}
                   display: "flex", alignItems: "center", gap: 8,
                   padding: "6px 14px", borderRadius: 6, border: "none",
                   background: active
-                    ? "rgba(192,154,94,0.15)"
+                    ? "rgba(138,158,132,0.15)"
                     : "transparent",
                   cursor: locked ? "default" : "pointer",
                   transition: "background 0.2s ease",
@@ -3222,7 +3220,7 @@ setAmbitionSaved(true); } catch {}
                   width: 22, height: 22, borderRadius: "50%", flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   background: done2
-                    ? "rgba(192,154,94,0.2)"
+                    ? "rgba(138,158,132,0.2)"
                     : active
                     ? T.gold
                     : "rgba(255,255,255,0.06)",
@@ -3255,7 +3253,7 @@ setAmbitionSaved(true); } catch {}
                 <div style={{
                   width: 20, height: 1, flexShrink: 0,
                   background: i < idx
-                    ? "rgba(192,154,94,0.4)"
+                    ? "rgba(138,158,132,0.4)"
                     : "rgba(255,255,255,0.1)",
                   transition: "background 0.4s ease",
                 }}/>
@@ -3290,7 +3288,7 @@ setAmbitionSaved(true); } catch {}
         const Diagram = DIAGRAMS[lesson.day - 1];
         return (
           <div style={{ background: "#131009", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "48px 40px", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: -80, left: -80, width: 400, height: 400, background: "radial-gradient(ellipse, rgba(192,154,94,0.1) 0%, transparent 60%)", pointerEvents: "none" }}/>
+            <div style={{ position: "absolute", top: -80, left: -80, width: 400, height: 400, background: "radial-gradient(ellipse, rgba(138,158,132,0.1) 0%, transparent 60%)", pointerEvents: "none" }}/>
             <div style={{ fontSize: 8.5, letterSpacing: "4px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, marginBottom: 28, alignSelf: "flex-start", animation: "fadeDown 0.6s ease both" }}>The Science</div>
             <div style={{ transform: "scale(1.4)", transformOrigin: "center", animation: "fadeIn 0.8s ease 0.1s both", opacity: 0 }}>
               {Diagram ? <Diagram/> : null}
@@ -3308,8 +3306,8 @@ setAmbitionSaved(true); } catch {}
             <p style={{ fontFamily: T.serif, fontSize: 18, fontStyle: "italic", color: "rgba(255,255,255,0.3)", lineHeight: 1.55, letterSpacing: "-0.2px" }}>"{lesson.bad}"</p>
           </div>
           {/* Bottom: After — warm and alive */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "40px 48px", background: "rgba(192,154,94,0.04)", position: "relative" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg," + T.gold + " 0%, rgba(192,154,94,0.1) 100%)" }}/>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "40px 48px", background: "rgba(138,158,132,0.04)", position: "relative" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg," + T.gold + " 0%, rgba(138,158,132,0.1) 100%)" }}/>
             <div style={{ fontSize: 8.5, letterSpacing: "4px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, marginBottom: 16 }}>After</div>
             <p style={{ fontFamily: T.serif, fontSize: 20, fontStyle: "italic", color: "rgba(255,255,255,0.88)", lineHeight: 1.5, letterSpacing: "-0.3px" }}>"{lesson.good}"</p>
           </div>
@@ -3332,7 +3330,7 @@ setAmbitionSaved(true); } catch {}
       // Simulation — scenario on left, coaching brief
       if (step === "Simulation") return (
         <div style={{ background: "#131009", height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "40px 48px", position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", top: -60, right: -60, width: 300, height: 300, background: "radial-gradient(ellipse, rgba(192,154,94,0.08) 0%, transparent 65%)" }}/>
+          <div style={{ position: "absolute", top: -60, right: -60, width: 300, height: 300, background: "radial-gradient(ellipse, rgba(138,158,132,0.08) 0%, transparent 65%)" }}/>
           <div style={{ animation: "fadeUp 0.6s ease both", position: "relative", zIndex: 2 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 32 }}>
               <div style={{ fontSize: 8.5, letterSpacing: "4px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans }}>Your Scenario</div>
@@ -3340,7 +3338,7 @@ setAmbitionSaved(true); } catch {}
                 {scenarios.map((_, i) => (
                   <button key={i} onClick={() => setSelSc(i)} style={{
                     width: 24, height: 24, borderRadius: "50%", border: "1px solid " + (selSc === i ? T.gold : "rgba(255,255,255,0.15)"),
-                    background: selSc === i ? "rgba(192,154,94,0.15)" : "transparent",
+                    background: selSc === i ? "rgba(138,158,132,0.15)" : "transparent",
                     color: selSc === i ? T.gold : "rgba(255,255,255,0.3)", fontSize: 10, fontWeight: 600,
                     cursor: "pointer", fontFamily: T.sans,
                     display: "flex", alignItems: "center", justifyContent: "center",
@@ -3350,7 +3348,7 @@ setAmbitionSaved(true); } catch {}
             </div>
             <p style={{ fontFamily: T.serif, fontSize: 22, fontWeight: 500, color: "rgba(255,255,255,0.9)", lineHeight: 1.45, letterSpacing: "-0.5px", marginBottom: 28 }}>{activeSc}</p>
             {activeRole && (
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 12px", background: "rgba(192,154,94,0.08)", borderRadius: 4, border: "1px solid rgba(192,154,94,0.2)" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 12px", background: "rgba(138,158,132,0.08)", borderRadius: 4, border: "1px solid rgba(138,158,132,0.2)" }}>
                 <span style={{ fontSize: 12 }}>{activeRole.icon}</span>
                 <span style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", fontFamily: T.sans }}>{activeRole.label}</span>
               </div>
@@ -3362,7 +3360,7 @@ setAmbitionSaved(true); } catch {}
       // Review — warm, complete, the close of the private session
       if (step === "Review") return (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "40px 48px", background: "linear-gradient(160deg, #1A1713 0%, #131009 100%)", position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 30% 70%, rgba(192,154,94,0.12) 0%, transparent 55%)", pointerEvents: "none" }}/>
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 30% 70%, rgba(138,158,132,0.12) 0%, transparent 55%)", pointerEvents: "none" }}/>
           <div style={{ position: "relative", zIndex: 2, animation: "fadeUp 0.6s ease both" }}>
             <div style={{ fontSize: 8.5, letterSpacing: "4px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, marginBottom: 20 }}>Your Promise</div>
             <p style={{ fontFamily: T.serif, fontSize: 20, fontStyle: "italic", color: "rgba(255,255,255,0.8)", lineHeight: 1.6, letterSpacing: "-0.2px", marginBottom: 32, maxWidth: 340 }}>{lesson.promise}</p>
@@ -3590,7 +3588,7 @@ setAmbitionSaved(true); } catch {}
                 background: T.gold, border: "none",
                 color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer",
                 fontFamily: T.sans, letterSpacing: "0.1px",
-                boxShadow: "0 2px 16px rgba(192,154,94,0.3)",
+                boxShadow: "0 2px 16px rgba(138,158,132,0.3)",
               }}>
                 {idx === 0 ? "Begin" : idx === SESSION_STEPS.length - 2 ? "Final Chapter" : "Continue"}
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -3772,7 +3770,7 @@ style={{display:"flex",alignItems:"center",position:"relative"}}>
                 const nodeCol = done2 ? T.gold : active ? 
 (isTheory?T.gold:T.navy) : T2.border;
                 const nodeBg = done2 ? T.goldLight : active ? 
-(isTheory?"rgba(183,154,107,0.12)":T.navyLight) : "transparent";
+(isTheory?"rgba(138,158,132,0.12)":T.navyLight) : "transparent";
                 const lineCol = i < idx ? T.gold : T2.border;
                 return (
                   <div key={s} 
@@ -3886,12 +3884,12 @@ this</div>
               <p 
 style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:"#5C1A14",lineHeight:1.55,margin:0}}>{lesson.bad}</p>
             </div>
-            <div style={{background:"#EFF7F2",border:"1px solid #B8DFCA",borderRadius:2,padding:"16px 18px"}}>
+            <div style={{background:"#EBF0EB",border:"1px solid #A8C4A4",borderRadius:2,padding:"16px 18px"}}>
               <div 
 style={{fontSize:10,fontWeight:700,color:T.green,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Say 
 this instead</div>
               <p 
-style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:"#14532D",lineHeight:1.55,margin:0}}>{lesson.good}</p>
+style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:"#2C4A38",lineHeight:1.55,margin:0}}>{lesson.good}</p>
             </div>
             <div 
 style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
@@ -3946,7 +3944,7 @@ lesson.day) : lesson.scenarios;
 style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
                     {activeRole ? (
                       <div 
-style={{display:"flex",alignItems:"center",gap:6,padding:"6px 10px",background:T.navy,borderRadius:8,border:"1px solid rgba(183,154,107,0.2)",flexShrink:0}}>
+style={{display:"flex",alignItems:"center",gap:6,padding:"6px 10px",background:T.navy,borderRadius:8,border:"1px solid rgba(138,158,132,0.2)",flexShrink:0}}>
                         <span 
 style={{color:T.gold,fontSize:12}}>{activeRole.icon}</span>
                         <span 
@@ -4035,10 +4033,10 @@ style={{fontSize:15,color:T2.text,lineHeight:1.5}}>{q}</span>
                 background:T.cardDark,
                 borderRadius:16,
                 overflow:"hidden",
-                border:"1px solid rgba(183,154,107,0.2)",
+                border:"1px solid rgba(138,158,132,0.2)",
               }}>
                 <div 
-style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(183,154,107,0.15))"}}/>
+style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.15))"}}/>
                 <div style={{padding:"16px 18px 18px"}}>
                   <div 
 style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
@@ -4046,7 +4044,7 @@ style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
 fill="none">
                       <path d="M7 1l1.5 3.5L12 5l-2.5 2.5.5 3.5L7 9.5 4 
 11l.5-3.5L2 5l3.5-.5z" stroke={T.gold} strokeWidth="1.1" 
-strokeLinejoin="round" fill="rgba(183,154,107,0.15)"/>
+strokeLinejoin="round" fill="rgba(138,158,132,0.15)"/>
                     </svg>
                     <span 
 style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>
@@ -4054,7 +4052,7 @@ style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letter
                     </span>
                     {ambitionSaved && (
                       <span 
-style={{marginLeft:"auto",fontSize:10,color:T.gold,background:"rgba(183,154,107,0.12)",padding:"2px 8px",borderRadius:8}}>Saved ✓</span>
+style={{marginLeft:"auto",fontSize:10,color:T.gold,background:"rgba(138,158,132,0.12)",padding:"2px 8px",borderRadius:8}}>Saved ✓</span>
                     )}
                   </div>
                   <p 
@@ -4115,7 +4113,7 @@ throughout the programme.
             {/* Ambition echo — days 8+ show it back if it exists */}
             {lesson.day >= 8 && ambitionSaved && ambitionDraft && (
               <div style={{
-                background:"rgba(183,154,107,0.06)",
+                background:"rgba(138,158,132,0.06)",
                 borderRadius:12,
                 padding:"12px 16px",
                 borderLeft:"2px solid "+T.gold,
@@ -4217,7 +4215,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
               cursor:"pointer",
               
 display:"flex",alignItems:"center",justifyContent:"center",gap:10,
-              boxShadow:idx===0?"0 4px 16px rgba(183,154,107,0.35)":"0 4px 16px rgba(17,28,46,0.3)",
+              boxShadow:idx===0?"0 4px 16px rgba(138,158,132,0.35)":"0 4px 16px rgba(17,28,46,0.3)",
               letterSpacing:"0.2px",
             }}>
               <span>{NAV_LABELS[idx]}</span>
@@ -4332,7 +4330,7 @@ finishDate + ".";
         <span style={{fontSize:12,color:T2.text3}}>Day {cur} of 14</span>
       </div>
       {onTrackMsg && (
-        <div style={{display:"flex",alignItems:"center",gap:8,padding:"10px 12px",background:streak>=2?"rgba(42,94,63,0.08)":"rgba(183,154,107,0.08)",borderRadius:6,borderLeft:"2px solid "+(streak>=2?T.green:T.gold)}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,padding:"10px 12px",background:streak>=2?"rgba(42,94,63,0.08)":"rgba(138,158,132,0.08)",borderRadius:6,borderLeft:"2px solid "+(streak>=2?T.green:T.gold)}}>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke={streak>=2?T.green:T.gold} strokeWidth="1.1"/><path d="M4 7.5l2 2 4-4" stroke={streak>=2?T.green:T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
           <span style={{fontSize:12,color:streak>=2?T.green:T.goldDark,fontWeight:500,lineHeight:1.4}}>{onTrackMsg}</span>
         </div>
@@ -4340,7 +4338,7 @@ finishDate + ".";
     </div>
   );
   const QuoteBlock = () => storedAmbition && cur >= 5 ? (
-    <div style={{background:dark?"rgba(183,154,107,0.07)":"rgba(183,154,107,0.08)",borderRadius:8,padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+    <div style={{background:dark?"rgba(183,154,107,0.07)":"rgba(138,158,132,0.08)",borderRadius:8,padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
       <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Your ambition</div>
       <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text2,lineHeight:1.6,margin:0}}>"In the next 18 months, I want to be {storedAmbition}"</p>
     </div>
@@ -4365,8 +4363,8 @@ finishDate + ".";
     </div>
   );
   const NudgeBanner = () => showNudge && (
-    <div style={{background:"linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",borderBottom:"1px solid rgba(183,154,107,0.2)",padding:"12px 20px",display:"flex",alignItems:"center",gap:12}}>
-      <div style={{width:34,height:34,borderRadius:8,flexShrink:0,background:"rgba(183,154,107,0.15)",border:"1px solid rgba(183,154,107,0.3)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+    <div style={{background:"linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",borderBottom:"1px solid rgba(138,158,132,0.2)",padding:"12px 20px",display:"flex",alignItems:"center",gap:12}}>
+      <div style={{width:34,height:34,borderRadius:8,flexShrink:0,background:"rgba(138,158,132,0.15)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center"}}>
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke={T.gold} strokeWidth="1.2"/><path d="M8 5v4M8 11v.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/></svg>
       </div>
       <div style={{flex:1}}>
@@ -4406,7 +4404,7 @@ finishDate + ".";
           {/* Layer 2: Cinematic bottom-up gradient — pulls eye to text */}
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.65) 30%, rgba(10,8,5,0.1) 65%, transparent 100%)" }}/>
           {/* Layer 3: Left ambient glow — warmth, not glare */}
-          <div style={{ position: "absolute", bottom: -80, left: -40, width: 600, height: 500, background: "radial-gradient(ellipse at 20% 80%, rgba(192,154,94,0.1) 0%, transparent 60%)", pointerEvents: "none" }}/>
+          <div style={{ position: "absolute", bottom: -80, left: -40, width: 600, height: 500, background: "radial-gradient(ellipse at 20% 80%, rgba(138,158,132,0.1) 0%, transparent 60%)", pointerEvents: "none" }}/>
           {/* Layer 4: Vignette edges */}
           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(6,5,3,0.35) 100%)", pointerEvents: "none" }}/>
 
@@ -4424,8 +4422,8 @@ finishDate + ".";
                   <div style={{
                     fontSize: 9, fontWeight: 600, letterSpacing: "4px",
                     textTransform: "uppercase", color: T.gold, fontFamily: T.sans,
-                    background: "rgba(192,154,94,0.14)",
-                    border: "1px solid rgba(192,154,94,0.28)",
+                    background: "rgba(138,158,132,0.14)",
+                    border: "1px solid rgba(138,158,132,0.28)",
                     padding: "5px 12px", borderRadius: 3,
                   }}>Day {cur}</div>
                   <div style={{
@@ -4682,7 +4680,7 @@ finishDate + ".";
       </div>
       {activeRole && (
         <div style={{padding:"12px 24px 0"}}>
-          <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 14px",background:T.navy,borderRadius:8,border:"1px solid rgba(183,154,107,0.2)"}}>
+          <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 14px",background:T.navy,borderRadius:8,border:"1px solid rgba(138,158,132,0.2)"}}>
             <span style={{color:T.gold,fontSize:13}}>{activeRole.icon}</span>
             <span style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.7)"}}>{activeRole.label}</span>
             <span style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginLeft:2}}>— scenarios tailored</span>
@@ -4713,15 +4711,15 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
           onClick={() => isLocked ? setLockedPreview(lesson) : onStart(lesson.day)}
           className="au-card-hover"
           style={{
-            background: isDone ? "rgba(61,107,79,0.05)" : isToday ? "rgba(192,154,94,0.05)" : T2.surface,
+            background: isDone ? "rgba(61,107,79,0.05)" : isToday ? "rgba(138,158,132,0.05)" : T2.surface,
             borderRadius: 6, padding: "18px 20px", cursor: "pointer",
-            border: "1px solid " + (isDone ? "rgba(61,107,79,0.2)" : isToday ? "rgba(192,154,94,0.3)" : T2.border),
+            border: "1px solid " + (isDone ? "rgba(61,107,79,0.2)" : isToday ? "rgba(138,158,132,0.3)" : T2.border),
             position: "relative", opacity: isLocked ? 0.5 : 1,
-            boxShadow: isToday ? "0 2px 20px rgba(192,154,94,0.1)" : "none",
+            boxShadow: isToday ? "0 2px 20px rgba(138,158,132,0.1)" : "none",
           }}>
           {isToday && <div style={{
             position: "absolute", top: 0, left: 0, right: 0, height: 2,
-            background: "linear-gradient(90deg, " + T.gold + " 0%, rgba(192,154,94,0.2) 100%)",
+            background: "linear-gradient(90deg, " + T.gold + " 0%, rgba(138,158,132,0.2) 100%)",
             borderRadius: "6px 6px 0 0",
           }}/>}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
@@ -4786,7 +4784,7 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
             <div style={{ fontSize: 9, letterSpacing: "4px", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", fontFamily: T.sans, marginBottom: 12 }}>14 Sessions · 6 Steps Each</div>
             <h1 style={{ fontFamily: T.serif, fontSize: 72, fontWeight: 600, color: "rgba(255,255,255,0.95)", letterSpacing: "-3px", lineHeight: 0.92, marginBottom: 16 }}>Your Programme</h1>
             {roleId && (() => { const r = ROLES.find(x => x.id === roleId); return r ? (
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 14px", background: "rgba(192,154,94,0.15)", borderRadius: 4, border: "1px solid rgba(192,154,94,0.28)" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 14px", background: "rgba(138,158,132,0.15)", borderRadius: 4, border: "1px solid rgba(138,158,132,0.28)" }}>
                 <span style={{ fontSize: 12 }}>{r.icon}</span>
                 <span style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", fontFamily: T.sans }}>{r.label} · Scenarios tailored</span>
               </div>
@@ -4865,7 +4863,7 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
                             <div style={{
                               fontSize: 11, color: "rgba(255,255,255,0.9)", fontFamily: T.sans, fontWeight: 500,
                               background: T.gold, padding: "7px 16px", borderRadius: 4,
-                              boxShadow: "0 2px 12px rgba(192,154,94,0.3)",
+                              boxShadow: "0 2px 12px rgba(138,158,132,0.3)",
                             }}>Today →</div>
                           )}
                           {isDone && (
@@ -4895,7 +4893,7 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
         <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 24px"}}>
           <div style={{fontSize:10,fontWeight:400,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>14 Sessions — 6 steps each</div>
           <h1 style={{fontFamily:T.serif,fontSize:32,fontWeight:700,color:"white",letterSpacing:"-0.5px"}}>Your Programme</h1>
-          {roleId && (()=>{const r=ROLES.find(x=>x.id===roleId);return r?(<div style={{marginTop:6,display:"inline-flex",alignItems:"center",gap:6,padding:"4px 10px",background:"rgba(183,154,107,0.15)",borderRadius:10,border:"1px solid rgba(183,154,107,0.25)"}}><span style={{color:T.gold,fontSize:11}}>{r.icon}</span><span style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.7)"}}>{r.label}</span></div>):null;})()}
+          {roleId && (()=>{const r=ROLES.find(x=>x.id===roleId);return r?(<div style={{marginTop:6,display:"inline-flex",alignItems:"center",gap:6,padding:"4px 10px",background:"rgba(138,158,132,0.15)",borderRadius:10,border:"1px solid rgba(138,158,132,0.25)"}}><span style={{color:T.gold,fontSize:11}}>{r.icon}</span><span style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.7)"}}>{r.label}</span></div>):null;})()}
         </div>
       </div>
       <div style={{padding:"20px",display:"flex",flexDirection:"column",gap:20}}>
@@ -4932,7 +4930,7 @@ style={{width:"100%",maxWidth:430,background:T2.surface,borderRadius:"28px 28px 
           >
             {/* Gold top rule */}
             <div 
-style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(183,154,107,0.2))"}}/>
+style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
             {/* Drag handle */}
             <div 
 style={{display:"flex",justifyContent:"center",padding:"12px 0 0"}}>
@@ -5190,7 +5188,7 @@ Role</div>
 to change</span>}
           </div>
           {activeRole ? (
-            <div style={{marginBottom:12,padding:"12px 14px",background:T.navy,borderRadius:8,border:"1px solid rgba(183,154,107,0.25)",display:"flex",alignItems:"center",gap:12}}>
+            <div style={{marginBottom:12,padding:"12px 14px",background:T.navy,borderRadius:8,border:"1px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",gap:12}}>
               <span 
 style={{fontSize:20,color:T.gold}}>{activeRole.icon}</span>
               <div>
@@ -5213,7 +5211,7 @@ your role to get scenarios tailored to your world.</p>
 style={{
                 padding:"10px 14px",borderRadius:8,border:"1px solid "+(roleId===role.id?T.gold:T.border),
                 
-background:roleId===role.id?"rgba(183,154,107,0.08)":T.card,
+background:roleId===role.id?"rgba(138,158,132,0.08)":T.card,
                 
 display:"flex",alignItems:"center",gap:12,cursor:"pointer",textAlign:"left",
               }}>
@@ -5280,7 +5278,7 @@ p];
       )}
       {!isDesktop && (<div style={{padding:"16px 20px 0",display:"flex",gap:8,overflowX:"auto",scrollbarWidth:"none"}}>
         {toolkitTabs.map(([id,label]) => (
-          <button key={id} onClick={()=>setTab(id)} style={{padding:"8px 16px",borderRadius:20,border:"1px solid "+(tab===id?(id==="saved"?T.gold:id==="story"?T.gold:T.navy):T2.border),background:tab===id?(id==="saved"?"rgba(183,154,107,0.12)":id==="story"?"rgba(183,154,107,0.12)":T.navy):"transparent",color:tab===id?(id==="saved"||id==="story"?T.gold:"white"):T2.text3,fontSize:12,fontWeight:500,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{label}</button>
+          <button key={id} onClick={()=>setTab(id)} style={{padding:"8px 16px",borderRadius:20,border:"1px solid "+(tab===id?(id==="saved"?T.gold:id==="story"?T.gold:T.navy):T2.border),background:tab===id?(id==="saved"?"rgba(138,158,132,0.12)":id==="story"?"rgba(138,158,132,0.12)":T.navy):"transparent",color:tab===id?(id==="saved"||id==="story"?T.gold:"white"):T2.text3,fontSize:12,fontWeight:500,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{label}</button>
         ))}
       </div>)}
       <div style={isDesktop?{maxWidth:1160,margin:"0 auto",padding:"24px 48px 60px"}:{}}>
@@ -5391,7 +5389,7 @@ and the most to gain.
             {/* Sign-off */}
             <div style={{paddingTop:8}}>
               <div 
-style={{height:1,background:`linear-gradient(90deg,${T.gold},rgba(183,154,107,0.1))`,marginBottom:16}}/>
+style={{height:1,background:`linear-gradient(90deg,${T.gold},rgba(138,158,132,0.1))`,marginBottom:16}}/>
               <p 
 style={{fontFamily:T.serif,fontSize:16,fontWeight:700,color:T2.text,lineHeight:1.5,margin:0}}>
                 Amplify your voice. Lead with confidence. Thrive — at work 
@@ -5493,7 +5491,7 @@ style={{margin:0,flex:1,fontSize:14,color:T2.text,fontStyle:"italic",lineHeight:
                   <div style={{display:"flex",gap:6,flexShrink:0}}>
                     <button onClick={()=>copy(p)} style={{padding:"5px 10px",borderRadius:8,border:"1px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:11,cursor:"pointer"}}>{copied===p?"✓":"Copy"}</button>
                     <button onClick={()=>toggleSave(p)} 
-style={{padding:"5px 10px",borderRadius:8,border:"1px solid rgba(183,154,107,0.3)",background:"rgba(183,154,107,0.08)",color:T.gold,fontSize:12,cursor:"pointer"}}>♥</button>
+style={{padding:"5px 10px",borderRadius:8,border:"1px solid rgba(138,158,132,0.3)",background:"rgba(138,158,132,0.08)",color:T.gold,fontSize:12,cursor:"pointer"}}>♥</button>
                   </div>
                 </div>
               ))}
@@ -5672,8 +5670,8 @@ lsSet("au1_dark",d); }
     border:"rgba(255,255,255,0.07)", divider:"rgba(255,255,255,0.05)",
     text:"rgba(255,255,255,0.90)", text2:"rgba(255,255,255,0.68)",
     text3:"rgba(255,255,255,0.40)", text4:"rgba(255,255,255,0.22)",
-    navyLight:"rgba(192,154,94,0.08)", goldLight:"rgba(192,154,94,0.10)",
-    goldDark:T.gold, greenBg:"rgba(61,107,79,0.2)", green:"#5A9E72",
+    navyLight:"rgba(138,158,132,0.1)", goldLight:"rgba(138,158,132,0.12)",
+    goldDark:T.gold, greenBg:"rgba(82,112,96,0.2)", green:"#8A9E84",
   } : {};
 
   // Reflection screen — check FIRST, before the !boarded onboarding check
@@ -5706,7 +5704,7 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
   if (view === "session") {
     return (
       <div style={wrapStyle}>
-        <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#EEE9DF;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
+        <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
         {cel && <Celebrate day={cel} onClose={() => { setCel(null); setView("main"); setTab("home"); }}/>}
         {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole}/>}
         <SessionView lesson={LESSONS[Math.min(selDay-1,13)]}
@@ -5721,7 +5719,7 @@ dark={dark} DK={DK} isDesktop={isDesktop}/>
     return (
       <div style={wrapStyle}>
         
-<style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#EEE9DF;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes 
+<style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes 
 slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
         <QuickPrepFlow onBack={() => setView("main")}/>
       </div>
@@ -5732,7 +5730,7 @@ slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
     <div 
 style={Object.assign({},wrapStyle,{display:"flex",flexDirection:"column"})}>
       
-<style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#EEE9DF;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes 
+<style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes 
 slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
       {cel && <Celebrate day={cel} onClose={() => setCel(null)}/>}
       {confirmReset && (
@@ -5910,15 +5908,15 @@ function EditorialTheoryCard({ day, t, image }) {
       borderRadius: 20,
       overflow: "hidden",
       boxShadow: "0 4px 32px rgba(17,28,46,0.10)",
-      border: "1px solid rgba(183,154,107,0.18)",
+      border: "1px solid rgba(138,158,132,0.18)",
     }}>
       <div style={{ height: 3, background: `linear-gradient(90deg, 
-${T.gold}, rgba(183,154,107,0.25))` }} />
+${T.gold}, rgba(138,158,132,0.25))` }} />
 
       <div style={{ padding: "16px 20px 0" }}>
         <div style={{
           display: "inline-flex", alignItems: "center", gap: 6,
-          background: goldLight, border: "1px solid rgba(183,154,107,0.3)",
+          background: goldLight, border: "1px solid rgba(138,158,132,0.3)",
           borderRadius: 6, padding: "4px 11px", marginBottom: 12,
         }}>
           <span style={{ fontSize: 10, fontWeight: 800, color: goldDark, 
@@ -6011,7 +6009,7 @@ margin: 0 }}>{t.concept}</p>
 
       <button onClick={() => setOpen(o => !o)} style={{ width: "100%", 
 padding: "14px 20px", background: open ? goldLight : "transparent", 
-border: "none", borderTop: "1px solid rgba(183,154,107,0.18)", cursor: 
+border: "none", borderTop: "1px solid rgba(138,158,132,0.18)", cursor: 
 "pointer", display: "flex", alignItems: "center", justifyContent: 
 "space-between", textAlign: "left", transition: "background 0.2s" }}>
         <div>
@@ -6050,7 +6048,7 @@ function TheoryCard({ day }) {
       <div style={{ background: T.cardDark, borderRadius: 2, overflow: 
 "hidden" }}>
         <div style={{ height: 2, background: `linear-gradient(90deg, 
-${T.gold}, rgba(183,154,107,0.2))` }} />
+${T.gold}, rgba(138,158,132,0.2))` }} />
         <div style={{ padding: "20px 20px 22px" }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: T.gold, 
 textTransform: "uppercase", letterSpacing: 2, marginBottom: 10 }}>
