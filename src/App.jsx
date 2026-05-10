@@ -3407,7 +3407,10 @@ setAmbitionSaved(true); } catch {}
           <div style={{ position: "absolute", inset: 0, background: lesson.day === 1 ? "rgba(10,8,5,0.50)" : "rgba(10,8,5,0.5)" }}/>
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.5) 40%, transparent 75%)" }}/>
           <div style={{ position: "relative", zIndex: 2, padding: "40px 48px", animation: "fadeUp 0.7s ease both" }}>
-            <div style={{ ...LP_LABEL, marginBottom: 20 }}>Day {lesson.day} · {lesson.tag}</div>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20 }}>
+              <div style={{ ...LP_LABEL }}>Day {lesson.day} · {lesson.tag}</div>
+              <div style={{ opacity: 0.55, flexShrink: 0, marginTop: -2 }}>{MODULE_ICONS[lesson.day - 1]}</div>
+            </div>
             <h2 style={{ ...LP_HEADING, fontSize: "clamp(36px,3.5vw,56px)", marginBottom: 24 }}>{lesson.title}</h2>
             <div style={{ width: 32, height: 1, background: T.gold, opacity: 0.45, marginBottom: 20 }}/>
             <p style={{ ...LP_BODY, fontSize: 19, maxWidth: 360 }}>{lesson.quote}</p>
@@ -4076,11 +4079,11 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         {isDone && <div 
 style={{position:"absolute",top:52,right:20,background:"rgba(42,94,63,0.9)",color:"white",fontSize:11,fontWeight:700,padding:"6px 12px",borderRadius:20,letterSpacing:1}}>DONE</div>}
         <div style={{position:"absolute",bottom:20,left:20,right:20}}>
-          <div 
-style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Day 
-{lesson.day} — {lesson.tag}</div>
-          <h1 
-style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+            <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:2}}>Day {lesson.day} — {lesson.tag}</div>
+            <div style={{opacity:0.55}}>{MODULE_ICONS[lesson.day - 1]}</div>
+          </div>
+          <h1 style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
         </div>
       </div>
 
