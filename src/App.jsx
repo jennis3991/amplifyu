@@ -799,8 +799,8 @@ const MODULE_ICONS = [
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M8 21L21 8" stroke={S} strokeWidth="1.5" strokeLinecap="butt"/><path d="M10 23L23 10" stroke={S} strokeWidth="1.5" strokeLinecap="butt"/><path d="M21 8L23 10" {...SI}/><path d="M8 21L5 25L10 23Z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/><path d="M12.5 18.5L14.5 16.5" {...SI}/></svg>,
   // 2 Slow Down — speech bubble with calm lines
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M5 7a2 2 0 012-2h14a2 2 0 012 2v9a2 2 0 01-2 2H10l-4 4V18H7a2 2 0 01-2-2V7z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/><path d="M9 11h10M9 14.5h7" {...SI}/></svg>,
-  // 3 Eliminate Fillers — scissors
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="8" cy="9" r="3.5" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="8" cy="19" r="3.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M11 11L23 5.5M11 17L23 22.5" {...SI}/></svg>,
+  // 3 Eliminate Fillers — scissors (two handle rings, blades crossing to tip)
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="6" cy="7" r="3.5" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="6" cy="21" r="3.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M9.5 7L25 22" {...SI}/><path d="M9.5 21L25 6" {...SI}/></svg>,
   // 4 Short Sentences — A4 page with short lines of text
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="6" y="3" width="16" height="22" rx="1.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M10 9h6" {...SI}/><path d="M10 13h8" {...SI}/><path d="M10 17h5" {...SI}/><path d="M10 21h4" {...SI}/></svg>,
   // 5 PRE Structure — 3 boxes linked in a chain
