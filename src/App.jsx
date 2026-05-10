@@ -103,8 +103,8 @@ function D1() {
   const 
 nodes=angles.map(a=>({x:cx+r*Math.cos(a*Math.PI/180),y:cy+r*Math.sin(a*Math.PI/180)}));
   const labels=["Pick a\nconcept","Teach it\nsimply","Find the\ngaps","Simplify\n& repeat"];
-  const cols=[C.gold,C.teal,C.red,C.navyLight];
-  const 
+  const cols=[C.gold,C.teal,C.red,"rgba(232,235,240,0.82)"];
+  const
 bgs=["rgba(138,158,132,0.18)","rgba(123,169,154,0.18)","rgba(196,122,122,0.18)","rgba(232,235,240,0.12)"];
   function arc(i) {
     const f=nodes[i], t=nodes[(i+1)%4];
@@ -3391,10 +3391,16 @@ setAmbitionSaved(true); } catch {}
               <img src={theoryImg.image} alt={theoryImg.alt || ""} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}/>
               {/* No base veil — image shows at full brightness */}
               {/* Light gradient only at the bottom to keep caption label readable */}
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.55) 0%, rgba(10,8,5,0.1) 30%, transparent 55%)" }}/>
-              <div style={{ position: "absolute", bottom: 44, left: 48, zIndex: 2, animation: "fadeUp 0.7s ease both", maxWidth: 360 }}>
-                <div style={{ ...LP_LABEL, fontSize: 13, color: "#F5EFE6", marginBottom: 14 }}>The Science</div>
-                <p style={{ fontFamily: T.serif, fontSize: 28, fontWeight: 600, fontStyle: "normal", color: "#F5EFE6", lineHeight: 1.2, margin: 0 }}>{theoryImg.captionText}</p>
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.82) 0%, rgba(10,8,5,0.35) 38%, transparent 60%)" }}/>
+              <div style={{ position: "absolute", bottom: 40, left: 24, zIndex: 2, animation: "fadeUp 0.7s ease both", maxWidth: 260 }}>
+                <div style={{ ...LP_LABEL, fontSize: 13, color: "#F5EFE6", marginBottom: 8 }}>The Science</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  {theoryImg.captionText.split(". ").filter(Boolean).map((line, i, arr) => (
+                    <p key={i} style={{ fontFamily: T.serif, fontSize: 22, fontWeight: 600, fontStyle: "normal", color: "#F5EFE6", lineHeight: 1.25, margin: 0 }}>
+                      {line.endsWith(".") ? line : line + "."}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
           );
