@@ -791,6 +791,40 @@ const THEORY_DATA = [
 ];
 
 
+// ─── MODULE ICONS — 14 editorial SVG line icons, sage green, 28×28
+const S = "#8A9E84";
+const SI = { stroke: S, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round", fill: "none" };
+const MODULE_ICONS = [
+  // 1 Speak Simply — quill pen
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M21 4C16 7 11 13 9 23" {...SI}/><path d="M21 4C18 8 15 10 12 14" {...SI}/><path d="M9 23L7 26M9 23L11 26" {...SI}/></svg>,
+  // 2 Feynman Technique — magnifying glass
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="12" cy="12" r="7.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M17.5 17.5L24 24" {...SI}/></svg>,
+  // 3 Eliminate Fillers — scissors
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="8" cy="9" r="3.5" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="8" cy="19" r="3.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M11 11L23 5.5M11 17L23 22.5" {...SI}/></svg>,
+  // 4 Short Sentences — decreasing lines
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 10h16" {...SI}/><path d="M6 15h11" {...SI}/><path d="M6 20h7" {...SI}/></svg>,
+  // 5 PRE Structure — three stacked layers
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="5" y="7" width="18" height="5" rx="1.5" stroke={S} strokeWidth="1.5" fill="none"/><rect x="5" y="14" width="18" height="5" rx="1.5" stroke={S} strokeWidth="1.5" fill="none"/><rect x="5" y="21" width="18" height="5" rx="1.5" stroke={S} strokeWidth="1.5" fill="none"/></svg>,
+  // 6 Storytelling — open book
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 8v13" {...SI}/><path d="M14 8C12 7 7 7 5 8v13c2-1 7-1 9 0" {...SI}/><path d="M14 8c2-1 7-1 9 0v13c-2-1-7-1-9 0" {...SI}/></svg>,
+  // 7 PIE Framework — pie chart 3 segments
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="9" stroke={S} strokeWidth="1.5" fill="none"/><path d="M14 14V5M14 14L21.8 18.5M14 14L6.2 18.5" {...SI}/></svg>,
+  // 8 Executive Presence — crown
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M4 20h20M4 20l3-9 7 5 7-5 3 9" {...SI}/><path d="M4 20v3h20v-3" {...SI}/></svg>,
+  // 9 Influence — two overlapping circles
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="11" cy="14" r="7" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="17" cy="14" r="7" stroke={S} strokeWidth="1.5" fill="none"/></svg>,
+  // 10 Difficult Conversations — two speech bubbles
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M4 7h13a1 1 0 011 1v6a1 1 0 01-1 1h-3l-2 3v-3H5a1 1 0 01-1-1V8a1 1 0 011-1z" {...SI}/><path d="M18 13h5a1 1 0 011 1v4a1 1 0 01-1 1h-1v2l-2-2h-4a1 1 0 01-1-1v-2" {...SI}/></svg>,
+  // 11 Personal Brand — diamond
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3l11 11-11 11L3 14 14 3z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/></svg>,
+  // 12 Networking — three dots connected
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="5.5" r="2.5" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="5" cy="22.5" r="2.5" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="23" cy="22.5" r="2.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M12.5 8L7 20M15.5 8L21 20M7.5 22.5h13" {...SI}/></svg>,
+  // 13 Leadership Voice — microphone
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="10.5" y="4" width="7" height="12" rx="3.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M7 14a7 7 0 0014 0" {...SI}/><path d="M14 21v4M11 25h6" {...SI}/></svg>,
+  // 14 High Stakes Moments — flame
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 24c-5 0-8-4-8-8 0-4 3-7 4-8-1 4 2 5 3 5 0-4 2-8 5-10 0 4 3 5 3 8 1-1 1-3 1-4 2 2 3 5 3 8 0 4-5 9-11 9z" {...SI}/></svg>,
+];
+
 // ─── FURTHER READING DATA
 const FURTHER_READING = [
   { books: [
@@ -5095,7 +5129,12 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
             {isToday && <span style={{fontSize:10,color:T.navy}}>Today</span>}
           </div>
         </div>
-        <span style={{fontSize:12,color:isDone?T.green:isLocked?T.text4:T.text3}}>{isDone?"Done":isLocked?"Preview":"Go"}</span>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:5}}>
+          <div style={{opacity:isDone?0.3:isLocked?0.2:0.7,transform:"scale(0.72)",transformOrigin:"right center"}}>
+            {MODULE_ICONS[lesson.day - 1]}
+          </div>
+          <span style={{fontSize:11,color:isDone?T.green:isLocked?T.text4:T.text3}}>{isDone?"Done":isLocked?"Preview":"Go"}</span>
+        </div>
       </div>
     );
   };
@@ -5218,21 +5257,26 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
                           }}>{lesson.title}</div>
                         </div>
 
-                        {/* Teaser — only on hover/today (visible text helps orientation) */}
-                        <div style={{ maxWidth: 280, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
-                          {isToday && (
-                            <div style={{
-                              fontSize: 11, color: "rgba(255,255,255,0.9)", fontFamily: T.sans, fontWeight: 500,
-                              background: T.gold, padding: "7px 16px", borderRadius: 4,
-                              boxShadow: "0 2px 12px rgba(138,158,132,0.3)",
-                            }}>Today →</div>
-                          )}
-                          {isDone && (
-                            <div style={{ fontSize: 11, color: T.green, fontFamily: T.sans, letterSpacing: "0.5px" }}>✓ Complete</div>
-                          )}
-                          {!isDone && !isToday && (
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T2.text4} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          )}
+                        {/* Module icon + status */}
+                        <div style={{ display: "flex", alignItems: "center", gap: 24, flexShrink: 0 }}>
+                          <div style={{ opacity: isDone ? 0.3 : 0.72 }}>
+                            {MODULE_ICONS[lesson.day - 1]}
+                          </div>
+                          <div style={{ minWidth: 80, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+                            {isToday && (
+                              <div style={{
+                                fontSize: 11, color: "rgba(255,255,255,0.9)", fontFamily: T.sans, fontWeight: 500,
+                                background: T.gold, padding: "7px 16px", borderRadius: 4,
+                                boxShadow: "0 2px 12px rgba(138,158,132,0.3)",
+                              }}>Today →</div>
+                            )}
+                            {isDone && (
+                              <div style={{ fontSize: 11, color: T.green, fontFamily: T.sans, letterSpacing: "0.5px" }}>✓ Complete</div>
+                            )}
+                            {!isDone && !isToday && (
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T2.text4} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            )}
+                          </div>
                         </div>
                       </div>
                     );
