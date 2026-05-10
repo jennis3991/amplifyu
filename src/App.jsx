@@ -103,9 +103,9 @@ function D1() {
   const 
 nodes=angles.map(a=>({x:cx+r*Math.cos(a*Math.PI/180),y:cy+r*Math.sin(a*Math.PI/180)}));
   const labels=["Pick a\nconcept","Teach it\nsimply","Find the\ngaps","Simplify\n& repeat"];
-  const cols=[C.gold,C.teal,C.red,"rgba(232,235,240,0.82)"];
+  const cols=[C.gold,C.teal,C.red,"rgba(232,235,240,0.88)"];
   const
-bgs=["rgba(138,158,132,0.18)","rgba(123,169,154,0.18)","rgba(196,122,122,0.18)","rgba(232,235,240,0.12)"];
+bgs=["rgba(138,158,132,0.18)","rgba(123,169,154,0.18)","rgba(196,122,122,0.18)","rgba(232,235,240,0.18)"];
   function arc(i) {
     const f=nodes[i], t=nodes[(i+1)%4];
     const dx=t.x-f.x, dy=t.y-f.y, d=Math.sqrt(dx*dx+dy*dy);
@@ -144,20 +144,20 @@ strokeWidth="1.2" strokeOpacity="0.85"/>
           <text x={n.x} y={n.y-5} textAnchor="middle" fontSize="12" 
 fontWeight="700" fontFamily="Georgia,serif" fill={cols[i]}>{i+1}</text>
           {labels[i].split("\n").map((l,li) => (
-            <text key={li} x={n.x} y={n.y+6+li*10} textAnchor="middle" 
-fontSize="7.5" fontWeight="600" fontFamily="Inter,sans-serif" 
-fill="rgba(255,255,255,0.75)">{l}</text>
+            <text key={li} x={n.x} y={n.y+6+li*10} textAnchor="middle"
+fontSize="7.5" fontWeight="600" fontFamily="Inter,sans-serif"
+fill="rgba(255,255,255,0.88)">{l}</text>
           ))}
         </g>
       ))}
       
 {[{x:cx,y:nodes[0].y-14,l:"EXPLAIN"},{x:nodes[1].x+20,y:cy,l:"REVIEW"},{x:cx,y:nodes[2].y+14,l:"REFINE"},{x:nodes[3].x-20,y:cy,l:"REPEAT"}].map((lb,i) => (
-        <text key={i} x={lb.x} y={lb.y} textAnchor="middle" fontSize="7" 
-fontFamily="Inter,sans-serif" fill="rgba(255,255,255,0.2)" 
+        <text key={i} x={lb.x} y={lb.y} textAnchor="middle" fontSize="7"
+fontFamily="Inter,sans-serif" fill="rgba(255,255,255,0.48)"
 letterSpacing="0.8">{lb.l}</text>
       ))}
-      <text x="0" y="214" fontSize="8" fill={C.dim} 
-fontFamily="Inter,sans-serif" fontStyle="italic">Simplicity is the 
+      <text x="0" y="214" fontSize="8" fill="rgba(255,255,255,0.62)"
+fontFamily="Inter,sans-serif" fontStyle="italic">Simplicity is the
 destination, not a shortcut.</text>
     </svg>
   );
