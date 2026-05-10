@@ -795,20 +795,20 @@ const THEORY_DATA = [
 const S = "#8A9E84";
 const SI = { stroke: S, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round", fill: "none" };
 const MODULE_ICONS = [
-  // 1 Speak Simply — quill pen
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M21 4C16 7 11 13 9 23" {...SI}/><path d="M21 4C18 8 15 10 12 14" {...SI}/><path d="M9 23L7 26M9 23L11 26" {...SI}/></svg>,
-  // 2 Feynman Technique — magnifying glass
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="12" cy="12" r="7.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M17.5 17.5L24 24" {...SI}/></svg>,
+  // 1 Speak Simply — ballpoint pen (barrel + nib + band)
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M8 21L21 8" stroke={S} strokeWidth="1.5" strokeLinecap="butt"/><path d="M10 23L23 10" stroke={S} strokeWidth="1.5" strokeLinecap="butt"/><path d="M21 8L23 10" {...SI}/><path d="M8 21L5 25L10 23Z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/><path d="M12.5 18.5L14.5 16.5" {...SI}/></svg>,
+  // 2 Slow Down — speech bubble with calm lines
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M5 7a2 2 0 012-2h14a2 2 0 012 2v9a2 2 0 01-2 2H10l-4 4V18H7a2 2 0 01-2-2V7z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/><path d="M9 11h10M9 14.5h7" {...SI}/></svg>,
   // 3 Eliminate Fillers — scissors
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="8" cy="9" r="3.5" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="8" cy="19" r="3.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M11 11L23 5.5M11 17L23 22.5" {...SI}/></svg>,
-  // 4 Short Sentences — decreasing lines
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 10h16" {...SI}/><path d="M6 15h11" {...SI}/><path d="M6 20h7" {...SI}/></svg>,
-  // 5 PRE Structure — three stacked layers
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="5" y="7" width="18" height="5" rx="1.5" stroke={S} strokeWidth="1.5" fill="none"/><rect x="5" y="14" width="18" height="5" rx="1.5" stroke={S} strokeWidth="1.5" fill="none"/><rect x="5" y="21" width="18" height="5" rx="1.5" stroke={S} strokeWidth="1.5" fill="none"/></svg>,
+  // 4 Short Sentences — A4 page with short lines of text
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="6" y="3" width="16" height="22" rx="1.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M10 9h6" {...SI}/><path d="M10 13h8" {...SI}/><path d="M10 17h5" {...SI}/><path d="M10 21h4" {...SI}/></svg>,
+  // 5 PRE Structure — 3 boxes linked in a chain
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="1" y="11" width="7" height="6" rx="1" stroke={S} strokeWidth="1.5" fill="none"/><path d="M8 14h5" {...SI}/><rect x="13" y="11" width="7" height="6" rx="1" stroke={S} strokeWidth="1.5" fill="none"/><path d="M20 14h5" {...SI}/><rect x="25" y="11" width="2" height="6" rx="0.5" stroke={S} strokeWidth="1.5" fill="none"/></svg>,
   // 6 Storytelling — open book
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 8v13" {...SI}/><path d="M14 8C12 7 7 7 5 8v13c2-1 7-1 9 0" {...SI}/><path d="M14 8c2-1 7-1 9 0v13c-2-1-7-1-9 0" {...SI}/></svg>,
-  // 7 PIE Framework — pie chart 3 segments
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="9" stroke={S} strokeWidth="1.5" fill="none"/><path d="M14 14V5M14 14L21.8 18.5M14 14L6.2 18.5" {...SI}/></svg>,
+  // 7 PIE Framework — 3 separated pie slices
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M15.5 11.5L15.5 2.5A9 9 0 0 1 23.3 16Z" stroke={S} strokeWidth="1.5" fill="none" strokeLinejoin="round"/><path d="M14 16.5L21.8 21A9 9 0 0 1 6.2 21Z" stroke={S} strokeWidth="1.5" fill="none" strokeLinejoin="round"/><path d="M12 13L4.2 17.5A9 9 0 0 1 12 4Z" stroke={S} strokeWidth="1.5" fill="none" strokeLinejoin="round"/></svg>,
   // 8 Executive Presence — crown
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M4 20h20M4 20l3-9 7 5 7-5 3 9" {...SI}/><path d="M4 20v3h20v-3" {...SI}/></svg>,
   // 9 Influence — two overlapping circles
