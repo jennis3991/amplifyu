@@ -3451,7 +3451,15 @@ setAmbitionSaved(true); } catch {}
       // ── Simulation — scenario as primary statement ────────────────────────────
       if (step === "Simulation") return (
         <div style={{ background: "#131009", height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "40px 48px", position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", top: -60, right: -60, width: 300, height: 300, background: "radial-gradient(ellipse, rgba(138,158,132,0.08) 0%, transparent 65%)" }}/>
+          {/* Day 1: photo background */}
+          {lesson.day === 1 && (
+            <>
+              <img src="/day1-simulation.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}/>
+              <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.58)" }}/>
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 55%, transparent 80%)" }}/>
+            </>
+          )}
+          {lesson.day !== 1 && <div style={{ position: "absolute", top: -60, right: -60, width: 300, height: 300, background: "radial-gradient(ellipse, rgba(138,158,132,0.08) 0%, transparent 65%)" }}/>}
           <div style={{ animation: "fadeUp 0.6s ease both", position: "relative", zIndex: 2 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
               <div style={{ ...LP_LABEL }}>Your Scenario</div>
