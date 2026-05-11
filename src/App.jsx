@@ -163,6 +163,58 @@ destination, not a shortcut.</text>
   );
 }
 
+// Narrative Transportation — Story Arc diagram
+function D_NT() {
+  const pts = [
+    {x:16,y:172,label:"Hook",sub:"Start with tension"},
+    {x:68,y:136,label:"Character",sub:"Make it human"},
+    {x:120,y:96,label:"Problem",sub:"What's at stake?"},
+    {x:170,y:52,label:"Turning Point",sub:"What changed?"},
+    {x:220,y:84,label:"Resolution",sub:"What happened?"},
+    {x:268,y:116,label:"Meaning",sub:"Why it matters"},
+  ];
+  const path = `M${pts[0].x} ${pts[0].y} C42 160,90 110,${pts[2].x} ${pts[2].y} C142 85,155 58,${pts[3].x} ${pts[3].y} C186 46,210 78,${pts[4].x} ${pts[4].y} C238 90,252 110,${pts[5].x} ${pts[5].y}`;
+  return (
+    <svg width="284" height="200" viewBox="0 0 284 200" fill="none">
+      <path d={path} stroke={C.gold} strokeWidth="1.8" strokeLinecap="round"/>
+      {pts.map((p,i) => (
+        <g key={i}>
+          <circle cx={p.x} cy={p.y} r="5" fill={i===3?"rgba(138,158,132,0.35)":"rgba(183,154,107,0.2)"} stroke={i===3?C.teal:C.gold} strokeWidth="1.2"/>
+          <text x={p.x} y={i<3||i===5?p.y-12:p.y+20} textAnchor="middle" fontSize="8.5" fontWeight="700" fontFamily="Inter,sans-serif" fill={i===3?C.teal:C.gold}>{p.label}</text>
+          <text x={p.x} y={i<3||i===5?p.y-3:p.y+30} textAnchor="middle" fontSize="6.5" fontFamily="Inter,sans-serif" fill={C.dim}>{p.sub}</text>
+        </g>
+      ))}
+      <text x="142" y="192" textAnchor="middle" fontSize="8.5" fontFamily="Georgia,serif" fontStyle="italic" fill="rgba(255,255,255,0.38)">No tension = no story.</text>
+    </svg>
+  );
+}
+
+// ─── NARRATIVE TRANSPORTATION — module constants
+const NT_PIXAR = [
+  { beat: "Once upon a time…", desc: "Establish the world before the change — the normal, expected state." },
+  { beat: "Every day…", desc: "Show the routine. What did the character expect from their world?" },
+  { beat: "Until one day…", desc: "The inciting incident. Something breaks the pattern and nothing is the same." },
+  { beat: "Because of that…", desc: "Chain of cause and effect. Decisions drive consequences forward." },
+  { beat: "Because of that…", desc: "The stakes rise. Actions compound into further complications." },
+  { beat: "Until finally…", desc: "Resolution — and the meaning that lasts beyond the story itself." },
+];
+const NT_NEURO = [
+  { word: "Curiosity", body: "The brain craves closure. Stories create open loops that demand resolution — your listener can't switch off." },
+  { word: "Empathy", body: "Stories create emotional simulation. The listener's brain fires as if they are living the experience themselves." },
+  { word: "Memory", body: "Narrative structure improves recall by 22×. Facts are forgotten by Tuesday. Stories stay for decades." },
+  { word: "Action", body: "Emotion precedes decision. People act on what moves them, not what merely informs them." },
+];
+const NT_EXAMPLES = [
+  { name: "Steve Jobs — iPhone Launch, 2007", story: '"An iPod… a phone… an internet communicator… Are you getting it? These are not three separate devices. This is one device."', lesson: "Build tension slowly through repetition. Then release it at exactly the right moment." },
+  { name: "The NASA Janitor", story: 'When JFK visited NASA in 1962 and asked a janitor what he was doing, the janitor set down his mop and said: "I\'m helping put a man on the moon, Mr President."', lesson: "The story around the work matters as much as the work itself. Narrative gives meaning to effort." },
+  { name: "Two Surgeons", story: 'Surgeon A: "Success rate 92%. Recovery: 10 days." Surgeon B: "A father of two came in terrified he\'d never play football with his son again. Three weeks later he sent us a photo from the park."', lesson: "Data informs. Story transforms. One creates confidence — the other creates trust." },
+];
+const NT_28 = {
+  bad: "Today I'll walk you through our Q3 cyber risk assessment, covering threat vectors, mitigation strategies, and budget implications.",
+  good: "Imagine arriving at the office tomorrow to find every system locked. Your laptop. The servers. The client database. You pick up your phone to call IT — and the line is dead. This is what a Category 1 breach looks like in the first 90 minutes. This morning, I want to show you exactly what we're doing to make sure you never live through that moment.",
+  lesson: "Start in the aftermath. Let them feel the consequence before you explain the cause.",
+};
+
 function D2() {
   const bars = [{label:"Fast",w:46,cap:"Clear & slow",col:C.gold},{label:"Medium",w:112,cap:"Balanced",col:C.teal},{label:"Rushed",w:202,cap:"Overloaded",col:C.red}];
   return (
@@ -887,7 +939,7 @@ const FURTHER_READING = [
 
 // ─── REVIEW STEP DATA — closing statements and session bullets per module
 const REVIEW_CLOSING = [
-  "The simplest words carry the furthest.",
+  "You've learned the framework. You've built your story. Now make it unforgettable.",
   "Slow down. The room will follow.",
   "In silence, authority lives.",
   "Cut everything that doesn't earn its place.",
@@ -904,7 +956,7 @@ const REVIEW_CLOSING = [
 ];
 
 const REVIEW_BULLETS = [
-  ["Complexity signals confusion — simplicity signals mastery", "If you can't explain it simply, you haven't finished thinking", "Every unnecessary word costs you credibility with your listener"],
+  ["You learned why storytelling creates influence faster than information alone", "You mastered the 6-beat story arc: Hook, Character, Problem, Turning Point, Resolution, Meaning", "You built and rehearsed your own professional story with AI coaching"],
   ["Speed signals anxiety; deliberate pace signals authority", "Cognitive load collapses comprehension — give listeners space to absorb", "Three seconds of intentional silence communicates more than ten words"],
   ["Filler words reduce perceived competence by up to 22%", "A pause is not weakness — it is thought made visible", "Replace 'um' and 'er' with breath, intention, and the next word"],
   ["One idea per sentence — always, without exception", "Short sentences land harder and are remembered longer", "Miller's Law: your listener's brain holds seven items at once — respect that"],
@@ -923,18 +975,18 @@ const REVIEW_BULLETS = [
 // ─── LESSON DATA
 const LESSONS = [
   // ── WEEK 1 
-  {day:1,week:1,title:"Speak Simply",tag:"Clarity",scene:"clarity",
-   quote:"Clarity is the ultimate form of intelligence.",
-   insight:"The clearest communicators don't use more words — they use better ones. Simplicity signals mastery. Complexity signals uncertainty.",
-   pieLink:"Performance and Exposure: Your ideas create impact when others understand them — including the idea of where you're going next. Clarity about your work and your ambition are the same skill.",
-   phrases:["My view is…","The key point is…","What this means is…"],
-   bad:"This is a multi-faceted situation with several interdependencies…",
-   good:"Here's the issue, and here's what I think we should do.",
-   practice:"Two exercises. First: explain what you do and the value you bring — in three sentences. No jargon. No qualifiers. Second: explain what you want next in your career — in one sentence. Say it as if you're telling a trusted senior leader, not writing a CV.",
-   scenarios:["Your manager asks for an update","A senior leader asks what you do","Someone asks a question you find difficult to answer clearly"],
-   review:["Did I make my point without jargon?","Was I clear in under 30 seconds?","Could someone repeat back what I said?"],
-   promise:"Clarity is a habit. The more you practice it, the more authority you project.",
-   teaser:"You'll learn to strip out the noise and say exactly what you mean — in a way that commands instant respect."},
+  {day:1,week:1,title:"Narrative Transportation",tag:"Storytelling",scene:"story",
+   quote:"The most powerful person in the world is the storyteller.",
+   insight:"A story well told doesn't just inform — it transports. Neuroscience shows that a compelling narrative activates the same brain regions as lived experience. This is your most powerful professional tool.",
+   pieLink:"Performance alone gets you noticed. Story makes you remembered. The same achievement, told as a narrative, creates 22× more retention and deeper trust in any audience.",
+   phrases:["Once upon a time, I was working on…","Until one day, something shifted…","Because of that, I made a decision…","Until finally, we arrived at…"],
+   bad:"I manage cross-functional teams to deliver strategic outcomes within agreed budget parameters.",
+   good:"Two years ago, our product was invisible. I built a coalition of seven teams who had never worked together — and we shipped something that changed how our customers see us.",
+   practice:"Build your professional story using the 6-beat arc. Think of a challenge you overcame, a change you drove, or a result you created. Use the AI coach to craft it into something unforgettable.",
+   scenarios:["Your MD asks you to open a board presentation — no slides, just your opening words to set the stakes","You're in an interview. The panel asks: Tell me about yourself. Give them the version that makes them lean forward.","A sceptical stakeholder thinks your proposal is too risky. Open with a story that changes the energy in the room."],
+   review:["I can name all 6 beats of the story arc framework","I understand why storytelling activates a different response in the brain than facts alone","I've built and rehearsed at least one version of my own professional story"],
+   promise:"You now have a framework that turns your experience into influence. Use it in your very next meeting.",
+   teaser:"Learn the exact 6-beat storytelling framework used by the world's most compelling communicators — and build your own story with AI coaching."},
 
   {day:2,week:1,title:"Slow Down",tag:"Voice Control",scene:"voice",
    quote:"Silence is the language of the wise.",
@@ -3011,6 +3063,159 @@ style={{padding:"13px 18px",borderRadius:0,border:"1px solid rgba(255,255,255,0.
 }
 
 // ─── AI COACH 
+// ─── STORY BUILDER — NT Module Practice Step AI Coach ──────────────────────
+// Replace ANTHROPIC_KEY with your key, or set up a proxy.
+// The existing CoachWidget uses the same fetch pattern.
+const ANTHROPIC_KEY = "";
+
+function StoryBuilderWidget({ onSave }) {
+  const [phase, setPhase] = useState("input");   // input|questions|style|building|done
+  const [topic, setTopic] = useState("");
+  const [answers, setAnswers] = useState({ who: "", tension: "", emotion: "" });
+  const [style, setStyle] = useState("");
+  const [story, setStory] = useState(() => { try { return localStorage.getItem("au1_nt_story") || ""; } catch { return ""; } });
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState(null);
+
+  const STYLES = ["Cinematic", "Executive", "Emotionally Human", "Provocative", "Aftermath + Rewind"];
+
+  async function generateStory(selectedStyle) {
+    if (busy) return;
+    setBusy(true); setErr(null);
+    const prompt = [
+      "You are a world-class executive communication coach specialising in professional storytelling.",
+      "The user needs to communicate: " + topic,
+      "Who this affects most: " + answers.who,
+      "The core tension: " + answers.tension,
+      "The emotion the audience feels: " + answers.emotion,
+      "Requested story style: " + selectedStyle,
+      "",
+      "Using the 6-beat story arc (Hook, Character, Problem, Turning Point, Resolution, Meaning),",
+      "write a compelling, authentic 150-200 word professional story in the '" + selectedStyle + "' style.",
+      "Write in first person. Make it specific, human, and credible — not generic or corporate.",
+      "Return ONLY a JSON object: { \"story\": \"the story\", \"tip\": \"one precise coaching observation about this style, max 15 words\" }",
+    ].join("\n");
+    try {
+      const headers = { "Content-Type": "application/json", "anthropic-version": "2023-06-01" };
+      if (ANTHROPIC_KEY) headers["x-api-key"] = ANTHROPIC_KEY;
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST", headers,
+        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 600, messages: [{ role: "user", content: prompt }] }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error("API error " + res.status);
+      const raw = (data.content || []).map(b => b.text || "").join("").trim();
+      let parsed = null;
+      const m = raw.match(/\{[\s\S]*"story"[\s\S]*\}/);
+      if (m) try { parsed = JSON.parse(m[0]); } catch (_) {}
+      if (!parsed?.story) throw new Error("Parse failed");
+      setStory(parsed.story);
+      setPhase("done");
+    } catch (e) {
+      setErr("The story coach is unavailable right now. You can still write your own story below.");
+      setPhase("done");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function saveStory() {
+    try { localStorage.setItem("au1_nt_story", story); } catch (_) {}
+    if (onSave) onSave(story);
+  }
+
+  const Q_STYLE = { fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.text3, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 8 };
+  const INPUT_STYLE = { width: "100%", padding: "12px 16px", border: "0.5px solid " + T.border, borderRadius: 4, outline: "none", resize: "none", background: T.surface, fontSize: 14, color: T.text, lineHeight: 1.6, fontFamily: T.sans, fontWeight: 300 };
+
+  if (phase === "input") return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      <div>
+        <p style={{ ...Q_STYLE }}>What do you need to communicate?</p>
+        <textarea value={topic} onChange={e => setTopic(e.target.value)} rows={3}
+          placeholder="A difficult conversation… an organisational change… a pitch… a leadership message…"
+          style={INPUT_STYLE}/>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 10 }}>
+          {["A difficult conversation", "An organisational change", "A pitch", "A leadership message"].map(ex => (
+            <button key={ex} onClick={() => setTopic(ex)} style={{ padding: "5px 12px", borderRadius: 30, border: "0.5px solid " + T.border, background: "transparent", fontSize: 11, color: T.text3, cursor: "pointer", fontFamily: T.sans }}>
+              {ex}
+            </button>
+          ))}
+        </div>
+      </div>
+      <button onClick={() => setPhase("questions")} disabled={!topic.trim()}
+        style={{ padding: "12px 24px", borderRadius: 4, border: "none", background: topic.trim() ? T.ink : T.border, color: T.bg, fontSize: 13, fontWeight: 600, cursor: topic.trim() ? "pointer" : "default", fontFamily: T.sans }}>
+        Start Building →
+      </button>
+    </div>
+  );
+
+  if (phase === "questions") return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      <div style={{ padding: "14px 16px", background: T.surface, borderRadius: 4, borderLeft: "2px solid " + T.gold }}>
+        <p style={{ fontFamily: T.sans, fontSize: 12, color: T.text3, margin: 0 }}>Communicating: <span style={{ color: T.text, fontStyle: "italic" }}>{topic}</span></p>
+      </div>
+      {[
+        { key: "who", q: "Who does this affect most?", ph: "A team member, a stakeholder, your customer…" },
+        { key: "tension", q: "What's the core tension?", ph: "The risk, the conflict, the gap between now and where you need to be…" },
+        { key: "emotion", q: "What emotion is your audience feeling?", ph: "Sceptical, anxious, excited, uncertain…" },
+      ].map(({ key, q, ph }) => (
+        <div key={key}>
+          <p style={{ ...Q_STYLE }}>{q}</p>
+          <input value={answers[key]} onChange={e => setAnswers(a => ({ ...a, [key]: e.target.value }))}
+            placeholder={ph} style={{ ...INPUT_STYLE, resize: undefined, padding: "11px 16px" }}/>
+        </div>
+      ))}
+      <button onClick={() => setPhase("style")} disabled={!answers.who || !answers.tension || !answers.emotion}
+        style={{ padding: "12px 24px", borderRadius: 4, border: "none", background: (answers.who && answers.tension && answers.emotion) ? T.ink : T.border, color: T.bg, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: T.sans }}>
+        Choose Your Style →
+      </button>
+    </div>
+  );
+
+  if (phase === "style" || busy) return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <p style={{ ...Q_STYLE }}>What opening style do you want?</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {STYLES.map(s => (
+          <button key={s} onClick={() => { setStyle(s); generateStory(s); }}
+            disabled={busy}
+            style={{ padding: "12px 18px", borderRadius: 4, border: "0.5px solid " + (style === s ? T.gold : T.border), background: style === s ? "rgba(138,158,132,0.08)" : "transparent", color: T.text, fontSize: 13, cursor: busy ? "default" : "pointer", fontFamily: T.sans, textAlign: "left", transition: "all 0.2s ease" }}>
+            {busy && style === s ? (
+              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ color: T.text3, fontStyle: "italic", fontSize: 12 }}>Building your story…</span>
+              </span>
+            ) : s}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (phase === "done") return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      {err && <p style={{ fontFamily: T.sans, fontSize: 12, color: T.red, padding: "10px 14px", background: "rgba(139,74,56,0.06)", borderRadius: 4 }}>{err}</p>}
+      <div>
+        <p style={{ ...Q_STYLE }}>Your Story — {style || "Draft"}</p>
+        <textarea value={story} onChange={e => setStory(e.target.value)} rows={10}
+          placeholder="Write or edit your story here…"
+          style={{ ...INPUT_STYLE, lineHeight: 1.75, fontFamily: T.serif, fontSize: 15 }}/>
+      </div>
+      <div style={{ display: "flex", gap: 10 }}>
+        <button onClick={saveStory} disabled={!story.trim()}
+          style={{ flex: 1, padding: "13px 20px", borderRadius: 4, border: "none", background: story.trim() ? T.ink : T.border, color: T.bg, fontSize: 13, fontWeight: 600, cursor: story.trim() ? "pointer" : "default", fontFamily: T.sans }}>
+          Save Story ✓
+        </button>
+        <button onClick={() => { setPhase("style"); setStyle(""); }}
+          style={{ padding: "13px 18px", borderRadius: 4, border: "0.5px solid " + T.border, background: "transparent", color: T.text3, fontSize: 12, cursor: "pointer", fontFamily: T.sans }}>
+          Try Another Style
+        </button>
+      </div>
+    </div>
+  );
+
+  return null;
+}
+
 function CoachWidget({ lesson, scenario }) {
   const [draft, setDraft]     = useState("");
   const [busy, setBusy]       = useState(false);
@@ -3303,9 +3508,11 @@ false; }
 setAmbitionSaved(true); } catch {}
     }
   }
+  const [ntStory, setNtStory] = useState(() => { try { return localStorage.getItem("au1_nt_story") || ""; } catch { return ""; } });
   const step = SESSION_STEPS[idx];
   const scenarios = roleId ? getScenariosForDay(roleId, lesson.day) : lesson.scenarios;
   const activeSc = scenarios[selSc] || scenarios[0];
+  const isNT = lesson.day === 1;
 
   // ─── THE STUDIO: Full desktop redesign ───────────────────────────────────
   // Architecture: Fixed left panel (visual stage) + scrollable right panel (content)
@@ -3388,6 +3595,78 @@ setAmbitionSaved(true); } catch {}
     const RP_LABEL  = { fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: T.sans, fontWeight: 500 };
 
     const LeftPanel = () => {
+      // ── NT Module (Day 1) — Narrative Transportation overrides ──────────────
+      if (isNT) {
+        const darkBase = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
+        if (step === "Insight") return (
+          <div style={darkBase}>
+            <img src="/day1-lounge.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
+            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.52)" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.3) 55%, transparent 80%)" }}/>
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
+              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:20 }}>
+                <div style={{ ...LP_LABEL, color:T.gold }}>The Foundation</div>
+                <div style={{ opacity:0.55 }}>{MODULE_ICONS[0]}</div>
+              </div>
+              <p style={{ ...LP_HEADING, fontSize:"clamp(30px,2.6vw,44px)", maxWidth:360, marginBottom:24 }}>Great storytelling is simpler than you think.</p>
+              <div style={{ width:32, height:1, background:T.gold, opacity:0.45, marginBottom:20 }}/>
+              <p style={{ ...LP_BODY, fontSize:17, maxWidth:340 }}>{lesson.quote}</p>
+            </div>
+          </div>
+        );
+        if (step === "Theory") return (
+          <div style={{ background:"#131009", height:"100%", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", padding:"40px 36px", position:"relative", overflow:"hidden" }}>
+            <div style={{ position:"absolute", top:-60, left:-60, width:360, height:360, background:"radial-gradient(ellipse, rgba(183,154,107,0.07) 0%, transparent 60%)", pointerEvents:"none" }}/>
+            <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:24, alignSelf:"flex-start", animation:"fadeDown 0.6s ease both" }}>The Story Arc</div>
+            <div style={{ animation:"fadeIn 0.8s ease 0.1s both", opacity:0 }}><D_NT/></div>
+          </div>
+        );
+        if (step === "Example") return (
+          <div style={{ background:"#0E0B08", height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+            <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(183,154,107,0.06) 0%, transparent 60%)" }}/>
+            <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Storytelling in the Wild</div>
+              <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,34px)", maxWidth:380, marginBottom:28, lineHeight:1.2 }}>Stories create empathy. Empathy creates trust. Trust creates influence.</p>
+              <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
+              <p style={{ ...LP_BODY, fontSize:15, maxWidth:340 }}>The same facts — told as a story — land 22× more powerfully in the human brain.</p>
+            </div>
+          </div>
+        );
+        if (step === "Practice") return (
+          <div style={{ position:"relative", height:"100%", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
+            <img src="/practice-bg.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
+            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.62)" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.98) 0%, transparent 60%)" }}/>
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, marginBottom:20 }}>Build Your Story</div>
+              <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2, marginBottom:20 }}>Use the framework. Make it yours.</p>
+              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                {["Hook — start with tension","Character — make it human","Problem — raise the stakes","Turning Point — what changed?","Resolution — what happened?","Meaning — why it matters"].map((b,i) => (
+                  <div key={i} style={{ display:"flex", alignItems:"center", gap:10 }}>
+                    <div style={{ width:16, height:16, borderRadius:"50%", border:"1px solid rgba(183,154,107,0.4)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                      <span style={{ fontSize:8, color:T.gold }}>{i+1}</span>
+                    </div>
+                    <span style={{ fontFamily:T.sans, fontSize:12, color:"rgba(245,239,230,0.65)" }}>{b}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+        if (step === "Simulation") return (
+          <div style={darkBase}>
+            <img src="/day1-simulation.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
+            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.58)" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 55%, transparent 80%)" }}/>
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, marginBottom:20 }}>Your Rehearsal</div>
+              <p style={{ ...LP_HEADING, fontSize:28, maxWidth:360, lineHeight:1.2 }}>Now tell it out loud.</p>
+            </div>
+          </div>
+        );
+        return null; // Review handled by 3-col layout
+      }
+
       // ── Insight — cinematic scene hero ──────────────────────────────────────
       // Day 1 uses a custom lounge photo. All other days use the SVG Scene.
       // BACKUP: revert to commit db934d3 to remove Day 1 photo entirely.
@@ -3545,6 +3824,141 @@ setAmbitionSaved(true); } catch {}
     };
 
     // ── Right panel: unified editorial content across all 6 steps ─────────────
+    // ── NT RightContent — all 6 steps ──────────────────────────────────────
+    const NTRightContent = () => {
+      if (step === "Insight") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>The Pixar Framework</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:8 }}>Every great story follows this pattern</h2>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:28 }}>Pixar used it for every film. Obama used it in every speech. It works because it mirrors how the human brain processes experience.</p>
+          <div style={{ display:"flex", flexDirection:"column", gap:0, marginBottom:32 }}>
+            {NT_PIXAR.map((b,i) => (
+              <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:16, padding:"14px 0", borderBottom:i<5?"0.5px solid "+T2.divider:"none" }}>
+                <div style={{ flexShrink:0, marginTop:3 }}>
+                  <div style={{ width:28, height:28, borderRadius:"50%", background:"rgba(138,158,132,0.1)", border:"0.5px solid rgba(138,158,132,0.25)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <span style={{ fontFamily:T.serif, fontSize:13, fontWeight:600, color:T.gold }}>{i+1}</span>
+                  </div>
+                </div>
+                <div>
+                  <p style={{ fontFamily:T.serif, fontSize:16, fontWeight:600, color:T.goldDark, margin:"0 0 4px" }}>{b.beat}</p>
+                  <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.6, fontWeight:300, margin:0 }}>{b.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:24 }}>
+            <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:14 }}>Example in action</div>
+            <div style={{ padding:"16px 20px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:16 }}>
+              <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text, lineHeight:1.65, margin:0 }}>
+                "Once upon a time, I was a new manager struggling to be heard in senior meetings. Every day I prepared thoroughly but left feeling invisible. Until one day, I tried opening with a story instead of data. Because of that, people stayed behind after the meeting. Because of that, I got a sponsor at director level. Until finally, I was presenting to the executive team."
+              </p>
+            </div>
+            <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T2.text2, lineHeight:1.6 }}>You already know how to do this. You've been telling stories your whole life.</p>
+          </div>
+        </div>
+      );
+
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>The Neuroscience</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:8 }}>Why Stories Work</h2>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:28 }}>Stories aren't just persuasion tools. They change the physical activity of the brain — your listener's neurons fire as if they are experiencing what you're describing.</p>
+          <div style={{ display:"flex", flexDirection:"column", gap:16, marginBottom:32 }}>
+            {NT_NEURO.map((n,i) => (
+              <div key={i} style={{ padding:"20px 22px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                <div style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T.goldDark, marginBottom:8 }}>{n.word}</div>
+                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontFamily:T.serif, fontSize:19, fontStyle:"italic", color:T.gold, lineHeight:1.5 }}>Facts explain. Stories move people.</p>
+        </div>
+      );
+
+      if (step === "Example") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>Three Stories Worth Studying</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:24 }}>Storytelling in the Wild</h2>
+          <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
+            {NT_EXAMPLES.map((ex,i) => (
+              <div key={i} style={{ padding:"22px 0", borderBottom:i<2?"0.5px solid "+T2.divider:"none" }}>
+                <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.goldDark, letterSpacing:"0.05em", marginBottom:10 }}>{ex.name}</div>
+                <p style={{ fontFamily:T.serif, fontSize:16, color:T2.text, lineHeight:1.65, marginBottom:12 }}>{ex.story}</p>
+                <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:T2.text2, lineHeight:1.55, margin:0 }}>Lesson: {ex.lesson}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:24, marginTop:8 }}>
+            <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:12 }}>The Aftermath + Rewind Technique</div>
+            <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:16 }}>
+              <div style={{ padding:"14px 16px", background:"rgba(139,74,56,0.06)", borderRadius:4, borderLeft:"2px solid "+T.red }}>
+                <div style={{ fontFamily:T.sans, fontSize:10, color:T.red, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:6 }}>Generic opening</div>
+                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text2, lineHeight:1.6, margin:0, fontStyle:"italic" }}>{NT_28.bad}</p>
+              </div>
+              <div style={{ padding:"14px 16px", background:"rgba(138,158,132,0.06)", borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+                <div style={{ fontFamily:T.sans, fontSize:10, color:T.goldDark, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:6 }}>Cinematic opening</div>
+                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.7, margin:0 }}>{NT_28.good}</p>
+              </div>
+            </div>
+            <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:T2.text2 }}>{NT_28.lesson}</p>
+          </div>
+        </div>
+      );
+
+      if (step === "Practice") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>AI Story Coach</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:6 }}>Build Your Story</h2>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:28 }}>Answer three questions. Choose a style. Your AI coach will craft a story using the 6-beat arc — then you refine it until it's yours.</p>
+          <StoryBuilderWidget onSave={s => { setNtStory(s); try { localStorage.setItem("au1_nt_story", s); } catch(_) {} }}/>
+        </div>
+      );
+
+      if (step === "Simulation") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>Rehearsal</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:24 }}>Now Practice Telling It</h2>
+          {ntStory ? (
+            <div style={{ padding:"18px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, marginBottom:24, borderLeft:"2px solid "+T.gold }}>
+              <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:10 }}>Your Story</div>
+              <p style={{ fontFamily:T.serif, fontSize:15, color:T2.text, lineHeight:1.75, margin:0 }}>{ntStory}</p>
+            </div>
+          ) : (
+            <div style={{ padding:"16px 20px", background:T2.surface, borderRadius:4, marginBottom:24 }}>
+              <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, fontStyle:"italic", margin:0 }}>No story saved yet — go back to Practice to build yours.</p>
+            </div>
+          )}
+          <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:28 }}>
+            {["Read your story aloud — at least once","Notice where you naturally pause","Feel the rhythm of the 6-beat arc","Time yourself — aim for under 2 minutes"].map((inst,i) => (
+              <div key={i} style={{ display:"flex", alignItems:"center", gap:12 }}>
+                <div style={{ width:20, height:20, borderRadius:"50%", border:"0.5px solid "+T.gold, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                  <span style={{ fontSize:10, color:T.goldDark }}>{i+1}</span>
+                </div>
+                <span style={{ fontFamily:T.sans, fontSize:14, color:T2.text, fontWeight:300 }}>{inst}</span>
+              </div>
+            ))}
+          </div>
+          <Timer totalSecs={180} label="Speak for up to 3 minutes"/>
+          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:20, marginTop:24 }}>
+            <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:12 }}>Checklist</div>
+            {[{ key:"read", l:"I've read it aloud at least once" }, { key:"pause", l:"I've identified my natural pauses" }, { key:"time", l:"I can tell it in under 2 minutes" }].map((item,i) => {
+              const [checked, setChecked] = useState(false);
+              return (
+                <div key={item.key} onClick={() => setChecked(c => !c)} style={{ display:"flex", alignItems:"center", gap:14, padding:"10px 0", borderBottom:i<2?"0.5px solid "+T2.divider:"none", cursor:"pointer" }}>
+                  <div style={{ width:20, height:20, borderRadius:4, border:"0.5px solid "+(checked?T.green:T2.border), background:checked?"rgba(82,112,96,0.1)":"transparent", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, transition:"all 0.2s" }}>
+                    {checked && <svg width="10" height="10" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l3 3 4-4" stroke={T.green} strokeWidth="1.5" strokeLinecap="round"/></svg>}
+                  </div>
+                  <span style={{ fontFamily:T.serif, fontSize:15, color:checked?T2.text3:T2.text, lineHeight:1.4, transition:"color 0.2s" }}>{item.l}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+
+      return null;
+    };
+
     const RightContent = () => (
       <div key={idx} className="au-step-enter" style={{ padding: "44px 44px 44px", maxWidth: 480 }}>
 
@@ -3810,9 +4224,35 @@ setAmbitionSaved(true); } catch {}
               </div>
             </div>
 
-            {/* COL 3 — Go Deeper: further reading */}
+            {/* COL 3 — Go Deeper / NT Storyboard */}
             {(() => {
               const fr = FURTHER_READING[lesson.day - 1];
+              if (isNT) return (
+                <div style={{ flex: 1, background: T2.bg, borderLeft: "1px solid " + T2.divider, borderTop: "3px solid " + T.gold, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+                  <div style={{ flex: 1, padding: "32px 32px 20px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+                    <h3 style={{ fontFamily: T.serif, fontSize: 22, fontWeight: 600, color: T2.text, letterSpacing: "-0.2px", marginBottom: 4 }}>Visualize Your Story</h3>
+                    <div style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: T.sans, fontWeight: 500, color: T2.text3, marginBottom: 20 }}>See your story as a 6-panel storyboard</div>
+                    {ntStory ? (
+                      <div style={{ padding:"14px 16px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, marginBottom:20, borderLeft:"2px solid "+T.gold }}>
+                        <p style={{ fontFamily:T.serif, fontSize:13, color:T2.text, lineHeight:1.7, margin:0 }}>{ntStory}</p>
+                      </div>
+                    ) : (
+                      <div style={{ padding:"12px 16px", background:T2.surface, borderRadius:4, marginBottom:20 }}>
+                        <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, fontStyle:"italic", margin:0 }}>Build your story in the Practice step to see it here.</p>
+                      </div>
+                    )}
+                    <div style={{ padding:"14px 16px", background:"rgba(138,158,132,0.06)", borderRadius:4, border:"0.5px solid rgba(138,158,132,0.2)" }}>
+                      <p style={{ fontFamily:T.sans, fontSize:12, color:T.goldDark, lineHeight:1.65, margin:0 }}>
+                        ✦ Storyboard generation coming soon — visual 6-panel story cards powered by AI image generation.
+                      </p>
+                    </div>
+                  </div>
+                  <div style={{ padding: "0 32px 32px", flexShrink: 0 }}>
+                    <div style={{ height: "0.5px", background: T2.divider, marginBottom: 16 }}/>
+                    <p style={{ fontFamily:T.sans, fontSize:11, color:T2.text3, margin:0 }}>View the full storytelling reading list in Toolkit → Reading List</p>
+                  </div>
+                </div>
+              );
               return (
                 <div style={{ flex: 1, background: T2.bg, borderLeft: "1px solid " + T2.divider, borderTop: "3px solid " + T.gold, display: "flex", flexDirection: "column", overflow: "hidden" }}>
                   <div style={{ flex: 1, padding: "32px 32px 20px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
@@ -3901,7 +4341,7 @@ setAmbitionSaved(true); } catch {}
                 }}/>
               )}
               <div style={{ position: "relative", zIndex: 1 }}>
-                <RightContent/>
+                {isNT ? <NTRightContent/> : <RightContent/>}
               </div>
             </div>
           </div>
