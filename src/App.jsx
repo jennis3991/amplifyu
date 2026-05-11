@@ -4119,22 +4119,38 @@ setAmbitionSaved(true); } catch {}
             dark:true,
             content: (
               <div style={{ maxWidth:560, margin:"0 auto", padding:"0 20px" }}>
-                <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:"rgba(245,239,230,0.45)", marginBottom:20 }}>The Aftermath + Rewind Technique</div>
-                <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:"#F5EFE6", lineHeight:1.25, marginBottom:32 }}>Incidents don't begin with hackers.<br/>They begin with ordinary decisions.</h2>
-                {[
-                  { panel:"Panel 1 — THE SETUP", dir:"Start after everything has gone wrong. Then rewind.", copy:"Many of you may have heard of the film 28 Days Later. We see the aftermath — the chaos, the consequences, the scramble to respond. Cyber incidents follow the same pattern. So today, I want us to rewind the story. Back to 24 hours earlier. Before the breach. Before anyone realises there's a problem." },
-                  { panel:"Panel 2 — THE REALITY", dir:"Make it human. Make it ordinary.", copy:"Picture this. It's just another busy day in Corporate Relations. Requests are coming in quickly. Deadlines are tight. And somewhere in the middle of all of that, you need a tool quickly to get something done. Nothing about this feels risky. You're doing your job. And yet — these are exactly the moments where incidents begin." },
-                  { panel:"Panel 3 — HOW IT HAPPENS", dir:"Connect the dots quietly.", copy:"It starts with something simple. A click on an email. Downloading a file. Using a quick workaround. And quietly, in the background, access is created. Because attackers don't always break in. Increasingly, they log in — using the gaps we unintentionally create." },
-                  { panel:"Panel 4 — THE KEY MESSAGE", dir:"Land the point with weight.", copy:"The gap between a small action and real impact is shrinking. The information we handle — relationships, stakeholder data, sensitive materials — is exactly what attackers value. Which is why the most important thing we can do is pause. Before we click. Before we share. Because incidents rarely begin with a dramatic event. They begin with ordinary decisions made on ordinary days." },
-                ].map((p,i) => (
-                  <div key={i} style={{ marginBottom:24, paddingBottom:24, borderBottom:i<3?"1px solid rgba(255,255,255,0.07)":"none" }}>
-                    <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T.gold, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:6 }}>{p.panel}</div>
-                    <div style={{ fontFamily:T.sans, fontSize:11, fontStyle:"italic", color:"rgba(245,239,230,0.38)", marginBottom:10 }}>({p.dir})</div>
-                    <p style={{ fontFamily:T.serif, fontSize:15, color:"rgba(245,239,230,0.85)", lineHeight:1.8, margin:0 }}>{p.copy}</p>
+                <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T.gold, marginBottom:16 }}>The Aftermath + Rewind Technique</div>
+                <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:32 }}>A cyber attack is only a click away.</h2>
+                <div style={{ display:"flex", flexDirection:"column", gap:18, marginBottom:32 }}>
+                  {[
+                    "You may remember the opening of 28 Days Later — a world already broken. Silence where there should be life. Chaos after collapse.",
+                    "Cyber incidents often feel the same.",
+                    "We see headlines. Stock markets falling. Systems offline. Organisations in crisis.",
+                    "But that's never where the real story begins.",
+                    "So today, let's rewind.",
+                  ].map((p,i) => (
+                    <p key={i} style={{ fontFamily:T.serif, fontSize:17, color:"rgba(245,239,230,0.88)", lineHeight:1.75, margin:0 }}>{p}</p>
+                  ))}
+                  <div style={{ padding:"16px 0", borderTop:"1px solid rgba(255,255,255,0.07)", borderBottom:"1px solid rgba(255,255,255,0.07)" }}>
+                    <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.4, margin:0 }}>24 hours earlier.</p>
                   </div>
-                ))}
-                <div style={{ padding:"16px 20px", borderLeft:"2px solid rgba(138,158,132,0.5)", marginTop:8 }}>
-                  <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", lineHeight:1.6, margin:0 }}>The Aftermath + Rewind technique: Start where most stories end, then pull the audience back to understand how we got there.</p>
+                  {[
+                    "Before the disruption. Before the panic. Before emergency calls.",
+                    "Because the most alarming part of a cyber attack…",
+                    "…is that it usually begins on what feels like a completely normal day.",
+                    "A busy morning. Tight deadlines. An email that looks legitimate. A quick click.",
+                    "And from that moment, everything else is just dominoes.",
+                  ].map((p,i) => (
+                    <p key={i} style={{ fontFamily:T.serif, fontSize:17, color:"rgba(245,239,230,0.88)", lineHeight:1.75, margin:0 }}>{p}</p>
+                  ))}
+                </div>
+                <div style={{ padding:"18px 22px", background:"rgba(255,255,255,0.04)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.5)", marginBottom:28 }}>
+                  <div style={{ fontFamily:T.sans, fontSize:10, color:T.gold, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:10 }}>Why this works</div>
+                  <p style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.72)", lineHeight:1.7, margin:"0 0 10px" }}>Instead of opening with facts about cyber risk, you begin in the aftermath — creating immediate emotional engagement — then rewind to show how we got there.</p>
+                  <p style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.72)", lineHeight:1.7, margin:0 }}>The audience goes on a journey. They feel the tension. They understand the stakes.</p>
+                </div>
+                <div style={{ padding:"16px 20px", borderLeft:"2px solid rgba(138,158,132,0.5)" }}>
+                  <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", lineHeight:1.65, margin:0 }}>The Aftermath + Rewind: Start where most stories end, then pull your audience back to understand how we arrived. Cinematic storytelling transforms dry topics into compelling narratives.</p>
                 </div>
               </div>
             ),
@@ -4145,9 +4161,11 @@ setAmbitionSaved(true); } catch {}
           <>
             {/* Full-screen overlay */}
             {openCard && (
-              <div style={{ position:"fixed", inset:0, zIndex:600, background: openCard.dark ? "rgba(14,11,8,0.97)" : "rgba(247,243,236,0.97)", backdropFilter:"blur(12px)", display:"flex", alignItems:"center", justifyContent:"center", overflowY:"auto", padding:"80px 24px 60px", animation:"fadeIn 0.25s ease both" }}>
-                <button onClick={() => setNtOpenCard(null)} style={{ position:"fixed", top:24, right:28, width:40, height:40, borderRadius:"50%", border:"1px solid "+(openCard.dark?"rgba(255,255,255,0.15)":T2.border), background:"transparent", color:openCard.dark?"rgba(255,255,255,0.6)":T2.text3, fontSize:18, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans, zIndex:10 }}>×</button>
-                <div style={{ width:"100%", animation:"fadeUp 0.3s ease both" }}>
+              <div style={{ position:"fixed", inset:0, zIndex:600, background: openCard.dark ? "rgba(14,11,8,0.97)" : "rgba(247,243,236,0.97)", backdropFilter:"blur(12px)", overflowY:"auto", animation:"fadeIn 0.25s ease both" }}>
+                {/* Close button — always visible at top right */}
+                <button onClick={() => setNtOpenCard(null)} style={{ position:"fixed", top:20, right:24, width:40, height:40, borderRadius:"50%", border:"1px solid "+(openCard.dark?"rgba(255,255,255,0.18)":T2.border), background: openCard.dark ? "rgba(14,11,8,0.7)" : "rgba(247,243,236,0.8)", backdropFilter:"blur(8px)", color:openCard.dark?"rgba(255,255,255,0.7)":T2.text3, fontSize:20, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans, zIndex:10 }}>×</button>
+                {/* Scrollable content — padding top ensures headline never hides behind nav */}
+                <div style={{ padding:"96px 24px 72px", minHeight:"100%", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"flex-start", animation:"fadeUp 0.3s ease both" }}>
                   {openCard.content}
                   <div style={{ textAlign:"center", marginTop:36 }}>
                     <button onClick={() => setNtOpenCard(null)} style={{ padding:"10px 24px", borderRadius:4, border:"1px solid "+(openCard.dark?"rgba(255,255,255,0.2)":T2.border), background:"transparent", color:openCard.dark?"rgba(245,239,230,0.6)":T2.text3, fontSize:12, cursor:"pointer", fontFamily:T.sans }}>← Back to examples</button>
