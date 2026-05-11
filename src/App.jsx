@@ -6097,10 +6097,8 @@ finishDate + ".";
           display: "flex", flexDirection: "column", justifyContent: "flex-end",
           minHeight: 640,
         }}>
-          {/* Background scene — full bleed, subtle pan animation */}
-          <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
-            <Scene name={lesson ? lesson.scene : "clarity"} height={900} day={lesson ? lesson.day : null}/>
-          </div>
+          {/* Background — full bleed photo */}
+          <img src="/home-hero.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}/>
 
           {/* Atmospheric layering — depth through gradients */}
           {/* Layer 1: Base dark veil */}
