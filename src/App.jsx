@@ -2851,6 +2851,8 @@ function WelcomeCard({ onDismiss }) {
             borderRadius: 8,
             display: "block",
             margin: "0 auto 24px",
+            border: "6px solid #1A1510",
+            boxSizing: "border-box",
           }}
           playsInline
           autoPlay
