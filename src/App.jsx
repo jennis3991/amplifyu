@@ -2798,6 +2798,102 @@ style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none"}}>
   );
 }
 
+// ─── WELCOME CARD — shown once after first onboarding ─────────────────────
+function WelcomeCard({ onDismiss }) {
+  const [showButton, setShowButton] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (vid) {
+      vid.play().catch(() => setShowButton(true));
+    }
+    const t = setTimeout(() => setShowButton(true), 6000);
+    return () => clearTimeout(t);
+  }, []);
+
+  function dismiss() {
+    setLeaving(true);
+    try { localStorage.setItem("amplifyu_welcome_shown", "1"); } catch(_) {}
+    setTimeout(onDismiss, 550);
+  }
+
+  return (
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 1000,
+      background: "rgba(10,8,5,0.82)",
+      backdropFilter: "blur(18px)",
+      WebkitBackdropFilter: "blur(18px)",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      padding: "24px",
+      animation: leaving ? "fadeOut 0.55s ease forwards" : "fadeIn 0.5s ease both",
+    }}>
+      <div style={{
+        width: "100%", maxWidth: 600,
+        background: "#F7F3EC",
+        borderRadius: 12,
+        padding: "40px 40px 36px",
+        boxShadow: "0 32px 96px rgba(44,36,22,0.18), 0 4px 20px rgba(44,36,22,0.08)",
+        textAlign: "center",
+        animation: leaving ? "fadeDown 0.45s ease forwards" : "fadeUp 0.5s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s both",
+      }}>
+        {/* Video */}
+        <video
+          ref={videoRef}
+          src="/welcome.mov"
+          onEnded={() => setShowButton(true)}
+          style={{
+            width: "100%", maxWidth: 400, borderRadius: 8,
+            display: "block", margin: "0 auto 28px",
+            background: "#EDE8DF",
+          }}
+          playsInline
+          autoPlay
+        />
+
+        {/* Heading */}
+        <h2 style={{
+          fontFamily: "'Cormorant Garamond','Georgia',serif",
+          fontSize: 28, fontWeight: 600, color: "#2C2416",
+          letterSpacing: "-0.3px", marginBottom: 10, lineHeight: 1.2,
+        }}>
+          Welcome to AmplifyU
+        </h2>
+
+        {/* Subtext */}
+        <p style={{
+          fontFamily: "'Inter',-apple-system,sans-serif",
+          fontSize: 16, color: "#6B5E44", lineHeight: 1.65,
+          marginBottom: 32, fontWeight: 300,
+        }}>
+          Every great communicator started exactly where you are now.
+        </p>
+
+        {/* Button — fades in after video */}
+        <button
+          onClick={dismiss}
+          style={{
+            padding: "13px 32px", borderRadius: 4, border: "none",
+            background: "#8A9E84", color: "#F7F3EC",
+            fontFamily: "'Inter',sans-serif", fontSize: 14, fontWeight: 600,
+            cursor: showButton ? "pointer" : "default",
+            letterSpacing: "0.02em",
+            opacity: showButton ? 1 : 0,
+            transform: showButton ? "translateY(0)" : "translateY(8px)",
+            transition: "opacity 0.5s ease, transform 0.5s ease, background 0.2s ease",
+            pointerEvents: showButton ? "auto" : "none",
+          }}
+          onMouseEnter={e => { if(showButton) e.currentTarget.style.background = "#2C2416"; }}
+          onMouseLeave={e => { if(showButton) e.currentTarget.style.background = "#8A9E84"; }}
+        >
+          Begin Your Programme →
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function Celebrate({day, onClose}) {
   const [phase, setPhase] = useState("burst");
   useEffect(() => {
@@ -7311,6 +7407,7 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   const [cel, setCel] = useState(null);
   const streak = getStreak(done);
   const activeRole = ROLES.find(r => r.id === roleId) || null;
+  const [showWelcome, setShowWelcome] = useState(false);
   // Daily reminder nudge — show if today's session not done and app opened after 18h gap
   const [showNudge, setShowNudge] = useState(() => {
     try {
@@ -7381,6 +7478,9 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
             setBoarded(true);
             lsSet("au1_ob", true);
             setReflectionData(null);
+            try {
+              if (!localStorage.getItem("amplifyu_welcome_shown")) setShowWelcome(true);
+            } catch(_) {}
           }}
         />
       </div>
@@ -7426,6 +7526,7 @@ style={Object.assign({},wrapStyle,{display:"flex",flexDirection:"column"})}>
 <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes 
 slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
       {cel && <Celebrate day={cel} onClose={() => setCel(null)}/>}
+      {showWelcome && <WelcomeCard onDismiss={() => setShowWelcome(false)}/>}
       {confirmReset && (
         <div 
 style={{position:"fixed",inset:0,zIndex:300,background:"rgba(11,13,16,0.7)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",padding:"24px"}}>

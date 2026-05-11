@@ -101,8 +101,9 @@
 
       /* ── Animations ─────────────────────────────────────────────────────── */
       @keyframes fadeIn      { from { opacity: 0; }                              to { opacity: 1; } }
-      @keyframes fadeUp      { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes fadeOut     { from { opacity: 1; }                              to { opacity: 0; } }
       @keyframes fadeDown    { from { opacity: 0; transform: translateY(-16px); }to { opacity: 1; transform: translateY(0); } }
+      @keyframes fadeUp      { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
       @keyframes slideUp     { from { transform: translateY(100%); }             to { transform: translateY(0); } }
       @keyframes heroPan     { from { transform: scale(1.04); }                  to { transform: scale(1); } }
       @keyframes sectionFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
