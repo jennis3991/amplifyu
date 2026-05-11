@@ -2593,10 +2593,8 @@ function Onboarding({onDone}) {
         <div style={{ height: "100vh", display: "flex", overflow: "hidden", fontFamily: T.sans }} className="au-grain-wrap">
           {/* LEFT: Atmospheric stage */}
           <div style={{ width: "45%", flexShrink: 0, position: "relative", overflow: "hidden", background: "#0F0D0A" }}>
-            <div className="au-hero-scene" style={{ position: "absolute", inset: 0, opacity: 0.35 }}>
-              <OBScene name="story" height={900}/>
-            </div>
-            <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.5)" }}/>
+            <img src="/ob-role.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}/>
+            <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.45)" }}/>
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, transparent 20%, rgba(10,8,5,0.75) 100%)" }}/>
             <div style={{ position: "absolute", bottom: 52, left: 52, zIndex: 2 }}>
               <div style={{ fontSize: 9, color: T.gold, letterSpacing: "3.5px", textTransform: "uppercase", fontFamily: T.sans, marginBottom: 14 }}>Almost there.</div>
