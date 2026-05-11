@@ -4425,19 +4425,8 @@ setAmbitionSaved(true); } catch {}
                     "That's what made complex issues feel human. That's what moved people from understanding to action."
                   ].map((p,i) => <p key={i} style={{ fontFamily:T.serif, fontSize:17, color:"rgba(245,239,230,0.85)", lineHeight:1.75, margin:0 }}>{p}</p>)}
                 </div>
-                <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)", marginBottom:32 }}>
+                <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)" }}>
                   <p style={{ fontFamily:T.serif, fontSize:20, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.5, margin:0 }}>"Stories create empathy. Empathy creates trust. Trust creates influence."</p>
-                </div>
-                <div style={{ display:"flex", gap:12, alignItems:"center" }}>
-                  <div style={{ flex:1, textAlign:"center", padding:"12px 16px", background:"rgba(255,255,255,0.05)", borderRadius:3 }}>
-                    <div style={{ fontFamily:T.sans, fontSize:11, color:"rgba(245,239,230,0.45)", marginBottom:4 }}>Facts</div>
-                    <div style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.6)" }}>→ Understanding</div>
-                  </div>
-                  <div style={{ fontFamily:T.sans, fontSize:18, color:"rgba(138,158,132,0.6)" }}>+</div>
-                  <div style={{ flex:1, textAlign:"center", padding:"12px 16px", background:"rgba(138,158,132,0.1)", borderRadius:3, border:"0.5px solid rgba(138,158,132,0.3)" }}>
-                    <div style={{ fontFamily:T.sans, fontSize:11, color:T.gold, marginBottom:4 }}>Stories</div>
-                    <div style={{ fontFamily:T.serif, fontSize:14, color:"#F5EFE6" }}>→ Action</div>
-                  </div>
                 </div>
               </div>
             ),
@@ -6298,78 +6287,6 @@ finishDate + ".";
               </div>
             </div>
           </section>
-
-          {/* ── Upcoming sessions — horizontal editorial panels ── */}
-          {!finished && (
-            <section style={{ padding: "64px 88px" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 60, alignItems: "start" }}>
-                <div style={{ paddingTop: 8 }}>
-                  <div style={{ fontSize: 9.5, fontWeight: 500, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", fontFamily: T.sans }}>Continue</div>
-                  <div style={{ width: 20, height: 1, background: T.gold, marginTop: 10, opacity: 0.5 }}/>
-                </div>
-                <div>
-                  {/* Next 3 sessions as editorial horizontal rows */}
-                  {LESSONS.filter(l => !done.includes(l.day)).slice(0, 4).map((l, idx) => (
-                    <div key={l.day}
-                      className="au-row"
-                      onClick={() => onStart(l.day)}
-                      style={{
-                        display: "flex", alignItems: "center", gap: 32,
-                        padding: "20px 0",
-                        borderBottom: idx < 3 ? "1px solid " + T2.divider : "none",
-                        cursor: "pointer",
-                      }}>
-                      <div style={{
-                        fontFamily: T.serif, fontSize: 36, fontWeight: 500,
-                        color: l.day === cur ? T.gold : T2.text4,
-                        letterSpacing: "-2px", lineHeight: 1, width: 52, flexShrink: 0,
-                      }}>{l.day}</div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 9, color: l.day === cur ? T.gold : T2.text3, textTransform: "uppercase", letterSpacing: "2.5px", marginBottom: 5, fontFamily: T.sans }}>{l.tag}</div>
-                        <div style={{ fontFamily: T.serif, fontSize: 20, fontWeight: 500, color: T2.text, letterSpacing: "-0.3px" }}>{l.title}</div>
-                      </div>
-                      <div style={{ flexShrink: 0 }}>
-                        {l.day === cur ? (
-                          <div style={{
-                            display: "flex", alignItems: "center", gap: 8,
-                            padding: "7px 16px", background: T.gold, borderRadius: 4,
-                          }}>
-                            <span style={{ fontSize: 11.5, fontWeight: 500, color: "white", fontFamily: T.sans }}>Today</span>
-                            <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          </div>
-                        ) : (
-                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke={T2.text4} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* ── Quote / Ambition — the emotional anchor ── */}
-          <section style={{ padding: "0 88px 80px" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 60 }}>
-              <div/>
-              <div style={{ borderTop: "1px solid " + T2.divider, paddingTop: 48 }}>
-                {storedAmbition && cur >= 5 ? (
-                  <div style={{ maxWidth: 580 }}>
-                    <div style={{ fontSize: 9.5, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 16, fontFamily: T.sans }}>Your North Star</div>
-                    <p style={{ fontFamily: T.serif, fontSize: 24, fontStyle: "italic", fontWeight: 400, color: T2.text2, lineHeight: 1.55, letterSpacing: "-0.3px" }}>
-                      "In the next 18 months, I want to be {storedAmbition}"
-                    </p>
-                  </div>
-                ) : (
-                  <div style={{ maxWidth: 560 }}>
-                    <p style={{ fontFamily: T.serif, fontSize: 22, fontStyle: "italic", fontWeight: 400, color: T2.text2, lineHeight: 1.6, letterSpacing: "-0.2px" }}>
-                      "{quote}"
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </section>
         </div>
       </div>
     );
@@ -6794,8 +6711,25 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
         </div>
       </div>)}
       {isDesktop && (
-        <div style={contentStyle}>
-          <h1 style={{fontFamily:T.serif,fontSize:36,fontWeight:700,color:T2.text,letterSpacing:"-0.5px",marginBottom:32}}>Your Progress</h1>
+        <div style={{ borderBottom:"1px solid "+T2.divider, marginBottom:0 }}>
+          <div style={{maxWidth:1160,margin:"0 auto",padding:"52px 88px 40px",display:"flex",alignItems:"flex-end",justifyContent:"space-between"}}>
+            <div>
+              <div style={{fontSize:10,letterSpacing:"4px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,marginBottom:14}}>Your Journey</div>
+              <h1 style={{fontFamily:T.serif,fontSize:52,fontWeight:500,color:T2.text,letterSpacing:"-2px",lineHeight:1,margin:0}}>Your Progress</h1>
+            </div>
+            <div style={{display:"flex",alignItems:"flex-end",gap:40,paddingBottom:4}}>
+              {streak > 0 && (
+                <div style={{textAlign:"right"}}>
+                  <div style={{fontFamily:T.serif,fontSize:40,fontWeight:500,color:T.gold,lineHeight:1,letterSpacing:"-2px"}}>{streak}</div>
+                  <div style={{fontSize:10,color:T2.text3,textTransform:"uppercase",letterSpacing:"2px",marginTop:4,fontFamily:T.sans}}>day streak</div>
+                </div>
+              )}
+              <div style={{textAlign:"right"}}>
+                <div style={{fontFamily:T.serif,fontSize:40,fontWeight:500,color:T2.text,lineHeight:1,letterSpacing:"-2px"}}>{pct}<span style={{fontSize:20,color:T.gold}}>%</span></div>
+                <div style={{fontSize:10,color:T2.text3,textTransform:"uppercase",letterSpacing:"2px",marginTop:4,fontFamily:T.sans}}>complete</div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
       <div style={isDesktop?Object.assign({},contentStyle,{paddingTop:0}):Object.assign({padding:"16px 20px",display:"flex",flexDirection:"column",gap:12})}>
@@ -7024,14 +6958,22 @@ p];
         </div>
       </div>)}
       {isDesktop && (
-        <div style={{maxWidth:1160,margin:"0 auto",padding:"40px 48px 0"}}>
-          <h1 style={{fontFamily:T.serif,fontSize:36,fontWeight:700,color:T2.text,letterSpacing:"-0.5px",marginBottom:28}}>Toolkit</h1>
-          <div style={{display:"flex",gap:4,marginBottom:0,borderBottom:"1px solid "+T2.border}}>
-            {toolkitTabs.map(([id,label]) => (
-              <button key={id} onClick={()=>setTab(id)} style={{padding:"9px 18px",border:"none",background:"transparent",fontSize:13,fontWeight:tab===id?600:400,color:tab===id?T2.text:T2.text3,cursor:"pointer",borderBottom:tab===id?"2px solid "+T.gold:"2px solid transparent",marginBottom:"-1px"}}>
-                {label}
-              </button>
-            ))}
+        <div style={{borderBottom:"1px solid "+T2.border}}>
+          <div style={{maxWidth:1160,margin:"0 auto",padding:"52px 88px 0"}}>
+            <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",marginBottom:32}}>
+              <div>
+                <div style={{fontSize:10,letterSpacing:"4px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,marginBottom:14}}>Resources</div>
+                <h1 style={{fontFamily:T.serif,fontSize:52,fontWeight:500,color:T2.text,letterSpacing:"-2px",lineHeight:1,margin:"0 0 8px"}}>Toolkit</h1>
+                <p style={{fontFamily:T.sans,fontSize:16,color:T2.text2,fontWeight:300,margin:0}}>Your communication resources</p>
+              </div>
+            </div>
+            <div style={{display:"flex",gap:4,marginBottom:0}}>
+              {toolkitTabs.map(([id,label]) => (
+                <button key={id} onClick={()=>setTab(id)} style={{padding:"9px 18px",border:"none",background:"transparent",fontSize:13,fontWeight:tab===id?600:400,color:tab===id?T2.text:T2.text3,cursor:"pointer",borderBottom:tab===id?"2px solid "+T.gold:"2px solid transparent",marginBottom:"-1px"}}>
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}
