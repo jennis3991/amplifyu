@@ -1015,7 +1015,7 @@ const LESSONS = [
    teaser:"Learn how to replace every filler word with something far more powerful — and instantly upgrade how others perceive you."},
 
   {day:4,week:1,title:"Short Sentences",tag:"Editing",scene:"clarity",
-   quote:"Brevity is the soul of wit. It is also the soul of influence.",
+   quote:"Short sentences are easier to follow. Easier to remember. And far more persuasive.",
    insight:"Long sentences bury your point. Short sentences land hard. The most powerful communicators say more with less — because they've edited ruthlessly. This is the foundation of everything that follows, including the stories you'll learn to tell.",
    pieLink:"Performance: Decision-makers remember concise inputs. Long-winded answers signal uncertain thinking. Short sentences are not simple — they are strategic. They are also the first rule of great storytelling.",
    phrases:["Here's the point.","In short…","What matters is…"],
@@ -1632,9 +1632,14 @@ const NAV_H = 64;
 // SIDEBAR_W kept at 0 — sidebar is gone on desktop
 const SIDEBAR_W = 0;
 
-function FloatingNav({ tab, setTab, streak, done, dark, activeRole }) {
+function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSession=false, onExitToTab }) {
   const pct = Math.round(done.length / 14 * 100);
   const [scrolled, setScrolled] = useState(false);
+  const [confirmTab, setConfirmTab] = useState(null);
+
+  function handleNavClick(id) {
+    if (inSession) { setConfirmTab(id); } else { setTab(id); }
+  }
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60);
@@ -1664,6 +1669,21 @@ function FloatingNav({ tab, setTab, streak, done, dark, activeRole }) {
   const linkActiveBg = onHero ? "rgba(255,255,255,0.12)" : "rgba(138,158,132,0.12)";
 
   return (
+    <>
+      {/* Session-exit confirmation dialog */}
+      {confirmTab && (
+        <div style={{ position:"fixed", inset:0, zIndex:500, background:"rgba(10,8,5,0.7)", backdropFilter:"blur(8px)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <div style={{ background:T.surface, borderRadius:8, padding:"28px 32px", width:340, border:"0.5px solid "+T.border, boxShadow:"0 24px 64px rgba(0,0,0,0.3)" }}>
+            <h3 style={{ fontFamily:T.serif, fontSize:20, fontWeight:500, color:T.text, marginBottom:10 }}>Exit this session?</h3>
+            <p style={{ fontFamily:T.sans, fontSize:13, color:T.text3, lineHeight:1.65, marginBottom:24 }}>Your progress will be saved to where you left off.</p>
+            <div style={{ display:"flex", gap:10 }}>
+              <button onClick={() => setConfirmTab(null)} style={{ flex:1, padding:"11px", borderRadius:4, border:"0.5px solid "+T.border, background:"transparent", color:T.text3, fontSize:13, cursor:"pointer", fontFamily:T.sans }}>Cancel</button>
+              <button onClick={() => { setConfirmTab(null); if(onExitToTab) onExitToTab(confirmTab); else setTab(confirmTab); }} style={{ flex:1, padding:"11px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:13, fontWeight:600, cursor:"pointer", fontFamily:T.sans }}>Exit</button>
+            </div>
+          </div>
+        </div>
+      )}
+
     <div style={{
       position: "fixed", top: 0, left: 0, right: 0,
       zIndex: 200, height: NAV_H,
@@ -1676,7 +1696,7 @@ function FloatingNav({ tab, setTab, streak, done, dark, activeRole }) {
       padding: "0 56px",
     }}>
       {/* Logo — always Cormorant Garamond */}
-      <button onClick={() => setTab("home")} style={{
+      <button onClick={() => handleNavClick("home")} style={{
         background: "none", border: "none", padding: 0,
         fontFamily: T.serif, fontSize: 20, fontWeight: 600,
         color: logoColor, letterSpacing: "-0.2px",
@@ -1691,7 +1711,7 @@ function FloatingNav({ tab, setTab, streak, done, dark, activeRole }) {
         {ITEMS.map(({ id, label }) => {
           const a = tab === id;
           return (
-            <button key={id} onClick={() => setTab(id)}
+            <button key={id} onClick={() => handleNavClick(id)}
               className="au-nav-btn"
               style={{
                 padding: "7px 16px", borderRadius: 4, border: "none",
@@ -1733,6 +1753,7 @@ function FloatingNav({ tab, setTab, streak, done, dark, activeRole }) {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
@@ -4489,29 +4510,7 @@ setAmbitionSaved(true); } catch {}
                   </p>
                 </div>
               </div>
-              {/* Complete button pinned to bottom */}
-              <div style={{ padding: "0 36px 36px", flexShrink: 0 }}>
-                {!isDone ? (
-                  <button onClick={onComplete} style={{
-                    width: "100%", padding: "14px 24px",
-                    background: T2.ink, color: T2.bg, border: "none", borderRadius: 4,
-                    fontFamily: T.sans, fontSize: 14, fontWeight: 600, cursor: "pointer",
-                    letterSpacing: "0.02em", display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-                    transition: "opacity 0.2s ease",
-                  }}
-                    onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}
-                    onMouseLeave={e => e.currentTarget.style.opacity = "1"}
-                  >
-                    Mark Complete & Continue
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </button>
-                ) : (
-                  <div style={{ width: "100%", padding: "14px 24px", background: "rgba(82,112,96,0.1)", border: "1px solid rgba(82,112,96,0.3)", borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                    <svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={T.green} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    <span style={{ fontSize: 13, color: T.green, fontFamily: T.sans, fontWeight: 500 }}>Session Complete — revisit anytime</span>
-                  </div>
-                )}
-              </div>
+              {/* Mark Complete lives in the nav bar — see chapter nav section below */}
             </div>
 
             {/* COL 3 — Go Deeper / NT Storyboard */}
@@ -4550,10 +4549,10 @@ setAmbitionSaved(true); } catch {}
                     <div style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: T.sans, fontWeight: 500, color: T2.text3, marginBottom: 28 }}>Recommended for this session</div>
                     {fr && fr.books.map((book, bi) => (
                       <div key={bi}>
-                        {bi > 0 && <div style={{ height: "0.5px", background: T2.divider, margin: "20px 0" }}/>}
-                        <p style={{ fontFamily: T.serif, fontSize: 16, fontWeight: 600, color: T2.text, letterSpacing: "-0.2px", marginBottom: 3 }}>{book.title}</p>
-                        <p style={{ fontFamily: T.sans, fontSize: 11, color: T2.text3, marginBottom: 10 }}>{book.author}</p>
-                        <p style={{ fontFamily: T.serif, fontSize: 13, fontStyle: "italic", color: T.goldDark, lineHeight: 1.55, marginBottom: 12 }}>{book.connection}</p>
+                        {bi > 0 && <div style={{ height: "0.5px", background: T2.divider, margin: "18px 0" }}/>}
+                        <p style={{ fontFamily: T.serif, fontSize: 20, fontWeight: 600, color: T2.text, letterSpacing: "-0.3px", marginBottom: 4 }}>{book.title}</p>
+                        <p style={{ fontFamily: T.sans, fontSize: 14, color: T2.text3, marginBottom: 10 }}>{book.author}</p>
+                        <p style={{ fontFamily: T.serif, fontSize: 16, fontStyle: "italic", color: T.goldDark, lineHeight: 1.55, marginBottom: 12 }}>{book.connection}</p>
                         <a href={book.amazon} target="_blank" rel="noreferrer" style={{
                           fontFamily: T.sans, fontSize: 12, fontWeight: 500,
                           color: T.gold, textDecoration: "none", letterSpacing: "0.01em",
@@ -4566,7 +4565,7 @@ setAmbitionSaved(true); } catch {}
                   </div>
                   <div style={{ padding: "0 32px 32px", flexShrink: 0 }}>
                     <div style={{ height: "0.5px", background: T2.divider, marginBottom: 16 }}/>
-                    <button onClick={() => { onBack(); /* TODO: open toolkit reading tab */ }} style={{
+                    <button onClick={() => { try { localStorage.setItem("au1_open_toolkit_tab","reading"); } catch(_){} onBack(); }} style={{
                       background: "none", border: "none", cursor: "pointer", padding: 0,
                       fontFamily: T.sans, fontSize: 12, color: T2.text3, letterSpacing: "0.01em",
                     }}
@@ -4603,7 +4602,7 @@ setAmbitionSaved(true); } catch {}
               <button
                 onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
                 style={{
-                  position: "absolute", top: NAV_H + 16, left: 24,
+                  position: "absolute", top: 16, left: 24,
                   display: "flex", alignItems: "center", gap: 6,
                   background: "#F5EFE6",
                   border: "1px solid rgba(44,36,22,0.18)", borderRadius: 4,
@@ -4675,8 +4674,25 @@ setAmbitionSaved(true); } catch {}
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
             )}
-            {/* Mark Complete lives in the center panel on Review step — hidden from nav bar */}
-            {idx < SESSION_STEPS.length - 1 || step !== "Review" ? null : null}
+            {/* Mark Complete in nav bar for Review step */}
+            {step === "Review" && !isDone && (
+              <button onClick={onComplete} className="au-cta" style={{
+                display: "flex", alignItems: "center", gap: 8,
+                padding: "9px 20px", borderRadius: 5,
+                background: T.green, border: "none",
+                color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer",
+                fontFamily: T.sans, boxShadow: "0 2px 16px rgba(61,107,79,0.3)",
+              }}>
+                Mark Complete & Continue
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
+            )}
+            {step === "Review" && isDone && (
+              <div style={{ padding: "8px 14px", borderRadius: 5, background: "rgba(61,107,79,0.2)", border: "1px solid rgba(61,107,79,0.3)", display: "flex", alignItems: "center", gap: 6 }}>
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={T.green} strokeWidth="1.6" strokeLinecap="round"/></svg>
+                <span style={{ fontSize: 12, color: T.green, fontFamily: T.sans }}>Complete</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -6378,6 +6394,12 @@ strokeWidth="1.5" strokeLinecap="round"/></svg>}
 function ToolkitScreen({onQuickPrep, dark=false, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
   const [tab, setTab] = useState("sayThis");
+  useEffect(() => {
+    try {
+      const pending = localStorage.getItem("au1_open_toolkit_tab");
+      if (pending) { setTab(pending); localStorage.removeItem("au1_open_toolkit_tab"); }
+    } catch(_) {}
+  }, []);
   const [openCat, setOpenCat] = useState(0);
   const [copied, setCopied] = useState(null);
   const [openMod, setOpenMod] = useState(null);
@@ -6892,7 +6914,7 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
       <div style={wrapStyle}>
         <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
         {cel && <Celebrate day={cel} onClose={() => { setCel(null); setView("main"); setTab("home"); }}/>}
-        {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole}/>}
+        {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole} inSession={view==="session"} onExitToTab={(t)=>{setTab(t);setView("main");}}/>}
         <SessionView lesson={LESSONS[Math.min(selDay-1,13)]}
 isDone={done.includes(selDay)} onComplete={() => completeDay(selDay)}
 onBack={() => setView("main")} roleId={roleId} activeRole={activeRole}
@@ -6943,7 +6965,7 @@ reset</button>
           </div>
         </div>
       )}
-      {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole}/>}
+      {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole} inSession={view==="session"} onExitToTab={(t)=>{setTab(t);setView("main");}}/>}
       <div className="au-grain-wrap" style={{flex:1,overflowY:"auto",marginLeft:0,paddingBottom:isDesktop?0:"calc(64px + env(safe-area-inset-bottom, 0px))",background:dark?"#19160F":T.bg}}>
         {tab==="home" && <HomeScreen done={done} cur={cur} streak={streak} onStart={startSession} roleId={roleId} activeRole={activeRole} dark={dark} DK={DK} showNudge={showNudge} onDismissNudge={()=>setShowNudge(false)} isDesktop={isDesktop}/>}
         {tab==="sessions" && <SessionsScreen done={done} cur={cur} onStart={startSession} roleId={roleId} dark={dark} DK={DK} isDesktop={isDesktop}/>}
