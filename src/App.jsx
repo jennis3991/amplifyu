@@ -2311,6 +2311,7 @@ function Onboarding({onDone}) {
         "Setting boundaries and asserting myself.",
       ],
       scene: "presence",
+      image: "/ob-q1.jpg",
     },
     {
       k: "context",
@@ -2323,6 +2324,7 @@ function Onboarding({onDone}) {
         "Navigating high-stakes conversations with confidence.",
       ],
       scene: "clarity",
+      image: "/ob-q2.jpg",
     },
     {
       k: "level",
@@ -2335,6 +2337,7 @@ function Onboarding({onDone}) {
         "I'm already strong. I want to go to the next level.",
       ],
       scene: "structure",
+      image: "/ob-q3.jpg",
     },
     {
       k: "ambition",
@@ -2347,6 +2350,7 @@ function Onboarding({onDone}) {
         "Recognised as someone who makes things happen.",
       ],
       scene: "brand",
+      image: "/ob-q4.jpg",
     },
   ];
 
@@ -2485,9 +2489,13 @@ function Onboarding({onDone}) {
             background: "#0F0D0A",
           }}>
             <div key={step} className="au-step-enter" style={{ position: "absolute", inset: 0 }}>
-              <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
-                <OBScene name={q.scene} height={900}/>
-              </div>
+              {q.image ? (
+                <img src={q.image} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}/>
+              ) : (
+                <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
+                  <OBScene name={q.scene} height={900}/>
+                </div>
+              )}
               <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.45)" }}/>
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, transparent 30%, rgba(10,8,5,0.7) 100%)" }}/>
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.9) 0%, transparent 50%)" }}/>
