@@ -908,8 +908,8 @@ const FURTHER_READING = [
     { title: "The 2-Hour Job Search", author: "Steve Dalton", connection: "A methodical approach to being known before you need to be — exactly what PIE is about.", summary: "Dalton's evidence-based system for prioritising and approaching contacts efficiently. Counterintuitive and remarkably effective for anyone building professional visibility.", amazon: "https://www.amazon.co.uk/s?k=The+2-Hour+Job+Search+Steve+Dalton" },
   ]},
   { books: [
-    { title: "Presence", author: "Amy Cuddy", connection: "The science of how body and mind interact to create — or undermine — executive presence.", summary: "Cuddy's research into posture, power, and confidence shows how small physical changes can dramatically shift how you feel and how others perceive you.", amazon: "https://www.amazon.co.uk/s?k=Presence+Amy+Cuddy" },
-    { title: "The Executive Presence Playbook", author: "Carol Kinsey Goman", connection: "A practical field guide to the non-verbal signals that communicate authority and credibility.", summary: "Goman translates body language research into concrete strategies for projecting confidence, warmth, and leadership in any professional setting.", amazon: "https://www.amazon.co.uk/s?k=The+Executive+Presence+Playbook+Carol+Kinsey+Goman" },
+    { title: "Wired for Story", author: "Lisa Cron", connection: "The neuroscience behind why stories work — the biological foundation of Narrative Transportation Theory.", summary: "Cron reveals what neuroscience tells us about why the brain is wired to respond to story, and how to use that knowledge to make every story you tell land with power.", amazon: "https://www.amazon.co.uk/s?k=Wired+for+Story+Lisa+Cron" },
+    { title: "Story", author: "Robert McKee", connection: "The definitive text on story structure — the deep craft behind the 6-beat arc you practised today.", summary: "McKee's landmark work on story structure has shaped screenwriters, novelists, and business communicators for decades. Dense, demanding, and worth every page.", amazon: "https://www.amazon.co.uk/s?k=Story+Robert+McKee" },
   ]},
   { books: [
     { title: "Never Split the Difference", author: "Chris Voss", connection: "FBI hostage negotiation tactics that reveal how real influence is built on empathy, not argument.", summary: "Voss upends everything you thought you knew about negotiation. Tactical empathy, mirroring, and the power of 'no' make this one of the most practically useful books on communication.", amazon: "https://www.amazon.co.uk/s?k=Never+Split+the+Difference+Chris+Voss" },
@@ -939,14 +939,14 @@ const FURTHER_READING = [
 
 // ─── REVIEW STEP DATA — closing statements and session bullets per module
 const REVIEW_CLOSING = [
-  "You've learned the framework. You've built your story. Now make it unforgettable.",
+  "The simplest words carry the furthest.",
   "Slow down. The room will follow.",
   "In silence, authority lives.",
   "Cut everything that doesn't earn its place.",
   "A well-built sentence is a well-built argument.",
   "The story you tell becomes the one they remember.",
   "Performance is invisible until someone sees it.",
-  "Presence is a choice made before you speak.",
+  "You've learned the framework. You've built your story. Now make it unforgettable.",
   "The most persuasive people ask the best questions.",
   "The conversation you avoid is the one that matters most.",
   "What you stand for is more powerful than what you do.",
@@ -956,14 +956,14 @@ const REVIEW_CLOSING = [
 ];
 
 const REVIEW_BULLETS = [
-  ["You learned why storytelling creates influence faster than information alone", "You mastered the 6-beat story arc: Hook, Character, Problem, Turning Point, Resolution, Meaning", "You built and rehearsed your own professional story with AI coaching"],
+  ["Complexity signals confusion — simplicity signals mastery", "If you can't explain it simply, you haven't finished thinking", "Every unnecessary word costs you credibility with your listener"],
   ["Speed signals anxiety; deliberate pace signals authority", "Cognitive load collapses comprehension — give listeners space to absorb", "Three seconds of intentional silence communicates more than ten words"],
   ["Filler words reduce perceived competence by up to 22%", "A pause is not weakness — it is thought made visible", "Replace 'um' and 'er' with breath, intention, and the next word"],
   ["One idea per sentence — always, without exception", "Short sentences land harder and are remembered longer", "Miller's Law: your listener's brain holds seven items at once — respect that"],
   ["Lead with your conclusion, then earn it with evidence", "Point → Reason → Example: the fastest path from idea to understanding", "Structure is a gift to your listener, not a constraint on your thinking"],
   ["Stories move people to places that facts cannot reach", "Every great professional story has a before, a shift, and an after", "Narrative transportation changes minds without triggering resistance"],
   ["Performance alone does not build careers — visibility multiplies it", "Image and exposure are not vanity — they are strategy", "Being known for the right things in the right rooms is a learnable skill"],
-  ["Presence begins in the body before a single word is spoken", "How you enter a room communicates authority before you speak", "Confidence is a decision made in private, before the public moment"],
+  ["You learned why storytelling creates influence faster than information alone", "You mastered the 6-beat story arc: Hook, Character, Problem, Turning Point, Resolution, Meaning", "You built and rehearsed your own professional story with AI coaching"],
   ["Real influence is built on empathy, not on argument", "People agree when they feel understood, not when they feel correct", "Reciprocity, commitment, and social proof are the levers of human agreement"],
   ["Difficult conversations require psychological safety for both people", "Care personally and challenge directly — that is the only honest path", "The goal of every hard conversation is shared meaning, not victory"],
   ["Your brand is what people say about you when you leave the room", "Consistency of voice and presence builds trust over years, not weeks", "You cannot be known for everything — choose your niche deliberately"],
@@ -975,18 +975,18 @@ const REVIEW_BULLETS = [
 // ─── LESSON DATA
 const LESSONS = [
   // ── WEEK 1 
-  {day:1,week:1,title:"Narrative Transportation",tag:"Storytelling",scene:"story",
-   quote:"The most powerful person in the world is the storyteller.",
-   insight:"A story well told doesn't just inform — it transports. Neuroscience shows that a compelling narrative activates the same brain regions as lived experience. This is your most powerful professional tool.",
-   pieLink:"Performance alone gets you noticed. Story makes you remembered. The same achievement, told as a narrative, creates 22× more retention and deeper trust in any audience.",
-   phrases:["Once upon a time, I was working on…","Until one day, something shifted…","Because of that, I made a decision…","Until finally, we arrived at…"],
-   bad:"I manage cross-functional teams to deliver strategic outcomes within agreed budget parameters.",
-   good:"Two years ago, our product was invisible. I built a coalition of seven teams who had never worked together — and we shipped something that changed how our customers see us.",
-   practice:"Build your professional story using the 6-beat arc. Think of a challenge you overcame, a change you drove, or a result you created. Use the AI coach to craft it into something unforgettable.",
-   scenarios:["Your MD asks you to open a board presentation — no slides, just your opening words to set the stakes","You're in an interview. The panel asks: Tell me about yourself. Give them the version that makes them lean forward.","A sceptical stakeholder thinks your proposal is too risky. Open with a story that changes the energy in the room."],
-   review:["I can name all 6 beats of the story arc framework","I understand why storytelling activates a different response in the brain than facts alone","I've built and rehearsed at least one version of my own professional story"],
-   promise:"You now have a framework that turns your experience into influence. Use it in your very next meeting.",
-   teaser:"Learn the exact 6-beat storytelling framework used by the world's most compelling communicators — and build your own story with AI coaching."},
+  {day:1,week:1,title:"Speak Simply",tag:"Clarity",scene:"clarity",
+   quote:"Clarity is the ultimate form of intelligence.",
+   insight:"The clearest communicators don't use more words — they use better ones. Simplicity signals mastery. Complexity signals uncertainty.",
+   pieLink:"Performance and Exposure: Your ideas create impact when others understand them — including the idea of where you're going next. Clarity about your work and your ambition are the same skill.",
+   phrases:["My view is…","The key point is…","What this means is…"],
+   bad:"This is a multi-faceted situation with several interdependencies…",
+   good:"Here's the issue, and here's what I think we should do.",
+   practice:"Two exercises. First: explain what you do and the value you bring — in three sentences. No jargon. No qualifiers. Second: explain what you want next in your career — in one sentence. Say it as if you're telling a trusted senior leader, not writing a CV.",
+   scenarios:["Your manager asks for an update","A senior leader asks what you do","Someone asks a question you find difficult to answer clearly"],
+   review:["Did I make my point without jargon?","Was I clear in under 30 seconds?","Could someone repeat back what I said?"],
+   promise:"Clarity is a habit. The more you practice it, the more authority you project.",
+   teaser:"You'll learn to strip out the noise and say exactly what you mean — in a way that commands instant respect."},
 
   {day:2,week:1,title:"Slow Down",tag:"Voice Control",scene:"voice",
    quote:"Silence is the language of the wise.",
@@ -1067,18 +1067,18 @@ const LESSONS = [
    teaser:"Bring together all six Week 1 habits and prepare for a storytelling deep-dive that will change how you show up in every professional room."},
 
   // ── WEEK 2 
-  {day:8,week:2,title:"SAR: Story Architecture",tag:"Storytelling",scene:"story",
-   quote:"Every great professional story has three bones: a situation worth caring about, an action worth respecting, and a result worth remembering.",
-   insight:"SAR — Situation, Action, Result — is the architecture beneath every great professional story. You already know why stories work. Now you have the blueprint. The structure doesn't constrain your story — it frees you from the two most common failures: too much setup, and a buried point.",
-   pieLink:"Performance and Exposure: SAR makes invisible work visible and career contributions undeniable. It's how your impact travels into rooms you're not in.",
-   phrases:["The situation was…","What I did was…","The result was…"],
-   bad:"I worked on the rebrand for months. It was a lot of work and involved a lot of stakeholders.",
-   good:"The brand had lost 30% awareness in two years. I led the repositioning. Within six months, awareness was back to historic highs.",
-   practice:"Write three SAR stories from your career. For each: one sentence for Situation, two for Action, one precise Result with a number or specific outcome. Then read them aloud.",
-   scenarios:["A performance review where your impact needs to be clear","An internal interview for a stretch role","A sponsor conversation where you need to be remembered"],
-   review:["Was my Situation specific enough to create stakes?","Was my Action clearly owned — not shared or vague?","Was my Result measurable and precise?"],
-   promise:"Your career story is only as strong as the SAR stories inside it. This week you'll learn not just the structure, but the craft that makes it land.",
-   teaser:"SAR is the professional storytelling framework. Learn the architecture that makes your contributions undeniable — and your impact impossible to ignore."},
+  {day:8,week:2,title:"Narrative Transportation",tag:"Storytelling",scene:"story",
+   quote:"The most powerful person in the world is the storyteller.",
+   insight:"A story well told doesn't just inform — it transports. Neuroscience shows that a compelling narrative activates the same brain regions as lived experience. This is your most powerful professional tool.",
+   pieLink:"Performance alone gets you noticed. Story makes you remembered. The same achievement, told as a narrative, creates 22× more retention and deeper trust in any audience.",
+   phrases:["Once upon a time, I was working on…","Until one day, something shifted…","Because of that, I made a decision…","Until finally, we arrived at…"],
+   bad:"I manage cross-functional teams to deliver strategic outcomes within agreed budget parameters.",
+   good:"Two years ago, our product was invisible. I built a coalition of seven teams who had never worked together — and we shipped something that changed how our customers see us.",
+   practice:"Build your professional story using the 6-beat arc. Think of a challenge you overcame, a change you drove, or a result you created. Use the AI coach to craft it into something unforgettable.",
+   scenarios:["Your MD asks you to open a board presentation — no slides, just your opening words to set the stakes","You're in an interview and the panel asks: Tell me about yourself. Give them the version that makes them lean forward.","A sceptical stakeholder thinks your proposal is too risky. Open with a story that changes the energy in the room."],
+   review:["I can name all 6 beats of the story arc framework","I understand why storytelling activates a different response in the brain than facts alone","I've built and rehearsed at least one version of my own professional story"],
+   promise:"You now have a framework that turns your experience into influence. Use it in your very next meeting.",
+   teaser:"Learn the exact 6-beat storytelling framework used by the world's most compelling communicators — and build your own story with AI coaching."},
 
   {day:9,week:2,title:"Making a Story Land",tag:"Storytelling",scene:"story",
    quote:"A story that doesn't land isn't a story — it's a report.",
@@ -3512,7 +3512,7 @@ setAmbitionSaved(true); } catch {}
   const step = SESSION_STEPS[idx];
   const scenarios = roleId ? getScenariosForDay(roleId, lesson.day) : lesson.scenarios;
   const activeSc = scenarios[selSc] || scenarios[0];
-  const isNT = lesson.day === 1;
+  const isNT = lesson.day === 8;
 
   // ─── THE STUDIO: Full desktop redesign ───────────────────────────────────
   // Architecture: Fixed left panel (visual stage) + scrollable right panel (content)
@@ -3600,13 +3600,15 @@ setAmbitionSaved(true); } catch {}
         const darkBase = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
         if (step === "Insight") return (
           <div style={darkBase}>
-            <img src="/day1-lounge.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
+            <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}>
+              <Scene name="story" height={900} day={lesson.day}/>
+            </div>
             <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.52)" }}/>
             <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.3) 55%, transparent 80%)" }}/>
             <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
               <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:20 }}>
-                <div style={{ ...LP_LABEL, color:T.gold }}>The Foundation</div>
-                <div style={{ opacity:0.55 }}>{MODULE_ICONS[0]}</div>
+                <div style={{ ...LP_LABEL, color:T.gold }}>Day {lesson.day} · {lesson.tag}</div>
+                <div style={{ opacity:0.55 }}>{MODULE_ICONS[lesson.day - 1]}</div>
               </div>
               <p style={{ ...LP_HEADING, fontSize:"clamp(30px,2.6vw,44px)", maxWidth:360, marginBottom:24 }}>Great storytelling is simpler than you think.</p>
               <div style={{ width:32, height:1, background:T.gold, opacity:0.45, marginBottom:20 }}/>
@@ -3615,10 +3617,13 @@ setAmbitionSaved(true); } catch {}
           </div>
         );
         if (step === "Theory") return (
-          <div style={{ background:"#131009", height:"100%", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", padding:"40px 36px", position:"relative", overflow:"hidden" }}>
-            <div style={{ position:"absolute", top:-60, left:-60, width:360, height:360, background:"radial-gradient(ellipse, rgba(183,154,107,0.07) 0%, transparent 60%)", pointerEvents:"none" }}/>
-            <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:24, alignSelf:"flex-start", animation:"fadeDown 0.6s ease both" }}>The Story Arc</div>
-            <div style={{ animation:"fadeIn 0.8s ease 0.1s both", opacity:0 }}><D_NT/></div>
+          <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
+            <img src="/narrative-transportation.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.35) 40%, transparent 65%)" }}/>
+            <div style={{ position:"absolute", bottom:40, left:24, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
+              <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Science</div>
+              <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, fontStyle:"normal", color:"#F5EFE6", lineHeight:1.25, margin:0 }}>When a story is told well, the listener is no longer an observer. They step through the door. That is when belief changes.</p>
+            </div>
           </div>
         );
         if (step === "Example") return (
@@ -3860,18 +3865,21 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Theory") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
-          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>The Neuroscience</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:8 }}>Why Stories Work</h2>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:28 }}>Stories aren't just persuasion tools. They change the physical activity of the brain — your listener's neurons fire as if they are experiencing what you're describing.</p>
-          <div style={{ display:"flex", flexDirection:"column", gap:16, marginBottom:32 }}>
+          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>The Story Arc</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:20 }}>The 6-Beat Framework</h2>
+          <div style={{ background:T.cardDark, borderRadius:4, padding:"24px 20px", marginBottom:28, display:"flex", justifyContent:"center" }}>
+            <D_NT/>
+          </div>
+          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:16 }}>Why Stories Work</div>
+          <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:24 }}>
             {NT_NEURO.map((n,i) => (
-              <div key={i} style={{ padding:"20px 22px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
-                <div style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T.goldDark, marginBottom:8 }}>{n.word}</div>
-                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>{n.body}</p>
+              <div key={i} style={{ padding:"14px 18px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, display:"flex", gap:14, alignItems:"flex-start" }}>
+                <div style={{ fontFamily:T.serif, fontSize:14, fontWeight:600, color:T.goldDark, minWidth:72, flexShrink:0, marginTop:1 }}>{n.word}</div>
+                <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{n.body}</p>
               </div>
             ))}
           </div>
-          <p style={{ fontFamily:T.serif, fontSize:19, fontStyle:"italic", color:T.gold, lineHeight:1.5 }}>Facts explain. Stories move people.</p>
+          <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T.gold, lineHeight:1.5 }}>Facts explain. Stories move people.</p>
         </div>
       );
 
