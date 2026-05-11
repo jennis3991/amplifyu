@@ -7360,6 +7360,8 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   const [view2, setView2] = useState("main");  // "main" | "reflection"
   const [tab, setTab] = useState("home");
   const [view, setView] = useState("main");
+  const scrollRef = useRef(null);
+  useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [tab]);
   const [selDay, setSelDay] = useState(1);
   const [cel, setCel] = useState(null);
   const streak = getStreak(done);
@@ -7509,7 +7511,7 @@ reset</button>
         </div>
       )}
       {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole} inSession={view==="session"} onExitToTab={(t)=>{setTab(t);setView("main");}}/>}
-      <div className="au-grain-wrap" style={{flex:1,overflowY:"auto",marginLeft:0,paddingBottom:isDesktop?0:"calc(64px + env(safe-area-inset-bottom, 0px))",background:dark?"#19160F":T.bg}}>
+      <div ref={scrollRef} className="au-grain-wrap" style={{flex:1,overflowY:"auto",marginLeft:0,paddingBottom:isDesktop?0:"calc(64px + env(safe-area-inset-bottom, 0px))",background:dark?"#19160F":T.bg}}>
         {tab==="home" && <HomeScreen done={done} cur={cur} streak={streak} onStart={startSession} roleId={roleId} activeRole={activeRole} dark={dark} DK={DK} showNudge={showNudge} onDismissNudge={()=>setShowNudge(false)} isDesktop={isDesktop}/>}
         {tab==="sessions" && <SessionsScreen done={done} cur={cur} onStart={startSession} roleId={roleId} dark={dark} DK={DK} isDesktop={isDesktop}/>}
         {tab==="progress" && <ProgressScreen done={done} cur={cur} streak={streak} roleId={roleId} activeRole={activeRole} onChangeRole={(r)=>{setRoleId(r);lsSet("au1_role",r);}} dark={dark} toggleDark={toggleDark} DK={DK} onReset={()=>setConfirmReset(true)} isDesktop={isDesktop}/>}
