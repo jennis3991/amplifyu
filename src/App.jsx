@@ -2809,7 +2809,7 @@ function WelcomeCard({ onDismiss }) {
     if (vid) {
       vid.play().catch(() => setShowButton(true));
     }
-    const t = setTimeout(() => setShowButton(true), 6000);
+    const t = setTimeout(() => setShowButton(true), 5000);
     return () => clearTimeout(t);
   }, []);
 
@@ -2825,27 +2825,31 @@ function WelcomeCard({ onDismiss }) {
       background: "rgba(10,8,5,0.82)",
       backdropFilter: "blur(18px)",
       WebkitBackdropFilter: "blur(18px)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      padding: "24px",
+      overflowY: "auto",
+      display: "flex", alignItems: "flex-start", justifyContent: "center",
+      padding: "40px 24px 60px",
       animation: leaving ? "fadeOut 0.55s ease forwards" : "fadeIn 0.5s ease both",
     }}>
       <div style={{
-        width: "100%", maxWidth: 600,
+        width: "100%", maxWidth: 560,
         background: "#F7F3EC",
         borderRadius: 12,
-        padding: "40px 40px 36px",
+        padding: "36px 40px 32px",
         boxShadow: "0 32px 96px rgba(44,36,22,0.18), 0 4px 20px rgba(44,36,22,0.08)",
         textAlign: "center",
         animation: leaving ? "fadeDown 0.45s ease forwards" : "fadeUp 0.5s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s both",
       }}>
-        {/* Video */}
+        {/* Video — capped height so card always fits in viewport */}
         <video
           ref={videoRef}
           src="/welcome.mov"
           onEnded={() => setShowButton(true)}
           style={{
-            width: "100%", maxWidth: 400, borderRadius: 8,
-            display: "block", margin: "0 auto 28px",
+            width: "100%", maxWidth: 400,
+            maxHeight: "40vh",
+            objectFit: "contain",
+            borderRadius: 8,
+            display: "block", margin: "0 auto 24px",
             background: "#EDE8DF",
           }}
           playsInline
