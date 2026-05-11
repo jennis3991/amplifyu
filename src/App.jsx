@@ -2674,28 +2674,25 @@ function Onboarding({onDone}) {
 
   if (phase === "landing") {
     return (
-      <div style={{minHeight:"100vh",background:T.ink,fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
-        <div style={{position:"relative",height:340,flexShrink:0}}>
-          <OBScene name="clarity" height={340}/>
-          <div style={{position:"absolute",top:52,left:24}}>
-            <div style={{fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.55)",textTransform:"uppercase",letterSpacing:3}}>AmplifyU</div>
-          </div>
-        </div>
-        <div style={{padding:"36px 28px 0",flex:1,background:T.ink}}>
-          <h1 style={{fontFamily:T.serif,fontSize:32,fontWeight:700,color:"#fff",lineHeight:1.2,marginBottom:16}}>Speak with clarity.<br/>Lead with <span style={{color:T.gold}}>confidence.</span></h1>
-          <p style={{fontSize:15,color:"rgba(255,255,255,0.58)",lineHeight:1.75,marginBottom:28}}>14 sessions. 2 weeks. One per day. Build clarity, structure, stories, and a confident presence.</p>
-          {[{icon:"—",label:"Build your voice.",sub:"Speak with clarity and intention in every room."},{icon:"—",label:"Own your brand.",sub:"Be known for what makes you distinctive."},{icon:"—",label:"Create impact.",sub:"Turn excellent work into visible results."}].map((p,i) => (
-            <div key={i} style={{display:"flex",gap:14,marginBottom:i<2?20:0}}>
-              <div style={{fontSize:16,color:T.gold,flexShrink:0,marginTop:2}}>{p.icon}</div>
-              <div>
-                <div style={{fontSize:14,fontWeight:700,color:"rgba(255,255,255,0.88)",marginBottom:4}}>{p.label}</div>
-                <div style={{fontSize:13,color:"rgba(255,255,255,0.45)",lineHeight:1.5}}>{p.sub}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div style={{padding:"28px 28px 48px",background:T.ink}}>
-          <button onClick={()=>setPhase("questions")} style={{width:"100%",padding:"17px",borderRadius:0,border:"none",background:T.gold,color:"white",fontSize:16,fontWeight:700,letterSpacing:0.5,cursor:"pointer"}}>Begin</button>
+      <div style={{ height:"100vh", overflow:"hidden", position:"relative", background:"#0F0D0A", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans }} className="au-grain-wrap">
+        {/* Atmospheric background */}
+        <div style={{ position:"absolute", inset:0, opacity:0.25 }}><OBScene name="presence" height={900}/></div>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 50% 40%, rgba(138,158,132,0.06) 0%, transparent 60%)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(10,8,5,0.6) 0%, rgba(10,8,5,0.3) 50%, rgba(10,8,5,0.8) 100%)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(6,5,3,0.5) 100%)" }}/>
+        {/* Content */}
+        <div style={{ position:"relative", zIndex:2, textAlign:"center", maxWidth:380, padding:"0 32px", animation:"fadeUp 1s cubic-bezier(0.25,0.46,0.45,0.94) 0.3s both" }}>
+          <div style={{ fontSize:10, letterSpacing:"6px", textTransform:"uppercase", color:T.gold, fontFamily:T.sans, fontWeight:500, marginBottom:40 }}>AmplifyU</div>
+          <h1 style={{ fontFamily:T.serif, fontSize:"clamp(32px,8vw,52px)", fontWeight:500, lineHeight:1.1, color:"rgba(255,255,255,0.93)", letterSpacing:"-1.5px", marginBottom:24 }}>
+            The space to become who you've always been capable of being.
+          </h1>
+          <div style={{ width:32, height:1, background:T.gold, margin:"0 auto 22px", opacity:0.6 }}/>
+          <p style={{ fontSize:14, color:"rgba(255,255,255,0.38)", lineHeight:1.75, marginBottom:48, fontFamily:T.sans, fontWeight:300 }}>
+            14 sessions. A private practice for communication, presence, and executive impact.
+          </p>
+          <button onClick={()=>setPhase("questions")} style={{ background:"transparent", border:"1px solid rgba(255,255,255,0.2)", borderRadius:40, padding:"13px 36px", color:"rgba(255,255,255,0.8)", fontSize:12, fontWeight:400, letterSpacing:"1.5px", textTransform:"uppercase", cursor:"pointer", fontFamily:T.sans }}>
+            Enter
+          </button>
         </div>
       </div>
     );
@@ -2739,18 +2736,26 @@ function Onboarding({onDone}) {
   const q = QS[step];
   return (
     <div style={{minHeight:"100vh",background:T.ink,fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
-      <div style={{position:"relative",flexShrink:0}}>
-        <OBScene name={["presence","clarity","structure","brand","story"][step % 5]} height={240}/>
-        <div style={{position:"absolute",bottom:22,left:24,right:24}}>
-          <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.45)",textTransform:"uppercase",letterSpacing:2,marginBottom:10}}>Question {step+1} of {QS.length}</div>
-          <div style={{display:"flex",gap:6}}>{QS.map((_,i)=><div key={i} style={{height:2,borderRadius:1,flex:1,background:i<=step?"white":"rgba(255,255,255,0.25)"}}/>)}</div>
+      {/* Photo banner — matches desktop left panel */}
+      <div style={{position:"relative",height:260,flexShrink:0,overflow:"hidden"}}>
+        {q.image ? (
+          <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>
+        ) : (
+          <OBScene name={q.scene} height={260}/>
+        )}
+        <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.48)"}}/>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 60%)"}}/>
+        <div style={{position:"absolute",bottom:20,left:24,right:24}}>
+          <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>{q.context}</div>
+          <div style={{display:"flex",gap:6}}>{QS.map((_,i)=><div key={i} style={{height:2,borderRadius:1,flex:1,background:i<=step?"white":"rgba(255,255,255,0.2)"}}/>)}</div>
         </div>
       </div>
+      {/* Question + options */}
       <div style={{padding:"28px 24px 40px",flex:1,background:T.ink}}>
-        <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"#fff",lineHeight:1.2,marginBottom:24}}>{q.q}</h2>
+        <h2 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,36px)",fontWeight:500,color:"rgba(255,255,255,0.93)",lineHeight:1.15,letterSpacing:"-0.5px",marginBottom:28}}>{q.q}</h2>
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {q.opts.map(opt => (
-            <button key={opt} onClick={()=>pick_mobile(opt)} style={{padding:"16px 18px",borderRadius:2,border:"1px solid rgba(255,255,255,0.12)",background:"rgba(255,255,255,0.04)",color:"rgba(255,255,255,0.88)",fontSize:14,textAlign:"left",cursor:"pointer"}}>{opt}</button>
+            <button key={opt} onClick={()=>pick_mobile(opt)} style={{padding:"16px 18px",borderRadius:2,border:"1px solid rgba(255,255,255,0.12)",background:"rgba(255,255,255,0.04)",color:"rgba(255,255,255,0.85)",fontSize:14,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5}}>{opt}</button>
           ))}
         </div>
       </div>
