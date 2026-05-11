@@ -2839,18 +2839,18 @@ function WelcomeCard({ onDismiss }) {
         textAlign: "center",
         animation: leaving ? "fadeDown 0.45s ease forwards" : "fadeUp 0.5s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s both",
       }}>
-        {/* Video — capped height so card always fits in viewport */}
+        {/* Video — height-driven so portrait video shows at natural width, no grey bars */}
         <video
           ref={videoRef}
           src="/welcome.mov"
           onEnded={() => setShowButton(true)}
           style={{
-            width: "100%", maxWidth: 400,
-            maxHeight: "40vh",
-            objectFit: "contain",
+            height: "46vh",
+            width: "auto",
+            maxWidth: "100%",
             borderRadius: 8,
-            display: "block", margin: "0 auto 24px",
-            background: "#EDE8DF",
+            display: "block",
+            margin: "0 auto 24px",
           }}
           playsInline
           autoPlay
