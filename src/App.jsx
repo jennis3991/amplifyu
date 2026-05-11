@@ -3068,39 +3068,129 @@ style={{padding:"13px 18px",borderRadius:0,border:"1px solid rgba(255,255,255,0.
 // The existing CoachWidget uses the same fetch pattern.
 const ANTHROPIC_KEY = "";
 
+// Context-aware coaching questions per story type
+const NT_STORY_TYPES = [
+  {
+    id: "pitch", label: "A Pitch or Presentation",
+    sub: "Explain a strategy, sell an idea",
+    questions: [
+      { key: "q1", q: "What's the core idea or change you're proposing?", ph: "A new approach, a product, a strategy shift…" },
+      { key: "q2", q: "What's at stake if this doesn't happen?", ph: "The risk, the missed opportunity, the cost of inaction…" },
+      { key: "q3", q: "What's the opening hook — what will grab attention immediately?", ph: "A surprising fact, a vivid scenario, a bold statement…" },
+      { key: "q4", q: "What transformation or outcome are you offering?", ph: "What will be different when they say yes?…" },
+      { key: "q5", q: "What action do you want the audience to take?", ph: "Approve, invest, adopt, champion…" },
+    ],
+  },
+  {
+    id: "difficult", label: "A Difficult Conversation",
+    sub: "Deliver feedback, navigate conflict",
+    questions: [
+      { key: "q1", q: "Who does this affect most?", ph: "A team member, a peer, a manager…" },
+      { key: "q2", q: "What's the tension or conflict?", ph: "The behaviour, the gap, the unspoken issue…" },
+      { key: "q3", q: "What emotion is your audience feeling right now?", ph: "Defensive, uncertain, disengaged, anxious…" },
+      { key: "q4", q: "What outcome are you hoping for?", ph: "A behaviour change, mutual understanding, a decision…" },
+      { key: "q5", q: "What's the human element — what do they care about?", ph: "Their reputation, their team, their growth…" },
+    ],
+  },
+  {
+    id: "leadership", label: "A Leadership Message",
+    sub: "Rally a team, communicate change",
+    questions: [
+      { key: "q1", q: "What change are you leading people through?", ph: "A restructure, a new direction, a cultural shift…" },
+      { key: "q2", q: "What resistance or fear might they be feeling?", ph: "Job security, loss of autonomy, uncertainty…" },
+      { key: "q3", q: "What's the vision — where are you taking them?", ph: "The better future, the shared mission…" },
+      { key: "q4", q: "What's the first concrete step you want them to take?", ph: "A meeting, a decision, a new behaviour…" },
+      { key: "q5", q: "What story humanizes this message?", ph: "A moment that captures why this matters…" },
+    ],
+  },
+  {
+    id: "personal", label: "A Personal Challenge",
+    sub: "Build confidence, overcome a block",
+    questions: [
+      { key: "q1", q: "What challenge are you facing?", ph: "A career moment, a skill gap, a fear…" },
+      { key: "q2", q: "What's holding you back?", ph: "Self-doubt, past experience, external pressure…" },
+      { key: "q3", q: "What would success look like?", ph: "How would you feel, what would you do differently?…" },
+      { key: "q4", q: "What story are you currently telling yourself about this?", ph: "The limiting narrative you want to change…" },
+      { key: "q5", q: "What's the new story you want to tell?", ph: "The version of yourself who has already solved this…" },
+    ],
+  },
+  {
+    id: "update", label: "An Update or Report",
+    sub: "Business update, project status",
+    questions: [
+      { key: "q1", q: "What's the key message or headline?", ph: "The one thing they must leave knowing…" },
+      { key: "q2", q: "What's the most important thing the audience needs to know?", ph: "Progress, risk, decision needed…" },
+      { key: "q3", q: "What's changed or what's new since last time?", ph: "Developments, surprises, course corrections…" },
+      { key: "q4", q: "What's at stake — why does this matter now?", ph: "Deadline, consequence, opportunity window…" },
+      { key: "q5", q: "What action or decision does this inform?", ph: "What do you need from them?…" },
+    ],
+  },
+  {
+    id: "sales", label: "A Sales Message",
+    sub: "Client pitch, proposal",
+    questions: [
+      { key: "q1", q: "What problem does your solution solve?", ph: "The specific pain point you remove…" },
+      { key: "q2", q: "What's the pain your audience is experiencing right now?", ph: "Inefficiency, lost revenue, missed opportunity…" },
+      { key: "q3", q: "What transformation do you offer?", ph: "Before and after — what changes?…" },
+      { key: "q4", q: "What makes your approach different or better?", ph: "Your unique mechanism, proof, experience…" },
+      { key: "q5", q: "What's the call to action?", ph: "A meeting, a trial, a decision…" },
+    ],
+  },
+];
+
 function StoryBuilderWidget({ onSave }) {
-  const [phase, setPhase] = useState("input");   // input|questions|style|building|done
-  const [topic, setTopic] = useState("");
-  const [answers, setAnswers] = useState({ who: "", tension: "", emotion: "" });
+  const [phase, setPhase] = useState("type");   // type|questions|style|building|done
+  const [storyType, setStoryType] = useState(null);
+  const [answers, setAnswers] = useState({});
   const [style, setStyle] = useState("");
   const [story, setStory] = useState(() => { try { return localStorage.getItem("au1_nt_story") || ""; } catch { return ""; } });
+  const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState(null);
 
-  const STYLES = ["Cinematic", "Executive", "Emotionally Human", "Provocative", "Aftermath + Rewind"];
+  const STYLES = [
+    { id: "Cinematic", desc: "Vivid scene-setting. Drop the audience into the moment before the context." },
+    { id: "Executive", desc: "Lead with stakes. Concise, authoritative, designed for busy senior audiences." },
+    { id: "Emotionally Human", desc: "Lead with the person. Make the audience feel before they think." },
+    { id: "Provocative", desc: "Open with a counterintuitive claim or a question that creates tension." },
+    { id: "Aftermath + Rewind", desc: "Start at the consequence. Then rewind to show how you got there." },
+  ];
+
+  const currentType = NT_STORY_TYPES.find(t => t.id === storyType);
+  const allAnswered = currentType && currentType.questions.every(q => (answers[q.key] || "").trim());
 
   async function generateStory(selectedStyle) {
-    if (busy) return;
-    setBusy(true); setErr(null);
+    if (busy || !currentType) return;
+    setBusy(true); setErr(null); setSaved(false);
+    const qaLines = currentType.questions.map((q, i) =>
+      `Q${i+1}: ${q.q}\nA: ${answers[q.key] || "(no answer)"}`
+    ).join("\n\n");
+
     const prompt = [
       "You are a world-class executive communication coach specialising in professional storytelling.",
-      "The user needs to communicate: " + topic,
-      "Who this affects most: " + answers.who,
-      "The core tension: " + answers.tension,
-      "The emotion the audience feels: " + answers.emotion,
-      "Requested story style: " + selectedStyle,
+      "Story type: " + currentType.label,
+      "Opening style requested: " + selectedStyle,
+      "",
+      "Context from the user:",
+      qaLines,
       "",
       "Using the 6-beat story arc (Hook, Character, Problem, Turning Point, Resolution, Meaning),",
-      "write a compelling, authentic 150-200 word professional story in the '" + selectedStyle + "' style.",
-      "Write in first person. Make it specific, human, and credible — not generic or corporate.",
-      "Return ONLY a JSON object: { \"story\": \"the story\", \"tip\": \"one precise coaching observation about this style, max 15 words\" }",
+      "write a compelling professional story in the '" + selectedStyle + "' style.",
+      "Format it as 4-6 numbered panels. Each panel should have:",
+      "- A panel heading in caps (e.g. 'Panel 1 — THE REALITY')",
+      "- A brief scene direction in italics on a new line (e.g. '(Set the scene. Human. Relatable.)')",
+      "- The narrative text (2-4 sentences, specific and vivid)",
+      "",
+      "Total length: 200-280 words. Write in second or third person for pitch/leadership, first person for personal.",
+      "Make it specific, human, and credible — never generic or corporate.",
+      "Return ONLY a JSON object: { \"story\": \"the full panel-formatted story\", \"tip\": \"one coaching observation about this style, max 18 words\" }",
     ].join("\n");
     try {
       const headers = { "Content-Type": "application/json", "anthropic-version": "2023-06-01" };
       if (ANTHROPIC_KEY) headers["x-api-key"] = ANTHROPIC_KEY;
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST", headers,
-        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 600, messages: [{ role: "user", content: prompt }] }),
+        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 900, messages: [{ role: "user", content: prompt }] }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error("API error " + res.status);
@@ -3112,7 +3202,7 @@ function StoryBuilderWidget({ onSave }) {
       setStory(parsed.story);
       setPhase("done");
     } catch (e) {
-      setErr("The story coach is unavailable right now. You can still write your own story below.");
+      setErr("The story coach is unavailable right now. Write your story below or add your Anthropic API key to activate AI generation.");
       setPhase("done");
     } finally {
       setBusy(false);
@@ -3121,93 +3211,117 @@ function StoryBuilderWidget({ onSave }) {
 
   function saveStory() {
     try { localStorage.setItem("au1_nt_story", story); } catch (_) {}
+    setSaved(true);
     if (onSave) onSave(story);
   }
 
-  const Q_STYLE = { fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.text3, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 8 };
-  const INPUT_STYLE = { width: "100%", padding: "12px 16px", border: "0.5px solid " + T.border, borderRadius: 4, outline: "none", resize: "none", background: T.surface, fontSize: 14, color: T.text, lineHeight: 1.6, fontFamily: T.sans, fontWeight: 300 };
+  function restart() {
+    setPhase("type"); setStoryType(null); setAnswers({});
+    setStyle(""); setStory(""); setErr(null); setSaved(false);
+  }
 
-  if (phase === "input") return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <div>
-        <p style={{ ...Q_STYLE }}>What do you need to communicate?</p>
-        <textarea value={topic} onChange={e => setTopic(e.target.value)} rows={3}
-          placeholder="A difficult conversation… an organisational change… a pitch… a leadership message…"
-          style={INPUT_STYLE}/>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 10 }}>
-          {["A difficult conversation", "An organisational change", "A pitch", "A leadership message"].map(ex => (
-            <button key={ex} onClick={() => setTopic(ex)} style={{ padding: "5px 12px", borderRadius: 30, border: "0.5px solid " + T.border, background: "transparent", fontSize: 11, color: T.text3, cursor: "pointer", fontFamily: T.sans }}>
-              {ex}
-            </button>
-          ))}
-        </div>
-      </div>
-      <button onClick={() => setPhase("questions")} disabled={!topic.trim()}
-        style={{ padding: "12px 24px", borderRadius: 4, border: "none", background: topic.trim() ? T.ink : T.border, color: T.bg, fontSize: 13, fontWeight: 600, cursor: topic.trim() ? "pointer" : "default", fontFamily: T.sans }}>
-        Start Building →
-      </button>
-    </div>
-  );
+  const LBL = { fontFamily: T.sans, fontSize: 10, fontWeight: 600, color: T.text3, textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: 6 };
+  const INP = { width: "100%", padding: "10px 14px", border: "0.5px solid " + T.border, borderRadius: 4, outline: "none", background: T.surface, fontSize: 13, color: T.text, lineHeight: 1.6, fontFamily: T.sans, fontWeight: 300, boxSizing: "border-box" };
 
-  if (phase === "questions") return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <div style={{ padding: "14px 16px", background: T.surface, borderRadius: 4, borderLeft: "2px solid " + T.gold }}>
-        <p style={{ fontFamily: T.sans, fontSize: 12, color: T.text3, margin: 0 }}>Communicating: <span style={{ color: T.text, fontStyle: "italic" }}>{topic}</span></p>
-      </div>
-      {[
-        { key: "who", q: "Who does this affect most?", ph: "A team member, a stakeholder, your customer…" },
-        { key: "tension", q: "What's the core tension?", ph: "The risk, the conflict, the gap between now and where you need to be…" },
-        { key: "emotion", q: "What emotion is your audience feeling?", ph: "Sceptical, anxious, excited, uncertain…" },
-      ].map(({ key, q, ph }) => (
-        <div key={key}>
-          <p style={{ ...Q_STYLE }}>{q}</p>
-          <input value={answers[key]} onChange={e => setAnswers(a => ({ ...a, [key]: e.target.value }))}
-            placeholder={ph} style={{ ...INPUT_STYLE, resize: undefined, padding: "11px 16px" }}/>
-        </div>
-      ))}
-      <button onClick={() => setPhase("style")} disabled={!answers.who || !answers.tension || !answers.emotion}
-        style={{ padding: "12px 24px", borderRadius: 4, border: "none", background: (answers.who && answers.tension && answers.emotion) ? T.ink : T.border, color: T.bg, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: T.sans }}>
-        Choose Your Style →
-      </button>
-    </div>
-  );
-
-  if (phase === "style" || busy) return (
+  // ── Phase 1: Story Type Selection ─────────────────────────────────────────
+  if (phase === "type") return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <p style={{ ...Q_STYLE }}>What opening style do you want?</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        {STYLES.map(s => (
-          <button key={s} onClick={() => { setStyle(s); generateStory(s); }}
-            disabled={busy}
-            style={{ padding: "12px 18px", borderRadius: 4, border: "0.5px solid " + (style === s ? T.gold : T.border), background: style === s ? "rgba(138,158,132,0.08)" : "transparent", color: T.text, fontSize: 13, cursor: busy ? "default" : "pointer", fontFamily: T.sans, textAlign: "left", transition: "all 0.2s ease" }}>
-            {busy && style === s ? (
-              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ color: T.text3, fontStyle: "italic", fontSize: 12 }}>Building your story…</span>
-              </span>
-            ) : s}
+      <h3 style={{ fontFamily: T.serif, fontSize: 22, fontWeight: 600, color: T.text, letterSpacing: "-0.2px", margin: 0 }}>What are you building?</h3>
+      <p style={{ fontFamily: T.sans, fontSize: 13, color: T.text3, fontWeight: 300, margin: 0 }}>Choose your story type — the coaching questions will adapt to fit your context.</p>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+        {NT_STORY_TYPES.map(t => (
+          <button key={t.id} onClick={() => { setStoryType(t.id); setAnswers({}); setPhase("questions"); }}
+            style={{
+              padding: "14px 16px", borderRadius: 4, border: "0.5px solid " + T.border,
+              background: "transparent", cursor: "pointer", textAlign: "left",
+              transition: "all 0.18s ease",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.background = "rgba(138,158,132,0.05)"; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.background = "transparent"; }}
+          >
+            <div style={{ fontFamily: T.serif, fontSize: 14, fontWeight: 600, color: T.text, marginBottom: 3 }}>{t.label}</div>
+            <div style={{ fontFamily: T.sans, fontSize: 11, color: T.text3, fontWeight: 300 }}>{t.sub}</div>
           </button>
         ))}
       </div>
     </div>
   );
 
-  if (phase === "done") return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      {err && <p style={{ fontFamily: T.sans, fontSize: 12, color: T.red, padding: "10px 14px", background: "rgba(139,74,56,0.06)", borderRadius: 4 }}>{err}</p>}
-      <div>
-        <p style={{ ...Q_STYLE }}>Your Story — {style || "Draft"}</p>
-        <textarea value={story} onChange={e => setStory(e.target.value)} rows={10}
-          placeholder="Write or edit your story here…"
-          style={{ ...INPUT_STYLE, lineHeight: 1.75, fontFamily: T.serif, fontSize: 15 }}/>
+  // ── Phase 2: Context-Specific Questions ───────────────────────────────────
+  if (phase === "questions" && currentType) return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <button onClick={() => setPhase("type")} style={{ padding: "4px 10px", borderRadius: 3, border: "0.5px solid " + T.border, background: "transparent", fontSize: 11, color: T.text3, cursor: "pointer", fontFamily: T.sans }}>← Back</button>
+        <div style={{ padding: "5px 12px", background: "rgba(138,158,132,0.08)", borderRadius: 3, border: "0.5px solid rgba(138,158,132,0.2)" }}>
+          <span style={{ fontFamily: T.sans, fontSize: 11, color: T.goldDark, fontWeight: 500 }}>{currentType.label}</span>
+        </div>
       </div>
-      <div style={{ display: "flex", gap: 10 }}>
-        <button onClick={saveStory} disabled={!story.trim()}
-          style={{ flex: 1, padding: "13px 20px", borderRadius: 4, border: "none", background: story.trim() ? T.ink : T.border, color: T.bg, fontSize: 13, fontWeight: 600, cursor: story.trim() ? "pointer" : "default", fontFamily: T.sans }}>
-          Save Story ✓
+      {currentType.questions.map((q, i) => (
+        <div key={q.key}>
+          <p style={{ ...LBL, marginBottom: 6 }}>{i + 1}. {q.q}</p>
+          <input value={answers[q.key] || ""} onChange={e => setAnswers(a => ({ ...a, [q.key]: e.target.value }))}
+            placeholder={q.ph} style={INP}/>
+        </div>
+      ))}
+      <button onClick={() => setPhase("style")} disabled={!allAnswered}
+        style={{ padding: "12px 20px", borderRadius: 4, border: "none", background: allAnswered ? T.ink : T.border, color: T.bg, fontSize: 13, fontWeight: 600, cursor: allAnswered ? "pointer" : "default", fontFamily: T.sans, marginTop: 4 }}>
+        Choose Opening Style →
+      </button>
+    </div>
+  );
+
+  // ── Phase 3: Opening Style ────────────────────────────────────────────────
+  if (phase === "style") return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
+        <button onClick={() => setPhase("questions")} style={{ padding: "4px 10px", borderRadius: 3, border: "0.5px solid " + T.border, background: "transparent", fontSize: 11, color: T.text3, cursor: "pointer", fontFamily: T.sans }}>← Back</button>
+        <p style={{ ...LBL, margin: 0 }}>Choose your opening style</p>
+      </div>
+      {STYLES.map(s => (
+        <button key={s.id} onClick={() => { setStyle(s.id); generateStory(s.id); }}
+          disabled={busy}
+          style={{
+            padding: "12px 16px", borderRadius: 4, textAlign: "left",
+            border: "0.5px solid " + (style === s.id ? T.gold : T.border),
+            background: style === s.id ? "rgba(138,158,132,0.06)" : "transparent",
+            cursor: busy ? "default" : "pointer", transition: "all 0.18s ease",
+          }}>
+          <div style={{ fontFamily: T.serif, fontSize: 14, fontWeight: 600, color: busy && style === s.id ? T.text3 : T.text, marginBottom: 2 }}>
+            {busy && style === s.id ? "Building your story…" : s.id}
+          </div>
+          {!(busy && style === s.id) && <div style={{ fontFamily: T.sans, fontSize: 11, color: T.text3, fontWeight: 300 }}>{s.desc}</div>}
         </button>
-        <button onClick={() => { setPhase("style"); setStyle(""); }}
-          style={{ padding: "13px 18px", borderRadius: 4, border: "0.5px solid " + T.border, background: "transparent", color: T.text3, fontSize: 12, cursor: "pointer", fontFamily: T.sans }}>
-          Try Another Style
+      ))}
+    </div>
+  );
+
+  // ── Phase 4: Story Output ─────────────────────────────────────────────────
+  if (phase === "done") return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      {err && <div style={{ padding: "10px 14px", background: "rgba(139,74,56,0.06)", borderRadius: 4, border: "0.5px solid rgba(139,74,56,0.15)" }}>
+        <p style={{ fontFamily: T.sans, fontSize: 12, color: T.red, margin: 0 }}>{err}</p>
+      </div>}
+      <div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+          <p style={{ ...LBL, margin: 0 }}>Your Story — {style || "Draft"}</p>
+          <span style={{ fontFamily: T.sans, fontSize: 10, color: T.text4 }}>{currentType?.label}</span>
+        </div>
+        <textarea value={story} onChange={e => { setStory(e.target.value); setSaved(false); }} rows={12}
+          placeholder="Write or edit your story here…"
+          style={{ ...INP, resize: "vertical", lineHeight: 1.8, fontFamily: T.serif, fontSize: 14, padding: "14px 16px" }}/>
+      </div>
+      <div style={{ display: "flex", gap: 8 }}>
+        <button onClick={saveStory} disabled={!story.trim()}
+          style={{ flex: 1, padding: "12px 16px", borderRadius: 4, border: "none", background: saved ? "rgba(82,112,96,0.15)" : (story.trim() ? T.ink : T.border), color: saved ? T.green : T.bg, fontSize: 13, fontWeight: 600, cursor: story.trim() ? "pointer" : "default", fontFamily: T.sans, border: saved ? "1px solid rgba(82,112,96,0.3)" : "none", transition: "all 0.2s" }}>
+          {saved ? "✓ Saved" : "Save Story"}
+        </button>
+        <button onClick={() => { setPhase("style"); setStyle(""); setBusy(false); }}
+          style={{ padding: "12px 14px", borderRadius: 4, border: "0.5px solid " + T.border, background: "transparent", color: T.text3, fontSize: 12, cursor: "pointer", fontFamily: T.sans }}>
+          Regenerate
+        </button>
+        <button onClick={restart}
+          style={{ padding: "12px 14px", borderRadius: 4, border: "0.5px solid " + T.border, background: "transparent", color: T.text3, fontSize: 12, cursor: "pointer", fontFamily: T.sans }}>
+          Start Over
         </button>
       </div>
     </div>
