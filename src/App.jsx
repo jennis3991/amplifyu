@@ -3623,6 +3623,7 @@ setAmbitionSaved(true); } catch {}
     }
   }
   const [ntStory, setNtStory] = useState(() => { try { return localStorage.getItem("au1_nt_story") || ""; } catch { return ""; } });
+  const [ntOpenCard, setNtOpenCard] = useState(null);
   const step = SESSION_STEPS[idx];
   const scenarios = roleId ? getScenariosForDay(roleId, lesson.day) : lesson.scenarios;
   const activeSc = scenarios[selSc] || scenarios[0];
@@ -3966,13 +3967,23 @@ setAmbitionSaved(true); } catch {}
             ))}
           </div>
           <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:24 }}>
-            <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:14 }}>Example in action</div>
-            <div style={{ padding:"16px 20px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:16 }}>
-              <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text, lineHeight:1.65, margin:0 }}>
-                "Once upon a time, I was a new manager struggling to be heard in senior meetings. Every day I prepared thoroughly but left feeling invisible. Until one day, I tried opening with a story instead of data. Because of that, people stayed behind after the meeting. Because of that, I got a sponsor at director level. Until finally, I was presenting to the executive team."
-              </p>
+            <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:14 }}>See it in action — confidence in meetings</div>
+            <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
+              {[
+                { beat:"Once upon a time…", line:"I thought confidence meant sounding polished." },
+                { beat:"Every day…",        line:"I overprepared for meetings." },
+                { beat:"Until one day…",    line:"I completely froze." },
+                { beat:"Because of that…", line:"I changed how I prepared." },
+                { beat:"Because of that…", line:"I focused on clarity, not perfection." },
+                { beat:"Until finally…",   line:"People started listening." },
+              ].map((r,i,arr) => (
+                <div key={i} style={{ display:"flex", gap:14, padding:"10px 0", borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none", alignItems:"flex-start" }}>
+                  <span style={{ fontFamily:T.serif, fontSize:13, fontWeight:600, color:T.gold, minWidth:140, flexShrink:0, paddingTop:1 }}>{r.beat}</span>
+                  <span style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text, lineHeight:1.55 }}>{r.line}</span>
+                </div>
+              ))}
             </div>
-            <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T2.text2, lineHeight:1.6 }}>You already know how to do this. You've been telling stories your whole life.</p>
+            <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T2.text2, lineHeight:1.6, marginTop:20 }}>This simple framework works for any story. Now see it in the wild →</p>
           </div>
         </div>
       );
@@ -3997,35 +4008,154 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Example") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
-          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>Three Stories Worth Studying</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:24 }}>Storytelling in the Wild</h2>
-          <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
-            {NT_EXAMPLES.map((ex,i) => (
-              <div key={i} style={{ padding:"22px 0", borderBottom:i<2?"0.5px solid "+T2.divider:"none" }}>
-                <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.goldDark, letterSpacing:"0.05em", marginBottom:10 }}>{ex.name}</div>
-                <p style={{ fontFamily:T.serif, fontSize:16, color:T2.text, lineHeight:1.65, marginBottom:12 }}>{ex.story}</p>
-                <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:T2.text2, lineHeight:1.55, margin:0 }}>Lesson: {ex.lesson}</p>
+      if (step === "Example") {
+        const NT_CARDS = [
+          {
+            id:"obama", title:"Obama", sub:"Storytelling as Leadership",
+            tag:"Leaders don't just communicate facts. They tell stories.",
+            dark:true,
+            content: (
+              <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
+                <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:"rgba(245,239,230,0.45)", marginBottom:20 }}>Storytelling as Leadership</div>
+                <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:32 }}>Leaders don't just communicate facts.<br/>They tell stories.</h2>
+                <div style={{ display:"flex", flexDirection:"column", gap:16, marginBottom:32 }}>
+                  {["When Barack Obama spoke, he rarely started with policy. He started with people.",
+                    "A mother choosing between medicine and groceries. A soldier returning home. A worker trying to keep their family afloat.",
+                    "That's what made complex issues feel human. That's what moved people from understanding to action."
+                  ].map((p,i) => <p key={i} style={{ fontFamily:T.serif, fontSize:17, color:"rgba(245,239,230,0.85)", lineHeight:1.75, margin:0 }}>{p}</p>)}
+                </div>
+                <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)", marginBottom:32 }}>
+                  <p style={{ fontFamily:T.serif, fontSize:20, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.5, margin:0 }}>"Stories create empathy. Empathy creates trust. Trust creates influence."</p>
+                </div>
+                <div style={{ display:"flex", gap:12, alignItems:"center" }}>
+                  <div style={{ flex:1, textAlign:"center", padding:"12px 16px", background:"rgba(255,255,255,0.05)", borderRadius:3 }}>
+                    <div style={{ fontFamily:T.sans, fontSize:11, color:"rgba(245,239,230,0.45)", marginBottom:4 }}>Facts</div>
+                    <div style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.6)" }}>→ Understanding</div>
+                  </div>
+                  <div style={{ fontFamily:T.sans, fontSize:18, color:"rgba(138,158,132,0.6)" }}>+</div>
+                  <div style={{ flex:1, textAlign:"center", padding:"12px 16px", background:"rgba(138,158,132,0.1)", borderRadius:3, border:"0.5px solid rgba(138,158,132,0.3)" }}>
+                    <div style={{ fontFamily:T.sans, fontSize:11, color:T.gold, marginBottom:4 }}>Stories</div>
+                    <div style={{ fontFamily:T.serif, fontSize:14, color:"#F5EFE6" }}>→ Action</div>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
-          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:24, marginTop:8 }}>
-            <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:12 }}>The Aftermath + Rewind Technique</div>
-            <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:16 }}>
-              <div style={{ padding:"14px 16px", background:"rgba(139,74,56,0.06)", borderRadius:4, borderLeft:"2px solid "+T.red }}>
-                <div style={{ fontFamily:T.sans, fontSize:10, color:T.red, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:6 }}>Generic opening</div>
-                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text2, lineHeight:1.6, margin:0, fontStyle:"italic" }}>{NT_28.bad}</p>
+            ),
+          },
+          {
+            id:"nasa", title:"NASA Janitor", sub:"Story Gives Purpose",
+            tag:"The same work. A completely different story.",
+            dark:false,
+            content: (
+              <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
+                <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T2.text3, marginBottom:20 }}>Story Gives Purpose</div>
+                <h2 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, lineHeight:1.2, marginBottom:32 }}>People don't want tasks.<br/>They want meaning.</h2>
+                <div style={{ display:"flex", flexDirection:"column", gap:16, marginBottom:28 }}>
+                  <p style={{ fontFamily:T.serif, fontSize:16, color:T2.text, lineHeight:1.75, margin:0 }}>President Kennedy allegedly asked a janitor at NASA what he was doing.</p>
+                  <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+                    <p style={{ fontFamily:T.serif, fontSize:19, fontStyle:"italic", color:T2.text, lineHeight:1.5, margin:0 }}>"I'm helping put a man on the moon, Mr President."</p>
+                  </div>
+                  <p style={{ fontFamily:T.serif, fontSize:16, color:T2.text, lineHeight:1.75, margin:0 }}>Whether the story is fully apocryphal or not, it endures because it captures something powerful.</p>
+                  <div style={{ textAlign:"center", padding:"16px", background:T2.surface, borderRadius:4 }}>
+                    <p style={{ fontFamily:T.serif, fontSize:20, fontWeight:600, color:T2.text, margin:0, letterSpacing:"-0.3px" }}>The same work. A different story.</p>
+                  </div>
+                  <p style={{ fontFamily:T.serif, fontSize:16, color:T2.text, lineHeight:1.75, margin:0 }}>One person saw themselves as cleaning floors. Another saw themselves as part of history.</p>
+                </div>
+                <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text2, lineHeight:1.65 }}>Story reframes mundane work into mission. The story around the work matters as much as the work itself.</p>
               </div>
-              <div style={{ padding:"14px 16px", background:"rgba(138,158,132,0.06)", borderRadius:4, borderLeft:"2px solid "+T.gold }}>
-                <div style={{ fontFamily:T.sans, fontSize:10, color:T.goldDark, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:6 }}>Cinematic opening</div>
-                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.7, margin:0 }}>{NT_28.good}</p>
+            ),
+          },
+          {
+            id:"surgeons", title:"Two Surgeons", sub:"Stories Build Trust",
+            tag:"Same information. Completely different emotional impact.",
+            dark:false,
+            content: (
+              <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
+                <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T2.text3, marginBottom:20 }}>Stories Build Trust</div>
+                <h2 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, lineHeight:1.2, marginBottom:28 }}>Same information.<br/>Different emotional impact.</h2>
+                <p style={{ fontFamily:T.serif, fontSize:15, color:T2.text, lineHeight:1.7, marginBottom:24 }}>Imagine two surgeons explaining the same operation.</p>
+                <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:24 }}>
+                  <div style={{ padding:"16px 20px", background:"rgba(139,74,56,0.05)", borderRadius:4, borderLeft:"2px solid rgba(139,74,56,0.3)" }}>
+                    <div style={{ fontFamily:T.sans, fontSize:10, color:T.red, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:8 }}>Surgeon A</div>
+                    <p style={{ fontFamily:T.serif, fontSize:15, color:T2.text, lineHeight:1.65, margin:"0 0 6px" }}>"Success rates are 92%. Procedure time is 45 minutes. Recovery is 10 days."</p>
+                    <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, margin:0 }}>Logical. Useful. Forgettable.</p>
+                  </div>
+                  <div style={{ padding:"16px 20px", background:"rgba(138,158,132,0.06)", borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+                    <div style={{ fontFamily:T.sans, fontSize:10, color:T.goldDark, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:8 }}>Surgeon B</div>
+                    <p style={{ fontFamily:T.serif, fontSize:15, color:T2.text, lineHeight:1.65, margin:"0 0 6px" }}>"Last month, a father of two came in terrified because he thought this operation would stop him playing football with his son. Three weeks later, he sent us a photo from the park."</p>
+                    <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, margin:0 }}>Human. Memorable. Trusted.</p>
+                  </div>
+                </div>
+                <div style={{ textAlign:"center", padding:"14px", background:T2.surface, borderRadius:4, marginBottom:20 }}>
+                  <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T2.text, margin:0 }}>Who do you trust more?</p>
+                </div>
+                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.7, marginBottom:16 }}>Humans don't connect with statistics first. We connect with human experience. Data informs. Story transforms.</p>
+                <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text2, lineHeight:1.6 }}>Stories create trust faster than information alone.</p>
+              </div>
+            ),
+          },
+          {
+            id:"cyber", title:"Cyber Threat", sub:"The Aftermath + Rewind",
+            tag:"Start where most stories end. Then pull the audience back.",
+            dark:true,
+            content: (
+              <div style={{ maxWidth:560, margin:"0 auto", padding:"0 20px" }}>
+                <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:"rgba(245,239,230,0.45)", marginBottom:20 }}>The Aftermath + Rewind Technique</div>
+                <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:"#F5EFE6", lineHeight:1.25, marginBottom:32 }}>Incidents don't begin with hackers.<br/>They begin with ordinary decisions.</h2>
+                {[
+                  { panel:"Panel 1 — THE SETUP", dir:"Start after everything has gone wrong. Then rewind.", copy:"Many of you may have heard of the film 28 Days Later. We see the aftermath — the chaos, the consequences, the scramble to respond. Cyber incidents follow the same pattern. So today, I want us to rewind the story. Back to 24 hours earlier. Before the breach. Before anyone realises there's a problem." },
+                  { panel:"Panel 2 — THE REALITY", dir:"Make it human. Make it ordinary.", copy:"Picture this. It's just another busy day in Corporate Relations. Requests are coming in quickly. Deadlines are tight. And somewhere in the middle of all of that, you need a tool quickly to get something done. Nothing about this feels risky. You're doing your job. And yet — these are exactly the moments where incidents begin." },
+                  { panel:"Panel 3 — HOW IT HAPPENS", dir:"Connect the dots quietly.", copy:"It starts with something simple. A click on an email. Downloading a file. Using a quick workaround. And quietly, in the background, access is created. Because attackers don't always break in. Increasingly, they log in — using the gaps we unintentionally create." },
+                  { panel:"Panel 4 — THE KEY MESSAGE", dir:"Land the point with weight.", copy:"The gap between a small action and real impact is shrinking. The information we handle — relationships, stakeholder data, sensitive materials — is exactly what attackers value. Which is why the most important thing we can do is pause. Before we click. Before we share. Because incidents rarely begin with a dramatic event. They begin with ordinary decisions made on ordinary days." },
+                ].map((p,i) => (
+                  <div key={i} style={{ marginBottom:24, paddingBottom:24, borderBottom:i<3?"1px solid rgba(255,255,255,0.07)":"none" }}>
+                    <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T.gold, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:6 }}>{p.panel}</div>
+                    <div style={{ fontFamily:T.sans, fontSize:11, fontStyle:"italic", color:"rgba(245,239,230,0.38)", marginBottom:10 }}>({p.dir})</div>
+                    <p style={{ fontFamily:T.serif, fontSize:15, color:"rgba(245,239,230,0.85)", lineHeight:1.8, margin:0 }}>{p.copy}</p>
+                  </div>
+                ))}
+                <div style={{ padding:"16px 20px", borderLeft:"2px solid rgba(138,158,132,0.5)", marginTop:8 }}>
+                  <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", lineHeight:1.6, margin:0 }}>The Aftermath + Rewind technique: Start where most stories end, then pull the audience back to understand how we got there.</p>
+                </div>
+              </div>
+            ),
+          },
+        ];
+        const openCard = NT_CARDS.find(c => c.id === ntOpenCard);
+        return (
+          <>
+            {/* Full-screen overlay */}
+            {openCard && (
+              <div style={{ position:"fixed", inset:0, zIndex:600, background: openCard.dark ? "rgba(14,11,8,0.97)" : "rgba(247,243,236,0.97)", backdropFilter:"blur(12px)", display:"flex", alignItems:"center", justifyContent:"center", overflowY:"auto", padding:"80px 24px 60px", animation:"fadeIn 0.25s ease both" }}>
+                <button onClick={() => setNtOpenCard(null)} style={{ position:"fixed", top:24, right:28, width:40, height:40, borderRadius:"50%", border:"1px solid "+(openCard.dark?"rgba(255,255,255,0.15)":T2.border), background:"transparent", color:openCard.dark?"rgba(255,255,255,0.6)":T2.text3, fontSize:18, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans, zIndex:10 }}>×</button>
+                <div style={{ width:"100%", animation:"fadeUp 0.3s ease both" }}>
+                  {openCard.content}
+                  <div style={{ textAlign:"center", marginTop:36 }}>
+                    <button onClick={() => setNtOpenCard(null)} style={{ padding:"10px 24px", borderRadius:4, border:"1px solid "+(openCard.dark?"rgba(255,255,255,0.2)":T2.border), background:"transparent", color:openCard.dark?"rgba(245,239,230,0.6)":T2.text3, fontSize:12, cursor:"pointer", fontFamily:T.sans }}>← Back to examples</button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* 4-card grid */}
+            <div key={idx} className="au-step-enter" style={{ padding:"44px 44px 44px", maxWidth:520 }}>
+              <h2 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", textAlign:"center", marginBottom:8 }}>Storytelling in the Wild</h2>
+              <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, textAlign:"center", fontStyle:"italic", marginBottom:28, fontWeight:300 }}>Click to explore storytelling across different contexts</p>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+                {NT_CARDS.map(card => (
+                  <button key={card.id} onClick={() => setNtOpenCard(card.id)}
+                    style={{ padding:"20px 18px", borderRadius:4, border:"0.5px solid "+T2.border, background:T2.surface, cursor:"pointer", textAlign:"left", transition:"all 0.2s ease", minHeight:100 }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.background = "rgba(138,158,132,0.04)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = T2.border; e.currentTarget.style.background = T2.surface; }}
+                  >
+                    <div style={{ fontFamily:T.serif, fontSize:16, fontWeight:600, color:T2.text, letterSpacing:"-0.2px", marginBottom:4 }}>{card.title}</div>
+                    <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.goldDark, marginBottom:8 }}>{card.sub}</div>
+                    <div style={{ fontFamily:T.sans, fontSize:11, color:T2.text3, lineHeight:1.5, fontStyle:"italic" }}>{card.tag}</div>
+                  </button>
+                ))}
               </div>
             </div>
-            <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:T2.text2 }}>{NT_28.lesson}</p>
-          </div>
-        </div>
-      );
+          </>
+        );
+      }
 
       if (step === "Practice") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
