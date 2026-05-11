@@ -189,6 +189,71 @@ function D_NT() {
   );
 }
 
+// Day 9 — 5 Ps delivery diagram
+function D_D9() {
+  const items = [
+    { label:"Pace",       col:C.gold,  sub:"Slow down\nto speed up" },
+    { label:"Pause",      col:C.teal,  sub:"Silence is\nyour power" },
+    { label:"Presence",   col:"rgba(183,154,107,0.75)", sub:"Command\nthe room" },
+    { label:"Projection", col:C.red,   sub:"Be heard\nwith clarity" },
+    { label:"Precision",  col:C.green, sub:"Every word\ncounts" },
+  ];
+  const W=56, gap=4, total=items.length*(W+gap)-gap;
+  return (
+    <svg width={total} height="120" viewBox={`0 0 ${total} 120`} fill="none">
+      {items.map((it,i) => {
+        const x = i*(W+gap);
+        const h = 55 + i*5;
+        return (
+          <g key={i}>
+            <rect x={x} y={120-h} width={W} height={h} rx="2" fill={`rgba(${it.col===C.gold?"183,154,107":it.col===C.teal?"123,169,154":it.col===C.red?"196,122,122":it.col===C.green?"74,158,118":"183,154,107"},0.15)`} stroke={it.col} strokeWidth="1"/>
+            <text x={x+W/2} y={120-h-6} textAnchor="middle" fontSize="9" fontWeight="700" fontFamily="Inter,sans-serif" fill={it.col}>{it.label}</text>
+            {it.sub.split("\n").map((l,li) => (
+              <text key={li} x={x+W/2} y={120-h+14+li*10} textAnchor="middle" fontSize="7" fontFamily="Inter,sans-serif" fill="rgba(255,255,255,0.55)">{l}</text>
+            ))}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+// ─── DAY 9 MAKING A STORY LAND — delivery constants
+const D9_FIVE_PS = [
+  { p:"Pace", heading:"Slow Down to Speed Up", body:"Most people speak too fast when nervous. Great speakers do the opposite — they slow down and give ideas space to breathe.", quote:'"If you want people to remember it, slow down when you say it." — Carmine Gallo' },
+  { p:"Pause", heading:"Silence Is Your Superpower", body:"The pause before the reveal. The beat after a powerful statement. The moment where you let the audience catch up. Amateur speakers fear silence. Masters use it intentionally.", quote:null },
+  { p:"Presence", heading:"Command the Room", body:"Presence isn't about being loud. It's about being grounded. Confident. Fully there. Stand still. Make eye contact. Believe what you're saying. The room will feel it.", quote:null },
+  { p:"Projection", heading:"Be Heard", body:"Not volume — clarity. Speak from your chest, not your throat. Project confidence, not just sound.", quote:'"Speak as if you\'re addressing the person furthest from you." — TED coaching principle' },
+  { p:"Precision", heading:"Choose Every Word", body:'Vague language weakens delivery. Concrete language strengthens it. "Last week" → "Tuesday morning at 9am". "We had a good result" → "Revenue jumped 40% in 10 days". Specificity creates credibility.', quote:null },
+];
+
+const D9_CARDS = [
+  {
+    id:"brenebrown", title:"Brené Brown", sub:"The Power of Vulnerability",
+    tag:"How she uses pauses and authenticity to create immediate trust.",
+    dark:true,
+    content: null, // defined inline
+  },
+  {
+    id:"simonsinek", title:"Simon Sinek", sub:"Start With Why",
+    tag:"How he varies pace, uses repetition, and builds momentum.",
+    dark:true,
+    content: null,
+  },
+  {
+    id:"amycuddy", title:"Amy Cuddy", sub:"Presence",
+    tag:"How her physical presence perfectly matches her message.",
+    dark:true,
+    content: null,
+  },
+  {
+    id:"stevejobs", title:"Steve Jobs", sub:"iPhone Launch 2007",
+    tag:"How he builds tension, uses pauses, and reveals with precision.",
+    dark:true,
+    content: null,
+  },
+];
+
 // ─── NARRATIVE TRANSPORTATION — module constants
 const NT_PIXAR = [
   { beat: "Once upon a time…", desc: "Establish the world before the change — the normal, expected state." },
@@ -912,8 +977,8 @@ const FURTHER_READING = [
     { title: "Story", author: "Robert McKee", connection: "The definitive text on story structure — the deep craft behind the 6-beat arc you practised today.", summary: "McKee's landmark work on story structure has shaped screenwriters, novelists, and business communicators for decades. Dense, demanding, and worth every page.", amazon: "https://www.amazon.co.uk/s?k=Story+Robert+McKee" },
   ]},
   { books: [
-    { title: "Never Split the Difference", author: "Chris Voss", connection: "FBI hostage negotiation tactics that reveal how real influence is built on empathy, not argument.", summary: "Voss upends everything you thought you knew about negotiation. Tactical empathy, mirroring, and the power of 'no' make this one of the most practically useful books on communication.", amazon: "https://www.amazon.co.uk/s?k=Never+Split+the+Difference+Chris+Voss" },
-    { title: "Influence", author: "Robert Cialdini", connection: "The foundational text on the six universal principles that drive human agreement.", summary: "Cialdini's landmark research on reciprocity, commitment, social proof, authority, liking, and scarcity remains the most cited work in persuasion science.", amazon: "https://www.amazon.co.uk/s?k=Influence+Robert+Cialdini" },
+    { title: "Talk Like TED", author: "Carmine Gallo", connection: "The science behind the world's most inspiring presentations — every delivery principle in this module is evidenced here.", summary: "Gallo deconstructs what makes TED talks unforgettable: emotional connection, novelty, and memorable delivery. Practical, evidenced, and immediately applicable to any professional speaking context.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
+    { title: "Speak with No Fear", author: "Mike Acker", connection: "Practical techniques for confident delivery — directly complements the 5 Ps framework you practised today.", summary: "Acker teaches you how to calm nerves, control your voice, and own the room. Direct, practical, and grounded in real speaking experience rather than theory.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
   ]},
   { books: [
     { title: "Crucial Conversations", author: "Patterson, Grenny, McMillan & Switzler", connection: "The essential toolkit for high-stakes dialogue — the direct companion to this module.", summary: "A proven method for holding conversations that matter: staying safe, listening to understand, and creating shared meaning even when stakes are high and emotions run hot.", amazon: "https://www.amazon.co.uk/s?k=Crucial+Conversations+Patterson+Grenny" },
@@ -947,7 +1012,7 @@ const REVIEW_CLOSING = [
   "The story you tell becomes the one they remember.",
   "Performance is invisible until someone sees it.",
   "You've learned the framework. You've built your story. Now make it unforgettable.",
-  "The most persuasive people ask the best questions.",
+  "You know how to build a story. You know how to deliver it. Now you can command any room.",
   "The conversation you avoid is the one that matters most.",
   "What you stand for is more powerful than what you do.",
   "Every relationship begins with genuine curiosity.",
@@ -964,7 +1029,7 @@ const REVIEW_BULLETS = [
   ["Stories move people to places that facts cannot reach", "Every great professional story has a before, a shift, and an after", "Narrative transportation changes minds without triggering resistance"],
   ["Performance alone does not build careers — visibility multiplies it", "Image and exposure are not vanity — they are strategy", "Being known for the right things in the right rooms is a learnable skill"],
   ["You learned why storytelling creates influence faster than information alone", "You mastered the 6-beat story arc: Hook, Character, Problem, Turning Point, Resolution, Meaning", "You built and rehearsed your own professional story with AI coaching"],
-  ["Real influence is built on empathy, not on argument", "People agree when they feel understood, not when they feel correct", "Reciprocity, commitment, and social proof are the levers of human agreement"],
+  ["You learned the 5 elements of powerful delivery: Pace, Pause, Presence, Projection, Precision", "You studied how Brené Brown, Simon Sinek, Amy Cuddy, and Steve Jobs deliver with impact", "You prepared and rehearsed your story for confident performance"],
   ["Difficult conversations require psychological safety for both people", "Care personally and challenge directly — that is the only honest path", "The goal of every hard conversation is shared meaning, not victory"],
   ["Your brand is what people say about you when you leave the room", "Consistency of voice and presence builds trust over years, not weeks", "You cannot be known for everything — choose your niche deliberately"],
   ["Give first, always — generosity is the foundation of every lasting network", "People remember how you made them feel, never just what you said", "A warm, curious introduction is worth ten cold connections"],
@@ -1080,18 +1145,18 @@ const LESSONS = [
    promise:"You now have a framework that turns your experience into influence. Use it in your very next meeting.",
    teaser:"Learn the exact 6-beat storytelling framework used by the world's most compelling communicators — and build your own story with AI coaching."},
 
-  {day:9,week:2,title:"Making a Story Land",tag:"Storytelling",scene:"story",
-   quote:"A story that doesn't land isn't a story — it's a report.",
-   insight:"Knowing the SAR framework and being able to make a story land are two different skills. Most professional stories fail not because they lack structure but because of three specific problems: too much context in the Situation, too many actors in the Action, and a Result that is vague or buried. The fix is ruthless editing — the same discipline you built in Week 1, now applied to narrative.",
-   pieLink:"Image and Exposure: A story that lands creates presence. A story that doesn't lands as noise. The difference is almost always in the editing, not the content.",
-   phrases:["The reason this mattered was…","Here's what actually changed…","The single most important thing that happened was…"],
-   bad:"So there was this project and we had loads of stakeholders and the timeline kept shifting and we tried a few different approaches before we eventually…",
-   good:"The deadline was in three days. I made one call that changed everything. We shipped on time and the client renewed.",
-   practice:"Take one SAR story you wrote yesterday. Apply the three rules: Situation in one sentence, cut any character who isn't essential, make the Result the sharpest sentence you've ever written. Read it aloud at normal pace. If it takes more than 90 seconds, cut more.",
-   scenarios:["Telling your story in a job interview or promotion panel","Explaining a complex project outcome to a non-technical audience","Opening a presentation with a story that earns attention"],
-   review:["Is my Situation one sentence?","Have I cut every character who isn't essential?","Is my Result the most precise and specific thing I say?"],
-   promise:"The gap between a good storyteller and a great one is almost always editing. You now know the three places to cut — and the one place never to.",
-   teaser:"Learn the three specific reasons professional stories fail — and the editing discipline that makes a story not just clear, but genuinely compelling."},
+  {day:9,week:2,title:"Making a Story Land",tag:"Delivery",scene:"voice",
+   quote:"You've built a great story. Now learn how the world's best speakers deliver it.",
+   insight:"It's not what you say — it's how you say it. Great content delivered poorly is forgotten. Simple content delivered powerfully is remembered. This module teaches you how world-class speakers deliver with confidence.",
+   pieLink:"Image: How you deliver creates your professional image as much as what you say. Delivery is the difference between being heard and being remembered.",
+   phrases:["[PAUSE] Let me say that again…","I want to slow down here because this matters…","The key moment was when…"],
+   bad:"We had some issues with the project that we were able to resolve after some time.",
+   good:"Tuesday morning at 9am, everything stopped. [PAUSE] Six hours later, we had solved what no one thought was solvable.",
+   practice:"Take your story from the previous session and prepare it for performance. Mark your pauses. Slow down your big ideas. Replace vague language with precise details.",
+   scenarios:["Delivering your story to a senior leadership team","A high-stakes client pitch","A TED-style conference talk"],
+   review:["I practiced all 5 elements of delivery: Pace, Pause, Presence, Projection, Precision","I studied how world-class speakers deliver with impact","I prepared and rehearsed my story for confident performance"],
+   promise:"You know how to build a story. You know how to deliver it. Now you can command any room.",
+   teaser:"Learn the 5 elements of powerful delivery used by Brené Brown, Simon Sinek, Amy Cuddy, and Steve Jobs."},
 
   {day:10,week:2,title:"The 3-Point Test",tag:"Storytelling",scene:"story",
    quote:"If you can't answer three questions before you tell a story, the story isn't ready.",
@@ -3084,6 +3149,113 @@ style={{padding:"13px 18px",borderRadius:0,border:"1px solid rgba(255,255,255,0.
 }
 
 // ─── AI COACH 
+// ─── DELIVERY COACH — Day 9 Practice Step ──────────────────────────────────
+const D9_REFINEMENTS = [
+  { id:"pauses",    title:"Mark Your Pauses",       icon:"⏸", desc:"Where should you stop speaking to let the idea land?", prompt:"Add [PAUSE] markers where a deliberate pause would land hardest. Show 2-3 examples with explanation." },
+  { id:"slowdown",  title:"Slow Down Big Ideas",    icon:"🎯", desc:"Which sentences contain your most important points? Slow down when you say them.", prompt:"Identify 2-3 key sentences that deserve slower delivery. Mark them **like this** and explain why." },
+  { id:"precision", title:"Add Precision",           icon:"✂️", desc:"Replace vague language with concrete details.", prompt:"Find 2-3 vague phrases and suggest specific replacements. Format: 'Change: [vague] → [specific]'" },
+  { id:"variation", title:"Plan Vocal Variation",   icon:"🎵", desc:"Where will you raise energy? Where will you drop to a whisper?", prompt:"Suggest 2-3 vocal variation moments. Mark HIGH ENERGY and ~whisper~ sections with a brief note why." },
+  { id:"openclose", title:"Lock In Opening & Closing", icon:"🔒", desc:"Your first 10 seconds and last 10 seconds matter most.", prompt:"Rewrite the opening sentence for maximum impact. Rewrite the closing sentence as a memorable callback. Explain both choices." },
+];
+
+function DeliveryCoachWidget({ onSave }) {
+  const baseStory = (() => { try { return localStorage.getItem("au1_nt_story") || ""; } catch { return ""; } })();
+  const [script, setScript] = useState(() => { try { return localStorage.getItem("au1_d9_script") || baseStory; } catch { return baseStory; } });
+  const [phase, setPhase] = useState("menu"); // menu|refining|done
+  const [activeRef, setActiveRef] = useState(null);
+  const [coaching, setCoaching] = useState({});
+  const [busy, setBusy] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  async function refine(ref) {
+    if (busy || !script.trim()) return;
+    setActiveRef(ref.id); setBusy(true);
+    const prompt = [
+      "You are an executive speaking coach reviewing this professional story for delivery performance.",
+      "Story:\n" + script,
+      "",
+      "Task: " + ref.prompt,
+      "Be concise and specific. Return ONLY valid JSON: { \"coaching\": \"your coaching note\", \"revised\": \"revised excerpt or full script\" }",
+    ].join("\n");
+    try {
+      const headers = { "Content-Type": "application/json", "anthropic-version": "2023-06-01" };
+      if (ANTHROPIC_KEY) headers["x-api-key"] = ANTHROPIC_KEY;
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST", headers,
+        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 600, messages: [{ role:"user", content:prompt }] }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error("API error");
+      const raw = (data.content||[]).map(b=>b.text||"").join("").trim();
+      let parsed = null;
+      const m = raw.match(/\{[\s\S]*"coaching"[\s\S]*\}/);
+      if (m) try { parsed = JSON.parse(m[0]); } catch(_) {}
+      if (parsed?.coaching) {
+        setCoaching(c => ({ ...c, [ref.id]: parsed.coaching }));
+        if (parsed.revised) setScript(parsed.revised);
+      }
+    } catch(_) {
+      setCoaching(c => ({ ...c, [ref.id]: "Add [PAUSE] after your strongest statements. Slow down on your key insight. Replace any vague time references with specific ones." }));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function save() {
+    try { localStorage.setItem("au1_d9_script", script); } catch(_) {}
+    setSaved(true);
+    if (onSave) onSave(script);
+  }
+
+  const INP = { width:"100%", padding:"12px 16px", border:"0.5px solid "+T.border, borderRadius:4, outline:"none", resize:"vertical", background:T.surface, fontSize:13, color:T.text, lineHeight:1.75, fontFamily:T.serif, fontWeight:300, boxSizing:"border-box" };
+  const LBL = { fontFamily:T.sans, fontSize:10, fontWeight:600, color:T.text3, textTransform:"uppercase", letterSpacing:"0.18em", marginBottom:6 };
+
+  if (!script.trim()) return (
+    <div style={{ padding:"16px 20px", background:T.surface, borderRadius:4, border:"0.5px solid "+T.border }}>
+      <p style={{ fontFamily:T.sans, fontSize:13, color:T.text3, margin:0 }}>No story found from Day 8. Complete the Narrative Transportation module first, then return here to prepare your delivery.</p>
+    </div>
+  );
+
+  return (
+    <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+      {/* Story textarea */}
+      <div>
+        <p style={{ ...LBL, marginBottom:6 }}>Your Story — edit as you refine</p>
+        <textarea value={script} onChange={e => { setScript(e.target.value); setSaved(false); }} rows={8} style={INP}/>
+      </div>
+
+      {/* 5 refinement buttons */}
+      <div>
+        <p style={{ ...LBL, marginBottom:10 }}>5 Delivery Refinements</p>
+        <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+          {D9_REFINEMENTS.map(ref => (
+            <div key={ref.id}>
+              <button onClick={() => refine(ref)} disabled={busy}
+                style={{ width:"100%", padding:"11px 16px", borderRadius:4, border:"0.5px solid "+(coaching[ref.id]?T.gold:T.border), background:coaching[ref.id]?"rgba(138,158,132,0.06)":"transparent", cursor:busy?"default":"pointer", display:"flex", alignItems:"center", gap:12, textAlign:"left", transition:"all 0.18s" }}>
+                <span style={{ fontSize:16 }}>{ref.icon}</span>
+                <div style={{ flex:1 }}>
+                  <div style={{ fontFamily:T.serif, fontSize:14, fontWeight:600, color:T.text, marginBottom:2 }}>{ref.title}</div>
+                  <div style={{ fontFamily:T.sans, fontSize:11, color:T.text3, fontWeight:300 }}>{busy && activeRef===ref.id ? "Coaching…" : ref.desc}</div>
+                </div>
+                {coaching[ref.id] && <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke={T.green} strokeWidth="1.5" strokeLinecap="round"/></svg>}
+              </button>
+              {coaching[ref.id] && (
+                <div style={{ padding:"10px 14px", background:"rgba(138,158,132,0.05)", borderRadius:"0 0 4px 4px", borderLeft:"2px solid rgba(138,158,132,0.4)", marginTop:1 }}>
+                  <p style={{ fontFamily:T.sans, fontSize:12, color:T.text2, lineHeight:1.65, margin:0 }}>{coaching[ref.id]}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <button onClick={save} style={{ padding:"12px 20px", borderRadius:4, border:"none", background:saved?"rgba(82,112,96,0.15)":T.ink, color:saved?T.green:T.bg, fontSize:13, fontWeight:600, cursor:"pointer", fontFamily:T.sans, border:saved?"1px solid rgba(82,112,96,0.3)":"none", transition:"all 0.2s" }}>
+        {saved ? "✓ Delivery Script Saved" : "Save Delivery Script"}
+      </button>
+    </div>
+  );
+}
+
 // ─── STORY BUILDER — NT Module Practice Step AI Coach ──────────────────────
 // Replace ANTHROPIC_KEY with your key, or set up a proxy.
 // The existing CoachWidget uses the same fetch pattern.
@@ -3645,10 +3817,13 @@ setAmbitionSaved(true); } catch {}
   }
   const [ntStory, setNtStory] = useState(() => { try { return localStorage.getItem("au1_nt_story") || ""; } catch { return ""; } });
   const [ntOpenCard, setNtOpenCard] = useState(null);
+  const [d9Script, setD9Script] = useState(() => { try { return localStorage.getItem("au1_d9_script") || ""; } catch { return ""; } });
+  const [d9OpenCard, setD9OpenCard] = useState(null);
   const step = SESSION_STEPS[idx];
   const scenarios = roleId ? getScenariosForDay(roleId, lesson.day) : lesson.scenarios;
   const activeSc = scenarios[selSc] || scenarios[0];
   const isNT = lesson.day === 8;
+  const isD9 = lesson.day === 9;
 
   // ─── THE STUDIO: Full desktop redesign ───────────────────────────────────
   // Architecture: Fixed left panel (visual stage) + scrollable right panel (content)
@@ -3806,6 +3981,78 @@ setAmbitionSaved(true); } catch {}
           </div>
         );
         return null; // Review handled by 3-col layout
+      }
+
+      // ── Day 9 LeftPanel ──────────────────────────────────────────────────────
+      if (isD9) {
+        const d9Dark = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
+        const d9Overlay = <>
+          <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.62)" }}/>
+          <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 55%, transparent 80%)" }}/>
+        </>;
+        const d9Label = (txt) => <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>{txt}</div>;
+        if (step === "Insight") return (
+          <div style={d9Dark}>
+            <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="voice" height={900} day={lesson.day}/></div>
+            {d9Overlay}
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
+              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:16 }}>
+                {d9Label("The Performance")}
+                <div style={{ opacity:0.55 }}>{MODULE_ICONS[lesson.day - 1]}</div>
+              </div>
+              <p style={{ ...LP_HEADING, fontSize:"clamp(26px,2.3vw,38px)", maxWidth:360, marginBottom:20 }}>You've built a great story. Now learn how the world's best speakers deliver it.</p>
+              <div style={{ width:32, height:1, background:T.gold, opacity:0.45 }}/>
+            </div>
+          </div>
+        );
+        if (step === "Theory") return (
+          <div style={{ background:"#131009", height:"100%", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", padding:"40px 36px", position:"relative", overflow:"hidden" }}>
+            <div style={{ position:"absolute", top:-60, left:-60, width:360, height:360, background:"radial-gradient(ellipse, rgba(183,154,107,0.07) 0%, transparent 60%)", pointerEvents:"none" }}/>
+            <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:24, alignSelf:"flex-start", animation:"fadeDown 0.6s ease both" }}>The 5 Elements</div>
+            <div style={{ animation:"fadeIn 0.8s ease 0.1s both", opacity:0 }}><D_D9/></div>
+            <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:"rgba(245,239,230,0.5)", marginTop:24, textAlign:"center" }}>Pace · Pause · Presence · Projection · Precision</p>
+          </div>
+        );
+        if (step === "Example") return (
+          <div style={d9Dark}>
+            <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="voice" height={900} day={lesson.day}/></div>
+            {d9Overlay}
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              {d9Label("Delivery Masters")}
+              <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2 }}>The best speakers in the world share one thing: they make you feel, not just hear.</p>
+            </div>
+          </div>
+        );
+        if (step === "Practice") return (
+          <div style={{ position:"relative", height:"100%", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
+            <img src="/practice-bg.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
+            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.62)" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.98) 0%, transparent 60%)" }}/>
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              {d9Label("Delivery Preparation")}
+              <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2, marginBottom:20 }}>Take your story and prepare it for performance.</p>
+              <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+                {D9_REFINEMENTS.map((r,i) => (
+                  <div key={i} style={{ display:"flex", alignItems:"center", gap:10 }}>
+                    <span style={{ fontSize:12 }}>{r.icon}</span>
+                    <span style={{ fontFamily:T.sans, fontSize:11, color:"rgba(245,239,230,0.55)" }}>{r.title}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+        if (step === "Simulation") return (
+          <div style={d9Dark}>
+            <img src="/day1-simulation.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
+            {d9Overlay}
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              {d9Label("Your Performance")}
+              <p style={{ ...LP_HEADING, fontSize:28, maxWidth:360, lineHeight:1.2 }}>Now perform it. This is where confidence is built.</p>
+            </div>
+          </div>
+        );
+        return null;
       }
 
       // ── Insight — cinematic scene hero ──────────────────────────────────────
@@ -4270,6 +4517,244 @@ setAmbitionSaved(true); } catch {}
       return null;
     };
 
+    // ── Day 9 RightContent ──────────────────────────────────────────────────
+    const D9RightContent = () => {
+      if (step === "Insight") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>Delivery Masterclass</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, letterSpacing:"-0.5px", lineHeight:1.15, marginBottom:20 }}>It's Not What You Say.<br/>It's How You Say It.</h2>
+          <div style={{ padding:"16px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, marginBottom:24 }}>
+            <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:10 }}>The Mehrabian reality</div>
+            <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>While the famous "7%-38%-55%" rule has been misapplied, the core truth remains: when credibility is in question, delivery matters more than words.</p>
+          </div>
+          <div style={{ marginBottom:24 }}>
+            <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text2, lineHeight:1.7, marginBottom:16 }}>Watch two people say the exact same sentence:</p>
+            <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+              <div style={{ padding:"14px 16px", background:"rgba(139,74,56,0.05)", borderRadius:4, borderLeft:"2px solid rgba(139,74,56,0.3)" }}>
+                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.6, margin:0 }}>One rushes. No pauses. Monotone. Eyes down.</p>
+              </div>
+              <div style={{ padding:"14px 16px", background:"rgba(138,158,132,0.05)", borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.6, margin:0 }}>One slows down. Strategic pauses. Vocal variation. Eye contact.</p>
+              </div>
+            </div>
+          </div>
+          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:20, marginBottom:24 }}>
+            <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+              {[["Great content delivered poorly","= forgotten."],["Simple content delivered powerfully","= remembered."]].map(([a,b],i) => (
+                <div key={i} style={{ display:"flex", gap:10, alignItems:"baseline" }}>
+                  <span style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text2 }}>{a}</span>
+                  <span style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:i===0?T.red:T.gold }}>{b}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <p style={{ fontFamily:T.serif, fontSize:19, fontStyle:"italic", color:T.gold, lineHeight:1.5 }}>You already have the story. Now make it land.</p>
+        </div>
+      );
+
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>The 5 Ps</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:20 }}>What Makes Delivery Powerful</h2>
+          <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:20 }}>
+            {D9_FIVE_PS.map((p,i) => (
+              <div key={i} style={{ padding:"16px 18px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                <div style={{ display:"flex", alignItems:"baseline", gap:8, marginBottom:6 }}>
+                  <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, letterSpacing:"0.15em", textTransform:"uppercase" }}>{p.p}</span>
+                  <span style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T2.text }}>{p.heading}</span>
+                </div>
+                <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{p.body}</p>
+                {p.quote && <p style={{ fontFamily:T.serif, fontSize:13, fontStyle:"italic", color:T2.text3, marginTop:8, margin:"8px 0 0" }}>{p.quote}</p>}
+              </div>
+            ))}
+          </div>
+          <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T.gold }}>Master these five. Deliver with impact.</p>
+        </div>
+      );
+
+      if (step === "Example") {
+        const CARDS_CONTENT = {
+          brenebrown: (
+            <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
+              <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T.gold, marginBottom:16 }}>The Power of Vulnerability in Delivery</div>
+              <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:28 }}>She doesn't perform. She connects.</h2>
+              <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)", marginBottom:28 }}>
+                <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.65, margin:0 }}>"I had a therapist once who told me: 'Vulnerability is not weakness.' <span style={{color:T.gold}}>[PAUSE]</span> And that changed everything for me."</p>
+              </div>
+              {[["She doesn't perform. She connects.","Authenticity creates safety. When you're real, the room relaxes with you."],["Pauses let the emotion land.","She trusts the silence. She doesn't rush to fill it. The pause is part of the delivery."],["Conversational tone = immediate trust.","She speaks like she's talking to one person. Not an audience. One person."]].map(([h,b],i) => (
+                <div key={i} style={{ marginBottom:16, paddingBottom:16, borderBottom:i<2?"1px solid rgba(255,255,255,0.07)":"none" }}>
+                  <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, marginBottom:4 }}>{h}</div>
+                  <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.8)", lineHeight:1.7, margin:0 }}>{b}</p>
+                </div>
+              ))}
+              <div style={{ padding:"14px 18px", background:"rgba(255,255,255,0.04)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.5)", marginTop:8 }}>
+                <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", margin:0 }}>Your takeaway: You don't need to be polished. You need to be real.</p>
+              </div>
+            </div>
+          ),
+          simonsinek: (
+            <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
+              <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T.gold, marginBottom:16 }}>Start With Why — TED 2009</div>
+              <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:28 }}>He slows down when the idea matters.</h2>
+              <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)", marginBottom:28 }}>
+                <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.65, margin:0 }}>"People don't buy what you do. They buy <span style={{color:T.gold}}>WHY</span> you do it. <span style={{color:T.gold}}>[PAUSE]</span> And what you do simply proves what you believe."</p>
+              </div>
+              {[["He slows down on the big idea.","The word WHY gets extra weight. Extra space. He makes you feel its importance before he explains it."],["Repetition builds rhythm.","'People don't buy what you do' appears multiple times. Repetition is a delivery tool, not a writing crutch."],["He lets the audience finish the thought.","The pauses are invitations. He creates space for the idea to form in your own mind."]].map(([h,b],i) => (
+                <div key={i} style={{ marginBottom:16, paddingBottom:16, borderBottom:i<2?"1px solid rgba(255,255,255,0.07)":"none" }}>
+                  <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, marginBottom:4 }}>{h}</div>
+                  <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.8)", lineHeight:1.7, margin:0 }}>{b}</p>
+                </div>
+              ))}
+              <div style={{ padding:"14px 18px", background:"rgba(255,255,255,0.04)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.5)", marginTop:8 }}>
+                <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", margin:0 }}>Your takeaway: Slow down when the idea matters. Let them feel the weight.</p>
+              </div>
+            </div>
+          ),
+          amycuddy: (
+            <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
+              <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T.gold, marginBottom:16 }}>Presence — TED 2012</div>
+              <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:28 }}>Her body tells the story before she speaks.</h2>
+              <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)", marginBottom:28 }}>
+                <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.65, margin:0 }}>"Don't fake it till you make it. Fake it till you <span style={{color:T.gold, textTransform:"uppercase"}}>become</span> it." <span style={{color:T.gold}}>[Long pause. Eye contact.]</span></p>
+              </div>
+              {[["She embodies confidence before she speaks about it.","Her posture, her stillness, her eye contact — all signal the message before a word lands."],["The pause after 'BECOME it' is everything.","She lets that word sit. She doesn't soften it. She trusts the audience to feel its weight."],["Her body language reinforces every word.","Great delivery is never just vocal. Every part of you communicates."]].map(([h,b],i) => (
+                <div key={i} style={{ marginBottom:16, paddingBottom:16, borderBottom:i<2?"1px solid rgba(255,255,255,0.07)":"none" }}>
+                  <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, marginBottom:4 }}>{h}</div>
+                  <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.8)", lineHeight:1.7, margin:0 }}>{b}</p>
+                </div>
+              ))}
+              <div style={{ padding:"14px 18px", background:"rgba(255,255,255,0.04)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.5)", marginTop:8 }}>
+                <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", margin:0 }}>Your takeaway: Your body tells the story too. Stand like you believe it.</p>
+              </div>
+            </div>
+          ),
+          stevejobs: (
+            <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
+              <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T.gold, marginBottom:16 }}>iPhone Launch — 2007</div>
+              <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:28 }}>He made the whole world lean forward.</h2>
+              <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)", marginBottom:28 }}>
+                <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.8, margin:0 }}>"An iPod. <span style={{color:T.gold}}>[PAUSE]</span> A phone. <span style={{color:T.gold}}>[PAUSE]</span> An internet communicator. <span style={{color:T.gold}}>[PAUSE]</span> Are you getting it? These are not three separate devices."</p>
+              </div>
+              {[["Strategic pauses build anticipation.","Each pause creates a micro-tension. The audience is holding their breath. He knows it. He uses it."],["Repetition creates rhythm.","Three beats. Same structure. He's teaching the audience how to receive the reveal."],["Precision in language = clarity in impact.","'An iPod. A phone. An internet communicator.' — six words. Three concepts. Perfect precision."]].map(([h,b],i) => (
+                <div key={i} style={{ marginBottom:16, paddingBottom:16, borderBottom:i<2?"1px solid rgba(255,255,255,0.07)":"none" }}>
+                  <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, marginBottom:4 }}>{h}</div>
+                  <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.8)", lineHeight:1.7, margin:0 }}>{b}</p>
+                </div>
+              ))}
+              <div style={{ padding:"14px 18px", background:"rgba(255,255,255,0.04)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.5)", marginTop:8 }}>
+                <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", margin:0 }}>Your takeaway: Don't rush the reveal. Make them lean in.</p>
+              </div>
+            </div>
+          ),
+        };
+        const openD9Card = D9_CARDS.find(c => c.id === d9OpenCard);
+        return (
+          <>
+            {openD9Card && (
+              <div style={{ position:"fixed", inset:0, zIndex:600, background:"rgba(14,11,8,0.97)", backdropFilter:"blur(12px)", overflowY:"auto", animation:"fadeIn 0.25s ease both" }}>
+                <button onClick={() => setD9OpenCard(null)} style={{ position:"fixed", top:20, right:24, width:40, height:40, borderRadius:"50%", border:"1px solid rgba(255,255,255,0.18)", background:"rgba(14,11,8,0.7)", backdropFilter:"blur(8px)", color:"rgba(255,255,255,0.7)", fontSize:20, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans, zIndex:10 }}>×</button>
+                <div style={{ padding:"96px 24px 72px", display:"flex", flexDirection:"column", alignItems:"center", animation:"fadeUp 0.3s ease both" }}>
+                  {CARDS_CONTENT[openD9Card.id]}
+                  <div style={{ textAlign:"center", marginTop:36 }}>
+                    <button onClick={() => setD9OpenCard(null)} style={{ padding:"10px 24px", borderRadius:4, border:"1px solid rgba(255,255,255,0.2)", background:"transparent", color:"rgba(245,239,230,0.6)", fontSize:12, cursor:"pointer", fontFamily:T.sans }}>← Back to examples</button>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+              <h2 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", textAlign:"center", marginBottom:8 }}>Learn from the Best</h2>
+              <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, textAlign:"center", fontStyle:"italic", marginBottom:28, fontWeight:300 }}>Click to explore how world-class speakers deliver</p>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+                {D9_CARDS.map(card => (
+                  <button key={card.id} onClick={() => setD9OpenCard(card.id)}
+                    style={{ padding:"20px 18px", borderRadius:4, border:"0.5px solid "+T2.border, background:T2.surface, cursor:"pointer", textAlign:"left", transition:"all 0.2s ease", minHeight:100 }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.background = "rgba(138,158,132,0.04)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = T2.border; e.currentTarget.style.background = T2.surface; }}
+                  >
+                    <div style={{ fontFamily:T.serif, fontSize:16, fontWeight:600, color:T2.text, marginBottom:4 }}>{card.title}</div>
+                    <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.goldDark, marginBottom:8 }}>{card.sub}</div>
+                    <div style={{ fontFamily:T.sans, fontSize:11, color:T2.text3, lineHeight:1.5, fontStyle:"italic" }}>{card.tag}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
+        );
+      }
+
+      if (step === "Practice") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>AI Delivery Coach</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:6 }}>Polish Your Delivery</h2>
+          <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:24 }}>Your story from Module 1 is loaded. Work through 5 delivery refinements — each one makes your story land harder.</p>
+          <DeliveryCoachWidget onSave={s => { setD9Script(s); try { localStorage.setItem("au1_d9_script", s); } catch(_){} }}/>
+        </div>
+      );
+
+      if (step === "Simulation") {
+        const [mode, setMode] = useState("solo");
+        return (
+          <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+            <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>Performance Practice</div>
+            <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:20 }}>Deliver with Confidence</h2>
+            {d9Script ? (
+              <div style={{ padding:"14px 18px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, marginBottom:20, borderLeft:"2px solid "+T.gold, maxHeight:160, overflowY:"auto" }}>
+                <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:8 }}>Your Delivery Script</div>
+                <p style={{ fontFamily:T.serif, fontSize:13, color:T2.text, lineHeight:1.75, margin:0, whiteSpace:"pre-wrap" }}>{d9Script}</p>
+              </div>
+            ) : (
+              <div style={{ padding:"12px 16px", background:T2.surface, borderRadius:4, marginBottom:20 }}>
+                <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, fontStyle:"italic", margin:0 }}>Go back to Practice to prepare your delivery script first.</p>
+              </div>
+            )}
+            <div style={{ display:"flex", gap:8, marginBottom:20 }}>
+              {[["solo","Solo Rehearsal"],["highstakes","High-Stakes (90s)"]].map(([id,label]) => (
+                <button key={id} onClick={() => setMode(id)} style={{ flex:1, padding:"9px 12px", borderRadius:4, border:"0.5px solid "+(mode===id?T.gold:T2.border), background:mode===id?"rgba(138,158,132,0.07)":"transparent", color:T2.text, fontSize:12, cursor:"pointer", fontFamily:T.sans, fontWeight:mode===id?500:400 }}>{label}</button>
+              ))}
+            </div>
+            {mode === "solo" && (
+              <>
+                <Timer totalSecs={180} label="3 minutes — speak aloud"/>
+                <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:16, marginTop:16 }}>
+                  <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>Checklist</div>
+                  {["I honored the pauses","I slowed down on key ideas","I felt grounded and present"].map((item,i) => {
+                    const [checked, setChecked] = useState(false);
+                    return (
+                      <div key={i} onClick={() => setChecked(c=>!c)} style={{ display:"flex", alignItems:"center", gap:12, padding:"9px 0", borderBottom:i<2?"0.5px solid "+T2.divider:"none", cursor:"pointer" }}>
+                        <div style={{ width:20, height:20, borderRadius:4, border:"0.5px solid "+(checked?T.green:T2.border), background:checked?"rgba(82,112,96,0.1)":"transparent", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                          {checked && <svg width="10" height="10" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l3 3 4-4" stroke={T.green} strokeWidth="1.5" strokeLinecap="round"/></svg>}
+                        </div>
+                        <span style={{ fontFamily:T.serif, fontSize:14, color:T2.text }}>{item}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+            {mode === "highstakes" && (
+              <>
+                <div style={{ padding:"12px 16px", background:"rgba(139,74,56,0.05)", borderRadius:4, border:"0.5px solid rgba(139,74,56,0.2)", marginBottom:16 }}>
+                  <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>"You have 90 seconds to deliver this to a CEO. The clock is running."</p>
+                </div>
+                <Timer totalSecs={90} label="90 seconds — under pressure"/>
+              </>
+            )}
+            <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:16, marginTop:20 }}>
+              <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>Coaching Reminders</div>
+              {["Breathe before you begin","Stand still — movement dilutes presence","If you lose your place, pause. Don't rush.","Deliver to one imaginary person, not a crowd"].map((tip,i) => (
+                <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"7px 0", borderBottom:i<3?"0.5px solid "+T2.divider:"none" }}>
+                  <div style={{ width:4, height:4, borderRadius:"50%", background:T.gold, flexShrink:0 }}/>
+                  <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text2, fontWeight:300 }}>{tip}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      return null;
+    };
+
     const RightContent = () => (
       <div key={idx} className="au-step-enter" style={{ padding: "44px 44px 44px", maxWidth: 480 }}>
 
@@ -4630,7 +5115,7 @@ setAmbitionSaved(true); } catch {}
                 }}/>
               )}
               <div style={{ position: "relative", zIndex: 1 }}>
-                {isNT ? <NTRightContent/> : <RightContent/>}
+                {isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
               </div>
             </div>
           </div>
