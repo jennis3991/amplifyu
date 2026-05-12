@@ -2702,7 +2702,10 @@ function Onboarding({onDone}) {
     return (
       <div style={{minHeight:"100vh",background:T.ink,fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
         <div style={{position:"relative",flexShrink:0}}>
-          <OBScene name="brand" height={240}/>
+          <img src="/ob-role.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>
+          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.45)"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.8) 0%,transparent 55%)"}}/>
+          <div style={{display:"none"}}/>{/* spacer — replaced OBScene */}
           <div style={{position:"absolute",bottom:22,left:24,right:24}}>
             <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.45)",textTransform:"uppercase",letterSpacing:2,marginBottom:10}}>Almost there</div>
             <div style={{display:"flex",gap:6}}>
@@ -2737,11 +2740,11 @@ function Onboarding({onDone}) {
   return (
     <div style={{minHeight:"100vh",background:T.ink,fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
       {/* Photo banner — matches desktop left panel */}
-      <div style={{position:"relative",height:260,flexShrink:0,overflow:"hidden"}}>
+      <div style={{position:"relative",height:280,flexShrink:0,overflow:"hidden"}}>
         {q.image ? (
-          <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>
+          <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 20%"}}/>
         ) : (
-          <OBScene name={q.scene} height={260}/>
+          <OBScene name={q.scene} height={280}/>
         )}
         <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.48)"}}/>
         <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 60%)"}}/>
@@ -6478,22 +6481,27 @@ finishDate + ".";
     );
   }
 
-  // ── MOBILE LAYOUT (unchanged) ─────────────────────────────────────────────
+  // ── MOBILE LAYOUT ─────────────────────────────────────────────────────────
   return (
     <div style={{background:T2.bg,minHeight:"100vh",paddingBottom:100}}>
       <PhraseStrip cur={cur}/>
       <NudgeBanner/>
-      <div style={{padding:"24px 24px 0"}}>
-        <div style={{fontSize:12,fontWeight:500,color:T2.text3,letterSpacing:0.5,marginBottom:6}}>{today}</div>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-          <h1 style={{fontFamily:T.serif,fontSize:34,fontWeight:700,color:T2.text,lineHeight:1.1}}>{greeting}</h1>
-          {streak>0 && (
-            <div style={{background:T2.card,border:"1px solid "+T2.border,borderRadius:2,padding:"8px 12px",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
-              <HourglassIcon streak={streak} size={34}/>
-              <div style={{fontSize:13,fontWeight:800,color:T.navy,lineHeight:1}}>{streak}</div>
-              <div style={{fontSize:9,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:1}}>Streak</div>
-            </div>
-          )}
+      {/* Hero banner */}
+      <div style={{position:"relative",height:260,overflow:"hidden"}}>
+        <img src="/home-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
+        <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.42)"}}/>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.88) 0%,transparent 55%)"}}/>
+        <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 24px"}}>
+          <div style={{fontSize:11,fontWeight:400,color:"rgba(255,255,255,0.5)",letterSpacing:0.5,marginBottom:4}}>{today}</div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+            <h1 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:"white",lineHeight:1.1,letterSpacing:"-0.5px"}}>{greeting}</h1>
+            {streak>0 && (
+              <div style={{background:"rgba(138,158,132,0.2)",border:"1px solid rgba(138,158,132,0.3)",borderRadius:4,padding:"6px 12px",display:"flex",flexDirection:"column",alignItems:"center",gap:1}}>
+                <div style={{fontSize:18,fontWeight:700,color:T.gold,lineHeight:1}}>{streak}</div>
+                <div style={{fontSize:9,fontWeight:600,color:"rgba(255,255,255,0.55)",textTransform:"uppercase",letterSpacing:1}}>Streak</div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       {activeRole && (
@@ -6743,11 +6751,13 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
 
   return (
     <div style={{background:T2.bg,minHeight:"100vh",paddingBottom:100}}>
-      <div style={{position:"relative",height:180}}>
-        <Scene name="clarity" height={180}/>
+      <div style={{position:"relative",height:260,overflow:"hidden"}}>
+        <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
+        <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.45)"}}/>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.85) 0%,transparent 60%)"}}/>
         <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 24px"}}>
-          <div style={{fontSize:10,fontWeight:400,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>14 Sessions — 6 steps each</div>
-          <h1 style={{fontFamily:T.serif,fontSize:32,fontWeight:700,color:"white",letterSpacing:"-0.5px"}}>Your Programme</h1>
+          <div style={{fontSize:10,fontWeight:400,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>14 Sessions — 6 steps each</div>
+          <h1 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:"white",letterSpacing:"-0.5px"}}>Your Programme</h1>
           {roleId && (()=>{const r=ROLES.find(x=>x.id===roleId);return r?(<div style={{marginTop:6,display:"inline-flex",alignItems:"center",gap:6,padding:"4px 10px",background:"rgba(138,158,132,0.15)",borderRadius:10,border:"1px solid rgba(138,158,132,0.25)"}}><span style={{color:T.gold,fontSize:11}}>{r.icon}</span><span style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.7)"}}>{r.label}</span></div>):null;})()}
         </div>
       </div>
