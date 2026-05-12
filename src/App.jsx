@@ -5533,63 +5533,229 @@ T.goldDark : T2.text4,
 
       <div style={{padding:"4px 20px 0",display:"flex",flexDirection:"column",gap:14}}>
 
-        {step==="Insight" && (
+        {/* ── NT (Day 8) Mobile Steps ─────────────────────────────────────── */}
+        {isNT && step==="Insight" && (
           <>
-            <div 
+            <div style={{background:T2.cardDark,borderRadius:2,padding:"20px"}}>
+              <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:"rgba(255,255,255,0.88)",lineHeight:1.5,margin:0}}>{lesson.quote}</p>
+            </div>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>The 6-Beat Framework</div>
+              <img src="/nt-6beat-framework.jpg" alt="6-Beat Framework" style={{width:"100%",borderRadius:4,marginBottom:14,display:"block"}}/>
+              {NT_PIXAR.map((b,i) => (
+                <div key={i} style={{display:"flex",gap:10,padding:"8px 0",borderBottom:i<5?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
+                  <span style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:T.gold,minWidth:120,flexShrink:0}}>{b.beat}</span>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:300,lineHeight:1.5}}>{b.desc}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Why Stories Work</div>
+              {NT_NEURO.map((n,i)=>(
+                <div key={i} style={{marginBottom:i<3?12:0,paddingBottom:i<3?12:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
+                  <span style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.goldDark}}>{n.word} — </span>
+                  <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:300}}>{n.body}</span>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+        {isNT && step==="Theory" && (
+          <>
+            <div style={{position:"relative",borderRadius:4,overflow:"hidden"}}>
+              <img src="/narrative-transportation.jpg" alt="" style={{width:"100%",display:"block",maxHeight:220,objectFit:"cover"}}/>
+              <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.85) 0%,transparent 55%)"}}/>
+              <div style={{position:"absolute",bottom:16,left:16,right:16}}>
+                <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6}}>The Science</div>
+                <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,margin:0}}>When a story is told well, the listener is no longer an observer. They step through the door.</p>
+              </div>
+            </div>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The Pixar Framework</div>
+              {NT_PIXAR.map((b,i) => (
+                <div key={i} style={{display:"flex",gap:10,padding:"9px 0",borderBottom:i<5?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
+                  <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,minWidth:130,flexShrink:0}}>{b.beat}</span>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:300,lineHeight:1.5}}>{b.desc}</span>
+                </div>
+              ))}
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T.gold,padding:"0 4px"}}>Facts explain. Stories move people.</p>
+          </>
+        )}
+        {isNT && step==="Example" && (
+          <>
+            <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Storytelling in the Wild</div>
+              {NT_EXAMPLES.map((ex,i) => (
+                <div key={i} style={{marginBottom:i<2?16:0,paddingBottom:i<2?16:0,borderBottom:i<2?"0.5px solid "+T2.divider:"none"}}>
+                  <div style={{fontSize:11,fontWeight:600,color:T.goldDark,marginBottom:6}}>{ex.name}</div>
+                  <p style={{fontFamily:T.serif,fontSize:14,color:T2.text,lineHeight:1.65,marginBottom:6}}>{ex.story}</p>
+                  <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text2,margin:0}}>{ex.lesson}</p>
+                </div>
+              ))}
+            </div>
+            <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>The Aftermath + Rewind</div>
+              <div style={{padding:"10px 12px",background:"rgba(139,74,56,0.06)",borderRadius:3,borderLeft:"2px solid rgba(139,74,56,0.3)",marginBottom:10}}>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text2,lineHeight:1.6,margin:0,fontStyle:"italic"}}>{NT_28.bad}</p>
+              </div>
+              <div style={{padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,margin:0}}>{NT_28.good}</p>
+              </div>
+            </div>
+          </>
+        )}
+        {isNT && step==="Practice" && (
+          <>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>AI Story Coach</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text2,lineHeight:1.7,marginBottom:16}}>Choose your story type, answer 3 questions, select a style — your AI coach builds the story.</p>
+              <StoryBuilderWidget onSave={s => { setNtStory(s); try { localStorage.setItem("au1_nt_story",s); } catch(_){} }}/>
+            </div>
+          </>
+        )}
+        {isNT && step==="Simulation" && (
+          <>
+            {ntStory ? (
+              <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px",borderLeft:"2px solid "+T.gold}}>
+                <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Your Story</div>
+                <p style={{fontFamily:T.serif,fontSize:14,color:T2.text,lineHeight:1.75,margin:0}}>{ntStory}</p>
+              </div>
+            ) : (
+              <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px"}}>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontStyle:"italic",margin:0}}>Build your story in Practice first.</p>
+              </div>
+            )}
+            <Timer totalSecs={180} label="Read your story aloud — 3 minutes"/>
+          </>
+        )}
+
+        {/* ── D9 (Day 9) Mobile Steps ─────────────────────────────────────── */}
+        {isD9 && step==="Insight" && (
+          <>
+            <div style={{background:T2.cardDark,borderRadius:2,padding:"20px"}}>
+              <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:"rgba(255,255,255,0.88)",lineHeight:1.5,margin:0}}>It's not what you say — it's how you say it. Great content delivered poorly is forgotten. Simple content delivered powerfully is remembered.</p>
+            </div>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The Delivery Contrast</div>
+              <div style={{padding:"10px 12px",background:"rgba(139,74,56,0.06)",borderRadius:3,borderLeft:"2px solid rgba(139,74,56,0.3)",marginBottom:8}}>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,margin:0}}>One rushes. No pauses. Monotone. Eyes down.</p>
+              </div>
+              <div style={{padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,margin:0}}>One slows down. Strategic pauses. Vocal variation. Eye contact.</p>
+              </div>
+            </div>
+          </>
+        )}
+        {isD9 && step==="Theory" && (
+          <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The 5 Ps of Powerful Delivery</div>
+            {D9_FIVE_PS.map((p,i) => (
+              <div key={i} style={{marginBottom:i<4?14:0,paddingBottom:i<4?14:0,borderBottom:i<4?"0.5px solid "+T2.divider:"none"}}>
+                <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4}}>
+                  <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,letterSpacing:"0.15em",textTransform:"uppercase"}}>{p.p}</span>
+                  <span style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text}}>{p.heading}</span>
+                </div>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:0}}>{p.body}</p>
+              </div>
+            ))}
+          </div>
+        )}
+        {isD9 && step==="Example" && (
+          <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Delivery Masters</div>
+            {[{name:"Brené Brown",lesson:"She doesn't perform. She connects. Pauses let the emotion land. Conversational tone = immediate trust."},
+              {name:"Simon Sinek",lesson:"He slows down on the big idea. Repetition builds rhythm. He lets the audience finish the thought."},
+              {name:"Amy Cuddy",lesson:"Her body tells the story before she speaks. The pause after 'BECOME it' is everything."},
+              {name:"Steve Jobs",lesson:"Strategic pauses build anticipation. Precision in language = clarity in impact."}].map((ex,i)=>(
+              <div key={i} style={{marginBottom:i<3?14:0,paddingBottom:i<3?14:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
+                <div style={{fontSize:12,fontWeight:600,color:T.goldDark,marginBottom:4}}>{ex.name}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,margin:0}}>{ex.lesson}</p>
+              </div>
+            ))}
+          </div>
+        )}
+        {isD9 && step==="Practice" && (
+          <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>AI Delivery Coach</div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text2,lineHeight:1.7,marginBottom:16}}>Your Day 8 story loads automatically. Work through 5 delivery refinements.</p>
+            <DeliveryCoachWidget onSave={s => { setD9Script(s); try { localStorage.setItem("au1_d9_script",s); } catch(_){} }}/>
+          </div>
+        )}
+        {isD9 && step==="Simulation" && (
+          <>
+            {d9Script ? (
+              <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px",borderLeft:"2px solid "+T.gold}}>
+                <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Your Delivery Script</div>
+                <p style={{fontFamily:T.serif,fontSize:13,color:T2.text,lineHeight:1.75,margin:0,whiteSpace:"pre-wrap"}}>{d9Script}</p>
+              </div>
+            ) : (
+              <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px"}}>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontStyle:"italic",margin:0}}>Go back to Practice to prepare your delivery script first.</p>
+              </div>
+            )}
+            <Timer totalSecs={180} label="Deliver your story — 3 minutes"/>
+          </>
+        )}
+
+        {/* ── Generic steps (all other days) ─────────────────────────────── */}
+        {!isNT && !isD9 && step==="Insight" && (
+          <>
+            <div
 style={{background:T2.cardDark,borderRadius:2,padding:"26px 24px",position:"relative",overflow:"hidden"}}>
-              <div 
+              <div
 style={{position:"absolute",top:-10,right:10,fontSize:100,lineHeight:1,color:"rgba(255,255,255,0.04)",fontFamily:T.serif}}>"</div>
-              <p 
+              <p
 style={{fontFamily:T.serif,fontSize:20,fontStyle:"italic",color:"rgba(255,255,255,0.88)",lineHeight:1.5,margin:0}}>{lesson.quote}</p>
             </div>
-            <div 
+            <div
 style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
-              <div 
-style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Today's 
+              <div
+style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Today's
 Insight</div>
-              <p 
+              <p
 style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.insight}</p>
             </div>
-            <div 
+            <div
 style={{background:T2.goldLight,borderRadius:0,borderLeft:"2px solid "+T.gold,padding:"14px 16px"}}>
-              <div 
-style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>PIE 
+              <div
+style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>PIE
 Connection</div>
-              <p 
+              <p
 style={{margin:0,fontSize:13,color:T.goldDark,lineHeight:1.55}}>{lesson.pieLink}</p>
             </div>
           </>
         )}
 
-        {step==="Theory" && <TheoryCard day={lesson.day}/>}
+        {!isNT && !isD9 && step==="Theory" && <TheoryCard day={lesson.day}/>}
 
-        {step==="Example" && (
+        {!isNT && !isD9 && step==="Example" && (
           <>
             <div style={{background:"#FDF0EE",border:"1px solid #F0C5C0",borderRadius:2,padding:"16px 18px"}}>
-              <div 
-style={{fontSize:10,fontWeight:700,color:T.red,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Not 
+              <div
+style={{fontSize:10,fontWeight:700,color:T.red,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Not
 this</div>
-              <p 
+              <p
 style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:"#5C1A14",lineHeight:1.55,margin:0}}>{lesson.bad}</p>
             </div>
             <div style={{background:"#EBF0EB",border:"1px solid #A8C4A4",borderRadius:2,padding:"16px 18px"}}>
-              <div 
-style={{fontSize:10,fontWeight:700,color:T.green,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Say 
+              <div
+style={{fontSize:10,fontWeight:700,color:T.green,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Say
 this instead</div>
-              <p 
+              <p
 style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:"#2C4A38",lineHeight:1.55,margin:0}}>{lesson.good}</p>
             </div>
-            <div 
+            <div
 style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-              <div 
-style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Starter 
+              <div
+style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Starter
 Phrases</div>
               {lesson.phrases.map((ph,i) => (
-                <div key={i} 
+                <div key={i}
 style={{display:"flex",alignItems:"center",gap:10,padding:"9px 0",borderBottom:i<lesson.phrases.length-1?"1px solid "+T2.divider:"none"}}>
-                  <div 
+                  <div
 style={{width:2,height:2,borderRadius:0,background:T.gold,flexShrink:0}}/>
-                  <p 
+                  <p
 style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                 </div>
               ))}
@@ -5597,22 +5763,22 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           </>
         )}
 
-        {step==="Practice" && (
+        {!isNT && !isD9 && step==="Practice" && (
           <>
-            <div 
+            <div
 style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
-              <div 
-style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Your 
+              <div
+style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Your
 Practice</div>
-              <p 
+              <p
 style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.practice}</p>
             </div>
             <Timer totalSecs={180} label="3 minutes"/>
-            <div 
+            <div
 style={{background:T2.goldLight,borderRadius:0,borderLeft:"2px solid "+T.gold,padding:"14px 16px"}}>
-              <p 
-style={{margin:0,fontSize:13,color:T.goldDark,lineHeight:1.5}}>Speak out 
-loud first. Then use the coach below to polish your response into 
+              <p
+style={{margin:0,fontSize:13,color:T.goldDark,lineHeight:1.5}}>Speak out
+loud first. Then use the coach below to polish your response into
 something you can use in real life.</p>
             </div>
             <CoachWidget lesson={lesson} scenario={null}/>
