@@ -4327,13 +4327,33 @@ setAmbitionSaved(true); } catch {}
     // ── Right panel: unified editorial content across all 6 steps ─────────────
     // ── NT RightContent — all 6 steps ──────────────────────────────────────
     const NTRightContent = () => {
-      if (step === "Insight") return (
+      if (step === "Insight") {
+        const [imgExpanded, setImgExpanded] = useState(false);
+        return (
+        <>
+          {/* Lightbox overlay */}
+          {imgExpanded && (
+            <div onClick={() => setImgExpanded(false)} style={{ position:"fixed", inset:0, zIndex:700, background:"rgba(10,8,5,0.92)", backdropFilter:"blur(12px)", display:"flex", alignItems:"center", justifyContent:"center", cursor:"zoom-out", padding:"40px", animation:"fadeIn 0.2s ease both" }}>
+              <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework"
+                style={{ maxWidth:"90vw", maxHeight:"90vh", borderRadius:6, boxShadow:"0 32px 80px rgba(0,0,0,0.5)", objectFit:"contain" }}/>
+              <button onClick={() => setImgExpanded(false)} style={{ position:"fixed", top:20, right:24, width:40, height:40, borderRadius:"50%", border:"1px solid rgba(255,255,255,0.2)", background:"transparent", color:"rgba(255,255,255,0.7)", fontSize:20, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
+            </div>
+          )}
         <div key={idx} className="au-step-enter" style={{ padding:"36px 44px 44px", maxWidth:560, overflowY:"auto" }}>
           {/* Section A — 6-Beat Framework image */}
           <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:6 }}>The 6-Beat Framework</div>
           <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, letterSpacing:"-0.5px", lineHeight:1.1, marginBottom:20 }}>Turning Stories Into Impact</h2>
-          <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework — Hook, Character, Problem, Turning Point, Resolution, Meaning"
-            style={{ width:"100%", borderRadius:4, marginBottom:24, display:"block" }}/>
+          {/* Clickable image — expands to full screen */}
+          <div style={{ position:"relative", cursor:"zoom-in", marginBottom:24 }} onClick={() => setImgExpanded(true)}
+            onMouseEnter={e => e.currentTarget.querySelector("img").style.opacity = "0.88"}
+            onMouseLeave={e => e.currentTarget.querySelector("img").style.opacity = "1"}>
+            <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework — Hook, Character, Problem, Turning Point, Resolution, Meaning"
+              style={{ width:"100%", borderRadius:4, display:"block", transition:"opacity 0.2s ease" }}/>
+            <div style={{ position:"absolute", bottom:10, right:10, background:"rgba(44,36,22,0.7)", backdropFilter:"blur(4px)", borderRadius:3, padding:"4px 10px", display:"flex", alignItems:"center", gap:5 }}>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="3.5" stroke="rgba(247,243,236,0.8)" strokeWidth="1.2"/><path d="M8 8l2.5 2.5" stroke="rgba(247,243,236,0.8)" strokeWidth="1.2" strokeLinecap="round"/><path d="M3.5 5h3M5 3.5v3" stroke="rgba(247,243,236,0.8)" strokeWidth="1" strokeLinecap="round"/></svg>
+              <span style={{ fontFamily:"'Inter',sans-serif", fontSize:10, color:"rgba(247,243,236,0.8)", fontWeight:500 }}>Click to expand</span>
+            </div>
+          </div>
           <div style={{ display:"flex", flexDirection:"column", gap:0, marginBottom:12 }}>
             {[
               { n:1, beat:"Hook",          sub:"It starts with tension." },
@@ -4366,7 +4386,9 @@ setAmbitionSaved(true); } catch {}
             <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T.gold, lineHeight:1.5 }}>Facts explain. Stories move people.</p>
           </div>
         </div>
-      );
+        </>
+        );
+      }
 
       if (step === "Theory") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
