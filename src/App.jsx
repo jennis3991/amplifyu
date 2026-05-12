@@ -1663,8 +1663,9 @@ function TabBar({tab, setTab}) {
       background:"#2C2416",
       borderTop:"1px solid rgba(255,255,255,0.08)",
       display:"flex", alignItems:"stretch",
-      zIndex:100,
+      zIndex:200,
       paddingBottom:"env(safe-area-inset-bottom,0px)",
+      boxShadow:"0 -4px 20px rgba(0,0,0,0.25)",
     }}>
       {tabs.map(({ id, label, Icon }) => {
         const active = tab === id;
@@ -2701,11 +2702,8 @@ function Onboarding({onDone}) {
   if (phase === "role") {
     return (
       <div style={{minHeight:"100vh",background:T.ink,fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
-        <div style={{position:"relative",flexShrink:0}}>
-          <img src="/ob-role.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>
-          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.45)"}}/>
-          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.8) 0%,transparent 55%)"}}/>
-          <div style={{display:"none"}}/>{/* spacer — replaced OBScene */}
+        <div style={{position:"relative",height:220,flexShrink:0}}>
+          <OBScene name="brand" height={220}/>
           <div style={{position:"absolute",bottom:22,left:24,right:24}}>
             <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.45)",textTransform:"uppercase",letterSpacing:2,marginBottom:10}}>Almost there</div>
             <div style={{display:"flex",gap:6}}>
@@ -2740,11 +2738,11 @@ function Onboarding({onDone}) {
   return (
     <div style={{minHeight:"100vh",background:T.ink,fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
       {/* Photo banner — matches desktop left panel */}
-      <div style={{position:"relative",height:280,flexShrink:0,overflow:"hidden"}}>
+      <div style={{position:"relative",height:300,flexShrink:0,overflow:"hidden"}}>
         {q.image ? (
-          <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 20%"}}/>
+          <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 35%"}}/>
         ) : (
-          <OBScene name={q.scene} height={280}/>
+          <OBScene name={q.scene} height={300}/>
         )}
         <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.48)"}}/>
         <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 60%)"}}/>
@@ -2758,7 +2756,7 @@ function Onboarding({onDone}) {
         <h2 style={{fontFamily:T.serif,fontSize:"clamp(28px,7vw,38px)",fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,0.93)",lineHeight:1.15,letterSpacing:"-0.3px",marginBottom:28}}>{q.q}</h2>
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {q.opts.map(opt => (
-            <button key={opt} onClick={()=>pick_mobile(opt)} style={{padding:"16px 18px",borderRadius:2,border:"1px solid rgba(255,255,255,0.12)",background:"rgba(255,255,255,0.04)",color:"rgba(255,255,255,0.85)",fontSize:14,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5}}>{opt}</button>
+            <button key={opt} onClick={()=>pick_mobile(opt)} style={{padding:"16px 18px",borderRadius:2,border:"1px solid rgba(255,255,255,0.18)",background:"rgba(255,255,255,0.04)",color:"rgba(255,255,255,0.88)",fontSize:17,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",lineHeight:1.45}}>{opt}</button>
           ))}
         </div>
       </div>
@@ -7559,7 +7557,10 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   const [tab, setTab] = useState("home");
   const [view, setView] = useState("main");
   const scrollRef = useRef(null);
-  useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [tab]);
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }, [tab, view]);
   const [selDay, setSelDay] = useState(1);
   const [cel, setCel] = useState(null);
   const streak = getStreak(done);
@@ -7709,7 +7710,7 @@ reset</button>
         </div>
       )}
       {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole} inSession={view==="session"} onExitToTab={(t)=>{setTab(t);setView("main");}}/>}
-      <div ref={scrollRef} className="au-grain-wrap" style={{flex:1,overflowY:"auto",marginLeft:0,paddingBottom:isDesktop?0:"calc(64px + env(safe-area-inset-bottom, 0px))",background:dark?"#19160F":T.bg}}>
+      <div ref={scrollRef} className="au-grain-wrap" style={{flex:1,overflowY:"auto",marginLeft:0,paddingBottom:isDesktop?0:"calc(88px + env(safe-area-inset-bottom, 0px))",background:dark?"#19160F":T.bg}}>
         {tab==="home" && <HomeScreen done={done} cur={cur} streak={streak} onStart={startSession} roleId={roleId} activeRole={activeRole} dark={dark} DK={DK} showNudge={showNudge} onDismissNudge={()=>setShowNudge(false)} isDesktop={isDesktop}/>}
         {tab==="sessions" && <SessionsScreen done={done} cur={cur} onStart={startSession} roleId={roleId} dark={dark} DK={DK} isDesktop={isDesktop}/>}
         {tab==="progress" && <ProgressScreen done={done} cur={cur} streak={streak} roleId={roleId} activeRole={activeRole} onChangeRole={(r)=>{setRoleId(r);lsSet("au1_role",r);}} dark={dark} toggleDark={toggleDark} DK={DK} onReset={()=>setConfirmReset(true)} isDesktop={isDesktop}/>}
