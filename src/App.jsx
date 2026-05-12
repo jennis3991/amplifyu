@@ -2560,7 +2560,7 @@ function Onboarding({onDone}) {
                       onMouseEnter={e => {
                         if (!entering) {
                           e.currentTarget.style.borderLeftColor = "rgba(138,158,132,0.4)";
-                          e.currentTarget.style.background = "rgba(192,154,94,0.02)";
+                          e.currentTarget.style.background = "rgba(138,158,132,0.04)";
                         }
                       }}
                       onMouseLeave={e => {
@@ -2701,7 +2701,7 @@ function Onboarding({onDone}) {
 
   if (phase === "role") {
     return (
-      <div style={{minHeight:"100vh",background:T.ink,fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
+      <div style={{minHeight:"100vh",background:"#1A1510",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
         <div style={{position:"relative",height:220,flexShrink:0}}>
           <OBScene name="brand" height={220}/>
           <div style={{position:"absolute",bottom:22,left:24,right:24}}>
@@ -2711,12 +2711,12 @@ function Onboarding({onDone}) {
             </div>
           </div>
         </div>
-        <div style={{padding:"28px 24px 0",flex:1,background:T.ink}}>
+        <div style={{padding:"28px 24px 0",flex:1,background:"#1A1510"}}>
           <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"#fff",lineHeight:1.2,marginBottom:8}}>What best describes your role?</h2>
           <p style={{fontSize:13,color:"rgba(255,255,255,0.45)",lineHeight:1.6,marginBottom:24}}>Your scenarios and exercises will be tailored to your world.</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {ROLES.map(role => (
-              <button key={role.id} onClick={()=>pickRole(role.id)} style={{padding:"16px 18px",borderRadius:2,border:"1px solid rgba(255,255,255,0.12)",background:"rgba(255,255,255,0.04)",textAlign:"left",cursor:"pointer",display:"flex",alignItems:"flex-start",gap:14}}>
+              <button key={role.id} onClick={()=>pickRole(role.id)} style={{padding:"16px 18px",borderRadius:2,border:"0.5px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.06)",textAlign:"left",cursor:"pointer",display:"flex",alignItems:"flex-start",gap:14}}>
                 <div style={{fontSize:18,color:T.gold,flexShrink:0,marginTop:1,width:20,textAlign:"center"}}>{role.icon}</div>
                 <div>
                   <div style={{fontSize:14,fontWeight:700,color:"rgba(255,255,255,0.92)",marginBottom:3}}>{role.label}</div>
@@ -2724,19 +2724,19 @@ function Onboarding({onDone}) {
                 </div>
               </button>
             ))}
-            <button onClick={()=>pickRole(null)} style={{padding:"14px 18px",borderRadius:2,border:"1px solid rgba(255,255,255,0.06)",background:"transparent",color:"rgba(255,255,255,0.3)",fontSize:13,textAlign:"left",cursor:"pointer"}}>
+            <button onClick={()=>pickRole(null)} style={{padding:"14px 18px",borderRadius:2,border:"0.5px solid rgba(138,158,132,0.15)",background:"transparent",color:"rgba(255,255,255,0.3)",fontSize:13,textAlign:"left",cursor:"pointer"}}>
               Skip for now — use general scenarios
             </button>
           </div>
         </div>
-        <div style={{height:40,background:T.ink}}/>
+        <div style={{height:40,background:"#1A1510"}}/>
       </div>
     );
   }
 
   const q = QS[step];
   return (
-    <div style={{minHeight:"100vh",background:T.ink,fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
+    <div style={{minHeight:"100vh",background:"#1A1510",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
       {/* Photo banner — matches desktop left panel */}
       <div style={{position:"relative",height:300,flexShrink:0,overflow:"hidden"}}>
         {q.image ? (
@@ -2752,11 +2752,11 @@ function Onboarding({onDone}) {
         </div>
       </div>
       {/* Question + options */}
-      <div style={{padding:"28px 24px 40px",flex:1,background:T.ink}}>
+      <div style={{padding:"28px 24px 40px",flex:1,background:"#1A1510"}}>
         <h2 style={{fontFamily:T.serif,fontSize:"clamp(28px,7vw,38px)",fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,0.93)",lineHeight:1.15,letterSpacing:"-0.3px",marginBottom:28}}>{q.q}</h2>
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {q.opts.map(opt => (
-            <button key={opt} onClick={()=>pick_mobile(opt)} style={{padding:"16px 18px",borderRadius:2,border:"1px solid rgba(255,255,255,0.18)",background:"rgba(255,255,255,0.04)",color:"rgba(255,255,255,0.88)",fontSize:17,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",lineHeight:1.45}}>{opt}</button>
+            <button key={opt} onClick={()=>pick_mobile(opt)} style={{padding:"16px 18px",borderRadius:2,border:"0.5px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.06)",color:"rgba(255,255,255,0.88)",fontSize:17,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",lineHeight:1.45}}>{opt}</button>
           ))}
         </div>
       </div>
