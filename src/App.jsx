@@ -6479,43 +6479,75 @@ finishDate + ".";
     );
   }
 
-  // ── MOBILE LAYOUT ─────────────────────────────────────────────────────────
+  // ── MOBILE LAYOUT — mirrors desktop sections exactly ─────────────────────
   return (
-    <div style={{background:T2.bg,minHeight:"100vh",paddingBottom:100}}>
-      <PhraseStrip cur={cur}/>
-      <NudgeBanner/>
-      {/* Hero banner */}
-      <div style={{position:"relative",height:260,overflow:"hidden"}}>
+    <div style={{background:T2.bg,minHeight:"100vh",paddingBottom:100}} className="au-page">
+
+      {/* ── SECTION 1: Cinematic hero ── */}
+      <div style={{position:"relative",height:"55vh",minHeight:340,overflow:"hidden",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
         <img src="/home-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
-        <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.42)"}}/>
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.88) 0%,transparent 55%)"}}/>
-        <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 24px"}}>
-          <div style={{fontSize:11,fontWeight:400,color:"rgba(255,255,255,0.5)",letterSpacing:0.5,marginBottom:4}}>{today}</div>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
-            <h1 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:"white",lineHeight:1.1,letterSpacing:"-0.5px"}}>{greeting}</h1>
-            {streak>0 && (
-              <div style={{background:"rgba(138,158,132,0.2)",border:"1px solid rgba(138,158,132,0.3)",borderRadius:4,padding:"6px 12px",display:"flex",flexDirection:"column",alignItems:"center",gap:1}}>
-                <div style={{fontSize:18,fontWeight:700,color:T.gold,lineHeight:1}}>{streak}</div>
-                <div style={{fontSize:9,fontWeight:600,color:"rgba(255,255,255,0.55)",textTransform:"uppercase",letterSpacing:1}}>Streak</div>
+        <div style={{position:"absolute",inset:0,background:"rgba(12,10,7,0.52)"}}/>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.97) 0%,rgba(10,8,5,0.65) 40%,rgba(10,8,5,0.1) 75%,transparent 100%)"}}/>
+        <div style={{position:"absolute",bottom:-60,left:-20,width:300,height:260,background:"radial-gradient(ellipse at 20% 80%,rgba(138,158,132,0.1) 0%,transparent 60%)",pointerEvents:"none"}}/>
+
+        <div style={{position:"relative",zIndex:5,padding:"0 24px 32px"}}>
+          {!finished && lesson && (
+            <div style={{animation:"fadeUp 0.8s cubic-bezier(0.25,0.46,0.45,0.94) both"}}>
+              <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
+                <div style={{fontSize:9,fontWeight:600,letterSpacing:"4px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,background:"rgba(138,158,132,0.14)",border:"1px solid rgba(138,158,132,0.28)",padding:"5px 12px",borderRadius:3}}>Day {cur}</div>
+                <div style={{fontSize:9,letterSpacing:"3px",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",fontFamily:T.sans}}>{lesson.tag}</div>
+                {todayDone && <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:T.green,fontFamily:T.sans,background:"rgba(61,107,79,0.2)",border:"1px solid rgba(61,107,79,0.35)",padding:"5px 12px",borderRadius:3}}>✓ Complete</div>}
               </div>
-            )}
-          </div>
+              <h1 style={{fontFamily:T.serif,fontSize:"clamp(36px,10vw,56px)",fontWeight:600,color:"rgba(255,255,255,0.95)",lineHeight:0.95,letterSpacing:"-2px",maxWidth:340,marginBottom:20}}>{lesson.title}</h1>
+              <p style={{fontSize:15,color:"rgba(255,255,255,0.44)",lineHeight:1.55,maxWidth:320,marginBottom:32,fontFamily:T.sans,fontWeight:300}}>{lesson.quote}</p>
+              <button
+                onClick={()=>onStart(cur)}
+                className="au-cta"
+                style={{display:"inline-flex",alignItems:"center",gap:12,background:"rgba(255,255,255,0.95)",border:"none",borderRadius:5,padding:"15px 28px",cursor:"pointer",boxShadow:"0 4px 32px rgba(0,0,0,0.35)"}}>
+                <span style={{fontSize:14,fontWeight:600,color:T.navy,letterSpacing:"-0.1px",fontFamily:T.sans}}>{todayDone?"Review Session":"Begin Session"}</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.navy} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
+            </div>
+          )}
+          {finished && (
+            <div style={{animation:"fadeUp 0.8s ease both"}}>
+              <div style={{fontSize:9,letterSpacing:"4px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,marginBottom:16}}>Programme Complete</div>
+              <h1 style={{fontFamily:T.serif,fontSize:"clamp(36px,10vw,52px)",fontWeight:600,color:"rgba(255,255,255,0.95)",lineHeight:0.95,letterSpacing:"-2px",marginBottom:16}}>You communicate<br/>differently now.</h1>
+              <p style={{fontSize:15,color:"rgba(255,255,255,0.44)",maxWidth:320,lineHeight:1.6,fontFamily:T.sans,fontWeight:300}}>Fourteen sessions. The clarity, structure, and presence you've built belong to you.</p>
+            </div>
+          )}
         </div>
       </div>
-      {activeRole && (
-        <div style={{padding:"12px 24px 0"}}>
-          <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 14px",background:T.navy,borderRadius:8,border:"1px solid rgba(138,158,132,0.2)"}}>
-            <span style={{color:T.gold,fontSize:13}}>{activeRole.icon}</span>
-            <span style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.7)"}}>{activeRole.label}</span>
-            <span style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginLeft:2}}>— scenarios tailored</span>
+
+      {/* ── SECTION 2: Today's Focus ── */}
+      <section style={{padding:"48px 24px 40px",borderBottom:"1px solid "+T2.divider,background:T2.bg}}>
+        <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Today's Focus</div>
+        <div style={{width:20,height:1,background:T.gold,marginBottom:24,opacity:0.5}}/>
+        <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:14,fontFamily:T.sans}}>{insight.label}</div>
+        <h2 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,36px)",fontWeight:500,color:T2.text,letterSpacing:"-1px",lineHeight:1.15,marginBottom:16}}>{insight.headline}</h2>
+        <p style={{fontSize:15,color:T2.text3,lineHeight:1.8,fontFamily:T.sans,fontWeight:300}}>{insight.body}</p>
+      </section>
+
+      {/* ── SECTION 3: Journey ── */}
+      <section style={{padding:"48px 24px 56px",background:T2.bg}}>
+        <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Journey</div>
+        <div style={{width:20,height:1,background:T.gold,marginBottom:28,opacity:0.5}}/>
+        <div style={{display:"flex",alignItems:"flex-end",gap:28,marginBottom:24,flexWrap:"wrap"}}>
+          <div>
+            <div style={{fontFamily:T.serif,fontSize:72,fontWeight:500,color:T2.text,lineHeight:0.85,letterSpacing:"-4px"}}>{pct}<span style={{fontSize:26,letterSpacing:"-1px",color:T.gold}}>%</span></div>
+            <div style={{fontSize:11,color:T2.text3,letterSpacing:"2px",textTransform:"uppercase",marginTop:10,fontFamily:T.sans}}>{done.length} of 14 sessions complete</div>
           </div>
+          {onTrackMsg && (
+            <div style={{paddingBottom:10,maxWidth:260,borderLeft:"2px solid "+T.gold,paddingLeft:16}}>
+              <p style={{fontSize:13,color:streak>=2?T.green:T.goldDark,lineHeight:1.55,fontFamily:T.sans}}>{onTrackMsg}</p>
+            </div>
+          )}
         </div>
-      )}
-      <div style={{padding:"12px 20px 0"}}><InsightCard/></div>
-      <div style={{padding:"16px 20px 0"}}><SessionCard/></div>
-      <div style={{padding:"16px 20px 0"}}><ProgressCard/></div>
-      <div style={{padding:"16px 20px 0"}}><QuoteBlock/></div>
-      <div style={{padding:"16px 20px 0"}}><PIECards/></div>
+        <div style={{height:1,background:T2.divider,borderRadius:1,overflow:"hidden"}}>
+          <div style={{width:pct+"%",height:"100%",background:"linear-gradient(90deg,"+T.goldDark+","+T.gold+")",transition:"width 1s ease"}}/>
+        </div>
+      </section>
+
     </div>
   );
 }
