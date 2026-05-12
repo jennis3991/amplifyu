@@ -2755,7 +2755,7 @@ function Onboarding({onDone}) {
       </div>
       {/* Question + options */}
       <div style={{padding:"28px 24px 40px",flex:1,background:T.ink}}>
-        <h2 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,36px)",fontWeight:500,color:"rgba(255,255,255,0.93)",lineHeight:1.15,letterSpacing:"-0.5px",marginBottom:28}}>{q.q}</h2>
+        <h2 style={{fontFamily:T.serif,fontSize:"clamp(28px,7vw,38px)",fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,0.93)",lineHeight:1.15,letterSpacing:"-0.3px",marginBottom:28}}>{q.q}</h2>
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {q.opts.map(opt => (
             <button key={opt} onClick={()=>pick_mobile(opt)} style={{padding:"16px 18px",borderRadius:2,border:"1px solid rgba(255,255,255,0.12)",background:"rgba(255,255,255,0.04)",color:"rgba(255,255,255,0.85)",fontSize:14,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5}}>{opt}</button>
