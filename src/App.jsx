@@ -6287,13 +6287,13 @@ finishDate + ".";
           minHeight: 640,
         }}>
           {/* Background — full bleed photo */}
-          <img src="/home-hero.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}/>
+          <img src="/home-hero.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 70%" }}/>
 
           {/* Atmospheric layering — depth through gradients */}
-          {/* Layer 1: Base dark veil */}
-          <div style={{ position: "absolute", inset: 0, background: "rgba(12,10,7,0.52)" }}/>
+          {/* Layer 1: Base dark veil — lightened so room reads through */}
+          <div style={{ position: "absolute", inset: 0, background: "rgba(12,10,7,0.28)" }}/>
           {/* Layer 2: Cinematic bottom-up gradient — pulls eye to text */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.65) 30%, rgba(10,8,5,0.1) 65%, transparent 100%)" }}/>
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.95) 0%, rgba(10,8,5,0.55) 28%, rgba(10,8,5,0.05) 58%, transparent 100%)" }}/>
           {/* Layer 3: Left ambient glow — warmth, not glare */}
           <div style={{ position: "absolute", bottom: -80, left: -40, width: 600, height: 500, background: "radial-gradient(ellipse at 20% 80%, rgba(138,158,132,0.1) 0%, transparent 60%)", pointerEvents: "none" }}/>
           {/* Layer 4: Vignette edges */}
@@ -6485,9 +6485,9 @@ finishDate + ".";
 
       {/* ── SECTION 1: Cinematic hero ── */}
       <div style={{position:"relative",height:"55vh",minHeight:340,overflow:"hidden",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
-        <img src="/home-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
-        <div style={{position:"absolute",inset:0,background:"rgba(12,10,7,0.52)"}}/>
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.97) 0%,rgba(10,8,5,0.65) 40%,rgba(10,8,5,0.1) 75%,transparent 100%)"}}/>
+        <img src="/home-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 70%"}}/>
+        <div style={{position:"absolute",inset:0,background:"rgba(12,10,7,0.28)"}}/>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.95) 0%,rgba(10,8,5,0.55) 40%,rgba(10,8,5,0.05) 75%,transparent 100%)"}}/>
         <div style={{position:"absolute",bottom:-60,left:-20,width:300,height:260,background:"radial-gradient(ellipse at 20% 80%,rgba(138,158,132,0.1) 0%,transparent 60%)",pointerEvents:"none"}}/>
 
         <div style={{position:"relative",zIndex:5,padding:"0 24px 32px"}}>
