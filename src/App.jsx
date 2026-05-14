@@ -7668,6 +7668,7 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
             setBoarded(true);
             lsSet("au1_ob", true);
             setReflectionData(null);
+            setTab("sessions");
             try {
               if (!localStorage.getItem("amplifyu_welcome_shown")) setShowWelcome(true);
             } catch(_) {}
