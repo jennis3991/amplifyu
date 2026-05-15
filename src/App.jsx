@@ -4182,19 +4182,10 @@ setAmbitionSaved(true); } catch {}
         if (theoryImg && theoryImg.image) {
           return (
             <div style={{ height: "100%", position: "relative", overflow: "hidden" }}>
-              <img src={theoryImg.image} alt={theoryImg.alt || ""} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}/>
-              {/* No base veil — image shows at full brightness */}
-              {/* Light gradient only at the bottom to keep caption label readable */}
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.82) 0%, rgba(10,8,5,0.35) 38%, transparent 60%)" }}/>
-              <div style={{ position: "absolute", bottom: 40, left: 24, zIndex: 2, animation: "fadeUp 0.7s ease both", maxWidth: 260 }}>
-                <div style={{ ...LP_LABEL, fontSize: 13, color: "#F5EFE6", marginBottom: 8 }}>The Science</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  {theoryImg.captionText.split(". ").filter(Boolean).map((line, i, arr) => (
-                    <p key={i} style={{ fontFamily: T.serif, fontSize: 22, fontWeight: 600, fontStyle: "normal", color: "#F5EFE6", lineHeight: 1.25, margin: 0 }}>
-                      {line.endsWith(".") ? line : line + "."}
-                    </p>
-                  ))}
-                </div>
+              <img src={theoryImg.image} alt={theoryImg.alt || ""} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: theoryImg.imgObjectPosition || "center" }}/>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "28%", background: "linear-gradient(to bottom, rgba(10,8,5,0.55) 0%, transparent 100%)" }}/>
+              <div style={{ position: "absolute", top: 32, left: 24, zIndex: 2, animation: "fadeUp 0.7s ease both" }}>
+                <div style={{ ...LP_LABEL, fontSize: 13, color: "#F5EFE6", textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>The Science</div>
               </div>
             </div>
           );
