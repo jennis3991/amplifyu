@@ -4016,30 +4016,27 @@ setAmbitionSaved(true); } catch {}
       if (isNT) {
         const darkBase = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
         if (step === "Insight") return (
-          <div style={darkBase}>
-            <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}>
-              <Scene name="story" height={900} day={lesson.day}/>
-            </div>
-            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.52)" }}/>
-            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.3) 55%, transparent 80%)" }}/>
-            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
-              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:20 }}>
+          <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
+            <img src="/narrative-transportation.jpg" alt="Turning Stories into Impact" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.38)" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.82) 0%, rgba(10,8,5,0.15) 55%, transparent 80%)" }}/>
+            <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:16 }}>
                 <div style={{ ...LP_LABEL, color:T.gold }}>The Foundation</div>
                 <div style={{ opacity:0.55 }}>{MODULE_ICONS[lesson.day - 1]}</div>
               </div>
-              <p style={{ ...LP_HEADING, fontSize:"clamp(28px,2.4vw,40px)", maxWidth:360, marginBottom:24 }}>Every great story follows a learnable pattern.</p>
-              <div style={{ width:32, height:1, background:T.gold, opacity:0.45, marginBottom:20 }}/>
-              <p style={{ ...LP_BODY, fontSize:17, maxWidth:340 }}>{lesson.quote}</p>
+              <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:300 }}>Turning Stories<br/>Into Impact</p>
             </div>
           </div>
         );
         if (step === "Theory") return (
           <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-            <img src="/narrative-transportation.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
-            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.35) 40%, transparent 65%)" }}/>
-            <div style={{ position:"absolute", bottom:40, left:24, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
-              <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Science</div>
-              <p style={{ fontFamily:T.serif, fontSize:20, fontWeight:600, fontStyle:"normal", color:"#F5EFE6", lineHeight:1.3, margin:0 }}>Understand it. Explain it simply. Find the gaps. Refine until nothing hides.</p>
+            <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.45)" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.3) 40%, transparent 65%)" }}/>
+            <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
+              <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Framework</div>
+              <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>Every great story follows a learnable pattern.</p>
             </div>
           </div>
         );
@@ -4321,33 +4318,29 @@ setAmbitionSaved(true); } catch {}
     // ── NT RightContent — all 6 steps ──────────────────────────────────────
     const NTRightContent = () => {
       if (step === "Insight") {
-        const [imgExpanded, setImgExpanded] = useState(false);
         return (
-        <>
-          {/* Lightbox overlay */}
-          {imgExpanded && (
-            <div onClick={() => setImgExpanded(false)} style={{ position:"fixed", inset:0, zIndex:700, background:"rgba(10,8,5,0.92)", backdropFilter:"blur(12px)", display:"flex", alignItems:"center", justifyContent:"center", cursor:"zoom-out", padding:"40px", animation:"fadeIn 0.2s ease both" }}>
-              <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework"
-                style={{ maxWidth:"90vw", maxHeight:"90vh", borderRadius:6, boxShadow:"0 32px 80px rgba(0,0,0,0.5)", objectFit:"contain" }}/>
-              <button onClick={() => setImgExpanded(false)} style={{ position:"fixed", top:20, right:24, width:40, height:40, borderRadius:"50%", border:"1px solid rgba(255,255,255,0.2)", background:"transparent", color:"rgba(255,255,255,0.7)", fontSize:20, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
+          <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:560, overflowY:"auto" }}>
+            <h2 style={{ fontFamily:T.serif, fontSize:34, fontWeight:600, color:T2.text, letterSpacing:"-0.5px", lineHeight:1.1, marginBottom:10 }}>Why Stories Work</h2>
+            <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:32 }}>Neuroscience reveals why stories bypass resistance and create change where facts alone can't.</p>
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:28 }}>
+              {NT_NEURO.map((n,i) => (
+                <div key={i} style={{ padding:"20px 22px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                  <div style={{ fontFamily:T.serif, fontSize:17, fontWeight:600, color:T.goldDark, marginBottom:8 }}>{n.word}</div>
+                  <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{n.body}</p>
+                </div>
+              ))}
             </div>
-          )}
-        <div key={idx} className="au-step-enter" style={{ padding:"36px 44px 44px", maxWidth:560, overflowY:"auto" }}>
-          {/* Section A — 6-Beat Framework image */}
-          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:6 }}>The 6-Beat Framework</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, letterSpacing:"-0.5px", lineHeight:1.1, marginBottom:20 }}>Turning Stories Into Impact</h2>
-          {/* Clickable image — expands to full screen */}
-          <div style={{ position:"relative", cursor:"zoom-in", marginBottom:24 }} onClick={() => setImgExpanded(true)}
-            onMouseEnter={e => e.currentTarget.querySelector("img").style.opacity = "0.88"}
-            onMouseLeave={e => e.currentTarget.querySelector("img").style.opacity = "1"}>
-            <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework — Hook, Character, Problem, Turning Point, Resolution, Meaning"
-              style={{ width:"100%", borderRadius:4, display:"block", transition:"opacity 0.2s ease" }}/>
-            <div style={{ position:"absolute", bottom:10, right:10, background:"rgba(44,36,22,0.7)", backdropFilter:"blur(4px)", borderRadius:3, padding:"4px 10px", display:"flex", alignItems:"center", gap:5 }}>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="3.5" stroke="rgba(247,243,236,0.8)" strokeWidth="1.2"/><path d="M8 8l2.5 2.5" stroke="rgba(247,243,236,0.8)" strokeWidth="1.2" strokeLinecap="round"/><path d="M3.5 5h3M5 3.5v3" stroke="rgba(247,243,236,0.8)" strokeWidth="1" strokeLinecap="round"/></svg>
-              <span style={{ fontFamily:"'Inter',sans-serif", fontSize:10, color:"rgba(247,243,236,0.8)", fontWeight:500 }}>Click to expand</span>
-            </div>
+            <p style={{ fontFamily:T.serif, fontSize:20, fontStyle:"italic", color:T.gold, lineHeight:1.4 }}>Facts explain. Stories move people.</p>
           </div>
-          <div style={{ display:"flex", flexDirection:"column", gap:0, marginBottom:12 }}>
+        );
+      }
+
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520, overflowY:"auto" }}>
+          {/* 6-Beat Framework */}
+          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>The 6-Beat Framework</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:T2.text, letterSpacing:"-0.4px", marginBottom:24 }}>Build Your Story</h2>
+          <div style={{ display:"flex", flexDirection:"column", gap:0, marginBottom:16 }}>
             {[
               { n:1, beat:"Hook",          sub:"It starts with tension." },
               { n:2, beat:"Character",     sub:"Make it human. Make it real." },
@@ -4356,53 +4349,20 @@ setAmbitionSaved(true); } catch {}
               { n:5, beat:"Resolution",    sub:"What happened? Why it matters." },
               { n:6, beat:"Meaning",       sub:"What stayed with us?" },
             ].map((b,i,arr) => (
-              <div key={i} style={{ display:"flex", alignItems:"center", gap:14, padding:"10px 0", borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none" }}>
+              <div key={i} style={{ display:"flex", alignItems:"center", gap:14, padding:"11px 0", borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none" }}>
                 <span style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, minWidth:16 }}>{b.n}</span>
-                <span style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T2.text, minWidth:110 }}>{b.beat}</span>
+                <span style={{ fontFamily:T.serif, fontSize:16, fontWeight:600, color:T2.text, minWidth:120 }}>{b.beat}</span>
                 <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, fontWeight:300 }}>{b.sub}</span>
               </div>
             ))}
           </div>
-          <p style={{ fontFamily:T.serif, fontSize:20, fontStyle:"italic", color:T.gold, lineHeight:1.4, marginBottom:32 }}>No tension = no story.</p>
+          <p style={{ fontFamily:T.serif, fontSize:20, fontStyle:"italic", color:T.gold, lineHeight:1.4, marginBottom:36 }}>No tension = no story.</p>
 
-          {/* Section B — Why Stories Work */}
+          {/* Pixar Framework */}
           <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:28 }}>
-            <h3 style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, letterSpacing:"-0.2px", marginBottom:16 }}>Why Stories Work</h3>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:20 }}>
-              {NT_NEURO.map((n,i) => (
-                <div key={i} style={{ padding:"16px 18px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
-                  <div style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T.goldDark, marginBottom:6 }}>{n.word}</div>
-                  <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text, lineHeight:1.6, fontWeight:300, margin:0 }}>{n.body}</p>
-                </div>
-              ))}
-            </div>
-            <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T.gold, lineHeight:1.5 }}>Facts explain. Stories move people.</p>
-          </div>
-        </div>
-        </>
-        );
-      }
-
-      if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
-          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>The Pixar Framework</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:T2.text, letterSpacing:"-0.4px", marginBottom:6 }}>Every great story follows this pattern</h2>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:28 }}>Pixar used it for every film. It works because it mirrors how the human brain processes experience.</p>
-          <div style={{ display:"flex", flexDirection:"column", gap:0, marginBottom:28 }}>
-            {NT_PIXAR.map((b,i) => (
-              <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:16, padding:"13px 0", borderBottom:i<5?"0.5px solid "+T2.divider:"none" }}>
-                <div style={{ width:26, height:26, borderRadius:"50%", background:"rgba(138,158,132,0.1)", border:"0.5px solid rgba(138,158,132,0.25)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:1 }}>
-                  <span style={{ fontFamily:T.serif, fontSize:12, fontWeight:600, color:T.gold }}>{i+1}</span>
-                </div>
-                <div>
-                  <p style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T.goldDark, margin:"0 0 2px" }}>{b.beat}</p>
-                  <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, lineHeight:1.55, fontWeight:300, margin:0 }}>{b.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          {/* Worked example */}
-          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:24 }}>
+            <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>The Pixar Framework</div>
+            <h3 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:8 }}>The Pixar Framework</h3>
+            <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:24 }}>Pixar used it for every film. It works because it mirrors how the human brain processes experience.</p>
             <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:14 }}>See it in action — confidence in meetings</div>
             <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
               {[
@@ -5529,50 +5489,72 @@ T.goldDark : T2.text4,
         {/* ── NT (Day 8) Mobile Steps ─────────────────────────────────────── */}
         {isNT && step==="Insight" && (
           <>
-            <div style={{background:T2.cardDark,borderRadius:2,padding:"20px"}}>
-              <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:"rgba(255,255,255,0.88)",lineHeight:1.5,margin:0}}>{lesson.quote}</p>
+            <div style={{position:"relative",borderRadius:4,overflow:"hidden",marginBottom:2}}>
+              <img src="/narrative-transportation.jpg" alt="Turning Stories into Impact" style={{width:"100%",display:"block",maxHeight:200,objectFit:"cover"}}/>
+              <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.78) 0%,transparent 55%)"}}/>
+              <div style={{position:"absolute",bottom:14,left:16,right:16}}>
+                <p style={{fontFamily:T.serif,fontSize:17,fontWeight:600,fontStyle:"italic",color:"#F5EFE6",lineHeight:1.3,margin:0}}>Turning Stories Into Impact</p>
+              </div>
             </div>
             <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>The 6-Beat Framework</div>
-              <img src="/nt-6beat-framework.jpg" alt="6-Beat Framework" style={{width:"100%",borderRadius:4,marginBottom:14,display:"block"}}/>
-              {NT_PIXAR.map((b,i) => (
-                <div key={i} style={{display:"flex",gap:10,padding:"8px 0",borderBottom:i<5?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
-                  <span style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:T.gold,minWidth:120,flexShrink:0}}>{b.beat}</span>
-                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:300,lineHeight:1.5}}>{b.desc}</span>
-                </div>
-              ))}
-            </div>
-            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-              <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Why Stories Work</div>
+              <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:14}}>Why Stories Work</div>
               {NT_NEURO.map((n,i)=>(
-                <div key={i} style={{marginBottom:i<3?12:0,paddingBottom:i<3?12:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
-                  <span style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.goldDark}}>{n.word} — </span>
+                <div key={i} style={{marginBottom:i<3?14:0,paddingBottom:i<3?14:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
+                  <span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.goldDark}}>{n.word} — </span>
                   <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:300}}>{n.body}</span>
                 </div>
               ))}
             </div>
+            <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T.gold,padding:"0 4px"}}>Facts explain. Stories move people.</p>
           </>
         )}
         {isNT && step==="Theory" && (
           <>
             <div style={{position:"relative",borderRadius:4,overflow:"hidden"}}>
-              <img src="/narrative-transportation.jpg" alt="" style={{width:"100%",display:"block",maxHeight:220,objectFit:"cover"}}/>
+              <img src="/nt-6beat-framework.jpg" alt="6-Beat Story Framework" style={{width:"100%",display:"block",maxHeight:220,objectFit:"cover"}}/>
               <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.85) 0%,transparent 55%)"}}/>
               <div style={{position:"absolute",bottom:16,left:16,right:16}}>
-                <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6}}>The Science</div>
-                <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,margin:0}}>When a story is told well, the listener is no longer an observer. They step through the door.</p>
+                <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6}}>The Framework</div>
+                <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,margin:0}}>Every great story follows a learnable pattern.</p>
               </div>
             </div>
             <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The Pixar Framework</div>
-              {NT_PIXAR.map((b,i) => (
-                <div key={i} style={{display:"flex",gap:10,padding:"9px 0",borderBottom:i<5?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
-                  <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,minWidth:130,flexShrink:0}}>{b.beat}</span>
-                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:300,lineHeight:1.5}}>{b.desc}</span>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The 6-Beat Framework</div>
+              {[
+                {n:1,beat:"Hook",         sub:"It starts with tension."},
+                {n:2,beat:"Character",    sub:"Make it human. Make it real."},
+                {n:3,beat:"Problem",      sub:"What broke? What's at stake?"},
+                {n:4,beat:"Turning Point",sub:"What changes? Everything shifts."},
+                {n:5,beat:"Resolution",   sub:"What happened? Why it matters."},
+                {n:6,beat:"Meaning",      sub:"What stayed with us?"},
+              ].map((b,i,arr) => (
+                <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none"}}>
+                  <span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,minWidth:16}}>{b.n}</span>
+                  <span style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,minWidth:100}}>{b.beat}</span>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:300}}>{b.sub}</span>
                 </div>
               ))}
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T.gold,marginTop:14,marginBottom:0}}>No tension = no story.</p>
             </div>
-            <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T.gold,padding:"0 4px"}}>Facts explain. Stories move people.</p>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>The Pixar Framework</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,marginBottom:14}}>Pixar used it for every film. It works because it mirrors how the human brain processes experience.</p>
+              <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>See it in action — confidence in meetings</div>
+              {[
+                {beat:"Once upon a time…",line:"I thought confidence meant sounding polished."},
+                {beat:"Every day…",       line:"I overprepared for meetings."},
+                {beat:"Until one day…",   line:"I completely froze."},
+                {beat:"Because of that…",line:"I changed how I prepared."},
+                {beat:"Because of that…",line:"I focused on clarity, not perfection."},
+                {beat:"Until finally…",  line:"People started listening."},
+              ].map((r,i,arr) => (
+                <div key={i} style={{display:"flex",gap:10,padding:"8px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
+                  <span style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:T.gold,minWidth:130,flexShrink:0}}>{r.beat}</span>
+                  <span style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5}}>{r.line}</span>
+                </div>
+              ))}
+              <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text2,lineHeight:1.6,marginTop:14,marginBottom:0}}>This simple framework works for any story. Now see it in the wild →</p>
+            </div>
           </>
         )}
         {isNT && step==="Example" && (
