@@ -4389,19 +4389,19 @@ setAmbitionSaved(true); } catch {}
           {
             id:"obama", title:"Obama", sub:"Storytelling as Leadership",
             tag:"Leaders don't just communicate facts. They tell stories.",
-            dark:true,
+            dark:false,
             content: (
               <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
-                <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:"rgba(245,239,230,0.45)", marginBottom:20 }}>Storytelling as Leadership</div>
-                <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:32 }}>Leaders don't just communicate facts.<br/>They tell stories.</h2>
+                <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T2.text3, marginBottom:20 }}>Storytelling as Leadership</div>
+                <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, lineHeight:1.2, marginBottom:32 }}>Leaders don't just communicate facts.<br/>They tell stories.</h2>
                 <div style={{ display:"flex", flexDirection:"column", gap:16, marginBottom:32 }}>
                   {["When Barack Obama spoke, he rarely started with policy. He started with people.",
                     "A mother choosing between medicine and groceries. A soldier returning home. A worker trying to keep their family afloat.",
                     "That's what made complex issues feel human. That's what moved people from understanding to action."
-                  ].map((p,i) => <p key={i} style={{ fontFamily:T.serif, fontSize:17, color:"rgba(245,239,230,0.85)", lineHeight:1.75, margin:0 }}>{p}</p>)}
+                  ].map((p,i) => <p key={i} style={{ fontFamily:T.serif, fontSize:17, color:T2.text, lineHeight:1.75, margin:0 }}>{p}</p>)}
                 </div>
-                <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)" }}>
-                  <p style={{ fontFamily:T.serif, fontSize:20, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.5, margin:0 }}>"Stories create empathy. Empathy creates trust. Trust creates influence."</p>
+                <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+                  <p style={{ fontFamily:T.serif, fontSize:20, fontStyle:"italic", color:T2.text, lineHeight:1.5, margin:0 }}>"Stories create empathy. Empathy creates trust. Trust creates influence."</p>
                 </div>
               </div>
             ),
@@ -4461,41 +4461,28 @@ setAmbitionSaved(true); } catch {}
           {
             id:"cyber", title:"Cyber Threat", sub:"The Aftermath + Rewind",
             tag:"Start where most stories end. Then pull the audience back.",
-            dark:true,
+            dark:false,
             content: (
-              <div style={{ maxWidth:560, margin:"0 auto", padding:"0 20px" }}>
-                <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T.gold, marginBottom:16 }}>The Aftermath + Rewind Technique</div>
-                <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:32 }}>A cyber attack is only a click away.</h2>
-                <div style={{ display:"flex", flexDirection:"column", gap:18, marginBottom:32 }}>
-                  {[
-                    "You may remember the opening of 28 Days Later — a world already broken. Silence where there should be life. Chaos after collapse.",
-                    "Cyber incidents often feel the same.",
-                    "We see headlines. Stock markets falling. Systems offline. Organisations in crisis.",
-                    "But that's never where the real story begins.",
-                    "So today, let's rewind.",
-                  ].map((p,i) => (
-                    <p key={i} style={{ fontFamily:T.serif, fontSize:17, color:"rgba(245,239,230,0.88)", lineHeight:1.75, margin:0 }}>{p}</p>
-                  ))}
-                  <div style={{ padding:"16px 0", borderTop:"1px solid rgba(255,255,255,0.07)", borderBottom:"1px solid rgba(255,255,255,0.07)" }}>
-                    <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.4, margin:0 }}>24 hours earlier.</p>
+              <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
+                <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T2.text3, marginBottom:20 }}>The Aftermath + Rewind Technique</div>
+                <h2 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, lineHeight:1.2, marginBottom:28 }}>Aftermath + Rewind</h2>
+                <div style={{ padding:"18px 22px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:24 }}>
+                  <p style={{ fontFamily:T.serif, fontSize:19, fontStyle:"italic", color:T2.text, lineHeight:1.5, margin:0 }}>"Our entire network went dark at 3am on Tuesday."</p>
+                </div>
+                <p style={{ fontFamily:T.serif, fontSize:15, color:T2.text, lineHeight:1.75, marginBottom:16 }}>The executive started with the crisis. Systems frozen. Data locked. Clients panicking.</p>
+                <p style={{ fontFamily:T.serif, fontSize:15, color:T2.text, lineHeight:1.75, marginBottom:24 }}>Then she rewound: <em>"24 hours earlier, everything was normal. Let me show you the one click that changed everything."</em></p>
+                <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:24 }}>
+                  <div style={{ padding:"14px 18px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                    <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T.goldDark, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:6 }}>Why It Works</div>
+                    <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.65, margin:0 }}>Starting with aftermath creates instant tension. The rewind builds suspense — people lean in, desperate to know how it happened.</p>
                   </div>
-                  {[
-                    "Before the disruption. Before the panic. Before emergency calls.",
-                    "Because the most alarming part of a cyber attack…",
-                    "…is that it usually begins on what feels like a completely normal day.",
-                    "A busy morning. Tight deadlines. An email that looks legitimate. A quick click.",
-                    "And from that moment, everything else is just dominoes.",
-                  ].map((p,i) => (
-                    <p key={i} style={{ fontFamily:T.serif, fontSize:17, color:"rgba(245,239,230,0.88)", lineHeight:1.75, margin:0 }}>{p}</p>
-                  ))}
+                  <div style={{ padding:"14px 18px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                    <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T.goldDark, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:6 }}>The Technique</div>
+                    <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.65, margin:0 }}>Like <em>28 Days Later</em>: show the devastation first, then rewind to reveal how we got here. The audience is on the edge of their seat.</p>
+                  </div>
                 </div>
-                <div style={{ padding:"18px 22px", background:"rgba(255,255,255,0.04)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.5)", marginBottom:28 }}>
-                  <div style={{ fontFamily:T.sans, fontSize:10, color:T.gold, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:10 }}>Why this works</div>
-                  <p style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.72)", lineHeight:1.7, margin:"0 0 10px" }}>Instead of opening with facts about cyber risk, you begin in the aftermath — creating immediate emotional engagement — then rewind to show how we got there.</p>
-                  <p style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.72)", lineHeight:1.7, margin:0 }}>The audience goes on a journey. They feel the tension. They understand the stakes.</p>
-                </div>
-                <div style={{ padding:"16px 20px", borderLeft:"2px solid rgba(138,158,132,0.5)" }}>
-                  <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", lineHeight:1.65, margin:0 }}>The Aftermath + Rewind: Start where most stories end, then pull your audience back to understand how we arrived. Cinematic storytelling transforms dry topics into compelling narratives.</p>
+                <div style={{ padding:"16px 20px", borderLeft:"2px solid "+T.gold }}>
+                  <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text2, lineHeight:1.65, margin:0 }}>When stakes are high, start at the end. Then take them back to the beginning. The tension is unbearable — and unforgettable.</p>
                 </div>
               </div>
             ),
@@ -4506,14 +4493,14 @@ setAmbitionSaved(true); } catch {}
           <>
             {/* Full-screen overlay */}
             {openCard && (
-              <div style={{ position:"fixed", inset:0, zIndex:600, background: openCard.dark ? "rgba(14,11,8,0.97)" : "rgba(247,243,236,0.97)", backdropFilter:"blur(12px)", overflowY:"auto", animation:"fadeIn 0.25s ease both" }}>
+              <div style={{ position:"fixed", inset:0, zIndex:600, background:"rgba(247,243,236,0.97)", backdropFilter:"blur(12px)", overflowY:"auto", animation:"fadeIn 0.25s ease both" }}>
                 {/* Close button — always visible at top right */}
-                <button onClick={() => setNtOpenCard(null)} style={{ position:"fixed", top:20, right:24, width:40, height:40, borderRadius:"50%", border:"1px solid "+(openCard.dark?"rgba(255,255,255,0.18)":T2.border), background: openCard.dark ? "rgba(14,11,8,0.7)" : "rgba(247,243,236,0.8)", backdropFilter:"blur(8px)", color:openCard.dark?"rgba(255,255,255,0.7)":T2.text3, fontSize:20, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans, zIndex:10 }}>×</button>
+                <button onClick={() => setNtOpenCard(null)} style={{ position:"fixed", top:20, right:24, width:40, height:40, borderRadius:"50%", border:"1px solid "+T2.border, background:"rgba(247,243,236,0.85)", backdropFilter:"blur(8px)", color:T2.text3, fontSize:20, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans, zIndex:10 }}>×</button>
                 {/* Scrollable content — padding top ensures headline never hides behind nav */}
                 <div style={{ padding:"96px 24px 72px", minHeight:"100%", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"flex-start", animation:"fadeUp 0.3s ease both" }}>
                   {openCard.content}
                   <div style={{ textAlign:"center", marginTop:36 }}>
-                    <button onClick={() => setNtOpenCard(null)} style={{ padding:"10px 24px", borderRadius:4, border:"1px solid "+(openCard.dark?"rgba(255,255,255,0.2)":T2.border), background:"transparent", color:openCard.dark?"rgba(245,239,230,0.6)":T2.text3, fontSize:12, cursor:"pointer", fontFamily:T.sans }}>← Back to examples</button>
+                    <button onClick={() => setNtOpenCard(null)} style={{ padding:"10px 24px", borderRadius:4, border:"1px solid "+T2.border, background:"transparent", color:T2.text3, fontSize:12, cursor:"pointer", fontFamily:T.sans }}>← Back to examples</button>
                   </div>
                 </div>
               </div>
