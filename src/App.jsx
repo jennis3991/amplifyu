@@ -4816,10 +4816,12 @@ setAmbitionSaved(true); } catch {}
               <div style={{ ...RP_LABEL, color: T2.text3, marginBottom: 18 }}>Today's Insight</div>
               <p style={{ fontFamily: T.serif, fontSize: 21, fontWeight: 400, color: T2.text, lineHeight: 1.6, letterSpacing: "-0.3px" }}>{lesson.insight}</p>
             </div>
-            <div style={{ borderLeft: "2px solid " + T.gold, paddingLeft: 22 }}>
-              <div style={{ ...RP_LABEL, color: T.goldDark, marginBottom: 10 }}>PIE Connection</div>
-              <p style={{ fontFamily: T.sans, fontSize: 14, color: T2.text3, lineHeight: 1.75, fontWeight: 300 }}>{lesson.pieLink}</p>
-            </div>
+            {lesson.day !== 1 && (
+              <div style={{ borderLeft: "2px solid " + T.gold, paddingLeft: 22 }}>
+                <div style={{ ...RP_LABEL, color: T.goldDark, marginBottom: 10 }}>PIE Connection</div>
+                <p style={{ fontFamily: T.sans, fontSize: 14, color: T2.text3, lineHeight: 1.75, fontWeight: 300 }}>{lesson.pieLink}</p>
+              </div>
+            )}
           </div>
         )}
 
@@ -5665,14 +5667,12 @@ Insight</div>
               <p
 style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.insight}</p>
             </div>
-            <div
-style={{background:T2.goldLight,borderRadius:0,borderLeft:"2px solid "+T.gold,padding:"14px 16px"}}>
-              <div
-style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>PIE
-Connection</div>
-              <p
-style={{margin:0,fontSize:13,color:T.goldDark,lineHeight:1.55}}>{lesson.pieLink}</p>
-            </div>
+            {lesson.day !== 1 && (
+              <div style={{background:T2.goldLight,borderRadius:0,borderLeft:"2px solid "+T.gold,padding:"14px 16px"}}>
+                <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>PIE Connection</div>
+                <p style={{margin:0,fontSize:13,color:T.goldDark,lineHeight:1.55}}>{lesson.pieLink}</p>
+              </div>
+            )}
           </>
         )}
 
@@ -7708,6 +7708,8 @@ reset</button>
     subtitle: "Richard Feynman, Nobel Physicist",
     captionLabel: "The Feynman Technique",
     captionText: "Understand it. Explain it simply. Find the gaps. Refine until nothing hides.",
+    imgFilter: "brightness(1.55) contrast(1.08) saturate(1.1)",
+    imgObjectPosition: "center 20%",
   },
     2: {
     image: "/cognitive-load.jpg",
@@ -7891,8 +7893,7 @@ lineHeight: 1.5, margin: 0, color: "rgba(255,250,242,0.95)" }}>
 
       <div style={{ position: "relative", margin: "0 20px 16px", 
 borderRadius: 14, overflow: "hidden", boxShadow: "0 4px 16px rgba(17,28,46,0.18)" }}>
-        <img src={image.image} alt={image.alt} style={{ width: "100%", 
-display: "block", aspectRatio: "1 / 1", objectFit: "cover" }} />
+        <img src={image.image} alt={image.alt} style={{ width: "100%", display: "block", aspectRatio: "1 / 1", objectFit: "cover", objectPosition: image.imgObjectPosition || "center", filter: image.imgFilter || "none" }} />
         {image.captionPosition !== "above" && (
           <>
             <div style={{ position: "absolute", left: 0, right: 0, bottom: 
