@@ -7709,7 +7709,7 @@ reset</button>
     captionLabel: "The Feynman Technique",
     captionText: "Understand it. Explain it simply. Find the gaps. Refine until nothing hides.",
     imgFilter: "brightness(4) contrast(0.9) saturate(0.95)",
-    imgOverlay: "rgba(255,255,255,0.55)",
+    imgOverlay: "rgba(255,255,255,0.75)",
     imgObjectPosition: "center 20%",
   },
     2: {
