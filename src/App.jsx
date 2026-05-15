@@ -2057,19 +2057,6 @@ function ReflectionScreen({ answers, onContinue }) {
           </div>
         </div>
 
-        {/* Key Focus Areas */}
-        <div style={{ padding: "18px 20px", background: T.bg, borderRadius: 8, border: "0.5px solid " + T.border }}>
-          <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 14, fontFamily: T.sans }}>Your Key Focus Areas</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {focusAreas.slice(0, 3).map((area) => (
-              <div key={area} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ fontSize: 11, color: T.gold, fontWeight: 500, fontFamily: T.sans, flexShrink: 0 }}>→</div>
-                <span style={{ fontFamily: T.serif, fontSize: 15, color: T.text, letterSpacing: "-0.2px" }}>{area}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Programme preview */}
         <div style={{ borderTop: "1px solid " + T.divider, paddingTop: 20 }}>
           <div style={{ fontSize: 9, color: T.text3, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 12, fontFamily: T.sans }}>Your Programme</div>
