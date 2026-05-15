@@ -7708,7 +7708,7 @@ reset</button>
     subtitle: "Richard Feynman, Nobel Physicist",
     captionLabel: "The Feynman Technique",
     captionText: "Understand it. Explain it simply. Find the gaps. Refine until nothing hides.",
-    imgFilter: "brightness(1.55) contrast(1.08) saturate(1.1)",
+    imgFilter: "brightness(2.1) contrast(1.05) saturate(1.05)",
     imgObjectPosition: "center 20%",
   },
     2: {
