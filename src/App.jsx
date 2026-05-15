@@ -7708,8 +7708,7 @@ reset</button>
     subtitle: "Richard Feynman, Nobel Physicist",
     captionLabel: "The Feynman Technique",
     captionText: "Understand it. Explain it simply. Find the gaps. Refine until nothing hides.",
-    imgFilter: "brightness(4) contrast(0.9) saturate(0.95)",
-    imgOverlay: "rgba(255,255,255,0.75)",
+    captionPosition: "above",
     imgObjectPosition: "center 20%",
   },
     2: {
@@ -7894,8 +7893,7 @@ lineHeight: 1.5, margin: 0, color: "rgba(255,250,242,0.95)" }}>
 
       <div style={{ position: "relative", margin: "0 20px 16px", 
 borderRadius: 14, overflow: "hidden", boxShadow: "0 4px 16px rgba(17,28,46,0.18)" }}>
-        <img src={image.image} alt={image.alt} style={{ width: "100%", display: "block", aspectRatio: "1 / 1", objectFit: "cover", objectPosition: image.imgObjectPosition || "center", filter: image.imgFilter || "none" }} />
-        {image.imgOverlay && <div style={{ position: "absolute", inset: 0, background: image.imgOverlay, pointerEvents: "none" }} />}
+        <img src={image.image} alt={image.alt} style={{ width: "100%", display: "block", aspectRatio: "1 / 1", objectFit: "cover", objectPosition: image.imgObjectPosition || "center" }} />
         {image.captionPosition !== "above" && (
           <>
             <div style={{ position: "absolute", left: 0, right: 0, bottom: 
