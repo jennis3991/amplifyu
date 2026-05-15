@@ -1227,7 +1227,7 @@ const LESSONS = [
 const ROLES = [
   {id:"individual",label:"Individual Contributor",icon:"◆",examples:"Analyst · Architect · Risk Advisor · Specialist",pieEmphasis:"Exposure is the lever most individual contributors are underusing. Your work is excellent — the gap is making sure the right people know it.",challenge:"Making complex thinking land with people who don't share your technical frame."},
   {id:"delivery",label:"Project / Programme Leader",icon:"▲",examples:"Project Manager · Programme Manager · Delivery Lead",pieEmphasis:"Performance and Image are your foundations — but Exposure to senior sponsors is what turns good delivery into career momentum.",challenge:"Communicating under pressure, managing upward, and making uncertainty sound like control."},
-  {id:"people",label:"People Leader",icon:"●",examples:"Team Lead · Line Manager · Head of",pieEmphasis:"Image is built in the small moments — how you give feedback, how you show up in 1:1s, how your team experiences you under pressure.",challenge:"Feedback, advocacy for your team, and owning the room when you're representing others."},
+  {id:"people",label:"People Leader",icon:"●",examples:"Team Leader · Line Manager · Head of",pieEmphasis:"Image is built in the small moments — how you give feedback, how you show up in 1:1s, how your team experiences you under pressure.",challenge:"Feedback, advocacy for your team, and owning the room when you're representing others."},
   {id:"senior",label:"Senior Leader",icon:"★",examples:"Director · VP · C-Suite · Partner",pieEmphasis:"At your level, Image — specifically economy of language and strategic framing — is often the gap between good leaders and great ones.",challenge:"Saying more with less, owning the room without over-explaining, and making every word count."},
 ];
 
@@ -1984,7 +1984,7 @@ function ReflectionScreen({ answers, onContinue }) {
         setReflection(parsed);
       } catch (_) {
         setReflection({
-          summary: "Here is what we are seeing — you want to " + contextLabel.toLowerCase().replace(/^telling /,"tell ").replace(/^building /,"build ").replace(/^influencing /,"influence ").replace(/^navigating /,"navigate ") + ", but " + challengeLabel.toLowerCase() + " is standing in the way. That gap between your capability and how you're showing up is exactly where AmplifyU works. You already have more than most people start with.",
+          summary: "Here is what we are seeing — you want to " + contextLabel.toLowerCase().replace(/^telling /,"tell ").replace(/^building /,"build ").replace(/^influencing /,"influence ").replace(/^navigating /,"navigate ").replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + ", but " + challengeLabel.toLowerCase().replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + " is standing in the way. That gap between your capability and how you're showing up is exactly where AmplifyU works. You already have more than most people start with.",
           motivation: "The fact that you can name what's holding you back means you're thinking more clearly about this than most. " + (answers.role === "senior" ? "At your level, the difference between good and exceptional is almost never about knowledge — it's about how you land what you know." : "The skills you're building — clarity, presence, story — are the ones that open the doors that matter.") + " Your growth in this area will compound in ways you can't yet see.",
           forward: "Here is where we will take you — 14 sessions built for someone at your stage, with scenarios drawn from your world as " + roleLabel + ". You will build the communication habits, personal brand, and visibility that turn your real capability into the career you are ready for.",
         });
@@ -2057,24 +2057,16 @@ function ReflectionScreen({ answers, onContinue }) {
           </div>
         </div>
 
-        {/* PIE emphasis */}
-        <div style={{ padding: "18px 20px", background: T.card, borderRadius: 8, border: "1px solid " + T.border }}>
-          <div style={{ fontSize: 9, color: T.text3, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 14, fontFamily: T.sans }}>Your PIE Priority</div>
-          <div style={{ display: "flex", gap: 6 }}>
-            {["Performance", "Image", "Exposure"].map((p) => {
-              const isKey = pieEmphasis.includes(p);
-              return (
-                <div key={p} style={{
-                  flex: 1, padding: "10px 8px", textAlign: "center",
-                  background: isKey ? "rgba(138,158,132,0.1)" : "transparent",
-                  border: "1px solid " + (isKey ? "rgba(138,158,132,0.3)" : T.border),
-                  borderRadius: 5,
-                }}>
-                  <div style={{ fontFamily: T.serif, fontSize: 17, fontWeight: 500, color: isKey ? T.gold : T.text3, lineHeight: 1 }}>{p[0]}</div>
-                  <div style={{ fontSize: 9, color: isKey ? T.goldDark : T.text4, marginTop: 4, fontFamily: T.sans }}>{p}</div>
-                </div>
-              );
-            })}
+        {/* Key Focus Areas */}
+        <div style={{ padding: "18px 20px", background: T.bg, borderRadius: 8, border: "0.5px solid " + T.border }}>
+          <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 14, fontFamily: T.sans }}>Your Key Focus Areas</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {focusAreas.slice(0, 3).map((area) => (
+              <div key={area} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ fontSize: 11, color: T.gold, fontWeight: 500, fontFamily: T.sans, flexShrink: 0 }}>→</div>
+                <span style={{ fontFamily: T.serif, fontSize: 15, color: T.text, letterSpacing: "-0.2px" }}>{area}</span>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -2405,7 +2397,7 @@ function Onboarding({onDone}) {
           }}>
             {/* Brand mark */}
             <div style={{
-              fontSize: 10, letterSpacing: "6px", textTransform: "uppercase",
+              fontSize: 12, letterSpacing: "6px", textTransform: "uppercase",
               color: T.gold, fontFamily: T.sans, fontWeight: 500,
               marginBottom: 52,
             }}>AmplifyU</div>
@@ -2419,7 +2411,7 @@ function Onboarding({onDone}) {
               letterSpacing: "-2px",
               marginBottom: 28,
             }}>
-              The space to become who you've always been capable of being.
+              The space to become who you've always been capable of.
             </h1>
 
             {/* Thin gold rule */}
@@ -2683,9 +2675,9 @@ function Onboarding({onDone}) {
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(6,5,3,0.5) 100%)" }}/>
         {/* Content */}
         <div style={{ position:"relative", zIndex:2, textAlign:"center", maxWidth:380, padding:"0 32px", animation:"fadeUp 1s cubic-bezier(0.25,0.46,0.45,0.94) 0.3s both" }}>
-          <div style={{ fontSize:10, letterSpacing:"6px", textTransform:"uppercase", color:T.gold, fontFamily:T.sans, fontWeight:500, marginBottom:40 }}>AmplifyU</div>
+          <div style={{ fontSize:12, letterSpacing:"6px", textTransform:"uppercase", color:T.gold, fontFamily:T.sans, fontWeight:500, marginBottom:40 }}>AmplifyU</div>
           <h1 style={{ fontFamily:T.serif, fontSize:"clamp(32px,8vw,52px)", fontWeight:500, lineHeight:1.1, color:"rgba(255,255,255,0.93)", letterSpacing:"-1.5px", marginBottom:24 }}>
-            The space to become who you've always been capable of being.
+            The space to become who you've always been capable of.
           </h1>
           <div style={{ width:32, height:1, background:T.gold, margin:"0 auto 22px", opacity:0.6 }}/>
           <p style={{ fontSize:14, color:"rgba(255,255,255,0.38)", lineHeight:1.75, marginBottom:48, fontFamily:T.sans, fontWeight:300 }}>
