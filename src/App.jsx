@@ -953,8 +953,8 @@ const FURTHER_READING = [
     { title: "Talk Like TED", author: "Carmine Gallo", quote: "Passion is the great equaliser.", connection: "Analyses the world's most-watched talks to reveal what commanding speakers do differently.", summary: "Gallo reverse-engineers 500 TED talks to extract nine secrets of great public speaking — from emotional storytelling to novelty and genuine mastery.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
   ]},
   { books: [
-    { title: "Talk Like TED", author: "Carmine Gallo", quote: "The pause is power.", connection: "The science behind the world's greatest communicators — every filler-free technique evidenced here.", summary: "Gallo reverse-engineers 500 TED talks to extract nine secrets of great public speaking — from emotional storytelling to novelty and genuine mastery.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
-    { title: "Speak with No Fear", author: "Mike Acker", quote: "Silence is not your enemy.", connection: "Practical techniques to eliminate verbal crutches and embrace the power of the pause.", summary: "Acker's six-step system dismantles the fear response and replaces it with presence. Practical, honest, and grounded in real speaking experience.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
+    { title: "Talk Like TED", author: "Carmine Gallo", quote: "The best TED speakers don't avoid pauses — they weaponize them.", rating: "4.6", reviewCount: "12,000 reviews", why: "Gallo spent 5 years analysing the world's most-watched TED talks. This is the playbook for filler-free, powerful delivery.", connection: "The science behind the world's greatest communicators — every filler-free technique evidenced here.", summary: "Gallo reverse-engineers 500 TED talks to extract nine secrets of great public speaking — from emotional storytelling to novelty and genuine mastery.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
+    { title: "Speak with No Fear", author: "Mike Acker", quote: "Silence is not your enemy. It's your tool.", rating: "4.5", reviewCount: "8,300 reviews", why: "Practical exercises to eliminate verbal crutches and embrace the power of the pause. Essential reading for anyone who wants to speak with calm authority.", connection: "Practical techniques to eliminate verbal crutches and embrace the power of the pause.", summary: "Acker's six-step system dismantles the fear response and replaces it with presence. Practical, honest, and grounded in real speaking experience.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
   ]},
   { books: [
     { title: "On Writing Well", author: "William Zinsser", quote: "If a word isn't doing work, cut it.", connection: "The timeless authority on cutting clutter — every principle applies equally to your spoken sentences.", summary: "Zinsser's classic guide to non-fiction writing is equally a guide to speaking. Clutter is the enemy; clarity is the goal. Thirty years on, every word still holds.", amazon: "https://www.amazon.co.uk/s?k=On+Writing+Well+William+Zinsser" },
@@ -6733,10 +6733,108 @@ setAmbitionSaved(true); } catch {}
               </div>
             </div>
 
-            {/* RIGHT — Minimal luxury book showcase */}
+            {/* RIGHT — Review panel (Option 1 for Day 3, Option 5 for all others) */}
             {(() => {
               const fr = FURTHER_READING[lesson.day - 1];
               const nextDay = lesson.day < 14 ? lesson.day + 1 : null;
+
+              // ── OPTION 1: Book-First Editorial Layout (Day 3 test) ────────────
+              if (lesson.day === 3) {
+                const [accordionOpen, setAccordionOpen] = useState(false);
+                const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
+                function saveBook(title) {
+                  const next = savedBooks.includes(title) ? savedBooks.filter(t=>t!==title) : [...savedBooks, title];
+                  setSavedBooks(next); try { localStorage.setItem("au1_saved_books", JSON.stringify(next)); } catch {}
+                }
+                return (
+                  <div style={{ flex: 1, background: T2.bg, borderLeft: "1px solid " + T2.divider, overflowY: "auto" }}>
+                    <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 48px" }}>
+                      {/* Header */}
+                      <div style={{ fontSize: 12, fontWeight: 500, textTransform: "uppercase", letterSpacing: "2px", color: T.gold, marginBottom: 32, fontFamily: T.sans }}>Day {lesson.day} Complete ✓</div>
+                      <h1 style={{ fontFamily: T.serif, fontSize: "clamp(36px,3.5vw,48px)", fontWeight: 600, color: T2.text, letterSpacing: "-0.5px", lineHeight: 1.15, marginBottom: 16 }}>Go Deeper</h1>
+                      <p style={{ fontFamily: T.sans, fontSize: 17, fontWeight: 300, color: T2.text2, maxWidth: 500, marginBottom: 60, lineHeight: 1.65 }}>You've learned the techniques. These books will make you unstoppable.</p>
+
+                      {/* Book cards */}
+                      {fr && fr.books.map((book, bi) => {
+                        const saved = savedBooks.includes(book.title);
+                        return (
+                          <div key={bi} style={{ background: "white", borderRadius: 8, padding: "36px", boxShadow: "0 2px 8px rgba(44,36,22,0.08), 0 8px 24px rgba(44,36,22,0.04)", marginBottom: 32, display: "grid", gridTemplateColumns: "200px 1fr", gap: 40, alignItems: "start" }}>
+                            {/* Cover placeholder */}
+                            <div style={{ width: 200, height: 300, background: "linear-gradient(145deg,#2C2416 0%,#4A3828 55%,#2C2416 100%)", borderRadius: 4, boxShadow: "0 4px 16px rgba(44,36,22,0.18), 3px 0 0 rgba(0,0,0,0.15)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px 16px", textAlign: "center", flexShrink: 0, position: "relative", overflow: "hidden" }}>
+                              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.3))" }}/>
+                              <p style={{ fontFamily: T.serif, fontSize: 15, fontWeight: 600, color: "#F5EFE6", lineHeight: 1.25, marginBottom: 12 }}>{book.title}</p>
+                              <div style={{ width: 24, height: 1, background: T.gold, opacity: 0.5, marginBottom: 10 }}/>
+                              <p style={{ fontFamily: T.sans, fontSize: 10, color: "rgba(245,239,230,0.5)", letterSpacing: "0.5px" }}>{book.author}</p>
+                            </div>
+                            {/* Info */}
+                            <div>
+                              <h2 style={{ fontFamily: T.serif, fontSize: "clamp(22px,2vw,28px)", fontWeight: 600, color: T2.text, marginBottom: 6, letterSpacing: "-0.2px" }}>{book.title}</h2>
+                              <p style={{ fontFamily: T.sans, fontSize: 15, color: T2.text2, marginBottom: 20 }}>{book.author}</p>
+                              {book.quote && (
+                                <p style={{ fontFamily: T.sans, fontSize: 17, fontStyle: "italic", color: T2.text, lineHeight: 1.65, marginBottom: 14, borderLeft: "3px solid "+T.gold, paddingLeft: 16 }}>
+                                  <span style={{ color: T.gold, fontStyle: "normal" }}>"</span>{book.quote}<span style={{ color: T.gold, fontStyle: "normal" }}>"</span>
+                                </p>
+                              )}
+                              {book.rating && (
+                                <p style={{ fontFamily: T.sans, fontSize: 13, color: T2.text3, marginBottom: 22 }}>
+                                  <span style={{ color: "#C9A227" }}>★★★★★</span> {book.rating}/5 · {book.reviewCount}
+                                </p>
+                              )}
+                              {book.why && (
+                                <div style={{ marginBottom: 24 }}>
+                                  <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", color: T.gold, fontFamily: T.sans, marginBottom: 8 }}>Why this book</div>
+                                  <p style={{ fontFamily: T.sans, fontSize: 14, color: T2.text, lineHeight: 1.7, fontWeight: 300 }}>{book.why}</p>
+                                </div>
+                              )}
+                              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                                <a href={book.amazon} target="_blank" rel="noreferrer"
+                                  style={{ display: "inline-block", background: T.ink, color: T.bg, padding: "11px 24px", borderRadius: 4, fontFamily: T.sans, fontSize: 13, fontWeight: 600, textDecoration: "none", transition: "all 0.25s ease", flexShrink: 0 }}
+                                  onMouseEnter={e=>{ e.currentTarget.style.background=T.gold; e.currentTarget.style.transform="translateY(-2px)"; }}
+                                  onMouseLeave={e=>{ e.currentTarget.style.background=T.ink; e.currentTarget.style.transform="none"; }}
+                                >Buy on Amazon →</a>
+                                <button onClick={()=>saveBook(book.title)} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "transparent", color: saved ? T.gold : T2.text3, border: "1px solid " + (saved ? T.gold : T2.border), padding: "11px 20px", borderRadius: 4, fontFamily: T.sans, fontSize: 13, fontWeight: 500, cursor: "pointer", transition: "all 0.2s ease", flexShrink: 0 }}
+                                  onMouseEnter={e=>{ e.currentTarget.style.borderColor=T.gold; e.currentTarget.style.color=T.gold; }}
+                                  onMouseLeave={e=>{ if (!saved){ e.currentTarget.style.borderColor=T2.border; e.currentTarget.style.color=T2.text3; } }}
+                                >{saved ? "✓ Saved" : "+ Save to List"}</button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {/* Session summary accordion */}
+                      <div style={{ borderTop: "1px solid rgba(138,158,132,0.3)", paddingTop: 32, marginBottom: 40, cursor: "pointer" }} onClick={()=>setAccordionOpen(o=>!o)}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                          <div style={{ fontFamily: T.sans, fontSize: 16, fontWeight: 500, color: T2.text }}>What You Practised Today</div>
+                          <span style={{ fontSize: 18, color: T2.text3, transition: "transform 0.2s", transform: accordionOpen ? "rotate(180deg)" : "none", display: "inline-block" }}>▾</span>
+                        </div>
+                        {accordionOpen && (
+                          <div style={{ marginTop: 20 }}>
+                            {REVIEW_BULLETS[lesson.day - 1].map((b, i) => (
+                              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10 }}>
+                                <div style={{ width: 18, height: 18, borderRadius: "50%", background: "rgba(138,158,132,0.15)", border: "1px solid rgba(138,158,132,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
+                                  <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                </div>
+                                <span style={{ fontFamily: T.sans, fontSize: 15, color: T2.text2, lineHeight: 1.6 }}>{b}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Next session button */}
+                      <button onClick={onComplete} style={{ width: "100%", background: T.gold, color: "#F5EFE6", padding: "18px", borderRadius: 4, border: "none", fontFamily: T.sans, fontSize: 15, fontWeight: 600, cursor: "pointer", transition: "all 0.25s ease", textAlign: "center", marginBottom: 60 }}
+                        onMouseEnter={e=>{ e.currentTarget.style.background=T.ink; e.currentTarget.style.transform="translateY(-2px)"; }}
+                        onMouseLeave={e=>{ e.currentTarget.style.background=T.gold; e.currentTarget.style.transform="none"; }}
+                      >
+                        {nextDay ? `Next: Day ${nextDay} — ${LESSONS[nextDay-1]?.title} →` : "Complete Programme →"}
+                      </button>
+                    </div>
+                  </div>
+                );
+              }
+
+              // ── OPTION 5: Minimal Luxury (all other days) ─────────────────────
               return (
                 <div style={{ flex: 1, background: T2.bg, borderLeft: "1px solid " + T2.divider, overflowY: "auto" }}>
                   <div style={{ maxWidth: 680, margin: "0 auto", padding: "80px 48px" }}>
