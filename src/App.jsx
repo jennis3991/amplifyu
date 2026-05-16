@@ -4811,8 +4811,7 @@ setAmbitionSaved(true); } catch {}
         </>;
         if (step === "Insight") return (
           <div style={d1Dark}>
-            <img src="/home-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
-            <div style={{ position:"absolute", inset:0, background:"rgba(247,243,236,0.1)" }}/>
+            <img src="/day1-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
             {d1Overlay}
             <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
               <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:16 }}>
