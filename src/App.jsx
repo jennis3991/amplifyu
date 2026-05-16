@@ -4243,8 +4243,8 @@ setAmbitionSaved(true); } catch {}
         </>;
         if (step === "Insight") return (
           <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-            {/* No overlays — paper text must be fully readable */}
-            <img src="/day4-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+            {/* No overlays — full image visible, no cropping */}
+            <img src="/day4-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain", objectPosition:"center", background:"#1A1510" }}/>
             {/* Minimal top gradient for label only */}
             <div style={{ position:"absolute", top:0, left:0, right:0, height:"25%", background:"linear-gradient(to bottom, rgba(10,8,5,0.5) 0%, transparent 100%)", pointerEvents:"none" }}/>
             <div style={{ position:"absolute", top:36, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", display:"flex", alignItems:"center", justifyContent:"space-between", right:48 }}>
@@ -4257,8 +4257,8 @@ setAmbitionSaved(true); } catch {}
           <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
             {(() => { const img = THEORY_IMAGES[4]; return img ? (
               <>
-                {/* No dark veil — image at full brightness */}
-                <img src={img.image} alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:img.imgObjectPosition||"center", filter:"brightness(1.2)" }}/>
+                {/* No dark veil — full image visible, no cropping */}
+                <img src={img.image} alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain", objectPosition:"center", filter:"brightness(1.2)", background:"#1C1A17" }}/>
                 {/* Minimal top gradient for label only */}
                 <div style={{ position:"absolute", top:0, left:0, right:0, height:"28%", background:"linear-gradient(to bottom, rgba(10,8,5,0.5) 0%, transparent 100%)", pointerEvents:"none" }}/>
                 <div style={{ position:"absolute", top:36, left:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
