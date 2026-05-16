@@ -5269,12 +5269,12 @@ setAmbitionSaved(true); } catch {}
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
                 {D10_EXAMPLES_DATA.map(card=>(
                   <button key={card.id} onClick={()=>setD10Card(card.id)}
-                    style={{padding:"20px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",transition:"all 0.2s ease",minHeight:100}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
-                    onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
-                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,letterSpacing:"-0.2px",marginBottom:4}}>{card.title}</div>
-                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.goldDark,marginBottom:8}}>{card.sub}</div>
-                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontStyle:"italic"}}>{card.tag}</div>
+                    style={{padding:"28px 24px",borderRadius:4,background:"rgba(255,255,255,0.8)",borderLeft:"4px solid "+T.gold,cursor:"pointer",textAlign:"left",transition:"all 0.25s ease",minHeight:110,boxShadow:"0 1px 4px rgba(44,36,22,0.06)"}}
+                    onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
+                    onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.8)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(44,36,22,0.06)";}}>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:10,lineHeight:1.15}}>{card.title}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>{card.sub}</div>
+                    <div style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:300}}>{card.tag}</div>
                   </button>
                 ))}
               </div>
@@ -5335,8 +5335,8 @@ setAmbitionSaved(true); } catch {}
               {n:4,title:"Make the case for your next opportunity",sub:"Connect your track record to what comes next."},
             ].map((sc,i)=>(
               <button key={i} onClick={()=>setSimInput(sc.title+": ")} style={{padding:"14px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.18s ease"}}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
+                onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
+                onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.8)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(44,36,22,0.06)";}}>
                 <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:3}}>{sc.n}. {sc.title}</div>
                 <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{sc.sub}</div>
               </button>
@@ -5425,12 +5425,12 @@ setAmbitionSaved(true); } catch {}
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
                 {D3_EXAMPLES_DATA.map(card=>(
                   <button key={card.id} onClick={()=>setD3Card(card.id)}
-                    style={{padding:"20px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",transition:"all 0.2s ease",minHeight:100}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
-                    onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
-                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,letterSpacing:"-0.2px",marginBottom:4}}>{card.title}</div>
-                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.goldDark,marginBottom:8}}>{card.sub}</div>
-                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontStyle:"italic"}}>{card.tag}</div>
+                    style={{padding:"28px 24px",borderRadius:4,background:"rgba(255,255,255,0.8)",borderLeft:"4px solid "+T.gold,cursor:"pointer",textAlign:"left",transition:"all 0.25s ease",minHeight:110,boxShadow:"0 1px 4px rgba(44,36,22,0.06)"}}
+                    onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
+                    onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.8)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(44,36,22,0.06)";}}>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:10,lineHeight:1.15}}>{card.title}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>{card.sub}</div>
+                    <div style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:300}}>{card.tag}</div>
                   </button>
                 ))}
               </div>
@@ -5483,8 +5483,8 @@ setAmbitionSaved(true); } catch {}
               {n:4,title:"Deliver instructions that are filler-free",sub:"Clear. Confident. Direct."},
             ].map((sc,i)=>(
               <button key={i} onClick={()=>setSimInput(sc.title+": ")} style={{padding:"14px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.18s ease"}}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
+                onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
+                onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.8)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(44,36,22,0.06)";}}>
                 <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:3}}>{sc.n}. {sc.title}</div>
                 <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{sc.sub}</div>
               </button>
@@ -5592,12 +5592,12 @@ setAmbitionSaved(true); } catch {}
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
                 {D4_EXAMPLES_DATA.map(card=>(
                   <button key={card.id} onClick={()=>setD4Card(card.id)}
-                    style={{padding:"20px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",transition:"all 0.2s ease",minHeight:100}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
-                    onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
-                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,letterSpacing:"-0.2px",marginBottom:4}}>{card.title}</div>
-                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.goldDark,marginBottom:8}}>{card.sub}</div>
-                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontStyle:"italic"}}>{card.tag}</div>
+                    style={{padding:"28px 24px",borderRadius:4,background:"rgba(255,255,255,0.8)",borderLeft:"4px solid "+T.gold,cursor:"pointer",textAlign:"left",transition:"all 0.25s ease",minHeight:110,boxShadow:"0 1px 4px rgba(44,36,22,0.06)"}}
+                    onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
+                    onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.8)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(44,36,22,0.06)";}}>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:10,lineHeight:1.15}}>{card.title}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>{card.sub}</div>
+                    <div style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:300}}>{card.tag}</div>
                   </button>
                 ))}
               </div>
@@ -5679,8 +5679,8 @@ setAmbitionSaved(true); } catch {}
               {n:4,title:"Give instructions that anyone could follow",sub:"Short sentences eliminate confusion."},
             ].map((sc,i)=>(
               <button key={i} onClick={()=>setSimInput(sc.title+": ")} style={{padding:"14px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.18s ease"}}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
+                onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
+                onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.8)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(44,36,22,0.06)";}}>
                 <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:3}}>{sc.n}. {sc.title}</div>
                 <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{sc.sub}</div>
               </button>
@@ -5698,8 +5698,8 @@ setAmbitionSaved(true); } catch {}
     const D1_CLARITY_FACTS = D1_CLARITY_FACTS_DATA;
     const D1_FEYNMAN_STEPS = D1_FEYNMAN_DATA;
     const D1_EXAMPLES = [
-      { id:"attenborough", title:"David Attenborough", sub:"Making Nature Understandable",
-        tag:"He translates scientific complexity into vivid, everyday language.",
+      { id:"tyson", title:"Neil deGrasse Tyson", sub:"Making the Universe Understandable",
+        tag:"He explains black holes and quantum physics so anyone can picture it.",
         content:(
           <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
             <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Making Nature Understandable</div>
@@ -5785,8 +5785,8 @@ setAmbitionSaved(true); } catch {}
             </div>
           </div>
         )},
-      { id:"obama2", title:"Michelle Obama", sub:"Ideas That Land",
-        tag:"Big ideas distilled into phrases you can remember.",
+      { id:"gladwell", title:"Malcolm Gladwell", sub:"Research to Rememberable",
+        tag:"Dense research distilled into ideas that stick forever. '10,000 hours.'",
         content:(
           <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
             <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Ideas That Land</div>
@@ -5920,12 +5920,12 @@ setAmbitionSaved(true); } catch {}
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
                 {D1_EXAMPLES.map(card=>(
                   <button key={card.id} onClick={()=>setD1OpenCard(card.id)}
-                    style={{padding:"20px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",transition:"all 0.2s ease",minHeight:100}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
-                    onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
-                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,letterSpacing:"-0.2px",marginBottom:4}}>{card.title}</div>
-                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.goldDark,marginBottom:8}}>{card.sub}</div>
-                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontStyle:"italic"}}>{card.tag}</div>
+                    style={{padding:"28px 24px",borderRadius:4,background:"rgba(255,255,255,0.8)",borderLeft:"4px solid "+T.gold,cursor:"pointer",textAlign:"left",transition:"all 0.25s ease",minHeight:110,boxShadow:"0 1px 4px rgba(44,36,22,0.06)"}}
+                    onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
+                    onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.8)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(44,36,22,0.06)";}}>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:10,lineHeight:1.15}}>{card.title}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>{card.sub}</div>
+                    <div style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:300}}>{card.tag}</div>
                   </button>
                 ))}
               </div>
@@ -6007,8 +6007,8 @@ setAmbitionSaved(true); } catch {}
               {n:4,title:"Pitch your idea to someone who can fund it",sub:"Make them care in one minute."},
             ].map((sc,i)=>(
               <button key={i} onClick={()=>setSimInput(sc.title+": ")} style={{padding:"14px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.18s ease"}}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
+                onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
+                onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.8)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(44,36,22,0.06)";}}>
                 <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:3}}>{sc.n}. {sc.title}</div>
                 <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{sc.sub}</div>
               </button>
