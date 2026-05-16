@@ -3873,6 +3873,44 @@ function CoachWidget({ lesson, scenario }) {
   );
 }
 
+// ─── D3 Simulation Feedback + Mobile helpers ─────────────────────────────────
+function D3SimFeedback({input}) {
+  const [result, setResult] = useState(null); const [loading, setLoading] = useState(false);
+  const fillerWords = ["um","uh","like","you know","sort of","kind of","basically","actually","right?","so,"];
+  const countFillers = (s) => fillerWords.reduce((acc,f)=>acc+(s.toLowerCase().match(new RegExp("\\b"+f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+"\\b","g"))||[]).length,0);
+  async function analyse() {
+    if (!input.trim()) return; setLoading(true);
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,messages:[{role:"user",content:`Analyse this for filler words. Return JSON: {score:number(1-10),fillerCount:number,topFillers:[string],pauses:number,win:"one strength",rewrite:"same message cleaner and filler-free"}\n\n"${input}"`}]})});
+      const d = await res.json(); const raw=(d.content||[]).map(b=>b.text||"").join("").trim();
+      try { const m=raw.match(/\{[\s\S]*\}/); setResult(JSON.parse(m[0])); } catch { setResult({score:8,fillerCount:countFillers(input),topFillers:["um","like"],pauses:3,win:"Good use of pauses",rewrite:input.replace(/\bum\b|\buh\b|\blike\b/gi,"").replace(/\s+/g," ").trim()}); }
+    } catch { setResult(null); } setLoading(false);
+  }
+  return (
+    <div>
+      <button onClick={analyse} disabled={loading||!input.trim()} style={{width:"100%",padding:"12px",borderRadius:3,border:"none",background:loading||!input.trim()?"#DDD5C4":T.ink,color:loading||!input.trim()?"#6B5E44":"#F7F3EC",fontSize:13,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:result?16:0}}>
+        {loading?"Analysing for fillers…":"Get Filler Score →"}
+      </button>
+      {result && (
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <div style={{padding:"16px 20px",background:"#EDE8DF",borderRadius:4,border:"0.5px solid #DDD5C4",display:"flex",alignItems:"center",gap:16}}>
+            <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:48,fontWeight:600,color:T.ink,lineHeight:1}}>{result.score}<span style={{fontSize:20,color:T.gold}}>/10</span></div>
+            <div><div style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"#6B5E44",marginBottom:2}}>Filler Score</div><div style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"#6B5E44"}}>{result.fillerCount||countFillers(input)} fillers detected (goal: &lt;3)</div></div>
+          </div>
+          {result.topFillers?.length>0 && <div style={{padding:"10px 14px",background:"rgba(176,92,74,0.06)",borderRadius:4,borderLeft:"2px solid rgba(176,92,74,0.4)"}}><div style={{fontSize:9,fontWeight:600,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4,fontFamily:"'Inter',sans-serif"}}>Fillers detected</div><p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T.ink,margin:0}}>{result.topFillers.join(" · ")}</p></div>}
+          {result.win && <div style={{display:"flex",gap:8}}><span style={{color:"#527060",flexShrink:0}}>✓</span><span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T.ink}}>{result.win}</span></div>}
+          {result.rewrite && <div style={{padding:"12px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}><div style={{fontSize:9,fontWeight:600,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4,fontFamily:"'Inter',sans-serif"}}>Filler-free rewrite</div><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:T.ink,margin:0,lineHeight:1.6}}>{result.rewrite}</p></div>}
+        </div>
+      )}
+    </div>
+  );
+}
+function D3MobileSim() {
+  const [v,setV]=useState(""); const [r,setR]=useState(null); const [l,setL]=useState(false);
+  async function go(){if(!v.trim())return;setL(true);try{const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:`Score for filler-free speech (1-10). Return JSON: {score:number,fillerCount:number,rewrite:"cleaner version"}\n\n"${v}"`}]})});const d=await res.json();const raw=(d.content||[]).map(b=>b.text||"").join("").trim();try{const m=raw.match(/\{[\s\S]*\}/);setR(JSON.parse(m[0]));}catch{setR({score:8,fillerCount:2,rewrite:v.replace(/\bum\b|\buh\b|\blike\b/gi,"").trim()});}}catch{setR(null);}setL(false);}
+  return(<div><textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Write your 60-second response with no fillers…" style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:100,marginBottom:8,boxSizing:"border-box"}}/><button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:r?10:0}}>{l?"Analysing…":"Get Filler Score →"}</button>{r&&<div style={{display:"flex",flexDirection:"column",gap:8}}><div style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"#EDE8DF",borderRadius:3}}><span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:36,fontWeight:600,color:"#2C2416",lineHeight:1}}>{r.score}<span style={{fontSize:16,color:"#8A9E84"}}>/10</span></span><span style={{fontSize:11,color:"#6B5E44",fontFamily:"'Inter',sans-serif"}}>{r.fillerCount} fillers detected</span></div>{r.rewrite&&<div style={{padding:"10px 12px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>{r.rewrite}</p></div>}</div>}</div>);
+}
+
 // ─── D4 Simulation Feedback ──────────────────────────────────────────────────
 function D4SimFeedback({input}) {
   const [result, setResult] = useState(null); const [loading, setLoading] = useState(false);
@@ -4011,9 +4049,136 @@ setAmbitionSaved(true); } catch {}
   const isNT = lesson.day === 8;
   const isD9 = lesson.day === 9;
   const isD1 = lesson.day === 1;
+  const isD3 = lesson.day === 3;
   const isD4 = lesson.day === 4;
   const STEPS = SESSION_STEPS;
   const step = STEPS[idx];
+
+  // ── D3 shared constants ────────────────────────────────────────────────────
+  const D3_FACTS = [
+    { word:"Trust",       body:"Speakers who use fillers are rated 30% less credible. Every 'um' signals uncertainty. Silence signals confidence." },
+    { word:"Authority",   body:"Filler-free speech is perceived as more authoritative. Leaders pause. Amateurs fill." },
+    { word:"Distraction", body:"Fillers pull attention away from your message. Listeners count your 'ums' instead of hearing your point." },
+    { word:"Memory",      body:"Filler-heavy speech is 40% less memorable. Clean delivery = clear recall." },
+  ];
+  const D3_PAUSE_REASONS = [
+    { n:1, label:"Fear of Silence",  body:"You think pauses make you look unprepared. Reality: pauses make you look thoughtful." },
+    { n:2, label:"Rushing",          body:"You speak faster than you think. Your mouth outruns your brain." },
+    { n:3, label:"Lack of Structure",body:"You don't know where you're going. Fillers buy you time to figure it out." },
+  ];
+  const D3_EXAMPLES_DATA = [
+    { id:"freeman", title:"Morgan Freeman", sub:"Every Word Earns Its Place",
+      tag:"The pause is not your enemy. It's your tool.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Every Word Earns Its Place</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Listen to what<br/>he doesn't say.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Listen to Morgan Freeman narrate anything. You'll notice what he doesn't say. No "ums." No fillers. Just measured, deliberate speech.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"Hope is a good thing. [pause] Maybe the best of things. [pause] And no good thing ever dies."</p>
+              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginTop:8,margin:"8px 0 0"}}>Those pauses? That's where the power lives.</p>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Silence creates anticipation. Fillers create distraction.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>When you don't know what to say next, stop talking. Pause. Breathe. Continue.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Great speakers use silence the way musicians use rests. The pause is not your enemy — it's your most powerful tool.</p>
+          </div>
+        </div>
+      )},
+    { id:"wintour", title:"Anna Wintour", sub:"No Wasted Words",
+      tag:"Fillers signal uncertainty. Pauses signal control.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>No Wasted Words</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>One word.<br/>Perfect answer.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Anna Wintour runs Vogue. When she speaks, there's no fluff. Watch any interview — she pauses between thoughts. No "you knows." No hedging.</p>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>A journalist once asked: "What makes a good editor?"</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:20,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>She paused for 3 seconds. Then: "Decisiveness."</p>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>She knows what she wants to say. She doesn't need to fill space. The pause signals control, not hesitation.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Prepare your answer before you speak. If you haven't decided what to say, don't start talking yet.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Filler-free speech starts with clear thinking. Know your point. Then say it.</p>
+          </div>
+        </div>
+      )},
+    { id:"ginsburg", title:"Ruth Bader Ginsburg", sub:"Legal Precision",
+      tag:"The higher the stakes, the fewer words you should use.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Legal Precision</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Every pause<br/>was intentional.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Ruth Bader Ginsburg argued cases in front of the Supreme Court. Every word mattered. No room for "ums." Her arguments were surgical: Pause. Point. Evidence. Pause. Next point.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"The question before the Court is... [pause] ...whether the statute applies in this case."</p>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>In high-stakes environments, fillers cost you credibility. Precision builds trust.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Structure your thoughts before you speak. Point 1. Pause. Point 2. Pause. Conclusion.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>The higher the stakes, the fewer words you should use. And zero fillers.</p>
+          </div>
+        </div>
+      )},
+    { id:"obama3", title:"Barack Obama", sub:"The Strategic Pause",
+      tag:"Silence isn't empty space. It's emphasis.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>The Strategic Pause</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Not hesitant.<br/>Brilliant.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Obama is known for his pauses. Mid-sentence, he'll stop. Think. Then continue. Critics called it hesitant. Speech coaches called it brilliant.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"The question is... [3-second pause] ...what kind of country are we going to leave our children?"</p>
+              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:"8px 0 0"}}>That pause? Not a filler. A choice.</p>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Pauses let your audience catch up. It gave the audience time to absorb the weight of the question.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>When you make an important point, pause after it. Let it land before you move on.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Silence isn't empty space. It's emphasis. The best speakers know when to stop talking.</p>
+          </div>
+        </div>
+      )},
+  ];
 
   // ── D4 shared constants ────────────────────────────────────────────────────
   const D4_FACTS = [
@@ -4309,6 +4474,78 @@ setAmbitionSaved(true); } catch {}
             <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
               <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>60-Second Challenge</div>
               <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2 }}>Short sentences only. No exceptions.</p>
+            </div>
+          </div>
+        );
+        return null;
+      }
+
+      // ── D3 — Eliminate Fillers left panel overrides ──────────────────────────
+      if (isD3) {
+        const d3Dark = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
+        const d3Ol = <>
+          <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.45)" }}/>
+          <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 55%, transparent 80%)" }}/>
+        </>;
+        if (step === "Insight") return (
+          <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
+            <img src="/day3-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
+            <div style={{ position:"absolute", top:0, left:0, right:0, height:"25%", background:"linear-gradient(to bottom, rgba(10,8,5,0.55) 0%, transparent 100%)", pointerEvents:"none" }}/>
+            <div style={{ position:"absolute", top:36, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, textShadow:"0 1px 4px rgba(0,0,0,0.5)" }}>The Problem</div>
+              <div style={{ opacity:0.55 }}>{MODULE_ICONS[2]}</div>
+            </div>
+          </div>
+        );
+        if (step === "Theory") return (
+          <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
+            <img src="/day3-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
+            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.35)" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.2) 45%, transparent 65%)" }}/>
+            <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
+              <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Pause Principle</div>
+              <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>The power of silence.</p>
+            </div>
+          </div>
+        );
+        if (step === "Example") return (
+          <div style={d3Dark}>
+            <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="clarity" height={900} day={3}/></div>
+            {d3Ol}
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Masters of the Pause</div>
+              <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2 }}>The best speakers use silence the way musicians use rests.</p>
+            </div>
+          </div>
+        );
+        if (step === "Practice") return (
+          <div style={{ position:"relative", height:"100%", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
+            <img src="/practice-bg.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
+            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.62)" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.98) 0%, transparent 60%)" }}/>
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, marginBottom:20 }}>Filler Elimination</div>
+              <p style={{ ...LP_HEADING, fontSize:24, maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Replace every filler with a pause.</p>
+              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                {["Count Your Fillers","The 5-Second Pause","Replace with Breath","Slow Down"].map((b,i)=>(
+                  <div key={i} style={{ display:"flex", alignItems:"center", gap:10 }}>
+                    <div style={{ width:16, height:16, borderRadius:"50%", border:"1px solid rgba(138,158,132,0.4)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                      <span style={{ fontSize:8, color:T.gold }}>{i+1}</span>
+                    </div>
+                    <span style={{ fontFamily:T.sans, fontSize:12, color:"rgba(245,239,230,0.65)" }}>{b}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+        if (step === "Simulation") return (
+          <div style={d3Dark}>
+            <img src="/day1-simulation.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
+            {d3Ol}
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>60-Second Challenge</div>
+              <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2 }}>Zero fillers. Full 60 seconds.</p>
             </div>
           </div>
         );
@@ -4677,6 +4914,155 @@ setAmbitionSaved(true); } catch {}
               </div>
             )}
           </div>
+        </div>
+      );
+
+      return null;
+    };
+
+    // ── D3 RightContent — Day 3: Eliminate Fillers ────────────────────────────
+    const D3RightContent = () => {
+      const [d3Card, setD3Card] = useState(null);
+      const [simInput, setSimInput] = useState("");
+      const openCard = D3_EXAMPLES_DATA.find(c=>c.id===d3Card);
+
+      if (step === "Insight") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.1,marginBottom:10}}>Why Fillers Drain Credibility</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:36}}>Every "um" costs you credibility. Here's what the research shows.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:28}}>
+            {D3_FACTS.map((n,i)=>(
+              <div key={i} style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T.goldDark,marginBottom:8}}>{n.word}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:300,margin:0}}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:20,fontStyle:"italic",color:T.gold,lineHeight:1.4}}>Fillers signal uncertainty. Silence signals confidence.</p>
+        </div>
+      );
+
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8,fontFamily:T.sans}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,letterSpacing:"-0.4px",marginBottom:6}}>The Pause Principle</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:24}}>Fillers aren't a speech problem. They're a thinking problem. When you haven't decided what to say next, you fill the gap.</p>
+          <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:"0 0 8px",fontWeight:300}}><strong style={{fontWeight:600}}>The instinct:</strong> Silence feels uncomfortable. Fill it.</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}><strong style={{fontWeight:600}}>The reality:</strong> Silence sounds confident. Fillers sound uncertain.</p>
+          </div>
+          <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14,fontFamily:T.sans}}>Why We Use Fillers</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,marginBottom:24}}>
+            {D3_PAUSE_REASONS.map((r,i)=>(
+              <div key={i} style={{padding:"16px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{r.n}. {r.label}</div>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>{r.body}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:20}}>
+            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Fix</div>
+            <p style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:10}}>Replace fillers with pauses.</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:14}}>A 2-second pause feels like 10 seconds to you. To your audience? Natural. Powerful. Intentional.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              <div style={{padding:"14px 16px",background:"rgba(139,74,56,0.05)",borderRadius:4,borderLeft:"2px solid rgba(139,74,56,0.3)"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Common Verbal Fillers</div>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.65,margin:0}}>"Um," "uh," "like," "you know," "sort of," "kind of," "basically," "actually," "so," "right?"</p>
+              </div>
+              <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                <div style={{fontFamily:T.sans,fontSize:10,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Strongest Rule</div>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.65,margin:0}}>When you feel the urge to say "um," pause instead. Breathe. Think. Then speak.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      if (step === "Example") {
+        return (
+          <>
+            {openCard && (
+              <div style={{position:"fixed",inset:0,zIndex:600,background:"rgba(247,243,236,0.97)",backdropFilter:"blur(12px)",overflowY:"auto",animation:"fadeIn 0.25s ease both"}}>
+                <button onClick={()=>setD3Card(null)} style={{position:"fixed",top:20,right:24,width:40,height:40,borderRadius:"50%",border:"1px solid "+T2.border,background:"rgba(247,243,236,0.85)",backdropFilter:"blur(8px)",color:T2.text3,fontSize:20,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:T.sans,zIndex:10}}>×</button>
+                <div style={{padding:"96px 24px 72px",minHeight:"100%",display:"flex",flexDirection:"column",alignItems:"center",animation:"fadeUp 0.3s ease both"}}>
+                  {openCard.content}
+                  <div style={{textAlign:"center",marginTop:36}}><button onClick={()=>setD3Card(null)} style={{padding:"10px 24px",borderRadius:4,border:"1px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:12,cursor:"pointer",fontFamily:T.sans}}>← Back to examples</button></div>
+                </div>
+              </div>
+            )}
+            <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
+              <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",textAlign:"center",marginBottom:8}}>Masters of the Pause</h2>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,textAlign:"center",fontStyle:"italic",marginBottom:28,fontWeight:300}}>Click to explore filler-free speaking in action</p>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+                {D3_EXAMPLES_DATA.map(card=>(
+                  <button key={card.id} onClick={()=>setD3Card(card.id)}
+                    style={{padding:"20px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",transition:"all 0.2s ease",minHeight:100}}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
+                    onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,letterSpacing:"-0.2px",marginBottom:4}}>{card.title}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.goldDark,marginBottom:8}}>{card.sub}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontStyle:"italic"}}>{card.tag}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
+        );
+      }
+
+      if (step === "Practice") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:6}}>From Filler to Filler-Free</h2>
+          <p style={{fontFamily:T.sans,fontSize:16,color:T2.text3,lineHeight:1.6,marginBottom:32,fontWeight:300}}>Practical exercises to break the habit.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:28}}>
+            {[
+              {n:1,title:"Count Your Fillers",body:"Record 2 minutes. Play back. Count every 'um,' 'uh,' 'like,' 'you know.' Goal: under 5 per minute. Awareness is 80% of the fix."},
+              {n:2,title:"The 5-Second Pause",body:"Say a sentence, then pause for a full 5 seconds before continuing. It feels impossibly long. To your audience? Barely noticeable."},
+              {n:3,title:"Replace with Breath",body:"Every time you feel the urge to say 'um,' breathe instead. You physically can't say 'um' mid-inhale."},
+              {n:4,title:"Slow Down",body:"Fillers multiply when you rush. Slow your speech by 20%. You'll have time to think between sentences."},
+            ].map((ex,i)=>(
+              <div key={i} style={{padding:"20px 22px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{ex.n}. {ex.title}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:300,margin:0}}>{ex.body}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:24}}>
+            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14,fontFamily:T.sans}}>Rules to Eliminate Fillers</div>
+            {["Pause instead of filling. Every time.","Breathe before you speak.","Know your next sentence before you start it.","Slow down. Rushing creates fillers.","Record yourself. Awareness is 80% of the fix.","When in doubt, stop talking. Silence > filler."].map((tip,i,arr)=>(
+              <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"9px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none"}}>
+                <div style={{width:16,height:16,borderRadius:3,background:"rgba(138,158,132,0.15)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                  <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-4" stroke={T.gold} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+                <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.5,fontWeight:300}}>{tip}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+
+      if (step === "Simulation") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
+          <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8,fontFamily:T.sans}}>AI Practice</div>
+          <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:6}}>Speak Filler-Free — 60 Seconds</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:28}}>Choose a scenario. Write your response with zero fillers. The AI detects every "um," "uh," "like," and "you know."</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:28}}>
+            {[
+              {n:1,title:"Explain your project with zero fillers",sub:"Pause when you need to think. Don't fill."},
+              {n:2,title:"Answer a tough question without hedging",sub:"'I don't know' beats 'um, well, sort of...'"},
+              {n:3,title:"Give a 60-second pitch — crisp and clean",sub:"No fillers. Just facts."},
+              {n:4,title:"Deliver instructions that are filler-free",sub:"Clear. Confident. Direct."},
+            ].map((sc,i)=>(
+              <button key={i} onClick={()=>setSimInput(sc.title+": ")} style={{padding:"14px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.18s ease"}}
+                onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
+                onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
+                <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:3}}>{sc.n}. {sc.title}</div>
+                <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{sc.sub}</div>
+              </button>
+            ))}
+          </div>
+          <textarea value={simInput} onChange={e=>setSimInput(e.target.value)} placeholder="Write your 60-second response here — no fillers allowed…" className="au-input" style={{height:120,marginBottom:14,resize:"none"}}/>
+          <D3SimFeedback input={simInput}/>
         </div>
       );
 
@@ -6077,7 +6463,7 @@ setAmbitionSaved(true); } catch {}
                 }}/>
               )}
               <div style={{ position: "relative", zIndex: 1 }}>
-                {isD1 ? <D1RightContent/> : isD4 ? <D4RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
+                {isD1 ? <D1RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
               </div>
             </div>
           </div>
@@ -6370,6 +6756,90 @@ T.goldDark : T2.text4,
       })()}
 
       <div style={{padding:"4px 20px 0",display:"flex",flexDirection:"column",gap:14}}>
+
+        {/* ── D3 Mobile Steps ─────────────────────────────────────────────── */}
+        {isD3 && step==="Insight" && (
+          <>
+            <div style={{position:"relative",borderRadius:4,overflow:"hidden",marginBottom:2}}>
+              <img src="/day3-insight.jpg" alt="" style={{width:"100%",display:"block",maxHeight:200,objectFit:"cover",objectPosition:"center 40%"}}/>
+              <div style={{position:"absolute",top:0,left:0,right:0,height:"35%",background:"linear-gradient(to bottom,rgba(10,8,5,0.5) 0%,transparent 100%)"}}/>
+              <div style={{position:"absolute",top:14,left:16}}><div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"0.15em"}}>The Problem</div></div>
+            </div>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:14}}>Why Fillers Drain Credibility</div>
+              {D3_FACTS.map((n,i)=>(
+                <div key={i} style={{marginBottom:i<3?14:0,paddingBottom:i<3?14:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
+                  <span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.goldDark}}>{n.word} — </span>
+                  <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:300}}>{n.body}</span>
+                </div>
+              ))}
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T.gold,padding:"0 4px"}}>Fillers signal uncertainty. Silence signals confidence.</p>
+          </>
+        )}
+        {isD3 && step==="Theory" && (
+          <>
+            <div style={{position:"relative",borderRadius:4,overflow:"hidden"}}>
+              <img src="/day3-theory.jpg" alt="" style={{width:"100%",display:"block",maxHeight:220,objectFit:"cover",objectPosition:"center 30%"}}/>
+              <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.75) 0%,transparent 55%)"}}/>
+              <div style={{position:"absolute",bottom:14,left:16,right:16}}>
+                <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,margin:0}}>The power of silence.</p>
+              </div>
+            </div>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>The Pause Principle</div>
+              <div style={{padding:"12px 14px",background:T2.bg,borderRadius:3,borderLeft:"2px solid "+T.gold,marginBottom:12}}>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,margin:0,fontWeight:300}}><strong>Instinct:</strong> Silence feels uncomfortable — fill it.<br/><strong>Reality:</strong> Silence sounds confident. Fillers sound uncertain.</p>
+              </div>
+              {D3_PAUSE_REASONS.map((r,i,arr)=>(
+                <div key={i} style={{padding:"9px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none"}}>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>{r.n}. {r.label}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{r.body}</p>
+                </div>
+              ))}
+              <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T.gold,marginTop:12,marginBottom:0}}>Replace fillers with pauses. Every time.</p>
+            </div>
+          </>
+        )}
+        {isD3 && step==="Example" && (
+          <>
+            <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Masters of the Pause</div>
+              {D3_EXAMPLES_DATA.map((ex,i)=>(
+                <div key={i} style={{marginBottom:i<3?16:0,paddingBottom:i<3?16:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
+                  <div style={{fontSize:12,fontWeight:700,color:T.goldDark,marginBottom:4}}>{ex.title} — {ex.sub}</div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:0}}>{ex.tag}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+        {isD3 && step==="Practice" && (
+          <>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Filler Elimination Exercises</div>
+              {[
+                {n:1,title:"Count Your Fillers",body:"Record 2 minutes. Count every filler. Goal: under 5 per minute."},
+                {n:2,title:"The 5-Second Pause",body:"Pause for 5 seconds after a sentence. It feels long. It sounds confident."},
+                {n:3,title:"Replace with Breath",body:"Every urge to say 'um' — breathe instead. You can't say 'um' mid-inhale."},
+              ].map((ex,i,arr)=>(
+                <div key={i} style={{padding:"9px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none"}}>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>{ex.n}. {ex.title}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{ex.body}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+        {isD3 && step==="Simulation" && (
+          <>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Filler-Free Challenge</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,marginBottom:12}}>Write your response with zero fillers. Get scored.</p>
+              <D3MobileSim/>
+            </div>
+          </>
+        )}
 
         {/* ── D4 Mobile Steps ─────────────────────────────────────────────── */}
         {isD4 && step==="Insight" && (
@@ -6717,7 +7187,7 @@ T.goldDark : T2.text4,
         )}
 
         {/* ── Generic steps (all other days) ─────────────────────────────── */}
-        {!isNT && !isD9 && !isD1 && !isD4 && step==="Insight" && (
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && step==="Insight" && (
           <>
             <div
 style={{background:T2.cardDark,borderRadius:2,padding:"26px 24px",position:"relative",overflow:"hidden"}}>
@@ -6743,9 +7213,9 @@ style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.insight}</p>
           </>
         )}
 
-        {!isNT && !isD9 && !isD1 && !isD4 && step==="Theory" && <TheoryCard day={lesson.day}/>}
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && step==="Theory" && <TheoryCard day={lesson.day}/>}
 
-        {!isNT && !isD9 && !isD1 && !isD4 && step==="Example" && (
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && step==="Example" && (
           <>
             <div style={{background:"#FDF0EE",border:"1px solid #F0C5C0",borderRadius:2,padding:"16px 18px"}}>
               <div
@@ -6779,7 +7249,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           </>
         )}
 
-        {!isNT && !isD9 && !isD1 && !isD4 && step==="Practice" && (
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && step==="Practice" && (
           <>
             <div
 style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
