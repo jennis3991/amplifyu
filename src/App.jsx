@@ -1158,20 +1158,7 @@ const LESSONS = [
    promise:"You know how to build a story. You know how to deliver it. Now you can command any room.",
    teaser:"Learn the 5 elements of powerful delivery used by Brené Brown, Simon Sinek, Amy Cuddy, and Steve Jobs."},
 
-  {day:10,week:2,title:"The 3-Point Test",tag:"Storytelling",scene:"story",
-   quote:"If you can't answer three questions before you tell a story, the story isn't ready.",
-   insight:"Every professional story — before you tell it — should pass the 3-Point Test: What is the one thing you want them to remember? What is the single most important detail that makes it real? What do you want them to think, feel, or do differently? If you can't answer all three before you speak, the story will land as information rather than impact. This is the bridge between Week 1 clarity and Week 2 story — Miller's Law applied to narrative.",
-   pieLink:"All three: A story that passes the 3-Point Test serves Performance (it demonstrates impact), Image (it shows how you think), and Exposure (it gives others something to repeat on your behalf).",
-   phrases:["The one thing I want you to remember is…","Here's the detail that made it real…","What this means for us is…"],
-   bad:"[Telling a story without knowing in advance what you want the listener to walk away with]",
-   good:"[Pausing before you speak to answer: what's the point, what's the proof, what's the shift I want to create?]",
-   practice:"Choose a story you tell often. Run it through the 3-Point Test before you tell it today: point, proof, shift. Then tell it. Notice whether it lands differently.",
-   scenarios:["Opening a presentation or meeting with a story","Using a story to support a recommendation under challenge","Answering 'tell me about a time when…' in any high-stakes conversation"],
-   review:["Could I articulate my one point before I started?","Did I use one specific, concrete detail that made it real?","Did the listener leave with something to think or do differently?"],
-   promise:"The 3-Point Test is the last thing you check before you speak and the first thing you remember when a story falls flat. You now have the full storytelling toolkit.",
-   teaser:"The final storytelling session — learn the three questions every story must answer before you tell it, and why this simple test separates memorable from forgettable."},
-
-  {day:11,week:2,title:"PIE: Performance",tag:"PIE",scene:"pie",
+  {day:10,week:2,title:"Performance",tag:"PIE",scene:"pie",theoryImageDay:11,
    quote:"Brilliant work in silence is still silence.",
    insight:"PIE = Performance, Image, Exposure. Research shows performance alone accounts for only 10% of career advancement. But without performance, nothing else works. Do excellent work — then communicate it clearly, with structure and story.",
    pieLink:"Performance: This is the foundation. Deliver, then tell the SAR story of what you delivered. The clearest performance statement is also a story.",
@@ -1184,20 +1171,7 @@ const LESSONS = [
    promise:"Your performance is the non-negotiable. Communicate it like it matters — because it does. And now you have the story architecture to do it.",
    teaser:"Only 10% of career advancement comes from performance. This session shows you how to communicate your work so it actually counts — with the story tools you've just built."},
 
-  {day:12,week:2,title:"PIE: Visible Ambition",tag:"PIE",scene:"pie",
-   quote:"The most powerful thing you can do is let the right people know where you're going.",
-   insight:"Exposure is not just about being seen — it's about being understood. The most powerful form of visibility is when the people who influence your career know not just that you exist, but what you're building toward. Presence without stated ambition is just attendance.",
-   pieLink:"Exposure: The career multiplier — but only when it carries your direction. Being in the right rooms and being known for going somewhere specific are two different things. You need both.",
-   phrases:["My ambition is…","What I'm building toward is…","In the next 18 months, I want to be…","I'd like to be considered for…","I wanted you to know that I'm actively working toward…"],
-   bad:"[Being visible but vague — showing up without a direction others can support]",
-   good:"[Being visible AND clear — so the people who can help you know exactly how to do it]",
-   practice:"Two things: name one senior person who should know your ambition but doesn't. Then write the one sentence you would say to them. Say it out loud. Own it.",
-   scenarios:["A sponsor asks where you see yourself going","A senior leader asks what you want next","A skip-level conversation where you need to be remembered"],
-   review:["Do the right people know what I want next?","Have I said my ambition out loud to someone who matters this week?","Am I being visible, or am I being visible with direction?"],
-   promise:"Exposure without stated ambition is presence. Exposure with stated ambition is momentum. You now know the difference.",
-   teaser:"Discover why being visible isn't enough — and how to become visible with direction so the right people know exactly where you're going and how to help you get there."},
-
-  {day:13,week:2,title:"PIE: Image",tag:"PIE",scene:"presence",
+  {day:11,week:2,title:"Brand & Image",tag:"Presence",scene:"presence",theoryImageDay:13,
    quote:"You never get a second chance to make a first impression. But you get many chances to reinforce it.",
    insight:"Image is how others perceive you — your presence, your personal style, the way you show up. You have far more control over this than you think. And now that you can tell a story, you have one of the most powerful image tools available: the ability to shape how others see you through what you choose to share.",
    pieLink:"Image: This is your visual and verbal brand — built in every interaction, especially the small ones. Stories are one of its most powerful building blocks.",
@@ -1209,6 +1183,32 @@ const LESSONS = [
    review:["How did I show up today?","Did my presence match my intention?","Do I have one story ready that shows — not just tells — who I am?"],
    promise:"Image is built deliberately, one interaction at a time. You now have the story to prove it.",
    teaser:"Your image is built in every room you enter. This session shows you how to take control — and how the stories you tell are one of its most powerful tools."},
+
+  {day:12,week:2,title:"Executive Presence",tag:"Presence",scene:"presence",comingSoon:true,
+   quote:"Presence is not what you project. It's what others feel when you enter.",
+   insight:"Executive presence is the combination of clarity, conviction, and composure that signals you belong in the room — and that you're ready for more. It is learnable. It is buildable. And it starts with how you communicate.",
+   pieLink:"Image: Presence is the ultimate image signal — and the one most difficult to fake. The good news: every tool in AmplifyU builds it.",
+   phrases:["My view is…","Let me be direct…","Here is what I believe…"],
+   bad:"[Deferring, hedging, and qualifying in rooms where directness would serve you better]",
+   good:"[Speaking with calm authority — clear on your position, open to challenge, secure in your expertise]",
+   practice:"Coming soon — this module is in development.",
+   scenarios:["A room where you need to own your authority","A presentation to senior leadership","Any moment where you need to be the expert in the room"],
+   review:["Did I project calm conviction today?","Was I direct without being blunt?","Did I take up space appropriately?"],
+   promise:"Executive presence is not a personality trait. It is a set of skills. You are building them.",
+   teaser:"Coming soon — learn the signals of executive presence and how to build them deliberately in every room you enter."},
+
+  {day:13,week:2,title:"Visible Ambition",tag:"Exposure",scene:"pie",theoryImageDay:12,
+   quote:"The most powerful thing you can do is let the right people know where you're going.",
+   insight:"Exposure is not just about being seen — it's about being understood. The most powerful form of visibility is when the people who influence your career know not just that you exist, but what you're building toward. Presence without stated ambition is just attendance.",
+   pieLink:"Exposure: The career multiplier — but only when it carries your direction. Being in the right rooms and being known for going somewhere specific are two different things. You need both.",
+   phrases:["My ambition is…","What I'm building toward is…","In the next 18 months, I want to be…","I'd like to be considered for…","I wanted you to know that I'm actively working toward…"],
+   bad:"[Being visible but vague — showing up without a direction others can support]",
+   good:"[Being visible AND clear — so the people who can help you know exactly how to do it]",
+   practice:"Two things: name one senior person who should know your ambition but doesn't. Then write the one sentence you would say to them. Say it out loud. Own it.",
+   scenarios:["A sponsor asks where you see yourself going","A senior leader asks what you want next","A skip-level conversation where you need to be remembered"],
+   review:["Do the right people know what I want next?","Have I said my ambition out loud to someone who matters this week?","Am I being visible, or am I being visible with direction?"],
+   promise:"Exposure without stated ambition is presence. Exposure with stated ambition is momentum. You now know the difference.",
+   teaser:"Discover why being visible isn't enough — and how to become visible with direction so the right people know exactly where you're going and how to help you get there."},
 
   {day:14,week:2,title:"Full Integration",tag:"Capstone",scene:"clarity",
    quote:"Excellence is not a destination — it's a direction. And now you know exactly which one to take.",
@@ -3969,7 +3969,10 @@ function D1SimFeedback({input}) {
 // ─── SESSION VIEW — 6 steps including Theory
 const SESSION_STEPS =
 ["Insight","Theory","Example","Practice","Simulation","Review"];
+const SESSION_STEPS_NT =
+["Insight","Theory","3-Point Test","Example","Practice","Simulation","Review"];
 const NAV_LABELS = ["See the theory","See examples","Start practice","Go to simulation","Go to review"];
+const NAV_LABELS_NT = ["See the theory","3-Point Test","See examples","Start practice","Go to simulation","Go to review"];
 
 function SessionView({lesson, isDone, onComplete, onBack, roleId,
 activeRole, dark=false, DK={}, isDesktop=false}) {
@@ -4005,13 +4008,15 @@ setAmbitionSaved(true); } catch {}
   const [ntOpenCard, setNtOpenCard] = useState(null);
   const [d9Script, setD9Script] = useState(() => { try { return localStorage.getItem("au1_d9_script") || ""; } catch { return ""; } });
   const [d9OpenCard, setD9OpenCard] = useState(null);
-  const step = SESSION_STEPS[idx];
+  // step is derived from STEPS (NT uses 7-step array, all others use 6-step)
   const scenarios = roleId ? getScenariosForDay(roleId, lesson.day) : lesson.scenarios;
   const activeSc = scenarios[selSc] || scenarios[0];
   const isNT = lesson.day === 8;
   const isD9 = lesson.day === 9;
   const isD1 = lesson.day === 1;
   const isD4 = lesson.day === 4;
+  const STEPS = isNT ? SESSION_STEPS_NT : SESSION_STEPS;
+  const step = STEPS[idx];
 
   // ── D4 shared constants ────────────────────────────────────────────────────
   const D4_FACTS = [
@@ -4161,7 +4166,7 @@ setAmbitionSaved(true); } catch {}
     // Left-panel content varies by step — the "visual stage"
     const ChapterMarks = () => (
       <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
-        {SESSION_STEPS.map((s, i) => {
+        {STEPS.map((s, i) => {
           const done2 = i < idx;
           const active = i === idx;
           const locked = i > idx && !isDone;
@@ -4207,7 +4212,7 @@ setAmbitionSaved(true); } catch {}
                 }}>{s}</span>
               </button>
               {/* Connector — clearly visible */}
-              {i < SESSION_STEPS.length - 1 && (
+              {i < STEPS.length - 1 && (
                 <div style={{
                   width: 18, height: 1.5, flexShrink: 0,
                   background: i < idx ? "#8A9E84" : "rgba(255,255,255,0.22)",
@@ -4416,6 +4421,29 @@ setAmbitionSaved(true); } catch {}
             </div>
           </div>
         );
+        if (step === "3-Point Test") return (
+          <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#131009", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px" }}>
+            <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 40%, rgba(138,158,132,0.08) 0%, transparent 60%)" }}/>
+            <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Before You Tell It</div>
+              <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2.2vw,36px)", maxWidth:360, marginBottom:20, lineHeight:1.15 }}>Every story must pass three tests.</p>
+              <div style={{ width:32, height:1, background:T.gold, opacity:0.45, marginBottom:20 }}/>
+              <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+                {[["Remember","One thing they walk away with."],["Real","The detail that makes it true."],["Result","What shifts for them after."]].map(([label,q],i)=>(
+                  <div key={i} style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
+                    <div style={{ width:20, height:20, borderRadius:"50%", border:"1px solid rgba(138,158,132,0.4)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                      <span style={{ fontSize:9, color:T.gold, fontWeight:600 }}>{i+1}</span>
+                    </div>
+                    <div>
+                      <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:2 }}>{label}</div>
+                      <p style={{ fontFamily:T.sans, fontSize:12, color:"rgba(245,239,230,0.55)", margin:0, lineHeight:1.5 }}>{q}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
         if (step === "Example") return (
           <div style={{ background:"#0E0B08", height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
             <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(183,154,107,0.06) 0%, transparent 60%)" }}/>
@@ -4567,7 +4595,7 @@ setAmbitionSaved(true); } catch {}
       // ── Theory — photo if available, otherwise diagram ───────────────────────
       if (step === "Theory") {
         const Diagram = DIAGRAMS[lesson.day - 1];
-        const theoryImg = THEORY_IMAGES[lesson.day];
+        const theoryImg = THEORY_IMAGES[lesson.theoryImageDay || lesson.day];
         if (theoryImg && theoryImg.image) {
           return (
             <div style={{ height: "100%", position: "relative", overflow: "hidden" }}>
@@ -5210,6 +5238,54 @@ setAmbitionSaved(true); } catch {}
               ))}
             </div>
             <p style={{ fontFamily:T.serif, fontSize:20, fontStyle:"italic", color:T.gold, lineHeight:1.4 }}>Facts explain. Stories move people.</p>
+          </div>
+        );
+      }
+
+      if (step === "3-Point Test") {
+        const [rem,setRem]=useState(""); const [real,setReal]=useState(""); const [res,setRes]=useState("");
+        const allFilled = rem.trim() && real.trim() && res.trim();
+        return (
+          <div key={idx} className="au-step-enter" style={{ padding:"52px 60px", overflowY:"auto", maxWidth:680 }}>
+            <div style={{ fontSize:10, fontWeight:500, color:T2.text3, textTransform:"uppercase", letterSpacing:"3px", marginBottom:10, fontFamily:T.sans }}>Before You Tell It</div>
+            <h2 style={{ fontFamily:T.serif, fontSize:34, fontWeight:600, color:T2.text, letterSpacing:"-0.5px", lineHeight:1.1, marginBottom:8 }}>Before You Tell It — Test It</h2>
+            <p style={{ fontFamily:T.sans, fontSize:16, color:T2.text3, lineHeight:1.6, marginBottom:40, fontWeight:300 }}>Every professional story must pass the 3-Point Test.</p>
+            <div style={{ display:"flex", flexDirection:"column", gap:20, marginBottom:32 }}>
+              {[
+                { n:1, label:"Remember", q:"What is the ONE thing you want them to remember?", val:rem, set:setRem, ph:"e.g. Our team delivered 3 months ahead of schedule." },
+                { n:2, label:"Real",     q:"What is the single most important detail that makes it real?", val:real, set:setReal, ph:"e.g. We worked through a major system failure in week 2 and didn't lose a day." },
+                { n:3, label:"Result",   q:"What do you want them to think, feel, or do differently?", val:res,  set:setRes,  ph:"e.g. Trust that we can handle the next project at twice the scale." },
+              ].map(({n,label,q,val,set,ph})=>(
+                <div key={n} style={{ background:T2.surface, borderRadius:4, padding:"22px 24px", border:"0.5px solid "+T2.border, borderLeft:"2px solid "+T.gold }}>
+                  <div style={{ fontSize:11, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:6, fontFamily:T.sans }}>{n}. {label}</div>
+                  <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.5, marginBottom:12, fontWeight:400 }}>{q}</p>
+                  <textarea value={val} onChange={e=>set(e.target.value)} placeholder={ph} className="au-input" style={{ height:64, resize:"none", fontSize:14 }}/>
+                </div>
+              ))}
+            </div>
+            <div style={{ padding:"24px", background:T.gold, borderRadius:4, marginBottom:32 }}>
+              <p style={{ fontFamily:T.sans, fontSize:16, color:"#F5EFE6", lineHeight:1.7, margin:0, fontWeight:400 }}>
+                "If you can't answer all three before you speak, the story will land as information rather than impact."
+              </p>
+            </div>
+            <div style={{ marginBottom:32 }}>
+              <button onClick={()=>setIdx(idx+1)} style={{ display:"inline-flex", alignItems:"center", gap:12, background:T.ink, border:"none", borderRadius:4, padding:"14px 28px", cursor:"pointer", fontFamily:T.sans, fontSize:14, fontWeight:600, color:T.bg }}>
+                Continue to Examples →
+              </button>
+            </div>
+            <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:28 }}>
+              <h3 style={{ fontFamily:T.sans, fontSize:18, fontWeight:600, color:T2.text, marginBottom:16 }}>Why This Matters</h3>
+              <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text3, lineHeight:1.8, marginBottom:16, fontWeight:300 }}>The human brain is wired to process narrative as a sequence of goals, obstacles, and outcomes.</p>
+              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                {["A story without a clear goal (stakes) fails to engage.","A story without a concrete detail (proof) fails to persuade.","A story without a shift (outcome) fails to be remembered."].map((pt,i)=>(
+                  <div key={i} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
+                    <span style={{ color:T.gold, fontWeight:600, flexShrink:0 }}>→</span>
+                    <span style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.6 }}>{pt}</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, marginTop:16, fontWeight:300 }}>All three are required for full neural engagement.</p>
+            </div>
           </div>
         );
       }
@@ -6091,7 +6167,7 @@ setAmbitionSaved(true); } catch {}
                 Back
               </button>
             )}
-            {idx < SESSION_STEPS.length - 1 && (
+            {idx < STEPS.length - 1 && (
               <button onClick={() => setIdx(i => i + 1)} className="au-cta" style={{
                 display: "flex", alignItems: "center", gap: 10,
                 padding: "9px 24px", borderRadius: 5,
@@ -6100,7 +6176,7 @@ setAmbitionSaved(true); } catch {}
                 fontFamily: T.sans, letterSpacing: "0.1px",
                 boxShadow: "0 2px 16px rgba(138,158,132,0.3)",
               }}>
-                {idx === 0 ? "Begin" : idx === SESSION_STEPS.length - 2 ? "Final Chapter" : "Continue"}
+                {idx === 0 ? "Begin" : idx === STEPS.length - 2 ? "Final Chapter" : "Continue"}
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
             )}
@@ -6161,7 +6237,7 @@ setAmbitionSaved(true); } catch {}
                 background:T.navyLight,
                 borderRadius:20,
               }}>
-                {SESSION_STEPS.slice(0,idx).map((s,i) => (
+                {STEPS.slice(0,idx).map((s,i) => (
                   <div key={s} 
 style={{display:"flex",alignItems:"center",gap:4}}>
                     <svg width="10" height="10" viewBox="0 0 10 10" 
@@ -6272,7 +6348,7 @@ style={{position:"absolute",top:52,right:20,background:"rgba(42,94,63,0.9)",colo
             {/* Connected arc row — min-width so all 6 steps always show */}
             <div
 style={{display:"flex",alignItems:"center",position:"relative",minWidth:"max-content",padding:"0 20px"}}>
-              {SESSION_STEPS.map((s,i) => {
+              {STEPS.map((s,i) => {
                 const done2 = i < idx;
                 const active = i === idx;
                 const isTheory = i === 1;
@@ -6284,7 +6360,7 @@ style={{display:"flex",alignItems:"center",position:"relative",minWidth:"max-con
                 return (
                   <div key={s} 
 style={{display:"flex",alignItems:"center",flex: 
-i<SESSION_STEPS.length-1?1:"none"}}>
+i<STEPS.length-1?1:"none"}}>
                     {/* Node */}
                     <div style={{
                       
@@ -6332,7 +6408,7 @@ T.goldDark : T2.text4,
                       }}>{s}</span>
                     </div>
                     {/* Connector line to next node */}
-                    {i < SESSION_STEPS.length-1 && (
+                    {i < STEPS.length-1 && (
                       <div style={{
                         flex:1,height:1.5,
                         marginTop:-14,
@@ -7092,7 +7168,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
               Previous
             </button>
           )}
-          {idx < SESSION_STEPS.length-1 && (
+          {idx < STEPS.length-1 && (
             <button onClick={()=>setIdx(i=>i+1)} style={{
               flex:1,
               padding:"18px 20px",
@@ -7120,7 +7196,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
           display:"flex",alignItems:"center",justifyContent:"center",
           gap:5,paddingBottom:24,
         }}>
-          {SESSION_STEPS.map((s,i) => (
+          {STEPS.map((s,i) => (
             <div key={s} style={{
               width:i===idx?24:6,height:6,borderRadius:3,
               background:i===idx?T.navy:i<idx?T.gold:T.border,
@@ -7129,7 +7205,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
           ))}
           <span 
 style={{fontSize:10,color:T2.text4,marginLeft:6,fontWeight:500}}>{idx+1} / 
-{SESSION_STEPS.length}</span>
+{STEPS.length}</span>
         </div>
       </div>
     </div>
@@ -7469,16 +7545,17 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
     const isDone = done.includes(lesson.day);
     const isToday = lesson.day === cur;
     const isLocked = false;
+    const isComingSoon = !!lesson.comingSoon;
     if (isDesktop) {
       return (
         <div
-          onClick={() => isLocked ? setLockedPreview(lesson) : onStart(lesson.day)}
+          onClick={() => isComingSoon ? null : isLocked ? setLockedPreview(lesson) : onStart(lesson.day)}
           className="au-card-hover"
           style={{
-            background: isDone ? "rgba(61,107,79,0.05)" : isToday ? "rgba(138,158,132,0.05)" : T2.surface,
-            borderRadius: 6, padding: "18px 20px", cursor: "pointer",
+            background: isComingSoon ? T2.surface : isDone ? "rgba(61,107,79,0.05)" : isToday ? "rgba(138,158,132,0.05)" : T2.surface,
+            borderRadius: 6, padding: "18px 20px", cursor: isComingSoon ? "default" : "pointer",
             border: "1px solid " + (isDone ? "rgba(61,107,79,0.2)" : isToday ? "rgba(138,158,132,0.3)" : T2.border),
-            position: "relative", opacity: isLocked ? 0.5 : 1,
+            position: "relative", opacity: isComingSoon ? 0.6 : isLocked ? 0.5 : 1,
             boxShadow: isToday ? "0 2px 20px rgba(138,158,132,0.1)" : "none",
           }}>
           {isToday && <div style={{
@@ -7494,34 +7571,37 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
             }}>{lesson.day}</div>
             <span style={{
               fontSize: 9.5, fontWeight: 600,
-              color: isDone ? T.green : isToday ? T.gold : T2.text4,
+              color: isComingSoon ? T2.text4 : isDone ? T.green : isToday ? T.gold : T2.text4,
               letterSpacing: "0.5px",
-            }}>{isDone ? "✓ Done" : isToday ? "Today" : "→"}</span>
+            }}>{isComingSoon ? "Coming Soon" : isDone ? "✓ Done" : isToday ? "Today" : "→"}</span>
           </div>
           <div style={{
             fontSize: 13, fontWeight: isDone ? 400 : 500,
             color: isDone ? T2.text3 : T2.text, marginBottom: 8, lineHeight: 1.3,
           }}>{lesson.title}</div>
-          <span style={{
-            fontSize: 9.5, fontWeight: 500, color: T2.text3,
-            background: T2.divider, padding: "2px 8px", borderRadius: 3,
-            display: "inline-block", letterSpacing: "0.3px",
-          }}>{lesson.tag}</span>
+          {isComingSoon
+            ? <span style={{ fontSize:9.5, fontWeight:600, color:T2.text4, background:"rgba(138,158,132,0.1)", padding:"2px 10px", borderRadius:3, display:"inline-block", letterSpacing:"0.5px", border:"0.5px solid rgba(138,158,132,0.2)" }}>In Development</span>
+            : <span style={{ fontSize:9.5, fontWeight:500, color:T2.text3, background:T2.divider, padding:"2px 8px", borderRadius:3, display:"inline-block", letterSpacing:"0.3px" }}>{lesson.tag}</span>
+          }
         </div>
       );
     }
     return (
-      <div key={lesson.day} onClick={() => isLocked ? setLockedPreview(lesson) : onStart(lesson.day)}
-        style={{background:T2.surface,borderRadius:16,padding:"14px 16px",display:"flex",alignItems:"center",gap:14,cursor:"pointer",opacity:isLocked?0.6:1}}>
-        <div style={{width:40,height:40,borderRadius:12,background:isDone?T.greenBg:isToday?T.navyLight:isLocked?"rgba(17,28,46,0.06)":T.card,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+      <div key={lesson.day} onClick={() => isComingSoon ? null : isLocked ? setLockedPreview(lesson) : onStart(lesson.day)}
+        style={{background:T2.surface,borderRadius:16,padding:"14px 16px",display:"flex",alignItems:"center",gap:14,cursor:isComingSoon?"default":"pointer",opacity:isComingSoon?0.55:isLocked?0.6:1}}>
+        <div style={{width:40,height:40,borderRadius:12,background:isDone?T.greenBg:isToday?T.navyLight:isComingSoon?"rgba(138,158,132,0.08)":isLocked?"rgba(17,28,46,0.06)":T.card,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
           {isDone ? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-6" stroke={T.green} strokeWidth="2" strokeLinecap="round"/></svg>
+            : isComingSoon ? <span style={{fontSize:10,color:T2.text4}}>✦</span>
             : isLocked ? <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="6" width="8" height="6" rx="1" stroke={T.text4} strokeWidth="1.2"/><path d="M5 6V4a2 2 0 014 0v2" stroke={T.text4} strokeWidth="1.2"/></svg>
             : <span style={{fontSize:13,fontWeight:700,color:isToday?T.navy:T.text3}}>{lesson.day}</span>}
         </div>
         <div style={{flex:1}}>
           <div style={{fontSize:14,fontWeight:isDone?500:700,color:isDone?T.text3:isLocked?T.text3:T.text,marginBottom:4}}>{lesson.title}</div>
           <div style={{display:"flex",alignItems:"center",gap:6}}>
-            <span style={{fontSize:10,fontWeight:600,color:isLocked?T.text4:T.navy,background:isLocked?"rgba(0,0,0,0.04)":T.navyLight,padding:"2px 8px",borderRadius:10}}>{lesson.tag}</span>
+            {isComingSoon
+              ? <span style={{fontSize:10,fontWeight:600,color:T2.text4,background:"rgba(138,158,132,0.1)",padding:"2px 8px",borderRadius:10}}>Coming Soon</span>
+              : <span style={{fontSize:10,fontWeight:600,color:isLocked?T.text4:T.navy,background:isLocked?"rgba(0,0,0,0.04)":T.navyLight,padding:"2px 8px",borderRadius:10}}>{lesson.tag}</span>
+            }
             {isToday && <span style={{fontSize:10,color:T.navy}}>Today</span>}
           </div>
         </div>
