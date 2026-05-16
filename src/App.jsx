@@ -4586,7 +4586,7 @@ setAmbitionSaved(true); } catch {}
             <div style={{ position:"absolute", top:0, left:0, right:0, height:"25%", background:"linear-gradient(to bottom, rgba(10,8,5,0.5) 0%, transparent 100%)", pointerEvents:"none" }}/>
             <div style={{ position:"absolute", top:36, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", display:"flex", alignItems:"center", justifyContent:"space-between", right:48 }}>
               <div style={{ ...LP_LABEL, color:T.gold, textShadow:"0 1px 4px rgba(0,0,0,0.5)" }}>The Evidence</div>
-              <div style={{ opacity:0.55 }}>{MODULE_ICONS[3]}</div>
+              
             </div>
           </div>
         );
@@ -4668,7 +4668,7 @@ setAmbitionSaved(true); } catch {}
                 <div style={{ ...LP_LABEL, color:T.gold, marginBottom:12 }}>The Evidence</div>
                 <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:320 }}>Brilliant work in silence<br/>is still silence.</p>
               </div>
-              <div style={{ opacity:0.55 }}>{MODULE_ICONS[9]}</div>
+              
             </div>
           </div>
         );
@@ -4749,7 +4749,7 @@ setAmbitionSaved(true); } catch {}
             <div style={{ position:"absolute", top:0, left:0, right:0, height:"25%", background:"linear-gradient(to bottom, rgba(10,8,5,0.55) 0%, transparent 100%)", pointerEvents:"none" }}/>
             <div style={{ position:"absolute", top:36, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
               <div style={{ ...LP_LABEL, color:T.gold, textShadow:"0 1px 4px rgba(0,0,0,0.5)" }}>The Problem</div>
-              <div style={{ opacity:0.55 }}>{MODULE_ICONS[2]}</div>
+              
             </div>
           </div>
         );
@@ -4820,9 +4820,9 @@ setAmbitionSaved(true); } catch {}
             <img src="/day1-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
             {d1Overlay}
             <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
-              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:16 }}>
+              <div style={{ marginBottom:16 }}>
                 <div style={{ ...LP_LABEL, color:T.gold }}>The Evidence</div>
-                <div style={{ opacity:0.55 }}>{MODULE_ICONS[0]}</div>
+                
               </div>
               <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:320 }}>Why Clarity<br/>Wins</p>
             </div>
@@ -4891,9 +4891,9 @@ setAmbitionSaved(true); } catch {}
             <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.38)" }}/>
             <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.82) 0%, rgba(10,8,5,0.15) 55%, transparent 80%)" }}/>
             <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:16 }}>
+              <div style={{ marginBottom:16 }}>
                 <div style={{ ...LP_LABEL, color:T.gold }}>The Foundation</div>
-                <div style={{ opacity:0.55 }}>{MODULE_ICONS[lesson.day - 1]}</div>
+                
               </div>
               <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:300 }}>Turning Stories<br/>Into Impact</p>
             </div>
@@ -4969,9 +4969,9 @@ setAmbitionSaved(true); } catch {}
             <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="voice" height={900} day={lesson.day}/></div>
             {d9Overlay}
             <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
-              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:16 }}>
+              <div style={{ marginBottom:16 }}>
                 {d9Label("The Performance")}
-                <div style={{ opacity:0.55 }}>{MODULE_ICONS[lesson.day - 1]}</div>
+                
               </div>
               <p style={{ ...LP_HEADING, fontSize:"clamp(26px,2.3vw,38px)", maxWidth:360, marginBottom:20 }}>You've built a great story. Now learn how the world's best speakers deliver it.</p>
               <div style={{ width:32, height:1, background:T.gold, opacity:0.45 }}/>
@@ -5047,9 +5047,9 @@ setAmbitionSaved(true); } catch {}
           <div style={{ position: "absolute", inset: 0, background: lesson.day === 1 ? "rgba(10,8,5,0.50)" : "rgba(10,8,5,0.5)" }}/>
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.5) 40%, transparent 75%)" }}/>
           <div style={{ position: "relative", zIndex: 2, padding: "40px 48px", animation: "fadeUp 0.7s ease both" }}>
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20 }}>
+            <div style={{ marginBottom: 20 }}>
               <div style={{ ...LP_LABEL }}>Day {lesson.day} · {lesson.tag}</div>
-              <div style={{ opacity: 0.55, flexShrink: 0, marginTop: -2 }}>{MODULE_ICONS[lesson.day - 1]}</div>
+              
             </div>
             <h2 style={{ ...LP_HEADING, fontSize: "clamp(36px,3.5vw,56px)", marginBottom: 24 }}>{lesson.title}</h2>
             <div style={{ width: 32, height: 1, background: T.gold, opacity: 0.45, marginBottom: 20 }}/>
