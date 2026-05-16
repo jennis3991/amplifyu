@@ -944,61 +944,61 @@ const MODULE_ICONS = [
 
 // ─── FURTHER READING DATA
 const FURTHER_READING = [
-  { books: [
-    { title: "Simply Said", author: "Jay Sullivan", quote: "Clarity isn't dumbing down. It's opening up.", connection: "The practical companion to Speak Clearly — a manual for audience-centred communication.", summary: "Sullivan distils decades of coaching Fortune 500 leaders into a repeatable framework. Every chapter delivers a technique you can use in your next meeting.", amazon: "https://www.amazon.co.uk/s?k=Simply+Said+Jay+Sullivan" },
-    { title: "The Pyramid Principle", author: "Barbara Minto", quote: "Lead with the answer. Then support it.", connection: "Minto's top-down structure is the intellectual backbone of simple, decisive communication.", summary: "The foundational text used by McKinsey and consulting firms worldwide. Lead with the answer, then support it — a discipline that transforms how you speak and write.", amazon: "https://www.amazon.co.uk/s?k=The+Pyramid+Principle+Barbara+Minto" },
+  { books: [ // Day 1
+    { title: "Simply Said", author: "Jay Sullivan", quote: "Clarity isn't dumbing down. It's opening up.", rating: "4.5", reviewCount: "6,200 reviews", why: "Sullivan spent decades coaching Fortune 500 executives. This is the most practical guide to audience-centred communication ever written — technique on every page.", connection: "The practical companion to Speak Clearly — a manual for audience-centred communication.", amazon: "https://www.amazon.co.uk/s?k=Simply+Said+Jay+Sullivan" },
+    { title: "The Pyramid Principle", author: "Barbara Minto", quote: "Lead with the answer. Then support it.", rating: "4.6", reviewCount: "9,400 reviews", why: "Used by McKinsey and every top consulting firm worldwide. The intellectual foundation of structured, decisive communication that leaders actually use.", connection: "Minto's top-down structure is the intellectual backbone of simple, decisive communication.", amazon: "https://www.amazon.co.uk/s?k=The+Pyramid+Principle+Barbara+Minto" },
   ]},
-  { books: [
-    { title: "Speak with No Fear", author: "Mike Acker", quote: "Confidence is a skill, not a personality trait.", connection: "Goes deep on the inner work of confident delivery — the mindset behind voice control.", summary: "Acker's six-step system dismantles the fear response and replaces it with presence. Practical, honest, and grounded in real speaking experience.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
-    { title: "Talk Like TED", author: "Carmine Gallo", quote: "Passion is the great equaliser.", connection: "Analyses the world's most-watched talks to reveal what commanding speakers do differently.", summary: "Gallo reverse-engineers 500 TED talks to extract nine secrets of great public speaking — from emotional storytelling to novelty and genuine mastery.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
+  { books: [ // Day 2
+    { title: "Speak with No Fear", author: "Mike Acker", quote: "Confidence is a skill, not a personality trait.", rating: "4.5", reviewCount: "8,300 reviews", why: "Acker dismantles the fear that makes people rush and fill silence. The mindset work behind genuine vocal control — essential for anyone who wants to slow down with authority.", connection: "Goes deep on the inner work of confident delivery — the mindset behind voice control.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
+    { title: "Talk Like TED", author: "Carmine Gallo", quote: "Passion is the great equaliser.", rating: "4.6", reviewCount: "12,000 reviews", why: "Gallo reverse-engineered 500 TED talks to find what makes speakers compelling. His chapter on pacing alone is worth the entire book.", connection: "Analyses the world's most-watched talks to reveal what commanding speakers do differently.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
   ]},
-  { books: [
-    { title: "Talk Like TED", author: "Carmine Gallo", quote: "The best TED speakers don't avoid pauses — they weaponize them.", rating: "4.6", reviewCount: "12,000 reviews", why: "Gallo spent 5 years analysing the world's most-watched TED talks. This is the playbook for filler-free, powerful delivery.", connection: "The science behind the world's greatest communicators — every filler-free technique evidenced here.", summary: "Gallo reverse-engineers 500 TED talks to extract nine secrets of great public speaking — from emotional storytelling to novelty and genuine mastery.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
-    { title: "Speak with No Fear", author: "Mike Acker", quote: "Silence is not your enemy. It's your tool.", rating: "4.5", reviewCount: "8,300 reviews", why: "Practical exercises to eliminate verbal crutches and embrace the power of the pause. Essential reading for anyone who wants to speak with calm authority.", connection: "Practical techniques to eliminate verbal crutches and embrace the power of the pause.", summary: "Acker's six-step system dismantles the fear response and replaces it with presence. Practical, honest, and grounded in real speaking experience.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
+  { books: [ // Day 3
+    { title: "Talk Like TED", author: "Carmine Gallo", quote: "The best TED speakers don't avoid pauses — they weaponize them.", rating: "4.6", reviewCount: "12,000 reviews", why: "Gallo spent 5 years analysing the world's most-watched TED talks. This is the playbook for filler-free, powerful delivery.", connection: "The science behind the world's greatest communicators — every filler-free technique evidenced here.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
+    { title: "Speak with No Fear", author: "Mike Acker", quote: "Silence is not your enemy. It's your tool.", rating: "4.5", reviewCount: "8,300 reviews", why: "Practical exercises to eliminate verbal crutches and embrace the power of the pause. Essential reading for anyone who wants to speak with calm authority.", connection: "Practical techniques to eliminate verbal crutches and embrace the power of the pause.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
   ]},
-  { books: [
-    { title: "On Writing Well", author: "William Zinsser", quote: "If a word isn't doing work, cut it.", connection: "The timeless authority on cutting clutter — every principle applies equally to your spoken sentences.", summary: "Zinsser's classic guide to non-fiction writing is equally a guide to speaking. Clutter is the enemy; clarity is the goal. Thirty years on, every word still holds.", amazon: "https://www.amazon.co.uk/s?k=On+Writing+Well+William+Zinsser" },
-    { title: "The Elements of Style", author: "Strunk & White", quote: "Omit needless words.", connection: "The definitive handbook of brevity — the complete philosophy behind short sentences.", summary: "The most influential guide to clear writing ever written. Every rule points toward the same principle: cut what you don't need.", amazon: "https://www.amazon.co.uk/s?k=The+Elements+of+Style+Strunk+White" },
+  { books: [ // Day 4
+    { title: "On Writing Well", author: "William Zinsser", quote: "If a word isn't doing work, cut it.", rating: "4.7", reviewCount: "14,000 reviews", why: "The most-cited book on clear communication, by a writer who spent 50 years practising it. Every chapter translates directly to how you should speak.", connection: "The timeless authority on cutting clutter — every principle applies equally to your spoken sentences.", amazon: "https://www.amazon.co.uk/s?k=On+Writing+Well+William+Zinsser" },
+    { title: "The Elements of Style", author: "Strunk & White", quote: "Omit needless words.", rating: "4.6", reviewCount: "22,000 reviews", why: "The shortest, most important book on brevity ever written. Three rules cover the entire philosophy of short sentences. Read it in an afternoon; apply it for life.", connection: "The definitive handbook of brevity — the complete philosophy behind short sentences.", amazon: "https://www.amazon.co.uk/s?k=The+Elements+of+Style+Strunk+White" },
   ]},
-  { books: [
-    { title: "The McKinsey Way", author: "Ethan Rasiel", quote: "Structure your answer before you open your mouth.", connection: "The operating manual for the structured thinking that PRE is built on.", summary: "Rasiel reveals how McKinsey consultants frame problems, communicate findings, and structure recommendations under pressure. Immediately usable in any professional context.", amazon: "https://www.amazon.co.uk/s?k=The+McKinsey+Way+Ethan+Rasiel" },
-    { title: "The Minto Pyramid Principle", author: "Barbara Minto", quote: "The mind's natural tendency is to think in groups.", connection: "The full method behind structured communication — go deeper into the framework PRE draws from.", summary: "Minto's complete system for structuring thinking and writing so leaders can communicate ideas clearly and persuasively every single time.", amazon: "https://www.amazon.co.uk/s?k=The+Minto+Pyramid+Principle+Barbara+Minto" },
+  { books: [ // Day 5
+    { title: "The McKinsey Way", author: "Ethan Rasiel", quote: "Structure your answer before you open your mouth.", rating: "4.4", reviewCount: "7,800 reviews", why: "Reveals how the world's best-paid communicators structure thinking and delivery. The PRE framework draws directly from the principles inside.", connection: "The operating manual for the structured thinking that PRE is built on.", amazon: "https://www.amazon.co.uk/s?k=The+McKinsey+Way+Ethan+Rasiel" },
+    { title: "The Minto Pyramid Principle", author: "Barbara Minto", quote: "The mind's natural tendency is to think in groups.", rating: "4.5", reviewCount: "5,200 reviews", why: "The complete system behind structured communication. If PRE gave you the skeleton, Minto gives you the full anatomy of a compelling argument.", connection: "The full method behind structured communication — go deeper into the framework PRE draws from.", amazon: "https://www.amazon.co.uk/s?k=The+Minto+Pyramid+Principle+Barbara+Minto" },
   ]},
-  { books: [
-    { title: "The Storyteller's Secret", author: "Carmine Gallo", quote: "Facts tell. Stories sell.", connection: "Reveals how the world's most inspiring communicators use story as their primary instrument.", summary: "Gallo interviews over 50 successful leaders to uncover the stories that changed careers, companies, and cultures. Practical, energising, and full of usable craft.", amazon: "https://www.amazon.co.uk/s?k=The+Storyteller%27s+Secret+Carmine+Gallo" },
-    { title: "Building a StoryBrand", author: "Donald Miller", quote: "Make your customer the hero, not your brand.", connection: "Miller's SB7 framework shows how to make your audience the hero — essential for professional storytelling.", summary: "A seven-part framework that clarifies your message by positioning yourself as the guide. Used by thousands of companies and communicators worldwide.", amazon: "https://www.amazon.co.uk/s?k=Building+a+StoryBrand+Donald+Miller" },
+  { books: [ // Day 6
+    { title: "The Storyteller's Secret", author: "Carmine Gallo", quote: "Facts tell. Stories sell.", rating: "4.6", reviewCount: "9,100 reviews", why: "Gallo interviewed 50+ world-class communicators to uncover how they use story to move people. One of the most useful books on professional storytelling ever published.", connection: "Reveals how the world's most inspiring communicators use story as their primary instrument.", amazon: "https://www.amazon.co.uk/s?k=The+Storyteller%27s+Secret+Carmine+Gallo" },
+    { title: "Building a StoryBrand", author: "Donald Miller", quote: "Make your customer the hero, not your brand.", rating: "4.7", reviewCount: "18,000 reviews", why: "Miller's SB7 framework is the clearest model for professional storytelling available. Used by thousands of organisations to clarify their message instantly.", connection: "Miller's SB7 framework shows how to make your audience the hero — essential for professional storytelling.", amazon: "https://www.amazon.co.uk/s?k=Building+a+StoryBrand+Donald+Miller" },
   ]},
-  { books: [
-    { title: "Promoting Yourself", author: "Harvey Mackay", quote: "Your reputation is your most valuable asset.", connection: "The definitive guide to making your value visible — the heart of the PIE Framework.", summary: "Mackay's practical strategies for building the relationships and reputation that create career momentum, without ever feeling inauthentic or self-promotional.", amazon: "https://www.amazon.co.uk/s?k=Promoting+Yourself+Harvey+Mackay" },
-    { title: "The 2-Hour Job Search", author: "Steve Dalton", quote: "Be known before you need to be.", connection: "A methodical approach to being known before you need to be — exactly what PIE is about.", summary: "Dalton's evidence-based system for prioritising and approaching contacts efficiently. Counterintuitive and remarkably effective for anyone building professional visibility.", amazon: "https://www.amazon.co.uk/s?k=The+2-Hour+Job+Search+Steve+Dalton" },
+  { books: [ // Day 7
+    { title: "Promoting Yourself", author: "Harvey Mackay", quote: "Your reputation is your most valuable asset.", rating: "4.3", reviewCount: "4,600 reviews", why: "The definitive guide to making your value visible without feeling inauthentic. Mackay's strategies have helped thousands build the professional presence they deserve.", connection: "The definitive guide to making your value visible — the heart of the PIE Framework.", amazon: "https://www.amazon.co.uk/s?k=Promoting+Yourself+Harvey+Mackay" },
+    { title: "The 2-Hour Job Search", author: "Steve Dalton", quote: "Be known before you need to be.", rating: "4.5", reviewCount: "6,700 reviews", why: "A methodical, evidence-based system for building visibility strategically. Counterintuitive and immediately actionable — read it before you need it.", connection: "A methodical approach to being known before you need to be — exactly what PIE is about.", amazon: "https://www.amazon.co.uk/s?k=The+2-Hour+Job+Search+Steve+Dalton" },
   ]},
-  { books: [
-    { title: "The Storyteller's Secret", author: "Carmine Gallo", quote: "Facts tell. Stories sell.", connection: "Reveals how the world's most inspiring communicators use story as their primary instrument.", summary: "Gallo interviews over 50 successful leaders to uncover the stories that changed careers, companies, and cultures. Practical, energising, and full of usable craft.", amazon: "https://www.amazon.co.uk/s?k=The+Storyteller%27s+Secret+Carmine+Gallo" },
-    { title: "Storyworthy", author: "Matthew Dicks", quote: "Every story is about a five-second moment.", connection: "Dicks' method for finding and telling stories from everyday life — the practitioner's craft behind narrative transportation.", summary: "Matthew Dicks has won the Moth GrandSLAM multiple times. His method for finding stories in ordinary life and building them into extraordinary moments is unlike any other.", amazon: "https://www.amazon.co.uk/s?k=Storyworthy+Matthew+Dicks" },
+  { books: [ // Day 8
+    { title: "The Storyteller's Secret", author: "Carmine Gallo", quote: "Facts tell. Stories sell.", rating: "4.6", reviewCount: "9,100 reviews", why: "The most practical book on professional storytelling available. Gallo's 50+ interviews reveal exactly how world-class communicators use narrative to create impact.", connection: "Reveals how the world's most inspiring communicators use story as their primary instrument.", amazon: "https://www.amazon.co.uk/s?k=The+Storyteller%27s+Secret+Carmine+Gallo" },
+    { title: "Storyworthy", author: "Matthew Dicks", quote: "Every story is about a five-second moment.", rating: "4.8", reviewCount: "7,200 reviews", why: "A multiple Moth GrandSLAM winner teaches you how to find stories in everyday life and craft them into moments people never forget. The practitioner's craft guide.", connection: "Dicks' method for finding and telling stories from everyday life — the practitioner's craft behind narrative transportation.", amazon: "https://www.amazon.co.uk/s?k=Storyworthy+Matthew+Dicks" },
   ]},
-  { books: [
-    { title: "Talk Like TED", author: "Carmine Gallo", quote: "Passion is the great equaliser.", connection: "The science behind the world's most inspiring presentations — every delivery principle in this module is evidenced here.", summary: "Gallo deconstructs what makes TED talks unforgettable: emotional connection, novelty, and memorable delivery. Practical, evidenced, and immediately applicable to any professional speaking context.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
-    { title: "Speak with No Fear", author: "Mike Acker", quote: "Own the room by owning yourself first.", connection: "Practical techniques for confident delivery — directly complements the 5 Ps framework you practised today.", summary: "Acker teaches you how to calm nerves, control your voice, and own the room. Direct, practical, and grounded in real speaking experience rather than theory.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
+  { books: [ // Day 9
+    { title: "Talk Like TED", author: "Carmine Gallo", quote: "Passion is the great equaliser.", rating: "4.6", reviewCount: "12,000 reviews", why: "The go-to guide for powerful delivery. Gallo's nine habits cover everything from vocal variety to storytelling to the strategic use of pause.", connection: "The science behind the world's most inspiring presentations — every delivery principle in this module is evidenced here.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
+    { title: "Speak with No Fear", author: "Mike Acker", quote: "Own the room by owning yourself first.", rating: "4.5", reviewCount: "8,300 reviews", why: "Practical, honest, and grounded in real speaking experience. Acker gives you the tools to calm nerves, control your voice, and command any room.", connection: "Practical techniques for confident delivery — directly complements the 5 Ps framework you practised today.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
   ]},
-  { books: [
-    { title: "Crucial Conversations", author: "Patterson, Grenny, McMillan & Switzler", quote: "The conversation is the relationship.", connection: "The essential toolkit for high-stakes dialogue — the direct companion to this module.", summary: "A proven method for holding conversations that matter: staying safe, listening to understand, and creating shared meaning even when stakes are high and emotions run hot.", amazon: "https://www.amazon.co.uk/s?k=Crucial+Conversations+Patterson+Grenny" },
-    { title: "Radical Candor", author: "Kim Scott", quote: "Care personally. Challenge directly.", connection: "The operating framework for feedback that is both honest and kind — care personally, challenge directly.", summary: "Scott's 2×2 model gives managers and colleagues a vocabulary for honest, constructive conversation that builds trust rather than eroding it.", amazon: "https://www.amazon.co.uk/s?k=Radical+Candor+Kim+Scott" },
+  { books: [ // Day 10
+    { title: "Crucial Conversations", author: "Patterson, Grenny, McMillan & Switzler", quote: "The conversation is the relationship.", rating: "4.6", reviewCount: "31,000 reviews", why: "The most widely used framework for high-stakes dialogue. Millions of leaders have applied these tools to conversations that define careers, teams, and organisations.", connection: "The essential toolkit for high-stakes dialogue — the direct companion to this module.", amazon: "https://www.amazon.co.uk/s?k=Crucial+Conversations+Patterson+Grenny" },
+    { title: "Radical Candor", author: "Kim Scott", quote: "Care personally. Challenge directly.", rating: "4.5", reviewCount: "19,000 reviews", why: "The clearest framework for feedback that builds trust rather than eroding it. Scott's 2×2 model gives you a language for honest, constructive communication.", connection: "The operating framework for feedback that is both honest and kind — care personally, challenge directly.", amazon: "https://www.amazon.co.uk/s?k=Radical+Candor+Kim+Scott" },
   ]},
-  { books: [
-    { title: "Known", author: "Mark Schaefer", quote: "In a noisy world, be consistently useful.", connection: "A methodical, research-backed roadmap to becoming known in your field — less hustle, more strategy.", summary: "Schaefer's four-step framework shows how to identify your place to be known, develop a content engine, and build the audience that creates real career leverage.", amazon: "https://www.amazon.co.uk/s?k=Known+Mark+Schaefer" },
-    { title: "Crushing It!", author: "Gary Vaynerchuk", quote: "Document. Don't create. Show up every day.", connection: "The energetic case for showing up consistently and building a brand around your authentic voice.", summary: "Vaynerchuk's handbook for building a personal brand through content, consistency, and genuine value creation — on any platform, at any stage of your career.", amazon: "https://www.amazon.co.uk/s?k=Crushing+It+Gary+Vaynerchuk" },
+  { books: [ // Day 11
+    { title: "Known", author: "Mark Schaefer", quote: "In a noisy world, be consistently useful.", rating: "4.5", reviewCount: "5,100 reviews", why: "Research-backed and practical — Schaefer's four-step framework shows exactly how to build the kind of visibility that creates real career leverage.", connection: "A methodical, research-backed roadmap to becoming known in your field — less hustle, more strategy.", amazon: "https://www.amazon.co.uk/s?k=Known+Mark+Schaefer" },
+    { title: "Crushing It!", author: "Gary Vaynerchuk", quote: "Document. Don't create. Show up every day.", rating: "4.4", reviewCount: "11,000 reviews", why: "The most energetic case for authentic personal brand building available. Whether you love or challenge his style, the principles of consistent visibility are undeniable.", connection: "The energetic case for showing up consistently and building a brand around your authentic voice.", amazon: "https://www.amazon.co.uk/s?k=Crushing+It+Gary+Vaynerchuk" },
   ]},
-  { books: [
-    { title: "Never Eat Alone", author: "Keith Ferrazzi", quote: "The currency of real networking is generosity.", connection: "The generosity-first philosophy of relationship building that makes networking feel natural.", summary: "Ferrazzi argues that the most connected people succeed not by using relationships but by genuinely investing in them. A practical guide to building a network that matters.", amazon: "https://www.amazon.co.uk/s?k=Never+Eat+Alone+Keith+Ferrazzi" },
-    { title: "How to Win Friends and Influence People", author: "Dale Carnegie", quote: "Be genuinely interested in other people.", connection: "Still the most proven book on making people feel valued — the foundation of every lasting professional relationship.", summary: "Carnegie's 1936 classic remains the most widely read book on human relations. Genuine interest, remembering names, making others feel important — timeless principles that never age.", amazon: "https://www.amazon.co.uk/s?k=How+to+Win+Friends+and+Influence+People+Dale+Carnegie" },
+  { books: [ // Day 12
+    { title: "Never Eat Alone", author: "Keith Ferrazzi", quote: "The currency of real networking is generosity.", rating: "4.4", reviewCount: "13,000 reviews", why: "The most human book on building professional relationships ever written. Ferrazzi's generosity-first philosophy turns networking from transactional to transformational.", connection: "The generosity-first philosophy of relationship building that makes networking feel natural.", amazon: "https://www.amazon.co.uk/s?k=Never+Eat+Alone+Keith+Ferrazzi" },
+    { title: "How to Win Friends and Influence People", author: "Dale Carnegie", quote: "Be genuinely interested in other people.", rating: "4.7", reviewCount: "85,000 reviews", why: "Nearly 90 years old and still the most-read book on human relations for a reason. Carnegie's principles are not tricks — they are truths about how people connect.", connection: "Still the most proven book on making people feel valued — the foundation of every lasting professional relationship.", amazon: "https://www.amazon.co.uk/s?k=How+to+Win+Friends+and+Influence+People+Dale+Carnegie" },
   ]},
-  { books: [
-    { title: "Dare to Lead", author: "Brené Brown", quote: "Vulnerability is the birthplace of innovation and change.", connection: "The research behind brave, vulnerable leadership communication — what a leadership voice really sounds like.", summary: "Brown's framework for courageous leadership — embracing vulnerability, building trust, and leading with values — is grounded in a decade of rigorous research.", amazon: "https://www.amazon.co.uk/s?k=Dare+to+Lead+Bren%C3%A9+Brown" },
-    { title: "Leaders Eat Last", author: "Simon Sinek", quote: "Great leaders sacrifice themselves for their people.", connection: "Sinek's case for why the best leaders communicate safety, purpose, and meaning above all else.", summary: "Drawing on biology and military examples, Sinek shows how the greatest leaders prioritise their people — creating the trust and cooperation that drives exceptional, lasting results.", amazon: "https://www.amazon.co.uk/s?k=Leaders+Eat+Last+Simon+Sinek" },
+  { books: [ // Day 13
+    { title: "Dare to Lead", author: "Brené Brown", quote: "Vulnerability is the birthplace of innovation and change.", rating: "4.6", reviewCount: "24,000 reviews", why: "A decade of rigorous research on what courageous leadership actually looks like. Brown's framework gives you permission to lead with honesty — and the tools to do it.", connection: "The research behind brave, vulnerable leadership communication — what a leadership voice really sounds like.", amazon: "https://www.amazon.co.uk/s?k=Dare+to+Lead+Bren%C3%A9+Brown" },
+    { title: "Leaders Eat Last", author: "Simon Sinek", quote: "Great leaders sacrifice themselves for their people.", rating: "4.6", reviewCount: "17,000 reviews", why: "Sinek's most important book. Drawing on biology and military examples, he shows why leaders who communicate safety, purpose, and meaning build teams that perform at the highest level.", connection: "Sinek's case for why the best leaders communicate safety, purpose, and meaning above all else.", amazon: "https://www.amazon.co.uk/s?k=Leaders+Eat+Last+Simon+Sinek" },
   ]},
-  { books: [
-    { title: "Talk Like TED", author: "Carmine Gallo", quote: "Passion is the great equaliser.", connection: "The framework for peak performance in your most important professional moments.", summary: "Gallo's analysis of the world's greatest talks reveals the nine habits that make speakers magnetic under pressure — passion, brevity, and unforgettable stories.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
-    { title: "The Art of Explanation", author: "Lee LeFever", quote: "Explanation is the bridge between knowing and understanding.", connection: "LeFever's method for making complex ideas land clearly — essential for any high-stakes presentation.", summary: "A practical guide to the most underrated communication skill: making hard things simple. LeFever's techniques transform how you prepare and deliver in critical moments.", amazon: "https://www.amazon.co.uk/s?k=The+Art+of+Explanation+Lee+LeFever" },
+  { books: [ // Day 14
+    { title: "Talk Like TED", author: "Carmine Gallo", quote: "Passion is the great equaliser.", rating: "4.6", reviewCount: "12,000 reviews", why: "The ultimate integration read. Gallo's nine habits bring together storytelling, delivery, clarity, and presence into a complete model for world-class communication.", connection: "The framework for peak performance in your most important professional moments.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
+    { title: "The Art of Explanation", author: "Lee LeFever", quote: "Explanation is the bridge between knowing and understanding.", rating: "4.3", reviewCount: "3,800 reviews", why: "LeFever's method for making complex ideas land clearly is the final skill that ties everything together. If you can explain anything to anyone, you have real executive presence.", connection: "LeFever's method for making complex ideas land clearly — essential for any high-stakes presentation.", amazon: "https://www.amazon.co.uk/s?k=The+Art+of+Explanation+Lee+LeFever" },
   ]},
 ];
 
@@ -6744,8 +6744,8 @@ setAmbitionSaved(true); } catch {}
               const fr = FURTHER_READING[lesson.day - 1];
               const nextDay = lesson.day < 14 ? lesson.day + 1 : null;
 
-              // ── OPTION 1: Book-First Editorial Layout (Day 3 test) ────────────
-              if (lesson.day === 3) {
+              // ── OPTION 1: Book-First Editorial Layout (all modules) ───────────
+              {
                 return (
                   <div style={{ flex: 1, background: T2.bg, borderLeft: "1px solid " + T2.divider, overflowY: "auto" }}>
                     <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 48px" }}>
@@ -6833,90 +6833,6 @@ setAmbitionSaved(true); } catch {}
                   </div>
                 );
               }
-
-              // ── OPTION 5: Minimal Luxury (all other days) ─────────────────────
-              return (
-                <div style={{ flex: 1, background: T2.bg, borderLeft: "1px solid " + T2.divider, overflowY: "auto" }}>
-                  <div style={{ maxWidth: 680, margin: "0 auto", padding: "80px 48px" }}>
-
-                    {/* Completion badge */}
-                    <div style={{ fontSize: 13, fontWeight: 500, textTransform: "uppercase", letterSpacing: "2px", color: T.gold, textAlign: "center", marginBottom: 40, fontFamily: T.sans }}>
-                      Day {lesson.day} Complete ✓
-                    </div>
-
-                    {/* Main heading */}
-                    <h1 style={{ fontFamily: T.serif, fontSize: "clamp(48px,4vw,64px)", fontWeight: 300, color: T2.text, letterSpacing: "-0.5px", textAlign: "center", marginBottom: 20, lineHeight: 1.05 }}>
-                      Keep Going
-                    </h1>
-
-                    {/* Subtitle */}
-                    <p style={{ fontFamily: T.sans, fontSize: 18, fontWeight: 300, color: T2.text2, textAlign: "center", maxWidth: 400, margin: "0 auto 100px", lineHeight: 1.6 }}>
-                      Two books to deepen this skill.
-                    </p>
-
-                    {/* Book cards */}
-                    {fr && fr.books.map((book, bi) => (
-                      <div key={bi} style={{ marginBottom: 120 }}>
-                        {/* Stylised cover placeholder */}
-                        <div style={{
-                          width: 220, height: 330, margin: "0 auto 40px",
-                          background: "linear-gradient(145deg, #2C2416 0%, #4A3828 60%, #2C2416 100%)",
-                          borderRadius: 4,
-                          boxShadow: "0 8px 24px rgba(44,36,22,0.18), 0 2px 8px rgba(44,36,22,0.1), 3px 0 0 rgba(0,0,0,0.15)",
-                          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                          padding: "28px 22px", textAlign: "center", position: "relative", overflow: "hidden",
-                        }}>
-                          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, "+T.gold+", rgba(138,158,132,0.3))" }}/>
-                          <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", fontFamily: T.sans, marginBottom: 16, opacity: 0.8 }}>AmplifyU Reading</div>
-                          <p style={{ fontFamily: T.serif, fontSize: 18, fontWeight: 600, color: "#F5EFE6", lineHeight: 1.25, marginBottom: 14, letterSpacing: "-0.2px" }}>{book.title}</p>
-                          <div style={{ width: 28, height: 1, background: T.gold, opacity: 0.5, marginBottom: 14 }}/>
-                          <p style={{ fontFamily: T.sans, fontSize: 11, color: "rgba(245,239,230,0.55)", letterSpacing: "0.5px" }}>{book.author}</p>
-                        </div>
-
-                        {/* Title + Author */}
-                        <div style={{ textAlign: "center", marginBottom: 24 }}>
-                          <h2 style={{ fontFamily: T.serif, fontSize: "clamp(24px,2.5vw,32px)", fontWeight: 600, color: T2.text, letterSpacing: "-0.3px", marginBottom: 8 }}>{book.title}</h2>
-                          <p style={{ fontFamily: T.sans, fontSize: 16, fontWeight: 400, color: T2.text2 }}>{book.author}</p>
-                        </div>
-
-                        {/* Pull quote */}
-                        {book.quote && (
-                          <p style={{ fontFamily: T.sans, fontSize: "clamp(17px,1.8vw,22px)", fontWeight: 300, fontStyle: "italic", color: T2.text, textAlign: "center", maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.6 }}>
-                            <span style={{ color: T.gold, fontStyle: "normal", fontSize: "1.2em", lineHeight: 0 }}>"</span>
-                            {book.quote}
-                            <span style={{ color: T.gold, fontStyle: "normal", fontSize: "1.2em", lineHeight: 0 }}>"</span>
-                          </p>
-                        )}
-
-                        {/* CTA button */}
-                        <div style={{ textAlign: "center" }}>
-                          <a href={book.amazon} target="_blank" rel="noreferrer"
-                            style={{ display: "inline-block", background: T2.text, color: T2.bg, padding: "16px 40px", borderRadius: 4, fontFamily: T.sans, fontSize: 15, fontWeight: 500, textDecoration: "none", transition: "all 0.25s ease", letterSpacing: "0.01em" }}
-                            onMouseEnter={e => { e.currentTarget.style.background = T.gold; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(44,36,22,0.18)"; }}
-                            onMouseLeave={e => { e.currentTarget.style.background = T2.text; e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}
-                          >View Book →</a>
-                        </div>
-                      </div>
-                    ))}
-
-                    {/* Continue link */}
-                    <div style={{ textAlign: "center", paddingBottom: 80 }}>
-                      {nextDay ? (
-                        <button onClick={onComplete} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: T.sans, fontSize: 15, fontWeight: 500, color: T2.text, textDecoration: "underline", textUnderlineOffset: 3, padding: 0 }}
-                          onMouseEnter={e => e.currentTarget.style.color = T.gold}
-                          onMouseLeave={e => e.currentTarget.style.color = T2.text}
-                        >
-                          Continue to Day {nextDay} →
-                        </button>
-                      ) : (
-                        <button onClick={onComplete} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: T.sans, fontSize: 15, fontWeight: 500, color: T2.text, textDecoration: "underline", textUnderlineOffset: 3, padding: 0 }}>
-                          Complete Programme →
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
             })()}
           </div>
         ) : (
