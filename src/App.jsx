@@ -6227,8 +6227,10 @@ finishDate + ".";
         }}>
           {/* Background — full bleed, no overlay on top 70% */}
           <img src="/home-hero.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}/>
-          {/* Parchment gradient only at bottom 30% */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 0%, transparent 70%, rgba(247,243,236,0.4) 85%, rgba(247,243,236,0.85) 100%)", pointerEvents: "none" }}/>
+          {/* Subtle full-image softening layer */}
+          <div style={{ position: "absolute", inset: 0, background: "rgba(247,243,236,0.18)", pointerEvents: "none" }}/>
+          {/* Parchment gradient at bottom 30% for button zone */}
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 0%, transparent 70%, rgba(247,243,236,0.5) 85%, rgba(247,243,236,0.92) 100%)", pointerEvents: "none" }}/>
 
           {/* Nav sits above image */}
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: NAV_H, zIndex: 10 }}/>
@@ -6242,8 +6244,8 @@ finishDate + ".";
                   <div style={{ fontSize: 9, letterSpacing: "3.5px", textTransform: "uppercase", color: T.text3, fontFamily: T.sans }}>{lesson.tag}</div>
                   {todayDone && <div style={{ fontSize: 9, letterSpacing: "2px", textTransform: "uppercase", color: T.green, fontFamily: T.sans, background: "rgba(61,107,79,0.1)", border: "1px solid rgba(61,107,79,0.3)", padding: "5px 12px", borderRadius: 3 }}>✓ Complete</div>}
                 </div>
-                <h1 style={{ fontFamily: T.serif, fontSize: "clamp(32px,3.5vw,52px)", fontWeight: 600, color: T.ink, lineHeight: 1.0, letterSpacing: "-2px", maxWidth: 520, marginBottom: 14 }}>{lesson.title}</h1>
-                <p style={{ fontSize: 15, color: T.text3, lineHeight: 1.55, maxWidth: 440, marginBottom: 28, fontFamily: T.sans, fontWeight: 300 }}>{lesson.quote}</p>
+                <h1 style={{ fontFamily: T.serif, fontSize: "clamp(32px,3.5vw,52px)", fontWeight: 600, color: T.ink, lineHeight: 1.0, letterSpacing: "-2px", maxWidth: 520, marginBottom: 14, textShadow: "0 1px 3px rgba(247,243,236,0.6)" }}>{lesson.title}</h1>
+                <p style={{ fontSize: 16, color: T.text2, lineHeight: 1.55, maxWidth: 440, marginBottom: 28, fontFamily: T.sans, fontWeight: 400, textShadow: "0 1px 2px rgba(247,243,236,0.5)" }}>{lesson.quote}</p>
                 <button onClick={() => onStart(cur)} className="au-cta" style={{ display: "inline-flex", alignItems: "center", gap: 12, background: T.ink, border: "none", borderRadius: 5, padding: "14px 28px", cursor: "pointer" }}>
                   <span style={{ fontSize: 13, fontWeight: 600, color: T.bg, fontFamily: T.sans }}>{todayDone ? "Review Session" : "Begin Session"}</span>
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.bg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -6352,8 +6354,10 @@ finishDate + ".";
       {/* ── SECTION 1: Hero — full brightness, parchment gradient at bottom ── */}
       <div style={{position:"relative",height:"55vh",minHeight:320,overflow:"hidden",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
         <img src="/home-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 30%"}}/>
-        {/* Parchment gradient only at bottom 30% */}
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, transparent 0%, transparent 70%, rgba(247,243,236,0.4) 85%, rgba(247,243,236,0.88) 100%)",pointerEvents:"none"}}/>
+        {/* Subtle full-image softening */}
+        <div style={{position:"absolute",inset:0,background:"rgba(247,243,236,0.18)",pointerEvents:"none"}}/>
+        {/* Parchment gradient at bottom 30% */}
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, transparent 0%, transparent 70%, rgba(247,243,236,0.5) 85%, rgba(247,243,236,0.92) 100%)",pointerEvents:"none"}}/>
         <div style={{position:"relative",zIndex:5,padding:"0 24px 28px"}}>
           {!finished && lesson && (
             <div style={{animation:"fadeUp 0.6s ease both"}}>
@@ -6362,7 +6366,7 @@ finishDate + ".";
                 <div style={{fontSize:9,letterSpacing:"3px",textTransform:"uppercase",color:T.text3,fontFamily:T.sans}}>{lesson.tag}</div>
                 {todayDone && <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:T.green,fontFamily:T.sans,background:"rgba(61,107,79,0.08)",border:"1px solid rgba(61,107,79,0.25)",padding:"5px 12px",borderRadius:3}}>✓ Complete</div>}
               </div>
-              <h1 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,40px)",fontWeight:600,color:T.ink,lineHeight:1.0,letterSpacing:"-1.5px",marginBottom:10}}>{lesson.title}</h1>
+              <h1 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,40px)",fontWeight:600,color:T.ink,lineHeight:1.0,letterSpacing:"-1.5px",marginBottom:10,textShadow:"0 1px 3px rgba(247,243,236,0.6)"}}>{lesson.title}</h1>
               <button onClick={()=>onStart(cur)} className="au-cta" style={{display:"inline-flex",alignItems:"center",gap:10,background:T.ink,border:"none",borderRadius:4,padding:"12px 22px",cursor:"pointer"}}>
                 <span style={{fontSize:13,fontWeight:600,color:T.bg,fontFamily:T.sans}}>{todayDone?"Review Session":"Begin Session"}</span>
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.bg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
