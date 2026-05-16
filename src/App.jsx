@@ -3969,10 +3969,7 @@ function D1SimFeedback({input}) {
 // ─── SESSION VIEW — 6 steps including Theory
 const SESSION_STEPS =
 ["Insight","Theory","Example","Practice","Simulation","Review"];
-const SESSION_STEPS_NT =
-["Insight","Theory","3-Point Test","Example","Practice","Simulation","Review"];
 const NAV_LABELS = ["See the theory","See examples","Start practice","Go to simulation","Go to review"];
-const NAV_LABELS_NT = ["See the theory","3-Point Test","See examples","Start practice","Go to simulation","Go to review"];
 
 function SessionView({lesson, isDone, onComplete, onBack, roleId,
 activeRole, dark=false, DK={}, isDesktop=false}) {
@@ -4015,7 +4012,7 @@ setAmbitionSaved(true); } catch {}
   const isD9 = lesson.day === 9;
   const isD1 = lesson.day === 1;
   const isD4 = lesson.day === 4;
-  const STEPS = isNT ? SESSION_STEPS_NT : SESSION_STEPS;
+  const STEPS = SESSION_STEPS;
   const step = STEPS[idx];
 
   // ── D4 shared constants ────────────────────────────────────────────────────
@@ -4418,29 +4415,6 @@ setAmbitionSaved(true); } catch {}
             <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
               <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Framework</div>
               <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>Every great story follows a learnable pattern.</p>
-            </div>
-          </div>
-        );
-        if (step === "3-Point Test") return (
-          <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#131009", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px" }}>
-            <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 40%, rgba(138,158,132,0.08) 0%, transparent 60%)" }}/>
-            <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Before You Tell It</div>
-              <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2.2vw,36px)", maxWidth:360, marginBottom:20, lineHeight:1.15 }}>Every story must pass three tests.</p>
-              <div style={{ width:32, height:1, background:T.gold, opacity:0.45, marginBottom:20 }}/>
-              <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
-                {[["Remember","One thing they walk away with."],["Real","The detail that makes it true."],["Result","What shifts for them after."]].map(([label,q],i)=>(
-                  <div key={i} style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
-                    <div style={{ width:20, height:20, borderRadius:"50%", border:"1px solid rgba(138,158,132,0.4)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                      <span style={{ fontSize:9, color:T.gold, fontWeight:600 }}>{i+1}</span>
-                    </div>
-                    <div>
-                      <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:2 }}>{label}</div>
-                      <p style={{ fontFamily:T.sans, fontSize:12, color:"rgba(245,239,230,0.55)", margin:0, lineHeight:1.5 }}>{q}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         );
@@ -5242,56 +5216,22 @@ setAmbitionSaved(true); } catch {}
         );
       }
 
-      if (step === "3-Point Test") {
-        const [rem,setRem]=useState(""); const [real,setReal]=useState(""); const [res,setRes]=useState("");
-        const allFilled = rem.trim() && real.trim() && res.trim();
-        return (
-          <div key={idx} className="au-step-enter" style={{ padding:"52px 60px", overflowY:"auto", maxWidth:680 }}>
-            <div style={{ fontSize:10, fontWeight:500, color:T2.text3, textTransform:"uppercase", letterSpacing:"3px", marginBottom:10, fontFamily:T.sans }}>Before You Tell It</div>
-            <h2 style={{ fontFamily:T.serif, fontSize:34, fontWeight:600, color:T2.text, letterSpacing:"-0.5px", lineHeight:1.1, marginBottom:8 }}>Before You Tell It — Test It</h2>
-            <p style={{ fontFamily:T.sans, fontSize:16, color:T2.text3, lineHeight:1.6, marginBottom:40, fontWeight:300 }}>Every professional story must pass the 3-Point Test.</p>
-            <div style={{ display:"flex", flexDirection:"column", gap:20, marginBottom:32 }}>
-              {[
-                { n:1, label:"Remember", q:"What is the ONE thing you want them to remember?", val:rem, set:setRem, ph:"e.g. Our team delivered 3 months ahead of schedule." },
-                { n:2, label:"Real",     q:"What is the single most important detail that makes it real?", val:real, set:setReal, ph:"e.g. We worked through a major system failure in week 2 and didn't lose a day." },
-                { n:3, label:"Result",   q:"What do you want them to think, feel, or do differently?", val:res,  set:setRes,  ph:"e.g. Trust that we can handle the next project at twice the scale." },
-              ].map(({n,label,q,val,set,ph})=>(
-                <div key={n} style={{ background:T2.surface, borderRadius:4, padding:"22px 24px", border:"0.5px solid "+T2.border, borderLeft:"2px solid "+T.gold }}>
-                  <div style={{ fontSize:11, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:6, fontFamily:T.sans }}>{n}. {label}</div>
-                  <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.5, marginBottom:12, fontWeight:400 }}>{q}</p>
-                  <textarea value={val} onChange={e=>set(e.target.value)} placeholder={ph} className="au-input" style={{ height:64, resize:"none", fontSize:14 }}/>
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520, overflowY:"auto" }}>
+          {/* Neural engagement intro */}
+          <div style={{ marginBottom:36 }}>
+            <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.8, marginBottom:16, fontWeight:300 }}>The human brain is wired to process narrative as a sequence of goals, obstacles, and outcomes.</p>
+            <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:16 }}>
+              {["A story without a clear goal (stakes) fails to engage.","A story without a concrete detail (proof) fails to persuade.","A story without a shift (outcome) fails to be remembered."].map((pt,i)=>(
+                <div key={i} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
+                  <span style={{ color:T.gold, fontWeight:600, flexShrink:0, fontFamily:T.sans }}>→</span>
+                  <span style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.6 }}>{pt}</span>
                 </div>
               ))}
             </div>
-            <div style={{ padding:"24px", background:T.gold, borderRadius:4, marginBottom:32 }}>
-              <p style={{ fontFamily:T.sans, fontSize:16, color:"#F5EFE6", lineHeight:1.7, margin:0, fontWeight:400 }}>
-                "If you can't answer all three before you speak, the story will land as information rather than impact."
-              </p>
-            </div>
-            <div style={{ marginBottom:32 }}>
-              <button onClick={()=>setIdx(idx+1)} style={{ display:"inline-flex", alignItems:"center", gap:12, background:T.ink, border:"none", borderRadius:4, padding:"14px 28px", cursor:"pointer", fontFamily:T.sans, fontSize:14, fontWeight:600, color:T.bg }}>
-                Continue to Examples →
-              </button>
-            </div>
-            <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:28 }}>
-              <h3 style={{ fontFamily:T.sans, fontSize:18, fontWeight:600, color:T2.text, marginBottom:16 }}>Why This Matters</h3>
-              <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text3, lineHeight:1.8, marginBottom:16, fontWeight:300 }}>The human brain is wired to process narrative as a sequence of goals, obstacles, and outcomes.</p>
-              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-                {["A story without a clear goal (stakes) fails to engage.","A story without a concrete detail (proof) fails to persuade.","A story without a shift (outcome) fails to be remembered."].map((pt,i)=>(
-                  <div key={i} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
-                    <span style={{ color:T.gold, fontWeight:600, flexShrink:0 }}>→</span>
-                    <span style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.6 }}>{pt}</span>
-                  </div>
-                ))}
-              </div>
-              <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, marginTop:16, fontWeight:300 }}>All three are required for full neural engagement.</p>
-            </div>
+            <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, margin:0 }}>All three are required for full neural engagement.</p>
           </div>
-        );
-      }
-
-      if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520, overflowY:"auto" }}>
+          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:28 }}>
           {/* 6-Beat Framework */}
           <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>The 6-Beat Framework</div>
           <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:T2.text, letterSpacing:"-0.4px", marginBottom:24 }}>Build Your Story</h2>
@@ -5335,6 +5275,7 @@ setAmbitionSaved(true); } catch {}
               ))}
             </div>
             <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T2.text2, lineHeight:1.6, marginTop:20 }}>This simple framework works for any story. Now see it in the wild →</p>
+          </div>
           </div>
         </div>
       );
