@@ -3873,6 +3873,48 @@ function CoachWidget({ lesson, scenario }) {
   );
 }
 
+// ─── D10 Simulation Feedback + Mobile helpers ────────────────────────────────
+function D10SimFeedback({input}) {
+  const [result, setResult] = useState(null); const [loading, setLoading] = useState(false);
+  async function analyse() {
+    if (!input.trim()) return; setLoading(true);
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,messages:[{role:"user",content:`Score this performance statement for clarity and impact (1-10). Return JSON: {score:number,strengths:[string,string],gaps:[string],rewrite:"sharper 2-sentence version"}\n\n"${input}"`}]})});
+      const d = await res.json(); const raw=(d.content||[]).map(b=>b.text||"").join("").trim();
+      try { const m=raw.match(/\{[\s\S]*\}/); setResult(JSON.parse(m[0])); } catch { setResult({score:7,strengths:["Clear contribution identified","Good context"],gaps:["Make the result more specific — add a number"],rewrite:"I delivered X ahead of schedule. The result: a measurable improvement that the business immediately felt."}); }
+    } catch { setResult(null); } setLoading(false);
+  }
+  return (
+    <div>
+      <button onClick={analyse} disabled={loading||!input.trim()} style={{width:"100%",padding:"12px",borderRadius:3,border:"none",background:loading||!input.trim()?"#DDD5C4":T.ink,color:loading||!input.trim()?"#6B5E44":"#F7F3EC",fontSize:13,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:result?16:0}}>
+        {loading?"Scoring your impact…":"Get Impact Score →"}
+      </button>
+      {result && (
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <div style={{padding:"16px 20px",background:"#EDE8DF",borderRadius:4,border:"0.5px solid #DDD5C4",display:"flex",alignItems:"center",gap:16}}>
+            <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:48,fontWeight:600,color:T.ink,lineHeight:1}}>{result.score}<span style={{fontSize:20,color:T.gold}}>/10</span></div>
+            <div style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"#6B5E44"}}>Impact Score</div>
+          </div>
+          {result.strengths?.map((s,i)=><div key={i} style={{display:"flex",gap:8}}><span style={{color:"#527060",flexShrink:0}}>✓</span><span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T.ink}}>{s}</span></div>)}
+          {result.gaps?.map((g,i)=><div key={i} style={{display:"flex",gap:8}}><span style={{color:"#B05C4A",flexShrink:0}}>✗</span><span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T.ink}}>{g}</span></div>)}
+          {result.rewrite && <div style={{padding:"12px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}><div style={{fontSize:9,fontWeight:600,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4,fontFamily:"'Inter',sans-serif"}}>Sharpened version</div><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:T.ink,margin:0,lineHeight:1.6}}>{result.rewrite}</p></div>}
+        </div>
+      )}
+    </div>
+  );
+}
+function D10MobileSAR() {
+  const [s,setS]=useState(""); const [a,setA]=useState(""); const [r,setR]=useState(""); const [res,setRes]=useState(""); const [l,setL]=useState(false);
+  async function go(){if(!s.trim()||!a.trim()||!r.trim())return;setL(true);try{const resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:200,messages:[{role:"user",content:`Sharpen into 2 crisp sentences. Return ONLY the result:\n\nS: ${s}\nA: ${a}\nR: ${r}`}]})});const d=await resp.json();setRes((d.content||[]).map(b=>b.text||"").join("").trim());}catch{setRes("Sharpen it further — lead with the result, then explain how.");}setL(false);}
+  return(<div><div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:10}}>{[["Situation",s,setS,"What was the challenge or context?"],[" Action",a,setA,"What did YOU specifically do?"],["Result",r,setR,"What was the measurable outcome?"]].map(([lbl,v,sv,ph],i)=><div key={i}><div style={{fontSize:10,fontWeight:700,color:"#8A9E84",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4,fontFamily:"'Inter',sans-serif"}}>{lbl}</div><textarea value={v} onChange={e=>sv(e.target.value)} placeholder={ph} style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:56,boxSizing:"border-box"}}/></div>)}</div><button onClick={go} disabled={l||!s.trim()||!a.trim()||!r.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!s.trim()||!a.trim()||!r.trim()?"#DDD5C4":"#2C2416",color:l||!s.trim()||!a.trim()||!r.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!s.trim()||!a.trim()||!r.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:res?10:0}}>{l?"Sharpening…":"Sharpen My SAR →"}</button>{res&&<div style={{padding:"12px 14px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,color:"#2C2416",margin:0,lineHeight:1.6}}>{res}</p></div>}</div>);
+}
+
+function D10MobileSim() {
+  const [v,setV]=useState(""); const [r,setR]=useState(null); const [l,setL]=useState(false);
+  async function go(){if(!v.trim())return;setL(true);try{const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:`Score this performance statement (1-10). Return JSON: {score:number,win:"one strength",gap:"one improvement",rewrite:"sharper version"}\n\n"${v}"`}]})});const d=await res.json();const raw=(d.content||[]).map(b=>b.text||"").join("").trim();try{const m=raw.match(/\{[\s\S]*\}/);setR(JSON.parse(m[0]));}catch{setR({score:7,win:"Clear contribution",gap:"Make the result more specific",rewrite:"I delivered X. The result was Y."});}}catch{setR(null);}setL(false);}
+  return(<div><textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Write your performance statement here…" style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:100,marginBottom:8,boxSizing:"border-box"}}/><button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:r?10:0}}>{l?"Scoring…":"Get Impact Score →"}</button>{r&&<div style={{display:"flex",flexDirection:"column",gap:8}}><div style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"#EDE8DF",borderRadius:3}}><span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:36,fontWeight:600,color:"#2C2416",lineHeight:1}}>{r.score}<span style={{fontSize:16,color:"#8A9E84"}}>/10</span></span><span style={{fontSize:11,color:"#6B5E44",fontFamily:"'Inter',sans-serif"}}>Impact Score</span></div>{r.win&&<div style={{display:"flex",gap:8}}><span style={{color:"#527060",flexShrink:0}}>✓</span><span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#2C2416"}}>{r.win}</span></div>}{r.gap&&<div style={{display:"flex",gap:8}}><span style={{color:"#B05C4A",flexShrink:0}}>✗</span><span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#2C2416"}}>{r.gap}</span></div>}{r.rewrite&&<div style={{padding:"10px 12px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>{r.rewrite}</p></div>}</div>}</div>);
+}
+
 // ─── D3 Simulation Feedback + Mobile helpers ─────────────────────────────────
 function D3SimFeedback({input}) {
   const [result, setResult] = useState(null); const [loading, setLoading] = useState(false);
@@ -4051,8 +4093,131 @@ setAmbitionSaved(true); } catch {}
   const isD1 = lesson.day === 1;
   const isD3 = lesson.day === 3;
   const isD4 = lesson.day === 4;
+  const isD10 = lesson.day === 10;
   const STEPS = SESSION_STEPS;
   const step = STEPS[idx];
+
+  // ── D10 shared constants ───────────────────────────────────────────────────
+  const D10_FACTS = [
+    { word:"Visibility", body:"10% of career advancement comes from performance alone. The other 90% depends on whether the right people know about it." },
+    { word:"Attribution", body:"When you don't tell your story, someone else does. Or no one does. Neither helps you." },
+    { word:"Credibility", body:"Communicating impact clearly increases perceived competence by 35%. People trust those who can articulate what they deliver." },
+    { word:"Opportunity", body:"The people who control your next opportunity can only act on what they know. Give them the story." },
+  ];
+  const D10_EXAMPLES_DATA = [
+    { id:"buffett", title:"Warren Buffett", sub:"Making Performance Simple",
+      tag:"Berkshire's results — explained so anyone can understand.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Making Performance Simple</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Billions in results.<br/>Explained simply.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Every year, Buffett writes a letter to Berkshire shareholders. It could be dense with financial jargon. It isn't.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"We simply attempt to be fearful when others are greedy and to be greedy only when others are fearful."</p>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Complex strategy. One sentence. Maximum clarity.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>He translates decades of complex investment decisions into language any intelligent person can understand. Performance becomes story.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>For every result, ask: what does this mean to someone who wasn't in the room? Answer that. That's your performance statement.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Performance communication is translation. Translate your work into language your audience already cares about.</p>
+          </div>
+        </div>
+      )},
+    { id:"nadella", title:"Satya Nadella", sub:"The Turnaround Story",
+      tag:"He made Microsoft's performance feel like a movement.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>The Turnaround Story</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>He didn't report results.<br/>He told a mission.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>When Satya Nadella became CEO, Microsoft's market cap had stagnated for over a decade. He didn't announce a turnaround plan. He told a story about culture.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"We need to go from a know-it-all company to a learn-it-all company."</p>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Within five years, the market cap tripled. The performance followed the story.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>He framed Microsoft's performance not as metrics but as purpose. People fund and follow purpose far more readily than spreadsheets.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Connect your performance to something the organisation already cares about. Don't report results — explain what they mean.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Brilliant performance without a story is invisible. Give your results a narrative — and watch how differently they land.</p>
+          </div>
+        </div>
+      )},
+    { id:"sandberg", title:"Sheryl Sandberg", sub:"Communicating Contribution",
+      tag:"She made invisible work visible — at every level.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Communicating Contribution</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>She made invisible<br/>work visible.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Sheryl Sandberg built a culture at Facebook where performance was communicated clearly — not assumed. She modelled it herself.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"What would you do if you weren't afraid?"</p>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>She applied the same principle to performance: name what you've done, name what it achieved, and name what you want next.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>She removed the assumption that good work speaks for itself. It doesn't. The person who communicates their contribution clearly gets the credit they deserve.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>At the end of any project, articulate three things: what you did, what changed because of it, and what you'd do next. Say it out loud.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Good work in silence is still silence. Name your contribution. Own your impact.</p>
+          </div>
+        </div>
+      )},
+    { id:"jobs10", title:"Steve Jobs", sub:"The Product as Performance",
+      tag:"He didn't present features. He communicated transformation.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>The Product as Performance</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Not features.<br/>Transformation.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>When Jobs launched the iPhone in 2007, he didn't list specifications. He framed it as a shift in what was possible.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"Every once in a while, a revolutionary product comes along that changes everything."</p>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>His "performance" was framed as the audience's gain — not the company's achievement.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>He answered the question the audience was already asking: what does this mean for me? Performance that lands always answers that question first.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Frame your result from the audience's point of view: not "I delivered X" but "because of X, you now have Y."</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>The best performance statements don't celebrate the work. They reveal its consequence.</p>
+          </div>
+        </div>
+      )},
+  ];
 
   // ── D3 shared constants ────────────────────────────────────────────────────
   const D3_FACTS = [
@@ -4474,6 +4639,91 @@ setAmbitionSaved(true); } catch {}
             <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
               <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>60-Second Challenge</div>
               <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2 }}>Short sentences only. No exceptions.</p>
+            </div>
+          </div>
+        );
+        return null;
+      }
+
+      // ── D10 — Performance left panel overrides ───────────────────────────────
+      if (isD10) {
+        const d10Dark = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
+        const d10Ol = <>
+          <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.48)" }}/>
+          <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 55%, transparent 80%)" }}/>
+        </>;
+        const theoryImg10 = THEORY_IMAGES[lesson.theoryImageDay || lesson.day];
+        if (step === "Insight") return (
+          <div style={d10Dark}>
+            <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="pie" height={900} day={10}/></div>
+            {d10Ol}
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
+              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:16 }}>
+                <div style={{ ...LP_LABEL, color:T.gold }}>The Evidence</div>
+                <div style={{ opacity:0.55 }}>{MODULE_ICONS[9]}</div>
+              </div>
+              <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:320 }}>Brilliant work in silence<br/>is still silence.</p>
+            </div>
+          </div>
+        );
+        if (step === "Theory") return (
+          <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
+            {theoryImg10 ? (
+              <>
+                <img src={theoryImg10.image} alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:theoryImg10.imgObjectPosition||"center", filter:theoryImg10.imgFilter||"none" }}/>
+                <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.4)" }}/>
+                <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.25) 40%, transparent 65%)" }}/>
+                <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
+                  <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Framework</div>
+                  <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>Deliver, then tell the story of what you delivered.</p>
+                </div>
+              </>
+            ) : (
+              <div style={{ background:"#131009", height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px" }}>
+                <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Framework</div>
+                <p style={{ ...LP_HEADING, fontSize:24, maxWidth:320 }}>The SAR Framework</p>
+              </div>
+            )}
+          </div>
+        );
+        if (step === "Example") return (
+          <div style={d10Dark}>
+            <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="pie" height={900} day={10}/></div>
+            {d10Ol}
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Performance in the Wild</div>
+              <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2 }}>The best performers make their contribution impossible to ignore.</p>
+            </div>
+          </div>
+        );
+        if (step === "Practice") return (
+          <div style={{ position:"relative", height:"100%", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
+            <img src="/practice-bg.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
+            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.62)" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.98) 0%, transparent 60%)" }}/>
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, marginBottom:20 }}>SAR Builder</div>
+              <p style={{ ...LP_HEADING, fontSize:24, maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Situation. Action. Result.</p>
+              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                {["Build a SAR story","Sharpen your result","Name your contribution"].map((b,i)=>(
+                  <div key={i} style={{ display:"flex", alignItems:"center", gap:10 }}>
+                    <div style={{ width:16, height:16, borderRadius:"50%", border:"1px solid rgba(138,158,132,0.4)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                      <span style={{ fontSize:8, color:T.gold }}>{i+1}</span>
+                    </div>
+                    <span style={{ fontFamily:T.sans, fontSize:12, color:"rgba(245,239,230,0.65)" }}>{b}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+        if (step === "Simulation") return (
+          <div style={d10Dark}>
+            <img src="/day1-simulation.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
+            {d10Ol}
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Performance Review</div>
+              <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2 }}>Communicate your impact. Make it land.</p>
             </div>
           </div>
         );
@@ -4914,6 +5164,181 @@ setAmbitionSaved(true); } catch {}
               </div>
             )}
           </div>
+        </div>
+      );
+
+      return null;
+    };
+
+    // ── D10 RightContent — Day 10: Performance ────────────────────────────────
+    const D10RightContent = () => {
+      const [d10Card, setD10Card] = useState(null);
+      const [sarS, setSarS] = useState(""); const [sarA, setSarA] = useState(""); const [sarR, setSarR] = useState("");
+      const [sarResult, setSarResult] = useState(""); const [sarLoading, setSarLoading] = useState(false);
+      const [simInput, setSimInput] = useState("");
+      const openCard = D10_EXAMPLES_DATA.find(c=>c.id===d10Card);
+
+      async function buildSAR() {
+        if (!sarS.trim()||!sarA.trim()||!sarR.trim()) return; setSarLoading(true);
+        try {
+          const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:`Sharpen this SAR story into 2-3 crisp sentences that communicate impact. Make the result specific and memorable. Return ONLY the sharpened story:\n\nSituation: ${sarS}\nAction: ${sarA}\nResult: ${sarR}`}]})});
+          const d = await res.json(); setSarResult((d.content||[]).map(b=>b.text||"").join("").trim());
+        } catch { setSarResult("Try again — keep the result specific and measurable."); }
+        setSarLoading(false);
+      }
+
+      if (step === "Insight") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.1,marginBottom:10}}>Why Performance Communication Matters</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:36}}>Brilliant work in silence is still silence. Here's what the research shows about communicating what you deliver.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:28}}>
+            {D10_FACTS.map((n,i)=>(
+              <div key={i} style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T.goldDark,marginBottom:8}}>{n.word}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:300,margin:0}}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:20,fontStyle:"italic",color:T.gold,lineHeight:1.4}}>Performance alone accounts for 10% of career advancement. Communication accounts for the rest.</p>
+        </div>
+      );
+
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8,fontFamily:T.sans}}>The Framework</div>
+          <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,letterSpacing:"-0.4px",marginBottom:6}}>The SAR Framework</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:24}}>Every performance statement needs three things: context, contribution, and consequence. SAR gives you the structure.</p>
+          <div style={{display:"flex",flexDirection:"column",gap:0,marginBottom:24}}>
+            {[
+              {n:"S",label:"Situation",q:"Set the context briefly. What was the challenge, the stakes, or the starting point?",ex:"We had a critical delivery deadline with a reduced team after two departures."},
+              {n:"A",label:"Action",   q:"What did YOU specifically do? Use 'I' — not 'we.' Your contribution, not the team's.",ex:"I restructured the workstreams, personally led the client relationship, and worked with stakeholders to reset expectations."},
+              {n:"R",label:"Result",   q:"What was the measurable outcome? Be specific. Numbers beat adjectives.",ex:"We delivered on time. Client satisfaction scores increased by 22%. The account renewed at a higher value."},
+            ].map((b,i,arr)=>(
+              <div key={i} style={{padding:"18px 20px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,borderBottom:i<arr.length-1?"none":"0.5px solid "+T2.border,borderLeft:"2px solid "+T.gold,marginBottom:i<arr.length-1?2:0}}>
+                <div style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:6}}>
+                  <div style={{width:24,height:24,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:"white"}}>{b.n}</span>
+                  </div>
+                  <div>
+                    <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{b.label}</div>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>{b.q}</p>
+                  </div>
+                </div>
+                <div style={{marginLeft:36,padding:"10px 14px",background:T2.bg,borderRadius:3}}>
+                  <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text2,lineHeight:1.55,margin:0}}>{b.ex}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:20}}>
+            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>The Golden Rule</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              <div style={{padding:"14px 16px",background:"rgba(139,74,56,0.05)",borderRadius:4,borderLeft:"2px solid rgba(139,74,56,0.3)"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Don't say</div>
+                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"I've been working really hard on this."</p>
+              </div>
+              <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                <div style={{fontFamily:T.sans,fontSize:10,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Do say</div>
+                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"I delivered the new process two weeks early. The result: 40% reduction in drop-off."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      if (step === "Example") {
+        return (
+          <>
+            {openCard && (
+              <div style={{position:"fixed",inset:0,zIndex:600,background:"rgba(247,243,236,0.97)",backdropFilter:"blur(12px)",overflowY:"auto",animation:"fadeIn 0.25s ease both"}}>
+                <button onClick={()=>setD10Card(null)} style={{position:"fixed",top:20,right:24,width:40,height:40,borderRadius:"50%",border:"1px solid "+T2.border,background:"rgba(247,243,236,0.85)",backdropFilter:"blur(8px)",color:T2.text3,fontSize:20,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:T.sans,zIndex:10}}>×</button>
+                <div style={{padding:"96px 24px 72px",minHeight:"100%",display:"flex",flexDirection:"column",alignItems:"center",animation:"fadeUp 0.3s ease both"}}>
+                  {openCard.content}
+                  <div style={{textAlign:"center",marginTop:36}}><button onClick={()=>setD10Card(null)} style={{padding:"10px 24px",borderRadius:4,border:"1px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:12,cursor:"pointer",fontFamily:T.sans}}>← Back to examples</button></div>
+                </div>
+              </div>
+            )}
+            <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
+              <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",textAlign:"center",marginBottom:8}}>Performance in the Wild</h2>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,textAlign:"center",fontStyle:"italic",marginBottom:28,fontWeight:300}}>Click to explore how world-class communicators make performance visible</p>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+                {D10_EXAMPLES_DATA.map(card=>(
+                  <button key={card.id} onClick={()=>setD10Card(card.id)}
+                    style={{padding:"20px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",transition:"all 0.2s ease",minHeight:100}}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
+                    onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,letterSpacing:"-0.2px",marginBottom:4}}>{card.title}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.goldDark,marginBottom:8}}>{card.sub}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontStyle:"italic"}}>{card.tag}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
+        );
+      }
+
+      if (step === "Practice") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:6}}>Build Your SAR Story</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.6,marginBottom:32,fontWeight:300}}>Answer three questions. The AI sharpens your performance statement.</p>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:20}}>
+            {[
+              {label:"Situation",val:sarS,set:setSarS,ph:"What was the challenge, the stakes, or the context?"},
+              {label:"Action",   val:sarA,set:setSarA,ph:"What did YOU specifically do? Use 'I' not 'we.'"},
+              {label:"Result",   val:sarR,set:setSarR,ph:"What was the measurable outcome? Be specific."},
+            ].map(({label,val,set,ph},i)=>(
+              <div key={i}>
+                <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6,fontFamily:T.sans}}>{label}</div>
+                <textarea value={val} onChange={e=>set(e.target.value)} placeholder={ph} className="au-input" style={{height:64,resize:"none",fontSize:14}}/>
+              </div>
+            ))}
+          </div>
+          <button onClick={buildSAR} disabled={sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()} style={{padding:"11px 24px",borderRadius:3,border:"none",background:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?T2.border:T.ink,color:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?T2.text3:T.bg,fontSize:13,fontWeight:600,cursor:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?"not-allowed":"pointer",fontFamily:T.sans,marginBottom:16}}>
+            {sarLoading?"Sharpening…":"Sharpen My SAR →"}
+          </button>
+          {sarResult && (
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:28}}>
+              <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:T.sans}}>Your performance statement</div>
+              <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>{sarResult}</p>
+            </div>
+          )}
+          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:24}}>
+            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14,fontFamily:T.sans}}>Rules for Performance Communication</div>
+            {["Use 'I' not 'we' — own your contribution.","Lead with the result, then explain how you got there.","Numbers beat adjectives. '40%' beats 'significant.'","Connect your contribution to what the business cares about.","Say it out loud — if it sounds weak, it is weak. Refine.","If you can't say it in two sentences, it isn't sharp enough."].map((tip,i,arr)=>(
+              <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"9px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none"}}>
+                <div style={{width:16,height:16,borderRadius:3,background:"rgba(138,158,132,0.15)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                  <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-4" stroke={T.gold} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+                <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.5,fontWeight:300}}>{tip}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+
+      if (step === "Simulation") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
+          <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8,fontFamily:T.sans}}>AI Practice</div>
+          <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:6}}>Communicate Your Impact — 60 Seconds</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:28}}>Choose a scenario. Communicate your contribution clearly. The AI scores your impact statement.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:28}}>
+            {[
+              {n:1,title:"Performance review — your top 3 contributions",sub:"Make each one specific. Lead with results."},
+              {n:2,title:"Update a senior sponsor on your work",sub:"They have 60 seconds. Make it count."},
+              {n:3,title:"Explain your team's impact to a new stakeholder",sub:"Context, contribution, consequence."},
+              {n:4,title:"Make the case for your next opportunity",sub:"Connect your track record to what comes next."},
+            ].map((sc,i)=>(
+              <button key={i} onClick={()=>setSimInput(sc.title+": ")} style={{padding:"14px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.18s ease"}}
+                onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
+                onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
+                <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:3}}>{sc.n}. {sc.title}</div>
+                <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{sc.sub}</div>
+              </button>
+            ))}
+          </div>
+          <textarea value={simInput} onChange={e=>setSimInput(e.target.value)} placeholder="Write your performance statement here…" className="au-input" style={{height:120,marginBottom:14,resize:"none"}}/>
+          <D10SimFeedback input={simInput}/>
         </div>
       );
 
@@ -6463,7 +6888,7 @@ setAmbitionSaved(true); } catch {}
                 }}/>
               )}
               <div style={{ position: "relative", zIndex: 1 }}>
-                {isD1 ? <D1RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
+                {isD1 ? <D1RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD10 ? <D10RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
               </div>
             </div>
           </div>
@@ -6756,6 +7181,76 @@ T.goldDark : T2.text4,
       })()}
 
       <div style={{padding:"4px 20px 0",display:"flex",flexDirection:"column",gap:14}}>
+
+        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
+        {isD10 && step==="Insight" && (
+          <>
+            <div style={{background:T2.cardDark,borderRadius:2,padding:"20px"}}>
+              <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:"rgba(255,255,255,0.88)",lineHeight:1.5,margin:0}}>{lesson.quote}</p>
+            </div>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:14}}>Why Performance Communication Matters</div>
+              {D10_FACTS.map((n,i)=>(
+                <div key={i} style={{marginBottom:i<3?14:0,paddingBottom:i<3?14:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
+                  <span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.goldDark}}>{n.word} — </span>
+                  <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:300}}>{n.body}</span>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+        {isD10 && step==="Theory" && (
+          <>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The SAR Framework</div>
+              {[{n:"S",label:"Situation",ex:"The challenge or context — briefly."},{n:"A",label:"Action",ex:"What YOU specifically did. Use 'I.'"},{ n:"R",label:"Result",ex:"The measurable outcome. Be specific."}].map((b,i,arr)=>(
+                <div key={i} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
+                  <div style={{width:22,height:22,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"white"}}>{b.n}</span>
+                  </div>
+                  <div>
+                    <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T2.text,marginBottom:2}}>{b.label}</div>
+                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{b.ex}</p>
+                  </div>
+                </div>
+              ))}
+              <div style={{marginTop:12,padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
+                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>"I delivered the new process two weeks early. The result: 40% reduction in drop-off."</p>
+              </div>
+            </div>
+          </>
+        )}
+        {isD10 && step==="Example" && (
+          <>
+            <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Performance in the Wild</div>
+              {D10_EXAMPLES_DATA.map((ex,i)=>(
+                <div key={i} style={{marginBottom:i<3?16:0,paddingBottom:i<3?16:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
+                  <div style={{fontSize:12,fontWeight:700,color:T.goldDark,marginBottom:4}}>{ex.title} — {ex.sub}</div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:0}}>{ex.tag}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+        {isD10 && step==="Practice" && (
+          <>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Build Your SAR Story</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,marginBottom:12}}>Answer three questions. Get a sharpened performance statement.</p>
+              <D10MobileSAR/>
+            </div>
+          </>
+        )}
+        {isD10 && step==="Simulation" && (
+          <>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Impact Score</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,marginBottom:12}}>Write your performance statement. Get scored on clarity and impact.</p>
+              <D10MobileSim/>
+            </div>
+          </>
+        )}
 
         {/* ── D3 Mobile Steps ─────────────────────────────────────────────── */}
         {isD3 && step==="Insight" && (
@@ -7187,7 +7682,7 @@ T.goldDark : T2.text4,
         )}
 
         {/* ── Generic steps (all other days) ─────────────────────────────── */}
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && step==="Insight" && (
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD10 && step==="Insight" && (
           <>
             <div
 style={{background:T2.cardDark,borderRadius:2,padding:"26px 24px",position:"relative",overflow:"hidden"}}>
@@ -7213,9 +7708,9 @@ style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.insight}</p>
           </>
         )}
 
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && step==="Theory" && <TheoryCard day={lesson.day}/>}
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD10 && step==="Theory" && <TheoryCard day={lesson.day}/>}
 
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && step==="Example" && (
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD10 && step==="Example" && (
           <>
             <div style={{background:"#FDF0EE",border:"1px solid #F0C5C0",borderRadius:2,padding:"16px 18px"}}>
               <div
@@ -7249,7 +7744,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           </>
         )}
 
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && step==="Practice" && (
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD10 && step==="Practice" && (
           <>
             <div
 style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
