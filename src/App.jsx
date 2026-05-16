@@ -6221,14 +6221,12 @@ finishDate + ".";
             SECTION 1: CINEMATIC HERO — Full viewport. One story. One CTA.
             ════════════════════════════════════════════════════════════════ */}
         <div style={{
-          position: "relative", height: "min(75vh, calc(100vw / 2.4))", overflow: "hidden",
+          position: "relative", height: "100vh", overflow: "hidden",
           display: "flex", flexDirection: "column", justifyContent: "flex-end",
-          minHeight: 500,
+          minHeight: 640,
         }}>
-          {/* Background — full bleed, no cropping of top or bottom */}
-          <img src="/home-hero.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}/>
-          {/* Very subtle film to unify */}
-          <div style={{ position: "absolute", inset: 0, background: "rgba(247,243,236,0.07)", pointerEvents: "none" }}/>
+          {/* Background — full bleed, no overlay on top 70% */}
+          <img src="/home-hero.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}/>
 
           {/* Nav sits above image */}
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: NAV_H, zIndex: 10 }}/>
@@ -6354,9 +6352,8 @@ finishDate + ".";
     <div style={{background:T2.bg,minHeight:"100vh",paddingBottom:100}} className="au-page">
 
       {/* ── SECTION 1: Hero — full brightness, parchment gradient at bottom ── */}
-      <div style={{position:"relative",height:"calc(100vw / 2.4)",minHeight:200,maxHeight:"65vh",overflow:"hidden",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
-        <img src="/home-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top"}}/>
-        <div style={{position:"absolute",inset:0,background:"rgba(247,243,236,0.07)",pointerEvents:"none"}}/>
+      <div style={{position:"relative",height:"55vh",minHeight:320,overflow:"hidden",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
+        <img src="/home-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 30%"}}/>
         <div style={{position:"relative",zIndex:5,padding:"0 20px 28px",display:"flex",flexDirection:"column",alignItems:"flex-start",gap:8}}>
           {!finished && lesson && (
             <>
