@@ -6234,39 +6234,29 @@ finishDate + ".";
           {/* Hero content — each line has its own background bar */}
           <div style={{ position: "relative", zIndex: 5, padding: "0 88px 72px" }}>
             {!finished && lesson && (
-              <div style={{ animation: "fadeUp 0.8s cubic-bezier(0.25,0.46,0.45,0.94) both", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10 }}>
-                {/* Bar 1 — Day/tag label */}
-                <div>
-                  <span style={{ display: "inline", background: "rgba(247,243,236,0.96)", padding: "6px 14px", fontSize: 9, fontWeight: 600, letterSpacing: "4px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, lineHeight: 2.4, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>
-                    Day {cur} — {lesson.tag}{todayDone ? "  ✓ Complete" : ""}
-                  </span>
-                </div>
-                {/* Bar 2 — Title */}
-                <div>
-                  <span style={{ display: "inline", background: "rgba(247,243,236,0.86)", padding: "4px 14px", fontFamily: T.serif, fontSize: "clamp(32px,3.5vw,54px)", fontWeight: 600, color: T.ink, letterSpacing: "-2px", lineHeight: 1.5, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>
+              <div style={{ animation: "fadeUp 0.8s cubic-bezier(0.25,0.46,0.45,0.94) both", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
+                {/* Single rounded box */}
+                <div style={{ background: "rgba(247,243,236,0.9)", padding: "24px 32px", borderRadius: 12, backdropFilter: "blur(8px)" }}>
+                  <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, marginBottom: 8 }}>
+                    Day {cur} — {lesson.tag}{todayDone ? "  ✓" : ""}
+                  </div>
+                  <div style={{ fontFamily: T.serif, fontSize: "clamp(28px,3vw,48px)", fontWeight: 600, color: T.ink, letterSpacing: "-1.5px", lineHeight: 1.05 }}>
                     {lesson.title}
-                  </span>
+                  </div>
                 </div>
-                {/* Bar 3 — Quote/subtitle */}
-                <div>
-                  <span style={{ display: "inline", background: "rgba(247,243,236,0.65)", padding: "4px 14px", fontFamily: T.sans, fontSize: 15, fontWeight: 400, color: T.text2, lineHeight: 1.9, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>
-                    {lesson.quote}
-                  </span>
-                </div>
-                {/* Button — no bar, sits below */}
-                <div style={{ marginTop: 6 }}>
-                  <button onClick={() => onStart(cur)} className="au-cta" style={{ display: "inline-flex", alignItems: "center", gap: 12, background: T.ink, border: "none", borderRadius: 4, padding: "14px 28px", cursor: "pointer" }}>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: T.bg, fontFamily: T.sans }}>{todayDone ? "Review Session" : "Begin Session"}</span>
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.bg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </button>
-                </div>
+                {/* Button below box */}
+                <button onClick={() => onStart(cur)} className="au-cta" style={{ display: "inline-flex", alignItems: "center", gap: 12, background: T.ink, border: "none", borderRadius: 4, padding: "14px 28px", cursor: "pointer" }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: T.bg, fontFamily: T.sans }}>{todayDone ? "Review Session" : "Begin Session"}</span>
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.bg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
               </div>
             )}
             {finished && (
-              <div style={{ animation: "fadeUp 0.8s ease both", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10 }}>
-                <div><span style={{ display: "inline", background: "rgba(247,243,236,0.96)", padding: "6px 14px", fontSize: 9, letterSpacing: "4px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, lineHeight: 2.4 }}>Programme Complete</span></div>
-                <div><span style={{ display: "inline", background: "rgba(247,243,236,0.86)", padding: "4px 14px", fontFamily: T.serif, fontSize: "clamp(32px,3.5vw,54px)", fontWeight: 600, color: T.ink, letterSpacing: "-2px", lineHeight: 1.5, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>You communicate<br/>differently now.</span></div>
-                <div><span style={{ display: "inline", background: "rgba(247,243,236,0.65)", padding: "4px 14px", fontFamily: T.sans, fontSize: 15, color: T.text3, lineHeight: 1.9 }}>Fourteen sessions. The clarity, structure, and presence you've built belong to you.</span></div>
+              <div style={{ animation: "fadeUp 0.8s ease both", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
+                <div style={{ background: "rgba(247,243,236,0.9)", padding: "24px 32px", borderRadius: 12, backdropFilter: "blur(8px)" }}>
+                  <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, marginBottom: 8 }}>Programme Complete</div>
+                  <div style={{ fontFamily: T.serif, fontSize: "clamp(28px,3vw,48px)", fontWeight: 600, color: T.ink, letterSpacing: "-1.5px", lineHeight: 1.05 }}>You communicate<br/>differently now.</div>
+                </div>
               </div>
             )}
           </div>
@@ -6367,9 +6357,10 @@ finishDate + ".";
         <div style={{position:"relative",zIndex:5,padding:"0 20px 28px",display:"flex",flexDirection:"column",alignItems:"flex-start",gap:8}}>
           {!finished && lesson && (
             <>
-              <div><span style={{display:"inline",background:"rgba(247,243,236,0.96)",padding:"5px 12px",fontSize:9,fontWeight:600,letterSpacing:"4px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,lineHeight:2.4,boxDecorationBreak:"clone",WebkitBoxDecorationBreak:"clone"}}>Day {cur} — {lesson.tag}{todayDone?"  ✓":""}</span></div>
-              <div><span style={{display:"inline",background:"rgba(247,243,236,0.86)",padding:"3px 12px",fontFamily:T.serif,fontSize:"clamp(24px,7vw,38px)",fontWeight:600,color:T.ink,letterSpacing:"-1.5px",lineHeight:1.5,boxDecorationBreak:"clone",WebkitBoxDecorationBreak:"clone"}}>{lesson.title}</span></div>
-              <div><span style={{display:"inline",background:"rgba(247,243,236,0.6)",padding:"3px 12px",fontFamily:T.sans,fontSize:13,fontWeight:400,color:T.text2,lineHeight:1.9,boxDecorationBreak:"clone",WebkitBoxDecorationBreak:"clone"}}>{lesson.quote}</span></div>
+              <div style={{background:"rgba(247,243,236,0.9)",padding:"18px 22px",borderRadius:10,backdropFilter:"blur(8px)"}}>
+                <div style={{fontSize:9,fontWeight:600,letterSpacing:"3px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,marginBottom:6}}>Day {cur} — {lesson.tag}{todayDone?"  ✓":""}</div>
+                <div style={{fontFamily:T.serif,fontSize:"clamp(22px,7vw,36px)",fontWeight:600,color:T.ink,letterSpacing:"-1px",lineHeight:1.05}}>{lesson.title}</div>
+              </div>
               <div style={{marginTop:4}}>
                 <button onClick={()=>onStart(cur)} className="au-cta" style={{display:"inline-flex",alignItems:"center",gap:10,background:T.ink,border:"none",borderRadius:4,padding:"12px 22px",cursor:"pointer"}}>
                   <span style={{fontSize:13,fontWeight:600,color:T.bg,fontFamily:T.sans}}>{todayDone?"Review Session":"Begin Session"}</span>
@@ -6379,10 +6370,10 @@ finishDate + ".";
             </>
           )}
           {finished && (
-            <>
-              <div><span style={{display:"inline",background:"rgba(247,243,236,0.96)",padding:"5px 12px",fontSize:9,letterSpacing:"4px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,lineHeight:2.4}}>Programme Complete</span></div>
-              <div><span style={{display:"inline",background:"rgba(247,243,236,0.86)",padding:"3px 12px",fontFamily:T.serif,fontSize:"clamp(24px,7vw,38px)",fontWeight:600,color:T.ink,letterSpacing:"-1.5px",lineHeight:1.5,boxDecorationBreak:"clone",WebkitBoxDecorationBreak:"clone"}}>You communicate<br/>differently now.</span></div>
-            </>
+            <div style={{background:"rgba(247,243,236,0.9)",padding:"18px 22px",borderRadius:10,backdropFilter:"blur(8px)"}}>
+              <div style={{fontSize:9,letterSpacing:"3px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,marginBottom:6}}>Programme Complete</div>
+              <div style={{fontFamily:T.serif,fontSize:"clamp(22px,7vw,36px)",fontWeight:600,color:T.ink,letterSpacing:"-1px",lineHeight:1.05}}>You communicate<br/>differently now.</div>
+            </div>
           )}
         </div>
       </div>
