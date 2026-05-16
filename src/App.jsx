@@ -6850,7 +6850,7 @@ setAmbitionSaved(true); } catch {}
 
             {/* LEFT PANEL — Primary stage: visual atmosphere + theory diagram */}
             <div style={{
-              width: isD4 ? "48%" : "60%", flexShrink: 0,
+              width: "40%", flexShrink: 0,
               position: "relative", overflow: "hidden", zIndex: 1,
             }}>
               <div key={idx} className="au-step-enter" style={{ height: "100%" }}>
