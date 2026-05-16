@@ -4242,28 +4242,29 @@ setAmbitionSaved(true); } catch {}
           <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 55%, transparent 80%)" }}/>
         </>;
         if (step === "Insight") return (
-          <div style={d4Dark}>
+          <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
+            {/* No overlays — paper text must be fully readable */}
             <img src="/day4-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
-            {d4Ol}
-            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
-              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:16 }}>
-                <div style={{ ...LP_LABEL, color:T.gold }}>The Evidence</div>
-                <div style={{ opacity:0.55 }}>{MODULE_ICONS[3]}</div>
-              </div>
-              <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:320 }}>Clarity.<br/>Precision.<br/>Impact.</p>
+            {/* Minimal top gradient for label only */}
+            <div style={{ position:"absolute", top:0, left:0, right:0, height:"25%", background:"linear-gradient(to bottom, rgba(10,8,5,0.5) 0%, transparent 100%)", pointerEvents:"none" }}/>
+            <div style={{ position:"absolute", top:36, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", display:"flex", alignItems:"center", justifyContent:"space-between", right:48 }}>
+              <div style={{ ...LP_LABEL, color:T.gold, textShadow:"0 1px 4px rgba(0,0,0,0.5)" }}>The Evidence</div>
+              <div style={{ opacity:0.55 }}>{MODULE_ICONS[3]}</div>
             </div>
           </div>
         );
         if (step === "Theory") return (
           <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
             {(() => { const img = THEORY_IMAGES[4]; return img ? (
-              <><img src={img.image} alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:img.imgObjectPosition||"center" }}/>
-              <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.35)" }}/>
-              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.25) 40%, transparent 65%)" }}/>
-              <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
-                <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Science</div>
-                <p style={{ fontFamily:T.serif, fontSize:17, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>Your audience can only hold so much. Respect their limits.</p>
-              </div></>
+              <>
+                {/* No dark veil — image at full brightness */}
+                <img src={img.image} alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:img.imgObjectPosition||"center", filter:"brightness(1.2)" }}/>
+                {/* Minimal top gradient for label only */}
+                <div style={{ position:"absolute", top:0, left:0, right:0, height:"28%", background:"linear-gradient(to bottom, rgba(10,8,5,0.5) 0%, transparent 100%)", pointerEvents:"none" }}/>
+                <div style={{ position:"absolute", top:36, left:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+                  <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", textShadow:"0 1px 4px rgba(0,0,0,0.5)" }}>The Science</div>
+                </div>
+              </>
             ) : (
               <div style={{ background:"#131009", height:"100%", display:"flex", alignItems:"flex-end", padding:"40px 48px" }}>
                 <div style={{ ...LP_LABEL, color:T.gold }}>The Science</div>
