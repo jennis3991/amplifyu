@@ -4711,12 +4711,12 @@ setAmbitionSaved(true); } catch {}
       }
 
       if (step === "Insight") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px",maxWidth:560,overflowY:"auto"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.1,marginBottom:10}}>Why Short Sentences Win</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:32}}>The brain processes short sentences faster, retains them longer, and finds them more persuasive. Here's the evidence.</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:28}}>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.1,marginBottom:10}}>Why Short Sentences Win</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:36}}>The brain processes short sentences faster, retains them longer, and finds them more persuasive. Here's the evidence.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:32}}>
             {D4_FACTS.map((n,i)=>(
-              <div key={i} style={{padding:"20px 22px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div key={i} style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
                 <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T.goldDark,marginBottom:8}}>{n.word}</div>
                 <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:300,margin:0}}>{n.body}</p>
               </div>
@@ -4727,31 +4727,31 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px",maxWidth:520,overflowY:"auto"}}>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8,fontFamily:T.sans}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.4px",marginBottom:6}}>Miller's Law</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:24}}>In 1956, psychologist George Miller discovered something fundamental about how humans think.</p>
-          <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
-            <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>We can only hold 7 (±2) pieces of information in working memory at once.</p>
+          <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,letterSpacing:"-0.4px",marginBottom:6}}>Miller's Law</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:24}}>In 1956, psychologist George Miller discovered something fundamental about how humans think.</p>
+          <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>We can only hold 7 (±2) pieces of information in working memory at once.</p>
           </div>
-          <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:24}}>
-            {["Every sentence you speak creates a memory load.","Long, complex sentences stack information faster than your audience can process it.","By the time you reach the end of a 40-word sentence, they've forgotten the beginning."].map((p,i)=>(
-              <p key={i} style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:0}}>{p}</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
+            {["Every sentence you speak creates a memory load.","Long sentences stack information faster than your audience can process.","By the time you reach the end, they've forgotten the beginning.","The fix? One idea. One sentence. Full stop."].map((p,i)=>(
+              <div key={i} style={{padding:"16px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:300,margin:0}}>{p}</p>
+              </div>
             ))}
           </div>
-          <div style={{padding:"16px 20px",background:T2.surface,borderRadius:4,marginBottom:20}}>
-            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>The Fix</div>
-            <p style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 6px"}}>One idea. One sentence. Full stop.</p>
-          </div>
           <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:20}}>
-            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>Example</div>
-            <div style={{padding:"14px 18px",background:"rgba(139,74,56,0.05)",borderRadius:4,borderLeft:"2px solid rgba(139,74,56,0.3)",marginBottom:10}}>
-              <div style={{fontFamily:T.sans,fontSize:10,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Too long — 34 words, 8+ concepts</div>
-              <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>"Our platform enables cross-functional teams to coordinate asynchronous workflows while maintaining data integrity across distributed systems, which allows for more efficient resource allocation."</p>
-            </div>
-            <div style={{padding:"14px 18px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-              <div style={{fontFamily:T.sans,fontSize:10,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Better — 4 short sentences</div>
-              <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>"Our platform helps teams work together. They coordinate without meetings. Data stays secure. Resource allocation improves."</p>
+            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>See It In Action</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+              <div style={{padding:"16px 18px",background:"rgba(139,74,56,0.05)",borderRadius:4,borderLeft:"2px solid rgba(139,74,56,0.3)"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>Too long — 34 words</div>
+                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>"Our platform enables cross-functional teams to coordinate asynchronous workflows while maintaining data integrity across distributed systems, which allows for more efficient resource allocation."</p>
+              </div>
+              <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                <div style={{fontFamily:T.sans,fontSize:10,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>Better — 4 short sentences</div>
+                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>"Our platform helps teams work together. They coordinate without meetings. Data stays secure. Resource allocation improves."</p>
+              </div>
             </div>
           </div>
         </div>
@@ -4769,10 +4769,10 @@ setAmbitionSaved(true); } catch {}
                 </div>
               </div>
             )}
-            <div key={idx} className="au-step-enter" style={{padding:"44px",maxWidth:520}}>
-              <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",textAlign:"center",marginBottom:8}}>Masters of Brevity</h2>
+            <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
+              <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",textAlign:"center",marginBottom:8}}>Masters of Brevity</h2>
               <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,textAlign:"center",fontStyle:"italic",marginBottom:28,fontWeight:300}}>Click to explore brevity in action</p>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
                 {D4_EXAMPLES_DATA.map(card=>(
                   <button key={card.id} onClick={()=>setD4Card(card.id)}
                     style={{padding:"20px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",transition:"all 0.2s ease",minHeight:100}}
@@ -4790,8 +4790,8 @@ setAmbitionSaved(true); } catch {}
       }
 
       if (step === "Practice") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px",maxWidth:540,overflowY:"auto"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:6}}>The Sentence Surgery Toolkit</h2>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:6}}>The Sentence Surgery Toolkit</h2>
           <p style={{fontFamily:T.sans,fontSize:16,color:T2.text3,lineHeight:1.6,marginBottom:32,fontWeight:300}}>Practical exercises to cut without losing meaning.</p>
 
           {/* Exercise 1 */}
@@ -4850,9 +4850,9 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Simulation") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px",maxWidth:520}}>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
           <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8,fontFamily:T.sans}}>AI Practice</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:6}}>Speak in Short Sentences — 60 Seconds</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:6}}>Speak in Short Sentences — 60 Seconds</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:28}}>Choose a scenario. Write your response using only short sentences. The AI analyses average sentence length and flags any run-ons.</p>
           <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:28}}>
             {[
