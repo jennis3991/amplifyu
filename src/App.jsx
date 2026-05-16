@@ -6227,36 +6227,46 @@ finishDate + ".";
         }}>
           {/* Background — full bleed, no overlay on top 70% */}
           <img src="/home-hero.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}/>
-          {/* Left parchment panel — text reading zone */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(247,243,236,0.95) 0%, rgba(247,243,236,0.88) 20%, rgba(247,243,236,0.45) 42%, transparent 62%)", pointerEvents: "none" }}/>
-          {/* Bottom gradient for button zone */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 60%, rgba(247,243,236,0.5) 82%, rgba(247,243,236,0.88) 100%)", pointerEvents: "none" }}/>
 
           {/* Nav sits above image */}
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: NAV_H, zIndex: 10 }}/>
 
-          {/* Hero content — sits in left gradient zone */}
-          <div style={{ position: "relative", zIndex: 5, padding: "0 88px 64px", maxWidth: "42%" }}>
+          {/* Hero content — each line has its own background bar */}
+          <div style={{ position: "relative", zIndex: 5, padding: "0 88px 72px" }}>
             {!finished && lesson && (
-              <div style={{ animation: "fadeUp 0.8s cubic-bezier(0.25,0.46,0.45,0.94) both" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                  <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "4px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, background: "rgba(138,158,132,0.14)", border: "1px solid rgba(138,158,132,0.3)", padding: "5px 12px", borderRadius: 3 }}>Day {cur}</div>
-                  <div style={{ fontSize: 9, letterSpacing: "3.5px", textTransform: "uppercase", color: T.text3, fontFamily: T.sans }}>{lesson.tag}</div>
-                  {todayDone && <div style={{ fontSize: 9, letterSpacing: "2px", textTransform: "uppercase", color: T.green, fontFamily: T.sans, background: "rgba(61,107,79,0.1)", border: "1px solid rgba(61,107,79,0.3)", padding: "5px 12px", borderRadius: 3 }}>✓ Complete</div>}
+              <div style={{ animation: "fadeUp 0.8s cubic-bezier(0.25,0.46,0.45,0.94) both", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10 }}>
+                {/* Bar 1 — Day/tag label */}
+                <div>
+                  <span style={{ display: "inline", background: "rgba(247,243,236,0.96)", padding: "6px 14px", fontSize: 9, fontWeight: 600, letterSpacing: "4px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, lineHeight: 2.4, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>
+                    Day {cur} — {lesson.tag}{todayDone ? "  ✓ Complete" : ""}
+                  </span>
                 </div>
-                <h1 style={{ fontFamily: T.serif, fontSize: "clamp(32px,3.5vw,52px)", fontWeight: 600, color: T.ink, lineHeight: 1.0, letterSpacing: "-2px", maxWidth: 400, marginBottom: 14 }}>{lesson.title}</h1>
-                <p style={{ fontSize: 16, color: T.text2, lineHeight: 1.55, maxWidth: 360, marginBottom: 28, fontFamily: T.sans, fontWeight: 400 }}>{lesson.quote}</p>
-                <button onClick={() => onStart(cur)} className="au-cta" style={{ display: "inline-flex", alignItems: "center", gap: 12, background: T.ink, border: "none", borderRadius: 5, padding: "14px 28px", cursor: "pointer" }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: T.bg, fontFamily: T.sans }}>{todayDone ? "Review Session" : "Begin Session"}</span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.bg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </button>
+                {/* Bar 2 — Title */}
+                <div>
+                  <span style={{ display: "inline", background: "rgba(247,243,236,0.86)", padding: "4px 14px", fontFamily: T.serif, fontSize: "clamp(32px,3.5vw,54px)", fontWeight: 600, color: T.ink, letterSpacing: "-2px", lineHeight: 1.5, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>
+                    {lesson.title}
+                  </span>
+                </div>
+                {/* Bar 3 — Quote/subtitle */}
+                <div>
+                  <span style={{ display: "inline", background: "rgba(247,243,236,0.65)", padding: "4px 14px", fontFamily: T.sans, fontSize: 15, fontWeight: 400, color: T.text2, lineHeight: 1.9, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>
+                    {lesson.quote}
+                  </span>
+                </div>
+                {/* Button — no bar, sits below */}
+                <div style={{ marginTop: 6 }}>
+                  <button onClick={() => onStart(cur)} className="au-cta" style={{ display: "inline-flex", alignItems: "center", gap: 12, background: T.ink, border: "none", borderRadius: 4, padding: "14px 28px", cursor: "pointer" }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: T.bg, fontFamily: T.sans }}>{todayDone ? "Review Session" : "Begin Session"}</span>
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.bg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </button>
+                </div>
               </div>
             )}
             {finished && (
-              <div style={{ animation: "fadeUp 0.8s ease both" }}>
-                <div style={{ fontSize: 9, letterSpacing: "4px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, marginBottom: 16 }}>Programme Complete</div>
-                <h1 style={{ fontFamily: T.serif, fontSize: "clamp(36px,4vw,60px)", fontWeight: 600, color: T.ink, lineHeight: 1.0, letterSpacing: "-2px", marginBottom: 16 }}>You communicate<br/>differently now.</h1>
-                <p style={{ fontSize: 15, color: T.text3, maxWidth: 400, lineHeight: 1.6, fontFamily: T.sans, fontWeight: 300 }}>Fourteen sessions. The clarity, structure, and presence you've built belong to you.</p>
+              <div style={{ animation: "fadeUp 0.8s ease both", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10 }}>
+                <div><span style={{ display: "inline", background: "rgba(247,243,236,0.96)", padding: "6px 14px", fontSize: 9, letterSpacing: "4px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, lineHeight: 2.4 }}>Programme Complete</span></div>
+                <div><span style={{ display: "inline", background: "rgba(247,243,236,0.86)", padding: "4px 14px", fontFamily: T.serif, fontSize: "clamp(32px,3.5vw,54px)", fontWeight: 600, color: T.ink, letterSpacing: "-2px", lineHeight: 1.5, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>You communicate<br/>differently now.</span></div>
+                <div><span style={{ display: "inline", background: "rgba(247,243,236,0.65)", padding: "4px 14px", fontFamily: T.sans, fontSize: 15, color: T.text3, lineHeight: 1.9 }}>Fourteen sessions. The clarity, structure, and presence you've built belong to you.</span></div>
               </div>
             )}
           </div>
@@ -6354,30 +6364,25 @@ finishDate + ".";
       {/* ── SECTION 1: Hero — full brightness, parchment gradient at bottom ── */}
       <div style={{position:"relative",height:"55vh",minHeight:320,overflow:"hidden",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
         <img src="/home-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 30%"}}/>
-        {/* Left parchment panel */}
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(to right, rgba(247,243,236,0.92) 0%, rgba(247,243,236,0.75) 30%, rgba(247,243,236,0.2) 55%, transparent 75%)",pointerEvents:"none"}}/>
-        {/* Bottom gradient */}
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, transparent 60%, rgba(247,243,236,0.5) 82%, rgba(247,243,236,0.92) 100%)",pointerEvents:"none"}}/>
-        <div style={{position:"relative",zIndex:5,padding:"0 24px 28px"}}>
+        <div style={{position:"relative",zIndex:5,padding:"0 20px 28px",display:"flex",flexDirection:"column",alignItems:"flex-start",gap:8}}>
           {!finished && lesson && (
-            <div style={{animation:"fadeUp 0.6s ease both"}}>
-              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12,flexWrap:"wrap"}}>
-                <div style={{fontSize:9,fontWeight:600,letterSpacing:"4px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.28)",padding:"5px 12px",borderRadius:3}}>Day {cur}</div>
-                <div style={{fontSize:9,letterSpacing:"3px",textTransform:"uppercase",color:T.text3,fontFamily:T.sans}}>{lesson.tag}</div>
-                {todayDone && <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:T.green,fontFamily:T.sans,background:"rgba(61,107,79,0.08)",border:"1px solid rgba(61,107,79,0.25)",padding:"5px 12px",borderRadius:3}}>✓ Complete</div>}
+            <>
+              <div><span style={{display:"inline",background:"rgba(247,243,236,0.96)",padding:"5px 12px",fontSize:9,fontWeight:600,letterSpacing:"4px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,lineHeight:2.4,boxDecorationBreak:"clone",WebkitBoxDecorationBreak:"clone"}}>Day {cur} — {lesson.tag}{todayDone?"  ✓":""}</span></div>
+              <div><span style={{display:"inline",background:"rgba(247,243,236,0.86)",padding:"3px 12px",fontFamily:T.serif,fontSize:"clamp(24px,7vw,38px)",fontWeight:600,color:T.ink,letterSpacing:"-1.5px",lineHeight:1.5,boxDecorationBreak:"clone",WebkitBoxDecorationBreak:"clone"}}>{lesson.title}</span></div>
+              <div><span style={{display:"inline",background:"rgba(247,243,236,0.6)",padding:"3px 12px",fontFamily:T.sans,fontSize:13,fontWeight:400,color:T.text2,lineHeight:1.9,boxDecorationBreak:"clone",WebkitBoxDecorationBreak:"clone"}}>{lesson.quote}</span></div>
+              <div style={{marginTop:4}}>
+                <button onClick={()=>onStart(cur)} className="au-cta" style={{display:"inline-flex",alignItems:"center",gap:10,background:T.ink,border:"none",borderRadius:4,padding:"12px 22px",cursor:"pointer"}}>
+                  <span style={{fontSize:13,fontWeight:600,color:T.bg,fontFamily:T.sans}}>{todayDone?"Review Session":"Begin Session"}</span>
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.bg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
               </div>
-              <h1 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,40px)",fontWeight:600,color:T.ink,lineHeight:1.0,letterSpacing:"-1.5px",marginBottom:10}}>{lesson.title}</h1>
-              <button onClick={()=>onStart(cur)} className="au-cta" style={{display:"inline-flex",alignItems:"center",gap:10,background:T.ink,border:"none",borderRadius:4,padding:"12px 22px",cursor:"pointer"}}>
-                <span style={{fontSize:13,fontWeight:600,color:T.bg,fontFamily:T.sans}}>{todayDone?"Review Session":"Begin Session"}</span>
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.bg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </button>
-            </div>
+            </>
           )}
           {finished && (
-            <div style={{animation:"fadeUp 0.6s ease both"}}>
-              <div style={{fontSize:9,letterSpacing:"4px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,marginBottom:12}}>Programme Complete</div>
-              <h1 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,40px)",fontWeight:600,color:T.ink,lineHeight:1.0,letterSpacing:"-1.5px",marginBottom:10}}>You communicate<br/>differently now.</h1>
-            </div>
+            <>
+              <div><span style={{display:"inline",background:"rgba(247,243,236,0.96)",padding:"5px 12px",fontSize:9,letterSpacing:"4px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,lineHeight:2.4}}>Programme Complete</span></div>
+              <div><span style={{display:"inline",background:"rgba(247,243,236,0.86)",padding:"3px 12px",fontFamily:T.serif,fontSize:"clamp(24px,7vw,38px)",fontWeight:600,color:T.ink,letterSpacing:"-1.5px",lineHeight:1.5,boxDecorationBreak:"clone",WebkitBoxDecorationBreak:"clone"}}>You communicate<br/>differently now.</span></div>
+            </>
           )}
         </div>
       </div>
