@@ -6220,22 +6220,14 @@ finishDate + ".";
         {/* ════════════════════════════════════════════════════════════════
             SECTION 1: CINEMATIC HERO — Full viewport. One story. One CTA.
             ════════════════════════════════════════════════════════════════ */}
-        <div style={{
-          position: "relative", height: "100vh", overflow: "hidden",
-          display: "flex", flexDirection: "column", justifyContent: "flex-end",
-          minHeight: 640,
-        }}>
-          {/* Background — full bleed, no overlay on top 70% */}
-          <img src="/home-hero.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}/>
+        <div style={{ position: "relative" }}>
+          {/* Full image — natural height, no cropping */}
+          <img src="/home-hero.jpg" alt="" style={{ width: "100%", height: "auto", display: "block" }}/>
 
-          {/* Nav sits above image */}
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: NAV_H, zIndex: 10 }}/>
-
-          {/* Hero content — each line has its own background bar */}
-          <div style={{ position: "relative", zIndex: 5, padding: "0 88px 72px" }}>
+          {/* Text box — overlaid at bottom-left */}
+          <div style={{ position: "absolute", bottom: 48, left: 88, zIndex: 5 }}>
             {!finished && lesson && (
               <div style={{ animation: "fadeUp 0.8s cubic-bezier(0.25,0.46,0.45,0.94) both", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
-                {/* Single rounded box */}
                 <div style={{ background: "rgba(247,243,236,0.9)", padding: "24px 32px", borderRadius: 12, backdropFilter: "blur(8px)" }}>
                   <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, marginBottom: 8 }}>
                     Day {cur} — {lesson.tag}{todayDone ? "  ✓" : ""}
@@ -6244,7 +6236,6 @@ finishDate + ".";
                     {lesson.title}
                   </div>
                 </div>
-                {/* Button below box */}
                 <button onClick={() => onStart(cur)} className="au-cta" style={{ display: "inline-flex", alignItems: "center", gap: 12, background: T.ink, border: "none", borderRadius: 4, padding: "14px 28px", cursor: "pointer" }}>
                   <span style={{ fontSize: 13, fontWeight: 600, color: T.bg, fontFamily: T.sans }}>{todayDone ? "Review Session" : "Begin Session"}</span>
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.bg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -6351,28 +6342,27 @@ finishDate + ".";
   return (
     <div style={{background:T2.bg,minHeight:"100vh",paddingBottom:100}} className="au-page">
 
-      {/* ── SECTION 1: Hero — full brightness, parchment gradient at bottom ── */}
-      <div style={{position:"relative",height:"55vh",minHeight:320,overflow:"hidden",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
-        <img src="/home-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 30%"}}/>
-        <div style={{position:"relative",zIndex:5,padding:"0 20px 28px",display:"flex",flexDirection:"column",alignItems:"flex-start",gap:8}}>
+      {/* ── SECTION 1: Hero — full image, no cropping ── */}
+      <div style={{position:"relative"}}>
+        <img src="/home-hero.jpg" alt="" style={{width:"100%",height:"auto",display:"block"}}/>
+        {/* Text box overlaid at bottom-left */}
+        <div style={{position:"absolute",bottom:16,left:16,right:16,zIndex:5}}>
           {!finished && lesson && (
-            <>
-              <div style={{background:"rgba(247,243,236,0.9)",padding:"18px 22px",borderRadius:10,backdropFilter:"blur(8px)"}}>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"flex-start",gap:10}}>
+              <div style={{background:"rgba(247,243,236,0.9)",padding:"16px 20px",borderRadius:10,backdropFilter:"blur(8px)"}}>
                 <div style={{fontSize:9,fontWeight:600,letterSpacing:"3px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,marginBottom:6}}>Day {cur} — {lesson.tag}{todayDone?"  ✓":""}</div>
-                <div style={{fontFamily:T.serif,fontSize:"clamp(22px,7vw,36px)",fontWeight:600,color:T.ink,letterSpacing:"-1px",lineHeight:1.05}}>{lesson.title}</div>
+                <div style={{fontFamily:T.serif,fontSize:"clamp(20px,5vw,32px)",fontWeight:600,color:T.ink,letterSpacing:"-1px",lineHeight:1.05}}>{lesson.title}</div>
               </div>
-              <div style={{marginTop:4}}>
-                <button onClick={()=>onStart(cur)} className="au-cta" style={{display:"inline-flex",alignItems:"center",gap:10,background:T.ink,border:"none",borderRadius:4,padding:"12px 22px",cursor:"pointer"}}>
-                  <span style={{fontSize:13,fontWeight:600,color:T.bg,fontFamily:T.sans}}>{todayDone?"Review Session":"Begin Session"}</span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.bg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </button>
-              </div>
-            </>
+              <button onClick={()=>onStart(cur)} className="au-cta" style={{display:"inline-flex",alignItems:"center",gap:10,background:T.ink,border:"none",borderRadius:4,padding:"12px 22px",cursor:"pointer"}}>
+                <span style={{fontSize:13,fontWeight:600,color:T.bg,fontFamily:T.sans}}>{todayDone?"Review Session":"Begin Session"}</span>
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T.bg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
+            </div>
           )}
           {finished && (
-            <div style={{background:"rgba(247,243,236,0.9)",padding:"18px 22px",borderRadius:10,backdropFilter:"blur(8px)"}}>
+            <div style={{background:"rgba(247,243,236,0.9)",padding:"16px 20px",borderRadius:10,backdropFilter:"blur(8px)"}}>
               <div style={{fontSize:9,letterSpacing:"3px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,marginBottom:6}}>Programme Complete</div>
-              <div style={{fontFamily:T.serif,fontSize:"clamp(22px,7vw,36px)",fontWeight:600,color:T.ink,letterSpacing:"-1px",lineHeight:1.05}}>You communicate<br/>differently now.</div>
+              <div style={{fontFamily:T.serif,fontSize:"clamp(20px,5vw,32px)",fontWeight:600,color:T.ink,letterSpacing:"-1px",lineHeight:1.05}}>You communicate<br/>differently now.</div>
             </div>
           )}
         </div>
