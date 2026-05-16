@@ -2504,7 +2504,7 @@ function Onboarding({onDone}) {
             padding: "80px 72px",
             position: "relative",
           }}>
-            <div key={step} className="au-step-enter" style={{ maxWidth: 520 }}>
+            <div key={step} className="au-step-enter" style={{ padding: "44px 52px" }}>
               {/* Question number — ambient, not instructional */}
               <div style={{
                 fontSize: 9, color: T.text3, letterSpacing: "3px",
@@ -2588,7 +2588,7 @@ function Onboarding({onDone}) {
 
           {/* RIGHT: Role selection — editorial */}
           <div style={{ flex: 1, background: "#F7F3EC", display: "flex", flexDirection: "column", justifyContent: "center", padding: "80px 72px" }}>
-            <div style={{ maxWidth: 520 }} className="au-step-enter">
+            <div style={{ padding: "44px 52px" }} className="au-step-enter">
               <div style={{ fontSize: 9, color: T.text3, letterSpacing: "3px", textTransform: "uppercase", marginBottom: 32, fontFamily: T.sans }}>Your Practice</div>
               <h2 style={{ fontFamily: T.serif, fontSize: "clamp(26px, 2.8vw, 40px)", fontWeight: 500, lineHeight: 1.15, color: T.text, letterSpacing: "-1px", marginBottom: 12 }}>
                 What best describes your world?
@@ -5851,7 +5851,7 @@ setAmbitionSaved(true); } catch {}
       }
 
       if (step === "Insight") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px",maxWidth:560,overflowY:"auto"}}>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.1,marginBottom:10}}>Why Clarity Wins</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:32}}>The clearest communicators don't use more words — they use better ones. Here's what the science shows.</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:28}}>
@@ -5867,7 +5867,7 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px",maxWidth:520,overflowY:"auto"}}>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8,fontFamily:T.sans}}>The Framework</div>
           <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.4px",marginBottom:6}}>The Feynman Technique</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:28}}>Richard Feynman won the Nobel Prize in Physics — and could explain quantum mechanics to a 12-year-old. His secret: the 4-step clarity loop.</p>
@@ -5903,7 +5903,7 @@ setAmbitionSaved(true); } catch {}
                 </div>
               </div>
             )}
-            <div key={idx} className="au-step-enter" style={{padding:"44px",maxWidth:520}}>
+            <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
               <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",textAlign:"center",marginBottom:8}}>Masters of Clear Communication</h2>
               <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,textAlign:"center",fontStyle:"italic",marginBottom:28,fontWeight:300}}>Click to explore clarity in action</p>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
@@ -5924,7 +5924,7 @@ setAmbitionSaved(true); } catch {}
       }
 
       if (step === "Practice") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px",maxWidth:540,overflowY:"auto"}}>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:6}}>Build Your Clarity Toolkit</h2>
           <p style={{fontFamily:T.sans,fontSize:16,color:T2.text3,lineHeight:1.6,marginBottom:32,fontWeight:300}}>Not rules — exercises you can use today.</p>
 
@@ -5984,7 +5984,7 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Simulation") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px",maxWidth:520}}>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
           <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8,fontFamily:T.sans}}>AI Practice</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,letterSpacing:"-0.3px",marginBottom:6}}>Speak Clearly — 60 Seconds</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:28}}>Choose a scenario. Write your clearest explanation. The AI will give you a clarity score and feedback.</p>
@@ -6016,7 +6016,7 @@ setAmbitionSaved(true); } catch {}
     const NTRightContent = () => {
       if (step === "Insight") {
         return (
-          <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:560, overflowY:"auto" }}>
+          <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
             <h2 style={{ fontFamily:T.serif, fontSize:34, fontWeight:600, color:T2.text, letterSpacing:"-0.5px", lineHeight:1.1, marginBottom:10 }}>Why Stories Work</h2>
             <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:32 }}>Neuroscience reveals why stories bypass resistance and create change where facts alone can't.</p>
             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:28 }}>
@@ -6033,7 +6033,7 @@ setAmbitionSaved(true); } catch {}
       }
 
       if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520, overflowY:"auto" }}>
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           {/* Neural engagement intro */}
           <div style={{ marginBottom:36 }}>
             <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.8, marginBottom:16, fontWeight:300 }}>The human brain is wired to process narrative as a sequence of goals, obstacles, and outcomes.</p>
@@ -6218,7 +6218,7 @@ setAmbitionSaved(true); } catch {}
               </div>
             )}
             {/* 4-card grid */}
-            <div key={idx} className="au-step-enter" style={{ padding:"44px 44px 44px", maxWidth:520 }}>
+            <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
               <h2 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", textAlign:"center", marginBottom:8 }}>Storytelling in the Wild</h2>
               <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, textAlign:"center", fontStyle:"italic", marginBottom:28, fontWeight:300 }}>Click to explore storytelling across different contexts</p>
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
@@ -6240,7 +6240,7 @@ setAmbitionSaved(true); } catch {}
       }
 
       if (step === "Practice") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
           <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>AI Story Coach</div>
           <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:6 }}>Build Your Story</h2>
           <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:28 }}>Answer three questions. Choose a style. Your AI coach will craft a story using the 6-beat arc — then you refine it until it's yours.</p>
@@ -6249,7 +6249,7 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Simulation") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
           <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>Rehearsal</div>
           <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:24 }}>Now Practice Telling It</h2>
           {ntStory ? (
@@ -6296,7 +6296,7 @@ setAmbitionSaved(true); } catch {}
     // ── Day 9 RightContent ──────────────────────────────────────────────────
     const D9RightContent = () => {
       if (step === "Insight") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
           <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>Delivery Masterclass</div>
           <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, letterSpacing:"-0.5px", lineHeight:1.15, marginBottom:20 }}>It's Not What You Say.<br/>It's How You Say It.</h2>
           <div style={{ padding:"16px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, marginBottom:24 }}>
@@ -6329,7 +6329,7 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
           <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>The 5 Ps</div>
           <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:20 }}>What Makes Delivery Powerful</h2>
           <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:20 }}>
@@ -6437,7 +6437,7 @@ setAmbitionSaved(true); } catch {}
                 </div>
               </div>
             )}
-            <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+            <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
               <h2 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", textAlign:"center", marginBottom:8 }}>Learn from the Best</h2>
               <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, textAlign:"center", fontStyle:"italic", marginBottom:28, fontWeight:300 }}>Click to explore how world-class speakers deliver</p>
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
@@ -6459,7 +6459,7 @@ setAmbitionSaved(true); } catch {}
       }
 
       if (step === "Practice") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
           <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>AI Delivery Coach</div>
           <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:6 }}>Polish Your Delivery</h2>
           <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:24 }}>Your story from Module 1 is loaded. Work through 5 delivery refinements — each one makes your story land harder.</p>
@@ -6470,7 +6470,7 @@ setAmbitionSaved(true); } catch {}
       if (step === "Simulation") {
         const [mode, setMode] = useState("solo");
         return (
-          <div key={idx} className="au-step-enter" style={{ padding:"44px", maxWidth:520 }}>
+          <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
             <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>Performance Practice</div>
             <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:20 }}>Deliver with Confidence</h2>
             {d9Script ? (
@@ -6532,7 +6532,7 @@ setAmbitionSaved(true); } catch {}
     };
 
     const RightContent = () => (
-      <div key={idx} className="au-step-enter" style={{ padding: "44px 44px 44px", maxWidth: 480 }}>
+      <div key={idx} className="au-step-enter" style={{ padding: "44px 52px" }}>
 
         {/* ── Insight ──────────────────────────────────────────────────────── */}
         {step === "Insight" && (
