@@ -4654,15 +4654,15 @@ setAmbitionSaved(true); } catch {}
         </>;
         const theoryImg10 = THEORY_IMAGES[lesson.theoryImageDay || lesson.day];
         if (step === "Insight") return (
-          <div style={d10Dark}>
-            <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="pie" height={900} day={10}/></div>
-            {d10Ol}
-            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
-              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:16 }}>
-                <div style={{ ...LP_LABEL, color:T.gold }}>The Evidence</div>
-                <div style={{ opacity:0.55 }}>{MODULE_ICONS[9]}</div>
+          <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
+            <img src="/day10-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.2) 45%, transparent 65%)" }}/>
+            <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both", display:"flex", alignItems:"flex-start", justifyContent:"space-between" }}>
+              <div>
+                <div style={{ ...LP_LABEL, color:T.gold, marginBottom:12 }}>The Evidence</div>
+                <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:320 }}>Brilliant work in silence<br/>is still silence.</p>
               </div>
-              <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:320 }}>Brilliant work in silence<br/>is still silence.</p>
+              <div style={{ opacity:0.55 }}>{MODULE_ICONS[9]}</div>
             </div>
           </div>
         );
