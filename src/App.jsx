@@ -4058,6 +4058,12 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const [selSc, setSelSc] = useState(0);
   const [checks, setChecks] = useState({});
   const [exitConfirm, setExitConfirm] = useState(false);
+  const [accordionOpen, setAccordionOpen] = useState(false);
+  const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
+  function saveBook(title) {
+    const next = savedBooks.includes(title) ? savedBooks.filter(t=>t!==title) : [...savedBooks, title];
+    setSavedBooks(next); try { localStorage.setItem("au1_saved_books", JSON.stringify(next)); } catch {}
+  }
   const [note, setNote] = useState(() => {
     try { return localStorage.getItem("au1_note_"+lesson.day) || ""; } 
 catch { return ""; }
@@ -6740,12 +6746,6 @@ setAmbitionSaved(true); } catch {}
 
               // ── OPTION 1: Book-First Editorial Layout (Day 3 test) ────────────
               if (lesson.day === 3) {
-                const [accordionOpen, setAccordionOpen] = useState(false);
-                const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
-                function saveBook(title) {
-                  const next = savedBooks.includes(title) ? savedBooks.filter(t=>t!==title) : [...savedBooks, title];
-                  setSavedBooks(next); try { localStorage.setItem("au1_saved_books", JSON.stringify(next)); } catch {}
-                }
                 return (
                   <div style={{ flex: 1, background: T2.bg, borderLeft: "1px solid " + T2.divider, overflowY: "auto" }}>
                     <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 48px" }}>
