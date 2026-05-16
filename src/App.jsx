@@ -8283,15 +8283,18 @@ finishDate + ".";
         {/* ════════════════════════════════════════════════════════════════
             SECTION 1: CINEMATIC HERO — Full viewport. One story. One CTA.
             ════════════════════════════════════════════════════════════════ */}
-        <div style={{ position: "relative" }}>
-          {/* Full image — natural height, no cropping */}
+        <div style={{ position: "relative", marginTop: NAV_H }}>
+          {/* Full image — natural height, no cropping, full SOCIAL PRESENCE visible */}
           <img src="/home-hero.jpg" alt="" style={{ width: "100%", height: "auto", display: "block" }}/>
+
+          {/* Dark overlay — Programme tab style */}
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(44,36,22,0.55) 0%, rgba(44,36,22,0.35) 40%, rgba(44,36,22,0.65) 100%)", pointerEvents: "none", zIndex: 1 }}/>
 
           {/* Text box — overlaid at bottom-left */}
           <div style={{ position: "absolute", bottom: 48, left: 88, zIndex: 5 }}>
             {!finished && lesson && (
               <div style={{ animation: "fadeUp 0.8s cubic-bezier(0.25,0.46,0.45,0.94) both", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
-                <div style={{ background: "rgba(247,243,236,0.9)", padding: "24px 32px", borderRadius: 12, backdropFilter: "blur(8px)" }}>
+                <div style={{ background: "rgba(247,243,236,0.92)", padding: "24px 32px", borderRadius: 12, backdropFilter: "blur(8px)", boxShadow: "0 4px 16px rgba(44,36,22,0.2)" }}>
                   <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, marginBottom: 8 }}>
                     Day {cur} — {lesson.tag}{todayDone ? "  ✓" : ""}
                   </div>
@@ -8307,7 +8310,7 @@ finishDate + ".";
             )}
             {finished && (
               <div style={{ animation: "fadeUp 0.8s ease both", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
-                <div style={{ background: "rgba(247,243,236,0.9)", padding: "24px 32px", borderRadius: 12, backdropFilter: "blur(8px)" }}>
+                <div style={{ background: "rgba(247,243,236,0.92)", padding: "24px 32px", borderRadius: 12, backdropFilter: "blur(8px)" }}>
                   <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, marginBottom: 8 }}>Programme Complete</div>
                   <div style={{ fontFamily: T.serif, fontSize: "clamp(28px,3vw,48px)", fontWeight: 600, color: T.ink, letterSpacing: "-1.5px", lineHeight: 1.05 }}>You communicate<br/>differently now.</div>
                 </div>
@@ -8405,14 +8408,16 @@ finishDate + ".";
   return (
     <div style={{background:T2.bg,minHeight:"100vh",paddingBottom:100}} className="au-page">
 
-      {/* ── SECTION 1: Hero — full image, no cropping ── */}
-      <div style={{position:"relative"}}>
+      {/* ── SECTION 1: Hero — full image below nav, dark overlay ── */}
+      <div style={{position:"relative",marginTop:NAV_H}}>
         <img src="/home-hero.jpg" alt="" style={{width:"100%",height:"auto",display:"block"}}/>
-        {/* Text box overlaid at bottom-left */}
+        {/* Dark overlay */}
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, rgba(44,36,22,0.55) 0%, rgba(44,36,22,0.3) 40%, rgba(44,36,22,0.65) 100%)",pointerEvents:"none",zIndex:1}}/>
+        {/* Text box overlaid at bottom */}
         <div style={{position:"absolute",bottom:16,left:16,right:16,zIndex:5}}>
           {!finished && lesson && (
             <div style={{display:"flex",flexDirection:"column",alignItems:"flex-start",gap:10}}>
-              <div style={{background:"rgba(247,243,236,0.9)",padding:"16px 20px",borderRadius:10,backdropFilter:"blur(8px)"}}>
+              <div style={{background:"rgba(247,243,236,0.92)",padding:"16px 20px",borderRadius:10,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(44,36,22,0.2)"}}>
                 <div style={{fontSize:9,fontWeight:600,letterSpacing:"3px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,marginBottom:6}}>Day {cur} — {lesson.tag}{todayDone?"  ✓":""}</div>
                 <div style={{fontFamily:T.serif,fontSize:"clamp(20px,5vw,32px)",fontWeight:600,color:T.ink,letterSpacing:"-1px",lineHeight:1.05}}>{lesson.title}</div>
               </div>
@@ -8423,7 +8428,7 @@ finishDate + ".";
             </div>
           )}
           {finished && (
-            <div style={{background:"rgba(247,243,236,0.9)",padding:"16px 20px",borderRadius:10,backdropFilter:"blur(8px)"}}>
+            <div style={{background:"rgba(247,243,236,0.92)",padding:"16px 20px",borderRadius:10,backdropFilter:"blur(8px)"}}>
               <div style={{fontSize:9,letterSpacing:"3px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,marginBottom:6}}>Programme Complete</div>
               <div style={{fontFamily:T.serif,fontSize:"clamp(20px,5vw,32px)",fontWeight:600,color:T.ink,letterSpacing:"-1px",lineHeight:1.05}}>You communicate<br/>differently now.</div>
             </div>
