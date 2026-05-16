@@ -5376,32 +5376,31 @@ setAmbitionSaved(true); } catch {}
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8,fontFamily:T.sans}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,letterSpacing:"-0.4px",marginBottom:6}}>The Pause Principle</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:24}}>Fillers aren't a speech problem. They're a thinking problem. When you haven't decided what to say next, you fill the gap.</p>
-          <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:"0 0 8px",fontWeight:300}}><strong style={{fontWeight:600}}>The instinct:</strong> Silence feels uncomfortable. Fill it.</p>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}><strong style={{fontWeight:600}}>The reality:</strong> Silence sounds confident. Fillers sound uncertain.</p>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:24}}>Fillers aren't a speech problem. They're a thinking problem. When you haven't decided what to say next, you fill the gap with "um," "uh," "like," or "you know."</p>
+          <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>Silence sounds confident. Fillers sound uncertain.</p>
           </div>
-          <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14,fontFamily:T.sans}}>Why We Use Fillers</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,marginBottom:24}}>
-            {D3_PAUSE_REASONS.map((r,i)=>(
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
+            {[
+              {label:"Fear of Silence",   body:"You think pauses make you look unprepared. Reality: pauses make you look thoughtful."},
+              {label:"Rushing",           body:"You speak faster than you think. Your mouth outruns your brain."},
+              {label:"Lack of Structure", body:"You don't know where you're going. Fillers buy you time to figure it out."},
+              {label:"The Fix",           body:"Replace fillers with pauses. Breathe. Think. Then speak."},
+            ].map((p,i)=>(
               <div key={i} style={{padding:"16px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{r.n}. {r.label}</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>{r.body}</p>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{p.label}</div>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:300,margin:0}}>{p.body}</p>
               </div>
             ))}
           </div>
           <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:20}}>
-            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Fix</div>
-            <p style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:10}}>Replace fillers with pauses.</p>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:14}}>A 2-second pause feels like 10 seconds to you. To your audience? Natural. Powerful. Intentional.</p>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-              <div style={{padding:"14px 16px",background:"rgba(139,74,56,0.05)",borderRadius:4,borderLeft:"2px solid rgba(139,74,56,0.3)"}}>
-                <div style={{fontFamily:T.sans,fontSize:10,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Common Verbal Fillers</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.65,margin:0}}>"Um," "uh," "like," "you know," "sort of," "kind of," "basically," "actually," "so," "right?"</p>
+            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>See It In Action</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+              <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>A 2-second pause feels like 10 seconds to you. To your audience? Natural. Powerful. Intentional.</p>
               </div>
-              <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <div style={{fontFamily:T.sans,fontSize:10,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Strongest Rule</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.65,margin:0}}>When you feel the urge to say "um," pause instead. Breathe. Think. Then speak.</p>
+              <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>When you feel the urge to say "um," pause instead. The pause is not your enemy. It's your tool.</p>
               </div>
             </div>
           </div>
@@ -5868,23 +5867,35 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Theory") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8,fontFamily:T.sans}}>The Framework</div>
-          <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,letterSpacing:"-0.4px",marginBottom:6}}>The Feynman Technique</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:28}}>Richard Feynman won the Nobel Prize in Physics — and could explain quantum mechanics to a 12-year-old. His secret: the 4-step clarity loop.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:0,marginBottom:24}}>
-            {D1_FEYNMAN_STEPS.map((b,i,arr)=>(
-              <div key={i} style={{display:"flex",alignItems:"flex-start",gap:14,padding:"14px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none"}}>
-                <span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,minWidth:20,paddingTop:2}}>{b.n}</span>
-                <div>
-                  <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,marginBottom:4}}>{b.beat}</div>
-                  <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300,lineHeight:1.6}}>{b.sub}</div>
-                </div>
+          <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8,fontFamily:T.sans}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,letterSpacing:"-0.4px",marginBottom:6}}>The Feynman Technique</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:24}}>Richard Feynman won the Nobel Prize in Physics — and could explain quantum mechanics to a 12-year-old. His secret: the 4-step clarity loop.</p>
+          <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>If you can't explain it simply, you don't understand it well enough.</p>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
+            {[
+              {label:"1. Understand", body:"Choose a concept and study it deeply."},
+              {label:"2. Explain",    body:"Teach it in simple words as if to someone else. No jargon."},
+              {label:"3. Simplify",   body:"When you stumble, that's a gap. Go back and fill it."},
+              {label:"4. Refine",     body:"Review, clarify, improve. Repeat until a child could follow."},
+            ].map((p,i)=>(
+              <div key={i} style={{padding:"16px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{p.label}</div>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:300,margin:0}}>{p.body}</p>
               </div>
             ))}
           </div>
           <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:20}}>
-            <div style={{fontSize:9,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>Why It Works</div>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>Teaching forces you to understand. Simplifying forces you to think. The clearest thinkers are the clearest speakers.</p>
+            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Why It Works</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+              <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>Teaching forces you to understand. If you can explain it clearly, you know it.</p>
+              </div>
+              <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>Simplifying forces you to think. The clearest thinkers are the clearest speakers.</p>
+              </div>
+            </div>
           </div>
         </div>
       );
@@ -6034,64 +6045,35 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Theory") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          {/* Neural engagement intro */}
-          <div style={{ marginBottom:36 }}>
-            <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.8, marginBottom:16, fontWeight:300 }}>The human brain is wired to process narrative as a sequence of goals, obstacles, and outcomes.</p>
-            <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:16 }}>
-              {["A story without a clear goal (stakes) fails to engage.","A story without a concrete detail (proof) fails to persuade.","A story without a shift (outcome) fails to be remembered."].map((pt,i)=>(
-                <div key={i} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
-                  <span style={{ color:T.gold, fontWeight:600, flexShrink:0, fontFamily:T.sans }}>→</span>
-                  <span style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.6 }}>{pt}</span>
-                </div>
-              ))}
-            </div>
-            <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, margin:0 }}>All three are required for full neural engagement.</p>
+          <div style={{ fontSize:10, fontWeight:500, color:T2.text3, textTransform:"uppercase", letterSpacing:"3px", marginBottom:8, fontFamily:T.sans }}>The Science</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:34, fontWeight:600, color:T2.text, letterSpacing:"-0.4px", marginBottom:6 }}>The Story Arc Framework</h2>
+          <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:24 }}>Stories follow a universal structure: Setup → Conflict → Resolution. This arc mirrors how the brain processes experience — as a sequence of goals, obstacles, and outcomes.</p>
+          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:24 }}>
+            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0 }}>A story without stakes fails to engage. A story without proof fails to persuade. A story without a shift fails to be remembered.</p>
           </div>
-          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:28 }}>
-          {/* 6-Beat Framework */}
-          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>The 6-Beat Framework</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:T2.text, letterSpacing:"-0.4px", marginBottom:24 }}>Build Your Story</h2>
-          <div style={{ display:"flex", flexDirection:"column", gap:0, marginBottom:16 }}>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:24 }}>
             {[
-              { n:1, beat:"Hook",          sub:"It starts with tension." },
-              { n:2, beat:"Character",     sub:"Make it human. Make it real." },
-              { n:3, beat:"Problem",       sub:"What broke? What's at stake?" },
-              { n:4, beat:"Turning Point", sub:"What changes? Everything shifts." },
-              { n:5, beat:"Resolution",    sub:"What happened? Why it matters." },
-              { n:6, beat:"Meaning",       sub:"What stayed with us?" },
-            ].map((b,i,arr) => (
-              <div key={i} style={{ display:"flex", alignItems:"center", gap:14, padding:"11px 0", borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none" }}>
-                <span style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, minWidth:16 }}>{b.n}</span>
-                <span style={{ fontFamily:T.serif, fontSize:16, fontWeight:600, color:T2.text, minWidth:120 }}>{b.beat}</span>
-                <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, fontWeight:300 }}>{b.sub}</span>
+              {label:"Setup",   body:"Establish the stakes. What was the situation? What was at risk?"},
+              {label:"Conflict",body:"What obstacle stood in the way? What made it hard?"},
+              {label:"Choice",  body:"What decision did you make? What did you do?"},
+              {label:"Outcome", body:"What changed as a result? What was the measurable impact?"},
+            ].map((p,i)=>(
+              <div key={i} style={{ padding:"16px 18px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.goldDark, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:6 }}>{p.label}</div>
+                <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{p.body}</p>
               </div>
             ))}
           </div>
-          <p style={{ fontFamily:T.serif, fontSize:20, fontStyle:"italic", color:T.gold, lineHeight:1.4, marginBottom:36 }}>No tension = no story.</p>
-
-          {/* Pixar Framework */}
-          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:28 }}>
-            <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>The Pixar Framework</div>
-            <h3 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:8 }}>The Pixar Framework</h3>
-            <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:24 }}>Pixar used it for every film. It works because it mirrors how the human brain processes experience.</p>
-            <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:14 }}>See it in action — confidence in meetings</div>
-            <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
-              {[
-                { beat:"Once upon a time…", line:"I thought confidence meant sounding polished." },
-                { beat:"Every day…",        line:"I overprepared for meetings." },
-                { beat:"Until one day…",    line:"I completely froze." },
-                { beat:"Because of that…", line:"I changed how I prepared." },
-                { beat:"Because of that…", line:"I focused on clarity, not perfection." },
-                { beat:"Until finally…",   line:"People started listening." },
-              ].map((r,i,arr) => (
-                <div key={i} style={{ display:"flex", gap:14, padding:"10px 0", borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none", alignItems:"flex-start" }}>
-                  <span style={{ fontFamily:T.serif, fontSize:13, fontWeight:600, color:T.gold, minWidth:138, flexShrink:0, paddingTop:1 }}>{r.beat}</span>
-                  <span style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:T2.text, lineHeight:1.55 }}>{r.line}</span>
-                </div>
-              ))}
+          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:20 }}>
+            <div style={{ fontSize:10, fontWeight:600, color:T.goldDark, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12, fontFamily:T.sans }}>See It In Action</div>
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+              <div style={{ padding:"16px 18px", background:"rgba(138,158,132,0.06)", borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+                <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:T2.text, lineHeight:1.65, margin:0 }}>Facts inform. Stories move. Structure is what turns information into impact.</p>
+              </div>
+              <div style={{ padding:"16px 18px", background:"rgba(138,158,132,0.06)", borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+                <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:T2.text, lineHeight:1.65, margin:0 }}>Every professional story needs stakes, conflict, and a clear outcome to engage the brain fully.</p>
+              </div>
             </div>
-            <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T2.text2, lineHeight:1.6, marginTop:20 }}>This simple framework works for any story. Now see it in the wild →</p>
-          </div>
           </div>
         </div>
       );
