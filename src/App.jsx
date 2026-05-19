@@ -7320,7 +7320,32 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         </div>
       )}
 
-      <div style={{position:"relative",maxHeight:250,overflow:"hidden"}}>
+      {/* Top nav bar — AmplifyU logo + exit */}
+      <div style={{
+        background:T.bg,
+        padding:"14px 20px",
+        display:"flex",alignItems:"center",justifyContent:"space-between",
+        borderBottom:"0.5px solid rgba(44,36,22,0.08)",
+      }}>
+        <span style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.ink,letterSpacing:"-0.3px"}}>AmplifyU</span>
+        <button
+          onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
+          style={{
+            height:36,padding:"0 14px 0 10px",
+            borderRadius:4,border:"0.5px solid #DDD5C4",
+            background:"transparent",color:"#6B5E44",
+            display:"flex",alignItems:"center",gap:5,
+            cursor:"pointer",fontFamily:T.sans,
+          }}>
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+            <path d="M9 2L4 7l5 5" stroke="#6B5E44" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span style={{fontSize:13,fontWeight:500}}>Exit</span>
+        </button>
+      </div>
+
+      {/* Header image */}
+      <div style={{position:"relative",maxHeight:220,overflow:"hidden"}}>
         {(()=>{
           const STEP_IMGS={
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
@@ -7329,31 +7354,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             8:{Insight:"/narrative-transportation.jpg",Theory:"/nt-6beat-framework.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
-          if(src) return <img src={src} alt="" style={{width:"100%",height:240,objectFit:"cover",objectPosition:"center",display:"block",pointerEvents:"none"}}/>;
-          return <Scene name={lesson.scene} height={240} day={lesson.day}/>;
+          if(src) return <img src={src} alt="" style={{width:"100%",height:220,objectFit:"cover",objectPosition:"center",display:"block",pointerEvents:"none"}}/>;
+          return <Scene name={lesson.scene} height={220} day={lesson.day}/>;
         })()}
-        <button
-          onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
-          style={{
-            position:"absolute",top:16,left:16,
-            height:44,
-            padding:"0 16px 0 12px",
-            borderRadius:4,border:"1px solid rgba(44,36,22,0.18)",
-            background:"#F5EFE6",
-            color:"#2C2416",
-            display:"flex",alignItems:"center",gap:6,
-            cursor:"pointer",
-            zIndex:50,
-          }}>
-          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
-            <path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span style={{fontSize:14,fontWeight:500,fontFamily:"'Inter',sans-serif"}}>
-            ← Exit
-          </span>
-        </button>
-        {isDone && <div 
-style={{position:"absolute",top:52,right:20,background:"rgba(42,94,63,0.9)",color:"white",fontSize:11,fontWeight:700,padding:"6px 12px",borderRadius:20,letterSpacing:1}}>DONE</div>}
+        {isDone && <div style={{position:"absolute",top:16,right:20,background:"rgba(42,94,63,0.9)",color:"white",fontSize:11,fontWeight:700,padding:"6px 12px",borderRadius:20,letterSpacing:1}}>DONE</div>}
         <div style={{position:"absolute",bottom:20,left:20,right:20}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
             <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:2}}>Day {lesson.day} — {lesson.tag}</div>
@@ -7530,12 +7534,14 @@ T.goldDark : T2.text4,
             <img src="/day3-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Master Filler-Free Speech</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Fillers are a habit, not a flaw. Here's what eliminating them does for you.</p>
-            {D3_FACTS.map((n,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
-                <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{n.body}</p>
-              </div>
-            ))}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {D3_FACTS.map((n,i)=>(
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+                </div>
+              ))}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>The pause is not empty. It's where confidence lives.</p>
           </>
         )}
@@ -7569,10 +7575,10 @@ T.goldDark : T2.text4,
               {id:"ginsburg",name:"Ruth Bader Ginsburg",preview:"Every pause was intentional. Every word was chosen. Her arguments were surgical: Pause. Point. Evidence. Pause. Next point.",quote:'"The question before the Court is... whether the statute applies in this case."',why:"In high-stakes environments, fillers cost you credibility. Precision builds trust.",technique:"Structure your thoughts before you speak. Point 1. Pause. Point 2. Pause. Conclusion.",lesson:"The higher the stakes, the fewer words you should use. And zero fillers."},
               {id:"obama3",name:"Barack Obama",preview:"Mid-sentence, he'll stop. Think. Then continue. That pause? Not a filler. A choice.",quote:'"The question is... what kind of country are we going to leave our children?"',why:"Pauses let your audience catch up. Fillers just fill time.",technique:"When you make an important point, pause after it. Let it land before you move on.",lesson:"Silence isn't empty space. It's emphasis."},
             ].map(card=>(
-              <div key={card.id} onClick={()=>setD3MobCard(d3MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer"}}>
+              <div key={card.id} onClick={()=>setD3MobCard(d3MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d3MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
                   <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
-                  <span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginLeft:10,flexShrink:0}}>{d3MobCard===card.id?"▴":"▸"}</span>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:d3MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{d3MobCard===card.id?"▴ less":"▸ explore"}</span>
                 </div>
                 <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
                 {d3MobCard===card.id && (
@@ -7618,12 +7624,14 @@ T.goldDark : T2.text4,
             <img src="/day4-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Short Sentences Win</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>The brain processes short sentences faster, retains them longer, and finds them more persuasive.</p>
-            {D4_FACTS.map((n,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
-                <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{n.body}</p>
-              </div>
-            ))}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {D4_FACTS.map((n,i)=>(
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+                </div>
+              ))}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Long sentences lose people. Short sentences move them.</p>
           </>
         )}
@@ -7653,10 +7661,10 @@ T.goldDark : T2.text4,
               {id:"chanel",name:"Coco Chanel",preview:"Chanel revolutionised fashion with one principle: Less is more.",quote:'"Fashion fades. Style remains."',why:"Each quote is a complete thought. No wasted words. Just precision.",technique:"Say what matters. Cut everything else.",lesson:"Elegance in communication is elimination. The best speakers know what to leave out."},
               {id:"goodall",name:"Jane Goodall",preview:"Goodall spent 60 years studying chimpanzees. She could use scientific jargon. She chooses not to.",quote:'"What you do makes a difference. And you have to decide what kind of difference you want to make."',why:"Short sentences make science human. Long sentences make it distant.",technique:"State the discovery in one sentence. State why it matters in the next. Stop there.",lesson:"The best educators make the complex feel simple. Short sentences are how they do it."},
             ].map(card=>(
-              <div key={card.id} onClick={()=>setD4MobCard(d4MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer"}}>
+              <div key={card.id} onClick={()=>setD4MobCard(d4MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d4MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
                   <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
-                  <span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginLeft:10,flexShrink:0}}>{d4MobCard===card.id?"▴":"▸"}</span>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:d4MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{d4MobCard===card.id?"▴ less":"▸ explore"}</span>
                 </div>
                 <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
                 {d4MobCard===card.id && (
@@ -7710,12 +7718,14 @@ T.goldDark : T2.text4,
             <img src="/day1-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Clarity Wins</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Clear language reduces mental effort, increases retention, and builds trust.</p>
-            {D1_CLARITY_FACTS_DATA.map((n,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
-                <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{n.body}</p>
-              </div>
-            ))}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {D1_CLARITY_FACTS_DATA.map((n,i)=>(
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+                </div>
+              ))}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Simplicity signals mastery. Complexity signals uncertainty.</p>
           </>
         )}
@@ -7729,12 +7739,14 @@ T.goldDark : T2.text4,
               <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>If you can't explain it simply, you don't understand it well enough.</p>
             </div>
             <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>His secret? The 4-step clarity loop:</p>
-            {[{label:"1. Understand",body:"Choose a concept and study it deeply."},{label:"2. Explain",body:"Teach it in simple words as if to someone else. No jargon."},{label:"3. Simplify",body:"When you stumble, that's a gap. Go back and fill it."},{label:"4. Refine",body:"Review, clarify, improve. Repeat until a child could follow."}].map((p,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"16px 20px",marginBottom:10}}>
-                <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{p.label}</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{p.body}</p>
-              </div>
-            ))}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {[{label:"1. Understand",body:"Choose a concept and study it deeply."},{label:"2. Explain",body:"Teach it in simple words as if to someone else. No jargon."},{label:"3. Simplify",body:"When you stumble, that's a gap. Go back and fill it."},{label:"4. Refine",body:"Review, clarify, improve. Repeat until a child could follow."}].map((p,i)=>(
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{p.label}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{p.body}</p>
+                </div>
+              ))}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Teaching forces you to understand. Simplifying forces you to think.</p>
           </>
         )}
@@ -7749,10 +7761,10 @@ T.goldDark : T2.text4,
               {id:"brown",name:"Brené Brown",preview:"Brown spent 20 years researching vulnerability. She could hide behind academic language. She doesn't.",quote:'"Vulnerability is not weakness. It\'s the most accurate measure of courage."',why:"She distils complexity into a single, memorable idea. No theory. No jargon. Just truth you can use.",technique:'Ask: "If I had 10 seconds to explain this, what would I say?" That\'s your message.',lesson:"Complex ideas don't need complex language. The best thinkers can explain their work in one sentence."},
               {id:"mobama",name:"Michelle Obama",preview:"Michelle Obama addresses millions on education, equality, leadership. Complex topics. High stakes. But her messages are always clear.",quote:'"When they go low, we go high."',why:"She takes big ideas and distils them into phrases you can remember and repeat. No wasted words.",technique:"Find the core of your message — the part that could fit on a bumper sticker. Build everything else around that.",lesson:"Clear communicators decide what people should remember, then say that first."},
             ].map(card=>(
-              <div key={card.id} onClick={()=>setD1MobCard(d1MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer"}}>
+              <div key={card.id} onClick={()=>setD1MobCard(d1MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d1MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
                   <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
-                  <span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginLeft:10,flexShrink:0}}>{d1MobCard===card.id?"▴":"▸"}</span>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:d1MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{d1MobCard===card.id?"▴ less":"▸ explore"}</span>
                 </div>
                 <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
                 {d1MobCard===card.id && (
@@ -7806,12 +7818,14 @@ T.goldDark : T2.text4,
             <img src="/narrative-transportation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Stories Change Minds</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Stories transport your audience into a different world. Facts inform. Stories transform.</p>
-            {NT_NEURO.map((n,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
-                <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{n.body}</p>
-              </div>
-            ))}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {NT_NEURO.map((n,i)=>(
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+                </div>
+              ))}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Facts explain. Stories move people.</p>
           </>
         )}
@@ -7875,10 +7889,10 @@ T.goldDark : T2.text4,
               {id:"gawande",name:"Surgeon Atul Gawande",preview:"Gawande could publish dense medical papers. Instead, he tells stories.",quote:'"The Checklist Manifesto" changed medical practice globally.',why:"The research was strong. But the story made it unforgettable. Doctors didn't adopt checklists because of data. They adopted them because they saw themselves in Gawande's story.",technique:"Lead with the person facing the problem. Show their struggle. Show the solution. Show the result.",lesson:"Data informs. Stories transform. Give them a narrative they can see themselves in."},
               {id:"cyber",name:"The Cyber Attack",preview:"A CISO needs budget for security. Facts alone won't convince the board.",quote:'"Last Tuesday at 3am, our systems went dark."',why:"Facts say \"this could happen.\" Stories say \"this happened. To us. It will happen again.\" The narrative transported the board into the future threat.",technique:"Three-act structure: what happened (Stakes), what went wrong (Obstacle), what it cost (Outcome).",lesson:"In high-stakes decisions, stories create urgency that facts can't."},
             ].map(card=>(
-              <div key={card.id} onClick={()=>setNtMobCard(ntMobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer"}}>
+              <div key={card.id} onClick={()=>setNtMobCard(ntMobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${ntMobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
                   <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
-                  <span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginLeft:10,flexShrink:0}}>{ntMobCard===card.id?"▴":"▸"}</span>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:ntMobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{ntMobCard===card.id?"▴ less":"▸ explore"}</span>
                 </div>
                 <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
                 {ntMobCard===card.id && (
