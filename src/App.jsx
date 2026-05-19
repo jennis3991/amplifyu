@@ -7695,7 +7695,7 @@ T.goldDark : T2.text4,
           <>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Clarity Wins</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Clear language reduces mental effort, increases retention, and builds trust.</p>
-            {D1_CLARITY_FACTS.map((n,i)=>(
+            {D1_CLARITY_FACTS_DATA.map((n,i)=>(
               <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
                 <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
                 <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{n.body}</p>
