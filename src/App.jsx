@@ -7330,7 +7330,8 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       </div>
 
       {/* Header image + Exit button overlay */}
-      <div style={{position:"relative",height:step==="Practice"?300:220,overflow:"hidden",background:step==="Practice"?"#141210":"transparent"}}>
+      {/* Header image + Exit button overlay */}
+      <div style={{position:"relative",height:(step==="Practice"||step==="Simulation")?300:220,overflow:"hidden",background:(step==="Practice"||step==="Simulation")?"#141210":"transparent"}}>
         {(()=>{
           const STEP_IMGS={
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
@@ -7338,13 +7339,14 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             8:{Insight:"/narrative-transportation.jpg",Theory:"/nt-6beat-framework.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           };
-          const h=step==="Practice"?300:220;
+          const darkFilm=step==="Practice"||step==="Simulation";
+          const h=darkFilm?300:220;
           const src=STEP_IMGS[lesson.day]?.[step];
-          if(src) return <img src={src} alt="" style={{width:"100%",height:h,objectFit:step==="Practice"?"contain":"cover",objectPosition:"center",display:"block",pointerEvents:"none"}}/>;
+          if(src) return <img src={src} alt="" style={{width:"100%",height:h,objectFit:darkFilm?"contain":"cover",objectPosition:"center",display:"block",pointerEvents:"none"}}/>;
           return <Scene name={lesson.scene} height={h} day={lesson.day}/>;
         })()}
-        {/* Dark film overlay for Practice */}
-        {step==="Practice" && <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.52)",pointerEvents:"none"}}/>}
+        {/* Dark film overlay for Practice + Simulation */}
+        {(step==="Practice"||step==="Simulation") && <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.52)",pointerEvents:"none"}}/>}
         {/* Exit button — top left over image */}
         <button
           onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
