@@ -7342,7 +7342,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           const darkFilm=step==="Practice"||step==="Simulation";
           const h=darkFilm?300:220;
           const src=STEP_IMGS[lesson.day]?.[step];
-          if(src) return <img src={src} alt="" style={{width:"100%",height:h,objectFit:darkFilm?"contain":"cover",objectPosition:"center",display:"block",pointerEvents:"none"}}/>;
+          if(src) return <img src={src} alt="" style={{width:"100%",height:h,objectFit:"cover",objectPosition:step==="Practice"?"center 40%":"center",display:"block",pointerEvents:"none"}}/>;
           return <Scene name={lesson.scene} height={h} day={lesson.day}/>;
         })()}
         {/* Dark film overlay for Practice + Simulation */}
