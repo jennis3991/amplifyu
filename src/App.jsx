@@ -7364,9 +7364,8 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         {/* Day + title — only on Insight and Review */}
         {(step==="Insight"||step==="Review") && (
           <div style={{position:"absolute",bottom:20,left:20,right:20}}>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+            <div style={{marginBottom:6}}>
               <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:2}}>Day {lesson.day} — {lesson.tag}</div>
-              <div style={{opacity:0.55}}>{MODULE_ICONS[lesson.day - 1]}</div>
             </div>
             <h1 style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
           </div>
