@@ -2274,63 +2274,59 @@ function ReflectionScreen({ answers, onContinue }) {
 
   // ── MOBILE (original, preserved) ─────────────────────────────────────────
   return (
-    <div style={{ minHeight:"100vh", background:"linear-gradient(180deg,#0B0D10 0%,#111C2E 100%)", fontFamily:T.sans, display:"flex", flexDirection:"column", overflowY:"auto" }}>
+    <div style={{ minHeight:"100vh", background:"#1A1510", fontFamily:T.sans, display:"flex", flexDirection:"column", overflowY:"auto" }}>
       <style>{`
         @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
         @keyframes goldPulse { 0%,100% { opacity:0.6; } 50% { opacity:1; } }
       `}</style>
-      <div style={{ padding:"56px 28px 0", flexShrink:0 }}>
-        <div style={{ fontSize:9,fontWeight:800,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:14 }}>AmplifyU</div>
+      <div style={{ padding:"52px 24px 0", flexShrink:0 }}>
+        <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:16,fontFamily:T.sans }}>AmplifyU</div>
         {status === "loading" ? (
           <div>
-            <div style={{ fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1.2,marginBottom:8 }}>Reading your responses…</div>
-            <p style={{ fontSize:14,color:"rgba(255,255,255,0.4)",lineHeight:1.6 }}>Building your personalised profile.</p>
+            <h2 style={{ fontFamily:T.serif,fontSize:28,fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,0.93)",lineHeight:1.15,marginBottom:8 }}>Reading your responses…</h2>
+            <p style={{ fontFamily:T.sans,fontSize:14,color:"rgba(255,255,255,0.4)",lineHeight:1.6 }}>Building your personalised profile.</p>
             <div style={{ marginTop:28,display:"flex",flexDirection:"column",gap:10 }}>
               {[1,0.7,0.5].map((op,i) => (
-                <div key={i} style={{ height:6,borderRadius:3,background:"linear-gradient(90deg,rgba(138,158,132,0.15) 0%,rgba(138,158,132,0.35) 50%,rgba(138,158,132,0.15) 100%)",backgroundSize:"400px 100%",animation:"shimmer 1.6s ease infinite",animationDelay:i*0.2+"s",opacity:op,width:["80%","60%","40%"][i] }}/>
+                <div key={i} style={{ height:4,borderRadius:2,background:"linear-gradient(90deg,rgba(138,158,132,0.15) 0%,rgba(138,158,132,0.35) 50%,rgba(138,158,132,0.15) 100%)",backgroundSize:"400px 100%",animation:"shimmer 1.6s ease infinite",animationDelay:i*0.2+"s",opacity:op,width:["80%","60%","40%"][i] }}/>
               ))}
             </div>
             <div style={{ display:"flex",gap:6,marginTop:20 }}>
-              {[0,1,2].map(i => (<div key={i} style={{ width:6,height:6,borderRadius:"50%",background:T.gold,animation:"goldPulse 1.2s ease-in-out "+(i*0.2)+"s infinite" }}/>))}
+              {[0,1,2].map(i => (<div key={i} style={{ width:5,height:5,borderRadius:"50%",background:T.gold,animation:"goldPulse 1.2s ease-in-out "+(i*0.2)+"s infinite" }}/>))}
             </div>
           </div>
         ) : (
           <div>
-            <div style={{ fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1.2,marginBottom:6 }}>Your profile,<br/>in focus.</div>
-            <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginTop:12 }}>
-              {role && (<div style={{ display:"flex",alignItems:"center",gap:6,padding:"5px 12px",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.25)",borderRadius:20 }}><span style={{ fontSize:12,color:T.gold }}>{role.icon}</span><span style={{ fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.8)" }}>{role.label}</span></div>)}
-            </div>
+            <h2 style={{ fontFamily:T.serif,fontSize:28,fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,0.93)",lineHeight:1.15,letterSpacing:"-0.3px",marginBottom:8 }}>Your profile,<br/>in focus.</h2>
+            {role && <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginTop:10,fontFamily:T.sans }}>{role.label}</div>}
           </div>
         )}
       </div>
       {status === "done" && reflection && (
-        <div style={{ padding:"28px 28px 0",display:"flex",flexDirection:"column",gap:20,flex:1 }}>
+        <div style={{ padding:"28px 24px 0",display:"flex",flexDirection:"column",gap:16,flex:1 }}>
           {section >= 1 && (<div style={{ animation:"sectionFade 0.6s ease both" }}>
-            <div style={{ fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,display:"flex",alignItems:"center",gap:8 }}><div style={{ width:16,height:1,background:T.gold }}/>Here's what we're seeing</div>
-            <div style={{ background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:16,padding:"20px",borderLeft:"2px solid "+T.gold }}>
-              <p style={{ fontFamily:T.serif,fontSize:16,color:"rgba(255,255,255,0.88)",lineHeight:1.75,margin:0 }}>{reflection.summary}</p>
+            <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans }}>Here's what we're seeing</div>
+            <div style={{ padding:"20px",borderLeft:"2px solid "+T.gold,background:"rgba(255,255,255,0.03)" }}>
+              <p style={{ fontFamily:T.sans,fontSize:15,color:"rgba(255,255,255,0.85)",lineHeight:1.75,margin:0,fontWeight:300 }}>{reflection.summary}</p>
             </div>
           </div>)}
           {section >= 2 && (<div style={{ animation:"sectionFade 0.6s ease both" }}>
-            <div style={{ background:"linear-gradient(135deg,rgba(17,28,46,0.9) 0%,rgba(30,45,69,0.7) 100%)",border:"1px solid rgba(138,158,132,0.2)",borderRadius:16,padding:"22px 20px",position:"relative",overflow:"hidden" }}>
-              <div style={{ position:"absolute",top:-20,right:-10,fontSize:120,lineHeight:1,color:"rgba(138,158,132,0.04)",fontFamily:T.serif,userSelect:"none" }}>"</div>
-              <p style={{ fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:"rgba(255,255,255,0.82)",lineHeight:1.75,margin:0 }}>{reflection.motivation}</p>
+            <div style={{ padding:"20px",borderLeft:"2px solid rgba(138,158,132,0.3)",background:"rgba(255,255,255,0.02)" }}>
+              <p style={{ fontFamily:T.sans,fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.75,margin:0,fontWeight:300 }}>{reflection.motivation}</p>
             </div>
           </div>)}
           {section >= 3 && (<div style={{ animation:"sectionFade 0.6s ease both" }}>
-            <div style={{ fontSize:9,fontWeight:700,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,display:"flex",alignItems:"center",gap:8 }}><div style={{ width:16,height:1,background:"rgba(255,255,255,0.2)" }}/>Here's where we'll take you</div>
-            <div style={{ background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:16,padding:"20px" }}>
-              <p style={{ fontSize:14,color:"rgba(255,255,255,0.65)",lineHeight:1.75,margin:0 }}>{reflection.forward}</p>
+            <div style={{ fontSize:10,color:"rgba(255,255,255,0.35)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans }}>Here's where we'll take you</div>
+            <div style={{ padding:"20px",background:"rgba(255,255,255,0.02)" }}>
+              <p style={{ fontFamily:T.sans,fontSize:15,color:"rgba(255,255,255,0.55)",lineHeight:1.75,margin:0,fontWeight:300 }}>{reflection.forward}</p>
             </div>
           </div>)}
           {section >= 4 && (<div style={{ animation:"sectionFade 0.6s ease both",paddingBottom:48 }}>
-            <div style={{ height:1,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.1))",marginBottom:20 }}/>
-            <p style={{ fontFamily:T.serif,fontSize:17,fontWeight:700,color:"rgba(255,255,255,0.9)",lineHeight:1.5,marginBottom:28,letterSpacing:"-0.2px" }}>This is your moment.{" "}<span style={{ color:T.gold }}>AmplifyU.</span></p>
-            <button onClick={onContinue} style={{ width:"100%",padding:"18px 24px",borderRadius:14,border:"none",background:"linear-gradient(135deg,"+T.gold+" 0%,"+T.goldDark+" 100%)",color:"white",fontSize:16,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:12,boxShadow:"0 8px 32px rgba(138,158,132,0.35)",letterSpacing:"0.2px" }}>
-              <span>Start Day 1</span>
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <div style={{ height:"0.5px",background:"rgba(138,158,132,0.3)",marginBottom:24 }}/>
+            <p style={{ fontFamily:T.sans,fontSize:15,color:"rgba(255,255,255,0.7)",lineHeight:1.6,marginBottom:28,fontWeight:300 }}>This is your moment. <span style={{ color:T.gold }}>AmplifyU.</span></p>
+            <button onClick={onContinue} style={{ width:"100%",padding:"17px 24px",borderRadius:3,border:"0.5px solid rgba(138,158,132,0.5)",background:"rgba(138,158,132,0.12)",color:"rgba(255,255,255,0.9)",fontSize:15,fontFamily:T.serif,fontStyle:"italic",cursor:"pointer",letterSpacing:"-0.2px" }}>
+              Begin Day 1 →
             </button>
-            <p style={{ fontSize:11,color:"rgba(255,255,255,0.25)",textAlign:"center",marginTop:12,lineHeight:1.5 }}>~15 minutes · Your first session is ready</p>
+            <p style={{ fontSize:12,color:"rgba(255,255,255,0.2)",textAlign:"center",marginTop:12,fontFamily:T.sans }}>~15 minutes · Your first session is ready</p>
           </div>)}
         </div>
       )}
@@ -2756,29 +2752,27 @@ function Onboarding({onDone}) {
   if (phase === "role") {
     return (
       <div style={{minHeight:"100vh",background:"#1A1510",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
-        <div style={{position:"relative",height:220,flexShrink:0}}>
-          <OBScene name="brand" height={220}/>
-          <div style={{position:"absolute",bottom:22,left:24,right:24}}>
-            <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.45)",textTransform:"uppercase",letterSpacing:2,marginBottom:10}}>Almost there</div>
+        {/* Library image header — consistent with question screens */}
+        <div style={{position:"relative",height:360,flexShrink:0,overflow:"hidden"}}>
+          <img src="/ob-library.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
+          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.3)"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, transparent 55%)"}}/>
+          <div style={{position:"absolute",bottom:20,left:24,right:24}}>
+            <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Almost there.</div>
             <div style={{display:"flex",gap:6}}>
               {[...QS,{q:"role"}].map((_,i)=><div key={i} style={{height:2,borderRadius:1,flex:1,background:i<QS.length?"white":"rgba(255,255,255,0.25)"}}/>)}
             </div>
           </div>
         </div>
         <div style={{padding:"28px 24px 0",flex:1,background:"#1A1510"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"#fff",lineHeight:1.2,marginBottom:8}}>What best describes your role?</h2>
-          <p style={{fontSize:13,color:"rgba(255,255,255,0.45)",lineHeight:1.6,marginBottom:24}}>Your scenarios and exercises will be tailored to your world.</p>
+          <h2 style={{fontFamily:T.serif,fontSize:"clamp(28px,7vw,38px)",fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,0.93)",lineHeight:1.15,letterSpacing:"-0.3px",marginBottom:20}}>What best describes your role?</h2>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {ROLES.map(role => (
-              <button key={role.id} onClick={()=>pickRole(role.id)} style={{padding:"16px 18px",borderRadius:2,border:"0.5px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.06)",textAlign:"left",cursor:"pointer",display:"flex",alignItems:"flex-start",gap:14}}>
-                <div style={{fontSize:18,color:T.gold,flexShrink:0,marginTop:1,width:20,textAlign:"center"}}>{role.icon}</div>
-                <div>
-                  <div style={{fontSize:14,fontWeight:700,color:"rgba(255,255,255,0.92)",marginBottom:3}}>{role.label}</div>
-                  <div style={{fontSize:11,color:"rgba(255,255,255,0.38)",lineHeight:1.4}}>{role.examples}</div>
-                </div>
+              <button key={role.id} onClick={()=>pickRole(role.id)} style={{padding:"16px 18px",borderRadius:2,border:"0.5px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.06)",color:"rgba(255,255,255,0.88)",fontSize:17,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",lineHeight:1.45}}>
+                {role.label}
               </button>
             ))}
-            <button onClick={()=>pickRole(null)} style={{padding:"14px 18px",borderRadius:2,border:"0.5px solid rgba(138,158,132,0.15)",background:"transparent",color:"rgba(255,255,255,0.3)",fontSize:13,textAlign:"left",cursor:"pointer"}}>
+            <button onClick={()=>pickRole(null)} style={{padding:"14px 18px",borderRadius:2,border:"none",background:"transparent",color:"rgba(255,255,255,0.3)",fontSize:14,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer"}}>
               Skip for now — use general scenarios
             </button>
           </div>
@@ -2791,15 +2785,15 @@ function Onboarding({onDone}) {
   const q = QS[step];
   return (
     <div style={{minHeight:"100vh",background:"#1A1510",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
-      {/* Photo banner — matches desktop left panel */}
-      <div style={{position:"relative",height:300,flexShrink:0,overflow:"hidden"}}>
+      {/* Photo banner */}
+      <div style={{position:"relative",height:360,flexShrink:0,overflow:"hidden"}}>
         {q.image ? (
-          <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 35%"}}/>
+          <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
         ) : (
-          <OBScene name={q.scene} height={300}/>
+          <OBScene name={q.scene} height={360}/>
         )}
-        <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.48)"}}/>
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 60%)"}}/>
+        <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.3)"}}/>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, transparent 55%)"}}/>
         <div style={{position:"absolute",bottom:20,left:24,right:24}}>
           <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>{q.context}</div>
           <div style={{display:"flex",gap:6}}>{QS.map((_,i)=><div key={i} style={{height:2,borderRadius:1,flex:1,background:i<=step?"white":"rgba(255,255,255,0.2)"}}/>)}</div>
