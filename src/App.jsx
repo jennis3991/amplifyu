@@ -8803,29 +8803,42 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
       );
     }
     return (
-      <div key={lesson.day} onClick={() => isComingSoon ? null : isLocked ? setLockedPreview(lesson) : onStart(lesson.day)}
-        style={{background:T2.surface,borderRadius:16,padding:"14px 16px",display:"flex",alignItems:"center",gap:14,cursor:isComingSoon?"default":"pointer",opacity:isComingSoon?0.55:isLocked?0.6:1}}>
-        <div style={{width:40,height:40,borderRadius:12,background:isDone?T.greenBg:isToday?T.navyLight:isComingSoon?"rgba(138,158,132,0.08)":isLocked?"rgba(17,28,46,0.06)":T.card,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-          {isDone ? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-6" stroke={T.green} strokeWidth="2" strokeLinecap="round"/></svg>
-            : isComingSoon ? <span style={{fontSize:10,color:T2.text4}}>✦</span>
-            : isLocked ? <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="6" width="8" height="6" rx="1" stroke={T.text4} strokeWidth="1.2"/><path d="M5 6V4a2 2 0 014 0v2" stroke={T.text4} strokeWidth="1.2"/></svg>
-            : <span style={{fontSize:13,fontWeight:700,color:isToday?T.navy:T.text3}}>{lesson.day}</span>}
+      <div key={lesson.day}
+        onClick={() => isComingSoon ? null : isLocked ? setLockedPreview(lesson) : onStart(lesson.day)}
+        style={{
+          display:"flex",alignItems:"center",gap:16,
+          padding:"18px 0",
+          borderBottom:"0.5px solid "+T2.divider,
+          cursor:isComingSoon?"default":"pointer",
+          opacity:isComingSoon?0.5:isLocked?0.6:1,
+        }}>
+        {/* Large editorial day number */}
+        <div style={{
+          fontFamily:T.serif,fontSize:32,fontWeight:500,
+          color:isDone?T.gold:isToday?T.gold:T2.text4,
+          letterSpacing:"-1.5px",lineHeight:1,
+          width:44,flexShrink:0,textAlign:"right",
+        }}>{lesson.day}</div>
+        {/* Hairline divider */}
+        <div style={{width:1,height:32,background:T2.divider,flexShrink:0}}/>
+        {/* Tag + title */}
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{
+            fontSize:9,fontFamily:T.sans,fontWeight:500,
+            color:isToday?T.gold:T2.text3,
+            textTransform:"uppercase",letterSpacing:"2px",marginBottom:4,
+          }}>{isComingSoon?"Coming Soon":lesson.tag}</div>
+          <div style={{
+            fontFamily:T.serif,fontSize:18,fontWeight:500,
+            color:isDone?T2.text3:T2.text,
+            letterSpacing:"-0.3px",lineHeight:1.2,
+          }}>{lesson.title}</div>
         </div>
-        <div style={{flex:1}}>
-          <div style={{fontSize:14,fontWeight:isDone?500:700,color:isDone?T.text3:isLocked?T.text3:T.text,marginBottom:4}}>{lesson.title}</div>
-          <div style={{display:"flex",alignItems:"center",gap:6}}>
-            {isComingSoon
-              ? <span style={{fontSize:10,fontWeight:600,color:T2.text4,background:"rgba(138,158,132,0.1)",padding:"2px 8px",borderRadius:10}}>Coming Soon</span>
-              : <span style={{fontSize:10,fontWeight:600,color:isLocked?T.text4:T.navy,background:isLocked?"rgba(0,0,0,0.04)":T.navyLight,padding:"2px 8px",borderRadius:10}}>{lesson.tag}</span>
-            }
-            {isToday && <span style={{fontSize:10,color:T.navy}}>Today</span>}
-          </div>
-        </div>
-        <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:5}}>
-          <div style={{opacity:isDone?0.3:isLocked?0.2:0.7,transform:"scale(0.72)",transformOrigin:"right center"}}>
-            {MODULE_ICONS[lesson.day - 1]}
-          </div>
-          <span style={{fontSize:11,color:isDone?T.green:isLocked?T.text4:T.text3}}>{isDone?"Done":isLocked?"Preview":"Go"}</span>
+        {/* Status */}
+        <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
+          {isToday && <div style={{fontSize:11,color:"rgba(255,255,255,0.9)",fontFamily:T.sans,fontWeight:500,background:T.gold,padding:"5px 12px",borderRadius:3}}>Today →</div>}
+          {isDone && <div style={{fontSize:11,color:T.gold,fontFamily:T.sans,letterSpacing:"0.3px"}}>✓ Complete</div>}
+          {!isDone && !isToday && <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T2.text4} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>}
         </div>
       </div>
     );
@@ -8995,21 +9008,29 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
           {roleId && (()=>{const r=ROLES.find(x=>x.id===roleId);return r?(<div style={{marginTop:6,display:"inline-flex",alignItems:"center",gap:6,padding:"4px 10px",background:"rgba(138,158,132,0.15)",borderRadius:10,border:"1px solid rgba(138,158,132,0.25)"}}><span style={{color:T.gold,fontSize:11}}>{r.icon}</span><span style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.7)"}}>{r.label}</span></div>):null;})()}
         </div>
       </div>
-      <div style={{padding:"20px",display:"flex",flexDirection:"column",gap:20}}>
-        {[{id:1,label:"Week 1",title:"Foundations + Story"},{id:2,label:"Week 2",title:"Story Craft, PIE and Brand"}].map(wk => {
+      <div style={{padding:"24px 24px 0",display:"flex",flexDirection:"column",gap:48}}>
+        {[
+          {id:1,label:"Week One",  title:"Voice, Clarity & Story",    sub:"The foundations of commanding communication."},
+          {id:2,label:"Week Two",  title:"Structure, PIE & Presence", sub:"Architecture, executive presence, and identity."},
+        ].map(wk => {
           const lessons = LESSONS.filter(l=>l.week===wk.id);
+          const doneCount = lessons.filter(l=>done.includes(l.day)).length;
           return (
             <div key={wk.id}>
-              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
-                <div style={{width:1,height:20,background:T.gold}}/>
+              {/* Editorial week header */}
+              <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",marginBottom:24,paddingBottom:16,borderBottom:"1px solid "+T2.divider}}>
                 <div>
-                  <div style={{fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>{wk.label}</div>
-                  <div style={{fontSize:15,fontWeight:700,color:T.text}}>{wk.title}</div>
+                  <div style={{fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"4px",marginBottom:8,fontFamily:T.sans}}>{wk.label}</div>
+                  <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:500,color:T2.text,letterSpacing:"-0.8px",lineHeight:1.1,margin:0}}>{wk.title}</h2>
+                  <p style={{fontSize:12,color:T2.text3,marginTop:5,fontFamily:T.sans,fontWeight:300,margin:"6px 0 0"}}>{wk.sub}</p>
+                </div>
+                <div style={{textAlign:"right",paddingBottom:2,flexShrink:0,marginLeft:16}}>
+                  <div style={{fontFamily:T.serif,fontSize:22,fontWeight:500,color:T2.text,letterSpacing:"-0.5px",lineHeight:1}}>{doneCount}<span style={{fontSize:13,color:T2.text3}}>/{lessons.length}</span></div>
+                  <div style={{fontSize:9,color:T2.text3,textTransform:"uppercase",letterSpacing:"2px",marginTop:3,fontFamily:T.sans}}>complete</div>
                 </div>
               </div>
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                {lessons.map(lesson => <DayCard key={lesson.day} lesson={lesson}/>)}
-              </div>
+              {/* Session rows */}
+              {lessons.map(lesson => <DayCard key={lesson.day} lesson={lesson}/>)}
             </div>
           );
         })}
