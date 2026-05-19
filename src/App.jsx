@@ -7346,10 +7346,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       <div style={{position:"relative",height:(step==="Practice"||step==="Simulation")?300:220,overflow:"hidden",background:(step==="Practice"||step==="Simulation")?"#141210":"transparent"}}>
         {(()=>{
           const STEP_IMGS={
-            1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            8:{Insight:"/narrative-transportation.jpg",Theory:"/nt-6beat-framework.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            8:{Insight:"/narrative-transportation.jpg",Theory:"/nt-6beat-framework.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           };
           const darkFilm=step==="Practice"||step==="Simulation";
           const h=darkFilm?300:220;
