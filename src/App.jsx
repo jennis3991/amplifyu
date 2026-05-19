@@ -4164,7 +4164,7 @@ setAmbitionSaved(true); } catch {}
   const [d3MobCard, setD3MobCard] = useState(null);
   const [d4MobCard, setD4MobCard] = useState(null);
   const [ntMobCard, setNtMobCard] = useState(null);
-  const swipeRef = React.useRef({x:0,y:0});
+  const swipeRef = useRef({x:0,y:0});
   // step is derived from STEPS (NT uses 7-step array, all others use 6-step)
   const scenarios = roleId ? getScenariosForDay(roleId, lesson.day) : lesson.scenarios;
   const activeSc = scenarios[selSc] || scenarios[0];
