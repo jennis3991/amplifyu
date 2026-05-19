@@ -7335,7 +7335,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             8:{Insight:"/narrative-transportation.jpg",Theory:"/nt-6beat-framework.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
-          if(src) return <img src={src} alt="" style={{width:"100%",height:240,objectFit:"cover",objectPosition:"center",display:"block"}}/>;
+          if(src) return <img src={src} alt="" style={{width:"100%",height:240,objectFit:"cover",objectPosition:"center",display:"block",pointerEvents:"none"}}/>;
           return <Scene name={lesson.scene} height={240} day={lesson.day}/>;
         })()}
         <button
@@ -7349,7 +7349,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             color:"#2C2416",
             display:"flex",alignItems:"center",gap:6,
             cursor:"pointer",
-            zIndex:10,
+            zIndex:50,
           }}>
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
             <path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
