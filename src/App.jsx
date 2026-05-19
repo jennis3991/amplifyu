@@ -7320,31 +7320,16 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         </div>
       )}
 
-      {/* Top nav bar — AmplifyU logo + exit */}
+      {/* Top nav bar — AmplifyU logo only */}
       <div style={{
         background:T.bg,
         padding:"14px 20px",
-        display:"flex",alignItems:"center",justifyContent:"space-between",
         borderBottom:"0.5px solid rgba(44,36,22,0.08)",
       }}>
         <span style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.ink,letterSpacing:"-0.3px"}}>AmplifyU</span>
-        <button
-          onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
-          style={{
-            height:36,padding:"0 14px 0 10px",
-            borderRadius:4,border:"0.5px solid #DDD5C4",
-            background:"transparent",color:"#6B5E44",
-            display:"flex",alignItems:"center",gap:5,
-            cursor:"pointer",fontFamily:T.sans,
-          }}>
-          <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-            <path d="M9 2L4 7l5 5" stroke="#6B5E44" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span style={{fontSize:13,fontWeight:500}}>Exit</span>
-        </button>
       </div>
 
-      {/* Header image */}
+      {/* Header image + Exit button overlay */}
       <div style={{position:"relative",maxHeight:220,overflow:"hidden"}}>
         {(()=>{
           const STEP_IMGS={
@@ -7357,14 +7342,35 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           if(src) return <img src={src} alt="" style={{width:"100%",height:220,objectFit:"cover",objectPosition:"center",display:"block",pointerEvents:"none"}}/>;
           return <Scene name={lesson.scene} height={220} day={lesson.day}/>;
         })()}
-        {isDone && <div style={{position:"absolute",top:16,right:20,background:"rgba(42,94,63,0.9)",color:"white",fontSize:11,fontWeight:700,padding:"6px 12px",borderRadius:20,letterSpacing:1}}>DONE</div>}
-        <div style={{position:"absolute",bottom:20,left:20,right:20}}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
-            <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:2}}>Day {lesson.day} — {lesson.tag}</div>
-            <div style={{opacity:0.55}}>{MODULE_ICONS[lesson.day - 1]}</div>
+        {/* Exit button — top left over image */}
+        <button
+          onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
+          style={{
+            position:"absolute",top:14,left:14,zIndex:50,
+            height:36,padding:"0 14px 0 10px",
+            borderRadius:4,border:"none",
+            background:"rgba(247,243,236,0.92)",
+            color:"#2C2416",
+            display:"flex",alignItems:"center",gap:5,
+            cursor:"pointer",fontFamily:T.sans,
+            boxShadow:"0 1px 6px rgba(44,36,22,0.15)",
+          }}>
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+            <path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span style={{fontSize:13,fontWeight:500}}>← Exit</span>
+        </button>
+        {isDone && <div style={{position:"absolute",top:14,right:14,background:"rgba(42,94,63,0.9)",color:"white",fontSize:11,fontWeight:700,padding:"6px 12px",borderRadius:20,letterSpacing:1}}>DONE</div>}
+        {/* Day + title — only on Insight and Review */}
+        {(step==="Insight"||step==="Review") && (
+          <div style={{position:"absolute",bottom:20,left:20,right:20}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+              <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:2}}>Day {lesson.day} — {lesson.tag}</div>
+              <div style={{opacity:0.55}}>{MODULE_ICONS[lesson.day - 1]}</div>
+            </div>
+            <h1 style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
           </div>
-          <h1 style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
-        </div>
+        )}
       </div>
 
       {/* Session Arc — horizontally scrollable on mobile */}
