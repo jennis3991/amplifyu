@@ -1,6 +1,7 @@
 import { StrictMode, Component } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
+import { registerSW } from "./pwa.js";
 
 class ErrorBoundary extends Component {
   constructor(props) { super(props); this.state = { err: null }; }
@@ -25,3 +26,5 @@ createRoot(document.getElementById("root")).render(
     </ErrorBoundary>
   </StrictMode>
 );
+
+registerSW();

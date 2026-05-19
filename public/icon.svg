@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#2C2416"/>
+  <!-- Warm gold line accent top -->
+  <rect x="0" y="0" width="512" height="3" fill="#8A9E84"/>
+  <!-- "AU" letterform -->
+  <text
+    x="256"
+    y="300"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="240"
+    font-weight="700"
+    fill="#F7F3EC"
+    text-anchor="middle"
+    letter-spacing="-8"
+  >AU</text>
+  <!-- Sage green dot accent -->
+  <circle cx="256" cy="420" r="8" fill="#8A9E84"/>
+</svg>
