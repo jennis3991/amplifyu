@@ -7327,7 +7327,17 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       )}
 
       <div style={{position:"relative",maxHeight:250,overflow:"hidden"}}>
-        <Scene name={lesson.scene} height={240} day={lesson.day}/>
+        {(()=>{
+          const STEP_IMGS={
+            1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            8:{Insight:"/narrative-transportation.jpg",Theory:"/nt-6beat-framework.jpg",Example:"/day1-lounge.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+          };
+          const src=STEP_IMGS[lesson.day]?.[step];
+          if(src) return <img src={src} alt="" style={{width:"100%",height:240,objectFit:"cover",objectPosition:"center",display:"block"}}/>;
+          return <Scene name={lesson.scene} height={240} day={lesson.day}/>;
+        })()}
         <button
           onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
           style={{
@@ -7523,7 +7533,7 @@ T.goldDark : T2.text4,
         {/* ── D3 Mobile Steps ─────────────────────────────────────────────── */}
         {isD3 && step==="Insight" && (
           <>
-            <img src="/day3-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",borderRadius:8,marginBottom:16}}/>
+            <img src="/day3-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Master Filler-Free Speech</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Fillers are a habit, not a flaw. Here's what eliminating them does for you.</p>
             {D3_FACTS.map((n,i)=>(
@@ -7537,7 +7547,7 @@ T.goldDark : T2.text4,
         )}
         {isD3 && step==="Theory" && (
           <>
-            <img src="/day3-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 30%",borderRadius:8,marginBottom:16}}/>
+            <img src="/day3-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 30%",display:"none"}}/>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Pause Principle</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Fillers are a habit, not a flaw. The strongest communicators simply replace them with intentional pauses.</p>
@@ -7556,7 +7566,7 @@ T.goldDark : T2.text4,
         )}
         {isD3 && step==="Example" && (
           <>
-            <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of the Pause</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how they use silence.</p>
             {[
@@ -7588,7 +7598,7 @@ T.goldDark : T2.text4,
         )}
         {isD3 && step==="Practice" && (
           <>
-            <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>From Filler to Filler-Free</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Practical exercises to break the habit.</p>
             {[{title:"Count Your Fillers",body:"Record 2 minutes. Count every filler. Goal: under 5 per minute. Awareness is 80% of the fix."},{title:"The 5-Second Pause",body:"Pause for 5 full seconds. It feels impossibly long to you. To your audience? Barely noticeable."},{title:"Replace with Breath",body:"Every urge to say 'um' — breathe instead. You physically can't say 'um' mid-inhale."},{title:"Slow Down",body:"Fillers multiply when you rush. Slow your speech by 20%. You'll have time to think between sentences."}].map((ex,i)=>(
@@ -7601,7 +7611,7 @@ T.goldDark : T2.text4,
         )}
         {isD3 && step==="Simulation" && (
           <>
-            <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",borderRadius:8,marginBottom:16}}/>
+            <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Speak Filler-Free — 60 Seconds</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Write your response with zero fillers. The AI detects every "um," "uh," "like," and "you know."</p>
             <D3MobileSim/>
@@ -7611,7 +7621,7 @@ T.goldDark : T2.text4,
         {/* ── D4 Mobile Steps ─────────────────────────────────────────────── */}
         {isD4 && step==="Insight" && (
           <>
-            <img src="/day4-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/day4-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Short Sentences Win</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>The brain processes short sentences faster, retains them longer, and finds them more persuasive.</p>
             {D4_FACTS.map((n,i)=>(
@@ -7625,7 +7635,7 @@ T.goldDark : T2.text4,
         )}
         {isD4 && step==="Theory" && (
           <>
-            <img src="/millers-law.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/millers-law.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Miller's Law</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>In 1956, psychologist George Miller discovered something fundamental about how humans think.</p>
@@ -7640,7 +7650,7 @@ T.goldDark : T2.text4,
         )}
         {isD4 && step==="Example" && (
           <>
-            <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Brevity</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how they do it.</p>
             {[
@@ -7672,7 +7682,7 @@ T.goldDark : T2.text4,
         )}
         {isD4 && step==="Practice" && (
           <>
-            <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Sentence Surgery Toolkit</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Practical exercises to cut without losing meaning.</p>
             <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
@@ -7693,7 +7703,7 @@ T.goldDark : T2.text4,
         )}
         {isD4 && step==="Simulation" && (
           <>
-            <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",borderRadius:8,marginBottom:16}}/>
+            <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Speak in Short Sentences — 60 Seconds</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Write your response using only short sentences. Get a brevity score.</p>
             <D4MobileSim/>
@@ -7703,7 +7713,7 @@ T.goldDark : T2.text4,
         {/* ── D1 Mobile Steps ─────────────────────────────────────────────── */}
         {isD1 && step==="Insight" && (
           <>
-            <img src="/day1-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/day1-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Clarity Wins</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Clear language reduces mental effort, increases retention, and builds trust.</p>
             {D1_CLARITY_FACTS_DATA.map((n,i)=>(
@@ -7717,7 +7727,7 @@ T.goldDark : T2.text4,
         )}
         {isD1 && step==="Theory" && (
           <>
-            <img src="/feynman-technique.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 20%",borderRadius:8,marginBottom:16}}/>
+            <img src="/feynman-technique.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 20%",display:"none"}}/>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Feynman Technique</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Richard Feynman won the Nobel Prize — and could explain quantum mechanics to a 12-year-old.</p>
@@ -7736,7 +7746,7 @@ T.goldDark : T2.text4,
         )}
         {isD1 && step==="Example" && (
           <>
-            <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Clear Communication</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how they do it.</p>
             {[
@@ -7768,7 +7778,7 @@ T.goldDark : T2.text4,
         )}
         {isD1 && step==="Practice" && (
           <>
-            <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Build Your Clarity Toolkit</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Practical exercises to strip jargon and simplify your message.</p>
             <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
@@ -7789,7 +7799,7 @@ T.goldDark : T2.text4,
         )}
         {isD1 && step==="Simulation" && (
           <>
-            <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",borderRadius:8,marginBottom:16}}/>
+            <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Speak Clearly — 60 Seconds</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Apply what you've learned. Choose a scenario and write your clearest explanation.</p>
             <D1MobileSim/>
@@ -7799,7 +7809,7 @@ T.goldDark : T2.text4,
         {/* ── NT (Day 8) Mobile Steps ─────────────────────────────────────── */}
         {isNT && step==="Insight" && (
           <>
-            <img src="/narrative-transportation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/narrative-transportation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Stories Change Minds</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Stories transport your audience into a different world. Facts inform. Stories transform.</p>
             {NT_NEURO.map((n,i)=>(
@@ -7862,7 +7872,7 @@ T.goldDark : T2.text4,
         )}
         {isNT && step==="Example" && (
           <>
-            <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Storytelling in the Wild</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore stories that changed minds.</p>
             {[
@@ -7894,7 +7904,7 @@ T.goldDark : T2.text4,
         )}
         {isNT && step==="Practice" && (
           <>
-            <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16}}/>
+            <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Build Your Story</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Answer three questions. Your AI coach builds the story using the 6-beat arc.</p>
             <StoryBuilderWidget onSave={s => { setNtStory(s); try { localStorage.setItem("au1_nt_story",s); } catch(_){} }}/>
@@ -7902,7 +7912,7 @@ T.goldDark : T2.text4,
         )}
         {isNT && step==="Simulation" && (
           <>
-            <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",borderRadius:8,marginBottom:16}}/>
+            <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Now Practice Telling It</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Read your story aloud. Feel the rhythm of the 6-beat arc.</p>
             {ntStory ? (
@@ -8149,48 +8159,11 @@ getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[selSc] ||
 
         {step==="Review" && (
           <>
-            {/* Mobile minimal luxury review */}
-            <div style={{background:T2.bg,borderRadius:2,padding:"40px 20px",textAlign:"center"}}>
-              <div style={{fontSize:12,fontWeight:500,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:28,fontFamily:T.sans}}>Day {lesson.day} Complete ✓</div>
-              <h2 style={{fontFamily:T.serif,fontSize:"clamp(40px,10vw,56px)",fontWeight:300,color:T2.text,letterSpacing:"-0.5px",marginBottom:14,lineHeight:1.05}}>Keep Going</h2>
-              <p style={{fontFamily:T.sans,fontSize:16,fontWeight:300,color:T2.text2,maxWidth:300,margin:"0 auto 48px",lineHeight:1.6}}>Two books to deepen this skill.</p>
+            {/* Review header */}
+            <div style={{padding:"24px 20px 8px"}}>
+              <div style={{fontSize:11,fontWeight:600,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:8,fontFamily:T.sans}}>Day {lesson.day} Complete ✓</div>
+              <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:0}}>Go Deeper</h2>
             </div>
-
-            {(() => {
-              const fr = FURTHER_READING[lesson.day-1];
-              const nextDay = lesson.day < 14 ? lesson.day + 1 : null;
-              return (<>
-                {fr && fr.books.map((book,bi)=>(
-                  <div key={bi} style={{background:T2.bg,padding:"0 0 48px",textAlign:"center"}}>
-                    {/* Mini cover */}
-                    <div style={{width:160,height:240,margin:"0 auto 28px",background:"linear-gradient(145deg,#2C2416 0%,#4A3828 60%,#2C2416 100%)",borderRadius:4,boxShadow:"0 6px 20px rgba(44,36,22,0.2), 2px 0 0 rgba(0,0,0,0.15)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px 16px",position:"relative",overflow:"hidden"}}>
-                      <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.3))"}}/>
-                      <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,marginBottom:10,textAlign:"center"}}>{book.title}</p>
-                      <div style={{width:20,height:1,background:T.gold,opacity:0.5,marginBottom:10}}/>
-                      <p style={{fontFamily:T.sans,fontSize:10,color:"rgba(245,239,230,0.5)",letterSpacing:"0.5px",textAlign:"center"}}>{book.author}</p>
-                    </div>
-                    <h3 style={{fontFamily:T.serif,fontSize:"clamp(22px,6vw,28px)",fontWeight:600,color:T2.text,letterSpacing:"-0.2px",marginBottom:6}}>{book.title}</h3>
-                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text2,marginBottom:20}}>{book.author}</p>
-                    {book.quote && <p style={{fontFamily:T.sans,fontSize:16,fontWeight:300,fontStyle:"italic",color:T2.text,maxWidth:280,margin:"0 auto 24px",lineHeight:1.6}}>
-                      <span style={{color:T.gold,fontStyle:"normal"}}>"</span>{book.quote}<span style={{color:T.gold,fontStyle:"normal"}}>"</span>
-                    </p>}
-                    <a href={book.amazon} target="_blank" rel="noreferrer"
-                      style={{display:"inline-block",background:T.ink,color:T.bg,padding:"14px 32px",borderRadius:4,fontFamily:T.sans,fontSize:14,fontWeight:500,textDecoration:"none"}}>
-                      View Book →
-                    </a>
-                  </div>
-                ))}
-                {!isDone ? (
-                  <button onClick={onComplete} style={{width:"100%",padding:"18px",border:"none",background:"#2C2416",color:"#F7F3EC",fontSize:15,fontWeight:600,fontFamily:T.sans,borderRadius:0,cursor:"pointer"}}>
-                    {nextDay ? `Continue to Day ${nextDay} →` : "Complete Programme →"}
-                  </button>
-                ) : (
-                  <div style={{padding:"16px 20px",background:T2.card,border:"1px solid "+T2.border,textAlign:"center"}}>
-                    <span style={{fontSize:14,color:T2.text2}}>Complete — practise again anytime</span>
-                  </div>
-                )}
-              </>);
-            })()}
 
             <div style={{background:T2.surface,borderRadius:16,padding:"18px 20px",display:"none"}}>
               <div
