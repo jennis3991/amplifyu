@@ -7304,37 +7304,6 @@ setAmbitionSaved(true); } catch {}
             border:"1px solid "+T2.border,
             boxShadow:"0 24px 64px rgba(0,0,0,0.3)",
           }}>
-            {/* Progress so far */}
-            <div style={{
-              display:"flex",justifyContent:"center",
-              marginBottom:20,
-            }}>
-              <div style={{
-                display:"flex",alignItems:"center",gap:8,
-                padding:"6px 16px",
-                background:T.navyLight,
-                borderRadius:20,
-              }}>
-                {STEPS.slice(0,idx).map((s,i) => (
-                  <div key={s} 
-style={{display:"flex",alignItems:"center",gap:4}}>
-                    <svg width="10" height="10" viewBox="0 0 10 10" 
-fill="none">
-                      <circle cx="5" cy="5" r="4.5" stroke={T.gold} 
-strokeWidth="0.8"/>
-                      <path d="M2.5 5l2 2 3.5-3.5" stroke={T.gold} 
-strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <span 
-style={{fontSize:9,fontWeight:600,color:T.goldDark}}>{s}</span>
-                    {i < idx-1 && <span 
-style={{fontSize:8,color:T.text4}}>›</span>}
-                  </div>
-                ))}
-                <span style={{fontSize:9,color:T.text4,marginLeft:2}}>✓ 
-done</span>
-              </div>
-            </div>
             <h3 style={{
               fontFamily:T.serif,fontSize:20,fontWeight:700,
               color:T2.text,textAlign:"center",marginBottom:10,
