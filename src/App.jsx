@@ -8055,7 +8055,7 @@ T.goldDark : T2.text4,
               {[
                 {word:"Credibility",  body:"Leading with your point signals clear thinking. Structured communication creates immediate credibility and helps your ideas land with confidence and authority."},
                 {word:"Recall",       body:"Structured messages are 40% more memorable. A clear beginning, middle and end helps your audience store and retrieve your message with ease."},
-                {word:"Persuasion",   body:"PRE is the architecture of every great professional pitch. A point backed by a reason and grounded in an example moves people to action."},
+                {word:"Persuasion",   body:"Great ideas rarely persuade on their own — structure is what makes them land. PRE helps you present a clear point, support it with logic, and reinforce it with proof that moves people to action."},
                 {word:"Decision Speed", body:"Leaders decide faster when communication is structured. Lead with your point and you accelerate every conversation you're in."},
               ].map((n,i)=>(
                 <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
