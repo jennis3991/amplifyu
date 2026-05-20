@@ -6930,6 +6930,78 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
+      if (step === "Practice") {
+        const D5_EXAMPLES=[
+          {q:"Where should we go for dinner tonight?",point:"Let's go to the Italian place.",reason:"It's relaxed, consistently good, and everyone will find something they like.",example:"Last time the food came quickly and everyone enjoyed it."},
+          {q:"Where should we go this summer?",point:"We should go to the South of France.",reason:"It has great weather, food, and is easy for a short trip.",example:"Friends went recently and said Monaco was brilliant."},
+          {q:"Is working from home better?",point:"I think hybrid works best.",reason:"It gives flexibility without losing collaboration.",example:"When I'm home I focus better, but office days are better for brainstorming."},
+          {q:"What should we watch tonight?",point:"Let's watch a comedy.",reason:"We've both had a long week and something light will be more enjoyable.",example:"Like when we watched Mrs Doubtfire — it was easy and fun."},
+        ];
+        const D5_BANK=["Best book you've read recently?","Why is sleep important?","Convince me to try coffee.","What makes a good leader?","Should children have smartphones?","What's the best productivity habit?","Why should I visit London?","Why is storytelling powerful?","Why should someone hire you?"];
+        const startChallenge=()=>{
+          const shuffled=[...D5_BANK].sort(()=>Math.random()-0.5);
+          setD5Challenge({started:true,idx:0,count:0,time:90,scenarios:shuffled});
+        };
+        const nextScenario=()=>setD5Challenge(c=>({...c,idx:(c.idx+1)%c.scenarios.length,count:c.count+1}));
+        return (
+          <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+            <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:32 }}>
+              <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>"If you can explain everyday decisions using PRE, you'll be able to use it in meetings, interviews, presentations, and high-stakes conversations without thinking."</p>
+            </div>
+            <h3 style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, marginBottom:20 }}>PRE Examples</h3>
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:40 }}>
+              {D5_EXAMPLES.map((ex,i)=>(
+                <div key={i} onClick={()=>setD5ExCard(d5ExCard===i?null:i)}
+                  style={{ background:T2.surface, borderRadius:4, border:`0.5px solid ${d5ExCard===i?T.gold:T2.border}`, padding:"20px", cursor:"pointer", transition:"border-color 0.2s" }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:d5ExCard===i?16:0 }}>
+                    <p style={{ fontFamily:T.serif, fontSize:16, fontWeight:600, color:T2.text, margin:0, lineHeight:1.3, flex:1 }}>{ex.q}</p>
+                    <span style={{ fontFamily:T.sans, fontSize:12, color:d5ExCard===i?T.gold:T2.text4, marginLeft:12, flexShrink:0 }}>{d5ExCard===i?"▴":"▸"}</span>
+                  </div>
+                  {d5ExCard===i && (
+                    <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:14 }}>
+                      {[{l:"Point",t:ex.point},{l:"Reason",t:ex.reason},{l:"Example",t:ex.example}].map((b,j)=>(
+                        <div key={j} style={{ marginBottom:j<2?10:0 }}>
+                          <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginRight:8 }}>{b.l}</span>
+                          <span style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.6 }}>{b.t}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div style={{ background:T2.surface, borderRadius:8, padding:"28px 32px", border:"0.5px solid "+T2.border }}>
+              <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8, fontFamily:T.sans }}>PRE Speed Challenge</div>
+              <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text3, lineHeight:1.6, marginBottom:24, maxWidth:480 }}>90 seconds. Answer as many as you can. Say your Point, Reason, and Example out loud — then hit Next.</p>
+              {!d5Challenge.started && d5Challenge.time>0 ? (
+                <button onClick={startChallenge} style={{ padding:"13px 32px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans }}>Start Challenge →</button>
+              ) : d5Challenge.time===0 ? (
+                <div style={{ display:"flex", alignItems:"center", gap:24 }}>
+                  <div>
+                    <div style={{ fontFamily:T.serif, fontSize:48, fontWeight:600, color:T2.text, lineHeight:1 }}>{d5Challenge.count}</div>
+                    <div style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, marginTop:4 }}>scenarios completed</div>
+                  </div>
+                  <button onClick={()=>setD5Challenge({started:false,idx:0,count:0,time:90,scenarios:null})} style={{ padding:"11px 24px", borderRadius:4, border:"1px solid "+T2.border, background:"transparent", color:T2.text, fontSize:13, fontWeight:500, cursor:"pointer", fontFamily:T.sans }}>Try Again</button>
+                </div>
+              ) : (
+                <div style={{ display:"flex", alignItems:"flex-start", gap:24 }}>
+                  <div style={{ fontFamily:T.serif, fontSize:48, fontWeight:600, color:d5Challenge.time<=10?"#B05C4A":T.gold, lineHeight:1, flexShrink:0 }}>{d5Challenge.time}s</div>
+                  <div style={{ flex:1 }}>
+                    <div style={{ background:T2.bg, borderRadius:4, padding:"20px 24px", marginBottom:16, border:"1px solid "+T2.border }}>
+                      <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, margin:0, lineHeight:1.3 }}>{d5Challenge.scenarios[d5Challenge.idx]}</p>
+                    </div>
+                    <div style={{ display:"flex", alignItems:"center", gap:16 }}>
+                      <button onClick={nextScenario} style={{ padding:"12px 28px", borderRadius:4, border:"none", background:T.gold, color:"white", fontSize:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans }}>Next →</button>
+                      <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text3 }}>{d5Challenge.count} done</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+
       if (step === "Example") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>PRE in Action</h2>
@@ -8355,16 +8427,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               {/* Motivational quote */}
               <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",borderRadius:4}}>
                 <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"If you can explain everyday decisions using PRE, you'll be able to use it in meetings, interviews, presentations, and high-stakes conversations without thinking."</p>
-              </div>
-              {/* Starter phrases */}
-              <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-                <div style={{fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12,fontFamily:T.sans}}>Starter Phrases</div>
-                {lesson.phrases.map((ph,i)=>(
-                  <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"10px 0",borderBottom:i<lesson.phrases.length-1?"0.5px solid "+T2.divider:"none"}}>
-                    <div style={{width:1.5,height:18,background:T.gold,flexShrink:0,marginTop:3,opacity:0.7}}/>
-                    <p style={{margin:0,fontFamily:T.serif,fontSize:15,color:T2.text,fontStyle:"italic",lineHeight:1.55}}>{ph}</p>
-                  </div>
-                ))}
               </div>
               {/* PRE Examples — 4 expandable cards */}
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>PRE Examples</div>
