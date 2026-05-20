@@ -5135,14 +5135,15 @@ setAmbitionSaved(true); } catch {}
       }
 
       // ── Insight — cinematic scene hero ──────────────────────────────────────
-      // Day 1 uses a custom lounge photo. All other days use the SVG Scene.
-      // BACKUP: revert to commit db934d3 to remove Day 1 photo entirely.
       if (step === "Insight") return (
         <div style={{ position: "relative", height: "100%", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-          {/* Background: custom photo for Day 1, SVG scene for all others */}
           {lesson.day === 1 ? (
             <img src="/day1-lounge.jpg" alt=""
               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
+            />
+          ) : isD5 ? (
+            <img src="/d5-insight.jpg" alt=""
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
             />
           ) : (
             <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
@@ -7501,7 +7502,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            5:{Theory:"/d5-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            5:{Insight:"/d5-insight.jpg",Theory:"/d5-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
