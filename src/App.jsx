@@ -4963,7 +4963,7 @@ setAmbitionSaved(true); } catch {}
         const darkBase = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
         if (step === "Insight") return (
           <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-            <img src="/narrative-transportation.jpg" alt="Turning Stories into Impact" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+            <img src="/nt-insight.jpg" alt="Narrative Transportation" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
             <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.38)" }}/>
             <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.82) 0%, rgba(10,8,5,0.15) 55%, transparent 80%)" }}/>
             <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
@@ -6351,6 +6351,9 @@ setAmbitionSaved(true); } catch {}
               ))}
             </div>
             <p style={{ fontFamily:T.sans, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.7, fontWeight:400 }}>Facts explain. Stories move people.</p>
+            <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginTop:16 }}>
+              <p style={{ fontFamily:T.serif, fontSize:20, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0 }}>We are more engaged when we feel inside the story.</p>
+            </div>
           </div>
         );
       }
@@ -7379,7 +7382,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            8:{Insight:"/narrative-transportation.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
+            8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
           if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:step==="Theory 2"?"contain":"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none",background:step==="Theory 2"?T.bg:"transparent"}}/>;
@@ -7877,6 +7880,9 @@ T.goldDark : T2.text4,
               ))}
             </div>
             <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Facts explain. Stories move people.</p>
+            <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",marginTop:12,borderRadius:4}}>
+              <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>We are more engaged when we feel inside the story.</p>
+            </div>
           </>
         )}
         {isNT && step==="Theory 1" && (
