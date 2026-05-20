@@ -8484,11 +8484,9 @@ Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});
   const finishDate = (() => {
     if (finished) return null;
     if (remaining === 0) return null;
-    // If streak >= 1, user is doing ~1 session/day. Assume daily from today.
-    // If no streak, assume every other day (more encouraging than projecting a long tail)
-    const daysPerSession = streak >= 3 ? 1 : streak >= 1 ? 1 : 2;
+    // 14-day programme — always 1 session per day
     const d = new Date();
-    d.setDate(d.getDate() + remaining * daysPerSession);
+    d.setDate(d.getDate() + remaining);
     return d.toLocaleDateString("en-GB", {day:"numeric", month:"long"});
   })();
   const onTrackMsg = (() => {
