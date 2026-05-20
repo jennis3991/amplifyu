@@ -4173,6 +4173,7 @@ setAmbitionSaved(true); } catch {}
   const isD1 = lesson.day === 1;
   const isD3 = lesson.day === 3;
   const isD4 = lesson.day === 4;
+  const isD5 = lesson.day === 5;
   const isD10 = lesson.day === 10;
   const STEPS = isNT
     ? ["Insight","Theory 1","Theory 2","Example","Practice","Review"]
@@ -8045,7 +8046,29 @@ T.goldDark : T2.text4,
         )}
 
         {/* ── Generic steps (all other days) ─────────────────────────────── */}
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD10 && step==="Insight" && (
+        {/* ── D5 Mobile Steps ─────────────────────────────────────────────── */}
+        {isD5 && step==="Insight" && (
+          <>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Structure Wins</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Structure isn't a constraint — it's a superpower. PRE (Point, Reason, Example) gives every answer, every opinion, and every presentation the precision to land immediately.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {[
+                {word:"Credibility",  body:"Leading with your point signals clear thinking. Structured answers make you sound authoritative — immediately and consistently."},
+                {word:"Recall",       body:"Structured messages are 40% more memorable. A clear beginning, middle and end helps your audience store and retrieve your message with ease."},
+                {word:"Persuasion",   body:"PRE is the architecture of every great professional pitch. A point backed by a reason and grounded in an example moves people to action."},
+                {word:"Decision Speed", body:"Leaders decide faster when communication is structured. Lead with your point and you accelerate every conversation you're in."},
+              ].map((n,i)=>(
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+                </div>
+              ))}
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Structure is the backbone of every powerful communication.</p>
+          </>
+        )}
+
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Insight" && (
           <>
             <div
 style={{background:T2.cardDark,borderRadius:2,padding:"26px 24px",position:"relative",overflow:"hidden"}}>
