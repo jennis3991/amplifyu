@@ -6930,11 +6930,11 @@ setAmbitionSaved(true); } catch {}
                 reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing." — Her rationale for why businesses could no longer think purely about short-term financial performance.',
                 example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people." — Concrete proof showing how the philosophy became operational reality.',
                 lesson:"She leads with a clear thesis, connects it to business reality, then proves it with concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
-              {name:"Jensen Huang",role:"Founder & CEO, NVIDIA",
+              {name:"Jensen Huang",role:"Founder & CEO, NVIDIA — said in 1993",
                 point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
                 reason:'"And the goal of winning is so that you can play again." — This is the exact logic bridge. His reason for why perfection isn\'t the goal.',
-                example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."',
-                lesson:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof. A single powerful example. That's what powerful communicators do."},
+                example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."\n\nNVIDIA itself is the proof. For years, GPUs were niche, gaming seemed narrow, and AI wasn\'t commercially obvious. NVIDIA kept making bets — staying in the game — until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth.',
+                lesson:"Said in 1993 — decades before the breakthrough that proved it true. Sharp thesis. Strategic rationale. Lived proof. That's what powerful communicators do."},
             ].map((card,ci)=>(
               <div key={ci} style={{ background:"white", borderRadius:8, padding:"32px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)" }}>
                 <h3 style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:T2.text, marginBottom:4, letterSpacing:"-0.2px" }}>{card.name}</h3>
@@ -8217,11 +8217,11 @@ T.goldDark : T2.text4,
                 reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing." — Her rationale for why businesses could no longer think purely about short-term financial performance.',
                 example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people." — Concrete proof showing how the philosophy became operational reality.',
                 lesson:"She leads with a clear thesis, connects it to business reality, then proves it with concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
-              {id:"huang",name:"Jensen Huang",preview:"Founder of NVIDIA. His communication style is compressed wisdom — a sharp point, strategic rationale, and lived proof that changed the world.",
-                point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
+              {id:"huang",name:"Jensen Huang",preview:"Founder of NVIDIA, said in 1993. His communication style is compressed wisdom — a sharp point, strategic rationale, and lived proof that changed the world.",
+                point:'"I don\'t need to build a killer product overnight, I just need to build a winning product." — Jensen Huang, 1993',
                 reason:'"And the goal of winning is so that you can play again." — This is the exact logic bridge. His reason for why perfection isn\'t the goal.',
-                example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."',
-                lesson:"He doesn't over-explain. He leads with a sharp thesis, strategic rationale, and lived proof. A sharp point, a clear reason, a single powerful example. That's what powerful communicators do."},
+                example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."\n\nNVIDIA itself is the proof. For years, GPUs were niche, gaming seemed narrow, and AI wasn\'t commercially obvious. NVIDIA kept making bets — staying in the game — until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth.',
+                lesson:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof. Said in 1993 — decades before the breakthrough that proved it true. That's what powerful communicators do."},
             ].map(card=>(
               <div key={card.id} onClick={()=>setD5MobCard(d5MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d5MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
