@@ -5203,22 +5203,33 @@ setAmbitionSaved(true); } catch {}
         );
       }
 
-      // ── Example — contrast storytelling: dim before → vivid after ───────────
-      if (step === "Example") return (
-        <div style={{ height: "100%", display: "flex", flexDirection: "column", background: "#131009" }}>
-          {/* Before — intentionally muted but still readable */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "40px 48px", borderBottom: "1px solid rgba(255,255,255,0.06)", animation: "fadeIn 0.5s ease both" }}>
-            <div style={{ ...LP_LABEL, color: "rgba(196,122,122,0.85)", marginBottom: 16 }}>Before</div>
-            <p style={{ fontFamily: T.serif, fontSize: 20, fontStyle: "italic", color: "rgba(245,239,230,0.45)", lineHeight: 1.55, letterSpacing: "-0.2px" }}>"{lesson.bad}"</p>
+      // ── Example — D5 gets cinematic text panel; others get before/after ────────
+      if (step === "Example") {
+        if (isD5) return (
+          <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
+            <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
+            <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>PRE in Action</div>
+              <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Point. Reason. Example. The architecture of every great professional answer.</p>
+              <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
+              <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>The world's most effective communicators all follow the same structure — whether they name it or not.</p>
+            </div>
           </div>
-          {/* After — warm and alive */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "40px 48px", background: "rgba(138,158,132,0.04)", position: "relative" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg," + T.gold + " 0%, rgba(138,158,132,0.1) 100%)" }}/>
-            <div style={{ ...LP_LABEL, marginBottom: 16 }}>After</div>
-            <p style={{ fontFamily: T.serif, fontSize: 22, fontStyle: "italic", color: CREAM, lineHeight: 1.5, letterSpacing: "-0.3px" }}>"{lesson.good}"</p>
+        );
+        return (
+          <div style={{ height: "100%", display: "flex", flexDirection: "column", background: "#131009" }}>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "40px 48px", borderBottom: "1px solid rgba(255,255,255,0.06)", animation: "fadeIn 0.5s ease both" }}>
+              <div style={{ ...LP_LABEL, color: "rgba(196,122,122,0.85)", marginBottom: 16 }}>Before</div>
+              <p style={{ fontFamily: T.serif, fontSize: 20, fontStyle: "italic", color: "rgba(245,239,230,0.45)", lineHeight: 1.55, letterSpacing: "-0.2px" }}>"{lesson.bad}"</p>
+            </div>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "40px 48px", background: "rgba(138,158,132,0.04)", position: "relative" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg," + T.gold + " 0%, rgba(138,158,132,0.1) 100%)" }}/>
+              <div style={{ ...LP_LABEL, marginBottom: 16 }}>After</div>
+              <p style={{ fontFamily: T.serif, fontSize: 22, fontStyle: "italic", color: CREAM, lineHeight: 1.5, letterSpacing: "-0.3px" }}>"{lesson.good}"</p>
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
 
       // ── Practice — practice-bg.jpg provides the atmosphere from the outer wrapper
       if (step === "Practice") return (
@@ -6927,10 +6938,10 @@ setAmbitionSaved(true); } catch {}
               <div key={ci} style={{ background:"white", borderRadius:8, padding:"32px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)" }}>
                 <h3 style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:T2.text, marginBottom:4, letterSpacing:"-0.2px" }}>{card.name}</h3>
                 <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, marginBottom:24, fontWeight:400 }}>{card.role}</p>
-                {[{label:"Point",text:card.point,serif:true},{label:"Reason",text:card.reason},{label:"Example",text:card.example}].map((block,i)=>(
+                {[{label:"Point",text:card.point},{label:"Reason",text:card.reason},{label:"Example",text:card.example}].map((block,i)=>(
                   <div key={i} style={{ marginBottom:18 }}>
-                    <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:6 }}>{block.label}</div>
-                    <p style={{ fontFamily:block.serif?T.serif:T.sans, fontSize:block.serif?16:14, fontStyle:block.serif?"italic":"normal", color:T2.text, lineHeight:1.65, fontWeight:block.serif?600:300, margin:0 }}>{block.text}</p>
+                    <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>{block.label}</div>
+                    <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T2.text, lineHeight:1.65, fontWeight:400, margin:0 }}>{block.text}</p>
                   </div>
                 ))}
                 <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:18, marginTop:4 }}>
