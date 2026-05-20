@@ -7033,7 +7033,7 @@ setAmbitionSaved(true); } catch {}
                 {card.proof && (
                   <div style={{ marginBottom:20 }}>
                     <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>{card.name === "Jensen Huang" ? "Nvidia Is The Proof" : "PepsiCo Is The Proof"}</div>
-                    <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>{card.proof}</p>
+                    <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>{card.proof}</p>
                   </div>
                 )}
                 <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:18, marginTop:4 }}>
@@ -8333,7 +8333,7 @@ T.goldDark : T2.text4,
                     {card.proof && (
                       <div style={{marginBottom:14}}>
                         <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{card.id==="huang"?"Nvidia Is The Proof":"PepsiCo Is The Proof"}</div>
-                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.proof}</p>
+                        <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.proof}</p>
                       </div>
                     )}
                     <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why This Works</div>
