@@ -6347,7 +6347,12 @@ setAmbitionSaved(true); } catch {}
       }
 
       if (step === "Theory 1") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+        <div key={idx} className="au-step-enter" style={{ overflowY:"auto" }}>
+          <div style={{ position:"relative", width:"100%", maxHeight:340, overflow:"hidden" }}>
+            <img src="/dual-coding-theory.jpg" alt="Dual Coding Theory" style={{ width:"100%", height:340, objectFit:"cover", objectPosition:"center", display:"block" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(247,243,236,0.95) 0%, transparent 50%)" }}/>
+          </div>
+          <div style={{ padding:"32px 52px 44px" }}>
           <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Green &amp; Brock, 2000</div>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Dual Coding Theory</h2>
           <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28 }}>Stories activate more of the brain than facts. They trigger emotion, memory, and meaning simultaneously. In professional settings, a well-placed story is the most powerful persuasion tool available.</p>
@@ -6368,6 +6373,7 @@ setAmbitionSaved(true); } catch {}
             ))}
           </div>
           <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T.gold, lineHeight:1.7 }}>The brain encodes story. It files away data.</p>
+          </div>
         </div>
       );
 
