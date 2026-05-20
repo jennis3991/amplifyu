@@ -6914,9 +6914,9 @@ setAmbitionSaved(true); } catch {}
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:24 }}>
             {[
               {name:"Indra Nooyi",role:"CEO, PepsiCo",
-                point:'"Companies cannot deliver long-term performance unless they also create long-term value for society."',
-                reason:"Consumer expectations were shifting. Health, sustainability, talent, and public trust were becoming strategic business issues. Her logic: if business ignores these shifts, performance eventually suffers.",
-                example:"At PepsiCo this became tangible: healthier product innovation, reducing sugar/salt/fat, sustainability initiatives, packaging redesign, environmental commitments. She operationalised the philosophy.",
+                point:'"Performance must be married with purpose."',
+                reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing." — Her rationale for why businesses could no longer think purely about short-term financial performance.',
+                example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people." — Concrete proof showing how the philosophy became operational reality.',
                 lesson:"She leads with a clear thesis, connects it to business reality, then proves it with concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
               {name:"Jensen Huang",role:"Founder & CEO, NVIDIA",
                 point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
@@ -8201,10 +8201,10 @@ T.goldDark : T2.text4,
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to see how world-class leaders use PRE — whether they name it or not.</p>
             {[
               {id:"nooyi",name:"Indra Nooyi",preview:"CEO of PepsiCo. Her 'Performance with Purpose' strategy is textbook PRE — a bold thesis backed by business logic and concrete action.",
-                point:'"Companies cannot deliver long-term performance unless they also create long-term value for society."',
-                reason:"Consumer expectations were shifting. Health, sustainability, talent, and public trust were becoming strategic business issues. Her logic: if business ignores these shifts, performance eventually suffers.",
-                example:"At PepsiCo this became tangible: healthier product innovation, reducing sugar/salt/fat, sustainability initiatives, packaging redesign, environmental commitments. She didn't leave it as philosophy — she operationalised it.",
-                lesson:"Because she leads with a clear thesis, connects it to business reality, then proves it with concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
+                point:'"Performance must be married with purpose."',
+                reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing." — Her rationale for why businesses could no longer think purely about short-term financial performance.',
+                example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people." — Concrete proof showing how the philosophy became operational reality.',
+                lesson:"She leads with a clear thesis, connects it to business reality, then proves it with concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
               {id:"huang",name:"Jensen Huang",preview:"Founder of NVIDIA. His communication style is compressed wisdom — a sharp point, strategic rationale, and lived proof that changed the world.",
                 point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
                 reason:'"And the goal of winning is so that you can play again." — This is the exact logic bridge. His reason for why perfection isn\'t the goal.',
