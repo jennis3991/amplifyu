@@ -1420,7 +1420,7 @@ const DAILY_INSIGHTS = [
   {label:"Communication Science",headline:"People remember stories, not facts.",body:"The brain processes narrative 22x more effectively than data alone. Story is not decoration — it's the delivery mechanism."},
   {label:"Career Research",headline:"Performance is only 10% of career success.",body:"Research consistently shows that image and exposure carry more weight than performance alone. All three are required."},
   {label:"Neuroscience",headline:"The pause is more powerful than the word.",body:"Strategic silence signals control. When you pause before answering, you appear more thoughtful, more confident, and more senior."},
-  {label:"Psychology",headline:"Filler words cost you authority — instantly.",body:"Research shows that um and like reduce perceived competence by up to 22%. The pause is always the better choice."},
+  {label:"Psychology",headline:"Replace one filler with a pause — your authority lifts instantly.",body:"Research shows a deliberate pause increases perceived competence by up to 22%. One habit. Immediate impact."},
   {label:"Leadership Research",headline:"Your first 30 seconds set the entire tone.",body:"First impressions form within 7 seconds and are remarkably resistant to change. Your opening line matters more than everything that follows."},
   {label:"Communication Science",headline:"Structured answers are 40% more persuasive.",body:"When information is presented with clear structure — point, reason, example — audiences retain it longer and are more likely to act on it."},
   {label:"Organisational Psychology",headline:"Visible contributors get 3x more opportunities.",body:"Exposure isn't vanity — it's strategy. Leaders who are visible to decision-makers consistently get more high-value work."},
@@ -5489,7 +5489,7 @@ setAmbitionSaved(true); } catch {}
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Master Filler-Free Speech</h2>
-          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32,maxWidth:700}}>Fillers aren't a speech problem. They're a thinking problem. When you haven't decided what to say next, you fill the gap with "um," "uh," "like," or "you know."</p>
+          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32,maxWidth:700}}>Most people are far stronger speakers than they realise. Fillers are simply a learnable habit — and removing them is one of the fastest ways to elevate your credibility, authority, and influence.</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:28}}>
             {D3_FACTS.map((n,i)=>(
               <div key={i} style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
@@ -7369,7 +7369,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           if(step==="Example"){
             const EX_HEADERS={
               1:{label:"MASTERS OF CLARITY",    heading:"The simplest words carry the most weight.",      body:"Clear communicators don't use more words. They use better ones."},
-              3:{label:"MASTERS OF THE PAUSE",  heading:"Silence is more powerful than the word that fills it.", body:"The strongest speakers pause. Nervous speakers fill every silence."},
+              3:{label:"MASTERS OF THE PAUSE",  heading:"Silence is more powerful than the word that fills it.", body:"The strongest speakers pause. Confident speakers own the silence."},
               4:{label:"MASTERS OF BREVITY",    heading:"Say less. Mean more. Be remembered.",             body:"The most persuasive lines ever spoken? All under 10 words."},
               8:{label:"STORYTELLING IN THE WILD", heading:"Stories create empathy. Empathy creates trust. Trust creates influence.", body:"The same facts — told as a story — land 22× more powerfully in the human brain."},
             };
@@ -7591,7 +7591,7 @@ T.goldDark : T2.text4,
           <>
             <img src="/day3-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Master Filler-Free Speech</h2>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Fillers are a habit, not a flaw. Here's what eliminating them does for you.</p>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most people are far stronger speakers than they realise. A few conscious habits are all that separates good from exceptional.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
               {D3_FACTS.map((n,i)=>(
                 <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
@@ -7619,7 +7619,7 @@ T.goldDark : T2.text4,
                 <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{r.body}</p>
               </div>
             ))}
-            <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>The strongest speakers pause often. Nervous speakers fill every silence.</p>
+            <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>The strongest speakers pause often. Confident speakers own the silence.</p>
           </>
         )}
         {isD3 && step==="Example" && (
