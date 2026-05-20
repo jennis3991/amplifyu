@@ -8206,200 +8206,111 @@ getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[selSc] ||
 
         {step==="Review" && (
           <>
-            {/* Review header */}
-            <div style={{padding:"24px 20px 8px"}}>
-              <div style={{fontSize:11,fontWeight:600,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:8,fontFamily:T.sans}}>Day {lesson.day} Complete ✓</div>
-              <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:0}}>Go Deeper</h2>
+            {/* Header */}
+            <div style={{padding:"28px 24px 4px"}}>
+              <div style={{fontSize:11,fontWeight:500,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:16,fontFamily:T.sans}}>Day {lesson.day} Complete ✓</div>
+              <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.05,letterSpacing:"-0.5px",marginBottom:12}}>Go Deeper</h2>
+              <p style={{fontFamily:T.sans,fontSize:14,fontWeight:300,color:T2.text2,lineHeight:1.65,marginBottom:0}}>You've learned the techniques. These books will make you unstoppable.</p>
             </div>
 
-            <div style={{background:T2.surface,borderRadius:16,padding:"18px 20px",display:"none"}}>
-              <div
-style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Reflection</div>
-              {lesson.review.map((q,i) => (
-                <div key={i}
-onClick={()=>setChecks(c=>Object.assign({},c,{[i]:!c[i]}))}
-style={{display:"flex",alignItems:"flex-start",gap:12,padding:"10px 0",borderBottom:i<lesson.review.length-1?"1px solid "+T2.divider:"none",cursor:"pointer"}}>
-                  <div
-style={{width:22,height:22,borderRadius:6,border:"1px solid "+(checks[i]?T.green:T.border),background:checks[i]?T.greenBg:"transparent",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                    {checks[i] && <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l3 3 4-4" stroke={T.green} strokeWidth="1.5" strokeLinecap="round"/></svg>}
-                  </div>
-                  <span
-style={{fontSize:15,color:T2.text,lineHeight:1.5}}>{q}</span>
-                </div>
-              ))}
-            </div>
-            {/* Ambition Statement — only on Day 7 Review (end of Week 1) */}
-            {lesson.day === 7 && (
-              <div style={{
-                background:T.cardDark,
-                borderRadius:16,
-                overflow:"hidden",
-                border:"1px solid rgba(138,158,132,0.2)",
-              }}>
-                <div 
-style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.15))"}}/>
-                <div style={{padding:"16px 18px 18px"}}>
-                  <div 
-style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-                    <svg width="14" height="14" viewBox="0 0 14 14" 
-fill="none">
-                      <path d="M7 1l1.5 3.5L12 5l-2.5 2.5.5 3.5L7 9.5 4 
-11l.5-3.5L2 5l3.5-.5z" stroke={T.gold} strokeWidth="1.1" 
-strokeLinejoin="round" fill="rgba(138,158,132,0.15)"/>
-                    </svg>
-                    <span 
-style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>
-                      Your Ambition Statement
-                    </span>
-                    {ambitionSaved && (
-                      <span 
-style={{marginLeft:"auto",fontSize:10,color:T.gold,background:"rgba(138,158,132,0.12)",padding:"2px 8px",borderRadius:8}}>Saved ✓</span>
-                    )}
-                  </div>
-                  <p 
-style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.6,marginBottom:12}}>
-                    Complete this sentence. Say it as if you're telling a 
-trusted senior leader — not writing a CV. One sentence. Direct. Owned.
-                  </p>
-                  <div style={{
-                    background:"rgba(255,255,255,0.04)",
-                    borderRadius:10,
-                    padding:"12px 14px",
-                    marginBottom:12,
-                    border:"1px solid rgba(255,255,255,0.08)",
-                  }}>
-                    <span 
-style={{fontSize:13,color:T.gold,fontFamily:T.serif,fontWeight:600}}>
-                      "In the next 18 months, I want to be{" "}
-                    </span>
-                    <span 
-style={{fontSize:13,color:"rgba(255,255,255,0.5)",fontFamily:T.serif}}>
-                      {ambitionDraft ? (
-                        <span 
-style={{color:"rgba(255,255,255,0.88)",fontStyle:"italic"}}>{ambitionDraft}</span>
-                      ) : (
-                        <span 
-style={{color:"rgba(255,255,255,0.25)",fontStyle:"italic"}}>your answer 
-here…</span>
-                      )}
-                    </span>
-                    <span 
-style={{fontSize:13,color:T.gold,fontFamily:T.serif,fontWeight:600}}>"</span>
-                  </div>
-                  <textarea
-                    value={ambitionDraft}
-                    onChange={e=>saveAmbition(e.target.value)}
-                    placeholder="…operating at director level, leading a 
-team that matters, known for making complex things clear…"
-                    rows={2}
-                    style={{
-                      width:"100%",padding:"10px 14px",
-                      border:"1px solid rgba(255,255,255,0.1)",
-                      borderRadius:8,outline:"none",resize:"none",
-                      background:"rgba(255,255,255,0.05)",
-                      fontSize:13,color:"rgba(255,255,255,0.85)",
-                      lineHeight:1.55,fontFamily:T.sans,
-                      boxSizing:"border-box",
-                    }}
-                  />
-                  <p 
-style={{fontSize:11,color:"rgba(255,255,255,0.28)",marginTop:8,lineHeight:1.5}}>
-                    This is your compass. AmplifyU will remind you of it 
-throughout the programme.
-                  </p>
-                </div>
-              </div>
-            )}
-
-
-            {/* Notes field */}
-            <div style={{background:T2.surface,borderRadius:16,border:"1px solid "+T2.border,overflow:"hidden"}}>
-              <div style={{padding:"14px 18px 8px",display:"flex",alignItems:"center",gap:8}}>
-                <svg width="14" height="14" viewBox="0 0 14 14" 
-fill="none">
-                  <path d="M2 2h10v10H2z" stroke={T.gold} 
-strokeWidth="1.1" rx="1" fill="none"/>
-                  <path d="M4 5h6M4 7h6M4 9h4" stroke={T.gold} 
-strokeWidth="1.1" strokeLinecap="round"/>
-                </svg>
-                <div 
-style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>My 
-note</div>
-                {note && <div 
-style={{marginLeft:"auto",fontSize:10,color:T2.text4}}>Saved</div>}
-              </div>
-              <textarea
-                value={note}
-                onChange={e=>saveNote(e.target.value)}
-                placeholder="What's one thing you want to take into 
-tomorrow?"
-                rows={3}
-                style={{
-                  width:"100%",padding:"8px 18px 16px",
-                  border:"none",outline:"none",resize:"none",
-                  background:"transparent",
-                  fontSize:14,color:T2.text,lineHeight:1.6,
-                  fontFamily:T.sans,boxSizing:"border-box",
-                }}
-              />
-            </div>
-
-            {/* Closing reflection card */}
-            <div style={{background:T.cardDark,borderRadius:2,padding:"24px 20px",position:"relative",overflow:"hidden"}}>
-              <div style={{fontSize:10,letterSpacing:"0.15em",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,fontWeight:500,marginBottom:14}}>Day {lesson.day} · {lesson.title}</div>
-              <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,marginBottom:16}}>{REVIEW_CLOSING[lesson.day-1]}</p>
-              <div style={{width:40,height:1.5,background:T.gold,opacity:0.6}}/>
-            </div>
-
-            {/* Session summary bullets */}
-            <div style={{background:T2.surface,borderRadius:2,padding:"18px 20px"}}>
-              <div style={{fontSize:10,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>What You Practised</div>
-              {REVIEW_BULLETS[lesson.day-1].map((b,i) => (
-                <div key={i} style={{display:"flex",alignItems:"flex-start",gap:12,padding:"10px 0",borderBottom:i<2?"0.5px solid "+T2.divider:"none"}}>
-                  <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                    <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </div>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.6,fontWeight:300,margin:0}}>{b}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Further reading — stacked book cards */}
-            {(() => {
+            {/* Book cards */}
+            {(()=>{
               const fr = FURTHER_READING[lesson.day-1];
-              if (!fr) return null;
-              return (
-                <div style={{background:T2.bg,border:"0.5px solid "+T2.border,borderRadius:2,borderTop:"3px solid "+T.gold,overflow:"hidden"}}>
-                  <div style={{padding:"18px 20px 4px"}}>
-                    <p style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,letterSpacing:"-0.2px",marginBottom:2}}>Go Deeper</p>
-                    <p style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.15em",textTransform:"uppercase",color:T2.text3,marginBottom:16}}>Recommended for this session</p>
+              if(!fr) return null;
+              return fr.books.map((book,bi)=>{
+                const saved = savedBooks.includes(book.title);
+                return (
+                  <div key={bi} style={{background:"white",borderRadius:8,margin:"0 4px",boxShadow:"0 2px 8px rgba(44,36,22,0.08),0 8px 24px rgba(44,36,22,0.04)",overflow:"hidden"}}>
+                    {/* Cover + info row */}
+                    <div style={{display:"flex",gap:0,alignItems:"stretch"}}>
+                      {/* Cover */}
+                      <div style={{width:110,flexShrink:0,background:"linear-gradient(145deg,#2C2416 0%,#4A3828 55%,#2C2416 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"16px 10px",textAlign:"center",position:"relative"}}>
+                        <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.3))"}}/>
+                        <p style={{fontFamily:T.serif,fontSize:11,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,marginBottom:8}}>{book.title}</p>
+                        <div style={{width:20,height:1,background:T.gold,opacity:0.5,marginBottom:8}}/>
+                        <p style={{fontFamily:T.sans,fontSize:9,color:"rgba(245,239,230,0.5)",letterSpacing:"0.3px"}}>{book.author}</p>
+                      </div>
+                      {/* Info */}
+                      <div style={{flex:1,padding:"18px 16px"}}>
+                        <h3 style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"#2C2416",marginBottom:4,letterSpacing:"-0.2px"}}>{book.title}</h3>
+                        <p style={{fontFamily:T.sans,fontSize:12,color:"#6B5E44",marginBottom:12}}>{book.author}</p>
+                        {book.quote && (
+                          <p style={{fontFamily:T.sans,fontSize:13,fontStyle:"italic",color:"#2C2416",lineHeight:1.55,marginBottom:10,borderLeft:"3px solid "+T.gold,paddingLeft:10}}>
+                            <span style={{color:T.gold,fontStyle:"normal"}}>"</span>{book.quote}<span style={{color:T.gold,fontStyle:"normal"}}>"</span>
+                          </p>
+                        )}
+                        {book.rating && (
+                          <p style={{fontFamily:T.sans,fontSize:12,color:"#8A7B66",marginBottom:0}}>
+                            <span style={{color:"#C9A227"}}>★★★★★</span> {book.rating}/5 · {book.reviewCount}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    {/* Why + actions */}
+                    {book.why && (
+                      <div style={{padding:"14px 16px 0",borderTop:"0.5px solid #EDE8DF"}}>
+                        <div style={{fontSize:10,fontWeight:600,textTransform:"uppercase",letterSpacing:"1.5px",color:T.gold,fontFamily:T.sans,marginBottom:6}}>Why this book</div>
+                        <p style={{fontFamily:T.sans,fontSize:13,color:"#2C2416",lineHeight:1.65,fontWeight:300,marginBottom:14}}>{book.why}</p>
+                      </div>
+                    )}
+                    <div style={{display:"flex",gap:10,padding:"0 16px 18px"}}>
+                      <a href={book.amazon} target="_blank" rel="noreferrer"
+                        style={{flex:1,display:"block",background:"#2C2416",color:"#F7F3EC",padding:"11px 0",borderRadius:4,fontFamily:T.sans,fontSize:13,fontWeight:600,textDecoration:"none",textAlign:"center"}}>
+                        Buy on Amazon →
+                      </a>
+                      <button onClick={()=>saveBook(book.title)} style={{flex:1,background:"transparent",color:saved?T.gold:"#8A7B66",border:"1px solid "+(saved?T.gold:"#DDD5C4"),padding:"11px 0",borderRadius:4,fontFamily:T.sans,fontSize:13,fontWeight:500,cursor:"pointer"}}>
+                        {saved?"✓ Saved":"+ Save to List"}
+                      </button>
+                    </div>
                   </div>
-                  {fr.books.map((book,bi) => (
-                    <div key={bi} style={{padding:"0 20px 18px",borderTop:bi>0?"0.5px solid "+T2.divider:"none"}}>
-                      {bi>0 && <div style={{height:18}}/>}
-                      <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,marginBottom:2}}>{book.title}</p>
-                      <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginBottom:8}}>{book.author}</p>
-                      <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.goldDark,lineHeight:1.5,marginBottom:10}}>{book.connection}</p>
-                      <a href={book.amazon} target="_blank" rel="noreferrer" style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:T.gold,textDecoration:"none"}}>Get the book →</a>
+                );
+              });
+            })()}
+
+            {/* What You Practised Today accordion */}
+            <div style={{borderTop:"1px solid rgba(138,158,132,0.25)",margin:"0 4px",paddingTop:20,cursor:"pointer"}} onClick={()=>setAccordionOpen(o=>!o)}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 4px"}}>
+                <div style={{fontFamily:T.sans,fontSize:15,fontWeight:500,color:T2.text}}>What You Practised Today</div>
+                <span style={{fontSize:16,color:T2.text3,transition:"transform 0.2s",transform:accordionOpen?"rotate(180deg)":"none",display:"inline-block"}}>▾</span>
+              </div>
+              {accordionOpen && (
+                <div style={{marginTop:16,padding:"0 4px"}}>
+                  {REVIEW_BULLETS[lesson.day-1].map((b,i)=>(
+                    <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10}}>
+                      <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.15)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>
+                        <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </div>
+                      <span style={{fontFamily:T.sans,fontSize:14,color:T2.text2,lineHeight:1.6}}>{b}</span>
                     </div>
                   ))}
                 </div>
-              );
-            })()}
-
-            <div style={{background:T2.cardDark,borderRadius:2,padding:"18px 20px"}}>
-              <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Your promise for tomorrow</div>
-              <p style={{fontSize:14,color:"rgba(255,255,255,0.8)",lineHeight:1.6}}>{lesson.promise}</p>
+              )}
             </div>
-            {!isDone ? (
-              <button onClick={onComplete} style={{width:"100%",padding:"18px",borderRadius:0,border:"none",background:"#2C2416",color:"#F7F3EC",fontSize:15,fontWeight:600,fontFamily:T.sans,minHeight:56}}>
-                Mark Complete & Continue →
-              </button>
-            ) : (
-              <div style={{padding:"16px 20px",borderRadius:2,background:T2.card,border:"1px solid "+T2.border,textAlign:"center"}}>
-                <span style={{fontSize:14,color:T2.text2}}>Complete — practise again anytime</span>
+
+            {/* Ambition Statement — only on Day 7 */}
+            {lesson.day === 7 && (
+              <div style={{background:T.cardDark,borderRadius:8,overflow:"hidden",border:"1px solid rgba(138,158,132,0.2)",margin:"0 4px"}}>
+                <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.15))"}}/>
+                <div style={{padding:"16px 18px 18px"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                    <span style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>Your Ambition Statement</span>
+                    {ambitionSaved && <span style={{marginLeft:"auto",fontSize:10,color:T.gold,background:"rgba(138,158,132,0.12)",padding:"2px 8px",borderRadius:8}}>Saved ✓</span>}
+                  </div>
+                  <p style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.6,marginBottom:12}}>Complete this sentence. Say it as if you're telling a trusted senior leader — one sentence, direct, owned.</p>
+                  <textarea value={ambitionDraft} onChange={e=>saveAmbition(e.target.value)} placeholder="…operating at director level, leading a team that matters…" rows={2} style={{width:"100%",padding:"10px 14px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,outline:"none",resize:"none",background:"rgba(255,255,255,0.05)",fontSize:13,color:"rgba(255,255,255,0.85)",lineHeight:1.55,fontFamily:T.sans,boxSizing:"border-box"}}/>
+                </div>
               </div>
             )}
+
+            {/* Next session CTA */}
+            {(()=>{
+              const nextDay = lesson.day < 14 ? lesson.day + 1 : null;
+              return (
+                <button onClick={onComplete} style={{width:"100%",background:T.gold,color:"#F5EFE6",padding:"18px",borderRadius:4,border:"none",fontFamily:T.sans,fontSize:15,fontWeight:600,cursor:"pointer",textAlign:"center"}}>
+                  {nextDay ? `Next: Day ${nextDay} — ${LESSONS[nextDay-1]?.title} →` : "Complete Programme →"}
+                </button>
+              );
+            })()}
           </>
         )}
 
