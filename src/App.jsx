@@ -8377,13 +8377,13 @@ style={{display:"flex",gap:6,alignItems:"center"}}>
 style={{fontSize:10,color:T2.text4,marginRight:2}}>Scenario:</span>
                       {scenarios.map((_,i) => (
                         <button key={i} onClick={()=>setSelSc(i)} style={{
-                          width:28,height:28,borderRadius:"50%",
+                          width:32,height:32,minHeight:32,borderRadius:"50%",
                           border:"1px solid "+(selSc===i?T.navy:T.border),
                           background:selSc===i?T.navy:"transparent",
                           color:selSc===i?"white":T.text3,
                           fontSize:12,fontWeight:700,cursor:"pointer",
-                          
-display:"flex",alignItems:"center",justifyContent:"center",
+                          display:"flex",alignItems:"center",justifyContent:"center",
+                          padding:0,flexShrink:0,
                         }}>{i+1}</button>
                       ))}
                     </div>
