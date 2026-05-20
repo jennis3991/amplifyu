@@ -8286,7 +8286,7 @@ style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.insight}</p>
           </>
         )}
 
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD10 && step==="Theory" && <TheoryCard day={lesson.day}/>}
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Theory" && <TheoryCard day={lesson.day}/>}
 
         {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Example" && (
           <>
