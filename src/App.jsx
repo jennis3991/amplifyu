@@ -8050,7 +8050,7 @@ T.goldDark : T2.text4,
         {isD5 && step==="Insight" && (
           <>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Structure Wins</h2>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Structure isn't a constraint — it's a superpower. PRE (Point, Reason, Example) gives every answer, every opinion, and every presentation the precision to land immediately.</p>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Structure is how you organise your thinking before you speak. PRE helps you do that: start with your point, explain why it matters, then bring it to life with an example.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
               {[
                 {word:"Credibility",  body:"Leading with your point signals clear thinking. Structured answers make you sound authoritative — immediately and consistently."},
