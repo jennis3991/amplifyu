@@ -8326,10 +8326,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
 
         {isD5 && step==="Practice" && (
           <>
-            <div style={{background:T2.surface,borderRadius:2,padding:"18px 20px"}}>
-              <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Your Practice</div>
-              <p style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.practice}</p>
-            </div>
+            {/* Starter Phrases — at top */}
             <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
               <div style={{fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12,fontFamily:T.sans}}>Starter Phrases</div>
               {lesson.phrases.map((ph,i)=>(
@@ -8339,6 +8336,23 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                 </div>
               ))}
             </div>
+            {/* Practice scenarios */}
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>Practice Scenarios</div>
+            {[
+              {n:1, label:"The Sponsor Ambush",    scenario:"You're in the lift with your CEO. She turns to you and asks: 'What's your honest view on whether this initiative will land?' You have 60 seconds. Lead with your point."},
+              {n:2, label:"The Board Moment",       scenario:"The chair pauses and looks directly at you: 'You've been closest to this — what's your read?' The room is watching. Structure your answer. Start with your conclusion."},
+              {n:3, label:"The Strategic Opinion",  scenario:"A senior stakeholder you've never met asks: 'What do you think we should do?' No time to prepare. Three parts. One point. One reason. One example. Go."},
+            ].map((sc,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"18px"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                  <div style={{width:24,height:24,minHeight:24,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <span style={{fontSize:11,fontWeight:700,color:"white",fontFamily:T.sans}}>{sc.n}</span>
+                  </div>
+                  <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text}}>{sc.label}</div>
+                </div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{sc.scenario}</p>
+              </div>
+            ))}
             <Timer totalSecs={180} label="3 minutes"/>
             <CoachWidget lesson={lesson} scenario={null}/>
           </>
