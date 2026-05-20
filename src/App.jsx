@@ -7389,7 +7389,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
 
       {/* Header image + Exit button overlay */}
       {/* Header image + Exit button overlay */}
-      <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:(step==="Practice"||step==="Simulation")?"#141210":step==="Theory 2"?T.bg:"transparent"}}>
+      <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:(step==="Practice"||step==="Simulation")?"#141210":"transparent"}}>
         {(()=>{
           const STEP_IMGS={
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
@@ -7398,7 +7398,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
-          if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:step==="Theory 2"?"contain":"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none",background:step==="Theory 2"?T.bg:"transparent"}}/>;
+          if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none"}}/>;
           return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
         })()}
         {/* Dark film overlay for Practice + Simulation */}
