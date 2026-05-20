@@ -6346,20 +6346,20 @@ setAmbitionSaved(true); } catch {}
         );
       }
 
-      if (step === "Theory") return (
+      if (step === "Theory 1") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The Story Arc Framework</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:24 }}>Stories follow a universal structure: Setup → Conflict → Resolution. This arc mirrors how the brain processes experience.</p>
-          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:24 }}>
-            <p style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0 }}>A story without stakes fails to engage. A story without proof fails to persuade. A story without a shift fails to be remembered.</p>
+          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Green &amp; Brock, 2000</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Dual Coding Theory</h2>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28 }}>Stories activate more of the brain than facts. They trigger emotion, memory, and meaning simultaneously. In professional settings, a well-placed story is the most powerful persuasion tool available.</p>
+          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
+            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0 }}>The brain encodes information more deeply when processed through both verbal and visual channels simultaneously. Story activates both. Facts alone activate only one.</p>
           </div>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:24 }}>
             {[
-              {label:"Setup",   body:"Establish the stakes. What was the situation? What was at risk?"},
-              {label:"Conflict",body:"What obstacle stood in the way? What made it hard?"},
-              {label:"Choice",  body:"What decision did you make? What did you do?"},
-              {label:"Outcome", body:"What changed as a result? What was the measurable impact?"},
+              {label:"Verbal Channel",  body:"Story activates the brain's language system — the same channel that processes speech, argument, and logic. It carries your message with precision."},
+              {label:"Visual Channel",  body:"Story simultaneously triggers the brain's visual cortex, creating mental imagery. Facts alone never do this. Your audience sees what you describe."},
+              {label:"65% vs 10%",      body:"People retain 65% of information delivered through story. Only 10% from data alone. Story isn't decoration — it's the delivery mechanism."},
+              {label:"The Convergence", body:"Every skill you built in Week 1 — clarity, pace, structure, brevity — comes together in the moment you tell a story. This is where it all lands."},
             ].map((p,i)=>(
               <div key={i} style={{ padding:"16px 18px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
                 <div style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T.gold, lineHeight:1.3, marginBottom:10 }}>{p.label}</div>
@@ -6367,16 +6367,33 @@ setAmbitionSaved(true); } catch {}
               </div>
             ))}
           </div>
-          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:20 }}>
-            <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>See It In Action</div>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
-              <div style={{ padding:"16px 18px", background:"rgba(138,158,132,0.06)", borderRadius:4, borderLeft:"2px solid "+T.gold }}>
-                <p style={{ fontFamily:T.sans, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.7, fontWeight:400, margin:0 }}>Facts inform. Stories move. Structure is what turns information into impact.</p>
+          <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T.gold, lineHeight:1.7 }}>The brain encodes story. It files away data.</p>
+        </div>
+      );
+
+      if (step === "Theory 2") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Framework</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The 6-Beat Framework</h2>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:24 }}>Every great story follows a learnable pattern. Master these six beats and you can tell any story.</p>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
+            {[
+              {n:1,beat:"Hook",         sub:"It starts with tension."},
+              {n:2,beat:"Character",    sub:"Make it human. Make it real."},
+              {n:3,beat:"Problem",      sub:"What broke? What's at stake?"},
+              {n:4,beat:"Turning Point",sub:"What changes? Everything shifts."},
+              {n:5,beat:"Resolution",   sub:"What happened? Why it matters."},
+              {n:6,beat:"Meaning",      sub:"What stayed with us?"},
+            ].map((b,i)=>(
+              <div key={i} style={{ padding:"16px 18px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:700, color:T.gold, marginBottom:6, letterSpacing:"0.5px" }}>Beat {b.n}</div>
+                <div style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, marginBottom:8 }}>{b.beat}</div>
+                <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text3, lineHeight:1.6, fontWeight:300, margin:0 }}>{b.sub}</p>
               </div>
-              <div style={{ padding:"16px 18px", background:"rgba(138,158,132,0.06)", borderRadius:4, borderLeft:"2px solid "+T.gold }}>
-                <p style={{ fontFamily:T.sans, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.7, fontWeight:400, margin:0 }}>Every professional story needs stakes, conflict, and a clear outcome to engage the brain fully.</p>
-              </div>
-            </div>
+            ))}
+          </div>
+          <div style={{ padding:"20px 24px", background:"rgba(138,158,132,0.06)", borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+            <p style={{ fontFamily:T.serif, fontSize:20, fontStyle:"italic", color:T.gold, lineHeight:1.5, margin:0 }}>No tension = no story. No shift = no meaning.</p>
           </div>
         </div>
       );
