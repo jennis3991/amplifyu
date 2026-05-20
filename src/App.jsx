@@ -4986,10 +4986,9 @@ setAmbitionSaved(true); } catch {}
           </div>
         );
         if (step === "Theory 2") return (
-          <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-            <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
-            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.45)" }}/>
-            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.3) 40%, transparent 65%)" }}/>
+          <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#100D09" }}>
+            <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain", objectPosition:"center" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 40%)" }}/>
             <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
               <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Framework</div>
               <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>Every great story follows a learnable pattern.</p>
@@ -6421,6 +6420,8 @@ setAmbitionSaved(true); } catch {}
               full={"Gawande could publish dense medical papers. Instead, he tells stories.\n\n\"The Checklist Manifesto\" wasn't a study. It was the story of how a simple checklist — inspired by airplane pilots — saved lives in operating rooms.\n\nOne surgeon. One problem. One solution. Changed medical practice globally.\n\nThe research was strong. But the story made it unforgettable. Doctors didn't adopt checklists because of data. They adopted them because they saw themselves in Gawande's story.\n\nLead with the person facing the problem. Show their struggle. Show the solution. Show the result.\n\nData informs. Stories transform. If you want people to act, give them a narrative they can see themselves in."}/>
             <ExCard name="The Cyber Attack" preview="A CISO needs budget for security. Facts alone won't convince the board."
               full={"A CISO needs budget for security. Facts alone won't convince the board.\n\nSo she tells a story:\n\n\"Last Tuesday at 3am, our systems went dark. For 6 hours, we couldn't process orders. We lost £2M in revenue. This could happen again tomorrow.\"\n\nStakes. Obstacle. Outcome. The board approved the budget.\n\nFacts say \"this could happen.\" Stories say \"this happened. To us. It will happen again.\" The narrative transported the board into the future threat.\n\nThree-act structure: what happened (Stakes), what went wrong (Obstacle), what it cost (Outcome).\n\nIn high-stakes decisions, stories create urgency that facts can't. Transport your audience into the future you're trying to prevent or create."}/>
+            <ExCard name="The Pixar Framework" preview="Pixar used the same story structure for every film. It works because it mirrors how the human brain processes experience."
+              full={"Pixar used the same story structure for every film. It works because it mirrors how the human brain processes experience.\n\nOnce upon a time… / Every day… / Until one day… / Because of that… / Because of that… / Until finally…\n\nSee it applied to a professional story about confidence in meetings:\n\n\"Once upon a time, I thought confidence meant sounding polished. Every day, I overprepared for meetings. Until one day, I completely froze. Because of that, I changed how I prepared. Because of that, I focused on clarity, not perfection. Until finally, people started listening.\"\n\nThe framework creates a predictable emotional arc. The brain anticipates each beat — and releases tension when it arrives. That release is what makes stories memorable.\n\nThis framework works for a boardroom pitch as well as it works for a Pixar film. Structure is what separates a story from a sequence of events."}/>
           </div>
         </div>
       );
@@ -7901,26 +7902,25 @@ T.goldDark : T2.text4,
         )}
         {isNT && step==="Theory 2" && (
           <>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Pixar Framework</h2>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Pixar used it for every film. It works because it mirrors how the human brain processes experience.</p>
-            <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"18px 20px",marginBottom:16,borderRadius:4}}>
-              <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>Once upon a time… Every day… Until one day… Because of that… Until finally…</p>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The 6-Beat Framework</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Every great story follows a learnable pattern. Master these six beats and you can tell any story.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {[
+                {n:1,beat:"Hook",         sub:"It starts with tension."},
+                {n:2,beat:"Character",    sub:"Make it human. Make it real."},
+                {n:3,beat:"Problem",      sub:"What broke? What's at stake?"},
+                {n:4,beat:"Turning Point",sub:"What changes? Everything shifts."},
+                {n:5,beat:"Resolution",   sub:"What happened? Why it matters."},
+                {n:6,beat:"Meaning",      sub:"What stayed with us?"},
+              ].map((b,i)=>(
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4}}>Beat {b.n}</div>
+                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:4}}>{b.beat}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{b.sub}</p>
+                </div>
+              ))}
             </div>
-            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10,fontFamily:T.sans}}>See it in action — confidence in meetings</div>
-            {[
-              {beat:"Once upon a time…",line:"I thought confidence meant sounding polished."},
-              {beat:"Every day…",       line:"I overprepared for meetings."},
-              {beat:"Until one day…",   line:"I completely froze."},
-              {beat:"Because of that…",line:"I changed how I prepared."},
-              {beat:"Because of that…",line:"I focused on clarity, not perfection."},
-              {beat:"Until finally…",  line:"People started listening."},
-            ].map((r,i,arr) => (
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px",marginBottom:8}}>
-                <div style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:T.gold,marginBottom:4}}>{r.beat}</div>
-                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{r.line}</p>
-              </div>
-            ))}
-            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text3,lineHeight:1.6,marginTop:8}}>This simple framework works for any story. Now see it in the wild →</p>
+            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.7,marginTop:8}}>No tension = no story. No shift = no meaning.</p>
           </>
         )}
         {isNT && step==="Example" && (
@@ -7933,6 +7933,7 @@ T.goldDark : T2.text4,
               {id:"earthrise",name:"NASA's Earthrise",preview:"1968. Apollo 8 orbited the moon. William Anders took one photo: Earth rising over the lunar horizon.",quote:"A single image launched the environmental movement.",why:"The photo transported people into the astronaut's perspective. Suddenly, Earth wasn't an abstract concept. It was vulnerable. Worth protecting.",technique:"Find the moment that changes perspective. That's your story's centre.",lesson:"The most powerful stories don't argue. They transport. Show people a new view, and they'll draw their own conclusions."},
               {id:"gawande",name:"Surgeon Atul Gawande",preview:"Gawande could publish dense medical papers. Instead, he tells stories.",quote:'"The Checklist Manifesto" changed medical practice globally.',why:"The research was strong. But the story made it unforgettable. Doctors didn't adopt checklists because of data. They adopted them because they saw themselves in Gawande's story.",technique:"Lead with the person facing the problem. Show their struggle. Show the solution. Show the result.",lesson:"Data informs. Stories transform. Give them a narrative they can see themselves in."},
               {id:"cyber",name:"The Cyber Attack",preview:"A CISO needs budget for security. Facts alone won't convince the board.",quote:'"Last Tuesday at 3am, our systems went dark."',why:"Facts say \"this could happen.\" Stories say \"this happened. To us. It will happen again.\" The narrative transported the board into the future threat.",technique:"Three-act structure: what happened (Stakes), what went wrong (Obstacle), what it cost (Outcome).",lesson:"In high-stakes decisions, stories create urgency that facts can't."},
+              {id:"pixar",name:"The Pixar Framework",preview:"Pixar used the same story structure for every film. It works because it mirrors how the human brain processes experience.",quote:'"Once upon a time… Until one day… Until finally…"',why:"The framework creates a predictable emotional arc. The brain anticipates each beat — and releases tension when it arrives. That release is what makes stories memorable.",technique:"Once upon a time… / Every day… / Until one day… / Because of that… / Because of that… / Until finally… Apply it to any professional story.",lesson:"This simple framework works for a boardroom pitch as well as it works for a Pixar film. Structure is what separates a story from a sequence of events."},
             ].map(card=>(
               <div key={card.id} onClick={()=>setNtMobCard(ntMobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${ntMobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
