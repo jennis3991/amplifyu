@@ -8479,7 +8479,7 @@ finishDate + ".";
     return "One session a day and you\'ll finish by " + finishDate + ".";
   })();
   const quote = QUOTES[cur%QUOTES.length];
-  const insight = DAILY_INSIGHTS[(cur-1)%DAILY_INSIGHTS.length];
+  const insight = { label: lesson.tag, headline: lesson.quote, body: lesson.teaser };
   // ── shared blocks used in both layouts ──────────────────────────────────
   const storedAmbition = (() => { try { return localStorage.getItem("au1_ambition") || ""; } catch { return ""; } })();
   const InsightCard = () => (
