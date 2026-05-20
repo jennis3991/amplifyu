@@ -4174,7 +4174,9 @@ setAmbitionSaved(true); } catch {}
   const isD3 = lesson.day === 3;
   const isD4 = lesson.day === 4;
   const isD10 = lesson.day === 10;
-  const STEPS = SESSION_STEPS;
+  const STEPS = isNT
+    ? ["Insight","Theory 1","Theory 2","Example","Practice","Review"]
+    : SESSION_STEPS;
   const step = STEPS[idx];
 
   // ── D10 shared constants ───────────────────────────────────────────────────
@@ -7349,7 +7351,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            8:{Insight:"/narrative-transportation.jpg",Theory:"/nt-6beat-framework.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            8:{Insight:"/narrative-transportation.jpg","Theory 1":"/nt-6beat-framework.jpg","Theory 2":"/nt-6beat-framework.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
           if(src) return <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none"}}/>;
@@ -7849,18 +7851,11 @@ T.goldDark : T2.text4,
             <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Facts explain. Stories move people.</p>
           </>
         )}
-        {isNT && step==="Theory" && (
+        {isNT && step==="Theory 1" && (
           <>
-            <div style={{position:"relative",borderRadius:4,overflow:"hidden"}}>
-              <img src="/nt-6beat-framework.jpg" alt="6-Beat Story Framework" style={{width:"100%",display:"block",maxHeight:220,objectFit:"cover"}}/>
-              <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.85) 0%,transparent 55%)"}}/>
-              <div style={{position:"absolute",bottom:16,left:16,right:16}}>
-                <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6}}>The Framework</div>
-                <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,margin:0}}>Every great story follows a learnable pattern.</p>
-              </div>
-            </div>
-            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The 6-Beat Framework</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The 6-Beat Framework</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Every great story follows a learnable pattern. Master these six beats and you can tell any story.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
               {[
                 {n:1,beat:"Hook",         sub:"It starts with tension."},
                 {n:2,beat:"Character",    sub:"Make it human. Make it real."},
@@ -7868,34 +7863,39 @@ T.goldDark : T2.text4,
                 {n:4,beat:"Turning Point",sub:"What changes? Everything shifts."},
                 {n:5,beat:"Resolution",   sub:"What happened? Why it matters."},
                 {n:6,beat:"Meaning",      sub:"What stayed with us?"},
-              ].map((b,i,arr) => (
-                <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none"}}>
-                  <span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,minWidth:16}}>{b.n}</span>
-                  <span style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,minWidth:100}}>{b.beat}</span>
-                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:300}}>{b.sub}</span>
+              ].map((b,i) => (
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4}}>Beat {b.n}</div>
+                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:4}}>{b.beat}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{b.sub}</p>
                 </div>
               ))}
-              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T.gold,marginTop:14,marginBottom:0}}>No tension = no story.</p>
             </div>
-            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>The Pixar Framework</div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,marginBottom:14}}>Pixar used it for every film. It works because it mirrors how the human brain processes experience.</p>
-              <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>See it in action — confidence in meetings</div>
-              {[
-                {beat:"Once upon a time…",line:"I thought confidence meant sounding polished."},
-                {beat:"Every day…",       line:"I overprepared for meetings."},
-                {beat:"Until one day…",   line:"I completely froze."},
-                {beat:"Because of that…",line:"I changed how I prepared."},
-                {beat:"Because of that…",line:"I focused on clarity, not perfection."},
-                {beat:"Until finally…",  line:"People started listening."},
-              ].map((r,i,arr) => (
-                <div key={i} style={{display:"flex",gap:10,padding:"8px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
-                  <span style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:T.gold,minWidth:130,flexShrink:0}}>{r.beat}</span>
-                  <span style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5}}>{r.line}</span>
-                </div>
-              ))}
-              <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text2,lineHeight:1.6,marginTop:14,marginBottom:0}}>This simple framework works for any story. Now see it in the wild →</p>
+            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.7,marginTop:8}}>No tension = no story.</p>
+          </>
+        )}
+        {isNT && step==="Theory 2" && (
+          <>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Pixar Framework</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Pixar used it for every film. It works because it mirrors how the human brain processes experience.</p>
+            <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"18px 20px",marginBottom:16,borderRadius:4}}>
+              <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>Once upon a time… Every day… Until one day… Because of that… Until finally…</p>
             </div>
+            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10,fontFamily:T.sans}}>See it in action — confidence in meetings</div>
+            {[
+              {beat:"Once upon a time…",line:"I thought confidence meant sounding polished."},
+              {beat:"Every day…",       line:"I overprepared for meetings."},
+              {beat:"Until one day…",   line:"I completely froze."},
+              {beat:"Because of that…",line:"I changed how I prepared."},
+              {beat:"Because of that…",line:"I focused on clarity, not perfection."},
+              {beat:"Until finally…",  line:"People started listening."},
+            ].map((r,i,arr) => (
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px",marginBottom:8}}>
+                <div style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:T.gold,marginBottom:4}}>{r.beat}</div>
+                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{r.line}</p>
+              </div>
+            ))}
+            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text3,lineHeight:1.6,marginTop:8}}>This simple framework works for any story. Now see it in the wild →</p>
           </>
         )}
         {isNT && step==="Example" && (
@@ -7936,24 +7936,6 @@ T.goldDark : T2.text4,
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Build Your Story</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Answer three questions. Your AI coach builds the story using the 6-beat arc.</p>
             <StoryBuilderWidget onSave={s => { setNtStory(s); try { localStorage.setItem("au1_nt_story",s); } catch(_){} }}/>
-          </>
-        )}
-        {isNT && step==="Simulation" && (
-          <>
-            <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Now Practice Telling It</h2>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Read your story aloud. Feel the rhythm of the 6-beat arc.</p>
-            {ntStory ? (
-              <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:16}}>
-                <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Your Story</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{ntStory}</p>
-              </div>
-            ) : (
-              <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"16px 20px",marginBottom:16}}>
-                <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,fontStyle:"italic",margin:0}}>Build your story in Practice first.</p>
-              </div>
-            )}
-            <Timer totalSecs={180} label="Read your story aloud — 3 minutes"/>
           </>
         )}
 
