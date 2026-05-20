@@ -8436,7 +8436,9 @@ display:"flex",alignItems:"center",justifyContent:"center",gap:10,
               boxShadow:idx===0?"0 4px 16px rgba(138,158,132,0.35)":"0 4px 16px rgba(17,28,46,0.3)",
               letterSpacing:"0.2px",
             }}>
-              <span>{NAV_LABELS[idx]}</span>
+              <span>{isNT
+                ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Practice":NAV_LABELS[idx])
+                : NAV_LABELS[idx]}</span>
               <svg width="18" height="18" viewBox="0 0 18 18" 
 fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="white" strokeWidth="2" 
 strokeLinecap="round" strokeLinejoin="round"/></svg>
