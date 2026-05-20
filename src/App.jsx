@@ -8339,9 +8339,9 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             {/* Practice scenarios */}
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>Practice Scenarios</div>
             {[
-              {n:1, label:"The Sponsor Ambush",    scenario:"You're in the lift with your CEO. She turns to you and asks: 'What's your honest view on whether this initiative will land?' You have 60 seconds. Lead with your point."},
-              {n:2, label:"The Board Moment",       scenario:"The chair pauses and looks directly at you: 'You've been closest to this — what's your read?' The room is watching. Structure your answer. Start with your conclusion."},
-              {n:3, label:"The Strategic Opinion",  scenario:"A senior stakeholder you've never met asks: 'What do you think we should do?' No time to prepare. Three parts. One point. One reason. One example. Go."},
+              {n:1, label:"Team Meeting Opinion",   scenario:"Your manager asks the team: 'Should we move to weekly check-ins instead of daily ones?' They turn to you first. Use PRE: give your view (yes or no), explain why it would or wouldn't work for your team, then give one real example of what you've seen happen when meetings are too frequent — or not frequent enough."},
+              {n:2, label:"Process Improvement",    scenario:"A colleague asks: 'Do you think we should change how we onboard new starters? It feels too long.' Give your view using PRE — state whether you agree, explain the one reason that matters most, then anchor it with a specific example from something you've actually seen or experienced."},
+              {n:3, label:"Everyday Recommendation",scenario:"Your team is debating whether to shift to flexible working hours. Your manager asks: 'What's your take?' Use PRE to give a clear, structured response — your position, one solid reason, and one concrete example that supports it."},
             ].map((sc,i)=>(
               <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"18px"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
