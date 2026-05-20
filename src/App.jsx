@@ -8209,8 +8209,8 @@ style={{fontSize:15,color:T2.text,lineHeight:1.5}}>{q}</span>
                 </div>
               ))}
             </div>
-            {/* Ambition Statement — shown days 4-7, week 1 window */}
-            {lesson.day >= 4 && lesson.day <= 7 && (
+            {/* Ambition Statement — only on Day 7 Review (end of Week 1) */}
+            {lesson.day === 7 && (
               <div style={{
                 background:T.cardDark,
                 borderRadius:16,
@@ -8292,27 +8292,6 @@ throughout the programme.
               </div>
             )}
 
-            {/* Ambition echo — days 8+ show it back if it exists */}
-            {lesson.day >= 8 && ambitionSaved && ambitionDraft && (
-              <div style={{
-                background:"rgba(138,158,132,0.06)",
-                borderRadius:12,
-                padding:"12px 16px",
-                borderLeft:"2px solid "+T.gold,
-              }}>
-                <div 
-style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Your 
-ambition</div>
-                <p 
-style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(255,255,255,0.7)",lineHeight:1.55,margin:0}}>
-                  "In the next 18 months, I want to be {ambitionDraft}"
-                </p>
-                <p 
-style={{fontSize:11,color:"rgba(255,255,255,0.3)",marginTop:6,margin:"6px 0 0"}}>
-                  Does how you showed up today reflect where you're going?
-                </p>
-              </div>
-            )}
 
             {/* Notes field */}
             <div style={{background:T2.surface,borderRadius:16,border:"1px solid "+T2.border,overflow:"hidden"}}>
