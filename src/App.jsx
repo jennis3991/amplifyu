@@ -4980,8 +4980,8 @@ setAmbitionSaved(true); } catch {}
           <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"center" }}>
             {/* Blurred bg fill */}
             <img src="/dual-coding-theory.jpg" alt="" style={{ position:"absolute", inset:"-20px", width:"calc(100% + 40px)", height:"calc(100% + 40px)", objectFit:"cover", filter:"blur(18px) brightness(0.6)", pointerEvents:"none" }}/>
-            {/* Sharp full-width image */}
-            <img src="/dual-coding-theory.jpg" alt="Dual Coding Theory" style={{ position:"relative", zIndex:1, width:"100%", height:"auto", display:"block" }}/>
+            {/* Sharp image — scaled up to reduce blurred border */}
+            <img src="/dual-coding-theory.jpg" alt="Dual Coding Theory" style={{ position:"relative", zIndex:1, width:"140%", marginLeft:"-20%", height:"auto", display:"block" }}/>
             <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.55) 0%, transparent 40%)", zIndex:2 }}/>
             <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:3, animation:"fadeUp 0.7s ease both" }}>
               <div style={{ ...LP_LABEL, color:T.gold, marginBottom:8 }}>Green &amp; Brock, 2000</div>
