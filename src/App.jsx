@@ -4648,6 +4648,7 @@ setAmbitionSaved(true); } catch {}
     const RP_LABEL  = { fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: T.sans, fontWeight: 500 };
 
     const LeftPanel = () => {
+      const [imgZoom, setImgZoom] = useState(false);
       // ── D4 — Short Sentences left panel overrides ────────────────────────────
       if (isD4) {
         const d4Dark = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
@@ -4986,14 +4987,26 @@ setAmbitionSaved(true); } catch {}
           </div>
         );
         if (step === "Theory 2") return (
-          <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#100D09" }}>
-            <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain", objectPosition:"center" }}/>
-            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 40%)" }}/>
-            <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
-              <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Framework</div>
-              <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>Every great story follows a learnable pattern.</p>
+          <>
+            {imgZoom && (
+              <div onClick={()=>setImgZoom(false)} style={{position:"fixed",inset:0,zIndex:1000,background:"rgba(10,8,5,0.92)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"zoom-out",backdropFilter:"blur(4px)"}}>
+                <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{maxWidth:"92vw",maxHeight:"92vh",objectFit:"contain",borderRadius:4,boxShadow:"0 24px 80px rgba(0,0,0,0.5)"}}/>
+                <div style={{position:"absolute",top:24,right:28,color:"rgba(255,255,255,0.5)",fontSize:28,lineHeight:1}}>×</div>
+              </div>
+            )}
+            <div onClick={()=>setImgZoom(true)} style={{ height:"100%", position:"relative", overflow:"hidden", cursor:"zoom-in" }}>
+              <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.72) 0%, transparent 45%)" }}/>
+              <div style={{ position:"absolute", top:20, right:20, zIndex:2, background:"rgba(10,8,5,0.45)", backdropFilter:"blur(4px)", borderRadius:4, padding:"6px 10px", display:"flex", alignItems:"center", gap:6 }}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2"/><path d="M9.5 9.5l2.5 2.5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2" strokeLinecap="round"/><path d="M4.5 6h3M6 4.5v3" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <span style={{fontSize:10,color:"rgba(255,255,255,0.7)",fontFamily:T.sans,fontWeight:500}}>Click to enlarge</span>
+              </div>
+              <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
+                <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Framework</div>
+                <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>Every great story follows a learnable pattern.</p>
+              </div>
             </div>
-          </div>
+          </>
         );
         if (step === "Example") return (
           <div style={{ background:"#0E0B08", height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
