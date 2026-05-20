@@ -7351,7 +7351,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            8:{Insight:"/narrative-transportation.jpg","Theory 1":"/nt-6beat-framework.jpg","Theory 2":"/nt-6beat-framework.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
+            8:{Insight:"/narrative-transportation.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
           if(src) return <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none"}}/>;
@@ -7853,25 +7853,23 @@ T.goldDark : T2.text4,
         )}
         {isNT && step==="Theory 1" && (
           <>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The 6-Beat Framework</h2>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Every great story follows a learnable pattern. Master these six beats and you can tell any story.</p>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Dual Coding Theory</h2>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Green &amp; Brock, 2000</div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Stories activate more of the brain than facts. They trigger emotion, memory, and meaning simultaneously. In professional settings, a well-placed story is the most powerful persuasion tool available.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
               {[
-                {n:1,beat:"Hook",         sub:"It starts with tension."},
-                {n:2,beat:"Character",    sub:"Make it human. Make it real."},
-                {n:3,beat:"Problem",      sub:"What broke? What's at stake?"},
-                {n:4,beat:"Turning Point",sub:"What changes? Everything shifts."},
-                {n:5,beat:"Resolution",   sub:"What happened? Why it matters."},
-                {n:6,beat:"Meaning",      sub:"What stayed with us?"},
-              ].map((b,i) => (
+                {word:"Verbal Channel",  body:"Story activates the brain's language system — the same channel that processes speech, argument, and logic. It carries your message with precision."},
+                {word:"Visual Channel",  body:"Story simultaneously triggers the brain's visual cortex, creating mental imagery. Facts alone never do this. Your audience sees what you describe."},
+                {word:"65% vs 10%",      body:"People retain 65% of information delivered through story. Only 10% from data alone. Story isn't decoration — it's the delivery mechanism."},
+                {word:"The Convergence", body:"Every skill you built in Week 1 — clarity, pace, structure, brevity — comes together in the moment you tell a story. This is where it all lands."},
+              ].map((n,i)=>(
                 <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4}}>Beat {b.n}</div>
-                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:4}}>{b.beat}</div>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{b.sub}</p>
+                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
                 </div>
               ))}
             </div>
-            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.7,marginTop:8}}>No tension = no story.</p>
+            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.7,marginTop:8}}>The brain encodes story. It files away data.</p>
           </>
         )}
         {isNT && step==="Theory 2" && (
