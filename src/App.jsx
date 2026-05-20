@@ -6943,7 +6943,7 @@ setAmbitionSaved(true); } catch {}
                 {[{label:"Point",text:card.point},{label:"Reason",text:card.reason},{label:"Example",text:card.example}].map((block,i)=>(
                   <div key={i} style={{ marginBottom:20 }}>
                     <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>{block.label}</div>
-                    <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T2.text, lineHeight:1.6, fontWeight:500, margin:0 }}>{block.text}</p>
+                    <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T2.text, lineHeight:1.65, fontWeight:400, margin:0 }}>{block.text}</p>
                   </div>
                 ))}
                 {card.proof && (
