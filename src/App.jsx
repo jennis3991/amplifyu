@@ -6919,9 +6919,9 @@ setAmbitionSaved(true); } catch {}
                 example:"At PepsiCo this became tangible: healthier product innovation, reducing sugar/salt/fat, sustainability initiatives, packaging redesign, environmental commitments. She operationalised the philosophy.",
                 lesson:"She leads with a clear thesis, connects it to business reality, then proves it with concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
               {name:"Jensen Huang",role:"Founder & CEO, NVIDIA",
-                point:'"You only need to win once."',
-                reason:"Most innovation is failure-heavy. Building transformative companies means repeated setbacks, bad product bets, and years of uncertainty. You don't need perfection — you need persistence long enough for one breakthrough.",
-                example:"NVIDIA itself. For years GPUs were niche and AI wasn't commercially obvious. Then one breakthrough — AI and accelerated computing — transformed NVIDIA into one of the most valuable companies on earth.",
+                point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
+                reason:'"And the goal of winning is so that you can play again." — This is the exact logic bridge. His reason for why perfection isn\'t the goal.',
+                example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."',
                 lesson:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof. A single powerful example. That's what powerful communicators do."},
             ].map((card,ci)=>(
               <div key={ci} style={{ background:"white", borderRadius:8, padding:"32px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)" }}>
@@ -8206,9 +8206,9 @@ T.goldDark : T2.text4,
                 example:"At PepsiCo this became tangible: healthier product innovation, reducing sugar/salt/fat, sustainability initiatives, packaging redesign, environmental commitments. She didn't leave it as philosophy — she operationalised it.",
                 lesson:"Because she leads with a clear thesis, connects it to business reality, then proves it with concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
               {id:"huang",name:"Jensen Huang",preview:"Founder of NVIDIA. His communication style is compressed wisdom — a sharp point, strategic rationale, and lived proof that changed the world.",
-                point:'"You only need to win once."',
-                reason:"Most innovation is failure-heavy. Building transformative companies means repeated setbacks, bad product bets, investor pressure, and years of uncertainty. You don't need perfection — you need persistence long enough for one breakthrough.",
-                example:"NVIDIA itself. For years, GPUs were niche, gaming seemed narrow, and AI wasn't commercially obvious. Then one breakthrough — AI and accelerated computing — transformed NVIDIA into one of the most valuable companies on earth.",
+                point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
+                reason:'"And the goal of winning is so that you can play again." — This is the exact logic bridge. His reason for why perfection isn\'t the goal.',
+                example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."',
                 lesson:"He doesn't over-explain. He leads with a sharp thesis, strategic rationale, and lived proof. A sharp point, a clear reason, a single powerful example. That's what powerful communicators do."},
             ].map(card=>(
               <div key={card.id} onClick={()=>setD5MobCard(d5MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d5MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
