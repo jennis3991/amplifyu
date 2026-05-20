@@ -4986,9 +4986,9 @@ setAmbitionSaved(true); } catch {}
           </div>
         );
         if (step === "Theory 2") return (
-          <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#100D09", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" }}>
-            <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{ width:"100%", maxHeight:"75%", objectFit:"contain", objectPosition:"center", padding:"0 32px", boxSizing:"border-box" }}/>
-            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 35%)" }}/>
+          <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#100D09" }}>
+            <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain", objectPosition:"center" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 40%)" }}/>
             <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
               <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Framework</div>
               <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>Every great story follows a learnable pattern.</p>
@@ -7382,7 +7382,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             8:{Insight:"/narrative-transportation.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
-          if(src) return <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none"}}/>;
+          if(src) return <img src={src} alt="" style={{width:step==="Theory 2"?"calc(100% - 12px)":"100%",marginLeft:step==="Theory 2"?"6px":0,height:320,objectFit:step==="Theory 2"?"contain":"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none",background:step==="Theory 2"?"#100D09":"transparent"}}/>;
           return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
         })()}
         {/* Dark film overlay for Practice + Simulation */}
