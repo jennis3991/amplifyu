@@ -8053,7 +8053,7 @@ T.goldDark : T2.text4,
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Structure is how you organise your thinking before you speak. PRE helps you do that: start with your point, explain why it matters, then bring it to life with an example.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
               {[
-                {word:"Credibility",  body:"Leading with your point signals clear thinking. Structured answers make you sound authoritative — immediately and consistently."},
+                {word:"Credibility",  body:"Leading with your point signals clear thinking. Structured communication creates immediate credibility and helps your ideas land with confidence and authority."},
                 {word:"Recall",       body:"Structured messages are 40% more memorable. A clear beginning, middle and end helps your audience store and retrieve your message with ease."},
                 {word:"Persuasion",   body:"PRE is the architecture of every great professional pitch. A point backed by a reason and grounded in an example moves people to action."},
                 {word:"Decision Speed", body:"Leaders decide faster when communication is structured. Lead with your point and you accelerate every conversation you're in."},
