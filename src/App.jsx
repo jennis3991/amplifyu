@@ -6925,11 +6925,11 @@ setAmbitionSaved(true); } catch {}
           <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:40, maxWidth:640 }}>Two of the world's most effective communicators — whether they name it or not, both use PRE every time.</p>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:24 }}>
             {[
-              {name:"Indra Nooyi",role:"CEO, PepsiCo",
+              {name:"Indra Nooyi",role:"CEO, PepsiCo — 2006",
                 point:'"Performance must be married with purpose."',
                 reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing." — Her rationale for why businesses could no longer think purely about short-term financial performance.',
-                example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people." — Concrete proof showing how the philosophy became operational reality.',
-                lesson:"She leads with a clear thesis, connects it to business reality, then proves it with concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
+                example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people."\n\nAt PepsiCo this became tangible action: healthier product innovation, reducing sugar, salt and fat, sustainability initiatives, packaging redesign, and environmental commitments. She didn\'t leave it as philosophy — she operationalised it.',
+                lesson:"Point → big strategic belief. Reason → why the market demands it. Example → concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
               {name:"Jensen Huang",role:"Founder & CEO, NVIDIA — said in 1993",
                 point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
                 reason:'"And the goal of winning is so that you can play again." — This is the exact logic bridge. His reason for why perfection isn\'t the goal.',
@@ -8212,11 +8212,11 @@ T.goldDark : T2.text4,
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>PRE in Action</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to see how world-class leaders use PRE — whether they name it or not.</p>
             {[
-              {id:"nooyi",name:"Indra Nooyi",preview:"CEO of PepsiCo. Her 'Performance with Purpose' strategy is textbook PRE — a bold thesis backed by business logic and concrete action.",
-                point:'"Performance must be married with purpose."',
+              {id:"nooyi",name:"Indra Nooyi",preview:"CEO of PepsiCo, 2006. Her 'Performance with Purpose' strategy is textbook PRE — a bold thesis backed by business logic and concrete action.",
+                point:'"Performance must be married with purpose." — Indra Nooyi, 2006',
                 reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing." — Her rationale for why businesses could no longer think purely about short-term financial performance.',
-                example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people." — Concrete proof showing how the philosophy became operational reality.',
-                lesson:"She leads with a clear thesis, connects it to business reality, then proves it with concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
+                example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people."\n\nAt PepsiCo this became tangible action: healthier product innovation, reducing sugar, salt and fat, sustainability initiatives, packaging redesign, and environmental commitments. She didn\'t leave it as philosophy — she operationalised it.',
+                lesson:"Point → big strategic belief. Reason → why the market demands it. Example → concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
               {id:"huang",name:"Jensen Huang",preview:"Founder of NVIDIA, said in 1993. His communication style is compressed wisdom — a sharp point, strategic rationale, and lived proof that changed the world.",
                 point:'"I don\'t need to build a killer product overnight, I just need to build a winning product." — Jensen Huang, 1993',
                 reason:'"And the goal of winning is so that you can play again." — This is the exact logic bridge. His reason for why perfection isn\'t the goal.',
