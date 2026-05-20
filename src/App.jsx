@@ -7394,14 +7394,31 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       </div>
 
       {/* Header image + Exit button overlay */}
-      {/* Header image + Exit button overlay */}
-      <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:(step==="Practice"||step==="Simulation")?"#141210":"transparent"}}>
+      <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:(step==="Practice"||step==="Simulation")?"#141210":step==="Example"?"#0E0B08":"transparent"}}>
         {(()=>{
+          // Example tab: dark cinematic text panel instead of image
+          if(step==="Example"){
+            const EX_HEADERS={
+              1:{label:"MASTERS OF CLARITY",    heading:"The simplest words carry the most weight.",      body:"Clear communicators don't use more words. They use better ones."},
+              3:{label:"MASTERS OF THE PAUSE",  heading:"Silence is more powerful than the word that fills it.", body:"The strongest speakers pause. Nervous speakers fill every silence."},
+              4:{label:"MASTERS OF BREVITY",    heading:"Say less. Mean more. Be remembered.",             body:"The most persuasive lines ever spoken? All under 10 words."},
+              8:{label:"STORYTELLING IN THE WILD", heading:"Stories create empathy. Empathy creates trust. Trust creates influence.", body:"The same facts — told as a story — land 22× more powerfully in the human brain."},
+            };
+            const h=EX_HEADERS[lesson.day]||EX_HEADERS[1];
+            return (
+              <div style={{width:"100%",height:320,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box"}}>
+                <div style={{fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>{h.label}</div>
+                <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(245,239,230,0.95)",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>{h.heading}</p>
+                <div style={{width:40,height:1,background:"rgba(245,239,230,0.25)",marginBottom:14}}/>
+                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>{h.body}</p>
+              </div>
+            );
+          }
           const STEP_IMGS={
-            1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
+            1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
           if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none"}}/>;
