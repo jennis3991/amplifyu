@@ -6930,24 +6930,31 @@ setAmbitionSaved(true); } catch {}
                 reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing." — Her rationale for why businesses could no longer think purely about short-term financial performance.',
                 example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people."\n\nAt PepsiCo this became tangible action: healthier product innovation, reducing sugar, salt and fat, sustainability initiatives, packaging redesign, and environmental commitments. She didn\'t leave it as philosophy — she operationalised it.',
                 lesson:"Point → big strategic belief. Reason → why the market demands it. Example → concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
-              {name:"Jensen Huang",role:"Founder & CEO, NVIDIA — said in 1993",
+              {name:"Jensen Huang",role:"Founder of Nvidia",
                 point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
-                reason:'"And the goal of winning is so that you can play again." — This is the exact logic bridge. His reason for why perfection isn\'t the goal.',
-                example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."\n\nNVIDIA itself is the proof. For years, GPUs were niche, gaming seemed narrow, and AI wasn\'t commercially obvious. NVIDIA kept making bets — staying in the game — until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth.',
+                reason:'"And the goal of winning is so that you can play again."',
+                example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."',
+                proof:"NVIDIA itself — for years, GPUs were niche, gaming seemed narrow, and AI wasn't commercially obvious. NVIDIA kept making bets and staying in the game until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth.",
                 lesson:"Said in 1993 — decades before the breakthrough that proved it true. Sharp thesis. Strategic rationale. Lived proof. That's what powerful communicators do."},
             ].map((card,ci)=>(
               <div key={ci} style={{ background:"white", borderRadius:8, padding:"32px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)" }}>
                 <h3 style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:T2.text, marginBottom:4, letterSpacing:"-0.2px" }}>{card.name}</h3>
                 <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, marginBottom:24, fontWeight:400 }}>{card.role}</p>
                 {[{label:"Point",text:card.point},{label:"Reason",text:card.reason},{label:"Example",text:card.example}].map((block,i)=>(
-                  <div key={i} style={{ marginBottom:18 }}>
+                  <div key={i} style={{ marginBottom:20 }}>
                     <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>{block.label}</div>
-                    <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T2.text, lineHeight:1.65, fontWeight:400, margin:0 }}>{block.text}</p>
+                    <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T2.text, lineHeight:1.6, fontWeight:500, margin:0 }}>{block.text}</p>
                   </div>
                 ))}
+                {card.proof && (
+                  <div style={{ marginBottom:20 }}>
+                    <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Nvidia Is The Proof</div>
+                    <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>{card.proof}</p>
+                  </div>
+                )}
                 <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:18, marginTop:4 }}>
-                  <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:6 }}>Why This Works</div>
-                  <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
+                  <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Why This Works</div>
+                  <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
                 </div>
               </div>
             ))}
@@ -8217,10 +8224,11 @@ T.goldDark : T2.text4,
                 reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing." — Her rationale for why businesses could no longer think purely about short-term financial performance.',
                 example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people."\n\nAt PepsiCo this became tangible action: healthier product innovation, reducing sugar, salt and fat, sustainability initiatives, packaging redesign, and environmental commitments. She didn\'t leave it as philosophy — she operationalised it.',
                 lesson:"Point → big strategic belief. Reason → why the market demands it. Example → concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
-              {id:"huang",name:"Jensen Huang",preview:"Founder of NVIDIA, said in 1993. His communication style is compressed wisdom — a sharp point, strategic rationale, and lived proof that changed the world.",
-                point:'"I don\'t need to build a killer product overnight, I just need to build a winning product." — Jensen Huang, 1993',
-                reason:'"And the goal of winning is so that you can play again." — This is the exact logic bridge. His reason for why perfection isn\'t the goal.',
-                example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."\n\nNVIDIA itself is the proof. For years, GPUs were niche, gaming seemed narrow, and AI wasn\'t commercially obvious. NVIDIA kept making bets — staying in the game — until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth.',
+              {id:"huang",name:"Jensen Huang",preview:"Founder of Nvidia.",
+                point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
+                reason:'"And the goal of winning is so that you can play again."',
+                example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."',
+                proof:"NVIDIA itself — for years, GPUs were niche, gaming seemed narrow, and AI wasn't commercially obvious. NVIDIA kept making bets and staying in the game until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth.",
                 lesson:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof. Said in 1993 — decades before the breakthrough that proved it true. That's what powerful communicators do."},
             ].map(card=>(
               <div key={card.id} onClick={()=>setD5MobCard(d5MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d5MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
@@ -8231,14 +8239,20 @@ T.goldDark : T2.text4,
                 <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
                 {d5MobCard===card.id && (
                   <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Point</div>
-                    <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:12,fontStyle:"italic"}}>{card.point}</p>
-                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Reason</div>
-                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,fontWeight:400,marginBottom:12}}>{card.reason}</p>
-                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Example</div>
-                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,fontWeight:400,marginBottom:12}}>{card.example}</p>
+                    {["Point","Reason","Example"].map((label,i)=>(
+                      <div key={i} style={{marginBottom:14}}>
+                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{label}</div>
+                        <p style={{fontFamily:T.serif,fontSize:16,fontWeight:500,color:T2.text,lineHeight:1.5,fontStyle:"italic",margin:0}}>{[card.point,card.reason,card.example][i]}</p>
+                      </div>
+                    ))}
+                    {card.proof && (
+                      <div style={{marginBottom:14}}>
+                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Nvidia Is The Proof</div>
+                        <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.proof}</p>
+                      </div>
+                    )}
                     <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why This Works</div>
-                    <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
+                    <p style={{fontFamily:T.serif,fontSize:16,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
                   </div>
                 )}
               </div>
