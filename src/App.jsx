@@ -8219,14 +8219,14 @@ T.goldDark : T2.text4,
                 <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
                 {d5MobCard===card.id && (
                   <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Point</div>
-                    <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:14,fontStyle:"italic"}}>{card.point}</p>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Reason</div>
-                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:14}}>{card.reason}</p>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Example</div>
-                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:14}}>{card.example}</p>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why This Works</div>
-                    <p style={{fontFamily:T.serif,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Point</div>
+                    <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:12,fontStyle:"italic"}}>{card.point}</p>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Reason</div>
+                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,fontWeight:400,marginBottom:12}}>{card.reason}</p>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Example</div>
+                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,fontWeight:400,marginBottom:12}}>{card.example}</p>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why This Works</div>
+                    <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
                   </div>
                 )}
               </div>
@@ -8262,7 +8262,7 @@ style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.insight}</p>
 
         {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD10 && step==="Theory" && <TheoryCard day={lesson.day}/>}
 
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD10 && step==="Example" && (
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Example" && (
           <>
             <div style={{background:"#FDF0EE",border:"1px solid #F0C5C0",borderRadius:2,padding:"16px 18px"}}>
               <div
@@ -8296,7 +8296,26 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           </>
         )}
 
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD10 && step==="Practice" && (
+        {isD5 && step==="Practice" && (
+          <>
+            <div style={{background:T2.surface,borderRadius:2,padding:"18px 20px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Your Practice</div>
+              <p style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.practice}</p>
+            </div>
+            <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+              <div style={{fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12,fontFamily:T.sans}}>Starter Phrases</div>
+              {lesson.phrases.map((ph,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"10px 0",borderBottom:i<lesson.phrases.length-1?"0.5px solid "+T2.divider:"none"}}>
+                  <div style={{width:1.5,height:18,background:T.gold,flexShrink:0,marginTop:3,opacity:0.7}}/>
+                  <p style={{margin:0,fontFamily:T.serif,fontSize:15,color:T2.text,fontStyle:"italic",lineHeight:1.55}}>{ph}</p>
+                </div>
+              ))}
+            </div>
+            <Timer totalSecs={180} label="3 minutes"/>
+            <CoachWidget lesson={lesson} scenario={null}/>
+          </>
+        )}
+        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Practice" && (
           <>
             <div
 style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
