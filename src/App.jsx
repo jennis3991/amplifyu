@@ -5167,6 +5167,19 @@ setAmbitionSaved(true); } catch {}
       if (step === "Theory") {
         const Diagram = DIAGRAMS[lesson.day - 1];
         const theoryImg = THEORY_IMAGES[lesson.theoryImageDay || lesson.day];
+        // Day 5: full-width contain with blurred bg so landscape image shows completely
+        if (isD5 && theoryImg && theoryImg.image) {
+          return (
+            <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#1A1510", display:"flex", flexDirection:"column", justifyContent:"center" }}>
+              <img src={theoryImg.image} alt="" style={{ position:"absolute", inset:"-20px", width:"calc(100% + 40px)", height:"calc(100% + 40px)", objectFit:"cover", filter:"blur(18px) brightness(0.45)", pointerEvents:"none" }}/>
+              <img src={theoryImg.image} alt={theoryImg.alt||""} style={{ position:"relative", zIndex:1, width:"140%", marginLeft:"-20%", height:"auto", display:"block" }}/>
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.55) 0%, transparent 40%)", zIndex:2 }}/>
+              <div style={{ position:"absolute", top:32, left:24, zIndex:3, animation:"fadeUp 0.7s ease both" }}>
+                <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", textShadow:"0 1px 6px rgba(0,0,0,0.6)" }}>The Science</div>
+              </div>
+            </div>
+          );
+        }
         if (theoryImg && theoryImg.image) {
           return (
             <div style={{ height: "100%", position: "relative", overflow: "hidden" }}>
