@@ -4163,6 +4163,7 @@ setAmbitionSaved(true); } catch {}
   const [d1MobCard, setD1MobCard] = useState(null);
   const [d3MobCard, setD3MobCard] = useState(null);
   const [d4MobCard, setD4MobCard] = useState(null);
+  const [d5MobCard, setD5MobCard] = useState(null);
   const [ntMobCard, setNtMobCard] = useState(null);
   const swipeRef = useRef({x:0,y:0});
   // step is derived from STEPS (NT uses 7-step array, all others use 6-step)
@@ -6906,6 +6907,42 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
+      if (step === "Example") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>PRE in Action</h2>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:40, maxWidth:640 }}>Two of the world's most effective communicators — whether they name it or not, both use PRE every time.</p>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:24 }}>
+            {[
+              {name:"Indra Nooyi",role:"CEO, PepsiCo",
+                point:'"Companies cannot deliver long-term performance unless they also create long-term value for society."',
+                reason:"Consumer expectations were shifting. Health, sustainability, talent, and public trust were becoming strategic business issues. Her logic: if business ignores these shifts, performance eventually suffers.",
+                example:"At PepsiCo this became tangible: healthier product innovation, reducing sugar/salt/fat, sustainability initiatives, packaging redesign, environmental commitments. She operationalised the philosophy.",
+                lesson:"She leads with a clear thesis, connects it to business reality, then proves it with concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
+              {name:"Jensen Huang",role:"Founder & CEO, NVIDIA",
+                point:'"You only need to win once."',
+                reason:"Most innovation is failure-heavy. Building transformative companies means repeated setbacks, bad product bets, and years of uncertainty. You don't need perfection — you need persistence long enough for one breakthrough.",
+                example:"NVIDIA itself. For years GPUs were niche and AI wasn't commercially obvious. Then one breakthrough — AI and accelerated computing — transformed NVIDIA into one of the most valuable companies on earth.",
+                lesson:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof. A single powerful example. That's what powerful communicators do."},
+            ].map((card,ci)=>(
+              <div key={ci} style={{ background:"white", borderRadius:8, padding:"32px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)" }}>
+                <h3 style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:T2.text, marginBottom:4, letterSpacing:"-0.2px" }}>{card.name}</h3>
+                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, marginBottom:24, fontWeight:400 }}>{card.role}</p>
+                {[{label:"Point",text:card.point,serif:true},{label:"Reason",text:card.reason},{label:"Example",text:card.example}].map((block,i)=>(
+                  <div key={i} style={{ marginBottom:18 }}>
+                    <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:6 }}>{block.label}</div>
+                    <p style={{ fontFamily:block.serif?T.serif:T.sans, fontSize:block.serif?16:14, fontStyle:block.serif?"italic":"normal", color:T2.text, lineHeight:1.65, fontWeight:block.serif?600:300, margin:0 }}>{block.text}</p>
+                  </div>
+                ))}
+                <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:18, marginTop:4 }}>
+                  <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:6 }}>Why This Works</div>
+                  <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+
       return <RightContent/>;
     };
 
@@ -7436,6 +7473,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
               1:{label:"MASTERS OF CLARITY",    heading:"The simplest words carry the most weight.",      body:"Clear communicators don't use more words. They use better ones."},
               3:{label:"MASTERS OF THE PAUSE",  heading:"Silence is more powerful than the word that fills it.", body:"The strongest speakers pause. Confident speakers own the silence."},
               4:{label:"MASTERS OF BREVITY",    heading:"Say less. Mean more. Be remembered.",             body:"The most persuasive lines ever spoken? All under 10 words."},
+              5:{label:"PRE IN ACTION",         heading:"Point. Reason. Example. The architecture of every great professional answer.", body:"The world's most effective communicators all follow the same structure — whether they know it or not."},
               8:{label:"STORYTELLING IN THE WILD", heading:"Stories create empathy. Empathy creates trust. Trust creates influence.", body:"The same facts — told as a story — land 22× more powerfully in the human brain."},
             };
             const h=EX_HEADERS[lesson.day]||EX_HEADERS[1];
@@ -8155,6 +8193,44 @@ T.goldDark : T2.text4,
               ))}
             </div>
             <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:4}}>PRE isn't just structure — it's how the brain naturally wants to receive information.</p>
+          </>
+        )}
+        {isD5 && step==="Example" && (
+          <>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>PRE in Action</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to see how world-class leaders use PRE — whether they name it or not.</p>
+            {[
+              {id:"nooyi",name:"Indra Nooyi",preview:"CEO of PepsiCo. Her 'Performance with Purpose' strategy is textbook PRE — a bold thesis backed by business logic and concrete action.",
+                point:'"Companies cannot deliver long-term performance unless they also create long-term value for society."',
+                reason:"Consumer expectations were shifting. Health, sustainability, talent, and public trust were becoming strategic business issues. Her logic: if business ignores these shifts, performance eventually suffers.",
+                example:"At PepsiCo this became tangible: healthier product innovation, reducing sugar/salt/fat, sustainability initiatives, packaging redesign, environmental commitments. She didn't leave it as philosophy — she operationalised it.",
+                lesson:"Because she leads with a clear thesis, connects it to business reality, then proves it with concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
+              {id:"huang",name:"Jensen Huang",preview:"Founder of NVIDIA. His communication style is compressed wisdom — a sharp point, strategic rationale, and lived proof that changed the world.",
+                point:'"You only need to win once."',
+                reason:"Most innovation is failure-heavy. Building transformative companies means repeated setbacks, bad product bets, investor pressure, and years of uncertainty. You don't need perfection — you need persistence long enough for one breakthrough.",
+                example:"NVIDIA itself. For years, GPUs were niche, gaming seemed narrow, and AI wasn't commercially obvious. Then one breakthrough — AI and accelerated computing — transformed NVIDIA into one of the most valuable companies on earth.",
+                lesson:"He doesn't over-explain. He leads with a sharp thesis, strategic rationale, and lived proof. A sharp point, a clear reason, a single powerful example. That's what powerful communicators do."},
+            ].map(card=>(
+              <div key={card.id} onClick={()=>setD5MobCard(d5MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d5MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                  <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:d5MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{d5MobCard===card.id?"▴ less":"▸ explore"}</span>
+                </div>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
+                {d5MobCard===card.id && (
+                  <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Point</div>
+                    <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:14,fontStyle:"italic"}}>{card.point}</p>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Reason</div>
+                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:14}}>{card.reason}</p>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Example</div>
+                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:14}}>{card.example}</p>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why This Works</div>
+                    <p style={{fontFamily:T.serif,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
+                  </div>
+                )}
+              </div>
+            ))}
           </>
         )}
 
