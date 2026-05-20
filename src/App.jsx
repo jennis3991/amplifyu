@@ -4986,9 +4986,9 @@ setAmbitionSaved(true); } catch {}
           </div>
         );
         if (step === "Theory 2") return (
-          <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#100D09" }}>
-            <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain", objectPosition:"center" }}/>
-            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 40%)" }}/>
+          <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#100D09", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" }}>
+            <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{ width:"100%", maxHeight:"75%", objectFit:"contain", objectPosition:"center", padding:"0 32px", boxSizing:"border-box" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 35%)" }}/>
             <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
               <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Framework</div>
               <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>Every great story follows a learnable pattern.</p>
