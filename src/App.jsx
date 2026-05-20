@@ -7343,7 +7343,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
 
       {/* Header image + Exit button overlay */}
       {/* Header image + Exit button overlay */}
-      <div style={{position:"relative",height:(step==="Practice"||step==="Simulation")?300:step==="Example"?320:220,overflow:"hidden",background:(step==="Practice"||step==="Simulation")?"#141210":"transparent"}}>
+      <div style={{position:"relative",height:320,overflow:"hidden",background:(step==="Practice"||step==="Simulation")?"#141210":"transparent"}}>
         {(()=>{
           const STEP_IMGS={
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
@@ -7351,11 +7351,9 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             8:{Insight:"/narrative-transportation.jpg",Theory:"/nt-6beat-framework.jpg",Example:"/example-quill.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           };
-          const darkFilm=step==="Practice"||step==="Simulation";
-          const h=darkFilm?300:step==="Example"?320:220;
           const src=STEP_IMGS[lesson.day]?.[step];
-          if(src) return <img src={src} alt="" style={{width:"100%",height:h,objectFit:"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none"}}/>;
-          return <Scene name={lesson.scene} height={h} day={lesson.day}/>;
+          if(src) return <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none"}}/>;
+          return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
         })()}
         {/* Dark film overlay for Practice + Simulation */}
         {(step==="Practice"||step==="Simulation") && <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.52)",pointerEvents:"none"}}/>}
