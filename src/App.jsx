@@ -10384,6 +10384,7 @@ strokeWidth="1.5" strokeLinecap="round"/></svg>}
           </div>
         </div>
       </div>
+      </div>
       {/* Version info */}
       <div style={{padding:"8px 20px 24px",textAlign:"center"}}>
         <div style={{fontSize:10,color:T2.text4,fontFamily:T.sans,letterSpacing:"0.5px",lineHeight:1.6}}>
