@@ -6092,6 +6092,18 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
+      if (step === "Simulation" && isD6) return (
+        <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+          <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
+          <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+            <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>High-Stakes — In Action</div>
+            <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Stay composed. Stay clear. Stay in control.</p>
+            <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+            <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Choose your scenario. Write your response. Your coach evaluates composure, clarity, and executive presence.</p>
+          </div>
+        </div>
+      );
+
       if (step === "Simulation") return (
         <div style={{ background: "#131009", height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "40px 48px", position: "relative", overflow: "hidden" }}>
           {/* Day 1: photo background */}
