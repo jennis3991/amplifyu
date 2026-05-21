@@ -8550,12 +8550,17 @@ setAmbitionSaved(true); } catch {}
             {/* Halo Effect — first */}
             <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The Halo Effect</h2>
             <p style={{ fontFamily:T.sans, fontSize:16, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:20, maxWidth:640 }}>Whether intentional or not, people are constantly building a story about who you are. Psychologists call this the Halo Effect: one standout positive trait shapes how they judge everything else.</p>
-            <div style={{ display:"flex", flexWrap:"wrap", gap:10, marginBottom:20 }}>
-              {[["articulate","intelligence"],["calm","competence"],["stylish","success"],["confident","capability"],["warm","trustworthiness"]].map(([sig,res],i) => (
-                <div key={i} style={{ padding:"8px 14px", background:T2.surface, borderRadius:3, border:"0.5px solid "+T2.border }}>
-                  <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:600, color:T2.text }}>{sig}</span>
-                  <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text3 }}> → people assume </span>
-                  <span style={{ fontFamily:T.serif, fontSize:13, fontStyle:"italic", color:T.gold }}>{res}</span>
+            <div style={{ marginBottom:20, border:"0.5px solid "+T2.border, borderRadius:4, overflow:"hidden" }}>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 32px 1fr", background:T2.surface, padding:"10px 20px", borderBottom:"0.5px solid "+T2.border }}>
+                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T2.text4, textTransform:"uppercase", letterSpacing:"1.5px" }}>You appear</div>
+                <div/>
+                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T2.text4, textTransform:"uppercase", letterSpacing:"1.5px" }}>People assume</div>
+              </div>
+              {[["Articulate","Intelligence"],["Calm","Competence"],["Stylish","Success"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([sig,res],i,arr) => (
+                <div key={i} style={{ display:"grid", gridTemplateColumns:"1fr 32px 1fr", alignItems:"center", padding:"14px 20px", background: i%2===0 ? T2.bg : T2.surface, borderBottom: i<arr.length-1 ? "0.5px solid "+T2.divider : "none" }}>
+                  <div style={{ fontFamily:T.sans, fontSize:14, fontWeight:500, color:T2.text }}>{sig}</div>
+                  <div style={{ fontFamily:T.sans, fontSize:14, color:T.gold, textAlign:"center", fontWeight:300 }}>→</div>
+                  <div style={{ fontFamily:T.sans, fontSize:14, fontWeight:600, color:T.gold }}>{res}</div>
                 </div>
               ))}
             </div>
@@ -10336,12 +10341,17 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Section 1 — The Halo Effect</div>
               <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:10}}>One Strong Signal Changes Everything</p>
               <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,marginBottom:10}}>When people notice one standout positive trait, they often assume other positive qualities must be true too.</p>
-              <div style={{display:"flex",flexDirection:"column",gap:5,marginBottom:10}}>
-                {[["articulate","intelligence"],["calm","competence"],["stylish","success"],["confident","capability"],["warm","trustworthiness"]].map(([s,r],i)=>(
-                  <div key={i} style={{display:"flex",alignItems:"center",gap:6}}>
-                    <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text}}>{s}</span>
-                    <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>→</span>
-                    <span style={{fontFamily:T.serif,fontSize:12,fontStyle:"italic",color:T.gold}}>{r}</span>
+              <div style={{border:"0.5px solid rgba(138,158,132,0.2)",borderRadius:4,overflow:"hidden",marginBottom:10}}>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 24px 1fr",background:"rgba(237,232,223,0.8)",padding:"7px 12px",borderBottom:"0.5px solid rgba(138,158,132,0.15)"}}>
+                  <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px"}}>You appear</span>
+                  <span/>
+                  <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px"}}>They assume</span>
+                </div>
+                {[["Articulate","Intelligence"],["Calm","Competence"],["Stylish","Success"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([s,r],i,arr)=>(
+                  <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 24px 1fr",alignItems:"center",padding:"10px 12px",background:i%2===0?"rgba(247,243,236,0.5)":"rgba(237,232,223,0.4)",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.12)":"none"}}>
+                    <span style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:T2.text}}>{s}</span>
+                    <span style={{fontFamily:T.sans,fontSize:13,color:T.gold,textAlign:"center",fontWeight:300}}>→</span>
+                    <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T.gold}}>{r}</span>
                   </div>
                 ))}
               </div>
