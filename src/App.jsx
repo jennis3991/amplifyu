@@ -1246,18 +1246,18 @@ const LESSONS = [
    promise:"Your performance is the non-negotiable. Communicate it like it matters — because it does. And now you have the story architecture to do it.",
    teaser:"Only 10% of career advancement comes from performance. This session shows you how to communicate your work so it actually counts — with the story tools you've just built."},
 
-  {day:11,week:2,title:"Brand & Image",tag:"Presence",scene:"presence",theoryImageDay:13,
-   quote:"You never get a second chance to make a first impression. But you get many chances to reinforce it.",
-   insight:"Image is how others perceive you — your presence, your personal style, the way you show up. You have far more control over this than you think. And now that you can tell a story, you have one of the most powerful image tools available: the ability to shape how others see you through what you choose to share.",
-   pieLink:"Image: This is your visual and verbal brand — built in every interaction, especially the small ones. Stories are one of its most powerful building blocks.",
-   phrases:["I want to be known for…","The way I show up is…","My approach is always…"],
-   bad:"[Showing up distracted, unprepared, unfocused — or visible without a story worth telling]",
-   good:"[Entering any room with calm, intention, full presence — and a story ready that shows who you are]",
-   practice:"Identify one element of your image you want to strengthen. Name it. Then identify one story from your career that demonstrates it. Practise telling that story today.",
-   scenarios:["Walking into a meeting with a new senior stakeholder","Joining a call where you need to make an impression","Greeting someone senior for the first time"],
-   review:["How did I show up today?","Did my presence match my intention?","Do I have one story ready that shows — not just tells — who I am?"],
-   promise:"Image is built deliberately, one interaction at a time. You now have the story to prove it.",
-   teaser:"Your image is built in every room you enter. This session shows you how to take control — and how the stories you tell are one of its most powerful tools."},
+  {day:11,week:2,title:"Brand Architecture",tag:"Presence",scene:"presence",
+   quote:"Your personal brand is what people say about you when you're not in the room.",
+   insight:"Image is how others perceive you. But perception isn't random — it's built from signals. Your appearance, your stories, your consistency, your voice. You have far more control over this than you think. The most powerful people in any room learned to shape it intentionally.",
+   pieLink:"Image: This module is the bridge. Everything you've built — clarity, voice, credibility, structure, composure — now becomes the architecture of how you're perceived.",
+   phrases:["I want to be known for…","What I stand for is…","My approach is always…"],
+   bad:"[Showing up without intention — letting others fill the gaps with their own assumptions]",
+   good:"[Entering every room with clear intention: consistent signals, a story ready, and a brand you've chosen]",
+   practice:"Write down three words you want people to use to describe you. Then ask: does the way you currently show up — your wardrobe, your digital presence, your communication — match those words?",
+   scenarios:["Walking into a room with a new senior stakeholder","Introducing yourself at a networking event","Updating your LinkedIn profile"],
+   review:["Do my signals match my intentions?","Do I have a consistent story about who I am?","Have I chosen my brand — or let others choose it for me?"],
+   promise:"Your image is already being built, in every room you enter. This is where you take control.",
+   teaser:"Discover how to shape the way others perceive you — with intentional signals, consistent behaviour, and stories that make your brand unforgettable."},
 
   {day:12,week:2,title:"Executive Presence",tag:"Presence",scene:"presence",comingSoon:true,
    quote:"Presence is not what you project. It's what others feel when you enter.",
@@ -4905,6 +4905,330 @@ function D6SimWidget({T, T2, isDesktop}) {
   return null;
 }
 
+// ─── D11 Practice Widget ──────────────────────────────────────────────────
+function D11PracticeWidget({T, T2, isDesktop}) {
+  const SIGNAL_AREAS = ["Wardrobe","LinkedIn & bio","Voice & pace","Posture & presence","Storytelling","Energy","Online presence","Communication style"];
+  const STORY_TYPES = [
+    {label:"Origin Story",      desc:"Where you came from and what shaped your values."},
+    {label:"Turning Point",     desc:"A moment that changed your direction or thinking."},
+    {label:"Failure Story",     desc:"A challenge you faced and what you learned."},
+    {label:"Values Story",      desc:"A decision that shows what you stand for."},
+  ];
+  const BRAND_WORDS = ["calm","sharp","trustworthy","creative","premium","warm","fearless","visionary","precise","driven","empathetic","decisive","authentic","bold","considered"];
+  const [words, setWords] = useState(["","",""]);
+  const [auditDone, setAuditDone] = useState({});
+  const [activeStory, setActiveStory] = useState(null);
+  const [storyText, setStoryText] = useState({});
+  const [tab, setTab] = useState(0);
+
+  const tabs = ["Brand Mirror","Signal Audit","Story Curation"];
+  const cs = {
+    card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"16px"},
+    label: {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8},
+  };
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+        {tabs.map((t,i) => (
+          <button key={i} onClick={()=>setTab(i)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${tab===i?T.gold:T2.border}`,background:tab===i?"rgba(138,158,132,0.1)":"transparent",color:tab===i?T.gold:T2.text3,fontSize:12,fontWeight:tab===i?600:400,cursor:"pointer",fontFamily:T.sans,transition:"all 0.15s",minHeight:36}}>{t}</button>
+        ))}
+      </div>
+
+      {tab===0 && (
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <div style={cs.card}>
+            <div style={cs.label}>Your Brand in Three Words</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>What three words do you <em>want</em> people to use to describe you? Be specific. These become your brand intent.</p>
+            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
+              {words.map((w,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{width:24,height:24,borderRadius:"50%",background:w?T.gold:"rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
+                    <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:"white"}}>{i+1}</span>
+                  </div>
+                  <input value={w} onChange={e=>{const n=[...words];n[i]=e.target.value;setWords(n);}} placeholder={["e.g. trustworthy","e.g. creative","e.g. calm"][i]} className="au-input" style={{flex:1,padding:"10px 14px",fontSize:14}}/>
+                </div>
+              ))}
+            </div>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:10}}>Or choose from these</div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:7}}>
+              {BRAND_WORDS.map((bw,i)=>{
+                const selected=words.includes(bw);
+                return (
+                  <button key={i} onClick={()=>{if(selected){setWords(words.map(w=>w===bw?"":w));}else{const idx=words.findIndex(w=>!w);if(idx>=0){const n=[...words];n[idx]=bw;setWords(n);}}}} style={{padding:"6px 12px",borderRadius:20,border:`0.5px solid ${selected?T.gold:T2.border}`,background:selected?"rgba(138,158,132,0.15)":"transparent",color:selected?T.gold:T2.text3,fontSize:12,cursor:"pointer",fontFamily:T.sans,minHeight:32,transition:"all 0.15s"}}>{bw}</button>
+                );
+              })}
+            </div>
+          </div>
+          {words.some(w=>w.trim()) && (
+            <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+              <div style={cs.label}>Now ask yourself</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>Does the way you currently show up — your wardrobe, your LinkedIn, your communication style, your energy — consistently signal <em style={{color:T.gold}}>{words.filter(w=>w.trim()).join(", ")}</em>?</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {tab===1 && (
+        <div style={cs.card}>
+          <div style={cs.label}>Signal Audit</div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>For each area below, mark whether your current signal is intentional and aligned with the brand you want.</p>
+          {SIGNAL_AREAS.map((area,i) => (
+            <div key={i} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:i<SIGNAL_AREAS.length-1?"0.5px solid "+T2.divider:"none"}}>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{area}</span>
+              <div style={{display:"flex",gap:8}}>
+                {["✓ Aligned","Needs work"].map((label,j)=>(
+                  <button key={j} onClick={()=>setAuditDone({...auditDone,[area]:j===0?"aligned":"needs"})} style={{padding:"5px 12px",borderRadius:3,border:`0.5px solid ${auditDone[area]===(j===0?"aligned":"needs")?T.gold:T2.border}`,background:auditDone[area]===(j===0?"aligned":"needs")?"rgba(138,158,132,0.12)":"transparent",color:auditDone[area]===(j===0?"aligned":"needs")?T.gold:T2.text4,fontSize:11,cursor:"pointer",fontFamily:T.sans,minHeight:32,fontWeight:auditDone[area]===(j===0?"aligned":"needs")?600:400,transition:"all 0.15s"}}>{label}</button>
+                ))}
+              </div>
+            </div>
+          ))}
+          {Object.keys(auditDone).length>0 && (
+            <div style={{marginTop:14,padding:"12px 14px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>
+                {Object.values(auditDone).filter(v=>v==="needs").length===0?"Every signal is aligned. Your brand is consistent.":
+                 `${Object.values(auditDone).filter(v=>v==="needs").length} area${Object.values(auditDone).filter(v=>v==="needs").length>1?"s":""} to work on. Start with the one most visible to the people who matter most.`}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {tab===2 && (
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <div style={cs.card}>
+            <div style={cs.label}>Your Story Portfolio</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:14}}>Every powerful personal brand is built on a few key stories. Choose one story type below and write your version.</p>
+          </div>
+          {STORY_TYPES.map((st,i)=>(
+            <div key={i} onClick={()=>setActiveStory(activeStory===i?null:i)} style={{...cs.card,cursor:"pointer",transition:"border-color 0.2s",borderColor:activeStory===i?T.gold:T2.border}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                <div style={{flex:1}}>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{st.label}</div>
+                  <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0,lineHeight:1.5}}>{st.desc}</p>
+                </div>
+                <span style={{fontFamily:T.sans,fontSize:12,color:activeStory===i?T.gold:T2.text4,marginLeft:12,flexShrink:0}}>{activeStory===i?"▴":"▸"}</span>
+              </div>
+              {activeStory===i && (
+                <div style={{marginTop:14,paddingTop:14,borderTop:"0.5px solid "+T2.divider}} onClick={e=>e.stopPropagation()}>
+                  <textarea value={storyText[i]||""} onChange={e=>setStoryText({...storyText,[i]:e.target.value})} placeholder={`Write your ${st.label.toLowerCase()} here…`} style={{width:"100%",minHeight:isDesktop?100:80,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6}}/>
+                  {(storyText[i]||"").trim().length>0 && (
+                    <div style={{marginTop:10,padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
+                      <p style={{fontFamily:T.serif,fontSize:12,fontStyle:"italic",color:T2.text3,margin:0,lineHeight:1.6}}>Good. Now trim it to under 90 seconds when spoken aloud. The best stories are the ones that feel effortless to tell.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── D11 Simulation Widget ─────────────────────────────────────────────────
+function D11SimWidget({T, T2, isDesktop}) {
+  const SCENARIOS = [
+    {id:0, label:"Networking Event", sub:"Someone asks who you are.",
+     aiOpener:'"Tell me about yourself."',
+     goal:"Clear identity signal",
+     context:"You have 30–60 seconds. This is where most people undersell themselves or go too broad.",
+     followUps:["What do you actually do day to day?","That's interesting — what made you choose that path?","So what are you working on right now?"],
+     starters:["I help [who] do [what] — most recently…","My background is [X], but what drives me is…","I work at the intersection of [X] and [Y]…"],
+     script:{topic:"Professional introduction",context:"A compelling 60-second introduction that signals who you are, what you stand for, and why it matters.",
+       beginner:'"I\'m a [role] who specialises in [area]. What drives me is [value/belief]. Most recently, I [specific achievement] — which taught me [insight]. I\'m here tonight because I\'m interested in [goal]."',
+       intermediate:["Open with your role and what drives you — not your job title alone","Name one specific recent win","Say what you\'re currently working toward or interested in","Close with a natural question or connection to them"]}},
+    {id:1, label:"Podcast Introduction", sub:"30 seconds to introduce yourself.",
+     aiOpener:'"Before we dive in — for our listeners who don\'t know you, introduce yourself in 30 seconds."',
+     goal:"Memorable brand signal",
+     context:"This is one of the highest-value 30 seconds in your career. Most people waste it.",
+     followUps:["Great — and what does that actually mean in practice?","What would you say is your superpower?","And what are you most focused on right now?"],
+     starters:["I spend my time helping [audience] [outcome]…","My work sits at the intersection of [X] and [Y]…","I\'m probably best known for [thing], but what I care most about is [value]…"],
+     script:{topic:"Podcast bio",context:"A crisp, memorable self-introduction that communicates expertise, differentiation, and personality.",
+       beginner:'"I\'m [name]. I work with [audience type] to help them [specific outcome]. I\'ve spent [X years] doing [area], and the thread through everything I do is [core belief or value]. Right now I\'m most excited about [current focus]."',
+       intermediate:["Open with what you do for others — not your job title","State your expertise through a lens of impact","Include one belief or value that differentiates you","Close with energy — what excites you right now"]}},
+    {id:2, label:"Interview", sub:"Why should we hire you?",
+     aiOpener:'"So — why should we hire you over someone else?"',
+     goal:"Confident brand articulation",
+     context:"The question most candidates fear. The ones who nail it treat it as a brand statement, not a list of qualifications.",
+     followUps:["Can you give me a specific example of that?","What would your previous team say about you?","How do you handle situations where you\'re out of your depth?"],
+     starters:["What I bring that's distinct is…","Throughout my career, the pattern has always been…","I\'m someone who [distinctive trait] — and the evidence for that is…"],
+     script:{topic:"Interview answer",context:"A confident, differentiated answer to the most common and most important interview question.",
+       beginner:'"What I bring is [specific skill or trait], backed by [experience]. But more than that, I bring [intangible — mindset, values, approach]. The clearest example of that is [brief story]. What drives me is [belief], and that\'s why this role genuinely excites me."',
+       intermediate:["Lead with your distinctive strength — not a list","Back it with one specific story","Name your values or approach, not just your skills","Connect your motivation to this specific role"]}},
+    {id:3, label:"LinkedIn Bio", sub:"Paste your current bio for a brand audit.",
+     aiOpener:'"Paste your current LinkedIn bio or \'About\' section. What does it currently signal — and what should it signal?"',
+     goal:"Brand coherence audit",
+     context:"Most LinkedIn bios read like a CV summary. The best ones read like a brand statement.",
+     followUps:["What three words do you want people to feel when they read it?","Who is the primary audience you want to attract?","Does it show personality — or just credentials?"],
+     starters:["This currently signals… Consider shifting toward…","The strongest line is… The weakest is…","One reframe that would change everything: instead of saying [X], try [Y]…"],
+     script:{topic:"LinkedIn bio",context:"A bio that signals expertise, values, and personality — not just employment history.",
+       beginner:'"I\'m a [role] who helps [audience] [achieve outcome]. I believe [core value or philosophy]. My work has [impact area]. Outside of [professional domain], I\'m [one personal dimension that humanises you]. If you want to talk about [topic], reach out."',
+       intermediate:["Open with what you do for others — not your title","State your core belief or philosophy","Name your impact area specifically","Add one human dimension — not just credentials","Close with an invitation to connect"]}},
+  ];
+
+  const [phase, setPhase] = useState('idle');
+  const [sc, setSc] = useState(null);
+  const [mode, setMode] = useState(null);
+  const [difficulty, setDifficulty] = useState('beginner');
+  const [userText, setUserText] = useState('');
+  const [feedback, setFeedback] = useState(null);
+  const [ownContext, setOwnContext] = useState('');
+  const [followIdx, setFollowIdx] = useState(0);
+
+  const reset = () => { setPhase('idle'); setSc(null); setMode(null); setDifficulty('beginner'); setUserText(''); setFeedback(null); setOwnContext(''); setFollowIdx(0); };
+
+  const SCORES = ['Clarity','Authenticity','Memorability','Brand Alignment','Confidence','Executive Presence'];
+  const generateFeedback = () => {
+    const scores = SCORES.map(s => ({ label:s, val:Math.floor(Math.random()*25)+70 }));
+    const notes = [
+      "Strong opening — your identity signal was clear within the first sentence. The specific achievement grounded it. Consider adding one belief or value that differentiates you beyond the role itself.",
+      "Excellent brand coherence. Your tone matched your content, and the story you used was precise. The emotional dimension could be slightly stronger — what do you care about most?",
+      "Very memorable framing. You led with what you do for others rather than your title — that's exactly right. The closing could be sharper: what do you want them to do or think next?",
+      "Clear, confident, and specific. The brand signal was strong. One refinement: where possible, show your values through a story rather than stating them directly. Proof is always more powerful than claim.",
+    ];
+    setFeedback({ scores, note: notes[Math.floor(Math.random()*notes.length)], followUp: sc?.followUps[Math.floor(Math.random()*sc.followUps.length)] });
+    setPhase('feedback');
+  };
+
+  const cs = {
+    card: { background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px" },
+    label: { fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8 },
+  };
+
+  if (phase === 'idle') return (
+    <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>Choose your scenario</div>
+      {SCENARIOS.map(s => (
+        <div key={s.id} onClick={()=>{setSc(s);setPhase('mode-select');}} style={{...cs.card,cursor:"pointer"}} className="au-lift">
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+            <div>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>{s.goal}</div>
+              <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,marginBottom:4}}>{s.label}</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>{s.sub}</p>
+            </div>
+            <span style={{fontFamily:T.sans,fontSize:12,color:T.gold,marginLeft:12,flexShrink:0}}>→</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  if (phase === 'mode-select') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={cs.card}>
+        <div style={cs.label}>The Prompt</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 10px"}}>{sc.aiOpener}</p>
+        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,lineHeight:1.6}}>{sc.context}</p>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+        <button onClick={()=>{setMode('guided');setPhase('setup');}} style={{...cs.card,cursor:"pointer",textAlign:"left",border:"0.5px solid "+T.gold}}>
+          <div style={cs.label}>Guided</div>
+          <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,marginBottom:6}}>Coach me through it</div>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>Script, talking points, and difficulty levels.</p>
+        </button>
+        <button onClick={()=>{setMode('own');setPhase('active');}} style={{...cs.card,cursor:"pointer",textAlign:"left"}}>
+          <div style={cs.label}>Real situation</div>
+          <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,marginBottom:6}}>Use my own words</div>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>Write naturally and get brand feedback.</p>
+        </button>
+      </div>
+      <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
+    </div>
+  );
+
+  if (phase === 'setup') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={cs.card}>
+        <div style={cs.label}>The Prompt</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>{sc.aiOpener}</p>
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>Difficulty</div>
+        <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>
+          {['beginner','intermediate','advanced'].map(d=>(
+            <button key={d} onClick={()=>setDifficulty(d)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${difficulty===d?T.gold:T2.border}`,background:difficulty===d?"rgba(138,158,132,0.12)":"transparent",color:difficulty===d?T.gold:T2.text3,fontSize:12,fontWeight:difficulty===d?600:400,cursor:"pointer",fontFamily:T.sans,transition:"all 0.15s",minHeight:36,textTransform:"capitalize"}}>{d}</button>
+          ))}
+        </div>
+        <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14}}>
+          {difficulty==='beginner' && <><div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Full Script</div><p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{sc.script.beginner}</p></>}
+          {difficulty==='intermediate' && <><div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Talking Points</div>{sc.script.intermediate.map((pt,i)=><div key={i} style={{display:"flex",gap:10,marginBottom:8,alignItems:"flex-start"}}><div style={{color:T.gold,fontFamily:T.sans,fontSize:12,fontWeight:700,flexShrink:0,marginTop:2}}>{i+1}.</div><p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0}}>{pt}</p></div>)}</>}
+          {difficulty==='advanced' && <><div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Speak Freely</div><p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:0}}>No script. Respond naturally. Your coach will evaluate clarity, authenticity, and brand alignment.</p></>}
+        </div>
+      </div>
+      <button onClick={()=>setPhase('active')} style={{width:"100%",padding:"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Start →</button>
+      <button onClick={()=>setPhase('mode-select')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
+    </div>
+  );
+
+  if (phase === 'active') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={cs.card}>
+        <div style={cs.label}>The Prompt</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>{sc.aiOpener}</p>
+        {followIdx>0 && sc.followUps[followIdx-1] && (
+          <div style={{marginTop:16,paddingTop:14,borderTop:"0.5px solid "+T2.divider}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(180,100,80,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Follow-up</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.4,margin:0}}>{sc.followUps[followIdx-1]}</p>
+          </div>
+        )}
+      </div>
+      {mode==='own' && (
+        <div style={cs.card}>
+          <div style={cs.label}>Your context (optional)</div>
+          <textarea value={ownContext} onChange={e=>setOwnContext(e.target.value)} placeholder="Add context about your actual situation for more personalised feedback…" style={{width:"100%",minHeight:60,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6}}/>
+        </div>
+      )}
+      <div style={cs.card}>
+        <div style={cs.label}>Your response</div>
+        <textarea value={userText} onChange={e=>setUserText(e.target.value)} placeholder="Write what you'd say…" style={{width:"100%",minHeight:isDesktop?140:110,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6}}/>
+      </div>
+      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+        {followIdx < sc.followUps.length && <button onClick={()=>setFollowIdx(i=>i+1)} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Follow-up →</button>}
+        <button onClick={generateFeedback} disabled={userText.trim().length<10} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"none",background:userText.trim().length>=10?T.ink:"rgba(44,36,22,0.3)",color:T.bg,fontSize:13,fontWeight:600,cursor:userText.trim().length>=10?"pointer":"not-allowed",fontFamily:T.sans,minHeight:44,transition:"background 0.2s"}}>Get Brand Feedback →</button>
+      </div>
+      <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Start over</button>
+    </div>
+  );
+
+  if (phase === 'feedback') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={cs.card}>
+        <div style={cs.label}>Brand Assessment</div>
+        {feedback.scores.map((s,i) => (
+          <div key={i} style={{marginBottom:12}}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
+              <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{s.label}</span>
+              <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:s.val>=85?T.gold:s.val>=70?"#7A9E84":T2.text3}}>{s.val}</span>
+            </div>
+            <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+              <div style={{height:"100%",width:s.val+"%",background:s.val>=85?T.gold:s.val>=70?"rgba(138,158,132,0.7)":"rgba(138,158,132,0.35)",borderRadius:2,transition:"width 0.8s ease"}}/>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+        <div style={cs.label}>Brand Coach Note</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{feedback.note}</p>
+      </div>
+      {feedback.followUp && (
+        <div style={{...cs.card,background:"rgba(44,30,20,0.06)"}}>
+          <div style={cs.label}>They ask</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:"0 0 8px"}}>{feedback.followUp}</p>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>How do you answer?</p>
+        </div>
+      )}
+      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+        <button onClick={()=>{setPhase('active');setUserText('');setFeedback(null);setFollowIdx(followIdx+1);}} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Try Again</button>
+        <button onClick={reset} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"none",background:T.ink,color:T.bg,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>New Scenario →</button>
+      </div>
+    </div>
+  );
+
+  return null;
+}
+
 // ─── SESSION VIEW — 6 steps including Theory
 const SESSION_STEPS =
 ["Insight","Theory","Example","Practice","Simulation","Review"];
@@ -4956,6 +5280,7 @@ setAmbitionSaved(true); } catch {}
   const [d4MobCard, setD4MobCard] = useState(null);
   const [d5MobCard, setD5MobCard] = useState(null);
   const [d6MobCard, setD6MobCard] = useState(null);
+  const [d11MobCard, setD11MobCard] = useState(null);
   const [ntMobCard, setNtMobCard] = useState(null);
   const swipeRef = useRef({x:0,y:0});
   // step is derived from STEPS (NT uses 7-step array, all others use 6-step)
@@ -4970,6 +5295,7 @@ setAmbitionSaved(true); } catch {}
   const isD5 = lesson.day === 5;
   const isD6 = lesson.day === 6;
   const isD10 = lesson.day === 10;
+  const isD11 = lesson.day === 11;
   const STEPS = isNT
     ? ["Insight","Theory 1","Theory 2","Example","Practice","Review"]
     : SESSION_STEPS;
@@ -6043,6 +6369,17 @@ setAmbitionSaved(true); } catch {}
             </div>
           </div>
         );
+        if (isD11) return (
+          <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
+            <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
+            <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Iconic Brands</div>
+              <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Brand isn't what you say about yourself. It's what others say when you're not there.</p>
+              <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
+              <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>Three people whose personal brands became cultural forces — by design, not accident.</p>
+            </div>
+          </div>
+        );
         return (
           <div style={{ height: "100%", display: "flex", flexDirection: "column", background: "#131009" }}>
             <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "40px 48px", borderBottom: "1px solid rgba(255,255,255,0.06)", animation: "fadeIn 0.5s ease both" }}>
@@ -6104,6 +6441,18 @@ setAmbitionSaved(true); } catch {}
             <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Stay composed. Stay clear. Stay in control.</p>
             <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
             <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Choose your scenario. Write your response. Your coach evaluates composure, clarity, and executive presence.</p>
+          </div>
+        </div>
+      );
+
+      if (step === "Simulation" && isD11) return (
+        <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+          <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
+          <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+            <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Brand — In Action</div>
+            <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Your brand is built in every room you enter. Shape it.</p>
+            <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+            <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Four scenarios where your brand is built or broken. Write your response. Get coached on clarity, authenticity, and memorability.</p>
           </div>
         </div>
       );
@@ -8108,6 +8457,146 @@ setAmbitionSaved(true); } catch {}
       return <RightContent/>;
     };
 
+    // ── D11 constants ────────────────────────────────────────────────────────
+    const D11_FACTS = [
+      {word:"First Impressions Are Fast", body:"People begin forming impressions in as little as 100 milliseconds — before you've said a single word.", source:"Willis & Todorov, 2006"},
+      {word:"People Read Signals",        body:"Humans make rapid judgments about confidence, competence, and trustworthiness from minimal cues. Every signal you send is being decoded.", source:"Ambady & Rosenthal / Princeton research"},
+      {word:"Stories Shape Reputation",   body:"Narrative becomes identity. Stories are remembered far more effectively than disconnected information — and they're the most powerful brand-building tool you have.", source:"Cognitive psychology principle"},
+      {word:"Consistency Becomes Brand",  body:"Repeated signals become your brand. Every interaction where you show up the same way adds to a pattern people trust, remember, and associate with you.", source:"Brand psychology"},
+    ];
+    const D11_EXAMPLES = [
+      {id:"jobs", name:"Steve Jobs", role:"Co-founder, Apple",
+       headline:"Simplicity as a Brand Signal",
+       body:"The black turtleneck, the stage minimalism, the deliberate pacing — every element was a conscious signal: 'I think differently, and so does everything I make.' Jobs didn't just build products. He built a consistent visual and behavioural language that became inseparable from the Apple brand.",
+       lesson:"Consistency is the most powerful branding tool available. When every signal aligns — appearance, communication, values, story — people remember you before you've said a word."},
+      {id:"beckham", name:"David Beckham", role:"Athlete · Entrepreneur · Philanthropist",
+       headline:"Brand Can Evolve",
+       body:"From Manchester United captain to fashion icon to club owner to humanitarian ambassador — Beckham's brand evolved without contradiction. Each phase added a dimension rather than replacing the last. The throughline was always intentional excellence, visual precision, and cultural reach.",
+       lesson:"Your brand isn't fixed. It can grow. The key is evolution that feels coherent — new chapters that add to the story rather than contradict it."},
+      {id:"wintour", name:"Anna Wintour", role:"Editor-in-Chief, Vogue",
+       headline:"Iconic Through Consistency",
+       body:"The bob. The sunglasses. The front row seat. For decades, Wintour has signalled authority, taste, and certainty through consistent visual and behavioural choices. She doesn't vary. She doesn't hedge. That consistency creates anticipation and recognition — the foundation of any powerful brand.",
+       lesson:"When people know what to expect from you, they trust you. Consistency signals confidence. Variation without purpose signals uncertainty."},
+    ];
+
+    const D11RightContent = () => {
+      const [d11Test, setD11Test] = useState(null);
+      const [d11CardOpen, setD11CardOpen] = useState(null);
+
+      if (step === "Insight") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Why Image Matters</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Perception Is Built From Signals</h2>
+          {!d11Test && (
+            <div style={{ marginBottom:32 }}>
+              <p style={{ fontFamily:T.sans, fontSize:16, color:"#A8998A", lineHeight:1.6, marginBottom:24, maxWidth:600 }}>Before we get to the science — a quick perception test. Three people walk into the same meeting. Same role. Same experience. Which one seems most trustworthy?</p>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:14, marginBottom:24 }}>
+                {[
+                  {label:"Person A", traits:["Arrives prepared","Measured pace","Consistent presence","Has a story ready"]},
+                  {label:"Person B", traits:["Energetic, unpredictable","Different every time","Full of ideas","Hard to read"]},
+                  {label:"Person C", traits:["Quiet, consistent","Always follows through","Same in every room","Signals without words"]},
+                ].map((p,i) => (
+                  <div key={i} onClick={()=>setD11Test(i)} style={{ padding:"20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, cursor:"pointer", transition:"border-color 0.2s" }} className="au-lift">
+                    <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10 }}>{p.label}</div>
+                    {p.traits.map((t,j) => (
+                      <div key={j} style={{ display:"flex", alignItems:"center", gap:7, marginBottom:6 }}>
+                        <div style={{ width:3, height:3, borderRadius:"50%", background:T.gold, flexShrink:0 }}/>
+                        <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text3 }}>{t}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+              <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, fontStyle:"italic" }}>Tap any card to see what your instinct reveals.</p>
+            </div>
+          )}
+          {d11Test !== null && (
+            <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
+              <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T2.text, lineHeight:1.5, margin:"0 0 10px" }}>Your instinct pointed to Person {["A","B","C"][d11Test]}.</p>
+              <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, margin:0 }}>That answer was made in milliseconds — before any evidence. This is how everyone reads everyone. The question isn't whether people are forming impressions. It's whether you're shaping them intentionally.</p>
+              <button onClick={()=>setD11Test(null)} style={{ marginTop:12, fontFamily:T.sans, fontSize:12, color:T.gold, background:"none", border:"none", cursor:"pointer", padding:0 }}>← Retake test</button>
+            </div>
+          )}
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
+            {D11_FACTS.map((n,i) => (
+              <div key={i} style={{ padding:"22px 24px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                <div style={{ fontFamily:T.serif, fontSize:20, fontWeight:600, color:T.gold, lineHeight:1.3, marginBottom:10 }}>{n.word}</div>
+                <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.7, fontWeight:400, margin:"0 0 8px" }}>{n.body}</p>
+                <div style={{ fontFamily:T.sans, fontSize:11, color:T2.text4, fontStyle:"italic" }}>{n.source}</div>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontFamily:T.sans, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.7 }}>Be your brand.</p>
+        </div>
+      );
+
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science of Perception</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>How Others Form Their View of You</h2>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28, maxWidth:640 }}>Perception isn't passive. It's a rapid, automatic process driven by signals. Understanding the mechanics means you can shape the output.</p>
+          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
+            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0 }}>Brand is repeated behaviour made visible.</p>
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
+            {[
+              {n:"Thin Slicing",            role:"Snap judgments, fast",              body:"Humans make accurate impressions from very brief exposures — sometimes under two seconds. Your brand is built in micro-moments, not presentations.", source:"Ambady & Rosenthal"},
+              {n:"One Signal Changes Everything", role:"The Halo Effect",            body:"One strong positive impression can shape how people judge everything else about you. A sharp communicator is assumed competent. A calm presence is assumed trustworthy.", source:"Classic psychology"},
+              {n:"Narrative Identity",       role:"Stories are remembered, facts aren't", body:"People remember you through the stories you tell. Your narrative becomes your identity — which means curating your stories is one of the highest-leverage brand investments you can make.", source:"Cognitive psychology"},
+              {n:"Consistency Principle",    role:"Repeated behaviour becomes brand", body:"Every time you show up the same way, you add a data point to the pattern people use to describe you. Inconsistency creates uncertainty. Consistency creates trust.", source:"Brand psychology"},
+            ].map((b,i) => (
+              <div key={i} style={{ padding:"20px 22px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:6 }}>{b.n}</div>
+                <div style={{ fontFamily:T.serif, fontSize:17, fontWeight:600, color:T2.text, marginBottom:8 }}>{b.role}</div>
+                <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.65, fontWeight:300, margin:"0 0 6px" }}>{b.body}</p>
+                <div style={{ fontFamily:T.sans, fontSize:11, color:T2.text4, fontStyle:"italic" }}>{b.source}</div>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontFamily:T.sans, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.7 }}>You're not creating a persona. You're becoming intentional about how your authentic strengths are perceived.</p>
+        </div>
+      );
+
+      if (step === "Practice") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Build Your Brand</h2>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:600 }}>Three exercises. Each one builds a different layer of your brand architecture.</p>
+          <D11PracticeWidget T={T} T2={T2} isDesktop={true}/>
+        </div>
+      );
+
+      if (step === "Simulation") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Your Brand Coach</h2>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>Four scenarios where your brand is built or broken. Write your response. Your coach evaluates clarity, authenticity, and memorability.</p>
+          <D11SimWidget T={T} T2={T2} isDesktop={true}/>
+        </div>
+      );
+
+      if (step === "Example") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Iconic Brands. Intentional Choices.</h2>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:40, maxWidth:640 }}>Three people whose personal brands became cultural forces — not by accident, but by design.</p>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:20 }}>
+            {D11_EXAMPLES.map((card,ci) => (
+              <div key={ci} style={{ background:"white", borderRadius:8, padding:"28px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)" }}>
+                <h3 style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, marginBottom:2 }}>{card.name}</h3>
+                <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, marginBottom:8, fontWeight:400 }}>{card.role}</p>
+                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:16 }}>{card.headline}</div>
+                <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.7, fontWeight:300, marginBottom:20 }}>{card.body}</p>
+                <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:16 }}>
+                  <div style={{ fontSize:10, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Lesson</div>
+                  <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+
+      return <RightContent/>;
+    };
+
     const RightContent = () => (
       <div key={idx} className="au-step-enter" style={{ padding: "44px 52px" }}>
 
@@ -8467,7 +8956,7 @@ setAmbitionSaved(true); } catch {}
                 }}/>
               )}
               <div style={{ position: "relative", zIndex: 1 }}>
-                {isD1 ? <D1RightContent/> : isD2 ? <D2RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD6 ? <D6RightContent/> : isD10 ? <D10RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
+                {isD1 ? <D1RightContent/> : isD2 ? <D2RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD6 ? <D6RightContent/> : isD11 ? <D11RightContent/> : isD10 ? <D10RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
               </div>
             </div>
           </div>
@@ -8642,6 +9131,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
               8:{label:"NARRATIVE — IN ACTION",       heading:"Tell the story. Transport your audience."},
               9:{label:"DELIVERY — IN ACTION",        heading:"Great content. Delivered powerfully."},
               10:{label:"PERFORMANCE — IN ACTION",    heading:"Communicate your impact with conviction."},
+              11:{label:"BRAND — IN ACTION",           heading:"Your brand is built in every room you enter. Shape it."},
             };
             const sh=SIM_HEADERS[lesson.day]||{label:"SIMULATION",heading:"Real scenario. Real pressure. Real coaching."};
             return (
@@ -8666,6 +9156,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
               8:{label:"STORYTELLING IN THE WILD", heading:"Stories create empathy. Empathy creates trust. Trust creates influence.",    body:"The same facts — told as a story — land 22× more powerfully in the human brain."},
               9:{label:"DELIVERY IN ACTION",       heading:"Great content, delivered powerfully, changes everything.",                  body:"The same message — delivered differently — lands completely differently."},
               10:{label:"PERFORMANCE IN ACTION",   heading:"Visible performance is communicated performance.",                          body:"Your work is exceptional. Make sure people know it."},
+              11:{label:"ICONIC BRANDS. INTENTIONAL CHOICES.", heading:"Brand isn't what you say about yourself. It's what others say when you're not there.", body:"Three people whose personal brands became cultural forces — not by accident, but by design."},
             };
             const h=EX_HEADERS[lesson.day]||EX_HEADERS[1];
             return (
@@ -9591,7 +10082,7 @@ T.goldDark : T2.text4,
           </>
         )}
 
-        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && step==="Insight" && (
+        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && !isD11 && step==="Insight" && (
           <>
             <div
 style={{background:T2.cardDark,borderRadius:2,padding:"26px 24px",position:"relative",overflow:"hidden"}}>
@@ -9617,9 +10108,9 @@ style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.insight}</p>
           </>
         )}
 
-        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && step==="Theory" && <TheoryCard day={lesson.day}/>}
+        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && !isD11 && step==="Theory" && <TheoryCard day={lesson.day}/>}
 
-        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && step==="Example" && (
+        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && !isD11 && step==="Example" && (
           <>
             <div style={{background:"#FDF0EE",border:"1px solid #F0C5C0",borderRadius:2,padding:"16px 18px"}}>
               <div
@@ -9770,7 +10261,89 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             <D6SimWidget T={T} T2={T2} isDesktop={false}/>
           </>
         )}
-        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && step==="Practice" && (
+        {isD11 && step==="Insight" && (
+          <>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Why Image Matters</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Perception Is Built From Signals</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most people let others form assumptions about them by default. The most effective communicators choose their signals intentionally.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {D11_FACTS.map((n,i)=>(
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 6px"}}>{n.body}</p>
+                  <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,fontStyle:"italic"}}>{n.source}</div>
+                </div>
+              ))}
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Be your brand.</p>
+          </>
+        )}
+        {isD11 && step==="Theory" && (
+          <>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science of Perception</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>How Others Form Their View of You</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Perception is a rapid, automatic process. Understanding the mechanics means you can shape the output.</p>
+            <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"14px 16px",marginBottom:16,borderRadius:4}}>
+              <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>Brand is repeated behaviour made visible.</p>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {[
+                {n:"Thin Slicing",      role:"Snap judgments",       body:"Accurate impressions from brief exposure. Your brand is built in micro-moments.", source:"Ambady & Rosenthal"},
+                {n:"Halo Effect",       role:"One Signal Changes Everything", body:"One strong positive impression shapes how people judge everything else about you.", source:"Classic psychology"},
+                {n:"Narrative Identity",role:"Stories over facts",    body:"People remember you through the stories you tell. Your narrative becomes your identity.", source:"Cognitive psychology"},
+                {n:"Consistency",       role:"Repeated = trusted",    body:"Every time you show up the same way, you add to the pattern people use to trust you.", source:"Brand psychology"},
+              ].map((b,i)=>(
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4,textTransform:"uppercase",letterSpacing:"1px"}}>{b.n}</div>
+                  <div style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T2.text,marginBottom:4}}>{b.role}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:"0 0 4px"}}>{b.body}</p>
+                  <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,fontStyle:"italic"}}>{b.source}</div>
+                </div>
+              ))}
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>You're not creating a persona. You're becoming intentional about how your authentic strengths are perceived.</p>
+          </>
+        )}
+        {isD11 && step==="Example" && (
+          <>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Iconic Brands. Intentional Choices.</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how these brand icons built recognition through deliberate signals.</p>
+            {D11_EXAMPLES.map(card=>(
+              <div key={card.id} onClick={()=>setD11MobCard(d11MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d11MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
+                  <div>
+                    <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:2}}>{card.name}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>{card.role}</div>
+                  </div>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:d11MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0}}>{d11MobCard===card.id?"▴ less":"▸ explore"}</span>
+                </div>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{card.headline}</p>
+                {d11MobCard===card.id && (
+                  <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:300,marginBottom:12}}>{card.body}</p>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Lesson</div>
+                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>{card.lesson}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </>
+        )}
+        {isD11 && step==="Practice" && (
+          <>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Build Your Brand</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Three exercises. Each builds a different layer of your brand architecture.</p>
+            <D11PracticeWidget T={T} T2={T2} isDesktop={false}/>
+          </>
+        )}
+        {isD11 && step==="Simulation" && (
+          <>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Your Brand Coach</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Four scenarios where your brand is built or broken. Write your response and get coached.</p>
+            <D11SimWidget T={T} T2={T2} isDesktop={false}/>
+          </>
+        )}
+        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && !isD11 && step==="Practice" && (
           <>
             <div
 style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
@@ -9792,7 +10365,7 @@ something you can use in real life.</p>
           </>
         )}
 
-        {!isD2 && !isD6 && step==="Simulation" && (
+        {!isD2 && !isD6 && !isD11 && step==="Simulation" && (
           <>
             {(()=>{
               const scenarios = roleId ? getScenariosForDay(roleId,
