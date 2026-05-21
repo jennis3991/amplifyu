@@ -5689,6 +5689,36 @@ setAmbitionSaved(true); } catch {}
     { n:4, beat:"Refine",        sub:"Review, clarify, and improve your explanation. Repeat until a child could follow." },
   ];
 
+  // ── D11 shared constants (used by both desktop + mobile) ──────────────────
+  const D11_FACTS = [
+    {word:"First Impressions Are Fast", body:"People begin forming impressions in as little as 100 milliseconds — before you've said a single word.", source:"Willis & Todorov, 2006"},
+    {word:"People Read Signals",        body:"Humans make rapid judgments about confidence, competence, and trustworthiness from minimal cues. Every signal you send is being decoded.", source:"Ambady & Rosenthal / Princeton research"},
+    {word:"Stories Shape Reputation",   body:"Narrative becomes identity. Stories are remembered far more effectively than disconnected information — and they're the most powerful brand-building tool you have.", source:"Cognitive psychology principle"},
+    {word:"Consistency Becomes Brand",  body:"Repeated signals become your brand. Every interaction where you show up the same way adds to a pattern people trust, remember, and associate with you.", source:"Brand psychology"},
+  ];
+  const D11_EXAMPLES = [
+    {id:"jobs", name:"Steve Jobs", role:"Co-founder, Apple",
+     headline:"Simplicity as a Brand Signal",
+     body:"The black turtleneck, the stage minimalism, the deliberate pacing — every element was a conscious signal: 'I think differently, and so does everything I make.' Jobs didn't just build products. He built a consistent visual and behavioural language that became inseparable from the Apple brand.",
+     lesson:"Consistency is the most powerful branding tool available. When every signal aligns — appearance, communication, values, story — people remember you before you've said a word."},
+    {id:"beckham", name:"David Beckham", role:"Athlete · Entrepreneur · Philanthropist",
+     headline:"Brand Can Evolve",
+     body:"From Manchester United captain to fashion icon to club owner to humanitarian ambassador — Beckham's brand evolved without contradiction. Each phase added a dimension rather than replacing the last. The throughline was always intentional excellence, visual precision, and cultural reach.",
+     lesson:"Your brand isn't fixed. It can grow. The key is evolution that feels coherent — new chapters that add to the story rather than contradict it."},
+    {id:"wintour", name:"Anna Wintour", role:"Editor-in-Chief, Vogue",
+     headline:"Iconic Through Consistency",
+     body:"The bob. The sunglasses. The front row seat. For decades, Wintour has signalled authority, taste, and certainty through consistent visual and behavioural choices. She doesn't vary. She doesn't hedge. That consistency creates anticipation and recognition — the foundation of any powerful brand.",
+     lesson:"When people know what to expect from you, they trust you. Consistency signals confidence. Variation without purpose signals uncertainty."},
+  ];
+  const D11_INGREDIENTS = [
+    {n:"Authority",    tagline:"Be known for something",         psych:"Authority Bias",          psychBody:"People naturally trust perceived expertise. If you're clearly exceptional in one area, credibility rises fast.",                                                                                              body:"The strongest brands stand for something specific. Not 'good at many things' — but known for one thing first.",    takeaway:"Own a category."},
+    {n:"Generosity",   tagline:"Give value freely",               psych:"Reciprocity (Cialdini)",  psychBody:"When people receive value, they naturally feel more positively toward the source.",                                                                                                                       body:"The fastest way to build goodwill is to help before asking. Teach. Share. Educate. Simplify. Practical tips, frameworks, behind-the-scenes lessons.",  takeaway:"Give before you ask."},
+    {n:"Relatability", tagline:"Share the human story",           psych:"Narrative Identity",      psychBody:"We connect with people whose journeys feel emotionally relatable. Similarity Attraction effect.",                                                                                                         body:"Expertise creates admiration. Story creates connection. People don't just want polished success — they want setbacks, lessons, beginnings, ambition, growth.",  takeaway:"Let people see the journey."},
+    {n:"Energy",       tagline:"Passion is perception",           psych:"Emotional Contagion",     psychBody:"Emotion spreads socially. Your energy influences how others feel — and whether they believe the message matters.",                                                                                        body:"Energy communicates belief. If you sound disengaged, people assume the message lacks importance. Conviction, warmth, and emotional presence are felt before they're heard.",  takeaway:"Passion is contagious."},
+    {n:"Familiarity",  tagline:"Repeated exposure builds trust",  psych:"Mere Exposure Effect",   psychBody:"The more often people encounter something, the more positively they tend to feel about it.",                                                                                                              body:"People trust what feels familiar. Series. Podcasts. Regular posts. Repeated appearances. Consistent presence — not one big moment.",  takeaway:"Consistency creates comfort."},
+    {n:"Polarity",     tagline:"Have a point of view",            psych:"Von Restorff Effect",     psychBody:"Things that stand out are remembered more easily than things that blend in. Distinctiveness is memorable.",                                                                                              body:"Memorable brands stand for something. They have opinions, preferences, perspectives — not to provoke, but to be distinct. Neutrality is forgettable.",  takeaway:"Being memorable requires definition."},
+  ];
+
   // ─── THE STUDIO: Full desktop redesign ───────────────────────────────────
   // Architecture: Fixed left panel (visual stage) + scrollable right panel (content)
   // Navigation: Ambient chapter marks at bottom, not a stretched step bar
@@ -8460,37 +8490,6 @@ setAmbitionSaved(true); } catch {}
 
       return <RightContent/>;
     };
-
-    // ── D11 constants ────────────────────────────────────────────────────────
-    const D11_FACTS = [
-      {word:"First Impressions Are Fast", body:"People begin forming impressions in as little as 100 milliseconds — before you've said a single word.", source:"Willis & Todorov, 2006"},
-      {word:"People Read Signals",        body:"Humans make rapid judgments about confidence, competence, and trustworthiness from minimal cues. Every signal you send is being decoded.", source:"Ambady & Rosenthal / Princeton research"},
-      {word:"Stories Shape Reputation",   body:"Narrative becomes identity. Stories are remembered far more effectively than disconnected information — and they're the most powerful brand-building tool you have.", source:"Cognitive psychology principle"},
-      {word:"Consistency Becomes Brand",  body:"Repeated signals become your brand. Every interaction where you show up the same way adds to a pattern people trust, remember, and associate with you.", source:"Brand psychology"},
-    ];
-    const D11_EXAMPLES = [
-      {id:"jobs", name:"Steve Jobs", role:"Co-founder, Apple",
-       headline:"Simplicity as a Brand Signal",
-       body:"The black turtleneck, the stage minimalism, the deliberate pacing — every element was a conscious signal: 'I think differently, and so does everything I make.' Jobs didn't just build products. He built a consistent visual and behavioural language that became inseparable from the Apple brand.",
-       lesson:"Consistency is the most powerful branding tool available. When every signal aligns — appearance, communication, values, story — people remember you before you've said a word."},
-      {id:"beckham", name:"David Beckham", role:"Athlete · Entrepreneur · Philanthropist",
-       headline:"Brand Can Evolve",
-       body:"From Manchester United captain to fashion icon to club owner to humanitarian ambassador — Beckham's brand evolved without contradiction. Each phase added a dimension rather than replacing the last. The throughline was always intentional excellence, visual precision, and cultural reach.",
-       lesson:"Your brand isn't fixed. It can grow. The key is evolution that feels coherent — new chapters that add to the story rather than contradict it."},
-      {id:"wintour", name:"Anna Wintour", role:"Editor-in-Chief, Vogue",
-       headline:"Iconic Through Consistency",
-       body:"The bob. The sunglasses. The front row seat. For decades, Wintour has signalled authority, taste, and certainty through consistent visual and behavioural choices. She doesn't vary. She doesn't hedge. That consistency creates anticipation and recognition — the foundation of any powerful brand.",
-       lesson:"When people know what to expect from you, they trust you. Consistency signals confidence. Variation without purpose signals uncertainty."},
-    ];
-
-    const D11_INGREDIENTS = [
-      {n:"Authority",    tagline:"Be known for something",         psych:"Authority Bias",          psychBody:"People naturally trust perceived expertise. If you're clearly exceptional in one area, credibility rises fast.",                                                                                              body:"The strongest brands stand for something specific. Not 'good at many things' — but known for one thing first.",    takeaway:"Own a category."},
-      {n:"Generosity",   tagline:"Give value freely",               psych:"Reciprocity (Cialdini)",  psychBody:"When people receive value, they naturally feel more positively toward the source.",                                                                                                                       body:"The fastest way to build goodwill is to help before asking. Teach. Share. Educate. Simplify. Practical tips, frameworks, behind-the-scenes lessons.",  takeaway:"Give before you ask."},
-      {n:"Relatability", tagline:"Share the human story",           psych:"Narrative Identity",      psychBody:"We connect with people whose journeys feel emotionally relatable. Similarity Attraction effect.",                                                                                                         body:"Expertise creates admiration. Story creates connection. People don't just want polished success — they want setbacks, lessons, beginnings, ambition, growth.",  takeaway:"Let people see the journey."},
-      {n:"Energy",       tagline:"Passion is perception",           psych:"Emotional Contagion",     psychBody:"Emotion spreads socially. Your energy influences how others feel — and whether they believe the message matters.",                                                                                        body:"Energy communicates belief. If you sound disengaged, people assume the message lacks importance. Conviction, warmth, and emotional presence are felt before they're heard.",  takeaway:"Passion is contagious."},
-      {n:"Familiarity",  tagline:"Repeated exposure builds trust",  psych:"Mere Exposure Effect",   psychBody:"The more often people encounter something, the more positively they tend to feel about it.",                                                                                                              body:"People trust what feels familiar. Series. Podcasts. Regular posts. Repeated appearances. Consistent presence — not one big moment.",  takeaway:"Consistency creates comfort."},
-      {n:"Polarity",     tagline:"Have a point of view",            psych:"Von Restorff Effect",     psychBody:"Things that stand out are remembered more easily than things that blend in. Distinctiveness is memorable.",                                                                                              body:"Memorable brands stand for something. They have opinions, preferences, perspectives — not to provoke, but to be distinct. Neutrality is forgettable.",  takeaway:"Being memorable requires definition."},
-    ];
 
     const D11RightContent = () => {
       const [d11Test, setD11Test] = useState(null);
