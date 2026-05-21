@@ -4269,9 +4269,10 @@ function D2SimWidget({T, T2, isDesktop}) {
     setLoading(false); setRound(r=>r+1); setPhase('feedback');
   }
 
-  const dark="#0E0B08", cream="rgba(245,239,230,0.9)", creamDim="rgba(245,239,230,0.5)";
+  const dark=T2.bg, cream=T2.text, creamDim=T2.text3;
+  const subBg=T2.surface, subBorder=T2.border, subBorderAct="rgba(138,158,132,0.5)";
   const btn=(label,onClick,style={})=>(
-    <button onClick={onClick} style={{padding:"12px 20px",borderRadius:4,border:"1px solid rgba(255,255,255,0.12)",background:"transparent",color:cream,fontSize:isDesktop?13:12,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44,transition:"all 0.2s",...style}}>{label}</button>
+    <button onClick={onClick} style={{padding:"12px 20px",borderRadius:4,border:"1px solid "+subBorder,background:"transparent",color:cream,fontSize:isDesktop?13:12,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44,transition:"all 0.2s",...style}}>{label}</button>
   );
 
   if(phase==='idle') return (
@@ -4296,12 +4297,12 @@ function D2SimWidget({T, T2, isDesktop}) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?20:16,fontWeight:600,color:cream,marginBottom:6,lineHeight:1.3}}>{sc.sub}</p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:creamDim,marginBottom:isDesktop?32:24}}>How would you like to practise?</p>
         <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:20}}>
-          <div onClick={()=>setMode('guided')} style={{background:mode==='guided'?"rgba(138,158,132,0.12)":"rgba(255,255,255,0.04)",border:`1px solid ${mode==='guided'?"rgba(138,158,132,0.5)":"rgba(255,255,255,0.1)"}`,borderRadius:8,padding:isDesktop?"20px 24px":"16px 18px",cursor:"pointer",transition:"all 0.2s"}}>
+          <div onClick={()=>setMode('guided')} style={{background:mode==='guided'?"rgba(138,158,132,0.10)":T2.surface,border:`1px solid ${mode==='guided'?"rgba(138,158,132,0.5)":T2.border}`,borderRadius:8,padding:isDesktop?"20px 24px":"16px 18px",cursor:"pointer",transition:"all 0.2s"}}>
             <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:cream,marginBottom:6}}>Coach Me With a Guided Scenario</div>
             <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:creamDim,marginBottom:8}}>AI provides a realistic professional scenario and a polished sample script to rehearse aloud.</div>
             <div style={{fontFamily:T.sans,fontSize:11,color:T.gold}}>Best for: building confidence · removing blank-page anxiety</div>
           </div>
-          <div onClick={()=>setMode('own')} style={{background:mode==='own'?"rgba(138,158,132,0.12)":"rgba(255,255,255,0.04)",border:`1px solid ${mode==='own'?"rgba(138,158,132,0.5)":"rgba(255,255,255,0.1)"}`,borderRadius:8,padding:isDesktop?"20px 24px":"16px 18px",cursor:"pointer",transition:"all 0.2s"}}>
+          <div onClick={()=>setMode('own')} style={{background:mode==='own'?"rgba(138,158,132,0.10)":T2.surface,border:`1px solid ${mode==='own'?"rgba(138,158,132,0.5)":T2.border}`,borderRadius:8,padding:isDesktop?"20px 24px":"16px 18px",cursor:"pointer",transition:"all 0.2s"}}>
             <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:cream,marginBottom:6}}>Practise With My Own Response</div>
             <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:creamDim,marginBottom:8}}>Use your own words — real content from your work or improvise freely.</div>
             <div style={{fontFamily:T.sans,fontSize:11,color:T.gold}}>Best for: real-world rehearsal · advanced practice</div>
@@ -4326,14 +4327,14 @@ function D2SimWidget({T, T2, isDesktop}) {
           <div style={{fontSize:10,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:10,fontFamily:T.sans}}>Choose your level</div>
           <div style={{display:"flex",gap:8,marginBottom:isDesktop?20:16}}>
             {[['beginner','Full Script','Read aloud'],['intermediate','Talking Points','Fill the gaps'],['advanced','Speak Freely','Improvise']].map(([d,label,sub])=>(
-              <button key={d} onClick={()=>setDifficulty(d)} style={{flex:1,padding:isDesktop?"12px 8px":"10px 6px",borderRadius:6,border:`1px solid ${difficulty===d?"rgba(138,158,132,0.5)":"rgba(255,255,255,0.1)"}`,background:difficulty===d?"rgba(138,158,132,0.12)":"rgba(255,255,255,0.04)",cursor:"pointer",fontFamily:T.sans,minHeight:44}}>
+              <button key={d} onClick={()=>setDifficulty(d)} style={{flex:1,padding:isDesktop?"12px 8px":"10px 6px",borderRadius:6,border:`1px solid ${difficulty===d?"rgba(138,158,132,0.5)":T2.border}`,background:difficulty===d?"rgba(138,158,132,0.10)":T2.surface,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>
                 <div style={{fontSize:isDesktop?12:11,fontWeight:600,color:difficulty===d?T.gold:cream,marginBottom:2}}>{label}</div>
                 <div style={{fontSize:10,color:creamDim}}>{sub}</div>
               </button>
             ))}
           </div>
           {/* Script preview */}
-          <div style={{background:"rgba(255,255,255,0.04)",borderRadius:6,padding:isDesktop?"18px 20px":"14px 16px",marginBottom:isDesktop?20:16,borderLeft:"2px solid rgba(138,158,132,0.3)"}}>
+          <div style={{background:T2.surface,borderRadius:6,padding:isDesktop?"18px 20px":"14px 16px",marginBottom:isDesktop?20:16,borderLeft:"2px solid rgba(138,158,132,0.3)"}}>
             <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:8,fontFamily:T.sans}}>
               {difficulty==='beginner'?'Suggested Script':difficulty==='intermediate'?'Talking Points':'You\'ll improvise this one'}
             </div>
@@ -4358,14 +4359,14 @@ function D2SimWidget({T, T2, isDesktop}) {
       <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
       <div style={{padding:isDesktop?"36px 40px":"24px 20px"}}>
         <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"0.2em",marginBottom:6,fontFamily:T.sans}}>{sc.label}</div>
-        <div style={{background:"rgba(255,255,255,0.04)",borderRadius:6,padding:isDesktop?"16px 20px":"12px 14px",marginBottom:isDesktop?24:18,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+        <div style={{background:T2.surface,borderRadius:6,padding:isDesktop?"16px 20px":"12px 14px",marginBottom:isDesktop?24:18,borderLeft:"2px solid "+T.gold}}>
           <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>AI Coach</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?17:14,fontStyle:"italic",color:cream,margin:0,lineHeight:1.5}}>{aiMsg}</p>
         </div>
         <div style={{fontSize:10,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:12,fontFamily:T.sans}}>Start with…</div>
         <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:isDesktop?20:16}}>
           {sc.starters.map((s,i)=>(
-            <button key={i} onClick={()=>{ setStarter(s); setInput(s+' '); setPhase('active'); }} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,padding:isDesktop?"12px 16px":"10px 14px",cursor:"pointer",textAlign:"left",fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:cream,lineHeight:1.4,minHeight:44,transition:"all 0.2s"}}>○ {s}</button>
+            <button key={i} onClick={()=>{ setStarter(s); setInput(s+' '); setPhase('active'); }} style={{background:T2.surface,border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,padding:isDesktop?"12px 16px":"10px 14px",cursor:"pointer",textAlign:"left",fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:cream,lineHeight:1.4,minHeight:44,transition:"all 0.2s"}}>○ {s}</button>
           ))}
           <button onClick={()=>{ setStarter(''); setInput(''); setPhase('active'); }} style={{background:"transparent",border:"1px solid rgba(255,255,255,0.06)",borderRadius:6,padding:isDesktop?"10px 16px":"8px 14px",cursor:"pointer",textAlign:"left",fontFamily:T.sans,fontSize:isDesktop?13:12,color:creamDim,minHeight:44}}>Or speak freely →</button>
         </div>
@@ -4378,13 +4379,13 @@ function D2SimWidget({T, T2, isDesktop}) {
     <div style={{background:dark,borderRadius:8,overflow:"hidden",animation:"fadeIn 0.3s ease"}}>
       <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
       <div style={{padding:isDesktop?"36px 40px":"24px 20px"}}>
-        <div style={{background:"rgba(255,255,255,0.04)",borderRadius:6,padding:isDesktop?"16px 20px":"12px 14px",marginBottom:isDesktop?24:18,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+        <div style={{background:T2.surface,borderRadius:6,padding:isDesktop?"16px 20px":"12px 14px",marginBottom:isDesktop?24:18,borderLeft:"2px solid "+T.gold}}>
           <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>AI Coach</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?17:14,fontStyle:"italic",color:cream,margin:0,lineHeight:1.5}}>{aiMsg}</p>
         </div>
-        <textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Speak your response…" autoFocus rows={isDesktop?5:4} style={{width:"100%",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,padding:"14px 16px",fontFamily:T.serif,fontSize:isDesktop?16:14,color:cream,lineHeight:1.65,resize:"none",outline:"none",boxSizing:"border-box",caretColor:T.gold}}/>
+        <textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Speak your response…" autoFocus rows={isDesktop?5:4} style={{width:"100%",background:T2.surface,border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,padding:"14px 16px",fontFamily:T.serif,fontSize:isDesktop?16:14,color:cream,lineHeight:1.65,resize:"none",outline:"none",boxSizing:"border-box",caretColor:T.gold}}/>
         <div style={{display:"flex",gap:10,marginTop:14}}>
-          <button onClick={submit} disabled={loading||!input.trim()} style={{flex:1,padding:"13px",borderRadius:4,border:"none",background:loading||!input.trim()?"rgba(255,255,255,0.06)":T.gold,color:loading||!input.trim()?creamDim:"white",fontSize:isDesktop?14:13,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:T.sans,minHeight:44}}>
+          <button onClick={submit} disabled={loading||!input.trim()} style={{flex:1,padding:"13px",borderRadius:4,border:"none",background:loading||!input.trim()?T2.surface:T.gold,color:loading||!input.trim()?creamDim:"white",fontSize:isDesktop?14:13,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:T.sans,minHeight:44}}>
             {loading?"Coaching in progress…":"Get Voice Coaching →"}
           </button>
           <button onClick={()=>setPhase(mode==='guided'?'guided-setup':'setup')} style={{background:"transparent",border:"1px solid rgba(255,255,255,0.1)",borderRadius:4,padding:"13px 16px",color:creamDim,fontFamily:T.sans,fontSize:12,cursor:"pointer",minHeight:44}}>Back</button>
@@ -4417,7 +4418,7 @@ function D2SimWidget({T, T2, isDesktop}) {
                   <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:creamDim,textTransform:"uppercase",letterSpacing:"0.1em"}}>{d.l}</span>
                   <span style={{fontFamily:T.serif,fontSize:isDesktop?14:12,fontWeight:600,color:d.v>=7?T.gold:d.v>=5?"rgba(245,239,230,0.7)":"rgba(180,100,80,0.9)"}}>{d.v}</span>
                 </div>
-                <div style={{height:3,background:"rgba(255,255,255,0.08)",borderRadius:2,overflow:"hidden"}}>
+                <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
                   <div style={{height:"100%",width:`${d.v*10}%`,background:d.v>=7?T.gold:d.v>=5?"rgba(245,239,230,0.4)":"rgba(180,100,80,0.6)",borderRadius:2,transition:"width 0.8s ease"}}/>
                 </div>
               </div>
@@ -4428,7 +4429,7 @@ function D2SimWidget({T, T2, isDesktop}) {
             <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:cream,margin:0,lineHeight:1.65}}>{result.feedback}</p>
           </div>
           {result.followUp&&(
-            <div style={{background:"rgba(255,255,255,0.04)",borderRadius:6,padding:isDesktop?"14px 18px":"12px 14px",borderLeft:"2px solid rgba(138,158,132,0.4)",marginBottom:isDesktop?24:18}}>
+            <div style={{background:T2.surface,borderRadius:6,padding:isDesktop?"14px 18px":"12px 14px",borderLeft:"2px solid "+T.gold,marginBottom:isDesktop?24:18}}>
               <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>Continue the conversation</div>
               <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:cream,margin:0,lineHeight:1.5}}>{result.followUp}</p>
             </div>
