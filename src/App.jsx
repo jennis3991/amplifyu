@@ -10404,7 +10404,6 @@ strokeWidth="1.5" strokeLinecap="round"/></svg>}
           {typeof __BUILD_TIME__ !== 'undefined' ? new Date(__BUILD_TIME__).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : ''}
         </div>
       </div>
-      </div>
     </div>
   );
 }
