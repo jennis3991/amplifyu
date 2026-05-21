@@ -10209,6 +10209,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
             </div>
           </div>
         </div>
+        </div>
       )}
       <div style={isDesktop?Object.assign({},contentStyle,{paddingTop:32}):Object.assign({padding:"16px 20px",display:"flex",flexDirection:"column",gap:12})}>
         <div style={{background:T2.cardDark,borderRadius:24,padding:"26px 24px"}}>
