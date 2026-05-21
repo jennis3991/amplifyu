@@ -1141,7 +1141,7 @@ const LESSONS = [
    promise:"Speed is anxiety. Pace is confidence. Today you chose pace.",
    teaser:"Discover why your voice is your most underused asset — and how mastering four simple levers changes how every room responds to you."},
 
-  {day:3,week:1,title:"Eliminate Fillers",tag:"Credibility",scene:"clarity",
+  {day:3,week:1,title:"The Credibility Edge",tag:"Credibility",scene:"clarity",
    quote:"What you don't say is as powerful as what you do.",
    insight:"Um, uh, like, you know — these words exist because we fear silence. But silence is more powerful than filler. It signals you're thinking, not floundering.",
    pieLink:"Image: Filler words undermine authority instantly. Removing them is one of the fastest credibility upgrades available.",
@@ -1152,7 +1152,7 @@ const LESSONS = [
    scenarios:["A difficult question from leadership","A panel presentation","A one-on-one with your manager"],
    review:["Did I pause instead of filling?","Was I comfortable with silence?","Did I feel more authoritative?"],
    promise:"Every filler word you remove is replaced by credibility.",
-   teaser:"Learn how to replace every filler word with something far more powerful — and instantly upgrade how others perceive you."},
+   teaser:"Discover why filler words quietly erode your authority — and how one simple shift makes you sound more credible, confident, and in control."},
 
   {day:4,week:1,title:"Short Sentences",tag:"Editing",scene:"clarity",
    quote:"Short sentences are easier to follow. Easier to remember. And far more persuasive.",
