@@ -9102,10 +9102,10 @@ something you can use in real life.</p>
           </>
         )}
 
-        {step==="Simulation" && (
+        {!isD2 && step==="Simulation" && (
           <>
             {(()=>{
-              const scenarios = roleId ? getScenariosForDay(roleId, 
+              const scenarios = roleId ? getScenariosForDay(roleId,
 lesson.day) : lesson.scenarios;
               const activeSc = scenarios[selSc] || scenarios[0];
               return (
