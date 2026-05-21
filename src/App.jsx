@@ -8150,8 +8150,19 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       </div>
 
       {/* Header image + Exit button overlay */}
-      <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:(step==="Practice"||step==="Simulation")?"#141210":step==="Example"?"#0E0B08":"transparent"}}>
+      <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:(step==="Practice"||step==="Simulation")?"#141210":step==="Example"||(isD2&&step==="Simulation")?"#0E0B08":"transparent"}}>
         {(()=>{
+          // Day 2 Simulation: dark cinematic text panel
+          if(isD2 && step==="Simulation"){
+            return (
+              <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box"}}>
+                <div style={{fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>REAL-WORLD VOICE COACHING</div>
+                <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(245,239,230,0.95)",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>This is where voice training becomes real.</p>
+                <div style={{width:40,height:1,background:"rgba(245,239,230,0.25)",marginBottom:14}}/>
+                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Choose your scenario. Speak. Get coached.</p>
+              </div>
+            );
+          }
           // Example tab: dark cinematic text panel instead of image
           if(step==="Example"){
             const EX_HEADERS={
@@ -8174,7 +8185,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           }
           const STEP_IMGS={
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            2:{Insight:"/d2-insight.jpg",Theory:"/d2-theory.jpg",Practice:"/d2-practice.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            2:{Insight:"/d2-insight.jpg",Theory:"/d2-theory.jpg",Practice:"/d2-practice.jpg",Review:"/review-chair.jpg"},
             3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             5:{Insight:"/d5-insight.jpg",Theory:"/d5-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
