@@ -8548,7 +8548,7 @@ setAmbitionSaved(true); } catch {}
             <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science of Personal Brand</div>
 
             {/* Halo Effect — first */}
-            <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>One Strong Signal Changes Everything</h2>
+            <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The Halo Effect</h2>
             <p style={{ fontFamily:T.sans, fontSize:16, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:20, maxWidth:640 }}>Whether intentional or not, people are constantly building a story about who you are. Psychologists call this the Halo Effect: one standout positive trait shapes how they judge everything else.</p>
             <div style={{ display:"flex", flexWrap:"wrap", gap:10, marginBottom:20 }}>
               {[["articulate","intelligence"],["calm","competence"],["stylish","success"],["confident","capability"],["warm","trustworthiness"]].map(([sig,res],i) => (
