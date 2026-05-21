@@ -10173,18 +10173,27 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
     : {padding:"20px",paddingBottom:100};
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}}>
-      {!isDesktop && (<div style={{position:"relative",height:180}}>
-        <Scene name="pie" height={180}/>
-        <div style={{position:"absolute",bottom:20,left:24}}>
-          <h1 style={{fontFamily:T.serif,fontSize:28,fontWeight:700,color:"white",letterSpacing:"-0.5px"}}>Your Progress</h1>
+      {/* Hero banner — mobile */}
+      {!isDesktop && (
+        <div style={{position:"relative",height:220,overflow:"hidden"}}>
+          <img src="/progress-hero.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 55%",display:"block"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.75) 0%,transparent 55%)"}}/>
+          <div style={{position:"absolute",bottom:20,left:24}}>
+            <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:6,fontFamily:T.sans}}>Your Journey</div>
+            <h1 style={{fontFamily:T.serif,fontSize:28,fontWeight:700,color:"white",letterSpacing:"-0.5px",lineHeight:1.1}}>Your Progress</h1>
+          </div>
         </div>
-      </div>)}
+      )}
+      {/* Hero banner — desktop */}
       {isDesktop && (
-        <div style={{ borderBottom:"1px solid "+T2.divider, marginBottom:0 }}>
-          <div style={{maxWidth:1160,margin:"0 auto",padding:"52px 88px 40px",display:"flex",alignItems:"flex-end",justifyContent:"space-between"}}>
+        <div style={{position:"relative",height:320,overflow:"hidden",borderBottom:"1px solid "+T2.divider}}>
+          <img src="/progress-hero.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 55%",display:"block"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.72) 0%,rgba(10,8,5,0.1) 60%,transparent 100%)"}}/>
+          <div style={{position:"absolute",bottom:0,left:0,right:0}}>
+            <div style={{maxWidth:1160,margin:"0 auto",padding:"0 88px 40px",display:"flex",alignItems:"flex-end",justifyContent:"space-between"}}>
             <div>
-              <div style={{fontSize:10,letterSpacing:"4px",textTransform:"uppercase",color:T.gold,fontFamily:T.sans,marginBottom:14}}>Your Journey</div>
-              <h1 style={{fontFamily:T.serif,fontSize:52,fontWeight:500,color:T2.text,letterSpacing:"-2px",lineHeight:1,margin:0}}>Your Progress</h1>
+              <div style={{fontSize:10,letterSpacing:"4px",textTransform:"uppercase",color:"rgba(200,180,140,0.9)",fontFamily:T.sans,marginBottom:14}}>Your Journey</div>
+              <h1 style={{fontFamily:T.serif,fontSize:52,fontWeight:500,color:"#F5EFE6",letterSpacing:"-2px",lineHeight:1,margin:0}}>Your Progress</h1>
             </div>
             <div style={{display:"flex",alignItems:"flex-end",gap:40,paddingBottom:4}}>
               {streak > 0 && (
@@ -10201,7 +10210,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
           </div>
         </div>
       )}
-      <div style={isDesktop?Object.assign({},contentStyle,{paddingTop:0}):Object.assign({padding:"16px 20px",display:"flex",flexDirection:"column",gap:12})}>
+      <div style={isDesktop?Object.assign({},contentStyle,{paddingTop:32}):Object.assign({padding:"16px 20px",display:"flex",flexDirection:"column",gap:12})}>
         <div style={{background:T2.cardDark,borderRadius:24,padding:"26px 24px"}}>
           <div 
 style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Overall</div>
