@@ -6028,6 +6028,17 @@ setAmbitionSaved(true); } catch {}
             </div>
           </div>
         );
+        if (isD6) return (
+          <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
+            <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
+            <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Masters Under Pressure</div>
+              <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Composure is a skill. The calmest person in the room shapes the room.</p>
+              <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
+              <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>How elite communicators handle the conversations most people avoid.</p>
+            </div>
+          </div>
+        );
         return (
           <div style={{ height: "100%", display: "flex", flexDirection: "column", background: "#131009" }}>
             <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "40px 48px", borderBottom: "1px solid rgba(255,255,255,0.06)", animation: "fadeIn 0.5s ease both" }}>
