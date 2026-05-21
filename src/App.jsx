@@ -6972,7 +6972,15 @@ setAmbitionSaved(true); } catch {}
             </div>
             <div style={{ background:T2.surface, borderRadius:8, padding:"28px 32px", border:"0.5px solid "+T2.border }}>
               <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8, fontFamily:T.sans }}>PRE Speed Challenge</div>
-              <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text3, lineHeight:1.6, marginBottom:24, maxWidth:480 }}>90 seconds. Answer as many as you can. Say your Point, Reason, and Example out loud — then hit Next.</p>
+              <div style={{ fontFamily:T.sans, fontSize:15, color:T2.text3, lineHeight:1.9, marginBottom:24, maxWidth:480 }}>
+                <div>90 seconds. For each question, say out loud:</div>
+                <div style={{ paddingLeft:16, marginTop:4 }}>
+                  <div><span style={{ color:T.gold, fontWeight:600 }}>Point</span></div>
+                  <div><span style={{ color:T.gold, fontWeight:600 }}>Reason</span></div>
+                  <div><span style={{ color:T.gold, fontWeight:600 }}>Example</span></div>
+                </div>
+                <div style={{ marginTop:4 }}>Then hit Next.</div>
+              </div>
               {!d5Challenge.started && d5Challenge.time>0 ? (
                 <button onClick={startChallenge} style={{ padding:"13px 32px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans }}>Start Challenge →</button>
               ) : d5Challenge.time===0 ? (
@@ -8452,7 +8460,15 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               {/* 90-second challenge */}
               <div style={{background:T2.surface,borderRadius:8,padding:"18px 20px"}}>
                 <div style={{fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontFamily:T.sans}}>PRE Speed Challenge</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>90 seconds. Answer as many as you can. Say your Point, Reason, and Example out loud — then hit Next.</p>
+                <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.9,marginBottom:16}}>
+                  <div>90 seconds. For each question, say out loud:</div>
+                  <div style={{paddingLeft:12,marginTop:2}}>
+                    <div><span style={{color:T.gold,fontWeight:600}}>Point</span></div>
+                    <div><span style={{color:T.gold,fontWeight:600}}>Reason</span></div>
+                    <div><span style={{color:T.gold,fontWeight:600}}>Example</span></div>
+                  </div>
+                  <div style={{marginTop:2}}>Then hit Next.</div>
+                </div>
                 {!d5Challenge.started && d5Challenge.time>0 ? (
                   <button onClick={startChallenge} style={{width:"100%",padding:"14px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans}}>
                     Start Challenge →
