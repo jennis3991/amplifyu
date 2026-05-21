@@ -1139,7 +1139,7 @@ const LESSONS = [
    scenarios:["Presenting to the board","A high-stakes negotiation","An unexpected question"],
    review:["Did I pause before answering?","Did I avoid rushing through my points?","Did I sound calm, even under pressure?"],
    promise:"Speed is anxiety. Pace is confidence. Today you chose pace.",
-   teaser:"Discover why slowing down is one of the most powerful signals of confidence, and how to use pace to own the room."},
+   teaser:"Discover why your voice is your most underused asset — and how mastering four simple levers changes how every room responds to you."},
 
   {day:3,week:1,title:"Eliminate Fillers",tag:"Credibility",scene:"clarity",
    quote:"What you don't say is as powerful as what you do.",
