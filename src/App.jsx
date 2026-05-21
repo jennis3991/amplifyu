@@ -5756,7 +5756,19 @@ setAmbitionSaved(true); } catch {}
         );
       }
 
-      // ── Simulation — scenario as primary statement ────────────────────────────
+      // ── Simulation — D2 gets cinematic panel; others get scenario ───────────────
+      if (step === "Simulation" && isD2) return (
+        <div style={{ background:"#0E0B08", height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+          <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
+          <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+            <div style={{ fontSize:11, fontWeight:700, color:"rgba(200,180,140,1)", textTransform:"uppercase", letterSpacing:"0.2em", marginBottom:20, fontFamily:T.sans }}>Real-World Voice Coaching</div>
+            <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>This is where voice training becomes real.</p>
+            <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+            <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.7)", lineHeight:1.65 }}>Choose your scenario. Speak. Get coached on pace, pauses, clarity, and presence.</p>
+          </div>
+        </div>
+      );
+
       if (step === "Simulation") return (
         <div style={{ background: "#131009", height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "40px 48px", position: "relative", overflow: "hidden" }}>
           {/* Day 1: photo background */}
