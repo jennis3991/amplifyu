@@ -7122,12 +7122,11 @@ setAmbitionSaved(true); } catch {}
                 <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:18 }}>
                   <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Practice Challenge</div>
                   <p style={{ fontFamily:T.serif, fontSize:16, fontWeight:600, color:T2.text, fontStyle:"italic", marginBottom:10 }}>Say: {card.challenge.sentence}</p>
-                  <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:16 }}>
+                  <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
                     {card.challenge.modes.map((m,i)=>(
                       <span key={i} style={{ background:"rgba(138,158,132,0.1)", border:"1px solid rgba(138,158,132,0.25)", borderRadius:20, padding:"5px 14px", fontFamily:T.sans, fontSize:12, color:T.goldDark, fontWeight:500 }}>{m}</span>
                     ))}
                   </div>
-                  <button style={{ display:"inline-block", background:T.ink, color:T.bg, padding:"11px 24px", borderRadius:4, fontFamily:T.sans, fontSize:13, fontWeight:600, cursor:"pointer", border:"none" }}>{card.cta}</button>
                 </div>
               </div>
             ))}
@@ -8079,12 +8078,11 @@ T.goldDark : T2.text4,
                       <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,marginBottom:14}}>{card.lesson}</p>
                       <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Practice Challenge</div>
                       <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:10}}>Say: {card.challenge.sentence}</p>
-                      <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
+                      <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
                         {card.challenge.modes.map((m,i)=>(
                           <span key={i} style={{background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.25)",borderRadius:20,padding:"4px 12px",fontFamily:T.sans,fontSize:11,color:T.goldDark,fontWeight:500}}>{m}</span>
                         ))}
                       </div>
-                      <button style={{width:"100%",padding:"12px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>{card.cta}</button>
                     </div>
                   )}
                 </div>
