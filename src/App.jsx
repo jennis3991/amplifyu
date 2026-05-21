@@ -8534,32 +8534,81 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science of Perception</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>How Others Form Their View of You</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28, maxWidth:640 }}>Perception isn't passive. It's a rapid, automatic process driven by signals. Understanding the mechanics means you can shape the output.</p>
-          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
-            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0 }}>Brand is repeated behaviour made visible.</p>
-          </div>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
-            {[
-              {n:"Thin Slicing",            role:"Snap judgments, fast",              body:"Humans make accurate impressions from very brief exposures — sometimes under two seconds. Your brand is built in micro-moments, not presentations.", source:"Ambady & Rosenthal"},
-              {n:"One Signal Changes Everything", role:"The Halo Effect",            body:"One strong positive impression can shape how people judge everything else about you. A sharp communicator is assumed competent. A calm presence is assumed trustworthy.", source:"Classic psychology"},
-              {n:"Narrative Identity",       role:"Stories are remembered, facts aren't", body:"People remember you through the stories you tell. Your narrative becomes your identity — which means curating your stories is one of the highest-leverage brand investments you can make.", source:"Cognitive psychology"},
-              {n:"Consistency Principle",    role:"Repeated behaviour becomes brand", body:"Every time you show up the same way, you add a data point to the pattern people use to describe you. Inconsistency creates uncertainty. Consistency creates trust.", source:"Brand psychology"},
-            ].map((b,i) => (
-              <div key={i} style={{ padding:"20px 22px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
-                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:6 }}>{b.n}</div>
-                <div style={{ fontFamily:T.serif, fontSize:17, fontWeight:600, color:T2.text, marginBottom:8 }}>{b.role}</div>
-                <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.65, fontWeight:300, margin:"0 0 6px" }}>{b.body}</p>
-                <div style={{ fontFamily:T.sans, fontSize:11, color:T2.text4, fontStyle:"italic" }}>{b.source}</div>
+      if (step === "Theory") {
+        const D11_INGREDIENTS = [
+          {n:"Authority",    tagline:"Be known for something",    psych:"Authority Bias",    psychBody:"People naturally trust perceived expertise. If you're clearly exceptional in one area, credibility rises fast.",    body:"The strongest brands stand for something specific. Not 'good at many things' — but known for one thing first. Own a category.",    takeaway:"Own a category."},
+          {n:"Generosity",   tagline:"Give value freely",          psych:"Reciprocity Principle",  psychBody:"When people receive value, they naturally feel more positively toward the source. (Cialdini)",              body:"The fastest way to build goodwill is to help before asking. Teach. Share. Educate. Simplify. Practical tips, frameworks, behind-the-scenes lessons.",  takeaway:"Give before you ask."},
+          {n:"Relatability", tagline:"Share the human story",      psych:"Narrative Identity",     psychBody:"We connect with people whose journeys feel emotionally relatable. Similarity Attraction effect.",           body:"Expertise creates admiration. Story creates connection. People don't just want polished success — they want setbacks, lessons, beginnings, ambition, growth.",  takeaway:"Let people see the journey."},
+          {n:"Energy",       tagline:"Passion is perception",      psych:"Emotional Contagion",    psychBody:"Emotion spreads socially. Your energy influences how others feel — and whether they believe the message.",  body:"Energy communicates belief. If you sound disengaged, people assume the message lacks importance. Conviction, warmth, and emotional presence are felt before they're heard.",  takeaway:"Passion is contagious."},
+          {n:"Familiarity",  tagline:"Repeated exposure builds comfort", psych:"Mere Exposure Effect", psychBody:"The more often people encounter something, the more positively they tend to feel about it.",          body:"People trust what feels familiar. Series. Podcasts. Regular posts. Repeated appearances. Consistent presence — not one big moment.",  takeaway:"Consistency creates comfort."},
+          {n:"Polarity",     tagline:"Have a point of view",       psych:"Von Restorff Effect",    psychBody:"Things that stand out are remembered more easily than things that blend in. Distinctiveness is memorable.", body:"Memorable brands stand for something. They have opinions, preferences, perspectives — not to provoke, but to be distinct. Neutrality is forgettable.",  takeaway:"Being memorable requires definition."},
+        ];
+        return (
+          <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+            <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science of Personal Brand</div>
+            <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The Recipe for a Memorable Personal Brand</h2>
+            <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:24, maxWidth:640 }}>Whether intentional or not, people are constantly building a story about who you are. Your personal brand is not a logo. It's the emotional and psychological impression people form from your signals, your stories, and your repeated presence.</p>
+
+            {/* Section 1 — Halo Effect */}
+            <div style={{ marginBottom:32 }}>
+              <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10 }}>Section 1 — The Halo Effect</div>
+              <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:16 }}>
+                <div style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.3, marginBottom:12 }}>One Strong Signal Changes Everything</div>
+                <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, margin:"0 0 14px" }}>Psychologists call this the Halo Effect. When people notice one standout positive trait, they often assume other positive qualities must be true too.</p>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:10, marginBottom:14 }}>
+                  {[["articulate","intelligence"],["calm","competence"],["stylish","success"],["confident","capability"],["warm","trustworthiness"]].map(([sig,res],i) => (
+                    <div key={i} style={{ padding:"8px 14px", background:T2.bg, borderRadius:3, border:"0.5px solid "+T2.border }}>
+                      <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:600, color:T2.text }}>{sig}</span>
+                      <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text3 }}> → people assume </span>
+                      <span style={{ fontFamily:T.serif, fontSize:13, fontStyle:"italic", color:T.gold }}>{res}</span>
+                    </div>
+                  ))}
+                </div>
+                <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, margin:"0 0 10px" }}>One visible strength creates a shortcut in the mind. That single signal becomes the lens through which everything else is interpreted.</p>
+                <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.6, margin:0 }}>If you become known for one strong thing, that perception expands.</p>
               </div>
-            ))}
+              <div style={{ padding:"14px 18px", background:T2.bg, borderRadius:3, borderLeft:"2px solid "+T2.border }}>
+                <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T2.text2, lineHeight:1.6, margin:0 }}>"People rarely remember everything about you. They remember the strongest signal you gave them."</p>
+              </div>
+            </div>
+
+            {/* Section 2 — The 6 Ingredients */}
+            <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:16 }}>Section 2 — The AmplifyU Brand Formula</div>
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
+              {D11_INGREDIENTS.map((ing,i) => (
+                <div key={i} style={{ padding:"20px 22px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                  <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
+                    <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px" }}>Ingredient {i+1}</div>
+                    <div style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T2.text }}>{ing.n}</div>
+                  </div>
+                  <div style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, fontStyle:"italic", marginBottom:10 }}>{ing.tagline}</div>
+                  <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.65, fontWeight:300, margin:"0 0 10px" }}>{ing.body}</p>
+                  <div style={{ padding:"8px 12px", background:T2.bg, borderRadius:3, marginBottom:8 }}>
+                    <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.goldDark, textTransform:"uppercase", letterSpacing:"1px", marginBottom:4 }}>{ing.psych}</div>
+                    <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, lineHeight:1.55, margin:0, fontWeight:300 }}>{ing.psychBody}</p>
+                  </div>
+                  <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold }}>→ {ing.takeaway}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Closing framework */}
+            <div style={{ padding:"24px 28px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, borderTop:"2px solid "+T.gold }}>
+              <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14 }}>Be Your Brand</div>
+              <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, marginBottom:16 }}>A powerful personal brand is built when people repeatedly experience:</p>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8, marginBottom:18 }}>
+                {[["Authority","they respect you"],["Generosity","they value you"],["Relatability","they connect with you"],["Energy","they feel you"],["Familiarity","they remember you"],["Polarity","they notice you"]].map(([k,v],i) => (
+                  <div key={i} style={{ padding:"10px 12px", background:T2.bg, borderRadius:3 }}>
+                    <div style={{ fontFamily:T.serif, fontSize:14, fontWeight:600, color:T.gold, marginBottom:3 }}>{k}</div>
+                    <div style={{ fontFamily:T.sans, fontSize:12, color:T2.text3 }}>{v}</div>
+                  </div>
+                ))}
+              </div>
+              <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>Your brand is the story people tell themselves about you after repeated exposure.</p>
+            </div>
           </div>
-          <p style={{ fontFamily:T.sans, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.7 }}>You're not creating a persona. You're becoming intentional about how your authentic strengths are perceived.</p>
-        </div>
-      );
+        );
+      }
 
       if (step === "Practice") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
@@ -10285,28 +10334,67 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
         )}
         {isD11 && step==="Theory" && (
           <>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science of Perception</div>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>How Others Form Their View of You</h2>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Perception is a rapid, automatic process. Understanding the mechanics means you can shape the output.</p>
-            <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"14px 16px",marginBottom:16,borderRadius:4}}>
-              <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>Brand is repeated behaviour made visible.</p>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science of Personal Brand</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Recipe for a Memorable Personal Brand</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Whether intentional or not, people are constantly building a story about who you are. That impression can be shaped.</p>
+
+            {/* Halo Effect */}
+            <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"14px 16px",marginBottom:14,borderRadius:4}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Section 1 — The Halo Effect</div>
+              <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:10}}>One Strong Signal Changes Everything</p>
+              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,marginBottom:10}}>When people notice one standout positive trait, they often assume other positive qualities must be true too.</p>
+              <div style={{display:"flex",flexDirection:"column",gap:5,marginBottom:10}}>
+                {[["articulate","intelligence"],["calm","competence"],["stylish","success"],["confident","capability"],["warm","trustworthiness"]].map(([s,r],i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"center",gap:6}}>
+                    <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text}}>{s}</span>
+                    <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>→</span>
+                    <span style={{fontFamily:T.serif,fontSize:12,fontStyle:"italic",color:T.gold}}>{r}</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text3,margin:0,lineHeight:1.5}}>"People rarely remember everything about you. They remember the strongest signal you gave them."</p>
             </div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-              {[
-                {n:"Thin Slicing",      role:"Snap judgments",       body:"Accurate impressions from brief exposure. Your brand is built in micro-moments.", source:"Ambady & Rosenthal"},
-                {n:"Halo Effect",       role:"One Signal Changes Everything", body:"One strong positive impression shapes how people judge everything else about you.", source:"Classic psychology"},
-                {n:"Narrative Identity",role:"Stories over facts",    body:"People remember you through the stories you tell. Your narrative becomes your identity.", source:"Cognitive psychology"},
-                {n:"Consistency",       role:"Repeated = trusted",    body:"Every time you show up the same way, you add to the pattern people use to trust you.", source:"Brand psychology"},
-              ].map((b,i)=>(
-                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4,textTransform:"uppercase",letterSpacing:"1px"}}>{b.n}</div>
-                  <div style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T2.text,marginBottom:4}}>{b.role}</div>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:"0 0 4px"}}>{b.body}</p>
-                  <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,fontStyle:"italic"}}>{b.source}</div>
+
+            {/* 6 Ingredients */}
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Section 2 — The Brand Formula</div>
+            {[
+              {n:"Authority",    tag:"Be known for something",    psych:"Authority Bias",          takeaway:"Own a category."},
+              {n:"Generosity",   tag:"Give value freely",          psych:"Reciprocity (Cialdini)", takeaway:"Give before you ask."},
+              {n:"Relatability", tag:"Share the human story",      psych:"Narrative Identity",      takeaway:"Let people see the journey."},
+              {n:"Energy",       tag:"Passion is perception",      psych:"Emotional Contagion",     takeaway:"Passion is contagious."},
+              {n:"Familiarity",  tag:"Repeated exposure = trust",  psych:"Mere Exposure Effect",   takeaway:"Consistency creates comfort."},
+              {n:"Polarity",     tag:"Have a point of view",       psych:"Von Restorff Effect",    takeaway:"Being memorable requires definition."},
+            ].map((ing,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"12px 14px",marginBottom:8,display:"flex",alignItems:"flex-start",gap:12}}>
+                <div style={{width:28,height:28,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:"white"}}>{i+1}</span>
                 </div>
-              ))}
+                <div style={{flex:1}}>
+                  <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:3}}>
+                    <span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text}}>{ing.n}</span>
+                    <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4,fontStyle:"italic"}}>{ing.tag}</span>
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                    <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{ing.psych}</span>
+                    <span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold}}>{ing.takeaway}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* Closing */}
+            <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"14px 16px",borderRadius:4,marginTop:4}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Be Your Brand</div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:12}}>
+                {[["Authority","they respect you"],["Generosity","they value you"],["Relatability","they connect with you"],["Energy","they feel you"],["Familiarity","they remember you"],["Polarity","they notice you"]].map(([k,v],i)=>(
+                  <div key={i} style={{display:"flex",gap:5,alignItems:"baseline"}}>
+                    <span style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:T.gold}}>{k}</span>
+                    <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>→ {v}</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.6}}>Your brand is the story people tell themselves about you after repeated exposure.</p>
             </div>
-            <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>You're not creating a persona. You're becoming intentional about how your authentic strengths are perceived.</p>
           </>
         )}
         {isD11 && step==="Example" && (
