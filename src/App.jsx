@@ -5306,8 +5306,11 @@ setAmbitionSaved(true); } catch {}
               <div style={{ ...LP_LABEL }}>Day {lesson.day} · {lesson.tag}</div>
               
             </div>
-            <h2 style={{ ...LP_HEADING, fontSize: "clamp(36px,3.5vw,56px)", marginBottom: 24 }}>{isD2 ? "Master the instrument behind your message." : lesson.title}</h2>
-            {!isD2 && <><div style={{ width: 32, height: 1, background: T.gold, opacity: 0.45, marginBottom: 20 }}/><p style={{ ...LP_BODY, fontSize: 19, maxWidth: 360 }}>{lesson.quote}</p></>}
+            <h2 style={{ ...LP_HEADING, fontSize: "clamp(36px,3.5vw,56px)", marginBottom: 24 }}>{lesson.title}</h2>
+            {isD2
+              ? <p style={{ fontFamily:T.sans, fontSize:14, fontWeight:400, color:"rgba(245,239,230,0.6)", lineHeight:1.5, margin:0, fontStyle:"italic" }}>Master the instrument behind your message.</p>
+              : <><div style={{ width: 32, height: 1, background: T.gold, opacity: 0.45, marginBottom: 20 }}/><p style={{ ...LP_BODY, fontSize: 19, maxWidth: 360 }}>{lesson.quote}</p></>
+            }
           </div>
         </div>
       );
