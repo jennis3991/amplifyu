@@ -7019,6 +7019,63 @@ setAmbitionSaved(true); } catch {}
     };
 
     const D2RightContent = () => {
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The 88 Keys</h2>
+          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
+            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0, fontStyle:"italic" }}>"Your voice is a piano with 88 keys. You've been playing the same 5 your whole life."</p>
+          </div>
+          <div style={{ fontSize:11, fontWeight:600, color:T.goldDark, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14, fontFamily:T.sans }}>The Science of Vocal Influence</div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:14, marginBottom:32 }}>
+            {[
+              {label:"Prosody",           body:"Rhythm, pitch, pace, and stress. Humans decode emotion through vocal patterns faster than language itself — your voice carries the message before the words do."},
+              {label:"Processing Fluency",body:"Clear, varied, well-paced speech signals intelligence. The brain says 'easy to process = credible.' Flat or rushed delivery creates friction — and loses the room."},
+              {label:"Vocal Contrast",    body:"The same reason music works. Contrast creates anticipation. No variation is cognitive wallpaper — it fades into the background within seconds."},
+            ].map((sc,i)=>(
+              <div key={i} style={{ padding:"18px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                <div style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T.gold, marginBottom:10 }}>{sc.label}</div>
+                <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>{sc.body}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ fontSize:11, fontWeight:600, color:T.goldDark, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14, fontFamily:T.sans }}>The Four Levers</div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:14, marginBottom:32 }}>
+            {[
+              {word:"Pace",  body:"Speed up to create energy. Slow down to signal importance."},
+              {word:"Pitch", body:"Rise to engage. Drop to command."},
+              {word:"Pause", body:"The silence that makes the next word hit harder."},
+              {word:"Power", body:"Volume as intention, not volume as effort."},
+            ].map((n,i)=>(
+              <div key={i} style={{ padding:"18px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                <div style={{ fontFamily:T.serif, fontSize:20, fontWeight:600, color:T.gold, marginBottom:8 }}>{n.word}</div>
+                <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ background:T2.cardDark, borderRadius:8, padding:"28px 32px" }}>
+            <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12, fontFamily:T.sans }}>Hear the Difference</div>
+            <p style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:"rgba(245,239,230,0.9)", marginBottom:20, lineHeight:1.3 }}>"I think this could work."</p>
+            <div style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:20 }}>
+              {["Fast","Slow","High Pitch","Low Pitch","Monotone","Warm / Confident"].map((label,i)=>(
+                <button key={i} style={{
+                  background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.12)",
+                  borderRadius:6, padding:"10px 18px", cursor:"pointer",
+                  display:"flex", alignItems:"center", gap:8,
+                  fontFamily:T.sans,
+                }}>
+                  <svg width="16" height="16" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(138,158,132,0.8)" strokeWidth="1.2"/><path d="M5.5 4.5l4 2.5-4 2.5V4.5z" fill="rgba(138,158,132,0.8)"/></svg>
+                  <span style={{ fontSize:13, color:"rgba(245,239,230,0.7)", fontWeight:500 }}>{label}</span>
+                </button>
+              ))}
+            </div>
+            <div style={{ borderTop:"0.5px solid rgba(255,255,255,0.08)", paddingTop:16 }}>
+              <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T.gold, margin:0, lineHeight:1.6 }}>What changed? Not the words. The meaning.</p>
+            </div>
+          </div>
+        </div>
+      );
+
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The Way You Speak Changes the Way People Listen</h2>
@@ -8465,6 +8522,64 @@ T.goldDark : T2.text4,
           </>
         )}
 
+        {isD2 && step==="Theory" && (
+          <>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>The 88 Keys</h2>
+            <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",marginBottom:20,borderRadius:4}}>
+              <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0,fontStyle:"italic"}}>"Your voice is a piano with 88 keys. You've been playing the same 5 your whole life."</p>
+            </div>
+            {/* Science cards */}
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>The Science of Vocal Influence</div>
+            {[
+              {label:"Prosody",           body:"Rhythm, pitch, pace, and stress. Humans decode emotion through vocal patterns faster than language itself — your voice carries the message before the words do."},
+              {label:"Processing Fluency",body:"Clear, varied, well-paced speech signals intelligence. The brain says 'easy to process = credible.' Flat or rushed delivery creates cognitive friction — and loses the room."},
+              {label:"Vocal Contrast",    body:"The same reason music works. Contrast creates anticipation. No variation is cognitive wallpaper — it fades into the background within seconds."},
+            ].map((sc,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px 16px",marginBottom:10}}>
+                <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,marginBottom:6}}>{sc.label}</div>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{sc.body}</p>
+              </div>
+            ))}
+            {/* 4 levers grid */}
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10,marginTop:4}}>The Four Levers</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>
+              {[
+                {word:"Pace",  body:"Speed up to create energy. Slow down to signal importance."},
+                {word:"Pitch", body:"Rise to engage. Drop to command."},
+                {word:"Pause", body:"The silence that makes the next word hit harder."},
+                {word:"Power", body:"Volume as intention, not volume as effort."},
+              ].map((n,i)=>(
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+                </div>
+              ))}
+            </div>
+            {/* Audio interaction */}
+            <div style={{background:T2.cardDark,borderRadius:8,padding:"20px",marginBottom:4}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Hear the Difference</div>
+              <p style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"rgba(245,239,230,0.9)",marginBottom:16,lineHeight:1.3}}>"I think this could work."</p>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:16}}>
+                {["Fast","Slow","High Pitch","Low Pitch","Monotone","Warm / Confident"].map((label,i)=>(
+                  <button key={i} style={{
+                    background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",
+                    borderRadius:6,padding:"10px 6px",cursor:"pointer",
+                    display:"flex",flexDirection:"column",alignItems:"center",gap:6,
+                    fontFamily:T.sans,minHeight:32,
+                  }}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(138,158,132,0.8)" strokeWidth="1.2"/><path d="M5.5 4.5l4 2.5-4 2.5V4.5z" fill="rgba(138,158,132,0.8)"/></svg>
+                    <span style={{fontSize:10,color:"rgba(245,239,230,0.6)",fontWeight:500,textAlign:"center",lineHeight:1.2}}>{label}</span>
+                  </button>
+                ))}
+              </div>
+              <div style={{borderTop:"0.5px solid rgba(255,255,255,0.08)",paddingTop:14}}>
+                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.6}}>What changed? Not the words. The meaning.</p>
+              </div>
+            </div>
+          </>
+        )}
+
         {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Insight" && (
           <>
             <div
@@ -8491,7 +8606,7 @@ style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.insight}</p>
           </>
         )}
 
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Theory" && <TheoryCard day={lesson.day}/>}
+        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Theory" && <TheoryCard day={lesson.day}/>}
 
         {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Example" && (
           <>
