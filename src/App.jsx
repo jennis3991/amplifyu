@@ -5732,19 +5732,29 @@ setAmbitionSaved(true); } catch {}
       }
 
       // ── Practice — practice-bg.jpg provides the atmosphere from the outer wrapper
-      if (step === "Practice") return (
-        <div style={{ position: "relative", height: "100%", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-          {/* No Scene — practice-bg.jpg shows through from the parent split wrapper */}
-          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.65)" }}/>
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.98) 0%, transparent 60%)" }}/>
-          <div style={{ position: "relative", zIndex: 2, padding: "40px 48px", animation: "fadeUp 0.6s ease both" }}>
-            <div style={{ ...LP_LABEL, marginBottom: 20 }}>Your Practice</div>
-            <p style={{ ...LP_HEADING, fontSize: 28, maxWidth: 380, lineHeight: 1.2 }}>
-              {lesson.practice.split('.')[0]}.
-            </p>
+      if (step === "Practice") {
+        if (isD2) return (
+          <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
+            <img src="/d2-practice.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.55)" }}/>
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, transparent 55%)" }}/>
+            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Train Your Instrument</div>
+              <p style={{ ...LP_HEADING, fontSize:28, maxWidth:360, lineHeight:1.2 }}>Four exercises. One goal: deliberate vocal control.</p>
+            </div>
           </div>
-        </div>
-      );
+        );
+        return (
+          <div style={{ position: "relative", height: "100%", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+            <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.65)" }}/>
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.98) 0%, transparent 60%)" }}/>
+            <div style={{ position: "relative", zIndex: 2, padding: "40px 48px", animation: "fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, marginBottom: 20 }}>Your Practice</div>
+              <p style={{ ...LP_HEADING, fontSize: 28, maxWidth: 380, lineHeight: 1.2 }}>{lesson.practice.split('.')[0]}.</p>
+            </div>
+          </div>
+        );
+      }
 
       // ── Simulation — scenario as primary statement ────────────────────────────
       if (step === "Simulation") return (
@@ -8164,7 +8174,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           }
           const STEP_IMGS={
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            2:{Insight:"/d2-insight.jpg",Theory:"/d2-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            2:{Insight:"/d2-insight.jpg",Theory:"/d2-theory.jpg",Practice:"/d2-practice.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             5:{Insight:"/d5-insight.jpg",Theory:"/d5-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
