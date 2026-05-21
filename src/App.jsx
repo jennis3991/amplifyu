@@ -5697,10 +5697,18 @@ setAmbitionSaved(true); } catch {}
     {word:"Consistency Becomes Brand",  body:"Repeated signals become your brand. Every interaction where you show up the same way adds to a pattern people trust, remember, and associate with you.", source:"Brand psychology"},
   ];
   const D11_EXAMPLES = [
-    {id:"jobs", name:"Steve Jobs", role:"Co-founder, Apple",
-     headline:"Simplicity as a Brand Signal",
-     body:"The black turtleneck, the stage minimalism, the deliberate pacing — every element was a conscious signal: 'I think differently, and so does everything I make.' Jobs didn't just build products. He built a consistent visual and behavioural language that became inseparable from the Apple brand.",
-     lesson:"Consistency is the most powerful branding tool available. When every signal aligns — appearance, communication, values, story — people remember you before you've said a word."},
+    {id:"swift", name:"Taylor Swift", role:"Recording Artist · Cultural Icon",
+     headline:"The Master of Connection, Storytelling & Familiarity",
+     body:"Taylor Swift didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel like they were part of her journey. From teenage country songwriter to global cultural icon, her brand evolved without losing its emotional core: authenticity, storytelling, reinvention, and direct connection with her audience. Fans don't just consume her work. They feel personally invested in her story. That's personal branding at its most powerful.",
+     lesson:"People didn't just buy Taylor Swift's music. They bought into her journey.",
+     ingredients:[
+       {n:"Authority",    detail:"Taylor owns a category: storytelling through songwriting. Emotional intelligence, reinvention, creative control, world-class performance. The strongest brands are associated with one unmistakable strength."},
+       {n:"Generosity",   detail:"Behind-the-scenes access, fan easter eggs, emotional honesty, long-form storytelling, meaningful audience interaction. Her fans feel rewarded for paying attention. Generosity creates loyalty."},
+       {n:"Relatability", detail:"Taylor made global fame feel personal. She openly shares heartbreak, ambition, growth, mistakes, reinvention, vulnerability. People feel like they've grown alongside her. People follow stories they emotionally recognise."},
+       {n:"Energy",       detail:"Whether performing, speaking, or accepting awards, people feel belief and emotional investment. Her energy says: this matters. Emotion communicates commitment."},
+       {n:"Familiarity",  detail:"Albums. Tours. Documentaries. Social media. Interviews. Cultural moments. Her audience sees her repeatedly over years. Visibility compounds trust and connection."},
+       {n:"Polarity",     detail:"Taylor is not neutral. She reinvents publicly, owns her narrative, makes bold creative decisions, creates passionate fandom. Memorable brands stand for something."},
+     ]},
     {id:"beckham", name:"David Beckham", role:"Athlete · Entrepreneur · Philanthropist",
      headline:"Brand Can Evolve",
      body:"From Manchester United captain to fashion icon to club owner to humanitarian ambassador — Beckham's brand evolved without contradiction. Each phase added a dimension rather than replacing the last. The throughline was always intentional excellence, visual precision, and cultural reach.",
@@ -8627,12 +8635,45 @@ setAmbitionSaved(true); } catch {}
       if (step === "Example") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Iconic Brands. Intentional Choices.</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:40, maxWidth:640 }}>Three people whose personal brands became cultural forces — not by accident, but by design.</p>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:20 }}>
-            {D11_EXAMPLES.map((card,ci) => (
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>Three people whose personal brands became cultural forces — not by accident, but by design.</p>
+
+          {/* Taylor Swift — full-width feature card */}
+          {D11_EXAMPLES.filter(c=>c.id==="swift").map(card=>(
+            <div key={card.id} style={{ background:"white", borderRadius:8, padding:"32px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)", marginBottom:20 }}>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:32 }}>
+                <div>
+                  <h3 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, marginBottom:2 }}>{card.name}</h3>
+                  <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, marginBottom:8 }}>{card.role}</p>
+                  <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:16 }}>{card.headline}</div>
+                  <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.75, fontWeight:300, marginBottom:20 }}>{card.body}</p>
+                  <div style={{ padding:"14px 16px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+                    <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14 }}>How she maps to the Brand Formula</div>
+                  {card.ingredients.map((ing,i)=>(
+                    <div key={i} style={{ display:"flex", gap:12, paddingBottom:12, marginBottom:12, borderBottom: i<card.ingredients.length-1 ? "0.5px solid "+T2.divider : "none", alignItems:"flex-start" }}>
+                      <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0, width:110 }}>
+                        <div style={{ width:20, height:20, borderRadius:"50%", background:"rgba(138,158,132,0.15)", border:"0.5px solid "+T.gold, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                          <span style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold }}>{i+1}</span>
+                        </div>
+                        <span style={{ fontFamily:T.sans, fontSize:12, fontWeight:700, color:T2.text }}>{ing.n}</span>
+                      </div>
+                      <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, lineHeight:1.6, fontWeight:300, margin:0 }}>{ing.detail}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* Beckham + Wintour — 2-col grid */}
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:20 }}>
+            {D11_EXAMPLES.filter(c=>c.id!=="swift").map((card,ci)=>(
               <div key={ci} style={{ background:"white", borderRadius:8, padding:"28px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)" }}>
                 <h3 style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, marginBottom:2 }}>{card.name}</h3>
-                <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, marginBottom:8, fontWeight:400 }}>{card.role}</p>
+                <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, marginBottom:8 }}>{card.role}</p>
                 <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:16 }}>{card.headline}</div>
                 <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.7, fontWeight:300, marginBottom:20 }}>{card.body}</p>
                 <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:16 }}>
@@ -10395,25 +10436,44 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Iconic Brands. Intentional Choices.</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how these brand icons built recognition through deliberate signals.</p>
-            {D11_EXAMPLES.map(card=>(
-              <div key={card.id} onClick={()=>setD11MobCard(d11MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d11MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
-                  <div>
-                    <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:2}}>{card.name}</div>
-                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>{card.role}</div>
+            {D11_EXAMPLES.map(card=>{
+              const open = d11MobCard===card.id;
+              return (
+                <div key={card.id} onClick={()=>setD11MobCard(open?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
+                    <div>
+                      <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:2}}>{card.name}</div>
+                      <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>{card.role}</div>
+                    </div>
+                    <span style={{fontFamily:T.sans,fontSize:12,color:open?T.gold:T2.text3,marginLeft:10,flexShrink:0}}>{open?"▴ less":"▸ explore"}</span>
                   </div>
-                  <span style={{fontFamily:T.sans,fontSize:12,color:d11MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0}}>{d11MobCard===card.id?"▴ less":"▸ explore"}</span>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{card.headline}</p>
+                  {open && (
+                    <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:300,marginBottom:12}}>{card.body}</p>
+                      {card.ingredients && (
+                        <div style={{marginBottom:14}}>
+                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Brand Formula Map</div>
+                          {card.ingredients.map((ing,i)=>(
+                            <div key={i} style={{display:"flex",gap:8,paddingBottom:10,marginBottom:10,borderBottom:i<card.ingredients.length-1?"0.5px solid rgba(138,158,132,0.15)":"none",alignItems:"flex-start"}}>
+                              <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.15)",border:"0.5px solid "+T.gold,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                                <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
+                              </div>
+                              <div>
+                                <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text,marginBottom:2}}>{ing.n}</div>
+                                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>{ing.detail}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Lesson</div>
+                      <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>{card.lesson}</p>
+                    </div>
+                  )}
                 </div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{card.headline}</p>
-                {d11MobCard===card.id && (
-                  <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:300,marginBottom:12}}>{card.body}</p>
-                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Lesson</div>
-                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>{card.lesson}</p>
-                  </div>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </>
         )}
         {isD11 && step==="Practice" && (
