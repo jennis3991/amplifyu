@@ -6355,9 +6355,10 @@ setAmbitionSaved(true); } catch {}
           );
         }
         if (theoryImg && theoryImg.image) {
+          const useContain = theoryImg.imgObjectFit === "contain";
           return (
-            <div style={{ height: "100%", position: "relative", overflow: "hidden" }}>
-              <img src={theoryImg.image} alt={theoryImg.alt || ""} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: theoryImg.imgObjectPosition || "center" }}/>
+            <div style={{ height: "100%", position: "relative", overflow: "hidden", background: useContain ? "#0E0B08" : "transparent" }}>
+              <img src={theoryImg.image} alt={theoryImg.alt || ""} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: useContain ? "contain" : "cover", objectPosition: theoryImg.imgObjectPosition || "center" }}/>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "28%", background: "linear-gradient(to bottom, rgba(10,8,5,0.55) 0%, transparent 100%)" }}/>
               <div style={{ position: "absolute", top: 32, left: 24, zIndex: 2, animation: "fadeUp 0.7s ease both" }}>
                 <div style={{ ...LP_LABEL, fontSize: 13, color: "#F5EFE6", textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>The Science</div>
@@ -9271,7 +9272,8 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
-          if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none"}}/>;
+          const useContainMob = lesson.day===11 && step==="Theory";
+          if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:useContainMob?"contain":"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
           return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
         })()}
         {/* Dark film overlay for Practice only */}
@@ -12364,7 +12366,8 @@ reset</button>
     captionLabel: "The Halo Effect",
     captionText: "One visible strength becomes the lens through which everything else is interpreted.",
     captionPosition: "above",
-    imgObjectPosition: "center 35%",
+    imgObjectFit: "contain",
+    imgObjectPosition: "center center",
   },
     7: {
     image: 
