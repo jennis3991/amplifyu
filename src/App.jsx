@@ -6273,6 +6273,10 @@ setAmbitionSaved(true); } catch {}
             <img src="/d6-insight.jpg" alt=""
               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
             />
+          ) : isD11 ? (
+            <img src="/d11-insight.jpg" alt=""
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}
+            />
           ) : (
             <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
               <Scene name={lesson.scene} height={900} day={lesson.day}/>
@@ -9175,6 +9179,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             5:{Insight:"/d5-insight.jpg",Theory:"/d5-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             6:{Insight:"/d6-insight.jpg",Theory:"/d6-theory.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
+            11:{Insight:"/d11-insight.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
             8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
