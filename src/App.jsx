@@ -1141,7 +1141,7 @@ const LESSONS = [
    promise:"Speed is anxiety. Pace is confidence. Today you chose pace.",
    teaser:"Discover why your voice is your most underused asset — and how mastering four simple levers changes how every room responds to you."},
 
-  {day:3,week:1,title:"The Credibility Edge",tag:"Credibility",scene:"clarity",
+  {day:3,week:1,title:"The Credibility Edge",subtitle:"Eliminate Fillers",tag:"Credibility",scene:"clarity",
    quote:"What you don't say is as powerful as what you do.",
    insight:"Um, uh, like, you know — these words exist because we fear silence. But silence is more powerful than filler. It signals you're thinking, not floundering.",
    pieLink:"Image: Filler words undermine authority instantly. Removing them is one of the fastest credibility upgrades available.",
@@ -11147,6 +11147,7 @@ function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDeskto
             color:isDone?T2.text3:T2.text,
             letterSpacing:"-0.3px",lineHeight:1.2,
           }}>{lesson.title}</div>
+          {lesson.subtitle && <div style={{fontFamily:T.sans,fontSize:11,color:T2.text4,marginTop:3,letterSpacing:"0.2px"}}>{lesson.subtitle}</div>}
         </div>
         {/* Status */}
         <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
