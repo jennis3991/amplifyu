@@ -8150,28 +8150,45 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       </div>
 
       {/* Header image + Exit button overlay */}
-      <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:(step==="Practice"||step==="Simulation")?"#141210":step==="Example"||(isD2&&step==="Simulation")?"#0E0B08":"transparent"}}>
+      <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:step==="Practice"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
         {(()=>{
-          // Day 2 Simulation: dark cinematic text panel
-          if(isD2 && step==="Simulation"){
+          // Simulation tab: dark cinematic panel for ALL modules
+          if(step==="Simulation"){
+            const SIM_HEADERS={
+              1:{label:"SPEAK CLEARLY — IN ACTION",   heading:"Clarity under pressure. This is the real test."},
+              2:{label:"REAL-WORLD VOICE COACHING",   heading:"This is where voice training becomes real."},
+              3:{label:"FILLER-FREE — IN ACTION",     heading:"60 seconds. Zero fillers. Real stakes."},
+              4:{label:"BREVITY — IN ACTION",         heading:"Short sentences. High stakes. Go."},
+              5:{label:"PRE — IN ACTION",             heading:"Structure your thinking. Speak with precision."},
+              6:{label:"STORYTELLING — IN ACTION",    heading:"Tell the story. Make them feel it."},
+              7:{label:"INTEGRATION — IN ACTION",     heading:"Everything you've built. One conversation."},
+              8:{label:"NARRATIVE — IN ACTION",       heading:"Tell the story. Transport your audience."},
+              9:{label:"DELIVERY — IN ACTION",        heading:"Great content. Delivered powerfully."},
+              10:{label:"PERFORMANCE — IN ACTION",    heading:"Communicate your impact with conviction."},
+            };
+            const sh=SIM_HEADERS[lesson.day]||{label:"SIMULATION",heading:"Real scenario. Real pressure. Real coaching."};
             return (
               <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box"}}>
-                <div style={{fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>REAL-WORLD VOICE COACHING</div>
-                <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(245,239,230,0.95)",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>This is where voice training becomes real.</p>
+                <div style={{fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>{sh.label}</div>
+                <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(245,239,230,0.95)",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>{sh.heading}</p>
                 <div style={{width:40,height:1,background:"rgba(245,239,230,0.25)",marginBottom:14}}/>
-                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Choose your scenario. Speak. Get coached.</p>
+                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Day {lesson.day} · {lesson.tag}</p>
               </div>
             );
           }
           // Example tab: dark cinematic text panel instead of image
           if(step==="Example"){
             const EX_HEADERS={
-              1:{label:"MASTERS OF CLARITY",    heading:"The simplest words carry the most weight.",      body:"Clear communicators don't use more words. They use better ones."},
-              2:{label:"VOICE IN ACTION",       heading:"Range creates engagement. Contrast creates emotion.", body:"The most compelling voices are the most controlled — and the most dynamic."},
-              3:{label:"MASTERS OF THE PAUSE",  heading:"Silence is more powerful than the word that fills it.", body:"The strongest speakers pause. Confident speakers own the silence."},
-              4:{label:"MASTERS OF BREVITY",    heading:"Say less. Mean more. Be remembered.",             body:"The most persuasive lines ever spoken? All under 10 words."},
-              5:{label:"PRE IN ACTION",         heading:"Point. Reason. Example. The architecture of every great professional answer.", body:"The world's most effective communicators all follow the same structure — whether they know it or not."},
-              8:{label:"STORYTELLING IN THE WILD", heading:"Stories create empathy. Empathy creates trust. Trust creates influence.", body:"The same facts — told as a story — land 22× more powerfully in the human brain."},
+              1:{label:"MASTERS OF CLARITY",      heading:"The simplest words carry the most weight.",                                  body:"Clear communicators don't use more words. They use better ones."},
+              2:{label:"VOICE IN ACTION",          heading:"Range creates engagement. Contrast creates emotion.",                        body:"The most compelling voices are the most controlled — and the most dynamic."},
+              3:{label:"MASTERS OF THE PAUSE",     heading:"Silence is more powerful than the word that fills it.",                     body:"The strongest speakers pause. Confident speakers own the silence."},
+              4:{label:"MASTERS OF BREVITY",       heading:"Say less. Mean more. Be remembered.",                                       body:"The most persuasive lines ever spoken? All under 10 words."},
+              5:{label:"PRE IN ACTION",            heading:"Point. Reason. Example. The architecture of every great professional answer.", body:"The world's most effective communicators all follow the same structure — whether they know it or not."},
+              6:{label:"STORYTELLING IN THE WILD", heading:"Stories create empathy. Empathy creates trust. Trust creates influence.",    body:"The same facts — told as a story — land 22× more powerfully in the human brain."},
+              7:{label:"COMMUNICATION IN ACTION",  heading:"Every skill. One conversation.",                                            body:"This is what a week of deliberate practice looks like in the real world."},
+              8:{label:"STORYTELLING IN THE WILD", heading:"Stories create empathy. Empathy creates trust. Trust creates influence.",    body:"The same facts — told as a story — land 22× more powerfully in the human brain."},
+              9:{label:"DELIVERY IN ACTION",       heading:"Great content, delivered powerfully, changes everything.",                  body:"The same message — delivered differently — lands completely differently."},
+              10:{label:"PERFORMANCE IN ACTION",   heading:"Visible performance is communicated performance.",                          body:"Your work is exceptional. Make sure people know it."},
             };
             const h=EX_HEADERS[lesson.day]||EX_HEADERS[1];
             return (
@@ -8195,8 +8212,8 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none"}}/>;
           return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
         })()}
-        {/* Dark film overlay for Practice + Simulation */}
-        {(step==="Practice"||step==="Simulation") && <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.52)",pointerEvents:"none"}}/>}
+        {/* Dark film overlay for Practice only */}
+        {step==="Practice" && <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.52)",pointerEvents:"none"}}/>}
         {/* Exit button — top left over image */}
         <button
           onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
