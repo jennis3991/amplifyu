@@ -4168,77 +4168,218 @@ function D2PracticeWidget({T, T2, isDesktop}) {
   );
 }
 
-// ─── D2 SIM WIDGET ────────────────────────────────────────────────────────────
+// ─── D2 SIM WIDGET V2 — premium coaching simulation ──────────────────────────
 function D2SimWidget({T, T2, isDesktop}) {
   const SCENARIOS=[
-    {id:0,label:"Pitch a new idea",goal:"Sound confident",prompt:"Pitch a new idea to leadership in 60 seconds. Focus on sounding confident, clear, and compelling."},
-    {id:1,label:"Deliver bad news",goal:"Warmth + calm",prompt:"Deliver bad news to your team empathetically. Focus on warmth, calm, and clarity."},
-    {id:2,label:"Motivate your team",goal:"Energy + conviction",prompt:"Give a 60-second motivational message to your team. Focus on energy and conviction."},
-    {id:3,label:"Interview question",goal:"Executive presence",prompt:"Answer: 'What makes you the right person for this role?' Focus on executive presence."},
+    {id:0,label:"Pitch a New Idea",sub:"You're presenting to senior leadership.",goal:"Confidence + clarity",
+     aiOpener:"You have 60 seconds. Convince me this is worth our time and investment.",
+     followUps:["What problem does this solve?","Why now?","What's the risk if we don't act?","How is this different from what we already do?"],
+     starters:["I believe this is worth attention because…","The opportunity here is…","What makes this compelling is…"],
+     hardPersona:"sceptical CEO who has heard many pitches before"},
+    {id:1,label:"Deliver Difficult Feedback",sub:"A direct report has been underperforming.",goal:"Warmth + calm",
+     aiOpener:"I appreciate you taking the time. I have to say — I didn't expect this conversation.",
+     followUps:["That's disappointing to hear.","What could I have done differently?","I felt like I was giving it everything.","Is this about my future here?"],
+     starters:["I want to start by saying I value what you bring…","This conversation is important because I care about your growth…","I want to be honest with you, and I want to do it with respect…"],
+     hardPersona:"defensive and emotional team member"},
+    {id:2,label:"Motivate Your Team",sub:"The team has had a tough quarter.",goal:"Energy + conviction",
+     aiOpener:"Honestly, morale has been low. I'm not sure words are going to fix this.",
+     followUps:["We've heard this before and things didn't change.","What's actually going to be different this time?","How do you expect us to stay motivated?"],
+     starters:["What we've built together matters, and here's why…","I want to be honest about where we are — and where we're going…","The work you've done this quarter has not gone unnoticed…"],
+     hardPersona:"disengaged team who have lost faith in leadership"},
+    {id:3,label:"Interview Question",sub:"Senior panel interview for a leadership role.",goal:"Executive presence",
+     aiOpener:"Tell me — in your own words — what makes you the right person for this role?",
+     followUps:["Tell me about a time you led through uncertainty.","What's your biggest leadership failure?","How do you handle conflict at the executive level?"],
+     starters:["What I bring to this role is…","Throughout my career, the thread has always been…","What sets me apart is…"],
+     hardPersona:"hostile interviewer testing under pressure"},
   ];
-  const DIMS=["Pace","Pauses","Vocal Variation","Confidence","Clarity","Warmth"];
-  const [sel, setSel] = useState(0);
-  const [input, setInput] = useState("");
+
+  const [phase, setPhase] = useState('idle'); // idle | setup | active | feedback
+  const [sc, setSc] = useState(null);
+  const [starter, setStarter] = useState('');
+  const [input, setInput] = useState('');
+  const [aiMsg, setAiMsg] = useState('');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [hard, setHard] = useState(false);
+  const [round, setRound] = useState(0);
 
-  async function evaluate() {
+  function selectScenario(s,hardMode=false){
+    setSc(s); setHard(hardMode); setStarter(''); setInput(''); setResult(null);
+    setAiMsg(hardMode?`[${s.hardPersona}] ${s.aiOpener}`:s.aiOpener);
+    setRound(0); setPhase('setup');
+  }
+
+  async function submit(){
     if(!input.trim()) return;
     setLoading(true);
     try {
-      const sc = SCENARIOS[sel];
-      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:500,messages:[{role:"user",content:`You are a premium voice and communication coach. Evaluate this response for vocal delivery qualities as if it were spoken aloud. Score each dimension 1-10 and give a 2-sentence coaching note.\n\nScenario: ${sc.prompt}\nGoal: ${sc.goal}\n\nResponse: "${input}"\n\nReturn JSON only: {"pace":N,"pauses":N,"variation":N,"confidence":N,"clarity":N,"warmth":N,"feedback":"coaching note"}`}]})});
+      const persona = hard ? `You are a ${sc.hardPersona}. ` : `You are a premium executive communication coach evaluating a spoken response. `;
+      const followUp = round < sc.followUps.length ? `After scoring, add a single follow-up question as the conversation partner: "${sc.followUps[round]}"` : "";
+      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:600,messages:[{role:"user",content:`${persona}The user is practising vocal delivery for: "${sc.label}". Goal: ${sc.goal}.\n\nThey said: "${input}"\n\nEvaluate as if spoken aloud. Score each 1-10. Write 2-3 sentences of premium coaching feedback — specific, encouraging, and actionable. ${followUp}\n\nReturn JSON only: {"confidence":N,"pace":N,"clarity":N,"warmth":N,"pauses":N,"presence":N,"feedback":"coaching note","followUp":"optional follow-up question or empty string"}`}]})});
       const d = await res.json();
       const raw = (d.content||[]).map(b=>b.text||"").join("").trim();
-      try { const m=raw.match(/\{[\s\S]*\}/); setResult(JSON.parse(m[0])); } catch { setResult(null); }
+      try { const m=raw.match(/\{[\s\S]*\}/); const r=JSON.parse(m[0]); setResult(r); if(r.followUp) setAiMsg(r.followUp); } catch { setResult(null); }
     } catch { setResult(null); }
-    setLoading(false);
+    setLoading(false); setRound(r=>r+1); setPhase('feedback');
   }
 
-  const scores = result ? [
-    {label:"Pace",v:result.pace},{label:"Pauses",v:result.pauses},{label:"Variation",v:result.variation},
-    {label:"Confidence",v:result.confidence},{label:"Clarity",v:result.clarity},{label:"Warmth",v:result.warmth},
-  ] : null;
+  const dark = "#0E0B08";
+  const cream = "rgba(245,239,230,0.9)";
+  const creamDim = "rgba(245,239,230,0.5)";
 
-  return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      {/* Scenario selector */}
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-        {SCENARIOS.map(sc=>(
-          <button key={sc.id} onClick={()=>{setSel(sc.id);setResult(null);setInput("");}} style={{
-            padding:"12px",borderRadius:6,border:`1px solid ${sel===sc.id?T.gold:T2.border}`,
-            background:sel===sc.id?"rgba(138,158,132,0.1)":"transparent",
-            cursor:"pointer",textAlign:"left",fontFamily:T.sans,minHeight:44,
+  // IDLE — scenario cards
+  if(phase==='idle') return (
+    <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr 1fr",gap:isDesktop?16:10}}>
+      {SCENARIOS.map(s=>(
+        <div key={s.id} onClick={()=>selectScenario(s)} style={{
+          background:T2.surface,borderRadius:isDesktop?8:6,padding:isDesktop?"24px 20px":"16px 14px",
+          cursor:"pointer",border:"0.5px solid "+T2.border,
+          transition:"all 0.2s ease",
+        }}
+        onMouseEnter={e=>{ e.currentTarget.style.borderColor=T.gold; e.currentTarget.style.transform="translateY(-2px)"; e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.08)"; }}
+        onMouseLeave={e=>{ e.currentTarget.style.borderColor=T2.border; e.currentTarget.style.transform="none"; e.currentTarget.style.boxShadow="none"; }}>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?18:14,fontWeight:600,color:T2.text,marginBottom:4,lineHeight:1.2}}>{s.label}</div>
+          <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,marginBottom:isDesktop?12:8}}>{s.sub}</div>
+          <div style={{display:"inline-block",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.2)",borderRadius:20,padding:"3px 10px",fontFamily:T.sans,fontSize:10,color:T.goldDark,fontWeight:500}}>Goal: {s.goal}</div>
+        </div>
+      ))}
+    </div>
+  );
+
+  // SETUP — immersive coaching panel
+  if(phase==='setup') return (
+    <div style={{background:dark,borderRadius:isDesktop?8:8,overflow:"hidden",animation:"fadeIn 0.4s ease"}}>
+      <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
+      <div style={{padding:isDesktop?"36px 40px":"24px 20px"}}>
+        <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"0.2em",marginBottom:6,fontFamily:T.sans}}>{sc.label}</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?22:16,fontWeight:600,color:cream,lineHeight:1.3,marginBottom:6}}>{sc.sub}</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:creamDim,marginBottom:isDesktop?28:20}}>Goal: <span style={{color:T.gold}}>{sc.goal}</span></p>
+
+        {/* AI opener */}
+        <div style={{background:"rgba(255,255,255,0.04)",borderRadius:6,padding:isDesktop?"16px 20px":"12px 14px",marginBottom:isDesktop?24:18,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+          <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>AI Coach</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:14,fontStyle:"italic",color:cream,margin:0,lineHeight:1.5}}>{aiMsg}</p>
+        </div>
+
+        {/* Starters */}
+        <div style={{fontSize:10,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:12,fontFamily:T.sans}}>Start with…</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:isDesktop?20:16}}>
+          {sc.starters.map((s,i)=>(
+            <button key={i} onClick={()=>{ setStarter(s); setInput(s+' '); setPhase('active'); }} style={{
+              background:starter===s?"rgba(138,158,132,0.15)":"rgba(255,255,255,0.04)",
+              border:`1px solid ${starter===s?"rgba(138,158,132,0.4)":"rgba(255,255,255,0.1)"}`,
+              borderRadius:6,padding:isDesktop?"12px 16px":"10px 14px",cursor:"pointer",textAlign:"left",
+              fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:cream,lineHeight:1.4,
+              minHeight:44,transition:"all 0.2s",
+            }}>○ {s}</button>
+          ))}
+          <button onClick={()=>{ setStarter(''); setInput(''); setPhase('active'); }} style={{
+            background:"transparent",border:"1px solid rgba(255,255,255,0.06)",borderRadius:6,
+            padding:isDesktop?"10px 16px":"8px 14px",cursor:"pointer",textAlign:"left",
+            fontFamily:T.sans,fontSize:isDesktop?13:12,color:creamDim,minHeight:44,
+          }}>Or speak freely →</button>
+        </div>
+        <button onClick={()=>setPhase('idle')} style={{background:"transparent",border:"none",color:creamDim,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:0}}>← Back to scenarios</button>
+      </div>
+    </div>
+  );
+
+  // ACTIVE — speaking mode
+  if(phase==='active') return (
+    <div style={{background:dark,borderRadius:8,overflow:"hidden",animation:"fadeIn 0.3s ease"}}>
+      <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
+      <div style={{padding:isDesktop?"36px 40px":"24px 20px"}}>
+        <div style={{background:"rgba(255,255,255,0.04)",borderRadius:6,padding:isDesktop?"16px 20px":"12px 14px",marginBottom:isDesktop?24:18,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+          <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>AI Coach</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:14,fontStyle:"italic",color:cream,margin:0,lineHeight:1.5}}>{aiMsg}</p>
+        </div>
+        <textarea
+          value={input}
+          onChange={e=>setInput(e.target.value)}
+          placeholder="Speak your response…"
+          autoFocus
+          rows={isDesktop?5:4}
+          style={{
+            width:"100%",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",
+            borderRadius:6,padding:"14px 16px",fontFamily:T.serif,fontSize:isDesktop?16:14,
+            color:cream,lineHeight:1.65,resize:"none",outline:"none",boxSizing:"border-box",
+            caretColor:T.gold,
+          }}
+        />
+        <div style={{display:"flex",gap:10,marginTop:14,alignItems:"center"}}>
+          <button onClick={submit} disabled={loading||!input.trim()} style={{
+            flex:1,padding:"13px",borderRadius:4,border:"none",
+            background:loading||!input.trim()?"rgba(255,255,255,0.06)":T.gold,
+            color:loading||!input.trim()?creamDim:"white",
+            fontSize:isDesktop?14:13,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",
+            fontFamily:T.sans,minHeight:44,transition:"all 0.2s",
           }}>
-            <div style={{fontSize:12,fontWeight:600,color:sel===sc.id?T.gold:T2.text,marginBottom:2}}>{sc.label}</div>
-            <div style={{fontSize:10,color:T2.text3}}>Goal: {sc.goal}</div>
+            {loading?"Coaching in progress…":"Get Voice Coaching →"}
           </button>
-        ))}
+          <button onClick={()=>setPhase('setup')} style={{background:"transparent",border:"1px solid rgba(255,255,255,0.1)",borderRadius:4,padding:"13px 16px",color:creamDim,fontFamily:T.sans,fontSize:12,cursor:"pointer",minHeight:44}}>Back</button>
+        </div>
       </div>
-      <div style={{background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,padding:"12px 16px"}}>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.5}}>{SCENARIOS[sel].prompt}</p>
-      </div>
-      <textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Write what you would say out loud…" rows={isDesktop?6:5} style={{width:"100%",borderRadius:4,border:"0.5px solid "+T2.border,padding:"12px 16px",fontSize:14,fontFamily:T.sans,resize:"none",background:T2.bg,color:T2.text,lineHeight:1.6,boxSizing:"border-box",outline:"none"}}/>
-      <button onClick={evaluate} disabled={loading||!input.trim()} style={{padding:"13px",borderRadius:4,border:"none",background:loading||!input.trim()?"#DDD5C4":T.ink,color:loading||!input.trim()?"#6B5E44":T.bg,fontSize:14,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:T.sans,minHeight:44}}>
-        {loading?"Analysing your voice…":"Get Voice Coaching →"}
-      </button>
-      {scores && (
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-            {scores.map((s,i)=>(
-              <div key={i} style={{background:T2.surface,borderRadius:4,padding:"12px",textAlign:"center",border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:s.v>=7?T.green:s.v>=5?T.gold:"#B05C4A",lineHeight:1}}>{s.v}<span style={{fontSize:12,color:T2.text3}}>/10</span></div>
-                <div style={{fontFamily:T.sans,fontSize:10,color:T2.text3,marginTop:4,textTransform:"uppercase",letterSpacing:"0.5px"}}>{s.label}</div>
+    </div>
+  );
+
+  // FEEDBACK — coaching scores
+  if(phase==='feedback'&&result) {
+    const dims=[{l:"Confidence",v:result.confidence},{l:"Pace",v:result.pace},{l:"Clarity",v:result.clarity},{l:"Warmth",v:result.warmth},{l:"Pauses",v:result.pauses},{l:"Presence",v:result.presence}];
+    const avg=Math.round(dims.reduce((a,d)=>a+d.v,0)/dims.length);
+    return (
+      <div style={{background:dark,borderRadius:8,overflow:"hidden",animation:"fadeIn 0.4s ease"}}>
+        <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
+        <div style={{padding:isDesktop?"36px 40px":"24px 20px"}}>
+          {/* Overall score */}
+          <div style={{display:"flex",alignItems:"center",gap:isDesktop?20:16,marginBottom:isDesktop?28:22}}>
+            <div style={{flexShrink:0,textAlign:"center"}}>
+              <div style={{fontFamily:T.serif,fontSize:isDesktop?56:44,fontWeight:600,color:avg>=7?T.gold:avg>=5?"rgba(245,239,230,0.7)":"#B05C4A",lineHeight:1}}>{avg}</div>
+              <div style={{fontFamily:T.sans,fontSize:10,color:creamDim,textTransform:"uppercase",letterSpacing:"0.1em",marginTop:2}}>/ 10</div>
+            </div>
+            <div>
+              <div style={{fontFamily:T.serif,fontSize:isDesktop?18:15,fontWeight:600,color:cream,marginBottom:4}}>Vocal Coaching Score</div>
+              <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,color:creamDim}}>{sc.label} · {sc.goal}</div>
+            </div>
+          </div>
+          {/* Score bars */}
+          <div style={{display:"flex",flexDirection:"column",gap:isDesktop?12:10,marginBottom:isDesktop?24:20}}>
+            {dims.map((d,i)=>(
+              <div key={i}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:creamDim,textTransform:"uppercase",letterSpacing:"0.1em"}}>{d.l}</span>
+                  <span style={{fontFamily:T.serif,fontSize:isDesktop?14:12,fontWeight:600,color:d.v>=7?T.gold:d.v>=5?"rgba(245,239,230,0.7)":"rgba(180,100,80,0.9)"}}>{d.v}</span>
+                </div>
+                <div style={{height:3,background:"rgba(255,255,255,0.08)",borderRadius:2,overflow:"hidden"}}>
+                  <div style={{height:"100%",width:`${d.v*10}%`,background:d.v>=7?T.gold:d.v>=5?"rgba(245,239,230,0.4)":"rgba(180,100,80,0.6)",borderRadius:2,transition:"width 0.8s ease"}}/>
+                </div>
               </div>
             ))}
           </div>
-          <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>{result.feedback}</p>
+          {/* Feedback */}
+          <div style={{background:"rgba(138,158,132,0.08)",borderRadius:6,padding:isDesktop?"18px 20px":"14px 16px",borderLeft:"2px solid "+T.gold,marginBottom:isDesktop?24:20}}>
+            <div style={{fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:8,fontFamily:T.sans}}>Your Coaching</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:cream,margin:0,lineHeight:1.65}}>{result.feedback}</p>
+          </div>
+          {/* Follow-up if any */}
+          {result.followUp&&(
+            <div style={{background:"rgba(255,255,255,0.04)",borderRadius:6,padding:isDesktop?"14px 18px":"12px 14px",borderLeft:"2px solid rgba(138,158,132,0.4)",marginBottom:isDesktop?24:18}}>
+              <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>Continue</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:cream,margin:0,lineHeight:1.5}}>{result.followUp}</p>
+            </div>
+          )}
+          {/* Actions */}
+          <div style={{display:"flex",flexWrap:"wrap",gap:10}}>
+            <button onClick={()=>{ setInput(starter); setPhase('active'); setResult(null); }} style={{flex:1,padding:"12px",borderRadius:4,border:"none",background:T.gold,color:"white",fontSize:isDesktop?13:12,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Try Again</button>
+            {result.followUp&&<button onClick={()=>{ setInput(''); setPhase('active'); setResult(null); setAiMsg(result.followUp); }} style={{flex:1,padding:"12px",borderRadius:4,border:"1px solid rgba(255,255,255,0.15)",background:"transparent",color:cream,fontSize:isDesktop?13:12,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Respond →</button>}
+            <button onClick={()=>selectScenario(sc,true)} style={{flex:1,padding:"12px",borderRadius:4,border:"1px solid rgba(255,255,255,0.15)",background:"transparent",color:creamDim,fontSize:isDesktop?13:12,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Harder Scenario</button>
+            <button onClick={()=>setPhase('idle')} style={{width:"100%",padding:"11px",borderRadius:4,border:"1px solid rgba(255,255,255,0.08)",background:"transparent",color:creamDim,fontSize:12,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>New Scenario</button>
           </div>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
+
+  return null;
 }
 
 // ─── D5 PRACTICE WIDGET — self-contained so timer re-renders only this component
