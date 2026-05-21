@@ -5289,6 +5289,10 @@ setAmbitionSaved(true); } catch {}
             <img src="/day1-lounge.jpg" alt=""
               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
             />
+          ) : isD2 ? (
+            <img src="/d2-insight.jpg" alt=""
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+            />
           ) : isD5 ? (
             <img src="/d5-insight.jpg" alt=""
               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
@@ -7748,7 +7752,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           }
           const STEP_IMGS={
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-            2:{Theory:"/d2-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            2:{Insight:"/d2-insight.jpg",Theory:"/d2-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             5:{Insight:"/d5-insight.jpg",Theory:"/d5-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
