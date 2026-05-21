@@ -7688,6 +7688,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           }
           const STEP_IMGS={
             1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+            2:{Theory:"/d2-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             5:{Insight:"/d5-insight.jpg",Theory:"/d5-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
@@ -10356,13 +10357,14 @@ reset</button>
     imgObjectPosition: "center 20%",
   },
     2: {
-    image: "/cognitive-load.jpg",
-    alt: "Two stone heads side by side — left overflowing with chaotic blocks (High Cognitive Load), right holding just a few shapes neatly (Low Cognitive Load).",
-    insight: "The speaker controls the cognitive load. Slow down, and you give their brain room to absorb.",
-    subtitle: "John Sweller, 1988",
-    captionLabel: "Cognitive Load Theory",
-    captionText: "Working memory is limited. Reduce the load.",
+    image: "/d2-theory.jpg",
+    alt: "Close-up of grand piano keys in warm golden light — evoking the precision and control of mastering your instrument.",
+    insight: "Your voice is an instrument. Like any instrument, it rewards deliberate practice.",
+    subtitle: "Voice Control",
+    captionLabel: "The Science of Delivery",
+    captionText: "Pace, pause, and tone are not style choices — they are communication decisions.",
     captionPosition: "above",
+    imgObjectPosition: "center 40%",
   },
     3: {
     image: 
