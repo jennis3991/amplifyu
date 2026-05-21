@@ -4115,6 +4115,180 @@ function D1SimFeedback({input}) {
   );
 }
 
+// ─── D2 PRACTICE WIDGET ──────────────────────────────────────────────────────
+function D2PracticeWidget({T, T2, isDesktop}) {
+  const EXERCISES=[
+    {id:"sentence",title:"Same Sentence Challenge",sentence:'"That\'s an interesting idea."',
+     instruction:"Say it six different ways. Same words. Completely different meaning.",
+     modes:["Supportive","Sarcastic","Sceptical","Excited","Disappointed","Impressed"],
+     lesson:"Same words ≠ same meaning."},
+    {id:"pace",title:"Pace Drill",sentence:'"I believe this is the right decision."',
+     instruction:"Vary only your speed. Notice how confidence changes.",
+     modes:["Too fast","Too slow","Ideal executive pace"],
+     lesson:"Pace signals certainty. Rushed sounds unsure. Slow signals conviction."},
+    {id:"pause",title:"Pause Power",sentence:'"We have one problem." [pause] "Time."',
+     instruction:"Say it once with the pause. Once without. Feel the difference.",
+     modes:["Without pause","With deliberate pause"],
+     lesson:"The pause is not empty — it's where your meaning lands."},
+    {id:"pitch",title:"Pitch Ladder",sentence:'"This is the right approach."',
+     instruction:"Read the same sentence at three pitch levels. Notice authority.",
+     modes:["Higher pitch","Neutral pitch","Lower pitch"],
+     lesson:"Lower pitch signals authority. Higher pitch signals energy or uncertainty."},
+  ];
+  const DRILL_BANK=["That's an interesting idea — as supportive","That's an interesting idea — as sceptical","I believe this is the right decision — too fast","I believe this is the right decision — ideal pace","We have one problem. Time. — without pause","We have one problem. Time. — with pause","This is the right approach — higher pitch","This is the right approach — lower pitch"];
+  const [openEx, setOpenEx] = useState(null);
+  const [challenge, setChallenge] = useState({started:false,idx:0,count:0,time:90,drills:null});
+  const timerRef = useRef(null);
+  useEffect(()=>{
+    if(!challenge.started){ clearInterval(timerRef.current); return; }
+    timerRef.current = setInterval(()=>{
+      setChallenge(c=>c.time<=1?{...c,time:0,started:false}:{...c,time:c.time-1});
+    },1000);
+    return ()=>clearInterval(timerRef.current);
+  },[challenge.started]);
+  const startChallenge=()=>setChallenge({started:true,idx:0,count:0,time:90,drills:[...DRILL_BANK].sort(()=>Math.random()-0.5)});
+  const nextDrill=()=>setChallenge(c=>({...c,idx:(c.idx+1)%c.drills.length,count:c.count+1}));
+
+  const card=(ex,i)=>(
+    <div key={ex.id} onClick={()=>setOpenEx(openEx===i?null:i)}
+      style={isDesktop
+        ?{background:T2.surface,borderRadius:4,border:`0.5px solid ${openEx===i?T.gold:T2.border}`,padding:"20px 24px",cursor:"pointer",transition:"border-color 0.2s",marginBottom:14}
+        :{background:"rgba(237,232,223,0.6)",border:`1px solid ${openEx===i?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px",cursor:"pointer",transition:"border-color 0.2s",marginBottom:10}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:openEx===i?12:0}}>
+        <div style={{fontFamily:T.serif,fontSize:isDesktop?18:15,fontWeight:600,color:T2.text}}>{ex.title}</div>
+        <span style={{fontFamily:T.sans,fontSize:12,color:openEx===i?T.gold:T2.text3,marginLeft:10,flexShrink:0}}>{openEx===i?"▴":"▸"}</span>
+      </div>
+      {openEx===i&&(
+        <div style={{paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:8}}>{ex.sentence}</p>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:12,color:T2.text3,lineHeight:1.6,marginBottom:12}}>{ex.instruction}</p>
+          <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:12}}>
+            {ex.modes.map((m,j)=>(
+              <span key={j} style={{background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.25)",borderRadius:20,padding:"4px 12px",fontFamily:T.sans,fontSize:isDesktop?12:11,color:T.goldDark,fontWeight:500}}>{m}</span>
+            ))}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>{ex.lesson}</p>
+        </div>
+      )}
+    </div>
+  );
+
+  const speedChallenge=(
+    <div style={isDesktop
+      ?{background:T2.cardDark,borderRadius:8,padding:"28px 32px"}
+      :{background:T2.cardDark,borderRadius:8,padding:"18px 20px"}}>
+      <div style={{fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:T.sans}}>Speed Challenge</div>
+      <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:"rgba(245,239,230,0.6)",lineHeight:1.7,marginBottom:isDesktop?24:16}}>
+        90 seconds. Say each drill out loud — then hit Next. How many can you nail?
+      </p>
+      {!challenge.started&&challenge.time>0?(
+        <button onClick={startChallenge} style={{padding:isDesktop?"13px 32px":"12px 24px",borderRadius:4,border:"none",background:T.gold,color:"white",fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,width:isDesktop?"auto":"100%",minHeight:44}}>Start Challenge →</button>
+      ):challenge.time===0?(
+        <div style={{display:"flex",alignItems:"center",gap:20}}>
+          <div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?48:28,fontWeight:600,color:"rgba(245,239,230,0.9)",lineHeight:1}}>{challenge.count}</div>
+            <div style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.4)",marginTop:4}}>drills completed</div>
+          </div>
+          <button onClick={()=>setChallenge({started:false,idx:0,count:0,time:90,drills:null})} style={{padding:"11px 20px",borderRadius:4,border:"1px solid rgba(255,255,255,0.15)",background:"transparent",color:"rgba(245,239,230,0.7)",fontSize:12,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Try Again</button>
+        </div>
+      ):(
+        <div style={isDesktop?{display:"flex",alignItems:"flex-start",gap:24}:{display:"block"}}>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?48:28,fontWeight:600,color:challenge.time<=10?"#B05C4A":T.gold,lineHeight:1,flexShrink:0,marginBottom:isDesktop?0:12}}>{challenge.time}s</div>
+          <div style={{flex:1}}>
+            <div style={{background:"rgba(255,255,255,0.06)",borderRadius:6,padding:isDesktop?"20px 24px":"14px",marginBottom:12,border:"1px solid rgba(255,255,255,0.08)"}}>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?20:16,fontWeight:600,color:"rgba(245,239,230,0.9)",margin:0,lineHeight:1.3}}>{challenge.drills[challenge.idx]}</p>
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:16}}>
+              <button onClick={nextDrill} style={{padding:isDesktop?"12px 28px":"11px 24px",borderRadius:4,border:"none",background:T.gold,color:"white",fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Next →</button>
+              <span style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.4)"}}>{challenge.count} done</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <>
+      {EXERCISES.map((ex,i)=>card(ex,i))}
+      {speedChallenge}
+    </>
+  );
+}
+
+// ─── D2 SIM WIDGET ────────────────────────────────────────────────────────────
+function D2SimWidget({T, T2, isDesktop}) {
+  const SCENARIOS=[
+    {id:0,label:"Pitch a new idea",goal:"Sound confident",prompt:"Pitch a new idea to leadership in 60 seconds. Focus on sounding confident, clear, and compelling."},
+    {id:1,label:"Deliver bad news",goal:"Warmth + calm",prompt:"Deliver bad news to your team empathetically. Focus on warmth, calm, and clarity."},
+    {id:2,label:"Motivate your team",goal:"Energy + conviction",prompt:"Give a 60-second motivational message to your team. Focus on energy and conviction."},
+    {id:3,label:"Interview question",goal:"Executive presence",prompt:"Answer: 'What makes you the right person for this role?' Focus on executive presence."},
+  ];
+  const DIMS=["Pace","Pauses","Vocal Variation","Confidence","Clarity","Warmth"];
+  const [sel, setSel] = useState(0);
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  async function evaluate() {
+    if(!input.trim()) return;
+    setLoading(true);
+    try {
+      const sc = SCENARIOS[sel];
+      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:500,messages:[{role:"user",content:`You are a premium voice and communication coach. Evaluate this response for vocal delivery qualities as if it were spoken aloud. Score each dimension 1-10 and give a 2-sentence coaching note.\n\nScenario: ${sc.prompt}\nGoal: ${sc.goal}\n\nResponse: "${input}"\n\nReturn JSON only: {"pace":N,"pauses":N,"variation":N,"confidence":N,"clarity":N,"warmth":N,"feedback":"coaching note"}`}]})});
+      const d = await res.json();
+      const raw = (d.content||[]).map(b=>b.text||"").join("").trim();
+      try { const m=raw.match(/\{[\s\S]*\}/); setResult(JSON.parse(m[0])); } catch { setResult(null); }
+    } catch { setResult(null); }
+    setLoading(false);
+  }
+
+  const scores = result ? [
+    {label:"Pace",v:result.pace},{label:"Pauses",v:result.pauses},{label:"Variation",v:result.variation},
+    {label:"Confidence",v:result.confidence},{label:"Clarity",v:result.clarity},{label:"Warmth",v:result.warmth},
+  ] : null;
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      {/* Scenario selector */}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+        {SCENARIOS.map(sc=>(
+          <button key={sc.id} onClick={()=>{setSel(sc.id);setResult(null);setInput("");}} style={{
+            padding:"12px",borderRadius:6,border:`1px solid ${sel===sc.id?T.gold:T2.border}`,
+            background:sel===sc.id?"rgba(138,158,132,0.1)":"transparent",
+            cursor:"pointer",textAlign:"left",fontFamily:T.sans,minHeight:44,
+          }}>
+            <div style={{fontSize:12,fontWeight:600,color:sel===sc.id?T.gold:T2.text,marginBottom:2}}>{sc.label}</div>
+            <div style={{fontSize:10,color:T2.text3}}>Goal: {sc.goal}</div>
+          </button>
+        ))}
+      </div>
+      <div style={{background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,padding:"12px 16px"}}>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.5}}>{SCENARIOS[sel].prompt}</p>
+      </div>
+      <textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Write what you would say out loud…" rows={isDesktop?6:5} style={{width:"100%",borderRadius:4,border:"0.5px solid "+T2.border,padding:"12px 16px",fontSize:14,fontFamily:T.sans,resize:"none",background:T2.bg,color:T2.text,lineHeight:1.6,boxSizing:"border-box",outline:"none"}}/>
+      <button onClick={evaluate} disabled={loading||!input.trim()} style={{padding:"13px",borderRadius:4,border:"none",background:loading||!input.trim()?"#DDD5C4":T.ink,color:loading||!input.trim()?"#6B5E44":T.bg,fontSize:14,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:T.sans,minHeight:44}}>
+        {loading?"Analysing your voice…":"Get Voice Coaching →"}
+      </button>
+      {scores && (
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+            {scores.map((s,i)=>(
+              <div key={i} style={{background:T2.surface,borderRadius:4,padding:"12px",textAlign:"center",border:"0.5px solid "+T2.border}}>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:s.v>=7?T.green:s.v>=5?T.gold:"#B05C4A",lineHeight:1}}>{s.v}<span style={{fontSize:12,color:T2.text3}}>/10</span></div>
+                <div style={{fontFamily:T.sans,fontSize:10,color:T2.text3,marginTop:4,textTransform:"uppercase",letterSpacing:"0.5px"}}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>{result.feedback}</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── D5 PRACTICE WIDGET — self-contained so timer re-renders only this component
 function D5PracticeWidget({T, T2, isDesktop}) {
   const D5_EXAMPLES=[
@@ -7095,6 +7269,22 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
+      if (step === "Practice") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Train Your Instrument</h2>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:560 }}>Voice requires repetition. Work through each exercise, then take the speed challenge.</p>
+          <D2PracticeWidget T={T} T2={T2} isDesktop={true}/>
+        </div>
+      );
+
+      if (step === "Simulation") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Real-World Voice Coaching</h2>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:560 }}>Pick a scenario. Write what you'd say. Your AI coach evaluates your delivery across six dimensions.</p>
+          <D2SimWidget T={T} T2={T2} isDesktop={true}/>
+        </div>
+      );
+
       if (step === "Example") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Voice in Action</h2>
@@ -8654,6 +8844,20 @@ T.goldDark : T2.text4,
           </>
         )}
 
+        {isD2 && step==="Practice" && (
+          <>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Train Your Instrument</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Voice requires repetition. Work through each exercise then take the speed challenge.</p>
+            <D2PracticeWidget T={T} T2={T2} isDesktop={false}/>
+          </>
+        )}
+        {isD2 && step==="Simulation" && (
+          <>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Real-World Voice Coaching</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Pick a scenario. Write what you'd say. Your AI coach evaluates your delivery across six dimensions.</p>
+            <D2SimWidget T={T} T2={T2} isDesktop={false}/>
+          </>
+        )}
         {isD2 && step==="Theory" && (
           <>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
@@ -8783,7 +8987,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             <D5PracticeWidget T={T} T2={T2} isDesktop={false}/>
           </>
         )}
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Practice" && (
+        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Practice" && (
           <>
             <div
 style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
