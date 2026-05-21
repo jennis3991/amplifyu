@@ -9226,7 +9226,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             5:{Insight:"/d5-insight.jpg",Theory:"/d5-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
             6:{Insight:"/d6-insight.jpg",Theory:"/d6-theory.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
-            11:{Insight:"/d11-insight.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
+            11:{Insight:"/d11-insight.jpg",Theory:"/d11-theory.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
             8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           };
           const src=STEP_IMGS[lesson.day]?.[step];
@@ -12304,6 +12304,16 @@ reset</button>
     captionText: "Pressure doesn't reveal weakness. It reveals preparation. The calmest person shapes every room they're in.",
     captionPosition: "above",
     imgObjectPosition: "center 30%",
+  },
+  11: {
+    image: "/d11-theory.jpg",
+    alt: "A marble chess queen with a glowing golden halo — the Halo Effect made visible.",
+    insight: "One strong signal changes how people see everything else about you.",
+    subtitle: "Brand Architecture",
+    captionLabel: "The Halo Effect",
+    captionText: "One visible strength becomes the lens through which everything else is interpreted.",
+    captionPosition: "above",
+    imgObjectPosition: "center 35%",
   },
     7: {
     image: 
