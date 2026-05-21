@@ -8169,10 +8169,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             const sh=SIM_HEADERS[lesson.day]||{label:"SIMULATION",heading:"Real scenario. Real pressure. Real coaching."};
             return (
               <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box"}}>
-                <div style={{fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>{sh.label}</div>
-                <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(245,239,230,0.95)",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>{sh.heading}</p>
-                <div style={{width:40,height:1,background:"rgba(245,239,230,0.25)",marginBottom:14}}/>
-                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Day {lesson.day} · {lesson.tag}</p>
+                <div style={{fontSize:10,fontWeight:700,color:"rgba(200,180,140,1)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>{sh.label}</div>
+                <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>{sh.heading}</p>
+                <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
+                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>Day {lesson.day} · {lesson.tag}</p>
               </div>
             );
           }
@@ -8193,10 +8193,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             const h=EX_HEADERS[lesson.day]||EX_HEADERS[1];
             return (
               <div style={{width:"100%",height:320,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box"}}>
-                <div style={{fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>{h.label}</div>
-                <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(245,239,230,0.95)",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>{h.heading}</p>
-                <div style={{width:40,height:1,background:"rgba(245,239,230,0.25)",marginBottom:14}}/>
-                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>{h.body}</p>
+                <div style={{fontSize:10,fontWeight:700,color:"rgba(200,180,140,1)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>{h.label}</div>
+                <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>{h.heading}</p>
+                <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
+                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>{h.body}</p>
               </div>
             );
           }
