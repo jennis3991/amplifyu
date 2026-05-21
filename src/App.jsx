@@ -11600,13 +11600,14 @@ reset</button>
     imgObjectPosition: "center",
   },
   6: {
-    image: "/narrative-transportation.jpg",
-    alt: "A closed book glowing from within, a luminous world visible through its pages — evoking the experience of narrative transportation.",
-    insight: "A great story doesn't just inform. It transports.",
-    subtitle: "Green & Brock, 2000",
-    captionLabel: "Narrative Transportation Theory",
-    captionText: "When a story is told well, the listener is no longer an observer. They step through the door. That is when belief changes.",
+    image: "/d6-theory.jpg",
+    alt: "A single chess pawn standing under a spotlight on marble — composure, precision, and the power of calm under pressure.",
+    insight: "The strongest communicator is often the calmest person in the room.",
+    subtitle: "High-Stakes Conversations",
+    captionLabel: "Composure Under Pressure",
+    captionText: "Pressure doesn't reveal weakness. It reveals preparation. The calmest person shapes every room they're in.",
     captionPosition: "above",
+    imgObjectPosition: "center 30%",
   },
     7: {
     image: 
