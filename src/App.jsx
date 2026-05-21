@@ -5359,8 +5359,19 @@ setAmbitionSaved(true); } catch {}
         );
       }
 
-      // ── Example — D5 gets cinematic text panel; others get before/after ────────
+      // ── Example — D2/D5 get cinematic text panels; others get before/after ──────
       if (step === "Example") {
+        if (isD2) return (
+          <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
+            <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
+            <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Voice in Action</div>
+              <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Range creates engagement. Contrast creates emotion.</p>
+              <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
+              <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>The most compelling voices are the most controlled — and the most dynamic.</p>
+            </div>
+          </div>
+        );
         if (isD5) return (
           <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
             <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
@@ -8729,7 +8740,7 @@ style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.insight}</p>
 
         {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Theory" && <TheoryCard day={lesson.day}/>}
 
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Example" && (
+        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Example" && (
           <>
             <div style={{background:"#FDF0EE",border:"1px solid #F0C5C0",borderRadius:2,padding:"16px 18px"}}>
               <div
