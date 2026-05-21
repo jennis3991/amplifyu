@@ -10173,7 +10173,6 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
     : {padding:"20px",paddingBottom:100};
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}}>
-      {/* Hero banner — mobile */}
       {!isDesktop && (
         <div style={{position:"relative",height:220,overflow:"hidden"}}>
           <img src="/progress-hero.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 55%",display:"block"}}/>
@@ -10184,31 +10183,20 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
           </div>
         </div>
       )}
-      {/* Hero banner — desktop */}
       {isDesktop && (
         <div style={{position:"relative",height:320,overflow:"hidden",borderBottom:"1px solid "+T2.divider}}>
           <img src="/progress-hero.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 55%",display:"block"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.72) 0%,rgba(10,8,5,0.1) 60%,transparent 100%)"}}/>
-          <div style={{position:"absolute",bottom:0,left:0,right:0}}>
-            <div style={{maxWidth:1160,margin:"0 auto",padding:"0 88px 40px",display:"flex",alignItems:"flex-end",justifyContent:"space-between"}}>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 88px 40px",display:"flex",alignItems:"flex-end",justifyContent:"space-between",maxWidth:1160,margin:"0 auto",boxSizing:"border-box"}}>
             <div>
               <div style={{fontSize:10,letterSpacing:"4px",textTransform:"uppercase",color:"rgba(200,180,140,0.9)",fontFamily:T.sans,marginBottom:14}}>Your Journey</div>
               <h1 style={{fontFamily:T.serif,fontSize:52,fontWeight:500,color:"#F5EFE6",letterSpacing:"-2px",lineHeight:1,margin:0}}>Your Progress</h1>
             </div>
             <div style={{display:"flex",alignItems:"flex-end",gap:40,paddingBottom:4}}>
-              {streak > 0 && (
-                <div style={{textAlign:"right"}}>
-                  <div style={{fontFamily:T.serif,fontSize:40,fontWeight:500,color:T.gold,lineHeight:1,letterSpacing:"-2px"}}>{streak}</div>
-                  <div style={{fontSize:10,color:T2.text3,textTransform:"uppercase",letterSpacing:"2px",marginTop:4,fontFamily:T.sans}}>day streak</div>
-                </div>
-              )}
-              <div style={{textAlign:"right"}}>
-                <div style={{fontFamily:T.serif,fontSize:40,fontWeight:500,color:T2.text,lineHeight:1,letterSpacing:"-2px"}}>{pct}<span style={{fontSize:20,color:T.gold}}>%</span></div>
-                <div style={{fontSize:10,color:T2.text3,textTransform:"uppercase",letterSpacing:"2px",marginTop:4,fontFamily:T.sans}}>complete</div>
-              </div>
+              {streak > 0 && <div style={{textAlign:"right"}}><div style={{fontFamily:T.serif,fontSize:40,fontWeight:500,color:T.gold,lineHeight:1,letterSpacing:"-2px"}}>{streak}</div><div style={{fontSize:10,color:"rgba(245,239,230,0.6)",textTransform:"uppercase",letterSpacing:"2px",marginTop:4,fontFamily:T.sans}}>day streak</div></div>}
+              <div style={{textAlign:"right"}}><div style={{fontFamily:T.serif,fontSize:40,fontWeight:500,color:"#F5EFE6",lineHeight:1,letterSpacing:"-2px"}}>{pct}<span style={{fontSize:20,color:T.gold}}>%</span></div><div style={{fontSize:10,color:"rgba(245,239,230,0.6)",textTransform:"uppercase",letterSpacing:"2px",marginTop:4,fontFamily:T.sans}}>complete</div></div>
             </div>
           </div>
-        </div>
         </div>
       )}
       <div style={isDesktop?Object.assign({},contentStyle,{paddingTop:32}):Object.assign({padding:"16px 20px",display:"flex",flexDirection:"column",gap:12})}>
