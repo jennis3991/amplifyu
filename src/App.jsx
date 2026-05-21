@@ -4319,6 +4319,7 @@ setAmbitionSaved(true); } catch {}
   const isNT = lesson.day === 8;
   const isD9 = lesson.day === 9;
   const isD1 = lesson.day === 1;
+  const isD2 = lesson.day === 2;
   const isD3 = lesson.day === 3;
   const isD4 = lesson.day === 4;
   const isD5 = lesson.day === 5;
@@ -7018,6 +7019,30 @@ setAmbitionSaved(true); } catch {}
       return null;
     };
 
+    const D2RightContent = () => {
+      if (step === "Insight") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The Way You Speak Changes the Way People Listen</h2>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>Your voice is more than sound — it's one of your most powerful communication tools. The way you speak shapes how your ideas land, how your energy is felt, and how memorable your message becomes.</p>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
+            {[
+              {word:"Attention",       body:"A flat voice fades into the background fast. Variation in pace, tone, and emphasis keeps the brain alert and signals that what you're saying matters."},
+              {word:"First Impression",body:"Listeners form an impression of confidence, energy, and credibility within moments of hearing you speak. Your delivery shapes the room before your message even begins."},
+              {word:"Memory",          body:"When delivery has contrast — pauses, pace shifts, vocal emphasis — the brain finds the message easier to process, store, and remember."},
+              {word:"Influence",       body:"The exact same sentence can sound inspiring, uncertain, authoritative, or disengaged depending entirely on delivery. Voice doesn't decorate meaning — it creates it."},
+            ].map((n,i)=>(
+              <div key={i} style={{ padding:"22px 24px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                <div style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T.gold, lineHeight:1.3, marginBottom:10 }}>{n.word}</div>
+                <p style={{ fontFamily:T.sans, fontSize:16, color:T2.text, lineHeight:1.7, fontWeight:400, margin:0 }}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontFamily:T.sans, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.7 }}>Your voice is your most underused communication tool. Start using it deliberately.</p>
+        </div>
+      );
+      return <RightContent/>;
+    };
+
     const D5RightContent = () => {
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
@@ -7481,7 +7506,7 @@ setAmbitionSaved(true); } catch {}
                 }}/>
               )}
               <div style={{ position: "relative", zIndex: 1 }}>
-                {isD1 ? <D1RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD10 ? <D10RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
+                {isD1 ? <D1RightContent/> : isD2 ? <D2RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD10 ? <D10RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
               </div>
             </div>
           </div>
@@ -7863,6 +7888,28 @@ T.goldDark : T2.text4,
               <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,marginBottom:12}}>Write your performance statement. Get scored on clarity and impact.</p>
               <D10MobileSim/>
             </div>
+          </>
+        )}
+
+        {/* ── D2 Mobile Steps ─────────────────────────────────────────────── */}
+        {isD2 && step==="Insight" && (
+          <>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Way You Speak Changes the Way People Listen</h2>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Your voice is more than sound — it's one of your most powerful communication tools. The way you speak shapes how your ideas land, how your energy is felt, and how memorable your message becomes.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {[
+                {word:"Attention",    body:"A flat voice fades into the background fast. Variation in pace, tone, and emphasis keeps the brain alert and signals that what you're saying matters."},
+                {word:"First Impression", body:"Listeners form an impression of confidence, energy, and credibility within moments of hearing you speak. Your delivery shapes the room before your message even begins."},
+                {word:"Memory",       body:"When delivery has contrast — pauses, pace shifts, vocal emphasis — the brain finds the message easier to process, store, and remember."},
+                {word:"Influence",    body:"The exact same sentence can sound inspiring, uncertain, authoritative, or disengaged depending entirely on delivery. Voice doesn't decorate meaning — it creates it."},
+              ].map((n,i)=>(
+                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+                </div>
+              ))}
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Your voice is your most underused communication tool. Start using it deliberately.</p>
           </>
         )}
 
@@ -8418,7 +8465,7 @@ T.goldDark : T2.text4,
           </>
         )}
 
-        {!isNT && !isD9 && !isD1 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Insight" && (
+        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD10 && step==="Insight" && (
           <>
             <div
 style={{background:T2.cardDark,borderRadius:2,padding:"26px 24px",position:"relative",overflow:"hidden"}}>
