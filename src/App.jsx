@@ -4135,19 +4135,7 @@ function D2PracticeWidget({T, T2, isDesktop}) {
      modes:["Higher pitch","Neutral pitch","Lower pitch"],
      lesson:"Lower pitch signals authority. Higher pitch signals energy or uncertainty."},
   ];
-  const DRILL_BANK=["That's an interesting idea — as supportive","That's an interesting idea — as sceptical","I believe this is the right decision — too fast","I believe this is the right decision — ideal pace","We have one problem. Time. — without pause","We have one problem. Time. — with pause","This is the right approach — higher pitch","This is the right approach — lower pitch"];
   const [openEx, setOpenEx] = useState(null);
-  const [challenge, setChallenge] = useState({started:false,idx:0,count:0,time:90,drills:null});
-  const timerRef = useRef(null);
-  useEffect(()=>{
-    if(!challenge.started){ clearInterval(timerRef.current); return; }
-    timerRef.current = setInterval(()=>{
-      setChallenge(c=>c.time<=1?{...c,time:0,started:false}:{...c,time:c.time-1});
-    },1000);
-    return ()=>clearInterval(timerRef.current);
-  },[challenge.started]);
-  const startChallenge=()=>setChallenge({started:true,idx:0,count:0,time:90,drills:[...DRILL_BANK].sort(()=>Math.random()-0.5)});
-  const nextDrill=()=>setChallenge(c=>({...c,idx:(c.idx+1)%c.drills.length,count:c.count+1}));
 
   const card=(ex,i)=>(
     <div key={ex.id} onClick={()=>setOpenEx(openEx===i?null:i)}
@@ -4173,45 +4161,9 @@ function D2PracticeWidget({T, T2, isDesktop}) {
     </div>
   );
 
-  const speedChallenge=(
-    <div style={isDesktop
-      ?{background:T2.cardDark,borderRadius:8,padding:"28px 32px"}
-      :{background:T2.cardDark,borderRadius:8,padding:"18px 20px"}}>
-      <div style={{fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:T.sans}}>Speed Challenge</div>
-      <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:"rgba(245,239,230,0.6)",lineHeight:1.7,marginBottom:isDesktop?24:16}}>
-        90 seconds. Say each drill out loud — then hit Next. How many can you nail?
-      </p>
-      {!challenge.started&&challenge.time>0?(
-        <button onClick={startChallenge} style={{padding:isDesktop?"13px 32px":"12px 24px",borderRadius:4,border:"none",background:T.gold,color:"white",fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,width:isDesktop?"auto":"100%",minHeight:44}}>Start Challenge →</button>
-      ):challenge.time===0?(
-        <div style={{display:"flex",alignItems:"center",gap:20}}>
-          <div>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?48:28,fontWeight:600,color:"rgba(245,239,230,0.9)",lineHeight:1}}>{challenge.count}</div>
-            <div style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.4)",marginTop:4}}>drills completed</div>
-          </div>
-          <button onClick={()=>setChallenge({started:false,idx:0,count:0,time:90,drills:null})} style={{padding:"11px 20px",borderRadius:4,border:"1px solid rgba(255,255,255,0.15)",background:"transparent",color:"rgba(245,239,230,0.7)",fontSize:12,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Try Again</button>
-        </div>
-      ):(
-        <div style={isDesktop?{display:"flex",alignItems:"flex-start",gap:24}:{display:"block"}}>
-          <div style={{fontFamily:T.serif,fontSize:isDesktop?48:28,fontWeight:600,color:challenge.time<=10?"#B05C4A":T.gold,lineHeight:1,flexShrink:0,marginBottom:isDesktop?0:12}}>{challenge.time}s</div>
-          <div style={{flex:1}}>
-            <div style={{background:"rgba(255,255,255,0.06)",borderRadius:6,padding:isDesktop?"20px 24px":"14px",marginBottom:12,border:"1px solid rgba(255,255,255,0.08)"}}>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?20:16,fontWeight:600,color:"rgba(245,239,230,0.9)",margin:0,lineHeight:1.3}}>{challenge.drills[challenge.idx]}</p>
-            </div>
-            <div style={{display:"flex",alignItems:"center",gap:16}}>
-              <button onClick={nextDrill} style={{padding:isDesktop?"12px 28px":"11px 24px",borderRadius:4,border:"none",background:T.gold,color:"white",fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Next →</button>
-              <span style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.4)"}}>{challenge.count} done</span>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-
   return (
     <>
       {EXERCISES.map((ex,i)=>card(ex,i))}
-      {speedChallenge}
     </>
   );
 }
