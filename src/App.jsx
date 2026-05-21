@@ -7782,7 +7782,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{marginBottom:6}}>
               <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:2}}>Day {lesson.day} — {lesson.tag}</div>
             </div>
-            <h1 style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1.2}}>{isD2&&step==="Insight"?"Master the instrument behind your message.":lesson.title}</h1>
+            {isD2&&step==="Insight"
+              ? <p style={{fontFamily:T.sans,fontSize:13,fontWeight:400,color:"rgba(255,255,255,0.7)",lineHeight:1.5,margin:0,fontStyle:"italic"}}>Master the instrument behind your message.</p>
+              : <h1 style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
+            }
           </div>
         )}
       </div>
