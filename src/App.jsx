@@ -1246,7 +1246,7 @@ const LESSONS = [
    promise:"Your performance is the non-negotiable. Communicate it like it matters — because it does. And now you have the story architecture to do it.",
    teaser:"Only 10% of career advancement comes from performance. This session shows you how to communicate your work so it actually counts — with the story tools you've just built."},
 
-  {day:11,week:2,title:"Brand Architecture",tag:"Presence",scene:"presence",
+  {day:11,week:2,title:"Brand Identity",tag:"Presence",scene:"presence",
    quote:"Your personal brand is what people say about you when you're not in the room.",
    insight:"Image is how others perceive you. But perception isn't random — it's built from signals. Your appearance, your stories, your consistency, your voice. You have far more control over this than you think. The most powerful people in any room learned to shape it intentionally.",
    pieLink:"Image: This module is the bridge. Everything you've built — clarity, voice, credibility, structure, composure — now becomes the architecture of how you're perceived.",
@@ -12360,7 +12360,7 @@ reset</button>
     image: "/d11-theory.jpg",
     alt: "A marble chess queen with a glowing golden halo — the Halo Effect made visible.",
     insight: "One strong signal changes how people see everything else about you.",
-    subtitle: "Brand Architecture",
+    subtitle: "Brand Identity",
     captionLabel: "The Halo Effect",
     captionText: "One visible strength becomes the lens through which everything else is interpreted.",
     captionPosition: "above",
