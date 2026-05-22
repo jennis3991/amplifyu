@@ -1129,7 +1129,7 @@ const LESSONS = [
    teaser:"You'll learn to strip out the noise and say exactly what you mean — in a way that commands instant respect."},
 
   {day:2,week:1,title:"The Voice Advantage",tag:"Voice",scene:"voice",
-   quote:"Silence is the language of the wise.",
+   quote:"Master the instrument behind your message.",
    insight:"The fastest speakers are rarely the most credible ones. Slowing down signals confidence — you're not rushing to fill silence, you're choosing your words.",
    pieLink:"Image: How you sound is how you're perceived. A calm, measured voice signals executive presence.",
    phrases:["Let me take a moment to think about that.","Here's what I've considered…","My view, after reflection, is…"],
