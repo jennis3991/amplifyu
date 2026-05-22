@@ -5613,6 +5613,11 @@ function SessionView({lesson, isDone, onComplete, onBack, roleId,
 activeRole, dark=false, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
   const [idx, setIdx] = useState(0);
+  const rightPanelRef = useRef(null);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (rightPanelRef.current) rightPanelRef.current.scrollTop = 0;
+  }, [idx]);
   const [selSc, setSelSc] = useState(0);
   const [checks, setChecks] = useState({});
   const [exitConfirm, setExitConfirm] = useState(false);
@@ -9399,7 +9404,7 @@ setAmbitionSaved(true); } catch {}
             </div>
 
             {/* RIGHT PANEL — Supporting content (40%) */}
-            <div style={{
+            <div ref={rightPanelRef} style={{
               flex: 1,
               background: step === "Practice" ? "rgba(247,243,236,0.92)" : T2.bg,
               overflowY: "auto", position: "relative", zIndex: 1,
