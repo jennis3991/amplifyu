@@ -9757,7 +9757,7 @@ T.goldDark : T2.text4,
         {isD1 && step==="Insight" && (
           <>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Clarity Wins</h2>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Clear language makes ideas easier to understand, easier to remember, and easier to act on.</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Clear language makes ideas easier to understand, easier to remember, and easier to act on.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
               {D1_CLARITY_FACTS_DATA.map((n,i)=>{
                 const open = d1MobCard===("cf"+i);
@@ -9782,7 +9782,7 @@ T.goldDark : T2.text4,
                 );
               })}
             </div>
-            <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>The clearest communicator is often the most influential.</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>The clearest communicator is often the most influential.</p>
           </>
         )}
         {isD1 && step==="Theory" && (
