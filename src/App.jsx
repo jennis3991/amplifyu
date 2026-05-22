@@ -8854,7 +8854,51 @@ setAmbitionSaved(true); } catch {}
       return null;
     };
 
+    const D2_INSIGHT_CARDS = [
+      {word:"Attention",       sub:"A flat voice loses the room in seconds",       bullets:["The brain is wired to respond to variation. Monotone delivery is processed as low-priority — people tune out almost instantly.","Varying pace, pitch, and tone keeps the brain alert and signals that what you're saying is worth their attention."]},
+      {word:"First Impression",sub:"Your voice speaks before your words do",        bullets:["Listeners form an impression of your confidence, energy, and credibility within moments of hearing you — before your message even begins.","Delivery shapes the room. A controlled, warm voice signals authority. A rushed or flat voice signals uncertainty."]},
+      {word:"Memory",          sub:"Contrast makes ideas stick",                     bullets:["When delivery has rhythm — pauses, pace shifts, vocal emphasis — the brain finds it easier to process, store, and recall.","Information delivered in a varied, engaging voice is significantly more memorable than the same words spoken flatly."]},
+      {word:"Influence",       sub:"Same words, completely different meaning",       bullets:["The exact same sentence can sound inspiring, uncertain, authoritative, or disengaged depending entirely on how it's delivered.","Voice doesn't decorate meaning — it creates it. Mastering your delivery is mastering the impact of every word you say."]},
+    ];
+
     const D2RightContent = () => {
+      const [d2InsightOpen, setD2InsightOpen] = useState(null);
+
+      if (step === "Insight") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The Way You Speak Changes the Way People Listen</h2>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:36, maxWidth:600 }}>Your voice is more than sound — it's one of your most powerful communication tools.</p>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:28 }}>
+            {D2_INSIGHT_CARDS.map((n,i) => {
+              const open = d2InsightOpen===i;
+              return (
+                <div key={i} onClick={()=>setD2InsightOpen(open?null:i)} className="au-lift"
+                  style={{ padding:"22px 24px", background:T2.surface, borderRadius:4, border:`0.5px solid ${open?T.gold:T2.border}`, cursor:"pointer", transition:"border-color 0.2s, box-shadow 0.2s, transform 0.2s" }}
+                  onMouseEnter={e=>{ if(!open){e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.boxShadow="0 4px 20px rgba(138,158,132,0.22), 0 1px 6px rgba(138,158,132,0.12)";} }}
+                  onMouseLeave={e=>{ if(!open){e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.boxShadow="none";} }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:open?10:6 }}>
+                    <div style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T.gold, lineHeight:1.3 }}>{n.word}</div>
+                    <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.7)", marginLeft:10, flexShrink:0, marginTop:2, transition:"color 0.2s" }}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.5, fontWeight:400, margin:open?"0 0 14px":0 }}>{n.sub}</p>
+                  {open && (
+                    <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:14, display:"flex", flexDirection:"column", gap:8 }}>
+                      {n.bullets.map((b,j)=>(
+                        <div key={j} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
+                          <div style={{ width:4, height:4, borderRadius:"50%", background:T.gold, flexShrink:0, marginTop:6 }}/>
+                          <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, fontWeight:400, margin:0 }}>{b}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <p style={{ fontFamily:T.sans, fontSize:16, color:T.gold, lineHeight:1.7, fontWeight:400, fontStyle:"italic" }}>Your voice is your most underused communication tool. Start using it deliberately.</p>
+        </div>
+      );
+
       if (step === "Theory") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science</div>
@@ -10212,19 +10256,31 @@ T.goldDark : T2.text4,
         {isD2 && step==="Insight" && (
           <>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Way You Speak Changes the Way People Listen</h2>
-            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Your voice is more than sound — it's one of your most powerful communication tools. The way you speak shapes how your ideas land, how your energy is felt, and how memorable your message becomes.</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Your voice is more than sound — it's one of your most powerful communication tools.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-              {[
-                {word:"Attention",    body:"A flat voice fades into the background fast. Variation in pace, tone, and emphasis keeps the brain alert and signals that what you're saying matters."},
-                {word:"First Impression", body:"Listeners form an impression of confidence, energy, and credibility within moments of hearing you speak. Your delivery shapes the room before your message even begins."},
-                {word:"Memory",       body:"When delivery has contrast — pauses, pace shifts, vocal emphasis — the brain finds the message easier to process, store, and remember."},
-                {word:"Influence",    body:"The exact same sentence can sound inspiring, uncertain, authoritative, or disengaged depending entirely on delivery. Voice doesn't decorate meaning — it creates it."},
-              ].map((n,i)=>(
-                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
-                  <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
-                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
-                </div>
-              ))}
+              {D2_INSIGHT_CARDS.map((n,i)=>{
+                const open = d2MobCard===("d2i"+i);
+                return (
+                  <div key={i} onClick={()=>setD2MobCard(open?null:"d2i"+i)}
+                    style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
+                      <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                      <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                    </div>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 10px":0}}>{n.sub}</p>
+                    {open && (
+                      <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
+                        {n.bullets.map((b,j)=>(
+                          <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                            <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
+                            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
             <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Your voice is your most underused communication tool. Start using it deliberately.</p>
           </>
