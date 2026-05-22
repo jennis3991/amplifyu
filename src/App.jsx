@@ -4074,10 +4074,385 @@ function D1MobileJargonSwap() {
   async function go(){if(!v.trim())return;setL(true);try{const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:200,messages:[{role:"user",content:`Simplify this, removing all jargon. Return ONLY the simplified sentence: "${v}"`}]})});const d=await res.json();setR((d.content||[]).map(b=>b.text||"").join("").trim());}catch{setR("Keep it simple enough that a 10-year-old could understand.");}setL(false);}
   return(<div><textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Write your sentence…" style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:64,marginBottom:8,boxSizing:"border-box"}}/><button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:r?10:0}}>{l?"Simplifying…":"Simplify It →"}</button>{r&&<div style={{padding:"12px 14px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,color:"#2C2416",margin:0,lineHeight:1.6}}>{r}</p></div>}</div>);
 }
-function D1MobileSim() {
-  const [v,setV]=useState(""); const [r,setR]=useState(null); const [l,setL]=useState(false);
-  async function go(){if(!v.trim())return;setL(true);try{const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,messages:[{role:"user",content:`Analyse this for clarity and return JSON: {score:number,win:"one strength",gap:"one improvement",rewrite:"cleaner version"}\n\n"${v}"`}]})});const d=await res.json();const raw=(d.content||[]).map(b=>b.text||"").join("").trim();try{const m=raw.match(/\{[\s\S]*\}/);setR(JSON.parse(m[0]));}catch{setR({score:7,win:"Clear main point",gap:"Lead with your outcome first",rewrite:"Start with what matters most, then explain how."});}}catch{setR(null);}setL(false);}
-  return(<div><textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Write your 60-second explanation…" style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:100,marginBottom:8,boxSizing:"border-box"}}/><button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:r?10:0}}>{l?"Analysing…":"Get Clarity Score →"}</button>{r&&<div style={{display:"flex",flexDirection:"column",gap:8}}><div style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"#EDE8DF",borderRadius:3}}><span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:36,fontWeight:600,color:"#2C2416",lineHeight:1}}>{r.score}<span style={{fontSize:16,color:"#8A9E84"}}>/10</span></span><span style={{fontSize:11,color:"#6B5E44",fontFamily:"'Inter',sans-serif"}}>Clarity Score</span></div>{r.win&&<div style={{display:"flex",gap:8}}><span style={{color:"#527060",flexShrink:0}}>✓</span><span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#2C2416"}}>{r.win}</span></div>}{r.gap&&<div style={{display:"flex",gap:8}}><span style={{color:"#B05C4A",flexShrink:0}}>✗</span><span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#2C2416"}}>{r.gap}</span></div>}{r.rewrite&&<div style={{padding:"10px 12px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>{r.rewrite}</p></div>}</div>}</div>);
+function D1MobileSim() { return null; } // replaced by D1SimWidget
+
+// ─── RECORD & REVIEW™ — D1 Simulation ────────────────────────────────────────
+function D1SimWidget({T, T2, isDesktop}) {
+  const PROMPTS = {
+    Work:[
+      "Explain a challenge you solved recently.",
+      "What makes a team truly effective?",
+      "Describe the best leader you've worked with.",
+      "Tell us about a difficult decision you made.",
+      "What frustrates you most at work — and why?",
+    ],
+    Personal:[
+      "What belief has genuinely changed your life?",
+      "What motivates you more than anything else?",
+      "What's something people misunderstand about you?",
+      "Describe a moment that changed your perspective.",
+      "What advice would you give your younger self?",
+    ],
+    Spontaneous:[
+      "Is social media helping or harming us?",
+      "What makes someone truly charismatic?",
+      "Should schools teach negotiation?",
+      "Is talent overrated compared to consistency?",
+      "What creates a strong first impression?",
+    ],
+  };
+  const ALL_PROMPTS = Object.values(PROMPTS).flat();
+  const DIMS = ["Structure","Clarity","Concision","Filler Words","Pace","Confidence","Main Message"];
+  const FOCUS = ["Shorter sentences","Fewer filler words","Clearer opening","Stronger structure","Slower pace","Sharper conclusion"];
+
+  const [phase, setPhase] = useState('intro');
+  const [cat, setCat] = useState('Work');
+  const [prompt, setPrompt] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(120);
+  const [isRec, setIsRec] = useState(false);
+  const [transcript, setTranscript] = useState('');
+  const [fallback, setFallback] = useState('');
+  const [analyzing, setAnalyzing] = useState(false);
+  const [feedback, setFeedback] = useState(null);
+  const [round1, setRound1] = useState(null);
+  const [selectedFocus, setSelectedFocus] = useState([]);
+  const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
+
+  const recRef = useRef(null);
+  const timerRef = useRef(null);
+  const liveRef = useRef('');
+  const waveRef = useRef(null);
+
+  const SpeechRec = typeof window!=='undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
+
+  useEffect(()=>{
+    if(isRec && timeLeft>0){
+      timerRef.current=setTimeout(()=>setTimeLeft(t=>t-1),1000);
+    } else if(isRec && timeLeft===0){
+      doStop();
+    }
+    return ()=>clearTimeout(timerRef.current);
+  },[isRec,timeLeft]);
+
+  useEffect(()=>{
+    if(!isRec){clearInterval(waveRef.current);return;}
+    waveRef.current=setInterval(()=>{
+      setWaveVals(()=>Array.from({length:9},()=>0.2+Math.random()*0.8));
+    },150);
+    return ()=>clearInterval(waveRef.current);
+  },[isRec]);
+
+  function doStart(){
+    setIsRec(true); liveRef.current=''; setTranscript('');
+    if(SpeechRec){
+      const rec=new SpeechRec();
+      rec.continuous=true; rec.interimResults=true; rec.lang='en-US';
+      rec.onresult=(e)=>{
+        let t='';
+        for(let i=0;i<e.results.length;i++) if(e.results[i].isFinal) t+=e.results[i][0].transcript+' ';
+        liveRef.current=t; setTranscript(t);
+      };
+      try{rec.start();}catch(e){}
+      recRef.current=rec;
+    }
+  }
+
+  function doStop(){
+    setIsRec(false); clearTimeout(timerRef.current);
+    if(recRef.current){try{recRef.current.stop();}catch(e){}}
+    const text = SpeechRec ? liveRef.current : fallback;
+    analyzeText(text||fallback);
+  }
+
+  async function analyzeText(text){
+    setPhase('analyzing');
+    const isRetry=!!round1;
+    const mockScores=()=>Object.fromEntries(DIMS.map(d=>[d,Math.floor(Math.random()*22)+62+(isRetry?10:0)]));
+    const mock={
+      overall:Math.floor(Math.random()*18)+64+(isRetry?12:0),
+      scores:mockScores(),
+      worked:["Confident and natural delivery","Good conversational energy throughout"],
+      improve:["Core point arrived late — lead with it next time","A few ideas drifted before landing"],
+      insight:"Your delivery felt natural and genuine. The opportunity is structure: if you lead with your clearest point in the first sentence, everything that follows lands harder."
+    };
+    if(!text||text.trim().length<15){
+      if(!isRetry){setRound1(mock);setFeedback(mock);}
+      else setFeedback({...mock,prev:round1});
+      setPhase(isRetry?'comparison':'feedback');
+      return;
+    }
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:700,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for clarity.\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"scores":{"Structure":<50-100>,"Clarity":<50-100>,"Concision":<50-100>,"Filler Words":<50-100>,"Pace":<50-100>,"Confidence":<50-100>,"Main Message":<50-100>},"worked":["<strength 1>","<strength 2>"],"improve":["<opportunity 1>","<opportunity 2>"],"insight":"<2 warm coaching sentences>"}`}]})});
+      const d=await res.json();
+      const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
+      const m=raw.match(/\{[\s\S]*\}/);
+      const parsed=JSON.parse(m[0]);
+      if(!isRetry){setRound1(parsed);setFeedback(parsed);}
+      else setFeedback({...parsed,prev:round1});
+    }catch{
+      if(!isRetry){setRound1(mock);setFeedback(mock);}
+      else setFeedback({...mock,prev:round1});
+    }
+    setPhase(isRetry?'comparison':'feedback');
+  }
+
+  function surprise(){
+    const p=ALL_PROMPTS[Math.floor(Math.random()*ALL_PROMPTS.length)];
+    setPrompt(p); setPhase('recording'); setTimeLeft(120); setIsRec(false); setTranscript(''); setFallback('');
+  }
+
+  function reset(){setPhase('intro');setPrompt(null);setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setSelectedFocus([]);}
+
+  const cs={
+    card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"},
+    label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8},
+    h2:{fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10},
+    body:{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.65,margin:0},
+    cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
+    ghost:{width:"100%",padding:"11px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44},
+  };
+
+  // ── INTRO ─────────────────────────────────────────────────────────────────
+  if(phase==='intro') return (
+    <div style={{display:"flex",flexDirection:"column",gap:0}}>
+      <div style={{background:"#0E0B08",borderRadius:8,padding:isDesktop?"44px 48px":"32px 24px",marginBottom:16,position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:-60,right:-60,width:200,height:200,borderRadius:"50%",background:"radial-gradient(circle,rgba(138,158,132,0.12) 0%,transparent 70%)",pointerEvents:"none"}}/>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:20}}>RECORD &amp; REVIEW™</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?40:30,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:16}}>The fastest way to improve is to hear yourself the way others do.</h2>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?16:14,color:"rgba(245,239,230,0.6)",lineHeight:1.7,marginBottom:28}}>Most people have never heard themselves the way others do. This exercise reveals your natural communication habits — then helps you improve them.</p>
+        <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:28}}>
+          {["Speak naturally for 90–120 seconds.","No script. No preparation.","We want to reveal your default communication patterns."].map((t,i)=>(
+            <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+              <div style={{width:4,height:4,borderRadius:"50%",background:"rgba(138,158,132,0.6)",flexShrink:0,marginTop:8}}/>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.55)",margin:0,lineHeight:1.6}}>{t}</p>
+            </div>
+          ))}
+        </div>
+        <button onClick={()=>setPhase('prompt')} style={{...cs.cta,background:"rgba(138,158,132,0.15)",color:"#F5EFE6",border:"0.5px solid rgba(138,158,132,0.4)"}}>Start Challenge →</button>
+      </div>
+    </div>
+  );
+
+  // ── PROMPT SELECTION ──────────────────────────────────────────────────────
+  if(phase==='prompt') return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <div>
+        <h2 style={cs.h2}>Choose a conversation starter</h2>
+        <p style={{...cs.body,marginBottom:16}}>Speak naturally. No preparation. The goal is not perfection — it's awareness.</p>
+      </div>
+      <div style={{display:"flex",gap:8,marginBottom:4}}>
+        {Object.keys(PROMPTS).map(c=>(
+          <button key={c} onClick={()=>setCat(c)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${cat===c?T.gold:T2.border}`,background:cat===c?"rgba(138,158,132,0.1)":"transparent",color:cat===c?T.gold:T2.text3,fontSize:12,fontWeight:cat===c?600:400,cursor:"pointer",fontFamily:T.sans,minHeight:36,transition:"all 0.15s"}}>{c}</button>
+        ))}
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+        {PROMPTS[cat].map((p,i)=>(
+          <div key={i} onClick={()=>{setPrompt(p);setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');}} style={{...cs.card,cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}} className="au-lift">
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,margin:0,flex:1}}>{p}</p>
+            <span style={{color:T.gold,fontSize:18,flexShrink:0}}>→</span>
+          </div>
+        ))}
+      </div>
+      <button onClick={surprise} style={{...cs.ghost,marginTop:4}}>✦ Surprise Me</button>
+    </div>
+  );
+
+  // ── RECORDING ────────────────────────────────────────────────────────────
+  if(phase==='recording') return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+        <div style={cs.label}>Your prompt</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.4,margin:0,fontWeight:500}}>{prompt}</p>
+      </div>
+      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"36px 32px":"28px 20px"}}>
+        {/* Timer ring */}
+        <div style={{position:"relative",width:120,height:120,margin:"0 auto 20px",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <svg style={{position:"absolute",inset:0,transform:"rotate(-90deg)"}} viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="54" fill="none" stroke={T2.border} strokeWidth="4"/>
+            <circle cx="60" cy="60" r="54" fill="none" stroke={T.gold} strokeWidth="4" strokeLinecap="round"
+              strokeDasharray={`${2*Math.PI*54}`}
+              strokeDashoffset={`${2*Math.PI*54*(1-timeLeft/120)}`}
+              style={{transition:"stroke-dashoffset 1s linear"}}/>
+          </svg>
+          <div style={{textAlign:"center"}}>
+            <div style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:timeLeft<=10?"#B05C4A":T2.text,lineHeight:1}}>{timeLeft}</div>
+            <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:2}}>seconds</div>
+          </div>
+        </div>
+        {/* Waveform */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:3,height:36,marginBottom:20}}>
+          {waveVals.map((h,i)=>(
+            <div key={i} style={{width:isDesktop?4:3,background:isRec?T.gold:T2.border,borderRadius:2,height:isRec?Math.round(h*32)+"px":"4px",transition:"height 0.12s ease,background 0.3s ease"}}/>
+          ))}
+        </div>
+        {/* Encouraging copy */}
+        {isRec && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20,fontStyle:"italic"}}>
+          {timeLeft>80?"Keep going. Stay natural."
+            :timeLeft>40?"We're looking for patterns, not perfection."
+            :"Almost there. Finish your thought."}
+        </p>}
+        {!isRec && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20}}>Speak naturally for up to 2 minutes.</p>}
+        {/* Record button */}
+        {!isRec ? (
+          <button onClick={doStart} style={{...cs.cta,maxWidth:240,margin:"0 auto",display:"block",borderRadius:40,background:T.ink,color:T.bg}}>
+            🎤 Start Recording
+          </button>
+        ) : (
+          <button onClick={doStop} style={{...cs.cta,maxWidth:240,margin:"0 auto",display:"block",borderRadius:40,background:"rgba(176,92,74,0.15)",color:"#B05C4A",border:"0.5px solid rgba(176,92,74,0.4)"}}>
+            ◼ Stop &amp; Analyse
+          </button>
+        )}
+        {/* Live transcript preview */}
+        {isRec && transcript && (
+          <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,marginTop:16,lineHeight:1.5,fontStyle:"italic",maxHeight:56,overflow:"hidden",textOverflow:"ellipsis"}}>
+            {transcript.slice(-120)}...
+          </p>
+        )}
+      </div>
+      {/* Text fallback */}
+      {!isRec && !SpeechRec && (
+        <div style={cs.card}>
+          <div style={cs.label}>Type your response instead</div>
+          <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Write what you'd say for 90–120 seconds…" style={{width:"100%",minHeight:120,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
+          {fallback.trim().length>15 && <button onClick={()=>analyzeText(fallback)} style={{...cs.cta,marginTop:14}}>Analyse My Response →</button>}
+        </div>
+      )}
+      <button onClick={()=>setPhase('prompt')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",padding:0,textAlign:"left"}}>← Choose different prompt</button>
+    </div>
+  );
+
+  // ── ANALYZING ────────────────────────────────────────────────────────────
+  if(phase==='analyzing') return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"60px 20px",gap:20}}>
+      <div style={{width:48,height:48,borderRadius:"50%",border:`2px solid ${T2.border}`,borderTop:`2px solid ${T.gold}`,animation:"spin 0.8s linear infinite"}}/>
+      <div style={{textAlign:"center"}}>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?22:18,color:T2.text,marginBottom:6}}>Analysing your clarity…</p>
+        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text4,margin:0}}>Your AI coach is reviewing your response.</p>
+      </div>
+    </div>
+  );
+
+  // ── FEEDBACK ─────────────────────────────────────────────────────────────
+  if(phase==='feedback' && feedback) return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      {/* Score hero */}
+      <div style={{background:"#0E0B08",borderRadius:8,padding:isDesktop?"36px 40px":"28px 20px",display:"flex",alignItems:"center",gap:isDesktop?40:24}}>
+        <div style={{flexShrink:0,textAlign:"center"}}>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?72:56,fontWeight:600,color:T.gold,lineHeight:1}}>{feedback.overall}</div>
+          <div style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.5)",marginTop:4}}>/ 100</div>
+        </div>
+        <div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Clarity Score</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:15,color:"#F5EFE6",lineHeight:1.4,margin:0}}>Here's how clearly your ideas came across.</p>
+        </div>
+      </div>
+      {/* Dimension bars */}
+      <div style={cs.card}>
+        <div style={cs.label}>Analysis</div>
+        {DIMS.map((d,i)=>(
+          <div key={i} style={{marginBottom:i<DIMS.length-1?14:0}}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
+              <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{d}</span>
+              <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:feedback.scores[d]>=80?T.gold:feedback.scores[d]>=65?"#7A9E84":T2.text3}}>{feedback.scores[d]}</span>
+            </div>
+            <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+              <div style={{height:"100%",width:feedback.scores[d]+"%",background:feedback.scores[d]>=80?T.gold:"rgba(138,158,132,0.5)",borderRadius:2,transition:"width 0.9s ease"}}/>
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* What worked */}
+      <div style={cs.card}>
+        <div style={cs.label}>What worked</div>
+        {feedback.worked.map((w,i)=>(
+          <div key={i} style={{display:"flex",gap:10,marginBottom:i<feedback.worked.length-1?10:0}}>
+            <span style={{color:"#527060",fontWeight:700,flexShrink:0}}>✓</span>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0}}>{w}</p>
+          </div>
+        ))}
+      </div>
+      {/* Opportunities */}
+      <div style={cs.card}>
+        <div style={cs.label}>Opportunities to improve</div>
+        {feedback.improve.map((w,i)=>(
+          <div key={i} style={{display:"flex",gap:10,marginBottom:i<feedback.improve.length-1?10:0}}>
+            <span style={{color:T.gold,flexShrink:0}}>→</span>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0}}>{w}</p>
+          </div>
+        ))}
+      </div>
+      {/* Coach insight */}
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+        <div style={cs.label}>Coach insight</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{feedback.insight}</p>
+      </div>
+      {/* Focus chips + retry */}
+      <div>
+        <div style={cs.label}>What to focus on next round</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:16}}>
+          {FOCUS.map((f,i)=>{
+            const sel=selectedFocus.includes(f);
+            return (
+              <button key={i} onClick={()=>setSelectedFocus(sf=>sel?sf.filter(x=>x!==f):[...sf,f])} style={{padding:"7px 14px",borderRadius:20,border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.12)":"transparent",color:sel?T.gold:T2.text3,fontSize:12,cursor:"pointer",fontFamily:T.sans,minHeight:36,transition:"all 0.15s",fontWeight:sel?600:400}}>{f}</button>
+            );
+          })}
+        </div>
+        <button onClick={()=>{setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');}} style={cs.cta}>Run It Again →</button>
+      </div>
+    </div>
+  );
+
+  // ── COMPARISON ────────────────────────────────────────────────────────────
+  if(phase==='comparison' && feedback && feedback.prev) return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <div style={{background:"#0E0B08",borderRadius:8,padding:isDesktop?"36px 40px":"28px 20px"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Your Improvement</div>
+        <div style={{display:"flex",gap:isDesktop?32:20,alignItems:"flex-end",marginBottom:16}}>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",marginBottom:4}}>Round 1</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?52:40,fontWeight:600,color:"rgba(245,239,230,0.5)",lineHeight:1}}>{feedback.prev.overall}</div>
+          </div>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?28:22,color:"rgba(245,239,230,0.3)"}}>→</div>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:11,color:T.gold,marginBottom:4}}>Round 2</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?52:40,fontWeight:600,color:T.gold,lineHeight:1}}>{feedback.overall}</div>
+          </div>
+          {feedback.overall > feedback.prev.overall && (
+            <div style={{marginLeft:"auto",padding:"8px 16px",background:"rgba(138,158,132,0.15)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.3)",flexShrink:0}}>
+              <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T.gold}}>+{feedback.overall - feedback.prev.overall}</div>
+              <div style={{fontFamily:T.sans,fontSize:10,color:"rgba(138,158,132,0.7)"}}>points</div>
+            </div>
+          )}
+        </div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:"rgba(245,239,230,0.6)",margin:0}}>That's real progress. Awareness changes performance.</p>
+      </div>
+      {/* Dimension comparison */}
+      <div style={cs.card}>
+        <div style={cs.label}>Score Comparison</div>
+        {DIMS.map((d,i)=>{
+          const s1=feedback.prev.scores[d]||0; const s2=feedback.scores[d]||0; const diff=s2-s1;
+          return (
+            <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 40px 40px 40px",gap:8,alignItems:"center",paddingBottom:i<DIMS.length-1?12:0,marginBottom:i<DIMS.length-1?12:0,borderBottom:i<DIMS.length-1?"0.5px solid "+T2.divider:"none"}}>
+              <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{d}</span>
+              <span style={{fontFamily:T.serif,fontSize:14,color:T2.text3,textAlign:"right"}}>{s1}</span>
+              <span style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,textAlign:"right"}}>{s2}</span>
+              <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:diff>0?"#527060":diff<0?"#B05C4A":T2.text4,textAlign:"right"}}>{diff>0?"+"+diff:diff}</span>
+            </div>
+          );
+        })}
+      </div>
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+        <div style={cs.label}>Coach insight</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{feedback.insight}</p>
+      </div>
+      <div style={{display:"flex",gap:10}}>
+        <button onClick={()=>{setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');}} style={{...cs.ghost,flex:1}}>Go Again</button>
+        <button onClick={reset} style={{...cs.cta,flex:1}}>New Challenge →</button>
+      </div>
+    </div>
+  );
+
+  return null;
 }
 
 // ─── D1 Simulation Feedback widget ───────────────────────────────────────────
@@ -7589,27 +7964,8 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Simulation") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
-          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>AI Practice</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>Speak Clearly — 60 Seconds</h2>
-          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:28}}>Apply what you've learned. Choose a scenario and write for 60 seconds.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:28}}>
-            {[
-              {n:1,title:"Explain your current project to a new stakeholder",sub:"They're smart but know nothing about your work."},
-              {n:2,title:"Describe your team's roadmap to non-technical executives",sub:"They care about outcomes, not process."},
-              {n:3,title:"Present a complex problem to your board",sub:"You have 60 seconds before they interrupt."},
-              {n:4,title:"Pitch your idea to someone who can fund it",sub:"Make them care in one minute."},
-            ].map((sc,i)=>(
-              <button key={i} onClick={()=>setSimInput(sc.title+": ")} style={{padding:"14px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.18s ease"}}
-                onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
-                onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.8)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(44,36,22,0.06)";}}>
-                <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:4}}>{sc.n}. {sc.title}</div>
-                <div style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400}}>{sc.sub}</div>
-              </button>
-            ))}
-          </div>
-          <textarea value={simInput} onChange={e=>setSimInput(e.target.value)} placeholder="Write your 60-second explanation here…" className="au-input" style={{height:120,marginBottom:14,resize:"none"}}/>
-          <D1SimFeedback input={simInput}/>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <D1SimWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
 
@@ -9861,10 +10217,7 @@ T.goldDark : T2.text4,
         )}
         {isD1 && step==="Simulation" && (
           <>
-            <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Speak Clearly — 60 Seconds</h2>
-            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Apply what you've learned. Choose a scenario and write your clearest explanation.</p>
-            <D1MobileSim/>
+            <D1SimWidget T={T} T2={T2} isDesktop={false}/>
           </>
         )}
 
