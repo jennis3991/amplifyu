@@ -8912,7 +8912,7 @@ setAmbitionSaved(true); } catch {}
             <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0, fontStyle:"italic" }}>"Your voice is a piano with 88 keys. You've been playing the same 5 your whole life."</p>
           </div>
           <div style={{ fontSize:11, fontWeight:600, color:T.goldDark, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14, fontFamily:T.sans }}>The Science of Vocal Influence</div>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:14, marginBottom:32 }}>
+          <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:32 }}>
             {[
               {label:"Prosody",            sub:"Your voice carries meaning before words do",    bullets:["Humans decode emotion through rhythm, pitch, pace, and stress — faster than language itself.","The way you say something communicates intent, confidence, and feeling before the content registers."]},
               {label:"Processing Fluency", sub:"Easy to hear = easy to trust",                  bullets:["Clear, varied, well-paced speech signals intelligence. The brain equates 'easy to process' with credibility.","Flat or rushed delivery creates cognitive friction — and the listener associates that friction with the speaker, not the content."]},
@@ -8944,7 +8944,7 @@ setAmbitionSaved(true); } catch {}
             })}
           </div>
           <div style={{ fontSize:11, fontWeight:600, color:T.goldDark, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14, fontFamily:T.sans }}>The Four Levers</div>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:14, marginBottom:32 }}>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:32 }}>
             {[
               {word:"Pace",  body:"Speed up to create energy. Slow down to signal importance."},
               {word:"Pitch", body:"Rise to engage. Drop to command."},
