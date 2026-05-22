@@ -7774,7 +7774,9 @@ setAmbitionSaved(true); } catch {}
             {D1_CLARITY_FACTS.map((n,i)=>{
               const open = d1OpenCard===("cf"+i);
               return (
-                <div key={i} onClick={()=>setD1OpenCard(open?null:"cf"+i)} style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:`0.5px solid ${open?T.gold:T2.border}`,cursor:"pointer",transition:"border-color 0.2s"}}>
+                <div key={i} onClick={()=>setD1OpenCard(open?null:"cf"+i)} className="au-lift" style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:`0.5px solid ${open?T.gold:T2.border}`,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s, transform 0.2s"}}
+                  onMouseEnter={e=>{if(!open){e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.boxShadow="0 4px 20px rgba(138,158,132,0.22), 0 1px 6px rgba(138,158,132,0.12)";}}}
+                  onMouseLeave={e=>{if(!open){e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.boxShadow="none";}}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?10:6}}>
                     <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:12,color:open?T.gold:T2.text4,marginLeft:10,flexShrink:0,marginTop:2}}>{open?"▴":"▸"}</span>
@@ -10118,7 +10120,7 @@ T.goldDark : T2.text4,
               {D1_CLARITY_FACTS_DATA.map((n,i)=>{
                 const open = d1MobCard===("cf"+i);
                 return (
-                  <div key={i} onClick={()=>setD1MobCard(open?null:"cf"+i)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s"}}>
+                  <div key={i} onClick={()=>setD1MobCard(open?null:"cf"+i)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:5}}>
                       <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                       <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
