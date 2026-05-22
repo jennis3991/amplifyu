@@ -6939,23 +6939,13 @@ setAmbitionSaved(true); } catch {}
           </div>
         );
         if (step === "Practice") return (
-          <div style={{ position:"relative", height:"100%", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
-            <img src="/practice-bg.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
-            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.62)" }}/>
-            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.98) 0%, transparent 60%)" }}/>
-            <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-              <div style={{ ...LP_LABEL, marginBottom:20 }}>Your Toolkit</div>
-              <p style={{ ...LP_HEADING, fontSize:24, maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Cut the complexity. Keep what matters.</p>
-              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-                {["The Jargon Swap","The So What? Chain","Tips from the best"].map((b,i)=>(
-                  <div key={i} style={{ display:"flex", alignItems:"center", gap:10 }}>
-                    <div style={{ width:16, height:16, borderRadius:"50%", border:"1px solid rgba(138,158,132,0.4)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                      <span style={{ fontSize:8, color:T.gold }}>{i+1}</span>
-                    </div>
-                    <span style={{ fontFamily:T.sans, fontSize:12, color:"rgba(245,239,230,0.65)" }}>{b}</span>
-                  </div>
-                ))}
-              </div>
+          <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+            <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
+            <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+              <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>THE CLARITY CHALLENGE™</div>
+              <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Can you make this simpler?</p>
+              <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+              <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>5 rounds. Increasing difficulty. Earn your badge.</p>
             </div>
           </div>
         );
