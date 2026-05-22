@@ -10363,19 +10363,19 @@ T.goldDark : T2.text4,
             <>
               <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Voice in Action</h2>
               <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Tap each card to explore how they use voice.</p>
-              {/* 2 side-by-side person cards */}
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
+              {/* Stacked person cards */}
+              <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
                 {D2_MOB_CARDS.map(card=>{
                   const open = d2MobCard===card.id;
                   return (
                     <div key={card.id} onClick={()=>setD2MobCard(open?null:card.id)}
-                      style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
-                        <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.2,flex:1}}>{card.name}</div>
-                        <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                      style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
+                        <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.2}}>{card.name}</div>
+                        <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
                       </div>
-                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"0.8px",marginBottom:8,lineHeight:1.3}}>{card.headline}</div>
-                      <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:open?"0 0 0":0}}>{card.sub}</p>
+                      <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>{card.headline}</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:0}}>{card.sub}</p>
                       {open && (
                         <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,marginTop:10}}>
                           <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,marginBottom:10,borderLeft:"2px solid "+T.gold,paddingLeft:10}}>{card.quote}</p>
@@ -10394,25 +10394,28 @@ T.goldDark : T2.text4,
               </div>
               {/* Single expandable challenge card below */}
               <div onClick={()=>setD2MobCard(challengeOpen?null:"challenge")}
-                style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${challengeOpen?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px 18px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:challengeOpen?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                style={{background:challengeOpen?"#0E0B08":"#1A1510",borderRadius:8,padding:"18px 20px",cursor:"pointer",transition:"background 0.2s, box-shadow 0.2s",boxShadow:challengeOpen?"0 4px 20px rgba(0,0,0,0.35)":"0 2px 10px rgba(0,0,0,0.2)"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <div>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>Voice Challenge</div>
-                    <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300}}>Tap to expand — say each sentence three ways</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Now try it yourself</div>
+                    <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,marginBottom:4}}>Can you say it four ways?</div>
+                    <div style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.5)"}}>Same sentence. Completely different voice.</div>
                   </div>
-                  <span style={{fontFamily:T.sans,fontSize:16,color:challengeOpen?T.gold:"rgba(138,158,132,0.7)",marginLeft:12,flexShrink:0,transition:"color 0.2s"}}>{challengeOpen?"▴":"▸"}</span>
+                  <div style={{marginLeft:14,flexShrink:0,width:36,height:36,borderRadius:"50%",background:"rgba(138,158,132,0.15)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:T.gold}}>{challengeOpen?"▴":"▸"}</span>
+                  </div>
                 </div>
                 {challengeOpen && (
-                  <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:14,marginTop:12}}>
+                  <div style={{borderTop:"0.5px solid rgba(255,255,255,0.08)",paddingTop:16,marginTop:14}}>
                     {D2_MOB_CARDS.map((card,ci)=>(
-                      <div key={ci} style={{marginBottom:ci<D2_MOB_CARDS.length-1?18:0}}>
-                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"0.8px",marginBottom:6}}>{card.name}</div>
-                        <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:10}}>Say: {card.challenge.sentence}</p>
+                      <div key={ci} style={{marginBottom:ci<D2_MOB_CARDS.length-1?20:0}}>
+                        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{card.name}</div>
+                        <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"#F5EFE6",fontStyle:"italic",marginBottom:10}}>"{card.challenge.sentence.replace(/"/g,'')}"</p>
                         <div style={{display:"flex",flexDirection:"column"}}>
                           {card.challenge.modes.map((m,i,arr)=>(
-                            <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
+                            <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(255,255,255,0.06)":"none"}}>
                               <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,width:14,flexShrink:0}}>{i+1}.</span>
-                              <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:400}}>{m}</span>
+                              <span style={{fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.7)",fontWeight:400}}>{m}</span>
                             </div>
                           ))}
                         </div>
