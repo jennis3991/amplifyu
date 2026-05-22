@@ -5677,10 +5677,10 @@ setAmbitionSaved(true); } catch {}
 
   // ── D1 shared constants (used by both desktop and mobile) ─────────────────
   const D1_CLARITY_FACTS_DATA = [
-    { word:"Cognitive Load", body:"Clear language frees your audience to focus on the idea, not decode your words. Simplicity is a gift you give to the people listening." },
-    { word:"Retention",      body:"Simple messages land and stay. The clearest communicators aren't dumbing things down — they're thinking harder so their audience doesn't have to." },
-    { word:"Credibility",    body:"Simple language shows confidence. When you can express a complex idea in plain words, it signals mastery — not lack of sophistication." },
-    { word:"Speed",          body:"Clarity accelerates decisions. When your message is easy to understand, people can act on it immediately." },
+    { word:"Cognitive Load",    sub:"If people have to work too hard, you lose them",    bullets:["The brain naturally prefers information that feels easy to process.","If people are working to decode your words, they're not fully absorbing your message."] },
+    { word:"Retention",         sub:"If people can repeat it, they remember it",          bullets:["Clear ideas are easier for the brain to store, retrieve, and share.","Complexity gets forgotten. Simplicity gets repeated."] },
+    { word:"Credibility",       sub:"True expertise sounds simple",                       bullets:["The clearest communicators often understand the deepest.","Making complexity feel simple signals confidence, clarity, and mastery."] },
+    { word:"Decision-Making",   sub:"Clarity removes hesitation",                         bullets:["Unclear communication creates doubt, delay, and second-guessing.","Clear communication makes the next step obvious."] },
   ];
   const D1_FEYNMAN_DATA = [
     { n:1, beat:"Understand",    sub:"Choose a concept and study it deeply." },
@@ -7394,16 +7394,32 @@ setAmbitionSaved(true); } catch {}
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Why Clarity Wins</h2>
-          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:36}}>Clear language reduces mental effort, increases retention, and builds trust. Here's the evidence.</p>
+          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:36,maxWidth:600}}>Clear language makes ideas easier to understand, easier to remember, and easier to act on. Here's why clarity matters.</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:28}}>
-            {D1_CLARITY_FACTS.map((n,i)=>(
-              <div key={i} style={{padding:"20px 22px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:10}}>{n.word}</div>
-                <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{n.body}</p>
-              </div>
-            ))}
+            {D1_CLARITY_FACTS.map((n,i)=>{
+              const open = d1OpenCard===("cf"+i);
+              return (
+                <div key={i} onClick={()=>setD1OpenCard(open?null:"cf"+i)} style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:`0.5px solid ${open?T.gold:T2.border}`,cursor:"pointer",transition:"border-color 0.2s"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?10:6}}>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3}}>{n.word}</div>
+                    <span style={{fontFamily:T.sans,fontSize:12,color:open?T.gold:T2.text4,marginLeft:10,flexShrink:0,marginTop:2}}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 14px":0}}>{n.sub}</p>
+                  {open && (
+                    <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,display:"flex",flexDirection:"column",gap:8}}>
+                      {n.bullets.map((b,j)=>(
+                        <div key={j} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+                          <div style={{width:4,height:4,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/>
+                          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:400,margin:0}}>{b}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
-          <p style={{fontFamily:T.sans,fontSize:16,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic"}}>Simplicity signals mastery. Complexity signals uncertainty.</p>
+          <p style={{fontFamily:T.sans,fontSize:16,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic"}}>The clearest communicator is often the most influential.</p>
         </div>
       );
 
@@ -9740,18 +9756,33 @@ T.goldDark : T2.text4,
         {/* ── D1 Mobile Steps ─────────────────────────────────────────────── */}
         {isD1 && step==="Insight" && (
           <>
-            <img src="/day1-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Clarity Wins</h2>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Clear language reduces mental effort, increases retention, and builds trust.</p>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Clear language makes ideas easier to understand, easier to remember, and easier to act on.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-              {D1_CLARITY_FACTS_DATA.map((n,i)=>(
-                <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
-                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
-                </div>
-              ))}
+              {D1_CLARITY_FACTS_DATA.map((n,i)=>{
+                const open = d1MobCard===("cf"+i);
+                return (
+                  <div key={i} onClick={()=>setD1MobCard(open?null:"cf"+i)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
+                      <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                      <span style={{fontFamily:T.sans,fontSize:11,color:open?T.gold:T2.text4,marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
+                    </div>
+                    <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 10px":0}}>{n.sub}</p>
+                    {open && (
+                      <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
+                        {n.bullets.map((b,j)=>(
+                          <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                            <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
+                            <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
-            <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Simplicity signals mastery. Complexity signals uncertainty.</p>
+            <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>The clearest communicator is often the most influential.</p>
           </>
         )}
         {isD1 && step==="Theory" && (
