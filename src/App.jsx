@@ -9763,17 +9763,17 @@ T.goldDark : T2.text4,
                 const open = d1MobCard===("cf"+i);
                 return (
                   <div key={i} onClick={()=>setD1MobCard(open?null:"cf"+i)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s"}}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
-                      <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
-                      <span style={{fontFamily:T.sans,fontSize:11,color:open?T.gold:T2.text4,marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:5}}>
+                      <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                      <span style={{fontFamily:T.sans,fontSize:12,color:open?T.gold:T2.text4,marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                     </div>
-                    <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 10px":0}}>{n.sub}</p>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 12px":0}}>{n.sub}</p>
                     {open && (
-                      <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
+                      <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:8}}>
                         {n.bullets.map((b,j)=>(
                           <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-                            <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
-                            <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
+                            <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/>
+                            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
                           </div>
                         ))}
                       </div>
