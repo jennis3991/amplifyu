@@ -4297,7 +4297,7 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
           <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:16,fontWeight:500}}>{round.task}</p>
           <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T2.border,marginBottom:20}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Original</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text2,lineHeight:1.5,margin:0}}>{round.original}</p>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{round.original}</p>
           </div>
         </div>
         {round.options.map((opt,i)=>{
@@ -4361,7 +4361,7 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:16,fontWeight:500}}>{round.task}</p>
         <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T2.border,marginBottom:round.example?16:0}}>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Simplify this</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text2,lineHeight:1.5,margin:0}}>{round.original}</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{round.original}</p>
         </div>
         {round.example && !aiResult && (
           <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,fontStyle:"italic",marginTop:8,marginBottom:0}}>Hint: something like {round.example}</p>
