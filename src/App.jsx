@@ -4969,9 +4969,9 @@ function D1SimFeedback({input}) {
 function D2PracticeWidget({T, T2, isDesktop}) {
   const EXERCISES=[
     {id:"sentence",title:"Same Sentence Challenge",sentence:'"That\'s an interesting idea."',
-     instruction:"Say it six different ways. Same words. Completely different meaning.",
-     modes:["Supportive","Sarcastic","Sceptical","Excited","Disappointed","Impressed"],
-     lesson:"Same words ≠ same meaning."},
+     instruction:"Say it three ways. Same words. Completely different meaning.",
+     modes:["Excited","Sarcastic","Sceptical"],
+     lesson:"Same words ≠ same meaning. Your voice creates the reality."},
     {id:"pace",title:"Pace Drill",sentence:'"I believe this is the right decision."',
      instruction:"Vary only your speed. Notice how confidence changes.",
      modes:["Too fast","Too slow","Ideal executive pace"],
@@ -4980,9 +4980,9 @@ function D2PracticeWidget({T, T2, isDesktop}) {
      instruction:"Say it once with the pause. Once without. Feel the difference.",
      modes:["Without pause","With deliberate pause"],
      lesson:"The pause is not empty — it's where your meaning lands."},
-    {id:"pitch",title:"Pitch Ladder",sentence:'"This is the right approach."',
-     instruction:"Read the same sentence at three pitch levels. Notice authority.",
-     modes:["Higher pitch","Neutral pitch","Lower pitch"],
+    {id:"pitch",title:"Pitch Ladder",sentence:'"I believe this is the right direction, and I think we should move forward with confidence."',
+     instruction:"Say the same sentence starting high and dropping steadily lower word by word. Let authority build as your voice descends.",
+     modes:["Higher pitch — start energised","Neutral pitch — controlled and clear","Lower pitch — authority and conviction"],
      lesson:"Lower pitch signals authority. Higher pitch signals energy or uncertainty."},
   ];
   const [openEx, setOpenEx] = useState(null);
