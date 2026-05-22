@@ -9667,15 +9667,20 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         {isDone && <div style={{position:"absolute",top:14,right:14,background:"rgba(42,94,63,0.9)",color:"white",fontSize:11,fontWeight:700,padding:"6px 12px",borderRadius:20,letterSpacing:1}}>DONE</div>}
         {/* Day + title — only on Insight and Review */}
         {(step==="Insight"||step==="Review") && (
-          <div style={{position:"absolute",bottom:20,left:20,right:20}}>
-            <div style={{marginBottom:6}}>
-              <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:2}}>Day {lesson.day} — {lesson.tag}</div>
+          <>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.88) 0%,rgba(10,8,5,0.3) 50%,transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",bottom:20,left:20,right:20,zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.55)",textTransform:"uppercase",letterSpacing:"2px",fontFamily:T.sans,marginBottom:8}}>Day {lesson.day} · {lesson.tag}</div>
+              {step==="Insight" ? (
+                <>
+                  <h1 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"white",lineHeight:1.2,marginBottom:8}}>{lesson.title}</h1>
+                  <p style={{fontFamily:T.sans,fontSize:12,fontWeight:400,color:"rgba(255,255,255,0.55)",lineHeight:1.5,margin:0,fontStyle:"italic"}}>{lesson.teaser}</p>
+                </>
+              ) : (
+                <h1 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
+              )}
             </div>
-            {isD2&&step==="Insight"
-              ? <p style={{fontFamily:T.sans,fontSize:13,fontWeight:400,color:"rgba(255,255,255,0.7)",lineHeight:1.5,margin:0,fontStyle:"italic"}}>Master the instrument behind your message.</p>
-              : <h1 style={{fontFamily:T.serif,fontSize:26,fontWeight:700,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
-            }
-          </div>
+          </>
         )}
       </div>
 
