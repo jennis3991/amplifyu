@@ -11255,7 +11255,7 @@ something you can use in real life.</p>
           </>
         )}
 
-        {!isD2 && !isD6 && !isD11 && step==="Simulation" && (
+        {!isD1 && !isD2 && !isD6 && !isD11 && step==="Simulation" && (
           <>
             {(()=>{
               const scenarios = roleId ? getScenariosForDay(roleId,
