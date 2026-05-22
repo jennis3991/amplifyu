@@ -4203,11 +4203,11 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
   }
 
   function getBadge(score) {
-    if (score >= 95) return {icon:"🏆", label:"Clarity Master",         sub:"You make complex ideas feel effortless.",        color:"#C9A84C"};
-    if (score >= 85) return {icon:"⚔️", label:"Jargon Slayer",          sub:"You cut through complexity with precision.",      color:T.gold};
-    if (score >= 70) return {icon:"✨", label:"Plain English Pro",       sub:"Your communication is clear, direct, and easy to follow.", color:"#7A9E84"};
-    if (score >= 55) return {icon:"🔥", label:"Clarity Builder",         sub:"You're learning to simplify with confidence.",   color:"#8B9E7A"};
-    return                  {icon:"🌱", label:"Rising Communicator",     sub:"Awareness is the first step to clarity.",        color:T2.text3};
+    if (score >= 95) return {img:"/badge-queen.jpg",  label:"Clarity Master",      sub:"You make complex ideas feel effortless.",                    color:"#C9A84C"};
+    if (score >= 85) return {img:"/badge-rook.jpg",   label:"Jargon Slayer",       sub:"You cut through complexity with precision.",                  color:T.gold};
+    if (score >= 70) return {img:"/badge-bishop.jpg", label:"Plain English Pro",   sub:"Your communication is clear, direct, and easy to follow.",   color:"#7A9E84"};
+    if (score >= 55) return {img:"/badge-knight.jpg", label:"Clarity Builder",     sub:"You're learning to simplify with confidence.",               color:"#8B9E7A"};
+    return                  {img:"/badge-pawn.jpg",   label:"Rising Communicator", sub:"Awareness is the first step to clarity.",                    color:T2.text3};
   }
 
   const maxPts = ROUNDS.reduce((s,r)=>s+r.pts,0);
@@ -4239,10 +4239,10 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
           ))}
         </div>
         <div style={{padding:"12px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.25)",marginBottom:24,display:"flex",alignItems:"center",gap:12}}>
-          <span style={{fontSize:22}}>⚔️</span>
+          <img src="/badge-queen.jpg" alt="Clarity Master" style={{width:48,height:48,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
           <div>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:2}}>Top prize</div>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,fontWeight:600}}>Jargon Slayer™ badge</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,fontWeight:600}}>Clarity Master badge</div>
           </div>
         </div>
         <button onClick={()=>setPhase('playing')} style={cs.cta}>Start Challenge →</button>
@@ -4311,7 +4311,7 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
                 <div style={{...cs.card,textAlign:"center"}}>
                   <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Updated Badge</div>
                   <div style={{display:"inline-flex",alignItems:"center",gap:12,padding:"12px 20px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:`0.5px solid rgba(138,158,132,0.3)`}}>
-                    <span style={{fontSize:24}}>{newBadge.icon}</span>
+                    <img src={newBadge.img} alt={newBadge.label} style={{width:52,height:52,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
                     <div style={{textAlign:"left"}}>
                       <div style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:newBadge.color}}>{newBadge.label}</div>
                       <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginTop:2}}>{newBadge.sub}</div>
@@ -4344,7 +4344,7 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
           <div style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.5)",marginBottom:20}}>/ 100</div>
           <h2 style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:"#F5EFE6",marginBottom:8}}>Your Clarity Score</h2>
           <div style={{display:"inline-flex",alignItems:"center",gap:10,padding:"10px 20px",background:"rgba(138,158,132,0.12)",borderRadius:4,border:`0.5px solid rgba(138,158,132,0.3)`,marginTop:4}}>
-            <span style={{fontSize:22}}>{badge.icon}</span>
+            <img src={badge.img} alt={badge.label} style={{width:48,height:48,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
             <span style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:badge.color}}>{badge.label}</span>
           </div>
         </div>
@@ -4529,7 +4529,7 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
               <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px 18px"}}>
                 <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Your Badge</div>
                 <div style={{display:"inline-flex",alignItems:"center",gap:12,padding:"14px 24px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:`0.5px solid rgba(138,158,132,0.3)`,marginBottom:12}}>
-                  <span style={{fontSize:28}}>{badge.icon}</span>
+                  <img src={badge.img} alt={badge.label} style={{width:56,height:56,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
                   <div style={{textAlign:"left"}}>
                     <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:badge.color}}>{badge.label}</div>
                     <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginTop:2}}>{badge.sub}</div>
