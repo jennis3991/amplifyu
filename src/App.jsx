@@ -8863,6 +8863,7 @@ setAmbitionSaved(true); } catch {}
 
     const D2RightContent = () => {
       const [d2InsightOpen, setD2InsightOpen] = useState(null);
+      const [d2TheoryOpen, setD2TheoryOpen] = useState(null);
 
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
@@ -8909,15 +8910,34 @@ setAmbitionSaved(true); } catch {}
           <div style={{ fontSize:11, fontWeight:600, color:T.goldDark, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14, fontFamily:T.sans }}>The Science of Vocal Influence</div>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:14, marginBottom:32 }}>
             {[
-              {label:"Prosody",           body:"Rhythm, pitch, pace, and stress. Humans decode emotion through vocal patterns faster than language itself — your voice carries the message before the words do."},
-              {label:"Processing Fluency",body:"Clear, varied, well-paced speech signals intelligence. The brain says 'easy to process = credible.' Flat or rushed delivery creates friction — and loses the room."},
-              {label:"Vocal Contrast",    body:"The same reason music works. Contrast creates anticipation. No variation is cognitive wallpaper — it fades into the background within seconds."},
-            ].map((sc,i)=>(
-              <div key={i} style={{ padding:"18px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
-                <div style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T.gold, marginBottom:10 }}>{sc.label}</div>
-                <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>{sc.body}</p>
-              </div>
-            ))}
+              {label:"Prosody",            sub:"Your voice carries meaning before words do",    bullets:["Humans decode emotion through rhythm, pitch, pace, and stress — faster than language itself.","The way you say something communicates intent, confidence, and feeling before the content registers."]},
+              {label:"Processing Fluency", sub:"Easy to hear = easy to trust",                  bullets:["Clear, varied, well-paced speech signals intelligence. The brain equates 'easy to process' with credibility.","Flat or rushed delivery creates cognitive friction — and the listener associates that friction with the speaker, not the content."]},
+              {label:"Vocal Contrast",     sub:"Variation is what keeps people in the room",   bullets:["The same reason music works: contrast creates anticipation and emotional engagement.","No variation in voice is cognitive wallpaper — it fades into the background within seconds, no matter how important the message."]},
+            ].map((sc,i)=>{
+              const open = d2TheoryOpen===i;
+              return (
+                <div key={i} onClick={()=>setD2TheoryOpen(open?null:i)} className="au-lift"
+                  style={{ padding:"18px 20px", background:T2.surface, borderRadius:4, border:`0.5px solid ${open?T.gold:T2.border}`, cursor:"pointer", transition:"border-color 0.2s, box-shadow 0.2s, transform 0.2s" }}
+                  onMouseEnter={e=>{ if(!open){e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.boxShadow="0 4px 20px rgba(138,158,132,0.22), 0 1px 6px rgba(138,158,132,0.12)";} }}
+                  onMouseLeave={e=>{ if(!open){e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.boxShadow="none";} }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:open?8:6 }}>
+                    <div style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T.gold, lineHeight:1.3 }}>{sc.label}</div>
+                    <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.7)", marginLeft:8, flexShrink:0, marginTop:2, transition:"color 0.2s" }}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.5, fontWeight:400, margin:open?"0 0 12px":0 }}>{sc.sub}</p>
+                  {open && (
+                    <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:12, display:"flex", flexDirection:"column", gap:8 }}>
+                      {sc.bullets.map((b,j)=>(
+                        <div key={j} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
+                          <div style={{ width:4, height:4, borderRadius:"50%", background:T.gold, flexShrink:0, marginTop:6 }}/>
+                          <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{b}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
           <div style={{ fontSize:11, fontWeight:600, color:T.goldDark, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14, fontFamily:T.sans }}>The Four Levers</div>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:14, marginBottom:32 }}>
@@ -10914,18 +10934,35 @@ T.goldDark : T2.text4,
             <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",marginBottom:20,borderRadius:4}}>
               <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0,fontStyle:"italic"}}>"Your voice is a piano with 88 keys. You've been playing the same 5 your whole life."</p>
             </div>
-            {/* Science cards */}
+            {/* Science cards — expandable */}
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>The Science of Vocal Influence</div>
             {[
-              {label:"Prosody",           body:"Rhythm, pitch, pace, and stress. Humans decode emotion through vocal patterns faster than language itself — your voice carries the message before the words do."},
-              {label:"Processing Fluency",body:"Clear, varied, well-paced speech signals intelligence. The brain says 'easy to process = credible.' Flat or rushed delivery creates cognitive friction — and loses the room."},
-              {label:"Vocal Contrast",    body:"The same reason music works. Contrast creates anticipation. No variation is cognitive wallpaper — it fades into the background within seconds."},
-            ].map((sc,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px 16px",marginBottom:10}}>
-                <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,marginBottom:6}}>{sc.label}</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{sc.body}</p>
-              </div>
-            ))}
+              {label:"Prosody",            sub:"Your voice carries meaning before words do",   bullets:["Humans decode emotion through rhythm, pitch, pace, and stress — faster than language itself.","The way you say something communicates intent, confidence, and feeling before the content registers."]},
+              {label:"Processing Fluency", sub:"Easy to hear = easy to trust",                 bullets:["Clear, varied, well-paced speech signals intelligence. The brain equates 'easy to process' with credibility.","Flat or rushed delivery creates cognitive friction — and the listener associates that friction with the speaker."]},
+              {label:"Vocal Contrast",     sub:"Variation is what keeps people in the room",  bullets:["The same reason music works: contrast creates anticipation and emotional engagement.","No variation is cognitive wallpaper — it fades into the background within seconds, no matter how important the message."]},
+            ].map((sc,i)=>{
+              const open = d2MobCard===("d2t"+i);
+              return (
+                <div key={i} onClick={()=>setD2MobCard(open?null:"d2t"+i)}
+                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px 16px",marginBottom:10,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?6:4}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,flex:1}}>{sc.label}</div>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 10px":0}}>{sc.sub}</p>
+                  {open && (
+                    <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
+                      {sc.bullets.map((b,j)=>(
+                        <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                          <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
+                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
             {/* 4 levers grid */}
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10,marginTop:4}}>The Four Levers</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>
