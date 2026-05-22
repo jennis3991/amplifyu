@@ -5000,9 +5000,12 @@ function D2PracticeWidget({T, T2, isDesktop}) {
         <div style={{paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:8}}>{ex.sentence}</p>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?14:12,color:T2.text3,lineHeight:1.6,marginBottom:12}}>{ex.instruction}</p>
-          <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:12}}>
-            {ex.modes.map((m,j)=>(
-              <span key={j} style={{background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.25)",borderRadius:20,padding:"4px 12px",fontFamily:T.sans,fontSize:isDesktop?12:11,color:T.goldDark,fontWeight:500}}>{m}</span>
+          <div style={{display:"flex",flexDirection:"column",gap:0,marginBottom:12}}>
+            {ex.modes.map((m,j,arr)=>(
+              <div key={j} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:j<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
+                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,width:14,flexShrink:0}}>{j+1}.</span>
+                <span style={{fontFamily:T.sans,fontSize:isDesktop?13:13,color:T2.text,fontWeight:400}}>{m}</span>
+              </div>
             ))}
           </div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>{ex.lesson}</p>
@@ -9052,9 +9055,12 @@ setAmbitionSaved(true); } catch {}
                   <div key={ci}>
                     <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T2.text3, marginBottom:8 }}>{card.name}</div>
                     <p style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T2.text, fontStyle:"italic", marginBottom:10 }}>Say: {card.challenge.sentence}</p>
-                    <div style={{ display:"flex", flexWrap:"wrap", gap:7 }}>
-                      {card.challenge.modes.map((m,i)=>(
-                        <span key={i} style={{ background:"rgba(138,158,132,0.1)", border:"1px solid rgba(138,158,132,0.25)", borderRadius:20, padding:"5px 12px", fontFamily:T.sans, fontSize:12, color:T.goldDark, fontWeight:500 }}>{m}</span>
+                    <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
+                      {card.challenge.modes.map((m,i,arr)=>(
+                        <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 0", borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none" }}>
+                          <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, width:14, flexShrink:0 }}>{i+1}.</span>
+                          <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text, fontWeight:400 }}>{m}</span>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -10382,9 +10388,12 @@ T.goldDark : T2.text4,
                 <div key={ci} style={{marginBottom:ci===0?16:0}}>
                   <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text3,marginBottom:6}}>{c.name}</div>
                   <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:8}}>Say: {c.sentence}</p>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                    {c.modes.map((m,i)=>(
-                      <span key={i} style={{background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.25)",borderRadius:20,padding:"5px 12px",fontFamily:T.sans,fontSize:12,color:T.goldDark,fontWeight:500}}>{m}</span>
+                  <div style={{display:"flex",flexDirection:"column",gap:0}}>
+                    {c.modes.map((m,i,arr)=>(
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
+                        <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,width:14,flexShrink:0}}>{i+1}.</span>
+                        <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:400}}>{m}</span>
+                      </div>
                     ))}
                   </div>
                 </div>
