@@ -10343,72 +10343,87 @@ T.goldDark : T2.text4,
           </>
         )}
 
-        {isD2 && step==="Example" && (
-          <>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Voice in Action</h2>
-            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how they use voice as their primary instrument.</p>
-            {[
-              {id:"williams",name:"Robin Williams",headline:"The Master of Vocal Range",
-               sub:"From the explosive Genie in Aladdin to the emotional stillness of Good Will Hunting — he transformed how a message felt using only his voice.",
-               quote:'"No matter what people tell you, words and ideas can change the world."',
-               levers:[{k:"Pace",v:"Rapid-fire energy or slow emotional weight"},{k:"Pitch",v:"Playful highs to grounded seriousness"},{k:"Tone",v:"Humour, warmth, intensity, vulnerability"},{k:"Pauses",v:"Creating anticipation, emotion, and impact"}],
-               lesson:"Range creates engagement. Contrast creates emotion. A flat voice fades. A dynamic voice keeps people listening.",
-               challenge:{sentence:'"Ah... now this is where things get interesting."',modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]}},
-              {id:"streep",name:"Meryl Streep",headline:"The Master of Precision and Presence",
-               sub:"Three iconic roles. Three completely different voices. Streep proves that the most powerful communicators don't get louder — they get more precise.",
-               quote:'"Take your broken heart, make it into art."',
-               levers:[{k:"Pace",v:"Deliberate control or sharp urgency"},{k:"Pitch",v:"Subtle tonal shifts that change emotional meaning"},{k:"Tone",v:"Authority, vulnerability, wit, empathy, strength"},{k:"Pauses",v:"Creating tension, emphasis, and dramatic impact"}],
-               lesson:"Precision creates presence. Control creates impact. A rushed voice can feel uncertain. An intentional voice commands attention.",
-               challenge:{sentence:'"This moment matters more than you think."',modes:["Sharp executive authority","Calm conviction","Warm encouragement","Emotionally vulnerable"]}},
-            ].map(card=>{
-              const open = d2MobCard===card.id;
-              return (
-                <div key={card.id} style={{marginBottom:16}}>
-                  {/* Person card */}
-                  <div onClick={()=>setD2MobCard(open?null:card.id)}
-                    style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
-                      <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.2}}>{card.name}</div>
-                      <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
-                    </div>
-                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>{card.headline}</div>
-                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:open?"0 0 16px":0}}>{card.sub}</p>
-                    {open && (
-                      <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:14}}>
-                        <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,marginBottom:14,borderLeft:"2px solid "+T.gold,paddingLeft:12}}>{card.quote}</p>
-                        {card.levers.map((l,i)=>(
-                          <div key={i} style={{display:"flex",gap:8,marginBottom:7}}>
-                            <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,flexShrink:0}}>{l.k} →</span>
-                            <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.5}}>{l.v}</span>
-                          </div>
-                        ))}
-                        <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.6,marginTop:12}}>{card.lesson}</p>
+        {isD2 && step==="Example" && (()=>{
+          const D2_MOB_CARDS = [
+            {id:"williams",name:"Robin Williams",headline:"The Master of Vocal Range",
+             sub:"From the explosive Genie in Aladdin to the emotional stillness of Good Will Hunting — he transformed how a message felt using only his voice.",
+             quote:'"No matter what people tell you, words and ideas can change the world."',
+             levers:[{k:"Pace",v:"Rapid-fire energy or slow emotional weight"},{k:"Pitch",v:"Playful highs to grounded seriousness"},{k:"Tone",v:"Humour, warmth, intensity, vulnerability"},{k:"Pauses",v:"Creating anticipation, emotion, and impact"}],
+             lesson:"Range creates engagement. Contrast creates emotion. A flat voice fades. A dynamic voice keeps people listening.",
+             challenge:{sentence:'"Ah... now this is where things get interesting."',modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]}},
+            {id:"streep",name:"Meryl Streep",headline:"The Master of Precision and Presence",
+             sub:"Three iconic roles. Three completely different voices. Streep proves that the most powerful communicators don't get louder — they get more precise.",
+             quote:'"Take your broken heart, make it into art."',
+             levers:[{k:"Pace",v:"Deliberate control or sharp urgency"},{k:"Pitch",v:"Subtle tonal shifts that change emotional meaning"},{k:"Tone",v:"Authority, vulnerability, wit, empathy, strength"},{k:"Pauses",v:"Creating tension, emphasis, and dramatic impact"}],
+             lesson:"Precision creates presence. Control creates impact. A rushed voice can feel uncertain. An intentional voice commands attention.",
+             challenge:{sentence:'"This moment matters more than you think."',modes:["Sharp executive authority","Calm conviction","Warm encouragement","Emotionally vulnerable"]}},
+          ];
+          const challengeOpen = d2MobCard==="challenge";
+          return (
+            <>
+              <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Voice in Action</h2>
+              <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Tap each card to explore how they use voice.</p>
+              {/* 2 side-by-side person cards */}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
+                {D2_MOB_CARDS.map(card=>{
+                  const open = d2MobCard===card.id;
+                  return (
+                    <div key={card.id} onClick={()=>setD2MobCard(open?null:card.id)}
+                      style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
+                        <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.2,flex:1}}>{card.name}</div>
+                        <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
                       </div>
-                    )}
-                  </div>
-                  {/* Connector */}
-                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",padding:"5px 0"}}>
-                    <div style={{width:1,height:12,background:T.gold,opacity:0.4}}/>
-                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.5"/></svg>
-                  </div>
-                  {/* Challenge card */}
-                  <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.18)",borderRadius:8,padding:"16px 18px"}}>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Voice Challenge</div>
-                    <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:10}}>Say: {card.challenge.sentence}</p>
-                    <div style={{display:"flex",flexDirection:"column"}}>
-                      {card.challenge.modes.map((m,i,arr)=>(
-                        <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
-                          <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,width:14,flexShrink:0}}>{i+1}.</span>
-                          <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:400}}>{m}</span>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"0.8px",marginBottom:open?8:0,lineHeight:1.3}}>{card.headline}</div>
+                      {open && (
+                        <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,marginTop:8}}>
+                          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,fontWeight:300,marginBottom:10}}>{card.sub}</p>
+                          <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,marginBottom:10,borderLeft:"2px solid "+T.gold,paddingLeft:10}}>{card.quote}</p>
+                          {card.levers.map((l,i)=>(
+                            <div key={i} style={{display:"flex",gap:6,marginBottom:5}}>
+                              <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,flexShrink:0}}>{l.k} →</span>
+                              <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.4}}>{l.v}</span>
+                            </div>
+                          ))}
+                          <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.gold,lineHeight:1.5,marginTop:10}}>{card.lesson}</p>
                         </div>
-                      ))}
+                      )}
                     </div>
+                  );
+                })}
+              </div>
+              {/* Single expandable challenge card below */}
+              <div onClick={()=>setD2MobCard(challengeOpen?null:"challenge")}
+                style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${challengeOpen?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px 18px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:challengeOpen?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>Voice Challenge</div>
+                    <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300}}>Tap to expand — say each sentence three ways</div>
                   </div>
+                  <span style={{fontFamily:T.sans,fontSize:16,color:challengeOpen?T.gold:"rgba(138,158,132,0.7)",marginLeft:12,flexShrink:0,transition:"color 0.2s"}}>{challengeOpen?"▴":"▸"}</span>
                 </div>
-              );
-            })}
-          </>
-        )}
+                {challengeOpen && (
+                  <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:14,marginTop:12}}>
+                    {D2_MOB_CARDS.map((card,ci)=>(
+                      <div key={ci} style={{marginBottom:ci<D2_MOB_CARDS.length-1?18:0}}>
+                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"0.8px",marginBottom:6}}>{card.name}</div>
+                        <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:10}}>Say: {card.challenge.sentence}</p>
+                        <div style={{display:"flex",flexDirection:"column"}}>
+                          {card.challenge.modes.map((m,i,arr)=>(
+                            <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
+                              <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,width:14,flexShrink:0}}>{i+1}.</span>
+                              <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:400}}>{m}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          );
+        })()}
 
         {/* ── D3 Mobile Steps ─────────────────────────────────────────────── */}
         {isD3 && step==="Insight" && (
