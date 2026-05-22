@@ -9003,7 +9003,7 @@ setAmbitionSaved(true); } catch {}
            quote:'"No matter what people tell you, words and ideas can change the world."',
            levers:[{k:"Pace",v:"Rapid-fire energy or slow emotional weight"},{k:"Pitch",v:"Playful highs to grounded seriousness"},{k:"Tone",v:"Humour, warmth, intensity, vulnerability"},{k:"Pauses",v:"Creating anticipation, emotion, and impact"}],
            lesson:"Range creates engagement. Contrast creates emotion. A flat voice fades. A dynamic voice keeps people listening.",
-           challenge:{sentence:'"This could change everything."',modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]}},
+           challenge:{sentence:'"Ah... now this is where things get interesting."',modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]}},
           {id:1, name:"Meryl Streep", headline:"The Master of Precision and Presence",
            sub:"Three iconic roles. Three completely different voices. Streep proves that the most powerful communicators don't get louder — they get more precise.",
            quote:'"Take your broken heart, make it into art."',
@@ -10346,7 +10346,7 @@ T.goldDark : T2.text4,
                quote:'"No matter what people tell you, words and ideas can change the world."',
                levers:[{k:"Pace",v:"Rapid-fire energy or slow emotional weight"},{k:"Pitch",v:"Playful highs to grounded seriousness"},{k:"Tone",v:"Humour, warmth, intensity, vulnerability"},{k:"Pauses",v:"Creating anticipation, emotion, and impact"}],
                lesson:"Range creates engagement. Contrast creates emotion. A flat voice fades. A dynamic voice keeps people listening.",
-               challenge:{sentence:'"This could change everything."',modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]}},
+               challenge:{sentence:'"Ah... now this is where things get interesting."',modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]}},
               {id:"streep",name:"Meryl Streep",headline:"The Master of Precision and Presence",
                sub:"Three iconic roles. Three completely different voices. Streep proves that the most powerful communicators don't get louder — they get more precise.",
                quote:'"Take your broken heart, make it into art."',
@@ -10383,7 +10383,7 @@ T.goldDark : T2.text4,
             <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.18)",borderRadius:8,padding:"18px 20px",marginTop:4}}>
               <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>Practice Challenge</div>
               {[
-                {name:"Robin Williams", sentence:'"This could change everything."', modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]},
+                {name:"Robin Williams", sentence:'"Ah... now this is where things get interesting."', modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]},
                 {name:"Meryl Streep",   sentence:'"This moment matters more than you think."', modes:["Sharp authority","Calm conviction","Warm encouragement","Vulnerable"]},
               ].map((c,ci)=>(
                 <div key={ci} style={{marginBottom:ci===0?16:0}}>
