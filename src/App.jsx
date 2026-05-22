@@ -6585,6 +6585,14 @@ setAmbitionSaved(true); } catch {}
     {n:"Polarity",     tagline:"Have a point of view",            psych:"Von Restorff Effect",     psychBody:"Things that stand out are remembered more easily than things that blend in. Distinctiveness is memorable.",                                                                                              body:"Memorable brands stand for something. They have opinions, preferences, perspectives — not to provoke, but to be distinct. Neutrality is forgettable.",  takeaway:"Being memorable requires definition."},
   ];
 
+  // ── D2 shared constants (used by both desktop + mobile) ───────────────────
+  const D2_INSIGHT_CARDS = [
+    {word:"Attention",       sub:"A flat voice loses the room in seconds",       bullets:["The brain is wired to respond to variation. Monotone delivery is processed as low-priority — people tune out almost instantly.","Varying pace, pitch, and tone keeps the brain alert and signals that what you're saying is worth their attention."]},
+    {word:"First Impression",sub:"Your voice speaks before your words do",        bullets:["Listeners form an impression of your confidence, energy, and credibility within moments of hearing you — before your message even begins.","Delivery shapes the room. A controlled, warm voice signals authority. A rushed or flat voice signals uncertainty."]},
+    {word:"Memory",          sub:"Contrast makes ideas stick",                     bullets:["When delivery has rhythm — pauses, pace shifts, vocal emphasis — the brain finds it easier to process, store, and recall.","Information delivered in a varied, engaging voice is significantly more memorable than the same words spoken flatly."]},
+    {word:"Influence",       sub:"Same words, completely different meaning",       bullets:["The exact same sentence can sound inspiring, uncertain, authoritative, or disengaged depending entirely on how it's delivered.","Voice doesn't decorate meaning — it creates it. Mastering your delivery is mastering the impact of every word you say."]},
+  ];
+
   // ─── THE STUDIO: Full desktop redesign ───────────────────────────────────
   // Architecture: Fixed left panel (visual stage) + scrollable right panel (content)
   // Navigation: Ambient chapter marks at bottom, not a stretched step bar
@@ -8856,13 +8864,6 @@ setAmbitionSaved(true); } catch {}
 
       return null;
     };
-
-    const D2_INSIGHT_CARDS = [
-      {word:"Attention",       sub:"A flat voice loses the room in seconds",       bullets:["The brain is wired to respond to variation. Monotone delivery is processed as low-priority — people tune out almost instantly.","Varying pace, pitch, and tone keeps the brain alert and signals that what you're saying is worth their attention."]},
-      {word:"First Impression",sub:"Your voice speaks before your words do",        bullets:["Listeners form an impression of your confidence, energy, and credibility within moments of hearing you — before your message even begins.","Delivery shapes the room. A controlled, warm voice signals authority. A rushed or flat voice signals uncertainty."]},
-      {word:"Memory",          sub:"Contrast makes ideas stick",                     bullets:["When delivery has rhythm — pauses, pace shifts, vocal emphasis — the brain finds it easier to process, store, and recall.","Information delivered in a varied, engaging voice is significantly more memorable than the same words spoken flatly."]},
-      {word:"Influence",       sub:"Same words, completely different meaning",       bullets:["The exact same sentence can sound inspiring, uncertain, authoritative, or disengaged depending entirely on how it's delivered.","Voice doesn't decorate meaning — it creates it. Mastering your delivery is mastering the impact of every word you say."]},
-    ];
 
     const D2RightContent = () => {
       const [d2InsightOpen, setD2InsightOpen] = useState(null);
