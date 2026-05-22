@@ -4101,7 +4101,13 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
      pts:30},
   ];
 
-  const [phase, setPhase] = useState('intro'); // intro|playing|transition|final
+  const BONUS_PROMPTS = [
+    {original:'"We need to proactively leverage our core competencies to deliver a best-in-class, customer-centric value proposition."',perfect:"We need to use our strengths to serve customers better."},
+    {original:'"This initiative will facilitate cross-functional synergies and drive strategic alignment across all business units."',perfect:"This will help our teams work better together."},
+    {original:'"Our digital transformation roadmap will optimise operational workflows and enhance organisational agility."',perfect:"We're making our processes faster and easier to change."},
+  ];
+
+  const [phase, setPhase] = useState('intro'); // intro|playing|transition|final|bonus
   const [roundIdx, setRoundIdx] = useState(0);
   const [totalPts, setTotalPts] = useState(0);
   const [mcqPts, setMcqPts] = useState(0);
@@ -4111,11 +4117,16 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
   const [rewriteText, setRewriteText] = useState('');
   const [aiResult, setAiResult] = useState(null);
   const [aiLoading, setAiLoading] = useState(false);
+  const [bonusIdx, setBonusIdx] = useState(0);
+  const [bonusText, setBonusText] = useState('');
+  const [bonusResult, setBonusResult] = useState(null);
+  const [bonusLoading, setBonusLoading] = useState(false);
+  const [bonusComplete, setBonusComplete] = useState(0);
 
   const round = ROUNDS[roundIdx];
   const isLast = roundIdx === ROUNDS.length - 1;
 
-  function reset() { setPhase('intro'); setRoundIdx(0); setTotalPts(0); setMcqPts(0); setRewritePts(0); setSelected(null); setAnswered(false); setRewriteText(''); setAiResult(null); }
+  function reset() { setPhase('intro'); setRoundIdx(0); setTotalPts(0); setMcqPts(0); setRewritePts(0); setSelected(null); setAnswered(false); setRewriteText(''); setAiResult(null); setBonusIdx(0); setBonusText(''); setBonusResult(null); setBonusComplete(0); }
 
   function handleMCQ(i) {
     if (answered) return;
@@ -4139,6 +4150,7 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
     setAiLoading(true);
     const mockScore = Math.floor(Math.random()*18)+72;
     const earnedPts = Math.round(round.pts * mockScore / 100);
+    const mockPerfect = round.id===4 ? "We're using data to attract more customers." : "We need to build a shared strategy that creates value for everyone involved.";
     const mockResult = {
       overall: mockScore,
       clarity: Math.floor(Math.random()*18)+72,
@@ -4147,10 +4159,11 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
       humanLanguage: Math.floor(Math.random()*18)+72,
       worked: ["Good use of plain language","Direct and readable"],
       improve: ["Could be even shorter","Consider cutting one more word"],
+      perfect: mockPerfect,
       pts: earnedPts,
     };
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:500,messages:[{role:"user",content:`Score this simplification for clarity. Original: ${round.original}\nUser's version: "${rewriteText}"\nReturn ONLY valid JSON: {"overall":<50-100>,"clarity":<50-100>,"simplicity":<50-100>,"brevity":<50-100>,"humanLanguage":<50-100>,"worked":["<str>","<str>"],"improve":["<str>","<str>"]}`}]})});
+      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:600,messages:[{role:"user",content:`Score this simplification for clarity. Original: ${round.original}\nUser's version: "${rewriteText}"\nReturn ONLY valid JSON: {"overall":<50-100>,"clarity":<50-100>,"simplicity":<50-100>,"brevity":<50-100>,"humanLanguage":<50-100>,"worked":["<str>","<str>"],"improve":["<str>","<str>"],"perfect":"<ideal plain-English version in 1 sentence>"}`}]})});
       const d = await res.json();
       const raw = (d.content||[]).map(b=>b.text||'').join('').trim();
       const m = raw.match(/\{[\s\S]*\}/);
@@ -4167,12 +4180,38 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
     setAiLoading(false);
   }
 
-  function getBadge(score) {
-    if (score >= 95) return {icon:"🏆", label:"Clarity Master",       color:"#C9A84C"};
-    if (score >= 85) return {icon:"⚔️", label:"Jargon Slayer™",       color:T.gold};
-    if (score >= 70) return {icon:"🔥", label:"Clarity Builder",       color:"#7A9E84"};
-    return                  {icon:"🛠",  label:"Simplifier in Training", color:T2.text3};
+  async function scoreBonus() {
+    if (!bonusText.trim() || bonusText.trim().length < 5) return;
+    setBonusLoading(true);
+    const bp = BONUS_PROMPTS[bonusIdx];
+    const mockScore = Math.floor(Math.random()*20)+75;
+    const mockR = { overall:mockScore, improve:"Try cutting it to one shorter clause.", perfect:bp.perfect };
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:`Score this simplification. Original: ${bp.original}\nUser's: "${bonusText}"\nReturn ONLY JSON: {"overall":<50-100>,"improve":"<one coaching sentence>","perfect":"<ideal 1-sentence plain-English version>"}`}]})});
+      const d = await res.json();
+      const raw = (d.content||[]).map(b=>b.text||'').join('').trim();
+      const m = raw.match(/\{[\s\S]*\}/);
+      const parsed = JSON.parse(m[0]);
+      const bonusPts = Math.round(10 * parsed.overall / 100);
+      setBonusResult({...parsed, bonusPts});
+      setTotalPts(p => p + bonusPts);
+    } catch {
+      setBonusResult({...mockR, bonusPts:Math.round(10*mockScore/100)});
+      setTotalPts(p => p + Math.round(10*mockScore/100));
+    }
+    setBonusLoading(false);
   }
+
+  function getBadge(score) {
+    if (score >= 95) return {icon:"🏆", label:"Clarity Master",         sub:"You make complex ideas feel effortless.",        color:"#C9A84C"};
+    if (score >= 85) return {icon:"⚔️", label:"Jargon Slayer",          sub:"You cut through complexity with precision.",      color:T.gold};
+    if (score >= 70) return {icon:"✨", label:"Plain English Pro",       sub:"Your communication is clear, direct, and easy to follow.", color:"#7A9E84"};
+    if (score >= 55) return {icon:"🔥", label:"Clarity Builder",         sub:"You're learning to simplify with confidence.",   color:"#8B9E7A"};
+    return                  {icon:"🌱", label:"Rising Communicator",     sub:"Awareness is the first step to clarity.",        color:T2.text3};
+  }
+
+  const maxPts = ROUNDS.reduce((s,r)=>s+r.pts,0);
+  const pct = Math.round((totalPts/maxPts)*100);
 
   const cs = {
     card: {background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"28px 32px":"18px 20px"},
@@ -4229,9 +4268,71 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
   );
 
   // ── FINAL SCORE ───────────────────────────────────────────────────────────
+  if (phase==='bonus') {
+    const bp = BONUS_PROMPTS[bonusIdx];
+    return (
+      <div style={{display:"flex",flexDirection:"column",gap:14}}>
+        <div style={cs.card}>
+          <div style={cs.label}>Practice Round {bonusComplete+1} of 2 — Refine Your Badge</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:16,fontWeight:500}}>Simplify this:</p>
+          <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T2.border}}>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{bp.original}</p>
+          </div>
+        </div>
+        {!bonusResult ? (
+          <>
+            <div style={cs.card}>
+              <div style={cs.label}>Your version</div>
+              <textarea value={bonusText} onChange={e=>setBonusText(e.target.value)} placeholder="Write it as simply as possible…" style={{width:"100%",minHeight:isDesktop?80:72,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
+            </div>
+            <button onClick={scoreBonus} disabled={bonusLoading||bonusText.trim().length<5} style={{...cs.cta,background:bonusLoading||bonusText.trim().length<5?"rgba(44,36,22,0.25)":T.ink,cursor:bonusLoading||bonusText.trim().length<5?"not-allowed":"pointer"}}>
+              {bonusLoading?"Scoring…":"Score My Version →"}
+            </button>
+          </>
+        ) : (
+          <>
+            <div style={{...cs.card,background:"#0E0B08",border:"none",display:"flex",alignItems:"center",gap:20}}>
+              <div style={{textAlign:"center",flexShrink:0}}>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?48:38,fontWeight:600,color:T.gold,lineHeight:1}}>{bonusResult.overall}</div>
+                <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",marginTop:2}}>/ 100</div>
+              </div>
+              <div>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>+{bonusResult.bonusPts} pts earned</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.6)",lineHeight:1.5,margin:0}}>{bonusResult.improve}</p>
+              </div>
+            </div>
+            <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+              <div style={cs.label}>The ideal answer</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.6,margin:0,fontStyle:"italic"}}>"{bonusResult.perfect}"</p>
+            </div>
+            {(()=>{
+              const newBadge = getBadge(pct);
+              return (
+                <div style={{...cs.card,textAlign:"center"}}>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Updated Badge</div>
+                  <div style={{display:"inline-flex",alignItems:"center",gap:12,padding:"12px 20px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:`0.5px solid rgba(138,158,132,0.3)`}}>
+                    <span style={{fontSize:24}}>{newBadge.icon}</span>
+                    <div style={{textAlign:"left"}}>
+                      <div style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:newBadge.color}}>{newBadge.label}</div>
+                      <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginTop:2}}>{newBadge.sub}</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+            <div style={{display:"flex",gap:10}}>
+              {bonusComplete < 1 && (
+                <button onClick={()=>{setBonusIdx(i=>(i+1)%BONUS_PROMPTS.length);setBonusText('');setBonusResult(null);setBonusComplete(c=>c+1);}} style={{...cs.ghost,flex:1}}>Next Practice →</button>
+              )}
+              <button onClick={()=>setPhase('final')} style={{...cs.cta,flex:1}}>See Final Score →</button>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+
   if (phase==='final') {
-    const maxPts = ROUNDS.reduce((s,r)=>s+r.pts,0);
-    const pct = Math.round((totalPts/maxPts)*100);
     const badge = getBadge(pct);
     const recMax = ROUNDS.slice(0,3).reduce((s,r)=>s+r.pts,0);
     const appMax = ROUNDS.slice(3).reduce((s,r)=>s+r.pts,0);
@@ -4363,9 +4464,6 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Simplify this</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{round.original}</p>
         </div>
-        {round.example && !aiResult && (
-          <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,fontStyle:"italic",marginTop:8,marginBottom:0}}>Hint: something like {round.example}</p>
-        )}
       </div>
       {!aiResult ? (
         <>
@@ -4379,6 +4477,7 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
         </>
       ) : (
         <>
+          {/* Score hero */}
           <div style={{...cs.card,background:"#0E0B08",border:"none"}}>
             <div style={{display:"flex",alignItems:"center",gap:isDesktop?32:20}}>
               <div style={{textAlign:"center",flexShrink:0}}>
@@ -4391,6 +4490,7 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
               </div>
             </div>
           </div>
+          {/* Dimension bars */}
           <div style={cs.card}>
             {[["Clarity",aiResult.clarity],["Simplicity",aiResult.simplicity],["Brevity",aiResult.brevity],["Human Language",aiResult.humanLanguage]].map(([d,s],i)=>(
               <div key={i} style={{marginBottom:i<3?12:0}}>
@@ -4404,6 +4504,7 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
               </div>
             ))}
           </div>
+          {/* Feedback */}
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
             <div style={{...cs.card,borderLeft:"2px solid #527060"}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>What worked</div>
@@ -4414,7 +4515,36 @@ function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
               {aiResult.improve.map((w,i)=><p key={i} style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,margin:i<aiResult.improve.length-1?"0 0 6px":0}}>→ {w}</p>)}
             </div>
           </div>
-          <button onClick={nextRound} style={cs.cta}>{isLast?"See Final Score →":"Next Challenge →"}</button>
+          {/* Perfect answer */}
+          {aiResult.perfect && (
+            <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+              <div style={cs.label}>The ideal answer</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.6,margin:0,fontStyle:"italic"}}>"{aiResult.perfect}"</p>
+            </div>
+          )}
+          {/* Badge after Round 5 */}
+          {isLast && (()=>{
+            const badge = getBadge(pct);
+            return (
+              <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px 18px"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Your Badge</div>
+                <div style={{display:"inline-flex",alignItems:"center",gap:12,padding:"14px 24px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:`0.5px solid rgba(138,158,132,0.3)`,marginBottom:12}}>
+                  <span style={{fontSize:28}}>{badge.icon}</span>
+                  <div style={{textAlign:"left"}}>
+                    <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:badge.color}}>{badge.label}</div>
+                    <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginTop:2}}>{badge.sub}</div>
+                  </div>
+                </div>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:"0 0 4px"}}>
+                  {pct >= 85 ? "Elite level. The strongest communicators make complexity feel effortless." : "Strong foundation. Keep practising and your instinct will sharpen fast."}
+                </p>
+              </div>
+            );
+          })()}
+          <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+            {isLast && <button onClick={()=>{setBonusIdx(0);setBonusText('');setBonusResult(null);setBonusComplete(0);setPhase('bonus');}} style={{...cs.ghost,flex:1}}>Practise More →</button>}
+            <button onClick={nextRound} style={{...cs.cta,flex:1}}>{isLast?"See Full Score →":"Next Challenge →"}</button>
+          </div>
         </>
       )}
     </div>
