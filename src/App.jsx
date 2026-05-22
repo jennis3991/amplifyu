@@ -10374,10 +10374,10 @@ T.goldDark : T2.text4,
                         <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.2,flex:1}}>{card.name}</div>
                         <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
                       </div>
-                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"0.8px",marginBottom:open?8:0,lineHeight:1.3}}>{card.headline}</div>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"0.8px",marginBottom:8,lineHeight:1.3}}>{card.headline}</div>
+                      <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:open?"0 0 0":0}}>{card.sub}</p>
                       {open && (
-                        <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,marginTop:8}}>
-                          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,fontWeight:300,marginBottom:10}}>{card.sub}</p>
+                        <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,marginTop:10}}>
                           <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,marginBottom:10,borderLeft:"2px solid "+T.gold,paddingLeft:10}}>{card.quote}</p>
                           {card.levers.map((l,i)=>(
                             <div key={i} style={{display:"flex",gap:6,marginBottom:5}}>
