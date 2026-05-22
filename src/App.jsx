@@ -6701,7 +6701,7 @@ setAmbitionSaved(true); } catch {}
           <div style={{ position: "relative", zIndex: 2, padding: "40px 48px", animation: "fadeUp 0.7s ease both" }}>
             <div style={{ ...LP_LABEL, marginBottom: 16 }}>Day {lesson.day} · {lesson.tag}</div>
             <h2 style={{ ...LP_HEADING, fontSize: "clamp(20px,1.8vw,26px)", marginBottom: 18, letterSpacing: "-0.3px" }}>{lesson.title}</h2>
-            <p style={{ fontFamily:T.sans, fontSize:14, fontWeight:400, color:"rgba(245,239,230,0.55)", lineHeight:1.6, margin:0, fontStyle:"italic", maxWidth:360 }}>{lesson.teaser}</p>
+            <p style={{ fontFamily:T.sans, fontSize:14, fontWeight:400, color:"rgba(245,239,230,0.55)", lineHeight:1.6, margin:0, fontStyle:"italic", maxWidth:360 }}>{lesson.quote}</p>
           </div>
         </div>
       );
@@ -9674,7 +9674,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
               {step==="Insight" ? (
                 <>
                   <h1 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"white",lineHeight:1.2,marginBottom:8}}>{lesson.title}</h1>
-                  <p style={{fontFamily:T.sans,fontSize:12,fontWeight:400,color:"rgba(255,255,255,0.55)",lineHeight:1.5,margin:0,fontStyle:"italic"}}>{lesson.teaser}</p>
+                  <p style={{fontFamily:T.sans,fontSize:12,fontWeight:400,color:"rgba(255,255,255,0.55)",lineHeight:1.5,margin:0,fontStyle:"italic"}}>{lesson.quote}</p>
                 </>
               ) : (
                 <h1 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
