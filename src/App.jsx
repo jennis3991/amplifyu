@@ -9016,57 +9016,58 @@ setAmbitionSaved(true); } catch {}
           <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
             <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Voice in Action</h2>
             <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>Two masters of vocal craft — and what they can teach you about range, control, and deliberate delivery.</p>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:20 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
               {D2_EX_CARDS.map((card)=>{
                 const open = d2ExOpen===card.id;
                 return (
-                  <div key={card.id} onClick={()=>setD2ExOpen(open?null:card.id)} className="au-lift"
-                    style={{ background:T2.surface, borderRadius:4, border:`0.5px solid ${open?T.gold:T2.border}`, padding:"24px", cursor:"pointer", transition:"border-color 0.2s, box-shadow 0.2s, transform 0.2s" }}
-                    onMouseEnter={e=>{ if(!open){e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.boxShadow="0 4px 20px rgba(138,158,132,0.22), 0 1px 6px rgba(138,158,132,0.12)";} }}
-                    onMouseLeave={e=>{ if(!open){e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.boxShadow="none";} }}>
-                    <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
-                      <h3 style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T.gold, lineHeight:1.2, margin:0 }}>{card.name}</h3>
-                      <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.7)", marginLeft:10, flexShrink:0, transition:"color 0.2s" }}>{open?"▴":"▸"}</span>
-                    </div>
-                    <p style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T2.text3, textTransform:"uppercase", letterSpacing:"1px", marginBottom:10 }}>{card.headline}</p>
-                    <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.65, fontWeight:300, margin:open?"0 0 20px":0 }}>{card.sub}</p>
-                    {open && (
-                      <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:18 }}>
-                        <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T2.text2, lineHeight:1.6, marginBottom:16, borderLeft:"2px solid "+T.gold, paddingLeft:14 }}>{card.quote}</p>
-                        <div style={{ marginBottom:14 }}>
-                          {card.levers.map((l,i)=>(
-                            <div key={i} style={{ display:"flex", gap:8, marginBottom:6 }}>
-                              <span style={{ fontFamily:T.sans, fontSize:11, fontWeight:700, color:T.gold, flexShrink:0 }}>{l.k} →</span>
-                              <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.5 }}>{l.v}</span>
-                            </div>
-                          ))}
-                        </div>
-                        <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.6, margin:0 }}>{card.lesson}</p>
+                  <div key={card.id} style={{ display:"flex", flexDirection:"column" }}>
+                    {/* Person card */}
+                    <div onClick={()=>setD2ExOpen(open?null:card.id)} className="au-lift"
+                      style={{ background:T2.surface, borderRadius:4, border:`0.5px solid ${open?T.gold:T2.border}`, padding:"24px", cursor:"pointer", transition:"border-color 0.2s, box-shadow 0.2s, transform 0.2s" }}
+                      onMouseEnter={e=>{ if(!open){e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.boxShadow="0 4px 20px rgba(138,158,132,0.22), 0 1px 6px rgba(138,158,132,0.12)";} }}
+                      onMouseLeave={e=>{ if(!open){e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.boxShadow="none";} }}>
+                      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
+                        <h3 style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T.gold, lineHeight:1.2, margin:0 }}>{card.name}</h3>
+                        <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.7)", marginLeft:10, flexShrink:0, transition:"color 0.2s" }}>{open?"▴":"▸"}</span>
                       </div>
-                    )}
+                      <p style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T2.text3, textTransform:"uppercase", letterSpacing:"1px", marginBottom:10 }}>{card.headline}</p>
+                      <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.65, fontWeight:300, margin:open?"0 0 20px":0 }}>{card.sub}</p>
+                      {open && (
+                        <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:18 }}>
+                          <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T2.text2, lineHeight:1.6, marginBottom:16, borderLeft:"2px solid "+T.gold, paddingLeft:14 }}>{card.quote}</p>
+                          <div style={{ marginBottom:14 }}>
+                            {card.levers.map((l,i)=>(
+                              <div key={i} style={{ display:"flex", gap:8, marginBottom:6 }}>
+                                <span style={{ fontFamily:T.sans, fontSize:11, fontWeight:700, color:T.gold, flexShrink:0 }}>{l.k} →</span>
+                                <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.5 }}>{l.v}</span>
+                              </div>
+                            ))}
+                          </div>
+                          <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.6, margin:0 }}>{card.lesson}</p>
+                        </div>
+                      )}
+                    </div>
+                    {/* Connector */}
+                    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", padding:"6px 0" }}>
+                      <div style={{ width:1, height:14, background:T.gold, opacity:0.4 }}/>
+                      <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.5"/></svg>
+                    </div>
+                    {/* Challenge card */}
+                    <div style={{ background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:"20px 22px" }}>
+                      <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10 }}>Voice Challenge</div>
+                      <p style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T2.text, fontStyle:"italic", marginBottom:12 }}>Say: {card.challenge.sentence}</p>
+                      <div style={{ display:"flex", flexDirection:"column" }}>
+                        {card.challenge.modes.map((m,i,arr)=>(
+                          <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 0", borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none" }}>
+                            <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, width:14, flexShrink:0 }}>{i+1}.</span>
+                            <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text, fontWeight:400 }}>{m}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 );
               })}
-            </div>
-            {/* Challenge — separate card */}
-            <div style={{ background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:"24px 28px" }}>
-              <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14 }}>Practice Challenge</div>
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:20 }}>
-                {D2_EX_CARDS.map((card,ci)=>(
-                  <div key={ci}>
-                    <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T2.text3, marginBottom:8 }}>{card.name}</div>
-                    <p style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T2.text, fontStyle:"italic", marginBottom:10 }}>Say: {card.challenge.sentence}</p>
-                    <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
-                      {card.challenge.modes.map((m,i,arr)=>(
-                        <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 0", borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none" }}>
-                          <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, width:14, flexShrink:0 }}>{i+1}.</span>
-                          <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text, fontWeight:400 }}>{m}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         );
@@ -10356,50 +10357,50 @@ T.goldDark : T2.text4,
             ].map(card=>{
               const open = d2MobCard===card.id;
               return (
-                <div key={card.id} onClick={()=>setD2MobCard(open?null:card.id)}
-                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
-                    <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.2}}>{card.name}</div>
-                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                <div key={card.id} style={{marginBottom:16}}>
+                  {/* Person card */}
+                  <div onClick={()=>setD2MobCard(open?null:card.id)}
+                    style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
+                      <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.2}}>{card.name}</div>
+                      <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                    </div>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>{card.headline}</div>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:open?"0 0 16px":0}}>{card.sub}</p>
+                    {open && (
+                      <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:14}}>
+                        <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,marginBottom:14,borderLeft:"2px solid "+T.gold,paddingLeft:12}}>{card.quote}</p>
+                        {card.levers.map((l,i)=>(
+                          <div key={i} style={{display:"flex",gap:8,marginBottom:7}}>
+                            <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,flexShrink:0}}>{l.k} →</span>
+                            <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.5}}>{l.v}</span>
+                          </div>
+                        ))}
+                        <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.6,marginTop:12}}>{card.lesson}</p>
+                      </div>
+                    )}
                   </div>
-                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>{card.headline}</div>
-                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:open?"0 0 16px":0}}>{card.sub}</p>
-                  {open && (
-                    <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:14}}>
-                      <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,marginBottom:14,borderLeft:"2px solid "+T.gold,paddingLeft:12}}>{card.quote}</p>
-                      {card.levers.map((l,i)=>(
-                        <div key={i} style={{display:"flex",gap:8,marginBottom:7}}>
-                          <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,flexShrink:0}}>{l.k} →</span>
-                          <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.5}}>{l.v}</span>
+                  {/* Connector */}
+                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",padding:"5px 0"}}>
+                    <div style={{width:1,height:12,background:T.gold,opacity:0.4}}/>
+                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.5"/></svg>
+                  </div>
+                  {/* Challenge card */}
+                  <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.18)",borderRadius:8,padding:"16px 18px"}}>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Voice Challenge</div>
+                    <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:10}}>Say: {card.challenge.sentence}</p>
+                    <div style={{display:"flex",flexDirection:"column"}}>
+                      {card.challenge.modes.map((m,i,arr)=>(
+                        <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
+                          <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,width:14,flexShrink:0}}>{i+1}.</span>
+                          <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:400}}>{m}</span>
                         </div>
                       ))}
-                      <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.6,marginTop:12}}>{card.lesson}</p>
                     </div>
-                  )}
+                  </div>
                 </div>
               );
             })}
-            {/* Challenge — separate card */}
-            <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.18)",borderRadius:8,padding:"18px 20px",marginTop:4}}>
-              <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>Practice Challenge</div>
-              {[
-                {name:"Robin Williams", sentence:'"Ah... now this is where things get interesting."', modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]},
-                {name:"Meryl Streep",   sentence:'"This moment matters more than you think."', modes:["Sharp authority","Calm conviction","Warm encouragement","Vulnerable"]},
-              ].map((c,ci)=>(
-                <div key={ci} style={{marginBottom:ci===0?16:0}}>
-                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text3,marginBottom:6}}>{c.name}</div>
-                  <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:8}}>Say: {c.sentence}</p>
-                  <div style={{display:"flex",flexDirection:"column",gap:0}}>
-                    {c.modes.map((m,i,arr)=>(
-                      <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
-                        <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,width:14,flexShrink:0}}>{i+1}.</span>
-                        <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:400}}>{m}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
           </>
         )}
 
