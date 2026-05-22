@@ -4215,20 +4215,20 @@ function D1SimWidget({T, T2, isDesktop}) {
   // ── INTRO ─────────────────────────────────────────────────────────────────
   if(phase==='intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:0}}>
-      <div style={{background:"#0E0B08",borderRadius:8,padding:isDesktop?"44px 48px":"32px 24px",marginBottom:16,position:"relative",overflow:"hidden"}}>
-        <div style={{position:"absolute",top:-60,right:-60,width:200,height:200,borderRadius:"50%",background:"radial-gradient(circle,rgba(138,158,132,0.12) 0%,transparent 70%)",pointerEvents:"none"}}/>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:20}}>RECORD &amp; REVIEW™</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?40:30,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:16}}>The fastest way to improve is to hear yourself the way others do.</h2>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?16:14,color:"rgba(245,239,230,0.6)",lineHeight:1.7,marginBottom:28}}>Most people have never heard themselves the way others do. This exercise reveals your natural communication habits — then helps you improve them.</p>
+      <div style={{background:T2.surface,borderRadius:8,padding:isDesktop?"44px 48px":"32px 24px",marginBottom:16,position:"relative",overflow:"hidden",border:"0.5px solid "+T2.border}}>
+        <div style={{position:"absolute",top:-60,right:-60,width:200,height:200,borderRadius:"50%",background:"radial-gradient(circle,rgba(138,158,132,0.08) 0%,transparent 70%)",pointerEvents:"none"}}/>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:20}}>RECORD &amp; REVIEW™</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?40:30,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:16}}>The fastest way to improve is to hear yourself the way others do.</h2>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?16:14,color:T2.text3,lineHeight:1.7,marginBottom:28}}>Most people have never heard themselves the way others do. This exercise reveals your natural communication habits — then helps you improve them.</p>
         <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:28}}>
           {["Speak naturally for 90–120 seconds.","No script. No preparation.","We want to reveal your default communication patterns."].map((t,i)=>(
             <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-              <div style={{width:4,height:4,borderRadius:"50%",background:"rgba(138,158,132,0.6)",flexShrink:0,marginTop:8}}/>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.55)",margin:0,lineHeight:1.6}}>{t}</p>
+              <div style={{width:4,height:4,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:8}}/>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0,lineHeight:1.6}}>{t}</p>
             </div>
           ))}
         </div>
-        <button onClick={()=>setPhase('prompt')} style={{...cs.cta,background:"rgba(138,158,132,0.15)",color:"#F5EFE6",border:"0.5px solid rgba(138,158,132,0.4)"}}>Start Challenge →</button>
+        <button onClick={()=>setPhase('prompt')} style={cs.cta}>Start Challenge →</button>
       </div>
     </div>
   );
