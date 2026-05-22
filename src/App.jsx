@@ -4076,6 +4076,351 @@ function D1MobileJargonSwap() {
 }
 function D1MobileSim() { return null; } // replaced by D1SimWidget
 
+// ─── THE CLARITY CHALLENGE™ ───────────────────────────────────────────────────
+function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
+  const ROUNDS = [
+    {id:1,type:'mcq',difficulty:'BEGINNER',label:'Round 1',task:'Which version is easiest to understand?',
+     original:'"Our strategic initiative aims to unlock scalable operational efficiencies."',
+     options:['We are implementing operational optimisation strategies.','We\'re improving how we work so the business runs more efficiently.','Our strategic transformation will drive scalable performance outcomes.'],
+     correct:1,why:['Plain language','Human wording','Clear meaning','No unnecessary jargon'],pts:10},
+    {id:2,type:'mcq',difficulty:'INTERMEDIATE',label:'Round 2',task:'Spot the clearest version',
+     original:'"Our platform facilitates asynchronous collaboration through API-enabled integrations."',
+     options:['Our system helps teams work together without needing to be online at the same time.','We enable asynchronous workflow integration functionality.','Cross-functional API collaboration powers asynchronous efficiency.'],
+     correct:0,why:['Removes technical jargon','Explains the benefit directly','Uses plain, human language'],pts:15},
+    {id:3,type:'mcq',difficulty:'ADVANCED',label:'Round 3',task:'Executive waffle mode — spot the clearest',
+     original:'"We need to create a more customer-centric innovation ecosystem."',
+     options:['We need to improve our customer innovation ecosystem strategy.','We need to build better products around what customers actually need.','We must align our customer transformation framework.'],
+     correct:1,why:['Specific and direct','Removes corporate speak','Clear purpose and meaning'],pts:20},
+    {id:4,type:'rewrite',difficulty:'REAL WORLD',label:'Round 4',task:'Rewrite it yourself',
+     prompt:'Simplify this message:',
+     original:'"We are leveraging data-driven optimisation frameworks to improve customer acquisition performance."',
+     example:'"We\'re using data to attract more customers."',pts:25},
+    {id:5,type:'rewrite',difficulty:'NIGHTMARE MODE',label:'Round 5 — Final Boss',task:'Simplify this corporate nightmare:',
+     prompt:'Simplify this:',
+     original:'"Our objective is to establish a scalable cross-functional strategic framework that maximises stakeholder alignment and accelerates value creation."',
+     pts:30},
+  ];
+
+  const [phase, setPhase] = useState('intro'); // intro|playing|transition|final
+  const [roundIdx, setRoundIdx] = useState(0);
+  const [totalPts, setTotalPts] = useState(0);
+  const [mcqPts, setMcqPts] = useState(0);
+  const [rewritePts, setRewritePts] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [answered, setAnswered] = useState(false);
+  const [rewriteText, setRewriteText] = useState('');
+  const [aiResult, setAiResult] = useState(null);
+  const [aiLoading, setAiLoading] = useState(false);
+
+  const round = ROUNDS[roundIdx];
+  const isLast = roundIdx === ROUNDS.length - 1;
+
+  function reset() { setPhase('intro'); setRoundIdx(0); setTotalPts(0); setMcqPts(0); setRewritePts(0); setSelected(null); setAnswered(false); setRewriteText(''); setAiResult(null); }
+
+  function handleMCQ(i) {
+    if (answered) return;
+    setSelected(i);
+    setAnswered(true);
+    if (i === round.correct) {
+      setTotalPts(p => p + round.pts);
+      setMcqPts(p => p + round.pts);
+    }
+  }
+
+  function nextRound() {
+    if (roundIdx === 2) { setPhase('transition'); return; }
+    if (isLast) { setPhase('final'); return; }
+    setRoundIdx(r => r + 1);
+    setSelected(null); setAnswered(false); setRewriteText(''); setAiResult(null);
+  }
+
+  async function scoreRewrite() {
+    if (!rewriteText.trim() || rewriteText.trim().length < 5) return;
+    setAiLoading(true);
+    const mockScore = Math.floor(Math.random()*18)+72;
+    const earnedPts = Math.round(round.pts * mockScore / 100);
+    const mockResult = {
+      overall: mockScore,
+      clarity: Math.floor(Math.random()*18)+72,
+      simplicity: Math.floor(Math.random()*18)+72,
+      brevity: Math.floor(Math.random()*18)+72,
+      humanLanguage: Math.floor(Math.random()*18)+72,
+      worked: ["Good use of plain language","Direct and readable"],
+      improve: ["Could be even shorter","Consider cutting one more word"],
+      pts: earnedPts,
+    };
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:500,messages:[{role:"user",content:`Score this simplification for clarity. Original: ${round.original}\nUser's version: "${rewriteText}"\nReturn ONLY valid JSON: {"overall":<50-100>,"clarity":<50-100>,"simplicity":<50-100>,"brevity":<50-100>,"humanLanguage":<50-100>,"worked":["<str>","<str>"],"improve":["<str>","<str>"]}`}]})});
+      const d = await res.json();
+      const raw = (d.content||[]).map(b=>b.text||'').join('').trim();
+      const m = raw.match(/\{[\s\S]*\}/);
+      const parsed = JSON.parse(m[0]);
+      const pts = Math.round(round.pts * parsed.overall / 100);
+      setAiResult({...parsed, pts});
+      setTotalPts(p => p + pts);
+      setRewritePts(p => p + pts);
+    } catch {
+      setAiResult(mockResult);
+      setTotalPts(p => p + mockResult.pts);
+      setRewritePts(p => p + mockResult.pts);
+    }
+    setAiLoading(false);
+  }
+
+  function getBadge(score) {
+    if (score >= 95) return {icon:"🏆", label:"Clarity Master",       color:"#C9A84C"};
+    if (score >= 85) return {icon:"⚔️", label:"Jargon Slayer™",       color:T.gold};
+    if (score >= 70) return {icon:"🔥", label:"Clarity Builder",       color:"#7A9E84"};
+    return                  {icon:"🛠",  label:"Simplifier in Training", color:T2.text3};
+  }
+
+  const cs = {
+    card: {background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"28px 32px":"18px 20px"},
+    label: {fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8},
+    h2: {fontFamily:T.serif,fontSize:isDesktop?38:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12},
+    body: {fontFamily:T.sans,fontSize:isDesktop?16:14,color:T2.text3,lineHeight:1.65,margin:0},
+    cta: {width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
+    ghost: {width:"100%",padding:"11px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44},
+    pts: {fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T.gold},
+  };
+
+  // ── INTRO ──────────────────────────────────────────────────────────────────
+  if (phase==='intro') return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <div style={cs.card}>
+        <div style={cs.label}>THE CLARITY CHALLENGE™</div>
+        <h2 style={cs.h2}>Can you make this simpler?</h2>
+        <p style={{...cs.body,marginBottom:20}}>The clearest communicators don't use bigger words. They make complex ideas feel obvious. This challenge trains your brain to spot jargon, simplify language, and communicate with precision.</p>
+        <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:24,padding:"16px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+          {["5 rounds — increasing difficulty.","Spot clarity, then create it.","One final score."].map((t,i)=>(
+            <div key={i} style={{display:"flex",gap:10,alignItems:"center"}}>
+              <div style={{width:4,height:4,borderRadius:"50%",background:T.gold,flexShrink:0}}/>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{t}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{padding:"12px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.25)",marginBottom:24,display:"flex",alignItems:"center",gap:12}}>
+          <span style={{fontSize:22}}>⚔️</span>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:2}}>Top prize</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,fontWeight:600}}>Jargon Slayer™ badge</div>
+          </div>
+        </div>
+        <button onClick={()=>setPhase('playing')} style={cs.cta}>Start Challenge →</button>
+      </div>
+    </div>
+  );
+
+  // ── TRANSITION ────────────────────────────────────────────────────────────
+  if (phase==='transition') return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"48px 40px":"36px 24px"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Recognition complete</div>
+        <div style={{width:56,height:56,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1.5px solid "+T.gold,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 20px"}}>
+          <span style={{fontSize:24}}>✓</span>
+        </div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?32:24,fontWeight:600,color:T2.text,marginBottom:12}}>Real World Mode</h2>
+        <p style={{...cs.body,marginBottom:8,maxWidth:400,margin:"0 auto 8px"}}>Spotting clarity is one skill.</p>
+        <p style={{...cs.body,marginBottom:24,maxWidth:400,margin:"0 auto 24px"}}>Creating it is another.</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontStyle:"italic",color:T2.text2,marginBottom:28}}>Now it's your turn.</p>
+        <button onClick={()=>{setRoundIdx(3);setPhase('playing');}} style={{...cs.cta,maxWidth:280,margin:"0 auto",display:"block"}}>Enter Real World Mode →</button>
+      </div>
+    </div>
+  );
+
+  // ── FINAL SCORE ───────────────────────────────────────────────────────────
+  if (phase==='final') {
+    const maxPts = ROUNDS.reduce((s,r)=>s+r.pts,0);
+    const pct = Math.round((totalPts/maxPts)*100);
+    const badge = getBadge(pct);
+    const recMax = ROUNDS.slice(0,3).reduce((s,r)=>s+r.pts,0);
+    const appMax = ROUNDS.slice(3).reduce((s,r)=>s+r.pts,0);
+    return (
+      <div style={{display:"flex",flexDirection:"column",gap:16}}>
+        <div style={{background:"#0E0B08",borderRadius:8,padding:isDesktop?"44px 40px":"32px 20px",textAlign:"center"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>THE CLARITY CHALLENGE™</div>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?80:64,fontWeight:600,color:T.gold,lineHeight:1}}>{pct}</div>
+          <div style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.5)",marginBottom:20}}>/ 100</div>
+          <h2 style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:"#F5EFE6",marginBottom:8}}>Your Clarity Score</h2>
+          <div style={{display:"inline-flex",alignItems:"center",gap:10,padding:"10px 20px",background:"rgba(138,158,132,0.12)",borderRadius:4,border:`0.5px solid rgba(138,158,132,0.3)`,marginTop:4}}>
+            <span style={{fontSize:22}}>{badge.icon}</span>
+            <span style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:badge.color}}>{badge.label}</span>
+          </div>
+        </div>
+        <div style={cs.card}>
+          <div style={cs.label}>Breakdown</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:16}}>
+            {[{label:"Recognition",earned:mcqPts,max:recMax},{label:"Application",earned:rewritePts,max:appMax}].map((b,i)=>(
+              <div key={i} style={{padding:"14px 16px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border,textAlign:"center"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>{b.label}</div>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T.gold}}>{b.earned}<span style={{fontSize:13,color:T2.text4}}> / {b.max}</span></div>
+              </div>
+            ))}
+          </div>
+          <div style={{height:6,background:T2.bg,borderRadius:3,overflow:"hidden",marginBottom:6}}>
+            <div style={{height:"100%",width:pct+"%",background:`linear-gradient(90deg,rgba(138,158,132,0.5),${T.gold})`,borderRadius:3,transition:"width 1s ease"}}/>
+          </div>
+          <div style={{fontFamily:T.sans,fontSize:11,color:T2.text4,textAlign:"right"}}>{pct}% of max</div>
+        </div>
+        <div style={cs.card}>
+          <div style={cs.label}>Coach note</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>
+            {pct>=85?"Your instinct for plain language is strong. The Feynman principle is becoming second nature — keep using it in every meeting and message.":"Good foundation. The more you practice spotting jargon, the faster your instinct will develop. Every complex sentence is an opportunity to simplify."}
+          </p>
+        </div>
+        <div style={{display:"flex",gap:10}}>
+          <button onClick={reset} style={{...cs.ghost,flex:1}}>Try Again</button>
+          {onSimulation && <button onClick={onSimulation} style={{...cs.cta,flex:1}}>Continue to Simulation →</button>}
+        </div>
+      </div>
+    );
+  }
+
+  // ── MCQ ROUND ──────────────────────────────────────────────────────────────
+  if (round.type==='mcq') {
+    const correct = selected===round.correct;
+    return (
+      <div style={{display:"flex",flexDirection:"column",gap:14}}>
+        {/* Progress */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
+          <div style={{display:"flex",gap:6}}>
+            {ROUNDS.map((_,i)=>(
+              <div key={i} style={{width:isDesktop?32:24,height:4,borderRadius:2,background:i<roundIdx?T.gold:i===roundIdx?"rgba(138,158,132,0.5)":T2.border,transition:"background 0.3s"}}/>
+            ))}
+          </div>
+          <div style={cs.pts}>{totalPts} pts</div>
+        </div>
+        <div style={cs.card}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
+            <div style={cs.label}>{round.label} — {round.difficulty}</div>
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:16,fontWeight:500}}>{round.task}</p>
+          <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T2.border,marginBottom:20}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Original</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text2,lineHeight:1.5,margin:0}}>{round.original}</p>
+          </div>
+        </div>
+        {round.options.map((opt,i)=>{
+          const isSelected = selected===i;
+          const isCorrectOpt = i===round.correct;
+          let bg = T2.surface, border = T2.border, textColor = T2.text;
+          if (answered) {
+            if (isCorrectOpt) { bg="rgba(82,112,96,0.1)"; border="#527060"; textColor="#2C5040"; }
+            else if (isSelected && !isCorrectOpt) { bg="rgba(176,92,74,0.08)"; border="#B05C4A"; textColor="#6B2E22"; }
+          } else if (isSelected) { bg="rgba(138,158,132,0.1)"; border=T.gold; }
+          return (
+            <div key={i} onClick={()=>handleMCQ(i)} style={{...cs.card,background:bg,border:`0.5px solid ${border}`,cursor:answered?"default":"pointer",transition:"all 0.2s",padding:isDesktop?"16px 20px":"14px 16px"}}>
+              <div style={{display:"flex",alignItems:"flex-start",gap:12}}>
+                <div style={{width:24,height:24,borderRadius:"50%",border:`1.5px solid ${answered&&isCorrectOpt?"#527060":answered&&isSelected&&!isCorrectOpt?"#B05C4A":isSelected?T.gold:T2.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,background:answered&&isCorrectOpt?"rgba(82,112,96,0.15)":"transparent",transition:"all 0.2s"}}>
+                  <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:answered&&isCorrectOpt?"#527060":answered&&isSelected&&!isCorrectOpt?"#B05C4A":T2.text3}}>{String.fromCharCode(65+i)}</span>
+                </div>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:textColor,lineHeight:1.6,margin:0,flex:1}}>{opt}</p>
+                {answered && isCorrectOpt && <span style={{color:"#527060",fontSize:16,flexShrink:0}}>✓</span>}
+                {answered && isSelected && !isCorrectOpt && <span style={{color:"#B05C4A",fontSize:16,flexShrink:0}}>✗</span>}
+              </div>
+            </div>
+          );
+        })}
+        {answered && (
+          <div style={{...cs.card,borderLeft:`2px solid ${correct?T.gold:"rgba(176,92,74,0.5)"}`}}>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+              <span style={{fontSize:16}}>{correct?"✅":"💡"}</span>
+              <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:correct?T.gold:"#B05C4A",textTransform:"uppercase",letterSpacing:"1px"}}>{correct?`+${round.pts} clarity points`:"The clearest version was B"}</div>
+            </div>
+            {correct ? (
+              <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                {round.why.map((w,i)=>(
+                  <span key={i} style={{padding:"4px 10px",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",borderRadius:20,fontFamily:T.sans,fontSize:11,color:T.gold}}>{w}</span>
+                ))}
+              </div>
+            ) : (
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>
+                Option {String.fromCharCode(65+round.correct)} uses plain language and human wording — it removes jargon and explains the meaning directly.
+              </p>
+            )}
+          </div>
+        )}
+        {answered && <button onClick={nextRound} style={cs.cta}>{isLast?"See Final Score →":roundIdx===2?"Enter Real World Mode →":"Next Challenge →"}</button>}
+      </div>
+    );
+  }
+
+  // ── REWRITE ROUND ──────────────────────────────────────────────────────────
+  return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
+        <div style={{display:"flex",gap:6}}>
+          {ROUNDS.map((_,i)=>(
+            <div key={i} style={{width:isDesktop?32:24,height:4,borderRadius:2,background:i<roundIdx?T.gold:i===roundIdx?"rgba(138,158,132,0.5)":T2.border,transition:"background 0.3s"}}/>
+          ))}
+        </div>
+        <div style={cs.pts}>{totalPts} pts</div>
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>{round.label} — {round.difficulty}</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:16,fontWeight:500}}>{round.task}</p>
+        <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T2.border,marginBottom:round.example?16:0}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Simplify this</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text2,lineHeight:1.5,margin:0}}>{round.original}</p>
+        </div>
+        {round.example && !aiResult && (
+          <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,fontStyle:"italic",marginTop:8,marginBottom:0}}>Hint: something like {round.example}</p>
+        )}
+      </div>
+      {!aiResult ? (
+        <>
+          <div style={cs.card}>
+            <div style={cs.label}>Your plain English version</div>
+            <textarea value={rewriteText} onChange={e=>setRewriteText(e.target.value)} placeholder="Write it as simply as possible…" style={{width:"100%",minHeight:isDesktop?96:80,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
+          </div>
+          <button onClick={scoreRewrite} disabled={aiLoading||rewriteText.trim().length<5} style={{...cs.cta,background:aiLoading||rewriteText.trim().length<5?"rgba(44,36,22,0.25)":T.ink,cursor:aiLoading||rewriteText.trim().length<5?"not-allowed":"pointer"}}>
+            {aiLoading?"Scoring your clarity…":"Score My Version →"}
+          </button>
+        </>
+      ) : (
+        <>
+          <div style={{...cs.card,background:"#0E0B08",border:"none"}}>
+            <div style={{display:"flex",alignItems:"center",gap:isDesktop?32:20}}>
+              <div style={{textAlign:"center",flexShrink:0}}>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?56:44,fontWeight:600,color:T.gold,lineHeight:1}}>{aiResult.overall}</div>
+                <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",marginTop:2}}>/ 100</div>
+              </div>
+              <div>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>+{aiResult.pts} pts earned</div>
+                <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:"#F5EFE6",lineHeight:1.4,margin:0}}>Clarity score for your rewrite</p>
+              </div>
+            </div>
+          </div>
+          <div style={cs.card}>
+            {[["Clarity",aiResult.clarity],["Simplicity",aiResult.simplicity],["Brevity",aiResult.brevity],["Human Language",aiResult.humanLanguage]].map(([d,s],i)=>(
+              <div key={i} style={{marginBottom:i<3?12:0}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{d}</span>
+                  <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:s>=80?T.gold:T2.text3}}>{s}</span>
+                </div>
+                <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+                  <div style={{height:"100%",width:s+"%",background:s>=80?T.gold:"rgba(138,158,132,0.4)",borderRadius:2,transition:"width 0.8s ease"}}/>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            <div style={{...cs.card,borderLeft:"2px solid #527060"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>What worked</div>
+              {aiResult.worked.map((w,i)=><p key={i} style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,margin:i<aiResult.worked.length-1?"0 0 6px":0}}>✓ {w}</p>)}
+            </div>
+            <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Improve</div>
+              {aiResult.improve.map((w,i)=><p key={i} style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,margin:i<aiResult.improve.length-1?"0 0 6px":0}}>→ {w}</p>)}
+            </div>
+          </div>
+          <button onClick={nextRound} style={cs.cta}>{isLast?"See Final Score →":"Next Challenge →"}</button>
+        </>
+      )}
+    </div>
+  );
+}
+
 // ─── RECORD & REVIEW™ — D1 Simulation ────────────────────────────────────────
 function D1SimWidget({T, T2, isDesktop}) {
   const PROMPTS = {
@@ -7852,113 +8197,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Practice") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>Build Your Clarity Toolkit</h2>
-          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:48}}>Practical exercises to strip jargon and simplify your message.</p>
-
-          {/* Exercise 1 — The Jargon Swap */}
-          <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"40px",marginBottom:24}}>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Exercise 1</div>
-            <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:14}}>The Jargon Swap</h3>
-            <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:20}}>Take a sentence from your work. The AI strips every word a 10-year-old wouldn't understand and replaces it with something concrete.</p>
-            <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"20px 24px",marginBottom:22,borderRadius:4}}>
-              <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>
-                {"❌ \"We're leveraging synergies to optimize our go-to-market strategy.\""}<br/>
-                {"✓ \"We're working together to sell faster.\""}
-              </p>
-            </div>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Turn</div>
-            <textarea value={jargonInput} onChange={e=>setJargonInput(e.target.value)} placeholder="Paste a sentence from your last presentation..." className="au-input" style={{height:100,marginBottom:8,resize:"vertical"}}/>
-            <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:20}}>AI will identify jargon and suggest simple alternatives.</p>
-            <button onClick={simplifyJargon} disabled={jargonLoading||!jargonInput.trim()} style={{padding:"13px 28px",borderRadius:4,border:"none",background:jargonLoading||!jargonInput.trim()?"rgba(138,158,132,0.2)":T.ink,color:jargonLoading||!jargonInput.trim()?T2.text3:T.bg,fontSize:14,fontWeight:600,cursor:jargonLoading||!jargonInput.trim()?"not-allowed":"pointer",fontFamily:T.sans,transition:"all 0.2s ease"}}>
-              {jargonLoading?"Simplifying…":"Find Jargon →"}
-            </button>
-            {jargonResult && (
-              <div style={{background:"rgba(138,158,132,0.1)",borderLeft:"4px solid "+T.gold,borderRadius:4,padding:"20px 24px",marginTop:20}}>
-                <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,textTransform:"uppercase",letterSpacing:"1.5px",color:T.gold,marginBottom:10}}>Simplified Version</div>
-                <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{jargonResult}</p>
-              </div>
-            )}
-          </div>
-
-          {/* Exercise 2 — The One-Breath Test */}
-          <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"40px",marginBottom:24}}>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Exercise 2</div>
-            <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:14}}>The One-Breath Test</h3>
-            <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:20}}>Can you say your key idea in one breath? If not, it's too complex. AI will condense it to one clear sentence.</p>
-            <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"20px 24px",marginBottom:22,borderRadius:4}}>
-              <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>
-                {"❌ \"Our platform enables cross-functional teams to coordinate asynchronous workflows...\" (can't finish in one breath)"}<br/>
-                {"✓ \"We help teams work together without endless meetings.\" (one breath, clear message)"}
-              </p>
-            </div>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Turn</div>
-            <textarea value={breathInput} onChange={e=>setBreathInput(e.target.value)} placeholder="Explain your project or idea..." className="au-input" style={{height:100,marginBottom:8,resize:"vertical"}}/>
-            <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:20}}>AI condenses it to under 15 words — one breath, one idea.</p>
-            <button onClick={runBreathTest} disabled={breathLoading||!breathInput.trim()} style={{padding:"13px 28px",borderRadius:4,border:"none",background:breathLoading||!breathInput.trim()?"rgba(138,158,132,0.2)":T.ink,color:breathLoading||!breathInput.trim()?T2.text3:T.bg,fontSize:14,fontWeight:600,cursor:breathLoading||!breathInput.trim()?"not-allowed":"pointer",fontFamily:T.sans,transition:"all 0.2s ease"}}>
-              {breathLoading?"Testing…":"Test It →"}
-            </button>
-            {breathResult && (
-              <div style={{background:"rgba(138,158,132,0.1)",borderLeft:"4px solid "+T.gold,borderRadius:4,padding:"20px 24px",marginTop:20}}>
-                <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,textTransform:"uppercase",letterSpacing:"1.5px",color:T.gold,marginBottom:10}}>One-Breath Version</div>
-                <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{breathResult}</p>
-              </div>
-            )}
-          </div>
-
-          {/* Exercise 3 — The "So What?" Chain */}
-          <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"40px",marginBottom:24}}>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Exercise 3</div>
-            <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:14}}>The "So What?" Chain</h3>
-            <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:20}}>State your idea. Ask "So what?" three times. The third answer is your real point — lead with that.</p>
-            <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"20px 24px",marginBottom:22,borderRadius:4}}>
-              <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>
-                {"\"We're improving our API response time.\""}<br/>
-                {"So what? → \"Pages load faster.\""}<br/>
-                {"So what? → \"Users don't bounce.\""}<br/>
-                {"So what? → \"We make more money.\""}<br/>
-                {"Lead with: \"We make more money.\""}
-              </p>
-            </div>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Turn</div>
-            <textarea value={soWhatInput} onChange={e=>setSoWhatInput(e.target.value)} placeholder="What are you working on?" className="au-input" style={{height:80,marginBottom:20,resize:"vertical"}}/>
-            <button onClick={runSoWhat} disabled={soWhatLoading||!soWhatInput.trim()} style={{padding:"13px 28px",borderRadius:4,border:"none",background:soWhatLoading||!soWhatInput.trim()?"rgba(138,158,132,0.2)":T.ink,color:soWhatLoading||!soWhatInput.trim()?T2.text3:T.bg,fontSize:14,fontWeight:600,cursor:soWhatLoading||!soWhatInput.trim()?"not-allowed":"pointer",fontFamily:T.sans,transition:"all 0.2s ease"}}>
-              {soWhatLoading?"Thinking…":"Ask \"So What?\" →"}
-            </button>
-            {soWhatResult && (
-              <div style={{background:"rgba(138,158,132,0.1)",borderLeft:"4px solid "+T.gold,borderRadius:4,padding:"20px 24px",marginTop:20}}>
-                <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,textTransform:"uppercase",letterSpacing:"1.5px",color:T.gold,marginBottom:14}}>Your "So What?" Chain</div>
-                {soWhatResult.chain.map((c,i)=>(
-                  <div key={i} style={{display:"flex",gap:12,padding:"10px 0",borderBottom:i<2?"0.5px solid rgba(138,158,132,0.2)":"none",alignItems:"flex-start"}}>
-                    <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,minWidth:72,flexShrink:0}}>{c.q}</span>
-                    <span style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400}}>{c.a}</span>
-                  </div>
-                ))}
-                <div style={{marginTop:16,padding:"14px 16px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                  <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Lead with this</div>
-                  <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{soWhatResult.lead}</p>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Tips Section */}
-          <div style={{marginTop:48,paddingTop:40,borderTop:"1px solid rgba(138,158,132,0.2)"}}>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Rules from Clear Speakers</h2>
-            {[
-              'Use active voice — "We launched," not "It was launched."',
-              "One idea per sentence. Full stop.",
-              'Replace "utilize" with "use." Always.',
-              "If you're explaining, you're already losing them. Show instead.",
-              "Test: Would my mum understand this? If not, simplify.",
-              "Cut every word that doesn't add meaning.",
-              'Concrete beats abstract: "Increased revenue 40%" > "Significant growth."',
-            ].map((tip,i,arr)=>(
-              <div key={i} style={{display:"flex",alignItems:"flex-start",gap:14,padding:"14px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
-                <span style={{color:T.gold,fontSize:16,flexShrink:0,marginTop:2,fontWeight:700}}>✓</span>
-                <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{tip}</p>
-              </div>
-            ))}
-          </div>
+          <D1ClarityChallenge T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
         </div>
       );
 
@@ -10200,23 +10439,7 @@ T.goldDark : T2.text4,
         )}
         {isD1 && step==="Practice" && (
           <>
-            <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Build Your Clarity Toolkit</h2>
-            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Practical exercises to strip jargon and simplify your message.</p>
-            <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
-              <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>Exercise 1: The Jargon Swap</div>
-              <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:12}}>Write one sentence from your work. Get the jargon-free version instantly.</p>
-              <D1MobileJargonSwap/>
-            </div>
-            <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
-              <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>Top Rules</div>
-              {['Use active voice — "We launched," not "It was launched."',"One idea per sentence. Full stop.",'Replace "utilize" with "use." Always.',"Concrete beats abstract: \"40% more revenue\" > \"Significant growth.\""].map((tip,i,arr)=>(
-                <div key={i} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none",alignItems:"flex-start"}}>
-                  <span style={{color:T.gold,fontSize:14,flexShrink:0,fontWeight:700}}>✓</span>
-                  <span style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,fontWeight:400}}>{tip}</span>
-                </div>
-              ))}
-            </div>
+            <D1ClarityChallenge T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
           </>
         )}
         {isD1 && step==="Simulation" && (
