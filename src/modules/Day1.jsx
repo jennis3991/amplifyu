@@ -426,7 +426,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavUpdate}
             )}
           </div>
         )}
-        {answered && <button onClick={nextRound} style={cs.cta}>{isLast?"See Final Score →":roundIdx===2?"Enter Real World Mode →":"Next Challenge →"}</button>}
+        {answered && !onNavUpdate && <button onClick={nextRound} style={cs.cta}>{isLast?"See Final Score →":roundIdx===2?"Enter Real World Mode →":"Next Challenge →"}</button>}
       </div>
     );
   }
@@ -510,7 +510,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavUpdate}
 
           <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
             {isLast && <button onClick={()=>{setBonusIdx(0);setBonusText('');setBonusResult(null);setBonusComplete(0);setPhase('bonus');}} style={{...cs.ghost,flex:1}}>Practise More →</button>}
-            <button onClick={nextRound} style={{...cs.cta,flex:1}}>{isLast?"See Full Score →":"Next Challenge →"}</button>
+            {!onNavUpdate && <button onClick={nextRound} style={{...cs.cta,flex:1}}>{isLast?"See Full Score →":"Next Challenge →"}</button>}
           </div>
         </>
       )}
