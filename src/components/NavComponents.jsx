@@ -61,7 +61,7 @@ export function TabBar({tab, setTab}) {
 // ─── FLOATING NAVIGATION ─────────────────────────────────────────────────────
 // Design: "The Chamber" — transparent over hero, glass on scroll. No sidebar.
 // Typography-first. Atmosphere-first. Software-last.
-const NAV_H = 64;
+export const NAV_H = 64;
 // SIDEBAR_W kept at 0 — sidebar is gone on desktop
 const SIDEBAR_W = 0;
 

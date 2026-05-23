@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { T } from '../theme.js';
 import { LESSONS, ROLES, REVIEW_CLOSING } from '../data.js';
 import { MODULE_ICONS } from '../diagrams.jsx';
+import { NAV_H } from '../components/NavComponents.jsx';
 import { Scene } from '../scenes.jsx';
 
 export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, isDesktop=false}) {

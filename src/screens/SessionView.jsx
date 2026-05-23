@@ -21,7 +21,7 @@ import { D11PracticeWidget, D11SimWidget } from '../modules/Day11.jsx';
 import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
 import { Scene, OBScene } from '../scenes.jsx';
 import { Timer } from '../components/Timer.jsx';
-import { PBar } from '../components/NavComponents.jsx';
+import { PBar, NAV_H } from '../components/NavComponents.jsx';
 import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 import { getScenariosForDay, getPIEEmphasis } from '../utils.js';
 

@@ -4,6 +4,12 @@ import { D9_FIVE_PS, D9_CARDS } from '../data.js';
 import { D_NT } from '../diagrams.jsx';
 import { Scene } from '../scenes.jsx';
 
+const CREAM = "#F5EFE6";
+const LP_LABEL = { fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, fontWeight: 500 };
+const LP_HEADING = { fontFamily: T.serif, fontWeight: 600, color: CREAM, letterSpacing: "-0.5px", lineHeight: 1.15 };
+const LP_BODY = { fontFamily: T.serif, fontStyle: "italic", color: "rgba(245,239,230,0.72)", lineHeight: 1.6 };
+
+
 export function SessionLeftPanel({
   T2, step, lesson, isDone,
   isD1, isD2, isD3, isD4, isD5, isD6, isD9, isD10, isD11, isNT,
