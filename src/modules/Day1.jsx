@@ -161,15 +161,16 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
       <div style={cs.card}>
         <div style={cs.label}>THE CLARITY CHALLENGE™</div>
         <h2 style={cs.h2}>Can you make this simpler?</h2>
-        <p style={{...cs.body,marginBottom:20}}>The clearest communicators don't use bigger words. They make complex ideas feel obvious. This challenge trains your brain to spot jargon, simplify language, and communicate with precision.</p>
+        <p style={{...cs.body,marginBottom:20}}>Great communicators make complexity feel simple. This challenge trains you to spot jargon and communicate with precision.</p>
         <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:24,padding:"16px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-          {["5 rounds — increasing difficulty.","Spot clarity, then create it.","One final score."].map((t,i)=>(
+          {["5 rounds, increasing difficulty","Spot clarity, then create it","One final score","Earn your Clarity Master badge 🏆"].map((t,i)=>(
             <div key={i} style={{display:"flex",gap:10,alignItems:"center"}}>
               <div style={{width:4,height:4,borderRadius:"50%",background:T.gold,flexShrink:0}}/>
               <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{t}</span>
             </div>
           ))}
         </div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:16,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:20}}>Ready? Let's begin.</p>
         <div style={{padding:"12px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.25)",marginBottom:24,display:"flex",alignItems:"center",gap:12}}>
           <img src="/badge-queen.jpg" alt="Clarity Master" style={{width:48,height:48,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
           <div>
