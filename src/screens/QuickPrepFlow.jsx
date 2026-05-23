@@ -4,7 +4,8 @@ import { QUICK_PREP } from '../data.js';
 import { Scene, OBScene } from '../scenes.jsx';
 import { Timer } from '../components/Timer.jsx';
 
-export function QuickPrepFlow({onBack}) {
+export function QuickPrepFlow({onBack, DK={}}) {
+  const T2 = Object.assign({}, T, DK);
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
   const PREP_SCENES = ["presence","clarity","structure","voice","brand"];
