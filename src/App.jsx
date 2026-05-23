@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { applyUpdate } from "./pwa.js";
 import { T } from "./theme.js";
 import { LESSONS, ROLES } from "./data.js";
