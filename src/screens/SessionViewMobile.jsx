@@ -1,0 +1,2052 @@
+import { useState, useRef } from 'react';
+import { T } from '../theme.js';
+import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_FIVE_PS, D9_CARDS, NT_PIXAR, REVIEW_CLOSING, REVIEW_BULLETS, FURTHER_READING, SESSION_STEPS, NAV_LABELS } from '../data.js';
+import { DeliveryCoachWidget } from '../modules/Day9.jsx';
+import { StoryBuilderWidget } from '../modules/Day8.jsx';
+import { CoachWidget } from '../modules/CoachWidget.jsx';
+import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
+import { D3SimFeedback, D3MobileSim } from '../modules/Day3.jsx';
+import { D4SimFeedback, D4MobileSplit, D4MobileSim } from '../modules/Day4.jsx';
+import { D1MobileJargonSwap, D1MobileSim, D1ClarityChallenge, D1SimWidget, D1SimFeedback } from '../modules/Day1.jsx';
+import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
+import { D5PracticeWidget } from '../modules/Day5.jsx';
+import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
+import { D11PracticeWidget, D11SimWidget } from '../modules/Day11.jsx';
+import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
+import { Scene, OBScene } from '../scenes.jsx';
+import { Timer } from '../components/Timer.jsx';
+import { PBar } from '../components/NavComponents.jsx';
+import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
+
+export function MobileSessionView({
+  T2, step, STEPS, idx, setIdx, lesson, isDone, onComplete, onBack,
+  isD1, isD2, isD3, isD4, isD5, isD6, isD9, isD10, isD11, isNT,
+  selSc, setSelSc, exitConfirm, setExitConfirm,
+  accordionOpen, setAccordionOpen, savedBooks, saveBook,
+  setNtStory, d9Script, setD9Script,
+  d1MobCard, setD1MobCard, d2MobCard, setD2MobCard,
+  d3MobCard, setD3MobCard, d4MobCard, setD4MobCard,
+  d5MobCard, setD5MobCard, d6MobCard, setD6MobCard,
+  d11MobCard, setD11MobCard, ntMobCard, setNtMobCard,
+  activeSc, scenarios, ambitionDraft, saveAmbition, ambitionSaved,
+  roleId, activeRole, swipeRef, note, saveNote, checks, setChecks,
+  ntOpenCard, setNtOpenCard, d9OpenCard, setD9OpenCard, ntStory,
+}) {
+  const D10_EXAMPLES_DATA = [
+    { id:"buffett", title:"Warren Buffett", sub:"Making Performance Simple",
+      tag:"Berkshire's results — explained so anyone can understand.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Making Performance Simple</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Billions in results.<br/>Explained simply.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Every year, Buffett writes a letter to Berkshire shareholders. It could be dense with financial jargon. It isn't.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"We simply attempt to be fearful when others are greedy and to be greedy only when others are fearful."</p>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Complex strategy. One sentence. Maximum clarity.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>He translates decades of complex investment decisions into language any intelligent person can understand. Performance becomes story.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>For every result, ask: what does this mean to someone who wasn't in the room? Answer that. That's your performance statement.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Performance communication is translation. Translate your work into language your audience already cares about.</p>
+          </div>
+        </div>
+      )},
+    { id:"nadella", title:"Satya Nadella", sub:"The Turnaround Story",
+      tag:"He made Microsoft's performance feel like a movement.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>The Turnaround Story</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>He didn't report results.<br/>He told a mission.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>When Satya Nadella became CEO, Microsoft's market cap had stagnated for over a decade. He didn't announce a turnaround plan. He told a story about culture.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"We need to go from a know-it-all company to a learn-it-all company."</p>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Within five years, the market cap tripled. The performance followed the story.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>He framed Microsoft's performance not as metrics but as purpose. People fund and follow purpose far more readily than spreadsheets.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Connect your performance to something the organisation already cares about. Don't report results — explain what they mean.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Brilliant performance without a story is invisible. Give your results a narrative — and watch how differently they land.</p>
+          </div>
+        </div>
+      )},
+    { id:"sandberg", title:"Sheryl Sandberg", sub:"Communicating Contribution",
+      tag:"She made invisible work visible — at every level.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Communicating Contribution</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>She made invisible<br/>work visible.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Sheryl Sandberg built a culture at Facebook where performance was communicated clearly — not assumed. She modelled it herself.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"What would you do if you weren't afraid?"</p>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>She applied the same principle to performance: name what you've done, name what it achieved, and name what you want next.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>She removed the assumption that good work speaks for itself. It doesn't. The person who communicates their contribution clearly gets the credit they deserve.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>At the end of any project, articulate three things: what you did, what changed because of it, and what you'd do next. Say it out loud.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Good work in silence is still silence. Name your contribution. Own your impact.</p>
+          </div>
+        </div>
+      )},
+    { id:"jobs10", title:"Steve Jobs", sub:"The Product as Performance",
+      tag:"He didn't present features. He communicated transformation.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>The Product as Performance</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Not features.<br/>Transformation.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>When Jobs launched the iPhone in 2007, he didn't list specifications. He framed it as a shift in what was possible.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"Every once in a while, a revolutionary product comes along that changes everything."</p>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>His "performance" was framed as the audience's gain — not the company's achievement.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>He answered the question the audience was already asking: what does this mean for me? Performance that lands always answers that question first.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Frame your result from the audience's point of view: not "I delivered X" but "because of X, you now have Y."</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>The best performance statements don't celebrate the work. They reveal its consequence.</p>
+          </div>
+        </div>
+      )},
+  ];
+
+  // ── D3 shared constants ────────────────────────────────────────────────────
+  const D3_EXAMPLES_DATA = [
+    { id:"freeman", title:"Morgan Freeman", sub:"Every Word Earns Its Place",
+      tag:"The pause is not your enemy. It's your tool.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Every Word Earns Its Place</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Listen to what<br/>he doesn't say.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Listen to Morgan Freeman narrate anything. You'll notice what he doesn't say. No "ums." No fillers. Just measured, deliberate speech.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"Hope is a good thing. [pause] Maybe the best of things. [pause] And no good thing ever dies."</p>
+              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginTop:8,margin:"8px 0 0"}}>Those pauses? That's where the power lives.</p>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Silence creates anticipation. Fillers create distraction.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>When you don't know what to say next, stop talking. Pause. Breathe. Continue.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Great speakers use silence the way musicians use rests. The pause is not your enemy — it's your most powerful tool.</p>
+          </div>
+        </div>
+      )},
+    { id:"wintour", title:"Anna Wintour", sub:"No Wasted Words",
+      tag:"Fillers signal uncertainty. Pauses signal control.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>No Wasted Words</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>One word.<br/>Perfect answer.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Anna Wintour runs Vogue. When she speaks, there's no fluff. Watch any interview — she pauses between thoughts. No "you knows." No hedging.</p>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>A journalist once asked: "What makes a good editor?"</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:20,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>She paused for 3 seconds. Then: "Decisiveness."</p>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>She knows what she wants to say. She doesn't need to fill space. The pause signals control, not hesitation.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Prepare your answer before you speak. If you haven't decided what to say, don't start talking yet.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Filler-free speech starts with knowing your point. The more clearly you think, the more naturally confident you sound.</p>
+          </div>
+        </div>
+      )},
+    { id:"ginsburg", title:"Ruth Bader Ginsburg", sub:"Legal Precision",
+      tag:"The higher the stakes, the fewer words you should use.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Legal Precision</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Every pause<br/>was intentional.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Ruth Bader Ginsburg argued cases in front of the Supreme Court. Every word mattered. No room for "ums." Her arguments were surgical: Pause. Point. Evidence. Pause. Next point.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"The question before the Court is... [pause] ...whether the statute applies in this case."</p>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>In high-stakes environments, fillers cost you credibility. Precision builds trust.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Structure your thoughts before you speak. Point 1. Pause. Point 2. Pause. Conclusion.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>The higher the stakes, the fewer words you should use. And zero fillers.</p>
+          </div>
+        </div>
+      )},
+    { id:"obama3", title:"Barack Obama", sub:"The Strategic Pause",
+      tag:"Silence isn't empty space. It's emphasis.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>The Strategic Pause</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Not hesitant.<br/>Brilliant.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Obama is known for his pauses. Mid-sentence, he'll stop. Think. Then continue. Critics called it hesitant. Speech coaches called it brilliant.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"The question is... [3-second pause] ...what kind of country are we going to leave our children?"</p>
+              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:"8px 0 0"}}>That pause? Not a filler. A choice.</p>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Pauses let your audience catch up. It gave the audience time to absorb the weight of the question.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>When you make an important point, pause after it. Let it land before you move on.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Silence isn't empty space. It's emphasis. The best speakers know when to stop talking.</p>
+          </div>
+        </div>
+      )},
+  ];
+
+  // ── D4 shared constants ────────────────────────────────────────────────────
+  const D4_EXAMPLES_DATA = [
+    { id:"hemingway", title:"Ernest Hemingway", sub:"Every Word Must Earn Its Place",
+      tag:"No flourish. No decoration. Just truth.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Every Word Must Earn Its Place</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>The Nobel Prize winner<br/>who mastered brevity.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Hemingway won the Nobel Prize for literature. His secret? Short sentences.</p>
+            <div style={{padding:"16px 20px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"The old man fished alone. Eighty-four days. No fish."</p>
+              <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:"10px 0 0"}}>"It was a good life. I was happy. We were happy."</p>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>No flourish. No decoration. Just truth.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Short sentences force precision. You can't hide weak ideas behind long sentences.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Write your first draft. Then cut every unnecessary word. What's left is what matters.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Every word you add dilutes your message. The best writers know what to leave out.</p>
+          </div>
+        </div>
+      )},
+    { id:"einstein", title:"Albert Einstein", sub:"Make It Simple, But Not Simpler",
+      tag:"Complex physics. Simple words. Clear image.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Make It Simple, But Not Simpler</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Relativity.<br/>In two sentences.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Einstein explained the universe. He could have hidden behind equations. He didn't.</p>
+            <div style={{padding:"16px 20px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"Put your hand on a hot stove for a minute. It feels like an hour. Sit with a pretty girl for an hour. It feels like a minute. That's relativity."</p>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Complex physics. Simple words. Clear image.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Short sentences make complex ideas accessible. Long sentences create distance between the idea and understanding.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Break the concept into pieces. Explain each piece in one sentence.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>If Einstein could explain the universe in short sentences, you can explain your work the same way.</p>
+          </div>
+        </div>
+      )},
+    { id:"chanel", title:"Coco Chanel", sub:"Elegance Through Elimination",
+      tag:"Short sentences. Maximum impact.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Elegance Through Elimination</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Less is more.<br/>In fashion and words.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Chanel revolutionized fashion with one principle: Less is more. Her words were equally sharp.</p>
+            <div style={{padding:"16px 20px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"Fashion fades. Style remains."</p>
+              <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:"10px 0 0"}}>"Simplicity is the keynote of all true elegance."</p>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Short sentences. Maximum impact.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Each quote is a complete thought. No wasted words. Just precision.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Say what matters. Cut everything else.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Elegance in communication is elimination. The best speakers know what to leave out.</p>
+          </div>
+        </div>
+      )},
+    { id:"goodall", title:"Jane Goodall", sub:"Science in Simple Sentences",
+      tag:"Decades of research. Three short sentences.",
+      content:(
+        <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Science in Simple Sentences</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>60 years of research.<br/>Three sentences.</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Goodall spent 60 years studying chimpanzees. She could use scientific jargon. She chooses not to.</p>
+            <div style={{padding:"16px 20px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"Chimps use tools. They have emotions. They're not so different from us."</p>
+            </div>
+            <div style={{padding:"16px 20px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"What you do makes a difference. And you have to decide what kind of difference you want to make."</p>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Short sentences make science human. Long sentences make it distant.</p>
+            </div>
+            <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>State the discovery in one sentence. State why it matters in the next. Stop there.</p>
+            </div>
+          </div>
+          <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>The best educators make the complex feel simple. Short sentences are how they do it.</p>
+          </div>
+        </div>
+      )},
+  ];
+
+  // ── D1 shared constants (used by both desktop and mobile) ─────────────────
+
+return (
+  <div
+    style={{background:T2.bg,minHeight:"100vh",paddingBottom:40}}
+    onTouchStart={e=>{swipeRef.current={x:e.touches[0].clientX,y:e.touches[0].clientY};}}
+    onTouchEnd={e=>{
+      const dx=e.changedTouches[0].clientX-swipeRef.current.x;
+      const dy=e.changedTouches[0].clientY-swipeRef.current.y;
+      if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>52){
+        if(dx<0&&idx<STEPS.length-1){setIdx(i=>i+1);}
+        else if(dx>0&&idx>0){setIdx(i=>i-1);}
+      }
+    }}
+  >
+     {/* Exit confirmation modal */}
+    {exitConfirm && (
+      <div style={{
+        position:"fixed",inset:0,zIndex:400,
+        background:"rgba(11,13,16,0.75)",
+        backdropFilter:"blur(8px)",
+        display:"flex",alignItems:"center",justifyContent:"center",
+        padding:"24px",
+      }}>
+        <div style={{
+          background:T2.surface,
+          borderRadius:20,
+          padding:"28px 24px",
+          width:"100%",maxWidth:340,
+          border:"1px solid "+T2.border,
+          boxShadow:"0 24px 64px rgba(0,0,0,0.3)",
+        }}>
+          <h3 style={{
+            fontFamily:T.serif,fontSize:20,fontWeight:700,
+            color:T2.text,textAlign:"center",marginBottom:10,
+          }}>Leave this session?</h3>
+          <p style={{
+            fontSize:13,color:T2.text3,
+            textAlign:"center",lineHeight:1.6,marginBottom:24,
+          }}>
+            You've completed <strong style={{color:T2.text}}>{idx} of 6 
+steps</strong>. Your progress won't be saved until you reach the Review 
+step.
+          </p>
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {/* Stay — primary */}
+            <button
+              onClick={() => setExitConfirm(false)}
+              style={{
+                width:"100%",padding:"15px",
+                borderRadius:12,border:"none",
+                background:"linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
+                
+color:"white",fontSize:14,fontWeight:700,cursor:"pointer",
+                boxShadow:"0 4px 16px rgba(17,28,46,0.25)",
+                
+display:"flex",alignItems:"center",justifyContent:"center",gap:8,
+              }}>
+              <svg width="14" height="14" viewBox="0 0 14 14" 
+fill="none"><path d="M7 1v12M1 7h12" stroke="white" strokeWidth="1.8" 
+strokeLinecap="round" transform="rotate(45 7 7)"/></svg>
+              Continue session
+            </button>
+            {/* Leave — secondary, destructive */}
+            <button
+              onClick={() => { setExitConfirm(false); onBack(); }}
+              style={{
+                width:"100%",padding:"13px",
+                borderRadius:12,
+                border:"1px solid "+T2.border,
+                background:"transparent",
+                
+color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
+              }}>
+              Leave without finishing
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+     {/* Top nav bar — AmplifyU logo only */}
+    <div style={{
+      background:T.bg,
+      padding:"14px 20px",
+      borderBottom:"0.5px solid rgba(44,36,22,0.08)",
+    }}>
+      <span style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.ink,letterSpacing:"-0.3px"}}>AmplifyU</span>
+    </div>
+     {/* Header image + Exit button overlay */}
+    <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:step==="Practice"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
+      {(()=>{
+        // Simulation tab: dark cinematic panel for ALL modules
+        if(step==="Simulation"){
+          const SIM_HEADERS={
+            1:{label:"SPEAK CLEARLY — IN ACTION",   heading:"Clarity under pressure. This is the real test."},
+            2:{label:"REAL-WORLD VOICE COACHING",   heading:"This is where voice training becomes real."},
+            3:{label:"FILLER-FREE — IN ACTION",     heading:"60 seconds. Zero fillers. Real stakes."},
+            4:{label:"BREVITY — IN ACTION",         heading:"Short sentences. High stakes. Go."},
+            5:{label:"PRE — IN ACTION",             heading:"Structure your thinking. Speak with precision."},
+            6:{label:"HIGH-STAKES — IN ACTION",       heading:"Stay composed. Stay clear. Stay in control."},
+            7:{label:"INTEGRATION — IN ACTION",     heading:"Everything you've built. One conversation."},
+            8:{label:"NARRATIVE — IN ACTION",       heading:"Tell the story. Transport your audience."},
+            9:{label:"DELIVERY — IN ACTION",        heading:"Great content. Delivered powerfully."},
+            10:{label:"PERFORMANCE — IN ACTION",    heading:"Communicate your impact with conviction."},
+            11:{label:"BRAND — IN ACTION",           heading:"Your brand is built in every room you enter. Shape it."},
+          };
+          const sh=SIM_HEADERS[lesson.day]||{label:"SIMULATION",heading:"Real scenario. Real pressure. Real coaching."};
+          return (
+            <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box"}}>
+              <div style={{fontSize:10,fontWeight:700,color:"rgba(200,180,140,1)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>{sh.label}</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>{sh.heading}</p>
+              <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
+              <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>Day {lesson.day} · {lesson.tag}</p>
+            </div>
+          );
+        }
+        // Example tab: dark cinematic text panel instead of image
+        if(step==="Example"){
+          const EX_HEADERS={
+            1:{label:"MASTERS OF CLARITY",      heading:"The simplest words carry the most weight.",                                  body:"Clear communicators don't use more words. They use better ones."},
+            2:{label:"VOICE IN ACTION",          heading:"Range creates engagement. Contrast creates emotion.",                        body:"The most compelling voices are the most controlled — and the most dynamic."},
+            3:{label:"MASTERS OF THE PAUSE",     heading:"Silence is more powerful than the word that fills it.",                     body:"The strongest speakers pause. Confident speakers own the silence."},
+            4:{label:"MASTERS OF BREVITY",       heading:"Say less. Mean more. Be remembered.",                                       body:"The most persuasive lines ever spoken? All under 10 words."},
+            5:{label:"PRE IN ACTION",            heading:"Point. Reason. Example. The architecture of every great professional answer.", body:"The world's most effective communicators all follow the same structure — whether they know it or not."},
+            6:{label:"MASTERS UNDER PRESSURE",      heading:"Composure is a skill. The calmest person in the room shapes the room.",  body:"How elite communicators handle the conversations most people avoid."},
+            7:{label:"COMMUNICATION IN ACTION",  heading:"Every skill. One conversation.",                                            body:"This is what a week of deliberate practice looks like in the real world."},
+            8:{label:"STORYTELLING IN THE WILD", heading:"Stories create empathy. Empathy creates trust. Trust creates influence.",    body:"The same facts — told as a story — land 22× more powerfully in the human brain."},
+            9:{label:"DELIVERY IN ACTION",       heading:"Great content, delivered powerfully, changes everything.",                  body:"The same message — delivered differently — lands completely differently."},
+            10:{label:"PERFORMANCE IN ACTION",   heading:"Visible performance is communicated performance.",                          body:"Your work is exceptional. Make sure people know it."},
+            11:{label:"ICONIC BRANDS. INTENTIONAL CHOICES.", heading:"Brand isn't what you say about yourself. It's what others say when you're not there.", body:"Three people whose personal brands became cultural forces — not by accident, but by design."},
+          };
+          const h=EX_HEADERS[lesson.day]||EX_HEADERS[1];
+          return (
+            <div style={{width:"100%",height:320,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box"}}>
+              <div style={{fontSize:10,fontWeight:700,color:"rgba(200,180,140,1)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>{h.label}</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>{h.heading}</p>
+              <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
+              <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>{h.body}</p>
+            </div>
+          );
+        }
+        const STEP_IMGS={
+          1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+          2:{Insight:"/d2-insight.jpg",Theory:"/d2-theory.jpg",Practice:"/d2-practice.jpg",Review:"/review-chair.jpg"},
+          3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+          4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+          5:{Insight:"/d5-insight.jpg",Theory:"/d5-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+          6:{Insight:"/d6-insight.jpg",Theory:"/d6-theory.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
+          11:{Insight:"/d11-insight.jpg",Theory:"/d11-theory.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
+          8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
+        };
+        const src=STEP_IMGS[lesson.day]?.[step];
+        const useContainMob = lesson.day===11 && step==="Theory";
+        if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:useContainMob?"contain":"cover",objectPosition:step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
+        return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
+      })()}
+      {/* Dark film overlay for Practice only */}
+      {step==="Practice" && <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.52)",pointerEvents:"none"}}/>}
+      {/* Exit button — top left over image */}
+      <button
+        onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
+        style={{
+          position:"absolute",top:14,left:14,zIndex:50,
+          height:36,padding:"0 14px 0 10px",
+          borderRadius:4,border:"none",
+          background:step==="Theory 2"?"rgba(247,243,236,0.45)":"rgba(247,243,236,0.92)",
+          color:"#2C2416",
+          display:"flex",alignItems:"center",gap:5,
+          cursor:"pointer",fontFamily:T.sans,
+          boxShadow:step==="Theory 2"?"none":"0 1px 6px rgba(44,36,22,0.15)",
+        }}>
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+          <path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+        <span style={{fontSize:13,fontWeight:500}}>← Exit</span>
+      </button>
+      {isDone && <div style={{position:"absolute",top:14,right:14,background:"rgba(42,94,63,0.9)",color:"white",fontSize:11,fontWeight:700,padding:"6px 12px",borderRadius:20,letterSpacing:1}}>DONE</div>}
+      {/* Day + title — only on Insight and Review */}
+      {(step==="Insight"||step==="Review") && (
+        <>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.88) 0%,rgba(10,8,5,0.3) 50%,transparent 80%)",pointerEvents:"none"}}/>
+          <div style={{position:"absolute",bottom:20,left:20,right:20,zIndex:2}}>
+            <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.55)",textTransform:"uppercase",letterSpacing:"2px",fontFamily:T.sans,marginBottom:8}}>Day {lesson.day} · {lesson.tag}</div>
+            {step==="Insight" ? (
+              <>
+                <h1 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"white",lineHeight:1.2,marginBottom:8}}>{lesson.title}</h1>
+                <p style={{fontFamily:T.sans,fontSize:12,fontWeight:400,color:"rgba(255,255,255,0.55)",lineHeight:1.5,margin:0,fontStyle:"italic"}}>{lesson.quote}</p>
+              </>
+            ) : (
+              <h1 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+     {/* Session Arc — horizontally scrollable on mobile */}
+    {(()=>{
+      const icons = ["◎","✦","←→","▶","◈","✓"];
+      const colors2 = [T.navy, T.gold, T.navy, T.navy, T.navy, T.green];
+      return (
+        <div style={{padding:"14px 0 0",userSelect:"none",overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
+          {/* Connected arc row — min-width so all 6 steps always show */}
+          <div
+style={{display:"flex",alignItems:"center",position:"relative",minWidth:"max-content",padding:"0 20px"}}>
+            {STEPS.map((s,i) => {
+              const done2 = i < idx;
+              const active = i === idx;
+              const isTheory = i === 1;
+              const nodeCol = done2 ? T.gold : active ? 
+(isTheory?T.gold:T.navy) : T2.border;
+              const nodeBg = done2 ? T.goldLight : active ? 
+(isTheory?"rgba(138,158,132,0.12)":T.navyLight) : "transparent";
+              const lineCol = i < idx ? T.gold : T2.border;
+              return (
+                <div key={s} 
+style={{display:"flex",alignItems:"center",flex: 
+i<STEPS.length-1?1:"none"}}>
+                  {/* Node */}
+                  <div style={{
+                    
+display:"flex",flexDirection:"column",alignItems:"center",
+                    flexShrink:0,gap:3,
+                  }}>
+                    <div style={{
+                      width: active ? 32 : 22,
+                      height: active ? 32 : 22,
+                      borderRadius:"50%",
+                      background: nodeBg,
+                      border:"1.5px solid "+nodeCol,
+                      
+display:"flex",alignItems:"center",justifyContent:"center",
+                      transition:"all 0.3s",
+                      boxShadow: active ? "0 2px 10px rgba(17,28,46,0.18)" : "none",
+                      position:"relative",
+                      zIndex:1,
+                    }}>
+                      {done2 ? (
+                        <svg width="10" height="10" viewBox="0 0 10 10" 
+fill="none">
+                          <path d="M2 5l2.5 2.5 4-4" stroke={T.gold} 
+strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      ) : (
+                        <span style={{
+                          fontSize: active ? 11 : 9,
+                          fontWeight:700,
+                          color: nodeCol,
+                          lineHeight:1,
+                        }}>{i+1}</span>
+                      )}
+                    </div>
+                    {/* Step label under node */}
+                    <span style={{
+                      fontSize: active ? 8 : 7,
+                      fontWeight: active ? 700 : 400,
+                      color: active ? (isTheory?T.gold:T.navy) : done2 ? 
+T.goldDark : T2.text4,
+                      textTransform:"uppercase",
+                      letterSpacing:"0.5px",
+                      whiteSpace:"nowrap",
+                      transition:"all 0.3s",
+                    }}>{s}</span>
+                  </div>
+                  {/* Connector line to next node */}
+                  {i < STEPS.length-1 && (
+                    <div style={{
+                      flex:1,height:1.5,
+                      marginTop:-14,
+                      background: i < idx
+                        ? "linear-gradient(90deg,"+T.gold+","+T.gold+")"
+                        : i === idx
+                        ? "linear-gradient(90deg,"+T.navy+" 0%,"+T2.border+" 100%)"
+                        : T2.border,
+                      transition:"background 0.4s",
+                    }}/>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    })()}
+     <div style={{padding:"4px 20px 0",display:"flex",flexDirection:"column",gap:14}}>
+       {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
+      {isD10 && step==="Insight" && (
+        <>
+          <div style={{background:T2.cardDark,borderRadius:2,padding:"20px"}}>
+            <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:"rgba(255,255,255,0.88)",lineHeight:1.5,margin:0}}>{lesson.quote}</p>
+          </div>
+          <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:14}}>Why Performance Communication Matters</div>
+            {D10_FACTS.map((n,i)=>(
+              <div key={i} style={{marginBottom:i<3?14:0,paddingBottom:i<3?14:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
+                <span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.goldDark}}>{n.word} — </span>
+                <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:300}}>{n.body}</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+      {isD10 && step==="Theory" && (
+        <>
+          <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The SAR Framework</div>
+            {[{n:"S",label:"Situation",ex:"The challenge or context — briefly."},{n:"A",label:"Action",ex:"What YOU specifically did. Use 'I.'"},{ n:"R",label:"Result",ex:"The measurable outcome. Be specific."}].map((b,i,arr)=>(
+              <div key={i} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
+                <div style={{width:22,height:22,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"white"}}>{b.n}</span>
+                </div>
+                <div>
+                  <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T2.text,marginBottom:2}}>{b.label}</div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{b.ex}</p>
+                </div>
+              </div>
+            ))}
+            <div style={{marginTop:12,padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>"I delivered the new process two weeks early. The result: 40% reduction in drop-off."</p>
+            </div>
+          </div>
+        </>
+      )}
+      {isD10 && step==="Example" && (
+        <>
+          <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Performance in the Wild</div>
+            {D10_EXAMPLES_DATA.map((ex,i)=>(
+              <div key={i} style={{marginBottom:i<3?16:0,paddingBottom:i<3?16:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
+                <div style={{fontSize:12,fontWeight:700,color:T.goldDark,marginBottom:4}}>{ex.title} — {ex.sub}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:0}}>{ex.tag}</p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+      {isD10 && step==="Practice" && (
+        <>
+          <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Build Your SAR Story</div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,marginBottom:12}}>Answer three questions. Get a sharpened performance statement.</p>
+            <D10MobileSAR/>
+          </div>
+        </>
+      )}
+      {isD10 && step==="Simulation" && (
+        <>
+          <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Impact Score</div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,marginBottom:12}}>Write your performance statement. Get scored on clarity and impact.</p>
+            <D10MobileSim/>
+          </div>
+        </>
+      )}
+       {/* ── D2 Mobile Steps ─────────────────────────────────────────────── */}
+      {isD2 && step==="Insight" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Way You Speak Changes the Way People Listen</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Your voice is more than sound — it's one of your most powerful communication tools.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {D2_INSIGHT_CARDS.map((n,i)=>{
+              const open = d2MobCard===("d2i"+i);
+              return (
+                <div key={i} onClick={()=>setD2MobCard(open?null:"d2i"+i)}
+                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 10px":0}}>{n.sub}</p>
+                  {open && (
+                    <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
+                      {n.bullets.map((b,j)=>(
+                        <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                          <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
+                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Your voice is your most underused communication tool. Start using it deliberately.</p>
+        </>
+      )}
+       {isD2 && step==="Example" && (()=>{
+        const D2_MOB_CARDS = [
+          {id:"williams",name:"Robin Williams",headline:"The Master of Vocal Range",
+           sub:"From the explosive Genie in Aladdin to the emotional stillness of Good Will Hunting — he transformed how a message felt using only his voice.",
+           quote:'"No matter what people tell you, words and ideas can change the world."',
+           levers:[{k:"Pace",v:"Rapid-fire energy or slow emotional weight"},{k:"Pitch",v:"Playful highs to grounded seriousness"},{k:"Tone",v:"Humour, warmth, intensity, vulnerability"},{k:"Pauses",v:"Creating anticipation, emotion, and impact"}],
+           lesson:"Range creates engagement. Contrast creates emotion. A flat voice fades. A dynamic voice keeps people listening.",
+           challenge:{sentence:'"Ah... now this is where things get interesting."',modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]}},
+          {id:"streep",name:"Meryl Streep",headline:"The Master of Precision and Presence",
+           sub:"Three iconic roles. Three completely different voices. Streep proves that the most powerful communicators don't get louder — they get more precise.",
+           quote:'"Take your broken heart, make it into art."',
+           levers:[{k:"Pace",v:"Deliberate control or sharp urgency"},{k:"Pitch",v:"Subtle tonal shifts that change emotional meaning"},{k:"Tone",v:"Authority, vulnerability, wit, empathy, strength"},{k:"Pauses",v:"Creating tension, emphasis, and dramatic impact"}],
+           lesson:"Precision creates presence. Control creates impact. A rushed voice can feel uncertain. An intentional voice commands attention.",
+           challenge:{sentence:'"This moment matters more than you think."',modes:["Sharp executive authority","Calm conviction","Warm encouragement","Emotionally vulnerable"]}},
+        ];
+        const challengeOpen = d2MobCard==="challenge";
+        return (
+          <>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Voice in Action</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Tap each card to explore how they use voice.</p>
+            {/* Stacked person cards */}
+            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
+              {D2_MOB_CARDS.map(card=>{
+                const open = d2MobCard===card.id;
+                return (
+                  <div key={card.id} onClick={()=>setD2MobCard(open?null:card.id)}
+                    style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
+                      <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.2}}>{card.name}</div>
+                      <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                    </div>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>{card.headline}</div>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:0}}>{card.sub}</p>
+                    {open && (
+                      <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,marginTop:10}}>
+                        <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,marginBottom:10,borderLeft:"2px solid "+T.gold,paddingLeft:10}}>{card.quote}</p>
+                        {card.levers.map((l,i)=>(
+                          <div key={i} style={{display:"flex",gap:6,marginBottom:5}}>
+                            <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,flexShrink:0}}>{l.k} →</span>
+                            <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.4}}>{l.v}</span>
+                          </div>
+                        ))}
+                        <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.gold,lineHeight:1.5,marginTop:10}}>{card.lesson}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            {/* Single expandable challenge card below */}
+            <div onClick={()=>setD2MobCard(challengeOpen?null:"challenge")}
+              style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${challengeOpen?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:challengeOpen?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div style={{flex:1}}>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Now try it yourself</div>
+                  <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:4}}>Can you say it four ways?</div>
+                  <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300}}>Same sentence. Completely different voice.</div>
+                </div>
+                <span style={{fontFamily:T.sans,fontSize:16,color:challengeOpen?T.gold:"rgba(138,158,132,0.7)",marginLeft:12,flexShrink:0,transition:"color 0.2s"}}>{challengeOpen?"▴":"▸"}</span>
+              </div>
+              {challengeOpen && (
+                <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:16,marginTop:14}}>
+                  {D2_MOB_CARDS.map((card,ci)=>(
+                    <div key={ci} style={{marginBottom:ci<D2_MOB_CARDS.length-1?20:0}}>
+                      <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>{card.name}</div>
+                      <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:10}}>{card.challenge.sentence}</p>
+                      <div style={{display:"flex",flexDirection:"column"}}>
+                        {card.challenge.modes.map((m,i,arr)=>(
+                          <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
+                            <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,width:14,flexShrink:0}}>{i+1}.</span>
+                            <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:400}}>{m}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </>
+        );
+      })()}
+       {/* ── D3 Mobile Steps ─────────────────────────────────────────────── */}
+      {isD3 && step==="Insight" && (
+        <>
+          <img src="/day3-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Master Filler-Free Speech</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most people are far stronger speakers than they realise. A few conscious habits are all that separates good from exceptional.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {D3_FACTS.map((n,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>The pause is not empty. It's where confidence lives.</p>
+        </>
+      )}
+      {isD3 && step==="Theory" && (
+        <>
+          <img src="/day3-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 30%",display:"none"}}/>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Pause Principle</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Fillers are a habit, not a flaw. The strongest communicators simply replace them with intentional pauses.</p>
+          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"18px 20px",marginBottom:20,borderRadius:4}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>Fillers aren't a speech problem. They're a thinking problem.</p>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>Why we use fillers:</p>
+          {D3_PAUSE_REASONS.map((r,i)=>(
+            <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"16px 20px",marginBottom:10}}>
+              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{r.n}. {r.label}</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{r.body}</p>
+            </div>
+          ))}
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>The strongest speakers pause often. Confident speakers own the silence.</p>
+        </>
+      )}
+      {isD3 && step==="Example" && (
+        <>
+          <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of the Pause</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how they use silence.</p>
+          {[
+            {id:"freeman",name:"Morgan Freeman",preview:'No "ums." No "uhs." Just measured, deliberate speech. When he needs to think, he pauses.',quote:'"Hope is a good thing. Maybe the best of things. And no good thing ever dies."',why:"Silence creates anticipation. Fillers create distraction.",technique:"When you don't know what to say next, stop talking. Pause. Breathe. Continue.",lesson:"The pause is not your enemy. It's your tool."},
+            {id:"wintour",name:"Anna Wintour",preview:'When asked "What makes a good editor?" she paused 3 seconds. Then: "Decisiveness." One word. Perfect answer.',quote:'"Decisiveness."',why:"Fillers signal uncertainty. Pauses signal control. She knows what she wants to say.",technique:"Prepare your answer before you speak. If you haven't decided what to say, don't start talking yet.",lesson:"Filler-free speech starts with knowing your point."},
+            {id:"ginsburg",name:"Ruth Bader Ginsburg",preview:"Every pause was intentional. Every word was chosen. Her arguments were surgical: Pause. Point. Evidence. Pause. Next point.",quote:'"The question before the Court is... whether the statute applies in this case."',why:"In high-stakes environments, fillers cost you credibility. Precision builds trust.",technique:"Structure your thoughts before you speak. Point 1. Pause. Point 2. Pause. Conclusion.",lesson:"The higher the stakes, the fewer words you should use. And zero fillers."},
+            {id:"obama3",name:"Barack Obama",preview:"Mid-sentence, he'll stop. Think. Then continue. That pause? Not a filler. A choice.",quote:'"The question is... what kind of country are we going to leave our children?"',why:"Pauses let your audience catch up. Fillers just fill time.",technique:"When you make an important point, pause after it. Let it land before you move on.",lesson:"Silence isn't empty space. It's emphasis."},
+          ].map(card=>(
+            <div key={card.id} onClick={()=>setD3MobCard(d3MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d3MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
+                <span style={{fontFamily:T.sans,fontSize:12,color:d3MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{d3MobCard===card.id?"▴ less":"▸ explore"}</span>
+              </div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
+              {d3MobCard===card.id && (
+                <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                  <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:12}}>{card.quote}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why It Works</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.why}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>The Technique</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.technique}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>AmplifyU Lesson</div>
+                  <p style={{fontFamily:T.sans,fontSize:15,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </>
+      )}
+      {isD3 && step==="Practice" && (
+        <>
+          <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>From Filler to Filler-Free</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Practical exercises to break the habit.</p>
+          {[{title:"Count Your Fillers",body:"Record 2 minutes. Count every filler. Goal: under 5 per minute. Awareness is 80% of the fix."},{title:"The 5-Second Pause",body:"Pause for 5 full seconds. It feels impossibly long to you. To your audience? Barely noticeable."},{title:"Replace with Breath",body:"Every urge to say 'um' — breathe instead. You physically can't say 'um' mid-inhale."},{title:"Slow Down",body:"Fillers multiply when you rush. Slow your speech by 20%. You'll have time to think between sentences."}].map((ex,i)=>(
+            <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"16px 20px",marginBottom:10}}>
+              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:8}}>{ex.title}</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{ex.body}</p>
+            </div>
+          ))}
+        </>
+      )}
+      {isD3 && step==="Simulation" && (
+        <>
+          <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Speak Filler-Free — 60 Seconds</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Write your response with zero fillers. The AI detects every "um," "uh," "like," and "you know."</p>
+          <D3MobileSim/>
+        </>
+      )}
+       {/* ── D4 Mobile Steps ─────────────────────────────────────────────── */}
+      {isD4 && step==="Insight" && (
+        <>
+          <img src="/day4-insight.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Short Sentences Win</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>The brain processes short sentences faster, retains them longer, and finds them more persuasive.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {D4_FACTS.map((n,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Long sentences lose people. Short sentences move them.</p>
+        </>
+      )}
+      {isD4 && step==="Theory" && (
+        <>
+          <img src="/millers-law.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Miller's Law</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>In 1956, psychologist George Miller discovered something fundamental about how humans think.</p>
+          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"18px 20px",marginBottom:20,borderRadius:4}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>We can only hold 7 (±2) pieces of information in working memory at once.</p>
+          </div>
+          {["Every sentence creates a memory load.","Long sentences stack information faster than your audience can process.","By the time you reach the end, they've forgotten the beginning.","The fix? Short sentences."].map((p,i)=>(
+            <p key={i} style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{p}</p>
+          ))}
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>One idea. One sentence. Full stop.</p>
+        </>
+      )}
+      {isD4 && step==="Example" && (
+        <>
+          <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Brevity</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how they do it.</p>
+          {[
+            {id:"hemingway",name:"Ernest Hemingway",preview:"Hemingway won the Nobel Prize for literature. His secret? Short sentences.",quote:'"The old man fished alone. Eighty-four days. No fish."',why:"Short sentences force precision. You can't hide weak ideas behind long ones.",technique:"Write your first draft. Then cut every unnecessary word. What's left is what matters.",lesson:"Every word you add dilutes your message. The best writers know what to leave out."},
+            {id:"einstein",name:"Albert Einstein",preview:"Einstein explained the universe. He could have hidden behind equations. He didn't.",quote:'"Put your hand on a hot stove for a minute. It feels like an hour. Sit with a pretty girl for an hour. It feels like a minute. That\'s relativity."',why:"Short sentences make complex ideas accessible. Long sentences create distance between the idea and understanding.",technique:"Break the concept into pieces. Explain each piece in one sentence.",lesson:"If Einstein could explain the universe in short sentences, you can explain your work the same way."},
+            {id:"chanel",name:"Coco Chanel",preview:"Chanel revolutionised fashion with one principle: Less is more.",quote:'"Fashion fades. Style remains."',why:"Each quote is a complete thought. No wasted words. Just precision.",technique:"Say what matters. Cut everything else.",lesson:"Elegance in communication is elimination. The best speakers know what to leave out."},
+            {id:"goodall",name:"Jane Goodall",preview:"Goodall spent 60 years studying chimpanzees. She could use scientific jargon. She chooses not to.",quote:'"What you do makes a difference. And you have to decide what kind of difference you want to make."',why:"Short sentences make science human. Long sentences make it distant.",technique:"State the discovery in one sentence. State why it matters in the next. Stop there.",lesson:"The best educators make the complex feel simple. Short sentences are how they do it."},
+          ].map(card=>(
+            <div key={card.id} onClick={()=>setD4MobCard(d4MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d4MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
+                <span style={{fontFamily:T.sans,fontSize:12,color:d4MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{d4MobCard===card.id?"▴ less":"▸ explore"}</span>
+              </div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
+              {d4MobCard===card.id && (
+                <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                  <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:12}}>{card.quote}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why It Works</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.why}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>The Technique</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.technique}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>AmplifyU Lesson</div>
+                  <p style={{fontFamily:T.sans,fontSize:15,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </>
+      )}
+      {isD4 && step==="Practice" && (
+        <>
+          <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Sentence Surgery Toolkit</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Practical exercises to cut without losing meaning.</p>
+          <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
+            <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>Exercise 1: The 15-Word Rule</div>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:12}}>Paste a long sentence. Get it split into short ones under 15 words each.</p>
+            <D4MobileSplit/>
+          </div>
+          <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
+            <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>Top Rules</div>
+            {["One idea per sentence. Full stop.","If you see 'and,' split the sentence.","Target: 15 words or fewer.","Cut every word that doesn't add meaning."].map((tip,i,arr)=>(
+              <div key={i} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none",alignItems:"flex-start"}}>
+                <span style={{color:T.gold,fontSize:14,flexShrink:0,fontWeight:700}}>✓</span>
+                <span style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,fontWeight:400}}>{tip}</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+      {isD4 && step==="Simulation" && (
+        <>
+          <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Speak in Short Sentences — 60 Seconds</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Write your response using only short sentences. Get a brevity score.</p>
+          <D4MobileSim/>
+        </>
+      )}
+       {/* ── D1 Mobile Steps ─────────────────────────────────────────────── */}
+      {isD1 && step==="Insight" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Clarity Wins</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Clear language makes ideas easier to understand, easier to remember, and easier to act on.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {D1_CLARITY_FACTS_DATA.map((n,i)=>{
+              const open = d1MobCard===("cf"+i);
+              return (
+                <div key={i} onClick={()=>setD1MobCard(open?null:"cf"+i)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:5}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 12px":0}}>{n.sub}</p>
+                  {open && (
+                    <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:8}}>
+                      {n.bullets.map((b,j)=>(
+                        <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                          <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/>
+                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>The clearest communicator is often the most influential.</p>
+        </>
+      )}
+      {isD1 && step==="Theory" && (
+        <>
+          <img src="/feynman-technique.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 20%",display:"none"}}/>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Feynman Technique</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Richard Feynman won the Nobel Prize — and could explain quantum mechanics to a 12-year-old.</p>
+          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"18px 20px",marginBottom:20,borderRadius:4}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>If you can't explain it simply, you don't understand it well enough.</p>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>His secret? The 4-step clarity loop:</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {[{label:"1. Understand",body:"Choose a concept and study it deeply."},{label:"2. Explain",body:"Teach it in simple words as if to someone else. No jargon."},{label:"3. Simplify",body:"When you stumble, that's a gap. Go back and fill it."},{label:"4. Refine",body:"Review, clarify, improve. Repeat until a child could follow."}].map((p,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{p.label}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{p.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Teaching forces you to understand. Simplifying forces you to think.</p>
+        </>
+      )}
+      {isD1 && step==="Example" && (
+        <>
+          <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Clear Communication</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how they do it.</p>
+          {[
+            {id:"attenborough",name:"David Attenborough",preview:"Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon. Instead, he uses language anyone can picture.",quote:'"The rainforest is like a vast, green lung breathing life into our planet."',why:"He translates scientific complexity into vivid, everyday language. You don't need a biology degree to understand the Amazon.",technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",lesson:"Clarity comes from choosing words that create images, not confusion."},
+            {id:"branson",name:"Sir Richard Branson",preview:"Branson built a global empire. But he speaks like he's chatting with a friend.",quote:'"We just try to make things better for people. If we do that, they\'ll choose us."',why:"He uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.",technique:"Remove every word a 10-year-old wouldn't understand. If what's left still makes sense, you've found clarity.",lesson:"The clearest speakers use the simplest words."},
+            {id:"brown",name:"Brené Brown",preview:"Brown spent 20 years researching vulnerability. She could hide behind academic language. She doesn't.",quote:'"Vulnerability is not weakness. It\'s the most accurate measure of courage."',why:"She distils complexity into a single, memorable idea. No theory. No jargon. Just truth you can use.",technique:'Ask: "If I had 10 seconds to explain this, what would I say?" That\'s your message.',lesson:"Complex ideas don't need complex language. The best thinkers can explain their work in one sentence."},
+            {id:"mobama",name:"Michelle Obama",preview:"Michelle Obama addresses millions on education, equality, leadership. Complex topics. High stakes. But her messages are always clear.",quote:'"When they go low, we go high."',why:"She takes big ideas and distils them into phrases you can remember and repeat. No wasted words.",technique:"Find the core of your message — the part that could fit on a bumper sticker. Build everything else around that.",lesson:"Clear communicators decide what people should remember, then say that first."},
+          ].map(card=>(
+            <div key={card.id} onClick={()=>setD1MobCard(d1MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d1MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
+                <span style={{fontFamily:T.sans,fontSize:12,color:d1MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{d1MobCard===card.id?"▴ less":"▸ explore"}</span>
+              </div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
+              {d1MobCard===card.id && (
+                <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                  <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:12}}>{card.quote}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why It Works</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.why}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>The Technique</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.technique}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>AmplifyU Lesson</div>
+                  <p style={{fontFamily:T.sans,fontSize:15,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </>
+      )}
+      {isD1 && step==="Practice" && (
+        <>
+          <D1ClarityChallenge T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
+        </>
+      )}
+      {isD1 && step==="Simulation" && (
+        <>
+          <D1SimWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+       {/* ── NT (Day 8) Mobile Steps ─────────────────────────────────────── */}
+      {isNT && step==="Insight" && (
+        <>
+          <img src="/narrative-transportation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Stories Change Minds</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Stories transport your audience into a different world. Facts inform. Stories transform.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {NT_NEURO.map((n,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Facts explain. Stories move people.</p>
+          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",marginTop:12,borderRadius:4}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>We are more engaged when we feel inside the story.</p>
+          </div>
+        </>
+      )}
+      {isNT && step==="Theory 1" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Dual Coding Theory</h2>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Green &amp; Brock, 2000</div>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Stories activate more of the brain than facts. They trigger emotion, memory, and meaning simultaneously. In professional settings, a well-placed story is the most powerful persuasion tool available.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {[
+              {word:"Verbal Channel",  body:"Story activates the brain's language system — the same channel that processes speech, argument, and logic. It carries your message with precision."},
+              {word:"Visual Channel",  body:"Story simultaneously triggers the brain's visual cortex, creating mental imagery. Facts alone never do this. Your audience sees what you describe."},
+              {word:"65% vs 10%",      body:"People retain 65% of information delivered through story. Only 10% from data alone. Story isn't decoration — it's the delivery mechanism."},
+              {word:"The Convergence", body:"Every skill you built in Week 1 — clarity, pace, structure, brevity — comes together in the moment you tell a story. This is where it all lands."},
+            ].map((n,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.7,marginTop:8}}>The brain encodes story. It files away data.</p>
+        </>
+      )}
+      {isNT && step==="Theory 2" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The 6-Beat Framework</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Every great story follows a learnable pattern. Master these six beats and you can tell any story.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {[
+              {n:1,beat:"Hook",         sub:"It starts with tension."},
+              {n:2,beat:"Character",    sub:"Make it human. Make it real."},
+              {n:3,beat:"Problem",      sub:"What broke? What's at stake?"},
+              {n:4,beat:"Turning Point",sub:"What changes? Everything shifts."},
+              {n:5,beat:"Resolution",   sub:"What happened? Why it matters."},
+              {n:6,beat:"Meaning",      sub:"What stayed with us?"},
+            ].map((b,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4}}>Beat {b.n}</div>
+                <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:4}}>{b.beat}</div>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{b.sub}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.7,marginTop:8}}>No tension = no story. No shift = no meaning.</p>
+        </>
+      )}
+      {isNT && step==="Example" && (
+        <>
+          <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Storytelling in the Wild</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore stories that changed minds.</p>
+          {[
+            {id:"obama8",name:"Barack Obama",preview:'Obama doesn\'t open with policy. He opens with story. His 2004 DNC speech: "My father was a foreign student, born and raised in a small village in Kenya..."',quote:'"Only in America is my story possible."',why:"Personal narrative creates emotional connection before logical argument. By the time he said that line, you were already invested.",technique:"Start with the human story. Then connect it to the point. People remember stories. They forget statistics.",lesson:"The strongest arguments begin with a story that makes the listener feel something before you ask them to think something."},
+            {id:"earthrise",name:"NASA's Earthrise",preview:"1968. Apollo 8 orbited the moon. William Anders took one photo: Earth rising over the lunar horizon.",quote:"A single image launched the environmental movement.",why:"The photo transported people into the astronaut's perspective. Suddenly, Earth wasn't an abstract concept. It was vulnerable. Worth protecting.",technique:"Find the moment that changes perspective. That's your story's centre.",lesson:"The most powerful stories don't argue. They transport. Show people a new view, and they'll draw their own conclusions."},
+            {id:"gawande",name:"Surgeon Atul Gawande",preview:"Gawande could publish dense medical papers. Instead, he tells stories.",quote:'"The Checklist Manifesto" changed medical practice globally.',why:"The research was strong. But the story made it unforgettable. Doctors didn't adopt checklists because of data. They adopted them because they saw themselves in Gawande's story.",technique:"Lead with the person facing the problem. Show their struggle. Show the solution. Show the result.",lesson:"Data informs. Stories transform. Give them a narrative they can see themselves in."},
+            {id:"cyber",name:"The Cyber Attack",preview:"A CISO needs budget for security. Facts alone won't convince the board.",quote:'"Last Tuesday at 3am, our systems went dark."',why:"Facts say \"this could happen.\" Stories say \"this happened. To us. It will happen again.\" The narrative transported the board into the future threat.",technique:"Three-act structure: what happened (Stakes), what went wrong (Obstacle), what it cost (Outcome).",lesson:"In high-stakes decisions, stories create urgency that facts can't."},
+            {id:"pixar",name:"The Pixar Framework",preview:"Pixar used the same story structure for every film. It works because it mirrors how the human brain processes experience.",quote:'"Once upon a time… Until one day… Until finally…"',why:"The framework creates a predictable emotional arc. The brain anticipates each beat — and releases tension when it arrives. That release is what makes stories memorable.",technique:"Once upon a time… / Every day… / Until one day… / Because of that… / Because of that… / Until finally… Apply it to any professional story.",lesson:"This simple framework works for a boardroom pitch as well as it works for a Pixar film. Structure is what separates a story from a sequence of events."},
+          ].map(card=>(
+            <div key={card.id} onClick={()=>setNtMobCard(ntMobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${ntMobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
+                <span style={{fontFamily:T.sans,fontSize:12,color:ntMobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{ntMobCard===card.id?"▴ less":"▸ explore"}</span>
+              </div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
+              {ntMobCard===card.id && (
+                <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                  <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:12}}>{card.quote}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why It Works</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.why}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>The Technique</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.technique}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>AmplifyU Lesson</div>
+                  <p style={{fontFamily:T.sans,fontSize:15,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </>
+      )}
+      {isNT && step==="Practice" && (
+        <>
+          <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Build Your Story</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Answer three questions. Your AI coach builds the story using the 6-beat arc.</p>
+          <StoryBuilderWidget onSave={s => { setNtStory(s); try { localStorage.setItem("au1_nt_story",s); } catch(_){} }}/>
+        </>
+      )}
+       {/* ── D9 (Day 9) Mobile Steps ─────────────────────────────────────── */}
+      {isD9 && step==="Insight" && (
+        <>
+          <div style={{background:T2.cardDark,borderRadius:2,padding:"20px"}}>
+            <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:"rgba(255,255,255,0.88)",lineHeight:1.5,margin:0}}>It's not what you say — it's how you say it. Great content delivered poorly is forgotten. Simple content delivered powerfully is remembered.</p>
+          </div>
+          <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The Delivery Contrast</div>
+            <div style={{padding:"10px 12px",background:"rgba(139,74,56,0.06)",borderRadius:3,borderLeft:"2px solid rgba(139,74,56,0.3)",marginBottom:8}}>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,margin:0}}>One rushes. No pauses. Monotone. Eyes down.</p>
+            </div>
+            <div style={{padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,margin:0}}>One slows down. Strategic pauses. Vocal variation. Eye contact.</p>
+            </div>
+          </div>
+        </>
+      )}
+      {isD9 && step==="Theory" && (
+        <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+          <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The 5 Ps of Powerful Delivery</div>
+          {D9_FIVE_PS.map((p,i) => (
+            <div key={i} style={{marginBottom:i<4?14:0,paddingBottom:i<4?14:0,borderBottom:i<4?"0.5px solid "+T2.divider:"none"}}>
+              <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4}}>
+                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,letterSpacing:"0.15em",textTransform:"uppercase"}}>{p.p}</span>
+                <span style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text}}>{p.heading}</span>
+              </div>
+              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:0}}>{p.body}</p>
+            </div>
+          ))}
+        </div>
+      )}
+      {isD9 && step==="Example" && (
+        <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Delivery Masters</div>
+          {[{name:"Brené Brown",lesson:"She doesn't perform. She connects. Pauses let the emotion land. Conversational tone = immediate trust."},
+            {name:"Simon Sinek",lesson:"He slows down on the big idea. Repetition builds rhythm. He lets the audience finish the thought."},
+            {name:"Amy Cuddy",lesson:"Her body tells the story before she speaks. The pause after 'BECOME it' is everything."},
+            {name:"Steve Jobs",lesson:"Strategic pauses build anticipation. Precision in language = clarity in impact."}].map((ex,i)=>(
+            <div key={i} style={{marginBottom:i<3?14:0,paddingBottom:i<3?14:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
+              <div style={{fontSize:12,fontWeight:600,color:T.goldDark,marginBottom:4}}>{ex.name}</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,margin:0}}>{ex.lesson}</p>
+            </div>
+          ))}
+        </div>
+      )}
+      {isD9 && step==="Practice" && (
+        <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+          <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>AI Delivery Coach</div>
+          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text2,lineHeight:1.7,marginBottom:16}}>Your Day 8 story loads automatically. Work through 5 delivery refinements.</p>
+          <DeliveryCoachWidget onSave={s => { setD9Script(s); try { localStorage.setItem("au1_d9_script",s); } catch(_){} }}/>
+        </div>
+      )}
+      {isD9 && step==="Simulation" && (
+        <>
+          {d9Script ? (
+            <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px",borderLeft:"2px solid "+T.gold}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Your Delivery Script</div>
+              <p style={{fontFamily:T.serif,fontSize:13,color:T2.text,lineHeight:1.75,margin:0,whiteSpace:"pre-wrap"}}>{d9Script}</p>
+            </div>
+          ) : (
+            <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px"}}>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontStyle:"italic",margin:0}}>Go back to Practice to prepare your delivery script first.</p>
+            </div>
+          )}
+          <Timer totalSecs={180} label="Deliver your story — 3 minutes"/>
+        </>
+      )}
+       {/* ── Generic steps (all other days) ─────────────────────────────── */}
+      {/* ── D5 Mobile Steps ─────────────────────────────────────────────── */}
+      {isD5 && step==="Insight" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Structure Wins</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Structure is how you organise your thinking before you speak. PRE helps you do that: start with your point, explain why it matters, then bring it to life with an example.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {[
+              {word:"Credibility",  body:"Leading with your point signals clear thinking. Structured communication creates immediate credibility and helps your ideas land with confidence and authority."},
+              {word:"Recall",       body:"Structured messages are 40% more memorable. A clear beginning, middle and end helps your audience store and retrieve your message with ease."},
+              {word:"Persuasion",   body:"Great ideas rarely persuade on their own — structure is what makes them land. PRE helps you present a clear point, support it with logic, and reinforce it with proof that moves people to action."},
+              {word:"Decision Speed", body:"Leaders decide faster when communication is structured. Lead with your point and you accelerate every conversation you're in."},
+            ].map((n,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Structure is the backbone of every powerful communication.</p>
+        </>
+      )}
+      {isD5 && step==="Theory" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The PRE Framework</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Two powerful findings from memory science explain exactly why PRE works — and why it's one of the most reliable communication frameworks available.</p>
+          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"18px 20px",marginBottom:20,borderRadius:4}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>People remember the beginning and end of information most clearly. The middle is forgotten.</p>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
+            {[
+              {n:"Point",    role:"Strong opening anchor",    body:"Lead with your conclusion. The brain locks onto the first thing it hears — give it something worth remembering."},
+              {n:"Reason",   role:"Cognitive bridge",          body:"Connect your point to meaning. This is how you make the idea stick — not just land."},
+              {n:"Example",  role:"Memorable closing proof",   body:"Finish with evidence. The recency effect means your example is the last thing heard — and the most recalled."},
+              {n:"Processing Fluency", role:"The multiplier", body:"Clear, easy-to-follow ideas are perceived as more intelligent, credible, and persuasive. PRE delivers that clarity every time."},
+            ].map((b,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4,textTransform:"uppercase",letterSpacing:"1px"}}>{b.n}</div>
+                <div style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T2.text,marginBottom:4}}>{b.role}</div>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{b.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:4}}>PRE isn't just structure — it's how the brain naturally wants to receive information.</p>
+        </>
+      )}
+      {isD5 && step==="Example" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>PRE in Action</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to see how world-class leaders use PRE — whether they name it or not.</p>
+          {[
+            {id:"nooyi",name:"Indra Nooyi",preview:"CEO of PepsiCo.",
+              point:'"Performance must be married with purpose."',
+              reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing."',
+              example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people."',
+              proof:"At PepsiCo this became tangible action: healthier product innovation, reducing sugar, salt and fat, sustainability initiatives, packaging redesign, and environmental commitments. She didn't leave it as philosophy — she operationalised it.",
+              lesson:"Point → big strategic belief. Reason → why the market demands it. Example → concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
+            {id:"huang",name:"Jensen Huang",preview:"Founder of Nvidia.",
+              point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
+              reason:'"And the goal of winning is so that you can play again."',
+              example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."',
+              proof:"NVIDIA itself — for years, GPUs were niche, gaming seemed narrow, and AI wasn't commercially obvious. NVIDIA kept making bets and staying in the game until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth.",
+              lesson:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof. Said in 1993 — decades before the breakthrough that proved it true. That's what powerful communicators do."},
+          ].map(card=>(
+            <div key={card.id} onClick={()=>setD5MobCard(d5MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d5MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
+                <span style={{fontFamily:T.sans,fontSize:12,color:d5MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{d5MobCard===card.id?"▴ less":"▸ explore"}</span>
+              </div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
+              {d5MobCard===card.id && (
+                <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                  {["Point","Reason","Example"].map((label,i)=>(
+                    <div key={i} style={{marginBottom:14}}>
+                      <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{label}</div>
+                      <p style={{fontFamily:T.serif,fontSize:16,fontWeight:500,color:T2.text,lineHeight:1.5,fontStyle:"italic",margin:0}}>{[card.point,card.reason,card.example][i]}</p>
+                    </div>
+                  ))}
+                  {card.proof && (
+                    <div style={{marginBottom:14}}>
+                      <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{card.id==="huang"?"Nvidia Is The Proof":"PepsiCo Is The Proof"}</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.proof}</p>
+                    </div>
+                  )}
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why This Works</div>
+                  <p style={{fontFamily:T.serif,fontSize:16,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </>
+      )}
+       {isD2 && step==="Practice" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Train Your Instrument</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Voice requires repetition. Work through each exercise then take the speed challenge.</p>
+          <D2PracticeWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {isD2 && step==="Simulation" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Real-World Voice Coaching</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Pick a scenario. Write what you'd say. Your AI coach evaluates your delivery across six dimensions.</p>
+          <D2SimWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {isD2 && step==="Theory" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>The 88 Keys</h2>
+          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",marginBottom:20,borderRadius:4}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0,fontStyle:"italic"}}>"Your voice is a piano with 88 keys. You've been playing the same 5 your whole life."</p>
+          </div>
+          {/* Science cards — expandable */}
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>The Science of Vocal Influence</div>
+          {[
+            {label:"Prosody",            sub:"Your voice carries meaning before words do",   bullets:["Humans decode emotion through rhythm, pitch, pace, and stress — faster than language itself.","The way you say something communicates intent, confidence, and feeling before the content registers."]},
+            {label:"Processing Fluency", sub:"Easy to hear = easy to trust",                 bullets:["Clear, varied, well-paced speech signals intelligence. The brain equates 'easy to process' with credibility.","Flat or rushed delivery creates cognitive friction — and the listener associates that friction with the speaker."]},
+            {label:"Vocal Contrast",     sub:"Variation is what keeps people in the room",  bullets:["The same reason music works: contrast creates anticipation and emotional engagement.","No variation is cognitive wallpaper — it fades into the background within seconds, no matter how important the message."]},
+          ].map((sc,i)=>{
+            const open = d2MobCard===("d2t"+i);
+            return (
+              <div key={i} onClick={()=>setD2MobCard(open?null:"d2t"+i)}
+                style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px 16px",marginBottom:10,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?6:4}}>
+                  <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,flex:1}}>{sc.label}</div>
+                  <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                </div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 10px":0}}>{sc.sub}</p>
+                {open && (
+                  <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
+                    {sc.bullets.map((b,j)=>(
+                      <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                        <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
+                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+          {/* 4 levers grid */}
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10,marginTop:4}}>The Four Levers</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>
+            {[
+              {word:"Pace",  body:"Speed up to create energy. Slow down to signal importance."},
+              {word:"Pitch", body:"Rise to engage. Drop to command."},
+              {word:"Pause", body:"The silence that makes the next word hit harder."},
+              {word:"Power", body:"Volume as intention, not volume as effort."},
+            ].map((n,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          {/* Audio interaction */}
+          <div style={{background:T2.cardDark,borderRadius:8,padding:"20px",marginBottom:4}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Hear the Difference</div>
+            <p style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"rgba(245,239,230,0.9)",marginBottom:16,lineHeight:1.3}}>"I think this could work."</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:16}}>
+              {["Fast","Slow","High Pitch","Low Pitch","Monotone","Warm / Confident"].map((label,i)=>(
+                <button key={i} style={{
+                  background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",
+                  borderRadius:6,padding:"10px 6px",cursor:"pointer",
+                  display:"flex",flexDirection:"column",alignItems:"center",gap:6,
+                  fontFamily:T.sans,minHeight:32,
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(138,158,132,0.8)" strokeWidth="1.2"/><path d="M5.5 4.5l4 2.5-4 2.5V4.5z" fill="rgba(138,158,132,0.8)"/></svg>
+                  <span style={{fontSize:10,color:"rgba(245,239,230,0.6)",fontWeight:500,textAlign:"center",lineHeight:1.2}}>{label}</span>
+                </button>
+              ))}
+            </div>
+            <div style={{borderTop:"0.5px solid rgba(255,255,255,0.08)",paddingTop:14}}>
+              <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.6}}>What changed? Not the words. The meaning.</p>
+            </div>
+          </div>
+        </>
+      )}
+       {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && !isD11 && step==="Insight" && (
+        <>
+          <div
+style={{background:T2.cardDark,borderRadius:2,padding:"26px 24px",position:"relative",overflow:"hidden"}}>
+            <div
+style={{position:"absolute",top:-10,right:10,fontSize:100,lineHeight:1,color:"rgba(255,255,255,0.04)",fontFamily:T.serif}}>"</div>
+            <p
+style={{fontFamily:T.serif,fontSize:20,fontStyle:"italic",color:"rgba(255,255,255,0.88)",lineHeight:1.5,margin:0}}>{lesson.quote}</p>
+          </div>
+          <div
+style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
+            <div
+style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Today's
+Insight</div>
+            <p
+style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.insight}</p>
+          </div>
+          {lesson.day !== 1 && (
+            <div style={{background:T2.goldLight,borderRadius:0,borderLeft:"2px solid "+T.gold,padding:"14px 16px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>PIE Connection</div>
+              <p style={{margin:0,fontSize:13,color:T.goldDark,lineHeight:1.55}}>{lesson.pieLink}</p>
+            </div>
+          )}
+        </>
+      )}
+       {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && !isD11 && step==="Theory" && <TheoryCard day={lesson.day}/>}
+       {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && !isD11 && step==="Example" && (
+        <>
+          <div style={{background:"#FDF0EE",border:"1px solid #F0C5C0",borderRadius:2,padding:"16px 18px"}}>
+            <div
+style={{fontSize:10,fontWeight:700,color:T.red,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Not
+this</div>
+            <p
+style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:"#5C1A14",lineHeight:1.55,margin:0}}>{lesson.bad}</p>
+          </div>
+          <div style={{background:"#EBF0EB",border:"1px solid #A8C4A4",borderRadius:2,padding:"16px 18px"}}>
+            <div
+style={{fontSize:10,fontWeight:700,color:T.green,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Say
+this instead</div>
+            <p
+style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:"#2C4A38",lineHeight:1.55,margin:0}}>{lesson.good}</p>
+          </div>
+          <div
+style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
+            <div
+style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Starter
+Phrases</div>
+            {lesson.phrases.map((ph,i) => (
+              <div key={i}
+style={{display:"flex",alignItems:"center",gap:10,padding:"9px 0",borderBottom:i<lesson.phrases.length-1?"1px solid "+T2.divider:"none"}}>
+                <div
+style={{width:2,height:2,borderRadius:0,background:T.gold,flexShrink:0}}/>
+                <p
+style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+       {isD5 && step==="Practice" && (
+        <>
+          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",borderRadius:4}}>
+            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"If you can explain everyday decisions using PRE, you'll be able to use it in meetings, interviews, presentations, and high-stakes conversations without thinking."</p>
+          </div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>PRE Examples</div>
+          <D5PracticeWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {isD6 && step==="Insight" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Why Composure Wins</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Stay Calm Under Pressure</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most people communicate well when conversations are easy. But leadership, trust, and reputation are often shaped in moments of tension.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {[
+              {word:"Emotion",    body:"Stress narrows thinking and makes reactive communication more likely. Composure keeps your thinking wide open when it matters most."},
+              {word:"Perception", body:"When others escalate, composure signals leadership. Calm in the room reads as confidence — and earns instant credibility."},
+              {word:"Influence",  body:"Your emotional state affects everyone around you. Calm is contagious. The steadiest person shapes the entire dynamic."},
+              {word:"Outcome",    body:"Anyone can communicate well when things are easy. The conversations that define your career happen under pressure."},
+            ].map((n,i) => (
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Composure is communication under pressure.</p>
+        </>
+      )}
+      {isD6 && step==="Theory" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science of Composure</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>What Happens Under Pressure</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>High-stakes conversations trigger biology before logic. Elite communicators understand the mechanics — and train to override them.</p>
+          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",marginBottom:16,borderRadius:4}}>
+            <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>The strongest communicator is often the calmest person in the room.</p>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
+            {[
+              {n:"Threat Response",      role:"Biology before logic",        body:"Criticism and conflict trigger fight-or-flight — faster speech, defensive tone, poor listening, impulsive reactions."},
+              {n:"Emotional Regulation", role:"Pause before performance",    body:"Breathe lower. Slow your pace. Use shorter responses. Strategic silence does the work before your words do."},
+              {n:"Framing",             role:"Language changes temperature", body:"'You're wrong' escalates. 'I see this differently' opens space. Same disagreement — completely different outcome."},
+              {n:"Listening",           role:"Being heard starts with hearing", body:"People de-escalate when they feel understood. Composure includes genuinely hearing — not just waiting to respond."},
+            ].map((b,i) => (
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4,textTransform:"uppercase",letterSpacing:"1px"}}>{b.n}</div>
+                <div style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T2.text,marginBottom:4}}>{b.role}</div>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{b.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:4}}>Composure isn't the absence of pressure — it's what you build so pressure doesn't change you.</p>
+        </>
+      )}
+      {isD6 && step==="Example" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters Under Pressure</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how world-class communicators handle difficult moments.</p>
+          {[
+            {id:"obama",name:"Barack Obama",preview:"44th President — Measured Under Fire.",
+             quote:'"If you\'re walking down the right path and you\'re willing to keep walking, eventually you\'ll make progress."',
+             what:["deliberate pace","controlled tone","emotional restraint","strategic pauses","executive calm"],
+             lesson:"Pressure rewards composure. Obama demonstrated that you can engage with the hardest questions without being destabilised by them.",
+             practice:'"I understand your concern, but I see it differently." — Try it defensive, calm, dismissive, then composed authority.'},
+            {id:"brown",name:"Brené Brown",preview:"Research Professor — Strength Through Vulnerability.",
+             quote:'"Clear is kind."',
+             what:["warmth without weakness","honest delivery","grounded presence","emotional steadiness"],
+             lesson:"Clarity and empathy can coexist. Difficult conversations often land better — not softer — when directness replaces avoidance.",
+             practice:'"I wanted to raise something difficult." — Try it nervous, compassionate, overly apologetic, then clear and calm.'},
+          ].map(card => (
+            <div key={card.id} onClick={()=>setD6MobCard(d6MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d6MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
+                <span style={{fontFamily:T.sans,fontSize:12,color:d6MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0}}>{d6MobCard===card.id?"▴ less":"▸ explore"}</span>
+              </div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
+              {d6MobCard===card.id && (
+                <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Quote</div>
+                  <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:"0 0 14px"}}>{card.quote}</p>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>What makes it powerful</div>
+                  {card.what.map((w,i)=>(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
+                      <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0}}/>
+                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:300}}>{w}</span>
+                    </div>
+                  ))}
+                  <div style={{marginTop:12}}>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Lesson</div>
+                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:"0 0 12px"}}>{card.lesson}</p>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Try it</div>
+                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,margin:0}}>{card.practice}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:4}}>Pressure doesn't create communication habits. It reveals them.</p>
+        </>
+      )}
+      {isD6 && step==="Practice" && (
+        <>
+          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"14px 16px",borderRadius:4}}>
+            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"The phrases that work best under pressure are the ones you've practised until they feel natural — not rehearsed."</p>
+          </div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>Scenario Drills</div>
+          <D6PracticeWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {isD6 && step==="Simulation" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Real-World Conversation Coaching</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Choose a scenario. Write your response. Your coach evaluates composure, clarity, empathy, and executive presence.</p>
+          <D6SimWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {isD11 && step==="Insight" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Why Image Matters</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Perception Is Built From Signals</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most people let others form assumptions about them by default. The most effective communicators choose their signals intentionally.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {D11_FACTS.map((n,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 6px"}}>{n.body}</p>
+                <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,fontStyle:"italic"}}>{n.source}</div>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Be your brand.</p>
+        </>
+      )}
+      {isD11 && step==="Theory" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science of Personal Brand</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Halo Effect</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>When people notice one standout positive trait, they often assume other positive qualities must be true too.</p>
+           {/* Aligned signal table */}
+          <div style={{border:"0.5px solid "+T2.border,borderRadius:4,overflow:"hidden",marginBottom:14}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 24px 1fr",background:T2.surface,padding:"8px 14px",borderBottom:"0.5px solid "+T2.divider}}>
+              <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px"}}>You appear</span>
+              <span/>
+              <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px"}}>They assume</span>
+            </div>
+            {[["Articulate","Intelligence"],["Calm","Competence"],["Stylish","Success"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([s,r],i,arr)=>(
+              <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 24px 1fr",alignItems:"center",padding:"11px 14px",background:i%2===0?T2.bg:T2.surface,borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none"}}>
+                <span style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:T2.text}}>{s}</span>
+                <span style={{fontFamily:T.sans,fontSize:13,color:T.gold,textAlign:"center",fontWeight:300}}>→</span>
+                <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T.gold}}>{r}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{padding:"12px 14px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T2.border,marginBottom:20}}>
+            <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text2,lineHeight:1.6,margin:0}}>"People rarely remember everything about you. They remember the strongest signal you gave them."</p>
+          </div>
+           {/* Brand formula */}
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>The Brand Formula</div>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:12}}>Six ingredients. Tap any to expand.</p>
+          {D11_INGREDIENTS.map((ing,i)=>{
+            const open = d11MobCard===("ing"+i);
+            return (
+              <div key={i} onClick={()=>setD11MobCard(open?null:"ing"+i)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"14px",marginBottom:8,cursor:"pointer",transition:"border-color 0.2s"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{width:24,height:24,borderRadius:"50%",background:open?T.gold:"rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
+                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"white"}}>{i+1}</span>
+                  </div>
+                  <div style={{flex:1}}>
+                    <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text}}>{ing.n}</span>
+                    <span style={{fontFamily:T.sans,fontSize:12,color:T2.text4,marginLeft:8}}>{ing.tagline}</span>
+                  </div>
+                  <span style={{fontFamily:T.sans,fontSize:11,color:open?T.gold:T2.text4}}>{open?"▴":"▸"}</span>
+                </div>
+                {open && (
+                  <div style={{marginTop:12,paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.65,fontWeight:300,margin:"0 0 10px"}}>{ing.body}</p>
+                    <div style={{padding:"8px 10px",background:"rgba(247,243,236,0.7)",borderRadius:3,marginBottom:8}}>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1px",marginBottom:3}}>{ing.psych}</div>
+                      <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{ing.psychBody}</p>
+                    </div>
+                    <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold}}>→ {ing.takeaway}</div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+           <div style={{padding:"14px 16px",background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,borderRadius:4,marginTop:4}}>
+            <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.6}}>Your brand is the story people tell themselves about you after repeated exposure.</p>
+          </div>
+        </>
+      )}
+      {isD11 && step==="Example" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Iconic Brands. Intentional Choices.</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how these brand icons built recognition through deliberate signals.</p>
+          {D11_EXAMPLES.map(card=>{
+            const open = d11MobCard===card.id;
+            return (
+              <div key={card.id} onClick={()=>setD11MobCard(open?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
+                  <div>
+                    <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:2}}>{card.name}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>{card.role}</div>
+                  </div>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:open?T.gold:T2.text3,marginLeft:10,flexShrink:0}}>{open?"▴ less":"▸ explore"}</span>
+                </div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{card.headline}</p>
+                {open && (
+                  <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:300,marginBottom:12}}>{card.body}</p>
+                    {card.ingredients && (
+                      <div style={{marginBottom:14}}>
+                        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Brand Formula Map</div>
+                        {card.ingredients.map((ing,i)=>(
+                          <div key={i} style={{display:"flex",gap:8,paddingBottom:10,marginBottom:10,borderBottom:i<card.ingredients.length-1?"0.5px solid rgba(138,158,132,0.15)":"none",alignItems:"flex-start"}}>
+                            <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.15)",border:"0.5px solid "+T.gold,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                              <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
+                            </div>
+                            <div>
+                              <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text,marginBottom:2}}>{ing.n}</div>
+                              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>{ing.detail}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Lesson</div>
+                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>{card.lesson}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </>
+      )}
+      {isD11 && step==="Practice" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Build Your Brand</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Three exercises. Each builds a different layer of your brand architecture.</p>
+          <D11PracticeWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {isD11 && step==="Simulation" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Your Brand Coach</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Four scenarios where your brand is built or broken. Write your response and get coached.</p>
+          <D11SimWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD10 && !isD11 && step==="Practice" && (
+        <>
+          <div
+style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
+            <div
+style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Your
+Practice</div>
+            <p
+style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.practice}</p>
+          </div>
+          <Timer totalSecs={180} label="3 minutes"/>
+          <div
+style={{background:T2.goldLight,borderRadius:0,borderLeft:"2px solid "+T.gold,padding:"14px 16px"}}>
+            <p
+style={{margin:0,fontSize:13,color:T.goldDark,lineHeight:1.5}}>Speak out
+loud first. Then use the coach below to polish your response into
+something you can use in real life.</p>
+          </div>
+          <CoachWidget lesson={lesson} scenario={null}/>
+        </>
+      )}
+       {!isD1 && !isD2 && !isD6 && !isD11 && step==="Simulation" && (
+        <>
+          {(()=>{
+            const scenarios = roleId ? getScenariosForDay(roleId,
+lesson.day) : lesson.scenarios;
+            const activeSc = scenarios[selSc] || scenarios[0];
+            return (
+              <>
+                {/* Role badge + scenario switcher in one row */}
+                <div 
+style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
+                  {activeRole ? (
+                    <div 
+style={{display:"flex",alignItems:"center",gap:6,padding:"6px 10px",background:T.navy,borderRadius:8,border:"1px solid rgba(138,158,132,0.2)",flexShrink:0}}>
+                      <span 
+style={{color:T.gold,fontSize:12}}>{activeRole.icon}</span>
+                      <span 
+style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.65)"}}>{activeRole.label}</span>
+                    </div>
+                  ) : <div/>}
+                  {/* Scenario number switcher — numbers only, no 
+repeated text */}
+                  <div 
+style={{display:"flex",gap:6,alignItems:"center"}}>
+                    <span 
+style={{fontSize:10,color:T2.text4,marginRight:2}}>Scenario:</span>
+                    {scenarios.map((_,i) => (
+                      <button key={i} onClick={()=>setSelSc(i)} style={{
+                        width:32,height:32,minHeight:32,borderRadius:"50%",
+                        border:"1px solid "+(selSc===i?T.navy:T.border),
+                        background:selSc===i?T.navy:"transparent",
+                        color:selSc===i?"white":T.text3,
+                        fontSize:12,fontWeight:700,cursor:"pointer",
+                        display:"flex",alignItems:"center",justifyContent:"center",
+                        padding:0,flexShrink:0,
+                      }}>{i+1}</button>
+                    ))}
+                  </div>
+                </div>
+                {/* Scenario text shown once, prominently */}
+                <div 
+style={{background:T2.cardDark,borderRadius:2,padding:"26px 24px"}}>
+                  <div 
+style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.45)",textTransform:"uppercase",letterSpacing:2,marginBottom:12}}>Your 
+scenario</div>
+                  <p 
+style={{fontFamily:T.serif,fontSize:21,fontWeight:600,color:"white",lineHeight:1.4,margin:0}}>{activeSc}</p>
+                </div>
+                <Timer totalSecs={180} label="Speak for up to 3 
+minutes"/>
+              </>
+            );
+          })()}
+          <div 
+style={{background:T2.surface,borderRadius:2,padding:"14px 16px"}}>
+            <div 
+style={{fontSize:11,fontWeight:600,color:T2.text3,marginBottom:10}}>Strong 
+responses always:</div>
+            {["State your point clearly","Give one reason","Add a real example"].map((txt,i) => (
+              <div key={i} 
+style={{display:"flex",alignItems:"center",gap:10,marginBottom:i<2?8:0}}>
+                <svg width="16" height="16" viewBox="0 0 16 16" 
+fill="none"><circle cx="8" cy="8" r="7" stroke={T.gold} 
+strokeWidth="1"/><path d="M5 8l2 2 4-4" stroke={T.gold} strokeWidth="1.3" 
+strokeLinecap="round"/></svg>
+                <span style={{fontSize:13,color:T2.text2}}>{txt}</span>
+              </div>
+            ))}
+          </div>
+          <CoachWidget lesson={lesson} scenario={(roleId ? 
+getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[selSc] || 
+(roleId ? getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[0]}/>
+        </>
+      )}
+       {step==="Review" && (
+        <>
+          {/* Header */}
+          <div style={{padding:"28px 24px 4px"}}>
+            <div style={{fontSize:11,fontWeight:500,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:16,fontFamily:T.sans}}>Day {lesson.day} Complete ✓</div>
+            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.05,letterSpacing:"-0.5px",marginBottom:12}}>Go Deeper</h2>
+            <p style={{fontFamily:T.sans,fontSize:14,fontWeight:300,color:T2.text2,lineHeight:1.65,marginBottom:0}}>You've learned the techniques. These books will make you unstoppable.</p>
+          </div>
+           {/* Book cards */}
+          {(()=>{
+            const fr = FURTHER_READING[lesson.day-1];
+            if(!fr) return null;
+            return fr.books.map((book,bi)=>{
+              const saved = savedBooks.includes(book.title);
+              return (
+                <div key={bi} style={{background:"white",borderRadius:8,margin:"0 4px",boxShadow:"0 2px 8px rgba(44,36,22,0.08),0 8px 24px rgba(44,36,22,0.04)",overflow:"hidden"}}>
+                  {/* Cover + info row */}
+                  <div style={{display:"flex",gap:0,alignItems:"stretch"}}>
+                    {/* Cover */}
+                    <div style={{width:110,flexShrink:0,background:"linear-gradient(145deg,#2C2416 0%,#4A3828 55%,#2C2416 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"16px 10px",textAlign:"center",position:"relative"}}>
+                      <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.3))"}}/>
+                      <p style={{fontFamily:T.serif,fontSize:11,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,marginBottom:8}}>{book.title}</p>
+                      <div style={{width:20,height:1,background:T.gold,opacity:0.5,marginBottom:8}}/>
+                      <p style={{fontFamily:T.sans,fontSize:9,color:"rgba(245,239,230,0.5)",letterSpacing:"0.3px"}}>{book.author}</p>
+                    </div>
+                    {/* Info */}
+                    <div style={{flex:1,padding:"18px 16px"}}>
+                      <h3 style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"#2C2416",marginBottom:4,letterSpacing:"-0.2px"}}>{book.title}</h3>
+                      <p style={{fontFamily:T.sans,fontSize:12,color:"#6B5E44",marginBottom:12}}>{book.author}</p>
+                      {book.quote && (
+                        <p style={{fontFamily:T.sans,fontSize:13,fontStyle:"italic",color:"#2C2416",lineHeight:1.55,marginBottom:10,borderLeft:"3px solid "+T.gold,paddingLeft:10}}>
+                          <span style={{color:T.gold,fontStyle:"normal"}}>"</span>{book.quote}<span style={{color:T.gold,fontStyle:"normal"}}>"</span>
+                        </p>
+                      )}
+                      {book.rating && (
+                        <p style={{fontFamily:T.sans,fontSize:12,color:"#8A7B66",marginBottom:0}}>
+                          <span style={{color:"#C9A227"}}>★★★★★</span> {book.rating}/5 · {book.reviewCount}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {/* Why + actions */}
+                  {book.why && (
+                    <div style={{padding:"14px 16px 0",borderTop:"0.5px solid #EDE8DF"}}>
+                      <div style={{fontSize:10,fontWeight:600,textTransform:"uppercase",letterSpacing:"1.5px",color:T.gold,fontFamily:T.sans,marginBottom:6}}>Why this book</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:"#2C2416",lineHeight:1.65,fontWeight:300,marginBottom:14}}>{book.why}</p>
+                    </div>
+                  )}
+                  <div style={{display:"flex",gap:10,padding:"0 16px 18px"}}>
+                    <a href={book.amazon} target="_blank" rel="noreferrer"
+                      style={{flex:1,display:"block",background:"#2C2416",color:"#F7F3EC",padding:"11px 0",borderRadius:4,fontFamily:T.sans,fontSize:13,fontWeight:600,textDecoration:"none",textAlign:"center"}}>
+                      Buy on Amazon →
+                    </a>
+                    <button onClick={()=>saveBook(book.title)} style={{flex:1,background:"transparent",color:saved?T.gold:"#8A7B66",border:"1px solid "+(saved?T.gold:"#DDD5C4"),padding:"11px 0",borderRadius:4,fontFamily:T.sans,fontSize:13,fontWeight:500,cursor:"pointer"}}>
+                      {saved?"✓ Saved":"+ Save to List"}
+                    </button>
+                  </div>
+                </div>
+              );
+            });
+          })()}
+           {/* What You Practised Today accordion */}
+          <div style={{borderTop:"1px solid rgba(138,158,132,0.25)",margin:"0 4px",paddingTop:20,cursor:"pointer"}} onClick={()=>setAccordionOpen(o=>!o)}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 4px"}}>
+              <div style={{fontFamily:T.sans,fontSize:15,fontWeight:500,color:T2.text}}>What You Practised Today</div>
+              <span style={{fontSize:16,color:T2.text3,transition:"transform 0.2s",transform:accordionOpen?"rotate(180deg)":"none",display:"inline-block"}}>▾</span>
+            </div>
+            {accordionOpen && (
+              <div style={{marginTop:16,padding:"0 4px"}}>
+                {REVIEW_BULLETS[lesson.day-1].map((b,i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10}}>
+                    <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.15)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>
+                      <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                    <span style={{fontFamily:T.sans,fontSize:14,color:T2.text2,lineHeight:1.6}}>{b}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+           {/* Ambition Statement — only on Day 7 */}
+          {lesson.day === 7 && (
+            <div style={{background:T.cardDark,borderRadius:8,overflow:"hidden",border:"1px solid rgba(138,158,132,0.2)",margin:"0 4px"}}>
+              <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.15))"}}/>
+              <div style={{padding:"16px 18px 18px"}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                  <span style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>Your Ambition Statement</span>
+                  {ambitionSaved && <span style={{marginLeft:"auto",fontSize:10,color:T.gold,background:"rgba(138,158,132,0.12)",padding:"2px 8px",borderRadius:8}}>Saved ✓</span>}
+                </div>
+                <p style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.6,marginBottom:12}}>Complete this sentence. Say it as if you're telling a trusted senior leader — one sentence, direct, owned.</p>
+                <textarea value={ambitionDraft} onChange={e=>saveAmbition(e.target.value)} placeholder="…operating at director level, leading a team that matters…" rows={2} style={{width:"100%",padding:"10px 14px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,outline:"none",resize:"none",background:"rgba(255,255,255,0.05)",fontSize:13,color:"rgba(255,255,255,0.85)",lineHeight:1.55,fontFamily:T.sans,boxSizing:"border-box"}}/>
+              </div>
+            </div>
+          )}
+           {/* Next session CTA */}
+          {(()=>{
+            const nextDay = lesson.day < 14 ? lesson.day + 1 : null;
+            return (
+              <button onClick={onComplete} style={{width:"100%",background:T.gold,color:"#F5EFE6",padding:"18px",borderRadius:4,border:"none",fontFamily:T.sans,fontSize:15,fontWeight:600,cursor:"pointer",textAlign:"center"}}>
+                {nextDay ? `Next: Day ${nextDay} — ${LESSONS[nextDay-1]?.title} →` : "Complete Programme →"}
+              </button>
+            );
+          })()}
+        </>
+      )}
+       {/* Navigation */}
+      <div style={{display:"flex",gap:10,paddingBottom:8,paddingTop:6}}>
+        {idx > 0 && (
+          <button onClick={()=>setIdx(i=>i-1)} style={{
+            padding:"14px 18px",borderRadius:14,
+            border:"1px solid "+T2.border,
+            background:T2.surface,color:T2.text3,
+            fontSize:12,fontWeight:500,cursor:"pointer",
+            display:"flex",alignItems:"center",gap:5,flexShrink:0,
+          }}>
+            <svg width="12" height="12" viewBox="0 0 14 14" 
+fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.6" 
+strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Previous
+          </button>
+        )}
+        {idx < STEPS.length-1 && (
+          <button onClick={()=>setIdx(i=>i+1)} style={{
+            flex:1,
+            padding:"18px 20px",
+            borderRadius:14,
+            border:"none",
+            background:idx===0
+              ? "linear-gradient(135deg,"+T.gold+" 0%,"+T.goldDark+" 100%)"
+              : "linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
+            color:"white",
+            fontSize:15,fontWeight:700,
+            cursor:"pointer",
+            
+display:"flex",alignItems:"center",justifyContent:"center",gap:10,
+            boxShadow:idx===0?"0 4px 16px rgba(138,158,132,0.35)":"0 4px 16px rgba(17,28,46,0.3)",
+            letterSpacing:"0.2px",
+          }}>
+            <span>{isNT
+              ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Practice":NAV_LABELS[idx])
+              : NAV_LABELS[idx]}</span>
+            <svg width="18" height="18" viewBox="0 0 18 18" 
+fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="white" strokeWidth="2" 
+strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+        )}
+      </div>
+      <div style={{
+        display:"flex",alignItems:"center",justifyContent:"center",
+        gap:5,paddingBottom:24,
+      }}>
+        {STEPS.map((s,i) => (
+          <div key={s} style={{
+            width:i===idx?24:6,height:6,borderRadius:3,
+            background:i===idx?T.navy:i<idx?T.gold:T.border,
+            transition:"all 0.3s",
+          }}/>
+        ))}
+        <span 
+style={{fontSize:10,color:T2.text4,marginLeft:6,fontWeight:500}}>{idx+1} / 
+{STEPS.length}</span>
+      </div>
+    </div>
+  </div>
+);
+}

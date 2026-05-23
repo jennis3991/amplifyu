@@ -630,3 +630,93 @@ export const NT_STORY_TYPES = [
 export const SESSION_STEPS =
 ["Insight","Theory","Example","Practice","Simulation","Review"];
 export const NAV_LABELS = ["See the theory","See examples","Start practice","Go to simulation","Go to review"];
+
+// ─── Session constants (pure data, no JSX)
+export const D10_FACTS = [
+  { word:"Visibility",   body:"Great work deserves to be known. Communicating your impact clearly isn't self-promotion — it's making sure your contributions can create the change they're meant to." },
+  { word:"Attribution",  body:"You've done the work. Now make sure the right people can see it. Telling your own story clearly is how your effort gets recognised and built upon." },
+  { word:"Credibility",  body:"When you can articulate what you deliver in clear, confident terms, people trust you more — and give you the opportunity to deliver more." },
+  { word:"Opportunity",  body:"The leaders who can open doors for you can only act on what they know. Help them help you by communicating your impact with clarity and conviction." },
+];
+
+export const D3_FACTS = [
+  { word:"Trust",     body:"Fillers are a habit, not a flaw. The strongest communicators simply replace them with intentional pauses — and you can too." },
+  { word:"Authority", body:"Pausing instead of filling makes you sound more confident. It's a skill you can build with practice, not a talent you're born with." },
+  { word:"Attention", body:"When you pause, people listen more closely. Silence creates anticipation. Your message lands with greater weight." },
+  { word:"Memory",    body:"Speech without fillers is easier to follow and remember. Remove the noise, and your real message comes through." },
+];
+
+export const D3_PAUSE_REASONS = [
+  { n:1, label:"Fear of Silence",   body:"Most people worry pauses make them look unprepared. They don't. A well-placed pause signals you're thinking carefully — and that's exactly what audiences respect." },
+  { n:2, label:"Rushing",           body:"Fillers appear most when we're moving faster than our thoughts. Slowing down by even 10% gives your brain the space to find the right word — every time." },
+  { n:3, label:"Lack of Structure", body:"When you know your key points, you need far fewer fillers. A clear structure means you always know where you're going — and that confidence shows." },
+];
+
+export const D4_FACTS = [
+  { word:"Processing Speed", body:"Short sentences let your audience follow along effortlessly. When ideas are easy to absorb, people can focus on meaning rather than structure." },
+  { word:"Retention",        body:"Sentences under 15 words are more memorable. The discipline of cutting forces you to find the essential idea — which makes it easier to keep." },
+  { word:"Impact",           body:"Short sentences give each idea room to breathe. When you say less, each word carries more. Brevity is a form of respect for your audience." },
+  { word:"Persuasion",       body:"\"I have a dream.\" \"Yes we can.\" \"Just do it.\" The most persuasive lines ever spoken? All under 10 words. Short sentences move people." },
+];
+
+export const D1_CLARITY_FACTS_DATA = [
+  { word:"Cognitive Load",    sub:"If people have to work too hard, you lose them",    bullets:["The brain naturally prefers information that feels easy to process.","If people are working to decode your words, they're not fully absorbing your message."] },
+  { word:"Retention",         sub:"If people can repeat it, they remember it",          bullets:["Clear ideas are easier for the brain to store, retrieve, and share.","Complexity gets forgotten. Simplicity gets repeated."] },
+  { word:"Credibility",       sub:"True expertise sounds simple",                       bullets:["The clearest communicators often understand the deepest.","Making complexity feel simple signals confidence, clarity, and mastery."] },
+  { word:"Decision-Making",   sub:"Clarity removes hesitation",                         bullets:["Unclear communication creates doubt, delay, and second-guessing.","Clear communication makes the next step obvious."] },
+];
+
+export const D1_FEYNMAN_DATA = [
+  { n:1, beat:"Understand",    sub:"Choose a concept and study it deeply." },
+  { n:2, beat:"Explain",       sub:"Teach it in simple words as if to someone else. No jargon. No shortcuts." },
+  { n:3, beat:"Simplify",      sub:"When you stumble, that's a gap. Go back and fill it. Remove unnecessary complexity." },
+  { n:4, beat:"Refine",        sub:"Review, clarify, and improve your explanation. Repeat until a child could follow." },
+];
+ // ── D11 shared constants (used by both desktop + mobile) ──────────────────
+
+export const D11_FACTS = [
+  {word:"First Impressions Are Fast", body:"People begin forming impressions in as little as 100 milliseconds — before you've said a single word.", source:"Willis & Todorov, 2006"},
+  {word:"People Read Signals",        body:"Humans make rapid judgments about confidence, competence, and trustworthiness from minimal cues. Every signal you send is being decoded.", source:"Ambady & Rosenthal / Princeton research"},
+  {word:"Stories Shape Reputation",   body:"Narrative becomes identity. Stories are remembered far more effectively than disconnected information — and they're the most powerful brand-building tool you have.", source:"Cognitive psychology principle"},
+  {word:"Consistency Becomes Brand",  body:"Repeated signals become your brand. Every interaction where you show up the same way adds to a pattern people trust, remember, and associate with you.", source:"Brand psychology"},
+];
+
+export const D11_EXAMPLES = [
+  {id:"swift", name:"Taylor Swift", role:"Recording Artist · Cultural Icon",
+   headline:"The Master of Connection, Storytelling & Familiarity",
+   body:"Taylor Swift didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel like they were part of her journey. From teenage country songwriter to global cultural icon, her brand evolved without losing its emotional core: authenticity, storytelling, reinvention, and direct connection with her audience. Fans don't just consume her work. They feel personally invested in her story. That's personal branding at its most powerful.",
+   lesson:"People didn't just buy Taylor Swift's music. They bought into her journey.",
+   ingredients:[
+     {n:"Authority",    detail:"Taylor owns a category: storytelling through songwriting. Emotional intelligence, reinvention, creative control, world-class performance. The strongest brands are associated with one unmistakable strength."},
+     {n:"Generosity",   detail:"Behind-the-scenes access, fan easter eggs, emotional honesty, long-form storytelling, meaningful audience interaction. Her fans feel rewarded for paying attention. Generosity creates loyalty."},
+     {n:"Relatability", detail:"Taylor made global fame feel personal. She openly shares heartbreak, ambition, growth, mistakes, reinvention, vulnerability. People feel like they've grown alongside her. People follow stories they emotionally recognise."},
+     {n:"Energy",       detail:"Whether performing, speaking, or accepting awards, people feel belief and emotional investment. Her energy says: this matters. Emotion communicates commitment."},
+     {n:"Familiarity",  detail:"Albums. Tours. Documentaries. Social media. Interviews. Cultural moments. Her audience sees her repeatedly over years. Visibility compounds trust and connection."},
+     {n:"Polarity",     detail:"Taylor is not neutral. She reinvents publicly, owns her narrative, makes bold creative decisions, creates passionate fandom. Memorable brands stand for something."},
+   ]},
+  {id:"beckham", name:"David Beckham", role:"Athlete · Entrepreneur · Philanthropist",
+   headline:"Brand Can Evolve",
+   body:"From Manchester United captain to fashion icon to club owner to humanitarian ambassador — Beckham's brand evolved without contradiction. Each phase added a dimension rather than replacing the last. The throughline was always intentional excellence, visual precision, and cultural reach.",
+   lesson:"Your brand isn't fixed. It can grow. The key is evolution that feels coherent — new chapters that add to the story rather than contradict it."},
+  {id:"wintour", name:"Anna Wintour", role:"Editor-in-Chief, Vogue",
+   headline:"Iconic Through Consistency",
+   body:"The bob. The sunglasses. The front row seat. For decades, Wintour has signalled authority, taste, and certainty through consistent visual and behavioural choices. She doesn't vary. She doesn't hedge. That consistency creates anticipation and recognition — the foundation of any powerful brand.",
+   lesson:"When people know what to expect from you, they trust you. Consistency signals confidence. Variation without purpose signals uncertainty."},
+];
+
+export const D11_INGREDIENTS = [
+  {n:"Authority",    tagline:"Be known for something",         psych:"Authority Bias",          psychBody:"People naturally trust perceived expertise. If you're clearly exceptional in one area, credibility rises fast.",                                                                                              body:"The strongest brands stand for something specific. Not 'good at many things' — but known for one thing first.",    takeaway:"Own a category."},
+  {n:"Generosity",   tagline:"Give value freely",               psych:"Reciprocity (Cialdini)",  psychBody:"When people receive value, they naturally feel more positively toward the source.",                                                                                                                       body:"The fastest way to build goodwill is to help before asking. Teach. Share. Educate. Simplify. Practical tips, frameworks, behind-the-scenes lessons.",  takeaway:"Give before you ask."},
+  {n:"Relatability", tagline:"Share the human story",           psych:"Narrative Identity",      psychBody:"We connect with people whose journeys feel emotionally relatable. Similarity Attraction effect.",                                                                                                         body:"Expertise creates admiration. Story creates connection. People don't just want polished success — they want setbacks, lessons, beginnings, ambition, growth.",  takeaway:"Let people see the journey."},
+  {n:"Energy",       tagline:"Passion is perception",           psych:"Emotional Contagion",     psychBody:"Emotion spreads socially. Your energy influences how others feel — and whether they believe the message matters.",                                                                                        body:"Energy communicates belief. If you sound disengaged, people assume the message lacks importance. Conviction, warmth, and emotional presence are felt before they're heard.",  takeaway:"Passion is contagious."},
+  {n:"Familiarity",  tagline:"Repeated exposure builds trust",  psych:"Mere Exposure Effect",   psychBody:"The more often people encounter something, the more positively they tend to feel about it.",                                                                                                              body:"People trust what feels familiar. Series. Podcasts. Regular posts. Repeated appearances. Consistent presence — not one big moment.",  takeaway:"Consistency creates comfort."},
+  {n:"Polarity",     tagline:"Have a point of view",            psych:"Von Restorff Effect",     psychBody:"Things that stand out are remembered more easily than things that blend in. Distinctiveness is memorable.",                                                                                              body:"Memorable brands stand for something. They have opinions, preferences, perspectives — not to provoke, but to be distinct. Neutrality is forgettable.",  takeaway:"Being memorable requires definition."},
+];
+ // ── D2 shared constants (used by both desktop + mobile) ───────────────────
+
+export const D2_INSIGHT_CARDS = [
+  {word:"Attention",       sub:"A flat voice loses the room in seconds",       bullets:["The brain is wired to respond to variation. Monotone delivery is processed as low-priority — people tune out almost instantly.","Varying pace, pitch, and tone keeps the brain alert and signals that what you're saying is worth their attention."]},
+  {word:"First Impression",sub:"Your voice speaks before your words do",        bullets:["Listeners form an impression of your confidence, energy, and credibility within moments of hearing you — before your message even begins.","Delivery shapes the room. A controlled, warm voice signals authority. A rushed or flat voice signals uncertainty."]},
+  {word:"Memory",          sub:"Contrast makes ideas stick",                     bullets:["When delivery has rhythm — pauses, pace shifts, vocal emphasis — the brain finds it easier to process, store, and recall.","Information delivered in a varied, engaging voice is significantly more memorable than the same words spoken flatly."]},
+  {word:"Influence",       sub:"Same words, completely different meaning",       bullets:["The exact same sentence can sound inspiring, uncertain, authoritative, or disengaged depending entirely on how it's delivered.","Voice doesn't decorate meaning — it creates it. Mastering your delivery is mastering the impact of every word you say."]},
+];
