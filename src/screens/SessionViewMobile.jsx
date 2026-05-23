@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { T } from '../theme.js';
-import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_FIVE_PS, D9_CARDS, NT_PIXAR, REVIEW_CLOSING, REVIEW_BULLETS, FURTHER_READING, SESSION_STEPS, NAV_LABELS } from '../data.js';
+import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_FIVE_PS, D9_CARDS, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS } from '../data.js';
+import { getScenariosForDay } from '../utils.js';
 import { DeliveryCoachWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';

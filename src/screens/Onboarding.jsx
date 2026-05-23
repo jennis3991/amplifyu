@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 import { ROLES } from '../data.js';
+import { useIsDesktop } from '../utils.js';
 import { OBScene } from '../scenes.jsx';
 
 export function Onboarding({onDone}) {

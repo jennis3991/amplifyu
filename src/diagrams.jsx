@@ -759,17 +759,6 @@ export const MODULE_ICONS = [
 
 
 
-function getScenariosForDay(roleId, day) {
-  const roleScenarios = ROLE_SCENARIOS[roleId];
-  if (roleScenarios && roleScenarios[day]) return roleScenarios[day];
-  const lesson = LESSONS.find(l => l.day === day);
-  return lesson ? lesson.scenarios : [];
-}
-
-function getPIEEmphasis(roleId) {
-  const role = ROLES.find(r => r.id === roleId);
-  return role ? role.pieEmphasis : null;
-}
 
 
 
