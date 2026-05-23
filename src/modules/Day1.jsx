@@ -40,6 +40,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
   ];
 
   const [phase, setPhase] = useState('intro'); // intro|playing|transition|final|bonus
+  const [showBadgeCard, setShowBadgeCard] = useState(false);
   const [roundIdx, setRoundIdx] = useState(0);
   const [totalPts, setTotalPts] = useState(0);
   const [mcqPts, setMcqPts] = useState(0);
@@ -271,16 +272,14 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
     const appMax = ROUNDS.slice(3).reduce((s,r)=>s+r.pts,0);
     return (
       <div style={{display:"flex",flexDirection:"column",gap:16}}>
+        {/* Score header */}
         <div style={{background:"#0E0B08",borderRadius:8,padding:isDesktop?"44px 40px":"32px 20px",textAlign:"center"}}>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>THE CLARITY CHALLENGE™</div>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?80:64,fontWeight:600,color:T.gold,lineHeight:1}}>{pct}</div>
-          <div style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.5)",marginBottom:20}}>/ 100</div>
-          <h2 style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:"#F5EFE6",marginBottom:8}}>Your Clarity Score</h2>
-          <div style={{display:"inline-flex",alignItems:"center",gap:10,padding:"10px 20px",background:"rgba(138,158,132,0.12)",borderRadius:4,border:`0.5px solid rgba(138,158,132,0.3)`,marginTop:4}}>
-            <img src={badge.img} alt={badge.label} style={{width:48,height:48,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
-            <span style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:badge.color}}>{badge.label}</span>
-          </div>
+          <div style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.5)",marginBottom:8}}>/ 100</div>
+          <h2 style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:"#F5EFE6",margin:0}}>Your Clarity Score</h2>
         </div>
+        {/* Breakdown */}
         <div style={cs.card}>
           <div style={cs.label}>Breakdown</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:16}}>
@@ -296,16 +295,51 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
           </div>
           <div style={{fontFamily:T.sans,fontSize:11,color:T2.text4,textAlign:"right"}}>{pct}% of max</div>
         </div>
+        {/* Coach note */}
         <div style={cs.card}>
           <div style={cs.label}>Coach note</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>
             {pct>=85?"Your instinct for plain language is strong. The Feynman principle is becoming second nature — keep using it in every meeting and message.":"Good foundation. The more you practice spotting jargon, the faster your instinct will develop. Every complex sentence is an opportunity to simplify."}
           </p>
         </div>
-        <div style={{display:"flex",gap:10}}>
-          <button onClick={reset} style={{...cs.ghost,flex:1}}>Try Again</button>
-          {onSimulation && <button onClick={onSimulation} style={{...cs.cta,flex:1}}>Continue to Simulation →</button>}
-        </div>
+        {/* Badge reveal CTA */}
+        <button onClick={()=>setShowBadgeCard(true)} style={{...cs.cta,width:"100%",padding:"16px",fontSize:isDesktop?15:14}}>
+          Reveal Your Badge →
+        </button>
+
+        {/* ── Badge slide-up overlay ───────────────────────────────────── */}
+        {showBadgeCard && (
+          <div style={{position:"fixed",inset:0,zIndex:1000,display:"flex",flexDirection:"column",justifyContent:"flex-end"}}
+               onClick={e=>{if(e.target===e.currentTarget)setShowBadgeCard(false);}}>
+            <div style={{position:"absolute",inset:0,background:"rgba(11,13,16,0.7)"}}/>
+            <div style={{position:"relative",background:T2.surface||"#EDE8DF",borderRadius:"28px 28px 0 0",padding:isDesktop?"40px 48px 48px":"32px 24px 40px",animation:"slideUp 0.42s cubic-bezier(0.22,1,0.36,1) both",maxWidth:isDesktop?540:"100%",margin:"0 auto",width:"100%",boxSizing:"border-box"}}>
+              {/* Drag handle */}
+              <div style={{width:40,height:4,background:"rgba(44,36,22,0.15)",borderRadius:2,margin:"0 auto 28px"}}/>
+              {/* Badge */}
+              <div style={{textAlign:"center",marginBottom:20}}>
+                <div style={{width:88,height:88,borderRadius:"50%",overflow:"hidden",border:"3px solid rgba(201,168,76,0.45)",margin:"0 auto 16px",boxShadow:"0 4px 24px rgba(138,158,132,0.25)"}}>
+                  <img src={badge.img} alt={badge.label} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                </div>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your Badge</div>
+                <h2 style={{fontFamily:T.serif,fontSize:isDesktop?30:26,fontWeight:600,color:badge.color,lineHeight:1.15,marginBottom:6}}>{badge.label}</h2>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3||"#6B5E44",lineHeight:1.5,margin:"0 0 16px"}}>{badge.sub}</p>
+                {/* Score pill */}
+                <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 20px",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",borderRadius:20,marginBottom:4}}>
+                  <span style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold}}>{pct}</span>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3||"#6B5E44"}}>/100 — Clarity Score</span>
+                </div>
+              </div>
+              {/* Divider */}
+              <div style={{height:"0.5px",background:"rgba(44,36,22,0.1)",margin:"4px 0 24px"}}/>
+              {/* Actions */}
+              <div style={{display:"flex",gap:10}}>
+                <button onClick={()=>{setShowBadgeCard(false);reset();}} style={{...cs.ghost,flex:1}}>Try Again</button>
+                {onSimulation && <button onClick={()=>{setShowBadgeCard(false);onSimulation();}} style={{...cs.cta,flex:1}}>Continue →</button>}
+                {!onSimulation && <button onClick={()=>setShowBadgeCard(false)} style={{...cs.cta,flex:1}}>Done</button>}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -455,25 +489,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
               <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.6,margin:0,fontStyle:"italic"}}>"{aiResult.perfect}"</p>
             </div>
           )}
-          {/* Badge after Round 5 */}
-          {isLast && (()=>{
-            const badge = getBadge(pct);
-            return (
-              <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px 18px"}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Your Badge</div>
-                <div style={{display:"inline-flex",alignItems:"center",gap:12,padding:"14px 24px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:`0.5px solid rgba(138,158,132,0.3)`,marginBottom:12}}>
-                  <img src={badge.img} alt={badge.label} style={{width:56,height:56,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
-                  <div style={{textAlign:"left"}}>
-                    <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:badge.color}}>{badge.label}</div>
-                    <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginTop:2}}>{badge.sub}</div>
-                  </div>
-                </div>
-                <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:"0 0 4px"}}>
-                  {pct >= 85 ? "Elite level. The strongest communicators make complexity feel effortless." : "Strong foundation. Keep practising and your instinct will sharpen fast."}
-                </p>
-              </div>
-            );
-          })()}
+
           <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
             {isLast && <button onClick={()=>{setBonusIdx(0);setBonusText('');setBonusResult(null);setBonusComplete(0);setPhase('bonus');}} style={{...cs.ghost,flex:1}}>Practise More →</button>}
             <button onClick={nextRound} style={{...cs.cta,flex:1}}>{isLast?"See Full Score →":"Next Challenge →"}</button>
