@@ -734,7 +734,8 @@ export function SessionLeftPanel({
    return null;
 };
  // ── Expandable example card — shared across all Example tabs ─────────────
-export const ExCard = ({name, preview, full}) => {
+export const ExCard = ({name, preview, full, T2: _T2}) => {
+  const T2 = _T2 || T;
   const [open, setOpen] = useState(false);
   return (
     <div onClick={()=>setOpen(o=>!o)} style={{padding:"28px 24px",borderRadius:8,background:open?"rgba(237,232,223,0.92)":"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",cursor:"pointer",transition:"all 0.25s ease",userSelect:"none"}}
