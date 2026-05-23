@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { T } from '../theme.js';
 import { POWER_PHRASES } from '../data.js';
 

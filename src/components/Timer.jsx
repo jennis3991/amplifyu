@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 
 export function Timer({totalSecs, label}) {
