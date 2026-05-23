@@ -5,7 +5,7 @@ import { D9_FIVE_PS, D9_CARDS, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_CL
   D1_CLARITY_FACTS_DATA, D1_FEYNMAN_DATA,
   D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS,
 } from '../data.js';
-import { SessionLeftPanel } from './SessionLeftPanel.jsx';
+import { SessionLeftPanel, ExCard } from './SessionLeftPanel.jsx';
 import { MobileSessionView } from './SessionViewMobile.jsx';
 import { DeliveryCoachWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget } from '../modules/Day8.jsx';
