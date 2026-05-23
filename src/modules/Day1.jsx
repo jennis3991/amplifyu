@@ -9,7 +9,7 @@ export function D1MobileJargonSwap() {
 export function D1MobileSim() { return null; } // replaced by D1SimWidget
 
 // ─── THE CLARITY CHALLENGE™ ───────────────────────────────────────────────────
-export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavUpdate}) {
+export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, onNavFn}) {
   const ROUNDS = [
     {id:1,type:'mcq',difficulty:'BEGINNER',label:'Round 1',task:'Which version is easiest to understand?',
      original:'"Our strategic initiative aims to unlock scalable operational efficiencies."',
@@ -158,22 +158,27 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavUpdate}
 
   // ── INTRO ──────────────────────────────────────────────────────────────────
   // ── Register nav action with parent session nav button ──────────────────────
+  // Fn stored in a ref (no re-render), label stored in state (triggers button update)
   useEffect(() => {
-    if (!onNavUpdate) return;
+    if (!onNavLabel) return;
     if (phase === 'intro') {
-      onNavUpdate({ fn: () => setPhase('playing'), label: 'Begin Challenge' });
+      if (onNavFn) onNavFn.current = () => setPhase('playing');
+      onNavLabel('Begin Challenge');
     } else if (phase === 'playing') {
       const canAdvance = round?.type === 'mcq' ? answered : !!aiResult;
       if (canAdvance) {
         const label = isLast ? 'See Your Score' : roundIdx === 2 ? 'Enter Real World Mode' : 'Next Challenge';
-        onNavUpdate({ fn: nextRound, label });
+        if (onNavFn) onNavFn.current = nextRound;
+        onNavLabel(label);
       } else {
-        onNavUpdate(null);
+        if (onNavFn) onNavFn.current = null;
+        onNavLabel(null);
       }
     } else {
-      onNavUpdate(null); // final/transition/bonus — release nav back to normal
+      if (onNavFn) onNavFn.current = null;
+      onNavLabel(null); // final/transition/bonus — release nav back to normal
     }
-  }, [phase, answered, aiResult, roundIdx, onNavUpdate]);
+  }, [phase, answered, aiResult, roundIdx]);
 
   if (phase==='intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:16}}>
@@ -426,7 +431,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavUpdate}
             )}
           </div>
         )}
-        {answered && !onNavUpdate && <button onClick={nextRound} style={cs.cta}>{isLast?"See Final Score →":roundIdx===2?"Enter Real World Mode →":"Next Challenge →"}</button>}
+        {answered && !onNavLabel && <button onClick={nextRound} style={cs.cta}>{isLast?"See Final Score →":roundIdx===2?"Enter Real World Mode →":"Next Challenge →"}</button>}
       </div>
     );
   }
@@ -510,7 +515,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavUpdate}
 
           <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
             {isLast && <button onClick={()=>{setBonusIdx(0);setBonusText('');setBonusResult(null);setBonusComplete(0);setPhase('bonus');}} style={{...cs.ghost,flex:1}}>Practise More →</button>}
-            {!onNavUpdate && <button onClick={nextRound} style={{...cs.cta,flex:1}}>{isLast?"See Full Score →":"Next Challenge →"}</button>}
+            {!onNavLabel && <button onClick={nextRound} style={{...cs.cta,flex:1}}>{isLast?"See Full Score →":"Next Challenge →"}</button>}
           </div>
         </>
       )}
