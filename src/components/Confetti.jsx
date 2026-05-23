@@ -149,6 +149,23 @@ export function WelcomeCard({ onDismiss }) {
   );
 }
 
+const DAY_BADGES = {
+  1:  { img:"/badge-queen.jpg",  label:"Clarity Champion",     sub:"You make complex ideas feel simple.",              color:"#C9A84C" },
+  2:  { img:"/badge-rook.jpg",   label:"Voice Advantage",      sub:"Pace signals authority. You chose pace.",          color:"#8A9E84" },
+  3:  { img:"/badge-bishop.jpg", label:"Filler-Free",          sub:"Silence is your superpower.",                     color:"#7A9E84" },
+  4:  { img:"/badge-knight.jpg", label:"Brevity Expert",       sub:"Short sentences. Strong impact.",                 color:"#8B9E7A" },
+  5:  { img:"/badge-pawn.jpg",   label:"PRE Master",           sub:"Structure is the gift you give your listener.",   color:"#8A9E84" },
+  6:  { img:"/badge-queen.jpg",  label:"Composure Expert",     sub:"Calm under pressure. Every time.",                color:"#C9A84C" },
+  7:  { img:"/badge-rook.jpg",   label:"Week 1 Champion",      sub:"Six skills. All embedded. All yours.",            color:"#8A9E84" },
+  8:  { img:"/badge-bishop.jpg", label:"Storyteller",          sub:"You transport people through narrative.",         color:"#7A9E84" },
+  9:  { img:"/badge-knight.jpg", label:"Delivery Master",      sub:"Pace, pause, presence, projection, precision.",   color:"#8B9E7A" },
+  10: { img:"/badge-pawn.jpg",   label:"Performance Voice",    sub:"Great work, clearly communicated.",               color:"#8A9E84" },
+  11: { img:"/badge-queen.jpg",  label:"Brand Builder",        sub:"Your image is intentional.",                     color:"#C9A84C" },
+  12: { img:"/badge-rook.jpg",   label:"Presence Expert",      sub:"You command the room.",                          color:"#8A9E84" },
+  13: { img:"/badge-bishop.jpg", label:"Exposure Expert",      sub:"The right people know where you're going.",      color:"#7A9E84" },
+  14: { img:"/badge-knight.jpg", label:"Communication Master", sub:"14 sessions. A voice that commands rooms.",      color:"#C9A84C" },
+};
+
 export function Celebrate({day, onClose}) {
   const [phase, setPhase] = useState("burst");
   useEffect(() => {
@@ -250,14 +267,14 @@ strokeWidth="1.5"
           <h2 style={{
             fontFamily:T.serif,fontSize:28,fontWeight:700,
             color: isComplete ? "white" : T.text,
-            textAlign:"center",marginBottom:10,letterSpacing:"-0.3px",
+            textAlign:"center",marginBottom:6,letterSpacing:"-0.3px",
           }}>
             {isComplete ? "Programme complete." : "Session "+day+" done."}
           </h2>
           <p style={{
             fontSize:14,
             color: isComplete ? "rgba(255,255,255,0.6)" : T.text3,
-            textAlign:"center",lineHeight:1.65,marginBottom:8,
+            textAlign:"center",lineHeight:1.65,marginBottom:16,
           }}>
             {isComplete ? (
               (() => {
@@ -269,12 +286,37 @@ strokeWidth="1.5"
             ) : "Each session is a rep. Every rep builds the habit. Keep going."}
           </p>
 
+          {/* Day badge */}
+          {(() => {
+            const badge = DAY_BADGES[day] || DAY_BADGES[1];
+            return (
+              <div style={{
+                display:"flex",alignItems:"center",gap:14,
+                padding:"16px 18px",
+                background: isComplete ? "rgba(201,168,76,0.12)" : "rgba(138,158,132,0.08)",
+                border:`0.5px solid ${isComplete ? "rgba(201,168,76,0.3)" : "rgba(138,158,132,0.25)"}`,
+                borderRadius:8,
+                marginBottom:16,
+                animation:"textFade 0.5s ease 0.45s both",
+              }}>
+                <div style={{width:56,height:56,borderRadius:"50%",overflow:"hidden",border:`1.5px solid rgba(201,168,76,0.4)`,flexShrink:0}}>
+                  <img src={badge.img} alt={badge.label} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                </div>
+                <div>
+                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:badge.color,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>Badge Earned</div>
+                  <div style={{fontFamily:T.serif,fontSize:isComplete?19:17,fontWeight:600,color:isComplete?"white":badge.color,lineHeight:1.2,marginBottom:2}}>{badge.label}</div>
+                  <div style={{fontFamily:T.sans,fontSize:11,color:isComplete?"rgba(255,255,255,0.55)":T.text3,lineHeight:1.4}}>{badge.sub}</div>
+                </div>
+              </div>
+            );
+          })()}
+
           {/* Progress ring label */}
           {!isComplete && (
             <div style={{
               display:"flex",alignItems:"center",justifyContent:"center",
               gap:6,marginBottom:8,
-              animation:"textFade 0.5s ease 0.5s both",
+              animation:"textFade 0.5s ease 0.55s both",
             }}>
               <div style={{height:1,flex:1,background:T.border}}/>
               <span style={{fontSize:12,fontWeight:600,color:T.gold}}>
