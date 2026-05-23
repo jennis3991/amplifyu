@@ -261,8 +261,7 @@ strokeWidth="1.5"
           }}>
             {isComplete ? (
               (() => {
-                const amb = (() => { try { return 
-localStorage.getItem("au1_ambition") || ""; } catch { return ""; } })();
+                const amb = (() => { try { return localStorage.getItem("au1_ambition") || ""; } catch { return ""; } })();
                 return amb
                   ? "14 sessions. You set out to be " + amb + ". You now have the voice to match the ambition."
                   : "14 sessions. You now communicate with clarity, structure, and impact. This is just the beginning.";

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { T } from '../theme.js';
 import { D9_FIVE_PS, D9_CARDS, D9_REFINEMENTS } from '../data.js';
-import { D_NT } from '../diagrams.jsx';
+import { D_NT, DIAGRAMS } from '../diagrams.jsx';
 import { Scene } from '../scenes.jsx';
+import { THEORY_IMAGES } from '../images.js';
 
 const CREAM = "#F5EFE6";
 const LP_LABEL = { fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, fontWeight: 500 };

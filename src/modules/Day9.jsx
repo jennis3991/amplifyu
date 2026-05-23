@@ -93,7 +93,7 @@ export function DeliveryCoachWidget({ onSave }) {
         </div>
       </div>
 
-      <button onClick={save} style={{ padding:"12px 20px", borderRadius:4, border:"none", background:saved?"rgba(82,112,96,0.15)":T.ink, color:saved?T.green:T.bg, fontSize:13, fontWeight:600, cursor:"pointer", fontFamily:T.sans, border:saved?"1px solid rgba(82,112,96,0.3)":"none", transition:"all 0.2s" }}>
+      <button onClick={save} style={{ padding:"12px 20px", borderRadius:4, background:saved?"rgba(82,112,96,0.15)":T.ink, color:saved?T.green:T.bg, fontSize:13, fontWeight:600, cursor:"pointer", fontFamily:T.sans, border:saved?"1px solid rgba(82,112,96,0.3)":"none", transition:"all 0.2s" }}>
         {saved ? "✓ Delivery Script Saved" : "Save Delivery Script"}
       </button>
     </div>

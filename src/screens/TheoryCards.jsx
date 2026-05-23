@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { T } from '../theme.js';
 import { THEORY_DATA, FURTHER_READING } from '../data.js';
 import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
+import { THEORY_IMAGES } from '../images.js';
 
 export function EditorialTheoryCard({ day, t, image }) {
   const [open, setOpen] = useState(false);

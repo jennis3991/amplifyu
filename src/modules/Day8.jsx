@@ -176,7 +176,7 @@ export function StoryBuilderWidget({ onSave }) {
       </div>
       <div style={{ display: "flex", gap: 8 }}>
         <button onClick={saveStory} disabled={!story.trim()}
-          style={{ flex: 1, padding: "12px 16px", borderRadius: 4, border: "none", background: saved ? "rgba(82,112,96,0.15)" : (story.trim() ? T.ink : T.border), color: saved ? T.green : T.bg, fontSize: 13, fontWeight: 600, cursor: story.trim() ? "pointer" : "default", fontFamily: T.sans, border: saved ? "1px solid rgba(82,112,96,0.3)" : "none", transition: "all 0.2s" }}>
+          style={{ flex: 1, padding: "12px 16px", borderRadius: 4, background: saved ? "rgba(82,112,96,0.15)" : (story.trim() ? T.ink : T.border), color: saved ? T.green : T.bg, fontSize: 13, fontWeight: 600, cursor: story.trim() ? "pointer" : "default", fontFamily: T.sans, border: saved ? "1px solid rgba(82,112,96,0.3)" : "none", transition: "all 0.2s" }}>
           {saved ? "✓ Saved" : "Save Story"}
         </button>
         <button onClick={() => { setPhase("style"); setStyle(""); setBusy(false); }}

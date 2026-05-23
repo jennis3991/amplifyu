@@ -44,16 +44,13 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
     setSavedBooks(next); try { localStorage.setItem("au1_saved_books", JSON.stringify(next)); } catch {}
   }
   const [note, setNote] = useState(() => {
-    try { return localStorage.getItem("au1_note_"+lesson.day) || ""; } 
-catch { return ""; }
+    try { return localStorage.getItem("au1_note_"+lesson.day) || ""; } catch { return ""; }
   });
   const [ambitionDraft, setAmbitionDraft] = useState(() => {
-    try { return localStorage.getItem("au1_ambition") || ""; } catch { 
-return ""; }
+    try { return localStorage.getItem("au1_ambition") || ""; } catch { return ""; }
   });
   const [ambitionSaved, setAmbitionSaved] = useState(() => {
-    try { return !!localStorage.getItem("au1_ambition"); } catch { return 
-false; }
+    try { return !!localStorage.getItem("au1_ambition"); } catch { return false; }
   });
   function saveNote(v) {
     setNote(v);
