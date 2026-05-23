@@ -2012,7 +2012,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
         {idx < STEPS.length-1 && (
           <button
             onClick={()=>{
-              if (isD1 && step==="Practice" && d1NavFnRef.current) { d1NavOverride.fn(); }
+              if (isD1 && step==="Practice" && d1NavFnRef.current) { d1NavFnRef.current(); }
               else { setIdx(i=>i+1); }
             }}
             disabled={isD1 && step==="Practice" && d1NavLabel===null}
@@ -2035,7 +2035,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
               letterSpacing:"0.2px",
             }}>
             <span>{isD1 && step==="Practice" && d1NavLabel
-              ? d1NavOverride.label
+              ? d1NavLabel
               : isNT
                 ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Practice":NAV_LABELS[idx])
                 : NAV_LABELS[idx]}</span>
