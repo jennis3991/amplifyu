@@ -3022,7 +3022,7 @@ setAmbitionSaved(true); } catch {}
                 Back
               </button>
             )}
-            {idx < STEPS.length - 1 && !(isD1 && step === "Practice" && d1NavOverride === null && phase !== undefined) && (
+            {idx < STEPS.length - 1 && (
               <button
                 onClick={() => {
                   if (isD1 && step === "Practice" && d1NavOverride?.fn) {
