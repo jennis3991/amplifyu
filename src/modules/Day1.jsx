@@ -9,7 +9,7 @@ export function D1MobileJargonSwap() {
 export function D1MobileSim() { return null; } // replaced by D1SimWidget
 
 // ─── THE CLARITY CHALLENGE™ ───────────────────────────────────────────────────
-export function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
+export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavUpdate}) {
   const ROUNDS = [
     {id:1,type:'mcq',difficulty:'BEGINNER',label:'Round 1',task:'Which version is easiest to understand?',
      original:'"Our strategic initiative aims to unlock scalable operational efficiencies."',
@@ -157,6 +157,24 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation}) {
   };
 
   // ── INTRO ──────────────────────────────────────────────────────────────────
+  // ── Register nav action with parent session nav button ──────────────────────
+  useEffect(() => {
+    if (!onNavUpdate) return;
+    if (phase === 'intro') {
+      onNavUpdate({ fn: () => setPhase('playing'), label: 'Begin Challenge' });
+    } else if (phase === 'playing') {
+      const canAdvance = round?.type === 'mcq' ? answered : !!aiResult;
+      if (canAdvance) {
+        const label = isLast ? 'See Your Score' : roundIdx === 2 ? 'Enter Real World Mode' : 'Next Challenge';
+        onNavUpdate({ fn: nextRound, label });
+      } else {
+        onNavUpdate(null);
+      }
+    } else {
+      onNavUpdate(null); // final/transition/bonus — release nav back to normal
+    }
+  }, [phase, answered, aiResult, roundIdx, onNavUpdate]);
+
   if (phase==='intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:16}}>
       <div style={cs.card}>

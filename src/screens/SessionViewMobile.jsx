@@ -33,6 +33,8 @@ export function MobileSessionView({
   roleId, activeRole, swipeRef, note, saveNote, checks, setChecks,
   ntOpenCard, setNtOpenCard, d9OpenCard, setD9OpenCard, ntStory,
 }) {
+  const [d1NavOverride, setD1NavOverride] = useState(null);
+
   const D10_EXAMPLES_DATA = [
     { id:"buffett", title:"Warren Buffett", sub:"Making Performance Simple",
       tag:"Berkshire's results — explained so anyone can understand.",
@@ -1120,7 +1122,7 @@ T.goldDark : T2.text4,
       )}
       {isD1 && step==="Practice" && (
         <>
-          <D1ClarityChallenge T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
+          <D1ClarityChallenge T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavUpdate={setD1NavOverride}/>
         </>
       )}
       {isD1 && step==="Simulation" && (
@@ -2007,28 +2009,36 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         )}
         {idx < STEPS.length-1 && (
-          <button onClick={()=>setIdx(i=>i+1)} style={{
-            flex:1,
-            padding:"18px 20px",
-            borderRadius:14,
-            border:"none",
-            background:idx===0
-              ? "linear-gradient(135deg,"+T.gold+" 0%,"+T.goldDark+" 100%)"
-              : "linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
-            color:"white",
-            fontSize:15,fontWeight:700,
-            cursor:"pointer",
-            
-display:"flex",alignItems:"center",justifyContent:"center",gap:10,
-            boxShadow:idx===0?"0 4px 16px rgba(138,158,132,0.35)":"0 4px 16px rgba(17,28,46,0.3)",
-            letterSpacing:"0.2px",
-          }}>
-            <span>{isNT
-              ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Practice":NAV_LABELS[idx])
-              : NAV_LABELS[idx]}</span>
-            <svg width="18" height="18" viewBox="0 0 18 18" 
-fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="white" strokeWidth="2" 
-strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <button
+            onClick={()=>{
+              if (isD1 && step==="Practice" && d1NavOverride?.fn) { d1NavOverride.fn(); }
+              else { setIdx(i=>i+1); }
+            }}
+            disabled={isD1 && step==="Practice" && d1NavOverride===null}
+            style={{
+              flex:1,
+              padding:"18px 20px",
+              borderRadius:14,
+              border:"none",
+              background: isD1 && step==="Practice" && d1NavOverride===null
+                ? "rgba(44,36,22,0.18)"
+                : idx===0
+                  ? "linear-gradient(135deg,"+T.gold+" 0%,"+T.goldDark+" 100%)"
+                  : "linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
+              color:"white",
+              fontSize:15,fontWeight:700,
+              cursor: isD1 && step==="Practice" && d1NavOverride===null ? "not-allowed" : "pointer",
+              opacity: isD1 && step==="Practice" && d1NavOverride===null ? 0.45 : 1,
+              display:"flex",alignItems:"center",justifyContent:"center",gap:10,
+              boxShadow:idx===0?"0 4px 16px rgba(138,158,132,0.35)":"0 4px 16px rgba(17,28,46,0.3)",
+              letterSpacing:"0.2px",
+            }}>
+            <span>{isD1 && step==="Practice" && d1NavOverride?.label
+              ? d1NavOverride.label
+              : isNT
+                ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Practice":NAV_LABELS[idx])
+                : NAV_LABELS[idx]}</span>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         )}
       </div>

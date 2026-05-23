@@ -38,6 +38,7 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const [checks, setChecks] = useState({});
   const [exitConfirm, setExitConfirm] = useState(false);
   const [accordionOpen, setAccordionOpen] = useState(false);
+  const [d1NavOverride, setD1NavOverride] = useState(null);
   const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
   function saveBook(title) {
     const next = savedBooks.includes(title) ? savedBooks.filter(t=>t!==title) : [...savedBooks, title];
@@ -1432,7 +1433,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Practice") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <D1ClarityChallenge T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
+          <D1ClarityChallenge T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavUpdate={setD1NavOverride}/>
         </div>
       );
 
@@ -3021,16 +3022,31 @@ setAmbitionSaved(true); } catch {}
                 Back
               </button>
             )}
-            {idx < STEPS.length - 1 && (
-              <button onClick={() => setIdx(i => i + 1)} className="au-cta" style={{
-                display: "flex", alignItems: "center", gap: 10,
-                padding: "9px 24px", borderRadius: 5,
-                background: T.gold, border: "none",
-                color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer",
-                fontFamily: T.sans, letterSpacing: "0.1px",
-                boxShadow: "0 2px 16px rgba(138,158,132,0.3)",
-              }}>
-                {idx === 0 ? "Begin" : idx === STEPS.length - 2 ? "Final Chapter" : "Continue"}
+            {idx < STEPS.length - 1 && !(isD1 && step === "Practice" && d1NavOverride === null && phase !== undefined) && (
+              <button
+                onClick={() => {
+                  if (isD1 && step === "Practice" && d1NavOverride?.fn) {
+                    d1NavOverride.fn();
+                  } else {
+                    setIdx(i => i + 1);
+                  }
+                }}
+                disabled={isD1 && step === "Practice" && d1NavOverride === null}
+                className="au-cta"
+                style={{
+                  display: "flex", alignItems: "center", gap: 10,
+                  padding: "9px 24px", borderRadius: 5,
+                  background: isD1 && step === "Practice" && d1NavOverride === null ? "rgba(138,158,132,0.3)" : T.gold,
+                  border: "none",
+                  color: "white", fontSize: 13, fontWeight: 600,
+                  cursor: isD1 && step === "Practice" && d1NavOverride === null ? "not-allowed" : "pointer",
+                  fontFamily: T.sans, letterSpacing: "0.1px",
+                  boxShadow: "0 2px 16px rgba(138,158,132,0.3)",
+                  opacity: isD1 && step === "Practice" && d1NavOverride === null ? 0.5 : 1,
+                }}>
+                {isD1 && step === "Practice" && d1NavOverride?.label
+                  ? d1NavOverride.label
+                  : idx === 0 ? "Begin" : idx === STEPS.length - 2 ? "Final Chapter" : "Continue"}
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
             )}
