@@ -83,8 +83,8 @@ export const THEORY_DATA = [
   {theory:"The Recency Effect (Murdock, 1962)",concept:"The last item in a sequence is remembered most reliably. Your Result — the final part of SAR — carries the most memory weight of any element in your story. The Situation sets context. The Action shows character. The Result is what the listener walks away with.",life:"Most people bury their Result in the middle or rush it at the end. The brain is ready to catch it last. Make it the most precise, deliberate sentence you say. Never bury it."},
   // Day 9 — Making a Story Land
   {theory:"The Three Story Killers",concept:"Research on professional communication identifies three consistent reasons stories fail to land: excessive setup (the Situation takes more than 20% of the story's time), too many characters (the listener loses track of who matters), and a vague Result (no number, no specific change, no clear outcome). All three are editing problems, not content problems.",life:"A story that doesn't land isn't a story — it's a report. The fix is almost always in the editing: one sentence for Situation, cut anyone who isn't essential, and make the Result the sharpest thing you say."},
-  // Day 10 — The 3-Point Test
-  {theory:"Cognitive Narrative Theory",concept:"The human brain is wired to process narrative as a sequence of goals, obstacles, and outcomes. A story without a clear goal (stakes) fails to engage. A story without a concrete detail (proof) fails to persuade. A story without a shift (outcome) fails to be remembered. All three are required for full neural engagement.",life:"The 3-Point Test — point, proof, shift — maps directly onto what the brain needs to process a story as meaningful rather than merely interesting. Answer all three before you speak, and the story will land almost every time."},
+  // Day 10 — Performance
+  {theory:"The Performance Iceberg (Harvey Coleman, 1996)",concept:"Career success is shaped by three factors — Performance, Image, and Exposure. Performance accounts for just 10%. Not because it doesn't matter — it's the foundation and your licence to operate. But it is not the multiplier. Most high performers spend their entire career optimising the 10% while leaving the 90% untouched.",life:"Invisible excellence does not scale. Visibility is not vanity — it is a communication skill. The gap between actual contribution and perceived contribution is where careers stall. This module closes that gap."},
   // Day 11 — PIE: Performance
   {theory:"The Performance Iceberg",concept:"Performance is the foundation everything else is built on. Without it, Image and Exposure are hollow. But here is what most high performers miss: even exceptional performance is invisible if it is not communicated. 90% of what you do sits below the waterline — unseen, uncredited, and professionally irrelevant unless you bring it to the surface.",life:"The most common mistake talented people make is believing that great work speaks for itself. It doesn't. You must learn to surface it — with clarity, with specificity, and with the stories that make the invisible visible."},
   // Day 12 — PIE: Visible Ambition
@@ -166,7 +166,7 @@ export const REVIEW_CLOSING = [
   "Performance is invisible until someone sees it.",
   "You've learned the framework. You've built your story. Now make it unforgettable.",
   "You know how to build a story. You know how to deliver it. Now you can command any room.",
-  "The conversation you avoid is the one that matters most.",
+  "Performance without visibility is philanthropy.",
   "What you stand for is more powerful than what you do.",
   "Every relationship begins with genuine curiosity.",
   "Leaders speak from who they are, not what they want.",
@@ -183,7 +183,7 @@ export const REVIEW_BULLETS = [
   ["Performance alone does not build careers — visibility multiplies it", "Image and exposure are not vanity — they are strategy", "Being known for the right things in the right rooms is a learnable skill"],
   ["You learned why storytelling creates influence faster than information alone", "You mastered the 6-beat story arc: Hook, Character, Problem, Turning Point, Resolution, Meaning", "You built and rehearsed your own professional story with AI coaching"],
   ["You learned the 5 elements of powerful delivery: Pace, Pause, Presence, Projection, Precision", "You studied how Brené Brown, Simon Sinek, Amy Cuddy, and Steve Jobs deliver with impact", "You prepared and rehearsed your story for confident performance"],
-  ["Difficult conversations require psychological safety for both people", "Care personally and challenge directly — that is the only honest path", "The goal of every hard conversation is shared meaning, not victory"],
+  ["Invisible excellence does not scale — visibility is a communication skill, not a personality trait", "Performance without visibility is philanthropy — your work needs a voice", "The gap between actual and perceived contribution is where careers stall. Communication closes it."],
   ["Your brand is what people say about you when you leave the room", "Consistency of voice and presence builds trust over years, not weeks", "You cannot be known for everything — choose your niche deliberately"],
   ["Give first, always — generosity is the foundation of every lasting network", "People remember how you made them feel, never just what you said", "A warm, curious introduction is worth ten cold connections"],
   ["A leadership voice is earned through vulnerability, not volume", "Brave language builds the psychological safety that makes teams great", "The words you choose every day define the culture around you"],
@@ -312,17 +312,17 @@ export const LESSONS = [
    teaser:"Learn the 5 elements of powerful delivery used by Brené Brown, Simon Sinek, Amy Cuddy, and Steve Jobs."},
 
   {day:10,week:2,title:"Performance",tag:"PIE",scene:"pie",theoryImageDay:11,
-   quote:"Brilliant work in silence is still silence.",
-   insight:"PIE = Performance, Image, Exposure. Research shows performance alone accounts for only 10% of career advancement. But without performance, nothing else works. Do excellent work — then communicate it clearly, with structure and story.",
-   pieLink:"Performance: This is the foundation. Deliver, then tell the SAR story of what you delivered. The clearest performance statement is also a story.",
-   phrases:["My specific contribution was…","The impact of that was…","What I built, led, or delivered was…"],
+   quote:"Great work does not automatically create visibility.",
+   insight:"Harvey Coleman's research revealed that Performance accounts for just 10% of career success. It earns you the right to be in the room. It doesn't earn you the promotion, the recognition, or the next opportunity. This module shows you how to close the gap between the work you do and the credit you deserve.",
+   pieLink:"Performance: This is the foundation — and it is not the ceiling. Visibility without substance is noise. But substance without visibility is invisibility. Both matter.",
+   phrases:["My specific contribution was…","The impact of that was…","What I built, led, or delivered was…","Because of that, the result was…","Here's what changed as a result of my work…"],
    bad:"I've been working really hard on this.",
-   good:"I delivered the new onboarding process two weeks early. The result: 40% reduction in customer drop-off.",
-   practice:"List your top three contributions this month. For each, write a SAR story in three sentences. Make the Result specific, measurable, and the sharpest sentence you write.",
-   scenarios:["Performance review","Team update where your contributions need to be visible","Conversation with a sponsor or senior advocate"],
-   review:["Can I articulate my three biggest contributions this month as SAR stories?","Did I connect effort to outcome — not just activity to activity?","Have I communicated impact, or just described work?"],
-   promise:"Your performance is the non-negotiable. Communicate it like it matters — because it does. And now you have the story architecture to do it.",
-   teaser:"Only 10% of career advancement comes from performance. This session shows you how to communicate your work so it actually counts — with the story tools you've just built."},
+   good:"I led the onboarding redesign and delivered it two weeks early. The result: 40% reduction in drop-off and a renewed client account.",
+   practice:"List your top three contributions this month. For each, ask: do the people who shape your future know this happened? If not — that's your work this week.",
+   scenarios:["Performance review — make your top contributions specific and outcome-led","A senior stakeholder asks what you've been focused on","Someone takes credit for your work in a meeting"],
+   review:["Did I name my contribution or just describe my effort?","Did I connect my work to a measurable outcome?","Do the right people know what I delivered this week?"],
+   promise:"Part of leadership is making value visible. You now have the language, the structure, and the mindset to do it with confidence.",
+   teaser:"Discover why 90% of career advancement depends on how visible your work is — not just how good it is."},
 
   {day:11,week:2,title:"Brand Identity",tag:"Presence",scene:"presence",
    quote:"Your personal brand is what people say about you when you're not in the room.",
@@ -633,10 +633,10 @@ export const NAV_LABELS = ["See the theory","See examples","Start practice","Go 
 
 // ─── Session constants (pure data, no JSX)
 export const D10_FACTS = [
-  { word:"Visibility",   body:"Great work deserves to be known. Communicating your impact clearly isn't self-promotion — it's making sure your contributions can create the change they're meant to." },
-  { word:"Attribution",  body:"You've done the work. Now make sure the right people can see it. Telling your own story clearly is how your effort gets recognised and built upon." },
-  { word:"Credibility",  body:"When you can articulate what you deliver in clear, confident terms, people trust you more — and give you the opportunity to deliver more." },
-  { word:"Opportunity",  body:"The leaders who can open doors for you can only act on what they know. Help them help you by communicating your impact with clarity and conviction." },
+  { word:"Hard work is often invisible.",               body:"Your most valuable work happens in conversations, problem-solving, and crisis handling — none of which are automatically visible to the people who decide your future." },
+  { word:"People can only evaluate what they can see.", body:"If your contribution is unclear, others fill in the gaps — and rarely in your favour. Perceived contribution drives decisions, not actual contribution." },
+  { word:"Visibility is not vanity. It is professional responsibility.", body:"Communicating your impact clearly helps your team, stakeholders, and organisation understand what is working. That is a leadership skill, not an ego move." },
+  { word:"Being excellent and being recognised are different skills.", body:"You were taught one. No one taught you the other. Until now." },
 ];
 
 export const D3_FACTS = [
