@@ -674,15 +674,14 @@ T.goldDark : T2.text4,
       {isD10 && step==="Practice" && (
         <>
           {/* Recipe — top, framed */}
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>So now you know the science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:8}}>The Recipe for Career Success</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>This is how you ensure you have a credible voice at the table.</p>
+          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>Now you know the science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:8}}>How to turn strong work into career momentum</h2>
           <div style={{marginBottom:24}}>
             {[
-              {icon:"✦", head:"Do excellent work", body:"Your foundation, your credibility — non-negotiable."},
-              {icon:"✦", head:"Focus on the vital few", body:"The work that matters to the people who shape your future."},
-              {icon:"✦", head:"Make it visible", body:"Communicate impact with clarity, confidence, and integrity."},
-              {icon:"✦", head:"Build strategic relationships", body:"Ensure the right people understand your value."},
+              {icon:"✦", head:"Start with substance", body:"Credibility comes from consistently doing high-quality work. This is the foundation everything else builds on."},
+              {icon:"✦", head:"Be intentional with your effort", body:"The most effective professionals focus on the work that creates the greatest impact—not just the busiest workload."},
+              {icon:"✦", head:"Make your contribution visible", body:"Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create."},
+              {icon:"✦", head:"Invest in professional trust", body:"Career progression is rarely just about output. Strong relationships, trust, and visibility all shape opportunity."},
             ].map((r,i,arr)=>(
               <div key={i} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
                 <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:2}}>{r.icon}</span>
