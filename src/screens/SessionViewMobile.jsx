@@ -564,7 +564,7 @@ T.goldDark : T2.text4,
       {isD10 && step==="Insight" && (
         <>
           <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The uncomfortable truth</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:12}}>{lesson.quote}</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:16}}>{lesson.quote}</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Harvey Coleman found Performance accounts for just 10% of career advancement. This module unlocks the other 90%.</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {D10_FACTS.map((n,i)=>{

@@ -1,7 +1,7 @@
 // AmplifyU Service Worker v2
 // Strategy: network-first HTML, cache-first hashed assets, auto-update on deploy
 
-const STATIC_CACHE = 'au-static-v1';
+const STATIC_CACHE = 'au-static-v2';
 const BUILD_INFO_URL = '/build-info.json';
 
 // ── Install ──────────────────────────────────────────────────────────────────
