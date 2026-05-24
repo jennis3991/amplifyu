@@ -597,14 +597,16 @@ T.goldDark : T2.text4,
       )}
       {isD10 && step==="Theory" && (
         <>
-          {/* Attribution Theory — top of page */}
+          {/* Label + Title — matches Day 1 style */}
+          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>The Performance Iceberg</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most professionals assume their effort speaks for itself. It doesn't.</p>
+
+          {/* Attribution Theory */}
           <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",marginBottom:16}}>
-            <div style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:T.gold,letterSpacing:"0.05em",textTransform:"uppercase",marginBottom:8}}>Attribution Theory — Fritz Heider, 1958</div>
+            <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,marginBottom:8}}>Attribution Theory — Fritz Heider, 1958</div>
             <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,margin:0,fontWeight:300}}>When people cannot directly observe your work, they attribute results to luck, team effort, or circumstance — not to you. Visibility closes this gap. It replaces assumption with evidence.</p>
           </div>
-
-          {/* Intro */}
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most professionals assume their effort speaks for itself. It doesn't.</p>
 
           {/* Above the waterline */}
           <div style={{padding:"14px 16px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border,marginBottom:8}}>
