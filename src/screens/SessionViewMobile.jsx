@@ -675,19 +675,41 @@ T.goldDark : T2.text4,
       )}
       {isD10 && step==="Practice" && (
         <>
-          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The 30-Second Impact Drill</div>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,marginBottom:16,fontWeight:300}}>Take something invisible and rewrite it so it communicates impact clearly.</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}}>
-            <div style={{padding:"12px",background:"rgba(139,74,56,0.06)",borderRadius:6,borderLeft:"2px solid rgba(139,74,56,0.3)"}}>
-              <div style={{fontSize:9,fontWeight:700,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6,fontFamily:T.sans}}>Before</div>
-              <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"I helped with onboarding."</p>
-            </div>
-            <div style={{padding:"12px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid "+T.gold}}>
-              <div style={{fontSize:9,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6,fontFamily:T.sans}}>After</div>
-              <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"I redesigned onboarding, cutting 6 steps to 3."</p>
-            </div>
+          {/* Recipe — top, framed */}
+          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>So now you know the science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:8}}>The Recipe for Career Success</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>This is how you ensure you have a credible voice at the table.</p>
+          <div style={{marginBottom:24}}>
+            {[
+              {icon:"✦", head:"Do excellent work", body:"Your foundation, your credibility — non-negotiable."},
+              {icon:"✦", head:"Focus on the vital few", body:"The work that matters to the people who shape your future."},
+              {icon:"✦", head:"Make it visible", body:"Communicate impact with clarity, confidence, and integrity."},
+              {icon:"✦", head:"Build strategic relationships", body:"Ensure the right people understand your value."},
+            ].map((r,i,arr)=>(
+              <div key={i} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
+                <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:2}}>{r.icon}</span>
+                <div><span style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text}}>{r.head}</span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300}}> — {r.body}</span></div>
+              </div>
+            ))}
           </div>
-          <D10MobileSAR/>
+
+          {/* SAR Builder */}
+          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:20}}>
+            <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:T.sans}}>The exercise</div>
+            <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:6}}>SAR Builder</h3>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Situation. Action. Result. Identify something you did — the coach helps you make your contribution visible.</p>
+            <div style={{display:"flex",gap:12,marginBottom:16,flexWrap:"wrap"}}>
+              {["Build a SAR story","Sharpen your result","Name your contribution"].map((s,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{width:18,height:18,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"white"}}>{i+1}</span>
+                  </div>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{s}</span>
+                </div>
+              ))}
+            </div>
+            <D10MobileSAR/>
+          </div>
         </>
       )}
       {isD10 && step==="Simulation" && (

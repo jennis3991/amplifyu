@@ -163,11 +163,11 @@ export function SessionLeftPanel({
     );
     if (step === "Simulation") return (
       <div style={d10Dark}>
-        <img src="/day1-simulation.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
+        <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="pie" height={900} day={10}/></div>
         {d10Ol}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Performance Review</div>
-          <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2 }}>Communicate your impact. Make it land.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Performance in Action</div>
+          <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2 }}>Communicate your impact. Make it impossible to miss.</p>
         </div>
       </div>
     );

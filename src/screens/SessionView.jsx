@@ -432,18 +432,18 @@ setAmbitionSaved(true); } catch {}
     // ── D10 RightContent — Day 10: Performance ────────────────────────────────
     const D10RightContent = () => {
       const [simInput, setSimInput] = useState("");
-      const [xrayItems, setXrayItems] = useState([{work:"",visible:"green"}]);
-      const [rewriteIn, setRewriteIn] = useState(""); const [rewriteOut, setRewriteOut] = useState(""); const [rewriteLoading, setRewriteLoading] = useState(false);
+      const [sarS, setSarS] = useState(""); const [sarA, setSarA] = useState(""); const [sarR, setSarR] = useState("");
+      const [sarResult, setSarResult] = useState(""); const [sarLoading, setSarLoading] = useState(false);
       const [storyCard, setStoryCard] = useState(null);
       const [openInsight, setOpenInsight] = useState(null);
 
-      async function scoreRewrite() {
-        if (!rewriteIn.trim()) return; setRewriteLoading(true);
+      async function buildSAR() {
+        if (!sarS.trim()||!sarA.trim()||!sarR.trim()) return; setSarLoading(true);
         try {
-          const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:`Rewrite this invisible contribution as a visible, impact-led performance statement. Be specific and confident. Return ONLY the rewritten statement:\n\n"${rewriteIn}"`}]})});
-          const d = await res.json(); setRewriteOut((d.content||[]).map(b=>b.text||"").join("").trim());
-        } catch { setRewriteOut("Lead with the outcome, then show how you got there. Numbers beat adjectives."); }
-        setRewriteLoading(false);
+          const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:350,messages:[{role:"user",content:`You are an executive communication coach. Sharpen this SAR story into 2-3 crisp sentences that communicate impact and ownership. Lead with the result. Make it specific and memorable. Return ONLY the sharpened story:\n\nSituation: ${sarS}\nAction: ${sarA}\nResult: ${sarR}`}]})});
+          const d = await res.json(); setSarResult((d.content||[]).map(b=>b.text||"").join("").trim());
+        } catch { setSarResult("Lead with the result, then show how you got there. Specifics beat adjectives."); }
+        setSarLoading(false);
       }
 
       if (step === "Insight") return (
@@ -567,46 +567,62 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Practice") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Visibility X-Ray</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.6,marginBottom:28,fontWeight:300}}>The most powerful exercise in this module. Take something invisible and make it visible.</p>
-          <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"20px 24px",marginBottom:24}}>
-            <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16,fontFamily:T.sans}}>The 30-Second Impact Drill</div>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,marginBottom:16,fontWeight:300}}>Take a contribution that is currently invisible — and rewrite it so it communicates impact clearly.</p>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
-              <div style={{padding:"12px 14px",background:"rgba(139,74,56,0.05)",borderRadius:4,borderLeft:"2px solid rgba(139,74,56,0.3)"}}>
-                <div style={{fontSize:9,fontWeight:700,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6,fontFamily:T.sans}}>Before</div>
-                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"I helped with onboarding."</p>
-              </div>
-              <div style={{padding:"12px 14px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <div style={{fontSize:9,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6,fontFamily:T.sans}}>After</div>
-                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"I redesigned the onboarding flow, cutting the process from 6 steps to 3 and reducing new user friction."</p>
-              </div>
-            </div>
-            <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8,fontFamily:T.sans}}>Your turn</div>
-            <textarea value={rewriteIn} onChange={e=>setRewriteIn(e.target.value)} placeholder="Describe something you did recently that is currently invisible…" className="au-input" style={{height:72,resize:"none",fontSize:14,marginBottom:10}}/>
-            <button onClick={scoreRewrite} disabled={rewriteLoading||!rewriteIn.trim()} style={{padding:"10px 22px",borderRadius:3,border:"none",background:rewriteLoading||!rewriteIn.trim()?T2.border:T.ink,color:rewriteLoading||!rewriteIn.trim()?T2.text3:T.bg,fontSize:13,fontWeight:600,cursor:rewriteLoading||!rewriteIn.trim()?"not-allowed":"pointer",fontFamily:T.sans,marginBottom:rewriteOut?14:0}}>
-              {rewriteLoading?"Rewriting…":"Make It Visible →"}
-            </button>
-            {rewriteOut && (
-              <div style={{padding:"14px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <div style={{fontSize:9,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:T.sans}}>Visible version</div>
-                <p style={{fontFamily:T.serif,fontSize:15,color:T2.text,lineHeight:1.7,margin:0}}>{rewriteOut}</p>
-              </div>
-            )}
-          </div>
-          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:24}}>
-            <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14,fontFamily:T.sans}}>The recipe for career success</div>
+
+          {/* Recipe — at top, framed */}
+          <div style={{marginBottom:32}}>
+            <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>So now you know the science</div>
+            <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:10}}>The Recipe for Career Success</h2>
+            <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>This is how you ensure you have a credible voice at the table.</p>
             {[
               {icon:"✦", head:"Do excellent work", body:"Your foundation, your credibility — non-negotiable."},
               {icon:"✦", head:"Focus on the vital few", body:"The work that matters to the people who shape your future."},
               {icon:"✦", head:"Make it visible", body:"Communicate impact with clarity, confidence, and integrity."},
               {icon:"✦", head:"Build strategic relationships", body:"Ensure the right people understand your value."},
             ].map((r,i,arr)=>(
-              <div key={i} style={{display:"flex",gap:12,padding:"11px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
-                <span style={{color:T.gold,fontFamily:T.sans,fontSize:14,flexShrink:0,marginTop:1}}>{r.icon}</span>
-                <div><span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text}}>{r.head} — </span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300}}>{r.body}</span></div>
+              <div key={i} style={{display:"flex",gap:12,padding:"12px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
+                <span style={{color:T.gold,fontFamily:T.sans,fontSize:14,flexShrink:0,marginTop:2}}>{r.icon}</span>
+                <div><span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text}}>{r.head}</span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300}}> — {r.body}</span></div>
               </div>
             ))}
+          </div>
+
+          {/* SAR Builder */}
+          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28}}>
+            <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The exercise</div>
+            <h3 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:6}}>SAR Builder</h3>
+            <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>Situation. Action. Result. Identify something you did — and the coach helps you make your contribution visible.</p>
+            <div style={{display:"flex",gap:24,marginBottom:24}}>
+              {["Build a SAR story","Sharpen your result","Name your contribution"].map((s,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{width:20,height:20,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"white"}}>{i+1}</span>
+                  </div>
+                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{s}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:20}}>
+              {[
+                {label:"Situation",val:sarS,set:setSarS,ph:"Set the context briefly. What was the challenge or starting point?"},
+                {label:"Action",   val:sarA,set:setSarA,ph:"What did YOU specifically do? Use 'I' — not 'we.'"},
+                {label:"Result",   val:sarR,set:setSarR,ph:"What was the measurable outcome? Be specific."},
+              ].map(({label,val,set,ph},i)=>(
+                <div key={i}>
+                  <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6,fontFamily:T.sans}}>{label}</div>
+                  <textarea value={val} onChange={e=>set(e.target.value)} placeholder={ph} className="au-input" style={{height:60,resize:"none",fontSize:14}}/>
+                </div>
+              ))}
+            </div>
+            <button onClick={buildSAR} disabled={sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()}
+              style={{padding:"11px 24px",borderRadius:3,border:"none",background:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?T2.border:T.ink,color:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?T2.text3:T.bg,fontSize:13,fontWeight:600,cursor:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?"not-allowed":"pointer",fontFamily:T.sans,marginBottom:sarResult?16:0}}>
+              {sarLoading?"Building your SAR…":"Build My SAR Story →"}
+            </button>
+            {sarResult && (
+              <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:T.sans}}>Your performance statement</div>
+                <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>{sarResult}</p>
+              </div>
+            )}
           </div>
         </div>
       );
