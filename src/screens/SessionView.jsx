@@ -435,6 +435,7 @@ setAmbitionSaved(true); } catch {}
       const [xrayItems, setXrayItems] = useState([{work:"",visible:"green"}]);
       const [rewriteIn, setRewriteIn] = useState(""); const [rewriteOut, setRewriteOut] = useState(""); const [rewriteLoading, setRewriteLoading] = useState(false);
       const [storyCard, setStoryCard] = useState(null);
+      const [openInsight, setOpenInsight] = useState(null);
 
       async function scoreRewrite() {
         if (!rewriteIn.trim()) return; setRewriteLoading(true);
@@ -451,20 +452,29 @@ setAmbitionSaved(true); } catch {}
           <h2 style={{fontFamily:T.serif,fontSize:42,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Great work does not automatically create visibility.</h2>
           <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32}}>In 1996, Harvey Coleman found that Performance accounts for just 10% of career advancement. Not because it doesn't matter — but because it is not the multiplier.</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:28}}>
-            {D10_FACTS.map((n,i)=>(
-              <div key={i} style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,cursor:"default"}}>
-                <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.4,marginBottom:6}}>{n.word}</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{n.sub}</p>
-                <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:10,display:"flex",flexDirection:"column",gap:6}}>
-                  {n.bullets.map((b,j)=>(
-                    <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-                      <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300,margin:0}}>{b}</p>
+            {D10_FACTS.map((n,i)=>{
+              const open = openInsight===i;
+              return (
+                <div key={i} onClick={()=>setOpenInsight(open?null:i)}
+                  style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 16px rgba(138,158,132,0.15)":"none"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:6}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.6)",marginLeft:8,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:open?"0 0 12px":0}}>{n.sub}</p>
+                  {open && (
+                    <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",flexDirection:"column",gap:8}}>
+                      {n.bullets.map((b,j)=>(
+                        <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                          <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/>
+                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300,margin:0}}>{b}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div style={{padding:"20px 24px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"3px solid "+T.gold}}>
             <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"Invisible excellence does not scale. Visibility is not self-promotion — it is communication."</p>
