@@ -581,6 +581,9 @@ T.goldDark : T2.text4,
         <>
           <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Performance Iceberg</div>
           <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:12}}>Most professionals assume their effort speaks for itself. It doesn't.</h2>
+          <div style={{marginBottom:16,borderRadius:8,overflow:"hidden"}}>
+            <img src="/performance-iceberg.jpg" alt="The Performance Iceberg" style={{width:"100%",display:"block",objectFit:"cover"}}/>
+          </div>
           <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
             <div style={{padding:"14px 16px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
               <div style={{fontSize:9,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8,fontFamily:T.sans}}>Above the waterline — what they see ↑</div>
