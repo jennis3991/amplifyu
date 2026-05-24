@@ -219,7 +219,7 @@ export const LESSONS = [
    promise:"Speed is anxiety. Pace is confidence. Today you chose pace.",
    teaser:"Discover why your voice is your most underused asset — and how mastering four simple levers changes how every room responds to you."},
 
-  {day:3,week:1,title:"The Credibility Edge",subtitle:"Eliminate Fillers",tag:"Credibility",scene:"clarity",
+  {day:3,week:1,title:"Eliminate Fillers",tag:"Credibility",scene:"clarity",
    quote:"What you don't say is as powerful as what you do.",
    insight:"Um, uh, like, you know — these words exist because we fear silence. But silence is more powerful than filler. It signals you're thinking, not floundering.",
    pieLink:"Image: Filler words undermine authority instantly. Removing them is one of the fastest credibility upgrades available.",
