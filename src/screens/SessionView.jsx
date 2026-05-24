@@ -75,6 +75,7 @@ setAmbitionSaved(true); } catch {}
   const [d4MobCard, setD4MobCard] = useState(null);
   const [d5MobCard, setD5MobCard] = useState(null);
   const [d6MobCard, setD6MobCard] = useState(null);
+  const [d10MobCard, setD10MobCard] = useState(null);
   const [d11MobCard, setD11MobCard] = useState(null);
   const [ntMobCard, setNtMobCard] = useState(null);
   const swipeRef = useRef({x:0,y:0});
@@ -3012,6 +3013,7 @@ setAmbitionSaved(true); } catch {}
       d4MobCard={d4MobCard} setD4MobCard={setD4MobCard}
       d5MobCard={d5MobCard} setD5MobCard={setD5MobCard}
       d6MobCard={d6MobCard} setD6MobCard={setD6MobCard}
+      d10MobCard={d10MobCard} setD10MobCard={setD10MobCard}
       d11MobCard={d11MobCard} setD11MobCard={setD11MobCard}
       ntMobCard={ntMobCard} setNtMobCard={setNtMobCard}
       activeSc={activeSc} scenarios={scenarios}

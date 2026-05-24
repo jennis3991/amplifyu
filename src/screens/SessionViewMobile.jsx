@@ -28,7 +28,7 @@ export function MobileSessionView({
   d1MobCard, setD1MobCard, d2MobCard, setD2MobCard,
   d3MobCard, setD3MobCard, d4MobCard, setD4MobCard,
   d5MobCard, setD5MobCard, d6MobCard, setD6MobCard,
-  d11MobCard, setD11MobCard, ntMobCard, setNtMobCard,
+  d10MobCard, setD10MobCard, d11MobCard, setD11MobCard, ntMobCard, setNtMobCard,
   activeSc, scenarios, ambitionDraft, saveAmbition, ambitionSaved,
   roleId, activeRole, swipeRef, note, saveNote, checks, setChecks,
   ntOpenCard, setNtOpenCard, d9OpenCard, setD9OpenCard, ntStory,
@@ -423,6 +423,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           5:{Insight:"/d5-insight.jpg",Theory:"/d5-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           6:{Insight:"/d6-insight.jpg",Theory:"/d6-theory.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
+          10:{Insight:"/day10-insight.jpg",Theory:"/performance-iceberg.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           11:{Insight:"/d11-insight.jpg",Theory:"/d11-theory.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
         };
@@ -562,9 +563,6 @@ T.goldDark : T2.text4,
        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
       {isD10 && step==="Insight" && (
         <>
-          <div style={{margin:"-4px -20px 16px",overflow:"hidden"}}>
-            <img src="/day10-insight.jpg" alt="" style={{width:"100%",display:"block",height:240,objectFit:"cover",objectPosition:"center 30%"}}/>
-          </div>
           <div style={{background:T2.cardDark,borderRadius:6,padding:"22px 20px",marginBottom:12}}>
             <div style={{fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>The uncomfortable truth</div>
             <p style={{fontFamily:T.serif,fontSize:19,fontWeight:600,color:"rgba(255,255,255,0.92)",lineHeight:1.4,margin:0}}>{lesson.quote}</p>
@@ -582,9 +580,6 @@ T.goldDark : T2.text4,
       )}
       {isD10 && step==="Theory" && (
         <>
-          <div style={{margin:"-4px -20px 16px",overflow:"hidden"}}>
-            <img src="/performance-iceberg.jpg" alt="The Performance Iceberg" style={{width:"100%",display:"block",height:240,objectFit:"cover",objectPosition:"center"}}/>
-          </div>
           <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Performance Iceberg</div>
           <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:12}}>Most professionals assume their effort speaks for itself. It doesn't.</h2>
           <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
