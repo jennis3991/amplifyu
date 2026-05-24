@@ -620,15 +620,15 @@ T.goldDark : T2.text4,
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {D10_EXAMPLES_DATA.map((ex)=>(
               <div key={ex.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border}}
-                onClick={()=>setD10Card(d10Card===ex.id?null:ex.id)}>
+                onClick={()=>setD10MobCard(d10MobCard===ex.id?null:ex.id)}>
                 <div style={{padding:"14px 16px",background:T2.surface,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <div>
                     <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,marginBottom:2}}>{ex.title}</div>
                     <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{ex.sub}</div>
                   </div>
-                  <span style={{color:d10Card===ex.id?T.gold:T2.text3,fontSize:16,marginLeft:10}}>{d10Card===ex.id?"▴":"▸"}</span>
+                  <span style={{color:d10MobCard===ex.id?T.gold:T2.text3,fontSize:16,marginLeft:10}}>{d10MobCard===ex.id?"▴":"▸"}</span>
                 </div>
-                {d10Card===ex.id && (
+                {d10MobCard===ex.id && (
                   <div style={{padding:"12px 14px",background:T2.bg,borderTop:"0.5px solid "+T2.divider}}>
                     <div style={{padding:"10px 12px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
                       <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{ex.lesson}</p>
