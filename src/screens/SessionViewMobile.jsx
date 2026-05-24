@@ -562,6 +562,9 @@ T.goldDark : T2.text4,
        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
       {isD10 && step==="Insight" && (
         <>
+          <div style={{margin:"-20px -20px 16px",overflow:"hidden"}}>
+            <img src="/day10-insight.jpg" alt="" style={{width:"100%",display:"block",height:240,objectFit:"cover",objectPosition:"center 30%"}}/>
+          </div>
           <div style={{background:T2.cardDark,borderRadius:6,padding:"22px 20px",marginBottom:12}}>
             <div style={{fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>The uncomfortable truth</div>
             <p style={{fontFamily:T.serif,fontSize:19,fontWeight:600,color:"rgba(255,255,255,0.92)",lineHeight:1.4,margin:0}}>{lesson.quote}</p>
