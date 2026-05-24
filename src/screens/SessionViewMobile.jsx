@@ -563,10 +563,8 @@ T.goldDark : T2.text4,
        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
       {isD10 && step==="Insight" && (
         <>
-          <div style={{background:T2.cardDark,borderRadius:6,padding:"22px 20px",marginBottom:12}}>
-            <div style={{fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>The uncomfortable truth</div>
-            <p style={{fontFamily:T.serif,fontSize:19,fontWeight:600,color:"rgba(255,255,255,0.92)",lineHeight:1.4,margin:0}}>{lesson.quote}</p>
-          </div>
+          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The uncomfortable truth</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:12}}>{lesson.quote}</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Harvey Coleman found Performance accounts for just 10% of career advancement. This module unlocks the other 90%.</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {D10_FACTS.map((n,i)=>{
@@ -603,14 +601,14 @@ T.goldDark : T2.text4,
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most professionals assume their effort speaks for itself. It doesn't.</p>
 
           {/* Attribution Theory */}
-          <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",marginBottom:16}}>
-            <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,marginBottom:8}}>Attribution Theory — Fritz Heider, 1958</div>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,margin:0,fontWeight:300}}>When people cannot directly observe your work, they attribute results to luck, team effort, or circumstance — not to you. Visibility closes this gap. It replaces assumption with evidence.</p>
+          <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.2,marginBottom:12}}>Attribution Theory — Fritz Heider, 1958</h3>
+          <div style={{padding:"18px 20px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",marginBottom:16}}>
+            <p style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,lineHeight:1.6,margin:0}}>When people cannot directly observe your work, they attribute results to luck, team effort, or circumstance — not to you. Visibility closes this gap. It replaces assumption with evidence.</p>
           </div>
 
           {/* Above the waterline */}
           <div style={{padding:"14px 16px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border,marginBottom:8}}>
-            <div style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,marginBottom:10}}>Above the waterline ↑</div>
+            <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,marginBottom:12}}>Above the waterline ↑</div>
             {["Outcomes they hear about","Moments you speak up","Visible ownership of results","Strategic contributions you name"].map((b,i)=>(
               <div key={i} style={{display:"flex",gap:8,marginBottom:i<3?6:0,alignItems:"flex-start"}}><span style={{color:T.gold,fontSize:11,marginTop:2}}>✦</span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.4}}>{b}</span></div>
             ))}
@@ -618,7 +616,7 @@ T.goldDark : T2.text4,
 
           {/* Below the waterline */}
           <div style={{padding:"14px 16px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border,marginBottom:16}}>
-            <div style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,marginBottom:10}}>Below the waterline ↓</div>
+            <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,marginBottom:12}}>Below the waterline ↓</div>
             {["Late nights and early starts","Quiet firefighting","Invisible support work","Emotional labour and relationship management"].map((b,i)=>(
               <div key={i} style={{display:"flex",gap:8,marginBottom:i<3?6:0,alignItems:"flex-start"}}><span style={{color:T.gold,fontSize:11,marginTop:2}}>↓</span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.4}}>{b}</span></div>
             ))}
