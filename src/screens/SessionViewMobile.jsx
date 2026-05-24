@@ -718,6 +718,7 @@ T.goldDark : T2.text4,
           <D10MobileSim/>
         </>
       )}
+      {isD2 && step==="Insight" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Way You Speak Changes the Way People Listen</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Your voice is more than sound — it's one of your most powerful communication tools.</p>
