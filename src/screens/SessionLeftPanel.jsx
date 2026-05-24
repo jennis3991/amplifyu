@@ -117,23 +117,17 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Theory") return (
-      <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        {theoryImg10 ? (
-          <>
-            <img src={theoryImg10.image} alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:theoryImg10.imgObjectPosition||"center", filter:theoryImg10.imgFilter||"none" }}/>
-            <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.4)" }}/>
-            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.25) 40%, transparent 65%)" }}/>
-            <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
-              <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Framework</div>
-              <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>Deliver, then tell the story of what you delivered.</p>
-            </div>
-          </>
-        ) : (
-          <div style={{ background:"#131009", height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px" }}>
-            <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Framework</div>
-            <p style={{ ...LP_HEADING, fontSize:24, maxWidth:320 }}>The SAR Framework</p>
-          </div>
-        )}
+      <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#0A0C10" }}>
+        <img
+          src="/performance-iceberg.jpg"
+          alt="The Performance Iceberg"
+          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}
+        />
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(8,6,3,0.75) 0%, rgba(8,6,3,0.1) 50%, transparent 75%)" }}/>
+        <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:10 }}>The Science</div>
+          <p style={{ fontFamily:T.serif, fontSize:"clamp(20px,1.8vw,28px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:340 }}>90% of your hardest work lives below the waterline.</p>
+        </div>
       </div>
     );
     if (step === "Example") return (

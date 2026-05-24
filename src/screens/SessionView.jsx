@@ -467,10 +467,7 @@ setAmbitionSaved(true); } catch {}
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Performance Iceberg</h2>
-          <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Most professionals assume their effort speaks for itself. It doesn't.</p>
-          <div style={{marginBottom:28,borderRadius:8,overflow:"hidden"}}>
-            <img src="/performance-iceberg.jpg" alt="The Performance Iceberg — 10% visible, 90% hidden" style={{width:"100%",display:"block",maxHeight:480,objectFit:"cover",objectPosition:"center"}}/>
-          </div>
+          <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:28}}>Most professionals assume their effort speaks for itself. It doesn't.</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:24}}>
             <div style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
               <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>Above the waterline ↑</div>
