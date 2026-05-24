@@ -569,43 +569,79 @@ T.goldDark : T2.text4,
           </div>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Harvey Coleman found Performance accounts for just 10% of career advancement. This module unlocks the other 90%.</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
-            {D10_FACTS.map((n,i)=>(
-              <div key={i} style={{padding:"14px 16px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300,margin:0}}>{n.body}</p>
-              </div>
-            ))}
+            {D10_FACTS.map((n,i)=>{
+              const open = d10MobCard===("d10i"+i);
+              return (
+                <div key={i} onClick={()=>setD10MobCard(open?null:"d10i"+i)}
+                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 10px":0}}>{n.sub}</p>
+                  {open && (
+                    <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
+                      {n.bullets.map((b,j)=>(
+                        <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                          <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
+                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </>
       )}
       {isD10 && step==="Theory" && (
         <>
-          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Performance Iceberg</div>
-          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:12}}>Most professionals assume their effort speaks for itself. It doesn't.</h2>
-          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
-            <div style={{padding:"14px 16px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
-              <div style={{fontSize:9,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8,fontFamily:T.sans}}>Above the waterline — what they see ↑</div>
-              {["Outcomes they hear about","Moments you speak up","Visible ownership","Strategic contributions you name"].map((b,i)=>(
-                <div key={i} style={{display:"flex",gap:8,marginBottom:4}}><span style={{color:T.gold,fontSize:12}}>✦</span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text}}>{b}</span></div>
-              ))}
-            </div>
-            <div style={{padding:"14px 16px",background:"#231E18",borderRadius:6}}>
-              <div style={{fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.4)",textTransform:"uppercase",letterSpacing:"1px",marginBottom:8,fontFamily:T.sans}}>Below the waterline — where effort goes ↓</div>
-              {["Late nights and early starts","Quiet firefighting","Invisible support work","Emotional labour"].map((b,i)=>(
-                <div key={i} style={{display:"flex",gap:8,marginBottom:4}}><span style={{color:"rgba(245,239,230,0.3)",fontSize:12}}>↓</span><span style={{fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.5)"}}>{b}</span></div>
-              ))}
-            </div>
+          {/* Attribution Theory — top of page */}
+          <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",marginBottom:16}}>
+            <div style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:T.gold,letterSpacing:"0.05em",textTransform:"uppercase",marginBottom:8}}>Attribution Theory — Fritz Heider, 1958</div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,margin:0,fontWeight:300}}>When people cannot directly observe your work, they attribute results to luck, team effort, or circumstance — not to you. Visibility closes this gap. It replaces assumption with evidence.</p>
           </div>
+
+          {/* Intro */}
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most professionals assume their effort speaks for itself. It doesn't.</p>
+
+          {/* Above the waterline */}
+          <div style={{padding:"14px 16px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border,marginBottom:8}}>
+            <div style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,marginBottom:10}}>Above the waterline ↑</div>
+            {["Outcomes they hear about","Moments you speak up","Visible ownership of results","Strategic contributions you name"].map((b,i)=>(
+              <div key={i} style={{display:"flex",gap:8,marginBottom:i<3?6:0,alignItems:"flex-start"}}><span style={{color:T.gold,fontSize:11,marginTop:2}}>✦</span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.4}}>{b}</span></div>
+            ))}
+          </div>
+
+          {/* Below the waterline */}
+          <div style={{padding:"14px 16px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border,marginBottom:16}}>
+            <div style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,marginBottom:10}}>Below the waterline ↓</div>
+            {["Late nights and early starts","Quiet firefighting","Invisible support work","Emotional labour and relationship management"].map((b,i)=>(
+              <div key={i} style={{display:"flex",gap:8,marginBottom:i<3?6:0,alignItems:"flex-start"}}><span style={{color:T.gold,fontSize:11,marginTop:2}}>↓</span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.4}}>{b}</span></div>
+            ))}
+          </div>
+
+          {/* 3 expandable principle cards */}
           {[
-            {head:"Excellence is your foundation — not your ceiling.", body:"Performance earns you the right to be in the room. It does not earn you the promotion."},
-            {head:"Visibility is a communication skill.",              body:"Not bragging. Not ego. Creating clarity and making value legible to the people who need to see it."},
-            {head:"Focus on the vital few.",                           body:"The work that matters is the work visible to the people who shape your future."},
-          ].map((p,i,arr)=>(
-            <div key={i} style={{padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border,borderLeft:"2px solid "+T.gold,marginBottom:i<arr.length-1?8:0}}>
-              <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:4}}>{p.head}</div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{p.body}</p>
-            </div>
-          ))}
+            {head:"Excellence is your foundation — not your ceiling.", body:"Performance earns you the right to be in the room. It does not earn you the promotion, the project, or the recognition. Visibility without substance is noise — but substance without visibility is invisibility."},
+            {head:"Visibility is a communication skill.", body:"It is NOT bragging, self-promotion, or ego. It IS creating clarity, helping others understand your impact, and making value legible to the people who need to see it. The most effective leaders do this instinctively."},
+            {head:"Focus on the vital few.", body:"Not all work is equal. The work that matters is the work visible to the people who shape your future. Spreading yourself across everything and excelling at things nobody notices is a common — and expensive — trap."},
+          ].map((p,i)=>{
+            const open = d10MobCard===("d10t"+i);
+            return (
+              <div key={i} onClick={()=>setD10MobCard(open?null:"d10t"+i)}
+                style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",marginBottom:i<2?8:0,transition:"border-color 0.2s"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:0}}>
+                  <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.3,flex:1}}>{p.head}</div>
+                  <span style={{fontFamily:T.sans,fontSize:15,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:8,flexShrink:0}}>{open?"▴":"▸"}</span>
+                </div>
+                {open && (
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>{p.body}</p>
+                )}
+              </div>
+            );
+          })}
         </>
       )}
       {isD10 && step==="Example" && (

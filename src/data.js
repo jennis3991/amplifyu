@@ -633,10 +633,18 @@ export const NAV_LABELS = ["See the theory","See examples","Start practice","Go 
 
 // ─── Session constants (pure data, no JSX)
 export const D10_FACTS = [
-  { word:"Hard work is often invisible.",               body:"Your most valuable work happens in conversations, problem-solving, and crisis handling — none of which are automatically visible to the people who decide your future." },
-  { word:"People can only evaluate what they can see.", body:"If your contribution is unclear, others fill in the gaps — and rarely in your favour. Perceived contribution drives decisions, not actual contribution." },
-  { word:"Visibility is not vanity. It is professional responsibility.", body:"Communicating your impact clearly helps your team, stakeholders, and organisation understand what is working. That is a leadership skill, not an ego move." },
-  { word:"Being excellent and being recognised are different skills.", body:"You were taught one. No one taught you the other. Until now." },
+  { word:"Hard work is often invisible.",
+    sub:"Your most valuable work is rarely seen by the people who decide your future.",
+    bullets:["Conversations, problem-solving, and crisis handling create real value — none of it automatic visible to decision-makers.","If no one knows about it, it doesn't count toward your recognition or advancement."] },
+  { word:"People can only evaluate what they can see.",
+    sub:"Perceived contribution drives decisions, not actual contribution.",
+    bullets:["When your work is unclear, others fill in the gaps — and rarely in your favour.","Visibility replaces assumption with evidence."] },
+  { word:"Visibility is not vanity. It is professional responsibility.",
+    sub:"Making your impact clear is a leadership skill.",
+    bullets:["Communicating what you deliver helps your team and organisation understand what is working.","That is clarity and leadership — not self-promotion."] },
+  { word:"Being excellent and being recognised are different skills.",
+    sub:"You were taught one. No one taught you the other.",
+    bullets:["High performers are rarely recognised for their best work — because it lives below the waterline.","Until now."] },
 ];
 
 export const D3_FACTS = [
