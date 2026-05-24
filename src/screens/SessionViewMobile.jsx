@@ -562,7 +562,7 @@ T.goldDark : T2.text4,
        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
       {isD10 && step==="Insight" && (
         <>
-          <div style={{margin:"-20px -20px 16px",overflow:"hidden"}}>
+          <div style={{margin:"-4px -20px 16px",overflow:"hidden"}}>
             <img src="/day10-insight.jpg" alt="" style={{width:"100%",display:"block",height:240,objectFit:"cover",objectPosition:"center 30%"}}/>
           </div>
           <div style={{background:T2.cardDark,borderRadius:6,padding:"22px 20px",marginBottom:12}}>
@@ -582,7 +582,7 @@ T.goldDark : T2.text4,
       )}
       {isD10 && step==="Theory" && (
         <>
-          <div style={{margin:"-20px -20px 16px",overflow:"hidden"}}>
+          <div style={{margin:"-4px -20px 16px",overflow:"hidden"}}>
             <img src="/performance-iceberg.jpg" alt="The Performance Iceberg" style={{width:"100%",display:"block",height:240,objectFit:"cover",objectPosition:"center"}}/>
           </div>
           <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Performance Iceberg</div>
