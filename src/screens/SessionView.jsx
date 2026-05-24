@@ -627,31 +627,61 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Simulation") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
-          <div style={{fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>AI Practice</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>Make Great Work Impossible to Miss</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:28}}>Five high-stakes scenarios. Own your achievements without arrogance. Specific. Outcome-led. Confident.</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:28}}>
-            {[
-              {n:1,title:"The Promotion Conversation",        sub:'"Why should you be considered for the next level?"'},
-              {n:2,title:"The Executive Update",             sub:'"Give me the 30-second version."'},
-              {n:3,title:"The Credit Theft",                 sub:"A colleague presents your work as theirs in front of leadership."},
-              {n:4,title:"The Skip-Level Surprise",          sub:'Senior leader asks: "What are you focused on right now?"'},
-              {n:5,title:"The Pushback",                     sub:'"I\'m not convinced this mattered."'},
-            ].map((sc,i)=>(
-              <button key={i} onClick={()=>setSimInput(sc.title+": ")} style={{padding:"14px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.18s ease"}}
-                onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
-                onMouseLeave={e=>{e.currentTarget.style.background=T2.surface;e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}>
-                <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:3}}>{sc.n}. {sc.title}</div>
-                <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontStyle:"italic"}}>{sc.sub}</div>
+      if (step === "Simulation") {
+        const HOT_SEAT_SCENARIOS = [
+          {id:1, title:"The Surprise Skip-Level",   prompt:'"So — what have you been focused on lately?"',                          tag:"Strategic framing · Brevity · Confidence"},
+          {id:2, title:"Promotion Calibration",      prompt:'"Why are you ready for the next level?"',                               tag:"Ownership · Evidence · Leadership language"},
+          {id:3, title:"The Executive Fly-By",       prompt:'"How\'s the project going?"',                                           tag:"Brevity · Prioritisation · Executive comms"},
+          {id:4, title:"Credit Theft",               prompt:"A colleague presents work you led as their own. Respond professionally.", tag:"Composure · Diplomacy · Ownership"},
+          {id:5, title:"The Difficult Stakeholder",  prompt:'"I\'m still not convinced this made a difference."',                    tag:"Persuasion · Calm under pressure · Credibility"},
+          {id:6, title:"The Quiet Achiever Trap",    prompt:'"You do great work — but I need more visibility into your impact."',    tag:"Self-advocacy · Reframing · Strategic comms"},
+        ];
+        const [activeScenario, setActiveScenario] = useState(null);
+        return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          {/* Hero header */}
+          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>Performance under pressure</div>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Leadership Hot Seat</h2>
+          <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Your impact. 30 seconds. Go.</p>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,fontWeight:300,marginBottom:28}}>Six scenarios that feel painfully real. In high-stakes moments, nobody asks for your full backstory. You'll be judged on how clearly you communicate your impact — fast. Frame the Situation. Explain your Action. Land the Result.</p>
+
+          {!activeScenario ? (
+            // Scenario picker
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+              {HOT_SEAT_SCENARIOS.map(sc=>(
+                <button key={sc.id} onClick={()=>{setActiveScenario(sc);setSimInput("");}}
+                  style={{padding:"20px 22px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.2s ease"}}
+                  onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 20px rgba(44,36,22,0.1)";}}
+                  onMouseLeave={e=>{e.currentTarget.style.background=T2.surface;e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}>
+                  <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,marginBottom:6,lineHeight:1.3}}>{sc.id}. {sc.title}</div>
+                  <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginBottom:10,fontStyle:"italic"}}>{sc.tag}</div>
+                  <div style={{fontFamily:T.sans,fontSize:12,color:T2.text2,lineHeight:1.5}}>{sc.prompt}</div>
+                </button>
+              ))}
+            </div>
+          ) : (
+            // Active scenario
+            <div>
+              <button onClick={()=>setActiveScenario(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"0 0 20px",background:"none",border:"none",cursor:"pointer",color:T2.text3,fontFamily:T.sans,fontSize:12}}>
+                ← All scenarios
               </button>
-            ))}
-          </div>
-          <textarea value={simInput} onChange={e=>setSimInput(e.target.value)} placeholder="Respond to the scenario — specific, confident, outcome-led…" className="au-input" style={{height:120,marginBottom:14,resize:"none"}}/>
-          <D10SimFeedback input={simInput}/>
+              <div style={{padding:"24px 28px",background:"#0E0B08",borderRadius:6,marginBottom:24}}>
+                <div style={{fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{activeScenario.title}</div>
+                <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"rgba(255,255,255,0.92)",lineHeight:1.35,marginBottom:10}}>{activeScenario.prompt}</p>
+                <div style={{fontFamily:T.sans,fontSize:12,color:"rgba(138,158,132,0.65)"}}>{activeScenario.tag}</div>
+              </div>
+              <div style={{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}}>
+                {["Frame the Situation","Explain your Action","Land the Result","30 seconds or less"].map((h,i)=>(
+                  <span key={i} style={{padding:"4px 10px",borderRadius:20,background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.25)",fontFamily:T.sans,fontSize:11,color:T.goldDark}}>{h}</span>
+                ))}
+              </div>
+              <textarea value={simInput} onChange={e=>setSimInput(e.target.value)} placeholder="Respond clearly, confidently, in 30 seconds or less…" className="au-input" style={{height:130,marginBottom:14,resize:"none"}}/>
+              <D10SimFeedback input={simInput} scenario={activeScenario.prompt}/>
+            </div>
+          )}
         </div>
-      );
+        );
+      }
 
       return null;
     };

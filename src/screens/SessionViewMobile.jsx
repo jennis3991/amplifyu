@@ -714,27 +714,12 @@ T.goldDark : T2.text4,
       )}
       {isD10 && step==="Simulation" && (
         <>
-          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>5 High-Stakes Scenarios</div>
-          <h2 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:12}}>Make Great Work Impossible to Miss</h2>
-          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
-            {[
-              {n:1,title:"The Promotion Conversation",  sub:'"Why should you be at the next level?"'},
-              {n:2,title:"The Executive Update",        sub:'"Give me the 30-second version."'},
-              {n:3,title:"The Credit Theft",            sub:"A colleague presents your work as theirs."},
-              {n:4,title:"The Skip-Level Surprise",     sub:'"What are you focused on right now?"'},
-              {n:5,title:"The Pushback",                sub:"I\'m not convinced this mattered."},
-            ].map((sc,i)=>(
-              <div key={i} style={{padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:2}}>{sc.n}. {sc.title}</div>
-                <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontStyle:"italic"}}>{sc.sub}</div>
-              </div>
-            ))}
-          </div>
+          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>Performance under pressure</div>
+          <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:8}}>The Leadership Hot Seat</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Six scenarios that feel painfully real. Frame the situation. Explain your action. Land the result — in 30 seconds.</p>
           <D10MobileSim/>
         </>
       )}
-       {/* ── D2 Mobile Steps ─────────────────────────────────────────────── */}
-      {isD2 && step==="Insight" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Way You Speak Changes the Way People Listen</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Your voice is more than sound — it's one of your most powerful communication tools.</p>
