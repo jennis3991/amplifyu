@@ -3,7 +3,7 @@ import { T } from '../theme.js';
 import { D9_FIVE_PS, D9_CARDS, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_CLOSING, REVIEW_BULLETS, LESSONS, D9_REFINEMENTS, SESSION_STEPS, NAV_LABELS,
   D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS,
   D1_CLARITY_FACTS_DATA, D1_FEYNMAN_DATA,
-  D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS,
+  D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D7_INSIGHT_CARDS,
 } from '../data.js';
 import { SessionLeftPanel, ExCard } from './SessionLeftPanel.jsx';
 import { MobileSessionView } from './SessionViewMobile.jsx';
@@ -75,6 +75,7 @@ setAmbitionSaved(true); } catch {}
   const [d4MobCard, setD4MobCard] = useState(null);
   const [d5MobCard, setD5MobCard] = useState(null);
   const [d6MobCard, setD6MobCard] = useState(null);
+  const [d7MobCard, setD7MobCard] = useState(null);
   const [d10MobCard, setD10MobCard] = useState(null);
   const [d11MobCard, setD11MobCard] = useState(null);
   const [ntMobCard, setNtMobCard] = useState(null);
@@ -90,6 +91,7 @@ setAmbitionSaved(true); } catch {}
   const isD4 = lesson.day === 4;
   const isD5 = lesson.day === 5;
   const isD6 = lesson.day === 6;
+  const isD7 = lesson.day === 7;
   const isD10 = lesson.day === 10;
   const isD11 = lesson.day === 11;
   const STEPS = isNT
@@ -428,6 +430,250 @@ setAmbitionSaved(true); } catch {}
     // ── Shared type constants for right panel ─────────────────────────────────
     // Uniform labels + consistent serif/sans pairing across all 6 steps
     const RP_LABEL  = { fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: T.sans, fontWeight: 500 };
+
+    // ── D7 RightContent — Week 1 Review ───────────────────────────────────────
+    const D7RightContent = () => {
+      const [openCard, setOpenCard] = useState(null);
+
+      if (step === "Insight") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16,fontFamily:T.sans}}>The wake-up call</div>
+          <h2 style={{fontFamily:T.serif,fontSize:42,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Most people know how to communicate better. Very few practise until it's automatic.</h2>
+          <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32}}>This week, you did something different.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:28}}>
+            {D7_INSIGHT_CARDS.map((n,i)=>{
+              const open = openCard===i;
+              return (
+                <div key={i} onClick={()=>setOpenCard(open?null:i)}
+                  style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 16px rgba(138,158,132,0.15)":"none"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:6}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.6)",marginLeft:8,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:open?"0 0 12px":0}}>{n.sub}</p>
+                  {open && (
+                    <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",flexDirection:"column",gap:8}}>
+                      {n.bullets.map((b,j)=>(
+                        <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                          <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/>
+                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300,margin:0}}>{b}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <div style={{padding:"20px 24px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"3px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"Mastery is conditioned, not studied."</p>
+          </div>
+        </div>
+      );
+
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Habit Loop</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:300,marginBottom:8}}>Charles Duhigg — The Power of Habit, 2012</p>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.6,marginBottom:24}}>Every habit — good or bad — follows the same loop:</p>
+          {/* CUE → ROUTINE → REWARD */}
+          <div style={{display:"flex",alignItems:"center",gap:0,marginBottom:28}}>
+            {[{label:"CUE",desc:"The trigger"},{label:"ROUTINE",desc:"The behaviour"},{label:"REWARD",desc:"The signal"}].map((n,i)=>(
+              <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+                <div style={{flex:1,padding:"16px 12px",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",borderRadius:6,textAlign:"center"}}>
+                  <div style={{fontFamily:T.serif,fontSize:16,fontWeight:700,color:T.gold,marginBottom:4}}>{n.label}</div>
+                  <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>{n.desc}</div>
+                </div>
+                {i<2 && <div style={{fontSize:20,color:T.gold,padding:"0 10px",flexShrink:0}}>→</div>}
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.65,marginBottom:16}}>Repeat the loop often enough and behaviour becomes automatic. Not through willpower. Through repetition.</p>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.65,marginBottom:20}}>This week, every exercise you completed ran that loop:</p>
+          {[
+            {head:"CUE", body:"A moment of pressure, a conversation, a question you weren't expecting — that became the trigger."},
+            {head:"ROUTINE", body:"A new behaviour. Pausing instead of filling. Leading with your point. Slowing down. Simplifying. That became the response."},
+            {head:"REWARD", body:"A sense of clarity, control, or progress. That became the signal your brain learned to seek."},
+          ].map((p,i)=>(
+            <div key={i} style={{padding:"16px 20px",background:T2.surface,border:"0.5px solid "+T2.border,borderLeft:"2px solid "+T.gold,borderRadius:4,marginBottom:10}}>
+              <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,marginBottom:6}}>{p.head}</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>{p.body}</p>
+            </div>
+          ))}
+          <div style={{height:"0.5px",background:T2.divider,margin:"28px 0"}}/>
+          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Neuroscience</div>
+          <h3 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Why repetition works at a biological level</h3>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,marginBottom:12,fontWeight:300}}>Every time you practise a skill deliberately, your brain wraps the relevant neural pathway in myelin — a sheath that makes the signal faster, stronger, and more automatic.</p>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,marginBottom:24,fontWeight:300}}>Skill is not talent. Skill is repetition. And repetition responds to practice, not intelligence. The six habits you trained this week are being written into your nervous system right now.</p>
+          <div style={{padding:"24px 28px",background:T2.cardDark,borderRadius:6}}>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.6,margin:"0 0 12px",fontStyle:"italic"}}>"You stop trying to communicate well. You simply do."</p>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(255,255,255,0.45)",lineHeight:1.5,margin:0,fontWeight:300}}>That is the difference between learning a technique and building a skill.</p>
+          </div>
+        </div>
+      );
+
+      if (step === "Example") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Your Week 1 Foundations</div>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Six habits. Seven days. Here's what you built.</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:300,marginBottom:28}}>Each foundation is a permanent part of your communication toolkit. Not techniques to remember — behaviours to repeat.</p>
+          <div style={{display:"flex",flexDirection:"column",gap:12}}>
+            {[
+              {day:"DAY 1",skill:"Clarity",science:"The Feynman Technique",line:"If you can't say it simply, you don't understand it well enough yet."},
+              {day:"DAY 2",skill:"Voice Control",science:"The 88 Keys",line:"Your voice has more range than you've been using. That changes from here."},
+              {day:"DAY 3",skill:"Filler-Free Speech",science:"The Pause Principle",line:"Leaders pause. Amateurs fill. Silence is control."},
+              {day:"DAY 4",skill:"Precision",science:"Miller's Law",line:"Every word must earn its place. Short sentences are a strategic choice."},
+              {day:"DAY 5",skill:"Structure",science:"The PRE Framework",line:"Point. Reason. Example. The architecture of every compelling answer."},
+              {day:"DAY 6",skill:"High-Stakes Conversations",science:"Calm Under Pressure",line:"The gap between good and great opens under pressure. You started closing it."},
+            ].map((f,i)=>(
+              <div key={i} style={{display:"flex",gap:16,alignItems:"flex-start",padding:"18px 20px",background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:6}}>
+                <div style={{background:T.gold,borderRadius:3,padding:"5px 10px",flexShrink:0,alignSelf:"flex-start"}}>
+                  <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"white",letterSpacing:"1px"}}>{f.day}</span>
+                </div>
+                <div style={{flex:1}}>
+                  <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,marginBottom:2}}>{f.skill}</div>
+                  <div style={{fontFamily:T.sans,fontSize:11,color:T.gold,fontWeight:600,letterSpacing:"0.5px",marginBottom:8}}>{f.science}</div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,margin:0,fontWeight:300,fontStyle:"italic"}}>"{f.line}"</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{marginTop:20,padding:"16px 20px",background:"rgba(138,158,132,0.08)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)",textAlign:"center"}}>
+            <p style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.4,margin:0}}>Skills compound.</p>
+          </div>
+        </div>
+      );
+
+      if (step === "Practice") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Communication Fitness Reps</div>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Train Your Instrument</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:300,marginBottom:28}}>Skill fades without repetition. Strength comes from reps. Choose your practice mode.</p>
+          {[
+            {badge:"⚡ QUICK REP",time:"2 minutes",head:"Pick one. Use it today.",body:"Choose one technique from this week and deploy it intentionally in your next real conversation.",prompt:"I want to do a quick rep. Help me choose one technique from Days 1–6 to use today, and tell me exactly what to watch for in my next conversation."},
+            {badge:"🔁 MEDIUM REP",time:"5 minutes",head:"Replay a real conversation.",body:"Think of a conversation from this week. The coach will identify the gap and help you rewrite the key moment.",prompt:"I want to replay a conversation from this week. Ask me about it and help me identify where I could have communicated more clearly, paused, or structured my answer better."},
+            {badge:"🏋️ PERFORMANCE REP",time:"10 minutes",head:"Repeat one full exercise from Days 1–6.",body:"Choose the skill that felt least natural. Fluency comes from reps, not from doing something once.",prompt:"I want to do a performance rep. Ask me which Day 1–6 skill felt least natural, then run that day's core exercise with me from the beginning."},
+          ].map((t,i)=>{
+            const open = openCard===("p"+i);
+            return (
+              <div key={i} onClick={()=>setOpenCard(open?null:("p"+i))}
+                style={{background:T2.surface,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,borderRadius:6,marginBottom:12,cursor:"pointer",overflow:"hidden",transition:"border-color 0.2s"}}>
+                <div style={{padding:"18px 22px",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                  <div style={{flex:1}}>
+                    <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:6}}>
+                      <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px"}}>{t.badge}</span>
+                      <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>· {t.time}</span>
+                    </div>
+                    <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:open?0:4}}>{t.head}</div>
+                    {!open && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{t.body}</p>}
+                  </div>
+                  <span style={{fontFamily:T.sans,fontSize:15,color:open?T.gold:T2.text3,marginLeft:16,flexShrink:0}}>{open?"▴":"▸"}</span>
+                </div>
+                {open && (
+                  <div style={{padding:"0 22px 20px",borderTop:"0.5px solid "+T2.divider}}>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:"16px 0 16px",fontWeight:300}}>{t.body}</p>
+                    <CoachWidget lesson={lesson} scenario={t.prompt}/>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      );
+
+      if (step === "Simulation") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Week 1 Pressure Test</div>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Real World Voice Coaching</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:300,marginBottom:28}}>Theory is what you know. Simulation is what you own. Select a scenario — then respond.</p>
+          {[
+            {tag:"CLARITY + STRUCTURE + BREVITY",head:"The 30-Second Ask",body:"A senior leader stops you in the corridor. 'Give me the one-minute version.'",goal:"Lead with your point. No fillers. No rambling."},
+            {tag:"COMPOSURE + PACE + STRUCTURE",head:"The Challenge",body:"You're presenting. Someone pushes back hard. 'I'm not convinced. Walk me through your thinking.'",goal:"Stay calm. Slow down. Rebuild your argument clearly."},
+            {tag:"CLARITY + SIMPLICITY + FEYNMAN",head:"The Simplification",body:"A stakeholder asks: 'Can you explain this so I can explain it to someone else?'",goal:"Strip it back. Plain English. One idea at a time."},
+            {tag:"ALL SIX FOUNDATIONS",head:"The Repeat",body:"Someone says: 'Sorry — I didn't quite follow that. Can you say it again?'",goal:"Restructure, simplify, and deliver — under the discomfort of being asked to repeat. Tests all six foundations."},
+          ].map((sc,i)=>{
+            const open = openCard===("s"+i);
+            return (
+              <div key={i} onClick={()=>setOpenCard(open?null:("s"+i))}
+                style={{background:T2.surface,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,borderRadius:6,marginBottom:12,cursor:"pointer",overflow:"hidden",transition:"border-color 0.2s"}}>
+                <div style={{padding:"18px 22px",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                  <div style={{flex:1}}>
+                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{sc.tag}</div>
+                    <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,lineHeight:1.3}}>{sc.head}</div>
+                  </div>
+                  <span style={{fontFamily:T.sans,fontSize:15,color:open?T.gold:T2.text3,marginLeft:16,flexShrink:0}}>{open?"▴":"▸"}</span>
+                </div>
+                {open && (
+                  <div style={{padding:"0 22px 20px",borderTop:"0.5px solid "+T2.divider}}>
+                    <div style={{padding:"16px 18px",background:T2.cardDark,borderRadius:4,marginBottom:16}}>
+                      <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"white",lineHeight:1.55,margin:"0 0 8px"}}>{sc.body}</p>
+                      <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(255,255,255,0.45)",margin:0}}><span style={{color:T.gold}}>Goal:</span> {sc.goal}</p>
+                    </div>
+                    <CoachWidget lesson={lesson} scenario={sc.body+" Your goal: "+sc.goal+" Score the response across: Clarity, Structure, Composure, Brevity, Filler-free delivery, Vocal confidence. Give one strength, one growth area, one coaching tip under 20 words."}/>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      );
+
+      if (step === "Review") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Shift</div>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:28}}>What changed this week.</h2>
+          {/* Before / Now */}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:32}}>
+            <div style={{padding:"20px 22px",background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:6}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:14}}>Before</div>
+              {["Reacting without thinking","Rambling to fill silence","Over-explaining under pressure","Communication on autopilot"].map((b,i)=>(
+                <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:i<3?10:0}}>
+                  <div style={{width:4,height:4,borderRadius:"50%",background:T2.text4,flexShrink:0,marginTop:6}}/>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{b}</p>
+                </div>
+              ))}
+            </div>
+            <div style={{padding:"20px 22px",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",borderRadius:6}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:14}}>Now</div>
+              {["Thinking before speaking","Pausing with intention","Leading with structure","Choosing words deliberately"].map((b,i)=>(
+                <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:i<3?10:0}}>
+                  <div style={{width:4,height:4,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.5,margin:0,fontWeight:400}}>{b}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Identity statement */}
+          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>Your Communication Identity</div>
+          <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Complete this statement.</h3>
+          <CoachWidget lesson={lesson} scenario={"Generate a personalised one-line Communication Identity Statement. Ask the user to complete: 'This week I discovered I communicate best when I...' — then respond with a single, powerful sentence that names their communication authority. Example format: 'You communicate best when you slow down, lead with structure, and trust the pause — that's where your authority lives.' Save-worthy. Read before high-stakes conversations."}/>
+          <div style={{height:"0.5px",background:T2.divider,margin:"28px 0"}}/>
+          {/* 4 takeaway cards */}
+          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16,fontFamily:T.sans}}>Your Four Takeaways</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:24}}>
+            {[
+              "Invisible excellence does not scale. Visibility is a communication skill.",
+              "Awareness creates intentions. Repetition creates habits. Only one shows up under pressure.",
+              "Confidence is clarity — not performance.",
+              "Mastery is conditioned, not studied.",
+            ].map((q,i)=>(
+              <div key={i} style={{padding:"18px 20px",background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:6}}>
+                <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.55,margin:0}}>"{q}"</p>
+              </div>
+            ))}
+          </div>
+          {/* Closing */}
+          <div style={{padding:"28px 32px",background:T2.cardDark,borderRadius:6}}>
+            <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.65,margin:"0 0 14px"}}>Your communication conditioning is now in motion.</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(255,255,255,0.5)",lineHeight:1.7,margin:"0 0 8px",fontWeight:300}}>Six habits. Seven days. The foundations are set.</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(255,255,255,0.5)",lineHeight:1.7,margin:0,fontWeight:300}}>Week 2 doesn't start from zero. It starts from here.</p>
+          </div>
+        </div>
+      );
+
+      return <RightContent/>;
+    };
 
     // ── D10 RightContent — Day 10: Performance ────────────────────────────────
     const D10RightContent = () => {
@@ -2951,7 +3197,7 @@ setAmbitionSaved(true); } catch {}
                 <SessionLeftPanel
                   T2={T2} step={step} lesson={lesson} isDone={isDone}
                   isD1={isD1} isD2={isD2} isD3={isD3} isD4={isD4} isD5={isD5}
-                  isD6={isD6} isD9={isD9} isD10={isD10} isD11={isD11} isNT={isNT}
+                  isD6={isD6} isD7={isD7} isD9={isD9} isD10={isD10} isD11={isD11} isNT={isNT}
                   selSc={selSc} setSelSc={setSelSc} activeSc={activeSc}
                   scenarios={scenarios} activeRole={activeRole}
                 />
@@ -2990,7 +3236,7 @@ setAmbitionSaved(true); } catch {}
               <div style={{ position: "relative", zIndex: 1 }}>
                 {isD1 && step === "Practice"
                   ? <div key="d1-practice" style={{padding:"44px 52px",overflowY:"auto"}}><D1ClarityChallenge T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD1NavLabel} onNavFn={d1NavFnRef}/></div>
-                  : isD1 ? <D1RightContent/> : isD2 ? <D2RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD6 ? <D6RightContent/> : isD11 ? <D11RightContent/> : isD10 ? <D10RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
+                  : isD1 ? <D1RightContent/> : isD2 ? <D2RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD6 ? <D6RightContent/> : isD7 ? <D7RightContent/> : isD11 ? <D11RightContent/> : isD10 ? <D10RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
               </div>
             </div>
           </div>
@@ -3079,7 +3325,7 @@ setAmbitionSaved(true); } catch {}
       T2={T2} step={step} STEPS={STEPS} idx={idx} setIdx={setIdx}
       lesson={lesson} isDone={isDone} onComplete={onComplete} onBack={onBack}
       isD1={isD1} isD2={isD2} isD3={isD3} isD4={isD4} isD5={isD5}
-      isD6={isD6} isD9={isD9} isD10={isD10} isD11={isD11} isNT={isNT}
+      isD6={isD6} isD7={isD7} isD9={isD9} isD10={isD10} isD11={isD11} isNT={isNT}
       selSc={selSc} setSelSc={setSelSc} exitConfirm={exitConfirm} setExitConfirm={setExitConfirm}
       accordionOpen={accordionOpen} setAccordionOpen={setAccordionOpen}
       savedBooks={savedBooks} saveBook={saveBook}
@@ -3090,6 +3336,7 @@ setAmbitionSaved(true); } catch {}
       d4MobCard={d4MobCard} setD4MobCard={setD4MobCard}
       d5MobCard={d5MobCard} setD5MobCard={setD5MobCard}
       d6MobCard={d6MobCard} setD6MobCard={setD6MobCard}
+      d7MobCard={d7MobCard} setD7MobCard={setD7MobCard}
       d10MobCard={d10MobCard} setD10MobCard={setD10MobCard}
       d11MobCard={d11MobCard} setD11MobCard={setD11MobCard}
       ntMobCard={ntMobCard} setNtMobCard={setNtMobCard}

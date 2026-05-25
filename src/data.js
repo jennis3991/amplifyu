@@ -632,6 +632,37 @@ export const SESSION_STEPS =
 export const NAV_LABELS = ["See the theory","See examples","Start practice","Go to simulation","Go to review"];
 
 // ─── Session constants (pure data, no JSX)
+export const D7_INSIGHT_CARDS = [
+  { word: "You've already done something most professionals never do.",
+    sub: "Six communication habits. Seven days. Deliberately.",
+    bullets: [
+      "Most people spend a career reacting — you spent a week conditioning. That gap is already opening.",
+      "The decision to practise deliberately is rarer than it looks.",
+    ]
+  },
+  { word: "Every rep this week physically changed your brain.",
+    sub: "Repetition doesn't just reinforce knowledge. It rewires how you communicate.",
+    bullets: [
+      "Each time you practised, your brain strengthened the neural pathway for that behaviour — making it faster, stronger, and more automatic.",
+      "This is biology, not motivation.",
+    ]
+  },
+  { word: "The hardest part of building any skill is starting.",
+    sub: "Awareness without practice stays theoretical. Practice without awareness stays shallow.",
+    bullets: [
+      "This week you had both. That combination is rarer than you think.",
+      "It's why what follows will feel progressively more natural.",
+    ]
+  },
+  { word: "What looks like effortless confidence is a deeply rehearsed habit.",
+    sub: "Elite communicators aren't naturally gifted. They've simply repeated their foundations enough times that the effort became invisible.",
+    bullets: [
+      "That process is now in motion for you.",
+      "Repetition is the only path — and you've already started.",
+    ]
+  },
+];
+
 export const D10_FACTS = [
   { word:"Hard work is often invisible.",
     sub:"Your most valuable work is rarely seen by the people who decide your future.",
