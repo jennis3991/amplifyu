@@ -13,7 +13,7 @@ const LP_BODY = { fontFamily: T.serif, fontStyle: "italic", color: "rgba(245,239
 
 export function SessionLeftPanel({
   T2, step, lesson, isDone,
-  isD1, isD2, isD3, isD4, isD5, isD6, isD9, isD10, isD11, isNT,
+  isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isNT,
   selSc, setSelSc, activeSc, scenarios, activeRole,
 }) {
   const [imgZoom, setImgZoom] = useState(false);
@@ -96,6 +96,23 @@ export function SessionLeftPanel({
     return null;
   }
    // ── D10 — Performance left panel overrides ───────────────────────────────
+  if (isD7) {
+    if (step === "Theory") return (
+      <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#1A1610" }}>
+        <img
+          src="/d7-habit-loop.jpg"
+          alt="The Habit Loop"
+          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}
+        />
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(8,6,3,0.8) 0%, rgba(8,6,3,0.1) 50%, transparent 75%)" }}/>
+        <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:10 }}>The Science</div>
+          <p style={{ fontFamily:T.serif, fontSize:"clamp(20px,1.8vw,28px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:340 }}>CUE. ROUTINE. REWARD. Repeat the loop — and the behaviour becomes automatic.</p>
+        </div>
+      </div>
+    );
+  }
+
   if (isD10) {
     const d10Dark = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
     const d10Ol = <>
