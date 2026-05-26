@@ -679,10 +679,30 @@ export const D10_FACTS = [
 ];
 
 export const D3_FACTS = [
-  { word:"Trust",     body:"Fillers are a habit, not a flaw. The strongest communicators simply replace them with intentional pauses — and you can too." },
-  { word:"Authority", body:"Pausing instead of filling makes you sound more confident. It's a skill you can build with practice, not a talent you're born with." },
-  { word:"Attention", body:"When you pause, people listen more closely. Silence creates anticipation. Your message lands with greater weight." },
-  { word:"Memory",    body:"Speech without fillers is easier to follow and remember. Remove the noise, and your real message comes through." },
+  { word:"Trust",
+    sub:"Filler-free speech signals you mean what you say.",
+    bullets:[
+      "When every word is chosen, listeners trust that you believe what you're saying.",
+      "Fillers signal uncertainty — even when you're completely confident. Remove them and your conviction comes through.",
+    ]},
+  { word:"Authority",
+    sub:"The pause is your most powerful punctuation mark.",
+    bullets:[
+      "Leaders pause before answering. It signals that your thinking matters and you won't be rushed.",
+      "A well-placed pause commands more attention than any filler. It tells the room: what comes next is worth waiting for.",
+    ]},
+  { word:"Attention",
+    sub:"Silence pulls people in.",
+    bullets:[
+      "When you pause, listeners lean in. The brain interprets silence as a signal that something important is coming.",
+      "Fillers train your audience to tune out. Clean delivery keeps every person in the room fully switched on.",
+    ]},
+  { word:"Memory",
+    sub:"What's easy to follow is easy to remember.",
+    bullets:[
+      "Fillers create noise that makes your message harder to retain. Remove them and your ideas land clearly.",
+      "People repeat what they remember. Filler-free speech makes your words worth passing on.",
+    ]},
 ];
 
 export const D3_PAUSE_REASONS = [
