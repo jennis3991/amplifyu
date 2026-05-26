@@ -191,7 +191,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           </div>
           <div>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Your Mission</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.65,margin:0}}>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>
               In each round, you'll face confusing workplace language. Your challenge: <strong>spot what's unclear</strong>, <strong>rewrite it simply</strong>, and <strong>think under pressure</strong>.
             </p>
           </div>
@@ -214,7 +214,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
                 <div style={{width:isDesktop?40:32,height:isDesktop?40:32,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.35)"),background:i===0?"rgba(138,158,132,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>
                   <span style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:i===0?T.gold:T2.text3}}>{r.n}</span>
                 </div>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?12:10,color:T2.text3,textAlign:"center",lineHeight:1.4,maxWidth:isDesktop?72:56}}>Round {r.n}<br/><span style={{fontWeight:500,color:T2.text2}}>{r.label}</span></div>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?13:11,color:T2.text3,textAlign:"center",lineHeight:1.4,maxWidth:isDesktop?80:60}}>Round {r.n}<br/><span style={{fontWeight:500,color:T2.text2}}>{r.label}</span></div>
               </div>
               {i<4 && <div style={{height:1,width:isDesktop?16:8,background:"rgba(138,158,132,0.25)",flexShrink:0,marginBottom:24}}/>}
             </div>
@@ -225,7 +225,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       {/* HOW YOU WIN */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>How You Win</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text3,marginBottom:14}}>AI scores your responses on:</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text3,marginBottom:14}}>AI scores your responses on:</p>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:8}}>
           {[
             {label:"Clarity",   icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="1.5" fill={T.gold}/></svg>},
@@ -235,7 +235,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           ].map((s,i)=>(
             <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,padding:"12px 8px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border}}>
               {s.icon}
-              <span style={{fontFamily:T.serif,fontSize:12,color:T2.text,fontWeight:500}}>{s.label}</span>
+              <span style={{fontFamily:T.serif,fontSize:13,color:T2.text,fontWeight:500}}>{s.label}</span>
             </div>
           ))}
         </div>
@@ -247,11 +247,11 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
         <div style={{flex:1}}>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>The Reward</div>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:4}}>Clarity Master</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text3,margin:0,lineHeight:1.5}}>Score 85% or higher to unlock the Clarity Master badge.</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text3,margin:0,lineHeight:1.5}}>Score 85% or higher to unlock the Clarity Master badge.</p>
         </div>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"10px 14px",background:"rgba(138,158,132,0.06)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",flexShrink:0}}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.5 4.5H15l-3.75 2.75 1.5 4.5L9 11l-3.75 2.75 1.5-4.5L3 6.5h4.5z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/></svg>
-          <span style={{fontFamily:T.serif,fontSize:10,color:T2.text3,textAlign:"center",lineHeight:1.4}}>Top achievers<br/>unlock exclusive<br/>recognition.</span>
+          <span style={{fontFamily:T.serif,fontSize:11,color:T2.text3,textAlign:"center",lineHeight:1.4}}>Top achievers<br/>unlock exclusive<br/>recognition.</span>
         </div>
       </div>
 
@@ -718,7 +718,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
       {/* HOW IT WORKS + 5-step journey */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>How it works</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:20}}>A simple 5-step clarity check-in.</h2>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:20}}>A simple 5-step clarity check-in.</h2>
         <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
           {[
             {n:1,label:"Choose a topic",     icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
@@ -731,7 +731,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
                 <div style={{width:isDesktop?48:38,height:isDesktop?48:38,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>{s.icon}</div>
                 <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,marginBottom:3}}>{s.n}</div>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?12:10,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?68:54}}>{s.label}</div>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?13:11,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:58}}>{s.label}</div>
               </div>
               {i<4 && <div style={{height:1,width:isDesktop?12:6,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:30}}/>}
             </div>
@@ -746,7 +746,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
           {["Your natural communication habits","Where clarity gets lost","What you're already doing well","Your personal clarity baseline"].map((b,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:i<3?8:0}}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{flexShrink:0,marginTop:2}}><circle cx="7" cy="7" r="6" stroke={T.gold} strokeWidth="1.1"/><circle cx="7" cy="7" r="2.5" stroke={T.gold} strokeWidth="1.1"/></svg>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,margin:0}}>{b}</p>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5,margin:0}}>{b}</p>
             </div>
           ))}
         </div>
@@ -758,7 +758,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
           ].map((item,i)=>(
             <div key={i} style={{display:"flex",gap:10,alignItems:"center",padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:6,marginBottom:i<1?8:0}}>
               {item.icon}
-              <span style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text}}>{item.label}</span>
+              <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text}}>{item.label}</span>
             </div>
           ))}
         </div>
@@ -767,8 +767,8 @@ export function D1SimWidget({T, T2, isDesktop}) {
           <div style={{width:40,height:40,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"1px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:12}}>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3l1.5 4H16l-3.5 2.5 1.5 4L10 11l-4 2.5 1.5-4L4 7h4.5z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/></svg>
           </div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:8}}>The goal is not perfection — it's awareness.</p>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.55,margin:0}}>Self-awareness is the fastest route to better communication.</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:8}}>The goal is not perfection — it's awareness.</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.55,margin:0}}>Self-awareness is the fastest route to better communication.</p>
         </div>
       </div>
 
