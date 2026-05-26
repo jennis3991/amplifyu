@@ -364,7 +364,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       <span style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.ink,letterSpacing:"-0.3px"}}>AmplifyU</span>
     </div>
      {/* Header image + Exit button overlay */}
-    <div style={{position:"relative",height:(isD1&&step==="Insight")?"auto":step==="Theory 2"?260:320,overflow:(isD1&&step==="Insight")?"visible":"hidden",background:step==="Practice"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
+    <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:step==="Practice"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
       {(()=>{
         // Simulation tab: dark cinematic panel for ALL modules
         if(step==="Simulation"){
@@ -430,8 +430,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         };
         const src=STEP_IMGS[lesson.day]?.[step];
         const useContainMob = lesson.day===11 && step==="Theory";
-        if(isD1 && step==="Insight" && src) return <img src={src} alt="" style={{width:"100%",height:"auto",display:"block",pointerEvents:"none"}}/>;
-        if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
+        if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":(isD1 && step==="Insight")?"center 38%":step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
         return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
       })()}
       {/* Dark film overlay for Practice only */}
