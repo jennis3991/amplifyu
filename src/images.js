@@ -2,6 +2,7 @@
 export const THEORY_IMAGES = {
   1: {
     image: "/feynman-technique.jpg",
+    imageTablet: "/feynman-technique-tablet.jpg",
     alt: "Four marble spheres arranged in a cycle on a warm surface — Understand, Explain, Simplify, Refine — beside an open notebook showing the Feynman Technique steps.",
     insight: "If you can't explain it simply, you don't know it well enough.",
     subtitle: "Richard Feynman, Nobel Physicist",

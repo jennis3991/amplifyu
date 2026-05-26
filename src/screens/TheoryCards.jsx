@@ -79,7 +79,14 @@ lineHeight: 1.5, margin: 0, color: "rgba(255,250,242,0.95)" }}>
 
       <div style={{ position: "relative", margin: "0 20px 16px", 
 borderRadius: 14, overflow: "hidden", boxShadow: "0 4px 16px rgba(17,28,46,0.18)" }}>
-        <img src={image.image} alt={image.alt} style={{ width: "100%", display: "block", aspectRatio: "1 / 1", objectFit: "cover", objectPosition: image.imgObjectPosition || "center" }} />
+        {image.imageTablet ? (
+          <picture>
+            <source media="(min-width: 768px)" srcSet={image.imageTablet}/>
+            <img src={image.image} alt={image.alt} style={{ width: "100%", display: "block", aspectRatio: "1 / 1", objectFit: "cover", objectPosition: image.imgObjectPosition || "center" }}/>
+          </picture>
+        ) : (
+          <img src={image.image} alt={image.alt} style={{ width: "100%", display: "block", aspectRatio: "1 / 1", objectFit: "cover", objectPosition: image.imgObjectPosition || "center" }}/>
+        )}
         {image.captionPosition !== "above" && (
           <>
             <div style={{ position: "absolute", left: 0, right: 0, bottom: 
