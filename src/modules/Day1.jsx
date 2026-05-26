@@ -72,45 +72,21 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
   }
 
   function nextRound() {
-    if (roundIdx === 2) { setPhase('transition'); return; }
     if (isLast) { setPhase('final'); return; }
     setRoundIdx(r => r + 1);
     setSelected(null); setAnswered(false); setRewriteText(''); setAiResult(null);
   }
 
-  async function scoreRewrite() {
+  function scoreRewrite() {
     if (!rewriteText.trim() || rewriteText.trim().length < 5) return;
-    setAiLoading(true);
-    const mockScore = Math.floor(Math.random()*18)+72;
-    const earnedPts = Math.round(round.pts * mockScore / 100);
-    const mockPerfect = round.id===4 ? "We're using data to attract more customers." : "We need to build a shared strategy that creates value for everyone involved.";
-    const mockResult = {
-      overall: mockScore,
-      clarity: Math.floor(Math.random()*18)+72,
-      simplicity: Math.floor(Math.random()*18)+72,
-      brevity: Math.floor(Math.random()*18)+72,
-      humanLanguage: Math.floor(Math.random()*18)+72,
-      worked: ["Good use of plain language","Direct and readable"],
-      improve: ["Could be even shorter","Consider cutting one more word"],
-      perfect: mockPerfect,
-      pts: earnedPts,
-    };
-    try {
-      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:600,messages:[{role:"user",content:`Score this simplification for clarity. Original: ${round.original}\nUser's version: "${rewriteText}"\nReturn ONLY valid JSON: {"overall":<50-100>,"clarity":<50-100>,"simplicity":<50-100>,"brevity":<50-100>,"humanLanguage":<50-100>,"worked":["<str>","<str>"],"improve":["<str>","<str>"],"perfect":"<ideal plain-English version in 1 sentence>"}`}]})});
-      const d = await res.json();
-      const raw = (d.content||[]).map(b=>b.text||'').join('').trim();
-      const m = raw.match(/\{[\s\S]*\}/);
-      const parsed = JSON.parse(m[0]);
-      const pts = Math.round(round.pts * parsed.overall / 100);
-      setAiResult({...parsed, pts});
-      setTotalPts(p => p + pts);
-      setRewritePts(p => p + pts);
-    } catch {
-      setAiResult(mockResult);
-      setTotalPts(p => p + mockResult.pts);
-      setRewritePts(p => p + mockResult.pts);
-    }
-    setAiLoading(false);
+    // Award pts based on brevity vs original (reward shorter plain English)
+    const origWords = round.original.split(/\s+/).length;
+    const userWords = rewriteText.trim().split(/\s+/).length;
+    const brevityRatio = Math.min(1, origWords / Math.max(userWords, 1));
+    const earnedPts = Math.round(round.pts * (0.7 + brevityRatio * 0.3));
+    setAiResult({submitted: true, pts: earnedPts});
+    setTotalPts(p => p + earnedPts);
+    setRewritePts(p => p + earnedPts);
   }
 
   async function scoreBonus() {
@@ -345,76 +321,105 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
     const badge = getBadge(pct);
     const recMax = ROUNDS.slice(0,3).reduce((s,r)=>s+r.pts,0);
     const appMax = ROUNDS.slice(3).reduce((s,r)=>s+r.pts,0);
+    const headline = pct>=85?"Your clarity instinct is sharp.":pct>=70?"You know the principle. Now sharpen the habit.":"Every rep builds the instinct. Keep going.";
+    const subtitle = pct>=85?"You spotted jargon fast and simplified under pressure. That's rare.":pct>=70?"Good recognition. The rewrite rounds show where to push further.":"Each attempt gets faster. The instinct is forming.";
+    const coachNote = pct>=85?"Your instinct for plain language is strong. The Feynman principle is becoming second nature — keep using it in every meeting and message.":pct>=70?"Good foundation. The more you practise spotting jargon, the faster your instinct develops. Every complex sentence is an opportunity to simplify.":"Building clarity takes repetition. The key insight: short sentences almost always win. Ask 'what's the simplest version?' before every message.";
+    const strengths = pct>=75
+      ? [mcqPts>=recMax*0.8?"Strong recognition — you spot jargon quickly":"Persistent across all rounds",rewritePts>=appMax*0.7?"Good application under pressure":"Engaged with the hard rounds"]
+      : ["Completed all 5 rounds","Building awareness with each rep"];
+    const opportunity = rewritePts<appMax*0.65?"Simplification — aim to cut the word count in half next time.":"Recognition speed — aim to answer MCQ rounds faster with more certainty.";
+    const FOCUS_CHIPS = ["Shorter sentences","Lead with the point","Cut one word per sentence","Replace every 'utilise' with 'use'","Ask: would a 10-year-old understand?"];
     return (
-      <div style={{display:"flex",flexDirection:"column",gap:16}}>
-        {/* Score header */}
-        <div style={{background:"#0E0B08",borderRadius:8,padding:isDesktop?"44px 40px":"32px 20px",textAlign:"center"}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>THE CLARITY CHALLENGE™</div>
-          <div style={{fontFamily:T.serif,fontSize:isDesktop?80:64,fontWeight:600,color:T.gold,lineHeight:1}}>{pct}</div>
-          <div style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.5)",marginBottom:8}}>/ 100</div>
-          <h2 style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:"#F5EFE6",margin:0}}>Your Clarity Score</h2>
+      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+        {/* 1 HERO */}
+        <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",top:-40,right:-40,width:160,height:160,borderRadius:"50%",background:"radial-gradient(circle,rgba(138,158,132,0.07) 0%,transparent 70%)",pointerEvents:"none"}}/>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>The Clarity Challenge™ — Your Results</div>
+          <div style={{display:"flex",gap:isDesktop?32:20,alignItems:"flex-start"}}>
+            <div style={{flexShrink:0}}>
+              <div style={{fontFamily:T.serif,fontSize:isDesktop?80:64,fontWeight:600,color:T.gold,lineHeight:1}}>{pct}</div>
+              <div style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.45)",marginTop:2}}>/ 100</div>
+            </div>
+            <div style={{paddingTop:8}}>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?24:19,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,margin:"0 0 8px"}}>{headline}</p>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.55)",margin:0,lineHeight:1.55}}>{subtitle}</p>
+            </div>
+          </div>
         </div>
-        {/* Breakdown */}
-        <div style={cs.card}>
-          <div style={cs.label}>Breakdown</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:16}}>
-            {[{label:"Recognition",earned:mcqPts,max:recMax},{label:"Application",earned:rewritePts,max:appMax}].map((b,i)=>(
-              <div key={i} style={{padding:"14px 16px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border,textAlign:"center"}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>{b.label}</div>
+        {/* 2 BREAKDOWN */}
+        <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px"}}>
+          <div style={cs.label}>Your score breakdown</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
+            {[{label:"Recognition",sub:"Spot the jargon",earned:mcqPts,max:recMax},{label:"Application",sub:"Rewrite it simply",earned:rewritePts,max:appMax}].map((b,i)=>(
+              <div key={i} style={{padding:"14px 16px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border,textAlign:"center"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:2}}>{b.label}</div>
+                <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginBottom:8}}>{b.sub}</div>
                 <div style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T.gold}}>{b.earned}<span style={{fontSize:13,color:T2.text4}}> / {b.max}</span></div>
               </div>
             ))}
           </div>
-          <div style={{height:6,background:T2.bg,borderRadius:3,overflow:"hidden",marginBottom:6}}>
-            <div style={{height:"100%",width:pct+"%",background:`linear-gradient(90deg,rgba(138,158,132,0.5),${T.gold})`,borderRadius:3,transition:"width 1s ease"}}/>
+          <div style={{height:5,background:T2.bg,borderRadius:3,overflow:"hidden",marginBottom:5}}>
+            <div style={{height:"100%",width:pct+"%",background:`linear-gradient(90deg,rgba(138,158,132,0.5),${T.gold})`,borderRadius:3,transition:"width 1.2s ease"}}/>
           </div>
           <div style={{fontFamily:T.sans,fontSize:11,color:T2.text4,textAlign:"right"}}>{pct}% of max</div>
         </div>
-        {/* Coach note */}
-        <div style={cs.card}>
-          <div style={cs.label}>Coach note</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>
-            {pct>=85?"Your instinct for plain language is strong. The Feynman principle is becoming second nature — keep using it in every meeting and message.":"Good foundation. The more you practice spotting jargon, the faster your instinct will develop. Every complex sentence is an opportunity to simplify."}
-          </p>
-        </div>
-        {/* Badge reveal CTA */}
-        <button onClick={()=>setShowBadgeCard(true)} style={{...cs.cta,width:"100%",padding:"16px",fontSize:isDesktop?15:14}}>
-          Reveal Your Badge →
-        </button>
-
-        {/* ── Badge slide-up overlay ───────────────────────────────────── */}
-        {showBadgeCard && (
-          <div style={{position:"fixed",inset:0,zIndex:1000,display:"flex",flexDirection:"column",justifyContent:"flex-end"}}
-               onClick={e=>{if(e.target===e.currentTarget)setShowBadgeCard(false);}}>
-            <div style={{position:"absolute",inset:0,background:"rgba(11,13,16,0.7)"}}/>
-            <div style={{position:"relative",background:T2.surface||"#EDE8DF",borderRadius:"28px 28px 0 0",padding:isDesktop?"40px 48px 48px":"32px 24px 40px",animation:"slideUp 0.42s cubic-bezier(0.22,1,0.36,1) both",maxWidth:isDesktop?540:"100%",margin:"0 auto",width:"100%",boxSizing:"border-box"}}>
-              {/* Drag handle */}
-              <div style={{width:40,height:4,background:"rgba(44,36,22,0.15)",borderRadius:2,margin:"0 auto 28px"}}/>
-              {/* Badge */}
-              <div style={{textAlign:"center",marginBottom:20}}>
-                <div style={{width:88,height:88,borderRadius:"50%",overflow:"hidden",border:"3px solid rgba(201,168,76,0.45)",margin:"0 auto 16px",boxShadow:"0 4px 24px rgba(138,158,132,0.25)"}}>
-                  <img src={badge.img} alt={badge.label} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+        {/* 3 STRENGTHS + OPPORTUNITY */}
+        <div style={{display:isDesktop?"grid":"flex",gridTemplateColumns:"1fr 1fr",flexDirection:"column",gap:isDesktop?12:10}}>
+          <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
+            <div style={cs.label}>What came across well</div>
+            {strengths.map((s,i)=>(
+              <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:i<strengths.length-1?10:0}}>
+                <div style={{width:28,height:28,borderRadius:"50%",background:"rgba(82,112,96,0.1)",border:"0.5px solid rgba(82,112,96,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#527060" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </div>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your Badge</div>
-                <h2 style={{fontFamily:T.serif,fontSize:isDesktop?30:26,fontWeight:600,color:badge.color,lineHeight:1.15,marginBottom:6}}>{badge.label}</h2>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3||"#6B5E44",lineHeight:1.5,margin:"0 0 16px"}}>{badge.sub}</p>
-                {/* Score pill */}
-                <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 20px",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",borderRadius:20,marginBottom:4}}>
-                  <span style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold}}>{pct}</span>
-                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3||"#6B5E44"}}>/100 — Clarity Score</span>
-                </div>
+                <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.55,margin:0}}>{s}</p>
               </div>
-              {/* Divider */}
-              <div style={{height:"0.5px",background:"rgba(44,36,22,0.1)",margin:"4px 0 24px"}}/>
-              {/* Actions */}
-              <div style={{display:"flex",gap:10}}>
-                <button onClick={()=>{setShowBadgeCard(false);reset();}} style={{...cs.ghost,flex:1}}>Try Again</button>
-                {onSimulation && <button onClick={()=>{setShowBadgeCard(false);onSimulation();}} style={{...cs.cta,flex:1}}>Continue →</button>}
-                {!onSimulation && <button onClick={()=>setShowBadgeCard(false)} style={{...cs.cta,flex:1}}>Done</button>}
+            ))}
+          </div>
+          <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#B07A40",textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>Biggest Opportunity</div>
+            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+              <div style={{width:40,height:40,borderRadius:"50%",background:"rgba(176,122,64,0.1)",border:"1px solid rgba(176,122,64,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2a5 5 0 014 8l-1 1v2H7v-2L6 10a5 5 0 014-8z" stroke="#B07A40" strokeWidth="1.2"/><path d="M7 15h6M8 17h4" stroke="#B07A40" strokeWidth="1.2" strokeLinecap="round"/></svg>
               </div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0}}>{opportunity}</p>
             </div>
           </div>
-        )}
+        </div>
+        {/* 4 COACH NOTE */}
+        <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
+          <div style={cs.label}>Your coach says</div>
+          <div style={{display:"flex",gap:isDesktop?16:12,alignItems:"flex-start"}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?40:32,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0}}>{coachNote}</p>
+          </div>
+        </div>
+        {/* 5 FOCUS CHIPS */}
+        <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
+          <div style={cs.label}>Take this into your next conversation</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+            {FOCUS_CHIPS.map((f,i)=>(
+              <span key={i} style={{padding:"7px 14px",borderRadius:20,border:"0.5px solid "+T2.border,background:T2.bg,fontFamily:T.serif,fontSize:isDesktop?13:11,color:T2.text}}>{f}</span>
+            ))}
+          </div>
+        </div>
+        {/* 6 RETRY + BADGE */}
+        <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"22px 28px":"18px 20px",border:"0.5px solid rgba(138,158,132,0.15)",display:isDesktop?"flex":"block",alignItems:"center",gap:20}}>
+          <div style={{width:52,height:52,borderRadius:"50%",overflow:"hidden",border:"1.5px solid rgba(200,168,76,0.35)",flexShrink:0,marginBottom:isDesktop?0:14}}>
+            <img src={badge.img} alt={badge.label} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+          </div>
+          <div style={{flex:1,marginBottom:isDesktop?0:14}}>
+            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>Badge Earned</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:"rgba(245,239,230,0.9)",marginBottom:2}}>{badge.label}</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?13:11,color:"rgba(245,239,230,0.5)",margin:0}}>{badge.sub}</p>
+          </div>
+          <div style={{display:"flex",gap:8,flexDirection:isDesktop?"column":"row"}}>
+            <button onClick={reset} style={{padding:"11px 20px",borderRadius:4,border:"0.5px solid rgba(245,239,230,0.15)",background:"transparent",color:"rgba(245,239,230,0.6)",fontFamily:T.serif,fontSize:isDesktop?14:13,cursor:"pointer",whiteSpace:"nowrap"}}>Try Again</button>
+            {onSimulation
+              ? <button onClick={onSimulation} style={{padding:"11px 20px",borderRadius:4,border:"none",background:"linear-gradient(135deg,"+T.gold+" 0%,#527060 100%)",color:"white",fontFamily:T.serif,fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>Continue →</button>
+              : <button onClick={reset} style={{padding:"11px 20px",borderRadius:4,border:"none",background:"linear-gradient(135deg,"+T.gold+" 0%,#527060 100%)",color:"white",fontFamily:T.serif,fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>Done ✓</button>}
+          </div>
+        </div>
       </div>
     );
   }
@@ -518,58 +523,14 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           </button>
         </>
       ) : (
-        <>
-          {/* Score hero */}
-          <div style={{...cs.card,background:"#0E0B08",border:"none"}}>
-            <div style={{display:"flex",alignItems:"center",gap:isDesktop?32:20}}>
-              <div style={{textAlign:"center",flexShrink:0}}>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?56:44,fontWeight:600,color:T.gold,lineHeight:1}}>{aiResult.overall}</div>
-                <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",marginTop:2}}>/ 100</div>
-              </div>
-              <div>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>+{aiResult.pts} pts earned</div>
-                <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:"#F5EFE6",lineHeight:1.4,margin:0}}>Clarity score for your rewrite</p>
-              </div>
-            </div>
+        <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px 20px"}}>
+          <div style={{width:52,height:52,borderRadius:"50%",background:"rgba(82,112,96,0.12)",border:"1.5px solid rgba(82,112,96,0.4)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 14px"}}>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 11l5 5 7-9" stroke="#527060" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
-          {/* Dimension bars */}
-          <div style={cs.card}>
-            {[["Clarity",aiResult.clarity],["Simplicity",aiResult.simplicity],["Brevity",aiResult.brevity],["Human Language",aiResult.humanLanguage]].map(([d,s],i)=>(
-              <div key={i} style={{marginBottom:i<3?12:0}}>
-                <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{d}</span>
-                  <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:s>=80?T.gold:T2.text3}}>{s}</span>
-                </div>
-                <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-                  <div style={{height:"100%",width:s+"%",background:s>=80?T.gold:"rgba(138,158,132,0.4)",borderRadius:2,transition:"width 0.8s ease"}}/>
-                </div>
-              </div>
-            ))}
-          </div>
-          {/* Feedback */}
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-            <div style={{...cs.card,borderLeft:"2px solid #527060"}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>What worked</div>
-              {aiResult.worked.map((w,i)=><p key={i} style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,margin:i<aiResult.worked.length-1?"0 0 6px":0}}>✓ {w}</p>)}
-            </div>
-            <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Improve</div>
-              {aiResult.improve.map((w,i)=><p key={i} style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,margin:i<aiResult.improve.length-1?"0 0 6px":0}}>→ {w}</p>)}
-            </div>
-          </div>
-          {/* Perfect answer */}
-          {aiResult.perfect && (
-            <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
-              <div style={cs.label}>The ideal answer</div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.6,margin:0,fontStyle:"italic"}}>"{aiResult.perfect}"</p>
-            </div>
-          )}
-
-          <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-            {isLast && <button onClick={()=>{setBonusIdx(0);setBonusText('');setBonusResult(null);setBonusComplete(0);setPhase('bonus');}} style={{...cs.ghost,flex:1}}>Practise More →</button>}
-            {!onNavLabel && <button onClick={nextRound} style={{...cs.cta,flex:1}}>{isLast?"See Full Score →":"Next Challenge →"}</button>}
-          </div>
-        </>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,marginBottom:6}}>Response recorded.</p>
+          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20}}>+{aiResult.pts} clarity points earned.</p>
+          {!onNavLabel && <button onClick={nextRound} style={{...cs.cta,maxWidth:240,margin:"0 auto",display:"block"}}>{isLast?"See Your Results →":"Next Challenge →"}</button>}
+        </div>
       )}
     </div>
   );
