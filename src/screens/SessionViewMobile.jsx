@@ -429,9 +429,9 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
         };
         const src=STEP_IMGS[lesson.day]?.[step];
-        const useContainMob = (lesson.day===11 && step==="Theory") || (isD1 && step==="Insight");
-        const containBg = isD1 && step==="Insight" ? "#3D2E1E" : "#0E0B08";
-        if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none",background:useContainMob?containBg:"transparent"}}/>;
+        const useContainMob = lesson.day===11 && step==="Theory";
+        const heroH = (isD1 && step==="Insight") ? 480 : step==="Theory 2" ? 260 : 320;
+        if(src) return <img src={src} alt="" style={{width:"100%",height:heroH,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center 40%",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
         return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
       })()}
       {/* Dark film overlay for Practice only */}
