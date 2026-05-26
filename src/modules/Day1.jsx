@@ -43,7 +43,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
      correct:1,
      feedback:"Great explanations answer the next obvious question. Why does exercise make you healthier? That's the gap."},
     {id:4, type:'explain', label:'Round 4', name:'Explain It Simply', pts:30,
-     task:'Explain how a caterpillar becomes a butterfly to a curious 8-year-old.',
+     task:'Teach a curious 8-year-old the lifecycle of a caterpillar.',
      hint:'One sentence · No jargon · Make it easy to picture',
      placeholder:'Inside its cocoon, the caterpillar…'},
   ];
@@ -141,7 +141,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       pts: Math.round(round.pts * 0.85),
     };
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:`You are a warm, encouraging communication coach helping someone practise the Feynman Technique.\n\nThe challenge: explain how a caterpillar becomes a butterfly to a curious 8-year-old.\n\nRules: one sentence, no jargon, make it easy to picture.\n\nUser's answer: "${explainText}"\n\nReturn ONLY valid JSON:\n{"praise":"<one warm specific compliment about what they did well — max 12 words>","tip":"<one gentle specific suggestion to improve — max 12 words>","pts":<20-30>}`}]})});
+      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:`You are a warm, encouraging communication coach helping someone practise the Feynman Technique.\n\nThe challenge: teach a curious 8-year-old the lifecycle of a caterpillar.\n\nRules: one sentence, no jargon, make it easy to picture.\n\nUser's answer: "${explainText}"\n\nReturn ONLY valid JSON:\n{"praise":"<one warm specific compliment about what they did well — max 12 words>","tip":"<one gentle specific suggestion to improve — max 12 words>","pts":<20-30>}`}]})});
       const d = await res.json();
       const raw = (d.content||[]).map(b=>b.text||'').join('').trim();
       const m = raw.match(/\{[\s\S]*\}/);
