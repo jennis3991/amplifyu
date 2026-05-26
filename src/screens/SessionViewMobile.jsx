@@ -364,7 +364,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       <span style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.ink,letterSpacing:"-0.3px"}}>AmplifyU</span>
     </div>
      {/* Header image + Exit button overlay */}
-    <div style={{position:"relative",height:(isD1&&(step==="Practice"||step==="Simulation"))?420:step==="Theory 2"?260:320,overflow:"hidden",background:step==="Practice"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
+    <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:step==="Practice"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
       {(()=>{
         // Simulation tab: dark cinematic panel for ALL modules
         if(step==="Simulation"){
@@ -430,7 +430,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         };
         // D1 Simulation — cinematic dark panel matching desktop left panel
         if(isD1 && step==="Simulation") return (
-          <div style={{width:"100%",height:420,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"80px 24px 24px",boxSizing:"border-box",position:"relative"}}>
+          <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"58px 24px 20px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Simulation · Day 1</div>
@@ -453,7 +453,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         );
         // D1 Practice — cinematic dark panel matching desktop left panel
         if(isD1 && step==="Practice") return (
-          <div style={{width:"100%",height:420,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"80px 24px 24px",boxSizing:"border-box",position:"relative"}}>
+          <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"58px 24px 20px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Feynman Challenge™</div>
@@ -464,10 +464,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span style={{fontFamily:T.serif,fontSize:13,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4 minutes</span></span>
               </div>
-              <div style={{position:"relative",width:110,height:110,display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <div style={{position:"relative",width:84,height:84,display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <div style={{position:"absolute",inset:0,borderRadius:"50%",border:"1px solid rgba(200,168,76,0.2)",boxShadow:"0 0 24px rgba(200,168,76,0.08)"}}/>
                 <div style={{position:"absolute",inset:8,borderRadius:"50%",border:"0.5px solid rgba(200,168,76,0.1)"}}/>
-                <img src="/badge-queen.jpg" alt="Great Explainer" style={{width:80,height:80,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(200,168,76,0.35)",position:"relative",zIndex:1}}/>
+                <img src="/badge-queen.jpg" alt="Great Explainer" style={{width:64,height:64,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(200,168,76,0.35)",position:"relative",zIndex:1}}/>
               </div>
             </div>
           </div>
