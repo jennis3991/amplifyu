@@ -1004,40 +1004,39 @@ setAmbitionSaved(true); } catch {}
           <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
             <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>Fillers happen when your brain is multitasking faster than it can think.</p>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
-            {[
-              {label:"Processing Bottleneck",  body:"Speaking, thinking, and organising ideas all compete for the same mental bandwidth — and something has to give."},
-              {label:"The Gap Filler Effect",   body:"When your next thought isn't ready, filler words buy your brain time. They're a coping mechanism, not a character flaw."},
-              {label:"Why Pauses Work",         body:"A pause gives your brain the processing time it needs — without adding noise. Silence is your brain catching up cleanly."},
-              {label:"The Fix",                 body:"Slow the thought process down. Structure your idea before you speak. Silence is always cleaner than a filler."},
-            ].map((p,i)=>(
-              <div key={i} style={{padding:"16px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>{p.label}</div>
-                <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{p.body}</p>
+          {(()=>{
+            const [open3, setOpen3] = useState(null);
+            const CARDS = [
+              {label:"Processing Bottleneck",  sub:"Speaking, thinking, and organising ideas all compete for the same mental bandwidth.",
+                bullets:["Fear of silence makes you fill — but a pause signals you're thinking, not struggling.","Rushing is a common trigger: when your mouth outruns your brain, sounds fill the gap."]},
+              {label:"The Gap Filler Effect",   sub:"When your next thought isn't ready, filler words buy your brain time.",
+                bullets:["Lack of structure is the root cause: know your next point and silence comes naturally.","Fillers are a coping mechanism, not a character flaw — they're a signal to slow down."]},
+              {label:"Why Pauses Work",         sub:"A pause gives your brain the processing time it needs — without adding noise.",
+                bullets:["Silence sounds confident. Fillers sound uncertain — even when you're not.","Silence is your brain catching up cleanly; your audience receives it as calm and control."]},
+              {label:"The Fix",                 sub:"Slow the thought process down. Structure your idea before you speak.",
+                bullets:["When you feel the urge to fill, pause instead. Breathe. Then speak.","Silence is always cleaner than a filler — and it leaves a stronger impression."]},
+            ];
+            return (
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
+                {CARDS.map((p,i)=>{
+                  const isOpen=open3===i;
+                  return (
+                    <div key={i} onClick={()=>setOpen3(isOpen?null:i)}
+                      style={{padding:"18px 20px",background:T2.surface,borderRadius:4,border:`0.5px solid ${isOpen?"rgba(138,158,132,0.4)":T2.border}`,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:isOpen?"0 2px 16px rgba(138,158,132,0.15)":"none"}}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:isOpen?8:8}}>
+                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flex:1}}>{p.label}</div>
+                        <span style={{fontFamily:T.sans,fontSize:15,color:isOpen?T.gold:"rgba(138,158,132,0.6)",marginLeft:8,flexShrink:0}}>{isOpen?"▴":"▸"}</span>
+                      </div>
+                      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:400,margin:isOpen?"0 0 12px":0}}>{p.sub}</p>
+                      {isOpen && (<div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",flexDirection:"column",gap:8}}>
+                        {p.bullets.map((b,j)=>(<div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/><p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:0}}>{b}</p></div>))}
+                      </div>)}
+                    </div>
+                  );
+                })}
               </div>
-            ))}
-          </div>
-          <div style={{padding:"20px 24px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:28}}>
-            <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T.gold,lineHeight:1.65,margin:0}}>You don't have a speaking problem. You have a processing speed problem — and the pause is the solution.</p>
-          </div>
-          {/* Pause Principle */}
-          <div style={{fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The Pause Principle</div>
-          <div style={{padding:"20px 24px",background:T2.cardDark,borderRadius:4,borderLeft:"3px solid "+T.gold,marginBottom:16}}>
-            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.35,margin:0}}>Silence sounds confident. Fillers sound uncertain.</p>
-          </div>
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
-            {[
-              "Fear of silence makes you fill — but a pause signals you're thinking, not struggling.",
-              "Rushing causes fillers: when your mouth outruns your brain, sounds fill the gap.",
-              "Lack of structure creates fillers: know your next point, and silence comes naturally.",
-              "The fix is simple: when you feel the urge to fill, pause instead. Breathe. Then speak.",
-            ].map((b,i)=>(
-              <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:8}}/>
-                <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.65,margin:0,fontWeight:400}}>{b}</p>
-              </div>
-            ))}
-          </div>
+            );
+          })()}
         </div>
       );
 
