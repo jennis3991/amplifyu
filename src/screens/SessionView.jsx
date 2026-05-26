@@ -2476,22 +2476,41 @@ setAmbitionSaved(true); } catch {}
     };
 
     const D5RightContent = () => {
+      const [d5OpenCard, setD5OpenCard] = useState(null);
+
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Why Structure Wins</h2>
           <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:600 }}>Structure is how you organise your thinking before you speak. PRE helps you do that: start with your point, explain why it matters, then bring it to life with an example.</p>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
             {[
-              {word:"Credibility",     body:"Leading with your point signals clear thinking. Structured communication creates immediate credibility and helps your ideas land with confidence and authority."},
-              {word:"Recall",          body:"Structured messages are 40% more memorable. A clear beginning, middle and end helps your audience store and retrieve your message with ease."},
-              {word:"Persuasion",      body:"Great ideas rarely persuade on their own — structure is what makes them land. PRE helps you present a clear point, support it with logic, and reinforce it with proof that moves people to action."},
-              {word:"Decision Speed",  body:"Leaders decide faster when communication is structured. Lead with your point and you accelerate every conversation you're in."},
-            ].map((n,i)=>(
-              <div key={i} style={{ padding:"22px 24px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
-                <div style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T.gold, lineHeight:1.3, marginBottom:10 }}>{n.word}</div>
-                <p style={{ fontFamily:T.sans, fontSize:16, color:T2.text, lineHeight:1.7, fontWeight:400, margin:0 }}>{n.body}</p>
-              </div>
-            ))}
+              {word:"Credibility",    sub:"Leading with your point signals clear thinking.", bullets:["Structured communication creates immediate credibility — your audience knows you have a clear perspective.","When you lead with your conclusion, you sound decisive and confident before you've even explained why."]},
+              {word:"Recall",         sub:"Structured messages are 40% more memorable.",     bullets:["A clear beginning, middle and end helps your audience store and retrieve your message with ease.","Without structure, ideas blur together. With PRE, each part reinforces the next."]},
+              {word:"Persuasion",     sub:"Great ideas rarely persuade on their own.",        bullets:["PRE helps you present a clear point, support it with logic, and reinforce it with proof.","Unstructured arguments make audiences work harder. Structured arguments make the next step obvious."]},
+              {word:"Decision Speed", sub:"Leaders decide faster when communication is structured.", bullets:["Lead with your point and you cut the cognitive overhead for whoever is listening.","Every conversation you structure well ends faster — with the outcome you want."]},
+            ].map((n,i)=>{
+              const open = d5OpenCard===i;
+              return (
+                <div key={i} onClick={()=>setD5OpenCard(open?null:i)}
+                  style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 16px rgba(138,158,132,0.15)":"none"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:6}}>
+                    <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.6)",marginLeft:8,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:open?"0 0 12px":0}}>{n.sub}</p>
+                  {open && (
+                    <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",flexDirection:"column",gap:8}}>
+                      {n.bullets.map((b,j)=>(
+                        <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                          <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/>
+                          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:300,margin:0}}>{b}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
           <p style={{ fontFamily:T.sans, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.7 }}>Structure is the backbone of every powerful communication.</p>
         </div>
@@ -2505,12 +2524,11 @@ setAmbitionSaved(true); } catch {}
           <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
             <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0 }}>People remember the beginning and end of information most clearly. The middle is forgotten.</p>
           </div>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:14, marginBottom:28 }}>
             {[
-              {n:"Point",    role:"Strong opening anchor",    body:"Lead with your conclusion. The brain locks onto the first thing it hears — give it something worth remembering."},
-              {n:"Reason",   role:"Cognitive bridge",          body:"Connect your point to meaning. This is how you make the idea stick — not just land."},
-              {n:"Example",  role:"Memorable closing proof",   body:"Finish with evidence. The recency effect means your example is the last thing heard — and the most recalled."},
-              {n:"Processing Fluency", role:"The multiplier", body:"Clear, easy-to-follow ideas are perceived as more intelligent, credible, and persuasive. PRE delivers that clarity every time."},
+              {n:"Point",   role:"Strong opening anchor",   body:"Lead with your conclusion. The brain locks onto the first thing it hears — give it something worth remembering."},
+              {n:"Reason",  role:"Cognitive bridge",         body:"Connect your point to meaning. This is how you make the idea stick — not just land."},
+              {n:"Example", role:"Memorable closing proof",  body:"Finish with evidence. The recency effect means your example is the last thing heard — and the most recalled."},
             ].map((b,i)=>(
               <div key={i} style={{ padding:"20px 22px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
                 <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:6 }}>{b.n}</div>
