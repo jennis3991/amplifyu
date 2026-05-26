@@ -601,8 +601,8 @@ export function D1SimWidget({T, T2, isDesktop}) {
     ],
   };
   const ALL_PROMPTS = Object.values(PROMPTS).flat();
-  const DIMS = ["Structure","Clarity","Concision","Filler Words","Pace","Confidence","Main Message"];
-  const FOCUS = ["Shorter sentences","Fewer filler words","Clearer opening","Stronger structure","Slower pace","Sharper conclusion"];
+  const DIMS = ["Clarity","Structure","Brevity","Focus","Simplicity"];
+  const FOCUS = ["Shorter opening","Lead with main point","Fewer filler words","Sharper ending","Stronger structure"];
 
   const [phase, setPhase] = useState('intro');
   const [cat, setCat] = useState('Work');
@@ -617,7 +617,10 @@ export function D1SimWidget({T, T2, isDesktop}) {
   const [selectedFocus, setSelectedFocus] = useState([]);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
 
+  const [audioURL, setAudioURL] = useState(null);
   const recRef = useRef(null);
+  const mediaRecRef = useRef(null);
+  const audioChunksRef = useRef([]);
   const timerRef = useRef(null);
   const liveRef = useRef('');
   const waveRef = useRef(null);
@@ -642,7 +645,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
   },[isRec]);
 
   function doStart(){
-    setIsRec(true); liveRef.current=''; setTranscript('');
+    setIsRec(true); liveRef.current=''; setTranscript(''); setAudioURL(null);
     if(SpeechRec){
       const rec=new SpeechRec();
       rec.continuous=true; rec.interimResults=true; rec.lang='en-US';
@@ -654,11 +657,21 @@ export function D1SimWidget({T, T2, isDesktop}) {
       try{rec.start();}catch(e){}
       recRef.current=rec;
     }
+    if(navigator.mediaDevices?.getUserMedia){
+      navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+        const mr=new MediaRecorder(stream);
+        audioChunksRef.current=[];
+        mr.ondataavailable=e=>audioChunksRef.current.push(e.data);
+        mr.onstop=()=>{const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});setAudioURL(URL.createObjectURL(blob));stream.getTracks().forEach(t=>t.stop());};
+        mr.start(); mediaRecRef.current=mr;
+      }).catch(()=>{});
+    }
   }
 
   function doStop(){
     setIsRec(false); clearTimeout(timerRef.current);
     if(recRef.current){try{recRef.current.stop();}catch(e){}}
+    if(mediaRecRef.current&&mediaRecRef.current.state!=='inactive'){try{mediaRecRef.current.stop();}catch(e){}}
     const text = SpeechRec ? liveRef.current : fallback;
     analyzeText(text||fallback);
   }
@@ -666,12 +679,15 @@ export function D1SimWidget({T, T2, isDesktop}) {
   async function analyzeText(text){
     setPhase('analyzing');
     const isRetry=!!round1;
-    const mockScores=()=>Object.fromEntries(DIMS.map(d=>[d,Math.floor(Math.random()*22)+62+(isRetry?10:0)]));
+    const mockScores=()=>Object.fromEntries(DIMS.map(d=>[d,Math.floor(Math.random()*22)+60+(isRetry?10:0)]));
+    const mockOverall=Math.floor(Math.random()*18)+62+(isRetry?12:0);
     const mock={
-      overall:Math.floor(Math.random()*18)+64+(isRetry?12:0),
+      overall:mockOverall,
+      headline:mockOverall>=80?"Your ideas landed with precision.":mockOverall>=70?"Your strongest idea arrived late.":"Your message needed a clearer focus.",
+      subtitle:isRetry?"Measurable progress. Keep going.":"A solid starting point. Now let's sharpen it.",
       scores:mockScores(),
-      worked:["Confident and natural delivery","Good conversational energy throughout"],
-      improve:["Core point arrived late — lead with it next time","A few ideas drifted before landing"],
+      worked:["Natural and conversational tone","Confident, easy to follow delivery"],
+      improve:["Lead with your strongest point — your core message took too long to land."],
       insight:"Your delivery felt natural and genuine. The opportunity is structure: if you lead with your clearest point in the first sentence, everything that follows lands harder."
     };
     if(!text||text.trim().length<15){
@@ -681,7 +697,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
       return;
     }
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:700,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for clarity.\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"scores":{"Structure":<50-100>,"Clarity":<50-100>,"Concision":<50-100>,"Filler Words":<50-100>,"Pace":<50-100>,"Confidence":<50-100>,"Main Message":<50-100>},"worked":["<strength 1>","<strength 2>"],"improve":["<opportunity 1>","<opportunity 2>"],"insight":"<2 warm coaching sentences>"}`}]})});
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:700,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Brevity":<50-100>,"Focus":<50-100>,"Simplicity":<50-100>},"worked":["<strength 1>","<strength 2>"],"improve":["<single highest-leverage opportunity>"],"insight":"<2 personalised coaching sentences>"}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -700,7 +716,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
     setPrompt(p); setPhase('recording'); setTimeLeft(120); setIsRec(false); setTranscript(''); setFallback('');
   }
 
-  function reset(){setPhase('intro');setPrompt(null);setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setSelectedFocus([]);}
+  function reset(){setPhase('intro');setPrompt(null);setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setSelectedFocus([]);setAudioURL(null);}
 
   const cs={
     card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"},
@@ -876,74 +892,172 @@ export function D1SimWidget({T, T2, isDesktop}) {
   );
 
   // ── FEEDBACK ─────────────────────────────────────────────────────────────
-  if(phase==='feedback' && feedback) return (
-    <div style={{display:"flex",flexDirection:"column",gap:16}}>
-      {/* Score hero */}
-      <div style={{background:"#0E0B08",borderRadius:8,padding:isDesktop?"36px 40px":"28px 20px",display:"flex",alignItems:"center",gap:isDesktop?40:24}}>
-        <div style={{flexShrink:0,textAlign:"center"}}>
-          <div style={{fontFamily:T.serif,fontSize:isDesktop?72:56,fontWeight:600,color:T.gold,lineHeight:1}}>{feedback.overall}</div>
-          <div style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.5)",marginTop:4}}>/ 100</div>
+  if(phase==='feedback' && feedback) {
+    const RDIMS=["Clarity","Structure","Brevity","Simplicity","Focus"];
+    const RANGLES=[-90,-18,54,126,198];
+    const cx=100,cy=100,rMax=72;
+    const rPt=(sc,aDeg)=>{const a=aDeg*Math.PI/180;return[cx+(sc/100)*rMax*Math.cos(a),cy+(sc/100)*rMax*Math.sin(a)];};
+    const gridPoly=(pct)=>RANGLES.map(a=>{const[x,y]=rPt(100,a);return`${(cx+(x-cx)*pct).toFixed(1)},${(cy+(y-cy)*pct).toFixed(1)}`;}).join(' ');
+    const dataPoly=RDIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores[d]||50,RANGLES[i]);return`${x.toFixed(1)},${y.toFixed(1)}`;}).join(' ');
+    const WBARS=Array.from({length:60},(_,i)=>Math.max(0.08,Math.min(1,Math.sin(i/59*Math.PI)*0.65+0.25+Math.sin(i*4.7)*0.13+Math.cos(i*2.3)*0.11)));
+    const MARKERS=[{pos:0.20,label:"Filler cluster",color:"#C8A46A"},{pos:0.43,label:"Ramble moment",color:"#B05C4A"},{pos:0.65,label:"Strongest point",color:"#527060"},{pos:0.87,label:"Unclear section",color:"#B05C4A"}];
+    const scoreColor=s=>s>=80?T.gold:s>=70?"#7A9E84":T2.text3;
+    const [playing,setPlaying]=useState(false);
+    const audioRef=useRef(null);
+    function togglePlay(){
+      if(!audioURL){setPlaying(p=>!p);return;}
+      if(!audioRef.current)audioRef.current=new Audio(audioURL);
+      if(playing){audioRef.current.pause();setPlaying(false);}
+      else{audioRef.current.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
+    }
+    return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      {/* 1 HERO */}
+      <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:-40,right:-40,width:180,height:180,borderRadius:"50%",background:"radial-gradient(circle,rgba(138,158,132,0.07) 0%,transparent 70%)",pointerEvents:"none"}}/>
+        <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Your Clarity Mirror</div>
+        <div style={{display:"flex",gap:isDesktop?32:20,alignItems:"flex-start",marginBottom:20}}>
+          <div style={{flexShrink:0}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?80:64,fontWeight:600,color:T.gold,lineHeight:1}}>{feedback.overall}</div>
+            <div style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.45)",marginTop:2}}>/ 100</div>
+          </div>
+          <div style={{paddingTop:8}}>
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{marginBottom:6}}><path d="M10 2l1.5 4H16l-3.5 2.5 1.5 4L10 10l-4 2.5 1.5-4L4 6h4.5z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/></svg>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?24:19,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,margin:"0 0 8px"}}>{feedback.headline||"Your message had strong moments."}</p>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.55)",margin:0,lineHeight:1.5}}>{feedback.subtitle||"A solid starting point. Now let's sharpen it."}</p>
+          </div>
         </div>
-        <div>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Clarity Score</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:15,color:"#F5EFE6",lineHeight:1.4,margin:0}}>Here's how clearly your ideas came across.</p>
+        <div style={{display:"flex",alignItems:"center",gap:14}}>
+          <button onClick={togglePlay} style={{display:"flex",alignItems:"center",gap:8,padding:"9px 18px",background:"rgba(245,239,230,0.08)",border:"0.5px solid rgba(245,239,230,0.2)",borderRadius:4,color:"#F5EFE6",fontFamily:T.serif,fontSize:13,cursor:"pointer",flexShrink:0}}>
+            {playing?<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/><rect x="8" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/></svg>:<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 1l9 5-9 5V1z" fill="#F5EFE6"/></svg>}
+            {playing?"Pause":"Play my recording"}
+          </button>
+          <div style={{flex:1,display:"flex",alignItems:"center",gap:1,height:24,overflow:"hidden"}}>
+            {WBARS.map((h,i)=><div key={i} style={{flex:1,background:`rgba(138,158,132,${0.25+h*0.35})`,borderRadius:1,height:Math.round(h*22)+"px",minWidth:2}}/>)}
+          </div>
         </div>
       </div>
-      {/* Dimension bars */}
-      <div style={cs.card}>
-        <div style={cs.label}>Analysis</div>
-        {DIMS.map((d,i)=>(
-          <div key={i} style={{marginBottom:i<DIMS.length-1?14:0}}>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
-              <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{d}</span>
-              <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:feedback.scores[d]>=80?T.gold:feedback.scores[d]>=65?"#7A9E84":T2.text3}}>{feedback.scores[d]}</span>
+      {/* 2 CLARITY PROFILE */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={cs.label}>Your Clarity Profile</div>
+        <div style={{display:isDesktop?"flex":"block",gap:24,alignItems:"center"}}>
+          <div style={{flexShrink:0,display:"flex",justifyContent:"center"}}>
+            <svg viewBox="0 0 200 200" width={isDesktop?200:170} height={isDesktop?200:170}>
+              {[0.25,0.5,0.75,1].map((p,i)=><polygon key={i} points={gridPoly(p)} fill="none" stroke={T2.border} strokeWidth={p===1?"0.8":"0.5"}/>)}
+              {RANGLES.map((a,i)=>{const[x,y]=rPt(100,a);return<line key={i} x1={cx} y1={cy} x2={x.toFixed(1)} y2={y.toFixed(1)} stroke={T2.border} strokeWidth="0.5"/>;})}
+              <polygon points={dataPoly} fill="rgba(138,158,132,0.18)" stroke="rgba(82,112,96,0.7)" strokeWidth="1.5"/>
+              {RDIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores[d]||50,RANGLES[i]);return<circle key={i} cx={x.toFixed(1)} cy={y.toFixed(1)} r="3" fill={T.gold} opacity="0.9"/>;})}
+              {RDIMS.map((d,i)=>{const[x,y]=rPt(114,RANGLES[i]);const anch=x<cx-4?"end":x>cx+4?"start":"middle";return<text key={i} x={x.toFixed(1)} y={y.toFixed(1)} textAnchor={anch} dominantBaseline="middle" style={{fontFamily:"'Inter',sans-serif",fontSize:"8px",fill:"rgba(44,36,22,0.55)",fontWeight:500}}>{d}</text>;})}
+            </svg>
+          </div>
+          <div style={{flex:1,display:"flex",flexDirection:"column",gap:10,marginTop:isDesktop?0:10}}>
+            {RDIMS.map((d,i)=>{const sc=feedback.scores[d]||50;return(
+              <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
+                <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,width:isDesktop?80:72,flexShrink:0}}>{d}</span>
+                <div style={{flex:1,height:4,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+                  <div style={{height:"100%",width:sc+"%",background:"linear-gradient(90deg,rgba(138,158,132,0.5),rgba(82,112,96,0.85))",borderRadius:2,transition:"width 1s ease"}}/>
+                </div>
+                <span style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontWeight:600,color:scoreColor(sc),width:24,textAlign:"right",flexShrink:0}}>{sc}</span>
+              </div>
+            );})}
+          </div>
+        </div>
+      </div>
+      {/* 3 STRENGTHS + OPPORTUNITY */}
+      <div style={{display:isDesktop?"grid":"flex",gridTemplateColumns:"1fr 1fr",flexDirection:"column",gap:isDesktop?12:10}}>
+        <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
+          <div style={cs.label}>What came across well</div>
+          {[
+            {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke={T2.text3} strokeWidth="1.2"/><path d="M3 9h16M7 5v12" stroke={T2.text3} strokeWidth="1.2"/></svg>,text:feedback.worked[0]||"Natural and conversational",sub:"Your tone felt authentic and easy to follow."},
+            {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke={T2.text3} strokeWidth="1.2"/><path d="M4 19c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke={T2.text3} strokeWidth="1.2" strokeLinecap="round"/></svg>,text:feedback.worked[1]||"Confident delivery",sub:"You spoke with assurance and conviction."},
+            {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 3C7 3 3.5 6 3.5 10c0 2.5 1.3 4.7 3.3 6l-1 3 3.2-1.2C10 18 10.5 18 11 18c4 0 7.5-3.6 7.5-8S15 3 11 3z" stroke={T2.text3} strokeWidth="1.2"/></svg>,text:"Engaging throughout",sub:"You kept the listener interested."},
+          ].map((item,i)=>(
+            <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:i<2?12:0,paddingBottom:i<2?12:0,borderBottom:i<2?"0.5px solid "+T2.divider:"none"}}>
+              <div style={{width:34,height:34,borderRadius:"50%",background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{item.icon}</div>
+              <div>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,marginBottom:2}}>{item.text}</div>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.4}}>{item.sub}</div>
+              </div>
             </div>
-            <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-              <div style={{height:"100%",width:feedback.scores[d]+"%",background:feedback.scores[d]>=80?T.gold:"rgba(138,158,132,0.5)",borderRadius:2,transition:"width 0.9s ease"}}/>
+          ))}
+        </div>
+        <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#B07A40",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Biggest Opportunity</div>
+          <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+            <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(176,122,64,0.1)",border:"1px solid rgba(176,122,64,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a5 5 0 014 8l-1 1v2H7v-2L6 10a5 5 0 014-8z" stroke="#B07A40" strokeWidth="1.2"/><path d="M7 15h6M8 17h4" stroke="#B07A40" strokeWidth="1.2" strokeLinecap="round"/></svg>
+            </div>
+            <div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 8px"}}>Lead with your strongest point.</p>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>{feedback.improve[0]||"Your core message took too long to land. Start with it next time."}</p>
             </div>
           </div>
-        ))}
-      </div>
-      {/* What worked */}
-      <div style={cs.card}>
-        <div style={cs.label}>What worked</div>
-        {feedback.worked.map((w,i)=>(
-          <div key={i} style={{display:"flex",gap:10,marginBottom:i<feedback.worked.length-1?10:0}}>
-            <span style={{color:"#527060",fontWeight:700,flexShrink:0}}>✓</span>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0}}>{w}</p>
-          </div>
-        ))}
-      </div>
-      {/* Opportunities */}
-      <div style={cs.card}>
-        <div style={cs.label}>Opportunities to improve</div>
-        {feedback.improve.map((w,i)=>(
-          <div key={i} style={{display:"flex",gap:10,marginBottom:i<feedback.improve.length-1?10:0}}>
-            <span style={{color:T.gold,flexShrink:0}}>→</span>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0}}>{w}</p>
-          </div>
-        ))}
-      </div>
-      {/* Coach insight */}
-      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
-        <div style={cs.label}>Coach insight</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{feedback.insight}</p>
-      </div>
-      {/* Focus chips + retry */}
-      <div>
-        <div style={cs.label}>What to focus on next round</div>
-        <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:16}}>
-          {FOCUS.map((f,i)=>{
-            const sel=selectedFocus.includes(f);
-            return (
-              <button key={i} onClick={()=>setSelectedFocus(sf=>sel?sf.filter(x=>x!==f):[...sf,f])} style={{padding:"7px 14px",borderRadius:20,border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.12)":"transparent",color:sel?T.gold:T2.text3,fontSize:12,cursor:"pointer",fontFamily:T.sans,minHeight:36,transition:"all 0.15s",fontWeight:sel?600:400}}>{f}</button>
-            );
-          })}
         </div>
-        <button onClick={()=>{setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');}} style={cs.cta}>Run It Again →</button>
+      </div>
+      {/* 4 AI COACH */}
+      <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
+        <div style={cs.label}>Your AI Coach Says</div>
+        <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?44:34,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0,flex:1}}>{feedback.insight}</p>
+          <div style={{width:36,height:36,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,alignSelf:"flex-end"}}>
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.5 4H15l-3.75 2.75 1.5 4.5L9 11l-3.75 2.75 1.5-4.5L3 6h4.5z" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+      {/* 5 HEAR IT BACK */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={cs.label}>Hear it back</div>
+        <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:isDesktop?14:10}}>
+          <button onClick={togglePlay} style={{width:40,height:40,borderRadius:"50%",border:"none",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
+            {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
+          </button>
+          <div style={{flex:1,position:"relative"}}>
+            <div style={{display:"flex",position:"relative",height:isDesktop?20:16,marginBottom:4}}>
+              {MARKERS.map((m,i)=>(
+                <div key={i} style={{position:"absolute",left:(m.pos*100)+"%",transform:"translateX(-50%)",textAlign:"center",zIndex:2}}>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?9:7,color:m.color,fontWeight:600,whiteSpace:"nowrap"}}>{m.label}</div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?8:6,color:T2.text4,whiteSpace:"nowrap"}}>{["0:24","0:52","1:24","1:45"][i]}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{height:36,display:"flex",alignItems:"center",gap:1,position:"relative",overflow:"hidden",borderRadius:4}}>
+              {WBARS.map((h,i)=>{const pos=i/WBARS.length;const nm=MARKERS.find(m=>Math.abs(m.pos-pos)<0.04);return<div key={i} style={{flex:1,background:nm?nm.color:`rgba(138,158,132,${0.3+h*0.4})`,borderRadius:1,height:Math.round(h*32)+"px",minWidth:2}}/>;} )}
+              {MARKERS.map((m,i)=><div key={i} style={{position:"absolute",left:(m.pos*100)+"%",top:0,bottom:0,width:2,background:m.color,opacity:0.6}}/>)}
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
+              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>0:00</span>
+              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>2:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* 6 FOCUS NEXT ROUND */}
+      <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
+        <div style={cs.label}>Focus next round</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+          {FOCUS.map((f,i)=>{const sel=selectedFocus.includes(f);return(
+            <button key={i} onClick={()=>setSelectedFocus(sf=>sel?sf.filter(x=>x!==f):[...sf,f])} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:20,border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.1)":"transparent",color:sel?T.gold:T2.text,fontFamily:T.serif,fontSize:isDesktop?13:12,cursor:"pointer",transition:"all 0.15s",fontWeight:sel?600:400}}>{f}</button>
+          );})}
+        </div>
+      </div>
+      {/* 7 RETRY CTA */}
+      <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"22px 28px":"18px 20px",border:"0.5px solid rgba(138,158,132,0.15)",display:isDesktop?"flex":"block",alignItems:"center",gap:20}}>
+        <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginBottom:isDesktop?0:14}}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l2 5h5l-4 3 2 5-5-3.5-5 3.5 2-5-4-3h5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>
+        </div>
+        <div style={{flex:1,marginBottom:isDesktop?0:14}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>Ready for Round Two?</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.65)",margin:0,lineHeight:1.5}}>Now that you know what to improve, try again while the feedback is fresh.</p>
+        </div>
+        <div style={{textAlign:isDesktop?"right":"left"}}>
+          <button onClick={()=>{setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');}} style={{display:"block",padding:isDesktop?"13px 26px":"13px 20px",borderRadius:4,border:"none",background:"linear-gradient(135deg,"+T.gold+" 0%,#527060 100%)",color:"white",fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",marginBottom:4}}>Improve My Score →</button>
+          <div style={{fontFamily:T.sans,fontSize:10,color:"rgba(138,158,132,0.55)"}}>Expected gain: +10–20 points</div>
+        </div>
       </div>
     </div>
-  );
+    );
+  }
 
   // ── COMPARISON ────────────────────────────────────────────────────────────
   if(phase==='comparison' && feedback && feedback.prev) return (
@@ -972,10 +1086,10 @@ export function D1SimWidget({T, T2, isDesktop}) {
       {/* Dimension comparison */}
       <div style={cs.card}>
         <div style={cs.label}>Score Comparison</div>
-        {DIMS.map((d,i)=>{
+        {["Clarity","Structure","Brevity","Focus","Simplicity"].map((d,i)=>{
           const s1=feedback.prev.scores[d]||0; const s2=feedback.scores[d]||0; const diff=s2-s1;
           return (
-            <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 40px 40px 40px",gap:8,alignItems:"center",paddingBottom:i<DIMS.length-1?12:0,marginBottom:i<DIMS.length-1?12:0,borderBottom:i<DIMS.length-1?"0.5px solid "+T2.divider:"none"}}>
+            <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 40px 40px 40px",gap:8,alignItems:"center",paddingBottom:i<4?12:0,marginBottom:i<4?12:0,borderBottom:i<4?"0.5px solid "+T2.divider:"none"}}>
               <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{d}</span>
               <span style={{fontFamily:T.serif,fontSize:14,color:T2.text3,textAlign:"right"}}>{s1}</span>
               <span style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,textAlign:"right"}}>{s2}</span>
