@@ -300,7 +300,7 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Practice") return (
-      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"space-between", padding:"44px 48px 40px", position:"relative", overflow:"hidden" }}>
+      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"space-between", padding:"80px 48px 40px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>THE CLARITY CHALLENGE™</div>
