@@ -328,13 +328,32 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Simulation") return (
-      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
+      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"space-between", padding:"80px 48px 40px", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>RECORD &amp; REVIEW™</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>The fastest way to improve is to hear yourself the way others do.</p>
-          <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Speak naturally. Get scored. Improve in real time.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>SIMULATION · DAY 1</div>
+          <p style={{ fontFamily:T.serif, fontSize:"clamp(32px,2.6vw,48px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.1, marginBottom:24, maxWidth:380 }}>See how clear you are— right now.</p>
+          <div style={{ padding:"16px 20px", background:"rgba(138,158,132,0.08)", borderRadius:8, border:"0.5px solid rgba(138,158,132,0.2)", marginBottom:24, display:"flex", alignItems:"center", gap:12 }}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="1.5" fill={T.gold}/></svg>
+            <div>
+              <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:3 }}>Today's Goal</div>
+              <div style={{ fontFamily:T.serif, fontSize:15, fontWeight:500, color:"rgba(245,239,230,0.85)" }}>Get your clarity baseline.</div>
+            </div>
+          </div>
+        </div>
+        <div style={{ position:"relative", zIndex:2, display:"flex", justifyContent:"center", alignItems:"center", flex:1 }}>
+          <div style={{ position:"relative", width:190, height:190, display:"flex", alignItems:"center", justifyContent:"center" }}>
+            <div style={{ position:"absolute", inset:0, borderRadius:"50%", border:"1px solid rgba(200,168,76,0.2)", boxShadow:"0 0 40px rgba(200,168,76,0.08)" }}/>
+            <div style={{ position:"absolute", inset:12, borderRadius:"50%", border:"0.5px solid rgba(200,168,76,0.12)" }}/>
+            <img src="/badge-queen.jpg" alt="" style={{ width:130, height:130, borderRadius:"50%", objectFit:"cover", border:"2px solid rgba(200,168,76,0.35)", position:"relative", zIndex:1 }}/>
+          </div>
+        </div>
+        <div style={{ position:"relative", zIndex:2 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+            <span style={{ fontFamily:T.serif, fontSize:13, color:"rgba(245,239,230,0.45)" }}>Estimated time: <span style={{ color:"rgba(245,239,230,0.65)", fontWeight:600 }}>4–5 minutes</span></span>
+          </div>
+          <p style={{ fontFamily:T.serif, fontSize:13, color:"rgba(245,239,230,0.35)", lineHeight:1.6, margin:0 }}>Awareness is the first move. Clarity is the advantage.</p>
         </div>
       </div>
     );

@@ -713,22 +713,66 @@ export function D1SimWidget({T, T2, isDesktop}) {
 
   // ── INTRO ─────────────────────────────────────────────────────────────────
   if(phase==='intro') return (
-    <div style={{display:"flex",flexDirection:"column",gap:0}}>
-      <div style={{background:T2.surface,borderRadius:8,padding:isDesktop?"44px 48px":"32px 24px",marginBottom:16,position:"relative",overflow:"hidden",border:"0.5px solid "+T2.border}}>
-        <div style={{position:"absolute",top:-60,right:-60,width:200,height:200,borderRadius:"50%",background:"radial-gradient(circle,rgba(138,158,132,0.08) 0%,transparent 70%)",pointerEvents:"none"}}/>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:20}}>RECORD &amp; REVIEW™</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?40:30,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:16}}>The fastest way to improve is to hear yourself the way others do.</h2>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?16:14,color:T2.text3,lineHeight:1.7,marginBottom:28}}>Most people have never heard themselves the way others do. This exercise reveals your natural communication habits — then helps you improve them.</p>
-        <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:28}}>
-          {["Speak naturally for 90–120 seconds.","No script. No preparation.","We want to reveal your default communication patterns."].map((t,i)=>(
-            <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-              <div style={{width:4,height:4,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:8}}/>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0,lineHeight:1.6}}>{t}</p>
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+
+      {/* HOW IT WORKS + 5-step journey */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>How it works</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:20}}>A simple 5-step clarity check-in.</h2>
+        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
+          {[
+            {n:1,label:"Choose a topic",     icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:2,label:"Speak naturally",    icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3,label:"AI scores clarity",  icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:4,label:"Reflect & listen",   icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke={T.gold} strokeWidth="1.3"/><path d="M8 9a3 3 0 016 0v4a3 3 0 01-6 0V9z" stroke={T.gold} strokeWidth="1.3"/></svg>},
+            {n:5,label:"Run it again",        icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 11a7 7 0 0111.95-4.95L18 8M18 8V4M18 8h-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M18 11a7 7 0 01-11.95 4.95L4 14M4 14v4M4 14h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>},
+          ].map((s,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                <div style={{width:isDesktop?48:38,height:isDesktop?48:38,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>{s.icon}</div>
+                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,marginBottom:3}}>{s.n}</div>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?12:10,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?68:54}}>{s.label}</div>
+              </div>
+              {i<4 && <div style={{height:1,width:isDesktop?12:6,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:30}}/>}
             </div>
           ))}
         </div>
-        <button onClick={()=>setPhase('prompt')} style={cs.cta}>Start Challenge →</button>
       </div>
+
+      {/* Three info cards */}
+      <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr":"1fr",gap:isDesktop?12:10}}>
+        <div style={{...cs.card,padding:isDesktop?"18px 20px":"16px 18px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>What you'll discover</div>
+          {["Your natural communication habits","Where clarity gets lost","What you're already doing well","Your personal clarity baseline"].map((b,i)=>(
+            <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:i<3?8:0}}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{flexShrink:0,marginTop:2}}><circle cx="7" cy="7" r="6" stroke={T.gold} strokeWidth="1.1"/><circle cx="7" cy="7" r="2.5" stroke={T.gold} strokeWidth="1.1"/></svg>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,margin:0}}>{b}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{...cs.card,padding:isDesktop?"18px 20px":"16px 18px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>You can also</div>
+          {[
+            {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke={T.gold} strokeWidth="1.2"/><path d="M10 7a3 3 0 016 0v3a3 3 0 01-6 0V7z" stroke={T.gold} strokeWidth="1.2"/></svg>,label:"Listen back anytime"},
+            {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10a7 7 0 0110.95-4.95L16 7M16 7V3M16 7h-4" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>,label:"Improve in real time"},
+          ].map((item,i)=>(
+            <div key={i} style={{display:"flex",gap:10,alignItems:"center",padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:6,marginBottom:i<1?8:0}}>
+              {item.icon}
+              <span style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text}}>{item.label}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{...cs.card,padding:isDesktop?"18px 20px":"16px 18px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Remember</div>
+          <div style={{width:40,height:40,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"1px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:12}}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3l1.5 4H16l-3.5 2.5 1.5 4L10 11l-4 2.5 1.5-4L4 7h4.5z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/></svg>
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:8}}>The goal is not perfection — it's awareness.</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.55,margin:0}}>Self-awareness is the fastest route to better communication.</p>
+        </div>
+      </div>
+
+      <button onClick={()=>setPhase('prompt')} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Choose a Topic to Begin →</button>
     </div>
   );
 
