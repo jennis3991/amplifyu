@@ -689,8 +689,58 @@ export function D1SimWidget({T, T2, isDesktop}) {
   if(phase==='intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
 
-      {/* BOX 1 — The First Step */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+      {/* On mobile: How it works comes first */}
+      {!isDesktop && (
+      <div style={{...cs.card,padding:"18px 20px"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>How it works</div>
+        <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>A simple 5-step clarity check-in.</h2>
+        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
+          {[
+            {n:1,label:"Choose a topic",    icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:2,label:"Speak naturally",   icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3,label:"AI scores clarity", icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:4,label:"Reflect & listen",  icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke={T.gold} strokeWidth="1.3"/><path d="M8 9a3 3 0 016 0v4a3 3 0 01-6 0V9z" stroke={T.gold} strokeWidth="1.3"/></svg>},
+            {n:5,label:"Run it again",       icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M4 11a7 7 0 0111.95-4.95L18 8M18 8V4M18 8h-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M18 11a7 7 0 01-11.95 4.95L4 14M4 14v4M4 14h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>},
+          ].map((s,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                <div style={{width:34,height:34,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:5}}>{s.icon}</div>
+                <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
+                <div style={{fontFamily:T.sans,fontSize:9,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:52}}>{s.label}</div>
+              </div>
+              {i<4 && <div style={{height:1,width:5,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:26}}/>}
+            </div>
+          ))}
+        </div>
+      </div>
+      )}
+
+      {/* Mobile: 2 boxes side by side */}
+      {!isDesktop && (
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        <div style={{...cs.card,padding:"14px 14px"}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>The First Step</div>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.65,marginBottom:10}}>
+            You've learned the science. Practised the techniques. Now it's time to hear how clearly you communicate.
+          </p>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.65,margin:0}}>
+            Self-review is one of the fastest proven ways to improve — used by top speakers and Fortune 500 leaders.
+          </p>
+        </div>
+        <div style={{...cs.card,padding:"14px 14px",background:"rgba(138,158,132,0.04)"}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Digital Coach</div>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.65,marginBottom:10}}>
+            Your AI coach will analyse your clarity, communication patterns, structure, pacing, and presence.
+          </p>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>
+            This recording becomes your baseline — not a test, expert coaching.
+          </p>
+        </div>
+      </div>
+      )}
+
+      {/* BOX 1 — desktop only */}
+      <div style={{...cs.card,padding:"22px 24px",display:isDesktop?"block":"none"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>The First Step to Great Communication</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:12}}>
           You've learned the science. Practised the techniques. Now it's time to hear how clearly you communicate.
@@ -700,8 +750,8 @@ export function D1SimWidget({T, T2, isDesktop}) {
         </p>
       </div>
 
-      {/* HOW IT WORKS + 5-step journey */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+      {/* HOW IT WORKS + 5-step journey — desktop only */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px",display:isDesktop?"block":"none"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>How it works</div>
         <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:20}}>A simple 5-step clarity check-in.</h2>
         <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
@@ -724,8 +774,8 @@ export function D1SimWidget({T, T2, isDesktop}) {
         </div>
       </div>
 
-      {/* BOX 2 — Coach perspective */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px",background:"rgba(138,158,132,0.04)"}}>
+      {/* BOX 2 — Coach perspective — desktop only */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px",background:"rgba(138,158,132,0.04)",display:isDesktop?"block":"none"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Your Digital Communication Coach</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:12}}>
           Once you record, your digital communication coach will analyse your delivery and provide personalised feedback on your clarity, communication patterns, structure, pacing, and presence.
