@@ -48,10 +48,14 @@ export const NT_PIXAR = [
   { beat: "Until finally…", desc: "Resolution — and the meaning that lasts beyond the story itself." },
 ];
 export const NT_NEURO = [
-  { word: "Curiosity", body: "Stories create open loops the brain wants to close. When you structure your message as a narrative, people lean in — they genuinely want to know what happens next." },
-  { word: "Empathy",   body: "A well-told story activates the listener's brain as if they're living it themselves. That shared experience builds trust faster than any data point." },
-  { word: "Memory",    body: "Narrative structure makes your message far easier to remember. The stories you tell can stay with people for years — long after the facts have faded." },
-  { word: "Action",    body: "Stories move people. When your message creates an emotional connection, it naturally leads to action — not just agreement, but real change." },
+  { word:"Curiosity", sub:"Stories create open loops the brain wants to close.",
+    bullets:["When you structure your message as a narrative, people lean in — they genuinely want to know what happens next.","Open loops hold attention. Data closes doors. Story opens them."] },
+  { word:"Empathy",   sub:"A well-told story activates the listener's brain as if they're living it themselves.",
+    bullets:["That shared experience builds trust faster than any data point.","When your audience feels inside the story, they're not just listening — they're experiencing."] },
+  { word:"Memory",    sub:"Narrative makes your message far easier to remember.",
+    bullets:["The stories you tell can stay with people for years — long after the facts have faded.","People forget statistics. They remember stories. Always."] },
+  { word:"Action",    sub:"Stories move people to act, not just agree.",
+    bullets:["When your message creates an emotional connection, it leads to action — not just agreement, but real change.","The most influential professionals aren't the most knowledgeable. They're the best storytellers."] },
 ];
 export const NT_EXAMPLES = [
   { name: "Steve Jobs — iPhone Launch, 2007", story: '"An iPod… a phone… an internet communicator… Are you getting it? These are not three separate devices. This is one device."', lesson: "Build tension slowly through repetition. Then release it at exactly the right moment." },
@@ -734,10 +738,14 @@ export const D1_FEYNMAN_DATA = [
  // ── D11 shared constants (used by both desktop + mobile) ──────────────────
 
 export const D11_FACTS = [
-  {word:"First Impressions Are Fast", body:"People begin forming impressions in as little as 100 milliseconds — before you've said a single word.", source:"Willis & Todorov, 2006"},
-  {word:"People Read Signals",        body:"Humans make rapid judgments about confidence, competence, and trustworthiness from minimal cues. Every signal you send is being decoded.", source:"Ambady & Rosenthal / Princeton research"},
-  {word:"Stories Shape Reputation",   body:"Narrative becomes identity. Stories are remembered far more effectively than disconnected information — and they're the most powerful brand-building tool you have.", source:"Cognitive psychology principle"},
-  {word:"Consistency Becomes Brand",  body:"Repeated signals become your brand. Every interaction where you show up the same way adds to a pattern people trust, remember, and associate with you.", source:"Brand psychology"},
+  { word:"First Impressions Are Fast", sub:"People start forming judgements in 100 milliseconds — before you've said a word.",
+    bullets:["The signals you give off before you speak are already shaping how you're received.","You cannot not communicate. Every element of your presence is being decoded."] },
+  { word:"People Read Signals", sub:"Every signal you send is being judged — fast and unconsciously.",
+    bullets:["Humans make rapid judgments about confidence, competence, and trustworthiness from minimal cues.","The gap between how you think you come across and how you actually land is where reputations are shaped."] },
+  { word:"Stories Shape Reputation", sub:"Narrative becomes identity.",
+    bullets:["Stories are remembered far more effectively than disconnected information.","The most powerful brand-building tool you have is the story others tell about you when you're not in the room."] },
+  { word:"Consistency Becomes Brand", sub:"Repeated signals become your brand.",
+    bullets:["Every interaction where you show up the same way adds to a pattern people trust and associate with you.","Consistency compounds. Each time you show up the same way, the impression deepens."] },
 ];
 
 export const D11_EXAMPLES = [
