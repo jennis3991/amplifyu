@@ -300,13 +300,30 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Practice") return (
-      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
+      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"space-between", padding:"44px 48px 40px", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>THE CLARITY CHALLENGE™</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Can you make this simpler?</p>
-          <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>5 rounds. Increasing difficulty. Earn your badge.</p>
+          <p style={{ fontFamily:T.serif, fontSize:"clamp(32px,2.6vw,48px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.1, marginBottom:20, maxWidth:380 }}>Think faster.<br/>Speak clearer.</p>
+          <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.45)", marginBottom:20 }}/>
+          <p style={{ fontFamily:T.sans, fontSize:15, color:"rgba(245,239,230,0.6)", lineHeight:1.6, marginBottom:20 }}>Complexity is easy.<br/>Clarity is a skill.</p>
+          <div style={{ display:"flex", alignItems:"flex-start", gap:10 }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,marginTop:2}}><circle cx="8" cy="8" r="7" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="3.5" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="1" fill={T.gold}/></svg>
+            <p style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.5)", lineHeight:1.65, margin:0 }}>Your mission: Turn confusing workplace language into clear communication.</p>
+          </div>
+        </div>
+        {/* Badge */}
+        <div style={{ position:"relative", zIndex:2, display:"flex", justifyContent:"center", alignItems:"center", flex:1, marginTop:16 }}>
+          <div style={{ position:"relative", width:200, height:200, display:"flex", alignItems:"center", justifyContent:"center" }}>
+            <div style={{ position:"absolute", inset:0, borderRadius:"50%", border:"1px solid rgba(200,168,76,0.2)", boxShadow:"0 0 40px rgba(200,168,76,0.08), 0 0 80px rgba(200,168,76,0.04)" }}/>
+            <div style={{ position:"absolute", inset:12, borderRadius:"50%", border:"0.5px solid rgba(200,168,76,0.12)" }}/>
+            <img src="/badge-queen.jpg" alt="Clarity Master" style={{ width:140, height:140, borderRadius:"50%", objectFit:"cover", border:"2px solid rgba(200,168,76,0.35)", position:"relative", zIndex:1 }}/>
+          </div>
+        </div>
+        {/* Time */}
+        <div style={{ position:"relative", zIndex:2, display:"flex", alignItems:"center", gap:8 }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+          <span style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.45)" }}>Estimated time: <span style={{ color:"rgba(245,239,230,0.7)", fontWeight:600 }}>4 minutes</span></span>
         </div>
       </div>
     );

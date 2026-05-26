@@ -181,29 +181,81 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
   }, [phase, answered, aiResult, roundIdx]);
 
   if (phase==='intro') return (
-    <div style={{display:"flex",flexDirection:"column",gap:16}}>
-      <div style={cs.card}>
-        <div style={cs.label}>THE CLARITY CHALLENGE™</div>
-        <h2 style={cs.h2}>Can you make this simpler?</h2>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>How it works</div>
-        <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:24,padding:"16px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-          {["5 rounds, increasing difficulty","Spot clarity, then create it","One final score","Earn your Clarity Master badge 🏆"].map((t,i)=>(
-            <div key={i} style={{display:"flex",gap:10,alignItems:"center"}}>
-              <div style={{width:4,height:4,borderRadius:"50%",background:T.gold,flexShrink:0}}/>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{t}</span>
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:12}}>
+
+      {/* YOUR MISSION */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
+          <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="1.5" fill={T.gold}/></svg>
+          </div>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Your Mission</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>
+              In each round, you'll face confusing workplace language. Your challenge: <strong>spot what's unclear</strong>, <strong>rewrite it simply</strong>, and <strong>think under pressure</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* THE CHALLENGE JOURNEY */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>The Challenge Journey</div>
+        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
+          {[
+            {n:1,label:"Warm up"},
+            {n:2,label:"Spot the jargon"},
+            {n:3,label:"Rewrite with clarity"},
+            {n:4,label:"Under pressure"},
+            {n:5,label:"Master round"},
+          ].map((r,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                <div style={{width:isDesktop?40:32,height:isDesktop?40:32,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.35)"),background:i===0?"rgba(138,158,132,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>
+                  <span style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:i===0?T.gold:T2.text3}}>{r.n}</span>
+                </div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?11:9,color:T2.text3,textAlign:"center",lineHeight:1.4,maxWidth:isDesktop?72:56}}>Round {r.n}<br/><span style={{fontWeight:500,color:T2.text2}}>{r.label}</span></div>
+              </div>
+              {i<4 && <div style={{height:1,width:isDesktop?16:8,background:"rgba(138,158,132,0.25)",flexShrink:0,marginBottom:24}}/>}
             </div>
           ))}
         </div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:16,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:20}}>Ready? Let's begin.</p>
-        <div style={{padding:"12px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.25)",marginBottom:24,display:"flex",alignItems:"center",gap:12}}>
-          <img src="/badge-queen.jpg" alt="Clarity Master" style={{width:48,height:48,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:2}}>Top prize</div>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,fontWeight:600}}>Clarity Master badge</div>
-          </div>
-        </div>
-        <button onClick={()=>setPhase('playing')} style={cs.cta}>Start Challenge →</button>
       </div>
+
+      {/* HOW YOU WIN */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>How You Win</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:14}}>AI scores your responses on:</p>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:8}}>
+          {[
+            {label:"Clarity",   icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="1.5" fill={T.gold}/></svg>},
+            {label:"Speed",     icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M13 3L6 13h6l-2 6 9-10h-6l2-6z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {label:"Precision", icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M6 6l10 10M16 6L6 16" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><circle cx="11" cy="11" r="8" stroke={T.gold} strokeWidth="1.3"/></svg>},
+            {label:"Simplicity",icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><ellipse cx="11" cy="8" rx="5" ry="5.5" stroke={T.gold} strokeWidth="1.3"/><path d="M9 15h4M10 17h2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+          ].map((s,i)=>(
+            <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,padding:"12px 8px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border}}>
+              {s.icon}
+              <span style={{fontFamily:T.sans,fontSize:11,color:T2.text,fontWeight:500}}>{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* THE REWARD */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px",display:"flex",gap:16,alignItems:"center"}}>
+        <img src="/badge-queen.jpg" alt="Clarity Master" style={{width:isDesktop?72:56,height:isDesktop?72:56,borderRadius:6,objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
+        <div style={{flex:1}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>The Reward</div>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:4}}>Clarity Master</div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,lineHeight:1.5}}>Score 85% or higher to unlock the Clarity Master badge.</p>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"10px 14px",background:"rgba(138,158,132,0.06)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",flexShrink:0}}>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.5 4.5H15l-3.75 2.75 1.5 4.5L9 11l-3.75 2.75 1.5-4.5L3 6.5h4.5z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/></svg>
+          <span style={{fontFamily:T.sans,fontSize:9,color:T2.text3,textAlign:"center",lineHeight:1.4}}>Top achievers<br/>unlock exclusive<br/>recognition.</span>
+        </div>
+      </div>
+
+      <button onClick={()=>setPhase('playing')} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Begin Challenge →</button>
     </div>
   );
 
