@@ -185,7 +185,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       <div style={cs.card}>
         <div style={cs.label}>THE CLARITY CHALLENGE™</div>
         <h2 style={cs.h2}>Can you make this simpler?</h2>
-        <p style={{...cs.body,marginBottom:20}}>Great communicators make complexity feel simple. This challenge trains you to spot jargon and communicate with precision.</p>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>How it works</div>
         <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:24,padding:"16px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
           {["5 rounds, increasing difficulty","Spot clarity, then create it","One final score","Earn your Clarity Master badge 🏆"].map((t,i)=>(
             <div key={i} style={{display:"flex",gap:10,alignItems:"center"}}>
