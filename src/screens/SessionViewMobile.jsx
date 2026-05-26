@@ -463,13 +463,13 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           <div style={{width:"100%",height:420,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"80px 24px 24px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Clarity Challenge™</div>
-              <p style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:"#F5EFE6",lineHeight:1.1,marginBottom:14}}>Think faster.<br/>Speak clearer.</p>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Feynman Challenge™</div>
+              <p style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:"#F5EFE6",lineHeight:1.1,marginBottom:14}}>If you can explain it simply, you understand it.</p>
               <div style={{width:36,height:1.5,background:"rgba(200,180,140,0.45)",marginBottom:14}}/>
-              <p style={{fontFamily:T.serif,fontSize:16,fontWeight:400,color:"rgba(245,239,230,0.75)",lineHeight:1.55,marginBottom:14}}>Complexity is easy. Clarity is a skill.</p>
+              <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.7)",lineHeight:1.6,marginBottom:14}}>Anyone can sound complicated. Great communicators make ideas easy to understand.</p>
               <div style={{display:"flex",alignItems:"flex-start",gap:8}}>
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,marginTop:3}}><circle cx="8" cy="8" r="7" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="3.5" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="1" fill={T.gold}/></svg>
-                <p style={{fontFamily:T.serif,fontSize:14,fontWeight:400,color:"rgba(245,239,230,0.55)",lineHeight:1.65,margin:0}}>Your mission: Turn confusing workplace language into clear communication.</p>
+                <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.45)",lineHeight:1.6,margin:0}}>Your mission: Learn the secret of the world's greatest teachers — explain things simply.</p>
               </div>
             </div>
             <div style={{position:"relative",zIndex:2,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>

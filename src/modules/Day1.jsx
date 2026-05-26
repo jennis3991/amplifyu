@@ -10,140 +10,184 @@ export function D1MobileSim() { return null; } // replaced by D1SimWidget
 
 // ─── THE CLARITY CHALLENGE™ ───────────────────────────────────────────────────
 export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, onNavFn}) {
+  // ── Question bank — swap topics here ────────────────────────────────────
   const ROUNDS = [
-    {id:1,type:'mcq',difficulty:'BEGINNER',label:'Round 1',task:'Which version is easiest to understand?',
-     original:'"Our strategic initiative aims to unlock scalable operational efficiencies."',
-     options:['We are implementing operational optimisation strategies.','We\'re improving how we work so the business runs more efficiently.','Our strategic transformation will drive scalable performance outcomes.'],
-     correct:1,why:['Plain language','Human wording','Clear meaning','No unnecessary jargon'],pts:10},
-    {id:2,type:'mcq',difficulty:'INTERMEDIATE',label:'Round 2',task:'Spot the clearest version',
-     original:'"Our platform facilitates asynchronous collaboration through API-enabled integrations."',
-     options:['Our system helps teams work together without needing to be online at the same time.','We enable asynchronous workflow integration functionality.','Cross-functional API collaboration powers asynchronous efficiency.'],
-     correct:0,why:['Removes technical jargon','Explains the benefit directly','Uses plain, human language'],pts:15},
-    {id:3,type:'mcq',difficulty:'ADVANCED',label:'Round 3',task:'Executive waffle mode — spot the clearest',
-     original:'"We need to create a more customer-centric innovation ecosystem."',
-     options:['We need to improve our customer innovation ecosystem strategy.','We need to build better products around what customers actually need.','We must align our customer transformation framework.'],
-     correct:1,why:['Specific and direct','Removes corporate speak','Clear purpose and meaning'],pts:20},
-    {id:4,type:'rewrite',difficulty:'REAL WORLD',label:'Round 4',task:'Rewrite it yourself',
-     prompt:'Simplify this message:',
-     original:'"We are leveraging data-driven optimisation frameworks to improve customer acquisition performance."',
-     example:'"We\'re using data to attract more customers."',pts:25},
-    {id:5,type:'rewrite',difficulty:'NIGHTMARE MODE',label:'Round 5 — Final Boss',task:'Simplify this corporate nightmare:',
-     prompt:'Simplify this:',
-     original:'"Our objective is to establish a scalable cross-functional strategic framework that maximises stakeholder alignment and accelerates value creation."',
-     pts:30},
+    {id:1, type:'mcq', label:'Round 1', name:'The Clarity Test', pts:20,
+     task:'Which explanation is easiest to understand?',
+     topic:'Gravity',
+     options:[
+       'Gravity is the force exerted between objects with mass.',
+       'Gravity is what pulls things down to the ground instead of letting them float away.',
+       'Gravity is a universal attractive interaction between physical bodies.',
+     ],
+     correct:1,
+     feedback:"Simple doesn't mean simplistic — it means understandable. Option B creates a picture. That's the Feynman test."},
+    {id:2, type:'order', label:'Round 2', name:'The Feynman Formula', pts:25,
+     task:'Ella wants to explain why the moon changes shape to her nephew. Put her steps in the correct order.',
+     items:[
+       'Ella reads about moon phases',
+       'Ella tries explaining it in simple language',
+       'Ella realises she gets stuck',
+       'Ella goes back and learns what she missed',
+     ],
+     correctOrder:[0,1,2,3],
+     feedback:"Getting stuck is useful. It reveals exactly where your understanding needs work — and that's where you grow."},
+    {id:3, type:'mcq', label:'Round 3', name:"What's Missing?", pts:25,
+     task:"What's missing from this explanation?",
+     statement:'"Exercise makes you healthier."',
+     options:[
+       "Nothing — it's clear.",
+       "It explains the result, but not why.",
+       "It needs bigger words.",
+     ],
+     correct:1,
+     feedback:"Great explanations answer the next obvious question. Why does exercise make you healthier? That's the gap."},
+    {id:4, type:'explain', label:'Round 4', name:'Explain It Simply', pts:30,
+     task:'Explain how a caterpillar becomes a butterfly to a curious 8-year-old.',
+     hint:'One sentence · No jargon · Make it easy to picture',
+     placeholder:'Inside its cocoon, the caterpillar…'},
   ];
 
-  const BONUS_PROMPTS = [
-    {original:'"We need to proactively leverage our core competencies to deliver a best-in-class, customer-centric value proposition."',perfect:"We need to use our strengths to serve customers better."},
-    {original:'"This initiative will facilitate cross-functional synergies and drive strategic alignment across all business units."',perfect:"This will help our teams work better together."},
-    {original:'"Our digital transformation roadmap will optimise operational workflows and enhance organisational agility."',perfect:"We're making our processes faster and easier to change."},
-  ];
-
-  const [phase, setPhase] = useState('intro'); // intro|playing|transition|final|bonus
-  const [showBadgeCard, setShowBadgeCard] = useState(false);
+  const [phase, setPhase] = useState('intro');
   const [roundIdx, setRoundIdx] = useState(0);
   const [totalPts, setTotalPts] = useState(0);
   const [mcqPts, setMcqPts] = useState(0);
-  const [rewritePts, setRewritePts] = useState(0);
+  const [explainPts, setExplainPts] = useState(0);
   const [selected, setSelected] = useState(null);
   const [answered, setAnswered] = useState(false);
-  const [rewriteText, setRewriteText] = useState('');
+  const [orderItems, setOrderItems] = useState([]);
+  const [orderSelected, setOrderSelected] = useState(null);
+  const [orderAnswered, setOrderAnswered] = useState(false);
+  const [explainText, setExplainText] = useState('');
   const [aiResult, setAiResult] = useState(null);
   const [aiLoading, setAiLoading] = useState(false);
-  const [bonusIdx, setBonusIdx] = useState(0);
-  const [bonusText, setBonusText] = useState('');
-  const [bonusResult, setBonusResult] = useState(null);
-  const [bonusLoading, setBonusLoading] = useState(false);
-  const [bonusComplete, setBonusComplete] = useState(0);
 
   const round = ROUNDS[roundIdx];
   const isLast = roundIdx === ROUNDS.length - 1;
 
-  function reset() { setPhase('intro'); setRoundIdx(0); setTotalPts(0); setMcqPts(0); setRewritePts(0); setSelected(null); setAnswered(false); setRewriteText(''); setAiResult(null); setBonusIdx(0); setBonusText(''); setBonusResult(null); setBonusComplete(0); }
+  function reset() {
+    setPhase('intro'); setRoundIdx(0); setTotalPts(0); setMcqPts(0); setExplainPts(0);
+    setSelected(null); setAnswered(false); setOrderItems([]); setOrderSelected(null);
+    setOrderAnswered(false); setExplainText(''); setAiResult(null);
+  }
 
   function handleMCQ(i) {
     if (answered) return;
-    setSelected(i);
-    setAnswered(true);
+    setSelected(i); setAnswered(true);
     if (i === round.correct) {
       setTotalPts(p => p + round.pts);
       setMcqPts(p => p + round.pts);
     }
   }
 
+  function initOrder() {
+    // Shuffle items for the ordering round
+    const shuffled = [...round.items];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    setOrderItems(shuffled);
+    setOrderSelected(null);
+    setOrderAnswered(false);
+  }
+
+  function handleOrderTap(i) {
+    if (orderAnswered) return;
+    if (orderSelected === null) {
+      setOrderSelected(i);
+    } else {
+      // Swap selected with tapped
+      const next = [...orderItems];
+      [next[orderSelected], next[i]] = [next[i], next[orderSelected]];
+      setOrderItems(next);
+      setOrderSelected(null);
+    }
+  }
+
+  function submitOrder() {
+    const correct = round.items; // original = correct order
+    const allCorrect = orderItems.every((item, i) => item === correct[i]);
+    setOrderAnswered(true);
+    const pts = allCorrect ? round.pts : Math.round(round.pts * 0.5);
+    setTotalPts(p => p + pts);
+    setMcqPts(p => p + pts);
+  }
+
   function nextRound() {
     if (isLast) { setPhase('final'); return; }
-    setRoundIdx(r => r + 1);
-    setSelected(null); setAnswered(false); setRewriteText(''); setAiResult(null);
+    const next = roundIdx + 1;
+    setRoundIdx(next);
+    setSelected(null); setAnswered(false);
+    setOrderAnswered(false); setOrderSelected(null);
+    setExplainText(''); setAiResult(null);
+    if (ROUNDS[next].type === 'order') {
+      // init order items after state update
+      const shuffled = [...ROUNDS[next].items];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      setOrderItems(shuffled);
+    }
   }
 
-  function scoreRewrite() {
-    if (!rewriteText.trim() || rewriteText.trim().length < 5) return;
-    // Award pts based on brevity vs original (reward shorter plain English)
-    const origWords = round.original.split(/\s+/).length;
-    const userWords = rewriteText.trim().split(/\s+/).length;
-    const brevityRatio = Math.min(1, origWords / Math.max(userWords, 1));
-    const earnedPts = Math.round(round.pts * (0.7 + brevityRatio * 0.3));
-    setAiResult({submitted: true, pts: earnedPts});
-    setTotalPts(p => p + earnedPts);
-    setRewritePts(p => p + earnedPts);
-  }
-
-  async function scoreBonus() {
-    if (!bonusText.trim() || bonusText.trim().length < 5) return;
-    setBonusLoading(true);
-    const bp = BONUS_PROMPTS[bonusIdx];
-    const mockScore = Math.floor(Math.random()*20)+75;
-    const mockR = { overall:mockScore, improve:"Try cutting it to one shorter clause.", perfect:bp.perfect };
+  async function scoreExplain() {
+    if (!explainText.trim() || explainText.trim().length < 5) return;
+    setAiLoading(true);
+    const mock = {
+      praise:"Beautiful. You made transformation easy to picture.",
+      tip:"Could you make it even simpler in one revision?",
+      pts: Math.round(round.pts * 0.85),
+    };
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:`Score this simplification. Original: ${bp.original}\nUser's: "${bonusText}"\nReturn ONLY JSON: {"overall":<50-100>,"improve":"<one coaching sentence>","perfect":"<ideal 1-sentence plain-English version>"}`}]})});
+      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:`You are a warm, encouraging communication coach helping someone practise the Feynman Technique.\n\nThe challenge: explain how a caterpillar becomes a butterfly to a curious 8-year-old.\n\nRules: one sentence, no jargon, make it easy to picture.\n\nUser's answer: "${explainText}"\n\nReturn ONLY valid JSON:\n{"praise":"<one warm specific compliment about what they did well — max 12 words>","tip":"<one gentle specific suggestion to improve — max 12 words>","pts":<20-30>}`}]})});
       const d = await res.json();
       const raw = (d.content||[]).map(b=>b.text||'').join('').trim();
       const m = raw.match(/\{[\s\S]*\}/);
       const parsed = JSON.parse(m[0]);
-      const bonusPts = Math.round(10 * parsed.overall / 100);
-      setBonusResult({...parsed, bonusPts});
-      setTotalPts(p => p + bonusPts);
+      setAiResult(parsed);
+      setTotalPts(p => p + (parsed.pts || mock.pts));
+      setExplainPts(p => p + (parsed.pts || mock.pts));
     } catch {
-      setBonusResult({...mockR, bonusPts:Math.round(10*mockScore/100)});
-      setTotalPts(p => p + Math.round(10*mockScore/100));
+      setAiResult(mock);
+      setTotalPts(p => p + mock.pts);
+      setExplainPts(p => p + mock.pts);
     }
-    setBonusLoading(false);
+    setAiLoading(false);
   }
 
   function getBadge(score) {
-    if (score >= 95) return {img:"/badge-queen.jpg",  label:"Clarity Master",      sub:"You make complex ideas feel effortless.",                    color:"#C9A84C"};
-    if (score >= 85) return {img:"/badge-rook.jpg",   label:"Jargon Slayer",       sub:"You cut through complexity with precision.",                  color:T.gold};
-    if (score >= 70) return {img:"/badge-bishop.jpg", label:"Plain English Pro",   sub:"Your communication is clear, direct, and easy to follow.",   color:"#7A9E84"};
-    if (score >= 55) return {img:"/badge-knight.jpg", label:"Clarity Builder",     sub:"You're learning to simplify with confidence.",               color:"#8B9E7A"};
-    return                  {img:"/badge-pawn.jpg",   label:"Rising Communicator", sub:"Awareness is the first step to clarity.",                    color:T2.text3};
+    if (score >= 90) return {img:"/badge-queen.jpg",  label:"Great Explainer",      sub:"You make complex ideas feel effortless.",          color:"#C9A84C"};
+    if (score >= 75) return {img:"/badge-rook.jpg",   label:"Clear Thinker",        sub:"You see through complexity with ease.",            color:T.gold};
+    if (score >= 60) return {img:"/badge-bishop.jpg", label:"Plain English Pro",    sub:"Your explanations are clear and direct.",          color:"#7A9E84"};
+    return                  {img:"/badge-pawn.jpg",   label:"Curious Learner",      sub:"Awareness is the first step to brilliant explanation.", color:T2.text3};
   }
 
   const maxPts = ROUNDS.reduce((s,r)=>s+r.pts,0);
   const pct = Math.round((totalPts/maxPts)*100);
 
   const cs = {
-    card: {background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"28px 32px":"18px 20px"},
+    card: {background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"18px 20px"},
     label: {fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8},
-    h2: {fontFamily:T.serif,fontSize:isDesktop?38:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12},
-    body: {fontFamily:T.sans,fontSize:isDesktop?16:14,color:T2.text3,lineHeight:1.65,margin:0},
+    h2: {fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12},
+    body: {fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.65,margin:0},
     cta: {width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
     ghost: {width:"100%",padding:"11px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44},
     pts: {fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T.gold},
   };
 
-  // ── INTRO ──────────────────────────────────────────────────────────────────
-  // ── Register nav action with parent session nav button ──────────────────────
-  // Fn stored in a ref (no re-render), label stored in state (triggers button update)
   useEffect(() => {
     if (!onNavLabel) return;
     if (phase === 'intro') {
       if (onNavFn) onNavFn.current = () => setPhase('playing');
       onNavLabel('Begin Challenge');
     } else if (phase === 'playing') {
-      const canAdvance = round?.type === 'mcq' ? answered : !!aiResult;
+      const canAdvance = round?.type === 'mcq' ? answered
+        : round?.type === 'order' ? orderAnswered
+        : !!aiResult;
       if (canAdvance) {
-        const label = isLast ? 'See Your Score' : roundIdx === 2 ? 'Enter Real World Mode' : 'Next Challenge';
+        const label = isLast ? 'See Your Results' : 'Next Round';
         if (onNavFn) onNavFn.current = nextRound;
         onNavLabel(label);
       } else {
@@ -152,15 +196,16 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       }
     } else {
       if (onNavFn) onNavFn.current = null;
-      onNavLabel(null); // final/transition/bonus — release nav back to normal
+      onNavLabel(null);
     }
-  }, [phase, answered, aiResult, roundIdx]);
+  }, [phase, answered, orderAnswered, aiResult, roundIdx]);
 
-  if (phase==='intro') return (
+  // ── INTRO ──────────────────────────────────────────────────────────────────
+  if (phase === 'intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:12}}>
 
       {/* YOUR MISSION */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+      <div style={{...cs.card}}>
         <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
           <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="1.5" fill={T.gold}/></svg>
@@ -168,173 +213,92 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           <div>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Your Mission</div>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,margin:0}}>
-              In each round, you'll face confusing workplace language. Your challenge: <strong>spot what's unclear</strong>, <strong>rewrite it simply</strong>, and <strong>think under pressure</strong>.
+              In each round, you'll learn a different secret of clear explanation.<br/>
+              <strong>Spot</strong> what makes ideas confusing. <strong>Find</strong> what's missing. <strong>Turn</strong> complexity into simplicity.
             </p>
           </div>
         </div>
       </div>
 
-      {/* THE CHALLENGE JOURNEY */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+      {/* CHALLENGE JOURNEY */}
+      <div style={{...cs.card}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>The Challenge Journey</div>
         <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
           {[
-            {n:1,label:"Warm up"},
-            {n:2,label:"Spot the jargon"},
-            {n:3,label:"Rewrite with clarity"},
-            {n:4,label:"Under pressure"},
-            {n:5,label:"Master round"},
+            {n:1,label:"The Clarity Test",   icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="9" cy="9" r="6" stroke={T.gold} strokeWidth="1.3"/><path d="M13.5 13.5l4 4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:2,label:"The Feynman Formula",icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 7h12M5 11h8M5 15h10" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3,label:"What's Missing?",    icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M7 5h3l1 4-2 1.5a10 10 0 004.5 4.5L15 13l4 1v3a1 1 0 01-1 1C8 18 4 9 4 6a1 1 0 011-1z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:4,label:"Explain It Simply",  icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 17l2-2 9-9 2 2-9 9-4 0z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/><path d="M15 5l2 2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
           ].map((r,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
-                <div style={{width:isDesktop?40:32,height:isDesktop?40:32,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.35)"),background:i===0?"rgba(138,158,132,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>
-                  <span style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:i===0?T.gold:T2.text3}}>{r.n}</span>
+                <div style={{width:isDesktop?44:36,height:isDesktop?44:36,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.35)"),background:i===0?"rgba(138,158,132,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:6}}>
+                  {r.icon}
                 </div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?12:10,color:T2.text3,textAlign:"center",lineHeight:1.4,maxWidth:isDesktop?80:60}}>Round {r.n}<br/><span style={{fontWeight:500,color:T2.text2}}>{r.label}</span></div>
+                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,marginBottom:3}}>{r.n}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?11:9,fontWeight:600,color:T2.text3,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?80:60,textTransform:"uppercase",letterSpacing:"0.5px"}}>Round {r.n}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?11:9,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?80:60}}>{r.label}</div>
               </div>
-              {i<4 && <div style={{height:1,width:isDesktop?16:8,background:"rgba(138,158,132,0.25)",flexShrink:0,marginBottom:24}}/>}
+              {i<3 && <div style={{height:1,width:isDesktop?12:6,background:"rgba(138,158,132,0.25)",flexShrink:0,marginBottom:40}}/>}
             </div>
           ))}
         </div>
       </div>
 
       {/* HOW YOU WIN */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>How You Win</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,marginBottom:14,lineHeight:1.6}}>AI scores your responses on:</p>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:8}}>
-          {[
-            {label:"Clarity",   icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="1.5" fill={T.gold}/></svg>},
-            {label:"Speed",     icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M13 3L6 13h6l-2 6 9-10h-6l2-6z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
-            {label:"Precision", icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M6 6l10 10M16 6L6 16" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><circle cx="11" cy="11" r="8" stroke={T.gold} strokeWidth="1.3"/></svg>},
-            {label:"Simplicity",icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><ellipse cx="11" cy="8" rx="5" ry="5.5" stroke={T.gold} strokeWidth="1.3"/><path d="M9 15h4M10 17h2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-          ].map((s,i)=>(
-            <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,padding:"12px 8px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border}}>
-              {s.icon}
-              <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:500}}>{s.label}</span>
-            </div>
-          ))}
+      <div style={{...cs.card}}>
+        <div style={{display:"flex",alignItems:"center",gap:isDesktop?24:12,flexWrap:"wrap"}}>
+          <div style={{flexShrink:0}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>How You Win</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0}}>AI scores your responses on:</p>
+          </div>
+          <div style={{display:"flex",flex:1,gap:isDesktop?8:6,flexWrap:"wrap"}}>
+            {[
+              {label:"Clarity",     icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="1.5" fill={T.gold}/></svg>},
+              {label:"Understanding",icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 3a5 5 0 014 8l-1 1v2H8v-2L7 11a5 5 0 014-8z" stroke={T.gold} strokeWidth="1.3"/><path d="M8 17h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+              {label:"Simplicity",  icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 11h14M4 7h9M4 15h11" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+              {label:"Audience awareness",icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="8" cy="7" r="3" stroke={T.gold} strokeWidth="1.2"/><circle cx="15" cy="8" r="2.5" stroke={T.gold} strokeWidth="1.2"/><path d="M2 18c0-3 2.7-5 6-5s6 2 6 5" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round"/><path d="M17 13c2 .5 3.5 2 3.5 4" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round"/></svg>},
+            ].map((s,i)=>(
+              <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:isDesktop?"12px 14px":"8px 10px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border,flex:1,minWidth:isDesktop?70:60}}>
+                {s.icon}
+                <span style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:T2.text,fontWeight:500,textAlign:"center",lineHeight:1.3}}>{s.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* THE REWARD */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px",display:"flex",gap:16,alignItems:"center"}}>
-        <img src="/badge-queen.jpg" alt="Clarity Master" style={{width:isDesktop?72:56,height:isDesktop?72:56,borderRadius:6,objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
+      {/* REWARD */}
+      <div style={{...cs.card,display:"flex",gap:16,alignItems:"center"}}>
+        <img src="/badge-queen.jpg" alt="Great Explainer" style={{width:isDesktop?72:56,height:isDesktop?72:56,borderRadius:6,objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
         <div style={{flex:1}}>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>The Reward</div>
-          <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:4}}>Clarity Master</div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0,lineHeight:1.65}}>Score 85% or higher to unlock the Clarity Master badge.</p>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:4}}>Great Explainer</div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0,lineHeight:1.65}}>Complete the challenge to unlock the Great Explainer badge.</p>
         </div>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"10px 14px",background:"rgba(138,158,132,0.06)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",flexShrink:0}}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.5 4.5H15l-3.75 2.75 1.5 4.5L9 11l-3.75 2.75 1.5-4.5L3 6.5h4.5z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/></svg>
-          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,textAlign:"center",lineHeight:1.4}}>Top achievers<br/>unlock exclusive<br/>recognition.</span>
+          <span style={{fontFamily:T.sans,fontSize:10,color:T2.text3,textAlign:"center",lineHeight:1.4}}>Top performers<br/>earn exclusive<br/>recognition.</span>
         </div>
       </div>
 
-      <button onClick={()=>setPhase('playing')} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Begin Challenge →</button>
+      <button onClick={()=>setPhase('playing')} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Feynman Challenge →</button>
     </div>
   );
 
-  // ── TRANSITION ────────────────────────────────────────────────────────────
-  if (phase==='transition') return (
-    <div style={{display:"flex",flexDirection:"column",gap:16}}>
-      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"48px 40px":"36px 24px"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Recognition complete</div>
-        <div style={{width:56,height:56,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1.5px solid "+T.gold,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 20px"}}>
-          <span style={{fontSize:24}}>✓</span>
-        </div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?32:24,fontWeight:600,color:T2.text,marginBottom:12}}>Real World Mode</h2>
-        <p style={{...cs.body,marginBottom:8,maxWidth:400,margin:"0 auto 8px"}}>Spotting clarity is one skill.</p>
-        <p style={{...cs.body,marginBottom:24,maxWidth:400,margin:"0 auto 24px"}}>Creating it is another.</p>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontStyle:"italic",color:T2.text2,marginBottom:28}}>Now it's your turn.</p>
-        <button onClick={()=>{setRoundIdx(3);setPhase('playing');}} style={{...cs.cta,maxWidth:280,margin:"0 auto",display:"block"}}>Enter Real World Mode →</button>
-      </div>
-    </div>
-  );
-
-  // ── FINAL SCORE ───────────────────────────────────────────────────────────
-  if (phase==='bonus') {
-    const bp = BONUS_PROMPTS[bonusIdx];
-    return (
-      <div style={{display:"flex",flexDirection:"column",gap:14}}>
-        <div style={cs.card}>
-          <div style={cs.label}>Practice Round {bonusComplete+1} of 2 — Refine Your Badge</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:16,fontWeight:500}}>Simplify this:</p>
-          <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T2.border}}>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{bp.original}</p>
-          </div>
-        </div>
-        {!bonusResult ? (
-          <>
-            <div style={cs.card}>
-              <div style={cs.label}>Your version</div>
-              <textarea value={bonusText} onChange={e=>setBonusText(e.target.value)} placeholder="Write it as simply as possible…" style={{width:"100%",minHeight:isDesktop?80:72,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
-            </div>
-            <button onClick={scoreBonus} disabled={bonusLoading||bonusText.trim().length<5} style={{...cs.cta,background:bonusLoading||bonusText.trim().length<5?"rgba(44,36,22,0.25)":T.ink,cursor:bonusLoading||bonusText.trim().length<5?"not-allowed":"pointer"}}>
-              {bonusLoading?"Scoring…":"Score My Version →"}
-            </button>
-          </>
-        ) : (
-          <>
-            <div style={{...cs.card,background:"#0E0B08",border:"none",display:"flex",alignItems:"center",gap:20}}>
-              <div style={{textAlign:"center",flexShrink:0}}>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?48:38,fontWeight:600,color:T.gold,lineHeight:1}}>{bonusResult.overall}</div>
-                <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",marginTop:2}}>/ 100</div>
-              </div>
-              <div>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(138,158,132,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>+{bonusResult.bonusPts} pts earned</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.6)",lineHeight:1.5,margin:0}}>{bonusResult.improve}</p>
-              </div>
-            </div>
-            <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
-              <div style={cs.label}>The ideal answer</div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.6,margin:0,fontStyle:"italic"}}>"{bonusResult.perfect}"</p>
-            </div>
-            {(()=>{
-              const newBadge = getBadge(pct);
-              return (
-                <div style={{...cs.card,textAlign:"center"}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Updated Badge</div>
-                  <div style={{display:"inline-flex",alignItems:"center",gap:12,padding:"12px 20px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:`0.5px solid rgba(138,158,132,0.3)`}}>
-                    <img src={newBadge.img} alt={newBadge.label} style={{width:52,height:52,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
-                    <div style={{textAlign:"left"}}>
-                      <div style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:newBadge.color}}>{newBadge.label}</div>
-                      <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginTop:2}}>{newBadge.sub}</div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })()}
-            <div style={{display:"flex",gap:10}}>
-              {bonusComplete < 1 && (
-                <button onClick={()=>{setBonusIdx(i=>(i+1)%BONUS_PROMPTS.length);setBonusText('');setBonusResult(null);setBonusComplete(c=>c+1);}} style={{...cs.ghost,flex:1}}>Next Practice →</button>
-              )}
-              <button onClick={()=>setPhase('final')} style={{...cs.cta,flex:1}}>See Final Score →</button>
-            </div>
-          </>
-        )}
-      </div>
-    );
-  }
-
-  if (phase==='final') {
+  // ── FINAL SCORECARD ────────────────────────────────────────────────────────
+  if (phase === 'final') {
     const badge = getBadge(pct);
-    const recMax = ROUNDS.slice(0,3).reduce((s,r)=>s+r.pts,0);
-    const appMax = ROUNDS.slice(3).reduce((s,r)=>s+r.pts,0);
-    const headline = pct>=85?"Your clarity instinct is sharp.":pct>=70?"You know the principle. Now sharpen the habit.":"Every rep builds the instinct. Keep going.";
-    const subtitle = pct>=85?"You spotted jargon fast and simplified under pressure. That's rare.":pct>=70?"Good recognition. The rewrite rounds show where to push further.":"Each attempt gets faster. The instinct is forming.";
-    const coachNote = pct>=85?"Your instinct for plain language is strong. The Feynman principle is becoming second nature — keep using it in every meeting and message.":pct>=70?"Good foundation. The more you practise spotting jargon, the faster your instinct develops. Every complex sentence is an opportunity to simplify.":"Building clarity takes repetition. The key insight: short sentences almost always win. Ask 'what's the simplest version?' before every message.";
-    const strengths = pct>=75
-      ? [mcqPts>=recMax*0.8?"Strong recognition — you spot jargon quickly":"Persistent across all rounds",rewritePts>=appMax*0.7?"Good application under pressure":"Engaged with the hard rounds"]
-      : ["Completed all 5 rounds","Building awareness with each rep"];
-    const opportunity = rewritePts<appMax*0.65?"Simplification — aim to cut the word count in half next time.":"Recognition speed — aim to answer MCQ rounds faster with more certainty.";
-    const FOCUS_CHIPS = ["Shorter sentences","Lead with the point","Cut one word per sentence","Replace every 'utilise' with 'use'","Ask: would a 10-year-old understand?"];
+    const headline = pct>=85?"Your explanation instinct is sharp.":pct>=70?"You understand the principle. Now make it a habit.":"Every rep builds the instinct.";
+    const subtitle = pct>=85?"You think like a great teacher — clear, vivid, audience-first.":pct>=70?"Good instincts. Keep simplifying until it feels effortless.":"Each attempt strengthens your clarity muscle.";
+    const coachNote = pct>=85?"You consistently chose clarity over complexity — that's the mark of a brilliant communicator. Keep using the Feynman test before every message: if a 10-year-old couldn't follow it, simplify further.":pct>=70?"Good foundation. The ordering round showed the Feynman loop in action: understand, explain, find the gap, refine. Keep asking 'what's the simplest version?' before every explanation.":"Clarity is a learned skill, not a talent. The best communicators got there through exactly this kind of deliberate practice. Every explanation you simplify builds the instinct.";
+    const FOCUS_CHIPS = ["Ask: could a 10-year-old follow this?","Find the one key idea","Cut every word that doesn't earn its place","Replace jargon with a picture","Answer the next obvious question"];
     return (
       <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-        {/* 1 HERO */}
+        {/* HERO */}
         <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)",position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",top:-40,right:-40,width:160,height:160,borderRadius:"50%",background:"radial-gradient(circle,rgba(138,158,132,0.07) 0%,transparent 70%)",pointerEvents:"none"}}/>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>The Clarity Challenge™ — Your Results</div>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>The Feynman Challenge™ — Your Results</div>
           <div style={{display:"flex",gap:isDesktop?32:20,alignItems:"flex-start"}}>
             <div style={{flexShrink:0}}>
               <div style={{fontFamily:T.serif,fontSize:isDesktop?80:64,fontWeight:600,color:T.gold,lineHeight:1}}>{pct}</div>
@@ -342,19 +306,23 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
             </div>
             <div style={{paddingTop:8}}>
               <p style={{fontFamily:T.serif,fontSize:isDesktop?24:19,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,margin:"0 0 8px"}}>{headline}</p>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.55)",margin:0,lineHeight:1.55}}>{subtitle}</p>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.55)",margin:0,lineHeight:1.55}}>{subtitle}</p>
             </div>
           </div>
         </div>
-        {/* 2 BREAKDOWN */}
-        <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px"}}>
+        {/* BREAKDOWN */}
+        <div style={{...cs.card}}>
           <div style={cs.label}>Your score breakdown</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
-            {[{label:"Recognition",sub:"Spot the jargon",earned:mcqPts,max:recMax},{label:"Application",sub:"Rewrite it simply",earned:rewritePts,max:appMax}].map((b,i)=>(
-              <div key={i} style={{padding:"14px 16px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border,textAlign:"center"}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:2}}>{b.label}</div>
-                <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginBottom:8}}>{b.sub}</div>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T.gold}}>{b.earned}<span style={{fontSize:13,color:T2.text4}}> / {b.max}</span></div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:14}}>
+            {[
+              {label:"Clarity Tests",sub:"Rounds 1 + 3",earned:mcqPts,max:ROUNDS.filter(r=>r.type==='mcq').reduce((s,r)=>s+r.pts,0)},
+              {label:"Feynman Order",sub:"Round 2",earned:mcqPts>0?Math.min(mcqPts,25):0,max:25},
+              {label:"Explanation",sub:"Round 4",earned:explainPts,max:30},
+            ].map((b,i)=>(
+              <div key={i} style={{padding:"12px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border,textAlign:"center"}}>
+                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:2}}>{b.label}</div>
+                <div style={{fontFamily:T.sans,fontSize:9,color:T2.text4,marginBottom:6}}>{b.sub}</div>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T.gold}}>{b.earned}<span style={{fontSize:11,color:T2.text4}}> / {b.max}</span></div>
               </div>
             ))}
           </div>
@@ -363,47 +331,24 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           </div>
           <div style={{fontFamily:T.sans,fontSize:11,color:T2.text4,textAlign:"right"}}>{pct}% of max</div>
         </div>
-        {/* 3 STRENGTHS + OPPORTUNITY */}
-        <div style={{display:isDesktop?"grid":"flex",gridTemplateColumns:"1fr 1fr",flexDirection:"column",gap:isDesktop?12:10}}>
-          <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
-            <div style={cs.label}>What came across well</div>
-            {strengths.map((s,i)=>(
-              <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:i<strengths.length-1?10:0}}>
-                <div style={{width:28,height:28,borderRadius:"50%",background:"rgba(82,112,96,0.1)",border:"0.5px solid rgba(82,112,96,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#527060" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </div>
-                <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.55,margin:0}}>{s}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#B07A40",textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>Biggest Opportunity</div>
-            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-              <div style={{width:40,height:40,borderRadius:"50%",background:"rgba(176,122,64,0.1)",border:"1px solid rgba(176,122,64,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2a5 5 0 014 8l-1 1v2H7v-2L6 10a5 5 0 014-8z" stroke="#B07A40" strokeWidth="1.2"/><path d="M7 15h6M8 17h4" stroke="#B07A40" strokeWidth="1.2" strokeLinecap="round"/></svg>
-              </div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0}}>{opportunity}</p>
-            </div>
-          </div>
-        </div>
-        {/* 4 COACH NOTE */}
-        <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
+        {/* COACH NOTE */}
+        <div style={{...cs.card}}>
           <div style={cs.label}>Your coach says</div>
-          <div style={{display:"flex",gap:isDesktop?16:12,alignItems:"flex-start"}}>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?40:32,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0}}>{coachNote}</p>
+          <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?38:30,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,margin:0}}>{coachNote}</p>
           </div>
         </div>
-        {/* 5 FOCUS CHIPS */}
-        <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
+        {/* FOCUS CHIPS */}
+        <div style={{...cs.card}}>
           <div style={cs.label}>Take this into your next conversation</div>
           <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
             {FOCUS_CHIPS.map((f,i)=>(
-              <span key={i} style={{padding:"7px 14px",borderRadius:20,border:"0.5px solid "+T2.border,background:T2.bg,fontFamily:T.serif,fontSize:isDesktop?13:11,color:T2.text}}>{f}</span>
+              <span key={i} style={{padding:"7px 14px",borderRadius:20,border:"0.5px solid "+T2.border,background:T2.bg,fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text}}>{f}</span>
             ))}
           </div>
         </div>
-        {/* 6 RETRY + BADGE */}
+        {/* BADGE + CTA */}
         <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"22px 28px":"18px 20px",border:"0.5px solid rgba(138,158,132,0.15)",display:isDesktop?"flex":"block",alignItems:"center",gap:20}}>
           <div style={{width:52,height:52,borderRadius:"50%",overflow:"hidden",border:"1.5px solid rgba(200,168,76,0.35)",flexShrink:0,marginBottom:isDesktop?0:14}}>
             <img src={badge.img} alt={badge.label} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
@@ -411,25 +356,24 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           <div style={{flex:1,marginBottom:isDesktop?0:14}}>
             <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>Badge Earned</div>
             <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:"rgba(245,239,230,0.9)",marginBottom:2}}>{badge.label}</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?13:11,color:"rgba(245,239,230,0.5)",margin:0}}>{badge.sub}</p>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"rgba(245,239,230,0.5)",margin:0}}>{badge.sub}</p>
           </div>
           <div style={{display:"flex",gap:8,flexDirection:isDesktop?"column":"row"}}>
-            <button onClick={reset} style={{padding:"11px 20px",borderRadius:4,border:"0.5px solid rgba(245,239,230,0.15)",background:"transparent",color:"rgba(245,239,230,0.6)",fontFamily:T.serif,fontSize:isDesktop?14:13,cursor:"pointer",whiteSpace:"nowrap"}}>Try Again</button>
+            <button onClick={reset} style={{padding:"11px 20px",borderRadius:4,border:"0.5px solid rgba(245,239,230,0.15)",background:"transparent",color:"rgba(245,239,230,0.6)",fontFamily:T.sans,fontSize:isDesktop?13:12,cursor:"pointer",whiteSpace:"nowrap"}}>Try Again</button>
             {onSimulation
-              ? <button onClick={onSimulation} style={{padding:"11px 20px",borderRadius:4,border:"none",background:"linear-gradient(135deg,"+T.gold+" 0%,#527060 100%)",color:"white",fontFamily:T.serif,fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>Continue →</button>
-              : <button onClick={reset} style={{padding:"11px 20px",borderRadius:4,border:"none",background:"linear-gradient(135deg,"+T.gold+" 0%,#527060 100%)",color:"white",fontFamily:T.serif,fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>Done ✓</button>}
+              ? <button onClick={onSimulation} style={{padding:"11px 20px",borderRadius:4,border:"none",background:"linear-gradient(135deg,"+T.gold+" 0%,#527060 100%)",color:"white",fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>Continue →</button>
+              : <button onClick={reset} style={{padding:"11px 20px",borderRadius:4,border:"none",background:"linear-gradient(135deg,"+T.gold+" 0%,#527060 100%)",color:"white",fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>Done ✓</button>}
           </div>
         </div>
       </div>
     );
   }
 
-  // ── MCQ ROUND ──────────────────────────────────────────────────────────────
-  if (round.type==='mcq') {
-    const correct = selected===round.correct;
+  // ── MCQ ROUND (types: mcq) ─────────────────────────────────────────────────
+  if (round.type === 'mcq') {
+    const correct = selected === round.correct;
     return (
       <div style={{display:"flex",flexDirection:"column",gap:14}}>
-        {/* Progress */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
           <div style={{display:"flex",gap:6}}>
             {ROUNDS.map((_,i)=>(
@@ -440,60 +384,120 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
         </div>
         <div style={cs.card}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
-            <div style={cs.label}>{round.label} — {round.difficulty}</div>
+            <div style={cs.label}>{round.label} — {round.name}</div>
           </div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:16,fontWeight:500}}>{round.task}</p>
-          <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T2.border,marginBottom:20}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Original</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{round.original}</p>
-          </div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.4,marginBottom:round.statement?8:16,fontWeight:500}}>{round.task}</p>
+          {round.statement && (
+            <div style={{padding:"12px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T2.border,marginBottom:16}}>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{round.statement}</p>
+            </div>
+          )}
         </div>
         {round.options.map((opt,i)=>{
           const isSelected = selected===i;
           const isCorrectOpt = i===round.correct;
-          let bg = T2.surface, border = T2.border, textColor = T2.text;
+          let bg=T2.surface, border=T2.border, textColor=T2.text;
           if (answered) {
             if (isCorrectOpt) { bg="rgba(82,112,96,0.1)"; border="#527060"; textColor="#2C5040"; }
-            else if (isSelected && !isCorrectOpt) { bg="rgba(176,92,74,0.08)"; border="#B05C4A"; textColor="#6B2E22"; }
+            else if (isSelected&&!isCorrectOpt) { bg="rgba(176,92,74,0.08)"; border="#B05C4A"; textColor="#6B2E22"; }
           } else if (isSelected) { bg="rgba(138,158,132,0.1)"; border=T.gold; }
           return (
-            <div key={i} onClick={()=>handleMCQ(i)} style={{...cs.card,background:bg,border:`0.5px solid ${border}`,cursor:answered?"default":"pointer",transition:"all 0.2s",padding:isDesktop?"16px 20px":"14px 16px"}}>
+            <div key={i} onClick={()=>handleMCQ(i)} style={{...cs.card,background:bg,border:`0.5px solid ${border}`,cursor:answered?"default":"pointer",transition:"all 0.2s"}}>
               <div style={{display:"flex",alignItems:"flex-start",gap:12}}>
-                <div style={{width:24,height:24,borderRadius:"50%",border:`1.5px solid ${answered&&isCorrectOpt?"#527060":answered&&isSelected&&!isCorrectOpt?"#B05C4A":isSelected?T.gold:T2.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,background:answered&&isCorrectOpt?"rgba(82,112,96,0.15)":"transparent",transition:"all 0.2s"}}>
+                <div style={{width:24,height:24,borderRadius:"50%",border:`1.5px solid ${answered&&isCorrectOpt?"#527060":answered&&isSelected&&!isCorrectOpt?"#B05C4A":isSelected?T.gold:T2.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,background:answered&&isCorrectOpt?"rgba(82,112,96,0.15)":"transparent"}}>
                   <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:answered&&isCorrectOpt?"#527060":answered&&isSelected&&!isCorrectOpt?"#B05C4A":T2.text3}}>{String.fromCharCode(65+i)}</span>
                 </div>
                 <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:textColor,lineHeight:1.6,margin:0,flex:1}}>{opt}</p>
-                {answered && isCorrectOpt && <span style={{color:"#527060",fontSize:16,flexShrink:0}}>✓</span>}
-                {answered && isSelected && !isCorrectOpt && <span style={{color:"#B05C4A",fontSize:16,flexShrink:0}}>✗</span>}
+                {answered&&isCorrectOpt&&<span style={{color:"#527060",fontSize:16,flexShrink:0}}>✓</span>}
+                {answered&&isSelected&&!isCorrectOpt&&<span style={{color:"#B05C4A",fontSize:16,flexShrink:0}}>✗</span>}
               </div>
             </div>
           );
         })}
         {answered && (
           <div style={{...cs.card,borderLeft:`2px solid ${correct?T.gold:"rgba(176,92,74,0.5)"}`}}>
-            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-              <span style={{fontSize:16}}>{correct?"✅":"💡"}</span>
-              <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:correct?T.gold:"#B05C4A",textTransform:"uppercase",letterSpacing:"1px"}}>{correct?`+${round.pts} clarity points`:"The clearest version was B"}</div>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+              <span style={{fontSize:16}}>{correct?"✓":"💡"}</span>
+              <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:correct?T.gold:"#B05C4A",textTransform:"uppercase",letterSpacing:"1px"}}>{correct?`+${round.pts} points`:"The clearest version was "+String.fromCharCode(65+round.correct)}</div>
             </div>
-            {correct ? (
-              <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                {round.why.map((w,i)=>(
-                  <span key={i} style={{padding:"4px 10px",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",borderRadius:20,fontFamily:T.sans,fontSize:11,color:T.gold}}>{w}</span>
-                ))}
-              </div>
-            ) : (
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>
-                Option {String.fromCharCode(65+round.correct)} uses plain language and human wording — it removes jargon and explains the meaning directly.
-              </p>
-            )}
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>{round.feedback}</p>
           </div>
         )}
-        {answered && !onNavLabel && <button onClick={nextRound} style={cs.cta}>{isLast?"See Final Score →":roundIdx===2?"Enter Real World Mode →":"Next Challenge →"}</button>}
+        {answered&&!onNavLabel&&<button onClick={nextRound} style={cs.cta}>{isLast?"See Your Results →":"Next Round →"}</button>}
       </div>
     );
   }
 
-  // ── REWRITE ROUND ──────────────────────────────────────────────────────────
+  // ── ORDERING ROUND ─────────────────────────────────────────────────────────
+  if (round.type === 'order') {
+    // Initialise on first render of this round
+    if (orderItems.length === 0) {
+      const shuffled = [...round.items];
+      for (let i = shuffled.length-1; i > 0; i--) {
+        const j = Math.floor(Math.random()*(i+1));
+        [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];
+      }
+      setOrderItems(shuffled);
+      return null;
+    }
+    const allCorrect = orderAnswered && orderItems.every((item,i)=>item===round.items[i]);
+    return (
+      <div style={{display:"flex",flexDirection:"column",gap:14}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
+          <div style={{display:"flex",gap:6}}>
+            {ROUNDS.map((_,i)=>(
+              <div key={i} style={{width:isDesktop?32:24,height:4,borderRadius:2,background:i<roundIdx?T.gold:i===roundIdx?"rgba(138,158,132,0.5)":T2.border,transition:"background 0.3s"}}/>
+            ))}
+          </div>
+          <div style={cs.pts}>{totalPts} pts</div>
+        </div>
+        <div style={cs.card}>
+          <div style={cs.label}>{round.label} — {round.name}</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:0,fontWeight:500}}>{round.task}</p>
+        </div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:"0 0 4px",lineHeight:1.5}}>
+          {orderAnswered ? "Here's the correct order:" : orderSelected!==null ? "Now tap another card to swap it." : "Tap a card to select it, then tap another to swap positions."}
+        </p>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {orderItems.map((item,i)=>{
+            const isSelected = orderSelected===i;
+            const isCorrectPos = orderAnswered && item===round.items[i];
+            const isWrongPos = orderAnswered && item!==round.items[i];
+            let border = T2.border, bg = T2.surface;
+            if (isSelected) { border=T.gold; bg="rgba(138,158,132,0.1)"; }
+            else if (isCorrectPos) { border="#527060"; bg="rgba(82,112,96,0.08)"; }
+            else if (isWrongPos) { border="#B05C4A"; bg="rgba(176,92,74,0.06)"; }
+            return (
+              <div key={i} onClick={()=>!orderAnswered&&handleOrderTap(i)} style={{...cs.card,border:`1px solid ${border}`,background:bg,cursor:orderAnswered?"default":"pointer",display:"flex",alignItems:"center",gap:12,transition:"all 0.2s",padding:isDesktop?"14px 18px":"12px 14px"}}>
+                <div style={{width:28,height:28,borderRadius:"50%",background:isCorrectPos?"rgba(82,112,96,0.15)":isWrongPos?"rgba(176,92,74,0.1)":isSelected?"rgba(138,158,132,0.15)":"rgba(44,36,22,0.06)",border:`1.5px solid ${isCorrectPos?"#527060":isWrongPos?"#B05C4A":isSelected?T.gold:T2.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:isCorrectPos?"#527060":isWrongPos?"#B05C4A":isSelected?T.gold:T2.text3}}>{i+1}</span>
+                </div>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5,margin:0,flex:1}}>{item}</p>
+                {isCorrectPos&&<span style={{color:"#527060",fontSize:15,flexShrink:0}}>✓</span>}
+                {isWrongPos&&<span style={{color:"#B05C4A",fontSize:15,flexShrink:0}}>✗</span>}
+                {!orderAnswered&&isSelected&&<span style={{color:T.gold,fontSize:13,flexShrink:0}}>↕</span>}
+              </div>
+            );
+          })}
+        </div>
+        {!orderAnswered && (
+          <button onClick={submitOrder} style={cs.cta}>Check My Order →</button>
+        )}
+        {orderAnswered && (
+          <div style={{...cs.card,borderLeft:`2px solid ${allCorrect?T.gold:"rgba(176,92,74,0.5)"}`}}>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+              <span style={{fontSize:16}}>{allCorrect?"✓":"💡"}</span>
+              <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:allCorrect?T.gold:"#B05C4A",textTransform:"uppercase",letterSpacing:"1px"}}>{allCorrect?`Perfect order — +${round.pts} points`:`Close — +${Math.round(round.pts*0.5)} points`}</div>
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>{round.feedback}</p>
+          </div>
+        )}
+        {orderAnswered&&!onNavLabel&&<button onClick={nextRound} style={{...cs.cta,marginTop:4}}>{isLast?"See Your Results →":"Next Round →"}</button>}
+      </div>
+    );
+  }
+
+  // ── EXPLAIN ROUND ──────────────────────────────────────────────────────────
   return (
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
@@ -505,36 +509,38 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
         <div style={cs.pts}>{totalPts} pts</div>
       </div>
       <div style={cs.card}>
-        <div style={cs.label}>{round.label} — {round.difficulty}</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:16,fontWeight:500}}>{round.task}</p>
-        <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T2.border,marginBottom:round.example?16:0}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Simplify this</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{round.original}</p>
-        </div>
+        <div style={cs.label}>{round.label} — {round.name}</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.4,marginBottom:12,fontWeight:500}}>{round.task}</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text4,margin:0,lineHeight:1.5}}>{round.hint}</p>
       </div>
       {!aiResult ? (
         <>
           <div style={cs.card}>
-            <div style={cs.label}>Your plain English version</div>
-            <textarea value={rewriteText} onChange={e=>setRewriteText(e.target.value)} placeholder="Write it as simply as possible…" style={{width:"100%",minHeight:isDesktop?96:80,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
+            <div style={cs.label}>Your explanation</div>
+            <textarea value={explainText} onChange={e=>setExplainText(e.target.value)} placeholder={round.placeholder||"Explain it simply…"} style={{width:"100%",minHeight:isDesktop?88:72,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
           </div>
-          <button onClick={scoreRewrite} disabled={aiLoading||rewriteText.trim().length<5} style={{...cs.cta,background:aiLoading||rewriteText.trim().length<5?"rgba(44,36,22,0.25)":T.ink,cursor:aiLoading||rewriteText.trim().length<5?"not-allowed":"pointer"}}>
-            {aiLoading?"Scoring your clarity…":"Score My Version →"}
+          <button onClick={scoreExplain} disabled={aiLoading||explainText.trim().length<5} style={{...cs.cta,background:aiLoading||explainText.trim().length<5?"rgba(44,36,22,0.25)":T.ink,cursor:aiLoading||explainText.trim().length<5?"not-allowed":"pointer"}}>
+            {aiLoading?"Reading your explanation…":"Get Feedback →"}
           </button>
         </>
       ) : (
-        <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px 20px"}}>
-          <div style={{width:52,height:52,borderRadius:"50%",background:"rgba(82,112,96,0.12)",border:"1.5px solid rgba(82,112,96,0.4)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 14px"}}>
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 11l5 5 7-9" stroke="#527060" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <div style={{...cs.card,background:"#0A0804",border:"0.5px solid rgba(138,158,132,0.15)"}}>
+            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Your AI coach says</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:"#F5EFE6",lineHeight:1.4,margin:"0 0 10px"}}>{aiResult.praise}</p>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.6)",lineHeight:1.6,margin:0}}>→ {aiResult.tip}</p>
           </div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,marginBottom:6}}>Response recorded.</p>
-          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20}}>+{aiResult.pts} clarity points earned.</p>
-          {!onNavLabel && <button onClick={nextRound} style={{...cs.cta,maxWidth:240,margin:"0 auto",display:"block"}}>{isLast?"See Your Results →":"Next Challenge →"}</button>}
+          <div style={{...cs.card,borderLeft:"2px solid "+T2.border}}>
+            <div style={cs.label}>Your explanation</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"{explainText}"</p>
+          </div>
+          {!onNavLabel&&<button onClick={nextRound} style={cs.cta}>{isLast?"See Your Results →":"Next Round →"}</button>}
         </div>
       )}
     </div>
   );
 }
+
 
 // ─── RECORD & REVIEW™ — D1 Simulation ────────────────────────────────────────
 export function D1SimWidget({T, T2, isDesktop}) {
