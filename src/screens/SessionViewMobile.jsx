@@ -430,23 +430,24 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         };
         // D1 Simulation — cinematic dark panel matching desktop left panel
         if(isD1 && step==="Simulation") return (
-          <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"58px 24px 20px",boxSizing:"border-box",position:"relative"}}>
+          <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Simulation · Day 1</div>
-              <p style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:"#F5EFE6",lineHeight:1.1}}>Awareness is where every great communicator begins.</p>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",top:20,right:20,zIndex:2,width:72,height:72,borderRadius:"50%",overflow:"hidden",border:"1.5px solid rgba(200,168,76,0.3)"}}>
+              <img src="/badge-queen.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
             </div>
-            <div style={{position:"relative",zIndex:2,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
-              <div>
-                <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
-                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                  <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.5)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.7)",fontWeight:600}}>4–5 minutes</span></span>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>Simulation · Day 1</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:12}}>Awareness is where every great communicator begins.</p>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10,padding:"8px 12px",background:"rgba(138,158,132,0.1)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)"}}>
+                <div>
+                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>Today's Goal</div>
+                  <div style={{fontFamily:T.serif,fontSize:13,color:"rgba(245,239,230,0.85)"}}>Establish your clarity baseline.</div>
                 </div>
-                <p style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.35)",margin:0,lineHeight:1.5}}>Awareness is the first move.<br/>Clarity is the advantage.</p>
               </div>
-              <div style={{position:"relative",width:100,height:100,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <div style={{position:"absolute",inset:0,borderRadius:"50%",border:"1px solid rgba(200,168,76,0.2)",boxShadow:"0 0 20px rgba(200,168,76,0.08)"}}/>
-                <img src="/badge-queen.jpg" alt="" style={{width:72,height:72,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(200,168,76,0.35)",position:"relative",zIndex:1}}/>
+              <div style={{display:"flex",alignItems:"center",gap:6}}>
+                <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4–5 minutes</span></span>
               </div>
             </div>
           </div>
