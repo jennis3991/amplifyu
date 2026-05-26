@@ -82,7 +82,7 @@ borderRadius: 14, overflow: "hidden", boxShadow: "0 4px 16px rgba(17,28,46,0.18)
         {image.imageTablet ? (
           <picture>
             <source media="(min-width: 768px)" srcSet={image.imageTablet}/>
-            <img src={image.image} alt={image.alt} style={{ width: "100%", height: "auto", display: "block" }}/>
+            <img src={image.image} alt={image.alt} style={{ width: "100%", display: "block", aspectRatio: "16 / 9", objectFit: "contain", background: "#8B7355" }}/>
           </picture>
         ) : (
           <img src={image.image} alt={image.alt} style={{ width: "100%", display: "block", aspectRatio: "1 / 1", objectFit: "cover", objectPosition: image.imgObjectPosition || "center" }}/>
