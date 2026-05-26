@@ -1259,7 +1259,8 @@ T.goldDark : T2.text4,
       {isD1 && step==="Insight" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Clarity Wins</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Clear language makes ideas easier to understand, easier to remember, and easier to act on.</p>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>Clear language makes ideas easier to understand, easier to remember, and easier to act on.</p>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Tap each card to explore why →</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
             {D1_CLARITY_FACTS_DATA.map((n,i)=>{
               const open = d1MobCard===("cf"+i);
@@ -1267,7 +1268,7 @@ T.goldDark : T2.text4,
                 <div key={i} onClick={()=>setD1MobCard(open?null:"cf"+i)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:5}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
-                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
+                    <span style={{fontFamily:T.sans,fontSize:12,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸ explore"}</span>
                   </div>
                   <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 12px":0}}>{n.sub}</p>
                   {open && (
@@ -1296,7 +1297,7 @@ T.goldDark : T2.text4,
           <div style={{background:"rgba(138,158,132,0.12)",borderLeft:"3px solid "+T.gold,padding:"20px 22px",marginBottom:20,borderRadius:4}}>
             <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.35,margin:0}}>If you can't explain it simply, you don't understand it well enough.</p>
           </div>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,fontWeight:500,marginBottom:10}}>His secret? The 4-step clarity loop:</p>
+          <p style={{fontFamily:T.serif,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:500,marginBottom:10}}>His secret? The 4-step clarity loop:</p>
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {[{label:"1. Understand",body:"Choose a concept and study it deeply."},{label:"2. Explain",body:"Teach it in simple words as if to someone else. No jargon."},{label:"3. Simplify",body:"When you stumble, that's a gap. Go back and fill it."},{label:"4. Refine",body:"Review, clarify, improve. Repeat until a child could follow."}].map((p,i)=>(
               <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
