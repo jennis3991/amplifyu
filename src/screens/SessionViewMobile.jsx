@@ -431,6 +431,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         const TABLET_IMGS={
           1:{Insight:"/day1-insight-tablet.jpg"},
           2:{Insight:"/d2-insight-tablet.jpg",Practice:"/d2-practice-tablet.jpg"},
+          3:{Theory:"/day3-theory-tablet.jpg"},
         };
         const src=STEP_IMGS[lesson.day]?.[step];
         const tabletSrc=TABLET_IMGS[lesson.day]?.[step];
