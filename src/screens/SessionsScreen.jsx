@@ -153,7 +153,7 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
         {/* ── Editorial Programme List — NOT a card grid ── */}
         <div style={{ maxWidth: 1080, margin: "0 auto", padding: "72px 88px 96px" }}>
           {[
-            { id: 1, label: "Week One",  title: "Voice, Clarity & Story",     sub: "The foundations of commanding communication." },
+            { id: 1, label: "Week One",  title: "Voice, Clarity & Structure",     sub: "The foundations of commanding communication." },
             { id: 2, label: "Week Two",  title: "Structure, PIE & Presence",  sub: "Architecture, executive presence, and identity." },
           ].map((wk, wkIdx) => {
             const wkLessons = LESSONS.filter(l => l.week === wk.id);
@@ -263,7 +263,7 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
       </div>
       <div style={{padding:"24px 24px 0",display:"flex",flexDirection:"column",gap:48}}>
         {[
-          {id:1,label:"Week One",  title:"Voice, Clarity & Story",    sub:"The foundations of commanding communication."},
+          {id:1,label:"Week One",  title:"Voice, Clarity & Structure",    sub:"The foundations of commanding communication."},
           {id:2,label:"Week Two",  title:"Structure, PIE & Presence", sub:"Architecture, executive presence, and identity."},
         ].map(wk => {
           const lessons = LESSONS.filter(l=>l.week===wk.id);
