@@ -154,7 +154,7 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
         <div style={{ maxWidth: 1080, margin: "0 auto", padding: "72px 88px 96px" }}>
           {[
             { id: 1, label: "Week One",  title: "Voice, Clarity & Structure",     sub: "The foundations of commanding communication." },
-            { id: 2, label: "Week Two",  title: "Structure, PIE & Presence",  sub: "Architecture, executive presence, and identity." },
+            { id: 2, label: "Week Two",  title: "Storytelling, Be your Brand & Own your Ambition",  sub: "Communicate with impact, presence, and purpose." },
           ].map((wk, wkIdx) => {
             const wkLessons = LESSONS.filter(l => l.week === wk.id);
             const doneCount = wkLessons.filter(l => done.includes(l.day)).length;
@@ -264,7 +264,7 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
       <div style={{padding:"24px 24px 0",display:"flex",flexDirection:"column",gap:48}}>
         {[
           {id:1,label:"Week One",  title:"Voice, Clarity & Structure",    sub:"The foundations of commanding communication."},
-          {id:2,label:"Week Two",  title:"Structure, PIE & Presence", sub:"Architecture, executive presence, and identity."},
+          {id:2,label:"Week Two",  title:"Storytelling, Be your Brand & Own your Ambition", sub:"Communicate with impact, presence, and purpose."},
         ].map(wk => {
           const lessons = LESSONS.filter(l=>l.week===wk.id);
           const doneCount = lessons.filter(l=>done.includes(l.day)).length;
