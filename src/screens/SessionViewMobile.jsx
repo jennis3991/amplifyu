@@ -1297,7 +1297,7 @@ T.goldDark : T2.text4,
           <div style={{background:"rgba(138,158,132,0.12)",borderLeft:"3px solid "+T.gold,padding:"20px 22px",marginBottom:20,borderRadius:4}}>
             <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.35,margin:0}}>If you can't explain it simply, you don't understand it well enough.</p>
           </div>
-          <p style={{fontFamily:T.serif,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:500,marginBottom:10}}>His secret? The 4-step clarity loop:</p>
+          <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.4,fontWeight:600,marginBottom:10}}>His secret? The 4-step clarity loop:</p>
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {[{label:"1. Understand",body:"Choose a concept and study it deeply."},{label:"2. Explain",body:"Teach it in simple words as if to someone else. No jargon."},{label:"3. Simplify",body:"When you stumble, that's a gap. Go back and fill it."},{label:"4. Refine",body:"Review, clarify, improve. Repeat until a child could follow."}].map((p,i)=>(
               <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
