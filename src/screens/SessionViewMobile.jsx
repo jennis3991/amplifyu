@@ -431,6 +431,9 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         const src=STEP_IMGS[lesson.day]?.[step];
         const useContainMob = lesson.day===11 && step==="Theory";
         const heroH = (isD1 && step==="Insight") ? 480 : step==="Theory 2" ? 260 : 320;
+        if(isD1 && step==="Insight" && src) return (
+          <div style={{width:"100%",height:heroH,background:"#3D2E1E",backgroundImage:`url(${src})`,backgroundSize:"80%",backgroundRepeat:"no-repeat",backgroundPosition:"center 25%",display:"block",pointerEvents:"none"}}/>
+        );
         if(src) return <img src={src} alt="" style={{width:"100%",height:heroH,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center 40%",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
         return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
       })()}
