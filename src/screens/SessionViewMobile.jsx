@@ -430,22 +430,22 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         };
         // D1 Practice — cinematic dark panel matching desktop left panel
         if(isD1 && step==="Practice") return (
-          <div style={{width:"100%",height:420,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"60px 24px 24px",boxSizing:"border-box",position:"relative"}}>
+          <div style={{width:"100%",height:420,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"80px 24px 24px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Clarity Challenge™</div>
               <p style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:"#F5EFE6",lineHeight:1.1,marginBottom:14}}>Think faster.<br/>Speak clearer.</p>
               <div style={{width:36,height:1.5,background:"rgba(200,180,140,0.45)",marginBottom:14}}/>
-              <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.6)",lineHeight:1.55,marginBottom:14}}>Complexity is easy. Clarity is a skill.</p>
+              <p style={{fontFamily:T.serif,fontSize:16,fontWeight:400,color:"rgba(245,239,230,0.75)",lineHeight:1.55,marginBottom:14}}>Complexity is easy. Clarity is a skill.</p>
               <div style={{display:"flex",alignItems:"flex-start",gap:8}}>
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,marginTop:2}}><circle cx="8" cy="8" r="7" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="3.5" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="1" fill={T.gold}/></svg>
-                <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.45)",lineHeight:1.6,margin:0}}>Your mission: Turn confusing workplace language into clear communication.</p>
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,marginTop:3}}><circle cx="8" cy="8" r="7" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="3.5" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="1" fill={T.gold}/></svg>
+                <p style={{fontFamily:T.serif,fontSize:14,fontWeight:400,color:"rgba(245,239,230,0.55)",lineHeight:1.65,margin:0}}>Your mission: Turn confusing workplace language into clear communication.</p>
               </div>
             </div>
             <div style={{position:"relative",zIndex:2,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                <span style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4 minutes</span></span>
+                <span style={{fontFamily:T.serif,fontSize:13,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4 minutes</span></span>
               </div>
               <div style={{position:"relative",width:110,height:110,display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <div style={{position:"absolute",inset:0,borderRadius:"50%",border:"1px solid rgba(200,168,76,0.2)",boxShadow:"0 0 24px rgba(200,168,76,0.08)"}}/>
