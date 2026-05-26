@@ -703,17 +703,12 @@ export function D1SimWidget({T, T2, isDesktop}) {
       {/* BOX 1 — The First Step */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>The First Step to Great Communication</div>
-        {[
-          {icon:"→", text:"Every great communicator started with awareness — you can't refine what you haven't heard."},
-          {icon:"→", text:"This is how elite speakers train: they know exactly where they stand before they build."},
-          {icon:"→", text:"You've learned the principles and practised the skills. You're more ready than you realise."},
-          {icon:"→", text:"Record this moment — in 14 days, you'll have the clearest evidence of how far you've come."},
-        ].map((b,i)=>(
-          <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:i<3?10:0}}>
-            <span style={{color:T.gold,fontSize:14,flexShrink:0,marginTop:1}}>✦</span>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0}}>{b.text}</p>
-          </div>
-        ))}
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:12}}>
+          You've learned the science. Practised the techniques. Now it's time to hear how clearly you communicate.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0}}>
+          Self-review is one of the fastest proven ways to improve communication, used by top speakers, performers, and Fortune 500 leaders — because <strong>awareness always comes before change.</strong>
+        </p>
       </div>
 
       {/* HOW IT WORKS + 5-step journey */}
@@ -742,15 +737,15 @@ export function D1SimWidget({T, T2, isDesktop}) {
 
       {/* BOX 2 — Coach perspective */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px",background:"rgba(138,158,132,0.04)"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Why your clarity score changes everything</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:14}}>
-          Most professionals speak every single day — yet almost none have ever heard themselves the way others do. That gap between how you <em>think</em> you communicate and how you <em>actually</em> land is where careers stall, ideas get lost, and influence slips away.
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Your Digital Communication Coach</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:12}}>
+          Once you record, your digital communication coach will analyse your delivery and provide personalised feedback on your clarity, communication patterns, structure, pacing, and presence.
         </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:14}}>
-          Clarity is one of the most measurable, most learnable, and highest-value skills a professional can develop. Leaders who know how they communicate — and who actively refine it — rise faster, earn more trust, and are remembered.
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:12}}>
+          <strong>This recording becomes your baseline.</strong> The clearer you understand where you are today, the faster you improve tomorrow.
         </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0}}>
-          Your clarity baseline isn't a verdict. It's your starting point — and the most important number you can have right now. <strong>Everything from here is measurable progress.</strong>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic"}}>
+          This isn't a test — it's expert coaching designed to help you become a clearer, more confident communicator.
         </p>
       </div>
 
