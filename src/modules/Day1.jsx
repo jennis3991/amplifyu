@@ -13,7 +13,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
   // ── Question bank — swap topics here ────────────────────────────────────
   const ROUNDS = [
     {id:1, type:'mcq', label:'Round 1', name:'The Clarity Test', pts:20,
-     task:'Which explanation is easiest to understand?',
+     task:'Which explanation explains gravity most clearly?',
      topic:'Gravity',
      options:[
        'Gravity is the force exerted between objects with mass.',
