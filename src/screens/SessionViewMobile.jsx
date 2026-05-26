@@ -429,20 +429,20 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
         };
         const TABLET_IMGS={
-          1:{Insight:"/day1-insight-tablet.jpg"},
-          2:{Insight:"/d2-insight-tablet.jpg",Practice:"/d2-practice-tablet.jpg"},
-          3:{Theory:"/day3-theory-tablet.jpg"},
-          4:{Insight:"/day4-insight-tablet.jpg",Theory:"/day4-theory-tablet.jpg"},
-          6:{Theory:"/d6-theory-tablet.jpg"},
-          8:{Insight:"/nt-insight-tablet.jpg","Theory 1":"/nt-theory1-tablet.jpg","Theory 2":"/nt-theory2-tablet.jpg"},
+          1:{Insight:{src:"/day1-insight-tablet.jpg"}},
+          2:{Insight:{src:"/d2-insight-tablet.jpg"},Practice:{src:"/d2-practice-tablet.jpg"}},
+          3:{Theory:{src:"/day3-theory-tablet.jpg"}},
+          4:{Insight:{src:"/day4-insight-tablet.jpg"},Theory:{src:"/day4-theory-tablet.jpg"}},
+          6:{Theory:{src:"/d6-theory-tablet.jpg"}},
+          8:{Insight:{src:"/nt-insight-tablet.jpg"},"Theory 1":{src:"/nt-theory1-tablet.jpg"},"Theory 2":{src:"/nt-theory2-tablet.jpg",pos:"center 68%"}},
         };
         const src=STEP_IMGS[lesson.day]?.[step];
-        const tabletSrc=TABLET_IMGS[lesson.day]?.[step];
+        const tabletEntry=TABLET_IMGS[lesson.day]?.[step];
         const useContainMob = lesson.day===11 && step==="Theory";
-        if(tabletSrc && src) return (
+        if(tabletEntry && src) return (
           <picture>
-            <source media="(min-width: 768px)" srcSet={tabletSrc}/>
-            <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:"center",display:"block",pointerEvents:"none"}}/>
+            <source media="(min-width: 768px)" srcSet={tabletEntry.src}/>
+            <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:tabletEntry.pos||"center",display:"block",pointerEvents:"none"}}/>
           </picture>
         );
         if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
