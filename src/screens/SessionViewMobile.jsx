@@ -433,6 +433,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           2:{Insight:"/d2-insight-tablet.jpg",Practice:"/d2-practice-tablet.jpg"},
           3:{Theory:"/day3-theory-tablet.jpg"},
           4:{Insight:"/day4-insight-tablet.jpg",Theory:"/day4-theory-tablet.jpg"},
+          6:{Theory:"/d6-theory-tablet.jpg"},
         };
         const src=STEP_IMGS[lesson.day]?.[step];
         const tabletSrc=TABLET_IMGS[lesson.day]?.[step];
