@@ -464,13 +464,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Feynman Challenge™</div>
-              <p style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:"#F5EFE6",lineHeight:1.1,marginBottom:14}}>If you can explain it simply, you understand it.</p>
-              <div style={{width:36,height:1.5,background:"rgba(200,180,140,0.45)",marginBottom:14}}/>
-              <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.7)",lineHeight:1.6,marginBottom:14}}>Anyone can sound complicated. Great communicators make ideas easy to understand.</p>
-              <div style={{display:"flex",alignItems:"flex-start",gap:8}}>
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,marginTop:3}}><circle cx="8" cy="8" r="7" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="3.5" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="1" fill={T.gold}/></svg>
-                <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.45)",lineHeight:1.6,margin:0}}>Your mission: Learn the secret of the world's greatest teachers — explain things simply.</p>
-              </div>
+              <p style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:"#F5EFE6",lineHeight:1.1}}>If you can explain it simply, you understand it.</p>
             </div>
             <div style={{position:"relative",zIndex:2,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
@@ -480,7 +474,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
               <div style={{position:"relative",width:110,height:110,display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <div style={{position:"absolute",inset:0,borderRadius:"50%",border:"1px solid rgba(200,168,76,0.2)",boxShadow:"0 0 24px rgba(200,168,76,0.08)"}}/>
                 <div style={{position:"absolute",inset:8,borderRadius:"50%",border:"0.5px solid rgba(200,168,76,0.1)"}}/>
-                <img src="/badge-queen.jpg" alt="Clarity Master" style={{width:80,height:80,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(200,168,76,0.35)",position:"relative",zIndex:1}}/>
+                <img src="/badge-queen.jpg" alt="Great Explainer" style={{width:80,height:80,borderRadius:"50%",objectFit:"cover",border:"1.5px solid rgba(200,168,76,0.35)",position:"relative",zIndex:1}}/>
               </div>
             </div>
           </div>

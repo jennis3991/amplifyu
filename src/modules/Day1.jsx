@@ -206,18 +206,11 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
 
       {/* YOUR MISSION */}
       <div style={{...cs.card}}>
-        <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
-          <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="1.5" fill={T.gold}/></svg>
-          </div>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Your Mission</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,margin:0}}>
-              In each round, you'll learn a different secret of clear explanation.<br/>
-              <strong>Spot</strong> what makes ideas confusing. <strong>Find</strong> what's missing. <strong>Turn</strong> complexity into simplicity.
-            </p>
-          </div>
-        </div>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your Mission</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,margin:0}}>
+          In each round, you'll learn a different secret of clear explanation.<br/>
+          <strong>Spot</strong> what makes ideas confusing. <strong>Find</strong> what's missing. <strong>Turn</strong> complexity into simplicity.
+        </p>
       </div>
 
       {/* CHALLENGE JOURNEY */}
@@ -247,12 +240,9 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
 
       {/* HOW YOU WIN */}
       <div style={{...cs.card}}>
-        <div style={{display:"flex",alignItems:"center",gap:isDesktop?24:12,flexWrap:"wrap"}}>
-          <div style={{flexShrink:0}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>How You Win</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0}}>Earn points for:</p>
-          </div>
-          <div style={{display:"flex",flex:1,gap:isDesktop?8:6,flexWrap:"wrap"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>How You Win</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,marginBottom:12}}>Earn points for:</p>
+        <div style={{display:"flex",gap:isDesktop?8:6,flexWrap:"wrap"}}>
             {[
               {label:"Clarity",     icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="1.5" fill={T.gold}/></svg>},
               {label:"Understanding",icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 3a5 5 0 014 8l-1 1v2H8v-2L7 11a5 5 0 014-8z" stroke={T.gold} strokeWidth="1.3"/><path d="M8 17h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
@@ -265,7 +255,6 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
               </div>
             ))}
           </div>
-        </div>
       </div>
 
       {/* REWARD */}
