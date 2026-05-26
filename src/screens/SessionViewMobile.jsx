@@ -434,6 +434,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           3:{Theory:"/day3-theory-tablet.jpg"},
           4:{Insight:"/day4-insight-tablet.jpg",Theory:"/day4-theory-tablet.jpg"},
           6:{Theory:"/d6-theory-tablet.jpg"},
+          8:{Insight:"/nt-insight-tablet.jpg","Theory 1":"/nt-theory1-tablet.jpg","Theory 2":"/nt-theory2-tablet.jpg"},
         };
         const src=STEP_IMGS[lesson.day]?.[step];
         const tabletSrc=TABLET_IMGS[lesson.day]?.[step];
