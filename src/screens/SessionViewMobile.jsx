@@ -428,11 +428,16 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           11:{Insight:"/d11-insight.jpg",Theory:"/d11-theory.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
         };
+        const TABLET_IMGS={
+          1:{Insight:"/day1-insight-tablet.jpg"},
+          2:{Insight:"/d2-insight-tablet.jpg",Practice:"/d2-practice-tablet.jpg"},
+        };
         const src=STEP_IMGS[lesson.day]?.[step];
+        const tabletSrc=TABLET_IMGS[lesson.day]?.[step];
         const useContainMob = lesson.day===11 && step==="Theory";
-        if(isD1 && step==="Insight" && src) return (
+        if(tabletSrc && src) return (
           <picture>
-            <source media="(min-width: 768px)" srcSet="/day1-insight-tablet.jpg"/>
+            <source media="(min-width: 768px)" srcSet={tabletSrc}/>
             <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:"center",display:"block",pointerEvents:"none"}}/>
           </picture>
         );
