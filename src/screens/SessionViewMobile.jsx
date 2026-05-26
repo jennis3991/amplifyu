@@ -1149,22 +1149,6 @@ T.goldDark : T2.text4,
               );
             })}
           </div>
-          {/* Pause Principle callout */}
-          <div style={{padding:"16px 18px",background:T2.cardDark,borderRadius:6,borderLeft:"3px solid "+T.gold,marginTop:8}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The Pause Principle</div>
-            <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.35,marginBottom:12}}>Silence sounds confident. Fillers sound uncertain.</p>
-            {[
-              "Fear of silence makes you fill — but a pause signals you're thinking, not struggling.",
-              "Rushing causes fillers: when your mouth outruns your brain, sounds fill the gap.",
-              "Lack of structure creates fillers: know your next point, and silence comes naturally.",
-              "The fix: when you feel the urge to fill, pause instead. Breathe. Then speak.",
-            ].map((b,i)=>(
-              <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:i<3?7:0}}>
-                <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
-                <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(255,255,255,0.6)",lineHeight:1.65,margin:0,fontWeight:300}}>{b}</p>
-              </div>
-            ))}
-          </div>
         </>
       )}
       {isD3 && step==="Theory" && (
@@ -1185,6 +1169,22 @@ T.goldDark : T2.text4,
             <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px 16px",marginBottom:10}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{p.label}</div>
               <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:400,margin:0}}>{p.body}</p>
+            </div>
+          ))}
+          {/* Pause Principle */}
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginTop:16,marginBottom:10}}>The Pause Principle</div>
+          <div style={{padding:"14px 16px",background:T2.cardDark,borderRadius:6,borderLeft:"3px solid "+T.gold,marginBottom:10}}>
+            <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.35,margin:0}}>Silence sounds confident. Fillers sound uncertain.</p>
+          </div>
+          {[
+            "Fear of silence makes you fill — but a pause signals you're thinking, not struggling.",
+            "Rushing causes fillers: when your mouth outruns your brain, sounds fill the gap.",
+            "Lack of structure creates fillers: know your next point, and silence comes naturally.",
+            "The fix is simple: when you feel the urge to fill, pause instead. Breathe. Then speak.",
+          ].map((b,i)=>(
+            <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",padding:"12px 14px",background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,marginBottom:8}}>
+              <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,margin:0,fontWeight:400}}>{b}</p>
             </div>
           ))}
         </>

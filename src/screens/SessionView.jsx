@@ -994,24 +994,6 @@ setAmbitionSaved(true); } catch {}
               );
             })}
           </div>
-          {/* Pause Principle callout — folded in from Theory */}
-          <div style={{padding:"20px 24px",background:T2.cardDark,borderRadius:6,borderLeft:"3px solid "+T.gold}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>The Pause Principle</div>
-            <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.35,marginBottom:14}}>Silence sounds confident. Fillers sound uncertain.</p>
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {[
-                "Fear of silence makes you fill — but a pause signals you're thinking, not struggling.",
-                "Rushing causes fillers: when your mouth outruns your brain, sounds fill the gap.",
-                "Lack of structure creates fillers: know your next point, and silence comes naturally.",
-                "The fix is simple: when you feel the urge to fill, pause instead. Breathe. Then speak.",
-              ].map((b,i)=>(
-                <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-                  <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:7}}/>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(255,255,255,0.65)",lineHeight:1.65,margin:0,fontWeight:300}}>{b}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       );
 
@@ -1035,8 +1017,26 @@ setAmbitionSaved(true); } catch {}
               </div>
             ))}
           </div>
-          <div style={{padding:"20px 24px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+          <div style={{padding:"20px 24px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:28}}>
             <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T.gold,lineHeight:1.65,margin:0}}>You don't have a speaking problem. You have a processing speed problem — and the pause is the solution.</p>
+          </div>
+          {/* Pause Principle */}
+          <div style={{fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The Pause Principle</div>
+          <div style={{padding:"20px 24px",background:T2.cardDark,borderRadius:4,borderLeft:"3px solid "+T.gold,marginBottom:16}}>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.35,margin:0}}>Silence sounds confident. Fillers sound uncertain.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {[
+              "Fear of silence makes you fill — but a pause signals you're thinking, not struggling.",
+              "Rushing causes fillers: when your mouth outruns your brain, sounds fill the gap.",
+              "Lack of structure creates fillers: know your next point, and silence comes naturally.",
+              "The fix is simple: when you feel the urge to fill, pause instead. Breathe. Then speak.",
+            ].map((b,i)=>(
+              <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:8}}/>
+                <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.65,margin:0,fontWeight:400}}>{b}</p>
+              </div>
+            ))}
           </div>
         </div>
       );
