@@ -327,12 +327,12 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>SIMULATION · DAY 1</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(32px,2.6vw,48px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.1, marginBottom:24, maxWidth:380 }}>See how clear you are— right now.</p>
+          <p style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.4vw,44px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.1, marginBottom:24, maxWidth:400 }}>Awareness is where every great communicator begins.</p>
           <div style={{ padding:"16px 20px", background:"rgba(138,158,132,0.08)", borderRadius:8, border:"0.5px solid rgba(138,158,132,0.2)", marginBottom:24, display:"flex", alignItems:"center", gap:12 }}>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="1.5" fill={T.gold}/></svg>
             <div>
               <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:3 }}>Today's Goal</div>
-              <div style={{ fontFamily:T.serif, fontSize:15, fontWeight:500, color:"rgba(245,239,230,0.85)" }}>Get your clarity baseline.</div>
+              <div style={{ fontFamily:T.serif, fontSize:15, fontWeight:500, color:"rgba(245,239,230,0.85)" }}>Establish your clarity baseline.</div>
             </div>
           </div>
         </div>

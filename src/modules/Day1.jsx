@@ -700,6 +700,20 @@ export function D1SimWidget({T, T2, isDesktop}) {
   if(phase==='intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
 
+      {/* MOTIVATING OPENER */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px",borderLeft:"2px solid "+T.gold}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why this matters</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,marginBottom:10}}>
+          The only way to improve your clarity is to first understand where you are right now. This is your baseline.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,marginBottom:10}}>
+          This is the same technique used by Fortune 500 leaders and elite communicators — and it works because <strong>awareness always comes before improvement.</strong>
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,margin:0}}>
+          You've already learned the theory and practised the skills. You're further along than you think. Now let's see where you are — and show you exactly where 14 days of this programme can take you.
+        </p>
+      </div>
+
       {/* HOW IT WORKS + 5-step journey */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>How it works</div>
@@ -727,8 +741,8 @@ export function D1SimWidget({T, T2, isDesktop}) {
       {/* Three info cards */}
       <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr":"1fr",gap:isDesktop?12:10}}>
         <div style={{...cs.card,padding:isDesktop?"18px 20px":"16px 18px"}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>What you'll discover</div>
-          {["Your natural communication habits","Where clarity gets lost","What you're already doing well","Your personal clarity baseline"].map((b,i)=>(
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>What you'll build</div>
+          {["A clear picture of how you communicate right now","Awareness of habits you didn't know you had","A personal clarity baseline to measure progress against","Proof of how far 14 days can take you"].map((b,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:i<3?8:0}}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{flexShrink:0,marginTop:2}}><circle cx="7" cy="7" r="6" stroke={T.gold} strokeWidth="1.1"/><circle cx="7" cy="7" r="2.5" stroke={T.gold} strokeWidth="1.1"/></svg>
               <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>{b}</p>
@@ -736,24 +750,24 @@ export function D1SimWidget({T, T2, isDesktop}) {
           ))}
         </div>
         <div style={{...cs.card,padding:isDesktop?"18px 20px":"16px 18px"}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>You can also</div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Your format</div>
           {[
-            {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke={T.gold} strokeWidth="1.2"/><path d="M10 7a3 3 0 016 0v3a3 3 0 01-6 0V7z" stroke={T.gold} strokeWidth="1.2"/></svg>,label:"Listen back anytime"},
-            {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10a7 7 0 0110.95-4.95L16 7M16 7V3M16 7h-4" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>,label:"Improve in real time"},
+            {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="2" stroke={T.gold} strokeWidth="1.2"/><path d="M3 9h14" stroke={T.gold} strokeWidth="1.2"/></svg>, label:"Choose a topic or speak freely — your call"},
+            {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="7" y="3" width="6" height="9" rx="3" stroke={T.gold} strokeWidth="1.2"/><path d="M4 10a6 6 0 0012 0M10 16v2M7 18h6" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round"/></svg>, label:"Speak naturally for up to 2 minutes"},
           ].map((item,i)=>(
             <div key={i} style={{display:"flex",gap:10,alignItems:"center",padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:6,marginBottom:i<1?8:0}}>
               {item.icon}
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text}}>{item.label}</span>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5}}>{item.label}</span>
             </div>
           ))}
         </div>
         <div style={{...cs.card,padding:isDesktop?"18px 20px":"16px 18px"}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Remember</div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>This is not a test</div>
           <div style={{width:40,height:40,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"1px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:12}}>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3l1.5 4H16l-3.5 2.5 1.5 4L10 11l-4 2.5 1.5-4L4 7h4.5z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/></svg>
           </div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:8}}>The goal is not perfection — it's awareness.</p>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>Self-awareness is the fastest route to better communication.</p>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:8}}>We're building awareness, not judging performance.</p>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>Some communication habits are deeply conditioned. This session reveals them — so the next 14 days can change them.</p>
         </div>
       </div>
 
