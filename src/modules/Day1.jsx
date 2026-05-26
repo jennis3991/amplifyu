@@ -618,6 +618,8 @@ export function D1SimWidget({T, T2, isDesktop}) {
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
 
   const [audioURL, setAudioURL] = useState(null);
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef(null);
   const recRef = useRef(null);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -902,8 +904,6 @@ export function D1SimWidget({T, T2, isDesktop}) {
     const WBARS=Array.from({length:60},(_,i)=>Math.max(0.08,Math.min(1,Math.sin(i/59*Math.PI)*0.65+0.25+Math.sin(i*4.7)*0.13+Math.cos(i*2.3)*0.11)));
     const MARKERS=[{pos:0.20,label:"Filler cluster",color:"#C8A46A"},{pos:0.43,label:"Ramble moment",color:"#B05C4A"},{pos:0.65,label:"Strongest point",color:"#527060"},{pos:0.87,label:"Unclear section",color:"#B05C4A"}];
     const scoreColor=s=>s>=80?T.gold:s>=70?"#7A9E84":T2.text3;
-    const [playing,setPlaying]=useState(false);
-    const audioRef=useRef(null);
     function togglePlay(){
       if(!audioURL){setPlaying(p=>!p);return;}
       if(!audioRef.current)audioRef.current=new Audio(audioURL);
