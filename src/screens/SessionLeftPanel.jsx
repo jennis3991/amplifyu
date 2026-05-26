@@ -306,11 +306,6 @@ export function SessionLeftPanel({
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>THE FEYNMAN CHALLENGE™</div>
           <p style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.4vw,44px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.1, marginBottom:20, maxWidth:400 }}>If you can explain it simply, you understand it.</p>
           <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.45)", marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:15, color:"rgba(245,239,230,0.6)", lineHeight:1.6, marginBottom:20 }}>Anyone can sound complicated.<br/>Great communicators make ideas easy to understand.</p>
-          <div style={{ display:"flex", alignItems:"flex-start", gap:10 }}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,marginTop:2}}><circle cx="8" cy="8" r="7" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="3.5" stroke={T.gold} strokeWidth="1.2"/><circle cx="8" cy="8" r="1" fill={T.gold}/></svg>
-            <p style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.5)", lineHeight:1.65, margin:0 }}>Your mission: Learn the secret used by the world's greatest teachers — explain things simply.</p>
-          </div>
         </div>
         {/* Badge */}
         <div style={{ position:"relative", zIndex:2, display:"flex", justifyContent:"center", alignItems:"center", flex:1, marginTop:16 }}>
