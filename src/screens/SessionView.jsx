@@ -1621,7 +1621,7 @@ setAmbitionSaved(true); } catch {}
               );
             })}
           </div>
-          <p style={{fontFamily:T.sans,fontSize:16,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic"}}>The clearest communicator is often the most influential.</p>
+          <p style={{fontFamily:T.sans,fontSize:16,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic"}}>A clear message makes people lean in.</p>
         </div>
       );
 
