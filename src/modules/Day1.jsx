@@ -191,7 +191,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           </div>
           <div>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Your Mission</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.65,margin:0}}>
               In each round, you'll face confusing workplace language. Your challenge: <strong>spot what's unclear</strong>, <strong>rewrite it simply</strong>, and <strong>think under pressure</strong>.
             </p>
           </div>
@@ -214,7 +214,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
                 <div style={{width:isDesktop?40:32,height:isDesktop?40:32,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.35)"),background:i===0?"rgba(138,158,132,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>
                   <span style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:i===0?T.gold:T2.text3}}>{r.n}</span>
                 </div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?11:9,color:T2.text3,textAlign:"center",lineHeight:1.4,maxWidth:isDesktop?72:56}}>Round {r.n}<br/><span style={{fontWeight:500,color:T2.text2}}>{r.label}</span></div>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?12:10,color:T2.text3,textAlign:"center",lineHeight:1.4,maxWidth:isDesktop?72:56}}>Round {r.n}<br/><span style={{fontWeight:500,color:T2.text2}}>{r.label}</span></div>
               </div>
               {i<4 && <div style={{height:1,width:isDesktop?16:8,background:"rgba(138,158,132,0.25)",flexShrink:0,marginBottom:24}}/>}
             </div>
@@ -225,7 +225,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       {/* HOW YOU WIN */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>How You Win</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:14}}>AI scores your responses on:</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text3,marginBottom:14}}>AI scores your responses on:</p>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:8}}>
           {[
             {label:"Clarity",   icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="1.5" fill={T.gold}/></svg>},
@@ -235,7 +235,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           ].map((s,i)=>(
             <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,padding:"12px 8px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border}}>
               {s.icon}
-              <span style={{fontFamily:T.sans,fontSize:11,color:T2.text,fontWeight:500}}>{s.label}</span>
+              <span style={{fontFamily:T.serif,fontSize:12,color:T2.text,fontWeight:500}}>{s.label}</span>
             </div>
           ))}
         </div>
@@ -247,11 +247,11 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
         <div style={{flex:1}}>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>The Reward</div>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:4}}>Clarity Master</div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,lineHeight:1.5}}>Score 85% or higher to unlock the Clarity Master badge.</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text3,margin:0,lineHeight:1.5}}>Score 85% or higher to unlock the Clarity Master badge.</p>
         </div>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"10px 14px",background:"rgba(138,158,132,0.06)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",flexShrink:0}}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.5 4.5H15l-3.75 2.75 1.5 4.5L9 11l-3.75 2.75 1.5-4.5L3 6.5h4.5z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/></svg>
-          <span style={{fontFamily:T.sans,fontSize:9,color:T2.text3,textAlign:"center",lineHeight:1.4}}>Top achievers<br/>unlock exclusive<br/>recognition.</span>
+          <span style={{fontFamily:T.serif,fontSize:10,color:T2.text3,textAlign:"center",lineHeight:1.4}}>Top achievers<br/>unlock exclusive<br/>recognition.</span>
         </div>
       </div>
 
