@@ -435,6 +435,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           4:{Insight:{src:"/day4-insight-tablet.jpg"},Theory:{src:"/day4-theory-tablet.jpg"}},
           6:{Theory:{src:"/d6-theory-tablet.jpg"}},
           8:{Insight:{src:"/nt-insight-tablet.jpg"},"Theory 1":{src:"/nt-theory1-tablet.jpg"},"Theory 2":{src:"/nt-theory2-tablet.jpg",pos:"center 68%"}},
+          10:{Theory:{src:"/performance-iceberg-tablet.jpg"}},
         };
         const src=STEP_IMGS[lesson.day]?.[step];
         const tabletEntry=TABLET_IMGS[lesson.day]?.[step];
