@@ -250,7 +250,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
         <div style={{display:"flex",alignItems:"center",gap:isDesktop?24:12,flexWrap:"wrap"}}>
           <div style={{flexShrink:0}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>How You Win</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0}}>AI scores your responses on:</p>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0}}>Earn points for:</p>
           </div>
           <div style={{display:"flex",flex:1,gap:isDesktop?8:6,flexWrap:"wrap"}}>
             {[
