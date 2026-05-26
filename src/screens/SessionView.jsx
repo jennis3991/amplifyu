@@ -994,40 +994,49 @@ setAmbitionSaved(true); } catch {}
               );
             })}
           </div>
-          <p style={{fontFamily:T.sans,fontSize:16,fontStyle:"italic",color:T.gold,lineHeight:1.7,fontWeight:400}}>The pause is not empty. It's where confidence lives.</p>
+          {/* Pause Principle callout — folded in from Theory */}
+          <div style={{padding:"20px 24px",background:T2.cardDark,borderRadius:6,borderLeft:"3px solid "+T.gold}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>The Pause Principle</div>
+            <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.35,marginBottom:14}}>Silence sounds confident. Fillers sound uncertain.</p>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {[
+                "Fear of silence makes you fill — but a pause signals you're thinking, not struggling.",
+                "Rushing causes fillers: when your mouth outruns your brain, sounds fill the gap.",
+                "Lack of structure creates fillers: know your next point, and silence comes naturally.",
+                "The fix is simple: when you feel the urge to fill, pause instead. Breathe. Then speak.",
+              ].map((b,i)=>(
+                <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                  <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:7}}/>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(255,255,255,0.65)",lineHeight:1.65,margin:0,fontWeight:300}}>{b}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       );
 
       if (step === "Theory") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The Pause Principle</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The Cognitive Load Principle</h2>
           <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
-            <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>Silence sounds confident. Fillers sound uncertain.</p>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>Fillers happen when your brain is multitasking faster than it can think.</p>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
             {[
-              {label:"Fear of Silence",   body:"You think pauses make you look unprepared. Reality: pauses make you look thoughtful."},
-              {label:"Rushing",           body:"You speak faster than you think. Your mouth outruns your brain."},
-              {label:"Lack of Structure", body:"You don't know where you're going. Fillers buy you time to figure it out."},
-              {label:"The Fix",           body:"Replace fillers with pauses. Breathe. Think. Then speak."},
+              {label:"Processing Bottleneck",  body:"Speaking, thinking, and organising ideas all compete for the same mental bandwidth — and something has to give."},
+              {label:"The Gap Filler Effect",   body:"When your next thought isn't ready, filler words buy your brain time. They're a coping mechanism, not a character flaw."},
+              {label:"Why Pauses Work",         body:"A pause gives your brain the processing time it needs — without adding noise. Silence is your brain catching up cleanly."},
+              {label:"The Fix",                 body:"Slow the thought process down. Structure your idea before you speak. Silence is always cleaner than a filler."},
             ].map((p,i)=>(
               <div key={i} style={{padding:"16px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
                 <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>{p.label}</div>
-                <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{p.body}</p>
+                <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{p.body}</p>
               </div>
             ))}
           </div>
-          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:20}}>
-            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>See It In Action</div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-              <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <p style={{fontFamily:T.sans,fontSize:16,fontStyle:"italic",color:T.gold,lineHeight:1.7,fontWeight:400,margin:0}}>A 2-second pause feels like 10 seconds to you. To your audience? Natural. Powerful. Intentional.</p>
-              </div>
-              <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <p style={{fontFamily:T.sans,fontSize:16,fontStyle:"italic",color:T.gold,lineHeight:1.7,fontWeight:400,margin:0}}>When you feel the urge to say "um," pause instead. The pause is not your enemy. It's your tool.</p>
-              </div>
-            </div>
+          <div style={{padding:"20px 24px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T.gold,lineHeight:1.65,margin:0}}>You don't have a speaking problem. You have a processing speed problem — and the pause is the solution.</p>
           </div>
         </div>
       );
