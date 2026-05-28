@@ -422,7 +422,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         const STEP_IMGS={
           1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           2:{Insight:"/d2-insight.jpg",Theory:"/d2-theory.jpg",Practice:"/d2-practice.jpg",Review:"/review-chair.jpg"},
-          3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+          3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Review:"/review-chair.jpg"},
           4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           5:{Insight:"/d5-insight.jpg",Theory:"/d5-theory.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           6:{Insight:"/d6-insight.jpg",Theory:"/d6-theory.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
@@ -472,6 +472,36 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4 minutes</span></span>
+              </div>
+            </div>
+          </div>
+        );
+        // D3 Practice — cinematic dark panel
+        if(isD3 && step==="Practice") return (
+          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Filler-Free Challenge™</div>
+              <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:14}}>Silence often sounds more confident than fillers.</p>
+              <div style={{display:"flex",alignItems:"center",gap:6}}>
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4 minutes</span></span>
+              </div>
+            </div>
+          </div>
+        );
+        // D3 Simulation — cinematic dark panel
+        if(isD3 && step==="Simulation") return (
+          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Simulation · Day 3</div>
+              <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:14}}>Speak without filling the silence.</p>
+              <div style={{display:"flex",alignItems:"center",gap:6}}>
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Teach me how to make your favourite meal.</span>
               </div>
             </div>
           </div>
@@ -2267,7 +2297,7 @@ something you can use in real life.</p>
           <CoachWidget lesson={lesson} scenario={null}/>
         </>
       )}
-       {!isD1 && !isD2 && !isD6 && !isD7 && !isD11 && !isD12 && step==="Simulation" && (
+       {!isD1 && !isD2 && !isD3 && !isD6 && !isD7 && !isD11 && !isD12 && step==="Simulation" && (
         <>
           {(()=>{
             const scenarios = roleId ? getScenariosForDay(roleId,
