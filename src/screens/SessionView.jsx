@@ -13,7 +13,7 @@ import { StoryBuilderWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
-import { D4SimFeedback, D4MobileSplit, D4MobileSim } from '../modules/Day4.jsx';
+import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget } from '../modules/Day4.jsx';
 import { D1ClarityChallenge, D1SimWidget } from '../modules/Day1.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget } from '../modules/Day5.jsx';
@@ -1298,11 +1298,13 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Practice") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-
-          {/* Header */}
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.2,marginBottom:12}}>The Sentence Surgery Toolkit</h2>
-          <p style={{fontFamily:T.sans,fontSize:17,color:T2.text2,lineHeight:1.6,marginBottom:48,fontWeight:300}}>Three exercises to cut without losing meaning.</p>
-
+          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Short Sentences Challenge</div>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.2,marginBottom:32}}>Short sentences give ideas space to land.</h2>
+          <D4PracticeWidget T={T} T2={T2} isDesktop={true}/>
+        </div>
+      );
+      if (step === "Practice_OLD_UNUSED_D4") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           {/* Exercise 1 — The 15-Word Rule */}
           <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"40px",marginBottom:24}}>
             <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Exercise 1</div>

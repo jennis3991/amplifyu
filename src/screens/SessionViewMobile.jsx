@@ -7,7 +7,7 @@ import { StoryBuilderWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
-import { D4SimFeedback, D4MobileSplit, D4MobileSim } from '../modules/Day4.jsx';
+import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget } from '../modules/Day4.jsx';
 import { D1MobileJargonSwap, D1MobileSim, D1ClarityChallenge, D1SimWidget, D1SimFeedback } from '../modules/Day1.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget } from '../modules/Day5.jsx';
@@ -38,6 +38,8 @@ export function MobileSessionView({
   const d1NavFnRef = useRef(null);
   const [d3NavLabel, setD3NavLabel] = useState(null);
   const d3NavFnRef = useRef(null);
+  const [d4NavLabel, setD4NavLabel] = useState(null);
+  const d4NavFnRef = useRef(null);
 
   const D10_EXAMPLES_DATA = [
   { id:"priya",     title:"The Invisible Fixer",        sub:"Same performance. No visibility.",  lesson:"Performance without communication is philanthropy." },
@@ -484,6 +486,21 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Filler-Free Challenge™</div>
               <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:14}}>Silence often sounds more confident than fillers.</p>
+              <div style={{display:"flex",alignItems:"center",gap:6}}>
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4 minutes</span></span>
+              </div>
+            </div>
+          </div>
+        );
+        // D4 Practice — cinematic dark panel
+        if(isD4 && step==="Practice") return (
+          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Short Sentences Challenge™</div>
+              <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:14}}>Short sentences give ideas space to land.</p>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4 minutes</span></span>
@@ -1341,23 +1358,7 @@ T.goldDark : T2.text4,
       )}
       {isD4 && step==="Practice" && (
         <>
-          <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Sentence Surgery Toolkit</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Practical exercises to cut without losing meaning.</p>
-          <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
-            <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>Exercise 1: The 15-Word Rule</div>
-            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:12}}>Paste a long sentence. Get it split into short ones under 15 words each.</p>
-            <D4MobileSplit/>
-          </div>
-          <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"20px",marginBottom:12}}>
-            <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>Top Rules</div>
-            {["One idea per sentence. Full stop.","If you see 'and,' split the sentence.","Target: 15 words or fewer.","Cut every word that doesn't add meaning."].map((tip,i,arr)=>(
-              <div key={i} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none",alignItems:"flex-start"}}>
-                <span style={{color:T.gold,fontSize:14,flexShrink:0,fontWeight:700}}>✓</span>
-                <span style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,fontWeight:400}}>{tip}</span>
-              </div>
-            ))}
-          </div>
+          <D4PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD4NavLabel} onNavFn={d4NavFnRef}/>
         </>
       )}
       {isD4 && step==="Simulation" && (
@@ -2522,23 +2523,24 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
             onClick={()=>{
               if (isD1 && step==="Practice" && d1NavFnRef.current) { d1NavFnRef.current(); }
               else if (isD3 && step==="Practice" && d3NavFnRef.current) { d3NavFnRef.current(); }
+              else if (isD4 && step==="Practice" && d4NavFnRef.current) { d4NavFnRef.current(); }
               else { setIdx(i=>i+1); }
             }}
-            disabled={(isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)}
+            disabled={(isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)}
             style={{
               flex:1,
               padding:"18px 20px",
               borderRadius:14,
               border:"none",
-              background: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null))
+              background: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null))
                 ? "rgba(44,36,22,0.18)"
                 : idx===0
                   ? "linear-gradient(135deg,"+T.gold+" 0%,"+T.goldDark+" 100%)"
                   : "linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
               color:"white",
               fontSize:15,fontWeight:700,
-              cursor: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)) ? "not-allowed" : "pointer",
-              opacity: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)) ? 0.45 : 1,
+              cursor: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)) ? "not-allowed" : "pointer",
+              opacity: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)) ? 0.45 : 1,
               display:"flex",alignItems:"center",justifyContent:"center",gap:10,
               boxShadow:idx===0?"0 4px 16px rgba(138,158,132,0.35)":"0 4px 16px rgba(17,28,46,0.3)",
               letterSpacing:"0.2px",
@@ -2547,7 +2549,9 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
               ? d1NavLabel
               : isD3 && step==="Practice" && d3NavLabel
                 ? d3NavLabel
-                : isNT
+                : isD4 && step==="Practice" && d4NavLabel
+                  ? d4NavLabel
+                  : isNT
                   ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Practice":NAV_LABELS[idx])
                   : isD7 && idx===1
                     ? "See your foundations"
