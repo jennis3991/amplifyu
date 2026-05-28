@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { T } from '../theme.js';
-import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_FIVE_PS, D9_CARDS, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS } from '../data.js';
+import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_FIVE_PS, D9_CARDS, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
 import { DeliveryCoachWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget } from '../modules/Day8.jsx';
@@ -13,6 +13,7 @@ import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget } from '../modules/Day5.jsx';
 import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
 import { D11PracticeWidget, D11SimWidget } from '../modules/Day11.jsx';
+import { D12PracticeWidget, D12SimWidget } from '../modules/Day12.jsx';
 import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
 import { Scene, OBScene } from '../scenes.jsx';
 import { Timer } from '../components/Timer.jsx';
@@ -21,14 +22,14 @@ import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 
 export function MobileSessionView({
   T2, step, STEPS, idx, setIdx, lesson, isDone, onComplete, onBack,
-  isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isNT,
+  isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isNT,
   selSc, setSelSc, exitConfirm, setExitConfirm,
   accordionOpen, setAccordionOpen, savedBooks, saveBook,
   setNtStory, d9Script, setD9Script,
   d1MobCard, setD1MobCard, d2MobCard, setD2MobCard,
   d3MobCard, setD3MobCard, d4MobCard, setD4MobCard,
   d5MobCard, setD5MobCard, d6MobCard, setD6MobCard,
-  d7MobCard, setD7MobCard, d10MobCard, setD10MobCard, d11MobCard, setD11MobCard, ntMobCard, setNtMobCard,
+  d7MobCard, setD7MobCard, d10MobCard, setD10MobCard, d11MobCard, setD11MobCard, d12MobCard, setD12MobCard, ntMobCard, setNtMobCard,
   activeSc, scenarios, ambitionDraft, saveAmbition, ambitionSaved,
   roleId, activeRole, swipeRef, note, saveNote, checks, setChecks,
   ntOpenCard, setNtOpenCard, d9OpenCard, setD9OpenCard, ntStory,
@@ -426,6 +427,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           7:{Insight:"/day10-insight.jpg",Theory:"/d7-habit-loop.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           10:{Insight:"/day10-insight.jpg",Theory:"/performance-iceberg.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           11:{Insight:"/d11-insight.jpg",Theory:"/d11-theory.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
+          12:{Insight:"/day10-insight.jpg",Theory:"/performance-iceberg.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
         };
         // D1 Simulation — cinematic dark panel matching desktop left panel
@@ -2140,7 +2142,108 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <D11SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
-      {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && step==="Practice" && (
+      {isD12 && step==="Insight" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Why Presence Matters</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Presence Is How Communication Feels</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Body language shapes how communication feels — helping people feel more connected, engaged, and at ease.</p>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Explore each card to learn more →</p>
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {D12_FACTS.map((n,i)=>{
+              const open=d12MobCard===("d12i"+i);
+              return (
+                <div key={i} onClick={()=>setD12MobCard(open?null:"d12i"+i)}
+                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 10px":0}}>{n.sub}</p>
+                  {open && (<div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
+                    {n.bullets.map((b,j)=>(<div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>))}
+                  </div>)}
+                </div>
+              );
+            })}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontWeight:400,fontStyle:"italic",marginTop:8}}>"Presence is how communication feels."</p>
+        </>
+      )}
+      {isD12 && step==="Theory" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Nonverbal Congruence</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>The brain constantly compares words with body language — when they align, communication feels more authentic and clear.</p>
+          <div style={{padding:"14px 16px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:16}}>
+            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"When communication feels safe, the brain becomes more open to the message."</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
+            {[
+              {title:"Thin Slicing",      body:"The brain forms rapid impressions from nonverbal cues before language is fully processed."},
+              {title:"Visual Processing", body:"The brain processes visual signals faster than spoken words."},
+              {title:"Gesture & Memory",  body:"Purposeful gestures improve listener comprehension and information retention."},
+              {title:"Trust & Congruence",body:"Communication feels more believable when verbal and nonverbal signals align consistently."},
+            ].map((c,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{c.title}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:400,margin:0}}>{c.body}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic",marginTop:4}}>"The body helps people understand the message."</p>
+        </>
+      )}
+      {isD12 && step==="Example" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Presence in Action</div>
+          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>The Strongest Communicators Create Calm, Clarity, and Connection</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>
+            {D12_EXAMPLES.map(card=>{
+              const open=d12MobCard===card.id;
+              return (
+                <div key={card.id} onClick={()=>setD12MobCard(open?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px",cursor:"pointer",transition:"border-color 0.2s"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                    <div style={{flex:1}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{card.name}</div>
+                      <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,lineHeight:1.2}}>{card.headline}</div>
+                    </div>
+                    <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  </div>
+                  {open && (
+                    <div style={{marginTop:12,paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,marginBottom:12,fontWeight:300}}>{card.body}</p>
+                      <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}}>
+                        {card.signals.map((s,i)=>(
+                          <span key={i} style={{padding:"3px 10px",borderRadius:20,border:"0.5px solid rgba(138,158,132,0.3)",background:"rgba(138,158,132,0.06)",fontFamily:T.sans,fontSize:11,color:T2.text3}}>{s}</span>
+                        ))}
+                      </div>
+                      <div style={{padding:"12px 14px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                        <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{card.lesson}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Great communicators create calm, clarity, and connection."</p>
+        </>
+      )}
+      {isD12 && step==="Practice" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Presence Challenge</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Seven rounds building gestures, posture, eye contact, expression, and grounded energy.</p>
+          <D12PracticeWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {isD12 && step==="Simulation" && (
+        <>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Presence is Visible</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Record yourself. Review your presence. Receive personalised coaching on how you communicate physically.</p>
+          <D12SimWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && !isD12 && step==="Practice" && (
         <>
           <div
 style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
@@ -2161,7 +2264,7 @@ something you can use in real life.</p>
           <CoachWidget lesson={lesson} scenario={null}/>
         </>
       )}
-       {!isD1 && !isD2 && !isD6 && !isD7 && !isD11 && step==="Simulation" && (
+       {!isD1 && !isD2 && !isD6 && !isD7 && !isD11 && !isD12 && step==="Simulation" && (
         <>
           {(()=>{
             const scenarios = roleId ? getScenariosForDay(roleId,
@@ -2233,6 +2336,31 @@ strokeLinecap="round"/></svg>
           <CoachWidget lesson={lesson} scenario={(roleId ? 
 getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[selSc] || 
 (roleId ? getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[0]}/>
+        </>
+      )}
+      {isD12 && step==="Review" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Review & Reflect</div>
+          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Strong Communication Is Experienced Physically As Well As Verbally</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
+            {[
+              {title:"Presence Shapes Perception",   body:"Body language influences how communication feels before words are fully processed."},
+              {title:"Gestures Improve Understanding",body:"Visual communication helps people process and remember ideas."},
+              {title:"Calm Presence Creates Clarity", body:"Grounded movement helps communication feel calm, intentional, and engaging."},
+              {title:"Congruence Builds Connection",  body:"Aligned words, tone, and body language help communication feel more emotionally clear and authentic."},
+            ].map((c,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{c.title}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:400,margin:0}}>{c.body}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px",marginBottom:16}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Suggested Exploration</div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:400,marginBottom:8}}>Watch: Keanu Reeves interviews · Kate Winslet interviews · Vinh Giang communication clips</p>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:400,margin:0}}>Observe: gestures · pauses · posture · facial expression · grounded energy · emotional congruence</p>
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Great communicators don't just speak clearly. They communicate presence."</p>
         </>
       )}
        {step==="Review" && (

@@ -341,18 +341,18 @@ export const LESSONS = [
    promise:"Your image is already being built, in every room you enter. This is where you take control.",
    teaser:"Discover how to shape the way others perceive you — with intentional signals, consistent behaviour, and stories that make your brand unforgettable."},
 
-  {day:12,week:2,title:"Executive Presence",tag:"Presence",scene:"presence",comingSoon:true,
-   quote:"Presence is not what you project. It's what others feel when you enter.",
-   insight:"Executive presence is the combination of clarity, conviction, and composure that signals you belong in the room — and that you're ready for more. It is learnable. It is buildable. And it starts with how you communicate.",
-   pieLink:"Image: Presence is the ultimate image signal — and the one most difficult to fake. The good news: every tool in AmplifyU builds it.",
-   phrases:["My view is…","Let me be direct…","Here is what I believe…"],
-   bad:"[Deferring, hedging, and qualifying in rooms where directness would serve you better]",
-   good:"[Speaking with calm authority — clear on your position, open to challenge, secure in your expertise]",
-   practice:"Coming soon — this module is in development.",
-   scenarios:["A room where you need to own your authority","A presentation to senior leadership","Any moment where you need to be the expert in the room"],
-   review:["Did I project calm conviction today?","Was I direct without being blunt?","Did I take up space appropriately?"],
-   promise:"Executive presence is not a personality trait. It is a set of skills. You are building them.",
-   teaser:"Coming soon — learn the signals of executive presence and how to build them deliberately in every room you enter."},
+  {day:12,week:2,title:"Presence",tag:"Presence",scene:"presence",subtitle:"Communicate Without Words",
+   quote:"People don't just hear confidence. They see it.",
+   insight:"Presence is how communication feels. Posture, gestures, eye contact, movement, and facial expression all shape how confidence, warmth, and connection are experienced — before a single word lands.",
+   pieLink:"Image: Presence is the ultimate image signal — the physical expression of everything you've been building. When your body communicates what your words say, people feel it.",
+   phrases:["Let me show you what I mean…","I want to be present with you on this…","Here's what I'm seeing…"],
+   bad:"[Crossing arms, avoiding eye contact, speaking faster than your thoughts — physical signals that contradict your message]",
+   good:"[Grounded posture, calm gestures, steady eye contact — physical signals that make your communication feel safe, confident, and real]",
+   practice:"The Presence Challenge — 7 rounds building gestures, posture, eye contact, expression, and grounded energy.",
+   scenarios:["A high-stakes presentation where your energy matters as much as your content","A difficult conversation where calm presence changes the outcome","Any moment where how you show up is as important as what you say"],
+   review:["Did my body language support my message today?","Was I physically calm and grounded in difficult moments?","Did I make people feel at ease through my presence?"],
+   promise:"Presence is not a personality trait. It is a set of physical habits. You are building them.",
+   teaser:"Learn how gestures, posture, eye contact, and calm energy shape how every conversation you have is experienced."},
 
   {day:13,week:2,title:"Visible Ambition",tag:"Exposure",scene:"pie",theoryImageDay:12,
    quote:"The most powerful thing you can do is let the right people know where you're going.",
@@ -779,6 +779,45 @@ export const D11_INGREDIENTS = [
   {n:"Familiarity",  tagline:"Repeated exposure builds trust",  psych:"Mere Exposure Effect",   psychBody:"The more often people encounter something, the more positively they tend to feel about it.",                                                                                                              body:"People trust what feels familiar. Series. Podcasts. Regular posts. Repeated appearances. Consistent presence — not one big moment.",  takeaway:"Consistency creates comfort."},
   {n:"Polarity",     tagline:"Have a point of view",            psych:"Von Restorff Effect",     psychBody:"Things that stand out are remembered more easily than things that blend in. Distinctiveness is memorable.",                                                                                              body:"Memorable brands stand for something. They have opinions, preferences, perspectives — not to provoke, but to be distinct. Neutrality is forgettable.",  takeaway:"Being memorable requires definition."},
 ];
+// ── D12 shared constants ──────────────────────────────────────────────────
+export const D12_FACTS = [
+  { word:"Psychological Safety", sub:"Calm, open communication helps people feel more comfortable and receptive.",
+    bullets:["Research shows people respond positively to warm expression, relaxed posture, and open body language.","Communication feels easier to connect with when physical signals feel calm and aligned."] },
+  { word:"Gestures", sub:"Purposeful gestures help ideas feel clearer and easier to remember.",
+    bullets:["Studies show hand gestures improve comprehension, engagement, and memory.","Visual communication helps the brain process information more effectively."] },
+  { word:"Calm Presence", sub:"Calm movement helps communication feel grounded and engaging.",
+    bullets:["Controlled movement is associated with composure, confidence, and clarity.","Reducing unnecessary movement helps listeners focus more easily on the message."] },
+  { word:"Congruence", sub:"Communication feels strongest when words, tone, and body language align.",
+    bullets:["Aligned communication makes messages feel more natural, believable, and emotionally clear.","The brain naturally processes visual and verbal communication together."] },
+];
+
+export const D12_EXAMPLES = [
+  { id:"keanu", name:"Keanu Reeves", role:"Actor · Cultural Icon",
+    headline:"Quiet Confidence",
+    body:"In interviews discussing grief, success, and human connection, Keanu Reeves often pauses before answering, maintains calm eye contact, and speaks with grounded stillness. His gestures are minimal but intentional. His posture stays relaxed and open, which makes his communication feel thoughtful and emotionally genuine.",
+    signals:["Calm pauses","Grounded posture","Soft eye contact","Relaxed shoulders","Deliberate movement"],
+    result:"His communication feels calm, authentic, and emotionally grounded.",
+    lesson:"Stillness can create powerful presence." },
+  { id:"kate", name:"Kate Winslet", role:"Actor",
+    headline:"Expressive Warmth",
+    body:"During interviews and acceptance speeches, Kate Winslet uses expressive facial reactions, open gestures, warm laughter, and responsive listening. When telling emotional stories, her posture and expression visibly support the feeling behind her words, making her communication feel emotionally aligned and deeply human.",
+    signals:["Expressive gestures","Warm facial expression","Responsive listening","Emotional congruence","Relaxed movement"],
+    result:"Her communication feels intelligent, warm, relatable, and emotionally engaging.",
+    lesson:"Warmth and expression create connection." },
+  { id:"gestures", name:"Gestures Create Clarity", role:"Communication Principle",
+    headline:"People understand ideas faster when they can see them.",
+    body:"Great communicators use their hands to reinforce scale, contrast, direction, growth, and emotion. This helps listeners visually process ideas while listening — messages become easier to follow and remember.",
+    signals:["Scale","Contrast","Direction","Growth","Emotion"],
+    result:"Messages become easier to follow and remember.",
+    lesson:"People understand ideas faster when they can see them." },
+  { id:"grounded", name:"Grounded Energy", role:"Communication Principle",
+    headline:"Calm energy shapes how conversations feel.",
+    body:"In difficult conversations, calm communicators often slow their movement, soften their posture, and maintain steady presence. This physical calmness influences the emotional tone of the conversation itself — communication feels calmer, clearer, and more emotionally safe.",
+    signals:["Slowed movement","Softened posture","Steady presence","Calm breathing","Grounded energy"],
+    result:"Communication feels calmer, clearer, and more emotionally safe.",
+    lesson:"Calm energy shapes how conversations feel." },
+];
+
  // ── D2 shared constants (used by both desktop + mobile) ───────────────────
 
 export const D2_INSIGHT_CARDS = [

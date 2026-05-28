@@ -13,7 +13,7 @@ const LP_BODY = { fontFamily: T.serif, fontStyle: "italic", color: "rgba(245,239
 
 export function SessionLeftPanel({
   T2, step, lesson, isDone,
-  isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isNT,
+  isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isNT,
   selSc, setSelSc, activeSc, scenarios, activeRole,
 }) {
   const [imgZoom, setImgZoom] = useState(false);
