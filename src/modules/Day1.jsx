@@ -44,7 +44,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
      feedback:"Great explanations answer the next obvious question. Why does exercise make you healthier? That's the gap."},
     {id:4, type:'explain', label:'Round 4', name:'Explain It Simply', pts:30,
      task:'Teach a curious 8-year-old the lifecycle of a caterpillar.',
-     hint:'One sentence · No jargon · Make it easy to picture',
+     hint:'No jargon · Make it easy to picture',
      placeholder:'Inside its cocoon, the caterpillar…'},
   ];
 
