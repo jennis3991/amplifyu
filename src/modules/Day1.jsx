@@ -208,7 +208,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       <div style={{...cs.card}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your Mission</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,margin:0}}>
-          In each round, you'll learn a different secret of clear explanation.<br/>
+          Next, let's master how clarity makes ideas stick.<br/>
           <strong>Spot</strong> what makes ideas confusing. <strong>Find</strong> what's missing. <strong>Turn</strong> complexity into simplicity.
         </p>
       </div>
