@@ -75,7 +75,11 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
       title:"FILLERS VS PAUSES",
       prompt:"Read these two versions out loud.",
       quote:null,
-      instruction:'Version A: "So um… I think we should probably like… start next week."\n\nVersion B: "I think we should start next week." [pause] "Then review progress together."',
+      instruction:null,
+      versions:[
+        {label:"Version A", text:'"So um… I think we should probably like… start next week."'},
+        {label:"Version B", text:'"I think we should start next week." [pause] "Then review progress together."'},
+      ],
       question:"Which version feels calmer, clearer, and more confident?",
       options:[
         {label:"Version A",correct:false},
@@ -94,10 +98,10 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
     },
     {
       title:"REMOVE THE NOISE",
-      prompt:'Which is the clean version of: "So I was like really excited because um the idea was basically finally working."',
-      quote:null,
+      prompt:"Which is the clean version?",
+      quote:'"So I was like really excited because um the idea was basically finally working."',
       instruction:null,
-      question:"Which version is cleaner?",
+      question:null,
       options:[
         {label:"So I was like really excited because um the idea was basically finally working.",correct:false},
         {label:"I was really excited because the idea was finally working.",correct:true},
@@ -212,9 +216,19 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
 
         <div style={cs.card}>
           <div style={cs.label}>{r.title}</div>
-          {r.prompt && <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:10,lineHeight:1.5}}>{r.prompt}</p>}
-          {r.quote && <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 10px"}}>{r.quote}</p>}
-          {r.instruction && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:r.quote2?"0 0 10px":0,whiteSpace:"pre-line"}}>{r.instruction}</p>}
+          {r.prompt && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:12,lineHeight:1.5}}>{r.prompt}</p>}
+          {r.quote && <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 12px"}}>{r.quote}</p>}
+          {r.versions && (
+            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>
+              {r.versions.map((v,i)=>(
+                <div key={i} style={{padding:"12px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{v.label}</div>
+                  <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,margin:0}}>{v.text}</p>
+                </div>
+              ))}
+            </div>
+          )}
+          {r.instruction && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:r.quote2?"0 0 12px":0}}>{r.instruction}</p>}
           {r.quote2 && <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{r.quote2}</p>}
           {r.question && !showFeedback && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,marginTop:14,marginBottom:0}}>{r.question}</p>}
         </div>
