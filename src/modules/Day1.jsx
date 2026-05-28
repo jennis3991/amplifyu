@@ -227,8 +227,8 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           {[
             {n:1,label:"The Clarity Test",   icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="9" cy="9" r="6" stroke={T.gold} strokeWidth="1.3"/><path d="M13.5 13.5l4 4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
             {n:2,label:"The Feynman Formula",icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 7h12M5 11h8M5 15h10" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:3,label:"What's Missing?",    icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M7 5h3l1 4-2 1.5a10 10 0 004.5 4.5L15 13l4 1v3a1 1 0 01-1 1C8 18 4 9 4 6a1 1 0 011-1z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
-            {n:4,label:"Explain It Simply",  icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 17l2-2 9-9 2 2-9 9-4 0z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/><path d="M15 5l2 2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3,label:"What's Missing?",    icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M9 8.5a2 2 0 013.5 1.3c0 1.5-2 2-2 3.5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><circle cx="11" cy="16" r="0.8" fill={T.gold}/></svg>},
+            {n:4,label:"Explain It Simply",  icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 5h14a1 1 0 011 1v8a1 1 0 01-1 1H7l-4 3V6a1 1 0 011-1z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/><path d="M8 9h6M8 12h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
           ].map((r,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
