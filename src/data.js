@@ -346,8 +346,6 @@ export const LESSONS = [
    insight:"Presence is how communication feels. Posture, gestures, eye contact, movement, and facial expression all shape how confidence, warmth, and connection are experienced — before a single word lands.",
    pieLink:"Image: Presence is the ultimate image signal — the physical expression of everything you've been building. When your body communicates what your words say, people feel it.",
    phrases:["Let me show you what I mean…","I want to be present with you on this…","Here's what I'm seeing…"],
-   bad:"[Crossing arms, avoiding eye contact, speaking faster than your thoughts — physical signals that contradict your message]",
-   good:"[Grounded posture, calm gestures, steady eye contact — physical signals that make your communication feel safe, confident, and real]",
    practice:"The Presence Challenge — 7 rounds building gestures, posture, eye contact, expression, and grounded energy.",
    scenarios:["A high-stakes presentation where your energy matters as much as your content","A difficult conversation where calm presence changes the outcome","Any moment where how you show up is as important as what you say"],
    review:["Did my body language support my message today?","Was I physically calm and grounded in difficult moments?","Did I make people feel at ease through my presence?"],
