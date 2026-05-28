@@ -214,7 +214,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           {["Spot what makes ideas confusing.","Find what's missing.","Turn complexity into simplicity."].map((t,i)=>(
             <div key={i} style={{display:"flex",gap:6,alignItems:"flex-start"}}>
               <span style={{color:T.gold,fontSize:11,flexShrink:0,marginTop:2}}>✦</span>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.5}}>{t}</span>
+              <span style={{fontFamily:T.serif,fontSize:isDesktop?16:15,fontStyle:"italic",color:T2.text,lineHeight:1.5}}>{t}</span>
             </div>
           ))}
         </div>
