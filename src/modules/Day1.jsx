@@ -214,7 +214,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           {["Spot what makes ideas confusing.","Find what's missing.","Turn complexity into simplicity."].map((t,i)=>(
             <div key={i} style={{display:"flex",gap:6,alignItems:"flex-start"}}>
               <span style={{color:T.gold,fontSize:11,flexShrink:0,marginTop:2}}>✦</span>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.5}}>{t}</span>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.5}}>{t}</span>
             </div>
           ))}
         </div>
@@ -236,8 +236,8 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
                   {r.icon}
                 </div>
                 <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,marginBottom:3}}>{r.n}</div>
-                        <div style={{fontFamily:T.sans,fontSize:isDesktop?12:10,fontWeight:600,color:T2.text3,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?84:64,textTransform:"uppercase",letterSpacing:"0.5px"}}>Round {r.n}</div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?12:10,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?84:64}}>{r.label}</div>
+                        <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,fontWeight:400,color:"#A8998A",textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?84:64}}>Round {r.n}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,color:"#A8998A",textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?84:64}}>{r.label}</div>
               </div>
               {i<3 && <div style={{height:1,width:isDesktop?12:6,background:"rgba(138,158,132,0.25)",flexShrink:0,marginBottom:40}}/>}
             </div>
@@ -248,7 +248,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       {/* HOW YOU WIN */}
       <div style={{...cs.card}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>How You Win</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:"#A8998A",marginBottom:14,lineHeight:1.6}}>Earn points for:</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:14}}>Earn points for:</p>
         <div style={{display:"flex",gap:isDesktop?8:6,flexWrap:"wrap"}}>
             {[
               {label:"Clarity",     icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="1.5" fill={T.gold}/></svg>},
@@ -258,7 +258,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
             ].map((s,i)=>(
               <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:isDesktop?"12px 14px":"8px 10px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border,flex:1,minWidth:isDesktop?70:60}}>
                 {s.icon}
-                <span style={{fontFamily:T.sans,fontSize:isDesktop?13:11,color:T2.text,fontWeight:500,textAlign:"center",lineHeight:1.3}}>{s.label}</span>
+                <span style={{fontFamily:T.sans,fontSize:isDesktop?14:12,color:"#A8998A",fontWeight:400,textAlign:"center",lineHeight:1.3}}>{s.label}</span>
               </div>
             ))}
           </div>
@@ -270,7 +270,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
         <div style={{flex:1}}>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>The Reward</div>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T2.text,marginBottom:6}}>Great Explainer</div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",margin:0,lineHeight:1.65}}>Complete the challenge to unlock the Great Explainer badge.</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:T.gold,lineHeight:1.2,margin:0}}>Complete the challenge to unlock the Great Explainer badge.</p>
         </div>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"10px 14px",background:"rgba(138,158,132,0.06)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",flexShrink:0}}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.5 4.5H15l-3.75 2.75 1.5 4.5L9 11l-3.75 2.75 1.5-4.5L3 6.5h4.5z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/></svg>

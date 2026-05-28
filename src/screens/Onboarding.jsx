@@ -415,7 +415,7 @@ export function Onboarding({onDone}) {
     return (
       <div style={{minHeight:"100vh",background:"#1A1510",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
         {/* Library image header — consistent with question screens */}
-        <div style={{position:"relative",height:360,flexShrink:0,overflow:"hidden"}}>
+        <div style={{position:"relative",height:420,flexShrink:0,overflow:"hidden"}}>
           <img src="/ob-library.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
           <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.3)"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, transparent 55%)"}}/>
@@ -430,8 +430,9 @@ export function Onboarding({onDone}) {
           <h2 style={{fontFamily:T.serif,fontSize:"clamp(28px,7vw,38px)",fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,0.93)",lineHeight:1.15,letterSpacing:"-0.3px",marginBottom:20}}>What best describes your role?</h2>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {ROLES.map(role => (
-              <button key={role.id} onClick={()=>pickRole(role.id)} style={{padding:"16px 18px",borderRadius:2,border:"0.5px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.06)",color:"rgba(255,255,255,0.88)",fontSize:17,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",lineHeight:1.45}}>
-                {role.label}
+              <button key={role.id} onClick={()=>pickRole(role.id)} style={{padding:"16px 18px",borderRadius:2,border:"0.5px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.06)",textAlign:"left",cursor:"pointer",display:"flex",flexDirection:"column",gap:4}}>
+                <span style={{color:"rgba(255,255,255,0.88)",fontSize:17,fontFamily:T.serif,fontStyle:"italic",lineHeight:1.3}}>{role.label}</span>
+                <span style={{color:"rgba(255,255,255,0.4)",fontSize:12,fontFamily:T.sans,fontStyle:"normal",lineHeight:1.4}}>{role.examples}</span>
               </button>
             ))}
             <button onClick={()=>pickRole(null)} style={{padding:"14px 18px",borderRadius:2,border:"none",background:"transparent",color:"rgba(255,255,255,0.3)",fontSize:14,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer"}}>
@@ -448,7 +449,7 @@ export function Onboarding({onDone}) {
   return (
     <div style={{minHeight:"100vh",background:"#1A1510",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
       {/* Photo banner */}
-      <div style={{position:"relative",height:360,flexShrink:0,overflow:"hidden"}}>
+      <div style={{position:"relative",height:420,flexShrink:0,overflow:"hidden"}}>
         {q.image ? (
           <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
         ) : (
