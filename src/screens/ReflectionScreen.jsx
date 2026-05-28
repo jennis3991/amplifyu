@@ -246,7 +246,7 @@ export function ReflectionScreen({ answers, onContinue }) {
           {section >= 1 && reflection && (
             <div style={{ marginBottom: 40, animation: "fadeUp 0.7s ease both" }}>
               <div style={{ width: 28, height: 1, background: T.gold, marginBottom: 20, opacity: 0.5 }}/>
-              <p style={{ fontFamily: T.serif, fontSize: "clamp(16px, 1.7vw, 20px)", color: "rgba(255,255,255,0.82)", lineHeight: 1.7, maxWidth: 560, letterSpacing: "-0.2px", margin: 0 }}>
+              <p style={{ fontFamily: T.serif, fontSize: "clamp(16px, 1.7vw, 20px)", color: "rgba(255,255,255,0.82)", lineHeight: 1.7, letterSpacing: "-0.2px", margin: 0 }}>
                 {reflection.summary}
               </p>
             </div>
@@ -258,7 +258,7 @@ export function ReflectionScreen({ answers, onContinue }) {
               {/* Large decorative mark */}
               <div style={{ fontFamily: T.serif, fontSize: 96, lineHeight: 0.6, color: "rgba(138,158,132,0.1)", position: "absolute", top: -8, left: -12, userSelect: "none" }}>"</div>
               <div style={{ borderLeft: "2px solid rgba(138,158,132,0.3)", paddingLeft: 28, position: "relative", zIndex: 1 }}>
-                <p style={{ fontFamily: T.serif, fontSize: "clamp(14px, 1.5vw, 17px)", fontStyle: "italic", color: "rgba(255,255,255,0.55)", lineHeight: 1.75, maxWidth: 520, margin: 0, letterSpacing: "-0.1px" }}>
+                <p style={{ fontFamily: T.serif, fontSize: "clamp(14px, 1.5vw, 17px)", fontStyle: "italic", color: "rgba(255,255,255,0.55)", lineHeight: 1.75, margin: 0, letterSpacing: "-0.1px" }}>
                   {reflection.motivation}
                 </p>
               </div>
@@ -269,7 +269,7 @@ export function ReflectionScreen({ answers, onContinue }) {
           {section >= 3 && reflection && (
             <div style={{ marginBottom: 48, animation: "fadeUp 0.7s ease both" }}>
               <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 16, fontFamily: T.sans }}>The path ahead</div>
-              <p style={{ fontSize: "clamp(13px, 1.3vw, 15px)", color: "rgba(255,255,255,0.45)", lineHeight: 1.8, maxWidth: 520, margin: 0, fontFamily: T.sans, fontWeight: 300 }}>
+              <p style={{ fontSize: "clamp(13px, 1.3vw, 15px)", color: "rgba(255,255,255,0.45)", lineHeight: 1.8, margin: 0, fontFamily: T.sans, fontWeight: 300 }}>
                 {reflection.forward}
               </p>
             </div>
