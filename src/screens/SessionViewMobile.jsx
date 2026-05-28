@@ -1163,14 +1163,14 @@ T.goldDark : T2.text4,
             <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>You don't have a speaking problem. You have a processing speed problem — and the pause is the solution.</p>
           </div>
           {[
-            {label:"Processing Bottleneck",  sub:"Speaking, thinking, and organising ideas all compete for the same mental bandwidth.",
-              bullets:["Fear of silence makes you fill — but a pause signals you're thinking, not struggling.","Rushing is a common trigger: when your mouth outruns your brain, sounds fill the gap."]},
-            {label:"The Gap Filler Effect",   sub:"When your next thought isn't ready, filler words buy your brain time.",
-              bullets:["Lack of structure is the root cause: know your next point and silence comes naturally.","Fillers are a coping mechanism, not a character flaw — they're a signal to slow down."]},
-            {label:"Why Pauses Work",         sub:"A pause gives your brain the processing time it needs — without adding noise.",
-              bullets:["Silence sounds confident. Fillers sound uncertain — even when you're not.","Silence is your brain catching up cleanly; your audience receives it as calm and control."]},
-            {label:"The Fix",                 sub:"Slow the thought process down. Structure your idea before you speak.",
-              bullets:["When you feel the urge to fill, pause instead. Breathe. Then speak.","Silence is always cleaner than a filler — and it leaves a stronger impression."]},
+            {label:"Words of Effect",         sub:"Fillers are not a habit. They are a symptom — your brain trying to hold the floor while it catches up.",
+              bullets:["Speaking, thinking, and organising ideas all compete for the same mental bandwidth at once.","When your mouth moves faster than your thoughts, your brain reaches for a placeholder. That placeholder is the filler."]},
+            {label:"The Gap Filler Effect",   sub:"What actually happens in the moment you say 'um' or 'er'.",
+              bullets:["Your next thought isn't ready. The filler buys your brain time — but at the cost of your credibility.","The audience hears the filler before they hear the idea. It signals uncertainty, even when you feel confident."]},
+            {label:"The Pause",               sub:"The solution is not to speak faster. It is to stop — and let your brain catch up.",
+              bullets:["When you feel the urge to fill, pause instead. Close your mouth. Let the silence work.","A pause signals control. It tells the room: what comes next is worth waiting for."]},
+            {label:"Why This Fix Works",      sub:"Pause. Breathe. That single moment changes everything.",
+              bullets:["A breath creates mental clarity and calms the nervous system — in that moment, you give yourself the best possible chance of a strong response.","Speak in declarative statements. Calm. Clear. Certain. One idea. One sentence. Full stop. No hedge. No filler. Just the point."]},
           ].map((p,i)=>{
             const open=d3MobCard===("d3t"+i);
             return (
