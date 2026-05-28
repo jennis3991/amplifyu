@@ -213,6 +213,7 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
                             color: isDone ? T2.text3 : T2.text,
                             letterSpacing: "-0.4px", lineHeight: 1.2,
                           }}>{lesson.title}</div>
+                          {lesson.subtitle && <div style={{ fontFamily: T.sans, fontSize: 11, color: T2.text4, marginTop: 3, letterSpacing: "0.2px" }}>{lesson.subtitle}</div>}
                         </div>
 
                         {/* Module icon + status */}
