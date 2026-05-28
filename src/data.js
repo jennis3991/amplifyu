@@ -723,7 +723,7 @@ export const D4_FACTS = [
 ];
 
 export const D1_CLARITY_FACTS_DATA = [
-  { word:"Cognitive Load",    sub:"If people have to work too hard, you lose them",    bullets:["The brain naturally prefers information that feels easy to process.","If people are working to decode your words, they're not fully absorbing your message."] },
+  { word:"Cognitive Load",    sub:"The harder to process, the harder to absorb",    bullets:["The brain naturally prefers information that feels easy to process.","If people are working to decode your words, they're not fully absorbing your message."] },
   { word:"Retention",         sub:"If people can repeat it, they remember it",          bullets:["Clear ideas are easier for the brain to store, retrieve, and share.","Complexity gets forgotten. Simplicity gets repeated."] },
   { word:"Credibility",       sub:"True expertise sounds simple",                       bullets:["The clearest communicators often understand the deepest.","Making complexity feel simple signals confidence, clarity, and mastery."] },
   { word:"Decision-Making",   sub:"Clarity removes hesitation",                         bullets:["Unclear communication creates doubt, delay, and second-guessing.","Clear communication makes the next step obvious."] },
