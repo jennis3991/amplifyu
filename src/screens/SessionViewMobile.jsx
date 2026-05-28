@@ -6,7 +6,7 @@ import { DeliveryCoachWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
-import { D3SimFeedback, D3MobileSim } from '../modules/Day3.jsx';
+import { D3SimFeedback, D3MobileSim, D3PracticeWidget } from '../modules/Day3.jsx';
 import { D4SimFeedback, D4MobileSplit, D4MobileSim } from '../modules/Day4.jsx';
 import { D1MobileJargonSwap, D1MobileSim, D1ClarityChallenge, D1SimWidget, D1SimFeedback } from '../modules/Day1.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
@@ -1223,15 +1223,8 @@ T.goldDark : T2.text4,
       )}
       {isD3 && step==="Practice" && (
         <>
-          <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>From Filler to Filler-Free</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Practical exercises to break the habit.</p>
-          {[{title:"Count Your Fillers",body:"Record 2 minutes. Count every filler. Goal: under 5 per minute. Awareness is 80% of the fix."},{title:"The 5-Second Pause",body:"Pause for 5 full seconds. It feels impossibly long to you. To your audience? Barely noticeable."},{title:"Replace with Breath",body:"Every urge to say 'um' — breathe instead. You physically can't say 'um' mid-inhale."},{title:"Slow Down",body:"Fillers multiply when you rush. Slow your speech by 20%. You'll have time to think between sentences."}].map((ex,i)=>(
-            <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"16px 20px",marginBottom:10}}>
-              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:8}}>{ex.title}</div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{ex.body}</p>
-            </div>
-          ))}
+          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:16}}>The Filler-Free Challenge</h2>
+          <D3PracticeWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
       {isD3 && step==="Simulation" && (

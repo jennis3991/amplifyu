@@ -12,7 +12,7 @@ import { DeliveryCoachWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
-import { D3SimFeedback, D3MobileSim } from '../modules/Day3.jsx';
+import { D3SimFeedback, D3MobileSim, D3PracticeWidget } from '../modules/Day3.jsx';
 import { D4SimFeedback, D4MobileSplit, D4MobileSim } from '../modules/Day4.jsx';
 import { D1ClarityChallenge, D1SimWidget } from '../modules/Day1.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
@@ -1062,9 +1062,13 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Practice") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.2,marginBottom:12}}>From Filler to Filler-Free</h2>
-          <p style={{fontFamily:T.sans,fontSize:17,color:T2.text2,lineHeight:1.6,marginBottom:48,fontWeight:300}}>Four exercises to break the habit.</p>
-
+          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Filler-Free Challenge</div>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.2,marginBottom:32}}>Replace fillers with calm, intentional communication.</h2>
+          <D3PracticeWidget T={T} T2={T2} isDesktop={true}/>
+        </div>
+      );
+      if (step === "Practice_OLD_UNUSED") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           {/* Exercise 1 — Count Your Fillers */}
           <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"40px",marginBottom:24}}>
             <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Exercise 1</div>
