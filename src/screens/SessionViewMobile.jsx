@@ -36,6 +36,8 @@ export function MobileSessionView({
 }) {
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
+  const [d3NavLabel, setD3NavLabel] = useState(null);
+  const d3NavFnRef = useRef(null);
 
   const D10_EXAMPLES_DATA = [
   { id:"priya",     title:"The Invisible Fixer",        sub:"Same performance. No visibility.",  lesson:"Performance without communication is philanthropy." },
@@ -1223,8 +1225,7 @@ T.goldDark : T2.text4,
       )}
       {isD3 && step==="Practice" && (
         <>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:16}}>The Filler-Free Challenge</h2>
-          <D3PracticeWidget T={T} T2={T2} isDesktop={false}/>
+          <D3PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD3NavLabel} onNavFn={d3NavFnRef}/>
         </>
       )}
       {isD3 && step==="Simulation" && (
@@ -2490,34 +2491,37 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
           <button
             onClick={()=>{
               if (isD1 && step==="Practice" && d1NavFnRef.current) { d1NavFnRef.current(); }
+              else if (isD3 && step==="Practice" && d3NavFnRef.current) { d3NavFnRef.current(); }
               else { setIdx(i=>i+1); }
             }}
-            disabled={isD1 && step==="Practice" && d1NavLabel===null}
+            disabled={(isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)}
             style={{
               flex:1,
               padding:"18px 20px",
               borderRadius:14,
               border:"none",
-              background: isD1 && step==="Practice" && d1NavLabel===null
+              background: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null))
                 ? "rgba(44,36,22,0.18)"
                 : idx===0
                   ? "linear-gradient(135deg,"+T.gold+" 0%,"+T.goldDark+" 100%)"
                   : "linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
               color:"white",
               fontSize:15,fontWeight:700,
-              cursor: isD1 && step==="Practice" && d1NavLabel===null ? "not-allowed" : "pointer",
-              opacity: isD1 && step==="Practice" && d1NavLabel===null ? 0.45 : 1,
+              cursor: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)) ? "not-allowed" : "pointer",
+              opacity: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)) ? 0.45 : 1,
               display:"flex",alignItems:"center",justifyContent:"center",gap:10,
               boxShadow:idx===0?"0 4px 16px rgba(138,158,132,0.35)":"0 4px 16px rgba(17,28,46,0.3)",
               letterSpacing:"0.2px",
             }}>
             <span>{isD1 && step==="Practice" && d1NavLabel
               ? d1NavLabel
-              : isNT
-                ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Practice":NAV_LABELS[idx])
-                : isD7 && idx===1
-                  ? "See your foundations"
-                  : NAV_LABELS[idx]}</span>
+              : isD3 && step==="Practice" && d3NavLabel
+                ? d3NavLabel
+                : isNT
+                  ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Practice":NAV_LABELS[idx])
+                  : isD7 && idx===1
+                    ? "See your foundations"
+                    : NAV_LABELS[idx]}</span>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         )}

@@ -39,18 +39,30 @@ export function D3MobileSim() {
 }
 
 // ─── D3 Practice Widget ───────────────────────────────────────────────────────
-export function D3PracticeWidget({T, T2, isDesktop}) {
+export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
   const [phase, setPhase] = useState('intro');
   const [round, setRound] = useState(0);
   const [selected, setSelected] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
 
+  useEffect(()=>{
+    if (!onNavLabel) return;
+    if (phase === 'intro') {
+      if (onNavFn) onNavFn.current = ()=>{ setPhase('playing'); setRound(0); setSelected(null); setShowFeedback(false); };
+      onNavLabel('Begin Challenge');
+    } else {
+      if (onNavFn) onNavFn.current = null;
+      onNavLabel(null);
+    }
+  }, [phase]);
+
   const ROUNDS = [
     {
       title:"SILENCE FEELS LONGER TO YOU",
-      prompt:"Say this sentence:",
+      prompt:"Say this sentence out loud:",
       quote:'"The most important part of communication is…"',
-      instruction:'Pause. Count slowly to 3 in your head. Then finish: "…making people feel understood."',
+      instruction:'Pause. Count slowly to 3 in your head.',
+      quote2:'"…making people feel understood."',
       question:"Did the pause feel awkward?",
       options:[
         {label:"Yes, it felt very long",correct:false},
@@ -151,10 +163,10 @@ export function D3PracticeWidget({T, T2, isDesktop}) {
           ].map((r,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
-                <div style={{width:isDesktop?38:30,height:isDesktop?38:30,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.3)"),background:i===0?"rgba(138,158,132,0.1)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:5}}>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:10,fontWeight:700,color:i===0?T.gold:"rgba(138,158,132,0.5)"}}>{r.n}</span>
+                <div style={{width:isDesktop?38:32,height:isDesktop?38:32,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.45)"),background:i===0?"rgba(138,158,132,0.1)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:5}}>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?13:11,fontWeight:700,color:i===0?T.gold:T2.text3}}>{r.n}</span>
                 </div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?11:9,color:"#A8998A",textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?72:46}}>{r.label}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?12:10,color:T2.text3,fontWeight:500,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?72:50}}>{r.label}</div>
               </div>
               {i<5 && <div style={{height:1,width:isDesktop?8:3,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:20}}/>}
             </div>
@@ -200,10 +212,11 @@ export function D3PracticeWidget({T, T2, isDesktop}) {
 
         <div style={cs.card}>
           <div style={cs.label}>{r.title}</div>
-          {r.prompt && <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:8,lineHeight:1.5}}>{r.prompt}</p>}
-          {r.quote && <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 12px"}}>{r.quote}</p>}
-          {r.instruction && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0,whiteSpace:"pre-line"}}>{r.instruction}</p>}
-          {r.question && !showFeedback && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,marginTop:12,marginBottom:0}}>{r.question}</p>}
+          {r.prompt && <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:10,lineHeight:1.5}}>{r.prompt}</p>}
+          {r.quote && <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 10px"}}>{r.quote}</p>}
+          {r.instruction && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:r.quote2?"0 0 10px":0,whiteSpace:"pre-line"}}>{r.instruction}</p>}
+          {r.quote2 && <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{r.quote2}</p>}
+          {r.question && !showFeedback && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,marginTop:14,marginBottom:0}}>{r.question}</p>}
         </div>
 
         {r.options && !showFeedback && (
