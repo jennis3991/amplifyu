@@ -341,7 +341,7 @@ export const LESSONS = [
    promise:"Your image is already being built, in every room you enter. This is where you take control.",
    teaser:"Discover how to shape the way others perceive you — with intentional signals, consistent behaviour, and stories that make your brand unforgettable."},
 
-  {day:12,week:2,title:"Presence",tag:"Nonverbal",scene:"presence",subtitle:"Communicate Without Words",
+  {day:12,week:2,title:"Presence",tag:"Nonverbal",scene:"presence",
    quote:"People don't just hear confidence. They see it.",
    insight:"Presence is how communication feels. Posture, gestures, eye contact, movement, and facial expression all shape how confidence, warmth, and connection are experienced — before a single word lands.",
    pieLink:"Image: Presence is the ultimate image signal — the physical expression of everything you've been building. When your body communicates what your words say, people feel it.",
