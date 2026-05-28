@@ -12,7 +12,7 @@ import { DeliveryCoachWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
-import { D3SimFeedback, D3MobileSim, D3PracticeWidget } from '../modules/Day3.jsx';
+import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
 import { D4SimFeedback, D4MobileSplit, D4MobileSim } from '../modules/Day4.jsx';
 import { D1ClarityChallenge, D1SimWidget } from '../modules/Day1.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
@@ -1173,27 +1173,10 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Simulation") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
-          <div style={{fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>AI Practice</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Speak Filler-Free — 60 Seconds</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:28}}>Choose a scenario. Write your response with zero fillers. The AI detects every "um," "uh," "like," and "you know."</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:28}}>
-            {[
-              {n:1,title:"Explain your project with zero fillers",sub:"Pause when you need to think. Don't fill."},
-              {n:2,title:"Answer a tough question without hedging",sub:"'I don't know' beats 'um, well, sort of...'"},
-              {n:3,title:"Give a 60-second pitch — crisp and clean",sub:"No fillers. Just facts."},
-              {n:4,title:"Deliver instructions that are filler-free",sub:"Clear. Confident. Direct."},
-            ].map((sc,i)=>(
-              <button key={i} onClick={()=>setSimInput(sc.title+": ")} style={{padding:"14px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.18s ease"}}
-                onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
-                onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.8)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(44,36,22,0.06)";}}>
-                <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:3}}>{sc.n}. {sc.title}</div>
-                <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{sc.sub}</div>
-              </button>
-            ))}
-          </div>
-          <textarea value={simInput} onChange={e=>setSimInput(e.target.value)} placeholder="Write your 60-second response here — no fillers allowed…" className="au-input" style={{height:120,marginBottom:14,resize:"none"}}/>
-          <D3SimFeedback input={simInput}/>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Simulation · Day 3</div>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:32}}>Speak Without Filling the Silence</h2>
+          <D3SimWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
 

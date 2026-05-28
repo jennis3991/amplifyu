@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 
 export function D3SimFeedback({input}) {
@@ -248,6 +248,356 @@ export function D3PracticeWidget({T, T2, isDesktop}) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Silence often sounds more confident than fillers."</p>
       </div>
       <button onClick={()=>{setPhase('intro');setRound(0);setSelected(null);setShowFeedback(false);}} style={cs.cta}>Practise Again →</button>
+    </div>
+  );
+
+  return null;
+}
+
+// ─── D3 Simulation Widget ─────────────────────────────────────────────────────
+export function D3SimWidget({T, T2, isDesktop}) {
+  const DIMS = ["Calm Pacing","Pause Control","Verbal Clarity","Conversational Flow","Speaking Presence","Thought Completion"];
+  const PROMPT = "Teach me how to make your favourite meal in 60 seconds.";
+
+  const [phase, setPhase] = useState('intro');
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [isRec, setIsRec] = useState(false);
+  const [transcript, setTranscript] = useState('');
+  const [fallback, setFallback] = useState('');
+  const [analyzing, setAnalyzing] = useState(false);
+  const [feedback, setFeedback] = useState(null);
+  const [round1, setRound1] = useState(null);
+  const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
+  const [audioURL, setAudioURL] = useState(null);
+  const [playing, setPlaying] = useState(false);
+
+  const audioRef = useRef(null);
+  const recRef = useRef(null);
+  const mediaRecRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const timerRef = useRef(null);
+  const liveRef = useRef('');
+  const waveRef = useRef(null);
+
+  const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
+
+  useEffect(()=>{
+    if(isRec&&timeLeft>0){timerRef.current=setTimeout(()=>setTimeLeft(t=>t-1),1000);}
+    else if(isRec&&timeLeft===0){doStop();}
+    return ()=>clearTimeout(timerRef.current);
+  },[isRec,timeLeft]);
+
+  useEffect(()=>{
+    if(!isRec){clearInterval(waveRef.current);return;}
+    waveRef.current=setInterval(()=>setWaveVals(()=>Array.from({length:9},()=>0.2+Math.random()*0.8)),150);
+    return ()=>clearInterval(waveRef.current);
+  },[isRec]);
+
+  function doStart(){
+    setIsRec(true);liveRef.current='';setTranscript('');setAudioURL(null);
+    if(SpeechRec){
+      const rec=new SpeechRec();
+      rec.continuous=true;rec.interimResults=true;rec.lang='en-US';
+      rec.onresult=(e)=>{let t='';for(let i=0;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+' ';liveRef.current=t;setTranscript(t);};
+      try{rec.start();}catch(e){}
+      recRef.current=rec;
+    }
+    if(navigator.mediaDevices?.getUserMedia){
+      navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+        const mr=new MediaRecorder(stream);
+        audioChunksRef.current=[];
+        mr.ondataavailable=e=>audioChunksRef.current.push(e.data);
+        mr.onstop=()=>{const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});setAudioURL(URL.createObjectURL(blob));stream.getTracks().forEach(t=>t.stop());};
+        mr.start();mediaRecRef.current=mr;
+      }).catch(()=>{});
+    }
+  }
+
+  function doStop(){
+    setIsRec(false);clearTimeout(timerRef.current);
+    if(recRef.current){try{recRef.current.stop();}catch(e){}}
+    if(mediaRecRef.current&&mediaRecRef.current.state!=='inactive'){try{mediaRecRef.current.stop();}catch(e){}}
+    analyzeText(SpeechRec?liveRef.current:fallback);
+  }
+
+  async function analyzeText(text){
+    setPhase('analyzing');
+    const isRetry=!!round1;
+    const base=isRetry?8:0;
+    const mock={
+      overall:Math.floor(Math.random()*18)+65+base,
+      headline:"Your explanation had a natural, conversational rhythm.",
+      subtitle:isRetry?"Noticeable improvement. Your pauses are landing.":"A natural starting point — awareness is already working.",
+      scores:Object.fromEntries(DIMS.map(d=>[d,Math.floor(Math.random()*22)+62+base])),
+      fillers:[],
+      worked:["Conversational and easy to follow","Good personal connection to the topic"],
+      improve:["When you feel a filler coming, pause instead — silence carries more authority."],
+      insight:"Your explanation was natural and warm. The key opportunity is pause control: every time you'd normally say 'um' or 'like', a breath creates far more impact."
+    };
+    if(!text||text.trim().length<15){
+      if(!isRetry){setRound1(mock);setFeedback(mock);}else setFeedback({...mock,prev:round1});
+      setPhase(isRetry?'comparison':'feedback');return;
+    }
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:700,messages:[{role:"user",content:`You are a premium communication coach specialising in filler-free speech. Analyse this spoken explanation for filler word usage and pacing quality.\n\nPrompt: "${PROMPT}"\nResponse: "${text}"\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: key insight>","subtitle":"<one warm encouraging sentence>","scores":{"Calm Pacing":<50-100>,"Pause Control":<50-100>,"Verbal Clarity":<50-100>,"Conversational Flow":<50-100>,"Speaking Presence":<50-100>,"Thought Completion":<50-100>},"fillers":["list exact filler words found, e.g. um, like, you know, basically, sort of"],"worked":["<strength 1>","<strength 2>"],"improve":["<single clearest opportunity to reduce fillers>"],"insight":"<2 personalised sentences about filler patterns and pause technique>"}`}]})});
+      const d=await res.json();
+      const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
+      const m=raw.match(/\{[\s\S]*\}/);
+      const parsed=JSON.parse(m[0]);
+      if(!isRetry){setRound1(parsed);setFeedback(parsed);}else setFeedback({...parsed,prev:round1});
+    }catch{
+      if(!isRetry){setRound1(mock);setFeedback(mock);}else setFeedback({...mock,prev:round1});
+    }
+    setPhase(isRetry?'comparison':'feedback');
+  }
+
+  function reset(){setPhase('intro');setTimeLeft(60);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);}
+
+  const cs={
+    card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"16px 18px"},
+    label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8},
+    cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
+    ghost:{width:"100%",padding:"11px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44},
+  };
+
+  // ── INTRO ────────────────────────────────────────────────────────────────────
+  if(phase==='intro') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      {/* HOW IT WORKS */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={cs.label}>How It Works</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>A simple 5-step filler-free check-in.</h2>
+        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
+          {[
+            {n:1,label:"Read the prompt",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:2,label:"Breathe & speak",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3,label:"AI detects fillers", icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:4,label:"Reflect & learn",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke={T.gold} strokeWidth="1.3"/><path d="M8 9a3 3 0 016 0v4a3 3 0 01-6 0V9z" stroke={T.gold} strokeWidth="1.3"/></svg>},
+            {n:5,label:"Try again",           icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 11a7 7 0 0111.95-4.95L18 8M18 8V4M18 8h-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M18 11a7 7 0 01-11.95 4.95L4 14M4 14v4M4 14h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>},
+          ].map((s,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                <div style={{width:isDesktop?44:34,height:isDesktop?44:34,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:5}}>{s.icon}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?12:9,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:52}}>{s.label}</div>
+              </div>
+              {i<4&&<div style={{height:1,width:isDesktop?12:5,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:26}}/>}
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* THE FIRST STEP */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
+        <div style={cs.label}>The First Step</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
+          You've learned the science. Practised the techniques. Now it's time to speak — and notice your patterns.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>
+          Self-review is one of the fastest proven ways to reduce fillers. Awareness is 80% of the fix.
+        </p>
+      </div>
+      {/* YOUR DIGITAL COACH */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
+        <div style={cs.label}>Your Digital Coach</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
+          Your AI coach will analyse your filler frequency, pacing, pause control, and conversational clarity.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>
+          This recording becomes your baseline — not a test, expert coaching.
+        </p>
+      </div>
+      <button onClick={()=>setPhase('recording')} style={cs.cta}>Start the Simulation →</button>
+    </div>
+  );
+
+  // ── RECORDING ────────────────────────────────────────────────────────────────
+  if(phase==='recording') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+        <div style={cs.label}>Your Prompt</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:0}}>{PROMPT}</p>
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>Before You Begin</div>
+        <div style={{display:"flex",flexDirection:"column",gap:6}}>
+          {["Take one calm breath.","Slow down slightly — pauses are welcome.","If you lose your train of thought, pause instead of filling.","Your goal is clarity, not speed."].map((tip,i)=>(
+            <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+              <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{tip}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{...cs.card,textAlign:"center"}}>
+        <div style={{fontFamily:T.serif,fontSize:isDesktop?48:36,fontWeight:600,color:isRec?T.gold:T2.text,lineHeight:1,marginBottom:8,transition:"color 0.3s"}}>
+          {isRec?`${Math.floor(timeLeft/60)}:${String(timeLeft%60).padStart(2,'0')}`:timeLeft}
+        </div>
+        {isRec&&(
+          <div style={{display:"flex",alignItems:"flex-end",justifyContent:"center",gap:3,height:32,marginBottom:12}}>
+            {waveVals.map((v,i)=>(
+              <div key={i} style={{width:3,borderRadius:2,background:T.gold,height:Math.max(4,v*32),transition:"height 0.15s ease"}}/>
+            ))}
+          </div>
+        )}
+        {isRec&&transcript&&(
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontStyle:"italic",marginBottom:12,maxWidth:480,margin:"0 auto 12px"}}>{transcript.slice(-120)}{transcript.length>120?'…':''}</p>
+        )}
+        {!SpeechRec&&isRec&&(
+          <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Type as you speak…" style={{width:"100%",minHeight:80,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,marginBottom:12}}/>
+        )}
+        <div style={{display:"flex",gap:10,justifyContent:"center"}}>
+          {!isRec?(
+            <button onClick={doStart} style={{...cs.cta,width:"auto",padding:"12px 32px"}}>Start Recording →</button>
+          ):(
+            <button onClick={doStop} style={{...cs.cta,width:"auto",padding:"12px 32px",background:"#8A4A3A"}}>Stop & Analyse →</button>
+          )}
+        </div>
+      </div>
+      <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
+    </div>
+  );
+
+  // ── ANALYZING ────────────────────────────────────────────────────────────────
+  if(phase==='analyzing') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
+      <div style={{display:"flex",gap:6}}>
+        {[0,1,2].map(i=>(
+          <div key={i} style={{width:6,height:6,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.22}s infinite`}}/>
+        ))}
+      </div>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>Analysing your delivery…</p>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Detecting fillers, pacing, pause control.</p>
+    </div>
+  );
+
+  // ── FEEDBACK ─────────────────────────────────────────────────────────────────
+  if(phase==='feedback'&&feedback) return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      {/* Overall score */}
+      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"28px":"20px"}}>
+        <div style={cs.label}>Your Clarity Score</div>
+        <div style={{fontFamily:T.serif,fontSize:isDesktop?56:44,fontWeight:600,color:T.gold,lineHeight:1,marginBottom:8}}>{feedback.overall}</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 6px"}}>{feedback.headline}</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0,lineHeight:1.5}}>{feedback.subtitle}</p>
+      </div>
+      {/* Dimension scores */}
+      <div style={cs.card}>
+        <div style={cs.label}>Communication Breakdown</div>
+        {DIMS.map((d,i)=>{
+          const v=feedback.scores?.[d]||70;
+          return (
+            <div key={i} style={{marginBottom:i<DIMS.length-1?12:0}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{d}</span>
+                <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:v>=85?T.gold:v>=70?"#7A9E84":T2.text3}}>{v}</span>
+              </div>
+              <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+                <div style={{height:"100%",width:v+"%",background:v>=85?T.gold:v>=70?"rgba(138,158,132,0.7)":"rgba(138,158,132,0.35)",borderRadius:2,transition:"width 0.8s ease"}}/>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {/* Fillers detected */}
+      {feedback.fillers&&feedback.fillers.length>0&&(
+        <div style={{...cs.card,background:"rgba(180,80,60,0.04)",border:"0.5px solid rgba(180,80,60,0.15)"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(160,70,50,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Fillers Detected</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:7}}>
+            {feedback.fillers.map((f,i)=>(
+              <span key={i} style={{padding:"4px 10px",borderRadius:20,border:"0.5px solid rgba(180,80,60,0.2)",background:"rgba(180,80,60,0.06)",fontFamily:T.sans,fontSize:12,color:"rgba(140,60,40,0.8)"}}>{f}</span>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginTop:10,marginBottom:0,lineHeight:1.5}}>Each of these can be replaced with a calm pause. Try the recording again and swap these for silence.</p>
+        </div>
+      )}
+      {/* What worked / improve */}
+      <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:10}}>
+        <div style={{...cs.card,borderLeft:"2px solid rgba(138,158,132,0.5)"}}>
+          <div style={cs.label}>What Worked</div>
+          {(feedback.worked||[]).map((w,i)=>(<div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:i<(feedback.worked.length-1)?8:0}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>{w}</p></div>))}
+        </div>
+        <div style={{...cs.card,borderLeft:"2px solid rgba(138,158,132,0.3)"}}>
+          <div style={cs.label}>One Thing to Improve</div>
+          {(feedback.improve||[]).map((w,i)=>(<p key={i} style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>{w}</p>))}
+        </div>
+      </div>
+      {/* Coach insight */}
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
+        <div style={cs.label}>Coach Insight</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{feedback.insight}</p>
+      </div>
+      {/* Reflection */}
+      <div style={cs.card}>
+        <div style={cs.label}>Reflection</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:10}}>"Did the pauses sound as long as they felt?"</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,marginBottom:12}}>Most pauses feel much longer to the speaker than the listener. Great communicators use silence to think clearly, reduce fillers, create emphasis, and let ideas land.</p>
+        {audioURL&&(
+          <div style={{display:"flex",alignItems:"center",gap:12}}>
+            <button onClick={()=>{if(audioRef.current){playing?audioRef.current.pause():audioRef.current.play();setPlaying(!playing);}}} style={{padding:"8px 16px",borderRadius:3,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:12,cursor:"pointer",fontFamily:T.sans}}>
+              {playing?"⏸ Pause":"▶ Play back your recording"}
+            </button>
+            <audio ref={audioRef} src={audioURL} onEnded={()=>setPlaying(false)} style={{display:"none"}}/>
+          </div>
+        )}
+      </div>
+      <div style={{...cs.card,background:"rgba(138,158,132,0.04)",textAlign:"center"}}>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"The strongest communicators don't rush to fill silence. They use pauses to think, breathe, and let ideas land."</p>
+      </div>
+      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+        <button onClick={()=>{setPhase('recording');setTimeLeft(60);setIsRec(false);setTranscript('');setFallback('');}} style={{...cs.ghost,flex:"1 1 auto"}}>Try Again →</button>
+        <button onClick={reset} style={{...cs.cta,flex:"1 1 auto",width:"auto"}}>Start Over</button>
+      </div>
+    </div>
+  );
+
+  // ── COMPARISON ───────────────────────────────────────────────────────────────
+  if(phase==='comparison'&&feedback&&round1) return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"24px":"18px"}}>
+        <div style={cs.label}>Progress</div>
+        <div style={{display:"flex",justifyContent:"center",gap:isDesktop?32:20,alignItems:"flex-end"}}>
+          <div style={{textAlign:"center"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginBottom:4}}>Round 1</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?40:32,fontWeight:600,color:T2.text3,lineHeight:1}}>{round1.overall}</div>
+          </div>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?24:18,color:T.gold,paddingBottom:8}}>→</div>
+          <div style={{textAlign:"center"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,color:T.gold,marginBottom:4}}>Round 2</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?40:32,fontWeight:600,color:T.gold,lineHeight:1}}>{feedback.overall}</div>
+          </div>
+        </div>
+        {feedback.overall>round1.overall&&(
+          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginTop:12,marginBottom:0}}>+{feedback.overall-round1.overall} points. That's measurable improvement.</p>
+        )}
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>Score Comparison</div>
+        {DIMS.map((d,i)=>{
+          const v1=round1.scores?.[d]||70;const v2=feedback.scores?.[d]||70;const diff=v2-v1;
+          return (
+            <div key={i} style={{marginBottom:i<DIMS.length-1?14:0}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{d}</span>
+                <span style={{fontFamily:T.sans,fontSize:12,color:diff>0?"rgba(100,160,100,0.9)":diff<0?"rgba(160,80,60,0.7)":T2.text3}}>{diff>0?`+${diff}`:diff===0?"—":diff}</span>
+              </div>
+              <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+                <div style={{height:"100%",width:v2+"%",background:v2>=85?T.gold:v2>=70?"rgba(138,158,132,0.7)":"rgba(138,158,132,0.35)",borderRadius:2,transition:"width 0.8s ease"}}/>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+        <div style={cs.label}>Coach Insight</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{feedback.insight}</p>
+      </div>
+      <div style={{...cs.card,background:"rgba(138,158,132,0.04)",textAlign:"center"}}>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"The strongest communicators don't rush to fill silence. They use pauses to think, breathe, and let ideas land."</p>
+      </div>
+      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+        <button onClick={()=>{setPhase('recording');setTimeLeft(60);setIsRec(false);setTranscript('');setFallback('');}} style={{...cs.ghost,flex:"1 1 auto"}}>One More Round →</button>
+        <button onClick={reset} style={{...cs.cta,flex:"1 1 auto",width:"auto"}}>Start Over</button>
+      </div>
     </div>
   );
 
