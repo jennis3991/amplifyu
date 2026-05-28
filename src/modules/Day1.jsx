@@ -722,27 +722,29 @@ export function D1SimWidget({T, T2, isDesktop}) {
       </div>
       )}
 
-      {/* Mobile: 2 boxes side by side */}
+      {/* Mobile: The First Step */}
       {!isDesktop && (
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-        <div style={{...cs.card,padding:"14px 14px"}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>The First Step</div>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.65,marginBottom:10}}>
-            You've learned the science. Practised the techniques. Now it's time to hear how clearly you communicate.
-          </p>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.65,margin:0}}>
-            Self-review is one of the fastest proven ways to improve — used by top speakers and Fortune 500 leaders.
-          </p>
-        </div>
-        <div style={{...cs.card,padding:"14px 14px",background:"rgba(138,158,132,0.04)"}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Digital Coach</div>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.65,marginBottom:10}}>
-            Your AI coach will analyse your clarity, communication patterns, structure, pacing, and presence.
-          </p>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>
-            This recording becomes your baseline — not a test, expert coaching.
-          </p>
-        </div>
+      <div style={{...cs.card,padding:"16px 18px"}}>
+        <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>The First Step</div>
+        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
+          You've learned the science. Practised the techniques. Now it's time to hear how clearly you communicate.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,margin:0}}>
+          Self-review is one of the fastest proven ways to improve — used by top speakers and Fortune 500 leaders.
+        </p>
+      </div>
+      )}
+
+      {/* Mobile: Your Digital Coach */}
+      {!isDesktop && (
+      <div style={{...cs.card,padding:"16px 18px",background:"rgba(138,158,132,0.04)"}}>
+        <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Digital Coach</div>
+        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
+          Your AI coach will analyse your clarity, communication patterns, structure, pacing, and presence.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>
+          This recording becomes your baseline — not a test, expert coaching.
+        </p>
       </div>
       )}
 
