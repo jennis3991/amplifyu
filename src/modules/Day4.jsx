@@ -52,39 +52,77 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
   const [round, setRound] = useState(0);
   const [selected, setSelected] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [writeInput, setWriteInput] = useState('');
+  const [writeResult, setWriteResult] = useState(null);
+  const [writeLoading, setWriteLoading] = useState(false);
   const [seed] = useState(()=>Math.random());
 
-  const ALL_ROUNDS = [
+  // The Scroll Test is always pinned first — most visual & immediately impactful
+  const PINNED = {
+    title:"THE SCROLL TEST",
+    prompt:"Imagine this lands in your inbox. Which one do you actually read?",
+    versions:[
+      {label:"Version A", text:'We need to have a meeting about the project because there have been some issues with the timeline and the deadline is coming up and people aren\'t entirely sure what they\'re supposed to be doing which is causing a bit of confusion and we really need to get everyone aligned and on the same page before things get worse.'},
+      {label:"Version B", text:"We need a meeting.\n\nThe deadline is close.\n\nPeople aren't sure what to do.\n\nLet's get aligned before it gets worse."},
+    ],
+    options:[{label:"Version A — the dense paragraph",correct:false},{label:"Version B — short, scannable lines",correct:true}],
+    feedback:"Dense paragraphs lose readers instantly. Short sentences with breathing space get read every time.",
+  };
+
+  const BANK = [
+    {
+      title:"CUT IT IN HALF",
+      type:"write",
+      prompt:"Rewrite this sentence using half the words. Every word you cut increases impact.",
+      quote:'"At this moment in time I\'m currently trying to decide what I want to eat."',
+      placeholder:"Your shorter version…",
+      originalWords:13,
+      reveal:'"I\'m deciding what to eat."',
+      feedback:"Shorter communication often feels clearer and more confident.",
+      aiPrompt:(input)=>`The user was asked to rewrite this sentence using half the words (original: "At this moment in time I'm currently trying to decide what I want to eat." — 13 words, target: ~6-7 words). Ideal answer: "I'm deciding what to eat." (5 words). Their attempt: "${input}" (${input.trim().split(/\s+/).length} words). Return ONLY valid JSON: {"words":${input.trim().split(/\s+/).length},"shorter":${input.trim().split(/\s+/).length<=9},"praise":"<one warm specific sentence about what they did well — max 12 words>","tip":"<one gentle improvement if needed — max 10 words, or empty string if great>"}`,
+    },
+    {
+      title:"SPLIT THE SENTENCE",
+      type:"write",
+      prompt:"Split this into shorter sentences. One idea per sentence.",
+      quote:'"I went to the supermarket after work and forgot my wallet but luckily my friend was there and she paid for everything which was really kind of her."',
+      placeholder:"Your split version…",
+      reveal:'"I went to the supermarket after work. I forgot my wallet. Luckily, my friend was there. She paid for everything. It was really kind of her."',
+      feedback:"One idea per sentence is easier for the brain to process and remember.",
+      aiPrompt:(input)=>`The user was asked to split this sentence into shorter sentences: "I went to the supermarket after work and forgot my wallet but luckily my friend was there and she paid for everything which was really kind of her." Their version: "${input}". Count how many sentences they created. Return ONLY valid JSON: {"sentences":<number of sentences they wrote>,"improved":${true},"praise":"<one warm specific sentence — max 12 words>","tip":"<one gentle tip if needed — max 10 words, or empty string>"}`,
+    },
     {
       title:"THE BRAIN PREFERS SIMPLE",
       prompt:"Which version is easier to understand?",
       versions:[
         {label:"Version A", text:'"The atmospheric conditions suggest a high probability of precipitation later this evening."'},
-        {label:"Version B ✅", text:'"It\'s probably going to rain tonight."'},
+        {label:"Version B", text:'"It\'s probably going to rain tonight."'},
       ],
       options:[{label:"Version A",correct:false},{label:"Version B",correct:true}],
-      feedback:"The brain absorbs information faster when sentences are shorter and simpler. Clarity reduces cognitive load.",
-    },
-    {
-      title:"SPLIT THE SENTENCE",
-      prompt:"How would you split this sentence?",
-      quote:'"I went to the supermarket after work and forgot my wallet but luckily my friend was there."',
-      instruction:null,
-      options:null,
-      action:"I know how I'd split it",
-      reveal:'"I went to the supermarket after work. I forgot my wallet. Luckily, my friend was there."',
-      feedback:"One idea per sentence is easier for the brain to process.",
+      feedback:"The brain absorbs information faster when sentences are shorter and simpler. Every word you cut reduces cognitive load.",
     },
     {
       title:"THE BREATH TEST",
-      prompt:"Read both versions out loud.",
+      prompt:"Read both versions out loud. Actually say them.",
       versions:[
         {label:"Version A", text:'"I wanted to ask whether anyone might potentially want to go out for dinner later this evening."'},
         {label:"Version B", text:'"Does anyone want dinner later?"'},
       ],
       question:"Which one felt easier to say?",
       options:[{label:"Version A — the longer one",correct:false},{label:"Version B — the shorter one",correct:true}],
-      feedback:"Shorter sentences are easier to speak, process, and remember.",
+      feedback:"If a sentence is hard to say out loud, it's hard for your audience to follow. Shorter sentences breathe better.",
+    },
+    {
+      title:"SAY IT LIKE ATTENBOROUGH",
+      prompt:"David Attenborough explains science so simply a child could understand it. Which version sounds most like him?",
+      quote:'"Photosynthesis is the biochemical process through which plants convert light energy into chemical energy."',
+      options:[
+        {label:"Photosynthesis enables plants to synthesise glucose from light-dependent reactions.",correct:false},
+        {label:"Plants use sunlight to make food.",correct:true},
+        {label:"Through photosynthesis, solar energy is converted into storable chemical energy.",correct:false},
+        {label:"Light energy drives the conversion of carbon dioxide into organic compounds.",correct:false},
+      ],
+      feedback:"Simple communication demonstrates deeper understanding. If you can't explain it simply, you don't fully understand it yet.",
     },
     {
       title:"REMOVE THE CLUTTER",
@@ -94,58 +132,47 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
         {label:"I just wanted to quickly let you know that I'm probably going to be slightly late.",correct:false},
         {label:"I'm going to be late.",correct:true},
       ],
-      feedback:"Most unclear sentences are overloaded with extra words. Clear communicators remove friction.",
+      feedback:"Most unclear sentences are overloaded with extra words. Clear communicators remove friction before they add.",
     },
     {
       title:"ONE THOUGHT. ONE SENTENCE.",
       prompt:"Which version feels clearer?",
       versions:[
         {label:"Version A", text:'"We decided to leave early because the weather was changing quickly and we didn\'t want to get stuck in traffic."'},
-        {label:"Version B ✅", text:'"The weather was changing quickly. We decided to leave early. We didn\'t want to get stuck in traffic."'},
+        {label:"Version B", text:'"The weather was changing quickly. We decided to leave early. We didn\'t want to get stuck in traffic."'},
       ],
       options:[{label:"Version A",correct:false},{label:"Version B",correct:true}],
-      feedback:"The brain remembers information better when ideas are separated clearly.",
-    },
-    {
-      title:"SAY IT LIKE ATTENBOROUGH",
-      prompt:"Simplify this so an 8-year-old could understand it:",
-      quote:'"Photosynthesis is the biochemical process through which plants convert light energy into chemical energy."',
-      options:null,
-      action:"I simplified it",
-      reveal:'"Plants use sunlight to make food."',
-      feedback:"Simple communication often demonstrates deeper understanding.",
-    },
-    {
-      title:"THE SCROLL TEST",
-      prompt:"Which message would you actually read fully on your phone?",
-      versions:[
-        {label:"Version A", text:"A long dense paragraph with multiple ideas packed into one block of text."},
-        {label:"Version B ✅", text:"Short clean sentences.\n\nEach idea gets its own space.\n\nEasy to scan."},
-      ],
-      options:[{label:"Version A — the dense paragraph",correct:false},{label:"Version B — short clean sentences",correct:true}],
-      feedback:"Shorter sentences reduce friction and increase readability.",
-    },
-    {
-      title:"CUT IT IN HALF",
-      prompt:"Rewrite this sentence using half the words:",
-      quote:'"At this moment in time I\'m currently trying to decide what I want to eat."',
-      options:null,
-      action:"I rewrote it",
-      reveal:'"I\'m deciding what to eat."',
-      feedback:"Shorter communication often feels clearer and more confident.",
+      feedback:"The brain remembers information better when each idea gets its own sentence. One thought. Full stop. Next thought.",
     },
   ];
 
-  // Pick 5 rounds pseudo-randomly using the seed, reshuffle on each new round
   const ROUNDS = useMemo(()=>{
-    const shuffled=[...ALL_ROUNDS].sort(()=>Math.sin(seed*9301+seed*49297)*0.5);
-    return shuffled.slice(0,5);
+    const shuffled=[...BANK].sort(()=>Math.sin(seed*9301+seed*49297)*0.5);
+    return [PINNED, ...shuffled.slice(0,4)];
   },[seed]);
+
+  function resetWrite(){setWriteInput('');setWriteResult(null);setWriteLoading(false);}
+
+  async function handleWriteSubmit(r){
+    if(!writeInput.trim()) return;
+    if(r.aiPrompt){
+      setWriteLoading(true);
+      try{
+        const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:200,messages:[{role:"user",content:r.aiPrompt(writeInput)}]})});
+        const d=await res.json();
+        const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
+        const m=raw.match(/\{[\s\S]*\}/);
+        setWriteResult(JSON.parse(m[0]));
+      }catch{setWriteResult({praise:"Great effort — you're thinking about brevity.",tip:""});}
+      setWriteLoading(false);
+    }
+    setShowFeedback(true);
+  }
 
   useEffect(()=>{
     if(!onNavLabel) return;
     if(phase==='intro'){
-      if(onNavFn) onNavFn.current=()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);};
+      if(onNavFn) onNavFn.current=()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);resetWrite();};
       onNavLabel('Begin Challenge');
     } else {
       if(onNavFn) onNavFn.current=null;
@@ -249,6 +276,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
           {r.question && !showFeedback && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,marginTop:14,marginBottom:0}}>{r.question}</p>}
         </div>
 
+        {/* MCQ options */}
         {r.options && !showFeedback && (
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {r.options.map((opt,i)=>(
@@ -260,24 +288,62 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
           </div>
         )}
 
-        {!r.options && !showFeedback && (
+        {/* Write rounds — textarea + AI */}
+        {r.type==='write' && !showFeedback && (
+          <>
+            <textarea
+              value={writeInput}
+              onChange={e=>setWriteInput(e.target.value)}
+              placeholder={r.placeholder}
+              style={{width:"100%",minHeight:isDesktop?80:72,background:"transparent",border:"0.5px solid "+T2.border,borderRadius:4,padding:"12px 14px",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}
+            />
+            <button
+              onClick={()=>handleWriteSubmit(r)}
+              disabled={!writeInput.trim()||writeLoading}
+              style={{...cs.cta,background:!writeInput.trim()||writeLoading?"rgba(44,36,22,0.25)":T.ink,cursor:!writeInput.trim()||writeLoading?"not-allowed":"pointer"}}>
+              {writeLoading?"Checking…":"Get AI Feedback →"}
+            </button>
+          </>
+        )}
+
+        {/* Action rounds (no options, no write) */}
+        {!r.options && r.type!=='write' && !showFeedback && (
           <button onClick={()=>setShowFeedback(true)} style={cs.cta}>{r.action} →</button>
         )}
 
         {showFeedback && (
           <>
-            {r.reveal && (
+            {/* Write feedback with AI result */}
+            {r.type==='write' && writeResult && (
+              <div style={{...cs.card,background:"rgba(138,158,132,0.06)",borderLeft:"2px solid "+T.gold}}>
+                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+                  <div style={cs.label}>AI Coach</div>
+                  {writeResult.words&&<span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginLeft:"auto"}}>{writeResult.words} words{r.originalWords?` (was ${r.originalWords})`:''}</span>}
+                </div>
+                <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:writeResult.tip?"0 0 8px":0}}>{writeResult.praise}</p>
+                {writeResult.tip&&<p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,margin:0,fontStyle:"italic"}}>{writeResult.tip}</p>}
+              </div>
+            )}
+            {r.type==='write' && writeInput && (
+              <div style={{...cs.card,background:"rgba(44,36,22,0.03)"}}>
+                <div style={cs.label}>Your version</div>
+                <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.4,margin:"0 0 10px",fontStyle:"italic"}}>"{writeInput}"</p>
+                {r.reveal&&<><div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>One great version</div><p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.4,margin:0}}>{r.reveal}</p></>}
+              </div>
+            )}
+            {/* Reveal for action rounds */}
+            {!r.type && r.reveal && (
               <div style={{...cs.card,background:"rgba(138,158,132,0.04)",borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
-                <div style={cs.label}>Clean Version</div>
+                <div style={cs.label}>The shorter version</div>
                 <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{r.reveal}</p>
               </div>
             )}
             <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
-              <div style={cs.label}>Why It Works</div>
+              <div style={cs.label}>Why it works</div>
               <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:0}}>{r.feedback}</p>
             </div>
             <button onClick={()=>{
-              if(round<ROUNDS.length-1){setRound(v=>v+1);setSelected(null);setShowFeedback(false);}
+              if(round<ROUNDS.length-1){setRound(v=>v+1);setSelected(null);setShowFeedback(false);resetWrite();}
               else{setPhase('done');}
             }} style={cs.cta}>
               {round<ROUNDS.length-1?`Round ${round+2} →`:"See Your Results →"}
@@ -293,10 +359,10 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
       <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Challenge Complete</div>
         <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Sentence Surgeon</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 24px"}}>You've trained your brain to see complexity — and cut it. Every sentence you shorten is a gift to your listener.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 24px"}}>You've trained your brain to see complexity — and cut it. Every sentence you shorten from now on is a gift to your listener.</p>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Short sentences give ideas space to land."</p>
       </div>
-      <button onClick={()=>{setPhase('intro');setRound(0);setSelected(null);setShowFeedback(false);}} style={cs.cta}>Another Round →</button>
+      <button onClick={()=>{setPhase('intro');setRound(0);setSelected(null);setShowFeedback(false);resetWrite();}} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"8px 0",textAlign:"center",width:"100%"}}>Another Round</button>
     </div>
   );
 
