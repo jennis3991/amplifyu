@@ -2462,32 +2462,42 @@ setAmbitionSaved(true); } catch {}
                 );
               })}
             </div>
-            {/* Row 2: connectors */}
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
-              {D2_EX_CARDS.map((card)=>(
-                <div key={card.id} style={{ display:"flex", flexDirection:"column", alignItems:"center", padding:"6px 0" }}>
-                  <div style={{ width:1, height:14, background:T.gold, opacity:0.4 }}/>
-                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.5"/></svg>
-                </div>
-              ))}
-            </div>
-            {/* Row 3: both challenge cards — aligned */}
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
-              {D2_EX_CARDS.map((card)=>(
-                <div key={card.id} style={{ background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:"20px 22px" }}>
-                  <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10 }}>Voice Challenge</div>
-                  <p style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T2.text, fontStyle:"italic", marginBottom:12 }}>Say: {card.challenge.sentence}</p>
-                  <div style={{ display:"flex", flexDirection:"column" }}>
-                    {card.challenge.modes.map((m,i,arr)=>(
-                      <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 0", borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none" }}>
-                        <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, width:14, flexShrink:0 }}>{i+1}.</span>
-                        <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text, fontWeight:400 }}>{m}</span>
-                      </div>
-                    ))}
+            {/* Challenge card — single expandable box */}
+            {(()=>{
+              const [chalOpen,setChalOpen]=d2ExOpen==="challenge"?[true,()=>setD2ExOpen(null)]:[false,()=>setD2ExOpen("challenge")];
+              return (
+                <div onClick={()=>setD2ExOpen(d2ExOpen==="challenge"?null:"challenge")}
+                  style={{ background:T2.surface, borderRadius:4, border:`0.5px solid ${d2ExOpen==="challenge"?T.gold:T2.border}`, padding:"24px", cursor:"pointer", transition:"border-color 0.2s, box-shadow 0.2s", marginTop:16,
+                    boxShadow:d2ExOpen==="challenge"?"0 4px 20px rgba(138,158,132,0.18)":"none" }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                    <div style={{ flex:1 }}>
+                      <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:8 }}>Now try it yourself</div>
+                      <div style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:T2.text, lineHeight:1.2, marginBottom:4 }}>Can you say it four ways?</div>
+                      <div style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, fontWeight:300 }}>Same sentence. Completely different voice.</div>
+                    </div>
+                    <span style={{ fontFamily:T.sans, fontSize:18, color:d2ExOpen==="challenge"?T.gold:"rgba(138,158,132,0.7)", marginLeft:20, flexShrink:0, transition:"color 0.2s" }}>{d2ExOpen==="challenge"?"▴":"▸"}</span>
                   </div>
+                  {d2ExOpen==="challenge" && (
+                    <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:20, marginTop:18, display:"grid", gridTemplateColumns:"1fr 1fr", gap:24 }}>
+                      {D2_EX_CARDS.map((card,ci)=>(
+                        <div key={ci}>
+                          <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:700, color:T2.text4, textTransform:"uppercase", letterSpacing:"1px", marginBottom:10 }}>{card.name}</div>
+                          <p style={{ fontFamily:T.serif, fontSize:17, fontWeight:600, color:T2.text, fontStyle:"italic", marginBottom:14 }}>{card.challenge.sentence}</p>
+                          <div style={{ display:"flex", flexDirection:"column" }}>
+                            {card.challenge.modes.map((m,i,arr)=>(
+                              <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"9px 0", borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none" }}>
+                                <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, width:16, flexShrink:0 }}>{i+1}.</span>
+                                <span style={{ fontFamily:T.sans, fontSize:14, color:T2.text, fontWeight:400 }}>{m}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
+              );
+            })()}
           </div>
         );
       }
