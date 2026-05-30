@@ -453,7 +453,7 @@ setAmbitionSaved(true); } catch {}
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16,fontFamily:T.sans}}>The wake-up call</div>
-          <h2 style={{fontFamily:T.serif,fontSize:42,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Most people know how to communicate better. Very few practise until it's automatic.</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Most people know how to communicate better. Very few practise until it's automatic.</h2>
           <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32}}>This week, you did something different.</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:28}}>
             {D7_INSIGHT_CARDS.map((n,i)=>{
@@ -495,7 +495,7 @@ setAmbitionSaved(true); } catch {}
       if (step === "Theory") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Habit Loop</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Habit Loop</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:300,marginBottom:8}}>Charles Duhigg — The Power of Habit, 2012</p>
           <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.6,marginBottom:24}}>Every habit — good or bad — follows the same loop:</p>
           {/* CUE → ROUTINE → REWARD */}
@@ -533,7 +533,7 @@ setAmbitionSaved(true); } catch {}
       if (step === "Example") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Your Week 1 Foundations</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Six habits. Seven days. Here's what you built.</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Six habits. Seven days. Here's what you built.</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:300,marginBottom:28}}>Each foundation is a permanent part of your communication toolkit. Not techniques to remember — behaviours to repeat.</p>
           <div style={{display:"flex",flexDirection:"column",gap:12}}>
             {[

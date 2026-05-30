@@ -870,7 +870,7 @@ T.goldDark : T2.text4,
       {isD7 && step==="Insight" && (
         <>
           <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The wake-up call</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Most people know how to communicate better. Very few practise until it's automatic.</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Most people know how to communicate better. Very few practise until it's automatic.</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>This week, you did something different.</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {D7_INSIGHT_CARDS.map((n,i)=>{
@@ -908,7 +908,7 @@ T.goldDark : T2.text4,
       {isD7 && step==="Theory" && (
         <>
           <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:6}}>The Habit Loop</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:6}}>The Habit Loop</h2>
           <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Charles Duhigg — The Power of Habit, 2012</p>
           <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,marginBottom:16}}>Every habit — good or bad — follows the same loop:</p>
           {/* CUE → ROUTINE → REWARD visual */}
@@ -945,7 +945,7 @@ T.goldDark : T2.text4,
       {isD7 && step==="Example" && (
         <>
           <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>Your Week 1 Foundations</div>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Six habits. Seven days. Here's what you built.</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:21,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Six habits. Seven days. Here's what you built.</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Each foundation is a permanent part of your communication toolkit. Not techniques to remember — behaviours to repeat.</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {[
