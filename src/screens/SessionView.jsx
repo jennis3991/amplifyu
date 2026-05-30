@@ -438,6 +438,9 @@ setAmbitionSaved(true); } catch {}
     // ── D7 RightContent — Week 1 Review ───────────────────────────────────────
     const D7RightContent = () => {
       const [openCard, setOpenCard] = useState(null);
+      const [checkedHabits, setCheckedHabits] = useState(new Set());
+      const [noticed, setNoticed] = useState('');
+      const [willPractise, setWillPractise] = useState('');
 
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
@@ -551,40 +554,122 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
+      const D7_COMMUNICATORS = [
+        {emoji:"🎙️",name:"Steven Bartlett",role:"Master of Listening",sub:"Known for creating conversations that reveal insight.",watchFor:["Active listening","Follow-up questions","Comfortable silence","Genuine curiosity"],connection:[["Day 3","Pause Principle"],["Day 6","High-Stakes Conversations"]],reflection:"How often does he speak versus listen?"},
+        {emoji:"⚖️",name:"Amal Clooney",role:"Master of Precision Under Pressure",sub:"What makes her communication remarkable isn't volume or emotion. It's clarity, precision, and calm conviction.",watchFor:["Structured arguments","Evidence-based communication","Deliberate language","Composed delivery"],connection:[["Day 4","Precision"],["Day 5","PRE"],["Day 6","High-Stakes Conversations"]],reflection:"How does she remain calm while discussing emotionally charged topics?"},
+        {emoji:"🎤",name:"Simon Sinek",role:"Master of Structure",sub:"Known for turning complex ideas into memorable frameworks. His communication is simple, organised, and easy to follow.",watchFor:["Clear structure","Repetition","Memorable phrases","Simple language"],connection:[["Day 1","Feynman Technique"],["Day 5","PRE"]],reflection:"How does he make complex ideas feel simple?"},
+        {emoji:"🌍",name:"David Attenborough",role:"Master of Clarity",sub:"Known for explaining complex subjects in a way anyone can understand. His communication is calm, precise, and remarkably clear.",watchFor:["Pace","Simplicity","Precision","Storytelling"],connection:[["Day 1","Clarity"],["Day 4","Precision"]],reflection:"What makes his explanations so easy to follow?"},
+      ];
       if (step === "Practice") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Communication Fitness Reps</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Train Your Instrument</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:300,marginBottom:28}}>Skill fades without repetition. Strength comes from reps. Choose your practice mode.</p>
-          {[
-            {badge:"⚡ QUICK REP",time:"2 minutes",head:"Pick one. Use it today.",body:"Choose one technique from this week and deploy it intentionally in your next real conversation.",prompt:"I want to do a quick rep. Help me choose one technique from Days 1–6 to use today, and tell me exactly what to watch for in my next conversation."},
-            {badge:"🔁 MEDIUM REP",time:"5 minutes",head:"Replay a real conversation.",body:"Think of a conversation from this week. The coach will identify the gap and help you rewrite the key moment.",prompt:"I want to replay a conversation from this week. Ask me about it and help me identify where I could have communicated more clearly, paused, or structured my answer better."},
-            {badge:"🏋️ PERFORMANCE REP",time:"10 minutes",head:"Repeat one full exercise from Days 1–6.",body:"Choose the skill that felt least natural. Fluency comes from reps, not from doing something once.",prompt:"I want to do a performance rep. Ask me which Day 1–6 skill felt least natural, then run that day's core exercise with me from the beginning."},
-          ].map((t,i)=>{
-            const open = openCard===("p"+i);
-            return (
-              <div key={i} onClick={()=>setOpenCard(open?null:("p"+i))}
-                style={{background:T2.surface,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,borderRadius:6,marginBottom:12,cursor:"pointer",overflow:"hidden",transition:"border-color 0.2s"}}>
-                <div style={{padding:"18px 22px",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                  <div style={{flex:1}}>
-                    <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:6}}>
-                      <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px"}}>{t.badge}</span>
-                      <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>· {t.time}</span>
-                    </div>
-                    <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:open?0:4}}>{t.head}</div>
-                    {!open && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{t.body}</p>}
+          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Practice</div>
+          <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Study a Master Communicator</h2>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.7,fontWeight:300,marginBottom:8}}>Over the last six days, you've learned how great communicators use clarity, pauses, precision, structure, and composure.</p>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,fontWeight:300,marginBottom:8}}>Choose someone you consider an exceptional communicator and watch 10 minutes of an interview, podcast, speech, or conversation.</p>
+          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:4}}>The goal isn't to copy their style.</p>
+          <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T.gold,lineHeight:1.7,marginBottom:28}}>The goal is to understand what makes them effective.</p>
+
+          {/* Observe */}
+          <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,marginBottom:28}}>
+            <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>Observe</div>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.5,marginBottom:12,fontWeight:300}}>As you watch, look for:</p>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {["How they explain ideas","How they use pauses","How they structure their thoughts","How they respond under pressure","How they build trust and credibility"].map((item,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(82,112,96,0.12)",border:"1px solid rgba(82,112,96,0.4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <span style={{color:"#527060",fontSize:10,fontWeight:700}}>✓</span>
                   </div>
-                  <span style={{fontFamily:T.sans,fontSize:15,color:open?T.gold:T2.text3,marginLeft:16,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  <span style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.5}}>{item}</span>
                 </div>
-                {open && (
-                  <div style={{padding:"0 22px 20px",borderTop:"0.5px solid "+T2.divider}}>
-                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:"16px 0 16px",fontWeight:300}}>{t.body}</p>
-                    <CoachWidget lesson={lesson} scenario={t.prompt}/>
+              ))}
+            </div>
+          </div>
+
+          {/* Communicator cards */}
+          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Need Inspiration?</div>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:32}}>
+            {D7_COMMUNICATORS.map((c,ci)=>{
+              const open = openCard===("c"+ci);
+              return (
+                <div key={ci} onClick={()=>setOpenCard(open?null:("c"+ci))}
+                  style={{background:T2.surface,borderRadius:4,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 16px rgba(138,158,132,0.1)":"none"}}>
+                  <div style={{padding:"18px 22px",display:"flex",alignItems:"flex-start",gap:14}}>
+                    <span style={{fontSize:22,flexShrink:0,marginTop:2}}>{c.emoji}</span>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:2}}>{c.name}</div>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:open?0:6}}>{c.role}</div>
+                      {!open && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{c.sub}</p>}
+                    </div>
+                    <span style={{fontFamily:T.sans,fontSize:15,color:open?T.gold:"rgba(138,158,132,0.5)",flexShrink:0,marginTop:2}}>{open?"▴":"▸"}</span>
                   </div>
-                )}
-              </div>
-            );
-          })}
+                  {open && (
+                    <div style={{borderTop:"0.5px solid "+T2.divider,padding:"20px 22px",display:"flex",flexDirection:"column",gap:16}}>
+                      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>{c.sub}</p>
+                      <div>
+                        <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:8}}>Watch For</div>
+                        <div style={{display:"flex",flexWrap:"wrap",gap:7}}>
+                          {c.watchFor.map((w,wi)=><span key={wi} style={{padding:"5px 13px",borderRadius:20,border:"0.5px solid "+T2.border,fontFamily:T.sans,fontSize:12,color:T2.text,background:T2.bg}}>{w}</span>)}
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:8}}>AmplifyU Connection</div>
+                        <div style={{display:"flex",gap:7,flexWrap:"wrap"}}>
+                          {c.connection.map(([day,principle],di)=>(
+                            <div key={di} style={{display:"flex",alignItems:"center",gap:6,padding:"5px 10px",background:"rgba(138,158,132,0.08)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)"}}>
+                              <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{day}</span>
+                              <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>{principle}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                        <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:6}}>Reflection</div>
+                        <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{c.reflection}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Reflect */}
+          <div style={{padding:"24px 28px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,marginBottom:16}}>
+            <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14,fontFamily:T.sans}}>Reflect</div>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.5,marginBottom:16,fontWeight:300}}>After watching, answer these questions:</p>
+            <p style={{fontFamily:T.sans,fontSize:14,fontWeight:600,color:T2.text,lineHeight:1.5,marginBottom:10}}>Which AmplifyU principle did you notice?</p>
+            <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:24}}>
+              {["Clarity","Pause","Precision","PRE Structure","Composure"].map(h=>{
+                const on=checkedHabits.has(h);
+                return (
+                  <button key={h} onClick={e=>{e.stopPropagation();const s=new Set(checkedHabits);on?s.delete(h):s.add(h);setCheckedHabits(s);}}
+                    style={{padding:"7px 16px",borderRadius:20,border:`1px solid ${on?T.gold:T2.border}`,background:on?"rgba(138,158,132,0.1)":"transparent",fontFamily:T.sans,fontSize:13,color:on?T.gold:T2.text,cursor:"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",gap:7}}>
+                    {on && <span style={{fontSize:10,color:T.gold}}>✓</span>}{h}
+                  </button>
+                );
+              })}
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:14,fontWeight:600,color:T2.text,lineHeight:1.5,marginBottom:12}}>Complete the sentence:</p>
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {[{label:"One thing I noticed was…",val:noticed,set:setNoticed,ph:"Write your observation…"},{label:"This week, I will practise…",val:willPractise,set:setWillPractise,ph:"Name one habit to develop…"}].map(({label,val,set,ph},fi)=>(
+                <div key={fi} style={{padding:"12px 16px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                  <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginBottom:6,fontWeight:500}}>{label}</div>
+                  <input value={val} onChange={e=>set(e.target.value)} placeholder={ph}
+                    style={{width:"100%",border:"none",background:"transparent",fontFamily:T.serif,fontSize:15,color:T2.text,outline:"none",padding:0}}/>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Final Insight */}
+          <div style={{padding:"24px 28px",background:T2.cardDark,borderRadius:6}}>
+            <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14,fontFamily:T.sans}}>Final Insight</div>
+            <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"rgba(245,239,230,0.9)",lineHeight:1.5,margin:"0 0 10px"}}>The best communicators don't just communicate.</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.5)",lineHeight:1.7,margin:"0 0 16px",fontWeight:300}}>They observe, reflect, and continuously refine their craft.</p>
+            <div style={{height:"0.5px",background:"rgba(245,239,230,0.1)",margin:"16px 0"}}/>
+            <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.5)",lineHeight:1.7,margin:"0 0 4px",fontWeight:300}}>This week, don't just consume content.</p>
+            <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T.gold,lineHeight:1.5,margin:0}}>Study the communication.</p>
+          </div>
         </div>
       );
 
