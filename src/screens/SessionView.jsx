@@ -3662,7 +3662,11 @@ setAmbitionSaved(true); } catch {}
               )}
               <div style={{ position: "relative", zIndex: 1 }}>
                 {isD1 && step === "Practice"
-                  ? <div key="d1-practice" style={{padding:"44px 52px",overflowY:"auto"}}><D1ClarityChallenge T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD1NavLabel} onNavFn={d1NavFnRef}/></div>
+                  ? <div key="d1-practice" style={{padding:"44px 52px",overflowY:"auto"}}>
+                      <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Practice · Day 1</div>
+                      <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:28}}>The Feynman Challenge™</h2>
+                      <D1ClarityChallenge T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD1NavLabel} onNavFn={d1NavFnRef}/>
+                    </div>
                   : isD1 ? <D1RightContent/> : isD2 ? <D2RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD6 ? <D6RightContent/> : isD7 ? <D7RightContent/> : isD11 ? <D11RightContent/> : isD12 ? <D12RightContent/> : isD10 ? <D10RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
               </div>
             </div>
