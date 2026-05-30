@@ -42,13 +42,9 @@ export function SessionLeftPanel({
             <img src={img.image} alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 35%", filter:"brightness(1.2)" }}/>
             {/* Minimal top gradient for label only */}
             <div style={{ position:"absolute", top:0, left:0, right:0, height:"28%", background:"linear-gradient(to bottom, rgba(10,8,5,0.5) 0%, transparent 100%)", pointerEvents:"none" }}/>
-            <div style={{ position:"absolute", top:36, left:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-              <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", textShadow:"0 1px 4px rgba(0,0,0,0.5)" }}>The Science</div>
-            </div>
           </>
         ) : (
           <div style={{ background:"#131009", height:"100%", display:"flex", alignItems:"flex-end", padding:"40px 48px" }}>
-            <div style={{ ...LP_LABEL, color:T.gold }}>The Science</div>
           </div>
         ); })()}
       </div>
@@ -106,7 +102,6 @@ export function SessionLeftPanel({
         />
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(8,6,3,0.8) 0%, rgba(8,6,3,0.1) 50%, transparent 75%)" }}/>
         <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:10 }}>The Science</div>
           <p style={{ fontFamily:T.serif, fontSize:"clamp(20px,1.8vw,28px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:340 }}>CUE. ROUTINE. REWARD. Repeat the loop — and the behaviour becomes automatic.</p>
         </div>
       </div>
@@ -142,7 +137,6 @@ export function SessionLeftPanel({
         />
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(8,6,3,0.75) 0%, rgba(8,6,3,0.1) 50%, transparent 75%)" }}/>
         <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:10 }}>The Science</div>
           <p style={{ fontFamily:T.serif, fontSize:"clamp(20px,1.8vw,28px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:340 }}>90% of your hardest work lives below the waterline.</p>
         </div>
       </div>
@@ -213,7 +207,6 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.35)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.2) 45%, transparent 65%)" }}/>
         <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
-          <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:8 }}>The Pause Principle</div>
           <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0 }}>The power of silence.</p>
         </div>
       </div>
@@ -284,9 +277,6 @@ export function SessionLeftPanel({
         <img src="/feynman-technique.jpg" alt="The Feynman Technique" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:T.imgObjectPosition||"center 20%" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.22)" }}/>
         <div style={{ position:"absolute", top:0, left:0, right:0, height:"25%", background:"linear-gradient(to bottom, rgba(10,8,5,0.55) 0%, transparent 100%)" }}/>
-        <div style={{ position:"absolute", top:36, left:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-          <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", textShadow:"0 1px 6px rgba(0,0,0,0.5)" }}>The Science</div>
-        </div>
       </div>
     );
     if (step === "Example") return (
@@ -574,9 +564,6 @@ export function SessionLeftPanel({
           <img src={theoryImg.image} alt="" style={{ position:"absolute", inset:"-20px", width:"calc(100% + 40px)", height:"calc(100% + 40px)", objectFit:"cover", filter:"blur(18px) brightness(0.45)", pointerEvents:"none" }}/>
           <img src={theoryImg.image} alt={theoryImg.alt||""} style={{ position:"relative", zIndex:1, width:"140%", marginLeft:"-20%", height:"auto", display:"block" }}/>
           <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.55) 0%, transparent 40%)", zIndex:2 }}/>
-          <div style={{ position:"absolute", top:32, left:24, zIndex:3, animation:"fadeUp 0.7s ease both" }}>
-            <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", textShadow:"0 1px 6px rgba(0,0,0,0.6)" }}>The Science</div>
-          </div>
         </div>
       );
     }
@@ -586,16 +573,12 @@ export function SessionLeftPanel({
         <div style={{ height: "100%", position: "relative", overflow: "hidden", background: useContain ? "#0E0B08" : "transparent" }}>
           <img src={theoryImg.image} alt={theoryImg.alt || ""} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: useContain ? "contain" : "cover", objectPosition: theoryImg.imgObjectPosition || "center" }}/>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "28%", background: "linear-gradient(to bottom, rgba(10,8,5,0.55) 0%, transparent 100%)" }}/>
-          <div style={{ position: "absolute", top: 32, left: 24, zIndex: 2, animation: "fadeUp 0.7s ease both" }}>
-            <div style={{ ...LP_LABEL, fontSize: 13, color: "#F5EFE6", textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>The Science</div>
-          </div>
         </div>
       );
     }
     return (
       <div style={{ background: "#131009", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "48px 40px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: -80, left: -80, width: 400, height: 400, background: "radial-gradient(ellipse, rgba(138,158,132,0.1) 0%, transparent 60%)", pointerEvents: "none" }}/>
-        <div style={{ ...LP_LABEL, fontSize: 13, color: "#F5EFE6", marginBottom: 28, alignSelf: "flex-start", animation: "fadeDown 0.6s ease both" }}>The Science</div>
         <div style={{ transform: "scale(1.4)", transformOrigin: "top center", animation: "fadeIn 0.8s ease 0.1s both", opacity: 0 }}>
           {Diagram ? <Diagram/> : null}
         </div>
