@@ -1305,7 +1305,7 @@ T.goldDark : T2.text4,
       )}
       {isD3 && step==="Practice" && (
         <>
-          <D3PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD3NavLabel} onNavFn={d3NavFnRef}/>
+          <D3PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD3NavLabel} onNavFn={d3NavFnRef} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
         </>
       )}
       {isD3 && step==="Simulation" && (
@@ -1391,7 +1391,7 @@ T.goldDark : T2.text4,
       )}
       {isD4 && step==="Practice" && (
         <>
-          <D4PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD4NavLabel} onNavFn={d4NavFnRef}/>
+          <D4PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD4NavLabel} onNavFn={d4NavFnRef} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
         </>
       )}
       {isD4 && step==="Simulation" && (

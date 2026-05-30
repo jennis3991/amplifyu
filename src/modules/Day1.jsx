@@ -264,20 +264,6 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           </div>
       </div>
 
-      {/* REWARD */}
-      <div style={{...cs.card,display:"flex",gap:16,alignItems:"center"}}>
-        <img src="/badge-queen.jpg" alt="Great Explainer" style={{width:isDesktop?72:56,height:isDesktop?72:56,borderRadius:6,objectFit:"cover",border:"1.5px solid rgba(201,168,76,0.4)",flexShrink:0}}/>
-        <div style={{flex:1}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>The Reward</div>
-          <div style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T2.text,marginBottom:6}}>Great Explainer</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:T.gold,lineHeight:1.2,margin:0}}>Complete the challenge to unlock the Great Explainer badge.</p>
-        </div>
-        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"10px 14px",background:"rgba(138,158,132,0.06)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",flexShrink:0}}>
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.5 4.5H15l-3.75 2.75 1.5 4.5L9 11l-3.75 2.75 1.5-4.5L3 6.5h4.5z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/></svg>
-          <span style={{fontFamily:T.sans,fontSize:10,color:T2.text3,textAlign:"center",lineHeight:1.4}}>Top performers<br/>earn exclusive<br/>recognition.</span>
-        </div>
-      </div>
-
       <button onClick={()=>setPhase('playing')} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Feynman Challenge →</button>
     </div>
   );

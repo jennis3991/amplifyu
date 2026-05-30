@@ -47,7 +47,7 @@ export function D4MobileSim() {
 }
 
 // ─── D4 Practice Widget ───────────────────────────────────────────────────────
-export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
+export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimulation}) {
   const [phase, setPhase] = useState('intro');
   const [round, setRound] = useState(0);
   const [selected, setSelected] = useState(null);
@@ -83,9 +83,9 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
       intro:"Follow these instructions.",
       rounds:[
         {label:"Round 1", items:["Touch your nose."]},
-        {label:"Round 2", items:["Touch your nose.","Clap twice.","Point left.","Touch your shoulder.","Blink.","Raise your hand."]},
+        {label:"Round 2", items:["Touch your nose.","Stamp your foot.","Point left.","Touch your shoulder.","Blink.","Raise your hand."]},
       ],
-      splitItems:["Touch your nose.","Clap twice.","Point left.","Touch your shoulder."],
+      splitItems:["Touch your nose.","Stamp your foot.","Point left.","Touch your shoulder."],
       question:"Which round felt easier?",
       options:[{label:"Round 1 — obviously",correct:true},{label:"About the same",correct:false},{label:"Round 2 — I like a challenge",correct:false}],
       lesson:"Miller's Law isn't just about words. It's about mental load. When information arrives one step at a time, the brain performs better.",
@@ -126,6 +126,9 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
     if(phase==='intro'){
       if(onNavFn) onNavFn.current=()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(4);setSimonStep(0);};
       onNavLabel('Begin Challenge');
+    } else if(phase==='done'){
+      if(onNavFn) onNavFn.current=onSimulation||null;
+      onNavLabel(onSimulation?'Simulation →':null);
     } else {
       if(onNavFn) onNavFn.current=null;
       onNavLabel(null);
@@ -191,14 +194,6 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
               <span style={{fontFamily:T.sans,fontSize:isDesktop?13:11,color:"#A8998A",fontWeight:400,textAlign:"center",lineHeight:1.3}}>{s}</span>
             </div>
           ))}
-        </div>
-      </div>
-      <div style={{...cs.card,display:"flex",gap:16,alignItems:"center"}}>
-        <img src="/badge-knight.jpg" alt="Clarity Architect badge" style={{width:isDesktop?72:56,height:isDesktop?72:56,borderRadius:6,objectFit:"cover",border:"1.5px solid rgba(138,158,132,0.3)",flexShrink:0}}/>
-        <div style={{flex:1}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>The Reward</div>
-          <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:6}}>Clarity Architect</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:T.gold,lineHeight:1.2,margin:0}}>Complete the challenge to unlock the Clarity Architect badge.</p>
         </div>
       </div>
       <button onClick={()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(4);setSimonStep(0);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Miller's Law Challenge →</button>
@@ -326,7 +321,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
                 <div style={cs.card}>
                   <div style={cs.label}>{r.title}</div>
                   <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Round 2</div>
-                  <p style={{fontFamily:T.serif,fontSize:18,color:T2.text,lineHeight:1.5,margin:0}}>Touch your nose, clap twice, point left, touch your shoulder, blink, then raise your hand.</p>
+                  <p style={{fontFamily:T.serif,fontSize:18,color:T2.text,lineHeight:1.5,margin:0}}>Touch your nose, stamp your foot, point left, touch your shoulder, blink, then raise your hand.</p>
                 </div>
                 <button onClick={()=>setSimonStep(2)} style={cs.cta}>Harder. ✓</button>
               </>
@@ -642,15 +637,6 @@ function _unusedD4OldRounds() {
               <span style={{fontFamily:T.sans,fontSize:isDesktop?13:11,color:"#A8998A",fontWeight:400,textAlign:"center",lineHeight:1.3}}>{s}</span>
             </div>
           ))}
-        </div>
-      </div>
-
-      <div style={{...cs.card,display:"flex",gap:16,alignItems:"center"}}>
-        <img src="/badge-knight.jpg" alt="Clarity Architect badge" style={{width:isDesktop?72:56,height:isDesktop?72:56,borderRadius:6,objectFit:"cover",border:"1.5px solid rgba(138,158,132,0.3)",flexShrink:0}}/>
-        <div style={{flex:1}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>The Reward</div>
-          <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:6}}>Clarity Architect</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:T.gold,lineHeight:1.2,margin:0}}>Complete the challenge to unlock the Clarity Architect badge.</p>
         </div>
       </div>
 
