@@ -22,15 +22,15 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
      ],
      correct:1,
      feedback:"Simple doesn't mean simplistic — it means understandable. Option B creates a picture. That's the Feynman test."},
-    {id:2, type:'order', label:'Round 2', name:'The Feynman Formula', pts:25,
-     task:'Ella wants to explain why the moon changes shape to her nephew. Put her steps in the correct order.',
-     items:[
-       'Ella reads about moon phases',
-       'Ella tries explaining it in simple language',
-       'Ella realises she gets stuck',
-       'Ella goes back and learns what she missed',
+    {id:2, type:'cardsort', label:'Round 2', name:'The Feynman Formula', pts:25,
+     task:'Sort each action into the right step of the Feynman Technique.',
+     cards:[
+       {text:"Read and absorb the concept until you can picture how it works.", bucket:'understand'},
+       {text:"Explain it out loud as if you're teaching a 10-year-old.", bucket:'explain'},
+       {text:"Replace every technical word with a simpler, plainer one.", bucket:'simplify'},
+       {text:"Go back and fill the gaps where your explanation broke down.", bucket:'refine'},
      ],
-     correctOrder:[0,1,2,3],
+     buckets:['understand','explain','simplify','refine'],
      feedback:"Getting stuck is useful. It reveals exactly where your understanding needs work — and that's where you grow."},
     {id:3, type:'mcq', label:'Round 3', name:"What's Missing?", pts:25,
      task:"What's missing from this explanation?",
@@ -58,6 +58,10 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
   const [orderItems, setOrderItems] = useState([]);
   const [orderSelected, setOrderSelected] = useState(null);
   const [orderAnswered, setOrderAnswered] = useState(false);
+  const [sortCards, setSortCards] = useState([]);
+  const [sortPlaced, setSortPlaced] = useState({});
+  const [sortSelected, setSortSelected] = useState(null);
+  const [sortChecked, setSortChecked] = useState(false);
   const [explainText, setExplainText] = useState('');
   const [aiResult, setAiResult] = useState(null);
   const [aiLoading, setAiLoading] = useState(false);
@@ -69,6 +73,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
     setPhase('intro'); setRoundIdx(0); setTotalPts(0); setMcqPts(0); setExplainPts(0);
     setSelected(null); setAnswered(false); setOrderItems([]); setOrderSelected(null);
     setOrderAnswered(false); setExplainText(''); setAiResult(null);
+    setSortCards([]); setSortPlaced({}); setSortSelected(null); setSortChecked(false);
   }
 
   function handleMCQ(i) {
@@ -114,6 +119,27 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
     setMcqPts(p => p + pts);
   }
 
+  function checkSort() {
+    const r = round;
+    let correct = 0;
+    r.buckets.forEach(b => { if (sortPlaced[b] != null && sortCards[sortPlaced[b]].bucket === b) correct++; });
+    const pts = Math.round(r.pts * (correct / r.cards.length));
+    setTotalPts(p => p + pts); setMcqPts(p => p + pts);
+    setSortChecked(true);
+  }
+  function tapSortCard(i) {
+    if (sortChecked) return;
+    setSortSelected(s => s === i ? null : i);
+  }
+  function tapSortBucket(bucket) {
+    if (sortChecked) return;
+    if (sortSelected === null) { if (sortPlaced[bucket] != null) setSortPlaced(p=>({...p,[bucket]:null})); return; }
+    const np = {...sortPlaced};
+    Object.keys(np).forEach(k => { if (np[k] === sortSelected) np[k] = null; });
+    np[bucket] = sortSelected;
+    setSortPlaced(np); setSortSelected(null);
+  }
+
   function nextRound() {
     if (isLast) { setPhase('final'); return; }
     const next = roundIdx + 1;
@@ -121,8 +147,13 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
     setSelected(null); setAnswered(false);
     setOrderAnswered(false); setOrderSelected(null);
     setExplainText(''); setAiResult(null);
+    setSortPlaced({}); setSortSelected(null); setSortChecked(false);
+    if (ROUNDS[next].type === 'cardsort') {
+      const cards = [...ROUNDS[next].cards];
+      for (let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}
+      setSortCards(cards);
+    }
     if (ROUNDS[next].type === 'order') {
-      // init order items after state update
       const shuffled = [...ROUNDS[next].items];
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -185,6 +216,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
     } else if (phase === 'playing') {
       const canAdvance = round?.type === 'mcq' ? answered
         : round?.type === 'order' ? orderAnswered
+        : round?.type === 'cardsort' ? sortChecked
         : !!aiResult;
       if (canAdvance) {
         const label = isLast ? 'See Your Results' : 'Next Round';
@@ -198,7 +230,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       if (onNavFn) onNavFn.current = null;
       onNavLabel(null);
     }
-  }, [phase, answered, orderAnswered, aiResult, roundIdx]);
+  }, [phase, answered, orderAnswered, sortChecked, aiResult, roundIdx]);
 
   // ── INTRO ──────────────────────────────────────────────────────────────────
   if (phase === 'intro') return (
@@ -298,7 +330,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:14}}>
             {[
               {label:"Clarity Tests",sub:"Rounds 1 + 3",earned:mcqPts,max:ROUNDS.filter(r=>r.type==='mcq').reduce((s,r)=>s+r.pts,0)},
-              {label:"Feynman Order",sub:"Round 2",earned:mcqPts>0?Math.min(mcqPts,25):0,max:25},
+              {label:"Feynman Formula",sub:"Round 2",earned:mcqPts>0?Math.min(mcqPts,25):0,max:25},
               {label:"Explanation",sub:"Round 4",earned:explainPts,max:30},
             ].map((b,i)=>(
               <div key={i} style={{padding:"12px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border,textAlign:"center"}}>
@@ -411,115 +443,82 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
   }
 
   // ── ORDERING ROUND ─────────────────────────────────────────────────────────
-  if (round.type === 'order') {
-    if (orderItems.length === 0) {
-      const shuffled = [...round.items];
-      for (let i = shuffled.length-1; i > 0; i--) {
-        const j = Math.floor(Math.random()*(i+1));
-        [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];
-      }
-      setOrderItems(shuffled);
+  if (round.type === 'cardsort') {
+    if (sortCards.length === 0) {
+      const cards = [...round.cards];
+      for (let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}
+      setSortCards(cards);
       return null;
     }
-    const allCorrect = orderAnswered && orderItems.every((item,i)=>item===round.items[i]);
-
-    function handleDragStart(e, i) {
-      e.dataTransfer.effectAllowed = 'move';
-      setOrderSelected(i);
-    }
-    function handleDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }
-    function handleDrop(e, i) {
-      e.preventDefault();
-      if (orderSelected === null || orderSelected === i) { setOrderSelected(null); return; }
-      const next = [...orderItems];
-      [next[orderSelected], next[i]] = [next[i], next[orderSelected]];
-      setOrderItems(next);
-      setOrderSelected(null);
-    }
-    function handleTap(i) {
-      if (orderAnswered) return;
-      if (orderSelected === null) { setOrderSelected(i); return; }
-      if (orderSelected === i) { setOrderSelected(null); return; }
-      const next = [...orderItems];
-      [next[orderSelected], next[i]] = [next[i], next[orderSelected]];
-      setOrderItems(next);
-      setOrderSelected(null);
-    }
-
+    const placedSet = new Set(Object.values(sortPlaced).filter(v=>v!=null));
+    const unplaced = sortCards.map((_,i)=>i).filter(i=>!placedSet.has(i));
+    const allPlaced = unplaced.length === 0;
+    const correctCount = sortChecked ? round.buckets.filter(b=>sortPlaced[b]!=null&&sortCards[sortPlaced[b]].bucket===b).length : 0;
+    const allCorrect = sortChecked && correctCount === round.cards.length;
     return (
       <div style={{display:"flex",flexDirection:"column",gap:14}}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
+        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:4}}>
           <div style={{display:"flex",gap:6}}>
             {ROUNDS.map((_,i)=>(
               <div key={i} style={{width:isDesktop?32:24,height:4,borderRadius:2,background:i<roundIdx?T.gold:i===roundIdx?"rgba(138,158,132,0.5)":T2.border,transition:"background 0.3s"}}/>
             ))}
           </div>
+          <div style={{flex:1,height:2,background:T2.border,borderRadius:2}}>
+            <div style={{height:"100%",width:(((roundIdx+1)/ROUNDS.length)*100)+"%",background:T.gold,borderRadius:2,transition:"width 0.4s"}}/>
+          </div>
           <div style={cs.pts}>{totalPts} pts</div>
         </div>
+        {/* Task card */}
         <div style={cs.card}>
           <div style={cs.label}>{round.label} — {round.name}</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:0,fontWeight:500}}>{round.task}</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,margin:0,fontWeight:500}}>{round.task}</p>
         </div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:"0 0 4px",lineHeight:1.5}}>
-          {orderAnswered ? "Here's the correct order:" : isDesktop ? "Drag the cards into the right order." : "Tap a card to select it, then tap another to swap."}
-        </p>
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          {orderItems.map((item,i)=>{
-            const isDragging = orderSelected===i;
-            const isCorrectPos = orderAnswered && item===round.items[i];
-            const isWrongPos = orderAnswered && item!==round.items[i];
-            let border = T2.border, bg = T2.surface;
-            if (isDragging) { border=T.gold; bg="rgba(138,158,132,0.1)"; }
-            else if (isCorrectPos) { border="#527060"; bg="rgba(82,112,96,0.08)"; }
-            else if (isWrongPos) { border="#B05C4A"; bg="rgba(176,92,74,0.06)"; }
+        {/* Unplaced card tray */}
+        {unplaced.length > 0 && (
+          <div style={{display:"flex",flexDirection:"column",gap:7}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px"}}>
+              {sortSelected===null ? "Tap a card to select it" : "Card selected — tap a bucket below to place it"}
+            </div>
+            {unplaced.map(i=>(
+              <div key={i} onClick={()=>tapSortCard(i)}
+                style={{padding:"13px 16px",borderRadius:4,border:`1px solid ${sortSelected===i?T.gold:T2.border}`,background:sortSelected===i?"rgba(138,158,132,0.08)":T2.bg,cursor:"pointer",transition:"all 0.15s",boxShadow:sortSelected===i?"0 0 0 2px rgba(138,158,132,0.15)":"none",userSelect:"none"}}>
+                <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0}}>{sortCards[i].text}</p>
+              </div>
+            ))}
+          </div>
+        )}
+        {/* Buckets */}
+        <div style={{display:"flex",flexDirection:isDesktop?"row":"column",gap:10}}>
+          {round.buckets.map((bucket,bi)=>{
+            const idx = sortPlaced[bucket];
+            const correct = sortChecked && idx!=null && sortCards[idx].bucket===bucket;
+            const wrong   = sortChecked && idx!=null && sortCards[idx].bucket!==bucket;
+            const highlight = !sortChecked && sortSelected!==null && idx==null;
+            const bucketLabel = ['Understand','Explain','Simplify','Refine'][bi];
             return (
-              <div key={item}
-                draggable={isDesktop && !orderAnswered}
-                onDragStart={isDesktop ? e=>handleDragStart(e,i) : undefined}
-                onDragOver={isDesktop ? handleDragOver : undefined}
-                onDrop={isDesktop ? e=>handleDrop(e,i) : undefined}
-                onDragEnd={isDesktop ? ()=>setOrderSelected(null) : undefined}
-                onClick={!isDesktop ? ()=>handleTap(i) : undefined}
-                style={{
-                  ...cs.card,
-                  border:`1px solid ${border}`,
-                  background:bg,
-                  cursor:orderAnswered?"default":isDesktop?"grab":"pointer",
-                  display:"flex",alignItems:"center",gap:12,
-                  transition:"all 0.2s",
-                  padding:isDesktop?"14px 18px":"12px 14px",
-                  opacity:isDragging?0.5:1,
-                  userSelect:"none",
-                }}>
-                {/* Drag handle */}
-                {!orderAnswered && (
-                  <div style={{display:"flex",flexDirection:"column",gap:3,flexShrink:0,opacity:0.35}}>
-                    {[0,1,2].map(j=><div key={j} style={{width:16,height:1.5,background:T2.text,borderRadius:1}}/>)}
-                  </div>
-                )}
-                <div style={{width:28,height:28,borderRadius:"50%",background:isCorrectPos?"rgba(82,112,96,0.15)":isWrongPos?"rgba(176,92,74,0.1)":"rgba(44,36,22,0.06)",border:`1.5px solid ${isCorrectPos?"#527060":isWrongPos?"#B05C4A":T2.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                  <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:isCorrectPos?"#527060":isWrongPos?"#B05C4A":T2.text3}}>{i+1}</span>
+              <div key={bucket} onClick={()=>tapSortBucket(bucket)}
+                style={{flex:1,borderRadius:4,border:`1.5px solid ${correct?"#527060":wrong?"#B05C4A":highlight?"rgba(138,158,132,0.5)":T2.border}`,background:correct?"rgba(82,112,96,0.06)":wrong?"rgba(176,92,74,0.06)":highlight?"rgba(138,158,132,0.04)":"transparent",cursor:!sortChecked?"pointer":"default",transition:"all 0.15s",minHeight:isDesktop?90:72,display:"flex",flexDirection:"column",padding:"11px 14px",gap:8}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                  <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:correct?"#527060":wrong?"#B05C4A":T.gold,textTransform:"uppercase",letterSpacing:"2px"}}>{bucketLabel}</span>
+                  {correct && <span style={{color:"#527060",fontSize:13}}>✓</span>}
+                  {wrong   && <span style={{color:"#B05C4A",fontSize:13}}>✗</span>}
+                  {idx==null && !sortChecked && <span style={{fontFamily:T.sans,fontSize:10,color:"rgba(138,158,132,0.4)"}}>place here</span>}
                 </div>
-                <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5,margin:0,flex:1}}>{item}</p>
-                {isCorrectPos&&<span style={{color:"#527060",fontSize:15,flexShrink:0}}>✓</span>}
-                {isWrongPos&&<span style={{color:"#B05C4A",fontSize:15,flexShrink:0}}>✗</span>}
+                {idx!=null && <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,margin:0}}>{sortCards[idx].text}</p>}
               </div>
             );
           })}
         </div>
-        {!orderAnswered && (
-          <button onClick={submitOrder} style={cs.cta}>Check My Order →</button>
-        )}
-        {orderAnswered && (
+        {!sortChecked && allPlaced && <button onClick={checkSort} style={cs.cta}>Check My Answers →</button>}
+        {sortChecked && (
           <div style={{...cs.card,borderLeft:`2px solid ${allCorrect?T.gold:"rgba(176,92,74,0.5)"}`}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-              <span style={{fontSize:16}}>{allCorrect?"✓":"💡"}</span>
-              <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:allCorrect?T.gold:"#B05C4A",textTransform:"uppercase",letterSpacing:"1px"}}>{allCorrect?`Perfect order — +${round.pts} points`:`Close — +${Math.round(round.pts*0.5)} points`}</div>
+              <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:allCorrect?T.gold:"#B05C4A",textTransform:"uppercase",letterSpacing:"1px"}}>{allCorrect?`Perfect — +${round.pts} points`:`${correctCount}/4 correct — +${Math.round(round.pts*(correctCount/4))} points`}</div>
             </div>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>{round.feedback}</p>
           </div>
         )}
-        {orderAnswered&&!onNavLabel&&<button onClick={nextRound} style={{...cs.cta,marginTop:4}}>{isLast?"See Your Results →":"Next Round →"}</button>}
+        {sortChecked && !onNavLabel && <button onClick={nextRound} style={{...cs.cta,marginTop:4}}>{isLast?"See Your Results →":"Next Round →"}</button>}
       </div>
     );
   }
