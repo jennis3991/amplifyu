@@ -2654,6 +2654,7 @@ setAmbitionSaved(true); } catch {}
 
     const D6RightContent = () => {
       const [openD6, setOpenD6] = useState(null);
+      const [d6ExOpen, setD6ExOpen] = useState(null);
       const D6_INSIGHT = [
         {word:"Emotion",    sub:"Stress narrows thinking and makes reactive communication more likely.", bullets:["Composure keeps your thinking wide open when it matters most.","In high-pressure moments, the first thing to go is nuance — unless you've trained for composure."]},
         {word:"Perception", sub:"When others escalate, composure signals leadership.",                   bullets:["Calm in the room reads as confidence — and earns instant credibility.","The person who stays grounded when everyone else reacts is the one people look to."]},
@@ -2733,57 +2734,74 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Masters Under Pressure</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:40, maxWidth:640 }}>Two communicators whose influence grew not despite difficult moments — but because of how they handled them.</p>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:24 }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:12 }}>Masters Under Pressure</h2>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28, maxWidth:640 }}>Two communicators whose influence grew not despite difficult moments — but because of how they handled them.</p>
+          <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:24 }}>
             {[
               {name:"Barack Obama", role:"44th President of the United States",
-               headline:"Measured Under Fire",
+               preview:'"If you\'re walking down the right path and you\'re willing to keep walking, eventually you\'ll make progress."',
+               trait:"Measured under fire",
+               body:"Obama's composure under questioning became a defining feature of his public image. Deliberate pace, controlled tone, strategic pauses — he never appeared rattled, even when the room was.",
                quote:'"If you\'re walking down the right path and you\'re willing to keep walking, eventually you\'ll make progress."',
                year:"2008",
-               what:["deliberate pace","controlled tone","emotional restraint","strategic pauses","executive calm"],
-               lesson:"Pressure rewards composure. Obama's communication style demonstrated that you can engage with the hardest questions without being destabilised by them.",
-               practice:['"I understand your concern, but I see it differently."',"Say it: defensive → calm → dismissive → composed authority"]},
-              {name:"Brené Brown", role:"Research Professor & Author",
-               headline:"Strength Through Vulnerability",
-               quote:'"Clear is kind."',
-               year:"Daring Greatly, 2012",
-               what:["warmth without weakness","honest delivery","grounded presence","emotional steadiness"],
-               lesson:"Clarity and empathy can coexist. Difficult conversations often land better — not softer — when directness replaces avoidance.",
-               practice:['"I wanted to raise something difficult."',"Say it: nervous → compassionate → overly apologetic → clear and calm"]},
-            ].map((card,ci) => (
-              <div key={ci} style={{ background:"white", borderRadius:8, padding:"32px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)" }}>
-                <h3 style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:T2.text, marginBottom:2, letterSpacing:"-0.2px" }}>{card.name}</h3>
-                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, marginBottom:6, fontWeight:400 }}>{card.role}</p>
-                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:16 }}>{card.headline}</div>
-                <div style={{ marginBottom:20 }}>
-                  <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Quote</div>
-                  <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T2.text, lineHeight:1.65, fontWeight:400, margin:0 }}>{card.quote}</p>
-                  <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, marginTop:6, marginBottom:0 }}>{card.year}</p>
-                </div>
-                <div style={{ marginBottom:20 }}>
-                  <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>What makes it powerful</div>
-                  {card.what.map((w,i) => (
-                    <div key={i} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6 }}>
-                      <div style={{ width:3, height:3, borderRadius:"50%", background:T.gold, flexShrink:0 }}/>
-                      <span style={{ fontFamily:T.sans, fontSize:14, color:T2.text, fontWeight:300 }}>{w}</span>
+               lesson:"Pressure rewards composure. You can engage with the hardest questions without being destabilised by them.",
+               tryIt:{phrase:'"I understand your concern, but I see it differently."', instruction:"Say it: defensive → calm → dismissive → composed authority"}},
+              {name:"Queen Elizabeth II", role:"Queen of the United Kingdom, 1952–2022",
+               preview:'"We will meet again."',
+               trait:"Calm under pressure",
+               body:"For over 70 years she communicated through wars, political change, national crises, and family scandals.\n\nShe rarely reacted publicly and became synonymous with stability.",
+               quote:'"We will meet again."',
+               year:"April 2020, during Covid",
+               lesson:"When emotions rise, consistency builds trust.",
+               tryIt:null},
+            ].map((card,ci)=>{
+              const open = d6ExOpen===ci;
+              return (
+                <div key={ci} onClick={()=>setD6ExOpen(open?null:ci)}
+                  style={{ background:T2.surface, borderRadius:4, border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`, cursor:"pointer", transition:"border-color 0.2s, box-shadow 0.2s", boxShadow:open?"0 2px 16px rgba(138,158,132,0.1)":"none" }}>
+                  {/* Header */}
+                  <div style={{ padding:"22px 28px", display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ display:"flex", alignItems:"baseline", gap:12, marginBottom:6 }}>
+                        <span style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.2 }}>{card.name}</span>
+                        <span style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, fontWeight:400 }}>{card.role}</span>
+                      </div>
+                      <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8 }}>{card.trait}</div>
+                      <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>{card.preview}</p>
                     </div>
-                  ))}
+                    <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.5)", marginLeft:20, flexShrink:0, marginTop:4 }}>{open?"▴":"▸"}</span>
+                  </div>
+                  {/* Expanded */}
+                  {open && (
+                    <div style={{ borderTop:"0.5px solid "+T2.divider, padding:"24px 28px", display:"flex", flexDirection:"column", gap:18 }}>
+                      <div>
+                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Why She's Relevant</div>
+                        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0, whiteSpace:"pre-line" }}>{card.body}</p>
+                      </div>
+                      <div>
+                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Quote</div>
+                        <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T2.text, lineHeight:1.65, margin:"0 0 4px" }}>{card.quote}</p>
+                        <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, margin:0 }}>{card.year}</p>
+                      </div>
+                      <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:16 }}>
+                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Lesson</div>
+                        <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
+                      </div>
+                      {card.tryIt && (
+                        <div style={{ background:T2.bg, borderRadius:4, padding:"14px 16px", border:"0.5px solid "+T2.border }}>
+                          <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Try it</div>
+                          <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text, lineHeight:1.5, margin:"0 0 6px" }}>{card.tryIt.phrase}</p>
+                          <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, margin:0 }}>{card.tryIt.instruction}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-                <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:18, marginTop:4, marginBottom:20 }}>
-                  <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Lesson</div>
-                  <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
-                </div>
-                <div style={{ background:T2.surface, borderRadius:4, padding:"16px 18px" }}>
-                  <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:10 }}>Try it</div>
-                  <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T2.text, lineHeight:1.5, margin:"0 0 8px" }}>{card.practice[0]}</p>
-                  <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, margin:0 }}>{card.practice[1]}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
-          <div style={{ marginTop:28, padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
-            <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>Pressure doesn't create communication habits. It reveals them.</p>
+          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+            <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>Pressure doesn't create communication habits. It reveals them.</p>
           </div>
         </div>
       );
