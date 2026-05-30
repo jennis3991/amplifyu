@@ -256,15 +256,6 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
             )}
             {showFeedback && (
               <>
-                <div style={cs.card}>
-                  <div style={cs.label}>Now try the shorter list</div>
-                  <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
-                    {r.shortItems.map((item,i)=>(
-                      <div key={i} style={{padding:"10px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border,fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,fontWeight:500}}>{item}</div>
-                    ))}
-                  </div>
-                  <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,lineHeight:1.5,fontStyle:"italic"}}>How many can you remember now?</p>
-                </div>
                 <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
                   <div style={cs.label}>Miller's Law in action</div>
                   <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:0}}>{r.lesson}</p>
