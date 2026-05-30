@@ -118,9 +118,6 @@ export function SessionLeftPanel({
           style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}
         />
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(8,6,3,0.8) 0%, rgba(8,6,3,0.1) 50%, transparent 75%)" }}/>
-        <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(20px,1.8vw,28px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:340 }}>CUE. ROUTINE. REWARD. Repeat the loop — and the behaviour becomes automatic.</p>
-        </div>
       </div>
     );
   }
