@@ -155,7 +155,7 @@ finishDate + ".";
 
         {/* Static CTA bar — directly below hero, in document flow */}
         <div style={{ background: T2.bg, borderBottom: "1px solid rgba(138,158,132,0.15)" }}>
-          <div style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 88px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 40 }}>
+          <div style={{ maxWidth: 1400, margin: "0 auto", padding: "20px 88px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 40 }}>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontFamily: T.sans, fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: T.gold, marginBottom: 8 }}>
                 {finished ? "Programme Complete" : `Day ${cur} — ${lesson?.tag ?? ""}${todayDone ? "  ✓" : ""}`}
@@ -179,7 +179,7 @@ finishDate + ".";
         <div style={{ background: T2.bg, position: "relative" }}>
 
           {/* ── Today's Insight — large editorial moment ── */}
-          <section style={{ padding: "80px 88px 64px", borderBottom: "1px solid " + T2.divider }}>
+          <section style={{ padding: "44px 88px 36px", borderBottom: "1px solid " + T2.divider }}>
             <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 60, alignItems: "start" }}>
               {/* Left: section label — editorial column */}
               <div style={{ paddingTop: 8 }}>
@@ -211,7 +211,7 @@ finishDate + ".";
           </section>
 
           {/* ── Progress — editorial number moment, not a widget ── */}
-          <section style={{ padding: "64px 88px", borderBottom: "1px solid " + T2.divider }}>
+          <section style={{ padding: "36px 88px 44px", borderBottom: "1px solid " + T2.divider }}>
             <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 60, alignItems: "start" }}>
               <div style={{ paddingTop: 8 }}>
                 <div style={{ fontSize: 9.5, fontWeight: 500, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", fontFamily: T.sans }}>Journey</div>
