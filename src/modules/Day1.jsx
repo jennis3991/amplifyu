@@ -206,15 +206,15 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
 
       {/* YOUR MISSION */}
       <div style={{...cs.card}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your Mission</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:16,fontWeight:600,color:T.gold,lineHeight:1.3,margin:"0 0 8px"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your Mission</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:19,fontWeight:600,color:T.gold,lineHeight:1.25,margin:"0 0 12px"}}>
           Master how clarity makes ideas stick.
         </p>
-        <div style={{display:"flex",flexDirection:"column",gap:2}}>
+        <div style={{display:"flex",flexDirection:"column",gap:6}}>
           {["Spot what makes ideas confusing.","Find what's missing.","Turn complexity into simplicity."].map((t,i)=>(
-            <div key={i} style={{display:"flex",gap:6,alignItems:"flex-start"}}>
-              <span style={{color:T.gold,fontSize:11,flexShrink:0,marginTop:2}}>✦</span>
-              <span style={{fontFamily:T.serif,fontSize:isDesktop?16:15,fontStyle:"italic",color:T2.text,lineHeight:1.5}}>{t}</span>
+            <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+              <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:3}}>✦</span>
+              <span style={{fontFamily:T.serif,fontSize:isDesktop?18:17,fontStyle:"italic",color:T2.text,lineHeight:1.4}}>{t}</span>
             </div>
           ))}
         </div>
