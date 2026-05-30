@@ -43,9 +43,9 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
      correct:1,
      feedback:"Great explanations answer the next obvious question. Why does exercise make you healthier? That's the gap."},
     {id:4, type:'explain', label:'Round 4', name:'Explain It Simply', pts:30,
-     task:'Teach a curious 8-year-old the lifecycle of a caterpillar.',
+     task:'Teach a curious 8-year-old the lifecycle of a butterfly.',
      hint:'No jargon · Make it easy to picture',
-     placeholder:'Inside its cocoon, the caterpillar…'},
+     placeholder:'Inside its chrysalis, the butterfly…'},
   ];
 
   const [phase, setPhase] = useState('intro');
@@ -141,7 +141,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       pts: Math.round(round.pts * 0.85),
     };
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:`You are a warm, encouraging communication coach helping someone practise the Feynman Technique.\n\nThe challenge: teach a curious 8-year-old the lifecycle of a caterpillar.\n\nRules: one sentence, no jargon, make it easy to picture.\n\nUser's answer: "${explainText}"\n\nReturn ONLY valid JSON:\n{"praise":"<one warm specific compliment about what they did well — max 12 words>","tip":"<one gentle specific suggestion to improve — max 12 words>","pts":<20-30>}`}]})});
+      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:`You are a warm, encouraging communication coach helping someone practise the Feynman Technique.\n\nThe challenge: teach a curious 8-year-old the lifecycle of a butterfly.\n\nRules: one sentence, no jargon, make it easy to picture.\n\nUser's answer: "${explainText}"\n\nReturn ONLY valid JSON:\n{"praise":"<one warm specific compliment about what they did well — max 12 words>","tip":"<one gentle specific suggestion to improve — max 12 words>","pts":<20-30>}`}]})});
       const d = await res.json();
       const raw = (d.content||[]).map(b=>b.text||'').join('').trim();
       const m = raw.match(/\{[\s\S]*\}/);
@@ -288,7 +288,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
     const headline = pct>=85?"Your explanation instinct is sharp.":pct>=70?"You understand the principle. Now make it a habit.":"Every rep builds the instinct.";
     const subtitle = pct>=85?"You think like a great teacher — clear, vivid, audience-first.":pct>=70?"Good instincts. Keep simplifying until it feels effortless.":"Each attempt strengthens your clarity muscle.";
     const coachNote = pct>=85?"You consistently chose clarity over complexity — that's the mark of a brilliant communicator. Keep using the Feynman test before every message: if a 10-year-old couldn't follow it, simplify further.":pct>=70?"Good foundation. The ordering round showed the Feynman loop in action: understand, explain, find the gap, refine. Keep asking 'what's the simplest version?' before every explanation.":"Clarity is a learned skill, not a talent. The best communicators got there through exactly this kind of deliberate practice. Every explanation you simplify builds the instinct.";
-    const FOCUS_CHIPS = ["Ask: could a 10-year-old follow this?","Find the one key idea","Cut every word that doesn't earn its place","Replace jargon with a picture","Answer the next obvious question"];
+    const FOCUS_CHIPS = ["Ask: could a 10-year-old follow this?","Find the one key idea","Cut every word that doesn't earn its place"];
     return (
       <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
         {/* HERO */}
@@ -450,6 +450,15 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       setOrderItems(next);
       setOrderSelected(null);
     }
+    function handleTap(i) {
+      if (orderAnswered) return;
+      if (orderSelected === null) { setOrderSelected(i); return; }
+      if (orderSelected === i) { setOrderSelected(null); return; }
+      const next = [...orderItems];
+      [next[orderSelected], next[i]] = [next[i], next[orderSelected]];
+      setOrderItems(next);
+      setOrderSelected(null);
+    }
 
     return (
       <div style={{display:"flex",flexDirection:"column",gap:14}}>
@@ -466,7 +475,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:0,fontWeight:500}}>{round.task}</p>
         </div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:"0 0 4px",lineHeight:1.5}}>
-          {orderAnswered ? "Here's the correct order:" : "Drag the cards into the right order."}
+          {orderAnswered ? "Here's the correct order:" : isDesktop ? "Drag the cards into the right order." : "Tap a card to select it, then tap another to swap."}
         </p>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {orderItems.map((item,i)=>{
@@ -479,16 +488,17 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
             else if (isWrongPos) { border="#B05C4A"; bg="rgba(176,92,74,0.06)"; }
             return (
               <div key={item}
-                draggable={!orderAnswered}
-                onDragStart={e=>handleDragStart(e,i)}
-                onDragOver={handleDragOver}
-                onDrop={e=>handleDrop(e,i)}
-                onDragEnd={()=>setOrderSelected(null)}
+                draggable={isDesktop && !orderAnswered}
+                onDragStart={isDesktop ? e=>handleDragStart(e,i) : undefined}
+                onDragOver={isDesktop ? handleDragOver : undefined}
+                onDrop={isDesktop ? e=>handleDrop(e,i) : undefined}
+                onDragEnd={isDesktop ? ()=>setOrderSelected(null) : undefined}
+                onClick={!isDesktop ? ()=>handleTap(i) : undefined}
                 style={{
                   ...cs.card,
                   border:`1px solid ${border}`,
                   background:bg,
-                  cursor:orderAnswered?"default":"grab",
+                  cursor:orderAnswered?"default":isDesktop?"grab":"pointer",
                   display:"flex",alignItems:"center",gap:12,
                   transition:"all 0.2s",
                   padding:isDesktop?"14px 18px":"12px 14px",

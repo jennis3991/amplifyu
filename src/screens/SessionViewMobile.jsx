@@ -387,6 +387,24 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           </div>
         );
+        // D1 Simulation — cinematic dark panel matching desktop left panel
+        if(isD1 && step==="Simulation") return (
+          <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",top:20,right:20,zIndex:2,width:64,height:64,borderRadius:"50%",overflow:"hidden",border:"1.5px solid rgba(200,168,76,0.3)"}}>
+              <img src="/badge-queen.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+            </div>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>Simulation · Day 1</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:12}}>Awareness is where every great communicator begins.</p>
+              <div style={{padding:"8px 12px",background:"rgba(138,158,132,0.1)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",marginBottom:10}}>
+                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>Today's Goal</div>
+                <div style={{fontFamily:T.serif,fontSize:13,color:"rgba(245,239,230,0.85)"}}>Establish your clarity baseline.</div>
+              </div>
+            </div>
+          </div>
+        );
         // Simulation tab: dark cinematic panel for ALL modules
         if(step==="Simulation"){
           const SIM_HEADERS={
@@ -450,30 +468,6 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           12:{Insight:"/day10-insight.jpg",Theory:"/performance-iceberg.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
         };
-        // D1 Simulation — cinematic dark panel matching desktop left panel
-        if(isD1 && step==="Simulation") return (
-          <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",top:20,right:20,zIndex:2,width:72,height:72,borderRadius:"50%",overflow:"hidden",border:"1.5px solid rgba(200,168,76,0.3)"}}>
-              <img src="/badge-queen.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
-            </div>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>Simulation · Day 1</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:12}}>Awareness is where every great communicator begins.</p>
-              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10,padding:"8px 12px",background:"rgba(138,158,132,0.1)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)"}}>
-                <div>
-                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>Today's Goal</div>
-                  <div style={{fontFamily:T.serif,fontSize:13,color:"rgba(245,239,230,0.85)"}}>Establish your clarity baseline.</div>
-                </div>
-              </div>
-              <div style={{display:"flex",alignItems:"center",gap:6}}>
-                <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4–5 minutes</span></span>
-              </div>
-            </div>
-          </div>
-        );
         // D1 Practice — cinematic dark panel matching desktop left panel
         if(isD1 && step==="Practice") return (
           <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
