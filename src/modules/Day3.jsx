@@ -284,10 +284,10 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
 // ─── D3 Simulation Widget ─────────────────────────────────────────────────────
 export function D3SimWidget({T, T2, isDesktop}) {
   const DIMS = ["Calm Pacing","Pause Control","Verbal Clarity","Conversational Flow","Speaking Presence","Thought Completion"];
-  const PROMPT = "Teach me how to make your favourite meal in 60 seconds.";
+  const PROMPT = "Introduce your favourite meal, explain why it's your favourite, then teach me how to make it in 90 seconds.";
 
   const [phase, setPhase] = useState('intro');
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(90);
   const [isRec, setIsRec] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [fallback, setFallback] = useState('');
@@ -381,7 +381,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
   const [selectedFocus, setSelectedFocus] = useState([]);
   const FOCUS=["Replace 'um' with pause","Slow your opening","Fewer 'like' words","Finish sentences cleanly","Breathe before speaking","No 'basically'","Cut the 'you know's"];
 
-  function reset(){setPhase('intro');setTimeLeft(60);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);setSelectedFocus([]);}
+  function reset(){setPhase('intro');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);setSelectedFocus([]);}
 
   function togglePlay(){
     if(!audioURL){setPlaying(p=>!p);return;}
@@ -694,7 +694,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
           <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.65)",margin:0,lineHeight:1.5}}>Now that you know where your fillers appear, try again and replace each one with a pause.</p>
         </div>
         <div style={{textAlign:isDesktop?"right":"left"}}>
-          <button onClick={()=>{setPhase('recording');setTimeLeft(60);setIsRec(false);setTranscript('');setFallback('');}} style={{padding:"12px 24px",borderRadius:4,border:"none",background:"rgba(82,112,96,0.85)",color:"white",fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:8,whiteSpace:"nowrap"}}>
+          <button onClick={()=>{setPhase('recording');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');}} style={{padding:"12px 24px",borderRadius:4,border:"none",background:"rgba(82,112,96,0.85)",color:"white",fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:8,whiteSpace:"nowrap"}}>
             Improve My Score <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
           <div style={{fontFamily:T.sans,fontSize:10,color:"rgba(245,239,230,0.3)",marginTop:6}}>Expected gain: +10–20 points</div>
