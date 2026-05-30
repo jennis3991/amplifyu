@@ -938,8 +938,8 @@ export function D4SimWidget({T, T2, isDesktop}) {
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>At 30 seconds, your producer will interrupt. At 15 seconds. At 5 seconds. Each time, you must compress further. Then the AI becomes your audience — and reveals what it actually remembered.</p>
       </div>
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px",background:"rgba(138,158,132,0.04)"}}>
-        <div style={cs.label}>Your Digital Coach</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>After your broadcast, your AI coach scores your Retention, Compression, Cognitive Load, and Headline quality — and reveals the gap between what you said and what your audience remembered.</p>
+        <div style={cs.label}>Your Broadcast Analyst</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>After your broadcast, your AI broadcast analyst scores your Retention, Compression, Cognitive Load, and Headline quality — and reveals the gap between what you said and what your audience remembered.</p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>That gap is Miller's Law in action.</p>
       </div>
       <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose Your Breaking Story →</button>
