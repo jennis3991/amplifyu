@@ -1662,7 +1662,7 @@ setAmbitionSaved(true); } catch {}
           <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
             <p style={{fontFamily:T.serif,fontSize:19,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>If you can't explain it simply, you don't understand it well enough.</p>
           </div>
-          <p style={{fontFamily:T.serif,fontSize:22,color:T2.text,lineHeight:1.4,fontWeight:600,marginBottom:20}}>His secret? The 4-step clarity loop:</p>
+          <p style={{fontFamily:T.serif,fontSize:20,color:T2.text,lineHeight:1.4,fontWeight:600,marginBottom:20}}>His secret? The 4-step clarity loop:</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
             {[
               {label:"1. Understand", body:"Choose a concept and study it deeply."},
