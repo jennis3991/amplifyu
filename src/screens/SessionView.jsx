@@ -13,7 +13,7 @@ import { StoryBuilderWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
-import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget } from '../modules/Day4.jsx';
+import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidget } from '../modules/Day4.jsx';
 import { D1ClarityChallenge, D1SimWidget } from '../modules/Day1.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget } from '../modules/Day5.jsx';
@@ -1427,25 +1427,9 @@ setAmbitionSaved(true); } catch {}
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px"}}>
           <div style={{fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>AI Practice</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Speak in Short Sentences — 60 Seconds</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,marginBottom:28}}>Choose a scenario. Write your response using only short sentences. The AI analyses average sentence length and flags any run-ons.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:28}}>
-            {[
-              {n:1,title:"Explain your project in under 15 words per sentence",sub:"No run-ons. No rambling. Just clarity."},
-              {n:2,title:"Deliver bad news using only short sentences",sub:"Get to the point. Then explain."},
-              {n:3,title:"Pitch your idea with maximum brevity",sub:"Hook them in the first sentence. Keep it tight."},
-              {n:4,title:"Give instructions that anyone could follow",sub:"Short sentences eliminate confusion."},
-            ].map((sc,i)=>(
-              <button key={i} onClick={()=>setSimInput(sc.title+": ")} style={{padding:"14px 18px",borderRadius:4,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.18s ease"}}
-                onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(44,36,22,0.1)";}}
-                onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.8)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(44,36,22,0.06)";}}>
-                <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:3}}>{sc.n}. {sc.title}</div>
-                <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{sc.sub}</div>
-              </button>
-            ))}
-          </div>
-          <textarea value={simInput} onChange={e=>setSimInput(e.target.value)} placeholder="Write your 60-second response here…" className="au-input" style={{height:120,marginBottom:14,resize:"none"}}/>
-          <D4SimFeedback input={simInput}/>
+          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>🎥 Breaking News Live</div>
+          <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:32}}>Report it live. Watch what your audience remembers.</h2>
+          <D4SimWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
 

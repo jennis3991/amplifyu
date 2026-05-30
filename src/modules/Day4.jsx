@@ -780,5 +780,378 @@ function _unusedD4OldRounds() {
   return null;
 }
 
+// ─── D4 Simulation Widget — Breaking News Live ───────────────────────────────
+export function D4SimWidget({T, T2, isDesktop}) {
+  const STORIES = [
+    {cat:"🔬 Science", items:["Scientists Confirm Evidence of Life on Mars","Asteroid Narrowly Misses Earth"]},
+    {cat:"💼 Business", items:["Four-Day Work Week Announced Nationwide","Major Cyber Attack Takes Down Global Tech Giant"]},
+    {cat:"🎲 Wild Card", items:["Loch Ness Monster Spotted in Scotland","Penguins Escape Zoo in Real-Life Madagascar Chase"]},
+  ];
+
+  const [phase, setPhase] = useState('intro');
+  const [story, setStory] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [isRec, setIsRec] = useState(false);
+  const [transcript, setTranscript] = useState('');
+  const [fallback, setFallback] = useState('');
+  const [producerMsg, setProducerMsg] = useState(null);
+  const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
+  const [audioURL, setAudioURL] = useState(null);
+  const [playing, setPlaying] = useState(false);
+  const [userPoints, setUserPoints] = useState(['','','']);
+  const [result, setResult] = useState(null);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [pointsSubmitted, setPointsSubmitted] = useState(false);
+  const [round1, setRound1] = useState(null);
+
+  const audioRef = useRef(null);
+  const recRef = useRef(null);
+  const mediaRecRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const timerRef = useRef(null);
+  const liveRef = useRef('');
+  const waveRef = useRef(null);
+  const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
+
+  const PRODUCER_MSGS = [
+    {at:30, msg:"Thirty seconds left. Cut the detail. Give us the key points."},
+    {at:45, msg:"Fifteen seconds left. Wrap up the story. What do people need to remember?"},
+    {at:55, msg:"Five seconds. One headline. Go."},
+  ];
+
+  useEffect(()=>{
+    if(!isRec){clearTimeout(timerRef.current);clearInterval(waveRef.current);return;}
+    timerRef.current=setInterval(()=>{
+      setTimeLeft(t=>{if(t<=1){doStop();return 0;}return t-1;});
+      setTimeElapsed(e=>{
+        const next=e+1;
+        const pm=PRODUCER_MSGS.find(m=>m.at===next);
+        if(pm) setProducerMsg(pm.msg);
+        return next;
+      });
+    },1000);
+    waveRef.current=setInterval(()=>setWaveVals(()=>Array.from({length:9},()=>0.2+Math.random()*0.8)),150);
+    return ()=>{clearInterval(timerRef.current);clearInterval(waveRef.current);};
+  },[isRec]);
+
+  function doStart(){
+    setIsRec(true);setProducerMsg(null);liveRef.current='';setTranscript('');setAudioURL(null);setTimeElapsed(0);setTimeLeft(60);
+    if(SpeechRec){
+      const rec=new SpeechRec();rec.continuous=true;rec.interimResults=true;rec.lang='en-US';
+      rec.onresult=(e)=>{let t='';for(let i=0;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+' ';liveRef.current=t;setTranscript(t);};
+      try{rec.start();}catch(err){}
+      recRef.current=rec;
+    }
+    if(navigator.mediaDevices?.getUserMedia){
+      navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+        const mr=new MediaRecorder(stream);
+        audioChunksRef.current=[];
+        mr.ondataavailable=e=>audioChunksRef.current.push(e.data);
+        mr.onstop=()=>{const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});setAudioURL(URL.createObjectURL(blob));stream.getTracks().forEach(t=>t.stop());};
+        mr.start();mediaRecRef.current=mr;
+      }).catch(()=>{});
+    }
+  }
+
+  function doStop(){
+    setIsRec(false);
+    if(recRef.current){try{recRef.current.stop();}catch(e){}}
+    if(mediaRecRef.current&&mediaRecRef.current.state!=='inactive'){try{mediaRecRef.current.stop();}catch(e){}}
+    const text=SpeechRec?liveRef.current:fallback;
+    analyzeReport(text||fallback);
+  }
+
+  async function analyzeReport(text){
+    setAnalyzing(true);
+    const isRetry=!!round1;
+    const base=isRetry?8:0;
+    const mock={
+      factsReported:["Story confirmed","Key detail 1","Key detail 2","Supporting context","Background info","Expert quote","Impact statement","Follow-up note"],
+      remembered:["Story confirmed","Key detail 1","Supporting context"],
+      forgotten:["Background info","Expert quote","Impact statement","Follow-up note"],
+      headline:`Breaking: ${story}.`,
+      retentionScore:Math.floor(Math.random()*20)+42+base,
+      compressionScore:Math.floor(Math.random()*20)+55+base,
+      cognitiveLoadScore:Math.floor(Math.random()*20)+50+base,
+      headlineScore:Math.floor(Math.random()*20)+60+base,
+      coachNote:"Your report covered a lot of ground. The strongest communicators lead with the most important fact and build from there. Try opening with your headline sentence next time — then support it."
+    };
+    if(!text||text.trim().length<20){
+      if(!isRetry)setRound1(mock); setResult(mock); setAnalyzing(false); setPhase('recall'); return;
+    }
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:700,messages:[{role:"user",content:`You are an AI audience member watching a breaking news report about: "${story}". The reporter's transcript: "${text}". Simulate what a typical viewer would remember vs forget, and score the communication quality. Return ONLY valid JSON:\n{"factsReported":["list every distinct fact or point they mentioned, up to 8 items"],"remembered":["list 3-5 things an average viewer would remember — favour vivid, concrete, emotional facts"],"forgotten":["list 2-4 facts that would likely be forgotten due to cognitive overload or poor prioritisation"],"headline":"<the single most memorable sentence that captures the story — max 12 words>","retentionScore":<0-100: percentage of facts audience retained>,"compressionScore":<0-100: how effectively they simplified as time reduced — 100 = perfect compression>,"cognitiveLoadScore":<0-100: 100 = very easy to follow, 0 = overwhelming>,"headlineScore":<0-100: could story be reduced to one memorable sentence?>,"coachNote":"<2-3 personalised sentences about their use of short sentences, how well they adapted under time pressure, and Miller's Law>"}`}]})});
+      const d=await res.json();
+      const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
+      const m=raw.match(/\{[\s\S]*\}/);
+      const parsed=JSON.parse(m[0]);
+      if(!isRetry)setRound1(parsed); setResult(parsed);
+    }catch{if(!isRetry)setRound1(mock); setResult(mock);}
+    setAnalyzing(false); setPhase('recall');
+  }
+
+  function reset(){setPhase('intro');setStory(null);setTimeLeft(60);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setRound1(null);setUserPoints(['','','']);setPointsSubmitted(false);setAudioURL(null);}
+
+  function togglePlay(){
+    if(!audioURL){setPlaying(p=>!p);return;}
+    if(!audioRef.current)audioRef.current=new Audio(audioURL);
+    if(playing){audioRef.current.pause();setPlaying(false);}
+    else{audioRef.current.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
+  }
+
+  const cs={
+    card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"16px 18px"},
+    label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8},
+    cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
+    ghost:{width:"100%",padding:"11px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44},
+  };
+
+  // ── INTRO ────────────────────────────────────────────────────────────────────
+  if(phase==='intro') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={cs.label}>How It Works</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>A 60-second live news broadcast.</h2>
+        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
+          {[
+            {n:1,label:"Choose a story",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M7 5v12M3 9h16" stroke={T.gold} strokeWidth="1.3"/></svg>},
+            {n:2,label:"Go live",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3,label:"Producer cuts",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M11 7v4l3 3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:4,label:"Audience recall",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3C7 3 3.5 6 3.5 10c0 2.5 1.3 4.7 3.3 6l-1 3 3.2-1.2C10 18 10.5 18 11 18c4 0 7.5-3.6 7.5-8S15 3 11 3z" stroke={T.gold} strokeWidth="1.3"/></svg>},
+            {n:5,label:"Miller's Law",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+          ].map((s,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                <div style={{width:isDesktop?44:34,height:isDesktop?44:34,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:5}}>{s.icon}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?12:9,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:52}}>{s.label}</div>
+              </div>
+              {i<4&&<div style={{height:1,width:isDesktop?12:5,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:26}}/>}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
+        <div style={cs.label}>The Challenge</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>You are a live news reporter. Report a breaking story to the nation — but as airtime shrinks, your sentences must get shorter and your message must get clearer.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>At 30 seconds, your producer will interrupt. At 15 seconds. At 5 seconds. Each time, you must compress further. Then the AI becomes your audience — and reveals what it actually remembered.</p>
+      </div>
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px",background:"rgba(138,158,132,0.04)"}}>
+        <div style={cs.label}>Your Digital Coach</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>After your broadcast, your AI coach scores your Retention, Compression, Cognitive Load, and Headline quality — and reveals the gap between what you said and what your audience remembered.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>That gap is Miller's Law in action.</p>
+      </div>
+      <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose Your Breaking Story →</button>
+    </div>
+  );
+
+  // ── CHOOSE STORY ─────────────────────────────────────────────────────────────
+  if(phase==='choose') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={cs.card}>
+        <div style={cs.label}>Breaking News</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:16}}>Choose your story. You have 60 seconds to report it live to the nation.</p>
+        {STORIES.map((cat,ci)=>(
+          <div key={ci} style={{marginBottom:ci<STORIES.length-1?16:0}}>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{cat.cat}</div>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {cat.items.map((item,ii)=>(
+                <button key={ii} onClick={()=>{setStory(item);setPhase('recording');}}
+                  style={{padding:"14px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:isDesktop?14:13,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",lineHeight:1.4,transition:"all 0.2s"}}>
+                  🔴 BREAKING: {item}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <button onClick={()=>setPhase('intro')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
+    </div>
+  );
+
+  // ── RECORDING ────────────────────────────────────────────────────────────────
+  if(phase==='recording') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"20px 24px":"16px 18px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+          <div style={{width:8,height:8,borderRadius:"50%",background:isRec?"#CC4444":"rgba(180,80,60,0.4)",animation:isRec?"glowPulse 1s ease infinite":"none"}}/>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.6)",textTransform:"uppercase",letterSpacing:"2px"}}>{isRec?"On Air":"Ready"}</div>
+          {isRec&&<div style={{marginLeft:"auto",fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:timeLeft<=10?"#CC4444":T.gold,lineHeight:1}}>{timeLeft}s</div>}
+        </div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:15,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,margin:"0 0 8px"}}>🔴 BREAKING: {story}</p>
+        {producerMsg && (
+          <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,marginTop:10}}>
+            <div style={{fontFamily:T.sans,fontSize:9,color:"#C8A46A",textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>🎧 Producer</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:"#C8A46A",lineHeight:1.4,margin:0}}>{producerMsg}</p>
+          </div>
+        )}
+        {isRec&&(
+          <div style={{display:"flex",alignItems:"flex-end",justifyContent:"center",gap:3,height:28,marginTop:12}}>
+            {waveVals.map((v,i)=><div key={i} style={{width:3,borderRadius:2,background:"rgba(138,158,132,0.7)",height:Math.max(3,v*26),transition:"height 0.15s ease"}}/>)}
+          </div>
+        )}
+        {isRec&&transcript&&<p style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",lineHeight:1.4,fontStyle:"italic",marginTop:8,marginBottom:0}}>{transcript.slice(-120)}{transcript.length>120?'…':''}</p>}
+      </div>
+      {!isRec&&!SpeechRec&&(
+        <div style={cs.card}>
+          <div style={cs.label}>Type your report</div>
+          <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Write your live report here…" style={{width:"100%",minHeight:100,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
+        </div>
+      )}
+      <div style={{display:"flex",gap:10,justifyContent:"center"}}>
+        {!isRec?(
+          <button onClick={doStart} style={{...cs.cta,maxWidth:280}}>🎙 Go Live →</button>
+        ):(
+          <button onClick={doStop} style={{...cs.cta,maxWidth:280,background:"#8A4A3A"}}>◼ End Broadcast & Analyse →</button>
+        )}
+      </div>
+      {!isRec&&<button onClick={()=>setPhase('choose')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Choose different story</button>}
+    </div>
+  );
+
+  // ── ANALYZING ────────────────────────────────────────────────────────────────
+  if(analyzing) return (
+    <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
+      <div style={{display:"flex",gap:6}}>
+        {[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.22}s infinite`}}/>)}
+      </div>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>The audience is processing your report…</p>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Measuring retention, compression, cognitive load.</p>
+    </div>
+  );
+
+  // ── RECALL ───────────────────────────────────────────────────────────────────
+  if(phase==='recall'&&result) {
+    const totalFacts=(result.factsReported||[]).length;
+    const remembered=(result.remembered||[]).length;
+    const forgotten=(result.forgotten||[]);
+    const retainPct=result.retentionScore||Math.round((remembered/Math.max(totalFacts,1))*100);
+    const scoreColor=s=>s>=75?T.gold:s>=55?"#7A9E84":"rgba(180,80,60,0.8)";
+
+    return (
+      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+        {/* Hero — dark score card */}
+        <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Broadcast Results</div>
+          <div style={{display:"flex",gap:isDesktop?24:16,alignItems:"flex-start",marginBottom:20,flexWrap:"wrap"}}>
+            {[
+              {label:"Retention",val:result.retentionScore,tip:"Facts audience remembered"},
+              {label:"Compression",val:result.compressionScore,tip:"Simplified under pressure"},
+              {label:"Cognitive Load",val:result.cognitiveLoadScore,tip:"Ease of following"},
+              {label:"Headline",val:result.headlineScore,tip:"One-sentence clarity"},
+            ].map((s,i)=>(
+              <div key={i} style={{textAlign:"center",flex:"1 1 80px"}}>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?38:30,fontWeight:600,color:scoreColor(s.val),lineHeight:1}}>{s.val}</div>
+                <div style={{fontFamily:T.sans,fontSize:10,color:"rgba(245,239,230,0.55)",marginTop:3}}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:14}}>
+            <button onClick={togglePlay} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 16px",background:"rgba(245,239,230,0.08)",border:"0.5px solid rgba(245,239,230,0.2)",borderRadius:4,color:"#F5EFE6",fontFamily:T.serif,fontSize:12,cursor:"pointer",flexShrink:0}}>
+              {playing?<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/><rect x="8" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/></svg>:<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 1l9 5-9 5V1z" fill="#F5EFE6"/></svg>}
+              {playing?"Pause":"Play broadcast"}
+            </button>
+            <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)"}}>You reported {totalFacts} facts. Audience retained {remembered}.</div>
+          </div>
+          {audioURL&&<audio ref={audioRef} src={audioURL} onEnded={()=>setPlaying(false)} style={{display:"none"}}/>}
+        </div>
+
+        {/* Audience Memory Test */}
+        <div style={cs.card}>
+          <div style={cs.label}>🧠 Viewer Memory Test</div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:14,lineHeight:1.5}}>Here's what the AI audience remembered from your report:</p>
+          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
+            {(result.remembered||[]).map((pt,i)=>(
+              <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"10px 12px",background:"rgba(82,112,96,0.06)",borderRadius:4,border:"0.5px solid rgba(82,112,96,0.2)"}}>
+                <span style={{color:"#527060",flexShrink:0,fontWeight:700}}>✓</span>
+                <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5}}>{pt}</span>
+              </div>
+            ))}
+          </div>
+          {forgotten.length>0&&(
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {forgotten.map((pt,i)=>(
+                <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"10px 12px",background:"rgba(180,80,60,0.04)",borderRadius:4,border:"0.5px solid rgba(180,80,60,0.15)"}}>
+                  <span style={{color:"rgba(180,80,60,0.7)",flexShrink:0,fontWeight:700}}>✗</span>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.5,textDecoration:"line-through"}}>{pt}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Best Headline */}
+        {result.headline&&(
+          <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+            <div style={cs.label}>Your story in one sentence</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>"{result.headline}"</p>
+          </div>
+        )}
+
+        {/* User's 3 key points — the comparison challenge */}
+        {!pointsSubmitted?(
+          <div style={cs.card}>
+            <div style={cs.label}>What were your 3 key points?</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,marginBottom:14}}>Write the 3 facts you intended your audience to remember. Then compare with what the AI actually retained.</p>
+            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
+              {userPoints.map((pt,i)=>(
+                <div key={i} style={{display:"flex",gap:10,alignItems:"center"}}>
+                  <div style={{width:24,height:24,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{i+1}</span>
+                  </div>
+                  <input value={pt} onChange={e=>{const n=[...userPoints];n[i]=e.target.value;setUserPoints(n);}} placeholder={`Key point ${i+1}…`} style={{flex:1,padding:"10px 12px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,outline:"none"}}/>
+                </div>
+              ))}
+            </div>
+            <button onClick={()=>setPointsSubmitted(true)} disabled={userPoints.filter(p=>p.trim()).length<1} style={{...cs.cta,background:userPoints.filter(p=>p.trim()).length<1?"rgba(44,36,22,0.25)":T.ink,cursor:userPoints.filter(p=>p.trim()).length<1?"not-allowed":"pointer"}}>Compare with Audience →</button>
+          </div>
+        ):(
+          <div style={cs.card}>
+            <div style={cs.label}>You vs the Audience</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
+              <div>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>You intended</div>
+                {userPoints.filter(p=>p.trim()).map((pt,i)=>(
+                  <div key={i} style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,marginBottom:6}}>· {pt}</div>
+                ))}
+              </div>
+              <div>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Audience remembered</div>
+                {(result.remembered||[]).map((pt,i)=>(
+                  <div key={i} style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,marginBottom:6}}>· {pt}</div>
+                ))}
+              </div>
+            </div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T2.text3,margin:0,lineHeight:1.5}}>The audience remembered different things than you intended. This is the gap that Miller's Law explains.</p>
+          </div>
+        )}
+
+        {/* AI Coach */}
+        <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
+          <div style={cs.label}>Your AI Coach Says</div>
+          <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?44:34,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0,flex:1}}>{result.coachNote}</p>
+          </div>
+        </div>
+
+        {/* Miller's Law closing */}
+        <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"22px 28px":"18px 20px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:"0 0 8px"}}>The strongest communicators know that attention is limited. If people can't remember it, they can't repeat it. And if they can't repeat it, the message is lost.</p>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:700,color:T.gold,margin:0,textTransform:"uppercase",letterSpacing:"1.5px"}}>That is Miller's Law in action.</p>
+        </div>
+
+        <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+          <button onClick={()=>{setPhase('choose');setTranscript('');setFallback('');setProducerMsg(null);setTimeLeft(60);setTimeElapsed(0);setUserPoints(['','','']);setPointsSubmitted(false);}} style={{...cs.ghost,flex:"1 1 auto"}}>Try Another Story →</button>
+          <button onClick={reset} style={{...cs.cta,flex:"1 1 auto",width:"auto"}}>Start Over</button>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+}
+
 // ─── D1 Mobile helpers ────────────────────────────────────────────────────────
 

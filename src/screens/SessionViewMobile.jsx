@@ -7,7 +7,7 @@ import { StoryBuilderWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
-import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget } from '../modules/Day4.jsx';
+import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidget } from '../modules/Day4.jsx';
 import { D1MobileJargonSwap, D1MobileSim, D1ClarityChallenge, D1SimWidget, D1SimFeedback } from '../modules/Day1.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget } from '../modules/Day5.jsx';
@@ -1386,10 +1386,7 @@ T.goldDark : T2.text4,
       )}
       {isD4 && step==="Simulation" && (
         <>
-          <img src="/day1-simulation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 40%",display:"none"}}/>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Speak in Short Sentences — 60 Seconds</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Write your response using only short sentences. Get a brevity score.</p>
-          <D4MobileSim/>
+          <D4SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
        {/* ── D1 Mobile Steps ─────────────────────────────────────────────── */}
@@ -2318,7 +2315,7 @@ something you can use in real life.</p>
           <CoachWidget lesson={lesson} scenario={null}/>
         </>
       )}
-       {!isD1 && !isD2 && !isD3 && !isD6 && !isD7 && !isD11 && !isD12 && step==="Simulation" && (
+       {!isD1 && !isD2 && !isD3 && !isD4 && !isD6 && !isD7 && !isD11 && !isD12 && step==="Simulation" && (
         <>
           {(()=>{
             const scenarios = roleId ? getScenariosForDay(roleId,
