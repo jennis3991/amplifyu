@@ -1015,7 +1015,7 @@ setAmbitionSaved(true); } catch {}
                 bullets:["Speaking, thinking, and organising ideas all compete for the same mental bandwidth at once.","When your mouth moves faster than your thoughts, your brain reaches for a placeholder. That placeholder is the filler."]},
               {label:"Inside the Moment",        sub:"What actually happens in the moment you say 'um' or 'er'.",
                 bullets:["Your next thought isn't ready. The filler buys your brain time — but at the cost of your credibility.","The audience hears the filler before they hear the idea. It signals uncertainty, even when you feel confident."]},
-              {label:"The Pause",               sub:"The solution is not to speak faster. It is to stop — and let your brain catch up.",
+              {label:"The Strategic Pause",      sub:"The solution is not to speak faster. It is to stop — and let your brain catch up.",
                 bullets:["When you feel the urge to fill, pause instead. Close your mouth. Let the silence work.","A pause signals control. It tells the room: what comes next is worth waiting for."]},
               {label:"Why This Fix Works",      sub:"Pause. Breathe. That single moment changes everything.",
                 bullets:["A breath creates mental clarity and calms the nervous system — in that moment, you give yourself the best possible chance of a strong response.","Speak in declarative statements. Calm. Clear. Certain. One idea. One sentence. Full stop. No hedge. No filler. Just the point."]},
