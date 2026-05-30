@@ -26,6 +26,7 @@ import { Timer } from '../components/Timer.jsx';
 import { PBar, NAV_H } from '../components/NavComponents.jsx';
 import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 import { getScenariosForDay, getPIEEmphasis } from '../utils.js';
+import { D7SimWidget } from '../modules/Day7.jsx';
 
 export function SessionView({lesson, isDone, onComplete, onBack, roleId,
 activeRole, dark=false, DK={}, isDesktop=false}) {
@@ -755,38 +756,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Week 1 Pressure Test</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Real World Voice Coaching</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:300,marginBottom:28}}>Theory is what you know. Simulation is what you own. Select a scenario — then respond.</p>
-          {[
-            {tag:"CLARITY + STRUCTURE + BREVITY",head:"The 30-Second Ask",body:"A senior leader stops you in the corridor. 'Give me the one-minute version.'",goal:"Lead with your point. No fillers. No rambling."},
-            {tag:"COMPOSURE + PACE + STRUCTURE",head:"The Challenge",body:"You're presenting. Someone pushes back hard. 'I'm not convinced. Walk me through your thinking.'",goal:"Stay calm. Slow down. Rebuild your argument clearly."},
-            {tag:"CLARITY + SIMPLICITY + FEYNMAN",head:"The Simplification",body:"A stakeholder asks: 'Can you explain this so I can explain it to someone else?'",goal:"Strip it back. Plain English. One idea at a time."},
-            {tag:"ALL SIX FOUNDATIONS",head:"The Repeat",body:"Someone says: 'Sorry — I didn't quite follow that. Can you say it again?'",goal:"Restructure, simplify, and deliver — under the discomfort of being asked to repeat. Tests all six foundations."},
-          ].map((sc,i)=>{
-            const open = openCard===("s"+i);
-            return (
-              <div key={i} onClick={()=>setOpenCard(open?null:("s"+i))}
-                style={{background:T2.surface,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,borderRadius:6,marginBottom:12,cursor:"pointer",overflow:"hidden",transition:"border-color 0.2s"}}>
-                <div style={{padding:"18px 22px",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                  <div style={{flex:1}}>
-                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{sc.tag}</div>
-                    <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,lineHeight:1.3}}>{sc.head}</div>
-                  </div>
-                  <span style={{fontFamily:T.sans,fontSize:15,color:open?T.gold:T2.text3,marginLeft:16,flexShrink:0}}>{open?"▴":"▸"}</span>
-                </div>
-                {open && (
-                  <div style={{padding:"0 22px 20px",borderTop:"0.5px solid "+T2.divider}}>
-                    <div style={{padding:"16px 18px",background:T2.cardDark,borderRadius:4,marginBottom:16}}>
-                      <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"white",lineHeight:1.55,margin:"0 0 8px"}}>{sc.body}</p>
-                      <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(255,255,255,0.45)",margin:0}}><span style={{color:T.gold}}>Goal:</span> {sc.goal}</p>
-                    </div>
-                    <CoachWidget lesson={lesson} scenario={sc.body+" Your goal: "+sc.goal+" Score the response across: Clarity, Structure, Composure, Brevity, Filler-free delivery, Vocal confidence. Give one strength, one growth area, one coaching tip under 20 words."}/>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          <D7SimWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
 

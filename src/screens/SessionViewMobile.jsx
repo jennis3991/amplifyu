@@ -14,6 +14,7 @@ import { D5PracticeWidget, D5SimWidget } from '../modules/Day5.jsx';
 import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
 import { D11PracticeWidget, D11SimWidget } from '../modules/Day11.jsx';
 import { D12PracticeWidget, D12SimWidget } from '../modules/Day12.jsx';
+import { D7SimWidget } from '../modules/Day7.jsx';
 import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
 import { Scene, OBScene } from '../scenes.jsx';
 import { Timer } from '../components/Timer.jsx';
@@ -442,7 +443,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             4:{label:"BREVITY — IN ACTION",         heading:"Short sentences. High stakes. Go."},
             5:{label:"PRE — IN ACTION",             heading:"Structure your thinking. Speak with precision."},
             6:{label:"AI CONVERSATION PREP",           heading:"Prepare for the conversations that matter most."},
-            7:{label:"INTEGRATION — IN ACTION",     heading:"Everything you've built. One conversation."},
+            7:{label:"WEEK 1 MASTER CHALLENGE",      heading:"Teach It Forward. Prove what you know."},
             8:{label:"NARRATIVE — IN ACTION",       heading:"Tell the story. Transport your audience."},
             9:{label:"DELIVERY — IN ACTION",        heading:"Great content. Delivered powerfully."},
             10:{label:"PERFORMANCE — IN ACTION",    heading:"Communicate your impact with conviction."},
@@ -1160,37 +1161,7 @@ T.goldDark : T2.text4,
 
       {isD7 && step==="Simulation" && (
         <>
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>Week 1 Pressure Test</div>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Real World Voice Coaching</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Theory is what you know. Simulation is what you own. Select a scenario — then respond.</p>
-          {[
-            {tag:"CLARITY + STRUCTURE + BREVITY",head:"The 30-Second Ask",body:"A senior leader stops you in the corridor. 'Give me the one-minute version.'",goal:"Lead with your point. No fillers. No rambling."},
-            {tag:"COMPOSURE + PACE + STRUCTURE",head:"The Challenge",body:"You're presenting. Someone pushes back hard. 'I'm not convinced. Walk me through your thinking.'",goal:"Stay calm. Slow down. Rebuild your argument clearly."},
-            {tag:"CLARITY + SIMPLICITY + FEYNMAN",head:"The Simplification",body:"A stakeholder asks: 'Can you explain this so I can explain it to someone else?'",goal:"Strip it back. Plain English. One idea at a time."},
-            {tag:"ALL SIX FOUNDATIONS",head:"The Repeat",body:"Someone says: 'Sorry — I didn't quite follow that. Can you say it again?'",goal:"Restructure, simplify, and deliver — under the discomfort of being asked to repeat. Tests all six foundations."},
-          ].map((sc,i)=>{
-            const open = d7MobCard===("d7s"+i);
-            return (
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,marginBottom:10,overflow:"hidden",cursor:"pointer"}} onClick={()=>setD7MobCard(open?null:"d7s"+i)}>
-                <div style={{padding:"14px 16px",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                  <div style={{flex:1}}>
-                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{sc.tag}</div>
-                    <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.3}}>{sc.head}</div>
-                  </div>
-                  <span style={{fontFamily:T.sans,fontSize:15,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:8,flexShrink:0}}>{open?"▴":"▸"}</span>
-                </div>
-                {open && (
-                  <div style={{padding:"0 16px 16px",borderTop:"0.5px solid rgba(138,158,132,0.15)"}}>
-                    <div style={{padding:"12px 14px",background:T2.cardDark,borderRadius:4,marginBottom:12}}>
-                      <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:"white",lineHeight:1.5,margin:"0 0 6px"}}>{sc.body}</p>
-                      <p style={{fontFamily:T.sans,fontSize:11,color:"rgba(255,255,255,0.45)",margin:0}}><span style={{color:T.gold}}>Goal:</span> {sc.goal}</p>
-                    </div>
-                    <CoachWidget lesson={lesson} scenario={sc.body+" Your goal: "+sc.goal+" Score the response across: Clarity, Structure, Composure, Brevity, Filler-free delivery, Vocal confidence. Give one strength, one growth area, one coaching tip under 20 words."}/>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          <D7SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
       {isD7 && step==="Review" && (
