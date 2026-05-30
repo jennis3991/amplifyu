@@ -246,7 +246,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           {["Spot what makes ideas confusing.","Find what's missing.","Turn complexity into simplicity."].map((t,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
               <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:3}}>✦</span>
-              <span style={{fontFamily:T.serif,fontSize:isDesktop?18:17,fontStyle:"italic",color:T2.text,lineHeight:1.4}}>{t}</span>
+              <span style={{fontFamily:T.serif,fontSize:isDesktop?18:17,color:T2.text,lineHeight:1.4}}>{t}</span>
             </div>
           ))}
         </div>
@@ -257,19 +257,18 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>The Challenge Journey</div>
         <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
           {[
-            {n:1,label:"The Clarity Test",   icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="9" cy="9" r="6" stroke={T.gold} strokeWidth="1.3"/><path d="M13.5 13.5l4 4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:2,label:"The Feynman Formula",icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 7h12M5 11h8M5 15h10" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:3,label:"What's Missing?",    icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M9 8.5a2 2 0 013.5 1.3c0 1.5-2 2-2 3.5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><circle cx="11" cy="16" r="0.8" fill={T.gold}/></svg>},
-            {n:4,label:"Explain It Simply",  icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 5h14a1 1 0 011 1v8a1 1 0 01-1 1H7l-4 3V6a1 1 0 011-1z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/><path d="M8 9h6M8 12h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:1,label:"The Clarity Test",   icon:<svg width="26" height="26" viewBox="0 0 22 22" fill="none"><circle cx="9" cy="9" r="6" stroke={T.gold} strokeWidth="1.3"/><path d="M13.5 13.5l4 4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:2,label:"The Feynman Formula",icon:<svg width="26" height="26" viewBox="0 0 22 22" fill="none"><path d="M5 7h12M5 11h8M5 15h10" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3,label:"What's Missing?",    icon:<svg width="26" height="26" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M9 8.5a2 2 0 013.5 1.3c0 1.5-2 2-2 3.5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><circle cx="11" cy="16" r="0.8" fill={T.gold}/></svg>},
+            {n:4,label:"Explain It Simply",  icon:<svg width="26" height="26" viewBox="0 0 22 22" fill="none"><path d="M4 5h14a1 1 0 011 1v8a1 1 0 01-1 1H7l-4 3V6a1 1 0 011-1z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/><path d="M8 9h6M8 12h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
           ].map((r,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
-                <div style={{width:isDesktop?44:36,height:isDesktop?44:36,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.35)"),background:i===0?"rgba(138,158,132,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:6}}>
+                <div style={{width:isDesktop?50:40,height:isDesktop?50:40,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.35)"),background:i===0?"rgba(138,158,132,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>
                   {r.icon}
                 </div>
-                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,marginBottom:3}}>{r.n}</div>
-                        <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,fontWeight:400,color:"#A8998A",textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?84:64}}>Round {r.n}</div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,color:"#A8998A",textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?84:64}}>{r.label}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?10:9,fontWeight:700,color:T.gold,marginBottom:3}}>Round {r.n}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,fontWeight:500,color:T2.text,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?88:66}}>{r.label}</div>
               </div>
               {i<3 && <div style={{height:1,width:isDesktop?12:6,background:"rgba(138,158,132,0.25)",flexShrink:0,marginBottom:40}}/>}
             </div>
