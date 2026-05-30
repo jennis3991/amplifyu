@@ -809,7 +809,8 @@ export const ExCard = ({name, preview, full, T2: _T2}) => {
         <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3}}>{name}</div>
         <span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginLeft:12,flexShrink:0,marginTop:4}}>{open?"▴":"▸"}</span>
       </div>
-      <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,margin:0,fontWeight:400,whiteSpace:"pre-wrap"}}>{open ? full : preview}</p>
+      <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,margin:0,fontWeight:400}}>{preview}</p>
+      {open && <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.75,margin:"14px 0 0",fontWeight:300,whiteSpace:"pre-wrap",borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:14}}>{full}</p>}
     </div>
   );
 };
