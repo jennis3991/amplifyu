@@ -150,7 +150,7 @@ finishDate + ".";
         {/* Hero — full image, clean, no overlay */}
         {/* Hero — full image */}
         <div style={{ marginTop: NAV_H, background: T2.bg }}>
-          <img src="/home-hero.jpg" alt="Social Presence Framework" style={{ width: "100%", maxHeight: "62vh", objectFit: "cover", objectPosition: "center 20%", display: "block" }}/>
+          <img src="/home-hero.jpg" alt="Social Presence Framework" style={{ width: "100%", maxHeight: "68vh", objectFit: "cover", objectPosition: "center 20%", display: "block" }}/>
         </div>
 
         {/* Static CTA bar — directly below hero, in document flow */}
