@@ -69,7 +69,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
     },
     {
       id:'netflix', title:"THE NETFLIX TEST",
-      intro:"Which version would you rather listen to?",
+      intro:"Which version would you rather hear?",
       versions:[
         {label:"Version A", text:"Last weekend I started a new show that my friend recommended because she said it had great reviews and after watching three episodes I understood why everyone was talking about it."},
         {label:"Version B", text:"Last weekend I started a new show.\n\nA friend recommended it.\n\nAfter three episodes, I understood the hype."},
@@ -224,7 +224,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
               <div style={cs.label}>{r.title}</div>
               <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:16,lineHeight:1.5}}>{r.intro}</p>
               {memPhase==='start' && (
-                <button onClick={()=>setMemPhase('showing')} style={cs.cta}>Start 5-second timer →</button>
+                <button onClick={()=>setMemPhase('showing')} style={cs.cta}>Start 4-second timer →</button>
               )}
               {memPhase==='showing' && (
                 <>
@@ -315,7 +315,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
                   <div style={cs.label}>{r.title}</div>
                   <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:16,lineHeight:1.5}}>{r.intro}</p>
                   <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Round 1</div>
-                  <p style={{fontFamily:T.serif,fontSize:isDesktop?22:19,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>Touch your nose.</p>
+                  <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>Touch your nose.</p>
                 </div>
                 <button onClick={()=>setSimonStep(1)} style={cs.cta}>Easy. ✓</button>
               </>
@@ -326,7 +326,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
                 <div style={cs.card}>
                   <div style={cs.label}>{r.title}</div>
                   <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Round 2</div>
-                  <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.5,margin:0}}>Touch your nose, clap twice, point left, touch your shoulder, blink, then raise your hand.</p>
+                  <p style={{fontFamily:T.serif,fontSize:18,color:T2.text,lineHeight:1.5,margin:0}}>Touch your nose, clap twice, point left, touch your shoulder, blink, then raise your hand.</p>
                 </div>
                 <button onClick={()=>setSimonStep(2)} style={cs.cta}>Harder. ✓</button>
               </>
@@ -343,7 +343,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
                         <div style={{width:24,height:24,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                           <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{i+1}</span>
                         </div>
-                        <span style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text}}>{item}</span>
+                        <span style={{fontFamily:T.serif,fontSize:18,color:T2.text}}>{item}</span>
                       </div>
                     ))}
                   </div>
