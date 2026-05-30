@@ -1142,10 +1142,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
           <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:700,color:T.gold,margin:0,textTransform:"uppercase",letterSpacing:"1.5px"}}>That is Miller's Law in action.</p>
         </div>
 
-        <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-          <button onClick={()=>{setPhase('choose');setTranscript('');setFallback('');setProducerMsg(null);setTimeLeft(60);setTimeElapsed(0);setUserPoints(['','','']);setPointsSubmitted(false);}} style={{...cs.ghost,flex:"1 1 auto"}}>Try Another Story →</button>
-          <button onClick={reset} style={{...cs.cta,flex:"1 1 auto",width:"auto"}}>Start Over</button>
-        </div>
       </div>
     );
   }
