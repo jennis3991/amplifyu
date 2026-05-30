@@ -2738,14 +2738,14 @@ setAmbitionSaved(true); } catch {}
           <p style={{ fontFamily:T.sans, fontSize:14, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28, maxWidth:640 }}>Two communicators whose influence grew not despite difficult moments — but because of how they handled them.</p>
           <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:24 }}>
             {[
-              {name:"Barack Obama", role:"44th President of the United States",
-               preview:'"If you\'re walking down the right path and you\'re willing to keep walking, eventually you\'ll make progress."',
-               trait:"Measured under fire",
-               body:"Obama's composure under questioning became a defining feature of his public image. Deliberate pace, controlled tone, strategic pauses — he never appeared rattled, even when the room was.",
-               quote:'"If you\'re walking down the right path and you\'re willing to keep walking, eventually you\'ll make progress."',
-               year:"2008",
-               lesson:"Pressure rewards composure. You can engage with the hardest questions without being destabilised by them.",
-               tryIt:{phrase:'"I understand your concern, but I see it differently."', instruction:"Say it: defensive → calm → dismissive → composed authority"}},
+              {name:"Lewis Hamilton", role:"7× Formula 1 World Champion",
+               preview:'"Firstly, a big congratulations to Max."',
+               trait:"Master of Composure Under Pressure",
+               body:"Throughout his career, Hamilton has faced criticism, controversy, public scrutiny, and championship-defining setbacks while performing on one of the world's biggest stages.\n\nAbu Dhabi 2021 — one lap away from a record-breaking eighth world title. One of the most controversial endings in sporting history. With millions watching, his first public words were:\n\n\"Firstly, a big congratulations to Max.\"\n\nExtreme disappointment. Global audience. Massive controversy. Years of work lost in seconds. Yet his first response was composure.\n\nYears later, he admitted he felt wronged — but also said he had found peace with it.\n\nHamilton has also spoken openly about struggling with depression from a young age: \"I had no one to talk to.\" And about his growth: \"I am so much more refined.\"\n\nElite communicators aren't naturally calm. They learn how to manage their reactions.",
+               quote:'"Firstly, a big congratulations to Max."',
+               year:"Abu Dhabi Grand Prix, 2021",
+               lesson:"Emotional control is often most visible when you have every reason to lose it. Pressure doesn't create character. It reveals it.",
+               tryIt:null},
               {name:"Queen Elizabeth II", role:"Queen of the United Kingdom, 1952–2022",
                preview:'"We will meet again."',
                trait:"Calm under pressure",
@@ -2775,7 +2775,7 @@ setAmbitionSaved(true); } catch {}
                   {open && (
                     <div style={{ borderTop:"0.5px solid "+T2.divider, padding:"24px 28px", display:"flex", flexDirection:"column", gap:18 }}>
                       <div>
-                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Why She's Relevant</div>
+                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>{ci===0?"Why He's Relevant":"Why She's Relevant"}</div>
                         <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0, whiteSpace:"pre-line" }}>{card.body}</p>
                       </div>
                       <div>
