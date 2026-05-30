@@ -2396,6 +2396,11 @@ setAmbitionSaved(true); } catch {}
           {id:1, name:"Meryl Streep", headline:"The Master of Precision and Presence",
            sub:"Three iconic roles. Three completely different voices. Streep proves that the most powerful communicators don't get louder — they get more precise.",
            quote:'"Take your broken heart, make it into art."',
+           roles:[
+             {role:"Miranda Priestly", film:"The Devil Wears Prada", voice:"Barely above a whisper. Ice-cold authority. Every pause a threat. She never raises her voice — and that's exactly what makes her terrifying. Precision over volume."},
+             {role:"Sophie Zawistowski", film:"Sophie's Choice", voice:"Raw, fractured, accent-laden grief. Her voice breaks where words can't. The emotional weight lives in the trembling pauses between sentences."},
+             {role:"Margaret Thatcher", film:"The Iron Lady", voice:"Deliberate, elevated, sculpted. She researched Thatcher's vocal coaching and rebuilt the register from scratch. Every word placed with political intention."},
+           ],
            levers:[{k:"Pace",v:"Deliberate control or sharp urgency"},{k:"Pitch",v:"Subtle tonal shifts that change emotional meaning"},{k:"Tone",v:"Authority, vulnerability, wit, empathy, strength"},{k:"Pauses",v:"Creating tension, emphasis, and dramatic impact"}],
            lesson:"Precision creates presence. Control creates impact. A rushed voice can feel uncertain. An intentional voice commands attention.",
            challenge:{sentence:'"This moment matters more than you think."',modes:["Sharp executive authority","Calm conviction","Warm encouragement","Emotionally vulnerable"]}},
@@ -2423,6 +2428,20 @@ setAmbitionSaved(true); } catch {}
                     {open && (
                       <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:18 }}>
                         <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T2.text2, lineHeight:1.6, marginBottom:16, borderLeft:"2px solid "+T.gold, paddingLeft:14 }}>{card.quote}</p>
+                        {card.roles && (
+                          <div style={{ marginBottom:18 }}>
+                            <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Three Roles. Three Voices.</div>
+                            {card.roles.map((r,i)=>(
+                              <div key={i} style={{ marginBottom:i<card.roles.length-1?12:0, paddingBottom:i<card.roles.length-1?12:0, borderBottom:i<card.roles.length-1?"0.5px solid "+T2.divider:"none" }}>
+                                <div style={{ display:"flex", gap:8, alignItems:"baseline", marginBottom:4 }}>
+                                  <span style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T2.text }}>{r.role}</span>
+                                  <span style={{ fontFamily:T.sans, fontSize:11, color:T2.text3, fontStyle:"italic" }}>{r.film}</span>
+                                </div>
+                                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.6, margin:0, fontWeight:300 }}>{r.voice}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                         <div style={{ marginBottom:14 }}>
                           {card.levers.map((l,i)=>(
                             <div key={i} style={{ display:"flex", gap:8, marginBottom:6 }}>
