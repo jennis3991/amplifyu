@@ -958,7 +958,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {cat.items.map((item,ii)=>(
                 <button key={ii} onClick={()=>{setStory(item);setPhase('recording');}}
-                  style={{padding:"14px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:isDesktop?16:15,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5,transition:"all 0.2s"}}>
+                  style={{padding:"14px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:isDesktop?14:13,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5,transition:"all 0.2s"}}>
                   {item}
                 </button>
               ))}
@@ -979,7 +979,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.6)",textTransform:"uppercase",letterSpacing:"2px"}}>{isRec?"On Air":"Ready"}</div>
           {isRec&&<div style={{marginLeft:"auto",fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:timeLeft<=10?"#CC4444":T.gold,lineHeight:1}}>{timeLeft}s</div>}
         </div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:15,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,margin:"0 0 8px"}}>🔴 BREAKING: {story}</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,margin:"0 0 8px"}}>🔴 BREAKING: {story}</p>
         {producerMsg && (
           <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,marginTop:10}}>
             <div style={{fontFamily:T.sans,fontSize:9,color:"#C8A46A",textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>🎧 Producer</div>
