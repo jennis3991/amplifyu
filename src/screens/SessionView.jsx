@@ -696,48 +696,56 @@ setAmbitionSaved(true); } catch {}
         );
 
         return (
-          <div key="p-reflect" className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:32}}>
+          <div key="p-reflect" className="au-step-enter" style={{display:"flex",flexDirection:"column",gap:14,padding:"44px 52px",overflowY:"auto"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <button onClick={()=>setPracticePhase('inspiration')} style={back}>← Back</button>
               <Progress/>
             </div>
-            <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Reflect</h2>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,fontWeight:300,marginBottom:32}}>After watching, capture what you noticed. The act of naming it makes it stick.</p>
-            <div style={{display:"flex",flexDirection:"column",gap:24,marginBottom:32}}>
-              <div>
-                <div style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,marginBottom:12}}>Which AmplifyU principle did you see in action?</div>
-                <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
-                  {["Clarity","Pause","Precision","PRE Structure","Composure"].map(h=>{
-                    const on=checkedHabits.has(h);
-                    return (
-                      <button key={h} onClick={e=>{e.stopPropagation();const s=new Set(checkedHabits);on?s.delete(h):s.add(h);setCheckedHabits(s);}}
-                        style={{padding:"8px 18px",borderRadius:20,border:`1px solid ${on?T.gold:T2.border}`,background:on?"rgba(138,158,132,0.1)":"transparent",fontFamily:T.sans,fontSize:13,color:on?T.gold:T2.text,cursor:"pointer",transition:"all 0.15s",fontWeight:on?600:400}}>
-                        {on?"✓ "+h:h}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-              <div>
-                <div style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,marginBottom:12}}>Complete the sentences:</div>
-                <div style={{display:"flex",flexDirection:"column",gap:12}}>
-                  {[{label:"One thing I noticed was…",val:noticed,set:setNoticed,ph:"Write your observation here"},{label:"This week, I will practise…",val:willPractise,set:setWillPractise,ph:"Name one habit to develop"}].map(({label,val,set,ph},fi)=>(
-                    <div key={fi} style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+(val?T.gold:T2.border),transition:"border-color 0.2s"}}>
-                      <div style={{fontFamily:T.sans,fontSize:11,color:T.gold,marginBottom:7,fontWeight:600,textTransform:"uppercase",letterSpacing:"1.5px"}}>{label}</div>
-                      <input value={val} onChange={e=>set(e.target.value)} placeholder={ph}
-                        style={{width:"100%",border:"none",background:"transparent",fontFamily:T.serif,fontSize:16,color:T2.text,outline:"none",padding:0,lineHeight:1.5}}/>
-                    </div>
-                  ))}
-                </div>
+
+            {/* Header card */}
+            <div style={{background:T2.surface,borderRadius:8,border:"1px solid "+T2.border,padding:"24px 28px"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>Step 3 — Reflect</div>
+              <p style={{fontFamily:T.serif,fontSize:22,color:T2.text,lineHeight:1.4,margin:0}}>After watching, capture what you noticed. The act of naming it makes it stick.</p>
+            </div>
+
+            {/* Principle tiles */}
+            <div style={{background:T2.surface,borderRadius:8,border:"1px solid "+T2.border,padding:"24px 28px"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Which AmplifyU principle did you notice?</div>
+              <div style={{display:"flex",gap:10}}>
+                {["Clarity","Pause","Precision","PRE Structure","Composure"].map(h=>{
+                  const on=checkedHabits.has(h);
+                  return (
+                    <button key={h} onClick={e=>{e.stopPropagation();const s=new Set(checkedHabits);on?s.delete(h):s.add(h);setCheckedHabits(s);}}
+                      style={{flex:1,padding:"16px 8px",borderRadius:6,border:`1px solid ${on?T.gold:T2.border}`,background:on?"rgba(138,158,132,0.08)":"transparent",cursor:"pointer",transition:"all 0.15s",textAlign:"left"}}>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:on?T.gold:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:on?6:0}}>{h}</div>
+                      {on&&<div style={{fontFamily:T.sans,fontSize:11,color:T.gold}}>✓</div>}
+                    </button>
+                  );
+                })}
               </div>
             </div>
-            <div style={{height:"0.5px",background:T2.divider,marginBottom:28}}/>
-            <div style={{padding:"28px 32px",background:T2.cardDark,borderRadius:6}}>
+
+            {/* Observation input */}
+            <div style={{background:T2.surface,borderRadius:8,border:`1px solid ${noticed?T.gold:T2.border}`,padding:"24px 28px",transition:"border-color 0.2s"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>One thing I noticed was</div>
+              <textarea value={noticed} onChange={e=>setNoticed(e.target.value)} placeholder="Write your observation here…"
+                style={{width:"100%",border:"none",borderTop:"0.5px solid "+T2.divider,background:"transparent",fontFamily:T.serif,fontSize:18,color:T2.text,outline:"none",padding:"16px 0 0",lineHeight:1.65,resize:"none",height:88,boxSizing:"border-box"}}/>
+            </div>
+
+            {/* Practice input */}
+            <div style={{background:T2.surface,borderRadius:8,border:`1px solid ${willPractise?T.gold:T2.border}`,padding:"24px 28px",transition:"border-color 0.2s"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>This week, I will practise</div>
+              <textarea value={willPractise} onChange={e=>setWillPractise(e.target.value)} placeholder="Name one habit to develop…"
+                style={{width:"100%",border:"none",borderTop:"0.5px solid "+T2.divider,background:"transparent",fontFamily:T.serif,fontSize:18,color:T2.text,outline:"none",padding:"16px 0 0",lineHeight:1.65,resize:"none",height:88,boxSizing:"border-box"}}/>
+            </div>
+
+            {/* Final Insight */}
+            <div style={{padding:"28px 32px",background:T2.cardDark,borderRadius:8}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16,fontFamily:T.sans}}>Final Insight</div>
               <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(245,239,230,0.92)",lineHeight:1.45,margin:"0 0 12px"}}>The best communicators don't just communicate.</p>
               <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.5)",lineHeight:1.75,margin:"0 0 20px",fontWeight:300}}>They observe, reflect, and continuously refine their craft.</p>
-              <div style={{height:"0.5px",background:"rgba(245,239,230,0.08)",marginBottom:20}}/>
-              <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.45)",lineHeight:1.75,margin:"0 0 6px",fontWeight:300}}>This week, don't just consume content.</p>
+              <div style={{height:"0.5px",background:"rgba(245,239,230,0.08)",marginBottom:18}}/>
+              <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.45)",lineHeight:1.7,margin:"0 0 4px",fontWeight:300}}>This week, don't just consume content.</p>
               <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T.gold,lineHeight:1.5,margin:0}}>Study the communication.</p>
             </div>
           </div>
