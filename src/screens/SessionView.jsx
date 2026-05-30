@@ -2726,7 +2726,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Real-World Conversation Coaching</h2>
+          <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:12 }}>AI Conversation Prep</h2>
           <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>Choose a high-stakes scenario. Write your response. Your coach evaluates composure, clarity, empathy, and executive presence.</p>
           <D6SimWidget T={T} T2={T2} isDesktop={true}/>
         </div>

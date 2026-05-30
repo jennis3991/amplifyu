@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 
 export function D6PracticeWidget({T, T2, isDesktop}) {
@@ -90,220 +90,312 @@ export function D6PracticeWidget({T, T2, isDesktop}) {
   );
 }
 
-// ─── D6 Simulation Widget ──────────────────────────────────────────────────
+// ─── D6 Simulation Widget — AI Conversation Prep ────────────────────────────
 export function D6SimWidget({T, T2, isDesktop}) {
-  const SCENARIOS = [
-    {id:0, label:"Difficult Feedback", sub:"Someone who feels singled out.",
-     aiOpener:'"I have to be honest — I feel like I\'m being singled out here."',
-     goal:"Empathy + composure",
-     followUps:["Others aren't being held to the same standard.","I've worked really hard and this doesn't feel fair.","Why is this only coming up now?"],
-     starters:["I hear that, and I want to understand more…","That's not my intention, and I appreciate you telling me…","Let me be clear about what I'm seeing — and I want to hear your view too…"],
-     script:{topic:"Addressing performance concerns",context:"A team member believes they're being treated unfairly. Your job is to stay calm, acknowledge the emotion, and move toward clarity.",
-       beginner:'"I hear that you feel singled out, and I want to take that seriously. That\'s not my intention. What I can do is walk you through what I\'ve observed, and I want you to tell me where you see it differently. This should be a conversation — not a verdict."',
-       intermediate:["Acknowledge: 'I hear that — and I want to understand what's behind it'","Don't defend — get curious: 'Can you tell me more about what you've noticed?'","Then be clear: state what you've observed calmly and specifically","Close: 'My goal is a conversation, not a confrontation'"]}},
-    {id:1, label:"Leadership Disagreement", sub:"Your concern is being dismissed.",
-     aiOpener:'"To be frank — I don\'t think your concern is valid here."',
-     goal:"Calm authority",
-     followUps:["We've already thought through this thoroughly.","I don't see the risk you're describing.","Let's move forward — we don't have time for this."],
-     starters:["I respect where you're coming from, and here's what I'm seeing…","I want to make sure this concern gets a full hearing, because…","I hear you, and I still believe this is worth pausing on because…"],
-     script:{topic:"Raising a risk that's being dismissed",context:"You've identified a risk. A senior leader isn't taking it seriously. Stay composed and make the case without escalating.",
-       beginner:'"I appreciate the confidence in the current plan. I want to flag one specific concern — not to slow things down, but to make sure we\'ve accounted for it. The risk I\'m seeing is [X]. If it\'s already been addressed, great — I\'m happy to move on. If not, I think it\'s worth two minutes."',
-       intermediate:["Don't react to the dismissal — stay calm and stay curious","Restate your concern clearly and specifically in one sentence","Invite engagement: 'Has this been considered, or should we look at it?'","Close by making it easy to engage: 'I'm not trying to block progress — I want to be confident we've covered it'"]}},
-    {id:2, label:"Emotional Employee", sub:"Frustration about a recurring issue.",
-     aiOpener:'"Honestly, I\'m frustrated. This keeps happening and nothing changes."',
-     goal:"Steadiness + warmth",
-     followUps:["Every time I raise it, it gets noted and forgotten.","I'm starting to wonder if it's even worth bringing things up.","It's demoralising."],
-     starters:["I hear your frustration — it's legitimate…","You're right that this has come up before, and I want to be honest about where we are…","I don't want to give you a non-answer. Here's what I can actually commit to…"],
-     script:{topic:"Responding to repeated frustration",context:"An employee has hit a wall — the same issue, the same response, no visible change. Your job is to acknowledge, not deflect.",
-       beginner:'"Your frustration makes sense — and I\'m not going to tell you it shouldn\'t. You\'ve raised this before and you deserve a real answer. Here\'s what I can tell you right now, and here\'s what I\'m going to do differently this time. I want to come back to you by [date] with a specific update."',
-       intermediate:["Don't minimise the frustration — validate it directly","Be honest: what's been done, what hasn't, and why","Name a specific next step with a timeframe","Show them this conversation was different: write it down with them if needed"]}},
-    {id:3, label:"Boundary Under Pressure", sub:"Unrealistic deadline demand.",
-     aiOpener:'"We need this by tomorrow. That\'s not negotiable."',
-     goal:"Firm calm",
-     followUps:["We don't have the luxury of more time.","Others are making it work.","This is a priority from the top — it has to happen."],
-     starters:["I want to make this work — here's what I can realistically commit to…","I can deliver something by tomorrow, but here's the trade-off you should know about…","I hear the pressure. Let me tell you exactly what's possible and what isn't…"],
-     script:{topic:"Holding a boundary on quality and timeline",context:"A deadline is unrealistic. You need to hold your position calmly without damaging the relationship or sounding obstructive.",
-       beginner:'"I understand this is urgent, and I want to make sure we deliver something that actually works. If I commit to tomorrow, here\'s the trade-off: [specific quality issue]. I can get you [X] by tomorrow — a first version, clearly marked as such. Or I can deliver the full thing by [realistic date]. Tell me which serves you better."',
-       intermediate:["Acknowledge the pressure: 'I hear the urgency'","State the trade-off clearly — not a complaint, just the reality","Offer a specific alternative: partial delivery or a revised date","Put the decision back with them: 'Which serves you better?'"]}},
+  const INDUSTRIES = ['Technology','Finance','Healthcare','Education','Sales','Marketing','Legal','Consulting','Other'];
+  const STAKEHOLDERS = ['CEO','Manager','Client','Investor','Team Member','Board Member','Customer','Colleague'];
+  const PRESSURES = [
+    {id:'friendly',    label:'Friendly',    desc:'Supportive questions'},
+    {id:'challenging', label:'Challenging', desc:'Pushback and probing'},
+    {id:'executive',   label:'Executive',   desc:'Short, direct, sceptical'},
+    {id:'boardroom',   label:'Boardroom',   desc:'High pressure, scrutiny'},
   ];
 
-  const [phase, setPhase] = useState('idle');
-  const [sc, setSc] = useState(null);
-  const [mode, setMode] = useState(null);
-  const [difficulty, setDifficulty] = useState('beginner');
-  const [userText, setUserText] = useState('');
-  const [feedback, setFeedback] = useState(null);
-  const [ownPrompt, setOwnPrompt] = useState('');
-  const [followIdx, setFollowIdx] = useState(0);
+  const [phase,          setPhase]         = useState('intro');
+  const [form,           setForm]          = useState({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging'});
+  const [profile,        setProfile]       = useState(null);
+  const [questions,      setQuestions]     = useState([]);
+  const [qIdx,           setQIdx]          = useState(0);
+  const [answers,        setAnswers]       = useState([]);
+  const [currentAnswer,  setCurrentAnswer] = useState('');
+  const [isListening,    setIsListening]   = useState(false);
+  const [recTime,        setRecTime]       = useState(0);
+  const [result,         setResult]        = useState(null);
+  const recRef  = useRef(null);
+  const timerRef = useRef(null);
+  const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
 
-  const reset = () => { setPhase('idle'); setSc(null); setMode(null); setDifficulty('beginner'); setUserText(''); setFeedback(null); setOwnPrompt(''); setFollowIdx(0); };
+  useEffect(()=>{
+    if(!isListening){clearInterval(timerRef.current);return;}
+    timerRef.current=setInterval(()=>setRecTime(t=>t+1),1000);
+    return()=>clearInterval(timerRef.current);
+  },[isListening]);
 
-  const SCORES = ['Composure','Clarity','Empathy','Pace','Confidence','Executive Presence'];
-  const generateFeedback = () => {
-    const scores = SCORES.map(s => ({ label:s, val:Math.floor(Math.random()*25)+70 }));
-    const notes = [
-      "Strong composure — your tone stayed steady throughout. The opening acknowledged the emotion without being derailed by it. Consider adding one concrete next step to close with equal clarity.",
-      "Very clear framing. Your position was stated once, firmly, and without escalation. The follow-through on empathy could be slightly warmer — but the structure was excellent.",
-      "Excellent emotional steadiness. You validated the frustration without capitulating to it. The pace was controlled. One suggestion: a shorter sentence at the end would land harder.",
-      "You held your ground with real poise. The boundary was clear, the alternative was practical, and the decision was returned to the other party — exactly right. Composure was visible throughout.",
-    ];
-    setFeedback({ scores, note: notes[Math.floor(Math.random()*notes.length)], followUp: sc?.followUps[Math.floor(Math.random()*sc.followUps.length)] });
-    setPhase('feedback');
+  async function generate(){
+    setPhase('analyzing');
+    const pressureLabel = PRESSURES.find(p=>p.id===form.pressure)?.label||'Challenging';
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:`You are a senior executive coach preparing someone for a high-stakes conversation.\n\nContext:\n- Industry: ${form.industry}\n- Their role: ${form.role}\n- Meeting: ${form.stakeholder}\n- About: ${form.purpose}\n- Pressure style: ${pressureLabel}\n\nGenerate a conversation profile and 10 realistic tough questions this stakeholder is likely to ask. Questions should feel specific, real, and increase in difficulty.\n\nReturn ONLY valid JSON:\n{"profile":{"stakeholderLabel":"${form.stakeholder}","goal":"<1-4 word goal>","riskLevel":"High|Medium|Low","concerns":["concern1","concern2","concern3","concern4"],"insight":"<2-3 sentences about what this stakeholder cares about and how they will challenge>"},"questions":["q1","q2","q3","q4","q5","q6","q7","q8","q9","q10"]}`}]})});
+      const d=await res.json();
+      const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
+      const m=raw.match(/\{[\s\S]*\}/);
+      const parsed=JSON.parse(m[0]);
+      setProfile(parsed.profile);
+      setQuestions(parsed.questions);
+    }catch{
+      setProfile({stakeholderLabel:form.stakeholder,goal:"Get answers",riskLevel:"High",concerns:["ROI","Risk","Timeline","Resources"],insight:`This ${form.stakeholder} will focus on practical implications and challenge your assumptions. Expect probing questions about evidence, alternatives, and risk.`});
+      setQuestions(["Why should we prioritise this now?","What happens if we do nothing?","How will we measure success?","What are the risks?","What is the ROI?","How confident are you in these numbers?","Why is this better than alternatives?","What resources will this require?","What could cause this to fail?","Why should I support this?"]);
+    }
+    setPhase('questions');
+  }
+
+  function startSim(){setQIdx(0);setAnswers([]);setCurrentAnswer('');setRecTime(0);setPhase('simulation');}
+
+  function startListening(){
+    if(!SpeechRec) return;
+    const rec=new SpeechRec();
+    rec.continuous=true;rec.interimResults=true;
+    let final=currentAnswer;
+    rec.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)final+=e.results[i][0].transcript+' ';else interim=e.results[i][0].transcript;}setCurrentAnswer(final+interim);};
+    rec.onend=()=>setIsListening(false);
+    rec.start();recRef.current=rec;setIsListening(true);setRecTime(0);
+  }
+  function stopListening(){if(recRef.current)recRef.current.stop();setIsListening(false);}
+
+  function nextQuestion(){
+    if(isListening)stopListening();
+    const newAnswers=[...answers,currentAnswer];
+    setAnswers(newAnswers);
+    setCurrentAnswer('');setRecTime(0);
+    if(qIdx<questions.length-1){setQIdx(i=>i+1);}
+    else{setPhase('reviewing');analyze(newAnswers);}
+  }
+
+  async function analyze(ans){
+    const qa=questions.map((q,i)=>`Q${i+1}: ${q}\nA: ${ans[i]||'(no answer)'}`).join('\n\n');
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:700,messages:[{role:"user",content:`You are an executive communication coach. Analyse these conversation practice responses.\n\nContext: ${form.role} preparing to meet ${form.stakeholder} about ${form.purpose}\n\n${qa}\n\nReturn ONLY valid JSON:\n{"scores":{"composure":{"score":<1-10>,"note":"<8 words>"},"clarity":{"score":<1-10>,"note":"<8 words>"},"confidence":{"score":<1-10>,"note":"<8 words>"},"evidence":{"score":<1-10>,"note":"<8 words>"},"brevity":{"score":<1-10>,"note":"<8 words>"}},"strengths":["<strength1>","<strength2>"],"development":["<area1>","<area2>"],"hardestQuestion":"<question text that got weakest response>","recommendation":"<2-3 sentence personalised coaching recommendation>"}`}]})});
+      const d=await res.json();const raw=(d.content||[]).map(b=>b.text||'').join('').trim();const m=raw.match(/\{[\s\S]*\}/);setResult(JSON.parse(m[0]));
+    }catch{
+      setResult({scores:{composure:{score:7,note:"Stayed measured throughout"},clarity:{score:7,note:"Mostly direct answers"},confidence:{score:7,note:"Clear position held"},evidence:{score:6,note:"Could use more specific data"},brevity:{score:7,note:"Generally concise"}},strengths:["Stayed composed under pressure","Clear on strategic rationale"],development:["Prepare stronger evidence for risk questions","Sharpen responses to follow-up probing"],hardestQuestion:questions[questions.length-1],recommendation:"Your strongest answers were backed by evidence. Before the real conversation, prepare clearer responses to risk and objection questions — those are where hesitation tends to show."});
+    }
+    setPhase('results');
+  }
+
+  const cs={
+    card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"20px 24px":"16px 18px"},
+    label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8},
+    inp:{width:"100%",borderRadius:3,border:"0.5px solid "+T2.border,padding:"10px 14px",fontSize:isDesktop?14:13,fontFamily:T.sans,background:T2.bg,color:T2.text,outline:"none",boxSizing:"border-box"},
+    sel:{width:"100%",borderRadius:3,border:"0.5px solid "+T2.border,padding:"10px 14px",fontSize:isDesktop?14:13,fontFamily:T.sans,background:T2.bg,color:T2.text,outline:"none",appearance:"none",cursor:"pointer",WebkitAppearance:"none"},
+    cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
   };
+  const scoreColor=s=>s>=8?"#527060":s>=5?T.gold:"#B05C4A";
+  const canGenerate=form.industry&&form.role&&form.stakeholder&&form.purpose;
 
-  const cs = {
-    card: { background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px" },
-    label: { fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8 },
-    h3: { fontFamily:T.serif, fontSize:isDesktop?22:18, fontWeight:600, color:T2.text, marginBottom:4 },
-    sub: { fontFamily:T.sans, fontSize:13, color:T2.text3, marginBottom:isDesktop?24:16 },
-  };
-
-  if (phase === 'idle') return (
-    <div style={{display:"flex",flexDirection:"column",gap:12}}>
-      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>Choose your scenario</div>
-      {SCENARIOS.map(s => (
-        <div key={s.id} onClick={()=>{setSc(s);setPhase('mode-select');}} style={{...cs.card,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s"}} className="au-lift">
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-            <div>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>{s.goal}</div>
-              <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,marginBottom:4}}>{s.label}</div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,lineHeight:1.5}}>{s.sub}</p>
+  // ── INTRO ──
+  if(phase==='intro') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={cs.card}>
+        <div style={cs.label}>AI Conversation Prep</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?22:20,fontWeight:600,color:T.gold,lineHeight:1.25,margin:"0 0 14px"}}>Prepare for the conversations that matter most.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 16px"}}>Most people prepare what they want to say. Elite communicators prepare for what they'll be asked.</p>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {[{n:"1",t:"Tell us about your upcoming conversation."},
+            {n:"2",t:"The AI analyses your stakeholder and generates 10 likely tough questions."},
+            {n:"3",t:"Answer each question. Get coaching on composure, clarity, and confidence."},
+          ].map((s,i)=>(
+            <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"10px 12px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{s.n}</span>
+              </div>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>{s.t}</span>
             </div>
-            <span style={{fontFamily:T.sans,fontSize:12,color:T.gold,marginLeft:12,flexShrink:0}}>→</span>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-
-  if (phase === 'mode-select') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={{...cs.card}}>
-        <div style={cs.label}>The Opening</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>{sc.aiOpener}</p>
-      </div>
-      <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6}}>How do you want to approach this?</div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-        <button onClick={()=>{setMode('guided');setPhase('setup');}} style={{...cs.card,cursor:"pointer",textAlign:"left",border:"0.5px solid "+T.gold}}>
-          <div style={cs.label}>Guided</div>
-          <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,marginBottom:6}}>Coach me through it</div>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>Get a script, coaching notes, and difficulty levels.</p>
-        </button>
-        <button onClick={()=>{setMode('own');setPhase('active');}} style={{...cs.card,cursor:"pointer",textAlign:"left"}}>
-          <div style={cs.label}>Real conversation</div>
-          <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,marginBottom:6}}>Use my own words</div>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>Write your natural response and get feedback.</p>
-        </button>
-      </div>
-      <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back to scenarios</button>
-    </div>
-  );
-
-  if (phase === 'setup') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={{...cs.card}}>
-        <div style={cs.label}>The Opening</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>{sc.aiOpener}</p>
-      </div>
-      <div style={{...cs.card}}>
-        <div style={cs.label}>Difficulty</div>
-        <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:16}}>
-          {['beginner','intermediate','advanced'].map(d=>(
-            <button key={d} onClick={()=>setDifficulty(d)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${difficulty===d?T.gold:T2.border}`,background:difficulty===d?"rgba(138,158,132,0.12)":"transparent",color:difficulty===d?T.gold:T2.text3,fontSize:12,fontWeight:difficulty===d?600:400,cursor:"pointer",fontFamily:T.sans,transition:"all 0.15s",minHeight:36,textTransform:"capitalize"}}>{d}</button>
           ))}
         </div>
-        <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14}}>
-          {difficulty==='beginner' && (
-            <div>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Full Script</div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{sc.script.beginner}</p>
-            </div>
-          )}
-          {difficulty==='intermediate' && (
-            <div>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Talking Points</div>
-              {sc.script.intermediate.map((pt,i) => (
-                <div key={i} style={{display:"flex",gap:10,marginBottom:8,alignItems:"flex-start"}}>
-                  <div style={{color:T.gold,fontFamily:T.sans,fontSize:12,fontWeight:700,flexShrink:0,marginTop:2}}>{i+1}.</div>
-                  <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0}}>{pt}</p>
-                </div>
+      </div>
+      <button onClick={()=>setPhase('setup')} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Prepare My Conversation →</button>
+    </div>
+  );
+
+  // ── SETUP ──
+  if(phase==='setup') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
+      <div style={cs.card}>
+        <div style={cs.label}>Step 1 — Your Conversation</div>
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>Industry</div>
+            <select value={form.industry} onChange={e=>setForm(f=>({...f,industry:e.target.value}))} style={cs.sel}>
+              <option value="">Select industry…</option>
+              {INDUSTRIES.map(i=><option key={i} value={i}>{i}</option>)}
+            </select>
+          </div>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>Your Role</div>
+            <input value={form.role} onChange={e=>setForm(f=>({...f,role:e.target.value}))} placeholder="e.g. Product Manager, Founder, Teacher…" style={cs.inp}/>
+          </div>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>Who Are You Meeting?</div>
+            <select value={form.stakeholder} onChange={e=>setForm(f=>({...f,stakeholder:e.target.value}))} style={cs.sel}>
+              <option value="">Select stakeholder…</option>
+              {STAKEHOLDERS.map(s=><option key={s} value={s}>{s}</option>)}
+            </select>
+          </div>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>What's the Conversation About?</div>
+            <textarea value={form.purpose} onChange={e=>setForm(f=>({...f,purpose:e.target.value}))} placeholder="e.g. Asking for a promotion, pitching a new project, requesting budget approval…" style={{...cs.inp,resize:"none",height:72,lineHeight:1.5}}/>
+          </div>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:8}}>Pressure Level</div>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              {PRESSURES.map(p=>(
+                <button key={p.id} onClick={()=>setForm(f=>({...f,pressure:p.id}))}
+                  style={{flex:"1 1 auto",padding:"8px 10px",borderRadius:4,border:`1px solid ${form.pressure===p.id?T.gold:T2.border}`,background:form.pressure===p.id?"rgba(138,158,132,0.08)":"transparent",cursor:"pointer",textAlign:"left",transition:"all 0.15s",minWidth:isDesktop?100:80}}>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:form.pressure===p.id?T.gold:T2.text}}>{p.label}</div>
+                  <div style={{fontFamily:T.sans,fontSize:10,color:T2.text3,marginTop:2}}>{p.desc}</div>
+                </button>
               ))}
             </div>
-          )}
-          {difficulty==='advanced' && (
-            <div>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Speak Freely</div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:0}}>No script. No prompts. Respond naturally and let your coach evaluate composure, clarity, and executive presence.</p>
-            </div>
-          )}
+          </div>
         </div>
       </div>
-      <button onClick={()=>setPhase('active')} style={{width:"100%",padding:"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Start Conversation →</button>
-      <button onClick={()=>setPhase('mode-select')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
+      <button onClick={generate} disabled={!canGenerate} style={{...cs.cta,opacity:canGenerate?1:0.45,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Generate My Questions →</button>
+      <button onClick={()=>setPhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:"6px 0",textAlign:"center"}}>← Back</button>
     </div>
   );
 
-  if (phase === 'active') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={{...cs.card}}>
-        <div style={cs.label}>They say</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>{sc.aiOpener}</p>
-        {followIdx>0 && sc.followUps[followIdx-1] && (
-          <div style={{marginTop:16,paddingTop:14,borderTop:"0.5px solid "+T2.divider}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(180,100,80,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>They push back</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.4,margin:0}}>{sc.followUps[followIdx-1]}</p>
-          </div>
-        )}
-      </div>
-      {mode==='own' && (
-        <div style={{...cs.card}}>
-          <div style={cs.label}>Your real conversation (optional context)</div>
-          <textarea value={ownPrompt} onChange={e=>setOwnPrompt(e.target.value)} placeholder="Briefly describe your actual situation for more personalised coaching…" style={{width:"100%",minHeight:72,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6}}/>
-        </div>
-      )}
-      <div style={{...cs.card}}>
-        <div style={cs.label}>Your response</div>
-        <textarea value={userText} onChange={e=>setUserText(e.target.value)} placeholder="Write what you'd say…" style={{width:"100%",minHeight:isDesktop?140:110,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6}}/>
-      </div>
-      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-        {followIdx < sc.followUps.length && <button onClick={()=>setFollowIdx(i=>i+1)} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>They push back →</button>}
-        <button onClick={generateFeedback} disabled={userText.trim().length<10} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"none",background:userText.trim().length>=10?T.ink:"rgba(44,36,22,0.3)",color:T.bg,fontSize:13,fontWeight:600,cursor:userText.trim().length>=10?"pointer":"not-allowed",fontFamily:T.sans,minHeight:44,transition:"background 0.2s"}}>Get Coaching →</button>
-      </div>
-      <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Start over</button>
+  // ── ANALYZING ──
+  if(phase==='analyzing') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"48px 0":"32px 0"}}>
+      <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}</div>
+      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,textAlign:"center"}}>Analysing your stakeholder…</p>
+      <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text4||T2.text3,margin:0,textAlign:"center"}}>Generating the toughest questions you're likely to face.</p>
     </div>
   );
 
-  if (phase === 'feedback') return (
+  // ── QUESTIONS ──
+  if(phase==='questions'&&profile) return (
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={{...cs.card}}>
-        <div style={cs.label}>Coaching Assessment</div>
-        {feedback.scores.map((s,i) => (
-          <div key={i} style={{marginBottom:12}}>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
-              <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{s.label}</span>
-              <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:s.val>=85?T.gold:s.val>=70?"#7A9E84":T2.text3}}>{s.val}</span>
+      <div style={{...cs.card,background:"#0A0804",border:"0.5px solid rgba(138,158,132,0.15)"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Conversation Profile</div>
+        <div style={{display:"flex",gap:isDesktop?20:12,flexWrap:"wrap",marginBottom:14}}>
+          {[{l:"Stakeholder",v:profile.stakeholderLabel||form.stakeholder},{l:"Goal",v:profile.goal},{l:"Risk Level",v:profile.riskLevel}].map(({l,v})=>(
+            <div key={l}>
+              <div style={{fontFamily:T.sans,fontSize:9,color:"rgba(245,239,230,0.4)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>{l}</div>
+              <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:"#F5EFE6"}}>{v}</div>
             </div>
-            <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-              <div style={{height:"100%",width:s.val+"%",background:s.val>=85?T.gold:s.val>=70?"rgba(138,158,132,0.7)":"rgba(138,158,132,0.35)",borderRadius:2,transition:"width 0.8s ease"}}/>
-            </div>
+          ))}
+        </div>
+        <div style={{marginBottom:14}}>
+          <div style={{fontFamily:T.sans,fontSize:9,color:"rgba(245,239,230,0.4)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Likely Concerns</div>
+          <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+            {(profile.concerns||[]).map((c,i)=><span key={i} style={{padding:"3px 10px",borderRadius:20,border:"0.5px solid rgba(138,158,132,0.3)",fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.65)"}}>{c}</span>)}
           </div>
-        ))}
+        </div>
+        <div style={{borderTop:"0.5px solid rgba(138,158,132,0.15)",paddingTop:12}}>
+          <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Coach Insight</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.65,margin:0}}>{profile.insight}</p>
+        </div>
       </div>
-      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
-        <div style={cs.label}>Coach's Note</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{feedback.note}</p>
+      <div style={cs.card}>
+        <div style={cs.label}>Your Top {questions.length} Likely Questions</div>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          {questions.map((q,i)=>(
+            <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"10px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{i+1}</span>
+              </div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.55,margin:0}}>{q}</p>
+            </div>
+          ))}
+        </div>
       </div>
-      {feedback.followUp && (
-        <div style={{...cs.card,background:"rgba(44,30,20,0.06)"}}>
-          <div style={cs.label}>Follow-up challenge</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"{feedback.followUp}"</p>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginTop:8,marginBottom:0}}>How would you respond now?</p>
+      <button onClick={startSim} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start Simulation →</button>
+      <button onClick={()=>setPhase('setup')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:"6px 0",textAlign:"center"}}>← Edit conversation details</button>
+    </div>
+  );
+
+  // ── SIMULATION ──
+  if(phase==='simulation') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{display:"flex",alignItems:"center",gap:10}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flexShrink:0}}>Question {qIdx+1} of {questions.length}</div>
+        <div style={{flex:1,height:2,background:T2.border,borderRadius:2}}><div style={{height:"100%",width:(((qIdx+1)/questions.length)*100)+"%",background:T.gold,borderRadius:2,transition:"width 0.4s"}}/></div>
+      </div>
+      <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}><span style={{fontWeight:600,color:T2.text}}>{form.stakeholder}</span> asks:</div>
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold,padding:isDesktop?"22px 28px":"18px 22px"}}>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{questions[qIdx]}</p>
+      </div>
+      <div style={cs.card}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px"}}>Your Response</div>
+          {SpeechRec&&(
+            <button onClick={isListening?stopListening:startListening}
+              style={{display:"flex",alignItems:"center",gap:6,padding:"5px 12px",borderRadius:20,border:`1px solid ${isListening?"#CC4444":T2.border}`,background:isListening?"rgba(204,68,68,0.08)":"transparent",cursor:"pointer",fontFamily:T.sans,fontSize:11,fontWeight:600,color:isListening?"#CC4444":T2.text3,transition:"all 0.2s"}}>
+              <div style={{width:7,height:7,borderRadius:"50%",background:isListening?"#CC4444":"rgba(138,158,132,0.5)",animation:isListening?"glowPulse 1s ease infinite":"none"}}/>
+              {isListening?`Recording ${recTime}s`:"Speak to record"}
+            </button>
+          )}
+        </div>
+        <textarea value={currentAnswer} onChange={e=>setCurrentAnswer(e.target.value)} placeholder="Speak your answer or type it here…" style={{...cs.inp,resize:"none",height:isDesktop?96:80,lineHeight:1.6,padding:"10px 12px"}}/>
+        {!SpeechRec&&<p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,margin:"6px 0 0",fontStyle:"italic"}}>Say your answer out loud, then type your key points.</p>}
+      </div>
+      <button onClick={nextQuestion} style={{...cs.cta,background:currentAnswer.trim()?T.gold:T.ink,color:"white",fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
+        {qIdx<questions.length-1?"Next Question →":"Get My Feedback →"}
+      </button>
+      <button onClick={()=>{if(isListening)stopListening();setAnswers([]);setQIdx(0);setCurrentAnswer('');setPhase('questions');}} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:"6px 0",textAlign:"center"}}>← Back to questions</button>
+    </div>
+  );
+
+  // ── REVIEWING ──
+  if(phase==='reviewing') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"48px 0":"32px 0"}}>
+      <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}</div>
+      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,textAlign:"center"}}>Your AI coach is reviewing your responses…</p>
+    </div>
+  );
+
+  // ── RESULTS ──
+  if(phase==='results'&&result) return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={cs.card}>
+        <div style={cs.label}>Your Coaching Report</div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+          {Object.entries(result.scores||{}).map(([key,val])=>(
+            <div key={key} style={{padding:"12px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
+                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"capitalize"}}>{key}</span>
+                <span style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:scoreColor(val.score),lineHeight:1}}>{val.score}<span style={{fontSize:10,color:T2.text3}}>/10</span></span>
+              </div>
+              <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,margin:0,lineHeight:1.4}}>{val.note}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{display:"flex",flexDirection:isDesktop?"row":"column",gap:10}}>
+        <div style={{...cs.card,flex:1,borderTop:"2px solid #527060"}}>
+          <div style={{...cs.label,color:"#527060"}}>Handled Well</div>
+          {(result.strengths||[]).map((s,i)=>(
+            <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:i<(result.strengths.length-1)?8:0}}>
+              <span style={{color:"#527060",fontSize:13,flexShrink:0,marginTop:1}}>✓</span>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>{s}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{...cs.card,flex:1,borderTop:"2px solid "+T.gold}}>
+          <div style={cs.label}>Prepare Further</div>
+          {(result.development||[]).map((d,i)=>(
+            <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:i<(result.development.length-1)?8:0}}>
+              <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:1}}>⚠</span>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>{d}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      {result.hardestQuestion&&(
+        <div style={{...cs.card,background:"rgba(176,92,74,0.04)",border:"0.5px solid rgba(176,92,74,0.2)"}}>
+          <div style={{...cs.label,color:"#B05C4A"}}>Question to Revisit</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{result.hardestQuestion}</p>
         </div>
       )}
-      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-        <button onClick={()=>{setPhase('active');setUserText('');setFeedback(null);setFollowIdx(followIdx+1);}} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Try Again</button>
-        <button onClick={reset} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"none",background:T.ink,color:T.bg,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>New Scenario →</button>
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
+        <div style={cs.label}>Coach Recommendation</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T.gold,lineHeight:1.65,margin:0}}>{result.recommendation}</p>
       </div>
+      <button onClick={()=>{setPhase('intro');setForm({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging'});setProfile(null);setQuestions([]);setAnswers([]);setResult(null);setQIdx(0);setCurrentAnswer('');}}
+        style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"8px 0",textAlign:"center",width:"100%"}}>
+        Prepare Another Conversation
+      </button>
     </div>
   );
 
