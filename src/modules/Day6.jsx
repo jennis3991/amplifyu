@@ -90,9 +90,38 @@ export function D6PracticeWidget({T, T2, isDesktop}) {
   );
 }
 
+// ─── Custom Dropdown ─────────────────────────────────────────────────────────
+function DropDown({field, value, placeholder, options, onSelect, open, onToggle, onClose, T, T2, isDesktop}) {
+  return (
+    <div style={{position:"relative"}}>
+      <button
+        onMouseDown={e=>{e.preventDefault();onToggle();}}
+        onBlur={()=>setTimeout(onClose,150)}
+        style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px",borderRadius:3,border:`0.5px solid ${open?T.gold:T2.border}`,background:T2.bg,color:value?T2.text:T2.text3||"#A8998A",fontFamily:T.sans,fontSize:isDesktop?14:13,cursor:"pointer",textAlign:"left",transition:"border-color 0.2s",outline:"none",minHeight:42}}>
+        <span style={{flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{value||placeholder}</span>
+        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" style={{flexShrink:0,marginLeft:8,transform:open?"rotate(180deg)":"none",transition:"transform 0.2s"}}>
+          <path d="M1 1.5l5 5 5-5" stroke={open?T.gold:"#A8998A"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      {open&&(
+        <div style={{position:"absolute",top:"calc(100% + 4px)",left:0,right:0,zIndex:100,background:T2.surface,border:"0.5px solid "+T.gold,borderRadius:4,boxShadow:"0 8px 28px rgba(44,36,22,0.13)",overflow:"hidden",maxHeight:220,overflowY:"auto"}}>
+          {options.map((opt,i)=>(
+            <div key={opt} onMouseDown={e=>{e.preventDefault();onSelect(opt);onClose();}}
+              style={{padding:"10px 14px",fontFamily:T.sans,fontSize:isDesktop?14:13,color:opt===value?T.gold:T2.text,background:opt===value?"rgba(138,158,132,0.08)":"transparent",cursor:"pointer",borderBottom:i<options.length-1?"0.5px solid "+T2.divider:"none",transition:"background 0.12s"}}
+              onMouseEnter={e=>e.currentTarget.style.background=opt===value?"rgba(138,158,132,0.12)":"rgba(138,158,132,0.05)"}
+              onMouseLeave={e=>e.currentTarget.style.background=opt===value?"rgba(138,158,132,0.08)":"transparent"}>
+              {opt}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── D6 Simulation Widget — AI Conversation Prep ────────────────────────────
 export function D6SimWidget({T, T2, isDesktop}) {
-  const INDUSTRIES = ['Technology','Finance','Healthcare','Education','Sales','Marketing','Legal','Consulting','Other'];
+  const INDUSTRIES = ['Technology','Finance','Healthcare','Education','Hospitality','Retail','Sales','Marketing','Legal','Consulting','Other'];
   const STAKEHOLDERS = ['CEO','Manager','Client','Investor','Team Member','Board Member','Customer','Colleague'];
   const PRESSURES = [
     {id:'friendly',    label:'Friendly',    desc:'Supportive questions'},
@@ -111,6 +140,7 @@ export function D6SimWidget({T, T2, isDesktop}) {
   const [isListening,    setIsListening]   = useState(false);
   const [recTime,        setRecTime]       = useState(0);
   const [result,         setResult]        = useState(null);
+  const [openDrop,       setOpenDrop]      = useState(null);
   const recRef  = useRef(null);
   const timerRef = useRef(null);
   const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
@@ -215,10 +245,8 @@ export function D6SimWidget({T, T2, isDesktop}) {
         <div style={{display:"flex",flexDirection:"column",gap:14}}>
           <div>
             <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>Industry</div>
-            <select value={form.industry} onChange={e=>setForm(f=>({...f,industry:e.target.value}))} style={cs.sel}>
-              <option value="">Select industry…</option>
-              {INDUSTRIES.map(i=><option key={i} value={i}>{i}</option>)}
-            </select>
+            <DropDown field="industry" value={form.industry} placeholder="Select industry…" options={INDUSTRIES}
+              onSelect={v=>setForm(f=>({...f,industry:v}))} open={openDrop==='industry'} onToggle={()=>setOpenDrop(openDrop==='industry'?null:'industry')} onClose={()=>setOpenDrop(null)} T={T} T2={T2} isDesktop={isDesktop}/>
           </div>
           <div>
             <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>Your Role</div>
@@ -226,10 +254,8 @@ export function D6SimWidget({T, T2, isDesktop}) {
           </div>
           <div>
             <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>Who Are You Meeting?</div>
-            <select value={form.stakeholder} onChange={e=>setForm(f=>({...f,stakeholder:e.target.value}))} style={cs.sel}>
-              <option value="">Select stakeholder…</option>
-              {STAKEHOLDERS.map(s=><option key={s} value={s}>{s}</option>)}
-            </select>
+            <DropDown field="stakeholder" value={form.stakeholder} placeholder="Select stakeholder…" options={STAKEHOLDERS}
+              onSelect={v=>setForm(f=>({...f,stakeholder:v}))} open={openDrop==='stakeholder'} onToggle={()=>setOpenDrop(openDrop==='stakeholder'?null:'stakeholder')} onClose={()=>setOpenDrop(null)} T={T} T2={T2} isDesktop={isDesktop}/>
           </div>
           <div>
             <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>What's the Conversation About?</div>
