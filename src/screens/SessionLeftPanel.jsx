@@ -88,6 +88,18 @@ export function SessionLeftPanel({
   }
    // ── D10 — Performance left panel overrides ───────────────────────────────
   if (isD7) {
+    if (step === "Insight") return (
+      <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
+        <img src="/day7-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.35)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, rgba(10,8,5,0.15) 50%, transparent 75%)" }}/>
+        <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+          <div style={{ ...LP_LABEL, marginBottom:16 }}>Day {lesson.day} · {lesson.tag}</div>
+          <h2 style={{ ...LP_HEADING, fontSize:"clamp(20px,1.8vw,26px)", marginBottom:18, letterSpacing:"-0.3px" }}>{lesson.title}</h2>
+          <p style={{ fontFamily:T.sans, fontSize:14, fontWeight:400, color:"rgba(245,239,230,0.55)", lineHeight:1.6, margin:0, fontStyle:"italic", maxWidth:360 }}>{lesson.quote}</p>
+        </div>
+      </div>
+    );
     if (step === "Example") return (
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
@@ -131,7 +143,7 @@ export function SessionLeftPanel({
     const theoryImg10 = THEORY_IMAGES[lesson.theoryImageDay || lesson.day];
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/day7-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
+        <img src="/day10-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.2) 45%, transparent 65%)" }}/>
         <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both", display:"flex", alignItems:"flex-start", justifyContent:"space-between" }}>
           <div>
