@@ -426,7 +426,6 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
 
   // ── ORDERING ROUND ─────────────────────────────────────────────────────────
   if (round.type === 'order') {
-    // Initialise on first render of this round
     if (orderItems.length === 0) {
       const shuffled = [...round.items];
       for (let i = shuffled.length-1; i > 0; i--) {
@@ -437,6 +436,21 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       return null;
     }
     const allCorrect = orderAnswered && orderItems.every((item,i)=>item===round.items[i]);
+
+    function handleDragStart(e, i) {
+      e.dataTransfer.effectAllowed = 'move';
+      setOrderSelected(i);
+    }
+    function handleDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }
+    function handleDrop(e, i) {
+      e.preventDefault();
+      if (orderSelected === null || orderSelected === i) { setOrderSelected(null); return; }
+      const next = [...orderItems];
+      [next[orderSelected], next[i]] = [next[i], next[orderSelected]];
+      setOrderItems(next);
+      setOrderSelected(null);
+    }
+
     return (
       <div style={{display:"flex",flexDirection:"column",gap:14}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
@@ -452,26 +466,47 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,marginBottom:0,fontWeight:500}}>{round.task}</p>
         </div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:"0 0 4px",lineHeight:1.5}}>
-          {orderAnswered ? "Here's the correct order:" : orderSelected!==null ? "Now tap another card to swap it." : "Tap a card to select it, then tap another to swap positions."}
+          {orderAnswered ? "Here's the correct order:" : "Drag the cards into the right order."}
         </p>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {orderItems.map((item,i)=>{
-            const isSelected = orderSelected===i;
+            const isDragging = orderSelected===i;
             const isCorrectPos = orderAnswered && item===round.items[i];
             const isWrongPos = orderAnswered && item!==round.items[i];
             let border = T2.border, bg = T2.surface;
-            if (isSelected) { border=T.gold; bg="rgba(138,158,132,0.1)"; }
+            if (isDragging) { border=T.gold; bg="rgba(138,158,132,0.1)"; }
             else if (isCorrectPos) { border="#527060"; bg="rgba(82,112,96,0.08)"; }
             else if (isWrongPos) { border="#B05C4A"; bg="rgba(176,92,74,0.06)"; }
             return (
-              <div key={i} onClick={()=>!orderAnswered&&handleOrderTap(i)} style={{...cs.card,border:`1px solid ${border}`,background:bg,cursor:orderAnswered?"default":"pointer",display:"flex",alignItems:"center",gap:12,transition:"all 0.2s",padding:isDesktop?"14px 18px":"12px 14px"}}>
-                <div style={{width:28,height:28,borderRadius:"50%",background:isCorrectPos?"rgba(82,112,96,0.15)":isWrongPos?"rgba(176,92,74,0.1)":isSelected?"rgba(138,158,132,0.15)":"rgba(44,36,22,0.06)",border:`1.5px solid ${isCorrectPos?"#527060":isWrongPos?"#B05C4A":isSelected?T.gold:T2.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                  <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:isCorrectPos?"#527060":isWrongPos?"#B05C4A":isSelected?T.gold:T2.text3}}>{i+1}</span>
+              <div key={item}
+                draggable={!orderAnswered}
+                onDragStart={e=>handleDragStart(e,i)}
+                onDragOver={handleDragOver}
+                onDrop={e=>handleDrop(e,i)}
+                onDragEnd={()=>setOrderSelected(null)}
+                style={{
+                  ...cs.card,
+                  border:`1px solid ${border}`,
+                  background:bg,
+                  cursor:orderAnswered?"default":"grab",
+                  display:"flex",alignItems:"center",gap:12,
+                  transition:"all 0.2s",
+                  padding:isDesktop?"14px 18px":"12px 14px",
+                  opacity:isDragging?0.5:1,
+                  userSelect:"none",
+                }}>
+                {/* Drag handle */}
+                {!orderAnswered && (
+                  <div style={{display:"flex",flexDirection:"column",gap:3,flexShrink:0,opacity:0.35}}>
+                    {[0,1,2].map(j=><div key={j} style={{width:16,height:1.5,background:T2.text,borderRadius:1}}/>)}
+                  </div>
+                )}
+                <div style={{width:28,height:28,borderRadius:"50%",background:isCorrectPos?"rgba(82,112,96,0.15)":isWrongPos?"rgba(176,92,74,0.1)":"rgba(44,36,22,0.06)",border:`1.5px solid ${isCorrectPos?"#527060":isWrongPos?"#B05C4A":T2.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:isCorrectPos?"#527060":isWrongPos?"#B05C4A":T2.text3}}>{i+1}</span>
                 </div>
                 <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5,margin:0,flex:1}}>{item}</p>
                 {isCorrectPos&&<span style={{color:"#527060",fontSize:15,flexShrink:0}}>✓</span>}
                 {isWrongPos&&<span style={{color:"#B05C4A",fontSize:15,flexShrink:0}}>✗</span>}
-                {!orderAnswered&&isSelected&&<span style={{color:T.gold,fontSize:13,flexShrink:0}}>↕</span>}
               </div>
             );
           })}
