@@ -148,14 +148,14 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       <div style={cs.card}>
         <div style={cs.label}>Your Mission</div>
-        <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,margin:"0 0 8px"}}>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:18,fontWeight:600,color:T.gold,lineHeight:1.3,margin:"0 0 8px"}}>
           Feel why short sentences win — in your own brain.
         </p>
         <div style={{display:"flex",flexDirection:"column",gap:2}}>
           {["Test your memory against Miller's Law.","Notice how chunked information feels clearer.","Build the reflex to break ideas into smaller pieces."].map((t,i)=>(
             <div key={i} style={{display:"flex",gap:6,alignItems:"flex-start"}}>
               <span style={{color:T.gold,fontSize:11,flexShrink:0,marginTop:2}}>✦</span>
-              <span style={{fontFamily:T.serif,fontSize:isDesktop?16:15,fontStyle:"italic",color:T2.text,lineHeight:1.5}}>{t}</span>
+              <span style={{fontFamily:T.serif,fontSize:isDesktop?16:17,fontStyle:"italic",color:T2.text,lineHeight:1.5}}>{t}</span>
             </div>
           ))}
         </div>
