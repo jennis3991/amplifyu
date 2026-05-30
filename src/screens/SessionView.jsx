@@ -576,39 +576,65 @@ setAmbitionSaved(true); } catch {}
         const back = {background:"none",border:"none",fontFamily:T.sans,fontSize:13,color:T2.text3,cursor:"pointer",padding:"8px 0",display:"flex",alignItems:"center",gap:6};
 
         if(practicePhase==='intro') return (
-          <div key="p-intro" className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:32}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",fontFamily:T.sans}}>Practice · Day 7</div>
-              <Progress/>
-            </div>
-            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Study a Master Communicator</h2>
-            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.75,fontWeight:300,marginBottom:14}}>Over the last six days, you've learned how great communicators use clarity, pauses, precision, structure, and composure.</p>
-            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.75,fontWeight:300,marginBottom:14}}>Choose someone you consider an exceptional communicator and watch <strong style={{fontWeight:600}}>10 minutes</strong> of an interview, podcast, speech, or conversation.</p>
-            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.75,fontWeight:300,marginBottom:4}}>The goal isn't to copy their style.</p>
-            <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T.gold,lineHeight:1.6,marginBottom:36}}>The goal is to understand what makes them effective.</p>
-            <div style={{padding:"22px 26px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,marginBottom:36}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16,fontFamily:T.sans}}>As you watch, look for</div>
-              <div style={{display:"flex",flexDirection:"column",gap:14}}>
-                {[
-                  {label:"How they explain ideas",sub:"Simplicity, analogy, or structure?"},
-                  {label:"How they use pauses",sub:"Where they pause — and what that does to the listener"},
-                  {label:"How they structure their thoughts",sub:"Do they lead with the point or build to it?"},
-                  {label:"How they respond under pressure",sub:"Do they slow down or speed up?"},
-                  {label:"How they build trust and credibility",sub:"What signals authority without arrogance?"},
-                ].map((item,i)=>(
-                  <div key={i} style={{display:"flex",alignItems:"flex-start",gap:12}}>
-                    <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(82,112,96,0.12)",border:"1px solid rgba(82,112,96,0.4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                      <span style={{color:"#527060",fontSize:9,fontWeight:700}}>✓</span>
-                    </div>
-                    <div>
-                      <div style={{fontFamily:T.sans,fontSize:14,color:T2.text,fontWeight:500,lineHeight:1.3,marginBottom:2}}>{item.label}</div>
-                      <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:300,lineHeight:1.4}}>{item.sub}</div>
-                    </div>
+          <div key="p-intro" className="au-step-enter" style={{display:"flex",flexDirection:"column",gap:16,padding:"44px 52px",overflowY:"auto"}}>
+
+            {/* YOUR MISSION */}
+            <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your Mission</div>
+              <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.25,margin:"0 0 14px"}}>Study a Master Communicator.</p>
+              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                {["Watch someone exceptional and study how they communicate.","Identify the habits that make them effective.","Bring one insight into your own conversations this week."].map((t,i)=>(
+                  <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                    <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:3}}>✦</span>
+                    <span style={{fontFamily:T.serif,fontSize:18,color:T2.text,lineHeight:1.4}}>{t}</span>
                   </div>
                 ))}
               </div>
             </div>
-            <button onClick={()=>setPracticePhase('inspiration')} style={cta}>Need Inspiration? →</button>
+
+            {/* THE CHALLENGE JOURNEY */}
+            <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>The Challenge Journey</div>
+              <div style={{display:"flex",alignItems:"flex-start"}}>
+                {[
+                  {n:1,label:"Observe",icon:<svg width="26" height="26" viewBox="0 0 22 22" fill="none"><ellipse cx="11" cy="11" rx="8.5" ry="5.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="2.5" stroke={T.gold} strokeWidth="1.3"/></svg>},
+                  {n:2,label:"Explore Masters",icon:<svg width="26" height="26" viewBox="0 0 22 22" fill="none"><circle cx="9" cy="8" r="3.5" stroke={T.gold} strokeWidth="1.3"/><path d="M3 18c0-3 2.7-5 6-5s6 2 6 5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><path d="M16 7l4 4M16 11l4-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+                  {n:3,label:"Reflect",icon:<svg width="26" height="26" viewBox="0 0 22 22" fill="none"><path d="M6 4h10a1 1 0 011 1v10a1 1 0 01-1 1H6a1 1 0 01-1-1V5a1 1 0 011-1z" stroke={T.gold} strokeWidth="1.3"/><path d="M8 8h6M8 11h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><path d="M13 16v3l2-1.5L17 19v-3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>},
+                ].map((r,i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+                    <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                      <div style={{width:50,height:50,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.35)"),background:i===0?"rgba(138,158,132,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>
+                        {r.icon}
+                      </div>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:3}}>Step {r.n}</div>
+                      <div style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:T2.text,textAlign:"center",lineHeight:1.3,maxWidth:88}}>{r.label}</div>
+                    </div>
+                    {i<2 && <div style={{height:1,width:12,background:"rgba(138,158,132,0.25)",flexShrink:0,marginBottom:40}}/>}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* HOW YOU WIN */}
+            <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>How You Win</div>
+              <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:14}}>You build the habit of:</p>
+              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                {[
+                  {label:"Observation",icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><ellipse cx="11" cy="11" rx="8" ry="5" stroke={T.gold} strokeWidth="1.3"/><circle cx="11" cy="11" r="2" stroke={T.gold} strokeWidth="1.3"/></svg>},
+                  {label:"Pattern Recognition",icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 11h14M4 7h9M4 15h11" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+                  {label:"Self-Awareness",icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="3.5" stroke={T.gold} strokeWidth="1.3"/><path d="M5 18c0-3 2.7-5 6-5s6 2 6 5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+                  {label:"Deliberate Practice",icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 3v4M11 15v4M3 11h4M15 11h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><circle cx="11" cy="11" r="3" stroke={T.gold} strokeWidth="1.3"/></svg>},
+                ].map((s,i)=>(
+                  <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,padding:"12px 14px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border,flex:1,minWidth:70}}>
+                    {s.icon}
+                    <span style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",fontWeight:400,textAlign:"center",lineHeight:1.3}}>{s.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button onClick={()=>setPracticePhase('inspiration')} style={{...cta,fontSize:16,padding:"18px"}}>Need Inspiration? →</button>
           </div>
         );
 
