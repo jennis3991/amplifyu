@@ -2586,44 +2586,62 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>PRE in Action</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:40, maxWidth:640 }}>Two of the world's most effective communicators — whether they name it or not, both use PRE every time.</p>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:24 }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:12 }}>PRE in Action</h2>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>Two of the world's most effective communicators — whether they name it or not, both use PRE every time.</p>
+          <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
             {[
-              {name:"Indra Nooyi",role:"CEO of PepsiCo",
-                point:'"Performance must be married with purpose."',
-                reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing."',
-                example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people."',
-                proof:"At PepsiCo this became tangible action: healthier product innovation, reducing sugar, salt and fat, sustainability initiatives, packaging redesign, and environmental commitments. She didn't leave it as philosophy — she operationalised it.",
-                lesson:"Point → big strategic belief. Reason → why the market demands it. Example → concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
-              {name:"Jensen Huang",role:"Founder of Nvidia",
+              {name:"Jensen Huang", role:"Founder of Nvidia",
                 point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
                 reason:'"And the goal of winning is so that you can play again."',
                 example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."',
+                proofLabel:"Nvidia Is The Proof",
                 proof:"NVIDIA itself — for years, GPUs were niche, gaming seemed narrow, and AI wasn't commercially obvious. NVIDIA kept making bets and staying in the game until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth.",
                 lesson:"Said in 1993 — decades before the breakthrough that proved it true. Sharp thesis. Strategic rationale. Lived proof. That's what powerful communicators do."},
-            ].map((card,ci)=>(
-              <div key={ci} style={{ background:"white", borderRadius:8, padding:"32px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)" }}>
-                <h3 style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:T2.text, marginBottom:4, letterSpacing:"-0.2px" }}>{card.name}</h3>
-                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, marginBottom:24, fontWeight:400 }}>{card.role}</p>
-                {[{label:"Point",text:card.point},{label:"Reason",text:card.reason},{label:"Example",text:card.example}].map((block,i)=>(
-                  <div key={i} style={{ marginBottom:20 }}>
-                    <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>{block.label}</div>
-                    <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T2.text, lineHeight:1.65, fontWeight:400, margin:0 }}>{block.text}</p>
+              {name:"Indra Nooyi", role:"CEO of PepsiCo",
+                point:'"Performance must be married with purpose."',
+                reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing."',
+                example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people."',
+                proofLabel:"PepsiCo Is The Proof",
+                proof:"At PepsiCo this became tangible action: healthier product innovation, reducing sugar, salt and fat, sustainability initiatives, packaging redesign, and environmental commitments. She didn't leave it as philosophy — she operationalised it.",
+                lesson:"Point → big strategic belief. Reason → why the market demands it. Example → concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
+            ].map((card,ci)=>{
+              const open = d5OpenCard===ci;
+              return (
+                <div key={ci} onClick={()=>setD5OpenCard(open?null:ci)}
+                  style={{ background:T2.surface, borderRadius:4, border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`, cursor:"pointer", transition:"border-color 0.2s, box-shadow 0.2s", boxShadow:open?"0 2px 16px rgba(138,158,132,0.1)":"none" }}>
+                  {/* Header — always visible */}
+                  <div style={{ padding:"22px 28px", display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ display:"flex", alignItems:"baseline", gap:12, marginBottom:10 }}>
+                        <span style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.2 }}>{card.name}</span>
+                        <span style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, fontWeight:400 }}>{card.role}</span>
+                      </div>
+                      <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0, maxWidth:560 }}>{card.point}</p>
+                    </div>
+                    <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.5)", marginLeft:20, flexShrink:0, marginTop:2 }}>{open?"▴":"▸"}</span>
                   </div>
-                ))}
-                {card.proof && (
-                  <div style={{ marginBottom:20 }}>
-                    <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>{card.name === "Jensen Huang" ? "Nvidia Is The Proof" : "PepsiCo Is The Proof"}</div>
-                    <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>{card.proof}</p>
-                  </div>
-                )}
-                <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:18, marginTop:4 }}>
-                  <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Why This Works</div>
-                  <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
+                  {/* Expanded body */}
+                  {open && (
+                    <div style={{ borderTop:"0.5px solid "+T2.divider, padding:"24px 28px", display:"flex", flexDirection:"column", gap:18 }}>
+                      {[{label:"Point",text:card.point},{label:"Reason",text:card.reason},{label:"Example",text:card.example}].map((block,i)=>(
+                        <div key={i}>
+                          <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:7 }}>{block.label}</div>
+                          <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text, lineHeight:1.65, margin:0 }}>{block.text}</p>
+                        </div>
+                      ))}
+                      <div>
+                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:7 }}>{card.proofLabel}</div>
+                        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>{card.proof}</p>
+                      </div>
+                      <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:16 }}>
+                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:7 }}>Why This Works</div>
+                        <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       );
