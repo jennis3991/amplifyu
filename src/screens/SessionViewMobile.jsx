@@ -564,7 +564,6 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         </svg>
         <span style={{fontSize:13,fontWeight:500}}>← Exit</span>
       </button>
-      {isDone && <div style={{position:"absolute",top:14,right:14,background:"rgba(42,94,63,0.9)",color:"white",fontSize:11,fontWeight:700,padding:"6px 12px",borderRadius:20,letterSpacing:1}}>DONE</div>}
       {/* Day + title — only on Insight and Review */}
       {(step==="Insight"||step==="Review") && (
         <>
