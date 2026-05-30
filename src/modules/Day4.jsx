@@ -193,11 +193,11 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
         </div>
       </div>
       <div style={{...cs.card,display:"flex",gap:16,alignItems:"center"}}>
-        <img src="/badge-knight.jpg" alt="Sentence Surgeon" style={{width:isDesktop?72:56,height:isDesktop?72:56,borderRadius:6,objectFit:"cover",border:"1.5px solid rgba(138,158,132,0.3)",flexShrink:0}}/>
+        <img src="/badge-knight.jpg" alt="Clarity Architect badge" style={{width:isDesktop?72:56,height:isDesktop?72:56,borderRadius:6,objectFit:"cover",border:"1.5px solid rgba(138,158,132,0.3)",flexShrink:0}}/>
         <div style={{flex:1}}>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>The Reward</div>
-          <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:6}}>Sentence Surgeon</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:T.gold,lineHeight:1.2,margin:0}}>Complete the challenge to unlock the Sentence Surgeon badge.</p>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:6}}>Clarity Architect</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:T.gold,lineHeight:1.2,margin:0}}>Complete the challenge to unlock the Clarity Architect badge.</p>
         </div>
       </div>
       <button onClick={()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Miller's Law Challenge →</button>
@@ -461,7 +461,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Challenge Complete</div>
-        <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Sentence Surgeon</div>
+        <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Clarity Architect</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 20px"}}>You've experienced Miller's Law five ways. Your brain now knows — short sentences aren't just cleaner. They're kinder to everyone listening.</p>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Short sentences give ideas space to land."</p>
       </div>
@@ -651,11 +651,11 @@ function _unusedD4OldRounds() {
       </div>
 
       <div style={{...cs.card,display:"flex",gap:16,alignItems:"center"}}>
-        <img src="/badge-knight.jpg" alt="Sentence Surgeon" style={{width:isDesktop?72:56,height:isDesktop?72:56,borderRadius:6,objectFit:"cover",border:"1.5px solid rgba(138,158,132,0.3)",flexShrink:0}}/>
+        <img src="/badge-knight.jpg" alt="Clarity Architect badge" style={{width:isDesktop?72:56,height:isDesktop?72:56,borderRadius:6,objectFit:"cover",border:"1.5px solid rgba(138,158,132,0.3)",flexShrink:0}}/>
         <div style={{flex:1}}>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>The Reward</div>
-          <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:6}}>Sentence Surgeon</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:T.gold,lineHeight:1.2,margin:0}}>Complete the challenge to unlock the Sentence Surgeon badge.</p>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:6}}>Clarity Architect</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:T.gold,lineHeight:1.2,margin:0}}>Complete the challenge to unlock the Clarity Architect badge.</p>
         </div>
       </div>
 
@@ -774,7 +774,7 @@ function _unusedD4OldRounds() {
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Challenge Complete</div>
-        <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Sentence Surgeon</div>
+        <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Clarity Architect</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 24px"}}>You've trained your brain to see complexity — and cut it. Every sentence you shorten from now on is a gift to your listener.</p>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Short sentences give ideas space to land."</p>
       </div>
