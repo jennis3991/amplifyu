@@ -895,7 +895,12 @@ T.goldDark : T2.text4,
               );
             })}
           </div>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:12}}>See the theory →</p>
+          <div style={{background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:8,padding:"16px",marginTop:4}}>
+            <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8,fontFamily:T.sans}}>The Neuroscience</div>
+            <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:10}}>Why repetition works at a biological level</div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,marginBottom:8,fontWeight:300}}>Every time you practise a skill deliberately, your brain wraps the relevant neural pathway in myelin — a sheath that makes the signal faster, stronger, and more automatic.</p>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T.gold,lineHeight:1.65,margin:0,fontStyle:"italic"}}>Skill is not talent. Skill is repetition. And repetition responds to practice, not intelligence. The six habits you trained this week are being written into your nervous system right now.</p>
+          </div>
         </>
       )}
       {isD7 && step==="Theory" && (
@@ -929,10 +934,6 @@ T.goldDark : T2.text4,
             </div>
           ))}
           <div style={{height:"0.5px",background:T2.divider,margin:"20px 0"}}/>
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:T.sans}}>The Neuroscience</div>
-          <h3 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:12}}>Why repetition works at a biological level</h3>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,marginBottom:10}}>Every time you practise a skill deliberately, your brain wraps the relevant neural pathway in myelin — a sheath that makes the signal faster, stronger, and more automatic.</p>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,marginBottom:16}}>Skill is not talent. Skill is repetition. And repetition responds to practice, not intelligence. The six habits you trained this week are being written into your nervous system right now.</p>
           <div style={{padding:"16px 18px",background:T2.cardDark,borderRadius:6}}>
             <p style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.6,margin:"0 0 8px",fontStyle:"italic"}}>"You stop trying to communicate well. You simply do."</p>
             <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(255,255,255,0.45)",lineHeight:1.5,margin:0,fontWeight:300}}>That is the difference between learning a technique and building a skill.</p>
