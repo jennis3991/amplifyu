@@ -75,7 +75,10 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>🎥 Breaking News Live</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Report it live. Watch what your audience remembers.</p>
+          <div style={{ display:"flex", alignItems:"flex-start", gap:12, marginBottom:24 }}>
+            <div style={{ width:11, height:11, borderRadius:"50%", background:"#CC4444", flexShrink:0, marginTop:8, animation:"glowPulse 1s ease infinite", boxShadow:"0 0 8px rgba(204,68,68,0.55)" }}/>
+            <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, margin:0, maxWidth:360 }}>Report it live. Watch what your audience remembers.</p>
+          </div>
           <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Sixty seconds. A breaking story. A producer cutting your time. The AI becomes your audience — and reveals what actually landed.</p>
         </div>

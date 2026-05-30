@@ -371,6 +371,22 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
      {/* Header image + Exit button overlay */}
     <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:step==="Practice"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
       {(()=>{
+        // D4 Simulation — Breaking News Live cinematic dark panel
+        if(isD4 && step==="Simulation") return (
+          <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>🎥 Breaking News Live</div>
+              <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14}}>
+                <div style={{width:10,height:10,borderRadius:"50%",background:"#CC4444",flexShrink:0,marginTop:6,animation:"glowPulse 1s ease infinite",boxShadow:"0 0 8px rgba(204,68,68,0.55)"}}/>
+                <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,margin:0}}>Report it live. Watch what your audience remembers.</p>
+              </div>
+              <div style={{width:40,height:1,background:"rgba(245,239,230,0.3)",marginBottom:12}}/>
+              <p style={{fontFamily:T.serif,fontSize:12,fontStyle:"italic",color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Sixty seconds. A breaking story. A producer cutting your time.</p>
+            </div>
+          </div>
+        );
         // Simulation tab: dark cinematic panel for ALL modules
         if(step==="Simulation"){
           const SIM_HEADERS={
