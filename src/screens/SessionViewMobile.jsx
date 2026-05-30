@@ -10,7 +10,7 @@ import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../mo
 import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidget } from '../modules/Day4.jsx';
 import { D1MobileJargonSwap, D1MobileSim, D1ClarityChallenge, D1SimWidget, D1SimFeedback } from '../modules/Day1.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
-import { D5PracticeWidget } from '../modules/Day5.jsx';
+import { D5PracticeWidget, D5SimWidget } from '../modules/Day5.jsx';
 import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
 import { D11PracticeWidget, D11SimWidget } from '../modules/Day11.jsx';
 import { D12PracticeWidget, D12SimWidget } from '../modules/Day12.jsx';
@@ -1934,11 +1934,12 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
        {isD5 && step==="Practice" && (
         <>
-          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",borderRadius:4}}>
-            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"If you can explain everyday decisions using PRE, you'll be able to use it in meetings, interviews, presentations, and high-stakes conversations without thinking."</p>
-          </div>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>PRE Examples</div>
           <D5PracticeWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {isD5 && step==="Simulation" && (
+        <>
+          <D5SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
       {isD6 && step==="Insight" && (
@@ -2325,7 +2326,7 @@ something you can use in real life.</p>
           <CoachWidget lesson={lesson} scenario={null}/>
         </>
       )}
-       {!isD1 && !isD2 && !isD3 && !isD4 && !isD6 && !isD7 && !isD11 && !isD12 && step==="Simulation" && (
+       {!isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD11 && !isD12 && step==="Simulation" && (
         <>
           {(()=>{
             const scenarios = roleId ? getScenariosForDay(roleId,

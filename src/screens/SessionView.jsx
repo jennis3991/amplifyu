@@ -16,7 +16,7 @@ import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../mo
 import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidget } from '../modules/Day4.jsx';
 import { D1ClarityChallenge, D1SimWidget } from '../modules/Day1.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
-import { D5PracticeWidget } from '../modules/Day5.jsx';
+import { D5PracticeWidget, D5SimWidget } from '../modules/Day5.jsx';
 import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
 import { D11PracticeWidget, D11SimWidget } from '../modules/Day11.jsx';
 import { D12PracticeWidget, D12SimWidget } from '../modules/Day12.jsx';
@@ -2577,10 +2577,13 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Practice") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:32 }}>
-            <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>"If you can explain everyday decisions using PRE, you'll be able to use it in meetings, interviews, presentations, and high-stakes conversations without thinking."</p>
-          </div>
           <D5PracticeWidget T={T} T2={T2} isDesktop={true}/>
+        </div>
+      );
+
+      if (step === "Simulation") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <D5SimWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
 
