@@ -1013,7 +1013,7 @@ setAmbitionSaved(true); } catch {}
             const CARDS = [
               {label:"The Real Cause",           sub:"Fillers are not a habit. They are a symptom — your brain trying to hold the floor while it catches up.",
                 bullets:["Speaking, thinking, and organising ideas all compete for the same mental bandwidth at once.","When your mouth moves faster than your thoughts, your brain reaches for a placeholder. That placeholder is the filler."]},
-              {label:"The Gap Filler Effect",   sub:"What actually happens in the moment you say 'um' or 'er'.",
+              {label:"Inside the Moment",        sub:"What actually happens in the moment you say 'um' or 'er'.",
                 bullets:["Your next thought isn't ready. The filler buys your brain time — but at the cost of your credibility.","The audience hears the filler before they hear the idea. It signals uncertainty, even when you feel confident."]},
               {label:"The Pause",               sub:"The solution is not to speak faster. It is to stop — and let your brain catch up.",
                 bullets:["When you feel the urge to fill, pause instead. Close your mouth. Let the silence work.","A pause signals control. It tells the room: what comes next is worth waiting for."]},
