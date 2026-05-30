@@ -91,27 +91,6 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       feedback:"The brain processes pauses more easily than filler words. Silence creates clarity. Version B communicates the same idea — with far more authority.",
     },
     {
-      title:"REPLACE THE FILLER",
-      prompt:"Complete this sentence without using um, like, you know, or basically:",
-      quote:'"What I really learned from this experience was…"',
-      instruction:"Take a breath before you speak. Let the pause do its job. Then finish the sentence in one clear, direct thought.",
-      options:null,
-      action:"I said it without fillers",
-      feedback:"A pause gives your brain time to think without adding noise to the message. Breathing before speaking reduces rushed delivery and creates calmer pacing.",
-    },
-    {
-      title:"REMOVE THE NOISE",
-      prompt:"Which is the clean version?",
-      quote:'"So I was like really excited because um the idea was basically finally working."',
-      instruction:null,
-      question:null,
-      options:[
-        {label:"So I was like really excited because um the idea was basically finally working.",correct:false},
-        {label:"I was really excited because the idea was finally working.",correct:true},
-      ],
-      feedback:"Removing filler words increases clarity instantly. Shorter, cleaner sentences feel easier to follow — and far more confident.",
-    },
-    {
       title:"THOUGHTFUL VS RUSHED",
       prompt:"Which speaker sounds more thoughtful?",
       quote:null,
@@ -163,10 +142,8 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
           {[
             {n:1,label:"Silence Feels Longer"},
             {n:2,label:"Fillers vs Pauses"},
-            {n:3,label:"Replace the Filler"},
-            {n:4,label:"Remove the Noise"},
-            {n:5,label:"Thoughtful vs Rushed"},
-            {n:6,label:"The Breath Reset"},
+            {n:3,label:"Thoughtful vs Rushed"},
+            {n:4,label:"The Breath Reset"},
           ].map((r,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
@@ -175,7 +152,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
                 </div>
                 <div style={{fontFamily:T.sans,fontSize:isDesktop?12:10,color:T2.text3,fontWeight:500,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?72:50}}>{r.label}</div>
               </div>
-              {i<5 && <div style={{height:1,width:isDesktop?8:3,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:20}}/>}
+              {i<3 && <div style={{height:1,width:isDesktop?8:3,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:20}}/>}
             </div>
           ))}
         </div>
