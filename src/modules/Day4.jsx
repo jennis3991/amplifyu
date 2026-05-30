@@ -55,6 +55,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
   const [memPhase, setMemPhase] = useState('start'); // 'start'|'showing'|'asking'
   const [memSecs, setMemSecs] = useState(5);
   const memRef = useRef(null);
+  const [simonStep, setSimonStep] = useState(0); // 0=round1, 1=round2, 2=round3, 3=lesson
 
   const ROUNDS = [
     {
@@ -123,7 +124,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
   useEffect(()=>{
     if(!onNavLabel) return;
     if(phase==='intro'){
-      if(onNavFn) onNavFn.current=()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);};
+      if(onNavFn) onNavFn.current=()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);setSimonStep(0);};
       onNavLabel('Begin Challenge');
     } else {
       if(onNavFn) onNavFn.current=null;
@@ -139,7 +140,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
 
   function advanceRound(){
     const next=round+1;
-    setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);
+    setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);setSimonStep(0);
     if(next<ROUNDS.length){setRound(next);}else{setPhase('done');}
   }
 
@@ -200,7 +201,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
           <p style={{fontFamily:T.serif,fontSize:isDesktop?16:13,fontWeight:600,color:T.gold,lineHeight:1.2,margin:0}}>Complete the challenge to unlock the Clarity Architect badge.</p>
         </div>
       </div>
-      <button onClick={()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Miller's Law Challenge →</button>
+      <button onClick={()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);setSimonStep(0);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Miller's Law Challenge →</button>
     </div>
   );
 
@@ -304,52 +305,55 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn}) {
           </>
         )}
 
-        {/* ── ROUND 3: SIMON SAYS ── */}
+        {/* ── ROUND 3: SIMON SAYS — sequential steps ── */}
         {r.id==='simon' && (
           <>
-            <div style={cs.card}>
-              <div style={cs.label}>{r.title}</div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:16,lineHeight:1.5}}>{r.intro}</p>
-              <div style={{display:"flex",flexDirection:"column",gap:12}}>
-                {r.rounds.map((rd,ri)=>(
-                  <div key={ri} style={{padding:"14px 16px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{rd.label}</div>
-                    <div style={{display:"flex",flexDirection:"column",gap:4}}>
-                      {rd.items.map((item,ii)=>(
-                        <p key={ii} style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,margin:0,lineHeight:1.5}}>{item}</p>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              {!showFeedback && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,marginTop:16,marginBottom:0}}>{r.question}</p>}
-            </div>
-            {!showFeedback && (
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                {r.options.map((opt,i)=>(
-                  <button key={i} onClick={()=>{setSelected(i);setShowFeedback(true);}}
-                    style={{padding:"14px 16px",borderRadius:4,border:`0.5px solid ${selected===i?T.gold:T2.border}`,background:selected===i?"rgba(138,158,132,0.08)":"transparent",color:T2.text,fontSize:isDesktop?15:14,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5,transition:"all 0.2s"}}>
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            )}
-            {showFeedback && (
+            {/* Step 0 — Round 1 */}
+            {simonStep===0 && (
               <>
                 <div style={cs.card}>
-                  <div style={cs.label}>Now try it chunked</div>
-                  <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                  <div style={cs.label}>{r.title}</div>
+                  <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:16,lineHeight:1.5}}>{r.intro}</p>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Round 1</div>
+                  <p style={{fontFamily:T.serif,fontSize:isDesktop?22:19,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>Touch your nose.</p>
+                </div>
+                <button onClick={()=>setSimonStep(1)} style={cs.cta}>Easy. ✓</button>
+              </>
+            )}
+            {/* Step 1 — Round 2 */}
+            {simonStep===1 && (
+              <>
+                <div style={cs.card}>
+                  <div style={cs.label}>{r.title}</div>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Round 2</div>
+                  <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.5,margin:0}}>Touch your nose, clap twice, point left, touch your shoulder, blink, then raise your hand.</p>
+                </div>
+                <button onClick={()=>setSimonStep(2)} style={cs.cta}>Harder. ✓</button>
+              </>
+            )}
+            {/* Step 2 — Round 3: broken up */}
+            {simonStep===2 && (
+              <>
+                <div style={cs.card}>
+                  <div style={cs.label}>{r.title}</div>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>Round 3 — Break it up</div>
+                  <div style={{display:"flex",flexDirection:"column",gap:10}}>
                     {r.splitItems.map((item,i)=>(
-                      <div key={i} style={{display:"flex",gap:10,alignItems:"center",padding:"8px 0",borderBottom:i<r.splitItems.length-1?"0.5px solid "+T2.divider:"none"}}>
-                        <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                      <div key={i} style={{display:"flex",gap:12,alignItems:"center",padding:"10px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                        <div style={{width:24,height:24,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                           <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{i+1}</span>
                         </div>
-                        <span style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text}}>{item}</span>
+                        <span style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text}}>{item}</span>
                       </div>
                     ))}
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:"12px 0 0",lineHeight:1.5,fontStyle:"italic"}}>Feels easier, doesn't it?</p>
                 </div>
+                <button onClick={()=>setSimonStep(3)} style={cs.cta}>That's better. ✓</button>
+              </>
+            )}
+            {/* Step 3 — Lesson */}
+            {simonStep===3 && (
+              <>
                 <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
                   <div style={cs.label}>AmplifyU Insight</div>
                   <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:0}}>{r.lesson}</p>
