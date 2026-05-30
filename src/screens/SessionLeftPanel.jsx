@@ -764,19 +764,20 @@ export function SessionLeftPanel({
    return null;
 };
  // ── Expandable example card — shared across all Example tabs ─────────────
-export const ExCard = ({name, preview, full, T2: _T2}) => {
+export const ExCard = ({name, preview, full, T2: _T2, compact}) => {
   const T2 = _T2 || T;
   const [open, setOpen] = useState(false);
+  const s = compact ? 0.85 : 1;
   return (
     <div onClick={()=>setOpen(o=>!o)} style={{padding:"28px 24px",borderRadius:8,background:open?"rgba(237,232,223,0.92)":"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",cursor:"pointer",transition:"all 0.25s ease",userSelect:"none"}}
       onMouseEnter={e=>{if(!open){e.currentTarget.style.background="rgba(237,232,223,0.85)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 12px rgba(44,36,22,0.08)";}}}
       onMouseLeave={e=>{if(!open){e.currentTarget.style.background="rgba(237,232,223,0.6)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
-        <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3}}>{name}</div>
+        <div style={{fontFamily:T.serif,fontSize:Math.round(22*s),fontWeight:600,color:T.gold,lineHeight:1.3}}>{name}</div>
         <span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginLeft:12,flexShrink:0,marginTop:4}}>{open?"▴":"▸"}</span>
       </div>
-      <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,margin:0,fontWeight:400}}>{preview}</p>
-      {open && <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.75,margin:"14px 0 0",fontWeight:300,whiteSpace:"pre-wrap",borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:14}}>{full}</p>}
+      <p style={{fontFamily:T.sans,fontSize:Math.round(16*s),color:T2.text,lineHeight:1.7,margin:0,fontWeight:400}}>{preview}</p>
+      {open && <p style={{fontFamily:T.sans,fontSize:Math.round(15*s),color:T2.text,lineHeight:1.75,margin:"14px 0 0",fontWeight:300,whiteSpace:"pre-wrap",borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:14}}>{full}</p>}
     </div>
   );
 };
