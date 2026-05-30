@@ -2390,6 +2390,11 @@ setAmbitionSaved(true); } catch {}
           {id:0, name:"Robin Williams", headline:"The Master of Vocal Range",
            sub:"From the explosive Genie in Aladdin to the emotional stillness of Good Will Hunting — he transformed how a message felt using only his voice.",
            quote:'"No matter what people tell you, words and ideas can change the world."',
+           roles:[
+             {role:"The Genie", film:"Aladdin", voice:"Explosive, shape-shifting, relentless. He recorded over 16 hours of improvised audio. Every line a different character, accent, pace, pitch. The voice is the performance — pure kinetic energy with no ceiling."},
+             {role:"Mrs Doubtfire", film:"Mrs Doubtfire", voice:"Warmth and precision in one. The character only works because the voice is completely believable — soft, maternal, unhurried. He didn't shout his way into the role. He listened his way in."},
+             {role:"Sean Maguire", film:"Good Will Hunting", voice:"Stillness as a weapon. Long pauses. A voice barely above a murmur. The most emotionally powerful scenes have almost no volume. He trusted silence to carry the weight that words couldn't."},
+           ],
            levers:[{k:"Pace",v:"Rapid-fire energy or slow emotional weight"},{k:"Pitch",v:"Playful highs to grounded seriousness"},{k:"Tone",v:"Humour, warmth, intensity, vulnerability"},{k:"Pauses",v:"Creating anticipation, emotion, and impact"}],
            lesson:"Range creates engagement. Contrast creates emotion. A flat voice fades. A dynamic voice keeps people listening.",
            challenge:{sentence:'"Ah... now this is where things get interesting."',modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]}},
