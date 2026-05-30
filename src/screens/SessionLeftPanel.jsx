@@ -71,12 +71,13 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Simulation") return (
-      <div style={d4Dark}>
-        <img src="/day1-simulation.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
-        {d4Ol}
-        <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>60-Second Challenge</div>
-          <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2 }}>Short sentences only. No exceptions.</p>
+      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
+        <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>🎥 Breaking News Live</div>
+          <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Report it live. Watch what your audience remembers.</p>
+          <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Sixty seconds. A breaking story. A producer cutting your time. The AI becomes your audience — and reveals what actually landed.</p>
         </div>
       </div>
     );
