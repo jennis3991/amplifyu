@@ -2746,13 +2746,13 @@ setAmbitionSaved(true); } catch {}
                year:"Abu Dhabi Grand Prix, 2021",
                lesson:"Emotional control is often most visible when you have every reason to lose it. Pressure doesn't create character. It reveals it.",
                tryIt:null},
-              {name:"Queen Elizabeth II", role:"Queen of the United Kingdom, 1952–2022",
+              {name:"👑 Queen Elizabeth II", role:"70 Years of Service · Master of Calm Leadership",
                preview:'"We will meet again."',
                trait:"Calm under pressure",
-               body:"For over 70 years she communicated through wars, political change, national crises, and family scandals.\n\nShe rarely reacted publicly and became synonymous with stability.",
+               body:"For over 70 years, Queen Elizabeth II communicated through wars, political upheaval, economic crises, family scandals, and moments of national grief. Throughout it all, she became a symbol of stability.\n\nDuring the COVID-19 pandemic, millions of people were facing uncertainty, isolation, and fear. In a rare televised address to the nation, she delivered a message that was simple, calm, and reassuring:\n\n\"We will meet again.\"\n\nNo dramatic promises. No false certainty. Just confidence, clarity, and hope.\n\nThe speech became one of the defining communication moments of the pandemic because it gave people something they needed most: reassurance without denying reality.\n\nHer leadership style was rarely loud. She understood that in times of uncertainty, people often look first for composure.\n\nThe Queen's influence wasn't built through constant communication. It was built through consistency. For decades, people knew what to expect: calmness, dignity, and steadiness under pressure.\n\nGreat communicators don't always have the most to say. They know when a few carefully chosen words can have the greatest impact.",
                quote:'"We will meet again."',
-               year:"April 2020, during Covid",
-               lesson:"When emotions rise, consistency builds trust.",
+               year:"COVID-19 Address to the Nation, 2020",
+               lesson:"In moments of uncertainty, people don't need perfect answers. They need confidence that someone is steady. When emotions rise, consistency builds trust. Calm is contagious.",
                tryIt:null},
             ].map((card,ci)=>{
               const open = d6ExOpen===ci;
