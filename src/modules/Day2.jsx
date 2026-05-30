@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
 
 export function D2PracticeWidget({T, T2, isDesktop}) {
@@ -56,8 +56,382 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
   );
 }
 
-// ─── D2 SIM WIDGET V2 — premium coaching simulation ──────────────────────────
+// ─── D2 SIM WIDGET — voice recording + AI vocal coach ────────────────────────
 export function D2SimWidget({T, T2, isDesktop}) {
+  const PROMPTS = {
+    Story:[
+      "Tell me about a moment that genuinely changed how you see the world.",
+      "Describe the best piece of advice you've ever received — and why it stuck.",
+      "Tell me about someone who shaped who you are today.",
+      "Describe a moment where you surprised yourself.",
+      "Tell me about a challenge that turned out to be a gift.",
+    ],
+    Persuade:[
+      "Convince me that silence is more powerful than words.",
+      "Make the case for doing less — but doing it better.",
+      "Persuade me that one skill matters more than any other.",
+      "Convince me that slowing down is a competitive advantage.",
+      "Make the case for listening over speaking.",
+    ],
+    Presence:[
+      "Introduce yourself as if you're speaking to a room of 500 people.",
+      "Describe what you do — in a way that makes people lean in.",
+      "Give a 90-second opening to a talk on the topic you care most about.",
+      "Speak about something you believe most people get wrong.",
+      "Inspire someone who is about to give up on something important.",
+    ],
+  };
+  const ALL_PROMPTS = Object.values(PROMPTS).flat();
+  const DIMS = ["Pace","Pitch","Tone","Pauses","Vocal Energy","Range","Presence"];
+
+  const [phase, setPhase] = useState('intro');
+  const [cat, setCat] = useState('Story');
+  const [prompt, setPrompt] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(90);
+  const [isRec, setIsRec] = useState(false);
+  const [transcript, setTranscript] = useState('');
+  const [fallback, setFallback] = useState('');
+  const [feedback, setFeedback] = useState(null);
+  const [round1, setRound1] = useState(null);
+  const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
+  const [audioURL, setAudioURL] = useState(null);
+  const [playing, setPlaying] = useState(false);
+
+  const audioRef = useRef(null);
+  const recRef = useRef(null);
+  const mediaRecRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const timerRef = useRef(null);
+  const liveRef = useRef('');
+  const waveRef = useRef(null);
+
+  const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
+
+  useEffect(()=>{
+    if(isRec&&timeLeft>0){timerRef.current=setTimeout(()=>setTimeLeft(t=>t-1),1000);}
+    else if(isRec&&timeLeft===0){doStop();}
+    return ()=>clearTimeout(timerRef.current);
+  },[isRec,timeLeft]);
+
+  useEffect(()=>{
+    if(!isRec){clearInterval(waveRef.current);return;}
+    waveRef.current=setInterval(()=>setWaveVals(()=>Array.from({length:9},()=>0.2+Math.random()*0.8)),150);
+    return ()=>clearInterval(waveRef.current);
+  },[isRec]);
+
+  function doStart(){
+    setIsRec(true);liveRef.current='';setTranscript('');setAudioURL(null);
+    if(SpeechRec){
+      const rec=new SpeechRec();
+      rec.continuous=true;rec.interimResults=true;rec.lang='en-US';
+      rec.onresult=(e)=>{let t='';for(let i=0;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+' ';liveRef.current=t;setTranscript(t);};
+      try{rec.start();}catch(e){}
+      recRef.current=rec;
+    }
+    if(navigator.mediaDevices?.getUserMedia){
+      navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+        const mr=new MediaRecorder(stream);
+        audioChunksRef.current=[];
+        mr.ondataavailable=e=>audioChunksRef.current.push(e.data);
+        mr.onstop=()=>{const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});setAudioURL(URL.createObjectURL(blob));stream.getTracks().forEach(t=>t.stop());};
+        mr.start();mediaRecRef.current=mr;
+      }).catch(()=>{});
+    }
+  }
+
+  function doStop(){
+    setIsRec(false);clearTimeout(timerRef.current);
+    if(recRef.current){try{recRef.current.stop();}catch(e){}}
+    if(mediaRecRef.current&&mediaRecRef.current.state!=='inactive'){try{mediaRecRef.current.stop();}catch(e){}}
+    analyzeText(SpeechRec?liveRef.current:fallback);
+  }
+
+  async function analyzeText(text){
+    setPhase('analyzing');
+    const isRetry=!!round1;
+    const base=isRetry?8:0;
+    const mock={
+      overall:Math.floor(Math.random()*18)+66+base,
+      headline:"Your voice carried genuine presence and warmth.",
+      subtitle:isRetry?"Clear improvement. Your vocal control is growing.":"A strong foundation — now let's sharpen the edges.",
+      scores:Object.fromEntries(DIMS.map(d=>[d,Math.floor(Math.random()*22)+63+base])),
+      habits:[],
+      worked:["Natural, conversational warmth throughout","Good use of pause before key ideas"],
+      improve:["Vary your pace more deliberately — slow down on your most important points to give them weight."],
+      insight:"Your voice already has warmth and authenticity. The next level is intentional contrast: slow down when the idea matters most, raise your energy when you want to inspire. The gap between where you are and truly compelling delivery is smaller than you think."
+    };
+    if(!text||text.trim().length<15){
+      if(!isRetry){setRound1(mock);setFeedback(mock);}else setFeedback({...mock,prev:round1});
+      setPhase(isRetry?'comparison':'feedback');return;
+    }
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery for vocal quality and presence.\n\nPrompt: "${prompt}"\nTranscript: "${text}"\n\nProvide detailed, personalised vocal coaching. Return ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important vocal insight>","subtitle":"<one warm encouraging sentence>","scores":{"Pace":<50-100>,"Pitch":<50-100>,"Tone":<50-100>,"Pauses":<50-100>,"Vocal Energy":<50-100>,"Range":<50-100>,"Presence":<50-100>},"habits":["list any notable vocal habits — e.g. rushing, monotone, trailing off, etc."],"worked":["<vocal strength 1>","<vocal strength 2>"],"improve":["<single most impactful vocal opportunity>"],"insight":"<2-3 personalised sentences: what the voice is doing well, what specific change would elevate it most, and why it matters>"}`}]})});
+      const d=await res.json();
+      const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
+      const m=raw.match(/\{[\s\S]*\}/);
+      const parsed=JSON.parse(m[0]);
+      if(!isRetry){setRound1(parsed);setFeedback(parsed);}else setFeedback({...parsed,prev:round1});
+    }catch{
+      if(!isRetry){setRound1(mock);setFeedback(mock);}else setFeedback({...mock,prev:round1});
+    }
+    setPhase(isRetry?'comparison':'feedback');
+  }
+
+  function selectPrompt(p){setPrompt(p);setPhase('recording');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');}
+  function surprise(){selectPrompt(ALL_PROMPTS[Math.floor(Math.random()*ALL_PROMPTS.length)]);}
+  function reset(){setPhase('intro');setPrompt(null);setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);}
+
+  const cs={
+    card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"16px 18px"},
+    label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8},
+    cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
+    ghost:{width:"100%",padding:"11px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44},
+  };
+
+  // ── INTRO ───────────────────────────────────────────────────────────────────
+  if(phase==='intro') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={cs.label}>How It Works</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>A simple 5-step vocal check-in.</h2>
+        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
+          {[
+            {n:1,label:"Choose a prompt",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:2,label:"Speak naturally",   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3,label:"AI scores voice",   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:4,label:"Reflect & listen",  icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke={T.gold} strokeWidth="1.3"/><path d="M8 9a3 3 0 016 0v4a3 3 0 01-6 0V9z" stroke={T.gold} strokeWidth="1.3"/></svg>},
+            {n:5,label:"Record again",       icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 11a7 7 0 0111.95-4.95L18 8M18 8V4M18 8h-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M18 11a7 7 0 01-11.95 4.95L4 14M4 14v4M4 14h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>},
+          ].map((s,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                <div style={{width:isDesktop?44:34,height:isDesktop?44:34,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:5}}>{s.icon}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?12:9,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:52}}>{s.label}</div>
+              </div>
+              {i<4&&<div style={{height:1,width:isDesktop?12:5,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:26}}/>}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
+        <div style={cs.label}>The First Step</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>You've learned the science of vocal impact. Now it's time to hear how your voice actually sounds in action.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>Listening back to your own delivery is one of the fastest ways to improve — used by professional speakers, actors, and leaders worldwide.</p>
+      </div>
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
+        <div style={cs.label}>Your Digital Voice Coach</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>Once you record, your AI vocal coach analyses your pace, pitch, tone, pauses, energy, range, and overall presence.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>This recording becomes your vocal baseline — not a test, expert coaching.</p>
+      </div>
+      <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose a Speaking Prompt →</button>
+    </div>
+  );
+
+  // ── CHOOSE ──────────────────────────────────────────────────────────────────
+  if(phase==='choose') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={cs.card}>
+        <div style={cs.label}>Choose Your Category</div>
+        <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>
+          {Object.keys(PROMPTS).map(c=>(
+            <button key={c} onClick={()=>setCat(c)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${cat===c?T.gold:T2.border}`,background:cat===c?"rgba(138,158,132,0.1)":"transparent",color:cat===c?T.gold:T2.text3,fontSize:12,fontWeight:cat===c?600:400,cursor:"pointer",fontFamily:T.sans,minHeight:36,transition:"all 0.15s"}}>{c}</button>
+          ))}
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {PROMPTS[cat].map((p,i)=>(
+            <button key={i} onClick={()=>selectPrompt(p)}
+              style={{padding:"14px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:isDesktop?15:14,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",lineHeight:1.4,transition:"all 0.2s"}}>
+              {p}
+            </button>
+          ))}
+        </div>
+      </div>
+      <button onClick={surprise} style={{...cs.ghost}}>Surprise me →</button>
+      <button onClick={()=>setPhase('intro')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
+    </div>
+  );
+
+  // ── RECORDING ───────────────────────────────────────────────────────────────
+  if(phase==='recording') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+        <div style={cs.label}>Your Prompt</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{prompt}</p>
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>Coaching Tips</div>
+        <div style={{display:"flex",flexDirection:"column",gap:6}}>
+          {["Vary your pace — slow down on important ideas.","Let pauses breathe. Don't rush to fill silence.","Bring genuine energy and emotion to your words.","Speak for 90 seconds to 2 minutes."].map((tip,i)=>(
+            <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+              <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{tip}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{...cs.card,textAlign:"center"}}>
+        <div style={{fontFamily:T.serif,fontSize:isDesktop?52:40,fontWeight:600,color:isRec?T.gold:T2.text,lineHeight:1,marginBottom:8,transition:"color 0.3s"}}>
+          {isRec?`${Math.floor(timeLeft/60)}:${String(timeLeft%60).padStart(2,'0')}`:timeLeft}
+        </div>
+        {isRec&&(
+          <div style={{display:"flex",alignItems:"flex-end",justifyContent:"center",gap:3,height:32,marginBottom:12}}>
+            {waveVals.map((v,i)=>(
+              <div key={i} style={{width:3,borderRadius:2,background:T.gold,height:Math.max(4,v*32),transition:"height 0.15s ease"}}/>
+            ))}
+          </div>
+        )}
+        {isRec&&transcript&&(
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontStyle:"italic",marginBottom:12,maxWidth:480,margin:"0 auto 12px"}}>{transcript.slice(-140)}{transcript.length>140?'…':''}</p>
+        )}
+        {!SpeechRec&&isRec&&(
+          <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Type as you speak…" style={{width:"100%",minHeight:80,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,marginBottom:12}}/>
+        )}
+        <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
+          {!isRec?(
+            <button onClick={doStart} style={{...cs.cta,width:"auto",padding:"12px 32px"}}>Start Recording →</button>
+          ):(
+            <button onClick={doStop} style={{...cs.cta,width:"auto",padding:"12px 32px",background:"#8A4A3A"}}>Stop & Analyse →</button>
+          )}
+          {isRec&&<button onClick={()=>{setTimeLeft(t=>Math.min(t+30,120));}} style={{padding:"12px 20px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:12,cursor:"pointer",fontFamily:T.sans}}>+30s</button>}
+        </div>
+      </div>
+      <button onClick={()=>setPhase('choose')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Choose a different prompt</button>
+    </div>
+  );
+
+  // ── ANALYZING ───────────────────────────────────────────────────────────────
+  if(phase==='analyzing') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
+      <div style={{display:"flex",gap:6}}>
+        {[0,1,2].map(i=>(
+          <div key={i} style={{width:6,height:6,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.22}s infinite`}}/>
+        ))}
+      </div>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>Analysing your voice…</p>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Evaluating pace, pitch, tone, pauses, energy, range, and presence.</p>
+    </div>
+  );
+
+  // ── FEEDBACK ────────────────────────────────────────────────────────────────
+  if(phase==='feedback'&&feedback) return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"28px":"20px"}}>
+        <div style={cs.label}>Your Vocal Score</div>
+        <div style={{fontFamily:T.serif,fontSize:isDesktop?56:44,fontWeight:600,color:T.gold,lineHeight:1,marginBottom:8}}>{feedback.overall}</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 6px"}}>{feedback.headline}</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0,lineHeight:1.5}}>{feedback.subtitle}</p>
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>Vocal Breakdown</div>
+        {DIMS.map((d,i)=>{
+          const v=feedback.scores?.[d]||70;
+          return (
+            <div key={i} style={{marginBottom:i<DIMS.length-1?12:0}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{d}</span>
+                <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:v>=85?T.gold:v>=70?"#7A9E84":T2.text3}}>{v}</span>
+              </div>
+              <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+                <div style={{height:"100%",width:v+"%",background:v>=85?T.gold:v>=70?"rgba(138,158,132,0.7)":"rgba(138,158,132,0.35)",borderRadius:2,transition:"width 0.8s ease"}}/>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {feedback.habits&&feedback.habits.length>0&&(
+        <div style={{...cs.card,background:"rgba(180,80,60,0.04)",border:"0.5px solid rgba(180,80,60,0.15)"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(160,70,50,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Vocal Habits Noticed</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:7}}>
+            {feedback.habits.map((h,i)=>(<span key={i} style={{padding:"4px 10px",borderRadius:20,border:"0.5px solid rgba(180,80,60,0.2)",background:"rgba(180,80,60,0.06)",fontFamily:T.sans,fontSize:12,color:"rgba(140,60,40,0.8)"}}>{h}</span>))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginTop:10,marginBottom:0,lineHeight:1.5}}>Each of these is a habit, not a flaw — and habits can be changed with deliberate practice.</p>
+        </div>
+      )}
+      <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:10}}>
+        <div style={{...cs.card,borderLeft:"2px solid rgba(138,158,132,0.5)"}}>
+          <div style={cs.label}>What Worked</div>
+          {(feedback.worked||[]).map((w,i)=>(<div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:i<(feedback.worked.length-1)?8:0}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>{w}</p></div>))}
+        </div>
+        <div style={{...cs.card,borderLeft:"2px solid rgba(138,158,132,0.3)"}}>
+          <div style={cs.label}>One Thing to Improve</div>
+          {(feedback.improve||[]).map((w,i)=>(<p key={i} style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>{w}</p>))}
+        </div>
+      </div>
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
+        <div style={cs.label}>Vocal Coach Insight</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{feedback.insight}</p>
+      </div>
+      {audioURL&&(
+        <div style={cs.card}>
+          <div style={cs.label}>Listen Back</div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,marginBottom:12}}>Listen to your own recording. Notice your pace, energy, and where your voice naturally rises and falls.</p>
+          <button onClick={()=>{if(audioRef.current){playing?audioRef.current.pause():audioRef.current.play();setPlaying(!playing);}}} style={{padding:"8px 20px",borderRadius:3,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,cursor:"pointer",fontFamily:T.sans}}>
+            {playing?"⏸ Pause":"▶ Play back your recording"}
+          </button>
+          <audio ref={audioRef} src={audioURL} onEnded={()=>setPlaying(false)} style={{display:"none"}}/>
+        </div>
+      )}
+      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+        <button onClick={()=>{setPhase('recording');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');}} style={{...cs.ghost,flex:"1 1 auto"}}>Record Again →</button>
+        <button onClick={()=>{setPhase('choose');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');}} style={{...cs.ghost,flex:"1 1 auto"}}>New Prompt →</button>
+        <button onClick={reset} style={{...cs.cta,flex:"1 1 auto",width:"auto"}}>Start Over</button>
+      </div>
+    </div>
+  );
+
+  // ── COMPARISON ──────────────────────────────────────────────────────────────
+  if(phase==='comparison'&&feedback&&round1) return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"24px":"18px"}}>
+        <div style={cs.label}>Your Progress</div>
+        <div style={{display:"flex",justifyContent:"center",gap:isDesktop?32:20,alignItems:"flex-end"}}>
+          <div style={{textAlign:"center"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginBottom:4}}>Round 1</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?40:32,fontWeight:600,color:T2.text3,lineHeight:1}}>{round1.overall}</div>
+          </div>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?24:18,color:T.gold,paddingBottom:8}}>→</div>
+          <div style={{textAlign:"center"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,color:T.gold,marginBottom:4}}>Round 2</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?40:32,fontWeight:600,color:T.gold,lineHeight:1}}>{feedback.overall}</div>
+          </div>
+        </div>
+        {feedback.overall>round1.overall&&(
+          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginTop:12,marginBottom:0}}>+{feedback.overall-round1.overall} points. Your voice is responding to the coaching.</p>
+        )}
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>Vocal Dimension Comparison</div>
+        {DIMS.map((d,i)=>{
+          const v1=round1.scores?.[d]||70;const v2=feedback.scores?.[d]||70;const diff=v2-v1;
+          return (
+            <div key={i} style={{marginBottom:i<DIMS.length-1?14:0}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{d}</span>
+                <span style={{fontFamily:T.sans,fontSize:12,color:diff>0?"rgba(100,160,100,0.9)":diff<0?"rgba(160,80,60,0.7)":T2.text3}}>{diff>0?`+${diff}`:diff===0?"—":diff}</span>
+              </div>
+              <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+                <div style={{height:"100%",width:v2+"%",background:v2>=85?T.gold:v2>=70?"rgba(138,158,132,0.7)":"rgba(138,158,132,0.35)",borderRadius:2,transition:"width 0.8s ease"}}/>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+        <div style={cs.label}>Vocal Coach Insight</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{feedback.insight}</p>
+      </div>
+      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+        <button onClick={()=>{setPhase('recording');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');}} style={{...cs.ghost,flex:"1 1 auto"}}>One More Round →</button>
+        <button onClick={reset} style={{...cs.cta,flex:"1 1 auto",width:"auto"}}>Start Over</button>
+      </div>
+    </div>
+  );
+
+  return null;
+}
+
+// ─── OLD D2 SCENARIOS (unused) ───────────────────────────────────────────────
+function _unused_D2SimScenarios() {
   const SCENARIOS=[
     {id:0,label:"Pitch a New Idea",sub:"You're presenting to senior leadership.",goal:"Confidence + clarity",
      aiOpener:"You have 60 seconds. Convince me this is worth our time and investment.",

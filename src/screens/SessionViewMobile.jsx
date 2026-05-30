@@ -1789,8 +1789,6 @@ T.goldDark : T2.text4,
       )}
       {isD2 && step==="Simulation" && (
         <>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Real-World Voice Coaching</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Pick a scenario. Write what you'd say. Your AI coach evaluates your delivery across six dimensions.</p>
           <D2SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
