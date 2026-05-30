@@ -646,25 +646,22 @@ setAmbitionSaved(true); } catch {}
             </div>
             <h2 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Need Inspiration?</h2>
             <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,fontWeight:300,marginBottom:28}}>Four exceptional communicators — each masters of a different skill. Expand a card, then watch them in action.</p>
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:36}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:36}}>
               {D7_COMMUNICATORS.map((c,ci)=>{
                 const open=openCard===("c"+ci);
                 return (
                   <div key={ci} onClick={()=>setOpenCard(open?null:("c"+ci))}
-                    style={{background:T2.surface,borderRadius:4,border:`0.5px solid ${open?T.gold:T2.border}`,cursor:"pointer",transition:"all 0.2s",boxShadow:open?"0 4px 20px rgba(138,158,132,0.12)":"none"}}>
-                    <div style={{padding:"20px 24px",display:"flex",alignItems:"center",gap:16}}>
-                      <span style={{fontSize:24,flexShrink:0}}>{c.emoji}</span>
-                      <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:3}}>{c.name}</div>
-                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>{c.role}</div>
+                    style={{background:T2.surface,borderRadius:8,border:`1px solid ${open?T.gold:T2.border}`,cursor:"pointer",transition:"all 0.2s",boxShadow:open?"0 4px 20px rgba(138,158,132,0.12)":"none"}}>
+                    <div style={{padding:"24px 26px 20px"}}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?0:10}}>
+                        <div style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T.gold,lineHeight:1.15,flex:1,paddingRight:12}}>{c.name}</div>
+                        <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.5)",flexShrink:0,marginTop:4,transition:"transform 0.2s",display:"inline-block",transform:open?"rotate(90deg)":"none"}}>▸</span>
                       </div>
-                      <svg width="12" height="8" viewBox="0 0 12 8" fill="none" style={{flexShrink:0,transform:open?"rotate(180deg)":"none",transition:"transform 0.2s"}}>
-                        <path d="M1 1.5l5 5 5-5" stroke={open?T.gold:"#A8998A"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
+                      {!open&&<p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.5,margin:0,fontWeight:400}}>{c.role}</p>}
                     </div>
                     {open&&(
-                      <div style={{borderTop:"0.5px solid "+T2.divider,padding:"20px 24px",display:"flex",flexDirection:"column",gap:18}}>
-                        <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:0,fontWeight:300}}>{c.sub}</p>
+                      <div style={{borderTop:"0.5px solid "+T2.divider,padding:"18px 26px 24px",display:"flex",flexDirection:"column",gap:16}}>
+                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,margin:0,fontWeight:300}}>{c.sub}</p>
                         <div>
                           <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:10}}>Watch For</div>
                           <div style={{display:"flex",flexWrap:"wrap",gap:7}}>

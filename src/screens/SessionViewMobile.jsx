@@ -1061,23 +1061,21 @@ T.goldDark : T2.text4,
             </div>
             <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Need Inspiration?</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:300,marginBottom:20}}>Four exceptional communicators. Expand a card, then watch them in action.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:4}}>
             {D7C.map((c,ci)=>{
               const open=d7MobCard===("d7c"+ci);
               return (
-                <div key={ci} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,marginBottom:8,overflow:"hidden",cursor:"pointer"}} onClick={()=>setD7MobCard(open?null:"d7c"+ci)}>
-                  <div style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
-                    <span style={{fontSize:20,flexShrink:0}}>{c.emoji}</span>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:2}}>{c.name}</div>
-                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1px"}}>{c.role}</div>
+                <div key={ci} style={{background:T2.surface,border:`1px solid ${open?T.gold:T2.border}`,borderRadius:8,overflow:"hidden",cursor:"pointer",transition:"all 0.2s"}} onClick={()=>setD7MobCard(open?null:"d7c"+ci)}>
+                  <div style={{padding:"16px 16px 12px"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?0:8}}>
+                      <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.2,flex:1,paddingRight:8}}>{c.name}</div>
+                      <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.5)",flexShrink:0,marginTop:3,display:"inline-block",transform:open?"rotate(90deg)":"none",transition:"transform 0.2s"}}>▸</span>
                     </div>
-                    <svg width="11" height="7" viewBox="0 0 12 8" fill="none" style={{flexShrink:0,transform:open?"rotate(180deg)":"none",transition:"transform 0.2s"}}>
-                      <path d="M1 1.5l5 5 5-5" stroke={open?T.gold:"#A8998A"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                    {!open&&<p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.4,margin:0,fontWeight:400}}>{c.role}</p>}
                   </div>
                   {open&&(
-                    <div style={{padding:"0 16px 16px",borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:"12px 0 12px",fontWeight:300}}>{c.sub}</p>
+                    <div style={{padding:"0 16px 16px",borderTop:"0.5px solid "+T2.divider}}>
+                      <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.65,margin:"10px 0 12px",fontWeight:300}}>{c.sub}</p>
                       <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:8}}>Watch For</div>
                       <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}}>
                         {c.watchFor.map((w,wi)=><span key={wi} style={{padding:"4px 10px",borderRadius:20,border:"0.5px solid "+T2.border,fontFamily:T.sans,fontSize:11,color:T2.text,background:T2.bg}}>{w}</span>)}
@@ -1100,9 +1098,8 @@ T.goldDark : T2.text4,
                 </div>
               );
             })}
-            <div style={{marginTop:16}}>
-              <button onClick={()=>{setD7MobCard(null);setD7PracticePhase('reflect');}} style={cta}>Begin Reflection →</button>
             </div>
+            <button onClick={()=>{setD7MobCard(null);setD7PracticePhase('reflect');}} style={{...cta,marginTop:16}}>Begin Reflection →</button>
           </>
         );
 
