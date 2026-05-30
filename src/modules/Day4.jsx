@@ -954,12 +954,12 @@ export function D4SimWidget({T, T2, isDesktop}) {
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:16}}>Choose your story. You have 60 seconds to report it live to the nation.</p>
         {STORIES.map((cat,ci)=>(
           <div key={ci} style={{marginBottom:ci<STORIES.length-1?16:0}}>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{cat.cat}</div>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{cat.cat.replace(/^[^\s]+\s/,'')}</div>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {cat.items.map((item,ii)=>(
                 <button key={ii} onClick={()=>{setStory(item);setPhase('recording');}}
-                  style={{padding:"14px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:isDesktop?14:13,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",lineHeight:1.4,transition:"all 0.2s"}}>
-                  🔴 BREAKING: {item}
+                  style={{padding:"14px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:isDesktop?16:15,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5,transition:"all 0.2s"}}>
+                  {item}
                 </button>
               ))}
             </div>
