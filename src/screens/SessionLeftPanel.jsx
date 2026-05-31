@@ -396,10 +396,6 @@ export function SessionLeftPanel({
         {/* Sharp image — scaled up to reduce blurred border */}
         <img src="/dual-coding-theory.jpg" alt="Dual Coding Theory" style={{ position:"relative", zIndex:1, width:"140%", marginLeft:"-20%", height:"auto", display:"block" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.55) 0%, transparent 40%)", zIndex:2 }}/>
-        <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:3, animation:"fadeUp 0.7s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:8 }}>Green &amp; Brock, 2000</div>
-          <p style={{ fontFamily:T.serif, fontSize:20, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0, maxWidth:320 }}>Words and images together. That's how stories are remembered.</p>
-        </div>
       </div>
     );
     if (step === "Theory 2") return (
