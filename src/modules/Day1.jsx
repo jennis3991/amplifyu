@@ -25,13 +25,13 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
     {id:2, type:'cardsort', label:'Round 2', name:'The Feynman Formula', pts:25,
      task:"Ella is explaining the Moon's phases to her nephew. Sort each of her statements into the right step.",
      cards:[
-       {text:"The Moon reflects sunlight, and as it orbits Earth every 29.5 days, we see different amounts of its lit side.", bucket:'understand'},
+       {text:"The Moon reflects sunlight, and as it orbits Earth every 29.5 days, we see different amounts of its lit side.", bucket:'learn'},
        {text:"Imagine a football in a dark room — the lamp is the Sun, you are Earth, and as the football moves around you, you see different parts of its lit side.", bucket:'explain'},
-       {text:"Most people think Earth's shadow causes moon phases — but that's wrong, it's actually the changing angle between the Sun, Earth, and Moon.", bucket:'refine'},
+       {text:"Most people think Earth's shadow causes moon phases — but that's a lunar eclipse. What actually changes is the angle between the Sun, Earth, and Moon.", bucket:'gaps'},
        {text:"The Moon never changes shape — we just see different amounts of its sunlit side as it travels around us.", bucket:'simplify'},
      ],
-     buckets:['understand','explain','simplify','refine'],
-     feedback:"The Moon's shape never changes — only our view of it does. That's the Feynman loop in action: understand the science, explain it simply, find the gaps, then simplify further."},
+     buckets:['learn','explain','gaps','simplify'],
+     feedback:"Moon phases happen because the Moon moves around Earth, and from Earth we see different amounts of the Moon's sunlit side. 🌙"},
     {id:3, type:'mcq', label:'Round 3', name:"What's Missing?", pts:25,
      task:"What's missing from this explanation?",
      statement:'"Exercise makes you healthier."',
@@ -493,7 +493,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
             const correct = sortChecked && idx!=null && sortCards[idx].bucket===bucket;
             const wrong   = sortChecked && idx!=null && sortCards[idx].bucket!==bucket;
             const highlight = !sortChecked && sortSelected!==null && idx==null;
-            const bucketLabel = ['Understand','Explain','Simplify','Refine'][bi];
+            const bucketLabel = ['Learn It','Explain It','Find the Gaps','Simplify It'][bi];
             return (
               <div key={bucket} onClick={()=>tapSortBucket(bucket)}
                 style={{flex:1,borderRadius:4,border:`1.5px solid ${correct?"#527060":wrong?"#B05C4A":highlight?"rgba(138,158,132,0.5)":T2.border}`,background:correct?"rgba(82,112,96,0.06)":wrong?"rgba(176,92,74,0.06)":highlight?"rgba(138,158,132,0.04)":"transparent",cursor:!sortChecked?"pointer":"default",transition:"all 0.15s",minHeight:isDesktop?90:72,display:"flex",flexDirection:"column",padding:"11px 14px",gap:8}}>
