@@ -387,14 +387,14 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           </div>
         );
-        // D5 Simulation — PRE Speed Challenge cinematic dark panel
+        // D5 Simulation — PRE Challenge cinematic dark panel
         if(isD5 && step==="Simulation") return (
           <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>PRE Speed Challenge</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:14}}>90 seconds. Real questions. AI coaching.</p>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>PRE Challenge</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:14}}>Real questions. Real coaching.</p>
               <div style={{width:36,height:1,background:"rgba(200,180,140,0.4)",marginBottom:12}}/>
               <p style={{fontFamily:T.serif,fontSize:12,fontStyle:"italic",color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Type your Point, Reason, and Example. Get instant AI feedback on each.</p>
             </div>

@@ -216,7 +216,7 @@ export function D5PracticeWidget({T, T2, isDesktop}) {
   );
 }
 
-// ─── D5 Simulation Widget — PRE Speed Challenge + AI Coach ───────────────────
+// ─── D5 Simulation Widget — PRE Challenge ────────────────────────────────────
 const SPEED_BANK = [
   "Where should we go this summer?","What should we watch tonight?","Should we get a dog?","What should we have for dinner?",
   "Should I take this job offer?","How can I improve my presentation skills?","Why should someone hire you?","What makes a great leader?",
@@ -224,33 +224,20 @@ const SPEED_BANK = [
   "Best book you've read recently?","Why is sleep important?","Convince me to try coffee.","Should we move to a bigger city?",
   "What's your biggest strength?","Why does teamwork matter?","Should we start a podcast?","How do you handle conflict at work?",
 ];
+const SCENARIO_COUNT = 4;
 
 export function D5SimWidget({T, T2, isDesktop}) {
-  const [phase,     setPhase]    = useState('intro');
-  const [timeLeft,  setTimeLeft] = useState(90);
-  const [count,     setCount]    = useState(0);
-  const [questions, setQuestions]= useState(null);
-  const [qi,        setQi]       = useState(0);
-  const [inputs,    setInputs]   = useState({point:'',reason:'',example:''});
-  const [feedback,  setFeedback] = useState(null);
-  const [loading,   setLoading]  = useState(false);
-  const timerRef = useRef(null);
-
-  // Timer runs only during 'playing' — pauses during 'feedback'
-  useEffect(()=>{
-    if(phase!=='playing'){clearInterval(timerRef.current);return;}
-    timerRef.current=setInterval(()=>{
-      setTimeLeft(t=>{
-        if(t<=1){clearInterval(timerRef.current);setPhase('done');return 0;}
-        return t-1;
-      });
-    },1000);
-    return()=>clearInterval(timerRef.current);
-  },[phase]);
+  const [phase,    setPhase]   = useState('intro');
+  const [questions,setQuestions]= useState(null);
+  const [qi,       setQi]      = useState(0);
+  const [inputs,   setInputs]  = useState({point:'',reason:'',example:''});
+  const [feedback, setFeedback]= useState(null);
+  const [loading,  setLoading] = useState(false);
+  const [scores,   setScores]  = useState([]);
 
   function start(){
-    setQuestions(shuffle([...SPEED_BANK]));
-    setQi(0);setCount(0);setTimeLeft(90);
+    const q=shuffle([...SPEED_BANK]).slice(0,SCENARIO_COUNT);
+    setQuestions(q);setQi(0);setScores([]);
     setInputs({point:'',reason:'',example:''});setFeedback(null);
     setPhase('playing');
   }
@@ -268,31 +255,25 @@ export function D5SimWidget({T, T2, isDesktop}) {
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||"").join("").trim();
       const m=raw.match(/\{[\s\S]*\}/);
-      setFeedback(JSON.parse(m[0]));
+      const fb=JSON.parse(m[0]);
+      setFeedback(fb);
+      setScores(s=>[...s,{q,point:fb.point?.score||7,reason:fb.reason?.score||7,example:fb.example?.score||7}]);
     }catch{
-      setFeedback({
-        point:  {score:7,tip:"Lead with a clear, direct position."},
-        reason: {score:7,tip:"Explain the 'why' more directly."},
-        example:{score:7,tip:"Make the example more concrete and specific."},
-        overall:"Good attempt. Sharpen each component for more impact.",
-      });
+      const fb={point:{score:7,tip:"Lead with a clear, direct position."},reason:{score:7,tip:"Explain the 'why' more directly."},example:{score:7,tip:"Make the example more concrete and specific."},overall:"Good attempt. Sharpen each component for more impact."};
+      setFeedback(fb);
+      setScores(s=>[...s,{q,point:7,reason:7,example:7}]);
     }
     setLoading(false);
     setPhase('feedback');
   }
 
   function next(){
-    setCount(c=>c+1);
-    setQi(i=>(i+1)%(questions?.length||1));
+    const nextQi=qi+1;
+    if(nextQi>=SCENARIO_COUNT){setPhase('done');return;}
+    setQi(nextQi);
     setInputs({point:'',reason:'',example:''});
     setFeedback(null);
     setPhase('playing');
-  }
-
-  function skip(){
-    setCount(c=>c+1);
-    setQi(i=>(i+1)%(questions?.length||1));
-    setInputs({point:'',reason:'',example:''});
   }
 
   const cs={
@@ -301,26 +282,26 @@ export function D5SimWidget({T, T2, isDesktop}) {
     cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
     input:{width:"100%",borderRadius:3,border:"0.5px solid "+T2.border,padding:"10px 12px",fontSize:isDesktop?14:13,fontFamily:T.sans,resize:"none",height:52,boxSizing:"border-box",background:T2.bg,color:T2.text,lineHeight:1.5,outline:"none"},
   };
-
   const scoreColor=s=>s>=8?"#527060":s>=5?T.gold:"#B05C4A";
 
   // ── INTRO ──────────────────────────────────────────────────────────────────
   if(phase==='intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       <div style={cs.card}>
-        <div style={cs.label}>PRE Speed Challenge</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?22:20,fontWeight:600,color:T.gold,lineHeight:1.25,margin:"0 0 18px"}}>90 seconds. Real questions. AI coach feedback.</p>
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+        <div style={cs.label}>PRE Challenge</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?22:20,fontWeight:600,color:T.gold,lineHeight:1.25,margin:"0 0 14px"}}>Real questions. Real coaching.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 16px",fontWeight:300}}>Four real-world scenarios. For each one, type your Point, Reason, and Example — then get instant AI coaching on every component.</p>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {[
-            {n:"1",t:"A question appears. Say your answer out loud first."},
-            {n:"2",t:"Type your Point, Reason and Example into the fields."},
-            {n:"3",t:"Get instant AI coaching on the clarity of each component."},
+            {n:"1",t:"A scenario appears. Think about it for a moment."},
+            {n:"2",t:"Type your Point, Reason, and Example."},
+            {n:"3",t:"Get coaching on clarity, then move to the next scenario."},
           ].map((s,i)=>(
-            <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"12px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
-              <div style={{width:24,height:24,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold}}>{s.n}</span>
+            <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"10px 12px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{s.n}</span>
               </div>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5}}>{s.t}</span>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>{s.t}</span>
             </div>
           ))}
         </div>
@@ -331,44 +312,36 @@ export function D5SimWidget({T, T2, isDesktop}) {
     </div>
   );
 
-  // ── PLAYING ────────────────────────────────────────────────────────────────
+  // ── PLAYING / FEEDBACK ─────────────────────────────────────────────────────
   if((phase==='playing'||phase==='feedback')&&questions) return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      {/* Timer row */}
-      <div style={{display:"flex",alignItems:"center",gap:12}}>
-        <div style={{fontFamily:T.serif,fontSize:isDesktop?40:32,fontWeight:600,color:phase==='feedback'?T2.text3:timeLeft<=10?"#B05C4A":T.gold,lineHeight:1,flexShrink:0,minWidth:isDesktop?64:52}}>
-          {timeLeft}<span style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>s</span>
+      {/* Progress */}
+      <div style={{display:"flex",alignItems:"center",gap:10}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flexShrink:0}}>Scenario {qi+1} of {SCENARIO_COUNT}</div>
+        <div style={{flex:1,height:2,background:T2.border,borderRadius:2}}>
+          <div style={{height:"100%",width:(((qi+1)/SCENARIO_COUNT)*100)+"%",background:T.gold,borderRadius:2,transition:"width 0.4s"}}/>
         </div>
-        <div style={{flex:1,height:3,background:T2.border,borderRadius:2,overflow:"hidden"}}>
-          <div style={{height:"100%",width:((timeLeft/90)*100)+"%",background:phase==='feedback'?"rgba(138,158,132,0.3)":timeLeft<=10?"#B05C4A":T.gold,borderRadius:2,transition:"width 1s linear"}}/>
-        </div>
-        <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T2.text3,flexShrink:0}}>{count} done</div>
       </div>
 
       {/* Question */}
       <div style={{...cs.card,borderLeft:"2px solid "+T.gold,padding:isDesktop?"20px 24px":"16px 20px"}}>
-        <div style={cs.label}>Your question</div>
+        <div style={cs.label}>Your scenario</div>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T2.text,lineHeight:1.25,margin:0}}>{questions[qi]}</p>
       </div>
 
-      {/* Input fields — visible during playing, greyed during feedback */}
+      {/* Inputs */}
       {phase==='playing'&&(
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {[{key:'point',lbl:'Point'},{key:'reason',lbl:'Reason'},{key:'example',lbl:'Example'}].map(({key,lbl})=>(
             <div key={key}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{lbl}</div>
-              <textarea
-                value={inputs[key]}
-                onChange={e=>setInputs(v=>({...v,[key]:e.target.value}))}
-                placeholder={`Your ${lbl.toLowerCase()}…`}
-                style={cs.input}
-              />
+              <textarea value={inputs[key]} onChange={e=>setInputs(v=>({...v,[key]:e.target.value}))} placeholder={`Your ${lbl.toLowerCase()}…`} style={cs.input}/>
             </div>
           ))}
         </div>
       )}
 
-      {/* Feedback scores */}
+      {/* Feedback */}
       {phase==='feedback'&&feedback&&(
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {[{key:'point',lbl:'Point'},{key:'reason',lbl:'Reason'},{key:'example',lbl:'Example'}].map(({key,lbl})=>{
@@ -394,50 +367,43 @@ export function D5SimWidget({T, T2, isDesktop}) {
         </div>
       )}
 
-      {/* Loading state */}
-      {loading&&(
-        <div style={{padding:"16px",textAlign:"center"}}>
-          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Analysing your PRE…</p>
-        </div>
-      )}
+      {loading&&<div style={{padding:"16px",textAlign:"center"}}><p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Analysing your PRE…</p></div>}
 
-      {/* Action buttons */}
       {phase==='playing'&&!loading&&(
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          <button
-            onClick={getCoaching}
-            disabled={!inputs.point.trim()&&!inputs.reason.trim()&&!inputs.example.trim()}
-            style={{...cs.cta,opacity:(!inputs.point.trim()&&!inputs.reason.trim()&&!inputs.example.trim())?0.45:1}}>
-            Get Feedback →
-          </button>
-          <button onClick={skip}
-            style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:"6px 0",textAlign:"center",width:"100%"}}>
-            Skip this question →
-          </button>
-        </div>
+        <button onClick={getCoaching} disabled={!inputs.point.trim()&&!inputs.reason.trim()&&!inputs.example.trim()}
+          style={{...cs.cta,opacity:(!inputs.point.trim()&&!inputs.reason.trim()&&!inputs.example.trim())?0.45:1}}>
+          Get Feedback →
+        </button>
       )}
       {phase==='feedback'&&!loading&&(
         <button onClick={next} style={{...cs.cta,background:T.gold,color:"white",fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
-          Next Question →
+          {qi<SCENARIO_COUNT-1?`Scenario ${qi+2} →`:"See Your Results →"}
         </button>
       )}
     </div>
   );
 
   // ── DONE ───────────────────────────────────────────────────────────────────
+  const avg = scores.length ? Math.round(scores.reduce((a,s)=>a+(s.point+s.reason+s.example)/3,0)/scores.length) : 0;
   return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"36px 32px":"28px 24px"}}>
-        <div style={{fontFamily:T.serif,fontSize:isDesktop?72:56,fontWeight:600,color:T2.text,lineHeight:0.85,letterSpacing:"-4px",marginBottom:4}}>{count}</div>
-        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,letterSpacing:"2px",textTransform:"uppercase",marginTop:10,marginBottom:18}}>questions coached</div>
-        <div style={{height:1,background:T2.divider,maxWidth:200,margin:"0 auto 18px"}}/>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,lineHeight:1.55,margin:0}}>
-          {count>=6?"Elite pace. PRE is becoming instinctive.":count>=3?"Strong. Keep practising until PRE is your default structure.":"PRE fluency takes repetition. Every round builds the reflex."}
+      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"26px 22px"}}>
+        <div style={{fontFamily:T.serif,fontSize:isDesktop?64:52,fontWeight:600,color:T2.text,lineHeight:0.85,letterSpacing:"-3px",marginBottom:4}}>
+          {avg}<span style={{fontSize:isDesktop?24:20,color:T.gold,letterSpacing:"-1px"}}>/10</span>
+        </div>
+        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,letterSpacing:"2px",textTransform:"uppercase",marginTop:10,marginBottom:16}}>average PRE score</div>
+        <div style={{height:1,background:T2.divider,maxWidth:160,margin:"0 auto 16px"}}/>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,fontStyle:"italic",color:T.gold,lineHeight:1.55,margin:0}}>
+          {avg>=8?"Instinctive. PRE is becoming your default structure.":avg>=6?"Solid. Keep building the reflex until PRE flows naturally.":"PRE fluency takes repetition. Every round builds the habit."}
         </p>
       </div>
+      <button onClick={start}
+        style={{...cs.cta,fontSize:isDesktop?15:14}}>
+        Try New Scenarios →
+      </button>
       <button onClick={()=>setPhase('intro')}
-        style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"8px 0",textAlign:"center",width:"100%"}}>
-        Try Again
+        style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:"4px 0",textAlign:"center",width:"100%"}}>
+        Back to intro
       </button>
     </div>
   );
