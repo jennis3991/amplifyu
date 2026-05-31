@@ -431,23 +431,14 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Practice") return (
-      <div style={{ position:"relative", height:"100%", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
-        <img src="/practice-bg.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.62)" }}/>
-        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.98) 0%, transparent 60%)" }}/>
+      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, marginBottom:20 }}>Build Your Story</div>
-          <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2, marginBottom:20 }}>Use the framework. Make it yours.</p>
-          <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-            {["Hook — start with tension","Character — make it human","Problem — raise the stakes","Turning Point — what changed?","Resolution — what happened?","Meaning — why it matters"].map((b,i) => (
-              <div key={i} style={{ display:"flex", alignItems:"center", gap:10 }}>
-                <div style={{ width:16, height:16, borderRadius:"50%", border:"1px solid rgba(183,154,107,0.4)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                  <span style={{ fontSize:8, color:T.gold }}>{i+1}</span>
-                </div>
-                <span style={{ fontFamily:T.sans, fontSize:12, color:"rgba(245,239,230,0.65)" }}>{b}</span>
-              </div>
-            ))}
-          </div>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Pixar Framework Challenge™</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,32px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Turn a real experience into a story people remember.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65, marginBottom:0 }}>Seven beats. Five minutes. One story you can use in presentations, interviews, meetings, and conversations.</p>
         </div>
       </div>
     );
