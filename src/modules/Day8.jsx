@@ -416,6 +416,8 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
   const [processingStep, setProcessingStep]= useState(0);
   const [result,         setResult]        = useState(null);
   const [activeTab,      setActiveTab]     = useState('story');
+  const [storyStyle,     setStoryStyle]    = useState(null);
+  const [styleGenerating,setStyleGenerating]=useState(false);
 
   const recRef      = useRef(null);
   const timerRef    = useRef(null);
@@ -445,7 +447,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
     }
   }
   function stopRec(){ setIsRec(false); clearTimeout(timerRef.current); if(recRef.current){try{recRef.current.stop();}catch(e){}} }
-  function restart(){ setPhase('landing');setSituation(null);setCoreMessage('');setInputMode('speak');setTextInput('');setTranscript('');setIsRec(false);setTimeLeft(90);setResult(null);setProcessingStep(0);setActiveTab('story'); }
+  function restart(){ setPhase('landing');setSituation(null);setCoreMessage('');setInputMode('speak');setTextInput('');setTranscript('');setIsRec(false);setTimeLeft(90);setResult(null);setProcessingStep(0);setActiveTab('story');setStoryStyle(null);setStyleGenerating(false); }
 
   async function generate(){
     stopRec();
@@ -759,22 +761,105 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
         )}
 
         {/* Tab: Storyboard */}
-        {activeTab==='storyboard'&&(
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
-            {(result.storyboard||[]).map((panel,i)=>(
-              <div key={i} style={{background:"#0A0804",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.15)",padding:isDesktop?"20px 24px":"16px 18px",display:"flex",gap:16,alignItems:"flex-start"}}>
-                <div style={{width:isDesktop?48:40,height:isDesktop?48:40,borderRadius:6,background:PANEL_COLORS[i],border:"0.5px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:10,fontWeight:700,color:T.gold}}>{i+1}</span>
-                </div>
-                <div style={{flex:1}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{panel.title}</div>
-                  <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,marginBottom:6}}>{panel.headline}</div>
-                  <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.55)",lineHeight:1.55,margin:0,fontWeight:300,fontStyle:"italic"}}>{panel.caption}</p>
+        {activeTab==='storyboard'&&(()=>{
+          const VSTYLES = [
+            { id:'professional', label:'Professional', desc:'Clean corporate',    panelBg:'#F0F4F8',   textCol:'#1A202C', accentCol:'#2D3748', borderCol:'#CBD5E0', imgBg:['#BEE3F8','#C6F6D5','#FEFCBF','#FED7D7','#E9D8FD','#B2F5EA'],  sceneFill:'#4299E1', labelCol:'#2B6CB0' },
+            { id:'cinematic',    label:'Cinematic',    desc:'Dark & dramatic',    panelBg:'#0D0D0D',   textCol:'#F5EFE6', accentCol:T.gold,    borderCol:'rgba(138,158,132,0.25)', imgBg:['#1A1A2E','#16213E','#0F3460','#1A0A2E','#0A1628','#0D1B2A'], sceneFill:T.gold,    labelCol:T.gold },
+            { id:'sketch',       label:'Sketch',       desc:'Hand-drawn style',   panelBg:'#FAFAF7',   textCol:'#2D3748', accentCol:'#4A5568', borderCol:'#A0AEC0', imgBg:['#F7FAFC','#F0FFF4','#FFFFF0','#FFF5F5','#FAF5FF','#EBFFF9'], sceneFill:'#718096', labelCol:'#2D3748' },
+            { id:'fun',          label:'Fun',          desc:'Bright & bold',      panelBg:'#FFF',      textCol:'#1A202C', accentCol:'#D53F8C', borderCol:'#FED7E2', imgBg:['#FEF08A','#86EFAC','#93C5FD','#FCA5A5','#DDD6FE','#6EE7B7'], sceneFill:'#DB2777', labelCol:'#6B21A8' },
+            { id:'lego',         label:'Lego',         desc:'Block style',        panelBg:'#FFD700',   textCol:'#1A1A1A', accentCol:'#CC0000', borderCol:'#CC0000', imgBg:['#FFD700','#CC0000','#2563EB','#16A34A','#CC0000','#F97316'],   sceneFill:'#1A1A1A', labelCol:'#CC0000' },
+            { id:'watercolour',  label:'Watercolour',  desc:'Soft & artistic',    panelBg:'#FEFAF6',   textCol:'#44403C', accentCol:'#78716C', borderCol:'#D6D3D1', imgBg:['#FDE8D8','#D1FAE5','#DBEAFE','#FCE7F3','#EDE9FE','#CFFAFE'], sceneFill:'#9D174D', labelCol:'#57534E' },
+          ];
+          const PANEL_SCENES = [
+            // Panel scene SVGs (path data for each scene type)
+            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><rect x="10" y="50" width="20" height="28" rx="2" fill={col} opacity="0.7"/><rect x="35" y="38" width="20" height="40" rx="2" fill={col} opacity="0.5"/><rect x="60" y="44" width="20" height="34" rx="2" fill={col} opacity="0.7"/><rect x="85" y="30" width="20" height="48" rx="2" fill={col} opacity="0.6"/><line x1="5" y1="52" x2="115" y2="52" stroke={col} strokeWidth="1" opacity="0.3"/><circle cx="20" cy="25" r="8" fill={col} opacity="0.15"/></svg>,
+            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><path d="M60 10 L110 70 L10 70 Z" fill={col} opacity="0.12"/><path d="M40 35 L80 35 M60 15 L60 55" stroke={col} strokeWidth="3" strokeLinecap="round" opacity="0.5"/><circle cx="60" cy="40" r="20" stroke={col} strokeWidth="1.5" fill="none" opacity="0.3"/><path d="M35 20 L50 35 M85 20 L70 35" stroke={col} strokeWidth="2" strokeLinecap="round" opacity="0.4"/></svg>,
+            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><circle cx="60" cy="34" r="18" fill={col} opacity="0.15"/><path d="M60 16 L60 52 M44 25 L76 25 M48 44 L72 44" stroke={col} strokeWidth="1.5" opacity="0.4"/><path d="M52 52 L68 52 M55 57 L65 57" stroke={col} strokeWidth="2" strokeLinecap="round" opacity="0.6"/><path d="M44 28 L32 20 M76 28 L88 20" stroke={col} strokeWidth="1.5" opacity="0.3"/><path d="M44 20 L32 28 M76 20 L88 28" stroke={col} strokeWidth="1.5" opacity="0.3"/></svg>,
+            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><path d="M20 60 Q40 20 60 40 Q80 60 100 20" stroke={col} strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.5"/><circle cx="100" cy="20" r="6" fill={col} opacity="0.6"/><path d="M94 26 L100 20 L106 26" stroke={col} strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.7"/><rect x="45" y="45" width="30" height="20" rx="4" fill={col} opacity="0.1"/></svg>,
+            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><path d="M30 65 L50 40 L70 55 L90 25" stroke={col} strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.6"/><circle cx="90" cy="25" r="5" fill={col} opacity="0.8"/><path d="M20 65 L100 65" stroke={col} strokeWidth="1" opacity="0.2"/><circle cx="30" cy="65" r="3" fill={col} opacity="0.4"/><circle cx="50" cy="40" r="3" fill={col} opacity="0.4"/><circle cx="70" cy="55" r="3" fill={col} opacity="0.4"/></svg>,
+            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><path d="M20 40 L90 40 M78 28 L90 40 L78 52" stroke={col} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" opacity="0.7"/><circle cx="108" cy="40" r="10" fill={col} opacity="0.15"/><circle cx="108" cy="40" r="6" fill={col} opacity="0.3"/><path d="M10 25 L10 55" stroke={col} strokeWidth="2" opacity="0.2" strokeDasharray="4 3"/></svg>,
+          ];
+
+          const vs = VSTYLES.find(s=>s.id===storyStyle);
+          const boards = result.storyboard||[];
+
+          // Style picker
+          if(!storyStyle) return (
+            <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
+              <div style={{...cs.card}}>
+                <div style={cs.label}>Choose Your Visual Style</div>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:20,fontWeight:300}}>
+                  Select a style for your visual storyboard. Each panel will be rendered in your chosen aesthetic.
+                </p>
+                <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(3,1fr)":"repeat(2,1fr)",gap:10}}>
+                  {VSTYLES.map(s=>(
+                    <button key={s.id} onClick={()=>{setStoryStyle(s.id);setStyleGenerating(true);setTimeout(()=>setStyleGenerating(false),1800);}}
+                      style={{padding:isDesktop?"16px":"14px",borderRadius:8,border:"0.5px solid "+T2.border,background:T2.bg,cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
+                      <div style={{width:"100%",height:isDesktop?48:40,borderRadius:4,background:s.imgBg[0],marginBottom:8,overflow:"hidden",position:"relative"}}>
+                        <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",gap:3}}>
+                          {s.imgBg.slice(0,3).map((c,i)=><div key={i} style={{flex:1,height:"100%",background:c}}/>)}
+                        </div>
+                      </div>
+                      <div style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,marginBottom:2}}>{s.label}</div>
+                      <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,margin:0,fontWeight:300}}>{s.desc}</p>
+                    </button>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+          );
+
+          // Generating state
+          if(styleGenerating) return (
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14,padding:"44px 0",textAlign:"center"}}>
+              <div style={{display:"flex",gap:5}}>{[0,1,2].map(i=><div key={i} style={{width:7,height:7,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.22}s infinite`}}/>)}</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,color:T2.text,lineHeight:1.4,margin:0}}>Rendering your {VSTYLES.find(s=>s.id===storyStyle)?.label} storyboard…</p>
+            </div>
+          );
+
+          // Rendered storyboard
+          const isLego = storyStyle==='lego';
+          const isSketch = storyStyle==='sketch';
+          return (
+            <div style={{display:"flex",flexDirection:"column",gap:isDesktop?12:10}}>
+              {/* Style pill + change button */}
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  <div style={{width:12,height:12,borderRadius:"50%",background:vs.accentCol}}/>
+                  <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text}}>{vs.label} Style</span>
+                </div>
+                <button onClick={()=>{setStoryStyle(null);setStyleGenerating(false);}} style={{fontFamily:T.sans,fontSize:12,color:T.gold,background:"none",border:"none",cursor:"pointer",padding:0}}>Change style ↺</button>
+              </div>
+
+              {/* Panel grid */}
+              <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:isDesktop?12:10}}>
+                {boards.map((panel,i)=>(
+                  <div key={i} style={{borderRadius:isLego?2:8,overflow:"hidden",border:isSketch?`2px dashed ${vs.borderCol}`:`1px solid ${vs.borderCol}`,background:vs.panelBg,boxShadow:storyStyle==='cinematic'?"0 4px 20px rgba(0,0,0,0.5)":isLego?"4px 4px 0 #8B0000":"none"}}>
+                    {/* Image area */}
+                    <div style={{position:"relative",height:isDesktop?140:110,overflow:"hidden",background:vs.imgBg[i]}}>
+                      {PANEL_SCENES[i](vs.sceneFill,vs.imgBg[i])}
+                      {/* Lego stud overlay */}
+                      {isLego&&<div style={{position:"absolute",inset:0,backgroundImage:"radial-gradient(circle at 50% 50%, rgba(255,255,255,0.35) 30%, transparent 30%)",backgroundSize:"12px 12px",pointerEvents:"none"}}/>}
+                      {/* Sketch hatching */}
+                      {isSketch&&<div style={{position:"absolute",inset:0,backgroundImage:"repeating-linear-gradient(45deg,transparent,transparent 6px,rgba(0,0,0,0.04) 6px,rgba(0,0,0,0.04) 7px)",pointerEvents:"none"}}/>}
+                      {/* Panel number badge */}
+                      <div style={{position:"absolute",top:8,left:8,width:isDesktop?26:22,height:isDesktop?26:22,borderRadius:isLego?2:4,background:isLego?"#CC0000":storyStyle==='cinematic'?"rgba(10,8,4,0.8)":"rgba(0,0,0,0.55)",display:"flex",alignItems:"center",justifyContent:"center",border:isLego?"2px solid #8B0000":"none"}}>
+                        <span style={{fontFamily:T.sans,fontSize:isDesktop?11:9,fontWeight:700,color:"#fff"}}>{i+1}</span>
+                      </div>
+                    </div>
+                    {/* Text area */}
+                    <div style={{padding:isDesktop?"14px 16px":"11px 14px",borderTop:isSketch?`2px dashed ${vs.borderCol}`:isLego?`3px solid #CC0000`:`0.5px solid ${vs.borderCol}`}}>
+                      <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:vs.labelCol,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{panel.title}</div>
+                      <div style={{fontFamily:isSketch?"Georgia,serif":T.serif,fontSize:isDesktop?14:13,fontWeight:600,color:vs.textCol,lineHeight:1.3,marginBottom:5}}>{panel.headline}</div>
+                      <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:storyStyle==='cinematic'?"rgba(245,239,230,0.5)":vs.accentCol,lineHeight:1.5,margin:0,fontWeight:300,fontStyle:"italic"}}>{panel.caption}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:T2.text3,textAlign:"center",lineHeight:1.5,margin:"4px 0 0",fontWeight:300}}>Visual storyboard mockup · Style: {vs.label}</p>
+            </div>
+          );
+        })()}
 
         {/* CTA */}
         <div style={{...cs.card,textAlign:"center",padding:isDesktop?"24px":"18px 20px",marginTop:4}}>
