@@ -205,31 +205,60 @@ export function D7SimWidget({ T, T2, isDesktop }) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>This is not a test — it's a demonstration of everything you've built.</p>
       </div>
 
-      {/* Text fallback */}
-      {!SpeechRec&&(
-        <div style={cs.card}>
-          <div style={cs.label}>Type Your Response</div>
-          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,marginBottom:10,fontWeight:300}}>Voice recording isn't supported on this device. Type your explanation below:</p>
-          <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Type your explanation here…" style={{width:"100%",borderRadius:3,border:"0.5px solid "+T2.border,padding:"12px 14px",fontSize:14,fontFamily:T.sans,resize:"none",height:120,boxSizing:"border-box",background:T2.bg,color:T2.text,outline:"none",lineHeight:1.6}}/>
-        </div>
-      )}
-
-      <button onClick={SpeechRec?startRec:doSubmit}
+      <button onClick={()=>{setIsRec(false);setTimeLeft(90);setPhase('recording');}}
         style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
-        Start the Simulation →
+        I'm Ready →
       </button>
     </div>
   );
 
   // ── RECORDING ─────────────────────────────────────────────────────────────
-  if(phase==='recording') return (
+  if(phase==='recording') {
+    // ── Pre-recording: prompt shown, user clicks when ready ──
+    if(!isRec) return (
+      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
+        {/* Prompt — prominent at top */}
+        <div style={{...cs.card,borderLeft:"3px solid "+T.gold,padding:isDesktop?"28px 32px":"22px 24px"}}>
+          <div style={cs.label}>Your Challenge</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?26:21,fontWeight:600,color:T2.text,lineHeight:1.25,marginBottom:14}}>
+            You've spent the last week learning communication. What exactly did you learn?
+          </p>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.65,margin:0}}>
+            Explain it as if you're teaching someone else.
+          </p>
+        </div>
+        {/* Instruction */}
+        <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 20px"}}>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:"0 0 10px",fontWeight:400}}>
+            Now explain what you learned as if you were teaching someone else. Not as a student — <span style={{color:T.gold,fontWeight:500}}>as a communicator.</span>
+          </p>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0}}>
+            You have 90 seconds. Click start when you are ready.
+          </p>
+        </div>
+        {/* Text fallback */}
+        {!SpeechRec&&(
+          <div style={cs.card}>
+            <div style={cs.label}>Type Your Response</div>
+            <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Type your explanation here…" style={{width:"100%",borderRadius:3,border:"0.5px solid "+T2.border,padding:"12px 14px",fontSize:14,fontFamily:T.sans,resize:"none",height:120,boxSizing:"border-box",background:T2.bg,color:T2.text,outline:"none",lineHeight:1.6}}/>
+          </div>
+        )}
+        <button onClick={SpeechRec?startRec:doSubmit} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
+          Start Recording →
+        </button>
+        <button onClick={()=>setPhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"6px 0",textAlign:"center",width:"100%"}}>← Back</button>
+      </div>
+    );
+
+    // ── Active recording ──
+    return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       {/* Timer panel */}
       <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"22px 28px":"18px 22px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
-            <div style={{width:8,height:8,borderRadius:"50%",background:isRec?"#CC4444":"rgba(180,80,60,0.4)",animation:isRec?"glowPulse 1s ease infinite":"none"}}/>
-            <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.5)",textTransform:"uppercase",letterSpacing:"2px"}}>{isRec?"On Air":"Paused"}</span>
+            <div style={{width:8,height:8,borderRadius:"50%",background:"#CC4444",animation:"glowPulse 1s ease infinite"}}/>
+            <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.5)",textTransform:"uppercase",letterSpacing:"2px"}}>On Air</span>
           </div>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?48:38,fontWeight:600,color:timeLeft<=10?"#CC4444":T.gold,lineHeight:1}}>{timeLeft}<span style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.4)"}}>s</span></div>
         </div>
@@ -240,11 +269,11 @@ export function D7SimWidget({ T, T2, isDesktop }) {
         {/* Waveform */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:3,height:isDesktop?44:36,marginBottom:isDesktop?18:14}}>
           {waveVals.map((v,i)=>(
-            <div key={i} style={{width:isDesktop?4:3,borderRadius:2,background:isRec?T.gold:"rgba(138,158,132,0.25)",height:Math.max(3,v*(isDesktop?40:32)),transition:isRec?"height 0.1s ease":"none"}}/>
+            <div key={i} style={{width:isDesktop?4:3,borderRadius:2,background:T.gold,height:Math.max(3,v*(isDesktop?40:32)),transition:"height 0.1s ease"}}/>
           ))}
         </div>
-        {/* Question */}
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:500,color:"rgba(245,239,230,0.8)",lineHeight:1.55,margin:0}}>You've spent the last week learning communication. What exactly did you learn? Explain it as if you're teaching someone else.</p>
+        {/* Prompt reminder */}
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontWeight:500,color:"rgba(245,239,230,0.65)",lineHeight:1.5,margin:0}}>Explain what you learned as if you're teaching someone else.</p>
       </div>
       {/* Coaching chips */}
       <div style={{display:"flex",gap:7,flexWrap:"wrap"}}>
@@ -261,7 +290,8 @@ export function D7SimWidget({ T, T2, isDesktop }) {
       )}
       <button onClick={doSubmit} style={cs.cta}>Submit →</button>
     </div>
-  );
+    );
+  }
 
   // ── ANALYSING ─────────────────────────────────────────────────────────────
   if(phase==='analyzing') return (
