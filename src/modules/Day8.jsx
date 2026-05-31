@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { T as Timport } from '../theme.js';
 
 const T2D = {
@@ -377,6 +377,415 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
       <button onClick={restart} style={cs.back}>Start Over</button>
     </div>
   );
+
+  return null;
+}
+
+// ─── Story Architect Widget (Simulation) ──────────────────────────────────────
+export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulation }) {
+  const T  = Tp  || Timport;
+  const T2 = T2p || T2D;
+
+  const SITUATIONS = [
+    { id:'pitch',        label:'Pitch',             desc:'Sell an idea.' },
+    { id:'proposal',     label:'Proposal',           desc:'Gain approval.' },
+    { id:'presentation', label:'Presentation',       desc:'Educate or inspire.' },
+    { id:'sales',        label:'Sales Meeting',      desc:'Create urgency.' },
+    { id:'team',         label:'Team Update',        desc:'Drive engagement.' },
+    { id:'leadership',   label:'Leadership Talk',    desc:'Inspire action.' },
+    { id:'custom',       label:'Something Else',     desc:'Build your own.' },
+  ];
+
+  const PROCESSING_STEPS = [
+    "Understanding your audience",
+    "Finding emotional hooks",
+    "Identifying key moments",
+    "Creating narrative arc",
+    "Designing storyboard",
+  ];
+
+  const [phase,          setPhase]         = useState('landing');
+  const [situation,      setSituation]     = useState(null);
+  const [coreMessage,    setCoreMessage]   = useState('');
+  const [inputMode,      setInputMode]     = useState('speak');
+  const [textInput,      setTextInput]     = useState('');
+  const [transcript,     setTranscript]    = useState('');
+  const [isRec,          setIsRec]         = useState(false);
+  const [timeLeft,       setTimeLeft]      = useState(90);
+  const [waveVals,       setWaveVals]      = useState(Array(12).fill(0.3));
+  const [processingStep, setProcessingStep]= useState(0);
+  const [result,         setResult]        = useState(null);
+  const [activeTab,      setActiveTab]     = useState('story');
+
+  const recRef      = useRef(null);
+  const timerRef    = useRef(null);
+  const waveRef     = useRef(null);
+  const liveRef     = useRef('');
+
+  const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
+
+  useEffect(()=>{
+    if(isRec&&timeLeft>0){ timerRef.current=setTimeout(()=>setTimeLeft(t=>t-1),1000); }
+    else if(isRec&&timeLeft===0){ stopRec(); }
+    return ()=>clearTimeout(timerRef.current);
+  },[isRec,timeLeft]);
+
+  useEffect(()=>{
+    if(!isRec){ clearInterval(waveRef.current); return; }
+    waveRef.current=setInterval(()=>setWaveVals(()=>Array.from({length:12},()=>0.15+Math.random()*0.85)),120);
+    return ()=>clearInterval(waveRef.current);
+  },[isRec]);
+
+  function startRec(){
+    liveRef.current=''; setTranscript(''); setIsRec(true); setTimeLeft(90);
+    if(SpeechRec){
+      const r=new SpeechRec(); r.continuous=true; r.interimResults=true;
+      r.onresult=e=>{ let t=''; for(let i=0;i<e.results.length;i++) if(e.results[i].isFinal) t+=e.results[i][0].transcript+' '; liveRef.current=t; setTranscript(t); };
+      try{r.start();}catch(e){} recRef.current=r;
+    }
+  }
+  function stopRec(){ setIsRec(false); clearTimeout(timerRef.current); if(recRef.current){try{recRef.current.stop();}catch(e){}} }
+  function restart(){ setPhase('landing');setSituation(null);setCoreMessage('');setInputMode('speak');setTextInput('');setTranscript('');setIsRec(false);setTimeLeft(90);setResult(null);setProcessingStep(0);setActiveTab('story'); }
+
+  async function generate(){
+    stopRec();
+    const spoken = (liveRef.current||'').trim() || textInput.trim();
+    setPhase('processing'); setProcessingStep(0);
+
+    const animateSteps = async()=>{
+      for(let i=1;i<=5;i++){ await new Promise(r=>setTimeout(r,650)); setProcessingStep(i); }
+    };
+
+    const callAPI = async()=>{
+      const mock = {
+        mainStory:{
+          opening:`There's a moment in every ${situation} when everything depends on your next words.`,
+          challenge:"The audience is busy, distracted, and has heard this before. Facts alone won't move them.",
+          transformation:"But a single, well-told story changes everything. It bypasses resistance and creates belief.",
+          message: coreMessage || "This is the moment to act.",
+          callToAction:"The question isn't whether to act. It's whether you'll act before the opportunity closes.",
+        },
+        versions:{
+          ted:`Imagine you're sitting in a room where a single decision will define the next five years. That's exactly where your audience sits right now. Here's what I've learned about the moments that matter most...`,
+          pixar:`Once upon a time, the way we ${situation.replace(/_/g,' ')} was holding us back. Every day, we repeated the same approach. One day, everything changed. Because of that, we had to rethink everything. Until finally, we found a better way. Ever since then, results have spoken for themselves.`,
+          executive:`Current state: we're at a crossroads. The tension: the old approach no longer serves us. Future state: with this decision, growth becomes inevitable. The action: approve this now, and let's move.`,
+          emotional:`I want to tell you about a moment I'll never forget. Because it changed how I think about everything we're trying to build together.`,
+        },
+        storyboard:[
+          {title:"Current Reality",   headline:"Where We Are Today",                    caption:"The world your audience already knows."},
+          {title:"Problem",           headline:"What's Holding Us Back",                caption:"The tension that makes action necessary."},
+          {title:"Turning Point",     headline:"The Moment Everything Changed",         caption:"A single insight, decision, or event."},
+          {title:"Breakthrough",      headline:"A New Way Forward",                     caption:"The solution that changes the equation."},
+          {title:"Transformation",    headline:"What Becomes Possible",                 caption:"The future unlocked by the right choice."},
+          {title:"Call To Action",    headline:"The Opportunity Is Ours",               caption:"What we must do next."},
+        ],
+        strength:{emotional:4,memorability:5,relevance:4,persuasion:4,clarity:5},
+        headline:"Strong narrative with clear transformation arc and a compelling call to action.",
+      };
+      if(!spoken && !coreMessage) return mock;
+      try{
+        const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+          model:"claude-sonnet-4-20250514",max_tokens:1200,messages:[{role:"user",content:
+            `You are a master storyteller for business presentations. Generate a complete story package.\n\nSituation: ${situation}\nCore Message: "${coreMessage}"\nContext (what they said): "${spoken}"\n\nReturn ONLY valid JSON:\n{"mainStory":{"opening":"...","challenge":"...","transformation":"...","message":"...","callToAction":"..."},"versions":{"ted":"30-second TED-style opening (2-3 sentences)","pixar":"Full Pixar-framework story (Once upon a time... Every day... One day... Because of that... Until finally... Ever since then...)","executive":"Business narrative: Current State → Tension → Future State → Call To Action (4 short paragraphs)","emotional":"Human-first emotional opening (2-3 sentences)"},"storyboard":[{"title":"Current Reality","headline":"...","caption":"..."},{"title":"Problem","headline":"...","caption":"..."},{"title":"Turning Point","headline":"...","caption":"..."},{"title":"Breakthrough","headline":"...","caption":"..."},{"title":"Transformation","headline":"...","caption":"..."},{"title":"Call To Action","headline":"...","caption":"..."}],"strength":{"emotional":<1-5>,"memorability":<1-5>,"relevance":<1-5>,"persuasion":<1-5>,"clarity":<1-5>},"headline":"<one sentence describing the story's core strength>"}`
+        }]})});
+        const d=await res.json();
+        const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
+        const m=raw.match(/\{[\s\S]*\}/);
+        return JSON.parse(m[0]);
+      }catch{ return mock; }
+    };
+
+    const [apiResult]=await Promise.all([callAPI(),animateSteps()]);
+    setResult(apiResult);
+    setPhase('results');
+  }
+
+  const cs = {
+    card:  { background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:isDesktop?"28px 32px":"20px 22px" },
+    label: { fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:8 },
+    cta:   { width:"100%", padding:isDesktop?"16px":"14px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:isDesktop?16:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50, transition:"all 0.2s" },
+    back:  { background:"none", border:"none", color:T2.text3, fontFamily:T.sans, fontSize:13, cursor:"pointer", padding:"4px 0", textAlign:"center", width:"100%" },
+    inp:   { width:"100%", padding:"14px 16px", border:"0.5px solid "+T2.border, borderRadius:4, outline:"none", background:T2.bg, fontSize:isDesktop?16:15, color:T2.text, lineHeight:1.6, fontFamily:T.sans, fontWeight:300, boxSizing:"border-box" },
+  };
+
+  function Stars({score}){
+    return <div style={{display:"flex",gap:3}}>{[1,2,3,4,5].map(i=>(
+      <svg key={i} width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M7 1l1.5 3.5H12L9.5 7l1 3.5L7 8.5 3.5 10.5l1-3.5L2 4.5h3.5z"
+          fill={i<=score?T.gold:"transparent"} stroke={i<=score?T.gold:"rgba(138,158,132,0.3)"} strokeWidth="1"/>
+      </svg>
+    ))}</div>;
+  }
+
+  // ── LANDING ────────────────────────────────────────────────────────────────
+  if(phase==='landing') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
+      <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"36px 40px":"24px",border:"0.5px solid rgba(138,158,132,0.2)"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>The Story Architect</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?34:26,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:12}}>Build a presentation story in under 3 minutes.</h2>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:"rgba(245,239,230,0.6)",lineHeight:1.7,marginBottom:24,fontWeight:300}}>Turn your ideas, experiences and presentation goals into a compelling story and visual storyboard.</p>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+          <button onClick={()=>{setInputMode('speak');setPhase('situation');}}
+            style={{padding:isDesktop?"16px 20px":"14px 16px",borderRadius:6,border:"1px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.08)",cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:"#F5EFE6",marginBottom:4}}>🎤 Speak Your Story</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"rgba(245,239,230,0.5)",margin:0,fontWeight:300}}>Record up to 90 seconds</p>
+          </button>
+          <button onClick={()=>{setInputMode('type');setPhase('situation');}}
+            style={{padding:isDesktop?"16px 20px":"14px 16px",borderRadius:6,border:"1px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.08)",cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:"#F5EFE6",marginBottom:4}}>✏️ Type Instead</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"rgba(245,239,230,0.5)",margin:0,fontWeight:300}}>Write your context</p>
+          </button>
+        </div>
+      </div>
+      <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 20px"}}>
+        <div style={cs.label}>Why This Is Different</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,margin:"0 0 12px",fontWeight:300}}>Most storytelling tools ask: <em>"Tell us a story."</em></p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0,fontWeight:400}}>Story Architect asks: <span style={{color:T.gold,fontWeight:500}}>"What are you trying to achieve?"</span> Then builds the story for you.</p>
+      </div>
+    </div>
+  );
+
+  // ── SITUATION ──────────────────────────────────────────────────────────────
+  if(phase==='situation') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
+      <div>
+        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300,marginBottom:6}}>Step 1 of 3</div>
+        <div style={{height:4,background:T2.border,borderRadius:2,marginBottom:16}}>
+          <div style={{height:"100%",width:"33%",background:T.gold,borderRadius:2}}/>
+        </div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:6}}>What are you preparing for?</h2>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+        {SITUATIONS.map(s=>(
+          <button key={s.id} onClick={()=>{setSituation(s.id);setPhase('message');}}
+            style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:isDesktop?"16px 20px":"13px 18px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
+            <div>
+              <div style={{fontFamily:T.serif,fontSize:isDesktop?17:16,fontWeight:600,color:T2.text,marginBottom:2}}>{s.label}</div>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,fontWeight:300}}>{s.desc}</p>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,marginLeft:12}}><path d="M4 8h8M8 4l4 4-4 4" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  // ── CORE MESSAGE ───────────────────────────────────────────────────────────
+  if(phase==='message') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
+      <div>
+        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300,marginBottom:6}}>Step 2 of 3</div>
+        <div style={{height:4,background:T2.border,borderRadius:2,marginBottom:16}}>
+          <div style={{height:"100%",width:"66%",background:T.gold,borderRadius:2}}/>
+        </div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:6}}>What's the one thing you want people to remember?</h2>
+      </div>
+      <div style={cs.card}>
+        <input value={coreMessage} onChange={e=>setCoreMessage(e.target.value)}
+          placeholder={`e.g. "Customer experience is our advantage."`}
+          style={{...cs.inp,fontSize:isDesktop?18:16}}/>
+        <div style={{display:"flex",flexDirection:"column",gap:6,marginTop:14}}>
+          {["Simplicity drives growth.","AI should help people, not replace them.","We need to change now."].map((ex,i)=>(
+            <button key={i} onClick={()=>setCoreMessage(ex)} style={{padding:"6px 12px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",cursor:"pointer",fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,textAlign:"left"}}>
+              → {ex}
+            </button>
+          ))}
+        </div>
+      </div>
+      <button onClick={()=>setPhase('record')} disabled={!coreMessage.trim()}
+        style={{...cs.cta,opacity:coreMessage.trim()?1:0.4,cursor:coreMessage.trim()?"pointer":"default"}}>Continue →</button>
+      <button onClick={()=>setPhase('situation')} style={cs.back}>← Back</button>
+    </div>
+  );
+
+  // ── RECORD ─────────────────────────────────────────────────────────────────
+  if(phase==='record') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
+      <div>
+        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300,marginBottom:6}}>Step 3 of 3</div>
+        <div style={{height:4,background:T2.border,borderRadius:2,marginBottom:16}}>
+          <div style={{height:"100%",width:"100%",background:T.gold,borderRadius:2}}/>
+        </div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:6}}>Tell me about it.</h2>
+      </div>
+
+      {inputMode==='speak' ? (
+        <>
+          <div style={{...cs.card,padding:isDesktop?"24px 28px":"20px 22px"}}>
+            <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,marginBottom:14,fontWeight:300}}>
+              Explain your presentation as if talking to a colleague. What is it about? Why does it matter? Any stories or examples you'd like included?
+            </div>
+            {isRec ? (
+              <>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8}}>
+                    <div style={{width:8,height:8,borderRadius:"50%",background:"#CC4444",animation:"glowPulse 1s ease infinite"}}/>
+                    <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px"}}>Recording</span>
+                  </div>
+                  <span style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T.gold}}>{Math.floor(timeLeft/60)}:{String(timeLeft%60).padStart(2,'0')}</span>
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:3,height:36,marginBottom:12}}>
+                  {waveVals.map((v,i)=><div key={i} style={{flex:1,background:T.gold,borderRadius:2,height:Math.max(3,v*32),transition:"height 0.1s ease"}}/>)}
+                </div>
+                {transcript&&<p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.55,fontStyle:"italic",margin:0}}>{transcript.slice(-180)}{transcript.length>180?'…':''}</p>}
+              </>
+            ) : (
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.6,margin:0,fontStyle:"italic"}}>Hold the button below to start recording.</p>
+            )}
+          </div>
+          <div style={{display:"flex",gap:10}}>
+            {!isRec
+              ? <button onClick={startRec} style={cs.cta}>Start Recording →</button>
+              : <button onClick={generate} style={{...cs.cta,background:"rgba(82,112,96,0.85)"}}>Stop & Build My Story →</button>
+            }
+          </div>
+          <button onClick={()=>setInputMode('type')} style={cs.back}>Switch to typing instead</button>
+        </>
+      ) : (
+        <>
+          <div style={cs.card}>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,marginBottom:12,fontWeight:300}}>
+              Explain your presentation in a few sentences. What's it about? Why does it matter? Any examples or stories?
+            </p>
+            <textarea value={textInput} onChange={e=>setTextInput(e.target.value)}
+              placeholder="e.g. I'm pitching a new product to our sales team. The problem is that our current tool wastes 3 hours per rep per week. We have a customer who saved £40K using our solution..."
+              rows={5}
+              style={{...cs.inp,resize:"none"}}/>
+          </div>
+          <button onClick={generate} disabled={!textInput.trim()}
+            style={{...cs.cta,opacity:textInput.trim()?1:0.4,cursor:textInput.trim()?"pointer":"default"}}>Build My Story →</button>
+          <button onClick={()=>setInputMode('speak')} style={cs.back}>Switch to voice instead</button>
+        </>
+      )}
+      <button onClick={()=>setPhase('message')} style={cs.back}>← Back</button>
+    </div>
+  );
+
+  // ── PROCESSING ─────────────────────────────────────────────────────────────
+  if(phase==='processing') return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:isDesktop?20:16,padding:isDesktop?"52px 0":"40px 0",textAlign:"center"}}>
+      <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"32px 40px":"24px 28px",border:"0.5px solid rgba(138,158,132,0.2)",width:"100%",maxWidth:440,boxSizing:"border-box",textAlign:"left"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:20}}>Building Your Story</div>
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+          {PROCESSING_STEPS.map((s,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:12,opacity:i<processingStep?1:0.3,transition:"opacity 0.4s ease"}}>
+              <div style={{width:20,height:20,borderRadius:"50%",border:"1.5px solid "+(i<processingStep?T.gold:"rgba(138,158,132,0.3)"),background:i<processingStep?"rgba(138,158,132,0.15)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.4s ease"}}>
+                {i<processingStep&&<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+              </div>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:i<processingStep?"#F5EFE6":"rgba(245,239,230,0.4)",fontWeight:300,transition:"color 0.4s ease"}}>{s}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  // ── RESULTS ────────────────────────────────────────────────────────────────
+  if(phase==='results'&&result) {
+    const TABS = [{id:'story',label:'Your Story'},{id:'versions',label:'Versions'},{id:'storyboard',label:'Storyboard'}];
+    const PANEL_COLORS = ['rgba(138,158,132,0.12)','rgba(176,122,64,0.1)','rgba(180,80,60,0.08)','rgba(82,112,96,0.12)','rgba(138,158,132,0.12)','rgba(44,36,22,0.15)'];
+    return (
+      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
+        {/* Header */}
+        <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"24px 32px":"20px 22px",border:"0.5px solid rgba(138,158,132,0.2)"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your Story Is Ready</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:"rgba(245,239,230,0.8)",lineHeight:1.6,margin:"0 0 16px"}}>{result.headline}</p>
+          {/* Strength */}
+          <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:isDesktop?12:8}}>
+            {[
+              {label:"Emotional",   score:result.strength?.emotional||4},
+              {label:"Memorable",   score:result.strength?.memorability||5},
+              {label:"Relevant",    score:result.strength?.relevance||4},
+              {label:"Persuasive",  score:result.strength?.persuasion||4},
+              {label:"Clarity",     score:result.strength?.clarity||5},
+            ].map((s,i)=>(
+              <div key={i} style={{textAlign:"center"}}>
+                <Stars score={s.score}/>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?10:9,color:"rgba(245,239,230,0.45)",marginTop:4}}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div style={{display:"flex",gap:0,borderBottom:"0.5px solid "+T2.border}}>
+          {TABS.map(tab=>(
+            <button key={tab.id} onClick={()=>setActiveTab(tab.id)} style={{
+              flex:1,padding:isDesktop?"12px 16px":"10px 12px",border:"none",background:"transparent",
+              fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:activeTab===tab.id?600:400,
+              color:activeTab===tab.id?T2.text:T2.text3,cursor:"pointer",
+              borderBottom:activeTab===tab.id?`2px solid ${T.gold}`:"2px solid transparent",
+              transition:"all 0.15s",marginBottom:-1,
+            }}>{tab.label}</button>
+          ))}
+        </div>
+
+        {/* Tab: Your Story */}
+        {activeTab==='story'&&(
+          <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+            {[
+              {label:"Opening",        text:result.mainStory?.opening},
+              {label:"Challenge",      text:result.mainStory?.challenge},
+              {label:"Transformation", text:result.mainStory?.transformation},
+              {label:"Core Message",   text:result.mainStory?.message},
+              {label:"Call To Action", text:result.mainStory?.callToAction},
+            ].map((section,i)=>(
+              <div key={i} style={{...cs.card,padding:isDesktop?"18px 22px":"14px 18px"}}>
+                <div style={cs.label}>{section.label}</div>
+                <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{section.text}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Tab: Versions */}
+        {activeTab==='versions'&&(
+          <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+            {[
+              {label:"TED Opening",       key:"ted",     best:"Presentations · Keynotes · Conferences"},
+              {label:"Pixar Framework",   key:"pixar",   best:"Teams · Training · Simplicity"},
+              {label:"Executive Version", key:"executive",best:"Boardrooms · Proposals · Executives"},
+              {label:"Emotional Opening", key:"emotional",best:"Leadership · Change · Transformation"},
+            ].map((v,i)=>(
+              <div key={i} style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10,gap:12,flexWrap:"wrap"}}>
+                  <div style={cs.label}>{v.label}</div>
+                  <span style={{fontFamily:T.sans,fontSize:10,color:T2.text3,fontWeight:300,textAlign:"right"}}>Best for: {v.best}</span>
+                </div>
+                <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,lineHeight:1.7,margin:0,whiteSpace:"pre-line"}}>{result.versions?.[v.key]}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Tab: Storyboard */}
+        {activeTab==='storyboard'&&(
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {(result.storyboard||[]).map((panel,i)=>(
+              <div key={i} style={{background:"#0A0804",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.15)",padding:isDesktop?"20px 24px":"16px 18px",display:"flex",gap:16,alignItems:"flex-start"}}>
+                <div style={{width:isDesktop?48:40,height:isDesktop?48:40,borderRadius:6,background:PANEL_COLORS[i],border:"0.5px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:10,fontWeight:700,color:T.gold}}>{i+1}</span>
+                </div>
+                <div style={{flex:1}}>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{panel.title}</div>
+                  <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,marginBottom:6}}>{panel.headline}</div>
+                  <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.55)",lineHeight:1.55,margin:0,fontWeight:300,fontStyle:"italic"}}>{panel.caption}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* CTA */}
+        <div style={{...cs.card,textAlign:"center",padding:isDesktop?"24px":"18px 20px",marginTop:4}}>
+          <div style={cs.label}>Next Step</div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16,fontWeight:300}}>You've built the story. Now it's time to deliver it. Practice your story aloud and receive AI coaching on narrative flow, clarity, and delivery.</p>
+          <button onClick={restart} style={{...cs.cta,marginBottom:10}}>Build Another Story →</button>
+        </div>
+        <button onClick={restart} style={cs.back}>Start Over</button>
+      </div>
+    );
+  }
 
   return null;
 }

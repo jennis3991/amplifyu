@@ -9,7 +9,7 @@ import { D9_FIVE_PS, D9_CARDS, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_CL
 import { SessionLeftPanel, ExCard } from './SessionLeftPanel.jsx';
 import { MobileSessionView } from './SessionViewMobile.jsx';
 import { DeliveryCoachWidget } from '../modules/Day9.jsx';
-import { StoryBuilderWidget } from '../modules/Day8.jsx';
+import { StoryBuilderWidget, StoryArchitectWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
@@ -100,7 +100,7 @@ setAmbitionSaved(true); } catch {}
   const isD11 = lesson.day === 11;
   const isD12 = lesson.day === 12;
   const STEPS = isNT
-    ? ["Insight","Theory 1","Theory 2","Example","Practice","Review"]
+    ? ["Insight","Theory 1","Theory 2","Example","Practice","Simulation","Review"]
     : SESSION_STEPS;
   const step = STEPS[idx];
 
@@ -2025,45 +2025,8 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Simulation") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
-          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Rehearsal</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Now Practice Telling It</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28 }}>You've built your story. Now practise telling it until it feels natural.</p>
-          {ntStory ? (
-            <div style={{ padding:"18px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, marginBottom:24, borderLeft:"2px solid "+T.gold }}>
-              <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10 }}>Your Story</div>
-              <p style={{ fontFamily:T.sans, fontSize:16, color:T2.text, lineHeight:1.7, fontWeight:400, margin:0 }}>{ntStory}</p>
-            </div>
-          ) : (
-            <div style={{ padding:"16px 20px", background:T2.surface, borderRadius:4, marginBottom:24 }}>
-              <p style={{ fontFamily:T.sans, fontSize:16, color:T2.text, lineHeight:1.7, fontWeight:400, fontStyle:"italic", margin:0 }}>No story saved yet — go back to Practice to build yours.</p>
-            </div>
-          )}
-          <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:28 }}>
-            {["Read your story aloud — at least once","Notice where you naturally pause","Feel the rhythm of the 6-beat arc","Time yourself — aim for under 2 minutes"].map((inst,i) => (
-              <div key={i} style={{ display:"flex", alignItems:"center", gap:12 }}>
-                <div style={{ width:20, height:20, borderRadius:"50%", border:"0.5px solid "+T.gold, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                  <span style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold }}>{i+1}</span>
-                </div>
-                <span style={{ fontFamily:T.sans, fontSize:16, color:T2.text, lineHeight:1.7, fontWeight:400 }}>{inst}</span>
-              </div>
-            ))}
-          </div>
-          <Timer totalSecs={180} label="Speak for up to 3 minutes"/>
-          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:20, marginTop:24 }}>
-            <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Checklist</div>
-            {[{ key:"read", l:"I've read it aloud at least once" }, { key:"pause", l:"I've identified my natural pauses" }, { key:"time", l:"I can tell it in under 2 minutes" }].map((item,i) => {
-              const [checked, setChecked] = useState(false);
-              return (
-                <div key={item.key} onClick={() => setChecked(c => !c)} style={{ display:"flex", alignItems:"center", gap:14, padding:"10px 0", borderBottom:i<2?"0.5px solid "+T2.divider:"none", cursor:"pointer" }}>
-                  <div style={{ width:20, height:20, borderRadius:4, border:"0.5px solid "+(checked?T.green:T2.border), background:checked?"rgba(82,112,96,0.1)":"transparent", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, transition:"all 0.2s" }}>
-                    {checked && <svg width="10" height="10" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l3 3 4-4" stroke={T.green} strokeWidth="1.5" strokeLinecap="round"/></svg>}
-                  </div>
-                  <span style={{ fontFamily:T.sans, fontSize:16, color:checked?T2.text3:T2.text, lineHeight:1.7, fontWeight:400, transition:"color 0.2s" }}>{item.l}</span>
-                </div>
-              );
-            })}
-          </div>
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <StoryArchitectWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
 

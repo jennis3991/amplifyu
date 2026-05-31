@@ -3,7 +3,7 @@ import { T } from '../theme.js';
 import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_FIVE_PS, D9_CARDS, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
 import { DeliveryCoachWidget } from '../modules/Day9.jsx';
-import { StoryBuilderWidget } from '../modules/Day8.jsx';
+import { StoryBuilderWidget, StoryArchitectWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
@@ -495,7 +495,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           10:{Insight:"/day10-insight.jpg",Theory:"/performance-iceberg.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           11:{Insight:"/d11-insight.jpg",Theory:"/d11-theory.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
           12:{Insight:"/day10-insight.jpg",Theory:"/performance-iceberg.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-          8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Review:"/review-chair.jpg"},
+          8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Simulation:null,Review:"/review-chair.jpg"},
         };
         // D1 Practice — cinematic dark panel matching desktop left panel
         if(isD1 && step==="Practice") return (
@@ -525,6 +525,21 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Filler-Free Challenge™</div>
               <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:14}}>Silence often sounds more confident than fillers.</p>
+              <div style={{display:"flex",alignItems:"center",gap:6}}>
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.7)"}}>Estimated time: <span style={{color:"#F5EFE6",fontWeight:600}}>3 minutes</span></span>
+              </div>
+            </div>
+          </div>
+        );
+        // NT Simulation — cinematic dark panel
+        if(isNT && step==="Simulation") return (
+          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 70% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 60%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Story Architect</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:14}}>Build a presentation story in under 3 minutes.</p>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.7)"}}>Estimated time: <span style={{color:"#F5EFE6",fontWeight:600}}>3 minutes</span></span>
@@ -1809,6 +1824,9 @@ T.goldDark : T2.text4,
             </div>
           ))}
         </>
+      )}
+      {isNT && step==="Simulation" && (
+        <StoryArchitectWidget T={T} T2={T2} isDesktop={false}/>
       )}
       {isNT && step==="Practice" && (
         <>
