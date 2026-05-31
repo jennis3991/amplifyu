@@ -139,8 +139,7 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
       <div style={{display:"flex",flexDirection:"column",gap:10}}>
         {CATS.map(cat=>(
           <button key={cat.id} onClick={()=>{setPhase('building');setBeatIndex(0);}}
-            style={{display:"flex",alignItems:"center",gap:isDesktop?20:16,padding:isDesktop?"18px 22px":"14px 18px",borderRadius:8,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
-            <span style={{fontSize:isDesktop?28:24,flexShrink:0}}>{cat.emoji}</span>
+            style={{display:"flex",alignItems:"center",gap:isDesktop?16:14,padding:isDesktop?"18px 22px":"14px 18px",borderRadius:8,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
             <div style={{flex:1}}>
               <div style={{fontFamily:T.serif,fontSize:isDesktop?19:17,fontWeight:600,color:T2.text,marginBottom:3}}>{cat.label}</div>
               <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,fontWeight:300}}>{cat.desc}</p>
