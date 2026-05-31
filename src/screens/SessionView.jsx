@@ -1903,9 +1903,6 @@ setAmbitionSaved(true); } catch {}
               );
             })()}
             <p style={{ fontFamily:T.sans, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.7, fontWeight:400 }}>Facts explain. Stories move people.</p>
-            <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginTop:16 }}>
-              <p style={{ fontFamily:T.serif, fontSize:20, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0 }}>We are more engaged when we feel inside the story.</p>
-            </div>
           </div>
         );
       }

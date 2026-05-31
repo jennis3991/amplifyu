@@ -1652,9 +1652,9 @@ T.goldDark : T2.text4,
        {/* ── NT (Day 8) Mobile Steps ─────────────────────────────────────── */}
       {isNT && step==="Insight" && (
         <>
-          <img src="/narrative-transportation.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Stories Change Minds</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Stories transport your audience into a different world. Facts inform. Stories transform.</p>
+          <div style={{borderLeft:"3px solid "+T.gold,padding:"16px 20px",background:"rgba(247,243,236,0.7)",borderRadius:4,marginBottom:16}}>
+            <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.35,margin:0}}>We are more engaged when we feel inside the story.</p>
+          </div>
           <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Explore each card to learn more →</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {NT_NEURO.map((n,i)=>{
@@ -1675,9 +1675,6 @@ T.goldDark : T2.text4,
             })}
           </div>
           <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Facts explain. Stories move people.</p>
-          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",marginTop:12,borderRadius:4}}>
-            <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>We are more engaged when we feel inside the story.</p>
-          </div>
         </>
       )}
       {isNT && step==="Theory 1" && (

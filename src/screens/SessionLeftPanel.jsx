@@ -381,11 +381,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.38)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.82) 0%, rgba(10,8,5,0.15) 55%, transparent 80%)" }}/>
         <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-          <div style={{ marginBottom:16 }}>
-            <div style={{ ...LP_LABEL, color:T.gold }}>The Foundation</div>
-            
-          </div>
-          <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:300 }}>Turning Stories<br/>Into Impact</p>
+          <p style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.35, margin:0, maxWidth:340 }}>We are more engaged when we feel inside the story.</p>
         </div>
       </div>
     );
