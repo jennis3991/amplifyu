@@ -214,17 +214,22 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
         </div>
 
         {/* Question card — separate */}
-        {r.question && !showFeedback && (
+        {r.options && !showFeedback && (
           <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
-            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
-              <div style={{width:isDesktop?40:34,height:isDesktop?40:34,borderRadius:"50%",background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2C5.6 2 2 5.2 2 9c0 2 .9 3.7 2.3 5L3.5 17l3.2-1.2C7.8 16.6 8.9 17 10 17c4.4 0 8-3.1 8-7s-3.6-8-8-8z" stroke={T.gold} strokeWidth="1.3"/><path d="M10 8v4M10 13.5v.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/></svg>
+            {r.question && (
+              <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
+                <div style={{width:isDesktop?40:34,height:isDesktop?40:34,borderRadius:"50%",background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2C5.6 2 2 5.2 2 9c0 2 .9 3.7 2.3 5L3.5 17l3.2-1.2C7.8 16.6 8.9 17 10 17c4.4 0 8-3.1 8-7s-3.6-8-8-8z" stroke={T.gold} strokeWidth="1.3"/><path d="M10 8v4M10 13.5v.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/></svg>
+                </div>
+                <div>
+                  <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,fontWeight:700,color:T2.text,margin:0,lineHeight:1.3}}>{r.question}</p>
+                  <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:"3px 0 0",fontWeight:300}}>Choose the option that fits you best.</p>
+                </div>
               </div>
-              <div>
-                <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,fontWeight:700,color:T2.text,margin:0,lineHeight:1.3}}>{r.question}</p>
-                <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:"3px 0 0",fontWeight:300}}>Choose the option that fits you best.</p>
-              </div>
-            </div>
+            )}
+            {!r.question && (
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,marginBottom:14,lineHeight:1.5}}>Choose the option that fits you best.</p>
+            )}
             <div style={{display:"grid",gridTemplateColumns:`repeat(${r.options.length},1fr)`,gap:isDesktop?10:8}}>
               {r.options.map((opt,i)=>{
                 const isSelected = selected===i;
