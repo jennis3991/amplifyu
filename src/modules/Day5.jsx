@@ -99,7 +99,7 @@ export function D5PracticeWidget({T, T2, isDesktop}) {
                 <div style={{width:isDesktop?34:28,height:isDesktop?34:28,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.35)"),background:i===0?"rgba(138,158,132,0.1)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:5}}>
                   <span style={{fontFamily:T.sans,fontSize:isDesktop?12:10,fontWeight:700,color:i===0?T.gold:T2.text3}}>{i+1}</span>
                 </div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?11:9,color:T2.text3,fontWeight:500,textAlign:"center",lineHeight:1.3}}>{label}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?11:9,color:"#A8998A",fontWeight:500,textAlign:"center",lineHeight:1.3}}>{label}</div>
               </div>
               {i<3&&<div style={{height:1,width:isDesktop?8:3,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:18}}/>}
             </div>

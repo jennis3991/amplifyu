@@ -268,7 +268,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
                   {r.icon}
                 </div>
                 <div style={{fontFamily:T.sans,fontSize:isDesktop?10:9,fontWeight:700,color:T.gold,marginBottom:3}}>Round {r.n}</div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,fontWeight:500,color:T2.text,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?88:66}}>{r.label}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,fontWeight:500,color:"#A8998A",textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?88:66}}>{r.label}</div>
               </div>
               {i<3 && <div style={{height:1,width:isDesktop?12:6,background:"rgba(138,158,132,0.25)",flexShrink:0,marginBottom:40}}/>}
             </div>
