@@ -25,12 +25,12 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
     {id:2, type:'cardsort', label:'Round 2', name:'The Feynman Formula', pts:25,
      task:"Ella is explaining the Moon's phases to her nephew. Sort each of her statements into the right step.",
      cards:[
-       {text:"Ella learns about Moon phases.", bucket:'learn'},
+       {text:"Ella learns about Moon phases.", bucket:'understand'},
        {text:"Ella explains Moon phases to her nephew using simple words.", bucket:'explain'},
-       {text:"Ella notices what she can't explain clearly and goes back to learn more.", bucket:'gaps'},
+       {text:"Ella notices what she can't explain clearly and goes back to learn more.", bucket:'refine'},
        {text:"Ella makes her explanation shorter, clearer, and easier to remember.", bucket:'simplify'},
      ],
-     buckets:['learn','explain','gaps','simplify'],
+     buckets:['understand','explain','simplify','refine'],
      feedback:"Moon phases happen because the Moon moves around Earth, and from Earth we see different amounts of the Moon's sunlit side. 🌙"},
     {id:3, type:'mcq', label:'Round 3', name:"What's Missing?", pts:25,
      task:"What's missing from this explanation?",
@@ -493,7 +493,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
             const correct = sortChecked && idx!=null && sortCards[idx].bucket===bucket;
             const wrong   = sortChecked && idx!=null && sortCards[idx].bucket!==bucket;
             const highlight = !sortChecked && sortSelected!==null && idx==null;
-            const bucketLabel = ['Learn It','Explain It','Find the Gaps','Simplify It'][bi];
+            const bucketLabel = ['Understand','Explain','Simplify','Refine'][bi];
             return (
               <div key={bucket} onClick={()=>tapSortBucket(bucket)}
                 style={{flex:1,borderRadius:4,border:`1.5px solid ${correct?"#527060":wrong?"#B05C4A":highlight?"rgba(138,158,132,0.5)":T2.border}`,background:correct?"rgba(82,112,96,0.06)":wrong?"rgba(176,92,74,0.06)":highlight?"rgba(138,158,132,0.04)":"transparent",cursor:!sortChecked?"pointer":"default",transition:"all 0.15s",minHeight:isDesktop?90:72,display:"flex",flexDirection:"column",padding:"11px 14px",gap:8}}>
