@@ -1637,6 +1637,8 @@ T.goldDark : T2.text4,
       )}
       {isD1 && step==="Practice" && (
         <>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Practice · Day 1</div>
+          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>The Feynman Challenge™</h2>
           <D1ClarityChallenge T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD1NavLabel} onNavFn={d1NavFnRef}/>
         </>
       )}
