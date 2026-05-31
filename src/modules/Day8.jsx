@@ -522,27 +522,37 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
   // ── LANDING ────────────────────────────────────────────────────────────────
   if(phase==='landing') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
-      <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"36px 40px":"24px",border:"0.5px solid rgba(138,158,132,0.2)"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>The Story Architect</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?34:26,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:12}}>Build a presentation story in under 3 minutes.</h2>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:"rgba(245,239,230,0.6)",lineHeight:1.7,marginBottom:24,fontWeight:300}}>Turn your ideas, experiences and presentation goals into a compelling story and visual storyboard.</p>
+      <div style={{...cs.card,padding:isDesktop?"32px 36px":"24px"}}>
+        <div style={cs.label}>Story Architect</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Your audience won't remember every slide. They'll remember how you made them feel.</h2>
+        <div style={{height:"0.5px",background:T2.border,marginBottom:18}}/>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:T2.text,lineHeight:1.75,marginBottom:14,fontWeight:300}}>
+          Behind every successful pitch, presentation, proposal, and leadership talk is a story that creates belief, builds connection, and inspires action.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:T2.text,lineHeight:1.75,marginBottom:14,fontWeight:300}}>
+          Every great presentation has a story behind it. The challenge is knowing how to find it.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:T2.text,lineHeight:1.75,marginBottom:14,fontWeight:300}}>
+          Simply capture your ideas by speaking naturally or adding a few notes. Story Architect uncovers the narrative hidden within your message and transforms it into a compelling story, visual storyboard, and presentation-ready experience.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:T2.text,lineHeight:1.75,marginBottom:24,fontWeight:300}}>
+          Using the storytelling techniques mastered by the world's best communicators, AmplifyU helps you craft stories that make people lean in, remember your message, and understand why it matters. Whether you're winning support for an idea, inspiring a team, or influencing a decision, Story Architect helps you turn information into a story that moves people to action.
+        </p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:24}}>
+          From a simple idea to a story people remember.
+        </p>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
           <button onClick={()=>{setInputMode('speak');setPhase('situation');}}
-            style={{padding:isDesktop?"16px 20px":"14px 16px",borderRadius:6,border:"1px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.08)",cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:"#F5EFE6",marginBottom:4}}>🎤 Speak Your Story</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"rgba(245,239,230,0.5)",margin:0,fontWeight:300}}>Record up to 90 seconds</p>
+            style={{padding:isDesktop?"16px 20px":"14px 16px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.bg,cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T2.text,marginBottom:4}}>Speak Your Story</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,margin:0,fontWeight:300}}>Record up to 90 seconds</p>
           </button>
           <button onClick={()=>{setInputMode('type');setPhase('situation');}}
-            style={{padding:isDesktop?"16px 20px":"14px 16px",borderRadius:6,border:"1px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.08)",cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:"#F5EFE6",marginBottom:4}}>✏️ Type Instead</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"rgba(245,239,230,0.5)",margin:0,fontWeight:300}}>Write your context</p>
+            style={{padding:isDesktop?"16px 20px":"14px 16px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.bg,cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T2.text,marginBottom:4}}>Type Instead</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,margin:0,fontWeight:300}}>Write your context</p>
           </button>
         </div>
-      </div>
-      <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 20px"}}>
-        <div style={cs.label}>Why This Is Different</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,margin:"0 0 12px",fontWeight:300}}>Most storytelling tools ask: <em>"Tell us a story."</em></p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0,fontWeight:400}}>Story Architect asks: <span style={{color:T.gold,fontWeight:500}}>"What are you trying to achieve?"</span> Then builds the story for you.</p>
       </div>
     </div>
   );
