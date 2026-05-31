@@ -147,10 +147,10 @@ finishDate + ".";
         {/* ════════════════════════════════════════════════════════════════
             SECTION 1: CINEMATIC HERO — Full viewport. One story. One CTA.
             ════════════════════════════════════════════════════════════════ */}
-        {/* Hero — full image, clean, no overlay */}
-        {/* Hero — full image */}
-        <div style={{ marginTop: NAV_H, background: T2.bg }}>
+        {/* Hero — full image with dark film */}
+        <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative" }}>
           <img src="/home-hero.jpg" alt="Social Presence Framework" style={{ width: "100%", maxHeight: "72vh", objectFit: "cover", objectPosition: "center 20%", display: "block" }}/>
+          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.38)", pointerEvents: "none" }}/>
         </div>
 
         {/* Static CTA bar — directly below hero, in document flow */}
@@ -256,9 +256,10 @@ finishDate + ".";
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}} className="au-page">
 
-      {/* ── SECTION 1: Hero — full image ── */}
-      <div style={{marginTop:NAV_H,background:T2.bg}}>
+      {/* ── SECTION 1: Hero — full image with dark film ── */}
+      <div style={{marginTop:NAV_H,background:T2.bg,position:"relative"}}>
         <img src="/home-hero.jpg" alt="Social Presence Framework" style={{width:"100%",height:"auto",display:"block"}}/>
+        <div style={{position:"absolute",inset:0,background:"rgba(10,8,4,0.38)",pointerEvents:"none"}}/>
       </div>
 
       {/* ── Static CTA bar — directly below hero ── */}
