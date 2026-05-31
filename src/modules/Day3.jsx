@@ -64,13 +64,13 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       title:"SILENCE FEELS LONGER TO YOU",
       prompt:"Say this sentence out loud:",
       quote:'"The most important part of communication is…"',
-      instruction:'Pause. Count slowly to 3 in your head.',
-      quote2:'"…making people feel understood."',
+      instruction:'Pause. Count to 3 slowly in your head.',
+      quote2:'"…creating clarity, not complexity."',
       question:"Did the pause feel awkward?",
       options:[
-        {label:"Yes, it felt very long",correct:false},
-        {label:"A little, but I pushed through",correct:true},
-        {label:"No, it felt completely natural",correct:false},
+        {label:"Yes",correct:false},
+        {label:"A little",correct:true},
+        {label:"No",correct:false},
       ],
       feedback:"Pauses feel longer to the speaker than to the audience. To listeners, intentional pauses feel thoughtful, calm, and controlled. Great communicators allow ideas space to land.",
     },
@@ -91,25 +91,14 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       feedback:"The brain processes pauses more easily than filler words. Silence creates clarity. Version B communicates the same idea — with far more authority.",
     },
     {
-      title:"THOUGHTFUL VS RUSHED",
-      prompt:"Which speaker sounds more thoughtful?",
-      quote:null,
-      instruction:null,
-      question:null,
-      options:[
-        {label:"Fast delivery with fillers",correct:false},
-        {label:"Slightly slower delivery with pauses",correct:true},
-      ],
-      feedback:"Rushing increases cognitive load for your listener. Pauses reduce communication friction. A slightly slower pace with intentional silence signals calm, confidence, and control.",
-    },
-    {
-      title:"THE BREATH RESET",
-      prompt:"Before answering, take one calm breath.",
-      quote:'"Here\'s what I\'d recommend."',
-      instruction:"Inhale. Pause. Then say the sentence slowly and clearly. Notice how the breath changes your pacing.",
+      title:"THE EXPERT QUESTION",
+      prompt:"Someone asks you:",
+      quote:'"What makes you good at your role?"',
+      instruction:"Take a breath. Pause. Then answer.",
+      note:"If you need time to think, pause. Silence sounds more confident than fillers.",
       options:null,
-      action:"I took the breath and said it",
-      feedback:"Breathing before speaking calms the nervous system and creates mental clarity. In that moment, you give yourself the best possible chance of a strong, filler-free response.",
+      action:"I spoke for 30 seconds",
+      feedback:"The more expertise you have, the less you need to rush. Experts pause because they trust their knowledge.",
     },
   ];
 
@@ -142,8 +131,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
           {[
             {n:1,label:"Silence Feels Longer"},
             {n:2,label:"Fillers vs Pauses"},
-            {n:3,label:"Thoughtful vs Rushed"},
-            {n:4,label:"The Breath Reset"},
+            {n:3,label:"The Expert Question"},
           ].map((r,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
@@ -152,15 +140,14 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
                 </div>
                 <div style={{fontFamily:T.sans,fontSize:isDesktop?12:10,color:"#A8998A",fontWeight:500,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?72:50}}>{r.label}</div>
               </div>
-              {i<3 && <div style={{height:1,width:isDesktop?8:3,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:20}}/>}
+              {i<2 && <div style={{height:1,width:isDesktop?8:3,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:20}}/>}
             </div>
           ))}
         </div>
       </div>
 
       <div style={cs.card}>
-        <div style={cs.label}>How You Win</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:14}}>Earn points for:</p>
+        <div style={cs.label}>Build the Habit Of</div>
         <div style={{display:"flex",gap:isDesktop?8:6,flexWrap:"wrap"}}>
           {["Calmness","Clarity","Presence","Intentional Pausing"].map((s,i)=>(
             <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:isDesktop?"10px 12px":"8px 10px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border,flex:1,minWidth:isDesktop?70:56}}>
@@ -199,7 +186,8 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
           {r.prompt && <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,lineHeight:1.6,margin:"0 0 18px"}}>{r.prompt}</p>}
           {r.quote && <p style={{fontFamily:T.serif,fontSize:isDesktop?26:21,fontStyle:"italic",color:T2.text,lineHeight:1.4,margin:"0 0 6px"}}>{r.quote}</p>}
           {r.instruction && !r.quote && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>{r.instruction}</p>}
-          {r.instruction && r.quote && <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,margin:"8px 0 r.quote2 ? 8px : 0",fontStyle:"italic"}}>{r.instruction}</p>}
+          {r.instruction && r.quote && <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,margin:"8px 0 0",fontStyle:"italic"}}>{r.instruction}</p>}
+          {r.note && <div style={{marginTop:14,padding:"10px 14px",background:"rgba(138,158,132,0.07)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.25)",textAlign:"left"}}><span style={{fontFamily:T.sans,fontSize:isDesktop?11:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginRight:6}}>Remember:</span><span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{r.note}</span></div>}
           {r.quote2 && <p style={{fontFamily:T.serif,fontSize:isDesktop?26:21,fontStyle:"italic",color:T2.text,lineHeight:1.4,margin:0}}>{r.quote2}</p>}
           {r.versions && (
             <div style={{display:"flex",flexDirection:"column",gap:10,textAlign:"left"}}>
@@ -291,17 +279,17 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
 // ─── D3 Simulation Widget ─────────────────────────────────────────────────────
 export function D3SimWidget({T, T2, isDesktop}) {
-  const DIMS = ["Calm Pacing","Pause Control","Verbal Clarity","Conversational Flow","Speaking Presence","Thought Completion"];
-  const PROMPT = "Introduce your favourite meal, explain why it's your favourite, then teach me how to make it in 90 seconds.";
+  const DIMS = ["Filler Control","Pause Quality","Speaking Pace","Confidence","Clarity","Story Flow"];
+  const PROMPT = "Tell us about a memorable holiday, trip, or experience. What happened? Why does it stand out? What made it memorable?";
 
   const [phase, setPhase] = useState('intro');
   const [timeLeft, setTimeLeft] = useState(90);
   const [isRec, setIsRec] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [fallback, setFallback] = useState('');
-  const [analyzing, setAnalyzing] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [round1, setRound1] = useState(null);
+  const [reflection, setReflection] = useState(null);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [audioURL, setAudioURL] = useState(null);
   const [playing, setPlaying] = useState(false);
@@ -352,7 +340,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
     setIsRec(false);clearTimeout(timerRef.current);
     if(recRef.current){try{recRef.current.stop();}catch(e){}}
     if(mediaRecRef.current&&mediaRecRef.current.state!=='inactive'){try{mediaRecRef.current.stop();}catch(e){}}
-    analyzeText(SpeechRec?liveRef.current:fallback);
+    setPhase('reflect');
   }
 
   async function analyzeText(text){
@@ -361,20 +349,25 @@ export function D3SimWidget({T, T2, isDesktop}) {
     const base=isRetry?8:0;
     const mock={
       overall:Math.floor(Math.random()*18)+65+base,
-      headline:"Your explanation had a natural, conversational rhythm.",
-      subtitle:isRetry?"Noticeable improvement. Your pauses are landing.":"A natural starting point — awareness is already working.",
+      headline:"Your story had a natural, engaging rhythm.",
+      subtitle:isRetry?"Noticeable improvement. Your pauses are landing.":"A strong start — awareness is already working.",
       scores:Object.fromEntries(DIMS.map(d=>[d,Math.floor(Math.random()*22)+62+base])),
       fillers:[],
-      worked:["Conversational and easy to follow","Good personal connection to the topic"],
-      improve:["When you feel a filler coming, pause instead — silence carries more authority."],
-      insight:"Your explanation was natural and warm. The key opportunity is pause control: every time you'd normally say 'um' or 'like', a breath creates far more impact."
+      fillerCount:0,
+      pauseCount:Math.floor(Math.random()*5)+2,
+      longestPause:2.4,
+      avgPause:1.2,
+      pace:140,
+      worked:["Your story was warm and personal","Good natural pauses throughout"],
+      improve:["Replace the next 'um' with a deliberate pause — your listener won't notice the gap."],
+      insight:"Your story came through with genuine warmth. The key opportunity is pause control: every time you'd normally say 'um' or 'like', a deliberate breath creates far more impact."
     };
     if(!text||text.trim().length<15){
       if(!isRetry){setRound1(mock);setFeedback(mock);}else setFeedback({...mock,prev:round1});
       setPhase(isRetry?'comparison':'feedback');return;
     }
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,messages:[{role:"user",content:`You are a world-class communication coach specialising in filler-free speech. Analyse this spoken explanation for filler word usage, pacing, and pause control.\n\nPrompt: "${PROMPT}"\nTranscript: "${text}"\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Calm Pacing":<50-100>,"Pause Control":<50-100>,"Verbal Clarity":<50-100>,"Conversational Flow":<50-100>,"Speaking Presence":<50-100>,"Thought Completion":<50-100>},"fillers":["list each distinct filler word or phrase found, e.g. um, uh, like, you know, basically, sort of, kind of, right"],"fillerCount":<total number of filler instances>,"worked":["<vocal strength 1>","<vocal strength 2>"],"improve":["<single clearest filler-reduction opportunity>"],"insight":"<2-3 personalised sentences about filler patterns, pause technique, and what specific change will help most>"}`}]})});
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:900,messages:[{role:"user",content:`You are a world-class communication coach specialising in filler-free speech and deliberate pause technique. Analyse this spoken story for filler word usage, pause patterns, speaking pace, and confidence.\n\nPrompt: "${PROMPT}"\nTranscript: "${text}"\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Filler Control":<50-100>,"Pause Quality":<50-100>,"Speaking Pace":<50-100>,"Confidence":<50-100>,"Clarity":<50-100>,"Story Flow":<50-100>},"fillers":["list each distinct filler word or phrase found"],"fillerCount":<total filler instances>,"pauseCount":<estimated number of intentional silent pauses>,"longestPause":<estimated longest pause in seconds as float>,"avgPause":<estimated average pause length in seconds as float>,"pace":<estimated words per minute as integer>,"worked":["<vocal strength 1>","<vocal strength 2>"],"improve":["<single clearest opportunity to use more intentional pauses>"],"insight":"<2-3 personalised sentences about filler patterns, pause usage, and what specific change will help most>"}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -389,7 +382,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
   const [selectedFocus, setSelectedFocus] = useState([]);
   const FOCUS=["Replace 'um' with pause","Slow your opening","Fewer 'like' words","Finish sentences cleanly","Breathe before speaking","No 'basically'","Cut the 'you know's"];
 
-  function reset(){setPhase('intro');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);setSelectedFocus([]);}
+  function reset(){setPhase('intro');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);setSelectedFocus([]);setReflection(null);}
 
   function togglePlay(){
     if(!audioURL){setPlaying(p=>!p);return;}
@@ -408,17 +401,37 @@ export function D3SimWidget({T, T2, isDesktop}) {
   // ── INTRO ────────────────────────────────────────────────────────────────────
   if(phase==='intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      {/* HOW IT WORKS */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={cs.label}>Simulation · Day 3</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:23,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:14}}>The Invisible Pause Challenge</h2>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
+          Most fillers aren't habits. They're a symptom of cognitive load — what happens when your brain is planning the next sentence while still delivering the current one.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>
+          The fix isn't willpower. It's learning to replace that cognitive gap with something even more powerful: deliberate silence.
+        </p>
+      </div>
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
+        <div style={cs.label}>Your Challenge</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
+          Tell us about a memorable holiday, trip, or experience — around 60 seconds.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
+          Every time you feel the urge to say <em>"um"</em>, <em>"uh"</em>, or <em>"like"</em> — pause instead. Replace every filler urge with silence.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>
+          Your AI coach will count your fillers, measure your pauses, and reveal the invisible patterns in your speech.
+        </p>
+      </div>
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
         <div style={cs.label}>How It Works</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>A simple 5-step filler-free check-in.</h2>
         <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
           {[
-            {n:1,label:"Read the prompt",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
-            {n:2,label:"Breathe & speak",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:3,label:"AI detects fillers", icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
-            {n:4,label:"Reflect & learn",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke={T.gold} strokeWidth="1.3"/><path d="M8 9a3 3 0 016 0v4a3 3 0 01-6 0V9z" stroke={T.gold} strokeWidth="1.3"/></svg>},
-            {n:5,label:"Try again",           icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 11a7 7 0 0111.95-4.95L18 8M18 8V4M18 8h-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M18 11a7 7 0 01-11.95 4.95L4 14M4 14v4M4 14h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>},
+            {n:1,label:"Read the prompt",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:2,label:"Tell your story",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3,label:"Reflect",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke={T.gold} strokeWidth="1.3"/><path d="M11 7v4l3 3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:4,label:"AI analysis",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:5,label:"Try again",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 11a7 7 0 0111.95-4.95L18 8M18 8V4M18 8h-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M18 11a7 7 0 01-11.95 4.95L4 14M4 14v4M4 14h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>},
           ].map((s,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
@@ -431,27 +444,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
           ))}
         </div>
       </div>
-      {/* THE FIRST STEP */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
-        <div style={cs.label}>The First Step</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
-          You've learned the science. Practised the techniques. Now it's time to speak — and notice your patterns.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>
-          Self-review is one of the fastest proven ways to reduce fillers. Awareness is 80% of the fix.
-        </p>
-      </div>
-      {/* YOUR DIGITAL COACH */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
-        <div style={cs.label}>Your Digital Coach</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
-          Your AI coach will analyse your filler frequency, pacing, pause control, and conversational clarity.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>
-          This recording becomes your baseline — not a test, expert coaching.
-        </p>
-      </div>
-      <button onClick={()=>setPhase('recording')} style={cs.cta}>Start the Simulation →</button>
+      <button onClick={()=>setPhase('recording')} style={cs.cta}>Begin the Challenge →</button>
     </div>
   );
 
@@ -463,9 +456,9 @@ export function D3SimWidget({T, T2, isDesktop}) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:0}}>{PROMPT}</p>
       </div>
       <div style={cs.card}>
-        <div style={cs.label}>Before You Begin</div>
+        <div style={cs.label}>Remember</div>
         <div style={{display:"flex",flexDirection:"column",gap:6}}>
-          {["Take one calm breath.","Slow down slightly — pauses are welcome.","If you lose your train of thought, pause instead of filling.","Your goal is clarity, not speed."].map((tip,i)=>(
+          {["Take one calm breath before you start.","When you feel a filler coming — pause instead.","Silence is strength. Your listener won't mind the gap.","Aim for around 60 seconds."].map((tip,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
               <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
               <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{tip}</span>
@@ -494,13 +487,48 @@ export function D3SimWidget({T, T2, isDesktop}) {
           {!isRec?(
             <button onClick={doStart} style={{...cs.cta,width:"auto",padding:"12px 32px"}}>Start Recording →</button>
           ):(
-            <button onClick={doStop} style={{...cs.cta,width:"auto",padding:"12px 32px",background:"#8A4A3A"}}>Stop & Analyse →</button>
+            <button onClick={doStop} style={{...cs.cta,width:"auto",padding:"12px 32px",background:"#8A4A3A"}}>Stop & Reflect →</button>
           )}
         </div>
       </div>
       <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
     </div>
   );
+
+  // ── REFLECT ──────────────────────────────────────────────────────────────────
+  if(phase==='reflect') {
+    const REFLECT_OPTIONS = [
+      "I paused more than I expected",
+      "My story felt clearer",
+      "I sounded more confident",
+      "I noticed how often fillers normally appear",
+    ];
+    return (
+      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+        <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+          <div style={cs.label}>Quick Reflection</div>
+          <h3 style={{fontFamily:T.serif,fontSize:isDesktop?22:19,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:6}}>How did that feel?</h3>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>Before your AI coach responds — take a moment. Which of these best describes your experience?</p>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          {REFLECT_OPTIONS.map((opt,i)=>{
+            const sel=reflection===opt;
+            return(
+              <button key={i} onClick={()=>setReflection(opt)} style={{...cs.card,padding:isDesktop?"16px 20px":"13px 16px",textAlign:"left",cursor:"pointer",border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.08)":T2.surface,display:"flex",alignItems:"center",gap:14,transition:"all 0.15s"}}>
+                <div style={{width:22,height:22,borderRadius:"50%",border:`1.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.15)":"transparent",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s"}}>
+                  {sel&&<div style={{width:10,height:10,borderRadius:"50%",background:T.gold}}/>}
+                </div>
+                <span style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:sel?T2.text:T2.text3,fontWeight:sel?600:400,lineHeight:1.3}}>{opt}</span>
+              </button>
+            );
+          })}
+        </div>
+        <button onClick={()=>reflection&&analyzeText(SpeechRec?liveRef.current:fallback)} disabled={!reflection} style={{...cs.cta,opacity:reflection?1:0.4,cursor:reflection?"pointer":"default"}}>
+          See My Analysis →
+        </button>
+      </div>
+    );
+  }
 
   // ── ANALYZING ────────────────────────────────────────────────────────────────
   if(phase==='analyzing') return (
@@ -511,7 +539,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
         ))}
       </div>
       <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>Analysing your delivery…</p>
-      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Detecting fillers, pacing, pause control.</p>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Detecting fillers, pause patterns, speaking pace.</p>
     </div>
   );
 
@@ -587,7 +615,26 @@ export function D3SimWidget({T, T2, isDesktop}) {
           </>
         )}
       </div>
-      {/* 3 FILLER PROFILE */}
+      {/* 3 PAUSE STATS */}
+      <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px"}}>
+        <div style={cs.label}>Your Pause Profile</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:isDesktop?16:10}}>
+          {[
+            {label:"Silent Pauses",value:feedback.pauseCount||"—",unit:"used"},
+            {label:"Longest Pause",value:feedback.longestPause?`${feedback.longestPause}s`:"—",unit:""},
+            {label:"Avg Pause",value:feedback.avgPause?`${feedback.avgPause}s`:"—",unit:""},
+            {label:"Speaking Pace",value:feedback.pace||"—",unit:"wpm"},
+            {label:"Fillers",value:fillerCount,unit:"total"},
+            {label:"Confidence",value:feedback.scores?.['Confidence']||"—",unit:"/100"},
+          ].map((stat,i)=>(
+            <div key={i} style={{textAlign:"center",padding:isDesktop?"12px 8px":"10px 6px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,lineHeight:1}}>{stat.value}<span style={{fontFamily:T.sans,fontSize:10,fontWeight:400,color:T2.text3,marginLeft:2}}>{stat.unit}</span></div>
+              <div style={{fontFamily:T.sans,fontSize:isDesktop?10:9,color:T2.text3,marginTop:4,lineHeight:1.2}}>{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* 4 FILLER PROFILE */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>Your Filler Profile</div>
         <div style={{display:isDesktop?"flex":"block",gap:24,alignItems:"center"}}>
@@ -614,7 +661,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
           </div>
         </div>
       </div>
-      {/* 4 WHAT CAME ACROSS WELL + BIGGEST OPPORTUNITY */}
+      {/* 5 WHAT CAME ACROSS WELL + BIGGEST OPPORTUNITY */}
       <div style={{display:isDesktop?"grid":"flex",gridTemplateColumns:"1fr 1fr",flexDirection:"column",gap:isDesktop?12:10}}>
         <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
           <div style={cs.label}>What came across well</div>
@@ -645,7 +692,19 @@ export function D3SimWidget({T, T2, isDesktop}) {
           </div>
         </div>
       </div>
-      {/* 5 AI COACH SAYS */}
+      {/* 6 THE COGNITIVE LOAD PRINCIPLE */}
+      <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"24px 28px":"18px 20px",border:"0.5px solid rgba(138,158,132,0.2)"}}>
+        <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>The Cognitive Load Principle</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:"rgba(245,239,230,0.85)",lineHeight:1.7,margin:"0 0 16px"}}>
+          Fillers aren't habits — they're a symptom. Your brain fills the gap between thoughts with sound because silence feels risky. But to your listener, that silence is power.
+        </p>
+        <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:16}}>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontStyle:"italic",color:T.gold,lineHeight:1.5,margin:0}}>
+            "Every filler is a pause in disguise. The most effective speakers simply remove the word and keep the pause."
+          </p>
+        </div>
+      </div>
+      {/* 7 AI COACH SAYS */}
       <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
         <div style={cs.label}>Your AI Coach Says</div>
         <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
@@ -656,7 +715,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
           </div>
         </div>
       </div>
-      {/* 6 HEAR IT BACK */}
+      {/* 8 HEAR IT BACK */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>Hear it back</div>
         <div style={{display:"flex",alignItems:"center",gap:12}}>
@@ -683,7 +742,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
           </div>
         </div>
       </div>
-      {/* 7 FOCUS NEXT ROUND */}
+      {/* 9 FOCUS NEXT ROUND */}
       <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
         <div style={cs.label}>Focus next round</div>
         <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
@@ -692,7 +751,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
           );})}
         </div>
       </div>
-      {/* 8 RETRY CTA */}
+      {/* 10 RETRY CTA */}
       <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"22px 28px":"18px 20px",border:"0.5px solid rgba(138,158,132,0.15)",display:isDesktop?"flex":"block",alignItems:"center",gap:20}}>
         <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginBottom:isDesktop?0:14}}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l2 5h5l-4 3 2 5-5-3.5-5 3.5 2-5-4-3h5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>
@@ -702,7 +761,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
           <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.65)",margin:0,lineHeight:1.5}}>Now that you know where your fillers appear, try again and replace each one with a pause.</p>
         </div>
         <div style={{textAlign:isDesktop?"right":"left"}}>
-          <button onClick={()=>{setPhase('recording');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');}} style={{padding:"12px 24px",borderRadius:4,border:"none",background:"rgba(82,112,96,0.85)",color:"white",fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:8,whiteSpace:"nowrap"}}>
+          <button onClick={()=>{setPhase('recording');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');setReflection(null);}} style={{padding:"12px 24px",borderRadius:4,border:"none",background:"rgba(82,112,96,0.85)",color:"white",fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:8,whiteSpace:"nowrap"}}>
             Improve My Score <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
           <div style={{fontFamily:T.sans,fontSize:10,color:"rgba(245,239,230,0.3)",marginTop:6}}>Expected gain: +10–20 points</div>
