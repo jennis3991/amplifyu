@@ -1800,7 +1800,7 @@ T.goldDark : T2.text4,
           <img src="/practice-bg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Build Your Story</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Answer three questions. Your AI coach builds the story using the 6-beat arc.</p>
-          <StoryBuilderWidget onSave={s => { setNtStory(s); try { localStorage.setItem("au1_nt_story",s); } catch(_){} }}/>
+          <StoryBuilderWidget T={T} T2={T2} isDesktop={false} onSave={s=>{setNtStory(s);try{localStorage.setItem("au1_nt_story",s);}catch(_){}}} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
         </>
       )}
        {/* ── D9 (Day 9) Mobile Steps ─────────────────────────────────────── */}
