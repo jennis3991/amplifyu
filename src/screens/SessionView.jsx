@@ -1636,34 +1636,6 @@ setAmbitionSaved(true); } catch {}
             </div>
           </div>
         )},
-      { id:"brown", title:"Brené Brown", sub:"Academia Made Accessible",
-        tag:"Complex ideas, distilled into one clear sentence.",
-        content:(
-          <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
-            <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Academia Made Accessible</div>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>20 years of research.<br/>One clear sentence.</h2>
-            <div style={{display:"flex",flexDirection:"column",gap:16,marginBottom:28}}>
-              <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Brown spent 20 years researching vulnerability and shame. She could hide behind academic language. She doesn't.</p>
-              <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"Vulnerability is not weakness. It's the most accurate measure of courage."</p>
-              </div>
-              <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Years of research. One clear sentence.</p>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
-              <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>She distills complexity into a single, memorable idea. No theory. No jargon. Just truth you can use.</p>
-              </div>
-              <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Ask: "If I had 10 seconds to explain this, what would I say?" That's your message. Everything else is supporting detail.</p>
-              </div>
-            </div>
-            <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
-              <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Complex ideas don't need complex language. The best thinkers can explain their work in one sentence.</p>
-            </div>
-          </div>
-        )},
       { id:"gladwell", title:"Malcolm Gladwell", sub:"Research to Rememberable",
         tag:"Dense research distilled into ideas that stick forever. '10,000 hours.'",
         content:(
@@ -1814,12 +1786,10 @@ setAmbitionSaved(true); } catch {}
       if (step === "Example") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>Masters of Clear Communication</h2>
-          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32}}>Three speakers who make complex ideas accessible.</p>
+          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32}}>Two speakers who make complex ideas accessible.</p>
           <div style={{display:"flex",flexDirection:"column",gap:16}}>
             <ExCard T2={T2} name="David Attenborough" preview="Attenborough explains ecosystems and planetary forces using language anyone can picture."
               full={"Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon.\n\nInstead, he uses language anyone can picture:\n\n\"The rainforest is like a vast, green lung breathing life into our planet.\"\n\nNo technical terms. Just an image you can see.\n\nHe translates scientific complexity into vivid, everyday language. You don't need a biology degree to understand the Amazon.\n\nReplace technical terms with pictures people already have in their heads. Make the abstract concrete.\n\nClarity comes from choosing words that create images, not confusion. The best explainers make you see what they're saying."}/>
-            <ExCard T2={T2} name="Brené Brown" preview="Brown spent 20 years researching vulnerability. She could hide behind academic language. She doesn't."
-              full={"Brown spent 20 years researching vulnerability and shame. She could hide behind academic language. She doesn't.\n\nHer central finding:\n\"Vulnerability is not weakness. It's the most accurate measure of courage.\"\n\nYears of research. One clear sentence.\n\nShe distils complexity into a single, memorable idea. No theory. No jargon. Just truth you can use.\n\nAsk: \"If I had 10 seconds to explain this, what would I say?\" That's your message. Everything else is supporting detail.\n\nComplex ideas don't need complex language. The best thinkers can explain their work in one sentence."}/>
             <ExCard T2={T2} name="Sir Richard Branson" preview="Branson built a global empire but speaks like he's chatting with a friend."
               full={"Branson built a global empire. But he speaks like he's chatting with a friend.\n\nWhen asked about Virgin's strategy:\n\"We just try to make things better for people. If we do that, they'll choose us.\"\n\nNo \"synergies.\" No \"value propositions.\" No corporate fluff.\n\nHe uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.\n\nRemove every word a 10-year-old wouldn't understand. If what's left still makes sense, you've found clarity.\n\nJargon doesn't make you sound smart. It makes you hard to understand. The clearest speakers use the simplest words."}/>
           </div>
