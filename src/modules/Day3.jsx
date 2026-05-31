@@ -176,8 +176,15 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
   if (phase === 'playing') {
     const r = ROUNDS[round];
+    const titleCase = r.title.split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(' ');
+    const OPTION_ICONS = [
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M10 6v4l2.5 2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>,
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 10c2-3 4-3 6 0s4 3 6 0" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/><path d="M3 14c2-3 4-3 6 0s4 3 6 0" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/></svg>,
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 10l4.5 4.5L16 6" stroke={T.gold} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+    ];
     return (
       <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+        {/* Progress */}
         <div style={{display:"flex",alignItems:"center",gap:10}}>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flexShrink:0}}>Round {round+1} of {ROUNDS.length}</div>
           <div style={{flex:1,height:2,background:T2.border,borderRadius:2}}>
@@ -185,40 +192,65 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
           </div>
         </div>
 
-        <div style={cs.card}>
-          <div style={cs.label}>{r.title}</div>
-          {r.prompt && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:12,lineHeight:1.5}}>{r.prompt}</p>}
-          {r.quote && <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 12px"}}>{r.quote}</p>}
+        {/* Main content card — centered */}
+        <div style={{...cs.card,textAlign:"center",padding:isDesktop?"28px 32px":"22px 20px"}}>
+          <h3 style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:700,color:T2.text,lineHeight:1.2,margin:"0 0 16px"}}>{titleCase}</h3>
+          <div style={{height:"0.5px",background:T2.divider,margin:"0 0 18px"}}/>
+          {r.prompt && <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,lineHeight:1.6,margin:"0 0 18px"}}>{r.prompt}</p>}
+          {r.quote && <p style={{fontFamily:T.serif,fontSize:isDesktop?26:21,fontStyle:"italic",color:T2.text,lineHeight:1.4,margin:"0 0 6px"}}>{r.quote}</p>}
+          {r.instruction && !r.quote && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>{r.instruction}</p>}
+          {r.instruction && r.quote && <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,margin:"8px 0 r.quote2 ? 8px : 0",fontStyle:"italic"}}>{r.instruction}</p>}
+          {r.quote2 && <p style={{fontFamily:T.serif,fontSize:isDesktop?26:21,fontStyle:"italic",color:T2.text,lineHeight:1.4,margin:0}}>{r.quote2}</p>}
           {r.versions && (
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>
+            <div style={{display:"flex",flexDirection:"column",gap:10,textAlign:"left"}}>
               {r.versions.map((v,i)=>(
-                <div key={i} style={{padding:"12px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                <div key={i} style={{padding:"12px 16px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
                   <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{v.label}</div>
-                  <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,margin:0}}>{v.text}</p>
+                  <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.4,margin:0}}>{v.text}</p>
                 </div>
               ))}
             </div>
           )}
-          {r.instruction && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:r.quote2?"0 0 12px":0}}>{r.instruction}</p>}
-          {r.quote2 && <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{r.quote2}</p>}
-          {r.question && !showFeedback && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,marginTop:14,marginBottom:0}}>{r.question}</p>}
         </div>
 
-        {r.options && !showFeedback && (
-          <div style={{display:"flex",flexDirection:"column",gap:8}}>
-            {r.options.map((opt,i)=>(
-              <button key={i} onClick={()=>{setSelected(i);setShowFeedback(true);}}
-                style={{padding:"14px 16px",borderRadius:4,border:`0.5px solid ${selected===i?(opt.correct?T.gold:"rgba(180,80,60,0.5)"):T2.border}`,background:selected===i?(opt.correct?"rgba(138,158,132,0.08)":"rgba(180,80,60,0.04)"):"transparent",color:T2.text,fontSize:isDesktop?15:14,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5,transition:"all 0.2s"}}>
-                {opt.label}
-              </button>
-            ))}
+        {/* Question card — separate */}
+        {r.question && !showFeedback && (
+          <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
+              <div style={{width:isDesktop?40:34,height:isDesktop?40:34,borderRadius:"50%",background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2C5.6 2 2 5.2 2 9c0 2 .9 3.7 2.3 5L3.5 17l3.2-1.2C7.8 16.6 8.9 17 10 17c4.4 0 8-3.1 8-7s-3.6-8-8-8z" stroke={T.gold} strokeWidth="1.3"/><path d="M10 8v4M10 13.5v.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/></svg>
+              </div>
+              <div>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,fontWeight:700,color:T2.text,margin:0,lineHeight:1.3}}>{r.question}</p>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:"3px 0 0",fontWeight:300}}>Choose the option that fits you best.</p>
+              </div>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:`repeat(${r.options.length},1fr)`,gap:isDesktop?10:8}}>
+              {r.options.map((opt,i)=>{
+                const isSelected = selected===i;
+                const correct = opt.correct;
+                const border = isSelected?(correct?T.gold:"rgba(180,80,60,0.4)"):T2.border;
+                const bg = isSelected?(correct?"rgba(138,158,132,0.08)":"rgba(180,80,60,0.04)"):T2.bg;
+                return (
+                  <button key={i} onClick={()=>{setSelected(i);setShowFeedback(true);}}
+                    style={{padding:isDesktop?"14px 12px":"12px 10px",borderRadius:6,border:`1px solid ${border}`,background:bg,cursor:"pointer",transition:"all 0.2s",display:"flex",alignItems:"center",gap:isDesktop?10:8,textAlign:"left"}}>
+                    <div style={{width:isDesktop?32:28,height:isDesktop?32:28,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                      {OPTION_ICONS[i]}
+                    </div>
+                    <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.4,fontWeight:400}}>{opt.label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
 
+        {/* Action button (non-MCQ rounds) */}
         {!r.options && !showFeedback && (
           <button onClick={()=>setShowFeedback(true)} style={cs.cta}>{r.action} →</button>
         )}
 
+        {/* Feedback */}
         {showFeedback && (
           <>
             <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
@@ -229,7 +261,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
               if (round < ROUNDS.length-1){setRound(v=>v+1);setSelected(null);setShowFeedback(false);}
               else {setPhase('done');}
             }} style={cs.cta}>
-              {round < ROUNDS.length-1 ? `Round ${round+2}: ${ROUNDS[round+1].title} →` : "See Your Results →"}
+              {round < ROUNDS.length-1 ? `Round ${round+2}: ${ROUNDS[round+1].title.charAt(0)+ROUNDS[round+1].title.slice(1).toLowerCase()} →` : "See Your Results →"}
             </button>
           </>
         )}
