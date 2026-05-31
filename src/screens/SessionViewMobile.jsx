@@ -1702,7 +1702,7 @@ T.goldDark : T2.text4,
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The 6-Beat Framework</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Every great story follows a learnable pattern. Master these six beats and you can tell any story.</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {[
               {n:1,beat:"Hook",         sub:"It starts with tension."},
               {n:2,beat:"Character",    sub:"Make it human. Make it real."},
@@ -1711,14 +1711,56 @@ T.goldDark : T2.text4,
               {n:5,beat:"Resolution",   sub:"What happened? Why it matters."},
               {n:6,beat:"Meaning",      sub:"What stayed with us?"},
             ].map((b,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4}}>Beat {b.n}</div>
-                <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,marginBottom:4}}>{b.beat}</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{b.sub}</p>
+              <div key={i} style={{display:"flex",alignItems:"center",gap:14,padding:"14px 16px",background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8}}>
+                <div style={{width:32,height:32,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T.gold}}>{b.n}</span>
+                </div>
+                <div style={{flex:1}}>
+                  <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,marginBottom:2}}>{b.beat}</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{b.sub}</p>
+                </div>
               </div>
             ))}
           </div>
-          <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.7,marginTop:8}}>No tension = no story. No shift = no meaning.</p>
+          <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.7,marginTop:8,marginBottom:24}}>No tension = no story. No shift = no meaning.</p>
+
+          {/* Pixar Framework */}
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>The Pixar Framework</div>
+          <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The most replicable story structure ever invented.</h3>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Pixar used the same template for every film. It works because it mirrors how the human brain processes experience.</p>
+          <div style={{display:"flex",flexDirection:"column",border:"0.5px solid rgba(138,158,132,0.25)",borderRadius:8,overflow:"hidden",marginBottom:16}}>
+            {[
+              {prompt:"Once upon a time…", desc:"Set the scene and introduce the protagonist."},
+              {prompt:"Every day…",         desc:"Establish the normal world."},
+              {prompt:"Until one day…",     desc:"Something disrupts the status quo."},
+              {prompt:"Because of that…",   desc:"The chain of consequences begins."},
+              {prompt:"Because of that…",   desc:"The stakes deepen."},
+              {prompt:"Until finally…",     desc:"Resolution. What changed, and why it matters."},
+            ].map((s,i)=>(
+              <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"12px 14px",background:i%2===0?"rgba(237,232,223,0.5)":"transparent",borderBottom:i<5?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
+                <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,minWidth:145,flexShrink:0}}>{s.prompt}</span>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:0}}>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{background:"rgba(138,158,132,0.06)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.25)",padding:"16px 18px"}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Applied Example</div>
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {[
+                {prompt:"Once upon a time…", text:"I thought confidence meant sounding polished."},
+                {prompt:"Every day…",         text:"I overprepared for meetings — scripts, rehearsed answers, perfect sentences."},
+                {prompt:"Until one day…",     text:"I completely froze mid-presentation."},
+                {prompt:"Because of that…",   text:"I changed how I prepared — focusing on clarity, not performance."},
+                {prompt:"Because of that…",   text:"I started listening more in meetings instead of waiting to speak."},
+                {prompt:"Until finally…",     text:"People started genuinely listening to me."},
+              ].map((s,i)=>(
+                <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+                  <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,minWidth:145,flexShrink:0}}>{s.prompt}</span>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.55,margin:0}}>{s.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </>
       )}
       {isNT && step==="Example" && (
@@ -1731,7 +1773,6 @@ T.goldDark : T2.text4,
             {id:"earthrise",name:"NASA's Earthrise",preview:"1968. Apollo 8 orbited the moon. William Anders took one photo: Earth rising over the lunar horizon.",quote:"A single image launched the environmental movement.",why:"The photo transported people into the astronaut's perspective. Suddenly, Earth wasn't an abstract concept. It was vulnerable. Worth protecting.",technique:"Find the moment that changes perspective. That's your story's centre.",lesson:"The most powerful stories don't argue. They transport. Show people a new view, and they'll draw their own conclusions."},
             {id:"gawande",name:"Surgeon Atul Gawande",preview:"Gawande could publish dense medical papers. Instead, he tells stories.",quote:'"The Checklist Manifesto" changed medical practice globally.',why:"The research was strong. But the story made it unforgettable. Doctors didn't adopt checklists because of data. They adopted them because they saw themselves in Gawande's story.",technique:"Lead with the person facing the problem. Show their struggle. Show the solution. Show the result.",lesson:"Data informs. Stories transform. Give them a narrative they can see themselves in."},
             {id:"cyber",name:"The Cyber Attack",preview:"A CISO needs budget for security. Facts alone won't convince the board.",quote:'"Last Tuesday at 3am, our systems went dark."',why:"Facts say \"this could happen.\" Stories say \"this happened. To us. It will happen again.\" The narrative transported the board into the future threat.",technique:"Three-act structure: what happened (Stakes), what went wrong (Obstacle), what it cost (Outcome).",lesson:"In high-stakes decisions, stories create urgency that facts can't."},
-            {id:"pixar",name:"The Pixar Framework",preview:"Pixar used the same story structure for every film. It works because it mirrors how the human brain processes experience.",quote:'"Once upon a time… Until one day… Until finally…"',why:"The framework creates a predictable emotional arc. The brain anticipates each beat — and releases tension when it arrives. That release is what makes stories memorable.",technique:"Once upon a time… / Every day… / Until one day… / Because of that… / Because of that… / Until finally… Apply it to any professional story.",lesson:"This simple framework works for a boardroom pitch as well as it works for a Pixar film. Structure is what separates a story from a sequence of events."},
           ].map(card=>(
             <div key={card.id} onClick={()=>setNtMobCard(ntMobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${ntMobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
