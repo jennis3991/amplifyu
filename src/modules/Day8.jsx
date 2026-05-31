@@ -521,39 +521,60 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
 
   // ── LANDING ────────────────────────────────────────────────────────────────
   if(phase==='landing') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
-      <div style={{...cs.card,padding:isDesktop?"32px 36px":"24px"}}>
-        <div style={cs.label}>Story Architect</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Your audience won't remember every slide. They'll remember how you made them feel.</h2>
-        <div style={{height:"0.5px",background:T2.border,marginBottom:18}}/>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:T2.text,lineHeight:1.75,marginBottom:14,fontWeight:300}}>
-          Behind every successful pitch, presentation, proposal, and leadership talk is a story that creates belief, builds connection, and inspires action.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:T2.text,lineHeight:1.75,marginBottom:14,fontWeight:300}}>
-          Every great presentation has a story behind it. The challenge is knowing how to find it.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:T2.text,lineHeight:1.75,marginBottom:14,fontWeight:300}}>
-          Simply capture your ideas by speaking naturally or adding a few notes. Story Architect uncovers the narrative hidden within your message and transforms it into a compelling story, visual storyboard, and presentation-ready experience.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:T2.text,lineHeight:1.75,marginBottom:24,fontWeight:300}}>
-          Using the storytelling techniques mastered by the world's best communicators, AmplifyU helps you craft stories that make people lean in, remember your message, and understand why it matters. Whether you're winning support for an idea, inspiring a team, or influencing a decision, Story Architect helps you turn information into a story that moves people to action.
-        </p>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:24}}>
-          From a simple idea to a story people remember.
-        </p>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-          <button onClick={()=>{setInputMode('speak');setPhase('situation');}}
-            style={{padding:isDesktop?"16px 20px":"14px 16px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.bg,cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T2.text,marginBottom:4}}>Speak Your Story</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,margin:0,fontWeight:300}}>Record up to 90 seconds</p>
-          </button>
-          <button onClick={()=>{setInputMode('type');setPhase('situation');}}
-            style={{padding:isDesktop?"16px 20px":"14px 16px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.bg,cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T2.text,marginBottom:4}}>Type Instead</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,margin:0,fontWeight:300}}>Write your context</p>
-          </button>
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      {/* Title — outside cards, matching D3 pattern */}
+      <div>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Simulation · Day 8</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?38:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>Story Architect</h2>
+      </div>
+
+      {/* HOW IT WORKS */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={cs.label}>How It Works</div>
+        <h3 style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 20px"}}>A 5-step story builder.</h3>
+        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
+          {[
+            {n:1,label:"Choose your\nsituation",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M7.5 11l2.5 2.5 4.5-4.5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>},
+            {n:2,label:"Define your\nmessage",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 5h14a1 1 0 011 1v8a1 1 0 01-1 1H7l-3 3V6a1 1 0 011-1z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:3,label:"Speak or\ntype",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:4,label:"AI builds\nyour story",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 2l1.5 4.5H17l-3.75 2.75 1.5 4.75L11 11.5l-3.75 2.5 1.5-4.75L5 6.5h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:5,label:"Visual\nstoryboard",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke={T.gold} strokeWidth="1.3"/><rect x="12" y="3" width="7" height="7" rx="1.5" stroke={T.gold} strokeWidth="1.3"/><rect x="3" y="12" width="7" height="7" rx="1.5" stroke={T.gold} strokeWidth="1.3"/><rect x="12" y="12" width="7" height="7" rx="1.5" stroke={T.gold} strokeWidth="1.3"/></svg>},
+          ].map((s,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                <div style={{width:isDesktop?44:34,height:isDesktop?44:34,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:6}}>{s.icon}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?11:9,color:T2.text3,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:52,whiteSpace:"pre-line"}}>{s.label}</div>
+              </div>
+              {i<4&&<div style={{height:1,width:isDesktop?12:5,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:32}}/>}
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* THE FIRST STEP */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
+        <div style={cs.label}>The First Step</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>
+          Behind every successful pitch, presentation, proposal, and leadership talk is a story that creates belief, builds connection, and inspires action. Every great presentation has a story behind it. The challenge is knowing how to find it.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>
+          Simply capture your ideas by speaking naturally or adding a few notes. Story Architect uncovers the narrative hidden within your message and transforms it into a compelling story, visual storyboard, and presentation-ready experience.
+        </p>
+      </div>
+
+      {/* YOUR AI COACH */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
+        <div style={cs.label}>Your AI Coach</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>
+          Your AI coach will generate a complete story, four alternative narrative frameworks — TED, Pixar, Executive, and Emotional — and a six-panel visual storyboard for your presentation.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic"}}>
+          From a simple idea to a story people remember — not a worksheet, a workflow.
+        </p>
+      </div>
+
+      <button onClick={()=>setPhase('situation')} style={cs.cta}>Start Building →</button>
     </div>
   );
 
