@@ -227,9 +227,14 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
                       </div>
                     </div>
                   )}
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:memPhase==='start'?16:0,opacity:memPhase==='start'?0.35:1,transition:"opacity 0.3s ease"}}>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:memPhase==='start'?16:0}}>
                     {r.items.map((item,i)=>(
-                      <div key={i} style={{padding:"10px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border,fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{item}</div>
+                      <div key={i} style={{padding:"10px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border,minHeight:isDesktop?42:38,display:"flex",alignItems:"center",transition:"all 0.3s ease"}}>
+                        {memPhase==='showing'
+                          ? <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{item}</span>
+                          : <div style={{height:10,borderRadius:4,background:"rgba(138,158,132,0.2)",width:(50+Math.floor(i*17+11)%35)+"%"}}/>
+                        }
+                      </div>
                     ))}
                   </div>
                   {memPhase==='start' && (
