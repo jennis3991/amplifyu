@@ -840,6 +840,43 @@ setAmbitionSaved(true); } catch {}
       const [sarResult, setSarResult] = useState(""); const [sarLoading, setSarLoading] = useState(false);
       const [storyCard, setStoryCard] = useState(null);
       const [openInsight, setOpenInsight] = useState(null);
+      // Simulation voice states
+      const [simPhase, setSimPhase] = useState('intro');
+      const [activeScenario, setActiveScenario] = useState(null);
+      const [simTranscript, setSimTranscript] = useState('');
+      const [simFallback, setSimFallback] = useState('');
+      const [simResult, setSimResult] = useState(null);
+      const [simIsRec, setSimIsRec] = useState(false);
+      const [simTimeLeft, setSimTimeLeft] = useState(30);
+      const [simWave, setSimWave] = useState(Array(10).fill(0.3));
+      const simRecRef = useRef(null); const simTimerRef = useRef(null); const simWaveRef = useRef(null); const simLiveRef = useRef('');
+      const SpeechRec10 = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
+
+      useEffect(()=>{ if(!simIsRec){clearInterval(simWaveRef.current);return;} simWaveRef.current=setInterval(()=>setSimWave(Array.from({length:10},()=>0.15+Math.random()*0.85)),130); return()=>clearInterval(simWaveRef.current); },[simIsRec]);
+      useEffect(()=>{ if(simIsRec&&simTimeLeft>0){simTimerRef.current=setTimeout(()=>setSimTimeLeft(t=>t-1),1000);} else if(simIsRec&&simTimeLeft===0){doSimStop();} return()=>clearTimeout(simTimerRef.current); },[simIsRec,simTimeLeft]);
+
+      function doSimStart(){
+        simLiveRef.current=''; setSimTranscript(''); setSimIsRec(true); setSimTimeLeft(30);
+        if(SpeechRec10){ const r=new SpeechRec10(); r.continuous=true; r.interimResults=true; r.onresult=e=>{let t='';for(let i=0;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+' ';simLiveRef.current=t;setSimTranscript(t);}; try{r.start();}catch(e){} simRecRef.current=r; }
+      }
+      function doSimStop(){
+        setSimIsRec(false); clearTimeout(simTimerRef.current);
+        if(simRecRef.current){try{simRecRef.current.stop();}catch(e){}}
+        analyzeSimResponse(SpeechRec10?simLiveRef.current:simFallback);
+      }
+      async function analyzeSimResponse(text){
+        setSimPhase('analyzing');
+        const scenario = activeScenario?.prompt || '';
+        const mock={overall:74,headline:"Clear ownership with room to sharpen the result.",scores:{Clarity:75,Structure:70,Confidence:72,Brevity:80,Impact:68},strength:"You spoke with genuine ownership and didn't shy away from the question.",improve:"Lead with the result before the context — flip the order for more impact.",rewrite:`I led a cross-functional project that increased efficiency by 30%. The key challenge was aligning three teams with competing priorities. I resolved this by establishing a weekly decision framework — and we delivered ahead of schedule.`,insight:"Your instinct to give context first is natural, but executives want the result first. Try: 'Result → How → Why it mattered.' You'll land harder, faster."};
+        if(!text||text.trim().length<10){setSimResult(mock);setSimPhase('feedback');return;}
+        try{
+          const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:700,messages:[{role:"user",content:`You are an executive communication coach. A professional was asked: "${scenario}"\n\nTheir spoken response: "${text}"\n\nEvaluate and return ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important observation>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Confidence":<50-100>,"Brevity":<50-100>,"Impact":<50-100>},"strength":"<one sentence: what they did well>","improve":"<one sentence: single most important improvement>","rewrite":"<sharper 2-3 sentence version of their answer, leading with result>","insight":"<2 sentences of personalised coaching>"}`}]})});
+          const d=await res.json(); const raw=(d.content||[]).map(b=>b.text||'').join('').trim(); const m=raw.match(/\{[\s\S]*\}/); setSimResult(JSON.parse(m[0]));
+        }catch{setSimResult(mock);}
+        setSimPhase('feedback');
+      }
+      function resetSim(){setSimPhase('intro');setActiveScenario(null);setSimTranscript('');setSimFallback('');setSimResult(null);setSimIsRec(false);setSimTimeLeft(30);}
+      const scoreColor=s=>s>=80?"#527060":s>=65?T.gold:"#B05C4A";
 
       async function buildSAR() {
         if (!sarS.trim()||!sarA.trim()||!sarR.trim()) return; setSarLoading(true);
@@ -1057,57 +1094,191 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Simulation") {
         const HOT_SEAT_SCENARIOS = [
-          {id:1, title:"The Surprise Skip-Level",   prompt:'"So — what have you been focused on lately?"',                          tag:"Strategic framing · Brevity · Confidence"},
-          {id:2, title:"Promotion Calibration",      prompt:'"Why are you ready for the next level?"',                               tag:"Ownership · Evidence · Leadership language"},
-          {id:3, title:"The Executive Fly-By",       prompt:'"How\'s the project going?"',                                           tag:"Brevity · Prioritisation · Executive comms"},
-          {id:4, title:"Credit Theft",               prompt:"A colleague presents work you led as their own. Respond professionally.", tag:"Composure · Diplomacy · Ownership"},
-          {id:5, title:"The Difficult Stakeholder",  prompt:'"I\'m still not convinced this made a difference."',                    tag:"Persuasion · Calm under pressure · Credibility"},
-          {id:6, title:"The Quiet Achiever Trap",    prompt:'"You do great work — but I need more visibility into your impact."',    tag:"Self-advocacy · Reframing · Strategic comms"},
+          {id:1, title:"The Surprise Skip-Level",  prompt:'"So — what have you been focused on lately?"',                          tag:"Strategic framing · Brevity · Confidence"},
+          {id:2, title:"Promotion Calibration",     prompt:'"Why are you ready for the next level?"',                               tag:"Ownership · Evidence · Leadership language"},
+          {id:3, title:"The Executive Fly-By",      prompt:'"How\'s the project going?"',                                           tag:"Brevity · Prioritisation · Executive comms"},
+          {id:4, title:"Credit Theft",              prompt:"A colleague presents work you led as their own. Respond professionally.", tag:"Composure · Diplomacy · Ownership"},
+          {id:5, title:"The Difficult Stakeholder", prompt:'"I\'m still not convinced this made a difference."',                    tag:"Persuasion · Calm under pressure · Credibility"},
+          {id:6, title:"The Quiet Achiever Trap",   prompt:'"You do great work — but I need more visibility into your impact."',    tag:"Self-advocacy · Reframing · Strategic comms"},
         ];
-        const [activeScenario, setActiveScenario] = useState(null);
-        return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          {/* Hero header */}
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>Performance under pressure</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Leadership Hot Seat</h2>
-          <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Your impact. 30 seconds. Go.</p>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,fontWeight:300,marginBottom:28}}>Six scenarios that feel painfully real. In high-stakes moments, nobody asks for your full backstory. You'll be judged on how clearly you communicate your impact — fast. Frame the Situation. Explain your Action. Land the Result.</p>
+        const cs10={card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"},label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10},cta:{width:"100%",padding:"16px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:16,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:52}};
 
-          {!activeScenario ? (
-            // Scenario picker
+        // ── INTRO ──
+        if(simPhase==='intro') return (
+          <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+            <div style={{marginBottom:24}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Simulation · Day 10</div>
+              <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>The Leadership Hot Seat</h2>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:14}}>
+              <div style={{...cs10.card}}>
+                <div style={cs10.label}>How It Works</div>
+                <h3 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 20px"}}>Six real scenarios. 30 seconds each. Speak — get coached.</h3>
+                <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
+                  {[
+                    {n:1,label:"Pick a\nscenario",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="14" height="16" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M7 7h8M7 11h8M7 15h5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+                    {n:2,label:"Hear the\nchallenge",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><path d="M11 3C7 3 3.5 6 3.5 10c0 2.5 1.3 4.7 3.3 6l-1 3 3.2-1.2C10 18 10.5 18 11 18c4 0 7.5-3.6 7.5-8S15 3 11 3z" stroke={T.gold} strokeWidth="1.3"/></svg>},
+                    {n:3,label:"Speak your\nanswer",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+                    {n:4,label:"Get\ncoached",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4.5H17l-3.75 2.75 1.5 4.75L11 11.5l-3.75 2.5 1.5-4.75L5 6.5h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+                  ].map((s,i)=>(
+                    <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+                      <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                        <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:6}}>{s.icon}</div>
+                        <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
+                        <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,textAlign:"center",lineHeight:1.3,whiteSpace:"pre-line"}}>{s.label}</div>
+                      </div>
+                      {i<3&&<div style={{height:1,width:16,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:28}}/>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div style={{...cs10.card}}>
+                <div style={cs10.label}>The First Step</div>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Six scenarios that feel painfully real. In high-stakes moments, nobody asks for your full backstory. You'll be judged on how clearly you communicate your impact — fast.</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>Frame the Situation. Explain your Action. Land the Result. Then stop.</p>
+              </div>
+              <div style={{...cs10.card}}>
+                <div style={cs10.label}>Your AmplifyU Coach</div>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AmplifyU coach will assess your spoken response across Clarity, Structure, Confidence, Brevity, and Impact — then rewrite your answer to show you exactly what a stronger version sounds like.</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic",fontWeight:300}}>Your impact. 30 seconds. Speak it.</p>
+              </div>
+              <button onClick={()=>setSimPhase('picking')} style={cs10.cta}>Start the Simulation →</button>
+            </div>
+          </div>
+        );
+
+        // ── PICKING ──
+        if(simPhase==='picking') return (
+          <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+            <div style={{marginBottom:24}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Simulation · Day 10</div>
+              <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Choose Your Scenario</h2>
+              <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,fontWeight:300}}>Pick the situation that feels most relevant to you right now.</p>
+            </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
               {HOT_SEAT_SCENARIOS.map(sc=>(
-                <button key={sc.id} onClick={()=>{setActiveScenario(sc);setSimInput("");}}
+                <button key={sc.id} onClick={()=>{setActiveScenario(sc);setSimPhase('ready');setSimTranscript('');setSimFallback('');setSimResult(null);setSimTimeLeft(30);}}
                   style={{padding:"20px 22px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.2s ease"}}
-                  onMouseEnter={e=>{e.currentTarget.style.background="rgba(247,243,236,0.95)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 20px rgba(44,36,22,0.1)";}}
-                  onMouseLeave={e=>{e.currentTarget.style.background=T2.surface;e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}>
-                  <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,marginBottom:6,lineHeight:1.3}}>{sc.id}. {sc.title}</div>
-                  <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginBottom:10,fontStyle:"italic"}}>{sc.tag}</div>
-                  <div style={{fontFamily:T.sans,fontSize:12,color:T2.text2,lineHeight:1.5}}>{sc.prompt}</div>
+                  onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
+                  onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{sc.id}. {sc.title}</div>
+                  <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:8}}>{sc.prompt}</div>
+                  <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>{sc.tag}</div>
                 </button>
               ))}
             </div>
-          ) : (
-            // Active scenario
-            <div>
-              <button onClick={()=>setActiveScenario(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"0 0 20px",background:"none",border:"none",cursor:"pointer",color:T2.text3,fontFamily:T.sans,fontSize:12}}>
-                ← All scenarios
-              </button>
-              <div style={{padding:"24px 28px",background:"#0E0B08",borderRadius:6,marginBottom:24}}>
-                <div style={{fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{activeScenario.title}</div>
-                <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"rgba(255,255,255,0.92)",lineHeight:1.35,marginBottom:10}}>{activeScenario.prompt}</p>
-                <div style={{fontFamily:T.sans,fontSize:12,color:"rgba(138,158,132,0.65)"}}>{activeScenario.tag}</div>
+            <button onClick={resetSim} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"16px 0 0",textAlign:"left"}}>← Back</button>
+          </div>
+        );
+
+        // ── READY ──
+        if(simPhase==='ready'&&activeScenario) return (
+          <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+            <div style={{display:"flex",flexDirection:"column",gap:14}}>
+              <div style={{...cs10.card,borderLeft:"3px solid "+T.gold,padding:"28px 32px"}}>
+                <div style={cs10.label}>{activeScenario.title}</div>
+                <p style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:14}}>{activeScenario.prompt}</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Frame the Situation. Explain your Action. Land the Result. Speak for up to 30 seconds. Click start when you are ready.</p>
               </div>
-              <div style={{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}}>
-                {["Frame the Situation","Explain your Action","Land the Result","30 seconds or less"].map((h,i)=>(
-                  <span key={i} style={{padding:"4px 10px",borderRadius:20,background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.25)",fontFamily:T.sans,fontSize:11,color:T.goldDark}}>{h}</span>
+              <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                {["Lead with the result","Use 'I' not 'we'","Be specific","30 seconds max"].map((h,i)=>(
+                  <span key={i} style={{padding:"5px 12px",borderRadius:20,background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",fontFamily:T.sans,fontSize:12,color:T.gold}}>{h}</span>
                 ))}
               </div>
-              <textarea value={simInput} onChange={e=>setSimInput(e.target.value)} placeholder="Respond clearly, confidently, in 30 seconds or less…" className="au-input" style={{height:130,marginBottom:14,resize:"none"}}/>
-              <D10SimFeedback input={simInput} scenario={activeScenario.prompt}/>
+              {!SpeechRec10&&(
+                <div style={{...cs10.card}}>
+                  <div style={cs10.label}>Type Your Response</div>
+                  <textarea value={simFallback} onChange={e=>setSimFallback(e.target.value)} placeholder="Type your response here…" style={{width:"100%",borderRadius:3,border:"0.5px solid "+T2.border,padding:"12px 14px",fontSize:14,fontFamily:T.sans,resize:"none",height:100,boxSizing:"border-box",background:T2.bg,color:T2.text,outline:"none",lineHeight:1.6}}/>
+                </div>
+              )}
+              <button onClick={SpeechRec10?doSimStart:()=>analyzeSimResponse(simFallback)} style={cs10.cta}>Start Recording →</button>
+              <button onClick={()=>setSimPhase('picking')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"4px 0",textAlign:"center"}}>← Choose different scenario</button>
             </div>
-          )}
-        </div>
+          </div>
+        );
+
+        // ── RECORDING ──
+        if(simPhase==='ready'&&simIsRec||simIsRec) return (
+          <div key={idx} style={{padding:"44px 52px",overflowY:"auto"}}>
+            <div style={{display:"flex",flexDirection:"column",gap:14}}>
+              <div style={{background:"#0A0804",borderRadius:8,padding:"24px 28px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8}}>
+                    <div style={{width:8,height:8,borderRadius:"50%",background:"#CC4444",animation:"glowPulse 1s ease infinite"}}/>
+                    <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.5)",textTransform:"uppercase",letterSpacing:"2px"}}>Recording</span>
+                  </div>
+                  <div style={{fontFamily:T.serif,fontSize:48,fontWeight:600,color:simTimeLeft<=10?"#CC4444":T.gold,lineHeight:1}}>{simTimeLeft}<span style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.4)"}}>s</span></div>
+                </div>
+                <div style={{height:2,background:"rgba(245,239,230,0.07)",borderRadius:1,marginBottom:16,overflow:"hidden"}}>
+                  <div style={{height:"100%",width:((30-simTimeLeft)/30*100)+"%",background:simTimeLeft<=10?"#CC4444":T.gold,borderRadius:1,transition:"width 1s linear"}}/>
+                </div>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:3,height:40,marginBottom:14}}>
+                  {simWave.map((v,i)=><div key={i} style={{width:4,borderRadius:2,background:T.gold,height:Math.max(3,v*36),transition:"height 0.1s ease"}}/>)}
+                </div>
+                <p style={{fontFamily:T.serif,fontSize:15,color:"rgba(245,239,230,0.65)",lineHeight:1.5,margin:0}}>{activeScenario?.prompt}</p>
+              </div>
+              {simTranscript&&<div style={{...cs10.card,padding:"14px 16px"}}><div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Live transcript</div><p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,margin:0}}>{simTranscript.slice(-200)}</p></div>}
+              <button onClick={doSimStop} style={{...cs10.cta,background:"#8A4A3A"}}>Stop & Get Feedback →</button>
+            </div>
+          </div>
+        );
+
+        // ── ANALYZING ──
+        if(simPhase==='analyzing') return (
+          <div key={idx} style={{padding:"44px 52px",display:"flex",flexDirection:"column",alignItems:"center",gap:16,textAlign:"center"}}>
+            <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.22}s infinite`}}/>)}</div>
+            <p style={{fontFamily:T.serif,fontSize:20,color:T2.text,lineHeight:1.4,margin:0}}>Your AmplifyU coach is reviewing your response…</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,fontWeight:300}}>Evaluating clarity, structure, confidence, brevity, and impact.</p>
+          </div>
+        );
+
+        // ── FEEDBACK ──
+        if(simPhase==='feedback'&&simResult) return (
+          <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+            <div style={{display:"flex",flexDirection:"column",gap:14}}>
+              {/* Score hero */}
+              <div style={{background:"#0A0804",borderRadius:8,padding:"28px 32px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
+                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>{activeScenario?.title}</div>
+                <div style={{display:"flex",gap:24,alignItems:"flex-start",marginBottom:16}}>
+                  <div style={{flexShrink:0}}><div style={{fontFamily:T.serif,fontSize:72,fontWeight:600,color:T.gold,lineHeight:0.9}}>{simResult.overall}</div><div style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.4)",marginTop:4}}>/100</div></div>
+                  <div style={{paddingTop:8}}><p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,margin:"0 0 8px"}}>{simResult.headline}</p></div>
+                </div>
+                {/* Score bars */}
+                <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                  {Object.entries(simResult.scores||{}).map(([dim,sc])=>(
+                    <div key={dim} style={{display:"flex",alignItems:"center",gap:10}}>
+                      <span style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.55)",width:90,flexShrink:0}}>{dim}</span>
+                      <div style={{flex:1,height:3,background:"rgba(245,239,230,0.07)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",width:sc+"%",background:sc>=80?"rgba(82,112,96,0.8)":sc>=65?T.gold:"rgba(180,80,60,0.7)",borderRadius:2,transition:"width 1s ease"}}/></div>
+                      <span style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:scoreColor(sc),width:24,textAlign:"right",flexShrink:0}}>{sc}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Strength + Improve */}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+                <div style={{...cs10.card,padding:"18px 20px"}}><div style={cs10.label}>What Landed</div><p style={{fontFamily:T.serif,fontSize:15,color:T2.text,lineHeight:1.6,margin:0}}>{simResult.strength}</p></div>
+                <div style={{...cs10.card,padding:"18px 20px",border:"0.5px solid rgba(176,122,64,0.3)"}}><div style={{...cs10.label,color:"#B07A40"}}>Biggest Opportunity</div><p style={{fontFamily:T.serif,fontSize:15,color:T2.text,lineHeight:1.6,margin:0}}>{simResult.improve}</p></div>
+              </div>
+              {/* Rewrite */}
+              <div style={{...cs10.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
+                <div style={cs10.label}>A Stronger Version</div>
+                <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0}}>{simResult.rewrite}</p>
+              </div>
+              {/* Insight */}
+              <div style={{...cs10.card}}>
+                <div style={cs10.label}>Your AmplifyU Coach Says</div>
+                <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>{simResult.insight}</p>
+              </div>
+              <button onClick={()=>setSimPhase('picking')} style={cs10.cta}>Try Another Scenario →</button>
+              <button onClick={resetSim} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"4px 0",textAlign:"center"}}>← Start over</button>
+            </div>
+          </div>
+        );
+
+        return (
+          <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+            <button onClick={()=>setSimPhase('intro')} style={{background:"none",border:"none",color:T.gold,fontFamily:T.sans,fontSize:14,cursor:"pointer",padding:0}}>← Back to intro</button>
+          </div>
         );
       }
 
