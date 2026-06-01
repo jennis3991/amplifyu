@@ -51,8 +51,8 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       if (onNavFn) onNavFn.current = ()=>{ setPhase('playing'); setRound(0); setSelected(null); setShowFeedback(false); };
       onNavLabel('Begin Challenge');
     } else if (phase === 'done') {
-      if (onNavFn) onNavFn.current = onSimulation || null;
-      onNavLabel(onSimulation ? 'Simulation →' : null);
+      if (onNavFn) onNavFn.current = null;
+      onNavLabel(null);
     } else {
       if (onNavFn) onNavFn.current = null;
       onNavLabel(null);
@@ -270,6 +270,11 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
         <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 24px"}}>You've practised the pause, recognised filler patterns, and replaced noise with calm intention. These habits compound every time you speak.</p>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Silence often sounds more confident than fillers."</p>
       </div>
+      {onSimulation && (
+        <button onClick={onSimulation} style={{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48}}>
+          Go to Simulation →
+        </button>
+      )}
       <button onClick={()=>{setPhase('intro');setRound(0);setSelected(null);setShowFeedback(false);}} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"8px 0",textAlign:"center",width:"100%",letterSpacing:"0.2px"}}>Practise again</button>
     </div>
   );
