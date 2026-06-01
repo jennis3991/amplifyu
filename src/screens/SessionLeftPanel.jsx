@@ -295,8 +295,7 @@ export function SessionLeftPanel({
         {d1Overlay}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
           <div style={{ ...LP_LABEL, marginBottom:16 }}>Day {lesson.day} · {lesson.tag}</div>
-          <h2 style={{ ...LP_HEADING, fontSize:"clamp(20px,1.8vw,26px)", marginBottom:18, letterSpacing:"-0.3px" }}>{lesson.title}</h2>
-          <p style={{ fontFamily:T.sans, fontSize:14, fontWeight:400, color:"rgba(245,239,230,0.55)", lineHeight:1.6, margin:0, fontStyle:"italic", maxWidth:360 }}>{lesson.quote}</p>
+          <h2 style={{ ...LP_HEADING, fontSize:"clamp(20px,1.8vw,26px)", marginBottom:0, letterSpacing:"-0.3px" }}>{lesson.title}</h2>
         </div>
       </div>
     );
