@@ -1797,12 +1797,12 @@ T.goldDark : T2.text4,
         <>
           <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Storytelling in the Wild</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore stories that changed minds.</p>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Four stories. Four superpowers. Tap each card to explore.</p>
           {[
-            {id:"obama8",name:"Barack Obama",preview:'Obama doesn\'t open with policy. He opens with story. His 2004 DNC speech: "My father was a foreign student, born and raised in a small village in Kenya..."',quote:'"Only in America is my story possible."',why:"Personal narrative creates emotional connection before logical argument. By the time he said that line, you were already invested.",technique:"Start with the human story. Then connect it to the point. People remember stories. They forget statistics.",lesson:"The strongest arguments begin with a story that makes the listener feel something before you ask them to think something."},
-            {id:"earthrise",name:"NASA's Earthrise",preview:"1968. Apollo 8 orbited the moon. William Anders took one photo: Earth rising over the lunar horizon.",quote:"A single image launched the environmental movement.",why:"The photo transported people into the astronaut's perspective. Suddenly, Earth wasn't an abstract concept. It was vulnerable. Worth protecting.",technique:"Find the moment that changes perspective. That's your story's centre.",lesson:"The most powerful stories don't argue. They transport. Show people a new view, and they'll draw their own conclusions."},
-            {id:"gawande",name:"Surgeon Atul Gawande",preview:"Gawande could publish dense medical papers. Instead, he tells stories.",quote:'"The Checklist Manifesto" changed medical practice globally.',why:"The research was strong. But the story made it unforgettable. Doctors didn't adopt checklists because of data. They adopted them because they saw themselves in Gawande's story.",technique:"Lead with the person facing the problem. Show their struggle. Show the solution. Show the result.",lesson:"Data informs. Stories transform. Give them a narrative they can see themselves in."},
-            {id:"cyber",name:"The Cyber Attack",preview:"A CISO needs budget for security. Facts alone won't convince the board.",quote:'"Last Tuesday at 3am, our systems went dark."',why:"Facts say \"this could happen.\" Stories say \"this happened. To us. It will happen again.\" The narrative transported the board into the future threat.",technique:"Three-act structure: what happened (Stakes), what went wrong (Obstacle), what it cost (Outcome).",lesson:"In high-stakes decisions, stories create urgency that facts can't."},
+            {id:"janitor",name:"The NASA Janitor",preview:"JFK asked a janitor what he did at NASA. His answer created purpose in a single sentence.",quote:'"I\'m helping put a man on the moon."',why:"He wasn't describing his task — he was describing his mission. Great stories connect everyday actions to a bigger purpose.",technique:"Don't tell people what they're doing. Help them understand why it matters.",lesson:"Purpose — the most powerful story creates meaning, not just instruction."},
+            {id:"surgeons",name:"The Two Surgeons",preview:"Two surgeons deliver the same message. One delivers data. The other paints a future.",quote:'"A year from now, you\'ll be playing football with your son."',why:"Same information. Completely different experience. One statistic, one story — the story creates hope where data creates anxiety.",technique:"Don't describe features. Describe outcomes. Paint the future your audience wants to live in.",lesson:"Hope — the best stories make people feel the result before it arrives."},
+            {id:"jobs",name:"Steve Jobs and the Envelope",preview:"When introducing the MacBook Air, Jobs didn't lead with specs. He reached into a manila envelope.",quote:'"The world\'s thinnest notebook."',why:"The product wasn't the story. The reveal was. Curiosity is one of the most powerful forces in communication.",technique:"Don't reveal everything immediately. Create anticipation before delivering the answer.",lesson:"Curiosity — great stories hold something back until exactly the right moment."},
+            {id:"obama_citizen",name:"Barack Obama and the Citizen",preview:"When discussing policy, Obama always started with a person. Not a policy. Not a statistic. A person.",quote:'"A mother struggling to pay bills. A worker supporting a family."',why:"The audience connected with the human story before hearing the argument. People care about people before they care about issues.",technique:"Start with a customer, colleague, or client before presenting the data.",lesson:"Connection — stories about people create empathy before logic."},
           ].map(card=>(
             <div key={card.id} onClick={()=>setNtMobCard(ntMobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${ntMobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
@@ -1823,6 +1823,22 @@ T.goldDark : T2.text4,
               )}
             </div>
           ))}
+          {/* Summary table */}
+          <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"18px 20px",marginTop:4}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Four Storytelling Superpowers</div>
+            {[
+              {story:"The NASA Janitor",   power:"Purpose"},
+              {story:"The Two Surgeons",   power:"Hope"},
+              {story:"Steve Jobs",         power:"Curiosity"},
+              {story:"Barack Obama",       power:"Connection"},
+            ].map((row,i,arr)=>(
+              <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.border:"none"}}>
+                <span style={{fontFamily:T.serif,fontSize:15,color:T2.text}}>{row.story}</span>
+                <span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.gold}}>{row.power}</span>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T.gold,lineHeight:1.6,marginTop:14,marginBottom:0}}>When people feel meaning, they remember the message.</p>
         </>
       )}
       {isNT && step==="Simulation" && (

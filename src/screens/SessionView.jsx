@@ -1989,17 +1989,38 @@ setAmbitionSaved(true); } catch {}
       if (step === "Example") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>Storytelling in the Wild</h2>
-          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32}}>Four examples of stories that changed minds, moved markets, and shaped history.</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
-            <ExCard T2={T2} name="Barack Obama" preview="Obama doesn't open with policy. He opens with story."
-              full={"Obama doesn't open with policy. He opens with story.\n\nHis 2004 DNC speech that launched his career:\n\"My father was a foreign student, born and raised in a small village in Kenya...\"\n\nHe spent 3 minutes on his family story before touching policy. Why? Because the story made the policy personal.\n\nPersonal narrative creates emotional connection before logical argument. By the time he said \"Only in America is my story possible,\" you were already invested.\n\nStart with the human story. Then connect it to the point. People remember stories. They forget statistics.\n\nThe strongest arguments begin with a story that makes the listener feel something before you ask them to think something."}/>
-            <ExCard T2={T2} name="NASA's Earthrise" preview="1968. Apollo 8 orbited the moon. William Anders took one photo."
-              full={"1968. Apollo 8 orbited the moon. William Anders took one photo: Earth rising over the lunar horizon.\n\nThat image — a fragile blue marble suspended in the void — launched the environmental movement.\n\nNo data. No arguments. Just one story told through an image.\n\nThe photo transported people into the astronaut's perspective. Suddenly, Earth wasn't an abstract concept. It was vulnerable. Worth protecting.\n\nFind the moment that changes perspective. That's your story's centre.\n\nThe most powerful stories don't argue. They transport. Show people a new view, and they'll draw their own conclusions."}/>
-            <ExCard T2={T2} name="Surgeon Atul Gawande" preview="Gawande could publish dense medical papers. Instead, he tells stories."
-              full={"Gawande could publish dense medical papers. Instead, he tells stories.\n\n\"The Checklist Manifesto\" wasn't a study. It was the story of how a simple checklist — inspired by airplane pilots — saved lives in operating rooms.\n\nOne surgeon. One problem. One solution. Changed medical practice globally.\n\nThe research was strong. But the story made it unforgettable. Doctors didn't adopt checklists because of data. They adopted them because they saw themselves in Gawande's story.\n\nLead with the person facing the problem. Show their struggle. Show the solution. Show the result.\n\nData informs. Stories transform. If you want people to act, give them a narrative they can see themselves in."}/>
-            <ExCard T2={T2} name="The Cyber Attack" preview="A CISO needs budget for security. Facts alone won't convince the board."
-              full={"A CISO needs budget for security. Facts alone won't convince the board.\n\nSo she tells a story:\n\n\"Last Tuesday at 3am, our systems went dark. For 6 hours, we couldn't process orders. We lost £2M in revenue. This could happen again tomorrow.\"\n\nStakes. Obstacle. Outcome. The board approved the budget.\n\nFacts say \"this could happen.\" Stories say \"this happened. To us. It will happen again.\" The narrative transported the board into the future threat.\n\nThree-act structure: what happened (Stakes), what went wrong (Obstacle), what it cost (Outcome).\n\nIn high-stakes decisions, stories create urgency that facts can't. Transport your audience into the future you're trying to prevent or create."}/>
+          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32}}>Four stories. Four superpowers. One lesson about how the best communicators move people.</p>
+          <div style={{display:"flex",flexDirection:"column",gap:16,marginBottom:40}}>
+            <ExCard T2={T2} name="The NASA Janitor" preview="A Story That Created Purpose. JFK asked a janitor what he did. The answer changed everything."
+              full={"In the 1960s, President John F. Kennedy visited NASA and reportedly asked a janitor carrying a broom:\n\n\"What do you do here?\"\n\nThe janitor replied:\n\n\"I'm helping put a man on the moon.\"\n\nHe wasn't describing his task.\nHe was describing his mission.\n\nLesson: Great stories connect everyday actions to a bigger purpose.\n\nWorkplace Application: Don't tell people what they're doing. Help them understand why it matters."}/>
+            <ExCard T2={T2} name="The Two Surgeons" preview="A Story That Created Hope. Same information. Different experience. One delivers data. The other paints a future."
+              full={"Two surgeons deliver the same message.\n\nSurgeon A says:\n\"This operation has a 90% success rate.\"\n\nSurgeon B says:\n\"A year from now, there's a very good chance you'll be sending me a photo of yourself playing football with your son.\"\n\nSame information. Different experience.\n\nOne delivers data. The other paints a future.\n\nLesson: People don't remember statistics. They remember stories about what those statistics mean.\n\nWorkplace Application: Don't describe features. Describe outcomes."}/>
+            <ExCard T2={T2} name="Steve Jobs and the Envelope" preview="A Story That Created Anticipation. When introducing the MacBook Air, Jobs didn't lead with specs. He built suspense."
+              full={"When introducing the first MacBook Air, Steve Jobs didn't begin with technical specifications.\n\nInstead, he built suspense.\n\nThen he reached into a manila envelope and pulled out the laptop.\n\nThe audience erupted.\n\nThe product wasn't the story. The reveal was.\n\nLesson: Curiosity is one of the most powerful forces in communication.\n\nWorkplace Application: Don't reveal everything immediately. Create anticipation before delivering the answer."}/>
+            <ExCard T2={T2} name="Barack Obama and the Citizen" preview="A Story That Created Connection. When discussing policy, Obama always started with a person. Not a statistic. A person."
+              full={"When discussing healthcare, jobs, or education, Barack Obama often began with a single person.\n\nNot a policy. Not a statistic. A person.\n\nA mother struggling to pay bills.\nA worker trying to support a family.\nA student chasing a dream.\n\nThe audience connected with the human story before hearing the argument.\n\nLesson: People care about people before they care about issues.\n\nWorkplace Application: Start with a customer, colleague, or client before presenting the data."}/>
           </div>
+          {/* Summary table */}
+          <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"28px 32px",marginBottom:24}}>
+            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:16}}>The Four Storytelling Superpowers</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:0}}>
+              <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",padding:"8px 0",borderBottom:"0.5px solid "+T2.border}}>Story</div>
+              <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",padding:"8px 0",borderBottom:"0.5px solid "+T2.border}}>What It Creates</div>
+              {[
+                {story:"The NASA Janitor",    power:"Purpose"},
+                {story:"The Two Surgeons",    power:"Hope"},
+                {story:"Steve Jobs",          power:"Curiosity"},
+                {story:"Barack Obama",        power:"Connection"},
+              ].map((row,i,arr)=>(
+                <>
+                  <div key={"a"+i} style={{fontFamily:T.serif,fontSize:16,color:T2.text,padding:"12px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.border:"none"}}>{row.story}</div>
+                  <div key={"b"+i} style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,padding:"12px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.border:"none"}}>{row.power}</div>
+                </>
+              ))}
+            </div>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,marginBottom:8}}>The best storytellers don't just share information. They create meaning.</p>
+          <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T.gold,lineHeight:1.5,margin:0}}>And when people feel meaning, they remember the message.</p>
         </div>
       );
 
