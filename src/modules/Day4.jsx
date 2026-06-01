@@ -53,7 +53,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   const [selected, setSelected] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [memPhase, setMemPhase] = useState('start'); // 'start'|'showing'|'asking'
-  const [memSecs, setMemSecs] = useState(4);
+  const [memSecs, setMemSecs] = useState(5);
   const memRef = useRef(null);
   const [simonStep, setSimonStep] = useState(0); // 0=round1, 1=round2, 2=round3, 3=lesson
   const [elevatorInput, setElevatorInput] = useState('');
@@ -61,7 +61,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   const ROUNDS = [
     {
       id:'memory', title:"THE MEMORY CHALLENGE",
-      intro:"Look at this list for 4 seconds. Try to remember as many as you can.",
+      intro:"Look at this list for 5 seconds. Try to remember as many as you can.",
       items:["Red umbrella","Dog","Train ticket","Blue bicycle","Coffee","Keys","Sunglasses","Backpack"],
       shortItems:["🚲 Blue bicycle","☕ Coffee","🔑 Keys","🎒 Backpack"],
       question:"How many did you remember?",
@@ -121,7 +121,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   useEffect(()=>{
     if(!onNavLabel) return;
     if(phase==='intro'){
-      if(onNavFn) onNavFn.current=()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(4);setSimonStep(0);};
+      if(onNavFn) onNavFn.current=()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);setSimonStep(0);};
       onNavLabel('Begin Challenge');
     } else if(phase==='done'){
       if(onNavFn) onNavFn.current=null;
@@ -140,7 +140,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
   function advanceRound(){
     const next=round+1;
-    setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(4);setSimonStep(0);setElevatorInput('');
+    setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);setSimonStep(0);setElevatorInput('');
     if(next<ROUNDS.length){setRound(next);}else{setPhase('done');}
   }
 
@@ -193,7 +193,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
           ))}
         </div>
       </div>
-      <button onClick={()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(4);setSimonStep(0);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Miller's Law Challenge →</button>
+      <button onClick={()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);setSimonStep(0);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Miller's Law Challenge →</button>
     </div>
   );
 
@@ -215,24 +215,29 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
             <div style={cs.card}>
               <div style={cs.label}>{r.title}</div>
               <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:16,lineHeight:1.5}}>{r.intro}</p>
-              {memPhase==='start' && (
-                <button onClick={()=>setMemPhase('showing')} style={cs.cta}>Start 4-second timer →</button>
-              )}
-              {memPhase==='showing' && (
+
+              {/* Always show the items grid — greyed out before start, active during timer */}
+              {(memPhase==='start'||memPhase==='showing') && (
                 <>
-                  <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
-                    <div style={{fontFamily:T.serif,fontSize:isDesktop?40:32,fontWeight:600,color:T.gold,lineHeight:1,flexShrink:0}}>{memSecs}</div>
-                    <div style={{flex:1,height:4,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-                      <div style={{height:"100%",width:((memSecs/4)*100)+"%",background:T.gold,borderRadius:2,transition:"width 1s linear"}}/>
+                  {memPhase==='showing' && (
+                    <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
+                      <div style={{fontFamily:T.serif,fontSize:isDesktop?40:32,fontWeight:600,color:T.gold,lineHeight:1,flexShrink:0}}>{memSecs}</div>
+                      <div style={{flex:1,height:4,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+                        <div style={{height:"100%",width:((memSecs/5)*100)+"%",background:T.gold,borderRadius:2,transition:"width 1s linear"}}/>
+                      </div>
                     </div>
-                  </div>
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                  )}
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:memPhase==='start'?16:0,opacity:memPhase==='start'?0.35:1,transition:"opacity 0.3s ease"}}>
                     {r.items.map((item,i)=>(
                       <div key={i} style={{padding:"10px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border,fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{item}</div>
                     ))}
                   </div>
+                  {memPhase==='start' && (
+                    <button onClick={()=>setMemPhase('showing')} style={cs.cta}>Start 5-second timer →</button>
+                  )}
                 </>
               )}
+
               {memPhase==='asking' && !showFeedback && (
                 <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,lineHeight:1.5,margin:0}}>{r.question}</p>
               )}
@@ -439,7 +444,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
           Go to Simulation →
         </button>
       )}
-      <button onClick={()=>{setPhase('intro');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(4);}} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"8px 0",textAlign:"center",width:"100%"}}>Play again</button>
+      <button onClick={()=>{setPhase('intro');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);}} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"8px 0",textAlign:"center",width:"100%"}}>Play again</button>
     </div>
   );
 
