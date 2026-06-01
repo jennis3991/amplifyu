@@ -444,12 +444,14 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
         <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 20px"}}>You've experienced Miller's Law five ways. Your brain now knows — short sentences aren't just cleaner. They're kinder to everyone listening.</p>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Short sentences give ideas space to land."</p>
       </div>
+      <button onClick={()=>{setPhase('intro');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);}} style={{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48}}>
+        Play Again →
+      </button>
       {onSimulation && (
-        <button onClick={onSimulation} style={{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48}}>
-          Go to Simulation →
+        <button onClick={onSimulation} style={{width:"100%",padding:isDesktop?"13px":"12px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:isDesktop?14:13,fontWeight:400,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>
+          Go to Simulation
         </button>
       )}
-      <button onClick={()=>{setPhase('intro');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);}} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"8px 0",textAlign:"center",width:"100%"}}>Play again</button>
     </div>
   );
 
