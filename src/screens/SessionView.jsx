@@ -42,6 +42,7 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const [exitConfirm, setExitConfirm] = useState(false);
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [workplaceOpen, setWorkplaceOpen] = useState(false);
+  const [reviewTab, setReviewTab] = useState('learned');
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
   const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
@@ -3420,9 +3421,56 @@ setAmbitionSaved(true); } catch {}
                   <div style={{ flex: 1, background: T2.bg, borderLeft: "1px solid " + T2.divider, overflowY: "auto" }}>
                     <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 48px" }}>
                       {/* Header */}
-                      <div style={{ fontSize: 12, fontWeight: 500, textTransform: "uppercase", letterSpacing: "2px", color: T.gold, marginBottom: 32, fontFamily: T.sans }}>Day {lesson.day} Complete ✓</div>
-                      <h1 style={{ fontFamily: T.serif, fontSize: "clamp(36px,3.5vw,48px)", fontWeight: 600, color: T2.text, letterSpacing: "-0.5px", lineHeight: 1.15, marginBottom: 16 }}>Go Deeper</h1>
-                      <p style={{ fontFamily: T.sans, fontSize: 17, fontWeight: 300, color: T2.text2, maxWidth: 500, marginBottom: 60, lineHeight: 1.65 }}>You've learned the techniques. These books will make you unstoppable.</p>
+                      <div style={{ fontSize: 12, fontWeight: 500, textTransform: "uppercase", letterSpacing: "2px", color: T.gold, marginBottom: 20, fontFamily: T.sans }}>Day {lesson.day} Complete ✓</div>
+
+                      {/* ── TABS: What You Learned / Workplace Application ── */}
+                      <div style={{ display: "flex", gap: 0, borderBottom: "1px solid " + T2.border, marginBottom: 32 }}>
+                        {[
+                          { id: "learned",   label: "What You Learned" },
+                          { id: "workplace", label: "Workplace Application" },
+                        ].map(tab => (
+                          <button key={tab.id} onClick={() => setReviewTab(tab.id)} style={{
+                            padding: "12px 24px", border: "none", background: "transparent",
+                            fontFamily: T.sans, fontSize: 14, fontWeight: reviewTab === tab.id ? 600 : 400,
+                            color: reviewTab === tab.id ? T2.text : T2.text3, cursor: "pointer",
+                            borderBottom: reviewTab === tab.id ? "2px solid " + T.gold : "2px solid transparent",
+                            marginBottom: -1, transition: "all 0.15s",
+                          }}>{tab.label}</button>
+                        ))}
+                      </div>
+
+                      {/* Tab: What You Learned */}
+                      {reviewTab === "learned" && (
+                        <div style={{ marginBottom: 48 }}>
+                          {REVIEW_BULLETS[lesson.day - 1].map((b, i) => (
+                            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 14, padding: "16px 20px", background: T2.surface, borderRadius: 6, border: "0.5px solid " + T2.border }}>
+                              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "rgba(138,158,132,0.12)", border: "1px solid rgba(138,158,132,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                                <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                              </div>
+                              <span style={{ fontFamily: T.sans, fontSize: 15, color: T2.text, lineHeight: 1.65, fontWeight: 300 }}>{b}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Tab: Workplace Application */}
+                      {reviewTab === "workplace" && (
+                        <div style={{ marginBottom: 48 }}>
+                          <p style={{ fontFamily: T.sans, fontSize: 15, color: T2.text3, lineHeight: 1.65, marginBottom: 24, fontWeight: 300 }}>How to put today's techniques to work immediately.</p>
+                          {(WORKPLACE_APPLICATION[lesson.day - 1] || []).map((b, i) => (
+                            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 14, padding: "16px 20px", background: T2.surface, borderRadius: 6, border: "0.5px solid " + T2.border }}>
+                              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "rgba(138,158,132,0.1)", border: "1px solid rgba(138,158,132,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                                <span style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold }}>{i + 1}</span>
+                              </div>
+                              <span style={{ fontFamily: T.sans, fontSize: 15, color: T2.text, lineHeight: 1.65, fontWeight: 300 }}>{b}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Divider before books */}
+                      <h2 style={{ fontFamily: T.serif, fontSize: "clamp(28px,2.5vw,36px)", fontWeight: 600, color: T2.text, letterSpacing: "-0.3px", lineHeight: 1.15, marginBottom: 12 }}>Go Deeper</h2>
+                      <p style={{ fontFamily: T.sans, fontSize: 15, fontWeight: 300, color: T2.text2, maxWidth: 500, marginBottom: 40, lineHeight: 1.65 }}>You've learned the techniques. These books will make you unstoppable.</p>
 
                       {/* Book cards */}
                       {fr && fr.books.map((book, bi) => {
@@ -3472,49 +3520,6 @@ setAmbitionSaved(true); } catch {}
                         );
                       })}
 
-                      {/* Session summary accordion */}
-                      <div style={{ borderTop: "1px solid rgba(138,158,132,0.3)", paddingTop: 32, marginBottom: 0, cursor: "pointer" }} onClick={()=>setAccordionOpen(o=>!o)}>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                          <div style={{ fontFamily: T.sans, fontSize: 16, fontWeight: 500, color: T2.text }}>What You Practised Today</div>
-                          <span style={{ fontSize: 18, color: T2.text3, transition: "transform 0.2s", transform: accordionOpen ? "rotate(180deg)" : "none", display: "inline-block" }}>▾</span>
-                        </div>
-                        {accordionOpen && (
-                          <div style={{ marginTop: 20 }}>
-                            {REVIEW_BULLETS[lesson.day - 1].map((b, i) => (
-                              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10 }}>
-                                <div style={{ width: 18, height: 18, borderRadius: "50%", background: "rgba(138,158,132,0.15)", border: "1px solid rgba(138,158,132,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
-                                  <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                </div>
-                                <span style={{ fontFamily: T.sans, fontSize: 15, color: T2.text2, lineHeight: 1.6 }}>{b}</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Workplace Application accordion */}
-                      <div style={{ borderTop: "1px solid rgba(138,158,132,0.15)", paddingTop: 24, marginBottom: 40, cursor: "pointer" }} onClick={()=>setWorkplaceOpen(o=>!o)}>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                            <div style={{ fontFamily: T.sans, fontSize: 16, fontWeight: 500, color: T2.text }}>Workplace Application</div>
-                            <span style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", padding: "3px 8px", border: "0.5px solid rgba(138,158,132,0.4)", borderRadius: 20 }}>New</span>
-                          </div>
-                          <span style={{ fontSize: 18, color: T2.text3, transition: "transform 0.2s", transform: workplaceOpen ? "rotate(180deg)" : "none", display: "inline-block" }}>▾</span>
-                        </div>
-                        <p style={{ fontFamily: T.sans, fontSize: 14, color: T2.text3, lineHeight: 1.6, margin: "8px 0 0", fontWeight: 300 }}>How to put today's techniques to work immediately.</p>
-                        {workplaceOpen && (
-                          <div style={{ marginTop: 20 }}>
-                            {(WORKPLACE_APPLICATION[lesson.day - 1] || []).map((b, i) => (
-                              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 14, padding: "14px 16px", background: T2.surface, borderRadius: 6, border: "0.5px solid " + T2.border }}>
-                                <div style={{ width: 24, height: 24, borderRadius: "50%", background: "rgba(138,158,132,0.1)", border: "1px solid rgba(138,158,132,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
-                                  <span style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold }}>{i + 1}</span>
-                                </div>
-                                <span style={{ fontFamily: T.sans, fontSize: 14, color: T2.text, lineHeight: 1.65, fontWeight: 300 }}>{b}</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
 
                       {/* Next session button */}
                       <button onClick={onComplete} style={{ width: "100%", background: T.gold, color: "#F5EFE6", padding: "18px", borderRadius: 4, border: "none", fontFamily: T.sans, fontSize: 15, fontWeight: 600, cursor: "pointer", transition: "all 0.25s ease", textAlign: "center", marginBottom: 60 }}
