@@ -56,6 +56,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   const [memSecs, setMemSecs] = useState(4);
   const memRef = useRef(null);
   const [simonStep, setSimonStep] = useState(0); // 0=round1, 1=round2, 2=round3, 3=lesson
+  const [elevatorInput, setElevatorInput] = useState('');
 
   const ROUNDS = [
     {
@@ -68,15 +69,11 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       lesson:"Your brain can only hold around 7 items in working memory at once — and often fewer under pressure. When there's too much competing for your attention, information slips. That's Miller's Law in action.",
     },
     {
-      id:'netflix', title:"THE NETFLIX TEST",
-      intro:"Which version would you rather hear?",
-      versions:[
-        {label:"Version A", text:"Last weekend I started a new show that my friend recommended because she said it had great reviews and after watching three episodes I understood why everyone was talking about it."},
-        {label:"Version B", text:"Last weekend I started a new show.\n\nA friend recommended it.\n\nAfter three episodes, I understood the hype."},
-      ],
-      question:"Which would you rather listen to?",
-      options:[{label:"Version A",correct:false},{label:"Version B",correct:true}],
-      lesson:"The information is identical — but Version B delivers it in smaller chunks that are easier to process. Great communicators don't overwhelm. They deliver one idea at a time.",
+      id:'elevator', title:"THE ELEVATOR TEST",
+      intro:"A senior leader stops you and asks:",
+      prompt:'"What does your team actually do?"',
+      instruction:"Answer in 3 short sentences.",
+      lesson:"Three sentences. Each one direct. No padding, no qualifiers, no jargon.\n\nWhen you can answer that question clearly, you've found your team's core message. Short sentences force you to decide what actually matters.",
     },
     {
       id:'simon', title:"SIMON SAYS",
@@ -143,7 +140,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
   function advanceRound(){
     const next=round+1;
-    setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(4);setSimonStep(0);
+    setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(4);setSimonStep(0);setElevatorInput('');
     if(next<ROUNDS.length){setRound(next);}else{setPhase('done');}
   }
 
@@ -168,7 +165,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
         <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
           {[
             {n:1,label:"Memory"},
-            {n:2,label:"Netflix Test"},
+            {n:2,label:"Elevator Test"},
             {n:3,label:"Simon Says"},
             {n:4,label:"Directions"},
             {n:5,label:"Scroll Test"},
@@ -262,37 +259,42 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
           </>
         )}
 
-        {/* ── ROUND 2: NETFLIX TEST ── */}
-        {r.id==='netflix' && (
+        {/* ── ROUND 2: ELEVATOR TEST ── */}
+        {r.id==='elevator' && (
           <>
-            <div style={cs.card}>
+            <div style={{...cs.card,textAlign:"center",padding:isDesktop?"28px 32px":"22px 20px"}}>
               <div style={cs.label}>{r.title}</div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:14,lineHeight:1.5}}>{r.intro}</p>
-              <div style={{display:"flex",flexDirection:"column",gap:10}}>
-                {r.versions.map((v,i)=>(
-                  <div key={i} style={{padding:"14px 16px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{v.label}</div>
-                    <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.6,margin:0,whiteSpace:"pre-line"}}>{v.text}</p>
-                  </div>
-                ))}
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5,marginBottom:16}}>{r.intro}</p>
+              <div style={{padding:"16px 20px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,textAlign:"left",marginBottom:16}}>
+                <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>{r.prompt}</p>
               </div>
-              {!showFeedback && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,marginTop:16,marginBottom:0}}>{r.question}</p>}
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,margin:0}}>{r.instruction}</p>
             </div>
             {!showFeedback && (
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                {r.options.map((opt,i)=>(
-                  <button key={i} onClick={()=>{setSelected(i);setShowFeedback(true);}}
-                    style={{padding:"14px 16px",borderRadius:4,border:`0.5px solid ${selected===i?(opt.correct?T.gold:"rgba(180,80,60,0.4)"):T2.border}`,background:selected===i?(opt.correct?"rgba(138,158,132,0.08)":"rgba(180,80,60,0.04)"):"transparent",color:T2.text,fontSize:isDesktop?15:14,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5,transition:"all 0.2s"}}>
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
+              <>
+                <textarea
+                  value={elevatorInput}
+                  onChange={e=>setElevatorInput(e.target.value)}
+                  placeholder={"Sentence 1.\n\nSentence 2.\n\nSentence 3."}
+                  rows={5}
+                  style={{width:"100%",padding:"14px 16px",border:"0.5px solid "+T2.border,borderRadius:4,outline:"none",background:T2.bg,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,fontFamily:T.sans,fontWeight:300,boxSizing:"border-box",resize:"none"}}
+                />
+                <button onClick={()=>setShowFeedback(true)} disabled={!elevatorInput.trim()}
+                  style={{...cs.cta,opacity:elevatorInput.trim()?1:0.4,cursor:elevatorInput.trim()?"pointer":"default"}}>
+                  See Feedback →
+                </button>
+              </>
             )}
             {showFeedback && (
               <>
                 <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
+                  <div style={cs.label}>Your Answer</div>
+                  <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,margin:"0 0 14px",whiteSpace:"pre-wrap"}}>{elevatorInput}</p>
+                  <div style={{height:"0.5px",background:T2.border,marginBottom:14}}/>
                   <div style={cs.label}>AmplifyU Insight</div>
-                  <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:0}}>{r.lesson}</p>
+                  {r.lesson.split('\n\n').map((para,i,arr)=>(
+                    <p key={i} style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:i<arr.length-1?"0 0 10px":0}}>{para}</p>
+                  ))}
                 </div>
                 <button onClick={advanceRound} style={cs.cta}>Round 3 →</button>
               </>
