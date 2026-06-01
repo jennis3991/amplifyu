@@ -143,6 +143,7 @@ lsSet("au1_dark",d); }
   }
 
   function startSession(d) { setSelDay(d); setView("session"); }
+  function startSessionAtStep(d, stepName) { try{localStorage.setItem("au1_initial_step",stepName);}catch{} setSelDay(d); setView("session"); }
   function completeDay(d) {
     if (!done.includes(d)) {
       const upd = [...done, d];
@@ -261,7 +262,7 @@ reset</button>
         {tab==="home" && <HomeScreen done={done} cur={cur} streak={streak} onStart={startSession} roleId={roleId} activeRole={activeRole} dark={dark} DK={DK} showNudge={showNudge} onDismissNudge={()=>setShowNudge(false)} isDesktop={isDesktop}/>}
         {tab==="sessions" && <SessionsScreen done={done} cur={cur} onStart={startSession} roleId={roleId} dark={dark} DK={DK} isDesktop={isDesktop}/>}
         {tab==="progress" && <ProgressScreen done={done} cur={cur} streak={streak} roleId={roleId} activeRole={activeRole} onChangeRole={(r)=>{setRoleId(r);lsSet("au1_role",r);}} dark={dark} toggleDark={toggleDark} DK={DK} onReset={()=>setConfirmReset(true)} isDesktop={isDesktop}/>}
-        {tab==="toolkit" && <ToolkitScreen onQuickPrep={() => setView("quickprep")} dark={dark} DK={DK} isDesktop={isDesktop}/>}
+        {tab==="toolkit" && <ToolkitScreen onQuickPrep={() => setView("quickprep")} onStartSession={startSessionAtStep} dark={dark} DK={DK} isDesktop={isDesktop}/>}
       </div>
       {!isDesktop && <TabBar tab={tab} setTab={setTab} dark={dark}/>}
     </div>

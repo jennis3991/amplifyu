@@ -3,9 +3,9 @@ import { T } from '../theme.js';
 import { FURTHER_READING, PHRASES, SAY_THIS, QUICK_PREP, DAILY_INSIGHTS, POWER_PHRASES } from '../data.js';
 import { Scene } from '../scenes.jsx';
 
-export function ToolkitScreen({onQuickPrep, dark=false, DK={}, isDesktop=false}) {
+export function ToolkitScreen({onQuickPrep, onStartSession, dark=false, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
-  const [tab, setTab] = useState("sayThis");
+  const [tab, setTab] = useState("aitools");
   useEffect(() => {
     try {
       const pending = localStorage.getItem("au1_open_toolkit_tab");
@@ -28,7 +28,7 @@ p];
     try { localStorage.setItem("au1_saved_phrases", JSON.stringify(next)); 
 } catch {}
   }
-  const toolkitTabs = [["story","My Story"],["sayThis","Say This Instead"],["phrases","Phrases"],["saved","♥ Saved"+(saved.length>0?" ("+saved.length+")":"")],["reading","Reading List"],["prep","Quick Prep"]];
+  const toolkitTabs = [["aitools","AI Tools"],["story","My Story"],["sayThis","Say This Instead"],["phrases","Phrases"],["saved","♥ Saved"+(saved.length>0?" ("+saved.length+")":"")],["reading","Reading List"],["prep","Quick Prep"]];
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}}>
       {!isDesktop && (<div style={{position:"relative",height:160}}>
@@ -63,6 +63,107 @@ p];
         ))}
       </div>)}
       <div style={isDesktop?{maxWidth:1160,margin:"0 auto",padding:"24px 48px 60px"}:{}}>
+      {tab==="aitools" && (() => {
+        const AI_TOOLS = [
+          {
+            featured: true,
+            label: "Story Architect",
+            tag: "Pitch · Proposal · Presentation · Leadership Talk",
+            headline: "Build a story for your next important presentation.",
+            body: "Turn your ideas into a compelling narrative, visual storyboard, and presentation-ready experience — in under 3 minutes. Speak or type your context and let the AI build it.",
+            cta: "Launch Story Architect →",
+            day: 8,
+            step: "Simulation",
+          },
+          {
+            featured: true,
+            label: "Leadership Hot Seat",
+            tag: "Promotion · Executive meetings · Difficult conversations",
+            headline: "AI coaching for high-stakes communication moments.",
+            body: "Six real workplace scenarios. Speak your answer in 30 seconds. Your AmplifyU coach scores your clarity, structure, confidence, brevity, and impact — then rewrites your answer to show you a stronger version.",
+            cta: "Launch Leadership Hot Seat →",
+            day: 10,
+            step: "Simulation",
+          },
+          {
+            featured: false,
+            label: "SAR Builder",
+            tag: "Performance reviews · Career conversations · Visibility",
+            headline: "Turn what you do into a story people remember.",
+            body: "Describe your Situation, Action, and Result. Your AmplifyU coach sharpens it into a crisp, powerful performance statement ready to use in any conversation.",
+            cta: "Launch SAR Builder →",
+            day: 10,
+            step: "Practice",
+          },
+          {
+            featured: false,
+            label: "Pixar Story Builder",
+            tag: "Storytelling · Presentations · Interviews",
+            headline: "Build a story using the world's most replicable narrative framework.",
+            body: "Seven beats. Five minutes. One complete story you can use anywhere. The same structure Pixar uses — adapted for professional communication.",
+            cta: "Launch Story Builder →",
+            day: 8,
+            step: "Practice",
+          },
+          {
+            featured: false,
+            label: "PRE Challenge",
+            tag: "Meetings · Quick responses · Boardroom clarity",
+            headline: "Practice precision under pressure.",
+            body: "Four real-world scenarios requiring Point, Reason, Example responses. Instant AI coaching on every component of your answer.",
+            cta: "Launch PRE Challenge →",
+            day: 5,
+            step: "Simulation",
+          },
+          {
+            featured: false,
+            label: "Clarity Check-In",
+            tag: "Communication baseline · Confidence · Self-awareness",
+            headline: "Establish your communication baseline.",
+            body: "Speak for 90 seconds and receive AI coaching on clarity, structure, pacing, and presence. This becomes your starting point for the entire programme.",
+            cta: "Launch Clarity Check-In →",
+            day: 1,
+            step: "Simulation",
+          },
+        ];
+        return (
+          <div style={{padding:isDesktop?"32px 0":"16px 20px 0"}}>
+            {/* Featured tools */}
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Featured</div>
+            <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:32}}>
+              {AI_TOOLS.filter(t=>t.featured).map((tool,i)=>(
+                <div key={i} style={{background:"#0A0804",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)",overflow:"hidden"}}>
+                  <div style={{padding:isDesktop?"24px 28px":"20px 22px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+                      <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px"}}>{tool.label}</span>
+                      <span style={{fontFamily:T.sans,fontSize:9,color:"rgba(138,158,132,0.6)",padding:"2px 8px",border:"0.5px solid rgba(138,158,132,0.25)",borderRadius:10}}>{tool.tag}</span>
+                    </div>
+                    <p style={{fontFamily:T.serif,fontSize:isDesktop?21:18,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,marginBottom:10}}>{tool.headline}</p>
+                    <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.55)",lineHeight:1.7,marginBottom:16,fontWeight:300}}>{tool.body}</p>
+                    <button onClick={()=>onStartSession&&onStartSession(tool.day,tool.step)} style={{padding:"12px 20px",borderRadius:4,border:"none",background:"rgba(138,158,132,0.85)",color:"white",fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",width:"100%",textAlign:"center"}}>
+                      {tool.cta}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* More AI tools */}
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>More AI Tools</div>
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {AI_TOOLS.filter(t=>!t.featured).map((tool,i)=>(
+                <div key={i} style={{background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border,padding:isDesktop?"18px 22px":"16px 18px",display:"flex",alignItems:"center",gap:16,cursor:"pointer"}} onClick={()=>onStartSession&&onStartSession(tool.day,tool.step)}>
+                  <div style={{flex:1}}>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{tool.label}</div>
+                    <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:3}}>{tool.headline}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{tool.tag}</div>
+                  </div>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{flexShrink:0}}><path d="M4 8h8M8 4l4 4-4 4" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
       {tab==="story" && (
         <div style={{padding:"16px 20px 0",display:"flex",flexDirection:"column",gap:0}}>
           {/* Header card */}
