@@ -971,22 +971,47 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Practice") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          {/* Title — outside cards, matching D3 pattern */}
+          <div style={{marginBottom:24}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Practice · Day 10</div>
+            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>The SAR Challenge™</h2>
+          </div>
 
-          {/* Recipe — at top, framed */}
-          <div style={{marginBottom:32}}>
-            <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>Now you know the science</div>
-            <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:20}}>How to turn strong work into career momentum</h2>
-            {[
-              {icon:"✦", head:"Start with substance", body:"Credibility comes from consistently doing high-quality work. This is the foundation everything else builds on."},
-              {icon:"✦", head:"Be intentional with your effort", body:"The most effective professionals focus on the work that creates the greatest impact—not just the busiest workload."},
-              {icon:"✦", head:"Make your contribution visible", body:"Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create."},
-              {icon:"✦", head:"Invest in professional trust", body:"Career progression is rarely just about output. Strong relationships, trust, and visibility all shape opportunity."},
-            ].map((r,i,arr)=>(
-              <div key={i} style={{display:"flex",gap:12,padding:"12px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
-                <span style={{color:T.gold,fontFamily:T.sans,fontSize:14,flexShrink:0,marginTop:2}}>{r.icon}</span>
-                <div><span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text}}>{r.head}</span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300}}> — {r.body}</span></div>
-              </div>
-            ))}
+          {/* HOW IT WORKS */}
+          <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px",marginBottom:14}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>How It Works</div>
+            <h3 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 20px"}}>A 3-step story that makes your contribution impossible to ignore.</h3>
+            <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
+              {[
+                {n:1,label:"Situation",desc:"Set the context",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M3 9h16" stroke={T.gold} strokeWidth="1.3"/></svg>},
+                {n:2,label:"Action",   desc:"What you did",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke={T.gold} strokeWidth="1.3"/><path d="M4 19c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+                {n:3,label:"Result",   desc:"The outcome",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><path d="M4 16l4-4 3 3 4-5 3 3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><rect x="3" y="3" width="16" height="16" rx="1.5" stroke={T.gold} strokeWidth="1.3"/></svg>},
+              ].map((s,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                    <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:6}}>{s.icon}</div>
+                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
+                    <div style={{fontFamily:T.sans,fontSize:12,color:T2.text,textAlign:"center",lineHeight:1.3,fontWeight:600}}>{s.label}</div>
+                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,textAlign:"center",lineHeight:1.3}}>{s.desc}</div>
+                  </div>
+                  {i<2&&<div style={{height:1,width:isDesktop?16:8,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:32}}/>}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* THE FIRST STEP */}
+          <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px",marginBottom:14}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>The First Step</div>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Think of something you did recently — a project, a problem you solved, a result you created. It doesn't need to be dramatic. It needs to be specific.</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
+          </div>
+
+          {/* YOUR AMPLIFYÚ COACH */}
+          <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px",marginBottom:24}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your AmplifyU Coach</div>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AmplifyU coach will take your three inputs and sharpen them into a crisp, powerful performance statement — ready to use in a review, conversation, or interview.</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic",fontWeight:300}}>Lead with the result. Make it specific. Own it.</p>
           </div>
 
           {/* SAR Builder */}
