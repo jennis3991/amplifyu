@@ -1158,7 +1158,7 @@ setAmbitionSaved(true); } catch {}
                 bullets:["A breath creates mental clarity and calms the nervous system — in that moment, you give yourself the best possible chance of a strong response.","Speak in declarative statements. Calm. Clear. Certain. One idea. One sentence. Full stop. No hedge. No filler. Just the point."]},
             ];
             return (
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
+              <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:24}}>
                 {CARDS.map((p,i)=>{
                   const isOpen=open3===i;
                   return (
