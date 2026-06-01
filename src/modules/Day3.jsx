@@ -91,7 +91,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       title:"THE EXPERT QUESTION",
       prompt:"Someone asks you:",
       quote:'"What makes you good at your role?"',
-      instruction:"Take a breath. Pause. Then answer.",
+      instruction:"Pause. Take a breath. Then answer.",
       note:"If you need time to think, pause. Silence sounds more confident than fillers.",
       options:null,
       action:"I spoke for 30 seconds",
