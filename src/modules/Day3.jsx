@@ -75,20 +75,17 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       feedback:"Pauses feel longer to the speaker than to the audience. To listeners, intentional pauses feel thoughtful, calm, and controlled. Great communicators allow ideas space to land.",
     },
     {
-      title:"FILLERS VS PAUSES",
-      prompt:"Read these two versions out loud.",
-      quote:null,
-      instruction:null,
-      versions:[
-        {label:"Version A", text:'"So um… I think we should probably like… start next week."'},
-        {label:"Version B", text:'"I think we should start next week." [pause] "Then review progress together."'},
-      ],
-      question:"Which version feels calmer, clearer, and more confident?",
+      title:"LOSE YOUR TRAIN OF THOUGHT",
+      prompt:"You're speaking and suddenly lose your train of thought.",
+      question:"What's the best thing to do?",
       options:[
-        {label:"Version A",correct:false},
-        {label:"Version B",correct:true},
+        {label:"A.  Say 'um' while you think",correct:false},
+        {label:"B.  Speak faster",correct:false},
+        {label:"C.  Pause briefly and gather your thoughts",correct:true},
+        {label:"D.  Repeat what you just said",correct:false},
       ],
-      feedback:"The brain processes pauses more easily than filler words. Silence creates clarity. Version B communicates the same idea — with far more authority.",
+      cols:2,
+      feedback:"Pause. Take a breath.\n\nThat single action creates mental clarity and calms the nervous system — and in that moment, you give yourself the best possible chance to find a strong response.\n\nThen deliver a declarative statement.\n\nCalm. Clear. Certain. One idea. One sentence. Full stop. No hedge. No filler. Just the point.",
     },
     {
       title:"THE EXPERT QUESTION",
@@ -130,7 +127,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
         <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
           {[
             {n:1,label:"Silence Feels Longer"},
-            {n:2,label:"Fillers vs Pauses"},
+            {n:2,label:"Lose Your Thread"},
             {n:3,label:"The Expert Question"},
           ].map((r,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
@@ -168,6 +165,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M10 6v4l2.5 2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>,
       <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 10c2-3 4-3 6 0s4 3 6 0" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/><path d="M3 14c2-3 4-3 6 0s4 3 6 0" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/></svg>,
       <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 10l4.5 4.5L16 6" stroke={T.gold} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="8" y="3" width="4" height="8" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M5 9a5 5 0 0010 0M10 14v3M8 17h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>,
     ];
     return (
       <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
@@ -218,7 +216,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
             {!r.question && (
               <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,marginBottom:14,lineHeight:1.5}}>Choose the option that fits you best.</p>
             )}
-            <div style={{display:"grid",gridTemplateColumns:`repeat(${r.options.length},1fr)`,gap:isDesktop?10:8}}>
+            <div style={{display:"grid",gridTemplateColumns:`repeat(${r.cols||r.options.length},1fr)`,gap:isDesktop?10:8}}>
               {r.options.map((opt,i)=>{
                 const isSelected = selected===i;
                 const correct = opt.correct;
@@ -248,7 +246,9 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
           <>
             <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
               <div style={cs.label}>Coaching Note</div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:0}}>{r.feedback}</p>
+              {r.feedback.split('\n\n').map((para,i)=>(
+                <p key={i} style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:i<r.feedback.split('\n\n').length-1?"0 0 12px":0}}>{para}</p>
+              ))}
             </div>
             <button onClick={()=>{
               if (round < ROUNDS.length-1){setRound(v=>v+1);setSelected(null);setShowFeedback(false);}
