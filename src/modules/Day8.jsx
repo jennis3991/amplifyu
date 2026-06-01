@@ -279,7 +279,7 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
       {/* Header */}
       <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"24px 32px":"20px 22px",border:"0.5px solid rgba(138,158,132,0.2)"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>AI Coach · What I'd Recommend</div>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>AmplifyU Coach · What I'd Recommend</div>
         <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Your Story, Crafted</h2>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>{genResult.coachNote}</p>
       </div>
@@ -565,9 +565,9 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
 
       {/* YOUR AI COACH */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
-        <div style={cs.label}>Your AI Coach</div>
+        <div style={cs.label}>Your AmplifyU Coach</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>
-          Your AI coach will generate a complete story, four alternative narrative frameworks — TED, Pixar, Executive, and Emotional — and a six-panel visual storyboard for your presentation.
+          Your AmplifyU coach will generate a complete story, four alternative narrative frameworks — TED, Pixar, Executive, and Emotional — and a six-panel visual storyboard for your presentation.
         </p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic"}}>
           From a simple idea to a story people remember — not a worksheet, a workflow.
@@ -895,7 +895,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
         {/* CTA */}
         <div style={{...cs.card,textAlign:"center",padding:isDesktop?"24px":"18px 20px",marginTop:4}}>
           <div style={cs.label}>Next Step</div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16,fontWeight:300}}>You've built the story. Now it's time to deliver it. Practice your story aloud and receive AI coaching on narrative flow, clarity, and delivery.</p>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16,fontWeight:300}}>You've built the story. Now it's time to deliver it. Practice your story aloud and receive AmplifyU coaching on narrative flow, clarity, and delivery.</p>
           <button onClick={restart} style={{...cs.cta,marginBottom:10}}>Build Another Story →</button>
         </div>
         <button onClick={restart} style={cs.back}>Start Over</button>

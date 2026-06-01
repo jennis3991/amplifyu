@@ -270,7 +270,7 @@ export function D12SimWidget({T, T2, isDesktop}) {
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
         <div style={cs.label}>Your Digital Coach</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
-          Your AI coach will analyse your posture, movement, gestures, eye contact, and facial engagement.
+          Your AmplifyU coach will analyse your posture, movement, gestures, eye contact, and facial engagement.
         </p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>
           This recording becomes your baseline — not a test, expert coaching.

@@ -198,10 +198,10 @@ export function D7SimWidget({ T, T2, isDesktop }) {
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:0,fontWeight:300}}>Now explain what you learned as if you were teaching someone else. Not as a student. <span style={{color:T.gold,fontWeight:500}}>As a communicator.</span></p>
       </div>
 
-      {/* AI coach card */}
+      {/* AmplifyU coach card */}
       <div style={cs.card}>
-        <div style={cs.label}>Your AI Coach</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AI coach will evaluate your explanation across all six Week 1 skills: Clarity, Voice Control, Pauses, Precision, Structure, and Composure.</p>
+        <div style={cs.label}>Your AmplifyU Coach</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AmplifyU coach will evaluate your explanation across all six Week 1 skills: Clarity, Voice Control, Pauses, Precision, Structure, and Composure.</p>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>This is not a test — it's a demonstration of everything you've built.</p>
       </div>
 
@@ -297,7 +297,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   if(phase==='analyzing') return (
     <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"60px 0":"44px 0"}}>
       <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.3s ease ${i*0.3}s infinite`}}/>)}</div>
-      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:"14px 0 4px",textAlign:"center"}}>Your AI coach is reviewing your response…</p>
+      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:"14px 0 4px",textAlign:"center"}}>Your AmplifyU coach is reviewing your response…</p>
       <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text3,margin:0,textAlign:"center",maxWidth:320}}>Evaluating all six Week 1 communication skills.</p>
     </div>
   );

@@ -221,7 +221,7 @@ export function D6SimWidget({T, T2, isDesktop}) {
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 16px"}}>Most people prepare what they want to say. Elite communicators prepare for what they'll be asked.</p>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {[{n:"1",t:"Tell us about your upcoming conversation."},
-            {n:"2",t:"The AI analyses your stakeholder and generates 10 likely tough questions."},
+            {n:"2",t:"AmplifyU analyses your stakeholder and generates 10 likely tough questions."},
             {n:"3",t:"Answer each question. Get coaching on composure, clarity, and confidence."},
           ].map((s,i)=>(
             <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"10px 12px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
@@ -367,7 +367,7 @@ export function D6SimWidget({T, T2, isDesktop}) {
   if(phase==='reviewing') return (
     <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"48px 0":"32px 0"}}>
       <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}</div>
-      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,textAlign:"center"}}>Your AI coach is reviewing your responses…</p>
+      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,textAlign:"center"}}>Your AmplifyU coach is reviewing your responses…</p>
     </div>
   );
 

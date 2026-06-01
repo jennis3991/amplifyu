@@ -290,7 +290,7 @@ export function D5SimWidget({T, T2, isDesktop}) {
       <div style={cs.card}>
         <div style={cs.label}>PRE Challenge</div>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?22:20,fontWeight:600,color:T.gold,lineHeight:1.25,margin:"0 0 14px"}}>Real questions. Real coaching.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 16px",fontWeight:300}}>Four real-world scenarios. For each one, type your Point, Reason, and Example — then get instant AI coaching on every component.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 16px",fontWeight:300}}>Four real-world scenarios. For each one, type your Point, Reason, and Example — then get instant AmplifyU coaching on every component.</p>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {[
             {n:"1",t:"A scenario appears. Think about it for a moment."},

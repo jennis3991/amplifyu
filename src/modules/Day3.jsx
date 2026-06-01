@@ -425,7 +425,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
           Every time you feel the urge to say <em>"um"</em>, <em>"uh"</em>, or <em>"like"</em> — pause instead. Replace every filler urge with silence.
         </p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>
-          Your AI coach will count your fillers, measure your pauses, and reveal the invisible patterns in your speech.
+          Your AmplifyU coach will count your fillers, measure your pauses, and reveal the invisible patterns in your speech.
         </p>
       </div>
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
@@ -513,7 +513,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
         <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
           <div style={cs.label}>Quick Reflection</div>
           <h3 style={{fontFamily:T.serif,fontSize:isDesktop?22:19,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:6}}>How did that feel?</h3>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>Before your AI coach responds — take a moment. Which of these best describes your experience?</p>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>Before your AmplifyU coach responds — take a moment. Which of these best describes your experience?</p>
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {REFLECT_OPTIONS.map((opt,i)=>{
@@ -711,7 +711,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
       </div>
       {/* 7 AI COACH SAYS */}
       <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
-        <div style={cs.label}>Your AI Coach Says</div>
+        <div style={cs.label}>Your AmplifyU Coach Says</div>
         <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?44:34,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0,flex:1}}>{feedback.insight}</p>

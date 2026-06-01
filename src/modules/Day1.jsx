@@ -551,7 +551,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       ) : (
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
           <div style={{...cs.card,background:"#0A0804",border:"0.5px solid rgba(138,158,132,0.15)"}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Your AI coach says</div>
+            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Your AmplifyU coach says</div>
             <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:"#F5EFE6",lineHeight:1.4,margin:"0 0 10px"}}>{aiResult.praise}</p>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.6)",lineHeight:1.6,margin:0}}>→ {aiResult.tip}</p>
           </div>
@@ -769,7 +769,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
       <div style={{...cs.card,padding:"16px 18px",background:"rgba(138,158,132,0.04)"}}>
         <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Digital Coach</div>
         <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
-          Your AI coach will analyse your clarity, communication patterns, structure, pacing, and presence.
+          Your AmplifyU coach will analyse your clarity, communication patterns, structure, pacing, and presence.
         </p>
         <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>
           This recording becomes your baseline — not a test, expert coaching.
@@ -924,7 +924,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
       <div style={{width:48,height:48,borderRadius:"50%",border:`2px solid ${T2.border}`,borderTop:`2px solid ${T.gold}`,animation:"spin 0.8s linear infinite"}}/>
       <div style={{textAlign:"center"}}>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?22:18,color:T2.text,marginBottom:6}}>Analysing your clarity…</p>
-        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text4,margin:0}}>Your AI coach is reviewing your response.</p>
+        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text4,margin:0}}>Your AmplifyU coach is reviewing your response.</p>
       </div>
     </div>
   );
@@ -1032,7 +1032,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
       </div>
       {/* 4 AI COACH */}
       <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
-        <div style={cs.label}>Your AI Coach Says</div>
+        <div style={cs.label}>Your AmplifyU Coach Says</div>
         <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?44:34,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0,flex:1}}>{feedback.insight}</p>

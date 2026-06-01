@@ -714,7 +714,7 @@ function _unusedD4OldRounds() {
             {r.type==='write' && writeResult && (
               <div style={{...cs.card,background:"rgba(138,158,132,0.06)",borderLeft:"2px solid "+T.gold}}>
                 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-                  <div style={cs.label}>AI Coach</div>
+                  <div style={cs.label}>AmplifyU Coach</div>
                   {writeResult.words&&<span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginLeft:"auto"}}>{writeResult.words} words{r.originalWords?` (was ${r.originalWords})`:''}</span>}
                 </div>
                 <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:writeResult.tip?"0 0 8px":0}}>{writeResult.praise}</p>
@@ -1113,9 +1113,9 @@ export function D4SimWidget({T, T2, isDesktop}) {
           </div>
         )}
 
-        {/* AI Coach */}
+        {/\* AmplifyU Coach \*/}
         <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
-          <div style={cs.label}>Your AI Coach Says</div>
+          <div style={cs.label}>Your AmplifyU Coach Says</div>
           <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
             <div style={{fontFamily:T.serif,fontSize:isDesktop?44:34,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
             <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0,flex:1}}>{result.coachNote}</p>

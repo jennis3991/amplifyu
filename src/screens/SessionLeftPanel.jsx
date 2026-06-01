@@ -139,7 +139,7 @@ export function SessionLeftPanel({
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Week 1 Master Challenge</div>
           <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Teach It Forward.</p>
           <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Explain what you learned as if teaching someone else. Your AI coach evaluates all six Week 1 skills.</p>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Explain what you learned as if teaching someone else. Your AmplifyU coach evaluates all six Week 1 skills.</p>
         </div>
       </div>
     );
@@ -745,7 +745,7 @@ export function SessionLeftPanel({
         <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>PRE Challenge</div>
         <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Real questions. Real coaching.</p>
         <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
-        <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Type your Point, Reason, and Example for each question. Your AI coach scores the clarity of every component.</p>
+        <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Type your Point, Reason, and Example for each question. Your AmplifyU coach scores the clarity of every component.</p>
       </div>
     </div>
   );
