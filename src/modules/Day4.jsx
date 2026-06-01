@@ -76,16 +76,16 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       lesson:"Three sentences. Each one direct. No padding, no qualifiers, no jargon.\n\nWhen you can answer that question clearly, you've found your team's core message. Short sentences force you to decide what actually matters.",
     },
     {
-      id:'simon', title:"SIMON SAYS",
-      intro:"Follow these instructions.",
-      rounds:[
-        {label:"Round 1", items:["Touch your nose."]},
-        {label:"Round 2", items:["Touch your nose.","Stamp your foot.","Point left.","Touch your shoulder.","Blink.","Raise your hand."]},
+      id:'millerlaw', title:"MILLER'S LAW",
+      question:"Why do the world's best communicators use short sentences?",
+      options:[
+        {label:"A.  Because they have less to say",correct:false},
+        {label:"B.  Because audiences remember less than speakers think",correct:true},
+        {label:"C.  Because short sentences sound more professional",correct:false},
+        {label:"D.  Because long sentences are always wrong",correct:false},
       ],
-      splitItems:["Touch your nose.","Stamp your foot.","Point left.","Touch your shoulder."],
-      question:"Which round felt easier?",
-      options:[{label:"Round 1 — obviously",correct:true},{label:"About the same",correct:false},{label:"Round 2 — I like a challenge",correct:false}],
-      lesson:"Miller's Law isn't just about words. It's about mental load. When information arrives one step at a time, the brain performs better.",
+      cols:2,
+      lesson:"Speakers know the whole message.\n\nAudiences hear it once.\n\nShort sentences give ideas room to land.\n\nThat's the essence of Miller's Law — and one of the most important communication lessons in AmplifyU.",
     },
     {
       id:'directions', title:"THE DIRECTIONS TEST",
@@ -166,7 +166,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
           {[
             {n:1,label:"Memory"},
             {n:2,label:"Elevator Test"},
-            {n:3,label:"Simon Says"},
+            {n:3,label:"Miller's Law"},
             {n:4,label:"Directions"},
             {n:5,label:"Scroll Test"},
           ].map((r,i)=>(
@@ -302,58 +302,35 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
           </>
         )}
 
-        {/* ── ROUND 3: SIMON SAYS — sequential steps ── */}
-        {r.id==='simon' && (
+        {/* ── ROUND 3: MILLER'S LAW ── */}
+        {r.id==='millerlaw' && (
           <>
-            {/* Step 0 — Round 1 */}
-            {simonStep===0 && (
-              <>
-                <div style={cs.card}>
-                  <div style={cs.label}>{r.title}</div>
-                  <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:16,lineHeight:1.5}}>{r.intro}</p>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Round 1</div>
-                  <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>Touch your nose.</p>
-                </div>
-                <button onClick={()=>setSimonStep(1)} style={cs.cta}>Easy. ✓</button>
-              </>
+            <div style={{...cs.card,textAlign:"center",padding:isDesktop?"28px 32px":"22px 20px"}}>
+              <div style={cs.label}>{r.title}</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{r.question}</p>
+            </div>
+            {!showFeedback && (
+              <div style={{display:"grid",gridTemplateColumns:`repeat(${r.cols||r.options.length},1fr)`,gap:isDesktop?10:8}}>
+                {r.options.map((opt,i)=>{
+                  const isSelected=selected===i;
+                  const border=isSelected?(opt.correct?T.gold:"rgba(180,80,60,0.4)"):T2.border;
+                  const bg=isSelected?(opt.correct?"rgba(138,158,132,0.08)":"rgba(180,80,60,0.04)"):T2.bg;
+                  return (
+                    <button key={i} onClick={()=>{setSelected(i);setShowFeedback(true);}}
+                      style={{padding:isDesktop?"14px 12px":"12px 10px",borderRadius:6,border:`1px solid ${border}`,background:bg,cursor:"pointer",transition:"all 0.2s",textAlign:"left",fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.4,fontWeight:400}}>
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
             )}
-            {/* Step 1 — Round 2 */}
-            {simonStep===1 && (
-              <>
-                <div style={cs.card}>
-                  <div style={cs.label}>{r.title}</div>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Round 2</div>
-                  <p style={{fontFamily:T.serif,fontSize:18,color:T2.text,lineHeight:1.5,margin:0}}>Touch your nose, stamp your foot, point left, touch your shoulder, blink, then raise your hand.</p>
-                </div>
-                <button onClick={()=>setSimonStep(2)} style={cs.cta}>Harder. ✓</button>
-              </>
-            )}
-            {/* Step 2 — Round 3: broken up */}
-            {simonStep===2 && (
-              <>
-                <div style={cs.card}>
-                  <div style={cs.label}>{r.title}</div>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>Round 3 — Break it up</div>
-                  <div style={{display:"flex",flexDirection:"column",gap:10}}>
-                    {r.splitItems.map((item,i)=>(
-                      <div key={i} style={{display:"flex",gap:12,alignItems:"center",padding:"10px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                        <div style={{width:24,height:24,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                          <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{i+1}</span>
-                        </div>
-                        <span style={{fontFamily:T.serif,fontSize:18,color:T2.text}}>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <button onClick={()=>setSimonStep(3)} style={cs.cta}>That's better. ✓</button>
-              </>
-            )}
-            {/* Step 3 — Lesson */}
-            {simonStep===3 && (
+            {showFeedback && (
               <>
                 <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
                   <div style={cs.label}>AmplifyU Insight</div>
-                  <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:0}}>{r.lesson}</p>
+                  {r.lesson.split('\n\n').map((para,i,arr)=>(
+                    <p key={i} style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:i<arr.length-1?"0 0 10px":0}}>{para}</p>
+                  ))}
                 </div>
                 <button onClick={advanceRound} style={cs.cta}>Round 4 →</button>
               </>
