@@ -209,22 +209,37 @@ setAmbitionSaved(true); } catch {}
     content:(
       <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
         <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>The Strategic Pause</div>
-        <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Not hesitant.<br/>Brilliant.</h2>
-        <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
-          <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Obama is known for his pauses. Mid-sentence, he'll stop. Think. Then continue. Critics called it hesitant. Speech coaches called it brilliant.</p>
-          <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-            <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"The question is... [3-second pause] ...what kind of country are we going to leave our children?"</p>
-            <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:"8px 0 0"}}>That pause? Not a filler. A choice.</p>
+        <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Not hesitant.<br/>Deliberate.</h2>
+        <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,marginBottom:24}}>Obama didn't pause because he couldn't find the words. He paused because he understood something most speakers never learn: silence makes the audience lean in. Here's how he used it in three of his most important moments.</p>
+
+        <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:24}}>
+          <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>2008 Election Night — Grant Park, Chicago</div>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.6,marginBottom:8}}>"If there is anyone out there who still doubts that America is a place where all things are possible... [4-second pause] ...who still wonders if the dream of our founders is alive in our time... [pause] ...tonight is your answer."</p>
+            <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0,lineHeight:1.55}}>Each pause let the crowd absorb the weight of the moment before he added to it. The silences built the emotion as much as the words did.</p>
+          </div>
+
+          <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>2015 Charleston Eulogy — Singing "Amazing Grace"</div>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.6,marginBottom:8}}>"Clementa Pinckney found that grace... [long pause, bowed head] ...Cynthia Hurd found that grace... [pause] ...Susie Jackson found that grace."</p>
+            <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0,lineHeight:1.55}}>Before breaking into song, he paused for nearly 10 seconds. The room went silent. That pause told the audience something extraordinary was about to happen — before a single note was sung.</p>
+          </div>
+
+          <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>2009 Inauguration — The Oath of Office</div>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.6,marginBottom:8}}>"I do solemnly swear... [pause] ...that I will faithfully execute... [pause] ...the office of President of the United States."</p>
+            <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0,lineHeight:1.55}}>Watched by two million people in person and billions worldwide, his deliberate pauses gave each phrase its own gravity. The words felt earned, not rushed.</p>
           </div>
         </div>
+
         <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
           <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Pauses let your audience catch up. It gave the audience time to absorb the weight of the question.</p>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>A pause signals that what just came before — or what is about to come next — deserves special attention. It forces the audience to stop and process. The speaker controls the room through silence, not sound.</p>
           </div>
           <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>When you make an important point, pause after it. Let it land before you move on.</p>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>After your most important point, stop talking. Count to two in your head. Let the idea settle before you continue. The audience will fill the silence with meaning — and remember it far longer than the words that followed.</p>
           </div>
         </div>
         <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
