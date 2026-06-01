@@ -628,6 +628,108 @@ export const NT_STORY_TYPES = [
   },
 ];
 
+// ─── Workplace Application — per-day practical tips ──────────────────────────
+export const WORKPLACE_APPLICATION = [
+  // Day 1 — Clarity
+  [
+    "Before your next meeting, explain the main topic to yourself in one sentence.",
+    "Test every key message: 'Could a 10-year-old understand this?'",
+    "Replace jargon with plain language in your next email or report.",
+    "After explaining an idea, ask a colleague to reflect it back to you — gaps reveal themselves instantly.",
+  ],
+  // Day 2 — Voice Control
+  [
+    "Slow down deliberately when delivering your most important point.",
+    "Record yourself on your next call or presentation and review your vocal range.",
+    "Use a three-second pause before any key statement — it signals control.",
+    "Vary your energy: start measured, build as your message builds.",
+  ],
+  // Day 3 — Eliminate Fillers
+  [
+    "Record a 60-second practice run before any important presentation.",
+    "Replace every 'um' and 'uh' with a deliberate pause — silence sounds more confident.",
+    "Prepare and memorise your opening sentence for every meeting.",
+    "Ask a trusted colleague to quietly signal when you use filler words.",
+  ],
+  // Day 4 — Short Sentences
+  [
+    "Rewrite your next email with one idea per sentence.",
+    "In your next presentation, use no sentence longer than 15 words.",
+    "Strip 'basically', 'in terms of', and 'as I said' from your next report.",
+    "When asked a question, answer in three sentences or fewer — then stop.",
+  ],
+  // Day 5 — Precision (PRE)
+  [
+    "Use the PRE framework (Point, Reason, Example) for your next key message.",
+    "Before any meeting, write down your single most important point.",
+    "Lead with the conclusion before the context in your next one-to-one.",
+    "Replace 'I think maybe' and 'sort of' with direct declarative statements.",
+  ],
+  // Day 6 — Composure Under Pressure
+  [
+    "Prepare three calm, confident responses to the toughest questions you expect this week.",
+    "Before a difficult conversation, take three slow breaths to reset your nervous system.",
+    "When challenged in a meeting, pause for two seconds before responding.",
+    "Practise composure in low-stakes conversations first — build the reflex before you need it.",
+  ],
+  // Day 7 — Week 1 Review
+  [
+    "Audit your last three emails for clarity, brevity, and structure.",
+    "Choose one Week 1 habit to focus on consciously this week.",
+    "Share one communication insight with your team.",
+    "Set a specific, measurable communication goal for the week ahead.",
+  ],
+  // Day 8 — Storytelling
+  [
+    "Open your next presentation with a short personal story instead of a data slide.",
+    "Find one story from your career that illustrates your team's purpose.",
+    "Use the Pixar Framework (Once upon a time… Until finally…) to structure your next project update.",
+    "Replace the first data slide in your next deck with a human example that shows the same point.",
+  ],
+  // Day 9 — Delivery
+  [
+    "Record yourself delivering a key message on video — watch without sound first, then with.",
+    "In your next meeting, maintain eye contact for 3–5 seconds at a time.",
+    "Stand during your next presentation instead of sitting — it changes your energy and theirs.",
+    "Use open gestures: hands visible, away from your body, and deliberate.",
+  ],
+  // Day 10 — Visibility
+  [
+    "Write down your three core professional strengths and look for opportunities to demonstrate them.",
+    "Prepare one observation or insight to contribute in your next senior meeting.",
+    "Update your professional summary or LinkedIn using the clarity principles from Day 1.",
+    "Find one opportunity this week to make your work visible — a concise update, a shared result.",
+  ],
+  // Day 11 — Influence & Persuasion
+  [
+    "Before pitching an idea, identify your audience's single biggest concern and address it first.",
+    "Lead with the benefit before the ask in your next proposal or recommendation.",
+    "Use a concrete story or customer example to support your next argument.",
+    "Name the risk of inaction — not just the opportunity — when making a case for change.",
+  ],
+  // Day 12 — Executive Presence
+  [
+    "Slow down your next presentation by 20% — deliberate pace signals authority.",
+    "Take up more physical space: sit forward, use gestures, don't shrink.",
+    "Reduce hedging: replace 'I think' with 'I believe', 'I'm not sure but' with a pause.",
+    "Prepare three confident answers to likely questions before any senior meeting.",
+  ],
+  // Day 13 — Difficult Conversations
+  [
+    "Before responding to a difficult message, wait 90 seconds — let the emotion settle first.",
+    "Listen to understand, not to reply, in your next disagreement.",
+    "Use 'I notice' and 'I feel' instead of 'You always' and 'You never'.",
+    "Find one piece of common ground before stating your position in any conflict.",
+  ],
+  // Day 14 — Communication System
+  [
+    "Block 10 minutes each week to review and practise one communication habit.",
+    "Set a 30-day challenge: pick one skill from the programme and practise it daily.",
+    "Pair with a colleague as an accountability partner — observe and give feedback on each other.",
+    "Identify the one communication situation where everything you've learned will matter most — and prepare for it.",
+  ],
+];
+
 // ─── SESSION VIEW — 6 steps including Theory
 export const SESSION_STEPS =
 ["Insight","Theory","Example","Practice","Simulation","Review"];

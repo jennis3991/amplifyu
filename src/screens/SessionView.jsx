@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
-import { D9_FIVE_PS, D9_CARDS, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_CLOSING, REVIEW_BULLETS, LESSONS, D9_REFINEMENTS, SESSION_STEPS, NAV_LABELS,
+import { D9_FIVE_PS, D9_CARDS, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, LESSONS, D9_REFINEMENTS, SESSION_STEPS, NAV_LABELS,
   D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS,
   D1_CLARITY_FACTS_DATA, D1_FEYNMAN_DATA,
   D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D7_INSIGHT_CARDS,
@@ -41,6 +41,7 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const [checks, setChecks] = useState({});
   const [exitConfirm, setExitConfirm] = useState(false);
   const [accordionOpen, setAccordionOpen] = useState(false);
+  const [workplaceOpen, setWorkplaceOpen] = useState(false);
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
   const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
@@ -3472,7 +3473,7 @@ setAmbitionSaved(true); } catch {}
                       })}
 
                       {/* Session summary accordion */}
-                      <div style={{ borderTop: "1px solid rgba(138,158,132,0.3)", paddingTop: 32, marginBottom: 40, cursor: "pointer" }} onClick={()=>setAccordionOpen(o=>!o)}>
+                      <div style={{ borderTop: "1px solid rgba(138,158,132,0.3)", paddingTop: 32, marginBottom: 0, cursor: "pointer" }} onClick={()=>setAccordionOpen(o=>!o)}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                           <div style={{ fontFamily: T.sans, fontSize: 16, fontWeight: 500, color: T2.text }}>What You Practised Today</div>
                           <span style={{ fontSize: 18, color: T2.text3, transition: "transform 0.2s", transform: accordionOpen ? "rotate(180deg)" : "none", display: "inline-block" }}>▾</span>
@@ -3485,6 +3486,30 @@ setAmbitionSaved(true); } catch {}
                                   <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                                 </div>
                                 <span style={{ fontFamily: T.sans, fontSize: 15, color: T2.text2, lineHeight: 1.6 }}>{b}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Workplace Application accordion */}
+                      <div style={{ borderTop: "1px solid rgba(138,158,132,0.15)", paddingTop: 24, marginBottom: 40, cursor: "pointer" }} onClick={()=>setWorkplaceOpen(o=>!o)}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            <div style={{ fontFamily: T.sans, fontSize: 16, fontWeight: 500, color: T2.text }}>Workplace Application</div>
+                            <span style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", padding: "3px 8px", border: "0.5px solid rgba(138,158,132,0.4)", borderRadius: 20 }}>New</span>
+                          </div>
+                          <span style={{ fontSize: 18, color: T2.text3, transition: "transform 0.2s", transform: workplaceOpen ? "rotate(180deg)" : "none", display: "inline-block" }}>▾</span>
+                        </div>
+                        <p style={{ fontFamily: T.sans, fontSize: 14, color: T2.text3, lineHeight: 1.6, margin: "8px 0 0", fontWeight: 300 }}>How to put today's techniques to work immediately.</p>
+                        {workplaceOpen && (
+                          <div style={{ marginTop: 20 }}>
+                            {(WORKPLACE_APPLICATION[lesson.day - 1] || []).map((b, i) => (
+                              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 14, padding: "14px 16px", background: T2.surface, borderRadius: 6, border: "0.5px solid " + T2.border }}>
+                                <div style={{ width: 24, height: 24, borderRadius: "50%", background: "rgba(138,158,132,0.1)", border: "1px solid rgba(138,158,132,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                                  <span style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold }}>{i + 1}</span>
+                                </div>
+                                <span style={{ fontFamily: T.sans, fontSize: 14, color: T2.text, lineHeight: 1.65, fontWeight: 300 }}>{b}</span>
                               </div>
                             ))}
                           </div>
