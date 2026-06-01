@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { T } from '../theme.js';
-import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_FIVE_PS, D9_CARDS, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES } from '../data.js';
+import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_FIVE_PS, D9_CARDS, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
 import { DeliveryCoachWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget } from '../modules/Day8.jsx';
@@ -138,22 +138,29 @@ export function MobileSessionView({
       content:(
         <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
           <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>The Strategic Pause</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Not hesitant.<br/>Brilliant.</h2>
-          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
-            <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Obama is known for his pauses. Mid-sentence, he'll stop. Think. Then continue. Critics called it hesitant. Speech coaches called it brilliant.</p>
-            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"The question is... [3-second pause] ...what kind of country are we going to leave our children?"</p>
-              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:"8px 0 0"}}>That pause? Not a filler. A choice.</p>
-            </div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Not hesitant.<br/>Deliberate.</h2>
+          <p style={{fontFamily:T.serif,fontSize:15,color:T2.text,lineHeight:1.75,marginBottom:16}}>Obama didn't pause because he couldn't find the words. He paused because silence makes the audience lean in. Here are three of his most important moments.</p>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+            {[
+              {label:"2008 Election Night — Grant Park",quote:'"If there is anyone out there who still doubts… [4-second pause] …tonight is your answer."',note:"Each pause let the crowd absorb the weight of the moment before he added to it."},
+              {label:"2015 Charleston Eulogy",quote:'"Clementa Pinckney found that grace… [long pause, bowed head] …Cynthia Hurd found that grace."',note:"Before breaking into 'Amazing Grace', he paused for nearly 10 seconds. The room went silent."},
+              {label:"2009 Inauguration",quote:'"I do solemnly swear… [pause] …that I will faithfully execute… [pause] …the office of President."',note:"Deliberate pauses gave each phrase its own gravity — watched by billions worldwide."},
+            ].map((ex,i)=>(
+              <div key={i} style={{padding:"14px 16px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>{ex.label}</div>
+                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.55,marginBottom:8}}>{ex.quote}</p>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:0}}>{ex.note}</p>
+              </div>
+            ))}
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
             <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Pauses let your audience catch up. It gave the audience time to absorb the weight of the question.</p>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>A pause signals that what just came before — or what is about to come next — deserves special attention. The speaker controls the room through silence, not sound.</p>
             </div>
             <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>When you make an important point, pause after it. Let it land before you move on.</p>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>After your most important point, stop talking. Count to two in your head. The audience will fill the silence with meaning — and remember it far longer.</p>
             </div>
           </div>
           <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
@@ -868,21 +875,17 @@ T.goldDark : T2.text4,
       )}
       {isD10 && step==="Practice" && (
         <>
-          {/* Recipe — top, framed */}
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>Now you know the science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:8}}>How to turn strong work into career momentum</h2>
-          <div style={{marginBottom:24}}>
-            {[
-              {icon:"✦", head:"Start with substance", body:"Credibility comes from consistently doing high-quality work. This is the foundation everything else builds on."},
-              {icon:"✦", head:"Be intentional with your effort", body:"The most effective professionals focus on the work that creates the greatest impact—not just the busiest workload."},
-              {icon:"✦", head:"Make your contribution visible", body:"Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create."},
-              {icon:"✦", head:"Invest in professional trust", body:"Career progression is rarely just about output. Strong relationships, trust, and visibility all shape opportunity."},
-            ].map((r,i,arr)=>(
-              <div key={i} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none",alignItems:"flex-start"}}>
-                <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:2}}>{r.icon}</span>
-                <div><span style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text}}>{r.head}</span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300}}> — {r.body}</span></div>
-              </div>
-            ))}
+          {/* D3-style landing */}
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Practice · Day 10</div>
+          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The SAR Challenge™</h2>
+          <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"16px 18px",marginBottom:12}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The First Step</div>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:8,fontWeight:300}}>Think of something you did recently — a project, a problem you solved, a result you created. Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
+          </div>
+          <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"16px 18px",marginBottom:16}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your AmplifyU Coach</div>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:6,fontWeight:300}}>Your AmplifyU coach takes your three inputs and sharpens them into a crisp performance statement — ready for any conversation.</p>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:0,fontStyle:"italic",fontWeight:300}}>Lead with the result. Make it specific. Own it.</p>
           </div>
 
           {/* SAR Builder */}
@@ -906,9 +909,8 @@ T.goldDark : T2.text4,
       )}
       {isD10 && step==="Simulation" && (
         <>
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>Performance under pressure</div>
-          <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:8}}>The Leadership Hot Seat</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Six scenarios that feel painfully real. Frame the situation. Explain your action. Land the result — in 30 seconds.</p>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Simulation · Day 10</div>
+          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The Leadership Hot Seat</h2>
           <D10MobileSim/>
         </>
       )}
@@ -2740,25 +2742,40 @@ getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[selSc] ||
               );
             });
           })()}
-           {/* What You Practised Today accordion */}
-          <div style={{borderTop:"1px solid rgba(138,158,132,0.25)",margin:"0 4px",paddingTop:20,cursor:"pointer"}} onClick={()=>setAccordionOpen(o=>!o)}>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 4px"}}>
-              <div style={{fontFamily:T.sans,fontSize:15,fontWeight:500,color:T2.text}}>What You Practised Today</div>
-              <span style={{fontSize:16,color:T2.text3,transition:"transform 0.2s",transform:accordionOpen?"rotate(180deg)":"none",display:"inline-block"}}>▾</span>
-            </div>
-            {accordionOpen && (
-              <div style={{marginTop:16,padding:"0 4px"}}>
-                {REVIEW_BULLETS[lesson.day-1].map((b,i)=>(
-                  <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10}}>
-                    <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.15)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>
+           {/* What You Learned / Workplace Application tabs */}
+          {(()=>{
+            const [revTab, setRevTab] = useState('learned');
+            return (
+              <div style={{borderTop:"1px solid rgba(138,158,132,0.25)",margin:"0 4px",paddingTop:16}}>
+                <div style={{display:"flex",gap:0,borderBottom:"0.5px solid "+T2.border,marginBottom:16}}>
+                  {[{id:"learned",label:"What You Learned"},{id:"workplace",label:"Workplace Application"}].map(t=>(
+                    <button key={t.id} onClick={()=>setRevTab(t.id)} style={{flex:1,padding:"10px 8px",border:"none",background:"transparent",fontFamily:T.sans,fontSize:13,fontWeight:revTab===t.id?600:400,color:revTab===t.id?T2.text:T2.text3,cursor:"pointer",borderBottom:revTab===t.id?"2px solid "+T.gold:"2px solid transparent",marginBottom:-1}}>{t.label}</button>
+                  ))}
+                </div>
+                {revTab==="learned" && REVIEW_BULLETS[lesson.day-1].map((b,i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
+                    <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
                       <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     </div>
-                    <span style={{fontFamily:T.sans,fontSize:14,color:T2.text2,lineHeight:1.6}}>{b}</span>
+                    <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
                   </div>
                 ))}
+                {revTab==="workplace" && (
+                  <>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,marginBottom:12,fontWeight:300}}>How to put today's techniques to work immediately.</p>
+                    {(WORKPLACE_APPLICATION[lesson.day-1]||[]).map((b,i)=>(
+                      <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
+                        <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                          <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
+                        </div>
+                        <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
+                      </div>
+                    ))}
+                  </>
+                )}
               </div>
-            )}
-          </div>
+            );
+          })()}
            {/* Ambition Statement — only on Day 7 */}
           {lesson.day === 7 && (
             <div style={{background:T.cardDark,borderRadius:8,overflow:"hidden",border:"1px solid rgba(138,158,132,0.2)",margin:"0 4px"}}>
