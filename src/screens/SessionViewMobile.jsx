@@ -2401,50 +2401,50 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Iconic Brands. Intentional Choices.</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>A personal brand built by design — not by accident.</p>
-          {D11_EXAMPLES.filter(c=>c.id==="swift").map(card=>{
-            const open = d11MobCard===card.id;
-            return (
-              <div key={card.id} style={{display:"flex",flexDirection:"column",gap:12}}>
-                {/* Name + subtitle + expandable */}
-                <div style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,borderRadius:8,overflow:"hidden",transition:"border-color 0.2s"}}>
-                  <div onClick={()=>setD11MobCard(open?null:card.id)} style={{padding:"20px",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                    <div style={{flex:1}}>
-                      <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:3}}>{card.name}</div>
-                      <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginBottom:8,fontWeight:300}}>{card.role}</div>
-                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>{card.headline}</div>
-                    </div>
-                    <div style={{display:"flex",alignItems:"center",gap:6,marginLeft:12,flexShrink:0,paddingTop:2}}>
-                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:300}}>{open?"Close":"Read more"}</span>
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.2s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </div>
-                  </div>
-                  {open && (
-                    <div style={{padding:"0 20px 20px",borderTop:"0.5px solid "+T2.border}}>
-                      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,fontWeight:300,margin:"16px 0 14px"}}>{card.body}</p>
-                      <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                        <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>{card.lesson}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                {/* Brand formula — separate box */}
-                <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"18px 20px"}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>How she maps to the Brand Formula</div>
-                  {card.ingredients.map((ing,i)=>(
-                    <div key={i} style={{display:"flex",gap:10,paddingBottom:i<card.ingredients.length-1?12:0,marginBottom:i<card.ingredients.length-1?12:0,borderBottom:i<card.ingredients.length-1?"0.5px solid "+T2.border:"none",alignItems:"flex-start"}}>
-                      <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.35)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                        <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
-                      </div>
+          <div style={{display:"flex",flexDirection:"column",gap:24}}>
+            {D11_EXAMPLES.map(card=>{
+              const open = d11MobCard===card.id;
+              return (
+                <div key={card.id} style={{display:"flex",flexDirection:"column",gap:12}}>
+                  <div style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,borderRadius:8,overflow:"hidden",transition:"border-color 0.2s"}}>
+                    <div onClick={()=>setD11MobCard(open?null:card.id)} style={{padding:"20px",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
                       <div style={{flex:1}}>
-                        <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T2.text,marginBottom:3}}>{ing.n}</div>
-                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>{ing.detail}</p>
+                        <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:3}}>{card.name}</div>
+                        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginBottom:8,fontWeight:300}}>{card.role}</div>
+                        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>{card.headline}</div>
+                      </div>
+                      <div style={{display:"flex",alignItems:"center",gap:6,marginLeft:12,flexShrink:0,paddingTop:2}}>
+                        <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:300}}>{open?"Close":"Read more"}</span>
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.2s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </div>
                     </div>
-                  ))}
+                    {open && (
+                      <div style={{padding:"0 20px 20px",borderTop:"0.5px solid "+T2.border}}>
+                        <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,fontWeight:300,margin:"16px 0 14px"}}>{card.body}</p>
+                        <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                          <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>{card.lesson}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"18px 20px"}}>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>How they map to the Brand Formula</div>
+                    {card.ingredients.map((ing,i)=>(
+                      <div key={i} style={{display:"flex",gap:10,paddingBottom:i<card.ingredients.length-1?12:0,marginBottom:i<card.ingredients.length-1?12:0,borderBottom:i<card.ingredients.length-1?"0.5px solid "+T2.border:"none",alignItems:"flex-start"}}>
+                        <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.35)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                          <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
+                        </div>
+                        <div style={{flex:1}}>
+                          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T2.text,marginBottom:3}}>{ing.n}</div>
+                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>{ing.detail}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </>
       )}
       {isD11 && step==="Practice" && (

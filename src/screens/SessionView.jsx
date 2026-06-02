@@ -3044,6 +3044,51 @@ setAmbitionSaved(true); } catch {}
       return <RightContent/>;
     };
 
+    const D11ExCard = ({card}) => {
+      const [open, setOpen] = useState(false);
+      return (
+        <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+          <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, overflow:"hidden" }}>
+            <button onClick={()=>setOpen(o=>!o)} style={{ width:"100%", padding:"28px 32px", display:"flex", alignItems:"center", justifyContent:"space-between", border:"none", background:"transparent", cursor:"pointer", textAlign:"left" }}>
+              <div>
+                <h3 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, marginBottom:4, lineHeight:1.1 }}>{card.name}</h3>
+                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, marginBottom:8, fontWeight:300 }}>{card.role}</p>
+                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px" }}>{card.headline}</div>
+              </div>
+              <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0, marginLeft:24 }}>
+                <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, fontWeight:300 }}>{open?"Close":"Read more"}</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform:open?"rotate(180deg)":"none", transition:"transform 0.2s", flexShrink:0 }}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+            </button>
+            {open && (
+              <div style={{ padding:"0 32px 28px", borderTop:"0.5px solid "+T2.border }}>
+                <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.75, fontWeight:300, margin:"20px 0 20px" }}>{card.body}</p>
+                <div style={{ padding:"16px 20px", background:T2.bg, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+                  <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
+                </div>
+              </div>
+            )}
+          </div>
+          <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"28px 32px" }}>
+            <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:20 }}>How they map to the Brand Formula</div>
+            <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
+              {card.ingredients.map((ing,i)=>(
+                <div key={i} style={{ display:"flex", gap:16, paddingBottom:i<card.ingredients.length-1?16:0, marginBottom:i<card.ingredients.length-1?16:0, borderBottom:i<card.ingredients.length-1?"0.5px solid "+T2.border:"none", alignItems:"flex-start" }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:10, flexShrink:0, width:130 }}>
+                    <div style={{ width:22, height:22, borderRadius:"50%", background:"rgba(138,158,132,0.12)", border:"1px solid rgba(138,158,132,0.35)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                      <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold }}>{i+1}</span>
+                    </div>
+                    <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:700, color:T2.text }}>{ing.n}</span>
+                  </div>
+                  <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.65, fontWeight:300, margin:0 }}>{ing.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
     const D11RightContent = () => {
       const [d11Test, setD11Test] = useState(null);
       const [d11CardOpen, setD11CardOpen] = useState(null);
@@ -3156,53 +3201,9 @@ setAmbitionSaved(true); } catch {}
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Iconic Brands. Intentional Choices.</h2>
           <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>A personal brand built by design — not by accident.</p>
 
-          {D11_EXAMPLES.filter(c=>c.id==="swift").map(card=>{
-            const [open, setOpen] = useState(false);
-            return (
-              <div key={card.id} style={{ display:"flex", flexDirection:"column", gap:16 }}>
-                {/* Name + subtitle + expandable */}
-                <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, overflow:"hidden" }}>
-                  <button onClick={()=>setOpen(o=>!o)} style={{ width:"100%", padding:"28px 32px", display:"flex", alignItems:"center", justifyContent:"space-between", border:"none", background:"transparent", cursor:"pointer", textAlign:"left" }}>
-                    <div>
-                      <h3 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, marginBottom:4, lineHeight:1.1 }}>{card.name}</h3>
-                      <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, marginBottom:8, fontWeight:300 }}>{card.role}</p>
-                      <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px" }}>{card.headline}</div>
-                    </div>
-                    <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0, marginLeft:24 }}>
-                      <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, fontWeight:300 }}>{open?"Close":"Read more"}</span>
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform:open?"rotate(180deg)":"none", transition:"transform 0.2s", flexShrink:0 }}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </div>
-                  </button>
-                  {open && (
-                    <div style={{ padding:"0 32px 28px", borderTop:"0.5px solid "+T2.border }}>
-                      <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.75, fontWeight:300, margin:"20px 0 20px" }}>{card.body}</p>
-                      <div style={{ padding:"16px 20px", background:T2.bg, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
-                        <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Brand Formula box */}
-                <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"28px 32px" }}>
-                  <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:20 }}>How she maps to the Brand Formula</div>
-                  <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
-                    {card.ingredients.map((ing,i)=>(
-                      <div key={i} style={{ display:"flex", gap:16, paddingBottom:i<card.ingredients.length-1?16:0, marginBottom:i<card.ingredients.length-1?16:0, borderBottom:i<card.ingredients.length-1?"0.5px solid "+T2.border:"none", alignItems:"flex-start" }}>
-                        <div style={{ display:"flex", alignItems:"center", gap:10, flexShrink:0, width:130 }}>
-                          <div style={{ width:22, height:22, borderRadius:"50%", background:"rgba(138,158,132,0.12)", border:"1px solid rgba(138,158,132,0.35)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                            <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold }}>{i+1}</span>
-                          </div>
-                          <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:700, color:T2.text }}>{ing.n}</span>
-                        </div>
-                        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.65, fontWeight:300, margin:0 }}>{ing.detail}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          <div style={{ display:"flex", flexDirection:"column", gap:32 }}>
+            {D11_EXAMPLES.map(card=><D11ExCard key={card.id} card={card}/>)}
+          </div>
         </div>
       );
 

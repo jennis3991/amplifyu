@@ -865,14 +865,18 @@ export const D11_EXAMPLES = [
      {n:"Familiarity",  detail:"Albums. Tours. Documentaries. Social media. Interviews. Cultural moments. Her audience sees her repeatedly over years. Visibility compounds trust and connection."},
      {n:"Polarity",     detail:"Taylor is not neutral. She reinvents publicly, owns her narrative, makes bold creative decisions, creates passionate fandom. Memorable brands stand for something."},
    ]},
-  {id:"beckham", name:"David Beckham", role:"Athlete · Entrepreneur · Philanthropist",
-   headline:"Brand Can Evolve",
-   body:"From Manchester United captain to fashion icon to club owner to humanitarian ambassador — Beckham's brand evolved without contradiction. Each phase added a dimension rather than replacing the last. The throughline was always intentional excellence, visual precision, and cultural reach.",
-   lesson:"Your brand isn't fixed. It can grow. The key is evolution that feels coherent — new chapters that add to the story rather than contradict it."},
-  {id:"wintour", name:"Anna Wintour", role:"Editor-in-Chief, Vogue",
-   headline:"Iconic Through Consistency",
-   body:"The bob. The sunglasses. The front row seat. For decades, Wintour has signalled authority, taste, and certainty through consistent visual and behavioural choices. She doesn't vary. She doesn't hedge. That consistency creates anticipation and recognition — the foundation of any powerful brand.",
-   lesson:"When people know what to expect from you, they trust you. Consistency signals confidence. Variation without purpose signals uncertainty."},
+  {id:"disney", name:"Disney", role:"Entertainment Empire · Cultural Institution",
+   headline:"100 Years of Magic, Wonder & Imagination",
+   body:"Disney has spent a century doing something most organisations never achieve: staying completely true to a brand identity across every format, generation, and medium. From Steamboat Willie in 1928 to Marvel, Pixar, and Star Wars today, every Disney product carries the same emotional promise — Magic, Wonder, and Imagination. The brand has survived leadership changes, financial crises, the death of its founder, and a complete technological revolution. It did this by protecting its emotional core with ruthless consistency. The logo, the music, the storytelling structure, the feeling of walking through the gates — all of it reinforces one message: you are entering somewhere extraordinary.",
+   lesson:"Disney didn't build a brand. They built a feeling — and then protected it for 100 years.",
+   ingredients:[
+     {n:"Authority",    detail:"Disney owns a category: family entertainment built on wonder and storytelling. They don't claim to do everything — they claim to do one thing better than anyone else: create magical experiences. That specialisation has made them the world's most valuable entertainment brand."},
+     {n:"Generosity",   detail:"Theme parks, animated films, shorts, documentaries, merchandise, live experiences — Disney gives audiences multiple ways to live inside the brand. They don't just sell a product. They create worlds people want to inhabit. Generosity of imagination is the foundation."},
+     {n:"Relatability", detail:"Every Disney story is rooted in universal human emotion: longing, courage, loss, love, growth. The characters change. The feeling doesn't. People connect with Disney because they see their own hopes and fears inside the story."},
+     {n:"Energy",       detail:"From the opening bars of a Disney fanfare to the fireworks above Cinderella's castle, Disney leads with emotion. The energy is consistent: wonder, anticipation, delight. That emotional signature is felt before a single word is spoken."},
+     {n:"Familiarity",  detail:"100 years of consistent identity. The same castle. The same musical cues. The same storytelling rhythm. Generations grow up with Disney, pass it to their children, and return as adults. Familiarity this deep becomes cultural memory."},
+     {n:"Polarity",     detail:"Disney has a clear point of view: magic is real, imagination matters, story has the power to change you. That position has attracted billions of devoted fans — and it's earned by never compromising on it, even when the world changes around them."},
+   ]},
 ];
 
 export const D11_INGREDIENTS = [
