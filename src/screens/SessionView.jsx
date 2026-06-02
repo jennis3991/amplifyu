@@ -3159,54 +3159,55 @@ setAmbitionSaved(true); } catch {}
       if (step === "Example") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Iconic Brands. Intentional Choices.</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>Three people whose personal brands became cultural forces — not by accident, but by design.</p>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>A personal brand built by design — not by accident.</p>
 
-          {/* Taylor Swift — full-width feature card */}
-          {D11_EXAMPLES.filter(c=>c.id==="swift").map(card=>(
-            <div key={card.id} style={{ background:"white", borderRadius:8, padding:"32px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)", marginBottom:20 }}>
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:32 }}>
-                <div>
-                  <h3 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, marginBottom:2 }}>{card.name}</h3>
-                  <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, marginBottom:8 }}>{card.role}</p>
-                  <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:16 }}>{card.headline}</div>
-                  <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.75, fontWeight:300, marginBottom:20 }}>{card.body}</p>
-                  <div style={{ padding:"14px 16px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
-                    <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
+          {D11_EXAMPLES.filter(c=>c.id==="swift").map(card=>{
+            const [open, setOpen] = useState(false);
+            return (
+              <div key={card.id} style={{ display:"flex", flexDirection:"column", gap:16 }}>
+                {/* Name + subtitle + expandable */}
+                <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, overflow:"hidden" }}>
+                  <button onClick={()=>setOpen(o=>!o)} style={{ width:"100%", padding:"28px 32px", display:"flex", alignItems:"center", justifyContent:"space-between", border:"none", background:"transparent", cursor:"pointer", textAlign:"left" }}>
+                    <div>
+                      <h3 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, marginBottom:4, lineHeight:1.1 }}>{card.name}</h3>
+                      <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, marginBottom:8, fontWeight:300 }}>{card.role}</p>
+                      <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px" }}>{card.headline}</div>
+                    </div>
+                    <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0, marginLeft:24 }}>
+                      <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, fontWeight:300 }}>{open?"Close":"Read more"}</span>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform:open?"rotate(180deg)":"none", transition:"transform 0.2s", flexShrink:0 }}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                  </button>
+                  {open && (
+                    <div style={{ padding:"0 32px 28px", borderTop:"0.5px solid "+T2.border }}>
+                      <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.75, fontWeight:300, margin:"20px 0 20px" }}>{card.body}</p>
+                      <div style={{ padding:"16px 20px", background:T2.bg, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+                        <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Brand Formula box */}
+                <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"28px 32px" }}>
+                  <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:20 }}>How she maps to the Brand Formula</div>
+                  <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
+                    {card.ingredients.map((ing,i)=>(
+                      <div key={i} style={{ display:"flex", gap:16, paddingBottom:i<card.ingredients.length-1?16:0, marginBottom:i<card.ingredients.length-1?16:0, borderBottom:i<card.ingredients.length-1?"0.5px solid "+T2.border:"none", alignItems:"flex-start" }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:10, flexShrink:0, width:130 }}>
+                          <div style={{ width:22, height:22, borderRadius:"50%", background:"rgba(138,158,132,0.12)", border:"1px solid rgba(138,158,132,0.35)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                            <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold }}>{i+1}</span>
+                          </div>
+                          <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:700, color:T2.text }}>{ing.n}</span>
+                        </div>
+                        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.65, fontWeight:300, margin:0 }}>{ing.detail}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div>
-                  <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14 }}>How she maps to the Brand Formula</div>
-                  {card.ingredients.map((ing,i)=>(
-                    <div key={i} style={{ display:"flex", gap:12, paddingBottom:12, marginBottom:12, borderBottom: i<card.ingredients.length-1 ? "0.5px solid "+T2.divider : "none", alignItems:"flex-start" }}>
-                      <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0, width:110 }}>
-                        <div style={{ width:20, height:20, borderRadius:"50%", background:"rgba(138,158,132,0.15)", border:"0.5px solid "+T.gold, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                          <span style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold }}>{i+1}</span>
-                        </div>
-                        <span style={{ fontFamily:T.sans, fontSize:12, fontWeight:700, color:T2.text }}>{ing.n}</span>
-                      </div>
-                      <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, lineHeight:1.6, fontWeight:300, margin:0 }}>{ing.detail}</p>
-                    </div>
-                  ))}
-                </div>
               </div>
-            </div>
-          ))}
-
-          {/* Beckham + Wintour — 2-col grid */}
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:20 }}>
-            {D11_EXAMPLES.filter(c=>c.id!=="swift").map((card,ci)=>(
-              <div key={ci} style={{ background:"white", borderRadius:8, padding:"28px", boxShadow:"0 2px 8px rgba(44,36,22,0.07), 0 8px 24px rgba(44,36,22,0.04)" }}>
-                <h3 style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, marginBottom:2 }}>{card.name}</h3>
-                <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, marginBottom:8 }}>{card.role}</p>
-                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:16 }}>{card.headline}</div>
-                <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.7, fontWeight:300, marginBottom:20 }}>{card.body}</p>
-                <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:16 }}>
-                  <div style={{ fontSize:10, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Lesson</div>
-                  <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       );
 
