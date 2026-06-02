@@ -186,7 +186,7 @@ export function D12PracticeWidget({T, T2, isDesktop}) {
               if (round < ROUNDS.length-1){setRound(v=>v+1);setSelected(null);setShowFeedback(false);}
               else {setPhase('done');}
             }} style={cs.cta}>
-              {round < ROUNDS.length-1 ? `Round ${round+2}: ${ROUNDS[round+1].title} →` : "See Your Results →"}
+              {round < ROUNDS.length-1 ? `Round ${round+2}: ${ROUNDS[round+1].title} →` : "Complete the Challenge →"}
             </button>
           </>
         )}
