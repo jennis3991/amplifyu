@@ -30,7 +30,7 @@ export function MobileSessionView({
   d1MobCard, setD1MobCard, d2MobCard, setD2MobCard,
   d3MobCard, setD3MobCard, d4MobCard, setD4MobCard,
   d5MobCard, setD5MobCard, d6MobCard, setD6MobCard,
-  d7MobCard, setD7MobCard, d10MobCard, setD10MobCard, d11MobCard, setD11MobCard, d12MobCard, setD12MobCard, ntMobCard, setNtMobCard,
+  d7MobCard, setD7MobCard, d10MobCard, setD10MobCard, d11MobCard, setD11MobCard, d11FormulaCard, setD11FormulaCard, d12MobCard, setD12MobCard, ntMobCard, setNtMobCard,
   activeSc, scenarios, ambitionDraft, saveAmbition, ambitionSaved,
   roleId, activeRole, swipeRef, note, saveNote, checks, setChecks,
   ntOpenCard, setNtOpenCard, d9OpenCard, setD9OpenCard, ntStory,
@@ -2439,28 +2439,37 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                       </div>
                     )}
                   </div>
-                  <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"18px 20px"}}>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>How they map to the Brand Formula</div>
-                    {card.ingredients.map((ing,i)=>(
-                      <div key={i} style={{display:"flex",gap:10,paddingBottom:i<card.ingredients.length-1?12:0,marginBottom:i<card.ingredients.length-1?12:0,borderBottom:i<card.ingredients.length-1?"0.5px solid "+T2.border:"none",alignItems:"flex-start"}}>
-                        <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.35)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                          <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
-                        </div>
-                        <div style={{flex:1}}>
-                          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T2.text,marginBottom:3}}>{ing.n}</div>
-                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0,marginBottom:ing.lesson?8:0}}>{ing.detail}</p>
-                          {ing.lesson && (
-                            <div style={{padding:"9px 12px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
-                              <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",display:"block",marginBottom:3}}>AmplifyU Lesson</span>
-                              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,fontStyle:"italic",margin:0}}>{ing.lesson}</p>
+                  <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+                    <div onClick={()=>setD11FormulaCard(d11FormulaCard===card.id?null:card.id)} style={{padding:"14px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer"}}>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>How they map to the Brand Formula</div>
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{transform:d11FormulaCard===card.id?"rotate(180deg)":"none",transition:"transform 0.2s",flexShrink:0,marginLeft:12}}><path d="M3 6l5 5 5-5" stroke={T.gold} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                    {d11FormulaCard===card.id && (
+                      <div style={{padding:"0 20px 20px",borderTop:"0.5px solid "+T2.border}}>
+                        <div style={{marginTop:16}}>
+                          {card.ingredients.map((ing,i)=>(
+                            <div key={i} style={{display:"flex",gap:10,paddingBottom:i<card.ingredients.length-1?12:0,marginBottom:i<card.ingredients.length-1?12:0,borderBottom:i<card.ingredients.length-1?"0.5px solid "+T2.border:"none",alignItems:"flex-start"}}>
+                              <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.35)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                                <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
+                              </div>
+                              <div style={{flex:1}}>
+                                <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T2.text,marginBottom:3}}>{ing.n}</div>
+                                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0,marginBottom:ing.lesson?8:0}}>{ing.detail}</p>
+                                {ing.lesson && (
+                                  <div style={{padding:"9px 12px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+                                    <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",display:"block",marginBottom:3}}>AmplifyU Lesson</span>
+                                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,fontStyle:"italic",margin:0}}>{ing.lesson}</p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                          {card.closing && (
+                            <div style={{marginTop:16,padding:"16px",background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.25)",textAlign:"center"}}>
+                              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{card.closing}</p>
                             </div>
                           )}
                         </div>
-                      </div>
-                    ))}
-                    {card.closing && (
-                      <div style={{marginTop:16,padding:"16px",background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.25)",textAlign:"center"}}>
-                        <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{card.closing}</p>
                       </div>
                     )}
                   </div>

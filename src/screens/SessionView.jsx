@@ -83,6 +83,7 @@ setAmbitionSaved(true); } catch {}
   const [d7MobCard, setD7MobCard] = useState(null);
   const [d10MobCard, setD10MobCard] = useState(null);
   const [d11MobCard, setD11MobCard] = useState(null);
+  const [d11FormulaCard, setD11FormulaCard] = useState(null);
   const [d12MobCard, setD12MobCard] = useState(null);
   const [ntMobCard, setNtMobCard] = useState(null);
   const swipeRef = useRef({x:0,y:0});
@@ -3046,6 +3047,7 @@ setAmbitionSaved(true); } catch {}
 
     const D11ExCard = ({card}) => {
       const [open, setOpen] = useState(false);
+      const [formulaOpen, setFormulaOpen] = useState(false);
       return (
         <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
           <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, overflow:"hidden" }}>
@@ -3069,9 +3071,14 @@ setAmbitionSaved(true); } catch {}
               </div>
             )}
           </div>
-          <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"28px 32px" }}>
-            <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:20 }}>How they map to the Brand Formula</div>
-            <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
+          <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, overflow:"hidden" }}>
+            <button onClick={()=>setFormulaOpen(o=>!o)} style={{ width:"100%", padding:"20px 32px", display:"flex", alignItems:"center", justifyContent:"space-between", border:"none", background:"transparent", cursor:"pointer", textAlign:"left" }}>
+              <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px" }}>How they map to the Brand Formula</div>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform:formulaOpen?"rotate(180deg)":"none", transition:"transform 0.2s", flexShrink:0, marginLeft:16 }}><path d="M3 6l5 5 5-5" stroke={T.gold} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+            {formulaOpen && (
+            <div style={{ padding:"0 32px 28px", borderTop:"0.5px solid "+T2.border }}>
+            <div style={{ display:"flex", flexDirection:"column", gap:0, marginTop:20 }}>
               {card.ingredients.map((ing,i)=>(
                 <div key={i} style={{ display:"flex", gap:16, paddingBottom:i<card.ingredients.length-1?16:0, marginBottom:i<card.ingredients.length-1?16:0, borderBottom:i<card.ingredients.length-1?"0.5px solid "+T2.border:"none", alignItems:"flex-start" }}>
                   <div style={{ display:"flex", alignItems:"center", gap:10, flexShrink:0, width:130 }}>
@@ -3096,6 +3103,8 @@ setAmbitionSaved(true); } catch {}
               <div style={{ marginTop:24, padding:"20px 24px", background:"rgba(138,158,132,0.07)", borderRadius:6, border:"0.5px solid rgba(138,158,132,0.25)", textAlign:"center" }}>
                 <p style={{ fontFamily:T.serif, fontSize:19, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>{card.closing}</p>
               </div>
+            )}
+            </div>
             )}
           </div>
         </div>
@@ -3876,6 +3885,7 @@ setAmbitionSaved(true); } catch {}
       d7MobCard={d7MobCard} setD7MobCard={setD7MobCard}
       d10MobCard={d10MobCard} setD10MobCard={setD10MobCard}
       d11MobCard={d11MobCard} setD11MobCard={setD11MobCard}
+      d11FormulaCard={d11FormulaCard} setD11FormulaCard={setD11FormulaCard}
       d12MobCard={d12MobCard} setD12MobCard={setD12MobCard}
       ntMobCard={ntMobCard} setNtMobCard={setNtMobCard}
       activeSc={activeSc} scenarios={scenarios}
