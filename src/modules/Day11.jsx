@@ -184,11 +184,17 @@ export function D11PracticeWidget({T, T2, isDesktop}) {
 // ─── D11 Simulation Widget — Brand Coherence Audit ───────────────────────────
 export function D11SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
+  const [mode, setMode] = useState(null);
   const [brandWords, setBrandWords] = useState(['','','']);
   const [profileText, setProfileText] = useState('');
   const [results, setResults] = useState(null);
+  const [buildRole, setBuildRole] = useState('');
+  const [buildAchievement, setBuildAchievement] = useState('');
+  const [buildAudience, setBuildAudience] = useState('');
+  const [buildResults, setBuildResults] = useState(null);
+  const [copied, setCopied] = useState(false);
 
-  const reset = () => { setPhase('intro'); setBrandWords(['','','']); setProfileText(''); setResults(null); };
+  const reset = () => { setPhase('intro'); setMode(null); setBrandWords(['','','']); setProfileText(''); setResults(null); setBuildRole(''); setBuildAchievement(''); setBuildAudience(''); setBuildResults(null); setCopied(false); };
 
   const cs = {
     card: { background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px" },
@@ -196,8 +202,6 @@ export function D11SimWidget({T, T2, isDesktop}) {
   };
   const cta = (disabled) => ({ width:"100%", padding:"15px", borderRadius:4, border:"none", background:disabled?"rgba(44,36,22,0.25)":T.ink, color:T.bg, fontSize:isDesktop?15:14, fontWeight:600, cursor:disabled?"not-allowed":"pointer", fontFamily:T.sans, minHeight:50, transition:"all 0.2s" });
   const back = { background:"none", border:"none", fontFamily:T.sans, fontSize:12, color:T2.text4, cursor:"pointer", padding:"8px 0", textAlign:"left" };
-
-  const [copied, setCopied] = useState(false);
 
   const runAudit = () => {
     const r = (min,max) => Math.floor(Math.random()*(max-min+1))+min;
@@ -243,32 +247,115 @@ export function D11SimWidget({T, T2, isDesktop}) {
     setPhase('results');
   };
 
+  const runBuild = () => {
+    const desired = brandWords.filter(w=>w.trim());
+    const d = desired.length > 0 ? desired.map(w=>w.trim()) : ['strategic','trusted','inspiring'];
+    const role = buildRole.trim() || 'professional';
+    const audience = buildAudience.trim() || 'organisations and teams';
+    const achievement = buildAchievement.trim();
+
+    if (mode === 'linkedin') {
+      const headline = `${role} | Helping ${audience} achieve clarity, growth, and lasting results`;
+      const about = `I help ${audience} achieve the kind of results that compound over time — through ${d[0]?.toLowerCase()}, ${d[1]?.toLowerCase() || 'deliberate'} leadership, and clear communication.\n\nAs a ${role}, I've built a career around ${d.join(', ').toLowerCase()}${achievement ? ` — most recently, ${achievement}` : ''}.\n\nI believe the best outcomes come from people who are clear on who they are, what they stand for, and the value they create. That belief shapes everything I do.\n\nIf you want to work with someone who brings ${d[0]?.toLowerCase()} and genuine care to every room they enter — let's connect.`;
+      const cv = `${role} with a proven track record of helping ${audience} achieve meaningful outcomes. Known for ${d.join(', ').toLowerCase()}, with a clear ability to turn complexity into clarity and strategy into action.${achievement ? ` ${achievement}.` : ''} Motivated by doing work that matters — and doing it with the highest standards.`;
+      setBuildResults({ headline, linkedin: about, cv });
+    } else {
+      const summary = `${role} with a track record of helping ${audience} achieve exceptional results. Known for being ${d.join(', ').toLowerCase()} — bringing clarity, rigour, and genuine commitment to every engagement.${achievement ? `\n\nKey achievement: ${achievement}.` : ''}\n\nA natural communicator and leader who translates complex challenges into clear, actionable strategy. Driven by the belief that the best outcomes come from ${d[0]?.toLowerCase()} thinking and ${d[d.length-1]?.toLowerCase()} execution.`;
+      setBuildResults({ cv: summary });
+    }
+    setPhase('build-results');
+  };
+
   if (phase === 'intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
       <div style={cs.card}>
         <div style={cs.label}>Real · Personal · Actionable</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 16px"}}>Your personal brand already exists. The question is whether you're shaping it intentionally.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 12px"}}>One of the fastest ways to assess your brand is to look at your LinkedIn profile.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>Most profiles describe what someone does. The strongest profiles communicate who they are, what they stand for, and the value they create.</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 10px"}}>Your brand is the story people tell about you when you're not in the room.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0}}>Choose what you'd like to do. Your AmplifyU coach scores your positioning, identifies the gaps, and writes stronger copy for you.</p>
       </div>
+      {[
+        {icon:"🔍", label:"Audit my LinkedIn profile", sub:"Already have a profile? Find the gap between how you're seen and how you want to be known.", action:()=>{setMode('audit');setPhase('words');}},
+        {icon:"✍️", label:"Build a LinkedIn profile from scratch", sub:"No profile yet? Build one around your brand — headline, About section, and messaging.", action:()=>{setMode('linkedin');setPhase('build-form');}},
+        {icon:"📄", label:"Write my CV profile statement", sub:"Create a compelling professional summary that positions you powerfully from the first line.", action:()=>{setMode('cv');setPhase('build-form');}},
+      ].map((opt,i)=>(
+        <button key={i} onClick={opt.action} style={{...cs.card,cursor:"pointer",textAlign:"left",border:`0.5px solid ${T2.border}`,display:"flex",gap:14,alignItems:"flex-start",transition:"border-color 0.2s, box-shadow 0.2s"}}
+          onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.boxShadow="0 2px 12px rgba(138,158,132,0.12)";}}
+          onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.boxShadow="none";}}>
+          <span style={{fontSize:isDesktop?22:20,flexShrink:0,marginTop:2}}>{opt.icon}</span>
+          <div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,marginBottom:4,lineHeight:1.2}}>{opt.label}</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,lineHeight:1.5}}>{opt.sub}</p>
+          </div>
+          <span style={{fontFamily:T.sans,fontSize:14,color:T.gold,marginLeft:"auto",flexShrink:0,paddingTop:2}}>→</span>
+        </button>
+      ))}
+    </div>
+  );
+
+  if (phase === 'build-form') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
       <div style={cs.card}>
-        <div style={cs.label}>What your AmplifyU coach will analyse</div>
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>
-          {[
-            "What signals your profile currently sends",
-            "Whether those signals are consistent",
-            "What people are likely to assume about you",
-            "Gaps between your current and desired brand",
-            "How to strengthen your positioning",
-          ].map((t,i)=>(
-            <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-              <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:2}}>✦</span>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5}}>{t}</span>
+        <div style={cs.label}>{mode==='linkedin'?"Build Your LinkedIn Profile":"Write Your CV Profile"}</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:"0 0 16px"}}>Answer three questions. Your AmplifyU coach writes the rest.</p>
+
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Your role or title</div>
+            <input value={buildRole} onChange={e=>setBuildRole(e.target.value)} placeholder={mode==='linkedin'?"e.g. Senior Marketing Manager":"e.g. Operations Director"} className="au-input" style={{width:"100%",padding:"10px 14px",fontSize:isDesktop?14:13,boxSizing:"border-box"}}/>
+          </div>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Who you help / your target audience</div>
+            <input value={buildAudience} onChange={e=>setBuildAudience(e.target.value)} placeholder="e.g. fast-growing startups, global marketing teams" className="au-input" style={{width:"100%",padding:"10px 14px",fontSize:isDesktop?14:13,boxSizing:"border-box"}}/>
+          </div>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>One key achievement or strength</div>
+            <textarea value={buildAchievement} onChange={e=>setBuildAchievement(e.target.value)} placeholder={mode==='linkedin'?"e.g. Led a team of 12 to deliver a £4M transformation programme on time and under budget":"e.g. Reduced operational costs by 30% while maintaining team engagement scores above 85%"} style={{width:"100%",minHeight:isDesktop?80:70,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
+          </div>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Three words you want to be known for</div>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              {brandWords.map((w,i)=>(
+                <input key={i} value={w} onChange={e=>{const n=[...brandWords];n[i]=e.target.value;setBrandWords(n);}} placeholder={["e.g. Strategic","e.g. Trusted","e.g. Inspiring"][i]} className="au-input" style={{flex:"1 1 80px",padding:"9px 12px",fontSize:isDesktop?13:12,minWidth:80}}/>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
-      <button onClick={()=>setPhase('words')} style={cta(false)}>Begin the Audit →</button>
+      <button onClick={runBuild} disabled={!buildRole.trim()} style={cta(!buildRole.trim())}>
+        {mode==='linkedin'?"Build My LinkedIn Profile →":"Write My CV Profile →"}
+      </button>
+      <button onClick={reset} style={back}>← Back</button>
+    </div>
+  );
+
+  if (phase === 'build-results' && buildResults) return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      {mode==='linkedin' && buildResults.headline && (
+        <div style={cs.card}>
+          <div style={cs.label}>LinkedIn Headline</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 10px"}}>{buildResults.headline}</p>
+          <button onClick={()=>{navigator.clipboard?.writeText(buildResults.headline).then(()=>{setCopied('h');setTimeout(()=>setCopied(false),2000);});}} style={{padding:"7px 14px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied==='h'?"rgba(138,158,132,0.15)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}>{copied==='h'?"Copied ✓":"Copy headline"}</button>
+        </div>
+      )}
+      {mode==='linkedin' && buildResults.linkedin && (
+        <div style={cs.card}>
+          <div style={cs.label}>LinkedIn About Section</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.75,margin:"0 0 14px",whiteSpace:"pre-wrap"}}>{buildResults.linkedin}</p>
+          <button onClick={()=>{navigator.clipboard?.writeText(buildResults.linkedin).then(()=>{setCopied('l');setTimeout(()=>setCopied(false),2000);});}} style={{padding:"7px 14px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied==='l'?"rgba(138,158,132,0.15)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}>{copied==='l'?"Copied ✓":"Copy About section"}</button>
+        </div>
+      )}
+      {buildResults.cv && (
+        <div style={cs.card}>
+          <div style={cs.label}>{mode==='linkedin'?"CV Profile Statement":"Your CV Profile"}</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.75,margin:"0 0 14px",whiteSpace:"pre-wrap"}}>{buildResults.cv}</p>
+          <button onClick={()=>{navigator.clipboard?.writeText(buildResults.cv).then(()=>{setCopied('c');setTimeout(()=>setCopied(false),2000);});}} style={{padding:"7px 14px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied==='c'?"rgba(138,158,132,0.15)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}>{copied==='c'?"Copied ✓":"Copy profile statement"}</button>
+        </div>
+      )}
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+        <div style={cs.label}>Next step</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0}}>Use this as your starting point. Personalise it with specific numbers, stories, and your own voice — the goal is to sound unmistakably like you. Then run the Brand Audit to check every signal is aligned.</p>
+      </div>
+      <button onClick={reset} style={{width:"100%",padding:"15px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:50}}>Start Again →</button>
     </div>
   );
 

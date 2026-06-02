@@ -3211,8 +3211,8 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Your Brand Coach</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>Four scenarios where your brand is built or broken. Write your response. Your coach evaluates clarity, authenticity, and memorability.</p>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:12 }}>The LinkedIn Brand Audit</h2>
+          <p style={{ fontFamily:T.sans, fontSize:17, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:600 }}>The fastest way to find the gap between how you're seen and how you want to be known — and close it.</p>
           <D11SimWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
