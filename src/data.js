@@ -315,7 +315,7 @@ export const LESSONS = [
    promise:"You know how to build a story. You know how to deliver it. Now you can command any room.",
    teaser:"Learn the 5 elements of powerful delivery used by Brené Brown, Simon Sinek, Amy Cuddy, and Steve Jobs."},
 
-  {day:10,week:2,title:"Performance",tag:"PIE",scene:"pie",theoryImageDay:11,
+  {day:10,week:2,title:"Performance",tag:"Impact",scene:"pie",theoryImageDay:11,
    quote:"Great work does not automatically create visibility.",
    insight:"Harvey Coleman's research revealed that Performance accounts for just 10% of career success. It earns you the right to be in the room. It doesn't earn you the promotion, the recognition, or the next opportunity. This module shows you how to close the gap between the work you do and the credit you deserve.",
    pieLink:"Performance: This is the foundation — and it is not the ceiling. Visibility without substance is noise. But substance without visibility is invisibility. Both matter.",
