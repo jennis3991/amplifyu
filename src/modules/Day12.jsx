@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 // ─── D12 Practice Widget ───────────────────────────────────────────────────
 export function D12PracticeWidget({T, T2, isDesktop}) {
@@ -209,18 +209,39 @@ export function D12PracticeWidget({T, T2, isDesktop}) {
   return null;
 }
 
-// ─── D12 Simulation Widget ─────────────────────────────────────────────────
+// ─── D12 Simulation Widget — Video Presence Recorder ─────────────────────────
 export function D12SimWidget({T, T2, isDesktop}) {
   const PROMPTS = [
-    "Tell a short inspiring story",
-    "Explain something you care about",
-    "Introduce yourself confidently",
-    "Describe a meaningful experience",
-    "Encourage someone through a challenge",
+    {label:"Inspire",    text:"Tell a short story about something that genuinely changed how you see the world."},
+    {label:"Explain",    text:"Explain something you care about deeply — as if to someone who's never heard of it."},
+    {label:"Introduce",  text:"Introduce yourself confidently — as if walking into the most important room of your career."},
+    {label:"Encourage",  text:"Encourage someone who is doubting themselves. Speak directly to them."},
+    {label:"Persuade",   text:"Make the case for one belief or idea you hold strongly. Convince the room."},
   ];
+  const OBSERVE = ["Posture","Gestures","Eye contact","Facial expression","Energy level","Stillness vs movement"];
 
   const [phase, setPhase] = useState('intro');
   const [chosenPrompt, setChosenPrompt] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [countdown, setCountdown] = useState(null);
+  const [recTime, setRecTime] = useState(0);
+  const [blobUrl, setBlobUrl] = useState(null);
+  const [permErr, setPermErr] = useState(false);
+  const [observations, setObservations] = useState({});
+  const [checked, setChecked] = useState([]);
+
+  const videoRef    = useRef(null);
+  const playbackRef = useRef(null);
+  const streamRef   = useRef(null);
+  const recorderRef = useRef(null);
+  const timerRef    = useRef(null);
+  const chunksRef   = useRef([]);
+
+  useEffect(()=>()=>{
+    if (streamRef.current)  streamRef.current.getTracks().forEach(t=>t.stop());
+    if (timerRef.current)   clearInterval(timerRef.current);
+    if (blobUrl)            URL.revokeObjectURL(blobUrl);
+  },[]);
 
   const cs = {
     card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"16px 18px"},
@@ -228,104 +249,208 @@ export function D12SimWidget({T, T2, isDesktop}) {
     cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
   };
 
+  const fmtTime = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+  const startCamera = async () => {
+    setPermErr(false);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({video:true,audio:true});
+      streamRef.current = stream;
+      setPhase('recording');
+      // 3-second countdown then start
+      let c = 3;
+      setCountdown(c);
+      const cd = setInterval(()=>{
+        c--;
+        if (c > 0) { setCountdown(c); }
+        else {
+          clearInterval(cd);
+          setCountdown(null);
+          chunksRef.current = [];
+          const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm';
+          const rec = new MediaRecorder(stream, {mimeType:mime});
+          recorderRef.current = rec;
+          rec.ondataavailable = e=>{ if(e.data.size>0) chunksRef.current.push(e.data); };
+          rec.onstop = ()=>{
+            const blob = new Blob(chunksRef.current, {type:'video/webm'});
+            setBlobUrl(URL.createObjectURL(blob));
+            stream.getTracks().forEach(t=>t.stop());
+            streamRef.current = null;
+            setIsRecording(false);
+            setPhase('playback');
+          };
+          rec.start(250);
+          setIsRecording(true);
+          setRecTime(0);
+          timerRef.current = setInterval(()=>setRecTime(t=>t+1), 1000);
+        }
+      }, 1000);
+    } catch(e) { setPermErr(true); }
+  };
+
+  const stopRecording = ()=>{
+    if (recorderRef.current && recorderRef.current.state !== 'inactive') recorderRef.current.stop();
+    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+  };
+
+  const resetAll = ()=>{
+    if (streamRef.current) streamRef.current.getTracks().forEach(t=>t.stop());
+    if (timerRef.current) clearInterval(timerRef.current);
+    if (blobUrl) URL.revokeObjectURL(blobUrl);
+    setBlobUrl(null); setIsRecording(false); setCountdown(null); setRecTime(0);
+    setObservations({}); setChecked([]); setChosenPrompt(null); setPermErr(false);
+    chunksRef.current = []; streamRef.current = null; recorderRef.current = null; timerRef.current = null;
+    setPhase('intro');
+  };
+
+  // Attach live stream to preview video element
+  useEffect(()=>{
+    if (phase==='recording' && videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+      videoRef.current.play().catch(()=>{});
+    }
+  },[phase]);
+
   if (phase === 'intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-
-      {/* HOW IT WORKS */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
-        <div style={cs.label}>How It Works</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>A simple 5-step presence check-in.</h2>
-        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
-          {[
-            {n:1,label:"Choose a prompt",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
-            {n:2,label:"Record naturally",   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:3,label:"Review presence",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M11 7v4l3 3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:4,label:"Get coaching",       icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
-            {n:5,label:"Try again",          icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 11a7 7 0 0111.95-4.95L18 8M18 8V4M18 8h-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M18 11a7 7 0 01-11.95 4.95L4 14M4 14v4M4 14h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>},
-          ].map((s,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
-              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
-                <div style={{width:isDesktop?44:34,height:isDesktop?44:34,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:5}}>{s.icon}</div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?12:9,color:"#A8998A",textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:52}}>{s.label}</div>
+      <div style={cs.card}>
+        <div style={cs.label}>Why self-review works</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 12px"}}>You cannot improve what you cannot see.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 10px"}}>Self-review on video is one of the most powerful development tools used by elite speakers, leaders, and performers. Most people have never seen themselves communicate.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>Watching yourself back — with the volume off first — reveals physical signals you're completely unaware of.</p>
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>The Process</div>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          {["Choose a prompt","Record yourself naturally for 60–90 seconds","Watch back with sound OFF — observe body language only","Watch again with sound ON — notice alignment","Rate what you see and read your coaching notes"].map((t,i)=>(
+            <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+              <div style={{width:22,height:22,borderRadius:"50%",border:"1px solid rgba(138,158,132,0.4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{i+1}</span>
               </div>
-              {i<4 && <div style={{height:1,width:isDesktop?12:5,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:26}}/>}
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,paddingTop:2}}>{t}</span>
             </div>
           ))}
         </div>
       </div>
-
-      {/* THE FIRST STEP */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
-        <div style={cs.label}>The First Step</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
-          You've learned the science. Practised the techniques. Now it's time to see how you communicate physically.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>
-          Self-review is one of the fastest proven ways to improve — used by top speakers, performers, and leaders worldwide.
-        </p>
-      </div>
-
-      {/* YOUR DIGITAL COACH */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
-        <div style={cs.label}>Your Digital Coach</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>
-          Your AmplifyU coach will analyse your posture, movement, gestures, eye contact, and facial engagement.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>
-          This recording becomes your baseline — not a test, expert coaching.
-        </p>
-      </div>
-
-      <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose a Recording Prompt →</button>
+      <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose a Prompt →</button>
     </div>
   );
 
   if (phase === 'choose') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       <div style={cs.card}>
-        <div style={cs.label}>Recording Prompts</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,marginBottom:14}}>Choose one and record yourself speaking naturally for 60–90 seconds.</p>
+        <div style={cs.label}>Choose Your Prompt</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px"}}>Pick one. Speak naturally for 60–90 seconds. Don't rehearse — just talk.</p>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {PROMPTS.map((p,i)=>(
-            <button key={i} onClick={()=>{setChosenPrompt(p);setPhase('reflect');}}
-              style={{padding:"14px 16px",borderRadius:4,border:`0.5px solid ${chosenPrompt===p?T.gold:T2.border}`,background:"transparent",color:T2.text,fontSize:isDesktop?14:13,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",lineHeight:1.4,transition:"all 0.2s"}}>
-              {p}
+            <button key={i} onClick={()=>setChosenPrompt(i)}
+              style={{padding:"14px 16px",borderRadius:4,border:`0.5px solid ${chosenPrompt===i?T.gold:T2.border}`,background:chosenPrompt===i?"rgba(138,158,132,0.07)":"transparent",textAlign:"left",cursor:"pointer",transition:"all 0.2s"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:chosenPrompt===i?T.gold:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{p.label}</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.4,margin:0,fontStyle:"italic"}}>{p.text}</p>
             </button>
           ))}
         </div>
       </div>
+      {permErr && (
+        <div style={{padding:"12px 14px",background:"rgba(180,60,60,0.06)",borderRadius:4,border:"0.5px solid rgba(180,60,60,0.2)"}}>
+          <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(160,60,60,0.9)",margin:0,lineHeight:1.5}}>Camera access was denied. Please allow camera and microphone permissions in your browser settings and try again.</p>
+        </div>
+      )}
+      <button onClick={startCamera} disabled={chosenPrompt===null} style={{...cs.cta,background:chosenPrompt===null?"rgba(44,36,22,0.25)":T.ink,cursor:chosenPrompt===null?"not-allowed":"pointer"}}>
+        Start Recording →
+      </button>
       <button onClick={()=>setPhase('intro')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
     </div>
   );
 
-  if (phase === 'reflect') return (
+  if (phase === 'recording') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+      {/* Prompt reminder */}
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold,padding:"14px 16px"}}>
         <div style={cs.label}>Your Prompt</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{chosenPrompt}</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text,lineHeight:1.4,margin:0}}>{chosenPrompt!==null?PROMPTS[chosenPrompt].text:''}</p>
+      </div>
+
+      {/* Camera preview */}
+      <div style={{position:"relative",borderRadius:8,overflow:"hidden",background:"#0A0804",aspectRatio:"16/9"}}>
+        <video ref={videoRef} muted playsInline autoPlay style={{width:"100%",height:"100%",objectFit:"cover",display:"block",transform:"scaleX(-1)"}}/>
+
+        {/* Countdown overlay */}
+        {countdown!==null && (
+          <div style={{position:"absolute",inset:0,background:"rgba(10,8,4,0.65)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?80:60,fontWeight:700,color:"#F5EFE6",lineHeight:1,animation:"fadeIn 0.3s ease"}}>{countdown}</div>
+          </div>
+        )}
+
+        {/* Recording indicator */}
+        {isRecording && (
+          <div style={{position:"absolute",top:12,left:12,display:"flex",alignItems:"center",gap:7,padding:"5px 12px",background:"rgba(10,8,4,0.72)",borderRadius:20,backdropFilter:"blur(4px)"}}>
+            <div style={{width:8,height:8,borderRadius:"50%",background:"#E05555",animation:"pulse 1.2s ease infinite"}}/>
+            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:"#F5EFE6",letterSpacing:"1px"}}>{fmtTime(recTime)}</span>
+          </div>
+        )}
+      </div>
+
+      {isRecording ? (
+        <button onClick={stopRecording} style={{...cs.cta,background:"#8A3030",color:"#F5EFE6"}}>Stop Recording ■</button>
+      ) : countdown!==null ? (
+        <div style={{textAlign:"center",padding:"12px",fontFamily:T.sans,fontSize:13,color:T2.text3}}>Get ready…</div>
+      ) : null}
+    </div>
+  );
+
+  if (phase === 'playback' && blobUrl) return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{...cs.card,padding:"8px"}}>
+        <video src={blobUrl} ref={playbackRef} controls playsInline style={{width:"100%",borderRadius:4,display:"block",background:"#0A0804"}}/>
       </div>
 
       <div style={cs.card}>
-        <div style={cs.label}>Reflection</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:14}}>Watch yourself once with sound <strong>OFF</strong>. Then watch again with sound ON.</p>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Notice</div>
-        <div style={{display:"flex",flexWrap:"wrap",gap:7}}>
-          {["Energy","Expression","Calmness","Posture","Gestures","Connection"].map((pt,i)=>(
-            <div key={i} style={{padding:"6px 12px",borderRadius:20,border:"0.5px solid rgba(138,158,132,0.3)",background:"rgba(138,158,132,0.06)"}}>
-              <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{pt}</span>
-            </div>
-          ))}
+        <div style={cs.label}>How to review</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
+          <div style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+            <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,flexShrink:0,marginTop:2}}>1.</span>
+            <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>Watch with <strong>sound OFF</strong> — observe only body language, gestures, and expression.</span>
+          </div>
+          <div style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+            <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,flexShrink:0,marginTop:2}}>2.</span>
+            <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>Watch again with <strong>sound ON</strong> — notice whether your non-verbal signals matched your words.</span>
+          </div>
+        </div>
+        <div style={cs.label}>What did you notice?</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {OBSERVE.map((item,i)=>{
+            const val = observations[item];
+            return (
+              <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:i<OBSERVE.length-1?"0.5px solid "+T2.divider:"none"}}>
+                <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text}}>{item}</span>
+                <div style={{display:"flex",gap:6}}>
+                  {["Strong","OK","Needs work"].map((opt,j)=>(
+                    <button key={j} onClick={()=>setObservations({...observations,[item]:opt})}
+                      style={{padding:"4px 10px",borderRadius:3,border:`0.5px solid ${val===opt?T.gold:T2.border}`,background:val===opt?"rgba(138,158,132,0.12)":"transparent",color:val===opt?T.gold:T2.text4,fontSize:10,cursor:"pointer",fontFamily:T.sans,minHeight:28,fontWeight:val===opt?700:400,transition:"all 0.15s"}}>{opt}</button>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      <div style={{...cs.card,background:"rgba(138,158,132,0.04)",textAlign:"center"}}>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Awareness transforms communication."</p>
-      </div>
+      {Object.keys(observations).length>=3 && (
+        <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
+          <div style={cs.label}>Coaching Note</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,lineHeight:1.7,margin:"0 0 10px"}}>
+            {Object.values(observations).filter(v=>v==="Needs work").length===0
+              ? "Strong session. Your physical signals look well-aligned. Record again and look for one moment where you could create even more stillness or emphasis."
+              : `You flagged ${Object.entries(observations).filter(([,v])=>v==="Needs work").map(([k])=>k.toLowerCase()).join(" and ")} as areas to work on. These are the fastest wins — small, deliberate changes in ${Object.entries(observations).filter(([,v])=>v==="Needs work")[0]?.[0]?.toLowerCase()} can shift how you're perceived immediately.`}
+          </p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Awareness is the first act of transformation."</p>
+        </div>
+      )}
 
       <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-        <button onClick={()=>{setChosenPrompt(null);setPhase('choose');}} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Choose Another Prompt</button>
-        <button onClick={()=>setPhase('intro')} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"none",background:T.ink,color:T.bg,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Start Over</button>
+        <button onClick={()=>{if(blobUrl)URL.revokeObjectURL(blobUrl);setBlobUrl(null);setIsRecording(false);setRecTime(0);setObservations({});chunksRef.current=[];setPhase('choose');}} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Record Again</button>
+        <button onClick={resetAll} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"none",background:T.ink,color:T.bg,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Start Over</button>
       </div>
     </div>
   );
