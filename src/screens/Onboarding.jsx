@@ -413,61 +413,86 @@ export function Onboarding({onDone}) {
 
   if (phase === "role") {
     return (
-      <div style={{minHeight:"100vh",background:"#1A1510",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
-        {/* Library image header — consistent with question screens */}
-        <div style={{position:"relative",height:420,flexShrink:0,overflow:"hidden"}}>
+      <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
+        <div style={{position:"relative",height:260,flexShrink:0,overflow:"hidden"}}>
           <img src="/ob-library.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
-          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.3)"}}/>
-          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, transparent 55%)"}}/>
+          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.35)"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 55%)"}}/>
           <div style={{position:"absolute",bottom:20,left:24,right:24}}>
-            <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Almost there.</div>
+            <div style={{fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"3.5px",fontFamily:T.sans,marginBottom:10}}>Almost there.</div>
             <div style={{display:"flex",gap:6}}>
-              {[...QS,{q:"role"}].map((_,i)=><div key={i} style={{height:2,borderRadius:1,flex:1,background:i<QS.length?"white":"rgba(255,255,255,0.25)"}}/>)}
+              {[...QS,{q:"role"}].map((_,i)=><div key={i} style={{height:2,borderRadius:1,flex:1,background:i<QS.length?T.gold:"rgba(255,255,255,0.3)"}}/>)}
             </div>
           </div>
         </div>
-        <div style={{padding:"28px 24px 0",flex:1,background:"#1A1510"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:"clamp(28px,7vw,38px)",fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,0.93)",lineHeight:1.15,letterSpacing:"-0.3px",marginBottom:20}}>What best describes your role?</h2>
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
-            {ROLES.map(role => (
-              <button key={role.id} onClick={()=>pickRole(role.id)} style={{padding:"16px 18px",borderRadius:2,border:"0.5px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.06)",textAlign:"left",cursor:"pointer",display:"flex",flexDirection:"column",gap:4}}>
-                <span style={{color:"rgba(255,255,255,0.88)",fontSize:17,fontFamily:T.serif,fontStyle:"italic",lineHeight:1.3}}>{role.label}</span>
-                <span style={{color:"rgba(255,255,255,0.4)",fontSize:12,fontFamily:T.sans,fontStyle:"normal",lineHeight:1.4}}>{role.examples}</span>
-              </button>
+        <div style={{padding:"32px 24px 48px",flex:1,background:"#F7F3EC"}}>
+          <div style={{fontSize:9,color:"#A8998A",letterSpacing:"3px",textTransform:"uppercase",marginBottom:24,fontFamily:T.sans}}>Your Practice</div>
+          <h2 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,36px)",fontWeight:500,lineHeight:1.15,color:"#2C2416",letterSpacing:"-0.5px",marginBottom:8}}>What best describes your world?</h2>
+          <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.65,marginBottom:32,fontWeight:300}}>Your scenarios and coaching will be shaped around your reality.</p>
+          <div style={{display:"flex",flexDirection:"column",gap:0}}>
+            {ROLES.map((role,i)=>(
+              <div key={role.id} onClick={()=>pickRole(role.id)} style={{
+                display:"flex",alignItems:"center",gap:16,
+                padding:"18px 0 18px 16px",
+                borderTop:i===0?"1px solid #DDD5C4":"none",
+                borderBottom:"1px solid #DDD5C4",
+                borderLeft:"2px solid transparent",
+                cursor:"pointer",transition:"all 0.2s ease",
+              }}
+                onTouchStart={e=>{e.currentTarget.style.borderLeftColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
+                onTouchEnd={e=>{e.currentTarget.style.borderLeftColor="transparent";e.currentTarget.style.background="transparent";}}>
+                <div style={{fontSize:18,flexShrink:0,width:24,textAlign:"center"}}>{role.icon}</div>
+                <div style={{flex:1}}>
+                  <div style={{fontFamily:T.serif,fontSize:16,fontWeight:500,color:"#2C2416",marginBottom:2,letterSpacing:"-0.1px"}}>{role.label}</div>
+                  <div style={{fontSize:11,color:"#A8998A",lineHeight:1.4,fontFamily:T.sans}}>{role.examples}</div>
+                </div>
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" style={{flexShrink:0,opacity:0.25,marginRight:4}}>
+                  <path d="M3 7h8M7 3l4 4-4 4" stroke="#2C2416" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
             ))}
-            <button onClick={()=>pickRole(null)} style={{padding:"14px 18px",borderRadius:2,border:"none",background:"transparent",color:"rgba(255,255,255,0.3)",fontSize:14,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer"}}>
-              Skip for now — use general scenarios
+            <button onClick={()=>pickRole(null)} style={{marginTop:20,padding:"10px 0",background:"none",border:"none",color:"#A8998A",fontSize:12,cursor:"pointer",textAlign:"left",fontFamily:T.sans,letterSpacing:"0.2px"}}>
+              Skip — use general scenarios →
             </button>
           </div>
         </div>
-        <div style={{height:40,background:"#1A1510"}}/>
       </div>
     );
   }
 
   const q = QS[step];
   return (
-    <div style={{minHeight:"100vh",background:"#1A1510",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
+    <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
       {/* Photo banner */}
-      <div style={{position:"relative",height:420,flexShrink:0,overflow:"hidden"}}>
-        {q.image ? (
-          <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
-        ) : (
-          <OBScene name={q.scene} height={360}/>
-        )}
+      <div style={{position:"relative",height:300,flexShrink:0,overflow:"hidden"}}>
+        {q.image
+          ? <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
+          : <OBScene name={q.scene} height={300}/>}
         <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.3)"}}/>
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, transparent 55%)"}}/>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 55%)"}}/>
         <div style={{position:"absolute",bottom:20,left:24,right:24}}>
-          <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>{q.context}</div>
-          <div style={{display:"flex",gap:6}}>{QS.map((_,i)=><div key={i} style={{height:2,borderRadius:1,flex:1,background:i<=step?"white":"rgba(255,255,255,0.2)"}}/>)}</div>
+          <div style={{fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"3.5px",fontFamily:T.sans,marginBottom:10}}>{q.context}</div>
+          <div style={{display:"flex",gap:6}}>{QS.map((_,i)=><div key={i} style={{height:2,borderRadius:1,flex:1,background:i<=step?T.gold:"rgba(255,255,255,0.2)"}}/>)}</div>
         </div>
       </div>
-      {/* Question + options */}
-      <div style={{padding:"28px 24px 40px",flex:1,background:"#1A1510"}}>
-        <h2 style={{fontFamily:T.serif,fontSize:"clamp(28px,7vw,38px)",fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,0.93)",lineHeight:1.15,letterSpacing:"-0.3px",marginBottom:28}}>{q.q}</h2>
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>
-          {q.opts.map(opt => (
-            <button key={opt} onClick={()=>pick_mobile(opt)} style={{padding:"16px 18px",borderRadius:2,border:"0.5px solid rgba(138,158,132,0.35)",background:"rgba(138,158,132,0.06)",color:"rgba(255,255,255,0.88)",fontSize:17,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",lineHeight:1.45}}>{opt}</button>
+
+      {/* Question + options on parchment */}
+      <div style={{padding:"32px 24px 48px",flex:1,background:"#F7F3EC"}}>
+        <div style={{fontSize:9,color:"#A8998A",letterSpacing:"3px",textTransform:"uppercase",marginBottom:24,fontFamily:T.sans}}>Reflection {step+1}</div>
+        <h2 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,36px)",fontWeight:500,lineHeight:1.15,color:"#2C2416",letterSpacing:"-0.5px",marginBottom:36}}>{q.q}</h2>
+        <div style={{display:"flex",flexDirection:"column",gap:0}}>
+          {q.opts.map((opt,i)=>(
+            <div key={opt} onClick={()=>pick_mobile(opt)} style={{
+              padding:"18px 0 18px 20px",
+              borderTop:i===0?"1px solid #DDD5C4":"none",
+              borderBottom:"1px solid #DDD5C4",
+              borderLeft:"2px solid transparent",
+              cursor:"pointer",transition:"all 0.2s ease",
+            }}
+              onTouchStart={e=>{e.currentTarget.style.borderLeftColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
+              onTouchEnd={e=>{e.currentTarget.style.borderLeftColor="transparent";e.currentTarget.style.background="transparent";}}>
+              <p style={{fontFamily:T.serif,fontSize:17,color:"#6B5E44",lineHeight:1.45,margin:0,letterSpacing:"-0.1px"}}>{opt}</p>
+            </div>
           ))}
         </div>
       </div>
