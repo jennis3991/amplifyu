@@ -45,6 +45,7 @@ export function MobileSessionView({
   const d4NavFnRef = useRef(null);
   const [reviewTab, setReviewTab] = useState('learned');
   const [d10PracticePhase, setD10PracticePhase] = useState('intro');
+  const [d10SarDone, setD10SarDone] = useState(false);
 
   const D10_EXAMPLES_DATA = [
   { id:"priya",     title:"The Invisible Fixer",        sub:"Same performance. No visibility.",  lesson:"Performance without communication is philanthropy." },
@@ -898,8 +899,13 @@ T.goldDark : T2.text4,
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The SAR Challenge™</div>
           <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>SAR Builder</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Situation. Action. Result. Describe what you did — your AmplifyU coach sharpens it into your performance statement.</p>
-          <D10MobileSAR/>
-          <button onClick={()=>setD10PracticePhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"12px 0",textAlign:"center",width:"100%",marginTop:8}}>← Back</button>
+          <D10MobileSAR onComplete={()=>setD10SarDone(true)}/>
+          {d10SarDone && (
+            <button onClick={()=>setIdx(STEPS.indexOf('Simulation'))} style={{width:"100%",padding:"14px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,marginTop:12}}>
+              Go to Simulation →
+            </button>
+          )}
+          <button onClick={()=>setD10PracticePhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"12px 0",textAlign:"center",width:"100%",marginTop:4}}>← Back</button>
         </>
       )}
       {isD10 && step==="Simulation" && (
@@ -2815,21 +2821,21 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
               else if (isD4 && step==="Practice" && d4NavFnRef.current) { d4NavFnRef.current(); }
               else { setIdx(i=>i+1); }
             }}
-            disabled={(isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)}
+            disabled={(isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)||(isD10 && step==="Practice" && !d10SarDone)}
             style={{
               flex:1,
               padding:"18px 20px",
               borderRadius:14,
               border:"none",
-              background: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null))
+              background: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)||(isD10 && step==="Practice" && !d10SarDone))
                 ? "rgba(44,36,22,0.18)"
                 : idx===0
                   ? "linear-gradient(135deg,"+T.gold+" 0%,"+T.goldDark+" 100%)"
                   : "linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
               color:"white",
               fontSize:15,fontWeight:700,
-              cursor: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)) ? "not-allowed" : "pointer",
-              opacity: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)) ? 0.45 : 1,
+              cursor: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)||(isD10 && step==="Practice" && !d10SarDone)) ? "not-allowed" : "pointer",
+              opacity: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)||(isD10 && step==="Practice" && !d10SarDone)) ? 0.45 : 1,
               display:"flex",alignItems:"center",justifyContent:"center",gap:10,
               boxShadow:idx===0?"0 4px 16px rgba(138,158,132,0.35)":"0 4px 16px rgba(17,28,46,0.3)",
               letterSpacing:"0.2px",

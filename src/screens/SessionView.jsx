@@ -1081,7 +1081,12 @@ setAmbitionSaved(true); } catch {}
               <p style={{fontFamily:T.serif,fontSize:17,color:T2.text,lineHeight:1.7,margin:0}}>{sarResult}</p>
             </div>
           )}
-          <button onClick={()=>setD10PracticePhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"16px 0 0",textAlign:"left"}}>← Back</button>
+          {sarResult && (
+            <button onClick={()=>setIdx(STEPS.indexOf('Simulation'))} style={{width:"100%",padding:"16px",borderRadius:4,border:"none",background:"rgba(82,112,96,0.85)",color:"white",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,marginTop:16}}>
+              Go to Simulation →
+            </button>
+          )}
+          <button onClick={()=>setD10PracticePhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"12px 0 0",textAlign:"left"}}>← Back</button>
         </div>
       );
 
