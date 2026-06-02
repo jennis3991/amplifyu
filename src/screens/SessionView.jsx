@@ -3080,10 +3080,23 @@ setAmbitionSaved(true); } catch {}
                     </div>
                     <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:700, color:T2.text }}>{ing.n}</span>
                   </div>
-                  <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.65, fontWeight:300, margin:0 }}>{ing.detail}</p>
+                  <div>
+                    <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.65, fontWeight:300, margin:0, marginBottom:ing.lesson?10:0 }}>{ing.detail}</p>
+                    {ing.lesson && (
+                      <div style={{ padding:"10px 14px", background:"rgba(138,158,132,0.08)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.4)" }}>
+                        <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", display:"block", marginBottom:4 }}>AmplifyU Lesson</span>
+                        <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.6, fontWeight:400, fontStyle:"italic", margin:0 }}>{ing.lesson}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
+            {card.closing && (
+              <div style={{ marginTop:24, padding:"20px 24px", background:"rgba(138,158,132,0.07)", borderRadius:6, border:"0.5px solid rgba(138,158,132,0.25)", textAlign:"center" }}>
+                <p style={{ fontFamily:T.serif, fontSize:19, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>{card.closing}</p>
+              </div>
+            )}
           </div>
         </div>
       );

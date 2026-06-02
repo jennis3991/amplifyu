@@ -2436,10 +2436,21 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                         </div>
                         <div style={{flex:1}}>
                           <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T2.text,marginBottom:3}}>{ing.n}</div>
-                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>{ing.detail}</p>
+                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0,marginBottom:ing.lesson?8:0}}>{ing.detail}</p>
+                          {ing.lesson && (
+                            <div style={{padding:"9px 12px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+                              <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",display:"block",marginBottom:3}}>AmplifyU Lesson</span>
+                              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,fontStyle:"italic",margin:0}}>{ing.lesson}</p>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
+                    {card.closing && (
+                      <div style={{marginTop:16,padding:"16px",background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.25)",textAlign:"center"}}>
+                        <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{card.closing}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
