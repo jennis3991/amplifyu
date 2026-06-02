@@ -67,7 +67,18 @@ export function D11PracticeWidget({T, T2, isDesktop}) {
       {tab===1 && (
         <div style={cs.card}>
           <div style={cs.label}>Signal Audit</div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>For each area below, mark whether your current signal is intentional and aligned with the brand you want.</p>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:12}}>For each area below, mark whether your current signal is intentional and aligned with the brand you want.</p>
+          <div style={{marginBottom:16,padding:"12px 14px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.35)"}}>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 8px"}}>That progression mirrors how personal brands are formed in the real world.</p>
+            <div style={{display:"flex",flexWrap:"wrap",gap:4,alignItems:"center"}}>
+              {["People see you","hear you","experience you","remember you","research you"].map((s,i,arr)=>(
+                <span key={i} style={{display:"flex",alignItems:"center",gap:4}}>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:600,color:T.gold}}>{s}</span>
+                  {i<arr.length-1 && <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4,opacity:0.6}}>→</span>}
+                </span>
+              ))}
+            </div>
+          </div>
           {SIGNAL_AREAS.map((area,i) => (
             <div key={i} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:i<SIGNAL_AREAS.length-1?"0.5px solid "+T2.divider:"none"}}>
               <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{area}</span>
