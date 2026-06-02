@@ -149,7 +149,7 @@ finishDate + ".";
             ════════════════════════════════════════════════════════════════ */}
         {/* Hero — full image with dark film */}
         <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative" }}>
-          <img src="/home-hero.jpg" alt="Social Presence Framework" style={{ width: "100%", height: "auto", display: "block" }}/>
+          <img src="/home-hero-2.jpg" alt="Social Presence Framework" style={{ width: "100%", height: "auto", display: "block" }}/>
           <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.15)", pointerEvents: "none" }}/>
         </div>
 
@@ -258,7 +258,7 @@ finishDate + ".";
 
       {/* ── SECTION 1: Hero — full image with dark film ── */}
       <div style={{marginTop:NAV_H,background:T2.bg,position:"relative"}}>
-        <img src="/home-hero.jpg" alt="Social Presence Framework" style={{width:"100%",height:"auto",display:"block"}}/>
+        <img src="/home-hero-2.jpg" alt="Social Presence Framework" style={{width:"100%",height:"auto",display:"block"}}/>
         <div style={{position:"absolute",inset:0,background:"rgba(10,8,4,0.15)",pointerEvents:"none"}}/>
       </div>
 
