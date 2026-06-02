@@ -841,6 +841,7 @@ setAmbitionSaved(true); } catch {}
       const [storyCard, setStoryCard] = useState(null);
       const [openInsight, setOpenInsight] = useState(null);
       // Simulation voice states
+      const [d10PracticePhase, setD10PracticePhase] = useState('intro');
       const [simPhase, setSimPhase] = useState('intro');
       const [activeScenario, setActiveScenario] = useState(null);
       const [simTranscript, setSimTranscript] = useState('');
@@ -1051,8 +1052,14 @@ setAmbitionSaved(true); } catch {}
             <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic",fontWeight:300}}>Lead with the result. Make it specific. Own it.</p>
           </div>
 
-          {/* SAR Builder */}
-          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28}}>
+          {d10PracticePhase==='intro' && (
+            <button onClick={()=>setD10PracticePhase('builder')} style={{width:"100%",padding:"16px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:16,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:52}}>
+              Start the SAR Builder →
+            </button>
+          )}
+
+          {/* SAR Builder — separate page */}
+          {d10PracticePhase==='builder' && <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28}}>
             <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The exercise</div>
             <h3 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:6}}>SAR Builder</h3>
             <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>Situation. Action. Result. Identify something you did — and the coach helps you make your contribution visible.</p>
@@ -1088,7 +1095,8 @@ setAmbitionSaved(true); } catch {}
                 <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>{sarResult}</p>
               </div>
             )}
-          </div>
+            <button onClick={()=>setD10PracticePhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"16px 0 0",textAlign:"left"}}>← Back</button>
+          </div>}
         </div>
       );
 
