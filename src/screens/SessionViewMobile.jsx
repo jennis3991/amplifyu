@@ -43,6 +43,8 @@ export function MobileSessionView({
   const d3NavFnRef = useRef(null);
   const [d4NavLabel, setD4NavLabel] = useState(null);
   const d4NavFnRef = useRef(null);
+  const [reviewTab, setReviewTab] = useState('learned');
+  const [d10PracticePhase, setD10PracticePhase] = useState('intro');
 
   const D10_EXAMPLES_DATA = [
   { id:"priya",     title:"The Invisible Fixer",        sub:"Same performance. No visibility.",  lesson:"Performance without communication is philanthropy." },
@@ -873,38 +875,31 @@ T.goldDark : T2.text4,
           </div>
         </>
       )}
-      {isD10 && step==="Practice" && (
+      {isD10 && step==="Practice" && d10PracticePhase==='intro' && (
         <>
-          {/* D3-style landing */}
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Practice · Day 10</div>
           <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The SAR Challenge™</h2>
           <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"16px 18px",marginBottom:12}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The First Step</div>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:8,fontWeight:300}}>Think of something you did recently — a project, a problem you solved, a result you created. Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:0,fontWeight:300}}>Think of something you did recently — a project, a problem you solved, a result you created. Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
           </div>
-          <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"16px 18px",marginBottom:16}}>
+          <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"16px 18px",marginBottom:20}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your AmplifyU Coach</div>
             <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:6,fontWeight:300}}>Your AmplifyU coach takes your three inputs and sharpens them into a crisp performance statement — ready for any conversation.</p>
             <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:0,fontStyle:"italic",fontWeight:300}}>Lead with the result. Make it specific. Own it.</p>
           </div>
-
-          {/* SAR Builder */}
-          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:20}}>
-            <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:T.sans}}>The exercise</div>
-            <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:6}}>SAR Builder</h3>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Situation. Action. Result. Identify something you did — the coach helps you make your contribution visible.</p>
-            <div style={{display:"flex",gap:12,marginBottom:16,flexWrap:"wrap"}}>
-              {["Build a SAR story","Sharpen your result","Name your contribution"].map((s,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:6}}>
-                  <div style={{width:18,height:18,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                    <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"white"}}>{i+1}</span>
-                  </div>
-                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{s}</span>
-                </div>
-              ))}
-            </div>
-            <D10MobileSAR/>
-          </div>
+          <button onClick={()=>setD10PracticePhase('builder')} style={{width:"100%",padding:"14px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48}}>
+            Start the SAR Builder →
+          </button>
+        </>
+      )}
+      {isD10 && step==="Practice" && d10PracticePhase==='builder' && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The SAR Challenge™</div>
+          <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>SAR Builder</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Situation. Action. Result. Describe what you did — your AmplifyU coach sharpens it into your performance statement.</p>
+          <D10MobileSAR/>
+          <button onClick={()=>setD10PracticePhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"12px 0",textAlign:"center",width:"100%",marginTop:8}}>← Back</button>
         </>
       )}
       {isD10 && step==="Simulation" && (
@@ -2743,39 +2738,34 @@ getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[selSc] ||
             });
           })()}
            {/* What You Learned / Workplace Application tabs */}
-          {(()=>{
-            const [revTab, setRevTab] = useState('learned');
-            return (
-              <div style={{borderTop:"1px solid rgba(138,158,132,0.25)",margin:"0 4px",paddingTop:16}}>
-                <div style={{display:"flex",gap:0,borderBottom:"0.5px solid "+T2.border,marginBottom:16}}>
-                  {[{id:"learned",label:"What You Learned"},{id:"workplace",label:"Workplace Application"}].map(t=>(
-                    <button key={t.id} onClick={()=>setRevTab(t.id)} style={{flex:1,padding:"10px 8px",border:"none",background:"transparent",fontFamily:T.sans,fontSize:13,fontWeight:revTab===t.id?600:400,color:revTab===t.id?T2.text:T2.text3,cursor:"pointer",borderBottom:revTab===t.id?"2px solid "+T.gold:"2px solid transparent",marginBottom:-1}}>{t.label}</button>
-                  ))}
+          <div style={{borderTop:"1px solid rgba(138,158,132,0.25)",margin:"0 4px",paddingTop:16}}>
+            <div style={{display:"flex",gap:0,borderBottom:"0.5px solid "+T2.border,marginBottom:16}}>
+              {[{id:"learned",label:"What You Learned"},{id:"workplace",label:"Workplace Application"}].map(t=>(
+                <button key={t.id} onClick={()=>setReviewTab(t.id)} style={{flex:1,padding:"10px 8px",border:"none",background:"transparent",fontFamily:T.sans,fontSize:13,fontWeight:reviewTab===t.id?600:400,color:reviewTab===t.id?T2.text:T2.text3,cursor:"pointer",borderBottom:reviewTab===t.id?"2px solid "+T.gold:"2px solid transparent",marginBottom:-1}}>{t.label}</button>
+              ))}
+            </div>
+            {reviewTab==="learned" && REVIEW_BULLETS[lesson.day-1].map((b,i)=>(
+              <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
+                <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                  <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </div>
-                {revTab==="learned" && REVIEW_BULLETS[lesson.day-1].map((b,i)=>(
+                <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
+              </div>
+            ))}
+            {reviewTab==="workplace" && (
+              <>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,marginBottom:12,fontWeight:300}}>How to put today's techniques to work immediately.</p>
+                {(WORKPLACE_APPLICATION[lesson.day-1]||[]).map((b,i)=>(
                   <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
-                    <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                      <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                      <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
                     </div>
                     <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
                   </div>
                 ))}
-                {revTab==="workplace" && (
-                  <>
-                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,marginBottom:12,fontWeight:300}}>How to put today's techniques to work immediately.</p>
-                    {(WORKPLACE_APPLICATION[lesson.day-1]||[]).map((b,i)=>(
-                      <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
-                        <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                          <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
-                        </div>
-                        <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
-                      </div>
-                    ))}
-                  </>
-                )}
-              </div>
-            );
-          })()}
+              </>
+            )}
+          </div>
            {/* Ambition Statement — only on Day 7 */}
           {lesson.day === 7 && (
             <div style={{background:T.cardDark,borderRadius:8,overflow:"hidden",border:"1px solid rgba(138,158,132,0.2)",margin:"0 4px"}}>
