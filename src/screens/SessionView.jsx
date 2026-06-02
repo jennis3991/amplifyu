@@ -856,7 +856,7 @@ setAmbitionSaved(true); } catch {}
       useEffect(()=>{ if(simIsRec&&simTimeLeft>0){simTimerRef.current=setTimeout(()=>setSimTimeLeft(t=>t-1),1000);} else if(simIsRec&&simTimeLeft===0){doSimStop();} return()=>clearTimeout(simTimerRef.current); },[simIsRec,simTimeLeft]);
 
       function doSimStart(){
-        simLiveRef.current=''; setSimTranscript(''); setSimIsRec(true); setSimTimeLeft(30);
+        simLiveRef.current=''; setSimTranscript(''); setSimIsRec(true); setSimTimeLeft(30); setSimPhase('recording');
         if(SpeechRec10){ const r=new SpeechRec10(); r.continuous=true; r.interimResults=true; r.onresult=e=>{let t='';for(let i=0;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+' ';simLiveRef.current=t;setSimTranscript(t);}; try{r.start();}catch(e){} simRecRef.current=r; }
       }
       function doSimStop(){
@@ -1198,7 +1198,7 @@ setAmbitionSaved(true); } catch {}
         );
 
         // ── RECORDING ──
-        if(simPhase==='ready'&&simIsRec||simIsRec) return (
+        if(simPhase==='recording') return (
           <div key={idx} style={{padding:"44px 52px",overflowY:"auto"}}>
             <div style={{display:"flex",flexDirection:"column",gap:14}}>
               <div style={{background:"#0A0804",borderRadius:8,padding:"24px 28px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
