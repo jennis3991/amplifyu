@@ -792,7 +792,7 @@ T.goldDark : T2.text4,
        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
       {isD10 && step==="Insight" && (
         <>
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The uncomfortable truth</div>
+          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The uncomfortable truth</div>
           <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:16}}>{lesson.quote}</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Harvey Coleman found Performance accounts for just 10% of career advancement. This module unlocks the other 90%.</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -825,7 +825,7 @@ T.goldDark : T2.text4,
       {isD10 && step==="Theory" && (
         <>
           {/* Label + Title — matches Day 1 style */}
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Science</div>
+          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>The Performance Iceberg</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most professionals assume their effort speaks for itself. It doesn't.</p>
 
@@ -875,7 +875,8 @@ T.goldDark : T2.text4,
       )}
       {isD10 && step==="Example" && (
         <>
-          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:8}}>Same Work. Different Career.</h2>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Example · Day 10</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Same Work. Different Career.</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,marginBottom:16}}>Three stories. One lesson.</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {D10_EXAMPLES_DATA.map((ex)=>(
@@ -903,7 +904,7 @@ T.goldDark : T2.text4,
       {isD10 && step==="Practice" && d10PracticePhase==='intro' && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Practice · Day 10</div>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The SAR Challenge™</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The SAR Challenge™</h2>
           <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"16px 18px",marginBottom:12}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The First Step</div>
             <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:0,fontWeight:300}}>Think of something you did recently — a project, a problem you solved, a result you created. Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
@@ -935,14 +936,14 @@ T.goldDark : T2.text4,
       {isD10 && step==="Simulation" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Simulation · Day 10</div>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The Leadership Hot Seat</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The Leadership Hot Seat</h2>
           <D10MobileSim/>
         </>
       )}
       {/* ── D7 Mobile Steps — Week 1 Review ─────────────────────────────────── */}
       {isD7 && step==="Insight" && (
         <>
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The wake-up call</div>
+          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The wake-up call</div>
           <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Most people know how to communicate better. Very few practise until it's automatic.</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>This week, you did something different.</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -980,8 +981,8 @@ T.goldDark : T2.text4,
       )}
       {isD7 && step==="Theory" && (
         <>
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:6}}>The Habit Loop</h2>
+          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Habit Loop</h2>
           <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Charles Duhigg — The Power of Habit, 2012</p>
           <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,marginBottom:16}}>Every habit — good or bad — follows the same loop:</p>
           {/* CUE → ROUTINE → REWARD visual */}
@@ -1017,8 +1018,8 @@ T.goldDark : T2.text4,
       )}
       {isD7 && step==="Example" && (
         <>
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>Your Week 1 Foundations</div>
-          <h2 style={{fontFamily:T.serif,fontSize:21,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Six habits. Seven days. Here's what you built.</h2>
+          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>Your Week 1 Foundations</div>
+          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Six habits. Seven days. Here's what you built.</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Each foundation is a permanent part of your communication toolkit. Not techniques to remember — behaviours to repeat.</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {[
@@ -1132,7 +1133,7 @@ T.goldDark : T2.text4,
               <button onClick={()=>setD7PracticePhase('intro')} style={{background:"none",border:"none",fontFamily:T.sans,fontSize:12,color:T2.text3,cursor:"pointer",padding:0}}>← Back</button>
               <Dots/>
             </div>
-            <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Need Inspiration?</h2>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Need Inspiration?</h2>
             <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:300,marginBottom:20}}>Four exceptional communicators. Expand a card, then watch them in action.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:4}}>
             {D7C.map((c,ci)=>{
@@ -1238,8 +1239,8 @@ T.goldDark : T2.text4,
       )}
       {isD7 && step==="Review" && (
         <>
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Shift</div>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:16}}>What changed this week.</h2>
+          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Shift</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>What changed this week.</h2>
           {/* Before / Now */}
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>
             <div style={{padding:"14px",background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:8}}>
@@ -1262,12 +1263,12 @@ T.goldDark : T2.text4,
             </div>
           </div>
           {/* Identity statement */}
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:T.sans}}>Your Communication Identity</div>
+          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:T.sans}}>Your Communication Identity</div>
           <h3 style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:12}}>Complete this statement.</h3>
           <CoachWidget lesson={lesson} scenario={"Generate a personalised one-line Communication Identity Statement. Ask the user to complete: 'This week I discovered I communicate best when I...' — then respond with a single, powerful sentence that names their communication authority. Example format: 'You communicate best when you slow down, lead with structure, and trust the pause — that's where your authority lives.' Save-worthy. Read before high-stakes conversations."}/>
           <div style={{height:"0.5px",background:T2.divider,margin:"20px 0"}}/>
           {/* 4 takeaway cards */}
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>Your Four Takeaways</div>
+          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>Your Four Takeaways</div>
           {[
             "Invisible excellence does not scale. Visibility is a communication skill.",
             "Awareness creates intentions. Repetition creates habits. Only one shows up under pressure.",
@@ -1533,7 +1534,8 @@ T.goldDark : T2.text4,
       )}
       {isD3 && step==="Simulation" && (
         <>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:16}}>Speak Without Filling the Silence</h2>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Simulation · Day 3</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Speak Without Filling the Silence</h2>
           <D3SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
@@ -2558,7 +2560,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       {isD12 && step==="Example" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Presence in Action</div>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>The Strongest Communicators Create Calm, Clarity, and Connection</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>The Strongest Communicators Create Calm, Clarity, and Connection</h2>
           <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>
             {D12_EXAMPLES.map(card=>{
               const open=d12MobCard===card.id;
@@ -2703,7 +2705,7 @@ getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[selSc] ||
       {isD12 && step==="Review" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Review & Reflect</div>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Strong Communication Is Experienced Physically As Well As Verbally</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Strong Communication Is Experienced Physically As Well As Verbally</h2>
           <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
             {[
               {title:"Presence Shapes Perception",   body:"Body language influences how communication feels before words are fully processed."},
