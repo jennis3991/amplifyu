@@ -3082,17 +3082,12 @@ setAmbitionSaved(true); } catch {}
             {/* Halo Effect — first */}
             <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The Halo Effect</h2>
             <p style={{ fontFamily:T.sans, fontSize:16, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:20, maxWidth:640 }}>Whether intentional or not, people are constantly building a story about who you are. Psychologists call this the Halo Effect: one standout positive trait shapes how they judge everything else.</p>
-            <div style={{ marginBottom:20, border:"0.5px solid "+T2.border, borderRadius:4, overflow:"hidden" }}>
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 32px 1fr", background:T2.surface, padding:"10px 20px", borderBottom:"0.5px solid "+T2.border }}>
-                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T2.text4, textTransform:"uppercase", letterSpacing:"1.5px" }}>You appear</div>
-                <div/>
-                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T2.text4, textTransform:"uppercase", letterSpacing:"1.5px" }}>People assume</div>
-              </div>
-              {[["Clear","Intelligence"],["Calm","Competence"],["Stylish","Success"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([sig,res],i,arr) => (
-                <div key={i} style={{ display:"grid", gridTemplateColumns:"1fr 32px 1fr", alignItems:"center", padding:"14px 20px", background: i%2===0 ? T2.bg : T2.surface, borderBottom: i<arr.length-1 ? "0.5px solid "+T2.divider : "none" }}>
-                  <div style={{ fontFamily:T.sans, fontSize:14, fontWeight:500, color:T2.text }}>{sig}</div>
-                  <div style={{ fontFamily:T.sans, fontSize:14, color:T.gold, textAlign:"center", fontWeight:300 }}>→</div>
-                  <div style={{ fontFamily:T.sans, fontSize:14, fontWeight:600, color:T.gold }}>{res}</div>
+            <div style={{ display:"flex", flexWrap:"wrap", gap:10, marginBottom:20 }}>
+              {[["Clear","Intelligence"],["Calm","Competence"],["Stylish","Success"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([sig,res],i) => (
+                <div key={i} style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", background:T2.surface, borderRadius:20, border:"0.5px solid "+T2.border }}>
+                  <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:500, color:T2.text }}>{sig}</span>
+                  <span style={{ fontFamily:T.sans, fontSize:12, color:T.gold }}>→</span>
+                  <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:600, color:T.gold }}>{res}</span>
                 </div>
               ))}
             </div>
