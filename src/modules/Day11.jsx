@@ -102,9 +102,9 @@ export function D11PracticeWidget({T, T2, isDesktop}) {
 
       {tab===2 && (
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          <div style={cs.card}>
+          <div style={{paddingBottom:4}}>
             <div style={cs.label}>Your Story Portfolio</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:14}}>Every powerful personal brand is built on a few key stories. Choose one story type below and write your version.</p>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:0}}>Every powerful personal brand is built on a few key stories. Choose one story type below and write your version.</p>
           </div>
           {STORY_TYPES.map((st,i)=>(
             <div key={i} onClick={()=>setActiveStory(activeStory===i?null:i)} style={{...cs.card,cursor:"pointer",transition:"border-color 0.2s",borderColor:activeStory===i?T.gold:T2.border}}>
