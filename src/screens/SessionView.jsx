@@ -3088,7 +3088,7 @@ setAmbitionSaved(true); } catch {}
                 <div/>
                 <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T2.text4, textTransform:"uppercase", letterSpacing:"1.5px" }}>People assume</div>
               </div>
-              {[["Articulate","Intelligence"],["Calm","Competence"],["Stylish","Success"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([sig,res],i,arr) => (
+              {[["Clear","Intelligence"],["Calm","Competence"],["Stylish","Success"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([sig,res],i,arr) => (
                 <div key={i} style={{ display:"grid", gridTemplateColumns:"1fr 32px 1fr", alignItems:"center", padding:"14px 20px", background: i%2===0 ? T2.bg : T2.surface, borderBottom: i<arr.length-1 ? "0.5px solid "+T2.divider : "none" }}>
                   <div style={{ fontFamily:T.sans, fontSize:14, fontWeight:500, color:T2.text }}>{sig}</div>
                   <div style={{ fontFamily:T.sans, fontSize:14, color:T.gold, textAlign:"center", fontWeight:300 }}>→</div>

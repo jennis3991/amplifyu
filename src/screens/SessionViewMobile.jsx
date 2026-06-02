@@ -2357,7 +2357,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               <span/>
               <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px"}}>They assume</span>
             </div>
-            {[["Articulate","Intelligence"],["Calm","Competence"],["Stylish","Success"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([s,r],i,arr)=>(
+            {[["Clear","Intelligence"],["Calm","Competence"],["Stylish","Success"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([s,r],i,arr)=>(
               <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 24px 1fr",alignItems:"center",padding:"11px 14px",background:i%2===0?T2.bg:T2.surface,borderBottom:i<arr.length-1?"0.5px solid "+T2.divider:"none"}}>
                 <span style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:T2.text}}>{s}</span>
                 <span style={{fontFamily:T.sans,fontSize:13,color:T.gold,textAlign:"center",fontWeight:300}}>→</span>
