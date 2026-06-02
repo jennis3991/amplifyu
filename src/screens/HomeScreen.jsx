@@ -149,8 +149,8 @@ finishDate + ".";
             ════════════════════════════════════════════════════════════════ */}
         {/* Hero — full image with dark film */}
         <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative" }}>
-          <img src="/home-hero.jpg" alt="Social Presence Framework" style={{ width: "100%", maxHeight: "72vh", objectFit: "cover", objectPosition: "center 20%", display: "block" }}/>
-          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.38)", pointerEvents: "none" }}/>
+          <img src="/home-hero.jpg" alt="Social Presence Framework" style={{ width: "100%", height: "auto", display: "block" }}/>
+          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.15)", pointerEvents: "none" }}/>
         </div>
 
         {/* Static CTA bar — directly below hero, in document flow */}
