@@ -1007,96 +1007,81 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice") return (
+      if (step === "Practice" && d10PracticePhase==='intro') return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          {/* Title — outside cards, matching D3 pattern */}
           <div style={{marginBottom:24}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Practice · Day 10</div>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>The SAR Challenge™</h2>
           </div>
-
-          {/* HOW IT WORKS */}
-          <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px",marginBottom:14}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>How It Works</div>
-            <h3 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 20px"}}>A 3-step story that makes your contribution impossible to ignore.</h3>
-            <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
-              {[
-                {n:1,label:"Situation",desc:"Set the context",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M3 9h16" stroke={T.gold} strokeWidth="1.3"/></svg>},
-                {n:2,label:"Action",   desc:"What you did",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke={T.gold} strokeWidth="1.3"/><path d="M4 19c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-                {n:3,label:"Result",   desc:"The outcome",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><path d="M4 16l4-4 3 3 4-5 3 3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><rect x="3" y="3" width="16" height="16" rx="1.5" stroke={T.gold} strokeWidth="1.3"/></svg>},
-              ].map((s,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
-                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
-                    <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:6}}>{s.icon}</div>
-                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
-                    <div style={{fontFamily:T.sans,fontSize:12,color:T2.text,textAlign:"center",lineHeight:1.3,fontWeight:600}}>{s.label}</div>
-                    <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,textAlign:"center",lineHeight:1.3}}>{s.desc}</div>
+          <div style={{display:"flex",flexDirection:"column",gap:14}}>
+            <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>How It Works</div>
+              <h3 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 20px"}}>A 3-step story that makes your contribution impossible to ignore.</h3>
+              <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
+                {[
+                  {n:1,label:"Situation",desc:"Set the context",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M3 9h16" stroke={T.gold} strokeWidth="1.3"/></svg>},
+                  {n:2,label:"Action",   desc:"What you did",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke={T.gold} strokeWidth="1.3"/><path d="M4 19c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+                  {n:3,label:"Result",   desc:"The outcome",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><path d="M4 16l4-4 3 3 4-5 3 3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><rect x="3" y="3" width="16" height="16" rx="1.5" stroke={T.gold} strokeWidth="1.3"/></svg>},
+                ].map((s,i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+                    <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                      <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:6}}>{s.icon}</div>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
+                      <div style={{fontFamily:T.sans,fontSize:12,color:T2.text,textAlign:"center",lineHeight:1.3,fontWeight:600}}>{s.label}</div>
+                      <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,textAlign:"center",lineHeight:1.3}}>{s.desc}</div>
+                    </div>
+                    {i<2&&<div style={{height:1,width:16,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:32}}/>}
                   </div>
-                  {i<2&&<div style={{height:1,width:isDesktop?16:8,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:32}}/>}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-
-          {/* THE FIRST STEP */}
-          <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px",marginBottom:14}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>The First Step</div>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Think of something you did recently — a project, a problem you solved, a result you created. It doesn't need to be dramatic. It needs to be specific.</p>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
-          </div>
-
-          {/* YOUR AMPLIFYÚ COACH */}
-          <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px",marginBottom:24}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your AmplifyU Coach</div>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AmplifyU coach will take your three inputs and sharpen them into a crisp, powerful performance statement — ready to use in a review, conversation, or interview.</p>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic",fontWeight:300}}>Lead with the result. Make it specific. Own it.</p>
-          </div>
-
-          {d10PracticePhase==='intro' && (
+            <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>The First Step</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Think of something you did recently — a project, a problem you solved, a result you created. It doesn't need to be dramatic. It needs to be specific.</p>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
+            </div>
+            <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your AmplifyU Coach</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AmplifyU coach will take your three inputs and sharpen them into a crisp, powerful performance statement — ready to use in a review, conversation, or interview.</p>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic",fontWeight:300}}>Lead with the result. Make it specific. Own it.</p>
+            </div>
             <button onClick={()=>setD10PracticePhase('builder')} style={{width:"100%",padding:"16px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:16,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:52}}>
               Start the SAR Builder →
             </button>
-          )}
+          </div>
+        </div>
+      );
 
-          {/* SAR Builder — separate page */}
-          {d10PracticePhase==='builder' && <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28}}>
-            <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The exercise</div>
-            <h3 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:6}}>SAR Builder</h3>
-            <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>Situation. Action. Result. Identify something you did — and the coach helps you make your contribution visible.</p>
-            <div style={{display:"flex",gap:24,marginBottom:24}}>
-              {["Build a SAR story","Sharpen your result","Name your contribution"].map((s,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:6}}>
-                  <div style={{width:20,height:20,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"white"}}>{i+1}</span>
-                  </div>
-                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{s}</span>
-                </div>
-              ))}
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:20}}>
-              {[
-                {label:"Situation",val:sarS,set:setSarS,ph:"Set the context briefly. What was the challenge or starting point?"},
-                {label:"Action",   val:sarA,set:setSarA,ph:"What did YOU specifically do? Use 'I' — not 'we.'"},
-                {label:"Result",   val:sarR,set:setSarR,ph:"What was the measurable outcome? Be specific."},
-              ].map(({label,val,set,ph},i)=>(
-                <div key={i}>
-                  <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6,fontFamily:T.sans}}>{label}</div>
-                  <textarea value={val} onChange={e=>set(e.target.value)} placeholder={ph} className="au-input" style={{height:60,resize:"none",fontSize:14}}/>
-                </div>
-              ))}
-            </div>
-            <button onClick={buildSAR} disabled={sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()}
-              style={{padding:"11px 24px",borderRadius:3,border:"none",background:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?T2.border:T.ink,color:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?T2.text3:T.bg,fontSize:13,fontWeight:600,cursor:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?"not-allowed":"pointer",fontFamily:T.sans,marginBottom:sarResult?16:0}}>
-              {sarLoading?"Building your SAR…":"Build My SAR Story →"}
-            </button>
-            {sarResult && (
-              <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:T.sans}}>Your performance statement</div>
-                <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>{sarResult}</p>
+      if (step === "Practice" && d10PracticePhase==='builder') return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <div style={{marginBottom:24}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Practice · Day 10</div>
+            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>SAR Builder</h2>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Situation. Action. Result. Describe what you did — your AmplifyU coach sharpens it into your performance statement.</p>
+          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:20}}>
+            {[
+              {label:"Situation",val:sarS,set:setSarS,ph:"Set the context briefly. What was the challenge or starting point?"},
+              {label:"Action",   val:sarA,set:setSarA,ph:"What did YOU specifically do? Use 'I' — not 'we.'"},
+              {label:"Result",   val:sarR,set:setSarR,ph:"What was the measurable outcome? Be specific."},
+            ].map(({label,val,set,ph},i)=>(
+              <div key={i}>
+                <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6,fontFamily:T.sans}}>{label}</div>
+                <textarea value={val} onChange={e=>set(e.target.value)} placeholder={ph} className="au-input" style={{height:72,resize:"none",fontSize:14}}/>
               </div>
-            )}
-            <button onClick={()=>setD10PracticePhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"16px 0 0",textAlign:"left"}}>← Back</button>
-          </div>}
+            ))}
+          </div>
+          <button onClick={buildSAR} disabled={sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()}
+            style={{padding:"13px 28px",borderRadius:4,border:"none",background:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?T2.border:T.ink,color:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?T2.text3:T.bg,fontSize:14,fontWeight:600,cursor:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?"not-allowed":"pointer",fontFamily:T.sans,marginBottom:sarResult?16:0}}>
+            {sarLoading?"Building your SAR…":"Build My SAR Story →"}
+          </button>
+          {sarResult && (
+            <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginTop:16}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>Your performance statement</div>
+              <p style={{fontFamily:T.serif,fontSize:17,color:T2.text,lineHeight:1.7,margin:0}}>{sarResult}</p>
+            </div>
+          )}
+          <button onClick={()=>setD10PracticePhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"16px 0 0",textAlign:"left"}}>← Back</button>
         </div>
       );
 
