@@ -15,12 +15,60 @@ export function D11PracticeWidget({T, T2, isDesktop}) {
   const [activeStory, setActiveStory] = useState(null);
   const [storyText, setStoryText] = useState({});
   const [tab, setTab] = useState(0);
+  const [phase, setPhase] = useState('intro');
 
   const tabs = ["Brand Mirror","Signal Audit","Story Curation"];
   const cs = {
     card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"16px"},
     label: {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8},
   };
+  const cta = {width:"100%",padding:"15px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:50,transition:"all 0.2s"};
+
+  if (phase === 'intro') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      {/* YOUR MISSION */}
+      <div style={cs.card}>
+        <div style={cs.label}>Your Mission</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T.gold,lineHeight:1.25,margin:"0 0 14px"}}>Build a brand that gets you remembered for the right reasons.</p>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {[
+            "Build your Brand Mirror — know exactly what you want to stand for.",
+            "Audit your signals — check every touchpoint you send to the world.",
+            "Curate your stories — the narratives that make your brand stick.",
+          ].map((t,i)=>(
+            <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+              <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:3}}>✦</span>
+              <span style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.45}}>{t}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* THE CHALLENGE JOURNEY */}
+      <div style={cs.card}>
+        <div style={cs.label}>The Challenge Journey</div>
+        <div style={{display:"flex",alignItems:"flex-start"}}>
+          {[
+            {n:1, label:"Brand Mirror"},
+            {n:2, label:"Signal Audit"},
+            {n:3, label:"Story Curation"},
+          ].map((r,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                <div style={{width:isDesktop?50:44,height:isDesktop?50:44,borderRadius:"50%",border:`1.5px solid ${i===0?T.gold:"rgba(138,158,132,0.35)"}`,background:i===0?"rgba(138,158,132,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?16:15,fontWeight:600,color:i===0?T.gold:"rgba(138,158,132,0.55)"}}>{r.n}</span>
+                </div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,fontWeight:500,color:"#A8998A",textAlign:"center",lineHeight:1.3,maxWidth:88}}>{r.label}</div>
+              </div>
+              {i<2 && <div style={{height:1,width:isDesktop?12:8,background:"rgba(138,158,132,0.25)",flexShrink:0,marginBottom:28}}/>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <button onClick={()=>setPhase('challenge')} style={cta}>Begin the Challenge →</button>
+    </div>
+  );
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
