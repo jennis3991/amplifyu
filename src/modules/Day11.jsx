@@ -181,202 +181,222 @@ export function D11PracticeWidget({T, T2, isDesktop}) {
   );
 }
 
-// ─── D11 Simulation Widget ─────────────────────────────────────────────────
+// ─── D11 Simulation Widget — Brand Coherence Audit ───────────────────────────
 export function D11SimWidget({T, T2, isDesktop}) {
-  const SCENARIOS = [
-    {id:0, label:"Networking Event", sub:"Someone asks who you are.",
-     aiOpener:'"Tell me about yourself."',
-     goal:"Clear identity signal",
-     context:"You have 30–60 seconds. This is where most people undersell themselves or go too broad.",
-     followUps:["What do you actually do day to day?","That's interesting — what made you choose that path?","So what are you working on right now?"],
-     starters:["I help [who] do [what] — most recently…","My background is [X], but what drives me is…","I work at the intersection of [X] and [Y]…"],
-     script:{topic:"Professional introduction",context:"A compelling 60-second introduction that signals who you are, what you stand for, and why it matters.",
-       beginner:'"I\'m a [role] who specialises in [area]. What drives me is [value/belief]. Most recently, I [specific achievement] — which taught me [insight]. I\'m here tonight because I\'m interested in [goal]."',
-       intermediate:["Open with your role and what drives you — not your job title alone","Name one specific recent win","Say what you\'re currently working toward or interested in","Close with a natural question or connection to them"]}},
-    {id:1, label:"Podcast Introduction", sub:"30 seconds to introduce yourself.",
-     aiOpener:'"Before we dive in — for our listeners who don\'t know you, introduce yourself in 30 seconds."',
-     goal:"Memorable brand signal",
-     context:"This is one of the highest-value 30 seconds in your career. Most people waste it.",
-     followUps:["Great — and what does that actually mean in practice?","What would you say is your superpower?","And what are you most focused on right now?"],
-     starters:["I spend my time helping [audience] [outcome]…","My work sits at the intersection of [X] and [Y]…","I\'m probably best known for [thing], but what I care most about is [value]…"],
-     script:{topic:"Podcast bio",context:"A crisp, memorable self-introduction that communicates expertise, differentiation, and personality.",
-       beginner:'"I\'m [name]. I work with [audience type] to help them [specific outcome]. I\'ve spent [X years] doing [area], and the thread through everything I do is [core belief or value]. Right now I\'m most excited about [current focus]."',
-       intermediate:["Open with what you do for others — not your job title","State your expertise through a lens of impact","Include one belief or value that differentiates you","Close with energy — what excites you right now"]}},
-    {id:2, label:"Interview", sub:"Why should we hire you?",
-     aiOpener:'"So — why should we hire you over someone else?"',
-     goal:"Confident brand articulation",
-     context:"The question most candidates fear. The ones who nail it treat it as a brand statement, not a list of qualifications.",
-     followUps:["Can you give me a specific example of that?","What would your previous team say about you?","How do you handle situations where you\'re out of your depth?"],
-     starters:["What I bring that's distinct is…","Throughout my career, the pattern has always been…","I\'m someone who [distinctive trait] — and the evidence for that is…"],
-     script:{topic:"Interview answer",context:"A confident, differentiated answer to the most common and most important interview question.",
-       beginner:'"What I bring is [specific skill or trait], backed by [experience]. But more than that, I bring [intangible — mindset, values, approach]. The clearest example of that is [brief story]. What drives me is [belief], and that\'s why this role genuinely excites me."',
-       intermediate:["Lead with your distinctive strength — not a list","Back it with one specific story","Name your values or approach, not just your skills","Connect your motivation to this specific role"]}},
-    {id:3, label:"LinkedIn Bio", sub:"Paste your current bio for a brand audit.",
-     aiOpener:'"Paste your current LinkedIn bio or \'About\' section. What does it currently signal — and what should it signal?"',
-     goal:"Brand coherence audit",
-     context:"Most LinkedIn bios read like a CV summary. The best ones read like a brand statement.",
-     followUps:["What three words do you want people to feel when they read it?","Who is the primary audience you want to attract?","Does it show personality — or just credentials?"],
-     starters:["This currently signals… Consider shifting toward…","The strongest line is… The weakest is…","One reframe that would change everything: instead of saying [X], try [Y]…"],
-     script:{topic:"LinkedIn bio",context:"A bio that signals expertise, values, and personality — not just employment history.",
-       beginner:'"I\'m a [role] who helps [audience] [achieve outcome]. I believe [core value or philosophy]. My work has [impact area]. Outside of [professional domain], I\'m [one personal dimension that humanises you]. If you want to talk about [topic], reach out."',
-       intermediate:["Open with what you do for others — not your title","State your core belief or philosophy","Name your impact area specifically","Add one human dimension — not just credentials","Close with an invitation to connect"]}},
-  ];
+  const [phase, setPhase] = useState('intro');
+  const [brandWords, setBrandWords] = useState(['','','']);
+  const [profileText, setProfileText] = useState('');
+  const [results, setResults] = useState(null);
 
-  const [phase, setPhase] = useState('idle');
-  const [sc, setSc] = useState(null);
-  const [mode, setMode] = useState(null);
-  const [difficulty, setDifficulty] = useState('beginner');
-  const [userText, setUserText] = useState('');
-  const [feedback, setFeedback] = useState(null);
-  const [ownContext, setOwnContext] = useState('');
-  const [followIdx, setFollowIdx] = useState(0);
-
-  const reset = () => { setPhase('idle'); setSc(null); setMode(null); setDifficulty('beginner'); setUserText(''); setFeedback(null); setOwnContext(''); setFollowIdx(0); };
-
-  const SCORES = ['Clarity','Authenticity','Memorability','Brand Alignment','Confidence','Executive Presence'];
-  const generateFeedback = () => {
-    const scores = SCORES.map(s => ({ label:s, val:Math.floor(Math.random()*25)+70 }));
-    const notes = [
-      "Strong opening — your identity signal was clear within the first sentence. The specific achievement grounded it. Consider adding one belief or value that differentiates you beyond the role itself.",
-      "Excellent brand coherence. Your tone matched your content, and the story you used was precise. The emotional dimension could be slightly stronger — what do you care about most?",
-      "Very memorable framing. You led with what you do for others rather than your title — that's exactly right. The closing could be sharper: what do you want them to do or think next?",
-      "Clear, confident, and specific. The brand signal was strong. One refinement: where possible, show your values through a story rather than stating them directly. Proof is always more powerful than claim.",
-    ];
-    setFeedback({ scores, note: notes[Math.floor(Math.random()*notes.length)], followUp: sc?.followUps[Math.floor(Math.random()*sc.followUps.length)] });
-    setPhase('feedback');
-  };
+  const reset = () => { setPhase('intro'); setBrandWords(['','','']); setProfileText(''); setResults(null); };
 
   const cs = {
     card: { background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px" },
     label: { fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8 },
   };
+  const cta = (disabled) => ({ width:"100%", padding:"15px", borderRadius:4, border:"none", background:disabled?"rgba(44,36,22,0.25)":T.ink, color:T.bg, fontSize:isDesktop?15:14, fontWeight:600, cursor:disabled?"not-allowed":"pointer", fontFamily:T.sans, minHeight:50, transition:"all 0.2s" });
+  const back = { background:"none", border:"none", fontFamily:T.sans, fontSize:12, color:T2.text4, cursor:"pointer", padding:"8px 0", textAlign:"left" };
 
-  if (phase === 'idle') return (
-    <div style={{display:"flex",flexDirection:"column",gap:12}}>
-      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>Choose your scenario</div>
-      {SCENARIOS.map(s => (
-        <div key={s.id} onClick={()=>{setSc(s);setPhase('mode-select');}} style={{...cs.card,cursor:"pointer"}} className="au-lift">
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-            <div>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>{s.goal}</div>
-              <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,marginBottom:4}}>{s.label}</div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>{s.sub}</p>
+  const runAudit = () => {
+    const r = (min,max) => Math.floor(Math.random()*(max-min+1))+min;
+    const signalPool = ['Strategic','Analytical','Experienced','Results-oriented','Delivery-focused','Credible','Diligent','Professional'];
+    const currentWords = signalPool.sort(()=>Math.random()-0.5).slice(0,3);
+    const desired = brandWords.filter(w=>w.trim());
+    const COHERENCE_AREAS = ["LinkedIn Bio","Headline","Communication Style","Online Presence","Personal Story","Professional Positioning"];
+    const icons = ["✅","❌","⚠️"];
+    const coherence = COHERENCE_AREAS.map(area => ({
+      area,
+      status: icons[r(0,2)],
+    }));
+    setResults({
+      currentWords,
+      desired,
+      signals: currentWords,
+      risks:[
+        "Feels similar to thousands of other profiles in your sector",
+        "Focuses heavily on responsibilities rather than outcomes",
+        "Limited differentiation — no clear point of view",
+        "Doesn't communicate what you uniquely stand for",
+      ],
+      scores:[
+        {label:"Clarity",       val:r(6,8)},
+        {label:"Credibility",   val:r(7,9)},
+        {label:"Memorability",  val:r(3,5)},
+        {label:"Differentiation",val:r(2,5)},
+        {label:"Consistency",   val:r(6,9)},
+      ],
+      coherence,
+    });
+    setPhase('results');
+  };
+
+  if (phase === 'intro') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={cs.card}>
+        <div style={cs.label}>Real · Personal · Actionable</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 16px"}}>Your personal brand already exists. The question is whether you're shaping it intentionally.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 12px"}}>One of the fastest ways to assess your brand is to look at your LinkedIn profile.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>Most profiles describe what someone does. The strongest profiles communicate who they are, what they stand for, and the value they create.</p>
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>What your AmplifyU coach will analyse</div>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          {[
+            "What signals your profile currently sends",
+            "Whether those signals are consistent",
+            "What people are likely to assume about you",
+            "Gaps between your current and desired brand",
+            "How to strengthen your positioning",
+          ].map((t,i)=>(
+            <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+              <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:2}}>✦</span>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5}}>{t}</span>
             </div>
-            <span style={{fontFamily:T.sans,fontSize:12,color:T.gold,marginLeft:12,flexShrink:0}}>→</span>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-
-  if (phase === 'mode-select') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={cs.card}>
-        <div style={cs.label}>The Prompt</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 10px"}}>{sc.aiOpener}</p>
-        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,lineHeight:1.6}}>{sc.context}</p>
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-        <button onClick={()=>{setMode('guided');setPhase('setup');}} style={{...cs.card,cursor:"pointer",textAlign:"left",border:"0.5px solid "+T.gold}}>
-          <div style={cs.label}>Guided</div>
-          <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,marginBottom:6}}>Coach me through it</div>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>Script, talking points, and difficulty levels.</p>
-        </button>
-        <button onClick={()=>{setMode('own');setPhase('active');}} style={{...cs.card,cursor:"pointer",textAlign:"left"}}>
-          <div style={cs.label}>Real situation</div>
-          <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,marginBottom:6}}>Use my own words</div>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>Write naturally and get brand feedback.</p>
-        </button>
-      </div>
-      <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
-    </div>
-  );
-
-  if (phase === 'setup') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={cs.card}>
-        <div style={cs.label}>The Prompt</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>{sc.aiOpener}</p>
-      </div>
-      <div style={cs.card}>
-        <div style={cs.label}>Difficulty</div>
-        <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>
-          {['beginner','intermediate','advanced'].map(d=>(
-            <button key={d} onClick={()=>setDifficulty(d)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${difficulty===d?T.gold:T2.border}`,background:difficulty===d?"rgba(138,158,132,0.12)":"transparent",color:difficulty===d?T.gold:T2.text3,fontSize:12,fontWeight:difficulty===d?600:400,cursor:"pointer",fontFamily:T.sans,transition:"all 0.15s",minHeight:36,textTransform:"capitalize"}}>{d}</button>
           ))}
         </div>
-        <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14}}>
-          {difficulty==='beginner' && <><div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Full Script</div><p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{sc.script.beginner}</p></>}
-          {difficulty==='intermediate' && <><div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Talking Points</div>{sc.script.intermediate.map((pt,i)=><div key={i} style={{display:"flex",gap:10,marginBottom:8,alignItems:"flex-start"}}><div style={{color:T.gold,fontFamily:T.sans,fontSize:12,fontWeight:700,flexShrink:0,marginTop:2}}>{i+1}.</div><p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0}}>{pt}</p></div>)}</>}
-          {difficulty==='advanced' && <><div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Speak Freely</div><p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:0}}>No script. Respond naturally. Your coach will evaluate clarity, authenticity, and brand alignment.</p></>}
-        </div>
       </div>
-      <button onClick={()=>setPhase('active')} style={{width:"100%",padding:"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Start →</button>
-      <button onClick={()=>setPhase('mode-select')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
+      <button onClick={()=>setPhase('words')} style={cta(false)}>Begin the Audit →</button>
     </div>
   );
 
-  if (phase === 'active') return (
+  if (phase === 'words') return (
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:2}}>
+        <div style={{display:"flex",gap:6}}>
+          {[1,2].map(i=><div key={i} style={{width:i===1?22:6,height:6,borderRadius:3,background:i===1?T.gold:T2.border,transition:"all 0.3s"}}/>)}
+        </div>
+        <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>Step 1 of 2</span>
+      </div>
       <div style={cs.card}>
-        <div style={cs.label}>The Prompt</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>{sc.aiOpener}</p>
-        {followIdx>0 && sc.followUps[followIdx-1] && (
-          <div style={{marginTop:16,paddingTop:14,borderTop:"0.5px solid "+T2.divider}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(180,100,80,0.8)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Follow-up</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.4,margin:0}}>{sc.followUps[followIdx-1]}</p>
+        <div style={cs.label}>Your Brand Intent</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 16px"}}>What three words do you want people to associate with your name?</p>
+        <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
+          {brandWords.map((w,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
+              <div style={{width:24,height:24,borderRadius:"50%",background:w?T.gold:"rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
+                <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:"white"}}>{i+1}</span>
+              </div>
+              <input value={w} onChange={e=>{const n=[...brandWords];n[i]=e.target.value;setBrandWords(n);}} placeholder={["e.g. Trusted","e.g. Strategic","e.g. Inspiring"][i]} className="au-input" style={{flex:1,padding:"10px 14px",fontSize:isDesktop?14:13}}/>
+            </div>
+          ))}
+        </div>
+        <div style={{paddingTop:14,borderTop:"0.5px solid "+T2.divider}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Examples</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+            {["Trusted","Strategic","Innovative","Confident","Inspiring","Credible","Decisive","Empathetic","Visionary","Calm"].map((ex,i)=>{
+              const sel=brandWords.includes(ex);
+              return <button key={i} onClick={()=>{if(sel){setBrandWords(brandWords.map(w=>w===ex?"":w));}else{const idx=brandWords.findIndex(w=>!w);if(idx>=0){const n=[...brandWords];n[idx]=ex;setBrandWords(n);}}}} style={{padding:"5px 12px",borderRadius:20,border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.15)":"transparent",color:sel?T.gold:T2.text3,fontSize:12,cursor:"pointer",fontFamily:T.sans,minHeight:30,transition:"all 0.15s"}}>{ex}</button>;
+            })}
           </div>
+        </div>
+      </div>
+      <button onClick={()=>setPhase('paste')} style={cta(false)}>Next →</button>
+      <button onClick={reset} style={back}>← Back</button>
+    </div>
+  );
+
+  if (phase === 'paste') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:2}}>
+        <div style={{display:"flex",gap:6}}>
+          {[1,2].map(i=><div key={i} style={{width:22,height:6,borderRadius:3,background:T.gold}}/>)}
+        </div>
+        <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>Step 2 of 2</span>
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>Your LinkedIn Profile</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 16px"}}>Paste your current LinkedIn headline, About section, or professional bio. The more you include, the deeper the analysis.</p>
+        <textarea
+          value={profileText}
+          onChange={e=>setProfileText(e.target.value)}
+          placeholder={"Paste your LinkedIn headline, About section, or professional bio here…\n\nExample:\nSenior manager with 15 years' experience leading teams and delivering projects across multiple industries."}
+          style={{width:"100%",minHeight:isDesktop?160:130,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.65,boxSizing:"border-box"}}
+        />
+        {profileText.trim().length>0 && (
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text4,margin:"10px 0 0"}}>{profileText.trim().split(/\s+/).length} words</p>
         )}
       </div>
-      {mode==='own' && (
-        <div style={cs.card}>
-          <div style={cs.label}>Your context (optional)</div>
-          <textarea value={ownContext} onChange={e=>setOwnContext(e.target.value)} placeholder="Add context about your actual situation for more personalised feedback…" style={{width:"100%",minHeight:60,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6}}/>
-        </div>
-      )}
-      <div style={cs.card}>
-        <div style={cs.label}>Your response</div>
-        <textarea value={userText} onChange={e=>setUserText(e.target.value)} placeholder="Write what you'd say…" style={{width:"100%",minHeight:isDesktop?140:110,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6}}/>
-      </div>
-      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-        {followIdx < sc.followUps.length && <button onClick={()=>setFollowIdx(i=>i+1)} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Follow-up →</button>}
-        <button onClick={generateFeedback} disabled={userText.trim().length<10} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"none",background:userText.trim().length>=10?T.ink:"rgba(44,36,22,0.3)",color:T.bg,fontSize:13,fontWeight:600,cursor:userText.trim().length>=10?"pointer":"not-allowed",fontFamily:T.sans,minHeight:44,transition:"background 0.2s"}}>Get Brand Feedback →</button>
-      </div>
-      <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Start over</button>
+      <button onClick={runAudit} disabled={profileText.trim().length<10} style={cta(profileText.trim().length<10)}>Run the Audit →</button>
+      <button onClick={()=>setPhase('words')} style={back}>← Back</button>
     </div>
   );
 
-  if (phase === 'feedback') return (
+  if (phase === 'results' && results) return (
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
+
+      {/* Current Brand Signals */}
       <div style={cs.card}>
-        <div style={cs.label}>Brand Assessment</div>
-        {feedback.scores.map((s,i) => (
-          <div key={i} style={{marginBottom:12}}>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
-              <span style={{fontFamily:T.sans,fontSize:12,color:T2.text,fontWeight:500}}>{s.label}</span>
-              <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:s.val>=85?T.gold:s.val>=70?"#7A9E84":T2.text3}}>{s.val}</span>
+        <div style={cs.label}>Your Current Brand Signals</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px"}}>Based on your profile, you currently signal:</p>
+        <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:16}}>
+          {results.signals.map((s,i)=>(
+            <span key={i} style={{padding:"6px 14px",borderRadius:20,background:"rgba(138,158,132,0.12)",border:"0.5px solid rgba(138,158,132,0.35)",fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:600,color:T.gold}}>{s}</span>
+          ))}
+        </div>
+        <div style={cs.label}>Potential Risks</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {results.risks.map((r,i)=>(
+            <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+              <span style={{fontFamily:T.sans,fontSize:13,color:"rgba(180,80,60,0.8)",flexShrink:0,marginTop:1}}>×</span>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{r}</span>
             </div>
-            <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-              <div style={{height:"100%",width:s.val+"%",background:s.val>=85?T.gold:s.val>=70?"rgba(138,158,132,0.7)":"rgba(138,158,132,0.35)",borderRadius:2,transition:"width 0.8s ease"}}/>
+          ))}
+        </div>
+      </div>
+
+      {/* Brand Alignment Score */}
+      <div style={cs.card}>
+        <div style={cs.label}>Brand Alignment Score</div>
+        {results.scores.map((s,i)=>(
+          <div key={i} style={{marginBottom:i<results.scores.length-1?14:0}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:6}}>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,fontWeight:500}}>{s.label}</span>
+              <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:700,color:s.val>=7?T.gold:s.val>=5?"#7A9E84":T2.text3}}>{s.val}<span style={{fontSize:11,fontWeight:400,color:T2.text4}}>/10</span></span>
+            </div>
+            <div style={{height:4,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+              <div style={{height:"100%",width:(s.val*10)+"%",background:s.val>=7?T.gold:s.val>=5?"rgba(138,158,132,0.7)":"rgba(180,80,60,0.35)",borderRadius:2,transition:"width 0.9s ease"}}/>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Reflection */}
       <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
-        <div style={cs.label}>Brand Coach Note</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{feedback.note}</p>
+        <div style={cs.label}>Reflection</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:"0 0 12px"}}>If someone read this profile for 15 seconds, they would likely describe you as:</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:"0 0 16px"}}>"{results.signals.join('. ')}."</p>
+        {results.desired.length>0 && <>
+          <div style={{display:"flex",flexDirection:"column",gap:10,padding:"14px 16px",background:T2.bg,borderRadius:4}}>
+            <div>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>You want to be known for</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T.gold,lineHeight:1.5,margin:0}}>{results.desired.join('. ')}.</p>
+            </div>
+            <div style={{height:"0.5px",background:T2.divider}}/>
+            <div>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Your profile currently communicates</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text3,lineHeight:1.5,margin:0}}>{results.currentWords.join('. ')}.</p>
+            </div>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:600,color:"rgba(180,80,60,0.8)",margin:"12px 0 0"}}>There is a gap.</p>
+        </>}
       </div>
-      {feedback.followUp && (
-        <div style={{...cs.card,background:"rgba(44,30,20,0.06)"}}>
-          <div style={cs.label}>They ask</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:"0 0 8px"}}>{feedback.followUp}</p>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>How do you answer?</p>
+
+      {/* Brand Coherence Table */}
+      <div style={cs.card}>
+        <div style={cs.label}>Brand Coherence Audit</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px"}}>How consistently does your brand show up across every touchpoint?</p>
+        {results.coherence.map((row,i)=>(
+          <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:i<results.coherence.length-1?"0.5px solid "+T2.divider:"none"}}>
+            <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text}}>{row.area}</span>
+            <span style={{fontSize:16}}>{row.status}</span>
+          </div>
+        ))}
+        <div style={{marginTop:16,padding:"12px 14px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>Repeated signals become reputation. Reputation becomes brand.</p>
         </div>
-      )}
-      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-        <button onClick={()=>{setPhase('active');setUserText('');setFeedback(null);setFollowIdx(followIdx+1);}} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Try Again</button>
-        <button onClick={reset} style={{flex:"1 1 auto",padding:"11px 16px",borderRadius:3,border:"none",background:T.ink,color:T.bg,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>New Scenario →</button>
       </div>
+
+      <button onClick={reset} style={{width:"100%",padding:"15px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:50}}>Run Another Audit →</button>
     </div>
   );
 
