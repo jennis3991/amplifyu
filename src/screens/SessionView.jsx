@@ -3052,36 +3052,6 @@ setAmbitionSaved(true); } catch {}
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Why Image Matters</div>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Perception Is Built From Signals</h2>
-          {!d11Test && (
-            <div style={{ marginBottom:32 }}>
-              <p style={{ fontFamily:T.sans, fontSize:16, color:"#A8998A", lineHeight:1.6, marginBottom:24, maxWidth:600 }}>Before we get to the science — a quick perception test. Three people walk into the same meeting. Same role. Same experience. Which one seems most trustworthy?</p>
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:14, marginBottom:24 }}>
-                {[
-                  {label:"Person A", traits:["Arrives prepared","Measured pace","Consistent presence","Has a story ready"]},
-                  {label:"Person B", traits:["Energetic, unpredictable","Different every time","Full of ideas","Hard to read"]},
-                  {label:"Person C", traits:["Quiet, consistent","Always follows through","Same in every room","Signals without words"]},
-                ].map((p,i) => (
-                  <div key={i} onClick={()=>setD11Test(i)} style={{ padding:"20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, cursor:"pointer", transition:"border-color 0.2s" }} className="au-lift">
-                    <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10 }}>{p.label}</div>
-                    {p.traits.map((t,j) => (
-                      <div key={j} style={{ display:"flex", alignItems:"center", gap:7, marginBottom:6 }}>
-                        <div style={{ width:3, height:3, borderRadius:"50%", background:T.gold, flexShrink:0 }}/>
-                        <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text3 }}>{t}</span>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-              <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, fontStyle:"italic" }}>Tap any card to see what your instinct reveals.</p>
-            </div>
-          )}
-          {d11Test !== null && (
-            <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
-              <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T2.text, lineHeight:1.5, margin:"0 0 10px" }}>Your instinct pointed to Person {["A","B","C"][d11Test]}.</p>
-              <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.7, margin:0 }}>That answer was made in milliseconds — before any evidence. This is how everyone reads everyone. The question isn't whether people are forming impressions. It's whether you're shaping them intentionally.</p>
-              <button onClick={()=>setD11Test(null)} style={{ marginTop:12, fontFamily:T.sans, fontSize:12, color:T.gold, background:"none", border:"none", cursor:"pointer", padding:0 }}>← Retake test</button>
-            </div>
-          )}
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
             {D11_FACTS.map((n,i)=>{
               const open=d11CardOpen===("ins"+i);
