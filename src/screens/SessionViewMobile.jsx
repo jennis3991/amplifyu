@@ -495,7 +495,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           );
         }
         const STEP_IMGS={
-          1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+          1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/day1-insight.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           2:{Insight:"/d2-insight.jpg",Theory:"/d2-theory.jpg",Practice:"/d2-practice.jpg",Review:"/review-chair.jpg"},
           3:{Insight:"/day3-insight.jpg",Theory:"/day3-theory.jpg",Review:"/review-chair.jpg"},
           4:{Insight:"/day4-insight.jpg",Theory:"/millers-law.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
@@ -642,7 +642,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         const TABLET_IMGS={
-          1:{Insight:{src:"/day1-insight-tablet.jpg"}},
+          1:{Insight:{src:"/day1-insight.jpg"},Example:{src:"/day1-insight.jpg"}},
           2:{Insight:{src:"/d2-insight-tablet.jpg"},Practice:{src:"/d2-practice-tablet.jpg"}},
           3:{Theory:{src:"/day3-theory-tablet.jpg"}},
           4:{Insight:{src:"/day4-insight-tablet.jpg"},Theory:{src:"/day4-theory-tablet.jpg"}},
@@ -691,7 +691,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             {step==="Insight" ? (
               <>
                 <h1 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"white",lineHeight:1.2,marginBottom:8}}>{lesson.title}</h1>
-                <p style={{fontFamily:T.sans,fontSize:12,fontWeight:400,color:"rgba(255,255,255,0.55)",lineHeight:1.5,margin:0,fontStyle:"italic"}}>{lesson.quote}</p>
+                <p style={{fontFamily:T.sans,fontSize:12,fontWeight:400,color:"rgba(255,255,255,0.55)",lineHeight:1.5,margin:0,fontStyle:"italic"}}>{isD1?"Transform complexity into clarity.":lesson.quote}</p>
               </>
             ) : (
               <h1 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
@@ -1679,7 +1679,7 @@ T.goldDark : T2.text4,
       )}
       {isD1 && step==="Example" && (
         <>
-          <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Examples · Day 1</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Clear Communication</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how they do it.</p>
           {[
@@ -1710,14 +1710,14 @@ T.goldDark : T2.text4,
       {isD1 && step==="Practice" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Practice · Day 1</div>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>The Feynman Challenge™</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>The Feynman Challenge™</h2>
           <D1ClarityChallenge T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD1NavLabel} onNavFn={d1NavFnRef}/>
         </>
       )}
       {isD1 && step==="Simulation" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Simulation · Day 1</div>
-          <h2 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Clarity Check-In</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Clarity Check-In</h2>
           <D1SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
