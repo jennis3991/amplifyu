@@ -2,22 +2,36 @@ import { useState } from 'react';
 
 // ─── D13 Practice Widget ───────────────────────────────────────────────────
 export function D13PracticeWidget({T, T2, isDesktop}) {
-  const [tab, setTab] = useState(0);
+  const [phase, setPhase] = useState('intro');
   const [people, setPeople] = useState(Array(5).fill(''));
   const [ambition, setAmbition] = useState('');
   const [ambitionRefined, setAmbitionRefined] = useState('');
   const [scores, setScores] = useState({});
   const [reconnect, setReconnect] = useState(Array(3).fill({name:'',value:''}));
-  const [phase, setPhase] = useState('intro');
 
-  const tabs = ["Opportunity Map","Ambition Statement","Visibility Audit","Relationship Builder"];
+  const ROUNDS = ['intro','ex1','ex2','ex3','ex4','done'];
+  const AUDIT_DIMS = ["Internal visibility","Industry visibility","Network strength","Senior stakeholder relationships"];
+
   const cs = {
     card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"},
     label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8},
     cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
   };
 
-  const AUDIT_DIMS = ["Internal visibility","Industry visibility","Network strength","Senior stakeholder relationships"];
+  const Progress = ({round}) => {
+    const exercises = ['ex1','ex2','ex3','ex4'];
+    const idx = exercises.indexOf(round);
+    return (
+      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:isDesktop?18:14}}>
+        <div style={{display:"flex",gap:5,flex:1}}>
+          {exercises.map((_,i)=>(
+            <div key={i} style={{height:3,borderRadius:2,flex:1,background:i<=idx?T.gold:T2.border,transition:"background 0.3s"}}/>
+          ))}
+        </div>
+        <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4,flexShrink:0}}>Round {idx+1} of 4</span>
+      </div>
+    );
+  };
 
   if (phase==='intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
@@ -49,112 +63,132 @@ export function D13PracticeWidget({T, T2, isDesktop}) {
           ))}
         </div>
       </div>
-      <button onClick={()=>setPhase('challenge')} style={cs.cta}>Begin the Challenge →</button>
+      <button onClick={()=>setPhase('ex1')} style={cs.cta}>Begin the Challenge →</button>
     </div>
   );
 
-  return (
+  if (phase==='ex1') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-        {tabs.map((t,i)=>(
-          <button key={i} onClick={()=>setTab(i)} style={{padding:"8px 14px",borderRadius:3,border:`0.5px solid ${tab===i?T.gold:T2.border}`,background:tab===i?"rgba(138,158,132,0.1)":"transparent",color:tab===i?T.gold:T2.text3,fontSize:12,fontWeight:tab===i?600:400,cursor:"pointer",fontFamily:T.sans,transition:"all 0.15s",minHeight:36}}>{t}</button>
-        ))}
-      </div>
-
-      {tab===0 && (
-        <div style={cs.card}>
-          <div style={cs.label}>Opportunity Mapping</div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>List five people who could significantly influence your future. For each, consider: do they know what you're good at? Do they know what you want next? Do they know how to help you?</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
-            {people.map((p,i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
-                <div style={{width:24,height:24,borderRadius:"50%",background:p?T.gold:"rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
-                  <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:"white"}}>{i+1}</span>
-                </div>
-                <input value={p} onChange={e=>{const n=[...people];n[i]=e.target.value;setPeople(n);}} placeholder={`Person ${i+1} — name or role`} className="au-input" style={{flex:1,padding:"10px 14px",fontSize:isDesktop?14:13}}/>
+      <Progress round="ex1"/>
+      <div style={cs.card}>
+        <div style={cs.label}>Round 1 · Opportunity Mapping</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>List five people who could significantly influence your future. For each, consider: do they know what you're good at? Do they know what you want next? Do they know how to help you?</p>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          {people.map((p,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
+              <div style={{width:24,height:24,borderRadius:"50%",background:p?T.gold:"rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
+                <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:"white"}}>{i+1}</span>
               </div>
-            ))}
-          </div>
-          {people.filter(p=>p.trim()).length>=3 && (
-            <div style={{marginTop:16,padding:"14px 16px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>Now ask yourself honestly: does each of these people know where you're going — not just what you do today?</p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {tab===1 && (
-        <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          <div style={cs.card}>
-            <div style={cs.label}>The Ambition Statement</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:14}}>Complete this sentence — then refine it until you'd say it out loud in front of a senior leader without hesitation.</p>
-            <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:10,fontWeight:500}}>Over the next three years, I want to become…</div>
-            <textarea value={ambition} onChange={e=>setAmbition(e.target.value)} placeholder="Write freely first. Don't edit yourself yet." style={{width:"100%",minHeight:isDesktop?80:70,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
-          </div>
-          {ambition.trim().length>10 && (
-            <div style={cs.card}>
-              <div style={cs.label}>Refine it</div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:12}}>Now rewrite it in one clear, confident sentence. Then say it aloud three times.</p>
-              <textarea value={ambitionRefined} onChange={e=>setAmbitionRefined(e.target.value)} placeholder="One sentence. Clear. Confident. Specific." style={{width:"100%",minHeight:isDesktop?60:55,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.serif,fontSize:isDesktop?16:15,color:T.gold,resize:"none",outline:"none",lineHeight:1.5,boxSizing:"border-box"}}/>
-              {ambitionRefined.trim().length>5 && (
-                <div style={{marginTop:12,padding:"12px 14px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0,lineHeight:1.6}}>Say it aloud. Own it. This is the sentence that opens doors — but only if you say it.</p>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {tab===2 && (
-        <div style={cs.card}>
-          <div style={cs.label}>Visibility Audit</div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>Score yourself honestly from 1–10 across each dimension. Where is your biggest gap?</p>
-          {AUDIT_DIMS.map((dim,i)=>{
-            const val = scores[dim]||0;
-            return (
-              <div key={i} style={{paddingBottom:i<AUDIT_DIMS.length-1?16:0,marginBottom:i<AUDIT_DIMS.length-1?16:0,borderBottom:i<AUDIT_DIMS.length-1?"0.5px solid "+T2.divider:"none"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,fontWeight:500}}>{dim}</span>
-                  <span style={{fontFamily:T.serif,fontSize:isDesktop?16:15,fontWeight:700,color:val>=7?T.gold:val>=5?"#7A9E84":T2.text3}}>{val}/10</span>
-                </div>
-                <input type="range" min="1" max="10" value={val||1} onChange={e=>setScores({...scores,[dim]:+e.target.value})}
-                  style={{width:"100%",accentColor:T.gold,cursor:"pointer"}}/>
-              </div>
-            );
-          })}
-          {Object.keys(scores).length>=2 && (
-            <div style={{marginTop:16,padding:"12px 14px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>
-                {Object.keys(scores).length===4
-                  ? `Your lowest area is ${Object.entries(scores).sort(([,a],[,b])=>a-b)[0][0].toLowerCase()}. That's where your next opportunity lives.`
-                  : "Rate all four to see your biggest opportunity."}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {tab===3 && (
-        <div style={cs.card}>
-          <div style={cs.label}>Relationship Builder</div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>Identify three people you should reconnect with this month. For each, think about what value you can provide them first — before asking for anything.</p>
-          {reconnect.map((r,i)=>(
-            <div key={i} style={{paddingBottom:i<2?16:0,marginBottom:i<2?16:0,borderBottom:i<2?"0.5px solid "+T2.divider:"none"}}>
-              <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Person {i+1}</div>
-              <input value={r.name} onChange={e=>{const n=[...reconnect];n[i]={...n[i],name:e.target.value};setReconnect(n);}} placeholder="Name or role" className="au-input" style={{width:"100%",padding:"9px 12px",fontSize:isDesktop?14:13,marginBottom:8,boxSizing:"border-box"}}/>
-              <input value={r.value} onChange={e=>{const n=[...reconnect];n[i]={...n[i],value:e.target.value};setReconnect(n);}} placeholder="What value can you provide them first?" className="au-input" style={{width:"100%",padding:"9px 12px",fontSize:isDesktop?14:13,boxSizing:"border-box"}}/>
+              <input value={p} onChange={e=>{const n=[...people];n[i]=e.target.value;setPeople(n);}} placeholder={`Person ${i+1} — name or role`} className="au-input" style={{flex:1,padding:"10px 14px",fontSize:isDesktop?14:13}}/>
             </div>
           ))}
-          {reconnect.filter(r=>r.name.trim()).length>=2 && (
-            <div style={{marginTop:16,padding:"12px 14px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>Give before you ask. The best relationships are built through generosity, not need.</p>
+        </div>
+        {people.filter(p=>p.trim()).length>=3 && (
+          <div style={{marginTop:16,padding:"14px 16px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>Now ask yourself honestly: does each of these people know where you're going — not just what you do today?</p>
+          </div>
+        )}
+      </div>
+      <button onClick={()=>setPhase('ex2')} style={cs.cta}>Round 2: Ambition Statement →</button>
+    </div>
+  );
+
+  if (phase==='ex2') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <Progress round="ex2"/>
+      <div style={cs.card}>
+        <div style={cs.label}>Round 2 · The Ambition Statement</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:14}}>Complete this sentence — then refine it until you'd say it out loud in front of a senior leader without hesitation.</p>
+        <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:10,fontWeight:500}}>Over the next three years, I want to become…</div>
+        <textarea value={ambition} onChange={e=>setAmbition(e.target.value)} placeholder="Write freely first. Don't edit yourself yet." style={{width:"100%",minHeight:isDesktop?80:70,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
+      </div>
+      {ambition.trim().length>10 && (
+        <div style={cs.card}>
+          <div style={cs.label}>Refine it</div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:12}}>Rewrite it in one clear, confident sentence. Then say it aloud three times.</p>
+          <textarea value={ambitionRefined} onChange={e=>setAmbitionRefined(e.target.value)} placeholder="One sentence. Clear. Confident. Specific." style={{width:"100%",minHeight:isDesktop?60:55,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.serif,fontSize:isDesktop?16:15,color:T.gold,resize:"none",outline:"none",lineHeight:1.5,boxSizing:"border-box"}}/>
+          {ambitionRefined.trim().length>5 && (
+            <div style={{marginTop:12,padding:"12px 14px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0,lineHeight:1.6}}>Say it aloud. Own it. This is the sentence that opens doors — but only if you say it.</p>
             </div>
           )}
         </div>
       )}
+      <button onClick={()=>setPhase('ex3')} style={cs.cta}>Round 3: Visibility Audit →</button>
+      <button onClick={()=>setPhase('ex1')} style={{background:"none",border:"none",fontFamily:T.sans,fontSize:12,color:T2.text4,cursor:"pointer",padding:"4px 0",textAlign:"left"}}>← Back</button>
     </div>
   );
+
+  if (phase==='ex3') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <Progress round="ex3"/>
+      <div style={cs.card}>
+        <div style={cs.label}>Round 3 · Visibility Audit</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>Score yourself honestly from 1–10 across each dimension. Where is your biggest gap?</p>
+        {AUDIT_DIMS.map((dim,i)=>{
+          const val = scores[dim]||0;
+          return (
+            <div key={i} style={{paddingBottom:i<AUDIT_DIMS.length-1?16:0,marginBottom:i<AUDIT_DIMS.length-1?16:0,borderBottom:i<AUDIT_DIMS.length-1?"0.5px solid "+T2.divider:"none"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,fontWeight:500}}>{dim}</span>
+                <span style={{fontFamily:T.serif,fontSize:isDesktop?16:15,fontWeight:700,color:val>=7?T.gold:val>=5?"#7A9E84":T2.text3}}>{val}/10</span>
+              </div>
+              <input type="range" min="1" max="10" value={val||1} onChange={e=>setScores({...scores,[dim]:+e.target.value})} style={{width:"100%",accentColor:T.gold,cursor:"pointer"}}/>
+            </div>
+          );
+        })}
+        {Object.keys(scores).length>=2 && (
+          <div style={{marginTop:16,padding:"12px 14px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>
+              {Object.keys(scores).length===4
+                ? `Your lowest area is ${Object.entries(scores).sort(([,a],[,b])=>a-b)[0][0].toLowerCase()}. That's where your next opportunity lives.`
+                : "Rate all four to reveal your biggest opportunity."}
+            </p>
+          </div>
+        )}
+      </div>
+      <button onClick={()=>setPhase('ex4')} style={cs.cta}>Round 4: Relationship Builder →</button>
+      <button onClick={()=>setPhase('ex2')} style={{background:"none",border:"none",fontFamily:T.sans,fontSize:12,color:T2.text4,cursor:"pointer",padding:"4px 0",textAlign:"left"}}>← Back</button>
+    </div>
+  );
+
+  if (phase==='ex4') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <Progress round="ex4"/>
+      <div style={cs.card}>
+        <div style={cs.label}>Round 4 · Relationship Builder</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>Identify three people you should reconnect with this month. For each, think about what value you can provide them first — before asking for anything.</p>
+        {reconnect.map((r,i)=>(
+          <div key={i} style={{paddingBottom:i<2?16:0,marginBottom:i<2?16:0,borderBottom:i<2?"0.5px solid "+T2.divider:"none"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Person {i+1}</div>
+            <input value={r.name} onChange={e=>{const n=[...reconnect];n[i]={...n[i],name:e.target.value};setReconnect(n);}} placeholder="Name or role" className="au-input" style={{width:"100%",padding:"9px 12px",fontSize:isDesktop?14:13,marginBottom:8,boxSizing:"border-box"}}/>
+            <input value={r.value} onChange={e=>{const n=[...reconnect];n[i]={...n[i],value:e.target.value};setReconnect(n);}} placeholder="What value can you provide them first?" className="au-input" style={{width:"100%",padding:"9px 12px",fontSize:isDesktop?14:13,boxSizing:"border-box"}}/>
+          </div>
+        ))}
+        {reconnect.filter(r=>r.name.trim()).length>=2 && (
+          <div style={{marginTop:16,padding:"12px 14px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>Give before you ask. The best relationships are built through generosity, not need.</p>
+          </div>
+        )}
+      </div>
+      <button onClick={()=>setPhase('done')} style={cs.cta}>Complete the Challenge →</button>
+      <button onClick={()=>setPhase('ex3')} style={{background:"none",border:"none",fontFamily:T.sans,fontSize:12,color:T2.text4,cursor:"pointer",padding:"4px 0",textAlign:"left"}}>← Back</button>
+    </div>
+  );
+
+  if (phase==='done') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Challenge Complete</div>
+        <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Visibility Strategist</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 24px"}}>You've mapped your network, stated your ambition, audited your visibility, and identified the relationships worth building. Now make one move today.</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Exposure is not self-promotion. It's making your value visible."</p>
+      </div>
+      <button onClick={()=>setPhase('intro')} style={cs.cta}>Practise Again →</button>
+    </div>
+  );
+
+  return null;
 }
 
 // ─── D13 Simulation Widget — The Promotion Room ───────────────────────────
