@@ -505,7 +505,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           7:{Insight:"/day7-insight.jpg",Theory:"/d7-habit-loop.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           10:{Insight:"/day10-insight.jpg",Theory:"/performance-iceberg.jpg",Practice:null,Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           11:{Insight:"/d11-insight.jpg",Theory:"/d11-theory.jpg",Practice:null,Review:"/review-chair.jpg"},
-          13:{Insight:"/day13-insight.jpg",Example:"/day13-insight.jpg",Review:"/review-chair.jpg"},
+          13:{Insight:"/day13-insight.jpg",Theory:"/day13-theory.jpg",Example:"/day13-insight.jpg",Review:"/review-chair.jpg"},
           12:{Insight:"/day10-insight.jpg",Theory:"/performance-iceberg.jpg",Practice:null,Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Simulation:null,Review:"/review-chair.jpg"},
         };
