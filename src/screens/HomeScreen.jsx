@@ -148,7 +148,7 @@ finishDate + ".";
             SECTION 1: CINEMATIC HERO — Full viewport. One story. One CTA.
             ════════════════════════════════════════════════════════════════ */}
         {/* Hero — full image with dark film */}
-        <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative" }}>
+        <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative", maxHeight: "55vh", overflow: "hidden" }}>
           <img src="/home-hero-2.jpg" alt="Social Presence Framework" style={{ width: "100%", height: "auto", display: "block" }}/>
           <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.15)", pointerEvents: "none" }}/>
         </div>
