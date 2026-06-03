@@ -646,9 +646,11 @@ export function SessionLeftPanel({
       </div>
     );
     if (isD13) return (
-      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
-        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 35%, rgba(138,158,132,0.06) 0%, transparent 55%)", pointerEvents:"none" }}/>
-        <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+      <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
+        <img src="/day13-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.42)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 50%, transparent 75%)" }}/>
+        <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>The Career Multiplier</div>
           <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Performance gets you in the door. Exposure opens the next one.</p>
           <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
