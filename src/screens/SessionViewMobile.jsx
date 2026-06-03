@@ -446,8 +446,8 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           </div>
         );
-        // Simulation tab: dark cinematic panel for ALL modules
-        if(step==="Simulation"){
+        // Simulation tab: dark cinematic panel for most modules (D13/D14 handle their own)
+        if(step==="Simulation" && !isD13 && !isD14){
           const SIM_HEADERS={
             1:{label:"SPEAK CLEARLY — IN ACTION",   heading:"Clarity under pressure. This is the real test."},
             2:{label:"REAL-WORLD VOICE COACHING",   heading:"This is where voice training becomes real."},
@@ -471,8 +471,8 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           );
         }
-        // Example tab: dark cinematic text panel instead of image
-        if(step==="Example"){
+        // Example tab: dark cinematic text panel instead of image (D13/D14 use STEP_IMGS)
+        if(step==="Example" && !isD13 && !isD14){
           const EX_HEADERS={
             1:{label:"MASTERS OF CLARITY",      heading:"The simplest words carry the most weight.",                                  body:"Clear communicators don't use more words. They use better ones."},
             2:{label:"VOICE IN ACTION",          heading:"Range creates engagement. Contrast creates emotion.",                        body:"The most compelling voices are the most controlled — and the most dynamic."},
@@ -2183,7 +2183,7 @@ T.goldDark : T2.text4,
           </div>
         </>
       )}
-       {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && step==="Insight" && (
+       {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && !isD12 && !isD13 && !isD14 && step==="Insight" && (
         <>
           <div
 style={{background:T2.cardDark,borderRadius:2,padding:"26px 24px",position:"relative",overflow:"hidden"}}>
@@ -2208,8 +2208,8 @@ style={{fontSize:15,color:T2.text,lineHeight:1.7}}>{lesson.insight}</p>
           )}
         </>
       )}
-       {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && step==="Theory" && <TheoryCard day={lesson.day}/>}
-       {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && step==="Example" && (
+       {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && !isD12 && !isD13 && !isD14 && step==="Theory" && <TheoryCard day={lesson.day}/>}
+       {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && !isD12 && !isD13 && !isD14 && step==="Example" && (
         <>
           <div style={{background:"#FDF0EE",border:"1px solid #F0C5C0",borderRadius:2,padding:"16px 18px"}}>
             <div
@@ -2634,7 +2634,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <D12SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
-      {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && !isD12 && step==="Practice" && (
+      {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && !isD12 && !isD13 && !isD14 && step==="Practice" && (
         <>
           <div
 style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
@@ -2655,7 +2655,7 @@ something you can use in real life.</p>
           <CoachWidget lesson={lesson} scenario={null}/>
         </>
       )}
-       {!isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD11 && !isD12 && step==="Simulation" && (
+       {!isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD11 && !isD12 && !isD13 && !isD14 && step==="Simulation" && (
         <>
           {(()=>{
             const scenarios = roleId ? getScenariosForDay(roleId,
@@ -2999,7 +2999,7 @@ getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[selSc] ||
           <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Communication helps people understand you. Exposure helps opportunities find you."</p>
         </>
       )}
-       {step==="Review" && (
+       {!isD13 && !isD14 && step==="Review" && (
         <>
           {/* Header */}
           <div style={{padding:"28px 24px 4px"}}>
