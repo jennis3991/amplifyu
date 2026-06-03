@@ -560,18 +560,6 @@ export function SessionLeftPanel({
   if (step === "Theory") {
     const Diagram = DIAGRAMS[lesson.day - 1];
     const theoryImg = THEORY_IMAGES[lesson.theoryImageDay || lesson.day];
-    if (isD13) return (
-      <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
-        <img src="/day13-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.42)" }}/>
-        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 50%, transparent 75%)" }}/>
-        <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Science of Exposure</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(20px,1.8vw,28px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:16, maxWidth:360 }}>Why visibility shapes careers more than most people realise.</p>
-          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-        </div>
-      </div>
-    );
     // Day 5: full-width contain with blurred bg so landscape image shows completely
     if (isD5 && theoryImg && theoryImg.image) {
       return (
