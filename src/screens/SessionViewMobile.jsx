@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { T } from '../theme.js';
-import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_FIVE_PS, D9_CARDS, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES } from '../data.js';
+import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_FIVE_PS, D9_CARDS, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS, D14_EXAMPLES } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
 import { DeliveryCoachWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget } from '../modules/Day8.jsx';
@@ -15,6 +15,7 @@ import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
 import { D11PracticeWidget, D11SimWidget } from '../modules/Day11.jsx';
 import { D12PracticeWidget, D12SimWidget } from '../modules/Day12.jsx';
 import { D13PracticeWidget, D13SimWidget } from '../modules/Day13.jsx';
+import { D14PracticeWidget, D14SimWidget } from '../modules/Day14.jsx';
 import { D7SimWidget } from '../modules/Day7.jsx';
 import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
 import { Scene, OBScene } from '../scenes.jsx';
@@ -24,7 +25,7 @@ import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 
 export function MobileSessionView({
   T2, step, STEPS, idx, setIdx, lesson, isDone, onComplete, onBack,
-  isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isNT,
+  isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isD14, isNT,
   selSc, setSelSc, exitConfirm, setExitConfirm,
   accordionOpen, setAccordionOpen, savedBooks, saveBook,
   setNtStory, d9Script, setD9Script,
@@ -541,6 +542,18 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.7)"}}>Estimated time: <span style={{color:"#F5EFE6",fontWeight:600}}>3 minutes</span></span>
               </div>
+            </div>
+          </div>
+        );
+        // D14 Practice — cinematic dark panel
+        if(isD14 && step==="Practice") return (
+          <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 50% 30%, rgba(138,158,132,0.10) 0%, transparent 60%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Day 14 · Capstone</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:10}}>You are not the communicator you were 14 days ago.</p>
+              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
         );
@@ -2742,6 +2755,129 @@ getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[selSc] ||
         </>
       )}
       {/* ── D13 Mobile Steps ──────────────────────────────────────────────── */}
+      {/* ── D14 Mobile Steps ──────────────────────────────────────────────── */}
+      {isD14 && step==="Insight" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Day 14 · The Final Chapter</div>
+          <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Amplified.</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.7,fontWeight:400,marginBottom:14}}>Over the last 14 days, you've developed skills that many people spend years trying to master. Clarity. Voice. Storytelling. Presence. Brand. Exposure. These are not isolated techniques — they work together.</p>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14}}>Tap each card to explore →</p>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
+            {D14_INSIGHT_CARDS.map((n,i)=>{
+              const open=d12MobCard===("d14i"+i);
+              return (
+                <div key={i} onClick={()=>setD12MobCard(open?null:("d14i"+i))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 10px":0}}>{n.sub}</p>
+                  {open && <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
+                    {n.bullets.map((b,j)=><div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>)}
+                  </div>}
+                </div>
+              );
+            })}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Today is not about learning something new. It's about recognising how far you've come."</p>
+        </>
+      )}
+      {isD14 && step==="Theory" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science Behind Growth</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>The Competence–Confidence Loop</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,marginBottom:14}}>Many people believe confidence comes first. The reality is the opposite.</p>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:4,marginBottom:16,padding:"14px",background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border}}>
+            {["Practice","Competence","Confidence","Action","Growth"].map((s,i)=>(
+              <div key={i} style={{display:"flex",alignItems:"center",gap:4}}>
+                <span style={{padding:"6px 12px",borderRadius:20,background:"rgba(138,158,132,0.12)",border:"0.5px solid rgba(138,158,132,0.3)",fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold}}>{s}</span>
+                {i<4 && <span style={{color:"rgba(138,158,132,0.5)",fontSize:12}}>→</span>}
+              </div>
+            ))}
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
+            {[["Clarity","organising ideas"],["Storytelling","emotional connection"],["Presence","influencing perception"],["Brand & Exposure","making value visible"]].map(([mod,out],i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"12px 14px"}}>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>When you learned <strong>{mod}</strong>, you practised {out}. Confidence followed.</p>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Competence creates confidence. Confidence creates action. Action creates growth."</p>
+        </>
+      )}
+      {isD14 && step==="Example" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Examples · Day 14</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Great Communicators Are Made, Not Born</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>None of them started where they finished. The same process is available to you.</p>
+          <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:14}}>
+            {D14_EXAMPLES.map(card=>{
+              const open=d12MobCard===("d14ex"+card.id);
+              return (
+                <div key={card.id} onClick={()=>setD12MobCard(open?null:("d14ex"+card.id))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px",cursor:"pointer",transition:"border-color 0.2s"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                    <div style={{flex:1}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{card.headline}</div>
+                      <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,lineHeight:1.2}}>{card.name}</div>
+                    </div>
+                    <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  </div>
+                  {open && <div style={{marginTop:12,paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,marginBottom:12,fontWeight:300}}>{card.body}</p>
+                    <div style={{padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                      <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{card.lesson}</p>
+                    </div>
+                  </div>}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+      {isD14 && step==="Practice" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Practice · Day 14</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Your AmplifyU Reflection</h2>
+          <D14PracticeWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {isD14 && step==="Simulation" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Simulation · Day 14</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Your Communication Blueprint</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Build the personalised communication system you'll use every day from here.</p>
+          <D14SimWidget T={T} T2={T2} isDesktop={false}/>
+        </>
+      )}
+      {isD14 && step==="Review" && (
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The AmplifyU Framework</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>Everything You've Built</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
+            {[["Clarity","People understand your ideas."],["Voice","People listen to your message."],["Storytelling","People remember your message."],["Presence","People notice your message."],["Brand","People associate you with something valuable."],["Exposure","The right people know who you are."]].map(([skill,desc],i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"12px 14px",display:"flex",gap:12,alignItems:"flex-start"}}>
+                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",flexShrink:0,paddingTop:1}}>{skill}</span>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,margin:0}}>{desc}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{padding:"16px",background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.25)",marginBottom:14}}>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:"0 0 8px"}}>Together they create:</p>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+              {["Understanding","Attention","Trust","Opportunity","Impact"].map((s,i)=><span key={i} style={{padding:"4px 10px",borderRadius:20,background:"rgba(138,158,132,0.12)",border:"0.5px solid rgba(138,158,132,0.3)",fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold}}>{s}</span>)}
+            </div>
+          </div>
+          <div style={{padding:"20px",background:T2.surface,borderRadius:8,border:"0.5px solid rgba(138,158,132,0.3)",marginBottom:14}}>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,margin:"0 0 12px"}}>You showed up. You practised. You reflected. You improved.</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,margin:"0 0 12px"}}>You are not the communicator you were 14 days ago.</p>
+            <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.5,fontStyle:"italic",margin:0}}>"Every conversation from this point forward is another opportunity to practise, improve, and amplify your impact."</p>
+          </div>
+          <div style={{padding:"16px",background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.25)"}}>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:"0 0 8px",fontWeight:500}}>Keep learning. Keep practising. Keep amplifying.</p>
+            <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.5,fontStyle:"italic",margin:0}}>"Now go make your voice count."</p>
+          </div>
+        </>
+      )}
       {isD13 && step==="Insight" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Career Multiplier</div>

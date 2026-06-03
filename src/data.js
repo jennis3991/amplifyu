@@ -365,8 +365,8 @@ export const LESSONS = [
    promise:"Exposure without stated ambition is presence. Exposure with stated ambition is momentum. You now know the difference.",
    teaser:"Discover why being visible isn't enough — and how to become visible with direction so the right people know exactly where you're going and how to help you get there."},
 
-  {day:14,week:2,title:"Full Integration",tag:"Capstone",scene:"clarity",
-   quote:"Excellence is not a destination — it's a direction. And now you know exactly which one to take.",
+  {day:14,week:2,title:"Amplified",tag:"Capstone",scene:"clarity",
+   quote:"Your future will be shaped by the conversations you choose to have, the stories you choose to tell, and the clarity with which you communicate who you are.",
    insight:"You've spent 14 days building the foundations of confident, clear, commanding communication. Clarity. Structure. Story. PIE. Ambition. Brand. These are not techniques — they are who you are becoming. And they all connect: every story you tell serves your performance, your image, your exposure, and your stated ambition.",
    pieLink:"Everything: Performance + Image + Exposure + Stated Ambition, delivered with clarity, structure, and story. This is the full picture.",
    phrases:["My view is…","Let me tell you what happened…","What I'm building toward is…","What I bring that others don't is…"],
@@ -931,6 +931,30 @@ export const D12_EXAMPLES = [
     signals:["Slowed movement","Softened posture","Steady presence","Calm breathing","Grounded energy"],
     result:"Communication feels calmer, clearer, and more emotionally safe.",
     lesson:"Calm energy shapes how conversations feel." },
+];
+
+// ── D14 shared constants ──────────────────────────────────────────────────
+export const D14_INSIGHT_CARDS = [
+  { word:"You Have Built More Than Skills", sub:"Over 14 days you've practised behaviours used by some of the world's most effective communicators.",
+    bullets:["Clear thinking creates clear communication — and you've trained both.","Small improvements compound into major transformation. You have already begun."] },
+  { word:"Confidence Is Earned", sub:"Confidence does not arrive before action. It follows action, repetition, and practice.",
+    bullets:["Confidence grows from competence. Competence grows from deliberate practice.","Every session you completed was a deposit into your confidence account."] },
+  { word:"Communication Changes Careers", sub:"Every major opportunity involves communication — interviews, presentations, leadership, networking, influence.",
+    bullets:["Communication amplifies capability. The clearest voice is often the most influential.","The skills you've built don't just help you perform — they help others see your performance."] },
+  { word:"This Is Only The Beginning", sub:"The goal of AmplifyU was never perfection. The goal was momentum.",
+    bullets:["Great communicators are built through repetition, not revelation.","Every future conversation becomes an opportunity to practise, improve, and amplify your impact."] },
+];
+
+export const D14_EXAMPLES = [
+  { id:"buffett", name:"Warren Buffett", headline:"Confidence Followed Competence",
+    body:"One of the world's most successful investors was once terrified of public speaking. He realised his career would be limited if he couldn't communicate effectively. So he invested in learning. He enrolled in a Dale Carnegie course — and years later described that training as one of the most valuable investments he ever made. Not in financial terms. In career terms. In impact terms.",
+    lesson:"Confidence followed competence. It always does." },
+  { id:"nadella", name:"Satya Nadella", headline:"Small Habits Create Lasting Reputations",
+    body:"When Satya Nadella became CEO of Microsoft, he wasn't known for being the loudest leader in the room. He became known for empathy. For listening. For clarity. For curiosity. Over time, these consistent communication behaviours became part of his leadership identity — and transformed one of the world's largest companies. His communication style wasn't a strategy. It was a practice.",
+    lesson:"Small communication habits, repeated consistently, create lasting reputations." },
+  { id:"oprah", name:"Oprah Winfrey", headline:"Your Authenticity Is Your Advantage",
+    body:"Early in her career, Oprah was told she wasn't suited to television news. Instead of trying to become someone else, she leaned into who she already was — her curiosity, her empathy, her ability to make people feel genuinely heard. Those qualities became one of the strongest personal brands in the world. She didn't win by copying someone else's communication style. She won by owning hers.",
+    lesson:"Your greatest communication advantage is authenticity. You cannot be out-competed at being you." },
 ];
 
 // ── D13 shared constants ──────────────────────────────────────────────────

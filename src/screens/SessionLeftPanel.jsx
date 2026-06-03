@@ -13,7 +13,7 @@ const LP_BODY = { fontFamily: T.serif, fontStyle: "italic", color: "rgba(245,239
 
 export function SessionLeftPanel({
   T2, step, lesson, isDone,
-  isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isNT,
+  isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isD14, isNT,
   selSc, setSelSc, activeSc, scenarios, activeRole,
 }) {
   const [imgZoom, setImgZoom] = useState(false);
@@ -654,6 +654,18 @@ export function SessionLeftPanel({
           <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>The strongest communicators make people feel calm, engaged, and connected.</p>
           <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>How great communicators use gestures, stillness, and grounded energy to create presence.</p>
+        </div>
+      </div>
+    );
+    if (isD14) return (
+      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 50% 30%, rgba(138,158,132,0.1) 0%, transparent 60%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 20% 80%, rgba(200,168,76,0.06) 0%, transparent 50%)", pointerEvents:"none" }}/>
+        <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Day 14 · Capstone</div>
+          <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2.2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:380 }}>You are not the communicator you were 14 days ago.</p>
+          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>And this is only the beginning.</p>
         </div>
       </div>
     );
