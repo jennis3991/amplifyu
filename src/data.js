@@ -352,8 +352,8 @@ export const LESSONS = [
    promise:"Presence is not a personality trait. It is a set of physical habits. You are building them.",
    teaser:"Learn how gestures, posture, eye contact, and calm energy shape how every conversation you have is experienced."},
 
-  {day:13,week:2,title:"Visible Ambition",tag:"Exposure",scene:"pie",theoryImageDay:12,
-   quote:"The most powerful thing you can do is let the right people know where you're going.",
+  {day:13,week:2,title:"Exposure",tag:"Visibility",scene:"pie",theoryImageDay:12,
+   quote:"Performance gets you in the door. Exposure opens the next one.",
    insight:"Exposure is not just about being seen — it's about being understood. The most powerful form of visibility is when the people who influence your career know not just that you exist, but what you're building toward. Presence without stated ambition is just attendance.",
    pieLink:"Exposure: The career multiplier — but only when it carries your direction. Being in the right rooms and being known for going somewhere specific are two different things. You need both.",
    phrases:["My ambition is…","What I'm building toward is…","In the next 18 months, I want to be…","I'd like to be considered for…","I wanted you to know that I'm actively working toward…"],
@@ -931,6 +931,44 @@ export const D12_EXAMPLES = [
     signals:["Slowed movement","Softened posture","Steady presence","Calm breathing","Grounded energy"],
     result:"Communication feels calmer, clearer, and more emotionally safe.",
     lesson:"Calm energy shapes how conversations feel." },
+];
+
+// ── D13 shared constants ──────────────────────────────────────────────────
+export const D13_INSIGHT_CARDS = [
+  { word:"Great Work Is Not Enough", sub:"People can only reward work they can see.",
+    bullets:["Performance is the foundation. Visibility is the multiplier.","Many talented people go unnoticed because they wait for their work to speak for itself — it rarely does."] },
+  { word:"Opportunities Travel Through People", sub:"Most career-defining opportunities come from conversations, not job boards.",
+    bullets:["Networks create access. Relationships create opportunities.","The people who know your value become the doors to new possibilities."] },
+  { word:"Visibility Compounds", sub:"One introduction leads to another. One opportunity creates another.",
+    bullets:["Exposure grows exponentially — the more people who know your value, the faster opportunities find you.","Early visibility investments pay compound returns over time."] },
+  { word:"Ambition Must Be Visible", sub:"People cannot support ambitions they've never heard.",
+    bullets:["Many people have goals. Few communicate them clearly to the right people.","The right people need to know where you're going to help you get there."] },
+];
+
+export const D13_THEORY_CARDS = [
+  { word:"The PIE Model", sub:"Career success is shaped by three compounding forces.",
+    bullets:["Performance: Can you do the job? Image: How are you perceived? Exposure: Who knows what you're capable of?","Research consistently shows that visibility and relationships play a larger role in advancement than most people expect."] },
+  { word:"The Mere Exposure Effect", sub:"People naturally trust and prefer things they encounter repeatedly.",
+    bullets:["The more familiar you become, the more trusted and memorable you become.","Consistent presence builds the familiarity that creates opportunity — even before people consciously recognise it."] },
+  { word:"Weak Tie Theory", sub:"Most major opportunities come through acquaintances, not close friends.",
+    bullets:["Acquaintances connect you to new information, new networks, and new opportunities your close circle can't see.","Your next opportunity is often one conversation away — with someone you barely know."] },
+  { word:"Sponsorship vs Mentorship", sub:"Mentors advise. Sponsors advocate.",
+    bullets:["Mentors speak to you. Sponsors speak about you when you're not in the room.","Exposure helps create sponsors — people who actively open doors and put your name forward without being asked."] },
+];
+
+export const D13_EXAMPLES = [
+  { id:"hidden", name:"The Hidden Expert", headline:"Visibility Amplifies Value",
+    body:"Two employees perform equally well. One quietly delivers excellent work. The other delivers excellent work and regularly shares progress with stakeholders. The second doesn't work harder — they communicate more strategically. Opportunities, promotions, and strategic invitations go to the person whose value is visible, not just real.",
+    lesson:"Visibility amplifies value. If the right people don't know what you're capable of, your capability is invisible to opportunity." },
+  { id:"conference", name:"The Conference Conversation", headline:"Relationships Create Momentum",
+    body:"Many careers have been changed by a single introduction — one conversation at the right moment with the right person. The opportunity wasn't planned. It wasn't on a job board. It was the result of being in the room, being memorable, and being ready. Exposure creates the conditions for what looks like luck but is really preparation meeting visibility.",
+    lesson:"Relationships create momentum. Invest in them before you need them." },
+  { id:"sponsor", name:"The Internal Sponsor", headline:"Say Your Ambition Out Loud",
+    body:"An employee told a senior leader directly: 'My goal is to move into strategy within the next two years.' Months later, a new role appeared. The leader remembered. The employee was recommended. No one else had made their ambition that clear. The outcome wasn't luck — it was the direct result of one clear, courageous conversation.",
+    lesson:"People cannot support goals they don't know about. Say your ambition out loud to someone who can help." },
+  { id:"network", name:"The Network Effect", headline:"Exposure Compounds",
+    body:"Person A knows 10 people. Person B knows 100 people. Person B doesn't have ten times more opportunities — they often have exponentially more. Each relationship is a node that can route opportunities in unexpected directions. The most connected professionals aren't lucky. They invest consistently in building relationships long before they need them.",
+    lesson:"Exposure compounds. Every relationship is a potential multiplier of opportunity." },
 ];
 
  // ── D2 shared constants (used by both desktop + mobile) ───────────────────

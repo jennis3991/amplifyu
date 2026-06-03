@@ -13,7 +13,7 @@ const LP_BODY = { fontFamily: T.serif, fontStyle: "italic", color: "rgba(245,239
 
 export function SessionLeftPanel({
   T2, step, lesson, isDone,
-  isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isNT,
+  isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isNT,
   selSc, setSelSc, activeSc, scenarios, activeRole,
 }) {
   const [imgZoom, setImgZoom] = useState(false);
@@ -645,6 +645,17 @@ export function SessionLeftPanel({
         </div>
       </div>
     );
+    if (isD13) return (
+      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 35%, rgba(138,158,132,0.06) 0%, transparent 55%)", pointerEvents:"none" }}/>
+        <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>The Career Multiplier</div>
+          <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Performance gets you in the door. Exposure opens the next one.</p>
+          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>Communication creates capability. Exposure creates opportunity.</p>
+        </div>
+      </div>
+    );
     return (
       <div style={{ height: "100%", display: "flex", flexDirection: "column", background: "#131009" }}>
         <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "40px 48px", borderBottom: "1px solid rgba(255,255,255,0.06)", animation: "fadeIn 0.5s ease both" }}>
@@ -680,6 +691,17 @@ export function SessionLeftPanel({
           <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Sort the cards. Train the instinct.</p>
           <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Four scenarios. Three cards each. Identify the Point, Reason, and Example — and build the reflex to structure any answer.</p>
+        </div>
+      </div>
+    );
+    if (isD13) return (
+      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.08) 0%, transparent 55%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
+        <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Make Your Value Visible</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,1.8vw,30px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Four exercises. One goal: make your value impossible to ignore.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
     );
@@ -736,6 +758,17 @@ export function SessionLeftPanel({
         <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Prepare for the conversations that matter most.</p>
         <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
         <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Tell the AI who you're meeting and why. It generates the 10 toughest questions you're likely to face — then coaches your responses.</p>
+      </div>
+    </div>
+  );
+   if (step === "Simulation" && isD13) return (
+    <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+      <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
+      <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>The Promotion Room</div>
+        <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>You're not in the room. Find out what they're saying — and change it.</p>
+        <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+        <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Profile yourself, identify your exposure gaps, and build the strategy to make your value impossible to ignore.</p>
       </div>
     </div>
   );
