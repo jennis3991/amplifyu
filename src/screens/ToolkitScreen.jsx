@@ -117,7 +117,7 @@ p];
                   {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 4h8l5 5v9H4V4z" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3" fill="none"/><path d="M11 4v6h5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3"/><path d="M7 12h5M7 15h3" stroke="rgba(138,158,132,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>,
                    label:"Story Architect", desc:"Build powerful stories and presentations in minutes.", tags:["Presentation","Pitch","Leadership Talks"], time:8, day:8, step:"Simulation"},
                   {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3" fill="none"/><circle cx="11" cy="11" r="4" stroke="rgba(138,158,132,0.6)" strokeWidth="1.2" fill="none"/><circle cx="11" cy="11" r="1.5" fill="rgba(138,158,132,0.8)"/></svg>,
-                   label:"Leadership Hot Seat", desc:"Practice high-stakes conversations with AI feedback.", tags:["Promotion","Executive Meetings","Difficult Conversations"], time:5, day:10, step:"Simulation"},
+                   label:"Leadership Hot Seat", desc:"Practice high-stakes conversations with AI feedback.", tags:["Promotion","Executive Meetings","Difficult Conversations"], time:5, day:6, step:"Simulation"},
                 ].map((t,i)=>(
                   <div key={i} style={{background:"#0D0B08",borderRadius:10,border:"0.5px solid rgba(138,158,132,0.15)",padding:isDesktop?"28px":"22px",display:"flex",flexDirection:"column",justifyContent:"space-between",minHeight:200}}>
                     <div>
@@ -179,7 +179,7 @@ p];
                   {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 6h14a1 1 0 011 1v7a1 1 0 01-1 1h-5l-4 3v-3H5a1 1 0 01-1-1V7a1 1 0 011-1z" stroke={T2.text3} strokeWidth="1.3" fill="none"/></svg>,
                    label:"Story Sprint", desc:"Tell your story in 60 seconds.", tag:"Elevator Pitches", time:3, day:8, step:"Simulation"},
                   {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 16V8l4 4 3-6 3 5 4-3v8H4z" stroke={T2.text3} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>,
-                   label:"Executive Briefing", desc:"Explain complex ideas with clarity.", tag:"Executive Communication", time:4, day:1, step:"Simulation"},
+                   label:"Executive Briefing", desc:"Explain complex ideas with clarity.", tag:"Executive Communication", time:4, day:4, step:"Simulation"},
                 ].map((t,i)=>(
                   <div key={i} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"20px":"16px",cursor:"pointer",display:"flex",flexDirection:"column",justifyContent:"space-between",minHeight:isDesktop?160:140}} onClick={()=>launch(t.day,t.step)}>
                     <div>
@@ -232,7 +232,7 @@ p];
               {sec("Tool Paths","Guided journeys to help you achieve your goals.")}
               <div style={{marginTop:16,display:"flex",flexDirection:"column",gap:12}}>
                 {[
-                  {label:"Promotion Path",     desc:"Stand out and get noticed.",             steps:[{n:"SAR Builder",day:10,step:"Practice"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Leadership Hot Seat",day:10,step:"Simulation"}]},
+                  {label:"Promotion Path",     desc:"Stand out and get noticed.",             steps:[{n:"SAR Builder",day:10,step:"Practice"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Leadership Hot Seat",day:6,step:"Simulation"}]},
                   {label:"Presentation Path",  desc:"Deliver with confidence and impact.",    steps:[{n:"Story Architect",day:8,step:"Simulation"},{n:"Pixar Builder",day:8,step:"Practice"},{n:"Story Sprint",day:8,step:"Simulation"}]},
                   {label:"Visibility Path",    desc:"Build your brand and expand your reach.",steps:[{n:"Rapport Builder",day:9,step:"Simulation"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Clarity Check-In",day:1,step:"Simulation"}]},
                 ].map((path,i)=>(
