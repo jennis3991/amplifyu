@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
-import { D9_FIVE_PS, D9_CARDS, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, LESSONS, D9_REFINEMENTS, SESSION_STEPS, NAV_LABELS,
+import { D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, LESSONS, SESSION_STEPS, NAV_LABELS,
   D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS,
   D1_CLARITY_FACTS_DATA, D1_FEYNMAN_DATA,
   D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D7_INSIGHT_CARDS,
@@ -8,7 +8,7 @@ import { D9_FIVE_PS, D9_CARDS, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_CL
 } from '../data.js';
 import { SessionLeftPanel, ExCard } from './SessionLeftPanel.jsx';
 import { MobileSessionView } from './SessionViewMobile.jsx';
-import { DeliveryCoachWidget } from '../modules/Day9.jsx';
+import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
@@ -2242,6 +2242,135 @@ setAmbitionSaved(true); } catch {}
 
     // ── Day 9 RightContent ──────────────────────────────────────────────────
     const D9RightContent = () => {
+      const [d9CardOpen, setD9CardOpen] = useState(null);
+      const [d9ExOpen, setD9ExOpen] = useState(null);
+
+      if (step === "Insight") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Missing Skill</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>How to make people feel understood.</h2>
+          <p style={{ fontFamily:T.sans, fontSize:16, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28, maxWidth:600 }}>Most people focus on what they want to say. Great communicators focus on understanding the person in front of them.</p>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
+            {D9_INSIGHT_CARDS.map((n,i)=>{
+              const open=d9CardOpen===i;
+              return (
+                <div key={i} onClick={()=>setD9CardOpen(open?null:i)} style={{ padding:"22px 24px", background:T2.surface, borderRadius:4, border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`, cursor:"pointer", transition:"all 0.2s", boxShadow:open?"0 2px 16px rgba(138,158,132,0.15)":"none" }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:open?8:6 }}>
+                    <div style={{ fontFamily:T.serif, fontSize:19, fontWeight:600, color:T.gold, lineHeight:1.3, flex:1 }}>{n.word}</div>
+                    <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.6)", marginLeft:8, flexShrink:0 }}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, fontWeight:300, margin:open?"0 0 12px":0 }}>{n.sub}</p>
+                  {open && <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:12, display:"flex", flexDirection:"column", gap:8 }}>
+                    {n.bullets.map((b,j)=><div key={j} style={{ display:"flex", gap:8, alignItems:"flex-start" }}><div style={{ width:3, height:3, borderRadius:"50%", background:T.gold, flexShrink:0, marginTop:6 }}/><p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{b}</p></div>)}
+                  </div>}
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+            <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>"Connection is not about having the perfect thing to say. It's about creating an environment where others feel comfortable sharing theirs."</p>
+          </div>
+        </div>
+      );
+
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science of Connection</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:20 }}>Why some people make everyone feel understood</h2>
+          <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:28 }}>
+            {[
+              { word:"The Likeability Principle", body:"People are more likely to trust, support and collaborate with people they like. Likeability isn't about being entertaining — it's about making others feel respected and understood." },
+              { word:"Active Listening", body:"Active listening means giving someone your full attention. Not preparing your next answer. Not waiting for your turn. Simply listening with the goal of understanding, not responding." },
+              { word:"The Curiosity Effect", body:"People enjoy conversations where they feel interesting. Great communicators ask questions that encourage reflection, storytelling and deeper thinking." },
+              { word:"Empathy", body:"Empathy is the ability to understand another person's perspective. You don't need to agree with someone to understand them. Understanding builds connection. Connection builds trust." },
+            ].map((n,i)=>{
+              const open=d9CardOpen===("t"+i);
+              return (
+                <div key={i} onClick={()=>setD9CardOpen(open?null:("t"+i))} style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`, cursor:"pointer", transition:"all 0.2s" }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:open?8:0 }}>
+                    <div style={{ fontFamily:T.serif, fontSize:19, fontWeight:600, color:T.gold, lineHeight:1.3, flex:1 }}>{n.word}</div>
+                    <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.6)", marginLeft:8 }}>{open?"▴":"▸"}</span>
+                  </div>
+                  {open && <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{n.body}</p>}
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:16 }}>The Four Communication Styles</div>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, marginBottom:16, fontWeight:300 }}>Different people value different things. The strongest communicators adapt — not because they're being fake, but because they're being effective.</p>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:24 }}>
+            {D9_COMM_STYLES.map((s,i)=>(
+              <div key={i} style={{ padding:"18px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
+                <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:700, color:s.colour, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8 }}>{s.label}</div>
+                <div style={{ marginBottom:10 }}>
+                  <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T2.text4, textTransform:"uppercase", letterSpacing:"1px", marginBottom:4 }}>Values</div>
+                  {s.values.map((v,j)=><span key={j} style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, display:"block", lineHeight:1.6 }}>{v}</span>)}
+                </div>
+                <div>
+                  <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T2.text4, textTransform:"uppercase", letterSpacing:"1px", marginBottom:4 }}>Connect through</div>
+                  {s.connect.map((v,j)=><span key={j} style={{ fontFamily:T.sans, fontSize:12, color:T.gold, display:"block", lineHeight:1.6 }}>{v}</span>)}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ padding:"16px 20px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+            <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T.gold, margin:0, lineHeight:1.6 }}>"Speak to people the way they need to be spoken to, not the way you prefer to communicate."</p>
+          </div>
+        </div>
+      );
+
+      if (step === "Example") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:8 }}>Connection in Action</h2>
+          <p style={{ fontFamily:T.sans, fontSize:16, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28, maxWidth:600 }}>Four stories. One truth: the most connected people listen more than they speak.</p>
+          <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+            {D9_EXAMPLES.map(card=>{
+              const open=d9ExOpen===card.id;
+              return (
+                <div key={card.id} style={{ background:T2.surface, borderRadius:8, border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`, overflow:"hidden", transition:"all 0.2s" }}>
+                  <button onClick={()=>setD9ExOpen(open?null:card.id)} style={{ width:"100%", padding:"24px 28px", display:"flex", alignItems:"center", justifyContent:"space-between", border:"none", background:"transparent", cursor:"pointer", textAlign:"left" }}>
+                    <div>
+                      <h3 style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, marginBottom:4, lineHeight:1.1 }}>{card.name}</h3>
+                      <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px" }}>{card.headline}</div>
+                    </div>
+                    <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0, marginLeft:20 }}>
+                      <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, fontWeight:300 }}>{open?"Close":"Read more"}</span>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform:open?"rotate(180deg)":"none", transition:"transform 0.2s" }}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                  </button>
+                  {open && <div style={{ padding:"0 28px 24px", borderTop:"0.5px solid "+T2.border }}>
+                    <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.75, fontWeight:300, margin:"20px 0 16px" }}>{card.body}</p>
+                    <div style={{ padding:"14px 18px", background:T2.bg, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
+                      <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.6, margin:0 }}>{card.lesson}</p>
+                    </div>
+                  </div>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+
+      if (step === "Practice") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:28 }}>Build Your Connection Habits</h2>
+          <D9PracticeWidget T={T} T2={T2} isDesktop={true}/>
+        </div>
+      );
+
+      if (step === "Simulation") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:12 }}>The Rapport Builder</h2>
+          <p style={{ fontFamily:T.sans, fontSize:17, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:600 }}>Four conversations. Four personalities. Adapt your style and build genuine rapport.</p>
+          <D9SimWidget T={T} T2={T2} isDesktop={true}/>
+        </div>
+      );
+
+      return null;
+    };
+    // ── end D9RightContent ──
+    const _D9_OLD_REMOVED = null;
+    if (false) {
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
           <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>Delivery Masterclass</div>
@@ -2475,8 +2604,8 @@ setAmbitionSaved(true); } catch {}
         );
       }
 
-      return null;
-    };
+    }
+    // ── end removed D9 old content ──
 
     const D2RightContent = () => {
       const [d2InsightOpen, setD2InsightOpen] = useState(null);

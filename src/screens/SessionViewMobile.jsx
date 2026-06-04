@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 import { T } from '../theme.js';
-import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_FIVE_PS, D9_CARDS, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS, D14_EXAMPLES } from '../data.js';
+import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS, D14_EXAMPLES } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
-import { DeliveryCoachWidget } from '../modules/Day9.jsx';
+import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
@@ -1921,70 +1921,111 @@ T.goldDark : T2.text4,
         </>
       )}
        {/* ── D9 (Day 9) Mobile Steps ─────────────────────────────────────── */}
+      {/* ── D9 Connection Mobile Steps ─────────────────────────────────── */}
       {isD9 && step==="Insight" && (
         <>
-          <div style={{background:T2.cardDark,borderRadius:2,padding:"20px"}}>
-            <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:"rgba(255,255,255,0.88)",lineHeight:1.5,margin:0}}>It's not what you say — it's how you say it. Great content delivered poorly is forgotten. Simple content delivered powerfully is remembered.</p>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Missing Skill</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>How to make people feel understood.</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Most people focus on what they want to say. Great communicators focus on understanding the person in front of them.</p>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14}}>Tap each card to explore →</p>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>
+            {D9_INSIGHT_CARDS.map((n,i)=>{
+              const open=d9OpenCard===("d9i"+i);
+              return (
+                <div key={i} onClick={()=>setD9OpenCard(open?null:("d9i"+i))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  </div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 10px":0}}>{n.sub}</p>
+                  {open && <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
+                    {n.bullets.map((b,j)=><div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>)}
+                  </div>}
+                </div>
+              );
+            })}
           </div>
-          <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-            <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The Delivery Contrast</div>
-            <div style={{padding:"10px 12px",background:"rgba(139,74,56,0.06)",borderRadius:3,borderLeft:"2px solid rgba(139,74,56,0.3)",marginBottom:8}}>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,margin:0}}>One rushes. No pauses. Monotone. Eyes down.</p>
-            </div>
-            <div style={{padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,margin:0}}>One slows down. Strategic pauses. Vocal variation. Eye contact.</p>
-            </div>
-          </div>
+          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Connection is not about having the perfect thing to say. It's about creating an environment where others feel comfortable sharing theirs."</p>
         </>
       )}
       {isD9 && step==="Theory" && (
-        <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-          <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>The 5 Ps of Powerful Delivery</div>
-          {D9_FIVE_PS.map((p,i) => (
-            <div key={i} style={{marginBottom:i<4?14:0,paddingBottom:i<4?14:0,borderBottom:i<4?"0.5px solid "+T2.divider:"none"}}>
-              <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4}}>
-                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,letterSpacing:"0.15em",textTransform:"uppercase"}}>{p.p}</span>
-                <span style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text}}>{p.heading}</span>
+        <>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why some people make everyone feel understood</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
+            {[
+              {word:"The Likeability Principle", body:"People trust, support and collaborate more with people they like. Likeability is about making others feel respected and understood."},
+              {word:"Active Listening", body:"Give someone your full attention. Not preparing your reply. Not waiting your turn. Simply listening with the goal of understanding."},
+              {word:"The Curiosity Effect", body:"People enjoy conversations where they feel interesting. Ask questions that encourage reflection, storytelling and deeper thinking."},
+              {word:"Empathy", body:"Understand another person's perspective. You don't need to agree to understand. Understanding builds connection. Connection builds trust."},
+            ].map((n,i)=>{
+              const open=d9OpenCard===("d9t"+i);
+              return (
+                <div key={i} onClick={()=>setD9OpenCard(open?null:("d9t"+i))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:0}}>
+                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
+                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  </div>
+                  {open && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>}
+                </div>
+              );
+            })}
+          </div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Four Communication Styles</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:12}}>
+            {D9_COMM_STYLES.map((s,i)=>(
+              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"12px"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:s.colour,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>{s.label}</div>
+                <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,marginBottom:4}}>{s.values.join(" · ")}</div>
+                <div style={{fontFamily:T.sans,fontSize:11,color:T.gold,lineHeight:1.5}}>{s.connect.join(" · ")}</div>
               </div>
-              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:0}}>{p.body}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Speak to people the way they need to be spoken to, not the way you prefer to communicate."</p>
+        </>
       )}
       {isD9 && step==="Example" && (
-        <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-          <div style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Delivery Masters</div>
-          {[{name:"Brené Brown",lesson:"She doesn't perform. She connects. Pauses let the emotion land. Conversational tone = immediate trust."},
-            {name:"Simon Sinek",lesson:"He slows down on the big idea. Repetition builds rhythm. He lets the audience finish the thought."},
-            {name:"Amy Cuddy",lesson:"Her body tells the story before she speaks. The pause after 'BECOME it' is everything."},
-            {name:"Steve Jobs",lesson:"Strategic pauses build anticipation. Precision in language = clarity in impact."}].map((ex,i)=>(
-            <div key={i} style={{marginBottom:i<3?14:0,paddingBottom:i<3?14:0,borderBottom:i<3?"0.5px solid "+T2.divider:"none"}}>
-              <div style={{fontSize:12,fontWeight:600,color:T.goldDark,marginBottom:4}}>{ex.name}</div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,margin:0}}>{ex.lesson}</p>
-            </div>
-          ))}
-        </div>
+        <>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Example · Day 9</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Connection in Action</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Four stories. One truth: the most connected people listen more than they speak.</p>
+          <div style={{display:"flex",flexDirection:"column",gap:12}}>
+            {D9_EXAMPLES.map(card=>{
+              const open=d9OpenCard===("d9ex"+card.id);
+              return (
+                <div key={card.id} onClick={()=>setD9OpenCard(open?null:("d9ex"+card.id))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px",cursor:"pointer",transition:"border-color 0.2s"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                    <div style={{flex:1}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{card.headline}</div>
+                      <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,lineHeight:1.2}}>{card.name}</div>
+                    </div>
+                    <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  </div>
+                  {open && <div style={{marginTop:12,paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>{card.body}</p>
+                    <div style={{padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                      <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{card.lesson}</p>
+                    </div>
+                  </div>}
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
       {isD9 && step==="Practice" && (
-        <div style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-          <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>AI Delivery Coach</div>
-          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text2,lineHeight:1.7,marginBottom:16}}>Your Day 8 story loads automatically. Work through 5 delivery refinements.</p>
-          <DeliveryCoachWidget onSave={s => { setD9Script(s); try { localStorage.setItem("au1_d9_script",s); } catch(_){} }}/>
-        </div>
+        <>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Practice · Day 9</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Build Your Connection Habits</h2>
+          <D9PracticeWidget T={T} T2={T2} isDesktop={false}/>
+        </>
       )}
       {isD9 && step==="Simulation" && (
         <>
-          {d9Script ? (
-            <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px",borderLeft:"2px solid "+T.gold}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Your Delivery Script</div>
-              <p style={{fontFamily:T.serif,fontSize:13,color:T2.text,lineHeight:1.75,margin:0,whiteSpace:"pre-wrap"}}>{d9Script}</p>
-            </div>
-          ) : (
-            <div style={{background:T2.surface,borderRadius:2,padding:"14px 16px"}}>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontStyle:"italic",margin:0}}>Go back to Practice to prepare your delivery script first.</p>
-            </div>
-          )}
-          <Timer totalSecs={180} label="Deliver your story — 3 minutes"/>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Simulation · Day 9</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Rapport Builder</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Four conversations. Four personalities. Adapt your style and build genuine rapport.</p>
+          <D9SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
        {/* ── Generic steps (all other days) ─────────────────────────────── */}

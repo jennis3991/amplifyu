@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { T } from '../theme.js';
-import { D9_FIVE_PS, D9_CARDS, D9_REFINEMENTS } from '../data.js';
+import { D9_COMM_STYLES } from '../data.js';
 import { D_NT, D_D9, DIAGRAMS } from '../diagrams.jsx';
 import { Scene } from '../scenes.jsx';
 import { THEORY_IMAGES } from '../images.js';
@@ -460,21 +460,21 @@ export function SessionLeftPanel({
         <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="voice" height={900} day={lesson.day}/></div>
         {d9Overlay}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
-          <div style={{ marginBottom:16 }}>
-            {d9Label("The Performance")}
-            
-          </div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(26px,2.3vw,38px)", maxWidth:360, marginBottom:20 }}>You've built a great story. Now learn how the world's best speakers deliver it.</p>
+          {d9Label("The Missing Skill")}
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2.2vw,36px)", maxWidth:380, marginBottom:20, lineHeight:1.2 }}>How to make people feel understood.</p>
           <div style={{ width:32, height:1, background:T.gold, opacity:0.45 }}/>
         </div>
       </div>
     );
     if (step === "Theory") return (
-      <div style={{ background:"#131009", height:"100%", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", padding:"40px 36px", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", top:-60, left:-60, width:360, height:360, background:"radial-gradient(ellipse, rgba(183,154,107,0.07) 0%, transparent 60%)", pointerEvents:"none" }}/>
-        <div style={{ ...LP_LABEL, fontSize:13, color:"#F5EFE6", marginBottom:24, alignSelf:"flex-start", animation:"fadeDown 0.6s ease both" }}>The 5 Elements</div>
-        <div style={{ animation:"fadeIn 0.8s ease 0.1s both", opacity:0 }}><D_D9/></div>
-        <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:"rgba(245,239,230,0.5)", marginTop:24, textAlign:"center" }}>Pace · Pause · Presence · Projection · Precision</p>
+      <div style={d9Dark}>
+        <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="voice" height={900} day={lesson.day}/></div>
+        {d9Overlay}
+        <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+          {d9Label("The Science of Connection")}
+          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2, marginBottom:16 }}>Speak to people the way they need to be spoken to.</p>
+          <div style={{ width:32, height:1, background:T.gold, opacity:0.45 }}/>
+        </div>
       </div>
     );
     if (step === "Example") return (
@@ -482,27 +482,19 @@ export function SessionLeftPanel({
         <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="voice" height={900} day={lesson.day}/></div>
         {d9Overlay}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          {d9Label("Delivery Masters")}
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2 }}>The best speakers in the world share one thing: they make you feel, not just hear.</p>
+          {d9Label("Connection in Action")}
+          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2 }}>The most connected people listen more than they speak.</p>
         </div>
       </div>
     );
     if (step === "Practice") return (
-      <div style={{ position:"relative", height:"100%", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
-        <img src="/practice-bg.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.62)" }}/>
-        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.98) 0%, transparent 60%)" }}/>
-        <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          {d9Label("Delivery Preparation")}
-          <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2, marginBottom:20 }}>Take your story and prepare it for performance.</p>
-          <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
-            {D9_REFINEMENTS.map((r,i) => (
-              <div key={i} style={{ display:"flex", alignItems:"center", gap:10 }}>
-                <span style={{ fontSize:12 }}>{r.icon}</span>
-                <span style={{ fontFamily:T.sans, fontSize:11, color:"rgba(245,239,230,0.55)" }}>{r.title}</span>
-              </div>
-            ))}
-          </div>
+      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.08) 0%, transparent 55%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
+        <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+          {d9Label("Build Your Connection Habits")}
+          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,1.8vw,30px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Five exercises. Build the habits of the world's most connected communicators.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
     );

@@ -2,7 +2,42 @@
 // No JSX, no React imports required.
 // Imported by App.jsx and session modules.
 
-// ─── DAY 9 MAKING A STORY LAND — delivery constants
+// ─── DAY 9 CONNECTION — constants
+export const D9_INSIGHT_CARDS = [
+  { word:"People Remember How You Make Them Feel", sub:"Long after a conversation ends, people rarely remember every word. They remember how they felt.",
+    bullets:["Connection creates emotional memory — feelings outlast facts.","Relationships grow when people feel understood, not just heard."] },
+  { word:"Listening Is a Competitive Advantage", sub:"Most people listen to reply. Few listen to understand.",
+    bullets:["Active listening builds trust faster than talking ever can.","People feel valued when they feel truly heard — not just acknowledged."] },
+  { word:"Great Questions Create Great Conversations", sub:"The quality of a conversation is often determined by the quality of the questions.",
+    bullets:["Curiosity creates connection. People feel interesting when someone is genuinely interested.","Questions reveal what matters most — and that's where real rapport lives."] },
+  { word:"Empathy Builds Trust", sub:"People trust those who understand their perspective — even when they disagree.",
+    bullets:["Understanding comes before influence. You cannot move someone you don't understand.","Empathy is not agreement. It's the willingness to see the world through another person's eyes."] },
+];
+
+export const D9_COMM_STYLES = [
+  { id:"driver",   label:"The Driver",    values:["Results","Action","Speed"],         connect:["Brevity","Directness","Outcomes"],          colour:"rgba(180,80,60,0.8)" },
+  { id:"thinker",  label:"The Thinker",   values:["Logic","Detail","Accuracy"],        connect:["Facts","Reasoning","Preparation"],          colour:"rgba(80,120,180,0.8)" },
+  { id:"connector",label:"The Connector", values:["Relationships","Teamwork","Warmth"],connect:["Empathy","Shared experiences","Stories"],   colour:"rgba(138,158,132,0.9)" },
+  { id:"visionary",label:"The Visionary", values:["Possibility","Innovation","Ideas"],  connect:["Future thinking","Creativity","Opportunity"],colour:"rgba(180,140,60,0.8)" },
+];
+
+export const D9_EXAMPLES = [
+  { id:"salesperson", name:"The Best Salesperson", headline:"People Buy From People Who Understand Them",
+    body:"The highest-performing salesperson in a company wasn't the most persuasive. She spent more time listening than speaking. She asked about challenges before recommending solutions. She understood what customers actually needed — not what she assumed they needed. Customers felt understood. They trusted her. Her numbers reflected it.",
+    lesson:"People buy from people who understand them. The same is true of influence, leadership, and every professional relationship." },
+  { id:"oprah", name:"Oprah's Superpower", headline:"Connection Begins With Attention",
+    body:"One reason Oprah became such a powerful communicator wasn't because she talked brilliantly. It was because she listened brilliantly. Guests felt genuinely heard — often for the first time. Her questions weren't prepared traps. They were authentic curiosity. She wasn't waiting for her turn to speak. She was fully present. That presence created some of the most powerful conversations in broadcast history.",
+    lesson:"Connection begins with attention. Full, genuine, unhurried attention is one of the rarest gifts you can give another person." },
+  { id:"ceo", name:"The CEO Who Asked Better Questions", headline:"Curiosity Is Often More Powerful Than Expertise",
+    body:"A CEO entered meetings with one goal: not to impress people, but to learn from them. Instead of giving answers, he asked — 'What am I missing?' The quality of conversations improved dramatically. His teams felt respected. They shared more honestly. Better decisions followed. His reputation for curiosity became one of his most powerful leadership tools.",
+    lesson:"Curiosity is often more powerful than expertise. The question that opens a room is worth more than the answer that closes it." },
+  { id:"networking", name:"The Networking Event", headline:"People Enjoy Talking to People Who Are Interested in Them",
+    body:"Two people attend the same networking event. One talks about themselves all evening — their achievements, their company, their plans. One asks thoughtful questions, listens carefully, and makes people feel like the most interesting person in the room. At the end of the night, everyone remembers the second person — even though they said far less. They left feeling good about themselves. And that feeling becomes associated with who they met.",
+    lesson:"People enjoy talking to people who are interested in them. Interest is magnetic. It is one of the most underrated tools in professional communication." },
+];
+
+// ─── DAY 9 MAKING A STORY LAND — legacy delivery constants (retained for compatibility)
+
 export const D9_FIVE_PS = [
   { p:"Pace", heading:"Slow Down to Speed Up", body:"Most people speak too fast when nervous. Great speakers do the opposite — they slow down and give ideas space to breathe.", quote:'"If you want people to remember it, slow down when you say it." — Carmine Gallo' },
   { p:"Pause", heading:"Silence Is Your Superpower", body:"The pause before the reveal. The beat after a powerful statement. The moment where you let the audience catch up. Amateur speakers fear silence. Masters use it intentionally.", quote:null },
@@ -302,18 +337,18 @@ export const LESSONS = [
    promise:"You now have a framework that turns your experience into influence. Use it in your very next meeting.",
    teaser:"Learn the exact 6-beat storytelling framework used by the world's most compelling communicators — and build your own story with AI coaching."},
 
-  {day:9,week:2,title:"Making a Story Land",tag:"Delivery",scene:"voice",
-   quote:"You've built a great story. Now learn how the world's best speakers deliver it.",
-   insight:"It's not what you say — it's how you say it. Great content delivered poorly is forgotten. Simple content delivered powerfully is remembered. This module teaches you how world-class speakers deliver with confidence.",
-   pieLink:"Image: How you deliver creates your professional image as much as what you say. Delivery is the difference between being heard and being remembered.",
-   phrases:["[PAUSE] Let me say that again…","I want to slow down here because this matters…","The key moment was when…"],
-   bad:"We had some issues with the project that we were able to resolve after some time.",
-   good:"Tuesday morning at 9am, everything stopped. [PAUSE] Six hours later, we had solved what no one thought was solvable.",
-   practice:"Take your story from the previous session and prepare it for performance. Mark your pauses. Slow down your big ideas. Replace vague language with precise details.",
-   scenarios:["Delivering your story to a senior leadership team","A high-stakes client pitch","A TED-style conference talk"],
-   review:["I practiced all 5 elements of delivery: Pace, Pause, Presence, Projection, Precision","I studied how world-class speakers deliver with impact","I prepared and rehearsed my story for confident performance"],
-   promise:"You know how to build a story. You know how to deliver it. Now you can command any room.",
-   teaser:"Learn the 5 elements of powerful delivery used by Brené Brown, Simon Sinek, Amy Cuddy, and Steve Jobs."},
+  {day:9,week:2,title:"Connection",tag:"Rapport",scene:"voice",
+   quote:"People may forget what you said. They rarely forget how you made them feel.",
+   insight:"The strongest relationships are not built through charisma. They're built through understanding. People are drawn to those who make them feel heard, who ask thoughtful questions, who listen with genuine curiosity.",
+   pieLink:"Image: How you make people feel shapes how they perceive you. Connection creates the emotional memory that builds lasting professional relationships.",
+   phrases:["What's the most interesting thing you're working on right now?","What am I missing here?","That's interesting — tell me more about that."],
+   bad:"Talking about yourself all evening at a networking event.",
+   good:"Asking thoughtful questions and leaving people feeling genuinely understood.",
+   practice:"In your next conversation, listen 70% and speak 30%. Observe what changes.",
+   scenarios:["A networking event where you want to build meaningful connections","A first meeting with a new stakeholder or senior leader","A team meeting where you want to create a stronger connection"],
+   review:["Did I listen more than I spoke?","Did I ask at least one question that opened a genuine conversation?","Did I adapt my communication style to the person I was talking to?"],
+   promise:"The ability to make people feel understood is one of the rarest and most valuable skills in professional life. You now know how to build it.",
+   teaser:"Discover how the world's most connected professionals build trust, rapport, and influence — through curiosity, empathy, and the art of making people feel heard."},
 
   {day:10,week:2,title:"Performance",tag:"Impact",scene:"pie",theoryImageDay:11,
    quote:"Great work does not automatically create visibility.",
