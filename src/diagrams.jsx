@@ -726,8 +726,8 @@ export const DIAGRAMS =
 export const MODULE_ICONS = [
   // 1 Speak Simply — ballpoint pen (barrel + nib + band)
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M8 21L21 8" stroke={S} strokeWidth="1.5" strokeLinecap="butt"/><path d="M10 23L23 10" stroke={S} strokeWidth="1.5" strokeLinecap="butt"/><path d="M21 8L23 10" {...SI}/><path d="M8 21L5 25L10 23Z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/><path d="M12.5 18.5L14.5 16.5" {...SI}/></svg>,
-  // 2 Slow Down — speech bubble with calm lines
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M5 7a2 2 0 012-2h14a2 2 0 012 2v9a2 2 0 01-2 2H10l-4 4V18H7a2 2 0 01-2-2V7z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/><path d="M9 11h10M9 14.5h7" {...SI}/></svg>,
+  // 2 Voice Control — microphone
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="10.5" y="4" width="7" height="12" rx="3.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M7 14a7 7 0 0014 0" {...SI}/><path d="M14 21v4M11 25h6" {...SI}/></svg>,
   // 3 Eliminate Fillers — scissors (two handle rings, blades crossing to tip)
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="6" cy="7" r="3.5" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="6" cy="21" r="3.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M9.5 7L25 22" {...SI}/><path d="M9.5 21L25 6" {...SI}/></svg>,
   // 4 Short Sentences — A4 page with short lines of text
@@ -748,10 +748,10 @@ export const MODULE_ICONS = [
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3l11 11-11 11L3 14 14 3z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/></svg>,
   // 12 Networking — three dots connected
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="5.5" r="2.5" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="5" cy="22.5" r="2.5" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="23" cy="22.5" r="2.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M12.5 8L7 20M15.5 8L21 20M7.5 22.5h13" {...SI}/></svg>,
-  // 13 Leadership Voice — microphone
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="10.5" y="4" width="7" height="12" rx="3.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M7 14a7 7 0 0014 0" {...SI}/><path d="M14 21v4M11 25h6" {...SI}/></svg>,
-  // 14 High Stakes Moments — flame
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 24c-5 0-8-4-8-8 0-4 3-7 4-8-1 4 2 5 3 5 0-4 2-8 5-10 0 4 3 5 3 8 1-1 1-3 1-4 2 2 3 5 3 8 0 4-5 9-11 9z" {...SI}/></svg>,
+  // 13 Exposure — spotlight / broadcast signal
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="22.5" r="1.8" stroke={S} strokeWidth="1.5" fill="none"/><path d="M9 17.5a7.07 7.07 0 0110 0" {...SI}/><path d="M5 13a13 13 0 0118 0" {...SI}/></svg>,
+  // 14 Amplified — graduation cap (programme completion)
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 8L3 13l11 5 11-5-11-5z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/><path d="M7.5 15.5V20c0 0 3 3 6.5 3s6.5-3 6.5-3v-4.5" {...SI}/><path d="M25 13v5" {...SI}/></svg>,
 ];
 
 
