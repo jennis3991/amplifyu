@@ -533,6 +533,14 @@ export function SessionLeftPanel({
         <img src="/d11-insight.jpg" alt=""
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}
         />
+      ) : isD13 ? (
+        <img src="/day13-insight.jpg" alt=""
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
+        />
+      ) : isD14 ? (
+        <img src="/day14-insight.jpg" alt=""
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 35%" }}
+        />
       ) : (
         <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
           <Scene name={lesson.scene} height={900} day={lesson.day}/>
