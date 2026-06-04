@@ -147,10 +147,10 @@ finishDate + ".";
         {/* ════════════════════════════════════════════════════════════════
             SECTION 1: CINEMATIC HERO — Full viewport. One story. One CTA.
             ════════════════════════════════════════════════════════════════ */}
-        {/* Hero — full image with dark film */}
-        <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative", maxHeight: "55vh", overflow: "hidden" }}>
-          <img src="/home-hero-2.jpg" alt="Social Presence Framework" style={{ width: "100%", height: "auto", display: "block" }}/>
-          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.15)", pointerEvents: "none" }}/>
+        {/* Hero — full image, contain so all pieces visible */}
+        <div style={{ marginTop: NAV_H, background: "#EDE5D8", position: "relative", maxHeight: "58vh", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <img src="/home-hero-2.jpg" alt="Social Presence Framework" style={{ width: "100%", height: "100%", objectFit: "contain", maxHeight: "58vh", display: "block" }}/>
+          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.08)", pointerEvents: "none" }}/>
         </div>
 
         {/* Static CTA bar — directly below hero, in document flow */}
