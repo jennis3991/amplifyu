@@ -224,18 +224,15 @@ p];
               {sec("Tool Paths","Guided journeys to help you achieve your goals.")}
               <div style={{marginTop:16,display:"flex",flexDirection:"column",gap:12}}>
                 {[
-                  {label:"Promotion Path",     desc:"Stand out and get noticed.",             icon:"🏆", steps:[{n:"SAR Builder",day:10,step:"Practice"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Leadership Hot Seat",day:10,step:"Simulation"}]},
-                  {label:"Presentation Path",  desc:"Deliver with confidence and impact.",    icon:"🎙️", steps:[{n:"Story Architect",day:8,step:"Simulation"},{n:"Pixar Builder",day:8,step:"Practice"},{n:"Story Sprint",day:8,step:"Simulation"}]},
-                  {label:"Visibility Path",    desc:"Build your brand and expand your reach.",icon:"🚀", steps:[{n:"Rapport Builder",day:9,step:"Simulation"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Clarity Check-In",day:1,step:"Simulation"}]},
+                  {label:"Promotion Path",     desc:"Stand out and get noticed.",             steps:[{n:"SAR Builder",day:10,step:"Practice"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Leadership Hot Seat",day:10,step:"Simulation"}]},
+                  {label:"Presentation Path",  desc:"Deliver with confidence and impact.",    steps:[{n:"Story Architect",day:8,step:"Simulation"},{n:"Pixar Builder",day:8,step:"Practice"},{n:"Story Sprint",day:8,step:"Simulation"}]},
+                  {label:"Visibility Path",    desc:"Build your brand and expand your reach.",steps:[{n:"Rapport Builder",day:9,step:"Simulation"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Clarity Check-In",day:1,step:"Simulation"}]},
                 ].map((path,i)=>(
                   <div key={i} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 28px":"18px 20px"}}>
                     <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:16,marginBottom:16}}>
-                      <div style={{display:"flex",alignItems:"center",gap:12}}>
-                        <span style={{fontSize:22}}>{path.icon}</span>
-                        <div>
-                          <div style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:700,color:T2.text,marginBottom:2}}>{path.label}</div>
-                          <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,fontWeight:300}}>{path.desc}</div>
-                        </div>
+                      <div>
+                        <div style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:700,color:T2.text,marginBottom:2}}>{path.label}</div>
+                        <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,fontWeight:300}}>{path.desc}</div>
                       </div>
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:0,marginBottom:16,flexWrap:"wrap",gap:4}}>
