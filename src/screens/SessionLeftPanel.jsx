@@ -533,6 +533,10 @@ export function SessionLeftPanel({
         <img src="/d11-insight.jpg" alt=""
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}
         />
+      ) : isD12 ? (
+        <img src="/day12-insight.jpg" alt=""
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}
+        />
       ) : isD13 ? (
         <img src="/day13-insight.jpg" alt=""
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
