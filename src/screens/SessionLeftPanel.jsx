@@ -785,6 +785,17 @@ export function SessionLeftPanel({
         </div>
       </div>
     );
+    if (isD6) return (
+      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
+        <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Composure Challenge</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,1.8vw,30px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Stay calm. Stay clear. The strongest communicator in the room is the calmest.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+        </div>
+      </div>
+    );
     return (
       <div style={{ position: "relative", height: "100%", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
         <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.65)" }}/>

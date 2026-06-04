@@ -547,6 +547,30 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           </div>
         );
+        // D6 Practice — cinematic dark panel
+        if(isD6 && step==="Practice") return (
+          <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Composure Challenge</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Stay calm. Stay clear. The strongest communicator in the room is the calmest.</p>
+              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
+            </div>
+          </div>
+        );
+        // D9 Practice — cinematic dark panel
+        if(isD9 && step==="Practice") return (
+          <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Build Your Connection Habits</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Five exercises. Build the habits of the world's most connected communicators.</p>
+              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
+            </div>
+          </div>
+        );
         // D6 Simulation — cinematic dark panel
         if(isD6 && step==="Simulation") return (
           <div style={{width:"100%",height:260,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
