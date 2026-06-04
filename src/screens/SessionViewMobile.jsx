@@ -547,6 +547,17 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           </div>
         );
+        // D14 Example — cinematic dark panel
+        if(isD14 && step==="Example") return (
+          <div style={{width:"100%",height:260,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Great Communicators Are Made</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>None of them started where they finished. The same process is available to you.</p>
+              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
+            </div>
+          </div>
+        );
         // D14 Simulation — cinematic dark panel
         if(isD14 && step==="Simulation") return (
           <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
