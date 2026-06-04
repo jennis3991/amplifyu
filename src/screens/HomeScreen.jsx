@@ -147,9 +147,9 @@ finishDate + ".";
         {/* ════════════════════════════════════════════════════════════════
             SECTION 1: CINEMATIC HERO — Full viewport. One story. One CTA.
             ════════════════════════════════════════════════════════════════ */}
-        {/* Hero — full-width at natural aspect ratio, no cropping */}
-        <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative" }}>
-          <img src="/home-hero-2.jpg" alt="Social Presence Framework" style={{ width: "100%", height: "auto", display: "block" }}/>
+        {/* Hero — full-width, top space trimmed */}
+        <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative", overflow: "hidden" }}>
+          <img src="/home-hero-2.jpg" alt="Social Presence Framework" style={{ width: "100%", height: "auto", display: "block", marginTop: "-6%" }}/>
           <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.10)", pointerEvents: "none" }}/>
         </div>
 
