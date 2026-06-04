@@ -552,6 +552,12 @@ export function SessionLeftPanel({
   if (step === "Theory") {
     const Diagram = DIAGRAMS[lesson.day - 1];
     const theoryImg = THEORY_IMAGES[lesson.theoryImageDay || lesson.day];
+    if (isD14) return (
+      <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
+        <img src="/day14-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.15)" }}/>
+      </div>
+    );
     if (isD13) return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
         <img src="/day13-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
