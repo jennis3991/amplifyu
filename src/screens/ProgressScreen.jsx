@@ -22,23 +22,25 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}}>
       {!isDesktop && (
-        <div style={{position:"relative",height:220,overflow:"hidden"}}>
-          <img src="/progress-hero.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 55%",display:"block"}}/>
-          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.75) 0%,transparent 55%)"}}/>
-          <div style={{position:"absolute",bottom:20,left:24}}>
-            <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:6,fontFamily:T.sans}}>Your Journey</div>
-            <h1 style={{fontFamily:T.serif,fontSize:28,fontWeight:700,color:"white",letterSpacing:"-0.5px",lineHeight:1.1}}>Your Progress</h1>
+        <div style={{position:"relative",height:260,overflow:"hidden"}}>
+          <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
+          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.35)"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.78) 0%,rgba(10,8,5,0.2) 50%,transparent 100%)"}}/>
+          <div style={{position:"absolute",bottom:24,left:24}}>
+            <div style={{fontSize:10,fontWeight:600,color:"rgba(245,239,230,0.55)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:8,fontFamily:T.sans}}>Your Journey</div>
+            <h1 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:"#F5EFE6",letterSpacing:"-0.5px",lineHeight:1.1}}>Your Progress</h1>
           </div>
         </div>
       )}
       {isDesktop && (
-        <div style={{position:"relative",height:320,overflow:"hidden",borderBottom:"1px solid "+T2.divider}}>
-          <img src="/progress-hero.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 55%",display:"block"}}/>
-          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.72) 0%,rgba(10,8,5,0.1) 60%,transparent 100%)"}}/>
-          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 88px 40px",display:"flex",alignItems:"flex-end",justifyContent:"space-between",maxWidth:1160,margin:"0 auto",boxSizing:"border-box"}}>
-            <div>
-              <div style={{fontSize:10,letterSpacing:"4px",textTransform:"uppercase",color:"rgba(200,180,140,0.9)",fontFamily:T.sans,marginBottom:14}}>Your Journey</div>
-              <h1 style={{fontFamily:T.serif,fontSize:52,fontWeight:500,color:"#F5EFE6",letterSpacing:"-2px",lineHeight:1,margin:0}}>Your Progress</h1>
+        <div style={{position:"relative",height:420,overflow:"hidden",paddingTop:"64px",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
+          <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
+          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.35)"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.75) 0%,rgba(10,8,5,0.2) 45%,transparent 100%)"}}/>
+          <div style={{position:"relative",zIndex:2,padding:"0 88px 52px",display:"flex",alignItems:"flex-end",justifyContent:"space-between",maxWidth:1160,margin:"0 auto",width:"100%",boxSizing:"border-box"}}>
+            <div style={{animation:"fadeUp 0.7s ease both"}}>
+              <div style={{fontSize:10,letterSpacing:"0.22em",textTransform:"uppercase",color:"rgba(245,239,230,0.55)",fontFamily:T.sans,fontWeight:500,marginBottom:14}}>Your Journey</div>
+              <h1 style={{fontFamily:T.serif,fontSize:72,fontWeight:600,color:"#F5EFE6",letterSpacing:"-3px",lineHeight:0.92,margin:0}}>Your Progress</h1>
             </div>
             <div style={{display:"flex",alignItems:"flex-end",gap:40,paddingBottom:4}}>
               {streak > 0 && <div style={{textAlign:"right"}}><div style={{fontFamily:T.serif,fontSize:40,fontWeight:500,color:T.gold,lineHeight:1,letterSpacing:"-2px"}}>{streak}</div><div style={{fontSize:10,color:"rgba(245,239,230,0.6)",textTransform:"uppercase",letterSpacing:"2px",marginTop:4,fontFamily:T.sans}}>day streak</div></div>}

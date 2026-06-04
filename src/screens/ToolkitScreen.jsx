@@ -31,25 +31,34 @@ p];
   const toolkitTabs = [["aitools","AI Tools"],["story","My Story"],["sayThis","Say This Instead"],["phrases","Phrases"],["saved","♥ Saved"+(saved.length>0?" ("+saved.length+")":"")],["reading","Reading List"],["prep","Quick Prep"]];
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}}>
-      {!isDesktop && (<div style={{position:"relative",height:160}}>
-        <Scene name="brand" height={160}/>
-        <div style={{position:"absolute",bottom:16,left:24}}>
-          <h1 style={{fontFamily:T.serif,fontSize:28,fontWeight:700,color:"white",letterSpacing:"-0.5px"}}>Toolkit</h1>
+      {!isDesktop && (
+        <div style={{position:"relative",height:260,overflow:"hidden"}}>
+          <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
+          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.35)"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.78) 0%,rgba(10,8,5,0.2) 50%,transparent 100%)"}}/>
+          <div style={{position:"absolute",bottom:24,left:24}}>
+            <div style={{fontSize:10,fontWeight:600,color:"rgba(245,239,230,0.55)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:8,fontFamily:T.sans}}>Your Operating System</div>
+            <h1 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:"#F5EFE6",letterSpacing:"-0.5px",lineHeight:1.1}}>Toolkit</h1>
+          </div>
         </div>
-      </div>)}
+      )}
       {isDesktop && (
-        <div style={{borderBottom:"1px solid "+T2.border}}>
-          <div style={{maxWidth:1160,margin:"0 auto",padding:"52px 88px 0"}}>
-            <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",marginBottom:32}}>
-              <div>
-                <h1 style={{fontFamily:T.serif,fontSize:52,fontWeight:500,color:T2.text,letterSpacing:"-2px",lineHeight:1,margin:"0 0 10px"}}>Toolkit</h1>
-                <p style={{fontFamily:T.sans,fontSize:17,color:T2.text,fontWeight:500,margin:"0 0 6px"}}>Your communication operating system.</p>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,fontWeight:300,margin:0,maxWidth:480}}>Powerful AI tools and exercises designed to help you communicate with greater clarity, confidence and impact.</p>
-              </div>
+        <div style={{position:"relative",height:420,overflow:"hidden",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
+          <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
+          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.35)"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.75) 0%,rgba(10,8,5,0.2) 45%,transparent 100%)"}}/>
+          <div style={{position:"relative",zIndex:2,maxWidth:1160,margin:"0 auto",width:"100%",padding:"0 88px 0",boxSizing:"border-box"}}>
+            <div style={{animation:"fadeUp 0.7s ease both",paddingBottom:0}}>
+              <div style={{fontSize:10,letterSpacing:"0.22em",textTransform:"uppercase",color:"rgba(245,239,230,0.55)",fontFamily:T.sans,fontWeight:500,marginBottom:14}}>Your Communication Operating System</div>
+              <h1 style={{fontFamily:T.serif,fontSize:72,fontWeight:600,color:"#F5EFE6",letterSpacing:"-3px",lineHeight:0.92,marginBottom:18}}>Toolkit</h1>
+              <p style={{fontFamily:T.sans,fontSize:16,color:"rgba(245,239,230,0.6)",fontWeight:300,margin:0,maxWidth:480}}>Powerful AI tools and exercises designed to help you communicate with greater clarity, confidence and impact.</p>
             </div>
-            <div style={{display:"flex",gap:4,marginBottom:0}}>
+          </div>
+          {/* Tab nav — sits at the bottom of the hero */}
+          <div style={{position:"relative",zIndex:2,background:"rgba(10,8,4,0.55)",backdropFilter:"blur(8px)",borderTop:"1px solid rgba(255,255,255,0.08)",marginTop:28}}>
+            <div style={{maxWidth:1160,margin:"0 auto",padding:"0 88px",display:"flex",gap:2}}>
               {toolkitTabs.map(([id,label]) => (
-                <button key={id} onClick={()=>setTab(id)} style={{padding:"9px 18px",border:"none",background:"transparent",fontSize:13,fontWeight:tab===id?600:400,color:tab===id?T2.text:T2.text3,cursor:"pointer",borderBottom:tab===id?"2px solid "+T.gold:"2px solid transparent",marginBottom:"-1px"}}>
+                <button key={id} onClick={()=>setTab(id)} style={{padding:"12px 18px",border:"none",background:"transparent",fontSize:13,fontWeight:tab===id?600:400,color:tab===id?"rgba(245,239,230,0.95)":"rgba(245,239,230,0.45)",cursor:"pointer",borderBottom:tab===id?"2px solid "+T.gold:"2px solid transparent",transition:"all 0.2s"}}>
                   {label}
                 </button>
               ))}
@@ -57,12 +66,12 @@ p];
           </div>
         </div>
       )}
-      {!isDesktop && (<div style={{padding:"16px 20px 0",display:"flex",gap:8,overflowX:"auto",scrollbarWidth:"none"}}>
+      {!isDesktop && (<div style={{padding:"12px 20px 0",display:"flex",gap:8,overflowX:"auto",scrollbarWidth:"none",borderBottom:"1px solid "+T2.divider}}>
         {toolkitTabs.map(([id,label]) => (
-          <button key={id} onClick={()=>setTab(id)} style={{padding:"8px 16px",borderRadius:20,border:"1px solid "+(tab===id?(id==="saved"?T.gold:id==="story"?T.gold:T.navy):T2.border),background:tab===id?(id==="saved"?"rgba(138,158,132,0.12)":id==="story"?"rgba(138,158,132,0.12)":T.navy):"transparent",color:tab===id?(id==="saved"||id==="story"?T.gold:"white"):T2.text3,fontSize:12,fontWeight:500,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{label}</button>
+          <button key={id} onClick={()=>setTab(id)} style={{padding:"8px 14px",borderRadius:20,border:"1px solid "+(tab===id?T.gold:T2.border),background:tab===id?"rgba(138,158,132,0.1)":"transparent",color:tab===id?T.gold:T2.text3,fontSize:12,fontWeight:500,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,marginBottom:8}}>{label}</button>
         ))}
       </div>)}
-      <div style={isDesktop?{maxWidth:1160,margin:"0 auto",padding:"24px 48px 60px"}:{}}>
+      <div style={isDesktop?{maxWidth:1160,margin:"0 auto",padding:"24px 88px 60px"}:{}}>
       {tab==="aitools" && (() => {
         const launch = (day,step) => onStartSession && onStartSession(day,step);
         const SI2 = {stroke:T2.text3,strokeWidth:"1.4",strokeLinecap:"round",strokeLinejoin:"round"};
