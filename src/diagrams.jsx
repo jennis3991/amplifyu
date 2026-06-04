@@ -748,8 +748,8 @@ export const MODULE_ICONS = [
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3l11 11-11 11L3 14 14 3z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/></svg>,
   // 12 Networking — three dots connected
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="5.5" r="2.5" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="5" cy="22.5" r="2.5" stroke={S} strokeWidth="1.5" fill="none"/><circle cx="23" cy="22.5" r="2.5" stroke={S} strokeWidth="1.5" fill="none"/><path d="M12.5 8L7 20M15.5 8L21 20M7.5 22.5h13" {...SI}/></svg>,
-  // 13 Exposure — spotlight / broadcast signal
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="22.5" r="1.8" stroke={S} strokeWidth="1.5" fill="none"/><path d="M9 17.5a7.07 7.07 0 0110 0" {...SI}/><path d="M5 13a13 13 0 0118 0" {...SI}/></svg>,
+  // 13 Exposure — eye (visibility)
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M4 14s4-8 10-8 10 8 10 8-4 8-10 8S4 14 4 14z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/><circle cx="14" cy="14" r="3" stroke={S} strokeWidth="1.5" fill="none"/></svg>,
   // 14 Amplified — graduation cap (programme completion)
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 8L3 13l11 5 11-5-11-5z" stroke={S} strokeWidth="1.5" strokeLinejoin="round" fill="none"/><path d="M7.5 15.5V20c0 0 3 3 6.5 3s6.5-3 6.5-3v-4.5" {...SI}/><path d="M25 13v5" {...SI}/></svg>,
 ];
