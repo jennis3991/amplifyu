@@ -243,7 +243,7 @@ p];
                         <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,fontWeight:300}}>{path.desc}</div>
                       </div>
                     </div>
-                    <div style={{display:"flex",alignItems:"center",gap:0,marginBottom:16,flexWrap:"wrap",gap:4}}>
+                    <div style={{display:"flex",alignItems:"center",marginBottom:16,flexWrap:"wrap",gap:4}}>
                       {path.steps.map((s,j)=>(
                         <div key={j} style={{display:"flex",alignItems:"center",gap:4}}>
                           <div style={{display:"flex",alignItems:"center",gap:6}}>
