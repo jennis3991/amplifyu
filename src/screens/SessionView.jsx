@@ -3742,7 +3742,8 @@ setAmbitionSaved(true); } catch {}
 
       if (step==="Practice") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:28}}>Your AmplifyU Reflection</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Your Practice</h2>
+          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.7,fontWeight:400,marginBottom:40,maxWidth:620}}>Have one conversation today where you use everything: PRE structure, a SAR story that passes the 3-Point Test, a confident phrase about your ambition, and deliberate presence.</p>
           <D14PracticeWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
