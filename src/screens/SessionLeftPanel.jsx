@@ -570,6 +570,12 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.15)" }}/>
       </div>
     );
+    if (isD12) return (
+      <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
+        <img src="/day12-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 50%" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.25)" }}/>
+      </div>
+    );
     if (isD13) return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
         <img src="/day13-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
