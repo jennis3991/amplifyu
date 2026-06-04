@@ -92,8 +92,7 @@ p];
               <div style={{marginTop:16,background:T2.surface,borderRadius:12,border:"0.5px solid "+T2.border,overflow:"hidden",display:"flex",alignItems:"stretch",minHeight:isDesktop?140:120}}>
                 <div style={{flex:1,padding:isDesktop?"28px 32px":"20px 20px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
                   <div>
-                    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-                      <span style={{fontSize:14}}>⭐</span>
+                    <div style={{marginBottom:10}}>
                       <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px"}}>Recommended For You</span>
                     </div>
                     <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:6}}>Brand Audit</div>
