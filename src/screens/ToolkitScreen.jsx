@@ -308,52 +308,23 @@ else. And it can be built — deliberately, in fifteen minutes a day."
               </p>
             </div>
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>
-              I had always been good at storytelling. I understood the 
-power of a well-placed narrative — how it changes the energy in a room, 
-how it makes people lean in. I had strong instincts for communication and 
-had built real credibility over my career. But coming back from leave, I 
-wanted more than instinct. I wanted a <strong>system.</strong> Something I 
-could call on when tired, when stretched, when operating across two very 
-full worlds simultaneously.
+              I had always been good at storytelling. I understood the power of a well-placed narrative — how it changes the energy in a room, how it makes people lean in. I had strong instincts for communication and had built real credibility over my career. But coming back from leave, I wanted more than instinct. I wanted a <strong>system.</strong> Something I could call on when tired, when stretched, when operating across two very full worlds simultaneously.
             </p>
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>
-              I built AmplifyU because the tools I needed didn't exist. 
-Something science-backed, practically structured, and designed for a real 
-professional life — not a retreat, not a course, not a workshop. <strong>A 
-daily platform that fits inside the life you already have.</strong>
+              I built AmplifyU because the tools I needed didn't exist. Something science-backed, practically structured, and designed for a real professional life — not a retreat, not a course, not a workshop. <strong>A daily platform that fits inside the life you already have.</strong>
             </p>
-            {/* PIE section */}
-            <div 
-style={{background:dark?T2.surface:T2.card,borderRadius:2,padding:"18px 20px"}}>
-              <div 
-style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:2,marginBottom:10}}>The 
-PIE Framework</div>
-              <p 
-style={{fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:12}}>
-                Research shows performance accounts for only <strong>10% 
-of career advancement.</strong> The remaining 90% is Image and Exposure — 
-how you show up and who sees you doing it.
+            <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>
+              The programme moves through fourteen deliberate modules — starting with the foundations: clarity, structure, and voice. Then the skills that separate good communicators from great ones: storytelling, connection, and managing pressure. Then the hardest work of all: building presence, communicating your ambition, and creating the kind of exposure that makes your value impossible to ignore.
+            </p>
+            {/* AI tools highlight */}
+            <div style={{background:dark?T2.surface:T2.card,borderRadius:2,padding:"18px 20px"}}>
+              <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:2,marginBottom:10}}>Built with AI Coaching</div>
+              <p style={{fontSize:14,color:T2.text,lineHeight:1.7,margin:0}}>
+                Every session includes an AI coach that responds to your specific words — not generic feedback, but personalised evaluation of your structure, reasoning, and delivery. Tools to help you rewrite, rehearse, and reflect. The kind of support that used to require an expensive coach is now available every day, inside sessions you can complete in under twenty minutes.
               </p>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-                
-{[{l:"P",t:"Performance",sub:"10%"},{l:"I",t:"Image",sub:"30%"},{l:"E",t:"Exposure",sub:"60%"}].map(p=>(
-                  <div key={p.l} 
-style={{background:T.navy,borderRadius:10,padding:"10px 8px",textAlign:"center"}}>
-                    <div 
-style={{fontFamily:T.serif,fontSize:22,fontWeight:700,color:T.gold,lineHeight:1,marginBottom:2}}>{p.l}</div>
-                    <div 
-style={{fontSize:9,fontWeight:700,color:"white",marginBottom:1}}>{p.t}</div>
-                    <div 
-style={{fontSize:9,color:"rgba(255,255,255,0.45)"}}>{p.sub}</div>
-                  </div>
-                ))}
-              </div>
             </div>
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>
-              AmplifyU is built around all three — because isolated 
-communication skills are not enough. What transforms a career is 
-understanding how everything works together, and having a daily practice 
-that makes it automatic.
+              I believe — genuinely, without qualification — that every person can become a better communicator. Not gifted. Not naturally smooth. But deliberate. Precise. Compelling. The professionals who have transformed their communication didn't do it through talent. They did it through practice, repetition, and a system that made their improvement visible to themselves and the people around them.
             </p>
             {/* Pull quote 2 */}
             <div 
