@@ -468,7 +468,7 @@ export function SessionLeftPanel({
     );
     if (step === "Theory") return (
       <div style={d9Dark}>
-        <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="voice" height={900} day={lesson.day}/></div>
+        <img src="/day9-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
         {d9Overlay}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           {d9Label("The Science of Connection")}
