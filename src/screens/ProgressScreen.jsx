@@ -146,7 +146,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
         {sec("Weekly Progress")}
         <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"24px 28px":"18px 20px"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:isDesktop?"space-between":"flex-start",flexWrap:"wrap",gap:12}}>
-            <div style={{display:"flex",gap:isDesktop?16:12,alignItems:"center"}}>
+            <div style={{display:"flex",gap:isDesktop?16:8,alignItems:"center"}}>
               {DAYS_OF_WEEK.map((d,i)=>{
                 const done_ = i < weekDone;
                 return (
@@ -160,7 +160,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
                 );
               })}
             </div>
-            <div style={{flex:1,marginLeft:isDesktop?32:0,minWidth:200}}>
+            <div style={{flex:1,marginLeft:isDesktop?32:0,minWidth:0}}>
               <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T2.text,marginBottom:4}}>
                 {weekDone>=5?"You're on a roll!":weekDone>=3?"You're building momentum!":"Keep going — every day counts."}
               </div>
@@ -281,7 +281,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
       <div style={{...W,paddingTop:isDesktop?40:28}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:isDesktop?20:14}}>
           {sec("Your Impact by Role")}
-          <button style={{fontFamily:T.sans,fontSize:12,color:T2.text3,background:"none",border:"none",cursor:"pointer",padding:0,marginTop:-isDesktop?8:6}}>Manage roles</button>
+          <button style={{fontFamily:T.sans,fontSize:12,color:T2.text3,background:"none",border:"none",cursor:"pointer",padding:0,marginTop:-(isDesktop?8:6)}}>Manage roles</button>
         </div>
         <div style={{display:"grid",gridTemplateColumns:isDesktop?"260px 1fr":"1fr",gap:isDesktop?24:14,alignItems:"start"}}>
           {/* Role card */}
