@@ -155,7 +155,7 @@ export function D6SimWidget({T, T2, isDesktop}) {
     setPhase('analyzing');
     const pressureLabel = PRESSURES.find(p=>p.id===form.pressure)?.label||'Challenging';
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:`You are a senior executive coach preparing someone for a high-stakes conversation.\n\nContext:\n- Industry: ${form.industry}\n- Their role: ${form.role}\n- Meeting: ${form.stakeholder}\n- About: ${form.purpose}\n- Pressure style: ${pressureLabel}\n\nGenerate a conversation profile and 10 realistic tough questions this stakeholder is likely to ask. Questions should feel specific, real, and increase in difficulty.\n\nReturn ONLY valid JSON:\n{"profile":{"stakeholderLabel":"${form.stakeholder}","goal":"<1-4 word goal>","riskLevel":"High|Medium|Low","concerns":["concern1","concern2","concern3","concern4"],"insight":"<2-3 sentences about what this stakeholder cares about and how they will challenge>"},"questions":["q1","q2","q3","q4","q5","q6","q7","q8","q9","q10"]}`}]})});
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,messages:[{role:"user",content:`You are a senior executive coach preparing someone for a high-stakes conversation.\n\nContext:\n- Industry: ${form.industry}\n- Their role: ${form.role}\n- Meeting: ${form.stakeholder}\n- About: ${form.purpose}\n- Pressure style: ${pressureLabel}\n\nGenerate a conversation profile and the 5 most important, highest-impact questions this stakeholder is likely to ask. Prioritise the questions they would definitely ask — the ones that probe rationale, risk, and evidence. Questions should feel specific, real, and build in difficulty.\n\nReturn ONLY valid JSON:\n{"profile":{"stakeholderLabel":"${form.stakeholder}","goal":"<1-4 word goal>","riskLevel":"High|Medium|Low","concerns":["concern1","concern2","concern3","concern4"],"insight":"<2-3 sentences about what this stakeholder cares about and how they will challenge>"},"questions":["q1","q2","q3","q4","q5"]}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -164,7 +164,7 @@ export function D6SimWidget({T, T2, isDesktop}) {
       setQuestions(parsed.questions);
     }catch{
       setProfile({stakeholderLabel:form.stakeholder,goal:"Get answers",riskLevel:"High",concerns:["ROI","Risk","Timeline","Resources"],insight:`This ${form.stakeholder} will focus on practical implications and challenge your assumptions. Expect probing questions about evidence, alternatives, and risk.`});
-      setQuestions(["Why should we prioritise this now?","What happens if we do nothing?","How will we measure success?","What are the risks?","What is the ROI?","How confident are you in these numbers?","Why is this better than alternatives?","What resources will this require?","What could cause this to fail?","Why should I support this?"]);
+      setQuestions(["Why should we prioritise this now?","What are the main risks — and how have you mitigated them?","How will we measure success?","What is the expected ROI?","Why is this the right approach over alternatives?"]);
     }
     setPhase('questions');
   }
@@ -435,10 +435,21 @@ export function D6SimWidget({T, T2, isDesktop}) {
         <div style={cs.label}>Coach Recommendation</div>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T.gold,lineHeight:1.65,margin:0}}>{result.recommendation}</p>
       </div>
-      <button onClick={()=>{setPhase('intro');setForm({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging'});setProfile(null);setQuestions([]);setAnswers([]);setResult(null);setQIdx(0);setCurrentAnswer('');}}
-        style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"8px 0",textAlign:"center",width:"100%"}}>
-        Prepare Another Conversation
-      </button>
+      {/* Repeat options */}
+      <div style={{display:"flex",flexDirection:"column",gap:10,marginTop:4}}>
+        <button onClick={()=>{setAnswers([]);setQIdx(0);setCurrentAnswer('');setResult(null);setPhase('simulation');}}
+          style={{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.gold,color:"white",fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans}}>
+          Repeat These 5 Questions →
+        </button>
+        <button onClick={()=>{setAnswers([]);setQIdx(0);setCurrentAnswer('');setResult(null);setQuestions([]);setProfile(null);setPhase('setup');generate();}}
+          style={{width:"100%",padding:isDesktop?"13px":"12px",borderRadius:4,border:`0.5px solid ${T.gold}`,background:"transparent",color:T.gold,fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans}}>
+          Ask Me 5 New Questions →
+        </button>
+        <button onClick={()=>{setPhase('intro');setForm({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging'});setProfile(null);setQuestions([]);setAnswers([]);setResult(null);setQIdx(0);setCurrentAnswer('');}}
+          style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:"6px 0",textAlign:"center",width:"100%"}}>
+          Prepare a Different Conversation
+        </button>
+      </div>
     </div>
   );
 
