@@ -274,7 +274,7 @@ export function D11SimWidget({T, T2, isDesktop}) {
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0}}>Choose what you'd like to do. Your AmplifyU coach scores your positioning, identifies the gaps, and writes stronger copy for you.</p>
       </div>
       {[
-        {icon:"🔍", label:"Audit my LinkedIn profile", sub:"Already have a profile? Find the gap between how you're seen and how you want to be known.", action:()=>{setMode('audit');setPhase('words');}},
+        {icon:"🔍", label:"Audit my LinkedIn profile", sub:"Already have a profile? Find the gap between how you're seen and how you want to be known.", action:()=>{setMode('audit');setPhase('paste');}},
         {icon:"✍️", label:"Build a LinkedIn profile from scratch", sub:"No profile yet? Build one around your brand — headline, About section, and messaging.", action:()=>{setMode('linkedin');setPhase('build-form');}},
         {icon:"📄", label:"Write my CV profile statement", sub:"Create a compelling professional summary that positions you powerfully from the first line.", action:()=>{setMode('cv');setPhase('build-form');}},
       ].map((opt,i)=>(
@@ -359,50 +359,8 @@ export function D11SimWidget({T, T2, isDesktop}) {
     </div>
   );
 
-  if (phase === 'words') return (
+  if (phase === 'words' || phase === 'paste') return (
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:2}}>
-        <div style={{display:"flex",gap:6}}>
-          {[1,2].map(i=><div key={i} style={{width:i===1?22:6,height:6,borderRadius:3,background:i===1?T.gold:T2.border,transition:"all 0.3s"}}/>)}
-        </div>
-        <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>Step 1 of 2</span>
-      </div>
-      <div style={cs.card}>
-        <div style={cs.label}>Your Brand Intent</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 16px"}}>What three words do you want people to associate with your name?</p>
-        <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
-          {brandWords.map((w,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
-              <div style={{width:24,height:24,borderRadius:"50%",background:w?T.gold:"rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
-                <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:"white"}}>{i+1}</span>
-              </div>
-              <input value={w} onChange={e=>{const n=[...brandWords];n[i]=e.target.value;setBrandWords(n);}} placeholder={["e.g. Trusted","e.g. Strategic","e.g. Inspiring"][i]} className="au-input" style={{flex:1,padding:"10px 14px",fontSize:isDesktop?14:13}}/>
-            </div>
-          ))}
-        </div>
-        <div style={{paddingTop:14,borderTop:"0.5px solid "+T2.divider}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Examples</div>
-          <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-            {["Trusted","Strategic","Innovative","Confident","Inspiring","Credible","Decisive","Empathetic","Visionary","Calm"].map((ex,i)=>{
-              const sel=brandWords.includes(ex);
-              return <button key={i} onClick={()=>{if(sel){setBrandWords(brandWords.map(w=>w===ex?"":w));}else{const idx=brandWords.findIndex(w=>!w);if(idx>=0){const n=[...brandWords];n[idx]=ex;setBrandWords(n);}}}} style={{padding:"5px 12px",borderRadius:20,border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.15)":"transparent",color:sel?T.gold:T2.text3,fontSize:12,cursor:"pointer",fontFamily:T.sans,minHeight:30,transition:"all 0.15s"}}>{ex}</button>;
-            })}
-          </div>
-        </div>
-      </div>
-      <button onClick={()=>setPhase('paste')} style={cta(false)}>Next →</button>
-      <button onClick={reset} style={back}>← Back</button>
-    </div>
-  );
-
-  if (phase === 'paste') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:2}}>
-        <div style={{display:"flex",gap:6}}>
-          {[1,2].map(i=><div key={i} style={{width:22,height:6,borderRadius:3,background:T.gold}}/>)}
-        </div>
-        <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>Step 2 of 2</span>
-      </div>
       <div style={cs.card}>
         <div style={cs.label}>Your LinkedIn Profile</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 16px"}}>Paste your current LinkedIn headline, About section, or professional bio. The more you include, the deeper the analysis.</p>
@@ -415,6 +373,21 @@ export function D11SimWidget({T, T2, isDesktop}) {
         {profileText.trim().length>0 && (
           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text4,margin:"10px 0 0"}}>{profileText.trim().split(/\s+/).length} words</p>
         )}
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>How do you want to be known?</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 12px"}}>Three words you want people to associate with your name.</p>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:12}}>
+          {brandWords.map((w,i)=>(
+            <input key={i} value={w} onChange={e=>{const n=[...brandWords];n[i]=e.target.value;setBrandWords(n);}} placeholder={["e.g. Trusted","e.g. Strategic","e.g. Inspiring"][i]} className="au-input" style={{flex:"1 1 80px",padding:"9px 12px",fontSize:isDesktop?14:13,minWidth:80}}/>
+          ))}
+        </div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+          {["Trusted","Strategic","Innovative","Confident","Inspiring","Credible","Decisive","Empathetic","Visionary","Calm"].map((ex,i)=>{
+            const sel=brandWords.includes(ex);
+            return <button key={i} onClick={()=>{if(sel){setBrandWords(brandWords.map(w=>w===ex?"":w));}else{const idx=brandWords.findIndex(w=>!w);if(idx>=0){const n=[...brandWords];n[idx]=ex;setBrandWords(n);}}}} style={{padding:"5px 12px",borderRadius:20,border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.15)":"transparent",color:sel?T.gold:T2.text3,fontSize:12,cursor:"pointer",fontFamily:T.sans,minHeight:30,transition:"all 0.15s"}}>{ex}</button>;
+          })}
+        </div>
       </div>
       <button onClick={runAudit} disabled={profileText.trim().length<10} style={cta(profileText.trim().length<10)}>Run the Audit →</button>
       <button onClick={()=>setPhase('words')} style={back}>← Back</button>
