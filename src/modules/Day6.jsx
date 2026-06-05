@@ -193,13 +193,25 @@ export function D6SimWidget({T, T2, isDesktop}) {
 
   async function analyze(ans){
     const qa=questions.map((q,i)=>`Q${i+1}: ${q}\nA: ${ans[i]||'(no answer)'}`).join('\n\n');
+    const fallback={
+      scores:{composure:{score:7,note:"Stayed measured throughout"},clarity:{score:7,note:"Mostly direct answers"},confidence:{score:7,note:"Clear position held"},evidence:{score:6,note:"Could use more specific data"},brevity:{score:7,note:"Generally concise"}},
+      strengths:["Stayed composed under pressure","Clear on strategic rationale"],
+      development:["Prepare stronger evidence for risk questions","Sharpen responses to follow-up probing"],
+      hardestQuestion:questions[questions.length-1]||'Final question',
+      recommendation:"Your strongest answers were backed by evidence. Before the real conversation, prepare clearer responses to risk and objection questions — those are where hesitation tends to show."
+    };
     try{
       const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:700,messages:[{role:"user",content:`You are an executive communication coach. Analyse these conversation practice responses.\n\nContext: ${form.role} preparing to meet ${form.stakeholder} about ${form.purpose}\n\n${qa}\n\nReturn ONLY valid JSON:\n{"scores":{"composure":{"score":<1-10>,"note":"<8 words>"},"clarity":{"score":<1-10>,"note":"<8 words>"},"confidence":{"score":<1-10>,"note":"<8 words>"},"evidence":{"score":<1-10>,"note":"<8 words>"},"brevity":{"score":<1-10>,"note":"<8 words>"}},"strengths":["<strength1>","<strength2>"],"development":["<area1>","<area2>"],"hardestQuestion":"<question text that got weakest response>","recommendation":"<2-3 sentence personalised coaching recommendation>"}`}]})});
-      const d=await res.json();const raw=(d.content||[]).map(b=>b.text||'').join('').trim();const m=raw.match(/\{[\s\S]*\}/);setResult(JSON.parse(m[0]));
-    }catch{
-      setResult({scores:{composure:{score:7,note:"Stayed measured throughout"},clarity:{score:7,note:"Mostly direct answers"},confidence:{score:7,note:"Clear position held"},evidence:{score:6,note:"Could use more specific data"},brevity:{score:7,note:"Generally concise"}},strengths:["Stayed composed under pressure","Clear on strategic rationale"],development:["Prepare stronger evidence for risk questions","Sharpen responses to follow-up probing"],hardestQuestion:questions[questions.length-1],recommendation:"Your strongest answers were backed by evidence. Before the real conversation, prepare clearer responses to risk and objection questions — those are where hesitation tends to show."});
+      const d=await res.json();
+      const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
+      const m=raw.match(/\{[\s\S]*\}/);
+      if(m){const parsed=JSON.parse(m[0]);setResult(parsed);}
+      else{setResult(fallback);}
+    }catch(e){
+      setResult(fallback);
+    }finally{
+      setPhase('results');
     }
-    setPhase('results');
   }
 
   const cs={
@@ -372,7 +384,12 @@ export function D6SimWidget({T, T2, isDesktop}) {
   );
 
   // ── RESULTS ──
-  if(phase==='results'&&result) return (
+  if(phase==='results') return !result ? (
+    <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"48px 0":"32px 0"}}>
+      <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}</div>
+      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,textAlign:"center"}}>Loading your results…</p>
+    </div>
+  ) : (
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
       <div style={cs.card}>
         <div style={cs.label}>Your Coaching Report</div>
@@ -427,6 +444,7 @@ export function D6SimWidget({T, T2, isDesktop}) {
 
   return null;
 }
+
 
 // ─── D11 Practice Widget ──────────────────────────────────────────────────
 
