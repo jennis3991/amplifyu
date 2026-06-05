@@ -26,6 +26,7 @@ import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
 import { Scene, OBScene } from '../scenes.jsx';
 import { Timer } from '../components/Timer.jsx';
 import { PBar, NAV_H } from '../components/NavComponents.jsx';
+import AICoachTab from '../components/AICoachTab.jsx';
 import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 import { getScenariosForDay, getPIEEmphasis } from '../utils.js';
 import { D7SimWidget } from '../modules/Day7.jsx';
@@ -3826,22 +3827,8 @@ setAmbitionSaved(true); } catch {}
 
         {/* ── Simulation ───────────────────────────────────────────────────── */}
         {step === "Simulation" && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            <div>
-              <div style={{ ...RP_LABEL, color: T2.text3, marginBottom: 14 }}>Respond As You Would In Real Life</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 4 }}>
-                {["State your point clearly", "Give one reason", "Add a real example"].map((txt, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <div style={{ width: 20, height: 20, borderRadius: "50%", border: "0.5px solid " + T.gold, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <span style={{ fontSize: 9, color: T.goldDark, fontWeight: 600, fontFamily: T.sans }}>{i + 1}</span>
-                    </div>
-                    <span style={{ fontFamily: T.serif, fontSize: 16, color: T2.text, lineHeight: 1.4 }}>{txt}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <Timer totalSecs={180} label="Speak for up to 3 minutes"/>
-            <CoachWidget lesson={lesson} scenario={activeSc}/>
+          <div key={idx} className="au-step-enter" style={{ overflowY: "auto" }}>
+            <AICoachTab dayNumber={lesson.day} dayTitle={lesson.title} />
           </div>
         )}
 

@@ -17,6 +17,7 @@ import { D12PracticeWidget, D12SimWidget } from '../modules/Day12.jsx';
 import { D13PracticeWidget, D13SimWidget } from '../modules/Day13.jsx';
 import { D14PracticeWidget, D14SimWidget } from '../modules/Day14.jsx';
 import { D7SimWidget } from '../modules/Day7.jsx';
+import AICoachTab from '../components/AICoachTab.jsx';
 import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
 import { Scene, OBScene } from '../scenes.jsx';
 import { Timer } from '../components/Timer.jsx';
@@ -2779,7 +2780,7 @@ something you can use in real life.</p>
           <CoachWidget lesson={lesson} scenario={null}/>
         </>
       )}
-       {!isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD11 && !isD12 && !isD13 && !isD14 && step==="Simulation" && (
+       {!isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && !isD12 && !isD13 && !isD14 && !isNT && !isD9 && step==="Simulation" && (
         <>
           {(()=>{
             const scenarios = roleId ? getScenariosForDay(roleId,
@@ -2848,9 +2849,7 @@ strokeLinecap="round"/></svg>
               </div>
             ))}
           </div>
-          <CoachWidget lesson={lesson} scenario={(roleId ? 
-getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[selSc] || 
-(roleId ? getScenariosForDay(roleId, lesson.day) : lesson.scenarios)[0]}/>
+          <AICoachTab dayNumber={lesson.day} dayTitle={lesson.title} />
         </>
       )}
       {isD12 && step==="Review" && (
