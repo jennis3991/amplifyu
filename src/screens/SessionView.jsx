@@ -3828,7 +3828,7 @@ setAmbitionSaved(true); } catch {}
         {/* ── Simulation ───────────────────────────────────────────────────── */}
         {step === "Simulation" && (
           <div key={idx} className="au-step-enter" style={{ overflowY: "auto" }}>
-            <AICoachTab dayNumber={lesson.day} dayTitle={lesson.title} />
+            <AICoachTab dayNumber={lesson.day} dayTitle={lesson.title} isDesktop={true} />
           </div>
         )}
 

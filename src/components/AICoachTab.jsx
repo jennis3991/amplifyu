@@ -212,7 +212,7 @@ const Card = ({ dark, children, style = {} }) => (
 );
 
 // ── Main component ────────────────────────────────────────────────────────────
-export default function AICoachTab({ dayNumber = 1, dayTitle = '' }) {
+export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = false }) {
   const SR = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
 
   const [step,        setStep]        = useState('intro');   // intro|topic|recording|analysing|results
@@ -681,9 +681,9 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '' }) {
         {/* ── B: CLARITY PROFILE ────────────────────────────────────── */}
         <Card>
           <SecLabel>Your Clarity Profile</SecLabel>
-          <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 16, alignItems: isDesktop ? 'center' : 'flex-start', flexDirection: isDesktop ? 'row' : 'column' }}>
             <Pentagon scores={cp} />
-            <div style={{ flex: 1, minWidth: 130 }}>
+            <div style={{ flex: 1, width: isDesktop ? undefined : '100%' }}>
               {['clarity', 'structure', 'brevity', 'simplicity', 'focus'].map((k, idx) => (
                 <div key={k} style={{ marginBottom: idx < 4 ? 11 : 0 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
@@ -704,7 +704,7 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '' }) {
         </Card>
 
         {/* ── C: TWO-COLUMN ─────────────────────────────────────────── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr', gap: 12, marginBottom: 14 }}>
           {/* What came across well */}
           <div style={{ background: '#fff', borderRadius: 12, border: `0.5px solid ${BORDER}`, padding: '16px' }}>
             <SecLabel>What Came Across Well</SecLabel>
