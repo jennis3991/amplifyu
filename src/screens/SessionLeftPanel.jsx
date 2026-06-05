@@ -54,8 +54,8 @@ export function SessionLeftPanel({
         <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="clarity" height={900} day={4}/></div>
         {d4Ol}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Masters of Brevity</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2 }}>The best communicators say more with less.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Masters of Brevity</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:380, lineHeight:1.2 }}>The best communicators say more with less.</p>
         </div>
       </div>
     );
@@ -63,9 +63,9 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>The Miller's Law Challenge™</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Feel why short sentences win — in your own brain.</p>
-          <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Miller's Law Challenge™</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Feel why short sentences win — in your own brain.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Five challenges. Memory, listening, doing, following, communicating — each one proves the same thing.</p>
         </div>
       </div>
@@ -74,12 +74,12 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>🎥 Breaking News Live</div>
-          <div style={{ display:"flex", alignItems:"flex-start", gap:12, marginBottom:24 }}>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>🎥 Breaking News Live</div>
+          <div style={{ display:"flex", alignItems:"flex-start", gap:12, marginBottom:16 }}>
             <div style={{ width:11, height:11, borderRadius:"50%", background:"#CC4444", flexShrink:0, marginTop:8, animation:"glowPulse 1s ease infinite", boxShadow:"0 0 8px rgba(204,68,68,0.55)" }}/>
-            <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, margin:0, maxWidth:360 }}>Report it live. Watch what your audience remembers.</p>
+            <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, margin:0 }}>Report it live. Watch what your audience remembers.</p>
           </div>
-          <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Sixty seconds. A breaking story. A producer cutting your time. The AI becomes your audience — and reveals what actually landed.</p>
         </div>
       </div>
@@ -104,10 +104,10 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Communication in Action</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Every skill. One conversation.</p>
-          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>This is what a week of deliberate practice looks like when you put it all together.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Communication in Action</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Every skill. One conversation.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>This is what a week of deliberate practice looks like when you put it all together.</p>
         </div>
       </div>
     );
@@ -115,10 +115,10 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Communication Fitness Reps</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Skill fades without repetition. Strength comes from reps.</p>
-          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>Choose your practice mode and keep the habits alive.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Communication Fitness Reps</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Skill fades without repetition. Strength comes from reps.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Choose your practice mode and keep the habits alive.</p>
         </div>
       </div>
     );
@@ -136,9 +136,9 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Week 1 Master Challenge</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Teach It Forward.</p>
-          <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Week 1 Master Challenge</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Teach It Forward.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Explain what you learned as if teaching someone else. Your AmplifyU coach evaluates all six Week 1 skills.</p>
         </div>
       </div>
@@ -174,7 +174,7 @@ export function SessionLeftPanel({
         />
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(8,6,3,0.75) 0%, rgba(8,6,3,0.1) 50%, transparent 75%)" }}/>
         <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(20px,1.8vw,28px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:340 }}>90% of your hardest work lives below the waterline.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, margin:0 }}>90% of your hardest work lives below the waterline.</p>
         </div>
       </div>
     );
@@ -183,8 +183,8 @@ export function SessionLeftPanel({
         <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="pie" height={900} day={10}/></div>
         {d10Ol}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Performance in the Wild</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2 }}>The best performers make their contribution impossible to ignore.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Performance in the Wild</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:380, lineHeight:1.2 }}>The best performers make their contribution impossible to ignore.</p>
         </div>
       </div>
     );
@@ -194,7 +194,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The SAR Challenge™</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,1.8vw,30px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Turn what you do into a story people remember.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Turn what you do into a story people remember.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
@@ -204,8 +204,8 @@ export function SessionLeftPanel({
         <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="pie" height={900} day={10}/></div>
         {d10Ol}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Performance in Action</div>
-          <p style={{ ...LP_HEADING, fontSize:26, maxWidth:340, lineHeight:1.2 }}>Communicate your impact. Make it impossible to miss.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Performance in Action</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Communicate your impact. Make it impossible to miss.</p>
         </div>
       </div>
     );
@@ -243,8 +243,8 @@ export function SessionLeftPanel({
         <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="clarity" height={900} day={3}/></div>
         {d3Ol}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Masters of the Pause</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2 }}>The best speakers use silence the way musicians use rests.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Masters of the Pause</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:380, lineHeight:1.2 }}>The best speakers use silence the way musicians use rests.</p>
         </div>
       </div>
     );
@@ -252,9 +252,9 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>The Filler-Free Challenge</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Silence often sounds more confident than fillers.</p>
-          <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Filler-Free Challenge</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Silence often sounds more confident than fillers.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Three rounds. Practise the pause, notice the difference silence makes, and build the habit of calm, deliberate delivery.</p>
         </div>
       </div>
@@ -263,9 +263,9 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Simulation · Day 3</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Speak without filling the silence.</p>
-          <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Simulation · Day 3</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Speak without filling the silence.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Teach me how to make your favourite meal. Your AI vocal coach analyses your delivery and gives personalised feedback.</p>
         </div>
       </div>
@@ -303,7 +303,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Clarity in the Wild</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2, marginBottom:16 }}>The clearest voices don't use more words. They use better ones.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:380, lineHeight:1.2, marginBottom:16 }}>The clearest voices don't use more words. They use better ones.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
@@ -312,9 +312,9 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"space-between", padding:"80px 48px 40px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>THE FEYNMAN CHALLENGE™</div>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>THE FEYNMAN CHALLENGE™</div>
           <p style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.4vw,44px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.1, marginBottom:20, maxWidth:400 }}>If you can explain it simply, you understand it.</p>
-          <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.45)", marginBottom:20 }}/>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
         {/* Badge */}
         <div style={{ position:"relative", zIndex:2, display:"flex", justifyContent:"center", alignItems:"center", flex:1, marginTop:16 }}>
@@ -335,7 +335,7 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"space-between", padding:"80px 48px 40px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>SIMULATION · DAY 1</div>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>SIMULATION · DAY 1</div>
           <p style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.4vw,44px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.1, marginBottom:24, maxWidth:400 }}>Awareness is where every great communicator begins.</p>
           <div style={{ padding:"16px 20px", background:"rgba(138,158,132,0.08)", borderRadius:8, border:"0.5px solid rgba(138,158,132,0.2)", marginBottom:24, display:"flex", alignItems:"center", gap:12 }}>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="1.5" fill={T.gold}/></svg>
@@ -414,9 +414,9 @@ export function SessionLeftPanel({
       <div style={{ background:"#0E0B08", height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(183,154,107,0.06) 0%, transparent 60%)" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Storytelling in the Wild</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,34px)", maxWidth:380, marginBottom:28, lineHeight:1.2 }}>Stories create empathy. Empathy creates trust. Trust creates influence.</p>
-          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Storytelling in the Wild</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:380, marginBottom:28, lineHeight:1.2 }}>Stories create empathy. Empathy creates trust. Trust creates influence.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
           <p style={{ ...LP_BODY, fontSize:15, maxWidth:340 }}>The same facts — told as a story — land 22× more powerfully in the human brain.</p>
         </div>
       </div>
@@ -427,8 +427,8 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Pixar Framework Challenge™</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,32px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Turn a real experience into a story people remember.</p>
-          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Turn a real experience into a story people remember.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65, marginBottom:0 }}>Seven beats. Five minutes. One story you can use in presentations, interviews, meetings, and conversations.</p>
         </div>
       </div>
@@ -439,8 +439,8 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Story Architect</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,1.8vw,30px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Build a story for your next important presentation.</p>
-          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Build a story for your next important presentation.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Pitch · Proposal · Presentation · Leadership Talk · Sales Meeting</p>
         </div>
       </div>
@@ -461,7 +461,7 @@ export function SessionLeftPanel({
         {d9Overlay}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
           {d9Label("The Missing Skill")}
-          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2.2vw,36px)", maxWidth:380, marginBottom:20, lineHeight:1.2 }}>How to make people feel understood.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, marginBottom:16, lineHeight:1.2 }}>How to make people feel understood.</p>
           <div style={{ width:32, height:1, background:T.gold, opacity:0.45 }}/>
         </div>
       </div>
@@ -472,7 +472,7 @@ export function SessionLeftPanel({
         {d9Overlay}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           {d9Label("The Science of Connection")}
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2, marginBottom:16 }}>Speak to people the way they need to be spoken to.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:380, lineHeight:1.2, marginBottom:16 }}>Speak to people the way they need to be spoken to.</p>
           <div style={{ width:32, height:1, background:T.gold, opacity:0.45 }}/>
         </div>
       </div>
@@ -483,7 +483,7 @@ export function SessionLeftPanel({
         {d9Overlay}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           {d9Label("Connection in Action")}
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2vw,32px)", maxWidth:380, lineHeight:1.2 }}>The most connected people listen more than they speak.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:380, lineHeight:1.2 }}>The most connected people listen more than they speak.</p>
         </div>
       </div>
     );
@@ -493,7 +493,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           {d9Label("Build Your Connection Habits")}
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,1.8vw,30px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Five exercises. Build the habits of the world's most connected communicators.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Five exercises. Build the habits of the world's most connected communicators.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
@@ -504,7 +504,7 @@ export function SessionLeftPanel({
         {d9Overlay}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           {d9Label("Your Performance")}
-          <p style={{ ...LP_HEADING, fontSize:28, maxWidth:360, lineHeight:1.2 }}>Now perform it. This is where confidence is built.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Now perform it. This is where confidence is built.</p>
         </div>
       </div>
     );
@@ -589,7 +589,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 50%, transparent 75%)" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Science of Exposure</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(20px,1.8vw,28px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:16, maxWidth:360 }}>Why visibility shapes careers more than most people realise.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Why visibility shapes careers more than most people realise.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
@@ -628,10 +628,10 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Voice in Action</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Range creates engagement. Contrast creates emotion.</p>
-          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>The most compelling voices are the most controlled — and the most dynamic.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Voice in Action</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Range creates engagement. Contrast creates emotion.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>The most compelling voices are the most controlled — and the most dynamic.</p>
         </div>
       </div>
     );
@@ -639,10 +639,10 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>PRE in Action</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Point. Reason. Example. The architecture of every great professional answer.</p>
-          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>The world's most effective communicators all follow the same structure — whether they name it or not.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>PRE in Action</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Point. Reason. Example. The architecture of every great professional answer.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>The world's most effective communicators all follow the same structure — whether they name it or not.</p>
         </div>
       </div>
     );
@@ -650,10 +650,10 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Masters Under Pressure</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Composure is a skill. The calmest person in the room shapes the room.</p>
-          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>How elite communicators handle the conversations most people avoid.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Masters Under Pressure</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Composure is a skill. The calmest person in the room shapes the room.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>How elite communicators handle the conversations most people avoid.</p>
         </div>
       </div>
     );
@@ -661,10 +661,10 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Iconic Brands</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Brand isn't what you say about yourself. It's what others say when you're not there.</p>
-          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>Three people whose personal brands became cultural forces — by design, not accident.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Iconic Brands</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Brand isn't what you say about yourself. It's what others say when you're not there.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Three people whose personal brands became cultural forces — by design, not accident.</p>
         </div>
       </div>
     );
@@ -672,10 +672,10 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Presence in the Wild</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>The strongest communicators make people feel calm, engaged, and connected.</p>
-          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>How great communicators use gestures, stillness, and grounded energy to create presence.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Presence in the Wild</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>The strongest communicators make people feel calm, engaged, and connected.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>How great communicators use gestures, stillness, and grounded energy to create presence.</p>
         </div>
       </div>
     );
@@ -683,10 +683,10 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Great Communicators Are Made</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>None of them started where they finished. The same process is available to you.</p>
-          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>Three communicators who changed the world — one deliberate choice at a time.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Great Communicators Are Made</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>None of them started where they finished. The same process is available to you.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Three communicators who changed the world — one deliberate choice at a time.</p>
         </div>
       </div>
     );
@@ -696,10 +696,10 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.42)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 50%, transparent 75%)" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>The Career Multiplier</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(22px,2vw,32px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Performance gets you in the door. Exposure opens the next one.</p>
-          <div style={{ width:40, height:1.5, background:T.gold, opacity:0.5, marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.65 }}>Communication creates capability. Exposure creates opportunity.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Career Multiplier</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Performance gets you in the door. Exposure opens the next one.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Communication creates capability. Exposure creates opportunity.</p>
         </div>
       </div>
     );
@@ -725,7 +725,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 20% 80%, rgba(138,158,132,0.05) 0%, transparent 50%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Day 14 · Your Practice</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,1.8vw,30px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>One conversation. Use everything you've built.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>One conversation. Use everything you've built.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
@@ -737,7 +737,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, transparent 55%)" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Train Your Instrument</div>
-          <p style={{ ...LP_HEADING, fontSize:28, maxWidth:360, lineHeight:1.2 }}>Four exercises. One goal: deliberate vocal control.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Four exercises. One goal: deliberate vocal control.</p>
         </div>
       </div>
     );
@@ -745,9 +745,9 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>The PRE Card Sort™</div>
-          <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Sort the cards. Train the instinct.</p>
-          <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The PRE Card Sort™</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Sort the cards. Train the instinct.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Four scenarios. Three cards each. Identify the Point, Reason, and Example — and build the reflex to structure any answer.</p>
         </div>
       </div>
@@ -758,7 +758,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Make Your Value Visible</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,1.8vw,30px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Four exercises. One goal: make your value impossible to ignore.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Four exercises. One goal: make your value impossible to ignore.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
@@ -769,7 +769,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Presence Challenge</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,1.8vw,30px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Seven rounds. Every physical signal that shapes how communication lands.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Seven rounds. Every physical signal that shapes how communication lands.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
@@ -780,7 +780,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Build Your Brand</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,1.8vw,30px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Three exercises. Three layers of your brand architecture.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Three exercises. Three layers of your brand architecture.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
@@ -791,7 +791,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Composure Challenge</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,1.8vw,30px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Stay calm. Stay clear. The strongest communicator in the room is the calmest.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Stay calm. Stay clear. The strongest communicator in the room is the calmest.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
@@ -801,8 +801,8 @@ export function SessionLeftPanel({
         <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.65)" }}/>
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.98) 0%, transparent 60%)" }}/>
         <div style={{ position: "relative", zIndex: 2, padding: "40px 48px", animation: "fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, marginBottom: 20 }}>Your Practice</div>
-          <p style={{ ...LP_HEADING, fontSize: 28, maxWidth: 380, lineHeight: 1.2 }}>{lesson.practice.split('.')[0]}.</p>
+          <div style={{ ...LP_LABEL, marginBottom: 16 }}>Your Practice</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>{lesson.practice.split('.')[0]}.</p>
         </div>
       </div>
     );
@@ -812,10 +812,10 @@ export function SessionLeftPanel({
     <div style={{ background:"#0E0B08", height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
       <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-        <div style={{ fontSize:11, fontWeight:700, color:"rgba(200,180,140,1)", textTransform:"uppercase", letterSpacing:"0.2em", marginBottom:20, fontFamily:T.sans }}>Real-World Voice Coaching</div>
-        <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>This is where voice training becomes real.</p>
-        <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
-        <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.7)", lineHeight:1.65 }}>Choose your scenario. Speak. Get coached on pace, pauses, clarity, and presence.</p>
+        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Real-World Voice Coaching</div>
+        <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>This is where voice training becomes real.</p>
+        <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+        <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Choose your scenario. Speak. Get coached on pace, pauses, clarity, and presence.</p>
       </div>
     </div>
   );
@@ -823,9 +823,9 @@ export function SessionLeftPanel({
     <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
       <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>AI Conversation Prep</div>
-        <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Prepare for the conversations that matter most.</p>
-        <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>AI Conversation Prep</div>
+        <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Prepare for the conversations that matter most.</p>
+        <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Tell the AI who you're meeting and why. It generates the 10 toughest questions you're likely to face — then coaches your responses.</p>
       </div>
     </div>
@@ -834,9 +834,9 @@ export function SessionLeftPanel({
     <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 50% 30%, rgba(200,168,76,0.08) 0%, transparent 60%)", pointerEvents:"none" }}/>
       <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Your Communication Blueprint</div>
+        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Your Communication Blueprint</div>
         <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:380 }}>Build the system you'll use for the rest of your career.</p>
-        <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+        <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Your archetype. Your brand statement. Your 90-day plan.</p>
       </div>
     </div>
@@ -845,9 +845,9 @@ export function SessionLeftPanel({
     <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
       <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>The Promotion Room</div>
-        <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>You're not in the room. Find out what they're saying — and change it.</p>
-        <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Promotion Room</div>
+        <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>You're not in the room. Find out what they're saying — and change it.</p>
+        <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Profile yourself, identify your exposure gaps, and build the strategy to make your value impossible to ignore.</p>
       </div>
     </div>
@@ -856,9 +856,9 @@ export function SessionLeftPanel({
     <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
       <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Presence — In Action</div>
-        <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Record. Review. See how you communicate.</p>
-        <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Presence — In Action</div>
+        <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Record. Review. See how you communicate.</p>
+        <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Choose a prompt. Record yourself naturally. Your digital coach analyses your presence and provides personalised feedback.</p>
       </div>
     </div>
@@ -867,9 +867,9 @@ export function SessionLeftPanel({
     <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
       <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>PRE Challenge</div>
-        <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Real questions. Real coaching.</p>
-        <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>PRE Challenge</div>
+        <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Real questions. Real coaching.</p>
+        <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Type your Point, Reason, and Example for each question. Your AmplifyU coach scores the clarity of every component.</p>
       </div>
     </div>
@@ -878,9 +878,9 @@ export function SessionLeftPanel({
     <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
       <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:20 }}>Brand — In Action</div>
-        <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,36px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:24, maxWidth:360 }}>Your brand is built in every room you enter. Shape it.</p>
-        <div style={{ width:48, height:1.5, background:"rgba(200,180,140,0.5)", marginBottom:20 }}/>
+        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Brand — In Action</div>
+        <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Your brand is built in every room you enter. Shape it.</p>
+        <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Find the gap between how you're seen and how you want to be known — then close it.</p>
       </div>
     </div>

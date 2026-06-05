@@ -406,7 +406,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>PRE Challenge</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:14}}>Real questions. Real coaching.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Real questions. Real coaching.</p>
               <div style={{width:36,height:1,background:"rgba(200,180,140,0.4)",marginBottom:12}}/>
               <p style={{fontFamily:T.serif,fontSize:12,fontStyle:"italic",color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Type your Point, Reason, and Example. Get instant AI feedback on each.</p>
             </div>
@@ -437,7 +437,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
               <img src="/badge-queen.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
             </div>
             <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>Simulation · Day 1</div>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Simulation · Day 1</div>
               <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:12}}>Awareness is where every great communicator begins.</p>
               <div style={{padding:"8px 12px",background:"rgba(138,158,132,0.1)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",marginBottom:10}}>
                 <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>Today's Goal</div>
@@ -464,8 +464,8 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           const sh=SIM_HEADERS[lesson.day]||{label:"SIMULATION",heading:"Real scenario. Real pressure. Real coaching."};
           return (
             <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box"}}>
-              <div style={{fontSize:10,fontWeight:700,color:"rgba(200,180,140,1)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>{sh.label}</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>{sh.heading}</p>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{sh.label}</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{sh.heading}</p>
               <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
               <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>Day {lesson.day} · {lesson.tag}</p>
             </div>
@@ -489,8 +489,8 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           const h=EX_HEADERS[lesson.day]||EX_HEADERS[1];
           return (
             <div style={{width:"100%",height:320,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box"}}>
-              <div style={{fontSize:10,fontWeight:700,color:"rgba(200,180,140,1)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12,fontFamily:T.sans}}>{h.label}</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.25,marginBottom:14,margin:"0 0 14px"}}>{h.heading}</p>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{h.label}</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{h.heading}</p>
               <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
               <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>{h.body}</p>
             </div>
@@ -539,7 +539,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Filler-Free Challenge™</div>
-              <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:14}}>Silence often sounds more confident than fillers.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Silence often sounds more confident than fillers.</p>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.7)"}}>Estimated time: <span style={{color:"#F5EFE6",fontWeight:600}}>3 minutes</span></span>
@@ -611,7 +611,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Your Communication Blueprint</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:10}}>Build the system you'll use for the rest of your career.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Build the system you'll use for the rest of your career.</p>
               <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
@@ -623,7 +623,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Day 14 · Capstone</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:10}}>You are not the communicator you were 14 days ago.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>You are not the communicator you were 14 days ago.</p>
               <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
@@ -635,7 +635,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Day 14 · Your Practice</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:10}}>One conversation. Use everything you've built.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>One conversation. Use everything you've built.</p>
               <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
@@ -647,7 +647,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Make Your Value Visible</div>
-              <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:14}}>Four exercises. Make your value impossible to ignore.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Four exercises. Make your value impossible to ignore.</p>
               <div style={{width:36,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
@@ -659,7 +659,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Presence Challenge</div>
-              <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:14}}>Seven rounds. Every physical signal that shapes how communication lands.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Seven rounds. Every physical signal that shapes how communication lands.</p>
               <div style={{width:36,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
@@ -671,7 +671,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Build Your Brand</div>
-              <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:14}}>Three exercises. Three layers of your brand architecture.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Three exercises. Three layers of your brand architecture.</p>
               <div style={{width:36,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
@@ -683,7 +683,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 60%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Story Architect</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:14}}>Build a presentation story in under 3 minutes.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Build a presentation story in under 3 minutes.</p>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.7)"}}>Estimated time: <span style={{color:"#F5EFE6",fontWeight:600}}>3 minutes</span></span>
@@ -698,7 +698,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Pixar Framework Challenge™</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:14}}>Turn a real experience into a story people remember.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Turn a real experience into a story people remember.</p>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.7)"}}>Estimated time: <span style={{color:"#F5EFE6",fontWeight:600}}>5 minutes</span></span>
@@ -713,7 +713,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The SAR Challenge™</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:14}}>Turn what you do into a story people remember.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Turn what you do into a story people remember.</p>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.7)"}}>Estimated time: <span style={{color:"#F5EFE6",fontWeight:600}}>5 minutes</span></span>
@@ -728,7 +728,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Short Sentences Challenge™</div>
-              <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:14}}>Short sentences give ideas space to land.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Short sentences give ideas space to land.</p>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4 minutes</span></span>
@@ -743,7 +743,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Simulation · Day 3</div>
-              <p style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:14}}>Speak without filling the silence.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Speak without filling the silence.</p>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Teach me how to make your favourite meal.</span>
