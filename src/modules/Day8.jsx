@@ -393,80 +393,115 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
     "A change management update — show the before and after, honest about what's changing and why",
   ];
 
-  const SCENE_SVGS = [
-    // Scene 1 — establishing / current reality
-    (gold) => (
+  // Dynamic SVG generator — reads visualDirection keywords to set palette and abstract shapes
+  function makeSceneSVG(scene, idx) {
+    const dir = (scene.visualDirection || '').toLowerCase();
+    // Palette from keywords
+    let bg = '#0A0804', bg2 = '#14100A', accent = '#8A9E84';
+    if (/red|fire|danger|alarm|alert|warning|urgent|blood|crisis/.test(dir))    { bg='#150404'; bg2='#1E0606'; accent='#CC4444'; }
+    else if (/gold|amber|sun|warm|honey|chrysalis|yellow|harvest/.test(dir))    { bg='#110C02'; bg2='#1A1206'; accent='#C9A84C'; }
+    else if (/green|garden|leaf|grass|nature|spring|forest|grow/.test(dir))     { bg='#020E06'; bg2='#051410'; accent='#4A8A5A'; }
+    else if (/blue|sky|ocean|sea|calm|water|azure|horizon/.test(dir))           { bg='#020614'; bg2='#04081E'; accent='#4A72B8'; }
+    else if (/purple|magic|sparkle|mystical|enchant|wizard|lavender/.test(dir)) { bg='#0A0614'; bg2='#12091E'; accent='#9A5AB8'; }
+    else if (/pink|rose|flower|petal|blossom|cherry/.test(dir))                 { bg='#140408'; bg2='#1E0812'; accent='#C44A8A'; }
+    else if (/white|bright|open|light|clear|dawn|morning|glow/.test(dir))       { bg='#0E0E0A'; bg2='#181812'; accent='#D4C87A'; }
+    else if (/dark|night|shadow|void|moon|midnight/.test(dir))                  { bg='#060402'; bg2='#0A0804'; accent='#887A6A'; }
+
+    // Shape category
+    const isWings   = /butterfly|wing|fly|soar|flight|spread|flap/.test(dir);
+    const isOval    = /egg|oval|chrysalis|cocoon|bubble|sphere|circle/.test(dir);
+    const isTree    = /tree|branch|leaf|petal|garden|plant|bloom|flower/.test(dir);
+    const isStar    = /star|sparkle|glow|shimmer|twinkle|light ray|radiant|glitter/.test(dir);
+    const isPath    = /path|road|journey|river|stream|trail|winding|map/.test(dir);
+    const isPeople  = /people|crowd|child|family|friend|figure|someone|gather|audience/.test(dir);
+    const isRising  = /rise|grow|climb|ascend|tall|build|tower|reach|launch/.test(dir);
+
+    return (
       <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
-        <rect width="160" height="100" fill="#0A0804"/>
-        <rect x="12" y="60" width="16" height="35" rx="1" fill={gold} opacity="0.5"/>
-        <rect x="34" y="45" width="16" height="50" rx="1" fill={gold} opacity="0.35"/>
-        <rect x="56" y="52" width="16" height="43" rx="1" fill={gold} opacity="0.5"/>
-        <rect x="78" y="36" width="16" height="59" rx="1" fill={gold} opacity="0.35"/>
-        <rect x="100" y="48" width="16" height="47" rx="1" fill={gold} opacity="0.5"/>
-        <rect x="122" y="28" width="16" height="67" rx="1" fill={gold} opacity="0.35"/>
-        <line x1="8" y1="62" x2="152" y2="62" stroke={gold} strokeWidth="0.8" opacity="0.2"/>
+        <defs>
+          <radialGradient id={`rg${idx}`} cx="50%" cy="45%" r="65%">
+            <stop offset="0%" stopColor={bg2}/>
+            <stop offset="100%" stopColor={bg}/>
+          </radialGradient>
+        </defs>
+        <rect width="160" height="100" fill={`url(#rg${idx})`}/>
+
+        {isWings && <>
+          <ellipse cx="60" cy="44" rx="30" ry="20" fill={accent} opacity="0.22" transform="rotate(-28 60 44)"/>
+          <ellipse cx="100" cy="44" rx="30" ry="20" fill={accent} opacity="0.22" transform="rotate(28 100 44)"/>
+          <ellipse cx="56" cy="63" rx="18" ry="11" fill={accent} opacity="0.15" transform="rotate(20 56 63)"/>
+          <ellipse cx="104" cy="63" rx="18" ry="11" fill={accent} opacity="0.15" transform="rotate(-20 104 63)"/>
+          <circle cx="80" cy="50" r="5" fill={accent} opacity="0.75"/>
+          <line x1="80" y1="55" x2="80" y2="74" stroke={accent} strokeWidth="1.5" opacity="0.35" strokeLinecap="round"/>
+        </>}
+
+        {isOval && !isWings && <>
+          <ellipse cx="80" cy="50" rx="28" ry="38" stroke={accent} strokeWidth="1.5" fill={accent} opacity="0.1"/>
+          <ellipse cx="80" cy="50" rx="18" ry="26" stroke={accent} strokeWidth="0.8" fill={accent} opacity="0.06"/>
+          <ellipse cx="72" cy="40" rx="8" ry="11" fill={accent} opacity="0.3" transform="rotate(-14 72 40)"/>
+          <circle cx="80" cy="50" r="3.5" fill={accent} opacity="0.55"/>
+        </>}
+
+        {isTree && !isWings && !isOval && <>
+          <path d="M80 90 L80 52" stroke={accent} strokeWidth="2.5" opacity="0.3" strokeLinecap="round"/>
+          <path d="M80 52 Q54 34 42 40 Q58 20 80 14 Q102 20 118 40 Q106 34 80 52" fill={accent} opacity="0.18"/>
+          <path d="M80 64 Q60 50 50 56 Q66 38 80 34 Q94 38 110 56 Q100 50 80 64" fill={accent} opacity="0.13"/>
+          <circle cx="60" cy="76" r="2.5" fill={accent} opacity="0.3"/>
+          <circle cx="100" cy="72" r="2.5" fill={accent} opacity="0.3"/>
+        </>}
+
+        {isStar && !isWings && !isOval && !isTree && <>
+          <circle cx="80" cy="50" r="34" fill={accent} opacity="0.04"/>
+          <circle cx="80" cy="50" r="20" fill={accent} opacity="0.07"/>
+          <circle cx="80" cy="50" r="8" fill={accent} opacity="0.38"/>
+          <line x1="80" y1="15" x2="80" y2="27" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
+          <line x1="80" y1="73" x2="80" y2="85" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
+          <line x1="44" y1="50" x2="56" y2="50" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
+          <line x1="104" y1="50" x2="116" y2="50" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
+          <line x1="57" y1="27" x2="65" y2="35" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
+          <line x1="103" y1="65" x2="111" y2="73" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
+          <line x1="103" y1="27" x2="95" y2="35" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
+          <line x1="57" y1="73" x2="65" y2="65" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
+        </>}
+
+        {isPath && !isWings && !isOval && !isTree && !isStar && <>
+          <path d="M12 80 Q36 56 62 65 Q88 74 112 44 Q126 30 148 16" stroke={accent} strokeWidth="2" fill="none" opacity="0.6" strokeLinecap="round"/>
+          <circle cx="12" cy="80" r="4" fill={accent} opacity="0.38"/>
+          <circle cx="62" cy="65" r="3" fill={accent} opacity="0.38"/>
+          <circle cx="112" cy="44" r="3" fill={accent} opacity="0.38"/>
+          <circle cx="148" cy="16" r="6" fill={accent} opacity="0.85"/>
+          <line x1="6" y1="90" x2="154" y2="90" stroke={accent} strokeWidth="0.8" opacity="0.12"/>
+        </>}
+
+        {isPeople && !isWings && !isOval && !isTree && !isStar && !isPath && <>
+          <circle cx="46" cy="38" r="10" fill={accent} opacity="0.22"/>
+          <circle cx="80" cy="32" r="13" fill={accent} opacity="0.35"/>
+          <circle cx="114" cy="38" r="10" fill={accent} opacity="0.22"/>
+          <path d="M32 82 Q46 60 60 70 Q70 76 80 72 Q90 68 100 70 Q114 80 128 82" stroke={accent} strokeWidth="1.5" fill="none" opacity="0.3" strokeLinecap="round"/>
+        </>}
+
+        {isRising && !isWings && !isOval && !isTree && !isStar && !isPath && !isPeople && <>
+          <rect x="12" y="70" width="12" height="16" rx="1" fill={accent} opacity="0.3"/>
+          <rect x="30" y="58" width="12" height="28" rx="1" fill={accent} opacity="0.4"/>
+          <rect x="48" y="46" width="12" height="40" rx="1" fill={accent} opacity="0.5"/>
+          <rect x="66" y="32" width="12" height="54" rx="1" fill={accent} opacity="0.6"/>
+          <rect x="84" y="20" width="12" height="66" rx="1" fill={accent} opacity="0.65"/>
+          <rect x="102" y="10" width="12" height="76" rx="1" fill={accent} opacity="0.7"/>
+          <path d="M18 76 L36 64 L54 52 L72 38 L90 26 L108 16" stroke={accent} strokeWidth="1.5" fill="none" opacity="0.5" strokeLinecap="round"/>
+          <line x1="6" y1="90" x2="154" y2="90" stroke={accent} strokeWidth="0.8" opacity="0.15"/>
+        </>}
+
+        {/* Default — abstract wave when no category matched */}
+        {!isWings && !isOval && !isTree && !isStar && !isPath && !isPeople && !isRising && <>
+          <path d={idx % 2 === 0 ? "M18 72 Q44 32 80 52 Q116 72 142 26" : "M18 26 Q44 66 80 46 Q116 26 142 72"}
+            stroke={accent} strokeWidth="2" fill="none" opacity="0.55" strokeLinecap="round"/>
+          <circle cx="80" cy={idx % 2 === 0 ? 52 : 46} r="26" fill={accent} opacity="0.04"/>
+          <circle cx="80" cy={idx % 2 === 0 ? 52 : 46} r="12" fill={accent} opacity="0.07"/>
+          <circle cx="80" cy={idx % 2 === 0 ? 52 : 46} r="4" fill={accent} opacity="0.5"/>
+        </>}
       </svg>
-    ),
-    // Scene 2 — tension / problem
-    (gold) => (
-      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
-        <rect width="160" height="100" fill="#0A0804"/>
-        <path d="M80 18 L100 58 H60 Z" stroke="#CC4444" strokeWidth="1.5" fill="rgba(204,68,68,0.12)"/>
-        <line x1="80" y1="30" x2="80" y2="46" stroke="#CC4444" strokeWidth="2" strokeLinecap="round"/>
-        <circle cx="80" cy="52" r="2" fill="#CC4444"/>
-        <circle cx="80" cy="50" r="28" stroke="rgba(204,68,68,0.15)" strokeWidth="1" fill="none"/>
-        <circle cx="80" cy="50" r="38" stroke="rgba(204,68,68,0.08)" strokeWidth="1" fill="none"/>
-      </svg>
-    ),
-    // Scene 3 — insight / turning point
-    (gold) => (
-      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
-        <rect width="160" height="100" fill="#0A0804"/>
-        <circle cx="80" cy="44" r="22" stroke={gold} strokeWidth="1" fill="none" opacity="0.3"/>
-        <circle cx="80" cy="44" r="14" stroke={gold} strokeWidth="1.5" fill="none" opacity="0.5"/>
-        <circle cx="80" cy="44" r="5" fill={gold} opacity="0.8"/>
-        <line x1="80" y1="14" x2="80" y2="22" stroke={gold} strokeWidth="1.5" opacity="0.5" strokeLinecap="round"/>
-        <line x1="80" y1="66" x2="80" y2="74" stroke={gold} strokeWidth="1.5" opacity="0.5" strokeLinecap="round"/>
-        <line x1="50" y1="44" x2="58" y2="44" stroke={gold} strokeWidth="1.5" opacity="0.5" strokeLinecap="round"/>
-        <line x1="102" y1="44" x2="110" y2="44" stroke={gold} strokeWidth="1.5" opacity="0.5" strokeLinecap="round"/>
-      </svg>
-    ),
-    // Scene 4 — breakthrough / solution
-    (gold) => (
-      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
-        <rect width="160" height="100" fill="#0A0804"/>
-        <path d="M20 72 Q50 30 80 48 Q110 66 140 20" stroke={gold} strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.7"/>
-        <circle cx="140" cy="20" r="5" fill={gold} opacity="0.9"/>
-        <path d="M132 24 L140 20 L136 28" stroke={gold} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.8"/>
-        <line x1="14" y1="80" x2="148" y2="80" stroke={gold} strokeWidth="0.8" opacity="0.15"/>
-      </svg>
-    ),
-    // Scene 5 — transformation / future
-    (gold) => (
-      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
-        <rect width="160" height="100" fill="#0A0804"/>
-        <circle cx="80" cy="46" r="30" fill="rgba(138,158,132,0.06)" stroke={gold} strokeWidth="0.8" opacity="0.4"/>
-        <circle cx="54" cy="46" r="8" fill={gold} opacity="0.7"/>
-        <circle cx="80" cy="30" r="8" fill={gold} opacity="0.5"/>
-        <circle cx="106" cy="46" r="8" fill={gold} opacity="0.7"/>
-        <circle cx="80" cy="62" r="8" fill={gold} opacity="0.5"/>
-        <line x1="60" y1="43" x2="74" y2="33" stroke={gold} strokeWidth="1" opacity="0.3"/>
-        <line x1="86" y1="33" x2="100" y2="43" stroke={gold} strokeWidth="1" opacity="0.3"/>
-        <line x1="60" y1="49" x2="74" y2="59" stroke={gold} strokeWidth="1" opacity="0.3"/>
-        <line x1="86" y1="59" x2="100" y2="49" stroke={gold} strokeWidth="1" opacity="0.3"/>
-      </svg>
-    ),
-    // Scene 6 — call to action
-    (gold) => (
-      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
-        <rect width="160" height="100" fill="#0A0804"/>
-        <path d="M28 50 L110 50" stroke={gold} strokeWidth="2.5" strokeLinecap="round" opacity="0.8"/>
-        <path d="M98 38 L112 50 L98 62" stroke={gold} strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.9"/>
-        <circle cx="130" cy="50" r="14" fill="rgba(138,158,132,0.1)" stroke={gold} strokeWidth="1" opacity="0.5"/>
-        <circle cx="130" cy="50" r="8" fill={gold} opacity="0.25"/>
-      </svg>
-    ),
-  ];
+    );
+  }
 
   const [phase,    setPhase]   = useState('brief');
   const [brief,    setBrief]   = useState('');
@@ -506,28 +541,31 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
           max_tokens: 1400,
           messages: [{
             role: "user",
-            content: `You are a master storyteller and creative director for business presentations. Based on the brief below, generate a complete, specific, cinematic story script.
+            content: `You are a master storyteller. A user has given you a brief. Your only job is to write THEIR story — not a generic template, not a business transformation arc, not a default narrative. You must adapt completely to what they describe.
 
-Brief: "${brief}"
+Read this brief carefully:
+"${brief}"
 
-Important: Name each scene precisely to THIS story — not generic labels. The narrative should be specific enough that someone reading it could picture exactly what they're seeing and hearing.
+Match its tone, genre, audience, and emotional register completely. If the brief says magical and for a child, write like a children's picture book — use wonder, simple language, characters, and joy. If it says breaking news, write urgent and cinematic. If it says a love story, write warmly and personally. If it says data and enterprise, write with precision and authority. The brief is your complete and only instruction — ignore any default story shapes.
 
-Return ONLY valid JSON:
+Write exactly 6 scenes that tell THIS specific story. Every scene title must name something that actually happens in this story — not generic labels like "The World Before", "The Turning Point", or "The Call To Action". Give each scene a name that only makes sense for this story.
+
+Return ONLY valid JSON — no preamble, no markdown:
 {
-  "storyTitle": "A specific, evocative title for this story (not generic)",
-  "deliveryNote": "One sentence on how to deliver this — tone, pace, emotional register",
+  "storyTitle": "A title specific to this story and this brief (not generic)",
+  "deliveryNote": "One sentence on how to tell this — tone, pace, energy, who it's for",
   "scenes": [
     {
       "number": 1,
-      "title": "Scene-specific title (e.g. The 3am Alert, not Opening)",
-      "narrative": "2-4 lines of narrator voiceover — specific, visual, present-tense. Make the audience see it.",
-      "visualDirection": "One line: exactly what the audience sees — e.g. Dark screens. One red notification.",
-      "caption": "One crisp sentence capturing this scene's narrative purpose"
+      "title": "Scene title that is specific to THIS story",
+      "narrative": "2-4 lines written in the style this brief calls for — if magical, be magical; if cinematic, be cinematic; if funny, be funny. Make the reader picture it exactly.",
+      "visualDirection": "One line describing what is seen — specific to this scene and story (e.g. A tiny egg on a bright green leaf. Morning dew. Sunlight breaking through.)",
+      "caption": "One crisp sentence that captures this scene's purpose in the story"
     }
   ]
 }
 
-Generate exactly 6 scenes. Make them feel like a film, not a slide deck.`
+6 scenes total. Stay true to the brief. This is their story, not a template.`
           }]
         })
       });
@@ -687,7 +725,7 @@ Generate exactly 6 scenes. Make them feel like a film, not a slide deck.`
                 <div key={i} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid rgba(138,158,132,0.2)",background:"#0D0B08",boxShadow:"0 4px 20px rgba(0,0,0,0.4)"}}>
                   {/* Visual area */}
                   <div style={{position:"relative",height:isDesktop?130:110,overflow:"hidden"}}>
-                    {SCENE_SVGS[i] ? SCENE_SVGS[i](GOLD) : SCENE_SVGS[0](GOLD)}
+                    {makeSceneSVG(scene, i)}
                     <div style={{position:"absolute",top:8,left:8,width:isDesktop?24:20,height:isDesktop?24:20,borderRadius:4,background:"rgba(10,8,4,0.75)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                       <span style={{fontFamily:T.sans,fontSize:isDesktop?10:9,fontWeight:700,color:T.gold}}>{scene.number}</span>
                     </div>
