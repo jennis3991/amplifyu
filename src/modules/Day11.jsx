@@ -223,9 +223,9 @@ export function D11SimWidget({T, T2, isDesktop}) {
     let rewriteAbout = `Known for being ${d.map(w=>w.toLowerCase()).join(', ')} — I bring clarity, rigour, and genuine commitment to every room I enter.\n\nMy work creates impact that compounds over time. I believe the best outcomes come from clear communication, deliberate decisions, and people who care deeply about their craft.\n\nIf you want to work with someone who is ${d0} and genuinely ${d2} — let's connect.`;
 
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch("/api/claude", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-api-key": import.meta.env.VITE_ANTHROPIC_KEY },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514",
           max_tokens: 700,

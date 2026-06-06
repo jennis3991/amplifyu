@@ -337,9 +337,9 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
   // ── Anthropic call ────────────────────────────────────────────────────────
   async function callCoach(tx, dur) {
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await fetch('/api/claude', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', "x-api-key": import.meta.env.VITE_ANTHROPIC_KEY },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 1000,
