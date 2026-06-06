@@ -484,7 +484,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             6:{label:"MASTERS UNDER PRESSURE",      heading:"Composure is a skill. The calmest person in the room shapes the room.",  body:"How elite communicators handle the conversations most people avoid."},
             7:{label:"COMMUNICATION IN ACTION",  heading:"Every skill. One conversation.",                                            body:"This is what a week of deliberate practice looks like in the real world."},
             8:{label:"STORYTELLING IN THE WILD", heading:"Stories create empathy. Empathy creates trust. Trust creates influence.",    body:"The same facts — told as a story — land 22× more powerfully in the human brain."},
-            9:{label:"DELIVERY IN ACTION",       heading:"Great content, delivered powerfully, changes everything.",                  body:"The same message — delivered differently — lands completely differently."},
+            9:{label:"CONNECTION IN ACTION",      heading:"The most connected people listen more than they speak.",                  body:"Four stories. One truth: connection is the skill that changes everything."},
             10:{label:"PERFORMANCE IN ACTION",   heading:"Visible performance is communicated performance.",                          body:"Your work is exceptional. Make sure people know it."},
             11:{label:"ICONIC BRANDS. INTENTIONAL CHOICES.", heading:"Brand isn't what you say about yourself. It's what others say when you're not there.", body:"Three people whose personal brands became cultural forces — not by accident, but by design."},
           };

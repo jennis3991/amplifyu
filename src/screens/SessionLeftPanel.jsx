@@ -478,12 +478,12 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Example") return (
-      <div style={d9Dark}>
-        <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="voice" height={900} day={lesson.day}/></div>
-        {d9Overlay}
-        <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
+      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
+        <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           {d9Label("Connection in Action")}
-          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:380, lineHeight:1.2 }}>The most connected people listen more than they speak.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>The most connected people listen more than they speak.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
     );
