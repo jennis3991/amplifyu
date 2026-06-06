@@ -928,10 +928,26 @@ Return ONLY valid JSON:
           </div>
         </div>
 
-        {/* ── STORY NARRATIVE + EXPERIENCE MODE ────────────────────────────── */}
+        {/* ── EXPERIENCE MODE ──────────────────────────────────────────────── */}
+        <div style={{marginBottom:isDesktop?28:20}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?14:12}}>Experience</div>
+          <div style={{display:"flex",flexDirection:"row",flexWrap:"wrap",gap:0,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+            {EXP_FIELDS.map((f,i,arr)=>(
+              <div key={i} style={{padding:isDesktop?"14px 18px":"11px 14px",borderRight:i<arr.length-1?"0.5px solid "+T2.border:"none",flex:"1 1 auto",display:"flex",gap:10,alignItems:"flex-start",minWidth:isDesktop?140:120}}>
+                <div style={{marginTop:2,flexShrink:0,opacity:0.6}}>{f.icon}</div>
+                <div>
+                  <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>{f.label}</div>
+                  <div style={{fontFamily:T.sans,fontSize:11,color:T2.text,fontWeight:400,lineHeight:1.4}}>{f.val}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── STORY NARRATIVE ──────────────────────────────────────────────── */}
         <div>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?16:12}}>Story Narrative</div>
-          <div style={{display:"flex",gap:isDesktop?28:0,alignItems:"flex-start",flexDirection:isDesktop?"row":"column"}}>
+          <div>
             {/* Story text */}
             <div style={{flex:1,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:isDesktop?"28px 32px":"18px 20px"}}>
               {result.story
@@ -951,37 +967,7 @@ Return ONLY valid JSON:
               }
             </div>
 
-            {/* Experience Mode sidebar */}
-            {isDesktop && (
-              <div style={{width:220,flexShrink:0}}>
-                <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12}}>Experience</div>
-                <div style={{display:"flex",flexDirection:"column",gap:0,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
-                  {EXP_FIELDS.map((f,i,arr)=>(
-                    <div key={i} style={{padding:"12px 16px",borderBottom:i<arr.length-1?"0.5px solid "+T2.border:"none",display:"flex",gap:10,alignItems:"flex-start"}}>
-                      <div style={{marginTop:2,flexShrink:0,opacity:0.6}}>{f.icon}</div>
-                      <div>
-                        <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>{f.label}</div>
-                        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text,fontWeight:400,lineHeight:1.4}}>{f.val}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
-
-          {/* Experience Mode on mobile — horizontal */}
-          {!isDesktop && (
-            <div style={{marginTop:14,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
-              <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"2.5px",padding:"11px 16px",borderBottom:"0.5px solid "+T2.border}}>Experience</div>
-              {EXP_FIELDS.map((f,i,arr)=>(
-                <div key={i} style={{padding:"10px 16px",borderBottom:i<arr.length-1?"0.5px solid "+T2.border:"none",display:"flex",justifyContent:"space-between",alignItems:"center",gap:10}}>
-                  <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px"}}>{f.label}</span>
-                  <span style={{fontFamily:T.sans,fontSize:11,color:T2.text,fontWeight:400,textAlign:"right"}}>{f.val}</span>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Footer actions */}
