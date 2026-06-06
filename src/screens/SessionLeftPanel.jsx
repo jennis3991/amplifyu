@@ -434,14 +434,49 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Simulation") return (
-      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 70% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)", pointerEvents:"none" }}/>
-        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
-        <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Story Architect</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Build a story for your next important presentation.</p>
-          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Pitch · Proposal · Presentation · Leadership Talk · Sales Meeting</p>
+      <div style={{ height:"100%", background:"#100E0B", display:"flex", flexDirection:"column", position:"relative", overflow:"hidden" }}>
+        {/* Subtle warm texture gradient */}
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 60%, rgba(180,140,80,0.07) 0%, transparent 60%)", pointerEvents:"none" }}/>
+        {/* Top: editorial label + headline */}
+        <div style={{ position:"relative", zIndex:2, padding:"48px 44px 0", animation:"fadeUp 0.6s ease both" }}>
+          <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(200,168,76,0.6)", textTransform:"uppercase", letterSpacing:"4px", marginBottom:24 }}>The Story Architect</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.6vw,42px)", fontWeight:500, color:"rgba(245,239,230,0.92)", lineHeight:1.1, letterSpacing:"-1px", margin:"0 0 20px" }}>Build a story<br/>that moves people.</h2>
+          <div style={{ width:28, height:1, background:"rgba(200,168,76,0.4)", marginBottom:20 }}/>
+          <p style={{ fontFamily:T.sans, fontSize:13, fontWeight:300, color:"rgba(245,239,230,0.42)", lineHeight:1.7, maxWidth:280, margin:0 }}>Craft stories that inspire action<br/>and drive meaningful impact.</p>
+        </div>
+        {/* Centre: atmospheric open-book SVG illustration */}
+        <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", padding:"24px 44px", position:"relative", zIndex:2 }}>
+          <svg viewBox="0 0 280 180" fill="none" width="100%" style={{ maxWidth:280, opacity:0.85 }}>
+            {/* Glow behind book */}
+            <ellipse cx="140" cy="130" rx="90" ry="30" fill="rgba(180,140,60,0.12)"/>
+            <ellipse cx="140" cy="125" rx="60" ry="20" fill="rgba(200,160,80,0.1)"/>
+            {/* Book spine shadow */}
+            <rect x="134" y="50" width="12" height="100" rx="2" fill="rgba(80,60,30,0.6)"/>
+            {/* Left page */}
+            <path d="M136 50 Q80 48 30 60 L30 148 Q80 138 136 140 Z" fill="rgba(245,235,210,0.12)" stroke="rgba(200,170,100,0.25)" strokeWidth="0.8"/>
+            {/* Left page lines */}
+            {[68,78,88,98,108,118,128].map((y,i)=>(
+              <line key={i} x1={50+(i%2)*4} y1={y} x2={120} y2={y+2} stroke="rgba(200,170,100,0.18)" strokeWidth="0.6"/>
+            ))}
+            {/* Right page */}
+            <path d="M144 50 Q200 48 250 60 L250 148 Q200 138 144 140 Z" fill="rgba(245,235,210,0.12)" stroke="rgba(200,170,100,0.25)" strokeWidth="0.8"/>
+            {/* Right page lines */}
+            {[68,78,88,98,108,118,128].map((y,i)=>(
+              <line key={i} x1={160} y1={y} x2={230+(i%2)*4} y2={y+2} stroke="rgba(200,170,100,0.18)" strokeWidth="0.6"/>
+            ))}
+            {/* Warm light emanating from spine */}
+            <ellipse cx="140" cy="95" rx="18" ry="55" fill="rgba(220,170,60,0.08)"/>
+            <ellipse cx="140" cy="95" rx="8" ry="50" fill="rgba(240,190,80,0.07)"/>
+            {/* Book cover bottom */}
+            <path d="M30 148 Q80 145 134 148 L134 155 Q80 158 30 155 Z" fill="rgba(60,45,20,0.7)"/>
+            <path d="M250 148 Q200 145 146 148 L146 155 Q200 158 250 155 Z" fill="rgba(60,45,20,0.7)"/>
+          </svg>
+        </div>
+        {/* Bottom: quote */}
+        <div style={{ position:"relative", zIndex:2, padding:"0 44px 44px", animation:"fadeUp 0.8s ease 0.2s both" }}>
+          <div style={{ fontFamily:T.serif, fontSize:44, lineHeight:0.7, color:"rgba(200,168,76,0.25)", marginBottom:12, userSelect:"none" }}>"</div>
+          <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:"rgba(245,239,230,0.5)", lineHeight:1.65, margin:"0 0 10px", maxWidth:280 }}>Facts tell, stories sell, but stories inspire action.</p>
+          <div style={{ fontFamily:T.sans, fontSize:10, color:"rgba(245,239,230,0.22)", letterSpacing:"1px" }}>— Unknown</div>
         </div>
       </div>
     );

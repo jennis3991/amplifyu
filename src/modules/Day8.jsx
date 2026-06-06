@@ -388,176 +388,359 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   const T  = Tp  || Timport;
   const T2 = T2p || T2D;
 
+  // ── Palette ──────────────────────────────────────────────────────────────
+  const CREAM = '#F8F5EF';
+  const INK   = '#3A3028';
+  const INK_D = 'rgba(58,48,40,0.28)';
+
+  // ── Sketch illustrations — fine-line editorial style ─────────────────────
+  function SketchIllustration({ scene, idx }) {
+    const dir = (scene.visual || scene.visualDirection || '').toLowerCase();
+    const isEgg        = /egg|tiny.*start|tiny.*begin|rest.*leaf|small.*oval|dewdrop/.test(dir);
+    const isCaterp     = /caterpillar|crawl|larva|hungry.*leaf|worm|munch|eating/.test(dir);
+    const isChrysalis  = /chrysalis|cocoon|golden.*sleep|hang.*branch|suspend|cocooned|transform/.test(dir);
+    const isButterfly  = /butterfly|wing|soar|emerge|first.*flight|spread.*wing|flying/.test(dir);
+    const isLeaf       = /leaf|leaf|garden|green|nature|bloom|petal|flower|blossom/.test(dir);
+    const isBook       = /book|page|pen|quill|write|open.*book|glowing.*book|story/.test(dir);
+    const isLightbulb  = /idea|insight|clarity|lightbulb|light.*idea|realise|understand/.test(dir);
+    const isMountain   = /mountain|peak|summit|climb|achieve|top/.test(dir);
+    const isPath       = /path|road|trail|winding|horizon|journey.*ahead|ahead/.test(dir);
+    const isDoor       = /door|doorway|open.*door|threshold|entrance|light.*through/.test(dir);
+    const isFigure     = /figure|silhouette|person|human|child|someone|together|people/.test(dir);
+    const isStar       = /star|shine|sparkle|glitter|shimmer|constellation/.test(dir);
+    const isSunrise    = /sunrise|dawn|morning|sun.*rising|golden.*sun|horizon.*sun/.test(dir);
+    const isFire       = /fire|flame|spark|urgent|alert|danger|red/.test(dir);
+    const isCompass    = /compass|navigation|direction|north|guide|map/.test(dir);
+
+    if (isEgg) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        {/* Leaf */}
+        <path d="M100 125 Q50 80 65 40 Q100 18 135 40 Q150 80 100 125" stroke={INK} strokeWidth="1.1" fill="rgba(58,48,40,0.04)"/>
+        {/* Midrib */}
+        <path d="M100 125 Q100 75 100 40" stroke={INK} strokeWidth="0.6" opacity="0.45"/>
+        {/* Lateral veins */}
+        {[[100,80,78,65],[100,80,122,65],[100,95,82,82],[100,95,118,82],[100,67,84,57],[100,67,116,57]].map(([x1,y1,x2,y2],i)=>(
+          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={INK} strokeWidth="0.5" opacity="0.3"/>
+        ))}
+        {/* Egg */}
+        <ellipse cx="100" cy="62" rx="9" ry="12" stroke={INK} strokeWidth="1" fill="rgba(245,240,228,0.9)"/>
+        {/* Subtle shadow under egg */}
+        <ellipse cx="100" cy="74" rx="6" ry="1.5" fill={INK} opacity="0.07"/>
+        {/* Dew drops */}
+        <circle cx="78" cy="88" r="2.2" stroke={INK} strokeWidth="0.7" fill="none"/>
+        <circle cx="120" cy="95" r="1.6" stroke={INK} strokeWidth="0.7" fill="none"/>
+        <circle cx="85" cy="105" r="1.3" stroke={INK} strokeWidth="0.6" fill="none"/>
+      </svg>
+    );
+    if (isCaterp) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        {/* Serrated leaf */}
+        <path d="M30 105 Q40 65 70 45 Q100 30 130 45 Q160 65 170 105 Q140 115 100 118 Q60 115 30 105Z" stroke={INK} strokeWidth="1" fill="rgba(58,48,40,0.04)"/>
+        <path d="M100 118 Q100 75 100 45" stroke={INK} strokeWidth="0.55" opacity="0.4"/>
+        {/* Caterpillar body segments */}
+        {[55,70,85,100,115,130].map((cx,i)=>(
+          <circle key={i} cx={cx} cy={80-(i===0||i===5?0:i%2===0?-2:2)} r={i===0?9:8} stroke={INK} strokeWidth={i===0?"1.2":"1"} fill="rgba(245,240,228,0.85)"/>
+        ))}
+        {/* Head details */}
+        <circle cx="53" cy="80" r="3" fill={INK} opacity="0.7"/>
+        <circle cx="57" cy="80" r="3" fill={INK} opacity="0.7"/>
+        {/* Antennae */}
+        <path d="M50 72 Q46 64 44 60" stroke={INK} strokeWidth="0.7" strokeLinecap="round"/>
+        <path d="M56 72 Q52 63 51 58" stroke={INK} strokeWidth="0.7" strokeLinecap="round"/>
+        {/* Legs */}
+        {[70,85,100,115].map((x,i)=>(
+          <path key={i} d={`M${x} 88 Q${x-2} 96 ${x-4} 102`} stroke={INK} strokeWidth="0.7" strokeLinecap="round" opacity="0.6"/>
+        ))}
+      </svg>
+    );
+    if (isChrysalis) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        {/* Branch */}
+        <path d="M30 35 Q80 32 140 30 Q170 29 190 32" stroke={INK} strokeWidth="1.5" strokeLinecap="round"/>
+        {/* Small twigs */}
+        <path d="M75 32 Q70 22 66 16" stroke={INK} strokeWidth="0.8" strokeLinecap="round" opacity="0.6"/>
+        <path d="M130 30 Q128 20 124 14" stroke={INK} strokeWidth="0.8" strokeLinecap="round" opacity="0.6"/>
+        {/* Silk thread */}
+        <path d="M100 35 Q99 42 100 50" stroke={INK} strokeWidth="0.7" opacity="0.6"/>
+        {/* Chrysalis body */}
+        <path d="M100 52 Q120 58 122 78 Q122 100 100 115 Q78 100 78 78 Q78 58 100 52Z" stroke={INK} strokeWidth="1.2" fill="rgba(200,168,76,0.1)"/>
+        {/* Wing pattern lines inside */}
+        <path d="M88 70 Q100 65 112 70" stroke={INK} strokeWidth="0.5" opacity="0.3"/>
+        <path d="M86 80 Q100 75 114 80" stroke={INK} strokeWidth="0.5" opacity="0.3"/>
+        <path d="M87 90 Q100 86 113 90" stroke={INK} strokeWidth="0.5" opacity="0.25"/>
+        {/* Sparkle marks */}
+        {[[70,55],[130,60],[65,75],[135,80],[72,95]].map(([x,y],i)=>(
+          <g key={i} opacity="0.55">
+            <line x1={x} y1={y-4} x2={x} y2={y+4} stroke={INK} strokeWidth="0.6"/>
+            <line x1={x-4} y1={y} x2={x+4} y2={y} stroke={INK} strokeWidth="0.6"/>
+          </g>
+        ))}
+      </svg>
+    );
+    if (isButterfly) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        {/* Upper wings */}
+        <path d="M100 65 Q78 38 52 40 Q32 42 35 62 Q38 80 65 78 Q85 76 100 65Z" stroke={INK} strokeWidth="1.1" fill="rgba(58,48,40,0.04)"/>
+        <path d="M100 65 Q122 38 148 40 Q168 42 165 62 Q162 80 135 78 Q115 76 100 65Z" stroke={INK} strokeWidth="1.1" fill="rgba(58,48,40,0.04)"/>
+        {/* Lower wings */}
+        <path d="M100 72 Q78 80 60 100 Q52 116 68 118 Q86 120 100 100Z" stroke={INK} strokeWidth="1" fill="rgba(58,48,40,0.04)"/>
+        <path d="M100 72 Q122 80 140 100 Q148 116 132 118 Q114 120 100 100Z" stroke={INK} strokeWidth="1" fill="rgba(58,48,40,0.04)"/>
+        {/* Wing venation */}
+        {[["M100 65 Q82 58 68 52"],["M100 65 Q88 55 80 46"],["M100 65 Q118 58 132 52"],["M100 65 Q112 55 120 46"]].map((d,i)=>(
+          <path key={i} d={d[0]} stroke={INK} strokeWidth="0.5" opacity="0.3"/>
+        ))}
+        <path d="M100 65 Q90 78 88 95 Q86 108 90 115" stroke={INK} strokeWidth="0.5" opacity="0.3"/>
+        <path d="M100 65 Q110 78 112 95 Q114 108 110 115" stroke={INK} strokeWidth="0.5" opacity="0.3"/>
+        {/* Body */}
+        <path d="M100 50 Q102 65 100 85 Q98 95 100 105" stroke={INK} strokeWidth="1.2" strokeLinecap="round"/>
+        {/* Antennae */}
+        <path d="M100 50 Q90 38 84 28" stroke={INK} strokeWidth="0.8" strokeLinecap="round"/>
+        <circle cx="83" cy="27" r="2" fill={INK} opacity="0.7"/>
+        <path d="M100 50 Q110 38 116 28" stroke={INK} strokeWidth="0.8" strokeLinecap="round"/>
+        <circle cx="117" cy="27" r="2" fill={INK} opacity="0.7"/>
+        {/* Flight sparkles */}
+        {[[50,50],[155,52],[42,90],[158,88]].map(([x,y],i)=>(
+          <g key={i} opacity="0.4">
+            <line x1={x} y1={y-3} x2={x} y2={y+3} stroke={INK} strokeWidth="0.6"/>
+            <line x1={x-3} y1={y} x2={x+3} y2={y} stroke={INK} strokeWidth="0.6"/>
+          </g>
+        ))}
+      </svg>
+    );
+    if (isLeaf) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        <path d="M100 125 Q45 90 50 45 Q75 15 100 20 Q125 15 150 45 Q155 90 100 125Z" stroke={INK} strokeWidth="1.1" fill="rgba(58,48,40,0.04)"/>
+        <path d="M100 125 Q100 70 100 20" stroke={INK} strokeWidth="0.7" opacity="0.5"/>
+        {[[100,70,76,55],[100,70,124,55],[100,88,80,76],[100,88,120,76],[100,55,82,44],[100,55,118,44],[100,103,84,94],[100,103,116,94]].map(([x1,y1,x2,y2],i)=>(
+          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={INK} strokeWidth="0.5" opacity="0.32"/>
+        ))}
+        <circle cx="100" cy="70" r="8" stroke={INK} strokeWidth="0.9" fill="none" opacity="0.4"/>
+        <path d="M100 120 Q100 128 100 135" stroke={INK} strokeWidth="1.2" strokeLinecap="round" opacity="0.6"/>
+      </svg>
+    );
+    if (isSunrise) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        <line x1="20" y1="110" x2="180" y2="110" stroke={INK} strokeWidth="0.8" opacity="0.4"/>
+        <path d="M100 110 Q60 110 35 110" stroke={INK} strokeWidth="0.6" opacity="0.25"/>
+        <path d="M165 110 Q140 110 100 110" stroke={INK} strokeWidth="0.6" opacity="0.25"/>
+        {/* Sun semicircle */}
+        <path d="M65 110 A35 35 0 0 1 135 110" stroke={INK} strokeWidth="1.2" fill="rgba(58,48,40,0.05)"/>
+        {/* Sun rays */}
+        {[[-70,-60,-45,-30,-15,0,15,30,45,60,70].map((angle,i)=>{
+          const rad = angle * Math.PI / 180;
+          const r1=38, r2=50;
+          return <line key={i} x1={100+r1*Math.sin(rad)} y1={110-r1*Math.cos(rad)} x2={100+r2*Math.sin(rad)} y2={110-r2*Math.cos(rad)} stroke={INK} strokeWidth="0.8" opacity="0.5" strokeLinecap="round"/>;
+        })]}
+        {/* Horizon reflection lines */}
+        {[4,8,12,16].map((y,i)=>(
+          <line key={i} x1={30+i*8} y1={110+y} x2={170-i*8} y2={110+y} stroke={INK} strokeWidth="0.5" opacity={0.15-i*0.03}/>
+        ))}
+      </svg>
+    );
+    if (isBook) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        {/* Open book */}
+        <path d="M100 95 Q70 93 40 98 L40 50 Q70 44 100 47 Z" stroke={INK} strokeWidth="1" fill="rgba(58,48,40,0.04)"/>
+        <path d="M100 95 Q130 93 160 98 L160 50 Q130 44 100 47 Z" stroke={INK} strokeWidth="1" fill="rgba(58,48,40,0.04)"/>
+        <line x1="100" y1="47" x2="100" y2="95" stroke={INK} strokeWidth="1.2" opacity="0.6"/>
+        {[56,63,70,77,84].map((y,i)=>(
+          <line key={i} x1={55} y1={y} x2={92} y2={y+1} stroke={INK} strokeWidth="0.5" opacity="0.3"/>
+        ))}
+        {[56,63,70,77,84].map((y,i)=>(
+          <line key={i} x1={108} y1={y} x2={145} y2={y+1} stroke={INK} strokeWidth="0.5" opacity="0.3"/>
+        ))}
+        <ellipse cx="100" cy="100" rx="30" ry="6" fill={INK} opacity="0.06"/>
+        {/* Quill */}
+        <path d="M148 44 Q155 35 170 25 Q160 30 152 42 Z" stroke={INK} strokeWidth="0.8" fill="rgba(58,48,40,0.12)"/>
+        <path d="M148 44 Q145 52 143 60" stroke={INK} strokeWidth="0.7" strokeLinecap="round" opacity="0.6"/>
+      </svg>
+    );
+    if (isLightbulb) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        <path d="M100 105 Q88 105 85 118 L115 118 Q112 105 100 105Z" stroke={INK} strokeWidth="1" fill="rgba(58,48,40,0.06)"/>
+        <path d="M90 118 L110 118" stroke={INK} strokeWidth="0.8" opacity="0.5"/>
+        <path d="M92 124 L108 124" stroke={INK} strokeWidth="0.8" opacity="0.4"/>
+        <path d="M94 130 L106 130" stroke={INK} strokeWidth="0.8" opacity="0.3"/>
+        <path d="M100 105 Q88 105 80 95 Q72 84 75 72 Q78 55 100 50 Q122 55 125 72 Q128 84 120 95 Q112 105 100 105Z" stroke={INK} strokeWidth="1.1" fill="rgba(58,48,40,0.04)"/>
+        <path d="M90 80 Q100 72 110 80" stroke={INK} strokeWidth="0.6" opacity="0.4"/>
+        {[[100,35],[68,42],[132,42],[58,60],[142,60],[62,92],[138,92]].map(([x,y],i)=>(
+          <g key={i} opacity={i<3?0.55:0.35}>
+            <line x1={x} y1={y-4} x2={x} y2={y+4} stroke={INK} strokeWidth="0.7"/>
+            <line x1={x-4} y1={y} x2={x+4} y2={y} stroke={INK} strokeWidth="0.7"/>
+          </g>
+        ))}
+      </svg>
+    );
+    if (isPath) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        <line x1="20" y1="115" x2="180" y2="115" stroke={INK} strokeWidth="0.7" opacity="0.3"/>
+        <path d="M55 115 Q75 80 100 62 Q120 48 165 38" stroke={INK} strokeWidth="1.3" fill="none" strokeLinecap="round" opacity="0.7"/>
+        <path d="M45 115 Q65 80 90 62 Q110 48 155 38" stroke={INK} strokeWidth="0.6" fill="none" strokeLinecap="round" opacity="0.3" strokeDasharray="3 4"/>
+        <circle cx="165" cy="38" r="4" stroke={INK} strokeWidth="0.9" fill="rgba(58,48,40,0.15)"/>
+        {/* Trees */}
+        {[[40,90],[30,100],[150,58],[160,68]].map(([x,y],i)=>(
+          <g key={i} opacity="0.4">
+            <line x1={x} y1={y} x2={x} y2={y+20} stroke={INK} strokeWidth="1"/>
+            <path d={`M${x} ${y} Q${x-8} ${y-14} ${x+8} ${y-14} Q${x} ${y-22} ${x} ${y}`} stroke={INK} strokeWidth="0.7" fill="rgba(58,48,40,0.05)"/>
+          </g>
+        ))}
+      </svg>
+    );
+    if (isDoor) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        {/* Frame */}
+        <rect x="68" y="28" width="64" height="98" rx="1" stroke={INK} strokeWidth="1" fill="rgba(58,48,40,0.04)"/>
+        {/* Door panels */}
+        <rect x="74" y="34" width="52" height="40" rx="1" stroke={INK} strokeWidth="0.6" fill="none" opacity="0.4"/>
+        <rect x="74" y="80" width="52" height="40" rx="1" stroke={INK} strokeWidth="0.6" fill="none" opacity="0.4"/>
+        {/* Light from within */}
+        <path d="M100 28 Q90 40 84 60 Q80 80 86 100 Q90 110 100 120" stroke={INK} strokeWidth="0.5" opacity="0.2" fill="none"/>
+        <path d="M100 28 Q110 40 116 60 Q120 80 114 100 Q110 110 100 120" stroke={INK} strokeWidth="0.5" opacity="0.2" fill="none"/>
+        {/* Glow lines emanating */}
+        {[[-20,-25],[0,-30],[20,-25],[35,-15],[40,0],[35,15]].map(([dx,dy],i)=>(
+          <line key={i} x1={100} y1={70} x2={100+dx} y2={70+dy} stroke={INK} strokeWidth="0.5" opacity={0.12+i*0.03} strokeLinecap="round"/>
+        ))}
+        {/* Handle */}
+        <circle cx="116" cy="78" r="3" stroke={INK} strokeWidth="0.8" fill="none"/>
+        {/* Threshold */}
+        <line x1="68" y1="126" x2="132" y2="126" stroke={INK} strokeWidth="1.2" opacity="0.5"/>
+      </svg>
+    );
+    if (isFigure) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        <circle cx="100" cy="42" r="14" stroke={INK} strokeWidth="1" fill="rgba(58,48,40,0.05)"/>
+        <path d="M86 56 Q80 70 78 88 Q78 100 100 100 Q122 100 122 88 Q120 70 114 56" stroke={INK} strokeWidth="1" fill="rgba(58,48,40,0.04)"/>
+        <path d="M86 68 Q72 72 64 82" stroke={INK} strokeWidth="1" strokeLinecap="round" opacity="0.7"/>
+        <path d="M114 68 Q128 72 136 82" stroke={INK} strokeWidth="1" strokeLinecap="round" opacity="0.7"/>
+        <path d="M90 100 Q88 118 86 128" stroke={INK} strokeWidth="1" strokeLinecap="round" opacity="0.6"/>
+        <path d="M110 100 Q112 118 114 128" stroke={INK} strokeWidth="1" strokeLinecap="round" opacity="0.6"/>
+        <line x1="40" y1="128" x2="160" y2="128" stroke={INK} strokeWidth="0.7" opacity="0.3"/>
+      </svg>
+    );
+    if (isStar) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        <path d="M100 28 L107 54 L135 54 L112 70 L121 96 L100 80 L79 96 L88 70 L65 54 L93 54 Z" stroke={INK} strokeWidth="1.1" fill="rgba(58,48,40,0.06)"/>
+        {[[100,20],[138,35],[152,70],[138,105],[100,118],[62,105],[48,70],[62,35]].map(([x,y],i)=>(
+          <g key={i} opacity="0.45">
+            <line x1={x} y1={y-5} x2={x} y2={y+5} stroke={INK} strokeWidth="0.7"/>
+            <line x1={x-5} y1={y} x2={x+5} y2={y} stroke={INK} strokeWidth="0.7"/>
+          </g>
+        ))}
+      </svg>
+    );
+    if (isFire) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        <path d="M100 115 Q80 115 72 100 Q65 85 75 72 Q78 65 80 58 Q88 72 84 80 Q95 60 92 40 Q105 55 104 68 Q112 52 110 38 Q125 55 122 75 Q128 68 126 56 Q135 70 132 88 Q128 100 120 108 Q112 115 100 115Z" stroke={INK} strokeWidth="1" fill="rgba(58,48,40,0.06)"/>
+        <path d="M92 108 Q100 95 108 108" stroke={INK} strokeWidth="0.7" opacity="0.4" fill="none"/>
+        {/* Sparks */}
+        {[[88,30],[100,25],[112,30],[80,50],[120,48]].map(([x,y],i)=>(
+          <g key={i} opacity={0.3+i*0.06}>
+            <line x1={x} y1={y-4} x2={x} y2={y+4} stroke={INK} strokeWidth="0.6"/>
+            <line x1={x-4} y1={y} x2={x+4} y2={y} stroke={INK} strokeWidth="0.6"/>
+          </g>
+        ))}
+      </svg>
+    );
+    if (isCompass) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        <circle cx="100" cy="70" r="45" stroke={INK} strokeWidth="0.8" fill="none" opacity="0.5"/>
+        <circle cx="100" cy="70" r="38" stroke={INK} strokeWidth="0.5" fill="none" opacity="0.3"/>
+        <path d="M100 25 L104 65 L100 70 L96 65 Z" stroke={INK} strokeWidth="0.9" fill="rgba(58,48,40,0.5)"/>
+        <path d="M100 115 L96 75 L100 70 L104 75 Z" stroke={INK} strokeWidth="0.9" fill="rgba(58,48,40,0.12)"/>
+        <path d="M55 70 L95 66 L100 70 L95 74 Z" stroke={INK} strokeWidth="0.9" fill="rgba(58,48,40,0.12)"/>
+        <path d="M145 70 L105 74 L100 70 L105 66 Z" stroke={INK} strokeWidth="0.9" fill="rgba(58,48,40,0.12)"/>
+        <circle cx="100" cy="70" r="4" stroke={INK} strokeWidth="1" fill={CREAM}/>
+        {['N','S','E','W'].map((l,i)=>{
+          const pos=[[100,36],[100,108],[138,70],[62,70]]; return (
+            <text key={i} x={pos[i][0]} y={pos[i][1]} textAnchor="middle" dominantBaseline="middle" fontFamily="serif" fontSize="10" fill={INK} opacity="0.7">{l}</text>
+          );
+        })}
+      </svg>
+    );
+    if (isMountain) return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        <line x1="15" y1="115" x2="185" y2="115" stroke={INK} strokeWidth="0.7" opacity="0.35"/>
+        <path d="M100 28 L145 115 L55 115 Z" stroke={INK} strokeWidth="1.1" fill="rgba(58,48,40,0.05)"/>
+        <path d="M55 115 L30 115 L60 72 Z" stroke={INK} strokeWidth="0.9" fill="rgba(58,48,40,0.04)" opacity="0.7"/>
+        <path d="M145 115 L170 115 L140 75 Z" stroke={INK} strokeWidth="0.9" fill="rgba(58,48,40,0.04)" opacity="0.7"/>
+        {/* Snow cap */}
+        <path d="M100 28 Q92 45 88 52 Q94 48 100 50 Q106 48 112 52 Q108 45 100 28Z" stroke={INK} strokeWidth="0.7" fill="rgba(245,240,230,0.9)"/>
+        {/* Horizontal distance lines */}
+        {[4,8,12].map((y,i)=>(
+          <line key={i} x1={30+i*10} y1={115+y} x2={170-i*10} y2={115+y} stroke={INK} strokeWidth="0.5" opacity={0.15-i*0.04}/>
+        ))}
+      </svg>
+    );
+    // Default: abstract editorial
+    return (
+      <svg viewBox="0 0 200 140" fill="none" width="100%" height="100%">
+        <rect width="200" height="140" fill={CREAM}/>
+        <path d={idx%2===0?"M30 105 Q65 45 100 68 Q135 92 170 35":"M30 35 Q65 95 100 72 Q135 48 170 105"}
+          stroke={INK} strokeWidth="1.2" fill="none" opacity="0.55" strokeLinecap="round"/>
+        <circle cx="100" cy={idx%2===0?68:72} r="22" stroke={INK} strokeWidth="0.6" fill="none" opacity="0.2"/>
+        <circle cx="100" cy={idx%2===0?68:72} r="10" stroke={INK} strokeWidth="0.8" fill="none" opacity="0.3"/>
+        <circle cx="100" cy={idx%2===0?68:72} r="3" fill={INK} opacity="0.45"/>
+        {[[40,55],[160,55],[40,90],[160,90]].map(([x,y],i)=>(
+          <g key={i} opacity="0.3">
+            <line x1={x} y1={y-4} x2={x} y2={y+4} stroke={INK} strokeWidth="0.7"/>
+            <line x1={x-4} y1={y} x2={x+4} y2={y} stroke={INK} strokeWidth="0.7"/>
+          </g>
+        ))}
+      </svg>
+    );
+  }
+
+  // ── Derive Experience Mode from storyWorld ────────────────────────────────
+  function deriveExperienceMode(sw) {
+    const e = (sw?.emotion||'').toLowerCase();
+    const s = (sw?.style||'').toLowerCase();
+    const TONES   = { wonder:'Warm, gentle, and magical', urgency:'Tense, direct, urgent', hope:'Uplifting and warm', sadness:'Quiet and reflective', excitement:'Energetic and vibrant', confidence:'Calm and assured', curiosity:'Playful and exploratory' };
+    const MUSIC   = { wonder:'Soft, whimsical, and uplifting', urgency:'Sharp, percussive, building', hope:'Gentle strings, ascending', sadness:'Piano, minimal', excitement:'Bright orchestral', confidence:'Low brass, steady', curiosity:'Light, unexpected' };
+    const NARR    = { bedtime:'Calm and gentle', cinematic:'Deep and expressive', ted:'Warm and direct', documentary:'Clear and authoritative', pitch:'Confident and precise', children:'Warm and playful' };
+    const dur = s.includes('short')||s.includes('brief')?'3-4 minutes':s.includes('long')||s.includes('epic')?'10-15 minutes':'5-7 minutes';
+    const tone    = Object.entries(TONES).find(([k])=>e.includes(k))?.[1] || 'Warm and considered';
+    const music   = Object.entries(MUSIC).find(([k])=>e.includes(k))?.[1] || 'Subtle, ambient';
+    const narr    = Object.entries(NARR).find(([k])=>s.includes(k))?.[1] || 'Clear and expressive';
+    return { tone, duration:dur, narration:narr, music, transitions:'Smooth and deliberate' };
+  }
+
+  // ── State ─────────────────────────────────────────────────────────────────
+  const [phase,    setPhase]   = useState('brief');
+  const [brief,    setBrief]   = useState('');
+  const [result,   setResult]  = useState(null);
+  const [apiError, setApiError]= useState(false);
+
   const EXAMPLE_BRIEFS = [
     "A magical story about the lifecycle of a butterfly for my 5-year-old — wonder and joy, bedtime story style",
     "A cybersecurity risk presentation for our board — make it feel like breaking news, urgent and specific",
     "A TED-style pitch for a new product — emotional, direct, show real human impact",
   ];
 
-  // Palette driven by emotion keyword
-  function emotionPalette(emotion) {
-    const e = (emotion||'').toLowerCase();
-    if (/curious|discover|wonder|question/.test(e))    return { bg:'#110C02', bg2:'#1A1206', accent:'#C9A84C' };
-    if (/growth|grow|learn|build|rise/.test(e))        return { bg:'#020E06', bg2:'#051410', accent:'#4A8A5A' };
-    if (/patience|wait|calm|still|quiet/.test(e))      return { bg:'#020614', bg2:'#04081E', accent:'#4A72B8' };
-    if (/wonder|awe|magic|enchant|amaze/.test(e))      return { bg:'#0A0614', bg2:'#12091E', accent:'#9A5AB8' };
-    if (/achieve|triumph|joy|excite|bright/.test(e))   return { bg:'#110C02', bg2:'#1C1408', accent:'#D4A030' };
-    if (/freedom|free|fly|soar|open|release/.test(e))  return { bg:'#020614', bg2:'#040A1A', accent:'#4A90C8' };
-    if (/danger|urgent|risk|fear|alarm|red/.test(e))   return { bg:'#150404', bg2:'#1E0606', accent:'#CC4444' };
-    if (/hope|love|warm|heart|tender/.test(e))         return { bg:'#140408', bg2:'#1E0812', accent:'#C44A8A' };
-    return { bg:'#0A0804', bg2:'#14100A', accent:'#8A9E84' };
-  }
-
-  // Brief-aware visual SVG from visual + emotion
-  function makeSceneSVG(scene, idx) {
-    const dir = (scene.visual || scene.visualDirection || '').toLowerCase();
-    const p   = emotionPalette(scene.emotion);
-    const { bg, bg2, accent } = p;
-
-    const isWings   = /butterfly|wing|fly|soar|flight|spread|flap/.test(dir);
-    const isOval    = /egg|oval|chrysalis|cocoon|bubble|sphere|circle/.test(dir);
-    const isTree    = /tree|branch|leaf|petal|garden|plant|bloom|flower/.test(dir);
-    const isStar    = /star|sparkle|glow|shimmer|twinkle|light|radiant/.test(dir);
-    const isPath    = /path|road|journey|river|trail|horizon|sky|sunset|sunrise/.test(dir);
-    const isPeople  = /people|crowd|child|family|friend|figure|someone|gather/.test(dir);
-    const isRising  = /rise|grow|climb|ascend|tall|build|tower|reach|launch/.test(dir);
-
-    return (
-      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
-        <defs>
-          <radialGradient id={`rg${idx}`} cx="50%" cy="45%" r="65%">
-            <stop offset="0%" stopColor={bg2}/>
-            <stop offset="100%" stopColor={bg}/>
-          </radialGradient>
-        </defs>
-        <rect width="160" height="100" fill={`url(#rg${idx})`}/>
-
-        {isWings && <>
-          <ellipse cx="60" cy="44" rx="30" ry="20" fill={accent} opacity="0.22" transform="rotate(-28 60 44)"/>
-          <ellipse cx="100" cy="44" rx="30" ry="20" fill={accent} opacity="0.22" transform="rotate(28 100 44)"/>
-          <ellipse cx="56" cy="63" rx="18" ry="11" fill={accent} opacity="0.16" transform="rotate(20 56 63)"/>
-          <ellipse cx="104" cy="63" rx="18" ry="11" fill={accent} opacity="0.16" transform="rotate(-20 104 63)"/>
-          <circle cx="80" cy="50" r="5" fill={accent} opacity="0.8"/>
-          <line x1="80" y1="55" x2="80" y2="74" stroke={accent} strokeWidth="1.5" opacity="0.35" strokeLinecap="round"/>
-        </>}
-        {isOval && !isWings && <>
-          <ellipse cx="80" cy="50" rx="28" ry="38" stroke={accent} strokeWidth="1.5" fill={accent} opacity="0.1"/>
-          <ellipse cx="80" cy="50" rx="18" ry="26" stroke={accent} strokeWidth="0.8" fill={accent} opacity="0.06"/>
-          <ellipse cx="72" cy="40" rx="8" ry="11" fill={accent} opacity="0.32" transform="rotate(-14 72 40)"/>
-          <circle cx="80" cy="50" r="3.5" fill={accent} opacity="0.55"/>
-        </>}
-        {isTree && !isWings && !isOval && <>
-          <path d="M80 90 L80 52" stroke={accent} strokeWidth="2.5" opacity="0.3" strokeLinecap="round"/>
-          <path d="M80 52 Q54 34 42 40 Q58 20 80 14 Q102 20 118 40 Q106 34 80 52" fill={accent} opacity="0.2"/>
-          <path d="M80 64 Q60 50 50 56 Q66 38 80 34 Q94 38 110 56 Q100 50 80 64" fill={accent} opacity="0.14"/>
-          <circle cx="60" cy="76" r="2.5" fill={accent} opacity="0.32"/>
-          <circle cx="100" cy="72" r="2.5" fill={accent} opacity="0.32"/>
-        </>}
-        {isStar && !isWings && !isOval && !isTree && <>
-          <circle cx="80" cy="50" r="34" fill={accent} opacity="0.04"/>
-          <circle cx="80" cy="50" r="20" fill={accent} opacity="0.08"/>
-          <circle cx="80" cy="50" r="8" fill={accent} opacity="0.4"/>
-          <line x1="80" y1="14" x2="80" y2="26" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
-          <line x1="80" y1="74" x2="80" y2="86" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
-          <line x1="44" y1="50" x2="56" y2="50" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
-          <line x1="104" y1="50" x2="116" y2="50" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
-          <line x1="56" y1="28" x2="64" y2="36" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
-          <line x1="104" y1="28" x2="96" y2="36" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
-          <line x1="56" y1="72" x2="64" y2="64" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
-          <line x1="104" y1="72" x2="96" y2="64" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
-        </>}
-        {isPath && !isWings && !isOval && !isTree && !isStar && <>
-          <path d="M12 80 Q36 56 62 65 Q88 74 112 44 Q126 30 148 16" stroke={accent} strokeWidth="2" fill="none" opacity="0.6" strokeLinecap="round"/>
-          <circle cx="12" cy="80" r="4" fill={accent} opacity="0.38"/>
-          <circle cx="62" cy="65" r="3" fill={accent} opacity="0.38"/>
-          <circle cx="112" cy="44" r="3" fill={accent} opacity="0.38"/>
-          <circle cx="148" cy="16" r="6" fill={accent} opacity="0.88"/>
-          <line x1="6" y1="90" x2="154" y2="90" stroke={accent} strokeWidth="0.8" opacity="0.12"/>
-        </>}
-        {isPeople && !isWings && !isOval && !isTree && !isStar && !isPath && <>
-          <circle cx="46" cy="38" r="10" fill={accent} opacity="0.22"/>
-          <circle cx="80" cy="32" r="13" fill={accent} opacity="0.36"/>
-          <circle cx="114" cy="38" r="10" fill={accent} opacity="0.22"/>
-          <path d="M32 82 Q46 60 60 70 Q70 76 80 72 Q90 68 100 70 Q114 80 128 82" stroke={accent} strokeWidth="1.5" fill="none" opacity="0.3" strokeLinecap="round"/>
-        </>}
-        {isRising && !isWings && !isOval && !isTree && !isStar && !isPath && !isPeople && <>
-          <rect x="12" y="70" width="12" height="16" rx="1" fill={accent} opacity="0.3"/>
-          <rect x="30" y="58" width="12" height="28" rx="1" fill={accent} opacity="0.4"/>
-          <rect x="48" y="46" width="12" height="40" rx="1" fill={accent} opacity="0.5"/>
-          <rect x="66" y="32" width="12" height="54" rx="1" fill={accent} opacity="0.6"/>
-          <rect x="84" y="20" width="12" height="66" rx="1" fill={accent} opacity="0.65"/>
-          <rect x="102" y="10" width="12" height="76" rx="1" fill={accent} opacity="0.72"/>
-          <path d="M18 76 L36 64 L54 52 L72 38 L90 26 L108 16" stroke={accent} strokeWidth="1.5" fill="none" opacity="0.5" strokeLinecap="round"/>
-        </>}
-        {!isWings && !isOval && !isTree && !isStar && !isPath && !isPeople && !isRising && <>
-          <path d={idx%2===0 ? "M18 72 Q44 32 80 52 Q116 72 142 26" : "M18 26 Q44 66 80 46 Q116 26 142 72"}
-            stroke={accent} strokeWidth="2" fill="none" opacity="0.55" strokeLinecap="round"/>
-          <circle cx="80" cy={idx%2===0?52:46} r="26" fill={accent} opacity="0.04"/>
-          <circle cx="80" cy={idx%2===0?52:46} r="12" fill={accent} opacity="0.07"/>
-          <circle cx="80" cy={idx%2===0?52:46} r="4" fill={accent} opacity="0.5"/>
-        </>}
-      </svg>
-    );
-  }
-
-  const [phase,    setPhase]   = useState('brief');
-  const [brief,    setBrief]   = useState('');
-  const [result,   setResult]  = useState(null);
-  const [apiError, setApiError]= useState(false);
-
   function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); }
 
-  // Brief-aware template fallback
   function buildFallback(b) {
     const bl = b.toLowerCase();
-    const isKids   = /child|kid|son|daughter|year.?old|baby|magical|fairy|princess|dragon/.test(bl);
+    const isKids   = /child|kid|son|daughter|year.?old|baby|magical|fairy|princess/.test(bl);
     const isUrgent = /urgent|crisis|risk|breaking|emergency|threat/.test(bl);
     const topic    = b.trim().split(/[,.\-—]/)[0].trim() || 'Your Story';
-
-    if (isKids) return {
-      storyWorld:{ subject:topic, audience:"Children", emotion:"Wonder", style:"Bedtime Story", visualWorld:"Magical World", character:"A brave little hero", lesson:"Believe in yourself" },
-      storyDNA:{ hero:"A tiny, curious hero", world:"A magical, colourful world", challenge:"A journey of change", magic:"The power of believing", lesson:"Every stage matters", ending:"Triumphant first flight" },
-      emotionalJourney:["Curiosity","Growth","Patience","Wonder","Achievement","Freedom"],
-      scenes:[
-        {number:1,title:"The Tiny Beginning",      visual:"A tiny egg on a bright green leaf. Morning dew. Soft golden light.",                 emotion:"Curiosity",    caption:"Every great journey starts small.", narrative:"Once upon a time, in a garden full of colour and light, the smallest beginning was about to become the greatest adventure."},
-        {number:2,title:"Eating Everything Up",    visual:"A hungry caterpillar munching bright green leaves. Sunshine everywhere.",            emotion:"Growth",       caption:"Eat. Grow. Explore.",             narrative:"Day after day, our little hero grew bigger and stronger — one leaf at a time."},
-        {number:3,title:"The Golden Chrysalis",    visual:"A glowing golden chrysalis hanging from a moonlit branch. Stars above.",            emotion:"Patience",     caption:"Magic is happening inside.",      narrative:"Then came the waiting. Tucked inside a golden sleeping bag, something wonderful was quietly taking shape."},
-        {number:4,title:"Transformation",          visual:"Swirling rainbow colours. Magical light. Something beautiful becoming.",             emotion:"Wonder",       caption:"Beautiful things take time.",     narrative:"Nobody could see it happening. But inside, absolutely everything was changing."},
-        {number:5,title:"Emergence",               visual:"Brilliant wings unfurling. Friends gathering. Sunlight streaming through.",         emotion:"Achievement",   caption:"Look what I became!",             narrative:"And then — one perfect morning — the chrysalis opened. And out stepped something so beautiful, everyone stopped to look."},
-        {number:6,title:"The First Flight",        visual:"A butterfly soaring over a valley at golden sunset. Wings catching the light.",     emotion:"Freedom",      caption:"Believe in your wings.",          narrative:"With one brave leap, she flew. The whole garden cheered. She had been becoming this all along."},
-      ],
-      story:`${topic}\n\nOnce upon a time, in a garden full of colour and magic, the most extraordinary journey began with the smallest of beginnings — a tiny, perfect egg on a bright green leaf.\n\nDay after day, a curious little caterpillar ate and grew and explored, learning that every leaf was an adventure.\n\nThen came the chrysalis — a golden sleeping bag of transformation. Nobody could see what was happening inside. But something magical was taking shape.\n\nIn the darkness, everything changed. Quietly. Completely. Beautifully.\n\nAnd one morning, the chrysalis opened — and out stepped the most wonderful butterfly anyone had ever seen.\n\nShe looked at her wings. She took a breath. And she flew.\n\nBecause all along, she had been becoming this.`,
-    };
-
-    if (isUrgent) return {
-      storyWorld:{ subject:topic, audience:"Leadership", emotion:"Urgency", style:"Cinematic", visualWorld:"High Stakes Room", character:"The Decision Maker", lesson:"Act now, not later" },
-      storyDNA:{ hero:"The team facing the decision", world:"A high-stakes boardroom", challenge:"A closing window", magic:"The right information at the right moment", lesson:"Inaction is a choice", ending:"A decisive yes" },
-      emotionalJourney:["Awareness","Tension","Clarity","Resolve","Confidence","Action"],
-      scenes:[
-        {number:1,title:"The Current Reality",  visual:"Dark screens. Data. The world as it stands right now.",              emotion:"Awareness",   caption:"This is where we are.",      narrative:"Before anything changes, we need to see exactly where we stand. Clearly. Honestly. Without softening."},
-        {number:2,title:"What's at Stake",      visual:"A countdown. A narrowing window. Numbers that matter.",              emotion:"Tension",     caption:"The window is closing.",     narrative:"This isn't a future problem. The risk is live. The gap between knowing and acting is where organisations fall."},
-        {number:3,title:"The Hidden Risk",      visual:"One highlighted line in a long report. The thing everyone missed.",  emotion:"Clarity",     caption:"Here's what we're missing.", narrative:"There's a layer most people don't reach. This is it. And once you see it, you can't unsee it."},
-        {number:4,title:"The Response",         visual:"A clear action plan. Concrete steps. Motion.",                      emotion:"Resolve",     caption:"This is what we do.",        narrative:"Not theory. Action. Here's exactly what needs to happen — and when."},
-        {number:5,title:"Protected Future",     visual:"Calm. Clear. Secure. The world on the other side of this decision.", emotion:"Confidence",  caption:"This is what we're building.", narrative:"On the other side of this decision is a fundamentally different operating environment."},
-        {number:6,title:"The Decision",         visual:"One chair. One table. One moment of choice.",                       emotion:"Action",      caption:"One decision. Made today.",  narrative:"Everything comes down to this. The plan is here. The team is ready. All that's needed now — is yes."},
-      ],
-      story:`${topic}\n\nThis is not a theoretical risk. This is happening now.\n\nHere is where we stand — clearly, honestly, without softening.\n\nThe window is closing. The gap between knowing and acting is exactly where organisations lose their advantage.\n\nThere's a layer most analyses don't reach. This is it. And it changes everything about how we respond.\n\nHere's the action. Not in theory — in practice. Concrete steps. A clear timeline. A team ready to move.\n\nOn the other side of this decision is a completely different operating environment.\n\nEverything comes down to this moment. One decision. Made today.`,
-    };
-
-    return {
-      storyWorld:{ subject:topic, audience:"Your audience", emotion:"Connection", style:"Your style", visualWorld:"Your world", character:"Your protagonist", lesson:"Your core message" },
-      storyDNA:{ hero:"The central character", world:"The setting", challenge:"The core tension", magic:"The turning point", lesson:"The insight", ending:"The resolution" },
-      emotionalJourney:["Curiosity","Tension","Insight","Hope","Confidence","Action"],
-      scenes:[
-        {number:1,title:"Where We Begin",       visual:"The world as it is. Familiar. Real.",                                emotion:"Curiosity",   caption:"Every story starts here.",        narrative:"Before anything changes, we need to see the world as it truly is."},
-        {number:2,title:"The Tension",          visual:"A gap. A question. Something that needs answering.",                 emotion:"Tension",     caption:"This is what makes it necessary.", narrative:"Something isn't working — or could work far better. That tension is the engine of this story."},
-        {number:3,title:"The Insight",          visual:"One clear idea, fully formed. A new way of seeing.",                emotion:"Insight",     caption:"This changes everything.",         narrative:"A new frame. Not more effort — a different lens. This is the pivot."},
-        {number:4,title:"The Path Forward",     visual:"A direction. Steps becoming clear. Motion beginning.",              emotion:"Hope",        caption:"From insight to action.",          narrative:"The route becomes clear. It's not easy — but it's right."},
-        {number:5,title:"What Becomes Possible",visual:"Open space. A different world. The future unlocked.",               emotion:"Confidence",  caption:"This is what we're building.",     narrative:"On the other side of this is something better. Fundamentally different."},
-        {number:6,title:"The Invitation",       visual:"A shared moment. The audience, ready to choose.",                   emotion:"Action",      caption:"Now it belongs to everyone.",      narrative:"This story ends with a question — what will we choose to do?"},
-      ],
-      story:`${topic}\n\nBefore anything changes, we need to see clearly.\n\nSomething isn't working — or could work far better. That tension is the engine of everything that follows.\n\nHere's the insight that changes the frame. Not more effort — a different way of seeing the problem.\n\nWith that insight, a path becomes clear. It won't be easy. But it will be right.\n\nOn the other side of this decision is something fundamentally better.\n\nThis story ends with a question for everyone here: what will we choose to do with what we now know?`,
-    };
+    if (isKids) return { storyWorld:{ subject:topic, audience:"Children (Age 5)", emotion:"Wonder", style:"Bedtime Story", visualWorld:"Magical Garden", character:"Luna", lesson:"Believe in yourself" }, scenes:[{number:1,title:"The Tiny Beginning",visual:"A tiny egg on a bright green leaf. Morning dew. Soft golden light.",emotion:"Curiosity",caption:"Every great journey starts small.",narrative:"Once upon a time, in a garden full of colour and magic, the tiniest of beginnings was about to become the greatest adventure."},{number:2,title:"Eating Everything Up",visual:"A hungry caterpillar on green leaves. Sunshine everywhere.",emotion:"Growth",caption:"Eat. Grow. Explore.",narrative:"Day after day, a curious little caterpillar grew bigger and stronger — one leaf at a time."},{number:3,title:"The Golden Chrysalis",visual:"A glowing chrysalis hanging from a moonlit branch. Stars above.",emotion:"Patience",caption:"Something magical is happening inside.",narrative:"Then came the waiting. Tucked inside a golden sleeping bag, something wonderful was quietly taking shape."},{number:4,title:"Transformation",visual:"Swirling rainbow light. Magical energy. Something becoming.",emotion:"Wonder",caption:"Beautiful things take time.",narrative:"Nobody could see it happening. But inside, absolutely everything was changing."},{number:5,title:"Emergence",visual:"Brilliant wings unfurling. Friends gathering. Sunlight.",emotion:"Achievement",caption:"Look what I became!",narrative:"And then — one perfect morning — the chrysalis opened. Something so beautiful, everyone stopped to look."},{number:6,title:"The First Flight",visual:"A butterfly soaring over a valley at golden sunset.",emotion:"Freedom",caption:"Believe in your wings.",narrative:"With one brave leap, she flew. The whole garden cheered. She had been becoming this all along."}], story:"Once upon a time, in a garden full of colour and magic, the most extraordinary journey began with the smallest of beginnings.\n\nDay after day, a curious caterpillar ate and grew and explored, learning that every leaf was an adventure.\n\nThen came the chrysalis — a golden sleeping bag of transformation. Something magical was happening inside.\n\nIn the darkness, everything changed. Quietly. Completely. Beautifully.\n\nAnd one morning, the chrysalis opened — and out stepped the most wonderful butterfly anyone had ever seen.\n\nShe looked at her wings. She took a breath. And she flew." };
+    if (isUrgent) return { storyWorld:{ subject:topic, audience:"Leadership", emotion:"Urgency", style:"Cinematic", visualWorld:"High Stakes", character:"The Decision Maker", lesson:"Act now" }, scenes:[{number:1,title:"The Current Reality",visual:"Dark screens. Data. The world as it stands right now.",emotion:"Awareness",caption:"This is where we are.",narrative:"Before anything changes, we need to see exactly where we stand. Clearly. Honestly."},{number:2,title:"What's at Stake",visual:"A countdown. Narrowing window. Numbers that matter.",emotion:"Tension",caption:"The window is closing.",narrative:"This isn't a future problem. The risk is live. The window is closing."},{number:3,title:"The Hidden Risk",visual:"One highlighted line in a long report. The thing everyone missed.",emotion:"Clarity",caption:"Here's what we're missing.",narrative:"There's a layer most people don't reach. This is it. And once you see it, you can't unsee it."},{number:4,title:"The Response",visual:"Clear action steps. Motion. Decision.",emotion:"Resolve",caption:"This is what we do.",narrative:"Not theory. Action. Here's exactly what needs to happen — and when."},{number:5,title:"Protected Future",visual:"Calm. Clear. Secure. The world on the other side.",emotion:"Confidence",caption:"This is what we're building.",narrative:"On the other side of this decision is a completely different reality."},{number:6,title:"The Decision",visual:"One chair. One table. One moment of choice.",emotion:"Action",caption:"One decision. Made today.",narrative:"Everything comes down to this. The team is ready. All that's needed now — is yes."}], story:"This is not a theoretical risk.\n\nHere is where we stand — clearly, honestly, without softening.\n\nThe gap between knowing and acting is exactly where organisations lose.\n\nHere's the insight that changes the frame. Not more effort — a different way of seeing.\n\nOn the other side of this decision is a fundamentally better operating environment.\n\nOne decision. Made today." };
+    return { storyWorld:{ subject:topic, audience:"Your audience", emotion:"Connection", style:"Presentation", visualWorld:"Your setting", character:"Your protagonist", lesson:"Your core message" }, scenes:[{number:1,title:"Where We Begin",visual:"The world as it is. Familiar. Real.",emotion:"Curiosity",caption:"Every story starts here.",narrative:"Before anything changes, we need to see the world as it truly is."},{number:2,title:"The Tension",visual:"A gap. A question. Something that needs answering.",emotion:"Tension",caption:"This is what makes it necessary.",narrative:"Something isn't working — or could work far better."},{number:3,title:"The Insight",visual:"One clear idea. A new way of seeing.",emotion:"Clarity",caption:"This changes everything.",narrative:"A new frame. Not more effort — different thinking."},{number:4,title:"The Path Forward",visual:"A direction. Steps becoming clear. Motion.",emotion:"Hope",caption:"From insight to action.",narrative:"The route becomes clear. It's not easy — but it's right."},{number:5,title:"What Becomes Possible",visual:"Open space. A different world.",emotion:"Confidence",caption:"This is what we're building.",narrative:"On the other side of this is something fundamentally better."},{number:6,title:"The Invitation",visual:"A shared moment. The audience, ready to choose.",emotion:"Action",caption:"Now it belongs to everyone.",narrative:"What will we choose to do with what we now know?"}], story:"Before anything changes, we need to see clearly.\n\nSomething isn't working — or could work far better.\n\nHere's the insight that changes the frame.\n\nWith that insight, a path becomes clear.\n\nOn the other side of this decision is something better.\n\nWhat will we choose?" };
   }
 
   async function generate() {
@@ -569,111 +752,65 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
         body: JSON.stringify({
           model:"claude-sonnet-4-20250514", max_tokens:2000,
           messages:[{ role:"user", content:
-`You are a cinematic story director. A user has given you a brief. Your job is NOT to produce a generic story template. You must first deeply understand the subject, audience, and emotional world — then generate a complete Story World Model from which the narrative flows naturally.
+`You are a cinematic story director. Read the brief carefully — understand the subject, audience, emotion, and visual world. Generate a complete cinematic story that matches the brief exactly.
 
 BRIEF: "${brief}"
 
-Read the brief with care. Understand: Who is this for? What is the subject? What emotion should it create? What visual world does it live in? What is the core lesson?
+Do NOT use a generic story template. Write THIS story — its specific subject, characters, scenes, and emotional arc. If it is for a child, write like a children's author. If it's a business pitch, write with conviction. If it's urgent, write with urgency.
 
-Now generate a complete cinematic story in this EXACT JSON structure:
-
+Return ONLY valid JSON:
 {
   "storyWorld": {
-    "subject": "the actual subject from the brief (specific, not generic)",
-    "audience": "exact target audience from brief",
-    "emotion": "primary emotion this story creates",
-    "style": "storytelling style (e.g. Bedtime Story, Cinematic Documentary, TED Talk, etc.)",
-    "visualWorld": "the visual setting (e.g. Enchanted Garden, Corporate Boardroom, etc.)",
-    "character": "the hero or protagonist (specific name and role if story warrants it)",
-    "lesson": "the core message or lesson in 4-6 words"
+    "subject": "specific subject from brief",
+    "audience": "exact audience",
+    "emotion": "primary emotion created",
+    "style": "storytelling style",
+    "visualWorld": "the visual setting",
+    "character": "hero or protagonist",
+    "lesson": "core lesson in 4-6 words"
   },
-  "storyDNA": {
-    "hero": "who the story follows",
-    "world": "the setting described vividly in 4-6 words",
-    "challenge": "the central challenge or tension",
-    "magic": "the element that makes this story special or surprising",
-    "lesson": "the insight that changes everything",
-    "ending": "how the story resolves in 4-6 words"
-  },
-  "emotionalJourney": ["Emotion1","Emotion2","Emotion3","Emotion4","Emotion5","Emotion6"],
   "scenes": [
     {
       "number": 1,
-      "title": "Scene title specific to THIS story (not generic like 'The Beginning')",
-      "visual": "Exactly what is seen: specific objects, colours, lighting, atmosphere. Write it like a film direction.",
-      "emotion": "One word — the emotion this scene creates",
-      "caption": "One sentence caption: punchy, specific, memorable.",
-      "narrative": "2-4 sentences of story narrative written in the exact style the brief calls for. If magical/children — write with wonder and simple joy. If cinematic/urgent — write with tension. If TED — write with conviction."
+      "title": "Scene title specific to THIS story",
+      "visual": "Exactly what is seen — specific objects, colours, atmosphere. 1-2 sentences.",
+      "emotion": "One word",
+      "caption": "One punchy sentence.",
+      "narrative": "2-3 sentences of story prose in exactly the style the brief calls for"
     }
   ],
-  "story": "The complete narrative — all 6 scenes woven into one flowing story, written entirely in the style the brief demands. Format with scene titles as headers (SCENE TITLE:) followed by the narrative. Make it feel like a real story, not a template."
+  "story": "Complete narrative — all scenes woven together, written entirely in the style the brief demands. Use scene titles as section breaks (write them as: TITLE:). Aim for 150-200 words."
 }
 
-Generate exactly 6 scenes. Match the brief completely. If it says magical for a child, write like a children's author. If it says breaking news, write like a documentary script. This is their story.`
+6 scenes exactly. Match the brief completely.`
           }]
         })
       });
       const d = await res.json();
-      if (!res.ok) throw new Error('API error');
+      if (!res.ok) throw new Error('API');
       const raw = (d.content||[]).map(b=>b.text||'').join('').trim().replace(/```json\n?|\n?```/g,'').trim();
       const m = raw.match(/\{[\s\S]*\}/);
-      if (!m) throw new Error('Parse error');
+      if (!m) throw new Error('Parse');
       const parsed = JSON.parse(m[0]);
       if (!parsed.scenes?.length) throw new Error('No scenes');
       setResult(parsed); setPhase('results');
     } catch(_) {
-      setApiError(true);
-      setResult(buildFallback(brief));
-      setPhase('results');
+      setApiError(true); setResult(buildFallback(brief)); setPhase('results');
     }
   }
-
-  const WORLD_FIELDS = [
-    { key:'subject',     label:'Subject',      emoji:'🎯' },
-    { key:'audience',    label:'Audience',     emoji:'👥' },
-    { key:'emotion',     label:'Emotion',      emoji:'✨' },
-    { key:'style',       label:'Style',        emoji:'🎬' },
-    { key:'visualWorld', label:'Visual World', emoji:'🌍' },
-    { key:'character',   label:'Character',    emoji:'⭐' },
-    { key:'lesson',      label:'Lesson',       emoji:'💡' },
-  ];
-
-  const DNA_FIELDS = [
-    { key:'hero',      label:'Hero'      },
-    { key:'world',     label:'World'     },
-    { key:'challenge', label:'Challenge' },
-    { key:'magic',     label:'Magic'     },
-    { key:'lesson',    label:'Lesson'    },
-    { key:'ending',    label:'Ending'    },
-  ];
-
-  const sec = (label) => (
-    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:isDesktop?16:12}}>
-      {label}
-    </div>
-  );
-
-  const divider = (
-    <div style={{height:"0.5px",background:`linear-gradient(90deg,${T.gold} 0%,rgba(138,158,132,0.08) 100%)`,margin:`${isDesktop?28:22}px 0`}}/>
-  );
 
   // ── BRIEF ──────────────────────────────────────────────────────────────────
   if (phase==='brief') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
       <div>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Story Architect</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>What's your story?</h2>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Describe the subject, audience, and the feeling you want to create. The AI will build a complete cinematic world — story, storyboard, and everything in between.</p>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?34:26,fontWeight:500,color:T2.text,lineHeight:1.1,letterSpacing:"-0.5px",marginBottom:8}}>What's your story?</h2>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Describe the subject, audience, and feeling. The AI builds a complete cinematic world — brief, storyboard, and narrative.</p>
       </div>
-
       <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"}}>
-        <textarea value={brief} onChange={e=>setBrief(e.target.value)}
-          placeholder={"e.g. A magical story about the lifecycle of a butterfly for my 5-year-old — full of wonder, bedtime story style, make it feel like a Pixar film"}
-          rows={isDesktop?5:4}
-          style={{width:"100%",background:"transparent",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,resize:"none",boxSizing:"border-box",fontWeight:300}}/>
-        {brief.trim() && <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:6,textAlign:"right"}}>{brief.trim().split(/\s+/).length} words</div>}
+        <textarea value={brief} onChange={e=>setBrief(e.target.value)} placeholder={"e.g. A magical story about the lifecycle of a butterfly for my 5-year-old — full of wonder, bedtime story style, make it feel like a Pixar film"} rows={isDesktop?5:4} style={{width:"100%",background:"transparent",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,resize:"none",boxSizing:"border-box",fontWeight:300}}/>
+        {brief.trim()&&<div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:6,textAlign:"right"}}>{brief.trim().split(/\s+/).length} words</div>}
       </div>
-
       <div>
         <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Or try an example</div>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
@@ -684,7 +821,6 @@ Generate exactly 6 scenes. Match the brief completely. If it says magical for a 
           ))}
         </div>
       </div>
-
       <button onClick={generate} disabled={!brief.trim()} style={{width:"100%",padding:isDesktop?"16px":"15px",borderRadius:4,border:"none",background:brief.trim()?(T.ink||"#2C2416"):"rgba(44,36,22,0.25)",color:T2.bg||"#F7F3EC",fontSize:isDesktop?15:14,fontWeight:600,cursor:brief.trim()?"pointer":"default",fontFamily:T.sans,minHeight:50}}>
         Generate My Story →
       </button>
@@ -696,7 +832,7 @@ Generate exactly 6 scenes. Match the brief completely. If it says magical for a 
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:20,padding:isDesktop?"64px 0":"44px 0",textAlign:"center"}}>
       <div style={{background:"#0A0804",borderRadius:10,padding:isDesktop?"36px 44px":"28px 28px",border:"0.5px solid rgba(138,158,132,0.2)",width:"100%",maxWidth:460,boxSizing:"border-box",textAlign:"left"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:20}}>Building Your Story World</div>
-        {["Understanding your brief","Extracting story world and characters","Mapping the emotional arc","Writing each cinematic scene","Composing the full narrative"].map((s,i)=>(
+        {["Understanding your brief","Extracting subject, characters, visual world","Mapping the emotional arc","Writing each cinematic scene","Composing the full narrative"].map((s,i)=>(
           <div key={i} style={{display:"flex",alignItems:"center",gap:12,marginBottom:i<4?14:0,animation:`fadeUp 0.5s ease ${i*0.3}s both`}}>
             <div style={{width:7,height:7,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.25}s infinite`,flexShrink:0}}/>
             <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.6)",fontWeight:300}}>{s}</span>
@@ -709,134 +845,141 @@ Generate exactly 6 scenes. Match the brief completely. If it says magical for a 
 
   // ── RESULTS ────────────────────────────────────────────────────────────────
   if (phase==='results' && result) {
-    const sw = result.storyWorld || {};
-    const dna = result.storyDNA || {};
-    const journey = result.emotionalJourney || [];
-    const scenes = result.scenes || [];
+    const sw      = result.storyWorld || {};
+    const scenes  = result.scenes || [];
+    const expMode = deriveExperienceMode(sw);
+
+    const BRIEF_FIELDS = [
+      {key:'subject',emoji:'🎯',label:'Subject'},
+      {key:'audience',emoji:'👥',label:'Audience'},
+      {key:'emotion',emoji:'✨',label:'Emotion'},
+      {key:'style',emoji:'🎬',label:'Style'},
+      {key:'lesson',emoji:'💡',label:'Lesson'},
+      {key:'visualWorld',emoji:'🌍',label:'Visual World'},
+    ];
+
+    const EXP_FIELDS = [
+      {icon:<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke={T2.text3} strokeWidth="1.1"/><path d="M7 4v3l2 1.5" stroke={T2.text3} strokeWidth="1" strokeLinecap="round"/></svg>, label:'Tone',        val:expMode.tone},
+      {icon:<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke={T2.text3} strokeWidth="1.1"/><path d="M7 4v3l2 1.5" stroke={T2.text3} strokeWidth="1" strokeLinecap="round"/></svg>, label:'Duration',   val:expMode.duration},
+      {icon:<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M4 5l3-3 3 3M4 9l3 3 3-3" stroke={T2.text3} strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/></svg>, label:'Narration',  val:expMode.narration},
+      {icon:<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 5v4l3-1.5v-1L2 5zM5 5v4l7-2V7L5 5z" stroke={T2.text3} strokeWidth="1" strokeLinejoin="round" fill="none"/></svg>, label:'Music',      val:expMode.music},
+      {icon:<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke={T2.text3} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/></svg>, label:'Transitions', val:expMode.transitions},
+    ];
 
     return (
-      <div style={{display:"flex",flexDirection:"column"}}>
+      <div style={{display:"flex",flexDirection:"column",gap:0}}>
 
-        {/* AI unavailable notice */}
-        {apiError && (
-          <div style={{background:"rgba(138,158,132,0.08)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)",padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
-            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>AI coach unavailable — showing a template based on your brief.</span>
-            <button onClick={()=>{setApiError(false);generate();}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:11,fontWeight:600,padding:0,flexShrink:0}}>Try again with AI →</button>
+        {/* API error notice */}
+        {apiError&&(
+          <div style={{background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.18)",padding:"10px 16px",marginBottom:20,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
+            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>AI coach unavailable — showing a template story based on your brief.</span>
+            <button onClick={()=>{setApiError(false);generate();}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:11,fontWeight:600,padding:0,flexShrink:0}}>Try AI again →</button>
           </div>
         )}
 
-        {/* ── STORY WORLD ──────────────────────────────────────────────────── */}
-        {sec("Story World")}
-        <div style={{display:"flex",flexWrap:"wrap",gap:isDesktop?10:8}}>
-          {WORLD_FIELDS.map(f => sw[f.key] ? (
-            <div key={f.key} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 14px",borderRadius:20,background:T2.surface,border:"0.5px solid "+T2.border}}>
-              <span style={{fontSize:isDesktop?16:14}}>{f.emoji}</span>
-              <div>
-                <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",lineHeight:1,marginBottom:2}}>{f.label}</div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,fontWeight:500,lineHeight:1.2}}>{sw[f.key]}</div>
-              </div>
-            </div>
-          ) : null)}
-        </div>
-
-        {divider}
-
-        {/* ── STORY DNA ────────────────────────────────────────────────────── */}
-        {sec("Story DNA")}
-        <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr":"1fr 1fr",gap:10}}>
-          {DNA_FIELDS.map(f => dna[f.key] ? (
-            <div key={f.key} style={{background:"#0A0804",borderRadius:8,padding:"14px 16px",border:"0.5px solid rgba(138,158,132,0.12)"}}>
-              <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{f.label}</div>
-              <div style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.85)",lineHeight:1.4}}>{dna[f.key]}</div>
-            </div>
-          ) : null)}
-        </div>
-
-        {divider}
-
-        {/* ── EMOTIONAL JOURNEY ────────────────────────────────────────────── */}
-        {sec("Emotional Journey")}
-        <div style={{display:"flex",alignItems:"center",flexWrap:"wrap",gap:"6px 0"}}>
-          {journey.map((emotion, i) => {
-            const p = emotionPalette(emotion);
-            return (
-              <div key={i} style={{display:"flex",alignItems:"center"}}>
-                <div style={{padding:"6px 16px",borderRadius:20,background:p.bg2,border:`0.5px solid ${p.accent}`,display:"flex",alignItems:"center",gap:6}}>
-                  <div style={{width:6,height:6,borderRadius:"50%",background:p.accent,flexShrink:0}}/>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:p.accent,fontWeight:600}}>{emotion}</span>
+        {/* ── STORY BRIEF ─────────────────────────────────────────────────── */}
+        <div style={{marginBottom:isDesktop?28:20}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?14:12}}>Story Brief</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:"0",borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden",background:T2.surface}}>
+            {BRIEF_FIELDS.filter(f=>sw[f.key]).map((f,i,arr)=>(
+              <div key={f.key} style={{padding:isDesktop?"14px 18px":"11px 14px",borderRight:i<arr.length-1?"0.5px solid "+T2.border:"none",flex:"1 1 auto",minWidth:isDesktop?120:100}}>
+                <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}>
+                  <span style={{fontSize:11}}>{f.emoji}</span>
+                  <span style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px"}}>{f.label}</span>
                 </div>
-                {i < journey.length-1 && <span style={{fontFamily:T.sans,fontSize:14,color:T2.text4,margin:"0 4px"}}>→</span>}
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?15:13,color:T2.text,lineHeight:1.2,fontWeight:500}}>{sw[f.key]}</div>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
 
-        {divider}
-
-        {/* ── STORYBOARD ───────────────────────────────────────────────────── */}
-        {sec("Storyboard")}
-        <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:isDesktop?12:10}}>
-          {scenes.map((scene,i)=>{
-            const p = emotionPalette(scene.emotion);
-            return (
-              <div key={i} style={{borderRadius:10,overflow:"hidden",border:`0.5px solid ${p.accent}22`,background:"#0D0B08",boxShadow:"0 4px 20px rgba(0,0,0,0.35)"}}>
-                {/* SVG visual */}
-                <div style={{position:"relative",height:isDesktop?130:110,overflow:"hidden"}}>
-                  {makeSceneSVG(scene,i)}
-                  {/* Scene number badge */}
-                  <div style={{position:"absolute",top:8,left:8,width:22,height:22,borderRadius:4,background:"rgba(10,8,4,0.75)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:p.accent}}>{scene.number}</span>
-                  </div>
-                  {/* Emotion chip */}
-                  <div style={{position:"absolute",top:8,right:8,padding:"3px 10px",borderRadius:20,background:"rgba(10,8,4,0.75)",border:`0.5px solid ${p.accent}55`}}>
-                    <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:p.accent,letterSpacing:"0.5px"}}>{scene.emotion}</span>
+        {/* ── STORYBOARD ──────────────────────────────────────────────────── */}
+        <div style={{marginBottom:isDesktop?32:24}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?14:12}}>Storyboard — {scenes.length} Key Scenes</div>
+          <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(6,1fr)":"repeat(2,1fr)",gap:isDesktop?10:8}}>
+            {scenes.map((scene,i)=>(
+              <div key={i} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,background:CREAM}}>
+                {/* Sketch area */}
+                <div style={{position:"relative",height:isDesktop?130:100,background:CREAM,overflow:"hidden"}}>
+                  <SketchIllustration scene={scene} idx={i}/>
+                  {/* Scene number */}
+                  <div style={{position:"absolute",top:7,left:7,width:20,height:20,borderRadius:"50%",background:"rgba(58,48,40,0.12)",border:"0.5px solid "+INK_D,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                    <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:INK,opacity:0.7}}>{scene.number}</span>
                   </div>
                 </div>
-                {/* Text */}
-                <div style={{padding:isDesktop?"14px 16px":"12px 14px",borderTop:`0.5px solid ${p.accent}18`}}>
-                  <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:"rgba(245,239,230,0.9)",marginBottom:4,lineHeight:1.3}}>{scene.title}</div>
-                  <p style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:`${p.accent}bb`,lineHeight:1.5,margin:"0 0 6px",fontStyle:"italic",fontWeight:300}}>{scene.visual||scene.visualDirection}</p>
-                  <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"rgba(245,239,230,0.6)",lineHeight:1.4,margin:0,fontWeight:400}}>{scene.caption}</p>
+                {/* Text area */}
+                <div style={{padding:isDesktop?"11px 12px":"9px 10px",borderTop:"0.5px solid "+T2.border,background:"#fff"}}>
+                  <div style={{fontFamily:T.serif,fontSize:isDesktop?12:11,fontWeight:600,color:INK,marginBottom:3,lineHeight:1.25}}>{scene.title}</div>
+                  <p style={{fontFamily:T.sans,fontSize:isDesktop?10:9,color:"rgba(58,48,40,0.55)",lineHeight:1.4,margin:"0 0 6px",fontWeight:300}}>{scene.caption}</p>
+                  <div style={{display:"inline-block",padding:"2px 9px",borderRadius:20,border:"0.5px solid rgba(58,48,40,0.2)",background:"rgba(58,48,40,0.04)"}}>
+                    <span style={{fontFamily:T.sans,fontSize:isDesktop?9:8,color:INK,opacity:0.6,fontWeight:500}}>{scene.emotion}</span>
+                  </div>
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
 
-        {divider}
+        {/* ── STORY NARRATIVE + EXPERIENCE MODE ────────────────────────────── */}
+        <div>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?16:12}}>Story Narrative</div>
+          <div style={{display:"flex",gap:isDesktop?28:0,alignItems:"flex-start",flexDirection:isDesktop?"row":"column"}}>
+            {/* Story text */}
+            <div style={{flex:1,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:isDesktop?"28px 32px":"18px 20px"}}>
+              {result.story
+                ? result.story.split('\n\n').map((para,i)=>{
+                    const isTitle = para.trim().endsWith(':');
+                    const text = para.trim().replace(/:$/,'');
+                    return text ? (
+                      <p key={i} style={{fontFamily:isTitle?T.sans:T.serif,fontSize:isTitle?(isDesktop?9:8):(isDesktop?17:15),fontWeight:isTitle?700:400,color:isTitle?T.gold:T2.text,textTransform:isTitle?"uppercase":undefined,letterSpacing:isTitle?"2.5px":"-0.1px",lineHeight:isTitle?1:(isDesktop?1.85:1.75),margin:isTitle?"20px 0 10px":"0 0 16px"}}>{text}</p>
+                    ) : null;
+                  })
+                : scenes.map((s,i)=>(
+                    <div key={i} style={{marginBottom:i<scenes.length-1?20:0}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{s.title}</div>
+                      <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.8,margin:0}}>{s.narrative}</p>
+                    </div>
+                  ))
+              }
+            </div>
 
-        {/* ── STORY ────────────────────────────────────────────────────────── */}
-        {sec("The Story")}
-        <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"28px 32px":"20px 22px"}}>
-          {result.story ? (
-            result.story.split('\n\n').map((para,i)=>{
-              const isTitle = para.endsWith(':') || (i===0 && para.split('\n').length===1 && para.length < 60);
-              return para.trim() ? (
-                <p key={i} style={{
-                  fontFamily: isTitle ? T.sans : T.serif,
-                  fontSize: isTitle ? (isDesktop?10:9) : (isDesktop?17:15),
-                  fontWeight: isTitle ? 700 : 400,
-                  color: isTitle ? T.gold : T2.text,
-                  letterSpacing: isTitle ? "2px" : "-0.1px",
-                  textTransform: isTitle ? "uppercase" : "none",
-                  lineHeight: isTitle ? 1 : 1.8,
-                  margin: isTitle ? "20px 0 10px" : "0 0 14px",
-                }}>{para.replace(/:$/, '')}</p>
-              ) : null;
-            })
-          ) : (
-            scenes.map((s,i)=>(
-              <div key={i} style={{marginBottom:i<scenes.length-1?20:0}}>
-                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{s.title}</div>
-                <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.8,margin:0}}>{s.narrative}</p>
+            {/* Experience Mode sidebar */}
+            {isDesktop && (
+              <div style={{width:220,flexShrink:0}}>
+                <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12}}>Experience</div>
+                <div style={{display:"flex",flexDirection:"column",gap:0,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+                  {EXP_FIELDS.map((f,i,arr)=>(
+                    <div key={i} style={{padding:"12px 16px",borderBottom:i<arr.length-1?"0.5px solid "+T2.border:"none",display:"flex",gap:10,alignItems:"flex-start"}}>
+                      <div style={{marginTop:2,flexShrink:0,opacity:0.6}}>{f.icon}</div>
+                      <div>
+                        <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>{f.label}</div>
+                        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text,fontWeight:400,lineHeight:1.4}}>{f.val}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))
+            )}
+          </div>
+
+          {/* Experience Mode on mobile — horizontal */}
+          {!isDesktop && (
+            <div style={{marginTop:14,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+              <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"2.5px",padding:"11px 16px",borderBottom:"0.5px solid "+T2.border}}>Experience</div>
+              {EXP_FIELDS.map((f,i,arr)=>(
+                <div key={i} style={{padding:"10px 16px",borderBottom:i<arr.length-1?"0.5px solid "+T2.border:"none",display:"flex",justifyContent:"space-between",alignItems:"center",gap:10}}>
+                  <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px"}}>{f.label}</span>
+                  <span style={{fontFamily:T.sans,fontSize:11,color:T2.text,fontWeight:400,textAlign:"right"}}>{f.val}</span>
+                </div>
+              ))}
+            </div>
           )}
         </div>
 
-        <div style={{marginTop:16,display:"flex",gap:10,flexWrap:"wrap"}}>
-          <button onClick={reset} style={{flex:1,padding:isDesktop?"14px":"12px",borderRadius:4,border:"none",background:T.ink||"#2C2416",color:T2.bg||"#F7F3EC",fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Build Another Story →</button>
-          <button onClick={()=>{setResult(null);setPhase('brief');}} style={{padding:isDesktop?"14px 18px":"12px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:isDesktop?13:12,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>← Edit Brief</button>
+        {/* Footer actions */}
+        <div style={{marginTop:isDesktop?24:18,display:"flex",gap:10,flexWrap:"wrap"}}>
+          <button onClick={reset} style={{flex:1,padding:isDesktop?"13px":"12px",borderRadius:4,border:"none",background:T.ink||"#2C2416",color:T2.bg||"#F7F3EC",fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Build Another Story →</button>
+          <button onClick={()=>{setResult(null);setPhase('brief');}} style={{padding:isDesktop?"13px 18px":"12px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:isDesktop?13:12,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>← Edit Brief</button>
         </div>
       </div>
     );
