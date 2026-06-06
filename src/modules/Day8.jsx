@@ -383,37 +383,43 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
 
 // ─── Story Architect Widget (Simulation) ──────────────────────────────────────
 
-export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulation }) {
+
+export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   const T  = Tp  || Timport;
   const T2 = T2p || T2D;
 
   const EXAMPLE_BRIEFS = [
-    "A cybersecurity risk presentation for leadership — make it feel like breaking news, urgent and specific",
-    "A pitch for a new product — TED-style, emotional and direct, show real human impact",
-    "A change management update — show the before and after, honest about what's changing and why",
+    "A magical story about the lifecycle of a butterfly for my 5-year-old — wonder and joy, bedtime story style",
+    "A cybersecurity risk presentation for our board — make it feel like breaking news, urgent and specific",
+    "A TED-style pitch for a new product — emotional, direct, show real human impact",
   ];
 
-  // Dynamic SVG generator — reads visualDirection keywords to set palette and abstract shapes
-  function makeSceneSVG(scene, idx) {
-    const dir = (scene.visualDirection || '').toLowerCase();
-    // Palette from keywords
-    let bg = '#0A0804', bg2 = '#14100A', accent = '#8A9E84';
-    if (/red|fire|danger|alarm|alert|warning|urgent|blood|crisis/.test(dir))    { bg='#150404'; bg2='#1E0606'; accent='#CC4444'; }
-    else if (/gold|amber|sun|warm|honey|chrysalis|yellow|harvest/.test(dir))    { bg='#110C02'; bg2='#1A1206'; accent='#C9A84C'; }
-    else if (/green|garden|leaf|grass|nature|spring|forest|grow/.test(dir))     { bg='#020E06'; bg2='#051410'; accent='#4A8A5A'; }
-    else if (/blue|sky|ocean|sea|calm|water|azure|horizon/.test(dir))           { bg='#020614'; bg2='#04081E'; accent='#4A72B8'; }
-    else if (/purple|magic|sparkle|mystical|enchant|wizard|lavender/.test(dir)) { bg='#0A0614'; bg2='#12091E'; accent='#9A5AB8'; }
-    else if (/pink|rose|flower|petal|blossom|cherry/.test(dir))                 { bg='#140408'; bg2='#1E0812'; accent='#C44A8A'; }
-    else if (/white|bright|open|light|clear|dawn|morning|glow/.test(dir))       { bg='#0E0E0A'; bg2='#181812'; accent='#D4C87A'; }
-    else if (/dark|night|shadow|void|moon|midnight/.test(dir))                  { bg='#060402'; bg2='#0A0804'; accent='#887A6A'; }
+  // Palette driven by emotion keyword
+  function emotionPalette(emotion) {
+    const e = (emotion||'').toLowerCase();
+    if (/curious|discover|wonder|question/.test(e))    return { bg:'#110C02', bg2:'#1A1206', accent:'#C9A84C' };
+    if (/growth|grow|learn|build|rise/.test(e))        return { bg:'#020E06', bg2:'#051410', accent:'#4A8A5A' };
+    if (/patience|wait|calm|still|quiet/.test(e))      return { bg:'#020614', bg2:'#04081E', accent:'#4A72B8' };
+    if (/wonder|awe|magic|enchant|amaze/.test(e))      return { bg:'#0A0614', bg2:'#12091E', accent:'#9A5AB8' };
+    if (/achieve|triumph|joy|excite|bright/.test(e))   return { bg:'#110C02', bg2:'#1C1408', accent:'#D4A030' };
+    if (/freedom|free|fly|soar|open|release/.test(e))  return { bg:'#020614', bg2:'#040A1A', accent:'#4A90C8' };
+    if (/danger|urgent|risk|fear|alarm|red/.test(e))   return { bg:'#150404', bg2:'#1E0606', accent:'#CC4444' };
+    if (/hope|love|warm|heart|tender/.test(e))         return { bg:'#140408', bg2:'#1E0812', accent:'#C44A8A' };
+    return { bg:'#0A0804', bg2:'#14100A', accent:'#8A9E84' };
+  }
 
-    // Shape category
+  // Brief-aware visual SVG from visual + emotion
+  function makeSceneSVG(scene, idx) {
+    const dir = (scene.visual || scene.visualDirection || '').toLowerCase();
+    const p   = emotionPalette(scene.emotion);
+    const { bg, bg2, accent } = p;
+
     const isWings   = /butterfly|wing|fly|soar|flight|spread|flap/.test(dir);
     const isOval    = /egg|oval|chrysalis|cocoon|bubble|sphere|circle/.test(dir);
     const isTree    = /tree|branch|leaf|petal|garden|plant|bloom|flower/.test(dir);
-    const isStar    = /star|sparkle|glow|shimmer|twinkle|light ray|radiant|glitter/.test(dir);
-    const isPath    = /path|road|journey|river|stream|trail|winding|map/.test(dir);
-    const isPeople  = /people|crowd|child|family|friend|figure|someone|gather|audience/.test(dir);
+    const isStar    = /star|sparkle|glow|shimmer|twinkle|light|radiant/.test(dir);
+    const isPath    = /path|road|journey|river|trail|horizon|sky|sunset|sunrise/.test(dir);
+    const isPeople  = /people|crowd|child|family|friend|figure|someone|gather/.test(dir);
     const isRising  = /rise|grow|climb|ascend|tall|build|tower|reach|launch/.test(dir);
 
     return (
@@ -429,75 +435,66 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
         {isWings && <>
           <ellipse cx="60" cy="44" rx="30" ry="20" fill={accent} opacity="0.22" transform="rotate(-28 60 44)"/>
           <ellipse cx="100" cy="44" rx="30" ry="20" fill={accent} opacity="0.22" transform="rotate(28 100 44)"/>
-          <ellipse cx="56" cy="63" rx="18" ry="11" fill={accent} opacity="0.15" transform="rotate(20 56 63)"/>
-          <ellipse cx="104" cy="63" rx="18" ry="11" fill={accent} opacity="0.15" transform="rotate(-20 104 63)"/>
-          <circle cx="80" cy="50" r="5" fill={accent} opacity="0.75"/>
+          <ellipse cx="56" cy="63" rx="18" ry="11" fill={accent} opacity="0.16" transform="rotate(20 56 63)"/>
+          <ellipse cx="104" cy="63" rx="18" ry="11" fill={accent} opacity="0.16" transform="rotate(-20 104 63)"/>
+          <circle cx="80" cy="50" r="5" fill={accent} opacity="0.8"/>
           <line x1="80" y1="55" x2="80" y2="74" stroke={accent} strokeWidth="1.5" opacity="0.35" strokeLinecap="round"/>
         </>}
-
         {isOval && !isWings && <>
           <ellipse cx="80" cy="50" rx="28" ry="38" stroke={accent} strokeWidth="1.5" fill={accent} opacity="0.1"/>
           <ellipse cx="80" cy="50" rx="18" ry="26" stroke={accent} strokeWidth="0.8" fill={accent} opacity="0.06"/>
-          <ellipse cx="72" cy="40" rx="8" ry="11" fill={accent} opacity="0.3" transform="rotate(-14 72 40)"/>
+          <ellipse cx="72" cy="40" rx="8" ry="11" fill={accent} opacity="0.32" transform="rotate(-14 72 40)"/>
           <circle cx="80" cy="50" r="3.5" fill={accent} opacity="0.55"/>
         </>}
-
         {isTree && !isWings && !isOval && <>
           <path d="M80 90 L80 52" stroke={accent} strokeWidth="2.5" opacity="0.3" strokeLinecap="round"/>
-          <path d="M80 52 Q54 34 42 40 Q58 20 80 14 Q102 20 118 40 Q106 34 80 52" fill={accent} opacity="0.18"/>
-          <path d="M80 64 Q60 50 50 56 Q66 38 80 34 Q94 38 110 56 Q100 50 80 64" fill={accent} opacity="0.13"/>
-          <circle cx="60" cy="76" r="2.5" fill={accent} opacity="0.3"/>
-          <circle cx="100" cy="72" r="2.5" fill={accent} opacity="0.3"/>
+          <path d="M80 52 Q54 34 42 40 Q58 20 80 14 Q102 20 118 40 Q106 34 80 52" fill={accent} opacity="0.2"/>
+          <path d="M80 64 Q60 50 50 56 Q66 38 80 34 Q94 38 110 56 Q100 50 80 64" fill={accent} opacity="0.14"/>
+          <circle cx="60" cy="76" r="2.5" fill={accent} opacity="0.32"/>
+          <circle cx="100" cy="72" r="2.5" fill={accent} opacity="0.32"/>
         </>}
-
         {isStar && !isWings && !isOval && !isTree && <>
           <circle cx="80" cy="50" r="34" fill={accent} opacity="0.04"/>
-          <circle cx="80" cy="50" r="20" fill={accent} opacity="0.07"/>
-          <circle cx="80" cy="50" r="8" fill={accent} opacity="0.38"/>
-          <line x1="80" y1="15" x2="80" y2="27" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
-          <line x1="80" y1="73" x2="80" y2="85" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
+          <circle cx="80" cy="50" r="20" fill={accent} opacity="0.08"/>
+          <circle cx="80" cy="50" r="8" fill={accent} opacity="0.4"/>
+          <line x1="80" y1="14" x2="80" y2="26" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
+          <line x1="80" y1="74" x2="80" y2="86" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
           <line x1="44" y1="50" x2="56" y2="50" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
           <line x1="104" y1="50" x2="116" y2="50" stroke={accent} strokeWidth="1.5" opacity="0.55" strokeLinecap="round"/>
-          <line x1="57" y1="27" x2="65" y2="35" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
-          <line x1="103" y1="65" x2="111" y2="73" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
-          <line x1="103" y1="27" x2="95" y2="35" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
-          <line x1="57" y1="73" x2="65" y2="65" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
+          <line x1="56" y1="28" x2="64" y2="36" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
+          <line x1="104" y1="28" x2="96" y2="36" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
+          <line x1="56" y1="72" x2="64" y2="64" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
+          <line x1="104" y1="72" x2="96" y2="64" stroke={accent} strokeWidth="1" opacity="0.35" strokeLinecap="round"/>
         </>}
-
         {isPath && !isWings && !isOval && !isTree && !isStar && <>
           <path d="M12 80 Q36 56 62 65 Q88 74 112 44 Q126 30 148 16" stroke={accent} strokeWidth="2" fill="none" opacity="0.6" strokeLinecap="round"/>
           <circle cx="12" cy="80" r="4" fill={accent} opacity="0.38"/>
           <circle cx="62" cy="65" r="3" fill={accent} opacity="0.38"/>
           <circle cx="112" cy="44" r="3" fill={accent} opacity="0.38"/>
-          <circle cx="148" cy="16" r="6" fill={accent} opacity="0.85"/>
+          <circle cx="148" cy="16" r="6" fill={accent} opacity="0.88"/>
           <line x1="6" y1="90" x2="154" y2="90" stroke={accent} strokeWidth="0.8" opacity="0.12"/>
         </>}
-
         {isPeople && !isWings && !isOval && !isTree && !isStar && !isPath && <>
           <circle cx="46" cy="38" r="10" fill={accent} opacity="0.22"/>
-          <circle cx="80" cy="32" r="13" fill={accent} opacity="0.35"/>
+          <circle cx="80" cy="32" r="13" fill={accent} opacity="0.36"/>
           <circle cx="114" cy="38" r="10" fill={accent} opacity="0.22"/>
           <path d="M32 82 Q46 60 60 70 Q70 76 80 72 Q90 68 100 70 Q114 80 128 82" stroke={accent} strokeWidth="1.5" fill="none" opacity="0.3" strokeLinecap="round"/>
         </>}
-
         {isRising && !isWings && !isOval && !isTree && !isStar && !isPath && !isPeople && <>
           <rect x="12" y="70" width="12" height="16" rx="1" fill={accent} opacity="0.3"/>
           <rect x="30" y="58" width="12" height="28" rx="1" fill={accent} opacity="0.4"/>
           <rect x="48" y="46" width="12" height="40" rx="1" fill={accent} opacity="0.5"/>
           <rect x="66" y="32" width="12" height="54" rx="1" fill={accent} opacity="0.6"/>
           <rect x="84" y="20" width="12" height="66" rx="1" fill={accent} opacity="0.65"/>
-          <rect x="102" y="10" width="12" height="76" rx="1" fill={accent} opacity="0.7"/>
+          <rect x="102" y="10" width="12" height="76" rx="1" fill={accent} opacity="0.72"/>
           <path d="M18 76 L36 64 L54 52 L72 38 L90 26 L108 16" stroke={accent} strokeWidth="1.5" fill="none" opacity="0.5" strokeLinecap="round"/>
-          <line x1="6" y1="90" x2="154" y2="90" stroke={accent} strokeWidth="0.8" opacity="0.15"/>
         </>}
-
-        {/* Default — abstract wave when no category matched */}
         {!isWings && !isOval && !isTree && !isStar && !isPath && !isPeople && !isRising && <>
-          <path d={idx % 2 === 0 ? "M18 72 Q44 32 80 52 Q116 72 142 26" : "M18 26 Q44 66 80 46 Q116 26 142 72"}
+          <path d={idx%2===0 ? "M18 72 Q44 32 80 52 Q116 72 142 26" : "M18 26 Q44 66 80 46 Q116 26 142 72"}
             stroke={accent} strokeWidth="2" fill="none" opacity="0.55" strokeLinecap="round"/>
-          <circle cx="80" cy={idx % 2 === 0 ? 52 : 46} r="26" fill={accent} opacity="0.04"/>
-          <circle cx="80" cy={idx % 2 === 0 ? 52 : 46} r="12" fill={accent} opacity="0.07"/>
-          <circle cx="80" cy={idx % 2 === 0 ? 52 : 46} r="4" fill={accent} opacity="0.5"/>
+          <circle cx="80" cy={idx%2===0?52:46} r="26" fill={accent} opacity="0.04"/>
+          <circle cx="80" cy={idx%2===0?52:46} r="12" fill={accent} opacity="0.07"/>
+          <circle cx="80" cy={idx%2===0?52:46} r="4" fill={accent} opacity="0.5"/>
         </>}
       </svg>
     );
@@ -506,296 +503,340 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
   const [phase,    setPhase]   = useState('brief');
   const [brief,    setBrief]   = useState('');
   const [result,   setResult]  = useState(null);
-  const [activeTab,setActiveTab]=useState('script');
-  const [copied,   setCopied]  = useState(null);
-  const [apiError, setApiError]= useState(null);
+  const [apiError, setApiError]= useState(false);
 
-  const GOLD = T.gold || '#8A9E84';
+  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); }
 
-  function reset() {
-    setPhase('brief'); setBrief(''); setResult(null); setActiveTab('script'); setCopied(null); setApiError(null);
-  }
-
-  // Brief-aware template fallback — extracts topic from brief text
-  function buildTemplateFallback(b) {
+  // Brief-aware template fallback
+  function buildFallback(b) {
     const bl = b.toLowerCase();
-    const topic = b.trim().split(/[,.\-—]/)[0].trim();
-    const isKids    = /child|kid|son|daughter|year.?old|baby|magical|fairy|princess|dragon/.test(bl);
-    const isUrgent  = /urgent|crisis|risk|breaking|emergency|threat|danger|warning/.test(bl);
-    const isChange  = /change|transform|before.*after|journey|evolution|growth/.test(bl);
-    const isBrief   = b.trim().split(/\s+/).length < 6;
+    const isKids   = /child|kid|son|daughter|year.?old|baby|magical|fairy|princess|dragon/.test(bl);
+    const isUrgent = /urgent|crisis|risk|breaking|emergency|threat/.test(bl);
+    const topic    = b.trim().split(/[,.\-—]/)[0].trim() || 'Your Story';
 
     if (isKids) return {
-      storyTitle: topic,
-      deliveryNote: "Tell it warmly, slowly — leave space for wonder between each scene.",
+      storyWorld:{ subject:topic, audience:"Children", emotion:"Wonder", style:"Bedtime Story", visualWorld:"Magical World", character:"A brave little hero", lesson:"Believe in yourself" },
+      storyDNA:{ hero:"A tiny, curious hero", world:"A magical, colourful world", challenge:"A journey of change", magic:"The power of believing", lesson:"Every stage matters", ending:"Triumphant first flight" },
+      emotionalJourney:["Curiosity","Growth","Patience","Wonder","Achievement","Freedom"],
       scenes:[
-        {number:1,title:"Once Upon a Time",          narrative:`In a world full of colour and magic, our story begins. ${topic} is about to start the greatest adventure imaginable.`,             visualDirection:"Soft morning light. Dewdrops on green leaves. A world waking up.",     caption:"Every great story starts with a tiny beginning."},
-        {number:2,title:"The Journey Begins",        narrative:"There are new things to discover, new challenges to face. But curiosity is the best compass — and our hero has plenty of it.",  visualDirection:"Winding path through a bright, friendly world. Flowers everywhere.",   caption:"The adventure is already underway."},
-        {number:3,title:"Something Unexpected",      narrative:"Then — something wonderful and surprising happens. The kind of thing nobody planned, but everybody needed.",                       visualDirection:"A moment of surprise. Eyes wide open. The world looks different now.",  caption:"The best stories have moments you never see coming."},
-        {number:4,title:"Growing Through It",        narrative:"It's not always easy. But every challenge makes our hero stronger, wiser, and more ready for what comes next.",                  visualDirection:"Warm golden light. A sense of effort — and reward.",                   caption:"Growth happens quietly, then all at once."},
-        {number:5,title:"The Magical Moment",        narrative:"And then — it happens. The moment everything has been building toward. More beautiful than anyone imagined.",                    visualDirection:"Bright, expansive, full of colour. A breath of wonder.",               caption:"Some moments are worth the whole journey."},
-        {number:6,title:"Flying Free",               narrative:"Now the adventure is truly beginning. A whole world is waiting — and our hero is ready for every bit of it.",                   visualDirection:"Open sky. Wide horizon. Infinite possibility stretching ahead.",        caption:"The end of one story is the start of the next."},
-      ]
+        {number:1,title:"The Tiny Beginning",      visual:"A tiny egg on a bright green leaf. Morning dew. Soft golden light.",                 emotion:"Curiosity",    caption:"Every great journey starts small.", narrative:"Once upon a time, in a garden full of colour and light, the smallest beginning was about to become the greatest adventure."},
+        {number:2,title:"Eating Everything Up",    visual:"A hungry caterpillar munching bright green leaves. Sunshine everywhere.",            emotion:"Growth",       caption:"Eat. Grow. Explore.",             narrative:"Day after day, our little hero grew bigger and stronger — one leaf at a time."},
+        {number:3,title:"The Golden Chrysalis",    visual:"A glowing golden chrysalis hanging from a moonlit branch. Stars above.",            emotion:"Patience",     caption:"Magic is happening inside.",      narrative:"Then came the waiting. Tucked inside a golden sleeping bag, something wonderful was quietly taking shape."},
+        {number:4,title:"Transformation",          visual:"Swirling rainbow colours. Magical light. Something beautiful becoming.",             emotion:"Wonder",       caption:"Beautiful things take time.",     narrative:"Nobody could see it happening. But inside, absolutely everything was changing."},
+        {number:5,title:"Emergence",               visual:"Brilliant wings unfurling. Friends gathering. Sunlight streaming through.",         emotion:"Achievement",   caption:"Look what I became!",             narrative:"And then — one perfect morning — the chrysalis opened. And out stepped something so beautiful, everyone stopped to look."},
+        {number:6,title:"The First Flight",        visual:"A butterfly soaring over a valley at golden sunset. Wings catching the light.",     emotion:"Freedom",      caption:"Believe in your wings.",          narrative:"With one brave leap, she flew. The whole garden cheered. She had been becoming this all along."},
+      ],
+      story:`${topic}\n\nOnce upon a time, in a garden full of colour and magic, the most extraordinary journey began with the smallest of beginnings — a tiny, perfect egg on a bright green leaf.\n\nDay after day, a curious little caterpillar ate and grew and explored, learning that every leaf was an adventure.\n\nThen came the chrysalis — a golden sleeping bag of transformation. Nobody could see what was happening inside. But something magical was taking shape.\n\nIn the darkness, everything changed. Quietly. Completely. Beautifully.\n\nAnd one morning, the chrysalis opened — and out stepped the most wonderful butterfly anyone had ever seen.\n\nShe looked at her wings. She took a breath. And she flew.\n\nBecause all along, she had been becoming this.`,
     };
 
     if (isUrgent) return {
-      storyTitle: topic,
-      deliveryNote: "Speak with urgency but control — this story needs to land hard and fast.",
+      storyWorld:{ subject:topic, audience:"Leadership", emotion:"Urgency", style:"Cinematic", visualWorld:"High Stakes Room", character:"The Decision Maker", lesson:"Act now, not later" },
+      storyDNA:{ hero:"The team facing the decision", world:"A high-stakes boardroom", challenge:"A closing window", magic:"The right information at the right moment", lesson:"Inaction is a choice", ending:"A decisive yes" },
+      emotionalJourney:["Awareness","Tension","Clarity","Resolve","Confidence","Action"],
       scenes:[
-        {number:1,title:"The Situation Right Now",   narrative:`Here is where things stand. The context your audience needs to feel — not just know — before anything else.`,                  visualDirection:"Dark room. One bright screen. Numbers that matter.",                   caption:"The current state, seen clearly."},
-        {number:2,title:"What's at Stake",           narrative:"This is not a drill. The gap between where we are and where we need to be is real — and the window is closing.",               visualDirection:"Red warning indicators. A clock. The weight of urgency.",              caption:"The stakes, made impossible to ignore."},
-        {number:3,title:"The Risk Nobody Names",     narrative:"Most people see the surface problem. This is the deeper one. The one that matters most and gets addressed last.",               visualDirection:"One highlighted line in a long document. A single point of failure.",  caption:"The insight that changes the whole conversation."},
-        {number:4,title:"What We Do Next",           narrative:"Here's the action. Not in theory. In practice. This is what changes the outcome — and it starts now.",                         visualDirection:"A clear path. Concrete steps. Motion, not hesitation.",                caption:"The response that makes the difference."},
-        {number:5,title:"What Protected Looks Like", narrative:"On the other side of this decision is a different world. This is what we're building toward — and why it's worth doing right.", visualDirection:"Calm. Clear. Secure. The future we're protecting.",                    caption:"The outcome that justifies every hard decision."},
-        {number:6,title:"The Decision",              narrative:"One choice. Made now. Everything else follows from this moment.",                                                                visualDirection:"A single chair at a table. A moment of clarity.",                     caption:"This is the ask."},
-      ]
+        {number:1,title:"The Current Reality",  visual:"Dark screens. Data. The world as it stands right now.",              emotion:"Awareness",   caption:"This is where we are.",      narrative:"Before anything changes, we need to see exactly where we stand. Clearly. Honestly. Without softening."},
+        {number:2,title:"What's at Stake",      visual:"A countdown. A narrowing window. Numbers that matter.",              emotion:"Tension",     caption:"The window is closing.",     narrative:"This isn't a future problem. The risk is live. The gap between knowing and acting is where organisations fall."},
+        {number:3,title:"The Hidden Risk",      visual:"One highlighted line in a long report. The thing everyone missed.",  emotion:"Clarity",     caption:"Here's what we're missing.", narrative:"There's a layer most people don't reach. This is it. And once you see it, you can't unsee it."},
+        {number:4,title:"The Response",         visual:"A clear action plan. Concrete steps. Motion.",                      emotion:"Resolve",     caption:"This is what we do.",        narrative:"Not theory. Action. Here's exactly what needs to happen — and when."},
+        {number:5,title:"Protected Future",     visual:"Calm. Clear. Secure. The world on the other side of this decision.", emotion:"Confidence",  caption:"This is what we're building.", narrative:"On the other side of this decision is a fundamentally different operating environment."},
+        {number:6,title:"The Decision",         visual:"One chair. One table. One moment of choice.",                       emotion:"Action",      caption:"One decision. Made today.",  narrative:"Everything comes down to this. The plan is here. The team is ready. All that's needed now — is yes."},
+      ],
+      story:`${topic}\n\nThis is not a theoretical risk. This is happening now.\n\nHere is where we stand — clearly, honestly, without softening.\n\nThe window is closing. The gap between knowing and acting is exactly where organisations lose their advantage.\n\nThere's a layer most analyses don't reach. This is it. And it changes everything about how we respond.\n\nHere's the action. Not in theory — in practice. Concrete steps. A clear timeline. A team ready to move.\n\nOn the other side of this decision is a completely different operating environment.\n\nEverything comes down to this moment. One decision. Made today.`,
     };
 
     return {
-      storyTitle: topic || "Your Story",
-      deliveryNote: "Speak with conviction. This story only works when you believe every word.",
+      storyWorld:{ subject:topic, audience:"Your audience", emotion:"Connection", style:"Your style", visualWorld:"Your world", character:"Your protagonist", lesson:"Your core message" },
+      storyDNA:{ hero:"The central character", world:"The setting", challenge:"The core tension", magic:"The turning point", lesson:"The insight", ending:"The resolution" },
+      emotionalJourney:["Curiosity","Tension","Insight","Hope","Confidence","Action"],
       scenes:[
-        {number:1,title:"Where We Begin",        narrative:`This is the starting point — the world as it is right now, before anything changes. It's worth seeing it clearly, because everything else follows from here.`, visualDirection:"The present moment. Familiar. Known. Real.",               caption:"Every story starts with the world as it is."},
-        {number:2,title:"The Tension",           narrative:"Something isn't working. Or something could work far better. The gap between where things are and where they could be is the engine of this story.",          visualDirection:"A gap. A distance. A question that needs answering.",       caption:"The problem that makes the story necessary."},
-        {number:3,title:"The Insight",           narrative:"Here's what changes everything: a new way of seeing the problem. Not more effort — a different frame. This is the pivot.",                                    visualDirection:"One clear idea, fully formed. A light that didn't exist before.", caption:"The realisation that makes everything else possible."},
-        {number:4,title:"The Path Forward",      narrative:"With this insight, the route becomes clear. It's not easy — but it's right. And the first step is already mapped.",                                           visualDirection:"A direction. A next step. Momentum beginning.",             caption:"From insight to action."},
-        {number:5,title:"What Becomes Possible", narrative:"If we follow this path — here's the world on the other side. Not just a better outcome, but a fundamentally different way of operating.",                     visualDirection:"Open space. Wide horizon. A new normal.",                  caption:"The future this story is building toward."},
-        {number:6,title:"The Invitation",        narrative:"This story ends with a question for everyone in the room. What will we choose to do with what we now know?",                                                  visualDirection:"A moment of shared decision. The room, alive.",             caption:"The story is theirs now."},
-      ]
+        {number:1,title:"Where We Begin",       visual:"The world as it is. Familiar. Real.",                                emotion:"Curiosity",   caption:"Every story starts here.",        narrative:"Before anything changes, we need to see the world as it truly is."},
+        {number:2,title:"The Tension",          visual:"A gap. A question. Something that needs answering.",                 emotion:"Tension",     caption:"This is what makes it necessary.", narrative:"Something isn't working — or could work far better. That tension is the engine of this story."},
+        {number:3,title:"The Insight",          visual:"One clear idea, fully formed. A new way of seeing.",                emotion:"Insight",     caption:"This changes everything.",         narrative:"A new frame. Not more effort — a different lens. This is the pivot."},
+        {number:4,title:"The Path Forward",     visual:"A direction. Steps becoming clear. Motion beginning.",              emotion:"Hope",        caption:"From insight to action.",          narrative:"The route becomes clear. It's not easy — but it's right."},
+        {number:5,title:"What Becomes Possible",visual:"Open space. A different world. The future unlocked.",               emotion:"Confidence",  caption:"This is what we're building.",     narrative:"On the other side of this is something better. Fundamentally different."},
+        {number:6,title:"The Invitation",       visual:"A shared moment. The audience, ready to choose.",                   emotion:"Action",      caption:"Now it belongs to everyone.",      narrative:"This story ends with a question — what will we choose to do?"},
+      ],
+      story:`${topic}\n\nBefore anything changes, we need to see clearly.\n\nSomething isn't working — or could work far better. That tension is the engine of everything that follows.\n\nHere's the insight that changes the frame. Not more effort — a different way of seeing the problem.\n\nWith that insight, a path becomes clear. It won't be easy. But it will be right.\n\nOn the other side of this decision is something fundamentally better.\n\nThis story ends with a question for everyone here: what will we choose to do with what we now know?`,
     };
   }
 
   async function generate() {
     if (!brief.trim()) return;
-    setPhase('generating'); setApiError(null);
-
+    setPhase('generating'); setApiError(false);
     try {
       const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method:"POST", headers:{"Content-Type":"application/json"},
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1400,
-          messages: [{
-            role: "user",
-            content: `You are a master storyteller. A user has given you a brief. Your only job is to write THEIR story — not a generic template, not a business transformation arc, not a default narrative. You must adapt completely to what they describe.
+          model:"claude-sonnet-4-20250514", max_tokens:2000,
+          messages:[{ role:"user", content:
+`You are a cinematic story director. A user has given you a brief. Your job is NOT to produce a generic story template. You must first deeply understand the subject, audience, and emotional world — then generate a complete Story World Model from which the narrative flows naturally.
 
-Read this brief carefully:
-"${brief}"
+BRIEF: "${brief}"
 
-Match its tone, genre, audience, and emotional register completely. If the brief says magical and for a child, write like a children's picture book — use wonder, simple language, characters, and joy. If it says breaking news, write urgent and cinematic. If it says a love story, write warmly and personally. If it says data and enterprise, write with precision and authority. The brief is your complete and only instruction — ignore any default story shapes.
+Read the brief with care. Understand: Who is this for? What is the subject? What emotion should it create? What visual world does it live in? What is the core lesson?
 
-Write exactly 6 scenes that tell THIS specific story. Every scene title must name something that actually happens in this story — not generic labels like "The World Before", "The Turning Point", or "The Call To Action". Give each scene a name that only makes sense for this story.
+Now generate a complete cinematic story in this EXACT JSON structure:
 
-Return ONLY valid JSON — no preamble, no markdown:
 {
-  "storyTitle": "A title specific to this story and this brief (not generic)",
-  "deliveryNote": "One sentence on how to tell this — tone, pace, energy, who it's for",
+  "storyWorld": {
+    "subject": "the actual subject from the brief (specific, not generic)",
+    "audience": "exact target audience from brief",
+    "emotion": "primary emotion this story creates",
+    "style": "storytelling style (e.g. Bedtime Story, Cinematic Documentary, TED Talk, etc.)",
+    "visualWorld": "the visual setting (e.g. Enchanted Garden, Corporate Boardroom, etc.)",
+    "character": "the hero or protagonist (specific name and role if story warrants it)",
+    "lesson": "the core message or lesson in 4-6 words"
+  },
+  "storyDNA": {
+    "hero": "who the story follows",
+    "world": "the setting described vividly in 4-6 words",
+    "challenge": "the central challenge or tension",
+    "magic": "the element that makes this story special or surprising",
+    "lesson": "the insight that changes everything",
+    "ending": "how the story resolves in 4-6 words"
+  },
+  "emotionalJourney": ["Emotion1","Emotion2","Emotion3","Emotion4","Emotion5","Emotion6"],
   "scenes": [
     {
       "number": 1,
-      "title": "Scene title that is specific to THIS story",
-      "narrative": "2-4 lines written in the style this brief calls for — if magical, be magical; if cinematic, be cinematic; if funny, be funny. Make the reader picture it exactly.",
-      "visualDirection": "One line describing what is seen — specific to this scene and story (e.g. A tiny egg on a bright green leaf. Morning dew. Sunlight breaking through.)",
-      "caption": "One crisp sentence that captures this scene's purpose in the story"
+      "title": "Scene title specific to THIS story (not generic like 'The Beginning')",
+      "visual": "Exactly what is seen: specific objects, colours, lighting, atmosphere. Write it like a film direction.",
+      "emotion": "One word — the emotion this scene creates",
+      "caption": "One sentence caption: punchy, specific, memorable.",
+      "narrative": "2-4 sentences of story narrative written in the exact style the brief calls for. If magical/children — write with wonder and simple joy. If cinematic/urgent — write with tension. If TED — write with conviction."
     }
-  ]
+  ],
+  "story": "The complete narrative — all 6 scenes woven into one flowing story, written entirely in the style the brief demands. Format with scene titles as headers (SCENE TITLE:) followed by the narrative. Make it feel like a real story, not a template."
 }
 
-6 scenes total. Stay true to the brief. This is their story, not a template.`
+Generate exactly 6 scenes. Match the brief completely. If it says magical for a child, write like a children's author. If it says breaking news, write like a documentary script. This is their story.`
           }]
         })
       });
       const d = await res.json();
-      if (!res.ok) throw new Error(d.error?.message || 'API error');
+      if (!res.ok) throw new Error('API error');
       const raw = (d.content||[]).map(b=>b.text||'').join('').trim().replace(/```json\n?|\n?```/g,'').trim();
       const m = raw.match(/\{[\s\S]*\}/);
-      if (!m) throw new Error('Could not parse response');
+      if (!m) throw new Error('Parse error');
       const parsed = JSON.parse(m[0]);
-      if (!parsed.scenes?.length) throw new Error('Invalid story structure');
-      setResult(parsed);
-      setPhase('results');
-    } catch(e) {
-      // API failed — use a brief-aware template so the content at least matches what they asked for
-      setApiError(e.message);
-      setResult(buildTemplateFallback(brief));
+      if (!parsed.scenes?.length) throw new Error('No scenes');
+      setResult(parsed); setPhase('results');
+    } catch(_) {
+      setApiError(true);
+      setResult(buildFallback(brief));
       setPhase('results');
     }
   }
 
-  function copy(text, key) {
-    navigator.clipboard?.writeText(text).catch(()=>{});
-    setCopied(key); setTimeout(()=>setCopied(null), 2000);
-  }
+  const WORLD_FIELDS = [
+    { key:'subject',     label:'Subject',      emoji:'🎯' },
+    { key:'audience',    label:'Audience',     emoji:'👥' },
+    { key:'emotion',     label:'Emotion',      emoji:'✨' },
+    { key:'style',       label:'Style',        emoji:'🎬' },
+    { key:'visualWorld', label:'Visual World', emoji:'🌍' },
+    { key:'character',   label:'Character',    emoji:'⭐' },
+    { key:'lesson',      label:'Lesson',       emoji:'💡' },
+  ];
 
-  const cs = {
-    card:  { background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:isDesktop?"28px 32px":"20px 22px" },
-    label: { fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:8 },
-    cta:   { width:"100%", padding:isDesktop?"16px":"15px", borderRadius:4, border:"none", background:T.ink||"#2C2416", color:T2.bg||"#F7F3EC", fontSize:isDesktop?15:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50, transition:"all 0.2s" },
-  };
+  const DNA_FIELDS = [
+    { key:'hero',      label:'Hero'      },
+    { key:'world',     label:'World'     },
+    { key:'challenge', label:'Challenge' },
+    { key:'magic',     label:'Magic'     },
+    { key:'lesson',    label:'Lesson'    },
+    { key:'ending',    label:'Ending'    },
+  ];
+
+  const sec = (label) => (
+    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:isDesktop?16:12}}>
+      {label}
+    </div>
+  );
+
+  const divider = (
+    <div style={{height:"0.5px",background:`linear-gradient(90deg,${T.gold} 0%,rgba(138,158,132,0.08) 100%)`,margin:`${isDesktop?28:22}px 0`}}/>
+  );
 
   // ── BRIEF ──────────────────────────────────────────────────────────────────
-  if (phase === 'brief') return (
+  if (phase==='brief') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
       <div>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Story Architect</div>
         <h2 style={{fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>What's your story?</h2>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Describe the topic, audience, and the feeling you want to create. The more direction you give, the more cinematic the output.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Describe the subject, audience, and the feeling you want to create. The AI will build a complete cinematic world — story, storyboard, and everything in between.</p>
       </div>
 
-      <div style={cs.card}>
-        <textarea
-          value={brief}
-          onChange={e=>setBrief(e.target.value)}
-          placeholder="e.g. A cybersecurity risk presentation for our leadership team — I want it to feel like breaking news, urgent and real. Show them what's at stake before showing the solution."
-          rows={isDesktop?6:5}
-          style={{width:"100%",background:"transparent",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,resize:"none",boxSizing:"border-box",fontWeight:300}}
-        />
-        {brief.trim() && (
-          <div style={{display:"flex",justifyContent:"flex-end",marginTop:8}}>
-            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{brief.trim().split(/\s+/).length} words</span>
-          </div>
-        )}
+      <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"}}>
+        <textarea value={brief} onChange={e=>setBrief(e.target.value)}
+          placeholder={"e.g. A magical story about the lifecycle of a butterfly for my 5-year-old — full of wonder, bedtime story style, make it feel like a Pixar film"}
+          rows={isDesktop?5:4}
+          style={{width:"100%",background:"transparent",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,resize:"none",boxSizing:"border-box",fontWeight:300}}/>
+        {brief.trim() && <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:6,textAlign:"right"}}>{brief.trim().split(/\s+/).length} words</div>}
       </div>
 
       <div>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Or start with an example</div>
+        <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Or try an example</div>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {EXAMPLE_BRIEFS.map((ex,i)=>(
-            <button key={i} onClick={()=>setBrief(ex)}
-              style={{padding:isDesktop?"12px 16px":"10px 14px",borderRadius:6,border:"0.5px solid "+T2.border,background:brief===ex?"rgba(138,158,132,0.08)":T2.surface,cursor:"pointer",textAlign:"left",fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,fontWeight:300,transition:"all 0.15s",display:"flex",alignItems:"flex-start",gap:10}}>
-              <span style={{color:T.gold,flexShrink:0,fontWeight:700}}>→</span>
-              {ex}
+            <button key={i} onClick={()=>setBrief(ex)} style={{padding:isDesktop?"11px 16px":"10px 14px",borderRadius:6,border:"0.5px solid "+T2.border,background:brief===ex?"rgba(138,158,132,0.08)":T2.surface,cursor:"pointer",textAlign:"left",fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,fontWeight:300,display:"flex",alignItems:"flex-start",gap:10,transition:"all 0.15s"}}>
+              <span style={{color:T.gold,flexShrink:0,fontWeight:700}}>→</span>{ex}
             </button>
           ))}
         </div>
       </div>
 
-      <button onClick={generate} disabled={!brief.trim()}
-        style={{...cs.cta,opacity:brief.trim()?1:0.4,cursor:brief.trim()?"pointer":"default"}}>
+      <button onClick={generate} disabled={!brief.trim()} style={{width:"100%",padding:isDesktop?"16px":"15px",borderRadius:4,border:"none",background:brief.trim()?(T.ink||"#2C2416"):"rgba(44,36,22,0.25)",color:T2.bg||"#F7F3EC",fontSize:isDesktop?15:14,fontWeight:600,cursor:brief.trim()?"pointer":"default",fontFamily:T.sans,minHeight:50}}>
         Generate My Story →
       </button>
     </div>
   );
 
   // ── GENERATING ─────────────────────────────────────────────────────────────
-  if (phase === 'generating') return (
-    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:isDesktop?20:16,padding:isDesktop?"64px 0":"44px 0",textAlign:"center"}}>
+  if (phase==='generating') return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:20,padding:isDesktop?"64px 0":"44px 0",textAlign:"center"}}>
       <div style={{background:"#0A0804",borderRadius:10,padding:isDesktop?"36px 44px":"28px 28px",border:"0.5px solid rgba(138,158,132,0.2)",width:"100%",maxWidth:460,boxSizing:"border-box",textAlign:"left"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:20}}>Writing Your Story</div>
-        <div style={{display:"flex",flexDirection:"column",gap:14}}>
-          {["Reading your brief","Finding the emotional core","Naming each scene","Writing the narrative","Composing visual directions"].map((s,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",gap:12,animation:`fadeUp 0.5s ease ${i*0.3}s both`}}>
-              <div style={{width:7,height:7,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.25}s infinite`,flexShrink:0}}/>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.6)",fontWeight:300}}>{s}</span>
-            </div>
-          ))}
-        </div>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:20}}>Building Your Story World</div>
+        {["Understanding your brief","Extracting story world and characters","Mapping the emotional arc","Writing each cinematic scene","Composing the full narrative"].map((s,i)=>(
+          <div key={i} style={{display:"flex",alignItems:"center",gap:12,marginBottom:i<4?14:0,animation:`fadeUp 0.5s ease ${i*0.3}s both`}}>
+            <div style={{width:7,height:7,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.25}s infinite`,flexShrink:0}}/>
+            <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.6)",fontWeight:300}}>{s}</span>
+          </div>
+        ))}
       </div>
-      <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text3,margin:0}}>Building something specific to your story…</p>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text3,margin:0}}>Creating a world, not just a story…</p>
     </div>
   );
 
   // ── RESULTS ────────────────────────────────────────────────────────────────
-  if (phase === 'results' && result) {
+  if (phase==='results' && result) {
+    const sw = result.storyWorld || {};
+    const dna = result.storyDNA || {};
+    const journey = result.emotionalJourney || [];
     const scenes = result.scenes || [];
+
     return (
-      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
+      <div style={{display:"flex",flexDirection:"column"}}>
 
-        {/* Header */}
-        <div style={{background:"#0A0804",borderRadius:10,padding:isDesktop?"24px 32px":"20px 22px",border:"0.5px solid rgba(138,158,132,0.2)"}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your Story</div>
-          <div style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:"rgba(245,239,230,0.92)",lineHeight:1.2,marginBottom:10}}>{result.storyTitle}</div>
-          {apiError && (
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,padding:"10px 14px",background:"rgba(255,255,255,0.05)",borderRadius:6,marginBottom:10,flexWrap:"wrap",gap:8}}>
-              <span style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",fontWeight:300}}>AI coach unavailable — showing a template based on your brief. <button onClick={()=>{setApiError(null);generate();}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:11,fontWeight:600,padding:0}}>Try again →</button></span>
+        {/* AI unavailable notice */}
+        {apiError && (
+          <div style={{background:"rgba(138,158,132,0.08)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)",padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
+            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>AI coach unavailable — showing a template based on your brief.</span>
+            <button onClick={()=>{setApiError(false);generate();}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:11,fontWeight:600,padding:0,flexShrink:0}}>Try again with AI →</button>
+          </div>
+        )}
+
+        {/* ── STORY WORLD ──────────────────────────────────────────────────── */}
+        {sec("Story World")}
+        <div style={{display:"flex",flexWrap:"wrap",gap:isDesktop?10:8}}>
+          {WORLD_FIELDS.map(f => sw[f.key] ? (
+            <div key={f.key} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 14px",borderRadius:20,background:T2.surface,border:"0.5px solid "+T2.border}}>
+              <span style={{fontSize:isDesktop?16:14}}>{f.emoji}</span>
+              <div>
+                <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",lineHeight:1,marginBottom:2}}>{f.label}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,fontWeight:500,lineHeight:1.2}}>{sw[f.key]}</div>
+              </div>
             </div>
-          )}
-          {result.deliveryNote && (
-            <div style={{display:"flex",alignItems:"flex-start",gap:10,padding:"12px 14px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)"}}>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,marginTop:1}}><circle cx="8" cy="8" r="6.5" stroke={T.gold} strokeWidth="1.2"/><path d="M8 5v4M8 11v1" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.6)",lineHeight:1.55,margin:0,fontWeight:300,fontStyle:"italic"}}>{result.deliveryNote}</p>
-            </div>
-          )}
+          ) : null)}
         </div>
 
-        {/* Tabs */}
-        <div style={{display:"flex",gap:0,borderBottom:"0.5px solid "+T2.border}}>
-          {[{id:'script',label:'Script'},{id:'storyboard',label:'Storyboard'}].map(tab=>(
-            <button key={tab.id} onClick={()=>setActiveTab(tab.id)} style={{
-              flex:1,padding:isDesktop?"12px 16px":"10px 12px",border:"none",background:"transparent",
-              fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:activeTab===tab.id?600:400,
-              color:activeTab===tab.id?T2.text:T2.text3,cursor:"pointer",
-              borderBottom:activeTab===tab.id?`2px solid ${T.gold}`:"2px solid transparent",
-              transition:"all 0.15s",marginBottom:-1,
-            }}>{tab.label}</button>
-          ))}
+        {divider}
+
+        {/* ── STORY DNA ────────────────────────────────────────────────────── */}
+        {sec("Story DNA")}
+        <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr":"1fr 1fr",gap:10}}>
+          {DNA_FIELDS.map(f => dna[f.key] ? (
+            <div key={f.key} style={{background:"#0A0804",borderRadius:8,padding:"14px 16px",border:"0.5px solid rgba(138,158,132,0.12)"}}>
+              <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{f.label}</div>
+              <div style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.85)",lineHeight:1.4}}>{dna[f.key]}</div>
+            </div>
+          ) : null)}
         </div>
 
-        {/* Script tab */}
-        {activeTab === 'script' && (
-          <div style={{display:"flex",flexDirection:"column",gap:isDesktop?12:10}}>
-            {scenes.map((scene,i)=>(
-              <div key={i} style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
-                {/* Scene header */}
-                <div style={{padding:isDesktop?"14px 20px":"12px 16px",background:"rgba(138,158,132,0.06)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:12}}>
-                  <div style={{width:24,height:24,borderRadius:"50%",background:"rgba(138,158,132,0.15)",border:"0.5px solid rgba(138,158,132,0.35)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{scene.number}</span>
-                  </div>
-                  <div style={{fontFamily:T.serif,fontSize:isDesktop?16:15,fontWeight:600,color:T2.text,flex:1}}>{scene.title}</div>
-                  <button onClick={()=>copy(scene.narrative+'\n\n['+scene.visualDirection+']',i)} style={{background:"none",border:"none",cursor:"pointer",color:T2.text4,fontFamily:T.sans,fontSize:11,padding:"2px 6px",flexShrink:0}}>{copied===i?"Copied ✓":"Copy"}</button>
+        {divider}
+
+        {/* ── EMOTIONAL JOURNEY ────────────────────────────────────────────── */}
+        {sec("Emotional Journey")}
+        <div style={{display:"flex",alignItems:"center",flexWrap:"wrap",gap:0}}>
+          {journey.map((emotion, i) => {
+            const p = emotionPalette(emotion);
+            return (
+              <div key={i} style={{display:"flex",alignItems:"center"}}>
+                <div style={{padding:"6px 16px",borderRadius:20,background:p.bg2,border:`0.5px solid ${p.accent}`,display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{width:6,height:6,borderRadius:"50%",background:p.accent,flexShrink:0}}/>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:p.accent,fontWeight:600}}>{emotion}</span>
                 </div>
-                {/* Narrative */}
-                <div style={{padding:isDesktop?"18px 20px":"14px 16px"}}>
-                  <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,lineHeight:1.75,margin:"0 0 12px"}}>{scene.narrative}</p>
-                  {/* Visual direction */}
-                  <div style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 12px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" style={{flexShrink:0,marginTop:1}}><rect x="1" y="1" width="12" height="12" rx="2" stroke={T.gold} strokeWidth="1.2" fill="none"/><path d="M4 9l2-3 2 2 2-3" stroke={T.gold} strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.55,margin:0,fontWeight:300,fontStyle:"italic"}}>{scene.visualDirection}</p>
+                {i < journey.length-1 && <span style={{fontFamily:T.sans,fontSize:14,color:T2.text4,margin:"0 4px"}}>→</span>}
+              </div>
+            );
+          })}
+        </div>
+
+        {divider}
+
+        {/* ── STORYBOARD ───────────────────────────────────────────────────── */}
+        {sec("Storyboard")}
+        <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:isDesktop?12:10}}>
+          {scenes.map((scene,i)=>{
+            const p = emotionPalette(scene.emotion);
+            return (
+              <div key={i} style={{borderRadius:10,overflow:"hidden",border:`0.5px solid ${p.accent}22`,background:"#0D0B08",boxShadow:"0 4px 20px rgba(0,0,0,0.35)"}}>
+                {/* SVG visual */}
+                <div style={{position:"relative",height:isDesktop?130:110,overflow:"hidden"}}>
+                  {makeSceneSVG(scene,i)}
+                  {/* Scene number badge */}
+                  <div style={{position:"absolute",top:8,left:8,width:22,height:22,borderRadius:4,background:"rgba(10,8,4,0.75)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:p.accent}}>{scene.number}</span>
                   </div>
-                  {/* Caption */}
-                  <p style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:T2.text4,lineHeight:1.5,margin:"10px 0 0",fontWeight:400}}>{scene.caption}</p>
+                  {/* Emotion chip */}
+                  <div style={{position:"absolute",top:8,right:8,padding:"3px 10px",borderRadius:20,background:"rgba(10,8,4,0.75)",border:`0.5px solid ${p.accent}55`}}>
+                    <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:p.accent,letterSpacing:"0.5px"}}>{scene.emotion}</span>
+                  </div>
+                </div>
+                {/* Text */}
+                <div style={{padding:isDesktop?"14px 16px":"12px 14px",borderTop:`0.5px solid ${p.accent}18`}}>
+                  <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:"rgba(245,239,230,0.9)",marginBottom:4,lineHeight:1.3}}>{scene.title}</div>
+                  <p style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:`${p.accent}bb`,lineHeight:1.5,margin:"0 0 6px",fontStyle:"italic",fontWeight:300}}>{scene.visual||scene.visualDirection}</p>
+                  <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"rgba(245,239,230,0.6)",lineHeight:1.4,margin:0,fontWeight:400}}>{scene.caption}</p>
                 </div>
               </div>
-            ))}
+            );
+          })}
+        </div>
 
-            {/* Copy full script */}
-            <button onClick={()=>copy(scenes.map(s=>`SCENE ${s.number}: ${s.title}\n${s.narrative}\n[${s.visualDirection}]`).join('\n\n'),'full')}
-              style={{padding:isDesktop?"13px 20px":"11px 16px",borderRadius:6,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}>
-              {copied==='full'?"Full script copied ✓":"Copy full script"}
-            </button>
-          </div>
-        )}
+        {divider}
 
-        {/* Storyboard tab */}
-        {activeTab === 'storyboard' && (
-          <div style={{display:"flex",flexDirection:"column",gap:isDesktop?12:10}}>
-            <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:isDesktop?12:10}}>
-              {scenes.map((scene,i)=>(
-                <div key={i} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid rgba(138,158,132,0.2)",background:"#0D0B08",boxShadow:"0 4px 20px rgba(0,0,0,0.4)"}}>
-                  {/* Visual area */}
-                  <div style={{position:"relative",height:isDesktop?130:110,overflow:"hidden"}}>
-                    {makeSceneSVG(scene, i)}
-                    <div style={{position:"absolute",top:8,left:8,width:isDesktop?24:20,height:isDesktop?24:20,borderRadius:4,background:"rgba(10,8,4,0.75)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                      <span style={{fontFamily:T.sans,fontSize:isDesktop?10:9,fontWeight:700,color:T.gold}}>{scene.number}</span>
-                    </div>
-                  </div>
-                  {/* Text area */}
-                  <div style={{padding:isDesktop?"14px 16px":"11px 14px",borderTop:"0.5px solid rgba(138,158,132,0.15)"}}>
-                    <div style={{fontFamily:T.sans,fontSize:isDesktop?10:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{scene.title}</div>
-                    <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"rgba(245,239,230,0.55)",lineHeight:1.5,margin:"0 0 6px",fontWeight:300,fontStyle:"italic"}}>{scene.visualDirection}</p>
-                    <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.75)",lineHeight:1.45,margin:0}}>{scene.caption}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* ── STORY ────────────────────────────────────────────────────────── */}
+        {sec("The Story")}
+        <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"28px 32px":"20px 22px"}}>
+          {result.story ? (
+            result.story.split('\n\n').map((para,i)=>{
+              const isTitle = para.endsWith(':') || (i===0 && para.split('\n').length===1 && para.length < 60);
+              return para.trim() ? (
+                <p key={i} style={{
+                  fontFamily: isTitle ? T.sans : T.serif,
+                  fontSize: isTitle ? (isDesktop?10:9) : (isDesktop?17:15),
+                  fontWeight: isTitle ? 700 : 400,
+                  color: isTitle ? T.gold : T2.text,
+                  letterSpacing: isTitle ? "2px" : "-0.1px",
+                  textTransform: isTitle ? "uppercase" : "none",
+                  lineHeight: isTitle ? 1 : 1.8,
+                  margin: isTitle ? "20px 0 10px" : "0 0 14px",
+                }}>{para.replace(/:$/, '')}</p>
+              ) : null;
+            })
+          ) : (
+            scenes.map((s,i)=>(
+              <div key={i} style={{marginBottom:i<scenes.length-1?20:0}}>
+                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{s.title}</div>
+                <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.8,margin:0}}>{s.narrative}</p>
+              </div>
+            ))
+          )}
+        </div>
 
-        {/* Footer */}
-        <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px",marginTop:4}}>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px",fontWeight:300}}>Now deliver it. Use the script as your guide — not a word-for-word script, but a felt narrative. Let the story move through you.</p>
-          <button onClick={reset} style={cs.cta}>Build Another Story →</button>
+        <div style={{marginTop:16,display:"flex",gap:10,flexWrap:"wrap"}}>
+          <button onClick={reset} style={{flex:1,padding:isDesktop?"14px":"12px",borderRadius:4,border:"none",background:T.ink||"#2C2416",color:T2.bg||"#F7F3EC",fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Build Another Story →</button>
+          <button onClick={()=>{setResult(null);setPhase('brief');}} style={{padding:isDesktop?"14px 18px":"12px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:isDesktop?13:12,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>← Edit Brief</button>
         </div>
       </div>
     );
