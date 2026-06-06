@@ -382,367 +382,258 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
 }
 
 // ─── Story Architect Widget (Simulation) ──────────────────────────────────────
+
 export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulation }) {
   const T  = Tp  || Timport;
   const T2 = T2p || T2D;
 
-  const SITUATIONS = [
-    { id:'pitch',        label:'Pitch',             desc:'Sell an idea.' },
-    { id:'proposal',     label:'Proposal',           desc:'Gain approval.' },
-    { id:'presentation', label:'Presentation',       desc:'Educate or inspire.' },
-    { id:'sales',        label:'Sales Meeting',      desc:'Create urgency.' },
-    { id:'team',         label:'Team Update',        desc:'Drive engagement.' },
-    { id:'leadership',   label:'Leadership Talk',    desc:'Inspire action.' },
-    { id:'custom',       label:'Something Else',     desc:'Build your own.' },
+  const EXAMPLE_BRIEFS = [
+    "A cybersecurity risk presentation for leadership — make it feel like breaking news, urgent and specific",
+    "A pitch for a new product — TED-style, emotional and direct, show real human impact",
+    "A change management update — show the before and after, honest about what's changing and why",
   ];
 
-  const PROCESSING_STEPS = [
-    "Understanding your audience",
-    "Finding emotional hooks",
-    "Identifying key moments",
-    "Creating narrative arc",
-    "Designing storyboard",
+  const SCENE_SVGS = [
+    // Scene 1 — establishing / current reality
+    (gold) => (
+      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
+        <rect width="160" height="100" fill="#0A0804"/>
+        <rect x="12" y="60" width="16" height="35" rx="1" fill={gold} opacity="0.5"/>
+        <rect x="34" y="45" width="16" height="50" rx="1" fill={gold} opacity="0.35"/>
+        <rect x="56" y="52" width="16" height="43" rx="1" fill={gold} opacity="0.5"/>
+        <rect x="78" y="36" width="16" height="59" rx="1" fill={gold} opacity="0.35"/>
+        <rect x="100" y="48" width="16" height="47" rx="1" fill={gold} opacity="0.5"/>
+        <rect x="122" y="28" width="16" height="67" rx="1" fill={gold} opacity="0.35"/>
+        <line x1="8" y1="62" x2="152" y2="62" stroke={gold} strokeWidth="0.8" opacity="0.2"/>
+      </svg>
+    ),
+    // Scene 2 — tension / problem
+    (gold) => (
+      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
+        <rect width="160" height="100" fill="#0A0804"/>
+        <path d="M80 18 L100 58 H60 Z" stroke="#CC4444" strokeWidth="1.5" fill="rgba(204,68,68,0.12)"/>
+        <line x1="80" y1="30" x2="80" y2="46" stroke="#CC4444" strokeWidth="2" strokeLinecap="round"/>
+        <circle cx="80" cy="52" r="2" fill="#CC4444"/>
+        <circle cx="80" cy="50" r="28" stroke="rgba(204,68,68,0.15)" strokeWidth="1" fill="none"/>
+        <circle cx="80" cy="50" r="38" stroke="rgba(204,68,68,0.08)" strokeWidth="1" fill="none"/>
+      </svg>
+    ),
+    // Scene 3 — insight / turning point
+    (gold) => (
+      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
+        <rect width="160" height="100" fill="#0A0804"/>
+        <circle cx="80" cy="44" r="22" stroke={gold} strokeWidth="1" fill="none" opacity="0.3"/>
+        <circle cx="80" cy="44" r="14" stroke={gold} strokeWidth="1.5" fill="none" opacity="0.5"/>
+        <circle cx="80" cy="44" r="5" fill={gold} opacity="0.8"/>
+        <line x1="80" y1="14" x2="80" y2="22" stroke={gold} strokeWidth="1.5" opacity="0.5" strokeLinecap="round"/>
+        <line x1="80" y1="66" x2="80" y2="74" stroke={gold} strokeWidth="1.5" opacity="0.5" strokeLinecap="round"/>
+        <line x1="50" y1="44" x2="58" y2="44" stroke={gold} strokeWidth="1.5" opacity="0.5" strokeLinecap="round"/>
+        <line x1="102" y1="44" x2="110" y2="44" stroke={gold} strokeWidth="1.5" opacity="0.5" strokeLinecap="round"/>
+      </svg>
+    ),
+    // Scene 4 — breakthrough / solution
+    (gold) => (
+      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
+        <rect width="160" height="100" fill="#0A0804"/>
+        <path d="M20 72 Q50 30 80 48 Q110 66 140 20" stroke={gold} strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.7"/>
+        <circle cx="140" cy="20" r="5" fill={gold} opacity="0.9"/>
+        <path d="M132 24 L140 20 L136 28" stroke={gold} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.8"/>
+        <line x1="14" y1="80" x2="148" y2="80" stroke={gold} strokeWidth="0.8" opacity="0.15"/>
+      </svg>
+    ),
+    // Scene 5 — transformation / future
+    (gold) => (
+      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
+        <rect width="160" height="100" fill="#0A0804"/>
+        <circle cx="80" cy="46" r="30" fill="rgba(138,158,132,0.06)" stroke={gold} strokeWidth="0.8" opacity="0.4"/>
+        <circle cx="54" cy="46" r="8" fill={gold} opacity="0.7"/>
+        <circle cx="80" cy="30" r="8" fill={gold} opacity="0.5"/>
+        <circle cx="106" cy="46" r="8" fill={gold} opacity="0.7"/>
+        <circle cx="80" cy="62" r="8" fill={gold} opacity="0.5"/>
+        <line x1="60" y1="43" x2="74" y2="33" stroke={gold} strokeWidth="1" opacity="0.3"/>
+        <line x1="86" y1="33" x2="100" y2="43" stroke={gold} strokeWidth="1" opacity="0.3"/>
+        <line x1="60" y1="49" x2="74" y2="59" stroke={gold} strokeWidth="1" opacity="0.3"/>
+        <line x1="86" y1="59" x2="100" y2="49" stroke={gold} strokeWidth="1" opacity="0.3"/>
+      </svg>
+    ),
+    // Scene 6 — call to action
+    (gold) => (
+      <svg viewBox="0 0 160 100" fill="none" width="100%" height="100%">
+        <rect width="160" height="100" fill="#0A0804"/>
+        <path d="M28 50 L110 50" stroke={gold} strokeWidth="2.5" strokeLinecap="round" opacity="0.8"/>
+        <path d="M98 38 L112 50 L98 62" stroke={gold} strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.9"/>
+        <circle cx="130" cy="50" r="14" fill="rgba(138,158,132,0.1)" stroke={gold} strokeWidth="1" opacity="0.5"/>
+        <circle cx="130" cy="50" r="8" fill={gold} opacity="0.25"/>
+      </svg>
+    ),
   ];
 
-  const [phase,          setPhase]         = useState('landing');
-  const [situation,      setSituation]     = useState(null);
-  const [coreMessage,    setCoreMessage]   = useState('');
-  const [inputMode,      setInputMode]     = useState('speak');
-  const [textInput,      setTextInput]     = useState('');
-  const [transcript,     setTranscript]    = useState('');
-  const [isRec,          setIsRec]         = useState(false);
-  const [timeLeft,       setTimeLeft]      = useState(90);
-  const [waveVals,       setWaveVals]      = useState(Array(12).fill(0.3));
-  const [processingStep, setProcessingStep]= useState(0);
-  const [result,         setResult]        = useState(null);
-  const [activeTab,      setActiveTab]     = useState('story');
-  const [storyStyle,     setStoryStyle]    = useState(null);
-  const [styleGenerating,setStyleGenerating]=useState(false);
+  const [phase,    setPhase]   = useState('brief');
+  const [brief,    setBrief]   = useState('');
+  const [result,   setResult]  = useState(null);
+  const [activeTab,setActiveTab]=useState('script');
+  const [copied,   setCopied]  = useState(null);
 
-  const recRef      = useRef(null);
-  const timerRef    = useRef(null);
-  const waveRef     = useRef(null);
-  const liveRef     = useRef('');
+  const GOLD = T.gold || '#8A9E84';
 
-  const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
-
-  useEffect(()=>{
-    if(isRec&&timeLeft>0){ timerRef.current=setTimeout(()=>setTimeLeft(t=>t-1),1000); }
-    else if(isRec&&timeLeft===0){ stopRec(); }
-    return ()=>clearTimeout(timerRef.current);
-  },[isRec,timeLeft]);
-
-  useEffect(()=>{
-    if(!isRec){ clearInterval(waveRef.current); return; }
-    waveRef.current=setInterval(()=>setWaveVals(()=>Array.from({length:12},()=>0.15+Math.random()*0.85)),120);
-    return ()=>clearInterval(waveRef.current);
-  },[isRec]);
-
-  function startRec(){
-    liveRef.current=''; setTranscript(''); setIsRec(true); setTimeLeft(90);
-    if(SpeechRec){
-      const r=new SpeechRec(); r.continuous=true; r.interimResults=true;
-      r.onresult=e=>{ let t=''; for(let i=0;i<e.results.length;i++) if(e.results[i].isFinal) t+=e.results[i][0].transcript+' '; liveRef.current=t; setTranscript(t); };
-      try{r.start();}catch(e){} recRef.current=r;
-    }
+  function reset() {
+    setPhase('brief'); setBrief(''); setResult(null); setActiveTab('script'); setCopied(null);
   }
-  function stopRec(){ setIsRec(false); clearTimeout(timerRef.current); if(recRef.current){try{recRef.current.stop();}catch(e){}} }
-  function restart(){ setPhase('landing');setSituation(null);setCoreMessage('');setInputMode('speak');setTextInput('');setTranscript('');setIsRec(false);setTimeLeft(90);setResult(null);setProcessingStep(0);setActiveTab('story');setStoryStyle(null);setStyleGenerating(false); }
 
-  async function generate(){
-    stopRec();
-    const spoken = (liveRef.current||'').trim() || textInput.trim();
-    setPhase('processing'); setProcessingStep(0);
+  async function generate() {
+    if (!brief.trim()) return;
+    setPhase('generating');
 
-    const animateSteps = async()=>{
-      for(let i=1;i<=5;i++){ await new Promise(r=>setTimeout(r,650)); setProcessingStep(i); }
+    const fallback = {
+      storyTitle: "The Story That Changes Everything",
+      deliveryNote: "Speak slowly. Let the silences land. This story only works if you believe it.",
+      scenes: [
+        { number:1, title:"The World Before",         narrative:"There's a moment — before everything changes — when the old way still feels safe. That's where we are today. And it's worth pausing to see it clearly.",                                       visualDirection:"A single desk. One lamp. Familiar, quiet, ordinary.",          caption:"Every transformation starts with the world as it is." },
+        { number:2, title:"The Crack in the Ceiling", narrative:"Then something shifts. A number that doesn't add up. A question no one wants to answer. A gap between what we say and what we see. The tension has a name now.",                              visualDirection:"A spreadsheet. One cell highlighted in red.",                   caption:"The problem that can no longer be ignored." },
+        { number:3, title:"The Moment of Clarity",    narrative:"Here's what we realised: the old answer was never going to solve the new problem. We needed a different frame — not more effort, but different thinking.",                                    visualDirection:"One light cutting through darkness. A single point of focus.",  caption:"Insight arrives quietly. Then it rewires everything." },
+        { number:4, title:"A Different Path",         narrative:"So we mapped a new route. Not the easiest one — but the right one. Each step grounded in evidence, built on what we already know works.",                                                    visualDirection:"A path emerging from fog. Each step illuminated one at a time.", caption:"The solution isn't bold — it's clear." },
+        { number:5, title:"What Becomes Possible",    narrative:"If we get this right, here's what changes. Not just the number — the feeling in the room. The way people talk about what we do. The confidence we carry into the next conversation.",         visualDirection:"Open space. Wide horizon. Room to breathe and grow.",           caption:"The future is only possible if we choose it now." },
+        { number:6, title:"The Ask",                  narrative:"So here's what I'm asking. One decision. Made today. That opens the door to all of it. The team is ready. The plan is here. What we need now — is this.",                                   visualDirection:"A door. Open. Light coming through.",                           caption:"Every great outcome begins with a single yes." },
+      ]
     };
 
-    const callAPI = async()=>{
-      const mock = {
-        mainStory:{
-          opening:`There's a moment in every ${situation} when everything depends on your next words.`,
-          challenge:"The audience is busy, distracted, and has heard this before. Facts alone won't move them.",
-          transformation:"But a single, well-told story changes everything. It bypasses resistance and creates belief.",
-          message: coreMessage || "This is the moment to act.",
-          callToAction:"The question isn't whether to act. It's whether you'll act before the opportunity closes.",
-        },
-        versions:{
-          ted:`Imagine you're sitting in a room where a single decision will define the next five years. That's exactly where your audience sits right now. Here's what I've learned about the moments that matter most...`,
-          pixar:`Once upon a time, the way we ${situation.replace(/_/g,' ')} was holding us back. Every day, we repeated the same approach. One day, everything changed. Because of that, we had to rethink everything. Until finally, we found a better way. Ever since then, results have spoken for themselves.`,
-          executive:`Current state: we're at a crossroads. The tension: the old approach no longer serves us. Future state: with this decision, growth becomes inevitable. The action: approve this now, and let's move.`,
-          emotional:`I want to tell you about a moment I'll never forget. Because it changed how I think about everything we're trying to build together.`,
-        },
-        storyboard:[
-          {title:"Current Reality",   headline:"Where We Are Today",                    caption:"The world your audience already knows."},
-          {title:"Problem",           headline:"What's Holding Us Back",                caption:"The tension that makes action necessary."},
-          {title:"Turning Point",     headline:"The Moment Everything Changed",         caption:"A single insight, decision, or event."},
-          {title:"Breakthrough",      headline:"A New Way Forward",                     caption:"The solution that changes the equation."},
-          {title:"Transformation",    headline:"What Becomes Possible",                 caption:"The future unlocked by the right choice."},
-          {title:"Call To Action",    headline:"The Opportunity Is Ours",               caption:"What we must do next."},
-        ],
-        strength:{emotional:4,memorability:5,relevance:4,persuasion:4,clarity:5},
-        headline:"Strong narrative with clear transformation arc and a compelling call to action.",
-      };
-      if(!spoken && !coreMessage) return mock;
-      try{
-        const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-          model:"claude-sonnet-4-20250514",max_tokens:1200,messages:[{role:"user",content:
-            `You are a master storyteller for business presentations. Generate a complete story package.\n\nSituation: ${situation}\nCore Message: "${coreMessage}"\nContext (what they said): "${spoken}"\n\nReturn ONLY valid JSON:\n{"mainStory":{"opening":"...","challenge":"...","transformation":"...","message":"...","callToAction":"..."},"versions":{"ted":"30-second TED-style opening (2-3 sentences)","pixar":"Full Pixar-framework story (Once upon a time... Every day... One day... Because of that... Until finally... Ever since then...)","executive":"Business narrative: Current State → Tension → Future State → Call To Action (4 short paragraphs)","emotional":"Human-first emotional opening (2-3 sentences)"},"storyboard":[{"title":"Current Reality","headline":"...","caption":"..."},{"title":"Problem","headline":"...","caption":"..."},{"title":"Turning Point","headline":"...","caption":"..."},{"title":"Breakthrough","headline":"...","caption":"..."},{"title":"Transformation","headline":"...","caption":"..."},{"title":"Call To Action","headline":"...","caption":"..."}],"strength":{"emotional":<1-5>,"memorability":<1-5>,"relevance":<1-5>,"persuasion":<1-5>,"clarity":<1-5>},"headline":"<one sentence describing the story's core strength>"}`
-        }]})});
-        const d=await res.json();
-        const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
-        const m=raw.match(/\{[\s\S]*\}/);
-        return JSON.parse(m[0]);
-      }catch{ return mock; }
-    };
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1400,
+          messages: [{
+            role: "user",
+            content: `You are a master storyteller and creative director for business presentations. Based on the brief below, generate a complete, specific, cinematic story script.
 
-    const [apiResult]=await Promise.all([callAPI(),animateSteps()]);
-    setResult(apiResult);
-    setPhase('results');
+Brief: "${brief}"
+
+Important: Name each scene precisely to THIS story — not generic labels. The narrative should be specific enough that someone reading it could picture exactly what they're seeing and hearing.
+
+Return ONLY valid JSON:
+{
+  "storyTitle": "A specific, evocative title for this story (not generic)",
+  "deliveryNote": "One sentence on how to deliver this — tone, pace, emotional register",
+  "scenes": [
+    {
+      "number": 1,
+      "title": "Scene-specific title (e.g. The 3am Alert, not Opening)",
+      "narrative": "2-4 lines of narrator voiceover — specific, visual, present-tense. Make the audience see it.",
+      "visualDirection": "One line: exactly what the audience sees — e.g. Dark screens. One red notification.",
+      "caption": "One crisp sentence capturing this scene's narrative purpose"
+    }
+  ]
+}
+
+Generate exactly 6 scenes. Make them feel like a film, not a slide deck.`
+          }]
+        })
+      });
+      const d = await res.json();
+      const raw = (d.content||[]).map(b=>b.text||'').join('').trim().replace(/\`\`\`json\n?|\n?\`\`\`/g,'').trim();
+      const m = raw.match(/\{[\s\S]*\}/);
+      if (m) { const parsed = JSON.parse(m[0]); setResult(parsed); }
+      else setResult(fallback);
+    } catch(_) { setResult(fallback); }
+    finally { setPhase('results'); }
+  }
+
+  function copy(text, key) {
+    navigator.clipboard?.writeText(text).catch(()=>{});
+    setCopied(key); setTimeout(()=>setCopied(null), 2000);
   }
 
   const cs = {
     card:  { background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:isDesktop?"28px 32px":"20px 22px" },
     label: { fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:8 },
-    cta:   { width:"100%", padding:isDesktop?"16px":"14px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:isDesktop?16:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50, transition:"all 0.2s" },
-    back:  { background:"none", border:"none", color:T2.text3, fontFamily:T.sans, fontSize:13, cursor:"pointer", padding:"4px 0", textAlign:"center", width:"100%" },
-    inp:   { width:"100%", padding:"14px 16px", border:"0.5px solid "+T2.border, borderRadius:4, outline:"none", background:T2.bg, fontSize:isDesktop?16:15, color:T2.text, lineHeight:1.6, fontFamily:T.sans, fontWeight:300, boxSizing:"border-box" },
+    cta:   { width:"100%", padding:isDesktop?"16px":"15px", borderRadius:4, border:"none", background:T.ink||"#2C2416", color:T2.bg||"#F7F3EC", fontSize:isDesktop?15:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50, transition:"all 0.2s" },
   };
 
-  function Stars({score}){
-    return <div style={{display:"flex",gap:3}}>{[1,2,3,4,5].map(i=>(
-      <svg key={i} width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M7 1l1.5 3.5H12L9.5 7l1 3.5L7 8.5 3.5 10.5l1-3.5L2 4.5h3.5z"
-          fill={i<=score?T.gold:"transparent"} stroke={i<=score?T.gold:"rgba(138,158,132,0.3)"} strokeWidth="1"/>
-      </svg>
-    ))}</div>;
-  }
-
-  // ── LANDING ────────────────────────────────────────────────────────────────
-  if(phase==='landing') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      {/* Title — outside cards, matching D3 pattern */}
-      <div>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Simulation · Day 8</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?38:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>Story Architect</h2>
-      </div>
-
-      {/* HOW IT WORKS */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
-        <div style={cs.label}>How It Works</div>
-        <h3 style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 20px"}}>A 5-step story builder.</h3>
-        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
-          {[
-            {n:1,label:"Choose your\nsituation",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M7.5 11l2.5 2.5 4.5-4.5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>},
-            {n:2,label:"Define your\nmessage",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 5h14a1 1 0 011 1v8a1 1 0 01-1 1H7l-3 3V6a1 1 0 011-1z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
-            {n:3,label:"Speak or\ntype",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:4,label:"AI builds\nyour story",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 2l1.5 4.5H17l-3.75 2.75 1.5 4.75L11 11.5l-3.75 2.5 1.5-4.75L5 6.5h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
-            {n:5,label:"Visual\nstoryboard",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke={T.gold} strokeWidth="1.3"/><rect x="12" y="3" width="7" height="7" rx="1.5" stroke={T.gold} strokeWidth="1.3"/><rect x="3" y="12" width="7" height="7" rx="1.5" stroke={T.gold} strokeWidth="1.3"/><rect x="12" y="12" width="7" height="7" rx="1.5" stroke={T.gold} strokeWidth="1.3"/></svg>},
-          ].map((s,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
-              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
-                <div style={{width:isDesktop?44:34,height:isDesktop?44:34,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:6}}>{s.icon}</div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?11:9,color:T2.text3,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:52,whiteSpace:"pre-line"}}>{s.label}</div>
-              </div>
-              {i<4&&<div style={{height:1,width:isDesktop?12:5,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:32}}/>}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* THE FIRST STEP */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
-        <div style={cs.label}>The First Step</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>
-          Behind every successful pitch, presentation, proposal, and leadership talk is a story that creates belief, builds connection, and inspires action. Every great presentation has a story behind it. The challenge is knowing how to find it.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>
-          Simply capture your ideas by speaking naturally or adding a few notes. Story Architect uncovers the narrative hidden within your message and transforms it into a compelling story, visual storyboard, and presentation-ready experience.
-        </p>
-      </div>
-
-      {/* YOUR AI COACH */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
-        <div style={cs.label}>Your AmplifyU Coach</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>
-          Your AmplifyU coach will generate a complete story, four alternative narrative frameworks — TED, Pixar, Executive, and Emotional — and a six-panel visual storyboard for your presentation.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic"}}>
-          From a simple idea to a story people remember — not a worksheet, a workflow.
-        </p>
-      </div>
-
-      <button onClick={()=>setPhase('situation')} style={cs.cta}>Start Building →</button>
-    </div>
-  );
-
-  // ── SITUATION ──────────────────────────────────────────────────────────────
-  if(phase==='situation') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
-      <div>
-        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300,marginBottom:6}}>Step 1 of 3</div>
-        <div style={{height:4,background:T2.border,borderRadius:2,marginBottom:16}}>
-          <div style={{height:"100%",width:"33%",background:T.gold,borderRadius:2}}/>
-        </div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:6}}>What are you preparing for?</h2>
-      </div>
-      <div style={{display:"flex",flexDirection:"column",gap:8}}>
-        {SITUATIONS.map(s=>(
-          <button key={s.id} onClick={()=>{setSituation(s.id);setPhase('message');}}
-            style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:isDesktop?"16px 20px":"13px 18px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
-            <div>
-              <div style={{fontFamily:T.serif,fontSize:isDesktop?17:16,fontWeight:600,color:T2.text,marginBottom:2}}>{s.label}</div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,fontWeight:300}}>{s.desc}</p>
-            </div>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,marginLeft:12}}><path d="M4 8h8M8 4l4 4-4 4" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-
-  // ── CORE MESSAGE ───────────────────────────────────────────────────────────
-  if(phase==='message') return (
+  // ── BRIEF ──────────────────────────────────────────────────────────────────
+  if (phase === 'brief') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
       <div>
-        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300,marginBottom:6}}>Step 2 of 3</div>
-        <div style={{height:4,background:T2.border,borderRadius:2,marginBottom:16}}>
-          <div style={{height:"100%",width:"66%",background:T.gold,borderRadius:2}}/>
-        </div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:6}}>What's the one thing you want people to remember?</h2>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Story Architect</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>What's your story?</h2>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Describe the topic, audience, and the feeling you want to create. The more direction you give, the more cinematic the output.</p>
       </div>
+
       <div style={cs.card}>
-        <input value={coreMessage} onChange={e=>setCoreMessage(e.target.value)}
-          placeholder={`e.g. "Customer experience is our advantage."`}
-          style={{...cs.inp,fontSize:isDesktop?18:16}}/>
-        <div style={{display:"flex",flexDirection:"column",gap:6,marginTop:14}}>
-          {["Simplicity drives growth.","AI should help people, not replace them.","We need to change now."].map((ex,i)=>(
-            <button key={i} onClick={()=>setCoreMessage(ex)} style={{padding:"6px 12px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",cursor:"pointer",fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,textAlign:"left"}}>
-              → {ex}
+        <textarea
+          value={brief}
+          onChange={e=>setBrief(e.target.value)}
+          placeholder="e.g. A cybersecurity risk presentation for our leadership team — I want it to feel like breaking news, urgent and real. Show them what's at stake before showing the solution."
+          rows={isDesktop?6:5}
+          style={{width:"100%",background:"transparent",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,resize:"none",boxSizing:"border-box",fontWeight:300}}
+        />
+        {brief.trim() && (
+          <div style={{display:"flex",justifyContent:"flex-end",marginTop:8}}>
+            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{brief.trim().split(/\s+/).length} words</span>
+          </div>
+        )}
+      </div>
+
+      <div>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Or start with an example</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {EXAMPLE_BRIEFS.map((ex,i)=>(
+            <button key={i} onClick={()=>setBrief(ex)}
+              style={{padding:isDesktop?"12px 16px":"10px 14px",borderRadius:6,border:"0.5px solid "+T2.border,background:brief===ex?"rgba(138,158,132,0.08)":T2.surface,cursor:"pointer",textAlign:"left",fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,fontWeight:300,transition:"all 0.15s",display:"flex",alignItems:"flex-start",gap:10}}>
+              <span style={{color:T.gold,flexShrink:0,fontWeight:700}}>→</span>
+              {ex}
             </button>
           ))}
         </div>
       </div>
-      <button onClick={()=>setPhase('record')} disabled={!coreMessage.trim()}
-        style={{...cs.cta,opacity:coreMessage.trim()?1:0.4,cursor:coreMessage.trim()?"pointer":"default"}}>Continue →</button>
-      <button onClick={()=>setPhase('situation')} style={cs.back}>← Back</button>
+
+      <button onClick={generate} disabled={!brief.trim()}
+        style={{...cs.cta,opacity:brief.trim()?1:0.4,cursor:brief.trim()?"pointer":"default"}}>
+        Generate My Story →
+      </button>
     </div>
   );
 
-  // ── RECORD ─────────────────────────────────────────────────────────────────
-  if(phase==='record') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
-      <div>
-        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300,marginBottom:6}}>Step 3 of 3</div>
-        <div style={{height:4,background:T2.border,borderRadius:2,marginBottom:16}}>
-          <div style={{height:"100%",width:"100%",background:T.gold,borderRadius:2}}/>
-        </div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:6}}>Tell me about it.</h2>
-      </div>
-
-      {inputMode==='speak' ? (
-        <>
-          <div style={{...cs.card,padding:isDesktop?"24px 28px":"20px 22px"}}>
-            <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,marginBottom:14,fontWeight:300}}>
-              Explain your presentation as if talking to a colleague. What is it about? Why does it matter? Any stories or examples you'd like included?
-            </div>
-            {isRec ? (
-              <>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8}}>
-                    <div style={{width:8,height:8,borderRadius:"50%",background:"#CC4444",animation:"glowPulse 1s ease infinite"}}/>
-                    <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px"}}>Recording</span>
-                  </div>
-                  <span style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T.gold}}>{Math.floor(timeLeft/60)}:{String(timeLeft%60).padStart(2,'0')}</span>
-                </div>
-                <div style={{display:"flex",alignItems:"center",gap:3,height:36,marginBottom:12}}>
-                  {waveVals.map((v,i)=><div key={i} style={{flex:1,background:T.gold,borderRadius:2,height:Math.max(3,v*32),transition:"height 0.1s ease"}}/>)}
-                </div>
-                {transcript&&<p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.55,fontStyle:"italic",margin:0}}>{transcript.slice(-180)}{transcript.length>180?'…':''}</p>}
-              </>
-            ) : (
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.6,margin:0,fontStyle:"italic"}}>Hold the button below to start recording.</p>
-            )}
-          </div>
-          <div style={{display:"flex",gap:10}}>
-            {!isRec
-              ? <button onClick={startRec} style={cs.cta}>Start Recording →</button>
-              : <button onClick={generate} style={{...cs.cta,background:"rgba(82,112,96,0.85)"}}>Stop & Build My Story →</button>
-            }
-          </div>
-          <button onClick={()=>setInputMode('type')} style={cs.back}>Switch to typing instead</button>
-        </>
-      ) : (
-        <>
-          <div style={cs.card}>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,marginBottom:12,fontWeight:300}}>
-              Explain your presentation in a few sentences. What's it about? Why does it matter? Any examples or stories?
-            </p>
-            <textarea value={textInput} onChange={e=>setTextInput(e.target.value)}
-              placeholder="e.g. I'm pitching a new product to our sales team. The problem is that our current tool wastes 3 hours per rep per week. We have a customer who saved £40K using our solution..."
-              rows={5}
-              style={{...cs.inp,resize:"none"}}/>
-          </div>
-          <button onClick={generate} disabled={!textInput.trim()}
-            style={{...cs.cta,opacity:textInput.trim()?1:0.4,cursor:textInput.trim()?"pointer":"default"}}>Build My Story →</button>
-          <button onClick={()=>setInputMode('speak')} style={cs.back}>Switch to voice instead</button>
-        </>
-      )}
-      <button onClick={()=>setPhase('message')} style={cs.back}>← Back</button>
-    </div>
-  );
-
-  // ── PROCESSING ─────────────────────────────────────────────────────────────
-  if(phase==='processing') return (
-    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:isDesktop?20:16,padding:isDesktop?"52px 0":"40px 0",textAlign:"center"}}>
-      <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"32px 40px":"24px 28px",border:"0.5px solid rgba(138,158,132,0.2)",width:"100%",maxWidth:440,boxSizing:"border-box",textAlign:"left"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:20}}>Building Your Story</div>
+  // ── GENERATING ─────────────────────────────────────────────────────────────
+  if (phase === 'generating') return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:isDesktop?20:16,padding:isDesktop?"64px 0":"44px 0",textAlign:"center"}}>
+      <div style={{background:"#0A0804",borderRadius:10,padding:isDesktop?"36px 44px":"28px 28px",border:"0.5px solid rgba(138,158,132,0.2)",width:"100%",maxWidth:460,boxSizing:"border-box",textAlign:"left"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:20}}>Writing Your Story</div>
         <div style={{display:"flex",flexDirection:"column",gap:14}}>
-          {PROCESSING_STEPS.map((s,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",gap:12,opacity:i<processingStep?1:0.3,transition:"opacity 0.4s ease"}}>
-              <div style={{width:20,height:20,borderRadius:"50%",border:"1.5px solid "+(i<processingStep?T.gold:"rgba(138,158,132,0.3)"),background:i<processingStep?"rgba(138,158,132,0.15)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.4s ease"}}>
-                {i<processingStep&&<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-              </div>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:i<processingStep?"#F5EFE6":"rgba(245,239,230,0.4)",fontWeight:300,transition:"color 0.4s ease"}}>{s}</span>
+          {["Reading your brief","Finding the emotional core","Naming each scene","Writing the narrative","Composing visual directions"].map((s,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:12,animation:`fadeUp 0.5s ease ${i*0.3}s both`}}>
+              <div style={{width:7,height:7,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.25}s infinite`,flexShrink:0}}/>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.6)",fontWeight:300}}>{s}</span>
             </div>
           ))}
         </div>
       </div>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text3,margin:0}}>Building something specific to your story…</p>
     </div>
   );
 
   // ── RESULTS ────────────────────────────────────────────────────────────────
-  if(phase==='results'&&result) {
-    const TABS = [{id:'story',label:'Your Story'},{id:'versions',label:'Versions'},{id:'storyboard',label:'Storyboard'}];
-    const PANEL_COLORS = ['rgba(138,158,132,0.12)','rgba(176,122,64,0.1)','rgba(180,80,60,0.08)','rgba(82,112,96,0.12)','rgba(138,158,132,0.12)','rgba(44,36,22,0.15)'];
+  if (phase === 'results' && result) {
+    const scenes = result.scenes || [];
     return (
       <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
+
         {/* Header */}
-        <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"24px 32px":"20px 22px",border:"0.5px solid rgba(138,158,132,0.2)"}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your Story Is Ready</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:"rgba(245,239,230,0.8)",lineHeight:1.6,margin:"0 0 16px"}}>{result.headline}</p>
-          {/* Strength */}
-          <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:isDesktop?12:8}}>
-            {[
-              {label:"Emotional",   score:result.strength?.emotional||4},
-              {label:"Memorable",   score:result.strength?.memorability||5},
-              {label:"Relevant",    score:result.strength?.relevance||4},
-              {label:"Persuasive",  score:result.strength?.persuasion||4},
-              {label:"Clarity",     score:result.strength?.clarity||5},
-            ].map((s,i)=>(
-              <div key={i} style={{textAlign:"center"}}>
-                <Stars score={s.score}/>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?10:9,color:"rgba(245,239,230,0.45)",marginTop:4}}>{s.label}</div>
-              </div>
-            ))}
-          </div>
+        <div style={{background:"#0A0804",borderRadius:10,padding:isDesktop?"24px 32px":"20px 22px",border:"0.5px solid rgba(138,158,132,0.2)"}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your Story</div>
+          <div style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:"rgba(245,239,230,0.92)",lineHeight:1.2,marginBottom:10}}>{result.storyTitle}</div>
+          {result.deliveryNote && (
+            <div style={{display:"flex",alignItems:"flex-start",gap:10,padding:"12px 14px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)"}}>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,marginTop:1}}><circle cx="8" cy="8" r="6.5" stroke={T.gold} strokeWidth="1.2"/><path d="M8 5v4M8 11v1" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.6)",lineHeight:1.55,margin:0,fontWeight:300,fontStyle:"italic"}}>{result.deliveryNote}</p>
+            </div>
+          )}
         </div>
 
         {/* Tabs */}
         <div style={{display:"flex",gap:0,borderBottom:"0.5px solid "+T2.border}}>
-          {TABS.map(tab=>(
+          {[{id:'script',label:'Script'},{id:'storyboard',label:'Storyboard'}].map(tab=>(
             <button key={tab.id} onClick={()=>setActiveTab(tab.id)} style={{
               flex:1,padding:isDesktop?"12px 16px":"10px 12px",border:"none",background:"transparent",
               fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:activeTab===tab.id?600:400,
@@ -753,152 +644,71 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
           ))}
         </div>
 
-        {/* Tab: Your Story */}
-        {activeTab==='story'&&(
-          <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-            {[
-              {label:"Opening",        text:result.mainStory?.opening},
-              {label:"Challenge",      text:result.mainStory?.challenge},
-              {label:"Transformation", text:result.mainStory?.transformation},
-              {label:"Core Message",   text:result.mainStory?.message},
-              {label:"Call To Action", text:result.mainStory?.callToAction},
-            ].map((section,i)=>(
-              <div key={i} style={{...cs.card,padding:isDesktop?"18px 22px":"14px 18px"}}>
-                <div style={cs.label}>{section.label}</div>
-                <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{section.text}</p>
+        {/* Script tab */}
+        {activeTab === 'script' && (
+          <div style={{display:"flex",flexDirection:"column",gap:isDesktop?12:10}}>
+            {scenes.map((scene,i)=>(
+              <div key={i} style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+                {/* Scene header */}
+                <div style={{padding:isDesktop?"14px 20px":"12px 16px",background:"rgba(138,158,132,0.06)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:12}}>
+                  <div style={{width:24,height:24,borderRadius:"50%",background:"rgba(138,158,132,0.15)",border:"0.5px solid rgba(138,158,132,0.35)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{scene.number}</span>
+                  </div>
+                  <div style={{fontFamily:T.serif,fontSize:isDesktop?16:15,fontWeight:600,color:T2.text,flex:1}}>{scene.title}</div>
+                  <button onClick={()=>copy(scene.narrative+'\n\n['+scene.visualDirection+']',i)} style={{background:"none",border:"none",cursor:"pointer",color:T2.text4,fontFamily:T.sans,fontSize:11,padding:"2px 6px",flexShrink:0}}>{copied===i?"Copied ✓":"Copy"}</button>
+                </div>
+                {/* Narrative */}
+                <div style={{padding:isDesktop?"18px 20px":"14px 16px"}}>
+                  <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,lineHeight:1.75,margin:"0 0 12px"}}>{scene.narrative}</p>
+                  {/* Visual direction */}
+                  <div style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 12px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" style={{flexShrink:0,marginTop:1}}><rect x="1" y="1" width="12" height="12" rx="2" stroke={T.gold} strokeWidth="1.2" fill="none"/><path d="M4 9l2-3 2 2 2-3" stroke={T.gold} strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.55,margin:0,fontWeight:300,fontStyle:"italic"}}>{scene.visualDirection}</p>
+                  </div>
+                  {/* Caption */}
+                  <p style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:T2.text4,lineHeight:1.5,margin:"10px 0 0",fontWeight:400}}>{scene.caption}</p>
+                </div>
               </div>
             ))}
+
+            {/* Copy full script */}
+            <button onClick={()=>copy(scenes.map(s=>`SCENE ${s.number}: ${s.title}\n${s.narrative}\n[${s.visualDirection}]`).join('\n\n'),'full')}
+              style={{padding:isDesktop?"13px 20px":"11px 16px",borderRadius:6,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}>
+              {copied==='full'?"Full script copied ✓":"Copy full script"}
+            </button>
           </div>
         )}
 
-        {/* Tab: Versions */}
-        {activeTab==='versions'&&(
-          <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-            {[
-              {label:"TED Opening",       key:"ted",     best:"Presentations · Keynotes · Conferences"},
-              {label:"Pixar Framework",   key:"pixar",   best:"Teams · Training · Simplicity"},
-              {label:"Executive Version", key:"executive",best:"Boardrooms · Proposals · Executives"},
-              {label:"Emotional Opening", key:"emotional",best:"Leadership · Change · Transformation"},
-            ].map((v,i)=>(
-              <div key={i} style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10,gap:12,flexWrap:"wrap"}}>
-                  <div style={cs.label}>{v.label}</div>
-                  <span style={{fontFamily:T.sans,fontSize:10,color:T2.text3,fontWeight:300,textAlign:"right"}}>Best for: {v.best}</span>
-                </div>
-                <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,lineHeight:1.7,margin:0,whiteSpace:"pre-line"}}>{result.versions?.[v.key]}</p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Tab: Storyboard */}
-        {activeTab==='storyboard'&&(()=>{
-          const VSTYLES = [
-            { id:'professional', label:'Professional', desc:'Clean corporate',    panelBg:'#F0F4F8',   textCol:'#1A202C', accentCol:'#2D3748', borderCol:'#CBD5E0', imgBg:['#BEE3F8','#C6F6D5','#FEFCBF','#FED7D7','#E9D8FD','#B2F5EA'],  sceneFill:'#4299E1', labelCol:'#2B6CB0' },
-            { id:'cinematic',    label:'Cinematic',    desc:'Dark & dramatic',    panelBg:'#0D0D0D',   textCol:'#F5EFE6', accentCol:T.gold,    borderCol:'rgba(138,158,132,0.25)', imgBg:['#1A1A2E','#16213E','#0F3460','#1A0A2E','#0A1628','#0D1B2A'], sceneFill:T.gold,    labelCol:T.gold },
-            { id:'sketch',       label:'Sketch',       desc:'Hand-drawn style',   panelBg:'#FAFAF7',   textCol:'#2D3748', accentCol:'#4A5568', borderCol:'#A0AEC0', imgBg:['#F7FAFC','#F0FFF4','#FFFFF0','#FFF5F5','#FAF5FF','#EBFFF9'], sceneFill:'#718096', labelCol:'#2D3748' },
-            { id:'fun',          label:'Fun',          desc:'Bright & bold',      panelBg:'#FFF',      textCol:'#1A202C', accentCol:'#D53F8C', borderCol:'#FED7E2', imgBg:['#FEF08A','#86EFAC','#93C5FD','#FCA5A5','#DDD6FE','#6EE7B7'], sceneFill:'#DB2777', labelCol:'#6B21A8' },
-            { id:'lego',         label:'Lego',         desc:'Block style',        panelBg:'#FFD700',   textCol:'#1A1A1A', accentCol:'#CC0000', borderCol:'#CC0000', imgBg:['#FFD700','#CC0000','#2563EB','#16A34A','#CC0000','#F97316'],   sceneFill:'#1A1A1A', labelCol:'#CC0000' },
-            { id:'watercolour',  label:'Watercolour',  desc:'Soft & artistic',    panelBg:'#FEFAF6',   textCol:'#44403C', accentCol:'#78716C', borderCol:'#D6D3D1', imgBg:['#FDE8D8','#D1FAE5','#DBEAFE','#FCE7F3','#EDE9FE','#CFFAFE'], sceneFill:'#9D174D', labelCol:'#57534E' },
-          ];
-          const PANEL_SCENES = [
-            // Panel scene SVGs (path data for each scene type)
-            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><rect x="10" y="50" width="20" height="28" rx="2" fill={col} opacity="0.7"/><rect x="35" y="38" width="20" height="40" rx="2" fill={col} opacity="0.5"/><rect x="60" y="44" width="20" height="34" rx="2" fill={col} opacity="0.7"/><rect x="85" y="30" width="20" height="48" rx="2" fill={col} opacity="0.6"/><line x1="5" y1="52" x2="115" y2="52" stroke={col} strokeWidth="1" opacity="0.3"/><circle cx="20" cy="25" r="8" fill={col} opacity="0.15"/></svg>,
-            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><path d="M60 10 L110 70 L10 70 Z" fill={col} opacity="0.12"/><path d="M40 35 L80 35 M60 15 L60 55" stroke={col} strokeWidth="3" strokeLinecap="round" opacity="0.5"/><circle cx="60" cy="40" r="20" stroke={col} strokeWidth="1.5" fill="none" opacity="0.3"/><path d="M35 20 L50 35 M85 20 L70 35" stroke={col} strokeWidth="2" strokeLinecap="round" opacity="0.4"/></svg>,
-            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><circle cx="60" cy="34" r="18" fill={col} opacity="0.15"/><path d="M60 16 L60 52 M44 25 L76 25 M48 44 L72 44" stroke={col} strokeWidth="1.5" opacity="0.4"/><path d="M52 52 L68 52 M55 57 L65 57" stroke={col} strokeWidth="2" strokeLinecap="round" opacity="0.6"/><path d="M44 28 L32 20 M76 28 L88 20" stroke={col} strokeWidth="1.5" opacity="0.3"/><path d="M44 20 L32 28 M76 20 L88 28" stroke={col} strokeWidth="1.5" opacity="0.3"/></svg>,
-            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><path d="M20 60 Q40 20 60 40 Q80 60 100 20" stroke={col} strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.5"/><circle cx="100" cy="20" r="6" fill={col} opacity="0.6"/><path d="M94 26 L100 20 L106 26" stroke={col} strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.7"/><rect x="45" y="45" width="30" height="20" rx="4" fill={col} opacity="0.1"/></svg>,
-            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><path d="M30 65 L50 40 L70 55 L90 25" stroke={col} strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.6"/><circle cx="90" cy="25" r="5" fill={col} opacity="0.8"/><path d="M20 65 L100 65" stroke={col} strokeWidth="1" opacity="0.2"/><circle cx="30" cy="65" r="3" fill={col} opacity="0.4"/><circle cx="50" cy="40" r="3" fill={col} opacity="0.4"/><circle cx="70" cy="55" r="3" fill={col} opacity="0.4"/></svg>,
-            (col,bg)=><svg viewBox="0 0 120 80" fill="none" width="100%" height="100%"><rect width="120" height="80" fill={bg}/><path d="M20 40 L90 40 M78 28 L90 40 L78 52" stroke={col} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" opacity="0.7"/><circle cx="108" cy="40" r="10" fill={col} opacity="0.15"/><circle cx="108" cy="40" r="6" fill={col} opacity="0.3"/><path d="M10 25 L10 55" stroke={col} strokeWidth="2" opacity="0.2" strokeDasharray="4 3"/></svg>,
-          ];
-
-          const vs = VSTYLES.find(s=>s.id===storyStyle);
-          const boards = result.storyboard||[];
-
-          // Style picker
-          if(!storyStyle) return (
-            <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
-              <div style={{...cs.card}}>
-                <div style={cs.label}>Choose Your Visual Style</div>
-                <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:20,fontWeight:300}}>
-                  Select a style for your visual storyboard. Each panel will be rendered in your chosen aesthetic.
-                </p>
-                <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(3,1fr)":"repeat(2,1fr)",gap:10}}>
-                  {VSTYLES.map(s=>(
-                    <button key={s.id} onClick={()=>{setStoryStyle(s.id);setStyleGenerating(true);setTimeout(()=>setStyleGenerating(false),1800);}}
-                      style={{padding:isDesktop?"16px":"14px",borderRadius:8,border:"0.5px solid "+T2.border,background:T2.bg,cursor:"pointer",textAlign:"left",transition:"all 0.15s"}}>
-                      <div style={{width:"100%",height:isDesktop?48:40,borderRadius:4,background:s.imgBg[0],marginBottom:8,overflow:"hidden",position:"relative"}}>
-                        <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",gap:3}}>
-                          {s.imgBg.slice(0,3).map((c,i)=><div key={i} style={{flex:1,height:"100%",background:c}}/>)}
-                        </div>
-                      </div>
-                      <div style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,marginBottom:2}}>{s.label}</div>
-                      <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,margin:0,fontWeight:300}}>{s.desc}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          );
-
-          // Generating state
-          if(styleGenerating) return (
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14,padding:"44px 0",textAlign:"center"}}>
-              <div style={{display:"flex",gap:5}}>{[0,1,2].map(i=><div key={i} style={{width:7,height:7,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.22}s infinite`}}/>)}</div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,color:T2.text,lineHeight:1.4,margin:0}}>Rendering your {VSTYLES.find(s=>s.id===storyStyle)?.label} storyboard…</p>
-            </div>
-          );
-
-          // Rendered storyboard
-          const isLego = storyStyle==='lego';
-          const isSketch = storyStyle==='sketch';
-          return (
-            <div style={{display:"flex",flexDirection:"column",gap:isDesktop?12:10}}>
-              {/* Style pill + change button */}
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
-                <div style={{display:"flex",alignItems:"center",gap:8}}>
-                  <div style={{width:12,height:12,borderRadius:"50%",background:vs.accentCol}}/>
-                  <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text}}>{vs.label} Style</span>
-                </div>
-                <button onClick={()=>{setStoryStyle(null);setStyleGenerating(false);}} style={{fontFamily:T.sans,fontSize:12,color:T.gold,background:"none",border:"none",cursor:"pointer",padding:0}}>Change style ↺</button>
-              </div>
-
-              {/* Panel grid */}
-              <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:isDesktop?12:10}}>
-                {boards.map((panel,i)=>(
-                  <div key={i} style={{borderRadius:isLego?2:8,overflow:"hidden",border:isSketch?`2px dashed ${vs.borderCol}`:`1px solid ${vs.borderCol}`,background:vs.panelBg,boxShadow:storyStyle==='cinematic'?"0 4px 20px rgba(0,0,0,0.5)":isLego?"4px 4px 0 #8B0000":"none"}}>
-                    {/* Image area */}
-                    <div style={{position:"relative",height:isDesktop?140:110,overflow:"hidden",background:vs.imgBg[i]}}>
-                      {PANEL_SCENES[i](vs.sceneFill,vs.imgBg[i])}
-                      {/* Lego stud overlay */}
-                      {isLego&&<div style={{position:"absolute",inset:0,backgroundImage:"radial-gradient(circle at 50% 50%, rgba(255,255,255,0.35) 30%, transparent 30%)",backgroundSize:"12px 12px",pointerEvents:"none"}}/>}
-                      {/* Sketch hatching */}
-                      {isSketch&&<div style={{position:"absolute",inset:0,backgroundImage:"repeating-linear-gradient(45deg,transparent,transparent 6px,rgba(0,0,0,0.04) 6px,rgba(0,0,0,0.04) 7px)",pointerEvents:"none"}}/>}
-                      {/* Panel number badge */}
-                      <div style={{position:"absolute",top:8,left:8,width:isDesktop?26:22,height:isDesktop?26:22,borderRadius:isLego?2:4,background:isLego?"#CC0000":storyStyle==='cinematic'?"rgba(10,8,4,0.8)":"rgba(0,0,0,0.55)",display:"flex",alignItems:"center",justifyContent:"center",border:isLego?"2px solid #8B0000":"none"}}>
-                        <span style={{fontFamily:T.sans,fontSize:isDesktop?11:9,fontWeight:700,color:"#fff"}}>{i+1}</span>
-                      </div>
-                    </div>
-                    {/* Text area */}
-                    <div style={{padding:isDesktop?"14px 16px":"11px 14px",borderTop:isSketch?`2px dashed ${vs.borderCol}`:isLego?`3px solid #CC0000`:`0.5px solid ${vs.borderCol}`}}>
-                      <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:vs.labelCol,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{panel.title}</div>
-                      <div style={{fontFamily:isSketch?"Georgia,serif":T.serif,fontSize:isDesktop?14:13,fontWeight:600,color:vs.textCol,lineHeight:1.3,marginBottom:5}}>{panel.headline}</div>
-                      <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:storyStyle==='cinematic'?"rgba(245,239,230,0.5)":vs.accentCol,lineHeight:1.5,margin:0,fontWeight:300,fontStyle:"italic"}}>{panel.caption}</p>
+        {/* Storyboard tab */}
+        {activeTab === 'storyboard' && (
+          <div style={{display:"flex",flexDirection:"column",gap:isDesktop?12:10}}>
+            <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:isDesktop?12:10}}>
+              {scenes.map((scene,i)=>(
+                <div key={i} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid rgba(138,158,132,0.2)",background:"#0D0B08",boxShadow:"0 4px 20px rgba(0,0,0,0.4)"}}>
+                  {/* Visual area */}
+                  <div style={{position:"relative",height:isDesktop?130:110,overflow:"hidden"}}>
+                    {SCENE_SVGS[i] ? SCENE_SVGS[i](GOLD) : SCENE_SVGS[0](GOLD)}
+                    <div style={{position:"absolute",top:8,left:8,width:isDesktop?24:20,height:isDesktop?24:20,borderRadius:4,background:"rgba(10,8,4,0.75)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <span style={{fontFamily:T.sans,fontSize:isDesktop?10:9,fontWeight:700,color:T.gold}}>{scene.number}</span>
                     </div>
                   </div>
-                ))}
-              </div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:T2.text3,textAlign:"center",lineHeight:1.5,margin:"4px 0 0",fontWeight:300}}>Visual storyboard mockup · Style: {vs.label}</p>
+                  {/* Text area */}
+                  <div style={{padding:isDesktop?"14px 16px":"11px 14px",borderTop:"0.5px solid rgba(138,158,132,0.15)"}}>
+                    <div style={{fontFamily:T.sans,fontSize:isDesktop?10:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{scene.title}</div>
+                    <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"rgba(245,239,230,0.55)",lineHeight:1.5,margin:"0 0 6px",fontWeight:300,fontStyle:"italic"}}>{scene.visualDirection}</p>
+                    <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.75)",lineHeight:1.45,margin:0}}>{scene.caption}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          );
-        })()}
+          </div>
+        )}
 
-        {/* CTA */}
-        <div style={{...cs.card,textAlign:"center",padding:isDesktop?"24px":"18px 20px",marginTop:4}}>
-          <div style={cs.label}>Next Step</div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16,fontWeight:300}}>You've built the story. Now it's time to deliver it. Practice your story aloud and receive AmplifyU coaching on narrative flow, clarity, and delivery.</p>
-          <button onClick={restart} style={{...cs.cta,marginBottom:10}}>Build Another Story →</button>
+        {/* Footer */}
+        <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px",marginTop:4}}>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px",fontWeight:300}}>Now deliver it. Use the script as your guide — not a word-for-word script, but a felt narrative. Let the story move through you.</p>
+          <button onClick={reset} style={cs.cta}>Build Another Story →</button>
         </div>
-        <button onClick={restart} style={cs.back}>Start Over</button>
       </div>
     );
   }
