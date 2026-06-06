@@ -880,9 +880,9 @@ Return ONLY valid JSON:
         {/* ── STORY BRIEF ─────────────────────────────────────────────────── */}
         <div style={{marginBottom:isDesktop?28:20}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?14:12}}>Story Brief</div>
-          <div style={{display:"flex",flexWrap:"wrap",gap:"0",borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden",background:T2.surface}}>
+          <div style={{display:"flex",flexWrap:isDesktop?"wrap":"nowrap",gap:"0",borderRadius:8,border:"0.5px solid "+T2.border,overflow:isDesktop?"hidden":"auto",background:T2.surface,WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
             {BRIEF_FIELDS.filter(f=>sw[f.key]).map((f,i,arr)=>(
-              <div key={f.key} style={{padding:isDesktop?"14px 18px":"11px 14px",borderRight:i<arr.length-1?"0.5px solid "+T2.border:"none",flex:"1 1 auto",minWidth:isDesktop?120:100}}>
+              <div key={f.key} style={{padding:isDesktop?"14px 18px":"11px 14px",borderRight:i<arr.length-1?"0.5px solid "+T2.border:"none",flex:isDesktop?"1 1 auto":"0 0 auto",minWidth:isDesktop?120:130}}>
                 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}>
                   <span style={{fontSize:11}}>{f.emoji}</span>
                   <span style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px"}}>{f.label}</span>
