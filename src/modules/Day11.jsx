@@ -203,36 +203,50 @@ export function D11SimWidget({T, T2, isDesktop}) {
   const cta = (disabled) => ({ width:"100%", padding:"15px", borderRadius:4, border:"none", background:disabled?"rgba(44,36,22,0.25)":T.ink, color:T.bg, fontSize:isDesktop?15:14, fontWeight:600, cursor:disabled?"not-allowed":"pointer", fontFamily:T.sans, minHeight:50, transition:"all 0.2s" });
   const back = { background:"none", border:"none", fontFamily:T.sans, fontSize:12, color:T2.text4, cursor:"pointer", padding:"8px 0", textAlign:"left" };
 
-  const runAudit = () => {
+  const runAudit = async () => {
+    setPhase('analyzing');
     const r = (min,max) => Math.floor(Math.random()*(max-min+1))+min;
     const signalPool = ['Strategic','Analytical','Experienced','Results-oriented','Delivery-focused','Credible','Diligent','Professional'];
     const currentWords = signalPool.sort(()=>Math.random()-0.5).slice(0,3);
     const desired = brandWords.filter(w=>w.trim());
+    const d = desired.length > 0 ? desired.map(w=>w.trim()) : ['strategic','trusted','inspiring'];
     const COHERENCE_AREAS = ["LinkedIn Bio","Headline","Communication Style","Online Presence","Personal Story","Professional Positioning"];
     const icons = ["✅","❌","⚠️"];
     const coherence = COHERENCE_AREAS.map(area => ({area, status:icons[r(0,2)]}));
-
     const profileSnippet = profileText.trim().length > 200
       ? profileText.trim().slice(0,200).trim() + '…'
       : profileText.trim();
 
-    const d = desired.length > 0 ? desired.map(w=>w.trim()) : ['strategic','trusted','inspiring'];
-    const d0 = d[0].toLowerCase();
-    const d1 = (d[1]||d[0]).toLowerCase();
-    const d2 = (d[2]||d[0]).toLowerCase();
-    const rewriteHeadline = `I help organisations achieve clarity, growth, and meaningful results through ${d0} thinking and ${d1} leadership.`;
-    const rewriteAbout = `${rewriteHeadline}\n\nKnown for being ${d.map(w=>w.toLowerCase()).join(', ')} — my work creates the kind of impact that compounds over time. I believe the best results come from clear communication, deliberate decisions, and people who care deeply about their craft.\n\nIf you want to work with someone who brings ${d0} and ${d2} into every room they enter — let's connect.`;
+    // Default template fallback in case API is unavailable
+    const d0=d[0].toLowerCase(), d1=(d[1]||d[0]).toLowerCase(), d2=(d[2]||d[0]).toLowerCase();
+    let rewriteHeadline = `${d0.charAt(0).toUpperCase()+d0.slice(1)} professional delivering results through ${d1} thinking and ${d2} leadership.`;
+    let rewriteAbout = `Known for being ${d.map(w=>w.toLowerCase()).join(', ')} — I bring clarity, rigour, and genuine commitment to every room I enter.\n\nMy work creates impact that compounds over time. I believe the best outcomes come from clear communication, deliberate decisions, and people who care deeply about their craft.\n\nIf you want to work with someone who is ${d0} and genuinely ${d2} — let's connect.`;
+
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 700,
+          messages: [{
+            role: "user",
+            content: `You are a personal branding coach. Rewrite this LinkedIn profile so it clearly communicates the following three brand words: ${d.join(', ')}.\n\nKeep the person's actual role, experience, and achievements — but reframe the language so every sentence reinforces who they want to be known as.\n\nCurrent profile:\n"${profileText.trim()}"\n\nReturn ONLY valid JSON:\n{"headline":"<punchy LinkedIn headline under 15 words that naturally embeds the brand words>","about":"<rewritten About section, 3 short paragraphs, warm professional tone, first person, brand words woven in naturally — not forced>"}`
+          }]
+        })
+      });
+      const data = await res.json();
+      const raw = (data.content||[]).map(b=>b.text||'').join('').trim();
+      const m = raw.match(/\{[\s\S]*\}/);
+      if (m) {
+        const parsed = JSON.parse(m[0]);
+        if (parsed.headline) rewriteHeadline = parsed.headline;
+        if (parsed.about)    rewriteAbout    = parsed.about;
+      }
+    } catch(_) {}
 
     setResults({
-      currentWords,
-      desired,
-      signals: currentWords,
-      risks:[
-        "Feels similar to thousands of other profiles in your sector",
-        "Focuses heavily on responsibilities rather than outcomes",
-        "Limited differentiation — no clear point of view",
-        "Doesn't communicate what you uniquely stand for",
-      ],
+      currentWords, desired, signals: currentWords,
       scores:[
         {label:"Clarity",        val:r(6,8)},
         {label:"Credibility",    val:r(7,9)},
@@ -240,9 +254,8 @@ export function D11SimWidget({T, T2, isDesktop}) {
         {label:"Differentiation",val:r(2,5)},
         {label:"Consistency",    val:r(6,9)},
       ],
-      coherence,
-      profileSnippet,
-      rewrite: rewriteAbout,
+      coherence, profileSnippet,
+      rewriteHeadline, rewrite: rewriteAbout,
     });
     setPhase('results');
   };
@@ -390,7 +403,15 @@ export function D11SimWidget({T, T2, isDesktop}) {
         </div>
       </div>
       <button onClick={runAudit} disabled={profileText.trim().length<10} style={cta(profileText.trim().length<10)}>Run the Audit →</button>
-      <button onClick={()=>setPhase('words')} style={back}>← Back</button>
+      <button onClick={reset} style={back}>← Back</button>
+    </div>
+  );
+
+  if (phase === 'analyzing') return (
+    <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"56px 0":"36px 0"}}>
+      <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}</div>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,margin:0,textAlign:"center"}}>Auditing your brand…</p>
+      <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,textAlign:"center",lineHeight:1.6}}>Analysing your profile against your brand intent and writing a stronger version.</p>
     </div>
   );
 
@@ -471,24 +492,39 @@ export function D11SimWidget({T, T2, isDesktop}) {
 
       {/* Recommended Rewrite */}
       <div style={cs.card}>
-        <div style={cs.label}>Recommended Rewrite</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px"}}>Here is a stronger version of your profile, written around your desired brand words.</p>
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>
-          <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(180,80,60,0.7)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Current</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T2.text3,lineHeight:1.65,margin:0}}>{results.profileSnippet}</p>
-          </div>
-          <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.07)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.3)"}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Recommended</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,lineHeight:1.7,margin:"0 0 14px",whiteSpace:"pre-wrap"}}>{results.rewrite}</p>
-            <button
-              onClick={()=>{navigator.clipboard?.writeText(results.rewrite).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);});}}
-              style={{padding:"8px 16px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied?"rgba(138,158,132,0.15)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}
-            >{copied?"Copied ✓":"Copy to clipboard"}</button>
-          </div>
+        <div style={cs.label}>Your Rewritten Profile</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 16px"}}>Written around <span style={{fontWeight:600,color:T.gold}}>{results.desired.join(', ')}</span> — use this as your starting point and personalise with your specific numbers and voice.</p>
+
+        {/* Current snippet */}
+        <div style={{padding:"12px 14px",background:T2.bg,borderRadius:4,marginBottom:10}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(180,80,60,0.65)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your current profile</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,fontStyle:"italic",color:T2.text3,lineHeight:1.65,margin:0}}>{results.profileSnippet}</p>
         </div>
-        <div style={{marginTop:14,padding:"12px 14px",background:"rgba(44,36,22,0.04)",borderRadius:3,borderLeft:"2px solid "+T2.border}}>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text4,lineHeight:1.6,margin:0}}>Use this as a starting point. Personalise it with your specific role, impact, and voice — the goal is to sound unmistakably like you.</p>
+
+        {/* Rewritten headline */}
+        {results.rewriteHeadline && (
+          <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.07)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.3)",marginBottom:10}}>
+            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>New headline</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 12px"}}>{results.rewriteHeadline}</p>
+            <button onClick={()=>{navigator.clipboard?.writeText(results.rewriteHeadline).then(()=>{setCopied('h');setTimeout(()=>setCopied(false),2000);});}}
+              style={{padding:"7px 14px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied==='h'?"rgba(138,158,132,0.15)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}>
+              {copied==='h'?"Copied ✓":"Copy headline"}
+            </button>
+          </div>
+        )}
+
+        {/* Rewritten About */}
+        <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.07)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.3)"}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>New About section</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.75,margin:"0 0 14px",whiteSpace:"pre-wrap"}}>{results.rewrite}</p>
+          <button onClick={()=>{navigator.clipboard?.writeText(results.rewrite).then(()=>{setCopied('a');setTimeout(()=>setCopied(false),2000);});}}
+            style={{padding:"7px 14px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied==='a'?"rgba(138,158,132,0.15)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}>
+            {copied==='a'?"Copied ✓":"Copy About section"}
+          </button>
+        </div>
+
+        <div style={{marginTop:12,padding:"11px 13px",background:"rgba(44,36,22,0.04)",borderRadius:3,borderLeft:"2px solid "+T2.border}}>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text4,lineHeight:1.6,margin:0}}>Personalise with specific numbers, stories, and your own voice — the goal is to sound unmistakably like you.</p>
         </div>
       </div>
 
