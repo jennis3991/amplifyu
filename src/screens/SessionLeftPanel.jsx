@@ -499,12 +499,12 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Simulation") return (
-      <div style={d9Dark}>
-        <img src="/day1-simulation.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
-        {d9Overlay}
-        <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          {d9Label("Your Performance")}
-          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Now perform it. This is where confidence is built.</p>
+      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
+        <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
+          {d9Label("The Rapport Builder")}
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Four conversations. Four personalities. Build genuine rapport.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
     );

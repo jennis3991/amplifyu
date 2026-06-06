@@ -459,7 +459,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             6:{label:"AI CONVERSATION PREP",           heading:"Prepare for the conversations that matter most."},
             7:{label:"WEEK 1 MASTER CHALLENGE",      heading:"Teach It Forward. Prove what you know."},
             8:{label:"NARRATIVE — IN ACTION",       heading:"Tell the story. Transport your audience."},
-            9:{label:"DELIVERY — IN ACTION",        heading:"Great content. Delivered powerfully."},
+            9:{label:"THE RAPPORT BUILDER",          heading:"Four conversations. Four personalities. Build genuine rapport."},
             10:{label:"PERFORMANCE — IN ACTION",    heading:"Communicate your impact with conviction."},
             11:{label:"BRAND — IN ACTION",           heading:"Your brand is built in every room you enter. Shape it."},
           };
