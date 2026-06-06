@@ -439,20 +439,14 @@ export function SessionLeftPanel({
         <img src="/d8-story-book.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 60%" }}/>
         {/* Dark gradient: heavy at top and bottom, lighter in middle to let the book shine */}
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(10,8,5,0.72) 0%, rgba(10,8,5,0.25) 40%, rgba(10,8,5,0.3) 60%, rgba(10,8,5,0.88) 100%)" }}/>
-        {/* Top: editorial label + headline */}
-        <div style={{ position:"relative", zIndex:2, padding:"48px 44px 0", animation:"fadeUp 0.6s ease both" }}>
+        {/* Spacer — lets the book image breathe */}
+        <div style={{ flex:1 }}/>
+        {/* Bottom: editorial label + headline */}
+        <div style={{ position:"relative", zIndex:2, padding:"0 44px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(200,168,76,0.7)", textTransform:"uppercase", letterSpacing:"4px", marginBottom:24 }}>The Story Architect</div>
           <h2 style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.6vw,42px)", fontWeight:500, color:"rgba(245,239,230,0.93)", lineHeight:1.1, letterSpacing:"-1px", margin:"0 0 20px" }}>Build a story<br/>that moves people.</h2>
           <div style={{ width:28, height:1, background:"rgba(200,168,76,0.45)", marginBottom:20 }}/>
           <p style={{ fontFamily:T.sans, fontSize:13, fontWeight:300, color:"rgba(245,239,230,0.45)", lineHeight:1.7, maxWidth:280, margin:0 }}>Craft stories that inspire action<br/>and drive meaningful impact.</p>
-        </div>
-        {/* Spacer — lets the book image breathe */}
-        <div style={{ flex:1 }}/>
-        {/* Bottom: quote */}
-        <div style={{ position:"relative", zIndex:2, padding:"0 44px 44px", animation:"fadeUp 0.8s ease 0.2s both" }}>
-          <div style={{ fontFamily:T.serif, fontSize:44, lineHeight:0.7, color:"rgba(200,168,76,0.3)", marginBottom:12, userSelect:"none" }}>"</div>
-          <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:"rgba(245,239,230,0.55)", lineHeight:1.65, margin:"0 0 10px", maxWidth:280 }}>Facts tell, stories sell, but stories inspire action.</p>
-          <div style={{ fontFamily:T.sans, fontSize:10, color:"rgba(245,239,230,0.25)", letterSpacing:"1px" }}>— Unknown</div>
         </div>
       </div>
     );
