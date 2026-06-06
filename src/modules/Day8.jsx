@@ -931,9 +931,9 @@ Return ONLY valid JSON:
         {/* ── EXPERIENCE MODE ──────────────────────────────────────────────── */}
         <div style={{marginBottom:isDesktop?28:20}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?14:12}}>Experience</div>
-          <div style={{display:"flex",flexDirection:"row",flexWrap:"wrap",gap:0,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+          <div style={{display:"flex",flexDirection:"row",flexWrap:isDesktop?"nowrap":"wrap",gap:0,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
             {EXP_FIELDS.map((f,i,arr)=>(
-              <div key={i} style={{padding:isDesktop?"14px 18px":"11px 14px",borderRight:i<arr.length-1?"0.5px solid "+T2.border:"none",flex:"1 1 auto",display:"flex",gap:10,alignItems:"flex-start",minWidth:isDesktop?140:120}}>
+              <div key={i} style={{padding:isDesktop?"14px 18px":"11px 14px",borderRight:i<arr.length-1?"0.5px solid "+T2.border:"none",flex:"1 1 0",display:"flex",gap:10,alignItems:"flex-start",minWidth:isDesktop?0:110}}>
                 <div style={{marginTop:2,flexShrink:0,opacity:0.6}}>{f.icon}</div>
                 <div>
                   <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>{f.label}</div>
