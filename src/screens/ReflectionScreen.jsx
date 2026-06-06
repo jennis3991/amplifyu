@@ -330,34 +330,36 @@ export function ReflectionScreen({ answers, onContinue }) {
           </div>
         ) : (
           <div>
-            <h2 style={{ fontFamily:T.serif,fontSize:28,fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,0.93)",lineHeight:1.15,letterSpacing:"-0.3px",marginBottom:8 }}>Your profile,<br/>in focus.</h2>
-            {role && <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginTop:10,fontFamily:T.sans }}>{role.label}</div>}
+            <div style={{ fontSize:9,color:"rgba(255,255,255,0.3)",textTransform:"uppercase",letterSpacing:"3.5px",marginBottom:14,fontFamily:T.sans }}>Your communication profile</div>
+            <h1 style={{ fontFamily:T.serif,fontSize:34,fontWeight:500,color:"rgba(255,255,255,0.93)",lineHeight:1.08,letterSpacing:"-1px",margin:0 }}>Here's what<br/>we're seeing.</h1>
+            {role && <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginTop:14,fontFamily:T.sans }}>{role.label}</div>}
           </div>
         )}
       </div>
       {status === "done" && reflection && (
-        <div style={{ padding:"28px 24px 0",display:"flex",flexDirection:"column",gap:16,flex:1 }}>
+        <div style={{ padding:"28px 24px 0",display:"flex",flexDirection:"column",gap:20,flex:1 }}>
+          {/* Section 1 — Summary */}
           {section >= 1 && (<div style={{ animation:"sectionFade 0.6s ease both" }}>
-            <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans }}>Here's what we're seeing</div>
-            <div style={{ padding:"20px",borderLeft:"2px solid "+T.gold,background:"rgba(255,255,255,0.03)" }}>
-              <p style={{ fontFamily:T.sans,fontSize:15,color:"rgba(255,255,255,0.85)",lineHeight:1.75,margin:0,fontWeight:300 }}>{reflection.summary}</p>
+            <div style={{ width:24,height:1,background:T.gold,marginBottom:18,opacity:0.5 }}/>
+            <p style={{ fontFamily:T.serif,fontSize:17,color:"rgba(255,255,255,0.82)",lineHeight:1.72,margin:0,letterSpacing:"-0.1px" }}>{reflection.summary}</p>
+          </div>)}
+          {/* Section 2 — Motivation (pull quote) */}
+          {section >= 2 && (<div style={{ animation:"sectionFade 0.6s ease both",position:"relative" }}>
+            <div style={{ fontFamily:T.serif,fontSize:72,lineHeight:0.6,color:"rgba(138,158,132,0.1)",position:"absolute",top:-4,left:-8,userSelect:"none" }}>"</div>
+            <div style={{ borderLeft:"2px solid rgba(138,158,132,0.3)",paddingLeft:20,position:"relative",zIndex:1 }}>
+              <p style={{ fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:"rgba(255,255,255,0.55)",lineHeight:1.75,margin:0,letterSpacing:"-0.1px" }}>{reflection.motivation}</p>
             </div>
           </div>)}
-          {section >= 2 && (<div style={{ animation:"sectionFade 0.6s ease both" }}>
-            <div style={{ padding:"20px",borderLeft:"2px solid rgba(138,158,132,0.3)",background:"rgba(255,255,255,0.02)" }}>
-              <p style={{ fontFamily:T.sans,fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.75,margin:0,fontWeight:300 }}>{reflection.motivation}</p>
-            </div>
-          </div>)}
+          {/* Section 3 — Path ahead */}
           {section >= 3 && (<div style={{ animation:"sectionFade 0.6s ease both" }}>
-            <div style={{ fontSize:10,color:"rgba(255,255,255,0.35)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans }}>Here's where we'll take you</div>
-            <div style={{ padding:"20px",background:"rgba(255,255,255,0.02)" }}>
-              <p style={{ fontFamily:T.sans,fontSize:15,color:"rgba(255,255,255,0.55)",lineHeight:1.75,margin:0,fontWeight:300 }}>{reflection.forward}</p>
-            </div>
+            <div style={{ fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:12,fontFamily:T.sans }}>The path ahead</div>
+            <p style={{ fontFamily:T.sans,fontSize:14,color:"rgba(255,255,255,0.45)",lineHeight:1.8,margin:0,fontWeight:300 }}>{reflection.forward}</p>
           </div>)}
-          {section >= 4 && (<div style={{ animation:"sectionFade 0.6s ease both",paddingBottom:48 }}>
-            <div style={{ height:"0.5px",background:"rgba(138,158,132,0.3)",marginBottom:24 }}/>
-            <p style={{ fontFamily:T.sans,fontSize:15,color:"rgba(255,255,255,0.7)",lineHeight:1.6,marginBottom:28,fontWeight:300 }}>This is your moment. <span style={{ color:T.gold }}>AmplifyU.</span></p>
-            <button onClick={onContinue} style={{ width:"100%",padding:"17px 24px",borderRadius:3,border:"0.5px solid rgba(138,158,132,0.5)",background:"rgba(138,158,132,0.12)",color:"rgba(255,255,255,0.9)",fontSize:15,fontFamily:T.serif,fontStyle:"italic",cursor:"pointer",letterSpacing:"-0.2px" }}>
+          {/* Section 4 — CTA */}
+          {section >= 4 && (<div style={{ animation:"sectionFade 0.6s ease both",paddingBottom:52 }}>
+            <div style={{ height:1,background:"linear-gradient(90deg,rgba(138,158,132,0.3) 0%,transparent 100%)",marginBottom:24 }}/>
+            <p style={{ fontFamily:T.serif,fontSize:18,fontWeight:500,color:"rgba(255,255,255,0.85)",lineHeight:1.4,marginBottom:28,letterSpacing:"-0.3px" }}>This is your moment.{" "}<span style={{ color:T.gold }}>AmplifyU.</span></p>
+            <button onClick={onContinue} style={{ width:"100%",padding:"16px 24px",borderRadius:6,border:"none",background:T.gold,color:"white",fontSize:15,fontFamily:T.sans,fontWeight:600,cursor:"pointer",letterSpacing:"0.2px" }}>
               Begin Day 1 →
             </button>
             <p style={{ fontSize:12,color:"rgba(255,255,255,0.2)",textAlign:"center",marginTop:12,fontFamily:T.sans }}>~15 minutes · Your first session is ready</p>
