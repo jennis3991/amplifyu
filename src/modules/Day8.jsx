@@ -756,7 +756,7 @@ Generate exactly 6 scenes. Match the brief completely. If it says magical for a 
 
         {/* ── EMOTIONAL JOURNEY ────────────────────────────────────────────── */}
         {sec("Emotional Journey")}
-        <div style={{display:"flex",alignItems:"center",flexWrap:"wrap",gap:0}}>
+        <div style={{display:"flex",alignItems:"center",flexWrap:"wrap",gap:"6px 0"}}>
           {journey.map((emotion, i) => {
             const p = emotionPalette(emotion);
             return (
