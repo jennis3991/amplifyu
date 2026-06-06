@@ -508,29 +508,66 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onSimulati
   const [result,   setResult]  = useState(null);
   const [activeTab,setActiveTab]=useState('script');
   const [copied,   setCopied]  = useState(null);
+  const [apiError, setApiError]= useState(null);
 
   const GOLD = T.gold || '#8A9E84';
 
   function reset() {
-    setPhase('brief'); setBrief(''); setResult(null); setActiveTab('script'); setCopied(null);
+    setPhase('brief'); setBrief(''); setResult(null); setActiveTab('script'); setCopied(null); setApiError(null);
+  }
+
+  // Brief-aware template fallback — extracts topic from brief text
+  function buildTemplateFallback(b) {
+    const bl = b.toLowerCase();
+    const topic = b.trim().split(/[,.\-—]/)[0].trim();
+    const isKids    = /child|kid|son|daughter|year.?old|baby|magical|fairy|princess|dragon/.test(bl);
+    const isUrgent  = /urgent|crisis|risk|breaking|emergency|threat|danger|warning/.test(bl);
+    const isChange  = /change|transform|before.*after|journey|evolution|growth/.test(bl);
+    const isBrief   = b.trim().split(/\s+/).length < 6;
+
+    if (isKids) return {
+      storyTitle: topic,
+      deliveryNote: "Tell it warmly, slowly — leave space for wonder between each scene.",
+      scenes:[
+        {number:1,title:"Once Upon a Time",          narrative:`In a world full of colour and magic, our story begins. ${topic} is about to start the greatest adventure imaginable.`,             visualDirection:"Soft morning light. Dewdrops on green leaves. A world waking up.",     caption:"Every great story starts with a tiny beginning."},
+        {number:2,title:"The Journey Begins",        narrative:"There are new things to discover, new challenges to face. But curiosity is the best compass — and our hero has plenty of it.",  visualDirection:"Winding path through a bright, friendly world. Flowers everywhere.",   caption:"The adventure is already underway."},
+        {number:3,title:"Something Unexpected",      narrative:"Then — something wonderful and surprising happens. The kind of thing nobody planned, but everybody needed.",                       visualDirection:"A moment of surprise. Eyes wide open. The world looks different now.",  caption:"The best stories have moments you never see coming."},
+        {number:4,title:"Growing Through It",        narrative:"It's not always easy. But every challenge makes our hero stronger, wiser, and more ready for what comes next.",                  visualDirection:"Warm golden light. A sense of effort — and reward.",                   caption:"Growth happens quietly, then all at once."},
+        {number:5,title:"The Magical Moment",        narrative:"And then — it happens. The moment everything has been building toward. More beautiful than anyone imagined.",                    visualDirection:"Bright, expansive, full of colour. A breath of wonder.",               caption:"Some moments are worth the whole journey."},
+        {number:6,title:"Flying Free",               narrative:"Now the adventure is truly beginning. A whole world is waiting — and our hero is ready for every bit of it.",                   visualDirection:"Open sky. Wide horizon. Infinite possibility stretching ahead.",        caption:"The end of one story is the start of the next."},
+      ]
+    };
+
+    if (isUrgent) return {
+      storyTitle: topic,
+      deliveryNote: "Speak with urgency but control — this story needs to land hard and fast.",
+      scenes:[
+        {number:1,title:"The Situation Right Now",   narrative:`Here is where things stand. The context your audience needs to feel — not just know — before anything else.`,                  visualDirection:"Dark room. One bright screen. Numbers that matter.",                   caption:"The current state, seen clearly."},
+        {number:2,title:"What's at Stake",           narrative:"This is not a drill. The gap between where we are and where we need to be is real — and the window is closing.",               visualDirection:"Red warning indicators. A clock. The weight of urgency.",              caption:"The stakes, made impossible to ignore."},
+        {number:3,title:"The Risk Nobody Names",     narrative:"Most people see the surface problem. This is the deeper one. The one that matters most and gets addressed last.",               visualDirection:"One highlighted line in a long document. A single point of failure.",  caption:"The insight that changes the whole conversation."},
+        {number:4,title:"What We Do Next",           narrative:"Here's the action. Not in theory. In practice. This is what changes the outcome — and it starts now.",                         visualDirection:"A clear path. Concrete steps. Motion, not hesitation.",                caption:"The response that makes the difference."},
+        {number:5,title:"What Protected Looks Like", narrative:"On the other side of this decision is a different world. This is what we're building toward — and why it's worth doing right.", visualDirection:"Calm. Clear. Secure. The future we're protecting.",                    caption:"The outcome that justifies every hard decision."},
+        {number:6,title:"The Decision",              narrative:"One choice. Made now. Everything else follows from this moment.",                                                                visualDirection:"A single chair at a table. A moment of clarity.",                     caption:"This is the ask."},
+      ]
+    };
+
+    return {
+      storyTitle: topic || "Your Story",
+      deliveryNote: "Speak with conviction. This story only works when you believe every word.",
+      scenes:[
+        {number:1,title:"Where We Begin",        narrative:`This is the starting point — the world as it is right now, before anything changes. It's worth seeing it clearly, because everything else follows from here.`, visualDirection:"The present moment. Familiar. Known. Real.",               caption:"Every story starts with the world as it is."},
+        {number:2,title:"The Tension",           narrative:"Something isn't working. Or something could work far better. The gap between where things are and where they could be is the engine of this story.",          visualDirection:"A gap. A distance. A question that needs answering.",       caption:"The problem that makes the story necessary."},
+        {number:3,title:"The Insight",           narrative:"Here's what changes everything: a new way of seeing the problem. Not more effort — a different frame. This is the pivot.",                                    visualDirection:"One clear idea, fully formed. A light that didn't exist before.", caption:"The realisation that makes everything else possible."},
+        {number:4,title:"The Path Forward",      narrative:"With this insight, the route becomes clear. It's not easy — but it's right. And the first step is already mapped.",                                           visualDirection:"A direction. A next step. Momentum beginning.",             caption:"From insight to action."},
+        {number:5,title:"What Becomes Possible", narrative:"If we follow this path — here's the world on the other side. Not just a better outcome, but a fundamentally different way of operating.",                     visualDirection:"Open space. Wide horizon. A new normal.",                  caption:"The future this story is building toward."},
+        {number:6,title:"The Invitation",        narrative:"This story ends with a question for everyone in the room. What will we choose to do with what we now know?",                                                  visualDirection:"A moment of shared decision. The room, alive.",             caption:"The story is theirs now."},
+      ]
+    };
   }
 
   async function generate() {
     if (!brief.trim()) return;
-    setPhase('generating');
-
-    const fallback = {
-      storyTitle: "The Story That Changes Everything",
-      deliveryNote: "Speak slowly. Let the silences land. This story only works if you believe it.",
-      scenes: [
-        { number:1, title:"The World Before",         narrative:"There's a moment — before everything changes — when the old way still feels safe. That's where we are today. And it's worth pausing to see it clearly.",                                       visualDirection:"A single desk. One lamp. Familiar, quiet, ordinary.",          caption:"Every transformation starts with the world as it is." },
-        { number:2, title:"The Crack in the Ceiling", narrative:"Then something shifts. A number that doesn't add up. A question no one wants to answer. A gap between what we say and what we see. The tension has a name now.",                              visualDirection:"A spreadsheet. One cell highlighted in red.",                   caption:"The problem that can no longer be ignored." },
-        { number:3, title:"The Moment of Clarity",    narrative:"Here's what we realised: the old answer was never going to solve the new problem. We needed a different frame — not more effort, but different thinking.",                                    visualDirection:"One light cutting through darkness. A single point of focus.",  caption:"Insight arrives quietly. Then it rewires everything." },
-        { number:4, title:"A Different Path",         narrative:"So we mapped a new route. Not the easiest one — but the right one. Each step grounded in evidence, built on what we already know works.",                                                    visualDirection:"A path emerging from fog. Each step illuminated one at a time.", caption:"The solution isn't bold — it's clear." },
-        { number:5, title:"What Becomes Possible",    narrative:"If we get this right, here's what changes. Not just the number — the feeling in the room. The way people talk about what we do. The confidence we carry into the next conversation.",         visualDirection:"Open space. Wide horizon. Room to breathe and grow.",           caption:"The future is only possible if we choose it now." },
-        { number:6, title:"The Ask",                  narrative:"So here's what I'm asking. One decision. Made today. That opens the door to all of it. The team is ready. The plan is here. What we need now — is this.",                                   visualDirection:"A door. Open. Light coming through.",                           caption:"Every great outcome begins with a single yes." },
-      ]
-    };
+    setPhase('generating'); setApiError(null);
 
     try {
       const res = await fetch("https://api.anthropic.com/v1/messages", {
@@ -570,12 +607,20 @@ Return ONLY valid JSON — no preamble, no markdown:
         })
       });
       const d = await res.json();
-      const raw = (d.content||[]).map(b=>b.text||'').join('').trim().replace(/\`\`\`json\n?|\n?\`\`\`/g,'').trim();
+      if (!res.ok) throw new Error(d.error?.message || 'API error');
+      const raw = (d.content||[]).map(b=>b.text||'').join('').trim().replace(/```json\n?|\n?```/g,'').trim();
       const m = raw.match(/\{[\s\S]*\}/);
-      if (m) { const parsed = JSON.parse(m[0]); setResult(parsed); }
-      else setResult(fallback);
-    } catch(_) { setResult(fallback); }
-    finally { setPhase('results'); }
+      if (!m) throw new Error('Could not parse response');
+      const parsed = JSON.parse(m[0]);
+      if (!parsed.scenes?.length) throw new Error('Invalid story structure');
+      setResult(parsed);
+      setPhase('results');
+    } catch(e) {
+      // API failed — use a brief-aware template so the content at least matches what they asked for
+      setApiError(e.message);
+      setResult(buildTemplateFallback(brief));
+      setPhase('results');
+    }
   }
 
   function copy(text, key) {
@@ -661,6 +706,11 @@ Return ONLY valid JSON — no preamble, no markdown:
         <div style={{background:"#0A0804",borderRadius:10,padding:isDesktop?"24px 32px":"20px 22px",border:"0.5px solid rgba(138,158,132,0.2)"}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your Story</div>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:"rgba(245,239,230,0.92)",lineHeight:1.2,marginBottom:10}}>{result.storyTitle}</div>
+          {apiError && (
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,padding:"10px 14px",background:"rgba(255,255,255,0.05)",borderRadius:6,marginBottom:10,flexWrap:"wrap",gap:8}}>
+              <span style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",fontWeight:300}}>AI coach unavailable — showing a template based on your brief. <button onClick={()=>{setApiError(null);generate();}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:11,fontWeight:600,padding:0}}>Try again →</button></span>
+            </div>
+          )}
           {result.deliveryNote && (
             <div style={{display:"flex",alignItems:"flex-start",gap:10,padding:"12px 14px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)"}}>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,marginTop:1}}><circle cx="8" cy="8" r="6.5" stroke={T.gold} strokeWidth="1.2"/><path d="M8 5v4M8 11v1" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>
