@@ -29,15 +29,16 @@ export function MobileSessionView({
   isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isD14, isNT,
   selSc, setSelSc, exitConfirm, setExitConfirm,
   accordionOpen, setAccordionOpen, savedBooks, saveBook,
-  setNtStory, d9Script, setD9Script,
+  setNtStory,
   d1MobCard, setD1MobCard, d2MobCard, setD2MobCard,
   d3MobCard, setD3MobCard, d4MobCard, setD4MobCard,
   d5MobCard, setD5MobCard, d6MobCard, setD6MobCard,
   d7MobCard, setD7MobCard, d10MobCard, setD10MobCard, d11MobCard, setD11MobCard, d11FormulaCard, setD11FormulaCard, d12MobCard, setD12MobCard, ntMobCard, setNtMobCard,
   activeSc, scenarios, ambitionDraft, saveAmbition, ambitionSaved,
   roleId, activeRole, swipeRef, note, saveNote, checks, setChecks,
-  ntOpenCard, setNtOpenCard, d9OpenCard, setD9OpenCard, ntStory,
+  ntOpenCard, setNtOpenCard, ntStory,
 }) {
+  const [d9OpenCard, setD9OpenCard] = useState(null);
   const [d7PracticePhase, setD7PracticePhase] = useState('intro');
   const [d7Habits, setD7Habits] = useState(new Set());
   const [d1NavLabel, setD1NavLabel] = useState(null);

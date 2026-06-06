@@ -75,8 +75,6 @@ setAmbitionSaved(true); } catch {}
   }
   const [ntStory, setNtStory] = useState(() => { try { return localStorage.getItem("au1_nt_story") || ""; } catch { return ""; } });
   const [ntOpenCard, setNtOpenCard] = useState(null);
-  const [d9Script, setD9Script] = useState(() => { try { return localStorage.getItem("au1_d9_script") || ""; } catch { return ""; } });
-  const [d9OpenCard, setD9OpenCard] = useState(null);
   const [d1MobCard, setD1MobCard] = useState(null);
   const [d2MobCard, setD2MobCard] = useState(null);
   const [d3MobCard, setD3MobCard] = useState(null);
@@ -2370,244 +2368,6 @@ setAmbitionSaved(true); } catch {}
       return null;
     };
     // ── end D9RightContent ──
-    const _D9_OLD_REMOVED = null;
-    if (false) {
-      if (step === "Insight") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
-          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>Delivery Masterclass</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, letterSpacing:"-0.5px", lineHeight:1.15, marginBottom:20 }}>It's Not What You Say.<br/>It's How You Say It.</h2>
-          <div style={{ padding:"16px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, marginBottom:24 }}>
-            <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:10 }}>The Mehrabian reality</div>
-            <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>While the famous "7%-38%-55%" rule has been misapplied, the core truth remains: when credibility is in question, delivery matters more than words.</p>
-          </div>
-          <div style={{ marginBottom:24 }}>
-            <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text2, lineHeight:1.7, marginBottom:16 }}>Watch two people say the exact same sentence:</p>
-            <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-              <div style={{ padding:"14px 16px", background:"rgba(139,74,56,0.05)", borderRadius:4, borderLeft:"2px solid rgba(139,74,56,0.3)" }}>
-                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.6, margin:0 }}>One rushes. No pauses. Monotone. Eyes down.</p>
-              </div>
-              <div style={{ padding:"14px 16px", background:"rgba(138,158,132,0.05)", borderRadius:4, borderLeft:"2px solid "+T.gold }}>
-                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.6, margin:0 }}>One slows down. Strategic pauses. Vocal variation. Eye contact.</p>
-              </div>
-            </div>
-          </div>
-          <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:20, marginBottom:24 }}>
-            <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-              {[["Great content delivered poorly","= forgotten."],["Simple content delivered powerfully","= remembered."]].map(([a,b],i) => (
-                <div key={i} style={{ display:"flex", gap:10, alignItems:"baseline" }}>
-                  <span style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text2 }}>{a}</span>
-                  <span style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:i===0?T.red:T.gold }}>{b}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <p style={{ fontFamily:T.serif, fontSize:19, fontStyle:"italic", color:T.gold, lineHeight:1.5 }}>You already have the story. Now make it land.</p>
-        </div>
-      );
-
-      if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
-          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>The 5 Ps</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:20 }}>What Makes Delivery Powerful</h2>
-          <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:20 }}>
-            {D9_FIVE_PS.map((p,i) => (
-              <div key={i} style={{ padding:"16px 18px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
-                <div style={{ display:"flex", alignItems:"baseline", gap:8, marginBottom:6 }}>
-                  <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, letterSpacing:"0.15em", textTransform:"uppercase" }}>{p.p}</span>
-                  <span style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T2.text }}>{p.heading}</span>
-                </div>
-                <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{p.body}</p>
-                {p.quote && <p style={{ fontFamily:T.serif, fontSize:13, fontStyle:"italic", color:T2.text3, marginTop:8, margin:"8px 0 0" }}>{p.quote}</p>}
-              </div>
-            ))}
-          </div>
-          <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T.gold }}>Master these five. Deliver with impact.</p>
-        </div>
-      );
-
-      if (step === "Example") {
-        const CARDS_CONTENT = {
-          brenebrown: (
-            <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
-              <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T.gold, marginBottom:16 }}>The Power of Vulnerability in Delivery</div>
-              <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:28 }}>She doesn't perform. She connects.</h2>
-              <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)", marginBottom:28 }}>
-                <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.65, margin:0 }}>"I had a therapist once who told me: 'Vulnerability is not weakness.' <span style={{color:T.gold}}>[PAUSE]</span> And that changed everything for me."</p>
-              </div>
-              {[["She doesn't perform. She connects.","Authenticity creates safety. When you're real, the room relaxes with you."],["Pauses let the emotion land.","She trusts the silence. She doesn't rush to fill it. The pause is part of the delivery."],["Conversational tone = immediate trust.","She speaks like she's talking to one person. Not an audience. One person."]].map(([h,b],i) => (
-                <div key={i} style={{ marginBottom:16, paddingBottom:16, borderBottom:i<2?"1px solid rgba(255,255,255,0.07)":"none" }}>
-                  <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, marginBottom:4 }}>{h}</div>
-                  <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.8)", lineHeight:1.7, margin:0 }}>{b}</p>
-                </div>
-              ))}
-              <div style={{ padding:"14px 18px", background:"rgba(255,255,255,0.04)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.5)", marginTop:8 }}>
-                <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", margin:0 }}>Your takeaway: You don't need to be polished. You need to be real.</p>
-              </div>
-            </div>
-          ),
-          simonsinek: (
-            <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
-              <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T.gold, marginBottom:16 }}>Start With Why — TED 2009</div>
-              <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:28 }}>He slows down when the idea matters.</h2>
-              <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)", marginBottom:28 }}>
-                <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.65, margin:0 }}>"People don't buy what you do. They buy <span style={{color:T.gold}}>WHY</span> you do it. <span style={{color:T.gold}}>[PAUSE]</span> And what you do simply proves what you believe."</p>
-              </div>
-              {[["He slows down on the big idea.","The word WHY gets extra weight. Extra space. He makes you feel its importance before he explains it."],["Repetition builds rhythm.","'People don't buy what you do' appears multiple times. Repetition is a delivery tool, not a writing crutch."],["He lets the audience finish the thought.","The pauses are invitations. He creates space for the idea to form in your own mind."]].map(([h,b],i) => (
-                <div key={i} style={{ marginBottom:16, paddingBottom:16, borderBottom:i<2?"1px solid rgba(255,255,255,0.07)":"none" }}>
-                  <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, marginBottom:4 }}>{h}</div>
-                  <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.8)", lineHeight:1.7, margin:0 }}>{b}</p>
-                </div>
-              ))}
-              <div style={{ padding:"14px 18px", background:"rgba(255,255,255,0.04)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.5)", marginTop:8 }}>
-                <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", margin:0 }}>Your takeaway: Slow down when the idea matters. Let them feel the weight.</p>
-              </div>
-            </div>
-          ),
-          amycuddy: (
-            <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
-              <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T.gold, marginBottom:16 }}>Presence — TED 2012</div>
-              <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:28 }}>Her body tells the story before she speaks.</h2>
-              <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)", marginBottom:28 }}>
-                <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.65, margin:0 }}>"Don't fake it till you make it. Fake it till you <span style={{color:T.gold, textTransform:"uppercase"}}>become</span> it." <span style={{color:T.gold}}>[Long pause. Eye contact.]</span></p>
-              </div>
-              {[["She embodies confidence before she speaks about it.","Her posture, her stillness, her eye contact — all signal the message before a word lands."],["The pause after 'BECOME it' is everything.","She lets that word sit. She doesn't soften it. She trusts the audience to feel its weight."],["Her body language reinforces every word.","Great delivery is never just vocal. Every part of you communicates."]].map(([h,b],i) => (
-                <div key={i} style={{ marginBottom:16, paddingBottom:16, borderBottom:i<2?"1px solid rgba(255,255,255,0.07)":"none" }}>
-                  <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, marginBottom:4 }}>{h}</div>
-                  <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.8)", lineHeight:1.7, margin:0 }}>{b}</p>
-                </div>
-              ))}
-              <div style={{ padding:"14px 18px", background:"rgba(255,255,255,0.04)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.5)", marginTop:8 }}>
-                <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", margin:0 }}>Your takeaway: Your body tells the story too. Stand like you believe it.</p>
-              </div>
-            </div>
-          ),
-          stevejobs: (
-            <div style={{ maxWidth:540, margin:"0 auto", padding:"0 20px" }}>
-              <div style={{ fontFamily:T.sans, fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:T.gold, marginBottom:16 }}>iPhone Launch — 2007</div>
-              <h2 style={{ fontFamily:T.serif, fontSize:30, fontWeight:600, color:"#F5EFE6", lineHeight:1.2, marginBottom:28 }}>He made the whole world lean forward.</h2>
-              <div style={{ padding:"20px 24px", borderLeft:"2px solid rgba(138,158,132,0.6)", marginBottom:28 }}>
-                <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.8, margin:0 }}>"An iPod. <span style={{color:T.gold}}>[PAUSE]</span> A phone. <span style={{color:T.gold}}>[PAUSE]</span> An internet communicator. <span style={{color:T.gold}}>[PAUSE]</span> Are you getting it? These are not three separate devices."</p>
-              </div>
-              {[["Strategic pauses build anticipation.","Each pause creates a micro-tension. The audience is holding their breath. He knows it. He uses it."],["Repetition creates rhythm.","Three beats. Same structure. He's teaching the audience how to receive the reveal."],["Precision in language = clarity in impact.","'An iPod. A phone. An internet communicator.' — six words. Three concepts. Perfect precision."]].map(([h,b],i) => (
-                <div key={i} style={{ marginBottom:16, paddingBottom:16, borderBottom:i<2?"1px solid rgba(255,255,255,0.07)":"none" }}>
-                  <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, marginBottom:4 }}>{h}</div>
-                  <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.8)", lineHeight:1.7, margin:0 }}>{b}</p>
-                </div>
-              ))}
-              <div style={{ padding:"14px 18px", background:"rgba(255,255,255,0.04)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.5)", marginTop:8 }}>
-                <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:"rgba(245,239,230,0.65)", margin:0 }}>Your takeaway: Don't rush the reveal. Make them lean in.</p>
-              </div>
-            </div>
-          ),
-        };
-        const openD9Card = D9_CARDS.find(c => c.id === d9OpenCard);
-        return (
-          <>
-            {openD9Card && (
-              <div style={{ position:"fixed", inset:0, zIndex:600, background:"rgba(14,11,8,0.97)", backdropFilter:"blur(12px)", overflowY:"auto", animation:"fadeIn 0.25s ease both" }}>
-                <button onClick={() => setD9OpenCard(null)} style={{ position:"fixed", top:20, right:24, width:40, height:40, borderRadius:"50%", border:"1px solid rgba(255,255,255,0.18)", background:"rgba(14,11,8,0.7)", backdropFilter:"blur(8px)", color:"rgba(255,255,255,0.7)", fontSize:20, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans, zIndex:10 }}>×</button>
-                <div style={{ padding:"96px 24px 72px", display:"flex", flexDirection:"column", alignItems:"center", animation:"fadeUp 0.3s ease both" }}>
-                  {CARDS_CONTENT[openD9Card.id]}
-                  <div style={{ textAlign:"center", marginTop:36 }}>
-                    <button onClick={() => setD9OpenCard(null)} style={{ padding:"10px 24px", borderRadius:4, border:"1px solid rgba(255,255,255,0.2)", background:"transparent", color:"rgba(245,239,230,0.6)", fontSize:12, cursor:"pointer", fontFamily:T.sans }}>← Back to examples</button>
-                  </div>
-                </div>
-              </div>
-            )}
-            <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
-              <h2 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", textAlign:"center", marginBottom:8 }}>Learn from the Best</h2>
-              <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, textAlign:"center", fontStyle:"italic", marginBottom:28, fontWeight:300 }}>Click to explore how world-class speakers deliver</p>
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
-                {D9_CARDS.map(card => (
-                  <button key={card.id} onClick={() => setD9OpenCard(card.id)}
-                    style={{ padding:"20px 18px", borderRadius:4, border:"0.5px solid "+T2.border, background:T2.surface, cursor:"pointer", textAlign:"left", transition:"all 0.2s ease", minHeight:100 }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.background = "rgba(138,158,132,0.04)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = T2.border; e.currentTarget.style.background = T2.surface; }}
-                  >
-                    <div style={{ fontFamily:T.serif, fontSize:16, fontWeight:600, color:T2.text, marginBottom:4 }}>{card.title}</div>
-                    <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.goldDark, marginBottom:8 }}>{card.sub}</div>
-                    <div style={{ fontFamily:T.sans, fontSize:11, color:T2.text3, lineHeight:1.5, fontStyle:"italic" }}>{card.tag}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </>
-        );
-      }
-
-      if (step === "Practice") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
-          <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>AI Delivery Coach</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:6 }}>Polish Your Delivery</h2>
-          <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.7, fontWeight:300, marginBottom:24 }}>Your story from Module 1 is loaded. Work through 5 delivery refinements — each one makes your story land harder.</p>
-          <DeliveryCoachWidget onSave={s => { setD9Script(s); try { localStorage.setItem("au1_d9_script", s); } catch(_){} }}/>
-        </div>
-      );
-
-      if (step === "Simulation") {
-        const [mode, setMode] = useState("solo");
-        return (
-          <div key={idx} className="au-step-enter" style={{ padding:"44px 52px" }}>
-            <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:8 }}>Performance Practice</div>
-            <h2 style={{ fontFamily:T.serif, fontSize:26, fontWeight:600, color:T2.text, letterSpacing:"-0.3px", marginBottom:20 }}>Deliver with Confidence</h2>
-            {d9Script ? (
-              <div style={{ padding:"14px 18px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, marginBottom:20, borderLeft:"2px solid "+T.gold, maxHeight:160, overflowY:"auto" }}>
-                <div style={{ ...RP_LABEL, color:T.goldDark, marginBottom:8 }}>Your Delivery Script</div>
-                <p style={{ fontFamily:T.serif, fontSize:13, color:T2.text, lineHeight:1.75, margin:0, whiteSpace:"pre-wrap" }}>{d9Script}</p>
-              </div>
-            ) : (
-              <div style={{ padding:"12px 16px", background:T2.surface, borderRadius:4, marginBottom:20 }}>
-                <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, fontStyle:"italic", margin:0 }}>Go back to Practice to prepare your delivery script first.</p>
-              </div>
-            )}
-            <div style={{ display:"flex", gap:8, marginBottom:20 }}>
-              {[["solo","Solo Rehearsal"],["highstakes","High-Stakes (90s)"]].map(([id,label]) => (
-                <button key={id} onClick={() => setMode(id)} style={{ flex:1, padding:"9px 12px", borderRadius:4, border:"0.5px solid "+(mode===id?T.gold:T2.border), background:mode===id?"rgba(138,158,132,0.07)":"transparent", color:T2.text, fontSize:12, cursor:"pointer", fontFamily:T.sans, fontWeight:mode===id?500:400 }}>{label}</button>
-              ))}
-            </div>
-            {mode === "solo" && (
-              <>
-                <Timer totalSecs={180} label="3 minutes — speak aloud"/>
-                <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:16, marginTop:16 }}>
-                  <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>Checklist</div>
-                  {["I honored the pauses","I slowed down on key ideas","I felt grounded and present"].map((item,i) => {
-                    const [checked, setChecked] = useState(false);
-                    return (
-                      <div key={i} onClick={() => setChecked(c=>!c)} style={{ display:"flex", alignItems:"center", gap:12, padding:"9px 0", borderBottom:i<2?"0.5px solid "+T2.divider:"none", cursor:"pointer" }}>
-                        <div style={{ width:20, height:20, borderRadius:4, border:"0.5px solid "+(checked?T.green:T2.border), background:checked?"rgba(82,112,96,0.1)":"transparent", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                          {checked && <svg width="10" height="10" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l3 3 4-4" stroke={T.green} strokeWidth="1.5" strokeLinecap="round"/></svg>}
-                        </div>
-                        <span style={{ fontFamily:T.serif, fontSize:14, color:T2.text }}>{item}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </>
-            )}
-            {mode === "highstakes" && (
-              <>
-                <div style={{ padding:"12px 16px", background:"rgba(139,74,56,0.05)", borderRadius:4, border:"0.5px solid rgba(139,74,56,0.2)", marginBottom:16 }}>
-                  <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>"You have 90 seconds to deliver this to a CEO. The clock is running."</p>
-                </div>
-                <Timer totalSecs={90} label="90 seconds — under pressure"/>
-              </>
-            )}
-            <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:16, marginTop:20 }}>
-              <div style={{ ...RP_LABEL, color:T2.text3, marginBottom:10 }}>Coaching Reminders</div>
-              {["Breathe before you begin","Stand still — movement dilutes presence","If you lose your place, pause. Don't rush.","Deliver to one imaginary person, not a crowd"].map((tip,i) => (
-                <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"7px 0", borderBottom:i<3?"0.5px solid "+T2.divider:"none" }}>
-                  <div style={{ width:4, height:4, borderRadius:"50%", background:T.gold, flexShrink:0 }}/>
-                  <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text2, fontWeight:300 }}>{tip}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-
-    }
-    // ── end removed D9 old content ──
-
     const D2RightContent = () => {
       const [d2InsightOpen, setD2InsightOpen] = useState(null);
       const [d2TheoryOpen, setD2TheoryOpen] = useState(null);
@@ -4238,7 +3998,7 @@ setAmbitionSaved(true); } catch {}
       selSc={selSc} setSelSc={setSelSc} exitConfirm={exitConfirm} setExitConfirm={setExitConfirm}
       accordionOpen={accordionOpen} setAccordionOpen={setAccordionOpen}
       savedBooks={savedBooks} saveBook={saveBook}
-      setNtStory={setNtStory} d9Script={d9Script} setD9Script={setD9Script}
+      setNtStory={setNtStory}
       d1MobCard={d1MobCard} setD1MobCard={setD1MobCard}
       d2MobCard={d2MobCard} setD2MobCard={setD2MobCard}
       d3MobCard={d3MobCard} setD3MobCard={setD3MobCard}
@@ -4256,7 +4016,7 @@ setAmbitionSaved(true); } catch {}
       roleId={roleId} activeRole={activeRole} swipeRef={swipeRef}
       note={note} saveNote={saveNote} checks={checks} setChecks={setChecks}
       ntOpenCard={ntOpenCard} setNtOpenCard={setNtOpenCard}
-      d9OpenCard={d9OpenCard} setD9OpenCard={setD9OpenCard} ntStory={ntStory}
+      ntStory={ntStory}
     />
   );
 }
