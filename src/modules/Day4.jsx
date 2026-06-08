@@ -1109,7 +1109,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
           </div>
         )}
 
-        {/\* AmplifyU Coach \*/}
+        {/* AmplifyU Coach */}
         <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
           <div style={cs.label}>Your AmplifyU Coach Says</div>
           <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
