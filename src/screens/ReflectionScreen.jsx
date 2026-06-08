@@ -79,7 +79,7 @@ export function ReflectionScreen({ answers, onContinue }) {
         const res = await fetch("/api/claude", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 800, messages: [{ role: "user", content: prompt }] }),
+          body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 800, messages: [{ role: "user", content: prompt }] }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error("API error");

@@ -248,7 +248,7 @@ export function D5SimWidget({T, T2, isDesktop}) {
     try{
       const res=await fetch("/api/claude",{
         method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:350,messages:[{role:"user",
+        body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:350,messages:[{role:"user",
           content:`You are a sharp communication coach evaluating a PRE (Point-Reason-Example) answer.\n\nQuestion: "${q}"\nPoint: "${inputs.point||'(blank)'}"\nReason: "${inputs.reason||'(blank)'}"\nExample: "${inputs.example||'(blank)'}"\n\nScore each 1-10 for clarity and give one sharp tip. Return ONLY valid JSON:\n{"point":{"score":<1-10>,"tip":"<max 10 words>"},"reason":{"score":<1-10>,"tip":"<max 10 words>"},"example":{"score":<1-10>,"tip":"<max 10 words>"},"overall":"<one punchy takeaway, max 12 words>"}`
         }]})
       });

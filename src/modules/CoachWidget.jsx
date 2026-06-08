@@ -23,7 +23,7 @@ export function CoachWidget({ lesson, scenario }) {
       const res = await fetch("/api/claude", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 600, messages: [{ role: "user", content: sysPrompt + "\n\nResponse to improve: " + txt }] }),
+        body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 600, messages: [{ role: "user", content: sysPrompt + "\n\nResponse to improve: " + txt }] }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error("API error");

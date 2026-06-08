@@ -129,7 +129,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
     try{
       const res=await fetch("/api/claude",{
         method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:650,messages:[{role:"user",
+        body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:650,messages:[{role:"user",
           content:`You are an expert communication coach. A learner just completed AmplifyU Week 1 covering: Clarity (Feynman Technique), Voice Control, Filler-Free Pauses, Precision (Miller's Law), Structure (PRE Framework), and Composure Under Pressure.\n\nThey were asked: "You've spent the last week learning communication. What exactly did you learn? Explain it as if teaching someone else."\n\nThis is their transcribed spoken response:\n\n"${text}"\n\nScore each skill 1-10 based on what can be inferred from the text. Return ONLY valid JSON:\n{"scores":{"clarity":<1-10>,"voiceControl":<1-10>,"pauses":<1-10>,"precision":<1-10>,"structure":<1-10>,"composure":<1-10>},"memorable":"<most memorable phrase or sentence from their response, max 12 words>","strongest":"<their strongest demonstrated communication habit, 1 sentence>","growth":"<their single most important growth opportunity, 1 sentence>","coachInsight":"<personalised, warm coaching insight for Week 2, 2-3 sentences>"}`
         }]})
       });
