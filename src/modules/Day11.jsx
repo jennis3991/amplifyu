@@ -213,6 +213,14 @@ export function D11SimWidget({T, T2, isDesktop}) {
     const COHERENCE_AREAS = ["LinkedIn Bio","Headline","Communication Style","Online Presence","Personal Story","Professional Positioning"];
     const icons = ["✅","❌","⚠️"];
     const coherence = COHERENCE_AREAS.map(area => ({area, status:icons[r(0,2)]}));
+    const riskPool = [
+      `Your profile reads as generic — it could describe hundreds of other professionals.`,
+      `There's little evidence connecting your day-to-day work to the words "${d.join(', ')}".`,
+      `Your headline leads with a job title rather than the impact or value you bring.`,
+      `Key achievements are buried or missing, so your credibility isn't immediately clear.`,
+      `The tone feels neutral rather than distinctive — it doesn't sound like "you".`,
+    ];
+    const risks = riskPool.sort(()=>Math.random()-0.5).slice(0,3);
     const profileSnippet = profileText.trim().length > 200
       ? profileText.trim().slice(0,200).trim() + '…'
       : profileText.trim();
@@ -246,7 +254,7 @@ export function D11SimWidget({T, T2, isDesktop}) {
     } catch(_) {}
 
     setResults({
-      currentWords, desired, signals: currentWords,
+      currentWords, desired, signals: currentWords, risks,
       scores:[
         {label:"Clarity",        val:r(6,8)},
         {label:"Credibility",    val:r(7,9)},
