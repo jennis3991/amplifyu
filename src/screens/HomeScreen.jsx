@@ -147,9 +147,9 @@ finishDate + ".";
         {/* ════════════════════════════════════════════════════════════════
             SECTION 1: CINEMATIC HERO — Full viewport. One story. One CTA.
             ════════════════════════════════════════════════════════════════ */}
-        {/* Hero — full-width, top space trimmed */}
-        <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative", overflow: "hidden" }}>
-          <img src="/home-hero-2.jpg" alt="Social Presence Framework" style={{ width: "100%", height: "auto", display: "block", marginTop: "-3%" }}/>
+        {/* Hero — full-width, fixed height (consistent with Programme banner) */}
+        <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative", overflow: "hidden", height: 580 }}>
+          <img src="/home-hero-3.jpg" alt="The Six Pillars of Communication Mastery" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 18%", display: "block" }}/>
           <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.10)", pointerEvents: "none" }}/>
         </div>
 
