@@ -353,9 +353,6 @@ finishDate + ".";
             </div>
           )}
         </div>
-        <div style={{height:1,background:T2.divider,borderRadius:1,overflow:"hidden"}}>
-          <div style={{width:pct+"%",height:"100%",background:"linear-gradient(90deg,"+T.goldDark+","+T.gold+")",transition:"width 1s ease"}}/>
-        </div>
       </section>
 
       {/* ── SECTION 4: All Sessions ── */}
