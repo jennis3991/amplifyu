@@ -100,10 +100,6 @@ export function Onboarding({onDone}) {
           background: "#0F0D0A", display: "flex", alignItems: "center", justifyContent: "center",
           fontFamily: T.sans,
         }} className="au-grain-wrap">
-          {/* Atmospheric background */}
-          <div style={{ position: "absolute", inset: 0, opacity: 0.25 }}>
-            <OBScene name="presence" height={900}/>
-          </div>
           {/* Logo mark — glows softly behind the CTA */}
           <div style={{ position: "absolute", left: 0, right: 0, top: "65%", transform: "translateY(-50%)", display: "flex", justifyContent: "center", pointerEvents: "none" }}>
             <img src="/logo-dark.jpg" alt="" style={{ width: "min(44vh, 500px)", height: "auto", opacity: 0.2, mixBlendMode: "screen" }}/>
@@ -392,8 +388,6 @@ export function Onboarding({onDone}) {
   if (phase === "landing") {
     return (
       <div style={{ height:"100vh", overflow:"hidden", position:"relative", background:"#0F0D0A", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans }} className="au-grain-wrap">
-        {/* Atmospheric background */}
-        <div style={{ position:"absolute", inset:0, opacity:0.25 }}><OBScene name="presence" height={900}/></div>
         {/* Logo mark — glows softly behind the CTA */}
         <div style={{ position:"absolute", left:0, right:0, top:"70%", transform:"translateY(-50%)", display:"flex", justifyContent:"center", pointerEvents:"none" }}>
           <img src="/logo-dark.jpg" alt="" style={{ width:"min(60vw, 320px)", height:"auto", opacity:0.2, mixBlendMode:"screen" }}/>
