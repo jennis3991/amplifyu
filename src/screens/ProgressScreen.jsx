@@ -10,7 +10,6 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
   const timeInvested = Math.round(done.length * 22); // ~22 min per session
   const timeH = Math.floor(timeInvested/60);
   const timeM = timeInvested % 60;
-  const [selectedDay, setSelectedDay] = useState(null);
   const [showAllAch, setShowAllAch] = useState(false);
 
   const SKILLS = [
@@ -53,8 +52,6 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
   const sec = (label) => (
     <div style={{fontFamily:T.sans,fontSize:isDesktop?11:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"2px",marginBottom:isDesktop?20:14}}>{label}</div>
   );
-
-  const selectedLesson = selectedDay ? LESSONS.find(l=>l.day===selectedDay) : null;
 
   const W = isDesktop ? {maxWidth:1160,margin:"0 auto",padding:"0 88px"} : {padding:"0 20px"};
 
@@ -322,40 +319,6 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
               ))}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* ── SESSION MAP ──────────────────────────────────────────────────── */}
-      <div style={{...W,paddingTop:isDesktop?40:28}}>
-        {sec("All Sessions")}
-        <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"24px 28px":"18px 20px"}}>
-          <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:selectedLesson?16:0}}>
-            {LESSONS.map(l=>{
-              const isDone=done.includes(l.day), isToday=l.day===cur, isSel=selectedDay===l.day;
-              return (
-                <button key={l.day} onClick={()=>setSelectedDay(isSel?null:l.day)}
-                  style={{width:36,height:36,borderRadius:8,background:isSel?T2.text:isDone?"rgba(138,158,132,0.12)":isToday?"rgba(138,158,132,0.06)":T2.bg,
-                    border:`0.5px solid ${isSel?T2.text:isDone?"rgba(138,158,132,0.4)":isToday?T.gold:T2.border}`,
-                    display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",transition:"all 0.15s"}}>
-                  {isDone&&!isSel?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/></svg>
-                    :<span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:isSel?T2.bg:isToday?T.gold:T2.text3}}>{l.day}</span>}
-                </button>
-              );
-            })}
-          </div>
-          {selectedLesson&&(
-            <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16,animation:"fadeUp 0.2s ease both"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
-                <div>
-                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>Day {selectedLesson.day} · {selectedLesson.tag}</div>
-                  <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text}}>{selectedLesson.title}</div>
-                </div>
-                <button onClick={()=>setSelectedDay(null)} style={{background:"none",border:"none",color:T2.text3,fontSize:18,cursor:"pointer",padding:0}}>×</button>
-              </div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:"0 0 8px",fontWeight:300}}>{selectedLesson.insight}</p>
-              {selectedLesson.promise&&<p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.gold,lineHeight:1.55,margin:0}}>{selectedLesson.promise}</p>}
-            </div>
-          )}
         </div>
       </div>
 

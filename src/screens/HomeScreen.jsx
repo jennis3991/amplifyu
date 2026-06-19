@@ -10,6 +10,8 @@ import { PhraseStrip } from '../components/PhraseStrip.jsx';
 export function HomeScreen({done, cur, streak, onStart, roleId, activeRole,
 dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
+  const [selectedDay, setSelectedDay] = useState(1);
+  const selectedLesson = selectedDay ? LESSONS.find(l => l.day === selectedDay) : null;
   const pct = Math.round((done.length/14)*100);
   const lesson = LESSONS[Math.min(cur-1,13)];
   const todayDone = done.includes(cur);
@@ -165,7 +167,7 @@ finishDate + ".";
               </div>
             </div>
             <button onClick={() => onStart(finished ? 1 : cur)}
-              style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 10, background: T.ink, color: T.bg, border: "none", borderRadius: 8, padding: "18px 48px", fontSize: 15, fontWeight: 600, fontFamily: T.sans, cursor: "pointer", transition: "all 0.25s ease", boxShadow: "0 2px 8px rgba(44,36,22,0.1)" }}
+              style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 10, background: T.ink, color: T.bg, border: "none", borderRadius: 8, padding: "21px 55px", fontSize: 17, fontWeight: 600, fontFamily: T.sans, cursor: "pointer", transition: "all 0.25s ease", boxShadow: "0 2px 8px rgba(44,36,22,0.1)" }}
               onMouseEnter={e => { e.currentTarget.style.background = T.gold; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(138,158,132,0.25)"; }}
               onMouseLeave={e => { e.currentTarget.style.background = T.ink; e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "0 2px 8px rgba(44,36,22,0.1)"; }}>
               {finished ? "Revisit Day 1" : todayDone ? "Review Session" : "Begin Session"} →
@@ -246,6 +248,54 @@ finishDate + ".";
               </div>
             </div>
           </section>
+
+          {/* ── All Sessions ── */}
+          <section style={{ padding: "36px 88px 56px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 60, alignItems: "start" }}>
+              <div style={{ paddingTop: 8 }}>
+                <div style={{ fontSize: 9.5, fontWeight: 500, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", fontFamily: T.sans }}>All Sessions</div>
+                <div style={{ width: 20, height: 1, background: T.gold, marginTop: 10, opacity: 0.5 }}/>
+              </div>
+              <div>
+                <div style={{ background: T2.surface, borderRadius: 10, border: "0.5px solid " + T2.border, padding: "24px 28px" }}>
+                  {/* Day number picker */}
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: selectedLesson ? 16 : 0 }}>
+                    {LESSONS.map(l => {
+                      const isDone = done.includes(l.day), isToday = l.day === cur, isSel = selectedDay === l.day;
+                      return (
+                        <button key={l.day} onClick={() => setSelectedDay(isSel ? null : l.day)}
+                          style={{ width: 40, height: 40, borderRadius: 8, cursor: "pointer", transition: "all 0.15s",
+                            background: isSel ? T2.text : isDone ? "rgba(138,158,132,0.12)" : isToday ? "rgba(138,158,132,0.06)" : T2.bg,
+                            border: `0.5px solid ${isSel ? T2.text : isDone ? "rgba(138,158,132,0.4)" : isToday ? T.gold : T2.border}`,
+                            display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          {isDone && !isSel
+                            ? <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/></svg>
+                            : <span style={{ fontFamily: T.sans, fontSize: 12, fontWeight: 600, color: isSel ? T2.bg : isToday ? T.gold : T2.text3 }}>{l.day}</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {/* Expanded day detail */}
+                  {selectedLesson && (
+                    <div style={{ borderTop: "0.5px solid " + T2.divider, paddingTop: 18, animation: "fadeUp 0.2s ease both" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+                        <div>
+                          <div style={{ fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 6 }}>
+                            Day {selectedLesson.day} · {selectedLesson.tag}
+                          </div>
+                          <div style={{ fontFamily: T.serif, fontSize: 22, fontWeight: 600, color: T2.text, lineHeight: 1.2 }}>{selectedLesson.title}</div>
+                        </div>
+                        <button onClick={() => setSelectedDay(null)} style={{ background: "none", border: "none", color: T2.text3, fontSize: 20, cursor: "pointer", padding: "0 0 0 16px", lineHeight: 1 }}>×</button>
+                      </div>
+                      <p style={{ fontFamily: T.sans, fontSize: 14, color: T2.text3, lineHeight: 1.7, margin: "0 0 10px", fontWeight: 300 }}>{selectedLesson.insight}</p>
+                      {selectedLesson.promise && <p style={{ fontFamily: T.serif, fontSize: 13, fontStyle: "italic", color: T.gold, lineHeight: 1.55, margin: 0 }}>{selectedLesson.promise}</p>}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+
         </div>
 
       </div>
