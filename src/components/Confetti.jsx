@@ -210,7 +210,7 @@ export function Celebrate({day, onClose}) {
         overflow:"hidden",
       }}>
         {/* Gold top rule */}
-        <div 
+        <div
 style={{height:3,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.3))"}}/>
 
         {/* Confetti only on day 14 */}
@@ -218,8 +218,17 @@ style={{height:3,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0
 
         {/* Drag handle */}
         <div style={{display:"flex",justifyContent:"center",padding:"14px 0 0"}}>
-          <div 
+          <div
 style={{width:36,height:3,borderRadius:2,background:isComplete?"rgba(255,255,255,0.15)":T.border}}/>
+        </div>
+
+        {/* Brand mark */}
+        <div style={{display:"flex",justifyContent:"center",padding:"18px 0 0"}}>
+          <img src="/logo-light.jpg" alt="AmplifyU"
+            style={{ width:56, height:56, borderRadius:12, objectFit:"cover",
+              opacity: isComplete ? 0.9 : 0.75,
+              boxShadow: isComplete ? "0 4px 16px rgba(0,0,0,0.4)" : "0 2px 8px rgba(44,36,22,0.12)",
+            }}/>
         </div>
 
         {/* Animated icon */}

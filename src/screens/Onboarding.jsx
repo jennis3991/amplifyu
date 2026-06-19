@@ -104,6 +104,10 @@ export function Onboarding({onDone}) {
           <div style={{ position: "absolute", inset: 0, opacity: 0.25 }}>
             <OBScene name="presence" height={900}/>
           </div>
+          {/* Logo mark — glows softly behind the CTA */}
+          <div style={{ position: "absolute", left: 0, right: 0, top: "65%", transform: "translateY(-50%)", display: "flex", justifyContent: "center", pointerEvents: "none" }}>
+            <img src="/logo-dark.jpg" alt="" style={{ width: "min(44vh, 500px)", height: "auto", opacity: 0.2, mixBlendMode: "screen" }}/>
+          </div>
           {/* Depth layers */}
           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 40%, rgba(138,158,132,0.06) 0%, transparent 60%)" }}/>
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(10,8,5,0.6) 0%, rgba(10,8,5,0.3) 50%, rgba(10,8,5,0.8) 100%)" }}/>
@@ -390,6 +394,10 @@ export function Onboarding({onDone}) {
       <div style={{ height:"100vh", overflow:"hidden", position:"relative", background:"#0F0D0A", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans }} className="au-grain-wrap">
         {/* Atmospheric background */}
         <div style={{ position:"absolute", inset:0, opacity:0.25 }}><OBScene name="presence" height={900}/></div>
+        {/* Logo mark — glows softly behind the CTA */}
+        <div style={{ position:"absolute", left:0, right:0, top:"70%", transform:"translateY(-50%)", display:"flex", justifyContent:"center", pointerEvents:"none" }}>
+          <img src="/logo-dark.jpg" alt="" style={{ width:"min(60vw, 320px)", height:"auto", opacity:0.2, mixBlendMode:"screen" }}/>
+        </div>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 50% 40%, rgba(138,158,132,0.06) 0%, transparent 60%)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(10,8,5,0.6) 0%, rgba(10,8,5,0.3) 50%, rgba(10,8,5,0.8) 100%)" }}/>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(6,5,3,0.5) 100%)" }}/>

@@ -128,15 +128,18 @@ export function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSes
       display: "flex", alignItems: "center",
       padding: "0 56px",
     }}>
-      {/* Logo — always Cormorant Garamond */}
+      {/* Logo mark */}
       <button onClick={() => handleNavClick("home")} style={{
         background: "none", border: "none", padding: 0,
-        fontFamily: T.serif, fontSize: 20, fontWeight: 600,
-        color: logoColor, letterSpacing: "-0.2px",
         cursor: "pointer", marginRight: 48, flexShrink: 0,
-        transition: "color 0.4s ease",
+        display: "flex", alignItems: "center",
       }}>
-        Amplify<span style={{ color: T.gold }}>U</span>
+        <img src="/logo-nav.jpg" alt="AmplifyU"
+          style={{ width: 36, height: 36, borderRadius: 8, objectFit: "cover",
+            filter: onHero ? "brightness(1.4)" : "none",
+            transition: "filter 0.4s ease",
+            boxShadow: onHero ? "none" : "0 1px 4px rgba(0,0,0,0.12)",
+          }}/>
       </button>
 
       {/* Navigation links */}
