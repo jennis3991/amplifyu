@@ -321,10 +321,9 @@ finishDate + ".";
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}} className="au-page">
 
-      {/* ── SECTION 1: Hero — full image with dark film ── */}
-      <div style={{marginTop:NAV_H,background:T2.bg,position:"relative"}}>
-        <img src="/home-hero-2.jpg" alt="Social Presence Framework" style={{width:"100%",height:"auto",display:"block"}}/>
-        <div style={{position:"absolute",inset:0,background:"rgba(10,8,4,0.15)",pointerEvents:"none"}}/>
+      {/* ── SECTION 1: Hero — full image ── */}
+      <div style={{marginTop:NAV_H,background:"#0a0805",position:"relative"}}>
+        <img src="/home-hero-8.png" alt="The Six Pillars of Communication Mastery" style={{width:"100%",height:"auto",display:"block"}}/>
       </div>
 
       {/* ── Static CTA bar — directly below hero ── */}
