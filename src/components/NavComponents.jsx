@@ -126,7 +126,7 @@ export function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSes
                   padding: "7px 16px", borderRadius: 4, border: "none",
                   background: a ? "rgba(255,255,255,0.08)" : "transparent",
                   fontSize: 13, fontWeight: a ? 600 : 500,
-                  color: a ? (id === "home" ? "#c9a96e" : "#8A9E84") : "rgba(255,255,255,0.78)",
+                  color: a ? (id === "home" && !inSession ? "#c9a96e" : "#8A9E84") : "rgba(255,255,255,0.78)",
                   letterSpacing: "0px", fontFamily: T.sans,
                   cursor: "pointer", transition: "all 0.2s ease",
                 }}>{label}</button>
