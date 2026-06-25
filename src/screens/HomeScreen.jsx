@@ -152,7 +152,6 @@ finishDate + ".";
         {/* Hero — full-width, natural height so chess pieces show complete */}
         <div style={{ marginTop: NAV_H, background: "#0a0805", position: "relative", overflow: "hidden" }}>
           <img src="/home-hero-7.png" alt="The Six Pillars of Communication Mastery" style={{ width: "100%", height: "auto", display: "block", filter: "contrast(1.3) brightness(1.08)" }}/>
-          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.08)", pointerEvents: "none" }}/>
         </div>
 
         {/* ── Two-column: Today's session (left) + YOUR JOURNEY card (right) ── */}
