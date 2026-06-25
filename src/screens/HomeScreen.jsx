@@ -181,7 +181,7 @@ finishDate + ".";
 
             {/* Left: today's session */}
             <div>
-              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: "#c9a96e", fontFamily: T.sans, marginBottom: 18 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", color: "#c9a96e", fontFamily: T.sans, marginBottom: 18 }}>
                 {finished ? "Programme Complete" : `Day ${cur} · ${lesson?.tag ?? ""}`}
               </div>
               <h2 style={{ fontFamily: T.serif, fontSize: 42, fontWeight: 500, color: T2.text, letterSpacing: "-1.5px", lineHeight: 1.1, maxWidth: 600, marginBottom: 18 }}>
