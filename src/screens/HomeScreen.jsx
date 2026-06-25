@@ -171,7 +171,7 @@ finishDate + ".";
             }}
             onMouseEnter={e => { e.currentTarget.style.background = "#F7F3EC"; e.currentTarget.style.transform = "translateY(-2px)"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "rgba(237,232,223,0.92)"; e.currentTarget.style.transform = "none"; }}>
-            {finished ? "Revisit Day 1" : todayDone ? "Review Session" : "Begin Session"}
+            {finished ? "Revisit Day 1 →" : todayDone ? "Review Session →" : "Begin Session →"}
           </button>
         </div>
 
