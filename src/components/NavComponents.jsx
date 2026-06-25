@@ -110,8 +110,8 @@ export function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSes
           cursor: "pointer", marginRight: 48, flexShrink: 0,
           display: "flex", alignItems: "center", gap: 12,
         }}>
-          <img src="/logo-nav.jpg" alt="AmplifyU"
-            style={{ width: 36, height: 36, borderRadius: 8, objectFit: "cover" }}/>
+          <img src="/logo-mark.png" alt="AmplifyU"
+            style={{ width: 38, height: 38, objectFit: "cover", mixBlendMode: "screen" }}/>
           <span style={{ fontFamily: T.sans, fontSize: 12, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: "rgba(255,255,255,0.88)" }}>AmplifyU</span>
         </button>
 
