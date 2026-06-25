@@ -152,6 +152,28 @@ finishDate + ".";
         {/* Hero — full-width, natural height so chess pieces show complete */}
         <div style={{ marginTop: NAV_H, background: "#0a0805", position: "relative", overflow: "hidden" }}>
           <img src="/home-hero-7.png" alt="The Six Pillars of Communication Mastery" style={{ width: "100%", height: "auto", display: "block" }}/>
+          {/* Begin Session button — overlaid under the King piece (Verbal Mastery) */}
+          <button
+            onClick={() => onStart(finished ? 1 : cur)}
+            style={{
+              position: "absolute", bottom: "11%", left: "26%",
+              transform: "translateX(-50%)",
+              background: "rgba(237,232,223,0.92)",
+              color: "#1a1510",
+              border: "1px solid rgba(237,232,223,0.5)",
+              borderRadius: 6,
+              padding: "13px 28px",
+              fontSize: 14, fontWeight: 500, fontFamily: T.sans,
+              letterSpacing: "0.02em",
+              cursor: "pointer",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = "#F7F3EC"; e.currentTarget.style.transform = "translateX(-50%) translateY(-2px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(237,232,223,0.92)"; e.currentTarget.style.transform = "translateX(-50%)"; }}>
+            {finished ? "Revisit Day 1" : todayDone ? "Review Session" : "Begin Session"}
+          </button>
         </div>
 
         {/* ── Two-column: Today's session (left) + YOUR JOURNEY card (right) ── */}
