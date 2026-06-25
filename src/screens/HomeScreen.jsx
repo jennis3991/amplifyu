@@ -149,105 +149,90 @@ finishDate + ".";
         {/* ════════════════════════════════════════════════════════════════
             SECTION 1: CINEMATIC HERO — Full viewport. One story. One CTA.
             ════════════════════════════════════════════════════════════════ */}
-        {/* Hero — full-width, fixed height (consistent with Programme banner) */}
-        <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative", overflow: "hidden", height: 580 }}>
+        {/* Hero — full-width, fixed height */}
+        <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative", overflow: "hidden", height: 420 }}>
           <img src="/home-hero-3.jpg" alt="The Six Pillars of Communication Mastery" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 18%", display: "block" }}/>
           <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.10)", pointerEvents: "none" }}/>
         </div>
 
-        {/* Static CTA bar — directly below hero, in document flow */}
-        <div style={{ background: T2.bg, borderBottom: "1px solid rgba(138,158,132,0.15)" }}>
-          <div style={{ maxWidth: 1400, margin: "0 auto", padding: "20px 88px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 40 }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontFamily: T.sans, fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: T.gold, marginBottom: 8 }}>
-                {finished ? "Programme Complete" : `Day ${cur} — ${lesson?.tag ?? ""}${todayDone ? "  ✓" : ""}`}
+        {/* ── Two-column: Today's session (left) + YOUR JOURNEY card (right) ── */}
+        <div style={{ background: T2.bg, borderBottom: "1px solid " + T2.divider }}>
+          <div style={{ maxWidth: 1400, margin: "0 auto", padding: "56px 88px", display: "grid", gridTemplateColumns: "1fr 320px", gap: 64, alignItems: "start" }}>
+
+            {/* Left: today's session */}
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: "#c9a96e", fontFamily: T.sans, marginBottom: 18 }}>
+                {finished ? "Programme Complete" : `Day ${cur} · ${lesson?.tag ?? ""}`}
               </div>
-              <div style={{ fontFamily: T.serif, fontSize: 36, fontWeight: 600, color: T.ink, lineHeight: 1.2, margin: 0 }}>
-                {finished ? "You communicate differently now." : lesson?.title}
+              <h2 style={{ fontFamily: T.serif, fontSize: 42, fontWeight: 500, color: T2.text, letterSpacing: "-1.5px", lineHeight: 1.1, maxWidth: 600, marginBottom: 18 }}>
+                {finished ? "You communicate differently now." : insight.headline}
+              </h2>
+              <p style={{ fontSize: 15, color: T2.text3, lineHeight: 1.8, maxWidth: 500, fontFamily: T.sans, fontWeight: 300, marginBottom: 32 }}>
+                {insight.body}
+              </p>
+              <button onClick={() => onStart(finished ? 1 : cur)}
+                style={{ display: "inline-flex", alignItems: "center", gap: 10, background: T.ink, color: T.bg, border: "none", borderRadius: 8, padding: "17px 40px", fontSize: 15, fontWeight: 600, fontFamily: T.sans, cursor: "pointer", transition: "all 0.25s ease", boxShadow: "0 2px 8px rgba(44,36,22,0.1)" }}
+                onMouseEnter={e => { e.currentTarget.style.background = "#c9a96e"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = T.ink; e.currentTarget.style.transform = "none"; }}>
+                {finished ? "Revisit Day 1" : todayDone ? "Review Session" : "Begin Session"} →
+              </button>
+            </div>
+
+            {/* Right: YOUR JOURNEY card */}
+            <div style={{ background: "#1a1714", borderRadius: 14, overflow: "hidden" }}>
+              {/* Header */}
+              <div style={{ padding: "22px 26px", display: "flex", alignItems: "center", gap: 14 }}>
+                <div style={{ width: 42, height: 42, borderRadius: "50%", background: "#111009", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <rect x="3" y="4" width="14" height="13" rx="1.5" stroke="rgba(255,255,255,0.65)" strokeWidth="1.2"/>
+                    <path d="M3 8h14" stroke="rgba(255,255,255,0.65)" strokeWidth="1.2"/>
+                    <path d="M7 2v3M13 2v3" stroke="rgba(255,255,255,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", color: "#c9a96e", fontFamily: T.sans }}>Your Journey</span>
+              </div>
+
+              {/* Divider */}
+              <div style={{ height: "0.5px", background: "rgba(255,255,255,0.08)", margin: "0 26px" }}/>
+
+              {/* Stats */}
+              <div style={{ padding: "20px 26px", display: "flex", flexDirection: "column", gap: 13 }}>
+                {[
+                  `Day ${cur} of 14`,
+                  streak > 0 ? `${streak} day streak` : "Start your streak",
+                  `${done.length} of 14 complete`,
+                ].map((item, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <span style={{ color: "#c9a96e", fontSize: 9, lineHeight: 1 }}>♦</span>
+                    <span style={{ fontFamily: T.sans, fontSize: 14, color: "rgba(255,255,255,0.78)", fontWeight: 300, letterSpacing: "0.01em" }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Divider */}
+              <div style={{ height: "0.5px", background: "rgba(255,255,255,0.08)", margin: "0 26px" }}/>
+
+              {/* CTA */}
+              <div style={{ padding: "18px 26px" }}>
+                <button onClick={() => onStart(finished ? 1 : cur)}
+                  style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, padding: 0, transition: "opacity 0.2s" }}
+                  onMouseEnter={e => e.currentTarget.style.opacity = "0.7"}
+                  onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
+                  <span style={{ fontFamily: T.sans, fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.82)" }}>
+                    {finished ? "Revisit Day 1" : todayDone ? "Review Session" : "Begin Session"}
+                  </span>
+                  <span style={{ color: "#c9a96e", fontSize: 16, lineHeight: 1 }}>→</span>
+                </button>
               </div>
             </div>
-            <button onClick={() => onStart(finished ? 1 : cur)}
-              style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 10, background: T.ink, color: T.bg, border: "none", borderRadius: 8, padding: "21px 55px", fontSize: 17, fontWeight: 600, fontFamily: T.sans, cursor: "pointer", transition: "all 0.25s ease", boxShadow: "0 2px 8px rgba(44,36,22,0.1)" }}
-              onMouseEnter={e => { e.currentTarget.style.background = T.gold; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(138,158,132,0.25)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = T.ink; e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "0 2px 8px rgba(44,36,22,0.1)"; }}>
-              {finished ? "Revisit Day 1" : todayDone ? "Review Session" : "Begin Session"} →
-            </button>
+
           </div>
         </div>
 
         {/* ════════════════════════════════════════════════════════════════
-            SECTION 2: EDITORIAL CONTENT — Below the fold. Warm linen.
+            SECTION 2: ALL SESSIONS
             ════════════════════════════════════════════════════════════════ */}
         <div style={{ background: T2.bg, position: "relative" }}>
-
-          {/* ── Today's Insight — large editorial moment ── */}
-          <section style={{ padding: "44px 88px 36px", borderBottom: "1px solid " + T2.divider }}>
-            <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 60, alignItems: "start" }}>
-              {/* Left: section label — editorial column */}
-              <div style={{ paddingTop: 8 }}>
-                <div style={{
-                  fontSize: 9.5, fontWeight: 500, color: T.gold,
-                  textTransform: "uppercase", letterSpacing: "3px",
-                  fontFamily: T.sans, writingMode: "horizontal-tb",
-                }}>Today's Focus</div>
-                <div style={{ width: 20, height: 1, background: T.gold, marginTop: 10, opacity: 0.5 }}/>
-              </div>
-              {/* Right: content */}
-              <div>
-                <div style={{
-                  fontSize: 10, fontWeight: 500, color: T2.text3,
-                  textTransform: "uppercase", letterSpacing: "3px",
-                  marginBottom: 18, fontFamily: T.sans,
-                }}>{insight.label}</div>
-                <h2 style={{
-                  fontFamily: T.serif, fontSize: 38, fontWeight: 500,
-                  color: T2.text, letterSpacing: "-1px", lineHeight: 1.15,
-                  maxWidth: 700, marginBottom: 20,
-                }}>{insight.headline}</h2>
-                <p style={{
-                  fontSize: 16, color: T2.text3, lineHeight: 1.8,
-                  maxWidth: 600, fontFamily: T.sans, fontWeight: 300,
-                }}>{insight.body}</p>
-              </div>
-            </div>
-          </section>
-
-          {/* ── Progress — editorial number moment, not a widget ── */}
-          <section style={{ padding: "36px 88px 44px", borderBottom: "1px solid " + T2.divider }}>
-            <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 60, alignItems: "start" }}>
-              <div style={{ paddingTop: 8 }}>
-                <div style={{ fontSize: 9.5, fontWeight: 500, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", fontFamily: T.sans }}>Journey</div>
-                <div style={{ width: 20, height: 1, background: T.gold, marginTop: 10, opacity: 0.5 }}/>
-              </div>
-              <div>
-                <div style={{ display: "flex", alignItems: "flex-end", gap: 40, marginBottom: 28 }}>
-                  {/* The number as a typographic moment */}
-                  <div>
-                    <div style={{
-                      fontFamily: T.serif, fontSize: 88, fontWeight: 500,
-                      color: T2.text, lineHeight: 0.85, letterSpacing: "-5px",
-                    }}>{pct}<span style={{ fontSize: 32, letterSpacing: "-1px", color: T.gold }}>%</span></div>
-                    <div style={{ fontSize: 11, color: T2.text3, letterSpacing: "2px", textTransform: "uppercase", marginTop: 10, fontFamily: T.sans }}>
-                      {done.length} of 14 sessions complete
-                    </div>
-                  </div>
-                  {/* On-track message */}
-                  {onTrackMsg && (
-                    <div style={{
-                      paddingBottom: 12, maxWidth: 320,
-                      borderLeft: "2px solid " + T.gold, paddingLeft: 20,
-                    }}>
-                      <p style={{ fontSize: 14, color: streak >= 2 ? T.green : T.goldDark, lineHeight: 1.55, fontFamily: T.sans }}>{onTrackMsg}</p>
-                    </div>
-                  )}
-                </div>
-                {/* Hairline progress track */}
-                <div style={{ height: 1, background: T2.divider, borderRadius: 1, overflow: "hidden", maxWidth: 520 }}>
-                  <div style={{ width: pct + "%", height: "100%", background: "linear-gradient(90deg," + T.goldDark + "," + T.gold + ")", transition: "width 1s ease" }}/>
-                </div>
-              </div>
-            </div>
-          </section>
 
           {/* ── All Sessions ── */}
           <section style={{ padding: "36px 88px 56px" }}>

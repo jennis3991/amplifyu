@@ -67,19 +67,11 @@ const SIDEBAR_W = 0;
 
 export function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSession=false, onExitToTab }) {
   const pct = Math.round(done.length / 14 * 100);
-  const [scrolled, setScrolled] = useState(false);
   const [confirmTab, setConfirmTab] = useState(null);
 
   function handleNavClick(id) {
     if (inSession) { setConfirmTab(id); } else { setTab(id); }
   }
-
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", fn, { passive: true });
-    fn(); // check on mount
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
 
   const ITEMS = [
     { id: "home",     label: "Home" },
@@ -87,19 +79,6 @@ export function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSes
     { id: "progress", label: "Progress" },
     { id: "toolkit",  label: "Toolkit" },
   ];
-
-  // Parchment when scrolled (light screens), dark glass over hero (top of home)
-  const onHero = !scrolled && tab === "home";
-  const navBg = onHero
-    ? "rgba(18,15,11,0.32)"
-    : "rgba(247,243,236,0.94)";
-  const navBorder = onHero
-    ? "0.5px solid transparent"
-    : "0.5px solid #DDD5C4";
-  const logoColor  = onHero ? "rgba(255,255,255,0.92)" : T.text;
-  const linkActive = onHero ? "rgba(255,255,255,0.92)" : T.text;
-  const linkInact  = onHero ? "rgba(255,255,255,0.42)" : T.text3;
-  const linkActiveBg = onHero ? "rgba(255,255,255,0.12)" : "rgba(138,158,132,0.12)";
 
   return (
     <>
@@ -117,78 +96,60 @@ export function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSes
         </div>
       )}
 
-    <div style={{
-      position: "fixed", top: 0, left: 0, right: 0,
-      zIndex: 200, height: NAV_H,
-      background: navBg,
-      backdropFilter: "blur(24px) saturate(180%)",
-      WebkitBackdropFilter: "blur(24px) saturate(180%)",
-      borderBottom: navBorder,
-      transition: "background 0.45s ease, border-color 0.4s ease",
-      display: "flex", alignItems: "center",
-      padding: "0 56px",
-    }}>
-      {/* Logo mark */}
-      <button onClick={() => handleNavClick("home")} style={{
-        background: "none", border: "none", padding: 0,
-        cursor: "pointer", marginRight: 48, flexShrink: 0,
+      <div style={{
+        position: "fixed", top: 0, left: 0, right: 0,
+        zIndex: 200, height: NAV_H,
+        background: "#0F0D0A",
+        borderBottom: "0.5px solid rgba(255,255,255,0.08)",
         display: "flex", alignItems: "center",
+        padding: "0 56px",
       }}>
-        <img src="/logo-nav.jpg" alt="AmplifyU"
-          style={{ width: 36, height: 36, borderRadius: 8, objectFit: "cover",
-            filter: onHero ? "brightness(1.4)" : "none",
-            transition: "filter 0.4s ease",
-            boxShadow: onHero ? "none" : "0 1px 4px rgba(0,0,0,0.12)",
-          }}/>
-      </button>
+        {/* Logo mark + wordmark */}
+        <button onClick={() => handleNavClick("home")} style={{
+          background: "none", border: "none", padding: 0,
+          cursor: "pointer", marginRight: 48, flexShrink: 0,
+          display: "flex", alignItems: "center", gap: 12,
+        }}>
+          <img src="/logo-nav.jpg" alt="AmplifyU"
+            style={{ width: 36, height: 36, borderRadius: 8, objectFit: "cover" }}/>
+          <span style={{ fontFamily: T.sans, fontSize: 12, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: "rgba(255,255,255,0.88)" }}>AmplifyU</span>
+        </button>
 
-      {/* Navigation links */}
-      <nav style={{ display: "flex", alignItems: "center", gap: 2, flex: 1 }}>
-        {ITEMS.map(({ id, label }) => {
-          const a = tab === id;
-          return (
-            <button key={id} onClick={() => handleNavClick(id)}
-              className="au-nav-btn"
-              style={{
-                padding: "7px 16px", borderRadius: 4, border: "none",
-                background: a ? linkActiveBg : "transparent",
-                fontSize: 13, fontWeight: a ? 500 : 400,
-                color: a ? (onHero ? linkActive : T.gold) : linkInact,
-                letterSpacing: "0px", fontFamily: T.sans,
-                cursor: "pointer", transition: "all 0.2s ease",
-              }}>{label}</button>
-          );
-        })}
-      </nav>
+        {/* Navigation links */}
+        <nav style={{ display: "flex", alignItems: "center", gap: 2, flex: 1 }}>
+          {ITEMS.map(({ id, label }) => {
+            const a = tab === id;
+            return (
+              <button key={id} onClick={() => handleNavClick(id)}
+                className="au-nav-btn"
+                style={{
+                  padding: "7px 16px", borderRadius: 4, border: "none",
+                  background: a ? "rgba(255,255,255,0.08)" : "transparent",
+                  fontSize: 13, fontWeight: a ? 500 : 400,
+                  color: a ? "#c9a96e" : "rgba(255,255,255,0.45)",
+                  letterSpacing: "0px", fontFamily: T.sans,
+                  cursor: "pointer", transition: "all 0.2s ease",
+                }}>{label}</button>
+            );
+          })}
+        </nav>
 
-      {/* Right: streak + progress */}
-      <div style={{ display: "flex", alignItems: "center", gap: 20, flexShrink: 0 }}>
-        {streak > 0 && (
-          <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-            <span style={{
-              fontFamily: T.serif, fontSize: 17, fontWeight: 600,
-              color: T.gold, lineHeight: 1, letterSpacing: "-0.5px",
-              transition: "color 0.4s ease",
-            }}>{streak}</span>
-            <span style={{
-              fontSize: 9, color: onHero ? "rgba(255,255,255,0.3)" : T.text3,
-              textTransform: "uppercase", letterSpacing: "2px", fontFamily: T.sans,
-              transition: "color 0.4s ease",
-            }}>streak</span>
+        {/* Right: streak + progress */}
+        <div style={{ display: "flex", alignItems: "center", gap: 20, flexShrink: 0 }}>
+          {streak > 0 && (
+            <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+              <span style={{ fontFamily: T.serif, fontSize: 17, fontWeight: 600, color: "#c9a96e", lineHeight: 1, letterSpacing: "-0.5px" }}>{streak}</span>
+              <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "2px", fontFamily: T.sans }}>streak</span>
+            </div>
+          )}
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ width: 80, height: 1, background: "rgba(255,255,255,0.1)", borderRadius: 1, overflow: "hidden" }}>
+              <div style={{ width: pct + "%", height: "100%", background: "linear-gradient(90deg,#b8956a,#c9a96e)", borderRadius: 1, transition: "width 1s ease" }}/>
+            </div>
+            <span style={{ fontSize: 10.5, color: "#c9a96e", fontWeight: 500, fontFamily: T.sans }}>{pct}%</span>
           </div>
-        )}
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 80, height: 1, background: onHero ? "rgba(255,255,255,0.12)" : T.divider, borderRadius: 1, overflow: "hidden" }}>
-            <div style={{
-              width: pct + "%", height: "100%",
-              background: "linear-gradient(90deg," + T.goldDark + "," + T.gold + ")",
-              borderRadius: 1, transition: "width 1s ease",
-            }}/>
-          </div>
-          <span style={{ fontSize: 10.5, color: T.gold, fontWeight: 500, fontFamily: T.sans }}>{pct}%</span>
         </div>
       </div>
-    </div>
     </>
   );
 }
