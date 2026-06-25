@@ -149,10 +149,10 @@ finishDate + ".";
         {/* ════════════════════════════════════════════════════════════════
             SECTION 1: CINEMATIC HERO — Full viewport. One story. One CTA.
             ════════════════════════════════════════════════════════════════ */}
-        {/* Hero — full-width, fixed height */}
-        <div style={{ marginTop: NAV_H, background: T2.bg, position: "relative", overflow: "hidden", height: 420 }}>
-          <img src="/home-hero-3.jpg" alt="The Six Pillars of Communication Mastery" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 18%", display: "block" }}/>
-          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.10)", pointerEvents: "none" }}/>
+        {/* Hero — full-width, natural height so chess pieces show complete */}
+        <div style={{ marginTop: NAV_H, background: "#0a0805", position: "relative", overflow: "hidden" }}>
+          <img src="/home-hero-4.jpg" alt="The Six Pillars of Communication Mastery" style={{ width: "100%", height: "auto", display: "block" }}/>
+          <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,4,0.08)", pointerEvents: "none" }}/>
         </div>
 
         {/* ── Two-column: Today's session (left) + YOUR JOURNEY card (right) ── */}
