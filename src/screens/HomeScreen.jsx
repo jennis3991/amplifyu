@@ -156,7 +156,7 @@ finishDate + ".";
           <button
             onClick={() => onStart(finished ? 1 : cur)}
             style={{
-              position: "absolute", bottom: "11%", right: "16%",
+              position: "absolute", bottom: "7%", right: "4%",
               background: "rgba(237,232,223,0.92)",
               color: "#1a1510",
               border: "1px solid rgba(237,232,223,0.5)",
