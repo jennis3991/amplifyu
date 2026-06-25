@@ -156,22 +156,21 @@ finishDate + ".";
           <button
             onClick={() => onStart(finished ? 1 : cur)}
             style={{
-              position: "absolute", bottom: "11%", left: "26%",
-              transform: "translateX(-50%)",
+              position: "absolute", bottom: "11%", right: "16%",
               background: "rgba(237,232,223,0.92)",
               color: "#1a1510",
               border: "1px solid rgba(237,232,223,0.5)",
               borderRadius: 6,
-              padding: "13px 28px",
-              fontSize: 14, fontWeight: 500, fontFamily: T.sans,
+              padding: "17px 37px",
+              fontSize: 19, fontWeight: 500, fontFamily: T.sans,
               letterSpacing: "0.02em",
               cursor: "pointer",
               backdropFilter: "blur(8px)",
               WebkitBackdropFilter: "blur(8px)",
               transition: "all 0.2s ease",
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = "#F7F3EC"; e.currentTarget.style.transform = "translateX(-50%) translateY(-2px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "rgba(237,232,223,0.92)"; e.currentTarget.style.transform = "translateX(-50%)"; }}>
+            onMouseEnter={e => { e.currentTarget.style.background = "#F7F3EC"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(237,232,223,0.92)"; e.currentTarget.style.transform = "none"; }}>
             {finished ? "Revisit Day 1" : todayDone ? "Review Session" : "Begin Session"}
           </button>
         </div>
@@ -204,10 +203,20 @@ finishDate + ".";
               {/* Header */}
               <div style={{ padding: "22px 26px", display: "flex", alignItems: "center", gap: 14 }}>
                 <div style={{ width: 42, height: 42, borderRadius: "50%", background: "#111009", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                    <rect x="3" y="4" width="14" height="13" rx="1.5" stroke="rgba(255,255,255,0.65)" strokeWidth="1.2"/>
-                    <path d="M3 8h14" stroke="rgba(255,255,255,0.65)" strokeWidth="1.2"/>
-                    <path d="M7 2v3M13 2v3" stroke="rgba(255,255,255,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+                    {/* Calendar outline */}
+                    <rect x="2" y="3.5" width="18" height="15" rx="2" stroke="white" strokeWidth="1.2"/>
+                    {/* Header bar */}
+                    <path d="M2 8h18" stroke="white" strokeWidth="1.2"/>
+                    {/* Hanging tabs */}
+                    <path d="M7 1.5v4M15 1.5v4" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
+                    {/* 3×3 dot grid */}
+                    <circle cx="7"  cy="12" r="1" fill="white"/>
+                    <circle cx="11" cy="12" r="1" fill="white"/>
+                    <circle cx="15" cy="12" r="1" fill="white"/>
+                    <circle cx="7"  cy="15.5" r="1" fill="white"/>
+                    <circle cx="11" cy="15.5" r="1" fill="white"/>
+                    <circle cx="15" cy="15.5" r="1" fill="white"/>
                   </svg>
                 </div>
                 <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", color: "#c9a96e", fontFamily: T.sans }}>Your Journey</span>
