@@ -125,8 +125,8 @@ export function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSes
                 style={{
                   padding: "7px 16px", borderRadius: 4, border: "none",
                   background: a ? "rgba(255,255,255,0.08)" : "transparent",
-                  fontSize: 13, fontWeight: a ? 500 : 400,
-                  color: a ? "#c9a96e" : "rgba(255,255,255,0.45)",
+                  fontSize: 13, fontWeight: a ? 600 : 500,
+                  color: a ? "#c9a96e" : "rgba(255,255,255,0.78)",
                   letterSpacing: "0px", fontFamily: T.sans,
                   cursor: "pointer", transition: "all 0.2s ease",
                 }}>{label}</button>
