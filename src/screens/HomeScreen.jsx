@@ -151,26 +151,28 @@ finishDate + ".";
             ════════════════════════════════════════════════════════════════ */}
         {/* Hero — full-width, natural height so chess pieces show complete */}
         <div style={{ marginTop: NAV_H, background: "#0a0805", position: "relative", overflow: "hidden" }}>
+          <style>{`@keyframes heroFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }`}</style>
           <img src="/home-hero-8.png" alt="The Six Pillars of Communication Mastery" style={{ width: "100%", height: "auto", display: "block" }}/>
-          {/* Begin Session button — overlaid under the King piece (Verbal Mastery) */}
+          {/* Begin Session button — overlaid on hero */}
           <button
             onClick={() => onStart(finished ? 1 : cur)}
             style={{
               position: "absolute", bottom: "7%", right: "4%",
-              background: "rgba(185,168,140,0.88)",
+              background: "rgba(185,168,140,0.60)",
               color: "#1a1510",
-              border: "1px solid rgba(200,185,160,0.4)",
+              border: "1px solid rgba(200,185,160,0.35)",
               borderRadius: 6,
               padding: "17px 37px",
               fontSize: 19, fontWeight: 500, fontFamily: T.sans,
               letterSpacing: "0.02em",
               cursor: "pointer",
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
-              transition: "all 0.2s ease",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+              animation: "heroFloat 3s ease-in-out infinite",
+              transition: "background 0.2s ease, opacity 0.2s ease",
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = "rgba(205,190,165,0.95)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "rgba(185,168,140,0.88)"; e.currentTarget.style.transform = "none"; }}>
+            onMouseEnter={e => { e.currentTarget.style.background = "rgba(205,190,165,0.88)"; e.currentTarget.style.animationPlayState = "paused"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(185,168,140,0.60)"; e.currentTarget.style.animationPlayState = "running"; }}>
             {finished ? "Revisit Day 1 →" : todayDone ? "Review Session →" : "Begin Session →"}
           </button>
         </div>
