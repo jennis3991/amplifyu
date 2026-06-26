@@ -435,9 +435,6 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",top:20,right:20,zIndex:2,width:64,height:64,borderRadius:"50%",overflow:"hidden",border:"1.5px solid rgba(200,168,76,0.3)"}}>
-              <img src="/badge-queen.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
-            </div>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Simulation · Day 1</div>
               <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:12}}>Awareness is where every great communicator begins.</p>
@@ -519,10 +516,6 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            {/* Badge — positioned top-right */}
-            <div style={{position:"absolute",top:20,right:20,zIndex:2,width:72,height:72,borderRadius:"50%",overflow:"hidden",border:"1.5px solid rgba(200,168,76,0.3)"}}>
-              <img src="/badge-queen.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
-            </div>
             {/* Text at bottom */}
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Feynman Challenge™</div>

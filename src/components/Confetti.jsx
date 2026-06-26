@@ -295,30 +295,6 @@ strokeWidth="1.5"
             ) : "Each session is a rep. Every rep builds the habit. Keep going."}
           </p>
 
-          {/* Day badge */}
-          {(() => {
-            const badge = DAY_BADGES[day] || DAY_BADGES[1];
-            return (
-              <div style={{
-                display:"flex",alignItems:"center",gap:14,
-                padding:"16px 18px",
-                background: isComplete ? "rgba(201,168,76,0.12)" : "rgba(138,158,132,0.08)",
-                border:`0.5px solid ${isComplete ? "rgba(201,168,76,0.3)" : "rgba(138,158,132,0.25)"}`,
-                borderRadius:8,
-                marginBottom:16,
-                animation:"textFade 0.5s ease 0.45s both",
-              }}>
-                <div style={{width:56,height:56,borderRadius:"50%",overflow:"hidden",border:`1.5px solid rgba(201,168,76,0.4)`,flexShrink:0}}>
-                  <img src={badge.img} alt={badge.label} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
-                </div>
-                <div>
-                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:badge.color,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>Badge Earned</div>
-                  <div style={{fontFamily:T.serif,fontSize:isComplete?19:17,fontWeight:600,color:isComplete?"white":badge.color,lineHeight:1.2,marginBottom:2}}>{badge.label}</div>
-                  <div style={{fontFamily:T.sans,fontSize:11,color:isComplete?"rgba(255,255,255,0.55)":T.text3,lineHeight:1.4}}>{badge.sub}</div>
-                </div>
-              </div>
-            );
-          })()}
 
           {/* Progress ring label */}
           {!isComplete && (

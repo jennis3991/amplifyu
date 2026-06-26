@@ -361,16 +361,8 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
             ))}
           </div>
         </div>
-        {/* BADGE + CTA */}
-        <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"22px 28px":"18px 20px",border:"0.5px solid rgba(138,158,132,0.15)",display:isDesktop?"flex":"block",alignItems:"center",gap:20}}>
-          <div style={{width:52,height:52,borderRadius:"50%",overflow:"hidden",border:"1.5px solid rgba(200,168,76,0.35)",flexShrink:0,marginBottom:isDesktop?0:14}}>
-            <img src={badge.img} alt={badge.label} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
-          </div>
-          <div style={{flex:1,marginBottom:isDesktop?0:14}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>Badge Earned</div>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:"rgba(245,239,230,0.9)",marginBottom:2}}>{badge.label}</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"rgba(245,239,230,0.5)",margin:0}}>{badge.sub}</p>
-          </div>
+        {/* CTA */}
+        <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"22px 28px":"18px 20px",border:"0.5px solid rgba(138,158,132,0.15)",display:"flex",alignItems:"center",justifyContent:"flex-end",gap:8}}>
           <div style={{display:"flex",gap:8,flexDirection:isDesktop?"column":"row"}}>
             <button onClick={reset} style={{padding:"11px 20px",borderRadius:4,border:"0.5px solid rgba(245,239,230,0.15)",background:"transparent",color:"rgba(245,239,230,0.6)",fontFamily:T.sans,fontSize:isDesktop?13:12,cursor:"pointer",whiteSpace:"nowrap"}}>Try Again</button>
             {onSimulation

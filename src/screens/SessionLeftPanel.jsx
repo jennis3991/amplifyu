@@ -316,14 +316,7 @@ export function SessionLeftPanel({
           <p style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.4vw,44px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.1, marginBottom:20, maxWidth:400 }}>If you can explain it simply, you understand it.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
-        {/* Badge */}
-        <div style={{ position:"relative", zIndex:2, display:"flex", justifyContent:"center", alignItems:"center", flex:1, marginTop:16 }}>
-          <div style={{ position:"relative", width:200, height:200, display:"flex", alignItems:"center", justifyContent:"center" }}>
-            <div style={{ position:"absolute", inset:0, borderRadius:"50%", border:"1px solid rgba(200,168,76,0.2)", boxShadow:"0 0 40px rgba(200,168,76,0.08), 0 0 80px rgba(200,168,76,0.04)" }}/>
-            <div style={{ position:"absolute", inset:12, borderRadius:"50%", border:"0.5px solid rgba(200,168,76,0.12)" }}/>
-            <img src="/badge-queen.jpg" alt="Clarity Master" style={{ width:140, height:140, borderRadius:"50%", objectFit:"cover", border:"2px solid rgba(200,168,76,0.35)", position:"relative", zIndex:1 }}/>
-          </div>
-        </div>
+        <div style={{ flex:1 }}/>
         {/* Time */}
         <div style={{ position:"relative", zIndex:2, display:"flex", alignItems:"center", gap:8 }}>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
@@ -345,13 +338,7 @@ export function SessionLeftPanel({
             </div>
           </div>
         </div>
-        <div style={{ position:"relative", zIndex:2, display:"flex", justifyContent:"center", alignItems:"center", flex:1 }}>
-          <div style={{ position:"relative", width:190, height:190, display:"flex", alignItems:"center", justifyContent:"center" }}>
-            <div style={{ position:"absolute", inset:0, borderRadius:"50%", border:"1px solid rgba(200,168,76,0.2)", boxShadow:"0 0 40px rgba(200,168,76,0.08)" }}/>
-            <div style={{ position:"absolute", inset:12, borderRadius:"50%", border:"0.5px solid rgba(200,168,76,0.12)" }}/>
-            <img src="/badge-queen.jpg" alt="" style={{ width:130, height:130, borderRadius:"50%", objectFit:"cover", border:"2px solid rgba(200,168,76,0.35)", position:"relative", zIndex:1 }}/>
-          </div>
-        </div>
+        <div style={{ flex:1 }}/>
         <div style={{ position:"relative", zIndex:2 }}>
           <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
