@@ -559,8 +559,69 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
 }
 
 
+// ─── VOICE WARM-UP — D1 Practice ─────────────────────────────────────────────
+export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComplete }) {
+  const TOPICS = [
+    { label: "Describe your current role to someone who's never heard of it",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="8" y1="12" x2="16" y2="12"/></svg> },
+    { label: "What's one project you're proud of?",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> },
+    { label: "Explain what your team does",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg> },
+    { label: "What's one thing you wish more people understood about your work?",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> },
+    { label: "Describe a recent win — however small",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 4h10v7a5 5 0 0 1-10 0V4z"/><path d="M7 9H4a1 1 0 0 0-1 1v1a3 3 0 0 0 2.7 2.96"/><path d="M17 9h3a1 1 0 0 1 1 1v1a3 3 0 0 1-2.7 2.96"/></svg> },
+    { label: "What are you working on this week?",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> },
+  ];
+
+  const [sel, setSel] = useState(null);
+  useEffect(() => {
+    if (sel !== null) {
+      onNavLabel("Next Round →");
+      onNavFn.current = () => onComplete(TOPICS[sel].label);
+    } else {
+      onNavLabel(null);
+      onNavFn.current = null;
+    }
+  }, [sel]);
+
+  return (
+    <div style={{ padding: isDesktop ? "44px 52px" : "24px 20px", overflowY: "auto" }}>
+      <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Practice · Day 1</div>
+      <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 12 }}>Voice Warm-Up</h2>
+      <div style={{ height: 3, background: "#E8E2D8", borderRadius: 2, marginBottom: 24, overflow: "hidden" }}>
+        <div style={{ height: "100%", width: sel !== null ? "100%" : "0%", background: "#8A9E84", borderRadius: 2, transition: "width 0.4s ease" }}/>
+      </div>
+      <div style={{ background: "#F0EBE2", border: "0.5px solid #DDD5C4", borderRadius: 4, padding: isDesktop ? "18px 20px" : "14px 16px", marginBottom: 20 }}>
+        <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 8 }}>Your Warm-Up</div>
+        <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, margin: 0 }}>Choose one topic below and speak for around 20 seconds. This isn't scored — it's just to get you comfortable speaking.</p>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isDesktop ? 12 : 10 }}>
+        {TOPICS.map((topic, i) => {
+          const active = sel === i;
+          return (
+            <button key={i} onClick={() => setSel(i)} style={{
+              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+              gap: 10, padding: isDesktop ? "22px 16px" : "16px 12px",
+              borderRadius: 6, cursor: "pointer", textAlign: "center",
+              border: active ? "1.5px solid #8A9E84" : "0.5px solid #DDD5C4",
+              background: active ? "rgba(138,158,132,0.10)" : "#F7F3EC",
+              transition: "all 0.2s ease", boxShadow: active ? "0 0 0 3px rgba(138,158,132,0.12)" : "none",
+            }}>
+              <div style={{ color: active ? "#8A9E84" : "#A8998A", transition: "color 0.2s" }}>{topic.icon}</div>
+              <span style={{ fontFamily: T.serif, fontSize: isDesktop ? 13 : 12, color: active ? "#2C2416" : "#6B5E44", lineHeight: 1.45, fontWeight: active ? 600 : 400 }}>{topic.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ─── RECORD & REVIEW™ — D1 Simulation ────────────────────────────────────────
-export function D1SimWidget({T, T2, isDesktop}) {
+export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   const PROMPTS = {
     Work:[
       "Explain a challenge you solved recently.",
@@ -685,7 +746,8 @@ export function D1SimWidget({T, T2, isDesktop}) {
       return;
     }
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:900,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nAlso identify 2–4 key moments in the transcript for waveform annotation. For each marker, estimate its proportional position (0.0 = start of transcript, 1.0 = end) based on word count. Only include marker types that genuinely apply:\n- "filler": where filler words (um, uh, like, so, basically, you know) cluster\n- "ramble": where the answer starts repeating or losing focus\n- "strong": where the single clearest/most impactful statement occurs (always include this)\n- "unclear": where meaning becomes hard to follow (only if present)\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Brevity":<50-100>,"Focus":<50-100>,"Simplicity":<50-100>},"worked":["<strength 1>","<strength 2>"],"improve":["<single highest-leverage opportunity>"],"insight":"<2 personalised coaching sentences>","markers":[{"pos":<0.0-1.0>,"label":"<Filler cluster|Ramble moment|Strongest point|Unclear section>","type":"<filler|ramble|strong|unclear>"}]}`}]})});
+      const warmCtx = warmUpTopic ? `\n\nContext: Before this, the user warmed up by speaking about: "${warmUpTopic}". If naturally relevant, briefly reference this in your insight to personalise the coaching.` : '';
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:900,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.${warmCtx}\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nAlso identify 2–4 key moments in the transcript for waveform annotation. For each marker, estimate its proportional position (0.0 = start of transcript, 1.0 = end) based on word count. Only include marker types that genuinely apply:\n- "filler": where filler words (um, uh, like, so, basically, you know) cluster\n- "ramble": where the answer starts repeating or losing focus\n- "strong": where the single clearest/most impactful statement occurs (always include this)\n- "unclear": where meaning becomes hard to follow (only if present)\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Brevity":<50-100>,"Focus":<50-100>,"Simplicity":<50-100>},"worked":["<strength 1>","<strength 2>"],"improve":["<single highest-leverage opportunity>"],"insight":"<2 personalised coaching sentences>","markers":[{"pos":<0.0-1.0>,"label":"<Filler cluster|Ramble moment|Strongest point|Unclear section>","type":"<filler|ramble|strong|unclear>"}]}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);

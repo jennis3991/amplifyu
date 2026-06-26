@@ -14,7 +14,7 @@ import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
 import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidget } from '../modules/Day4.jsx';
-import { D1ClarityChallenge, D1SimWidget } from '../modules/Day1.jsx';
+import { D1WarmUpWidget, D1SimWidget } from '../modules/Day1.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget, D5SimWidget } from '../modules/Day5.jsx';
 import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
@@ -34,7 +34,7 @@ import { D7SimWidget } from '../modules/Day7.jsx';
 export function SessionView({lesson, isDone, onComplete, onBack, roleId,
 activeRole, dark=false, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
-  const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory 1","Theory 2","Example","Practice","Simulation","Review"]:["Insight","Theory","Example","Practice","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
+  const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory 1","Theory 2","Example","Practice","Simulation","Review"]:lesson.day===1?["Insight","Theory","Example","Voice Warm-Up","Simulation","Review"]:["Insight","Theory","Example","Practice","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
   const rightPanelRef = useRef(null);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -48,6 +48,7 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const [reviewTab, setReviewTab] = useState('learned');
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
+  const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
   function saveBook(title) {
     const next = savedBooks.includes(title) ? savedBooks.filter(t=>t!==title) : [...savedBooks, title];
@@ -105,7 +106,9 @@ setAmbitionSaved(true); } catch {}
   const isD12 = lesson.day === 12;
   const isD13 = lesson.day === 13;
   const isD14 = lesson.day === 14;
-  const STEPS = isNT
+  const STEPS = isD1
+    ? ["Insight","Theory","Example","Voice Warm-Up","Simulation","Review"]
+    : isNT
     ? ["Insight","Theory 1","Theory 2","Example","Practice","Simulation","Review"]
     : SESSION_STEPS;
   const step = STEPS[idx];
@@ -2017,7 +2020,7 @@ setAmbitionSaved(true); } catch {}
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Simulation · Day 1</div>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:28}}>Clarity Check-In</h2>
-          <D1SimWidget T={T} T2={T2} isDesktop={true}/>
+          <D1SimWidget T={T} T2={T2} isDesktop={true} warmUpTopic={d1WarmUpTopic}/>
         </div>
       );
 
@@ -3885,7 +3888,7 @@ setAmbitionSaved(true); } catch {}
             {/* RIGHT PANEL — Supporting content (40%) */}
             <div ref={rightPanelRef} style={{
               flex: 1,
-              background: step === "Practice" ? "rgba(247,243,236,0.92)" : T2.bg,
+              background: (step === "Practice" || step === "Voice Warm-Up") ? "rgba(247,243,236,0.92)" : T2.bg,
               overflowY: "auto", position: "relative", zIndex: 1,
               borderLeft: "1px solid " + T2.divider,
             }}>
@@ -3899,12 +3902,12 @@ setAmbitionSaved(true); } catch {}
                 }}/>
               )}
               <div style={{ position: "relative", zIndex: 1 }}>
-                {isD1 && step === "Practice"
-                  ? <div key="d1-practice" style={{padding:"44px 52px",overflowY:"auto"}}>
-                      <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Practice · Day 1</div>
-                      <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:28}}>The Feynman Challenge™</h2>
-                      <D1ClarityChallenge T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD1NavLabel} onNavFn={d1NavFnRef}/>
-                    </div>
+                {isD1 && step === "Voice Warm-Up"
+                  ? <D1WarmUpWidget key="d1-warmup" T={T} T2={T2} isDesktop={true}
+                      onNavLabel={setD1NavLabel}
+                      onNavFn={d1NavFnRef}
+                      onComplete={(topic) => { setD1WarmUpTopic(topic); setIdx(i => i + 1); }}
+                    />
                   : isD1 ? <D1RightContent/> : isD2 ? <D2RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD6 ? <D6RightContent/> : isD7 ? <D7RightContent/> : isD11 ? <D11RightContent/> : isD12 ? <D12RightContent/> : isD13 ? <D13RightContent/> : isD14 ? <D14RightContent/> : isD10 ? <D10RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
               </div>
             </div>
@@ -3939,26 +3942,26 @@ setAmbitionSaved(true); } catch {}
             {idx < STEPS.length - 1 && (
               <button
                 onClick={() => {
-                  if (isD1 && step === "Practice" && d1NavFnRef.current) {
+                  if (isD1 && step === "Voice Warm-Up" && d1NavFnRef.current) {
                     d1NavFnRef.current();
                   } else {
                     setIdx(i => i + 1);
                   }
                 }}
-                disabled={isD1 && step === "Practice" && d1NavLabel === null}
+                disabled={isD1 && step === "Voice Warm-Up" && d1NavLabel === null}
                 className="au-cta"
                 style={{
                   display: "flex", alignItems: "center", gap: 10,
                   padding: "9px 24px", borderRadius: 5,
-                  background: isD1 && step === "Practice" && d1NavLabel === null ? "rgba(138,158,132,0.3)" : T.gold,
+                  background: isD1 && step === "Voice Warm-Up" && d1NavLabel === null ? "rgba(138,158,132,0.3)" : T.gold,
                   border: "none",
                   color: "white", fontSize: 13, fontWeight: 600,
-                  cursor: isD1 && step === "Practice" && d1NavLabel === null ? "not-allowed" : "pointer",
+                  cursor: isD1 && step === "Voice Warm-Up" && d1NavLabel === null ? "not-allowed" : "pointer",
                   fontFamily: T.sans, letterSpacing: "0.1px",
                   boxShadow: "0 2px 16px rgba(138,158,132,0.3)",
-                  opacity: isD1 && step === "Practice" && d1NavLabel === null ? 0.5 : 1,
+                  opacity: isD1 && step === "Voice Warm-Up" && d1NavLabel === null ? 0.5 : 1,
                 }}>
-                {isD1 && step === "Practice" && d1NavLabel
+                {isD1 && step === "Voice Warm-Up" && d1NavLabel
                   ? d1NavLabel
                   : idx === 0 ? "Begin" : idx === STEPS.length - 2 ? "Final Chapter" : "Continue"}
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
