@@ -640,7 +640,8 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       sr.onresult = (e) => {
         let t = '';
         for (let i = 0; i < e.results.length; i++) {
-          if (e.results[i].isFinal) t += e.results[i][0].transcript + ' ';
+          // capture both final and interim so short recordings aren't lost
+          t += e.results[i][0].transcript + ' ';
         }
         liveRef.current = t;
       };
@@ -665,13 +666,15 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
       try { mediaRecRef.current.stop(); } catch(e) {}
     }
+    // brief wait for SpeechRecognition to fire its final onresult
+    await new Promise(r => setTimeout(r, 350));
     const topicText = TOPICS[sel].label;
     const spoken = liveRef.current.trim();
     setAnalysing(true);
     try {
       const content = spoken.length > 10
-        ? `The user just warmed up their voice for ~20 seconds on this topic: "${topicText}".\n\nHere's roughly what they said: "${spoken}"\n\nWrite a 1–2 sentence coaching observation that SPECIFICALLY references something they actually said — a word, phrase, idea, or example from their transcript. Make the user feel like you genuinely listened. Lead with something positive or strong. Do NOT give generic praise like "good start". Make it feel unmistakably personal to what they just said.\n\nReturn only the observation. No scores. No lists.`
-        : `The user just warmed up their voice for ~20 seconds on this topic: "${topicText}".\n\nGive a warm 1–2 sentence observation that references this specific topic. What does it take to talk about this well? What might they have had to draw on? Make it feel relevant to exactly what they spoke about, not generic coaching.\n\nReturn only the observation. No scores.`;
+        ? `You are a warm communication coach listening back to a 20-second voice warm-up.\n\nTopic the user spoke about: "${topicText}"\nWhat they said: "${spoken}"\n\nWrite exactly 2 sentences of feedback. Rules:\n- Sentence 1: pick out ONE specific thing from their actual words — a phrase, an idea, or the way they put something — and name it directly. Start with what worked.\n- Sentence 2: one forward-looking note tied to today's communication practice — keep it brief and encouraging.\nDo NOT give topic advice. Do NOT say "good start" or "great job". Respond only to what they specifically said. No scores, no lists.`
+        : `You are a warm communication coach. The user just spoke for ~20 seconds on this topic: "${topicText}".\n\nWrite exactly 2 sentences. Rules:\n- Sentence 1: make a specific observation about what speaking on THIS particular topic requires — the courage, the self-knowledge, the translation work involved. Frame it as something you noticed about how they approached it, not generic advice.\n- Sentence 2: one short encouraging note that connects to today's session.\nMake the user feel genuinely seen. No scores, no lists.`;
       const res = await fetch('/api/claude', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -679,9 +682,9 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       });
       const d = await res.json();
       const obs = (d.content || []).map(b => b.text || '').join('').trim();
-      setAiObs(obs || "Good start — your voice is coming through clearly.");
+      setAiObs(obs || "Your voice was clear and your energy was right. That's the foundation — everything else builds from here.");
     } catch {
-      setAiObs("Good start — your voice is coming through clearly.");
+      setAiObs("Your voice was clear and your energy was right. That's the foundation — everything else builds from here.");
     }
     setAnalysing(false);
     setRecDone(true);
