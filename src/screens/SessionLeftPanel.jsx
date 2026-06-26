@@ -309,13 +309,12 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Practice") return (
-      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"space-between", padding:"80px 48px 40px", position:"relative", overflow:"hidden" }}>
+      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"80px 48px 64px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Voice Warm-Up</div>
           <p style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.4vw,44px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.1, marginBottom:20, maxWidth:400 }}>Let's warm up your voice.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:24 }}/>
-          <p style={{ fontFamily:T.serif, fontStyle:"italic", fontSize:15, color:"rgba(245,239,230,0.55)", lineHeight:1.7, maxWidth:360, marginBottom:24 }}>Pick a topic below and speak for around 20 seconds. Don't worry about being perfect — it's simply to get you talking.</p>
           <div style={{ display:"flex", alignItems:"flex-start", gap:14, padding:"16px 20px", background:"rgba(138,158,132,0.08)", borderRadius:8, border:"0.5px solid rgba(138,158,132,0.2)", maxWidth:380 }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{flexShrink:0,marginTop:2}}><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z" stroke={T.gold} strokeWidth="1.3"/><circle cx="12" cy="9" r="2.5" stroke={T.gold} strokeWidth="1.3"/></svg>
             <div>
@@ -323,11 +322,6 @@ export function SessionLeftPanel({
               <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.65)", lineHeight:1.6, margin:0 }}>There's no right or wrong answer. Just speak naturally — we'll handle the rest.</p>
             </div>
           </div>
-        </div>
-        <div style={{ flex:1 }}/>
-        <div style={{ position:"relative", zIndex:2, display:"flex", alignItems:"center", gap:8 }}>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-          <span style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.45)" }}>Estimated time: <span style={{ color:"rgba(245,239,230,0.7)", fontWeight:600 }}>1 minute</span></span>
         </div>
       </div>
     );
