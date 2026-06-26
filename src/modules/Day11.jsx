@@ -295,14 +295,17 @@ export function D11SimWidget({T, T2, isDesktop}) {
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0}}>Choose what you'd like to do. Your AmplifyU coach scores your positioning, identifies the gaps, and writes stronger copy for you.</p>
       </div>
       {[
-        {icon:"🔍", label:"Audit my LinkedIn profile", sub:"Already have a profile? Find the gap between how you're seen and how you want to be known.", action:()=>{setMode('audit');setPhase('paste');}},
-        {icon:"✍️", label:"Build a LinkedIn profile from scratch", sub:"No profile yet? Build one around your brand — headline, About section, and messaging.", action:()=>{setMode('linkedin');setPhase('build-form');}},
-        {icon:"📄", label:"Write my CV profile statement", sub:"Create a compelling professional summary that positions you powerfully from the first line.", action:()=>{setMode('cv');setPhase('build-form');}},
+        {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.3"/><path d="M9 6v3l2 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><path d="M13.5 13.5l3 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>,
+         label:"Audit my LinkedIn profile", sub:"Already have a profile? Find the gap between how you're seen and how you want to be known.", action:()=>{setMode('audit');setPhase('paste');}},
+        {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 14l9-9 2 2-9 9H5v-2z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M12 5l2 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+         label:"Build a LinkedIn profile from scratch", sub:"No profile yet? Build one around your brand — headline, About section, and messaging.", action:()=>{setMode('linkedin');setPhase('build-form');}},
+        {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="2" width="12" height="16" rx="1.5" stroke="currentColor" strokeWidth="1.3"/><path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
+         label:"Write my CV profile statement", sub:"Create a compelling professional summary that positions you powerfully from the first line.", action:()=>{setMode('cv');setPhase('build-form');}},
       ].map((opt,i)=>(
         <button key={i} onClick={opt.action} style={{...cs.card,cursor:"pointer",textAlign:"left",border:`0.5px solid ${T2.border}`,display:"flex",gap:14,alignItems:"flex-start",transition:"border-color 0.2s, box-shadow 0.2s"}}
           onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.boxShadow="0 2px 12px rgba(138,158,132,0.12)";}}
           onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.boxShadow="none";}}>
-          <span style={{fontSize:isDesktop?22:20,flexShrink:0,marginTop:2}}>{opt.icon}</span>
+          <span style={{color:T2.text3,flexShrink:0,marginTop:3}}>{opt.icon}</span>
           <div>
             <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,marginBottom:4,lineHeight:1.2}}>{opt.label}</div>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,lineHeight:1.5}}>{opt.sub}</p>
