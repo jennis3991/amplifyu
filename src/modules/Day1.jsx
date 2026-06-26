@@ -603,6 +603,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
 
   const [audioURL, setAudioURL] = useState(null);
   const [playing, setPlaying] = useState(false);
+  const [audioDuration, setAudioDuration] = useState(120);
   const audioRef = useRef(null);
   const recRef = useRef(null);
   const mediaRecRef = useRef(null);
@@ -674,7 +675,8 @@ export function D1SimWidget({T, T2, isDesktop}) {
       scores:mockScores(),
       worked:["Natural and conversational tone","Confident, easy to follow delivery"],
       improve:["Lead with your strongest point — your core message took too long to land."],
-      insight:"Your delivery felt natural and genuine. The opportunity is structure: if you lead with your clearest point in the first sentence, everything that follows lands harder."
+      insight:"Your delivery felt natural and genuine. The opportunity is structure: if you lead with your clearest point in the first sentence, everything that follows lands harder.",
+      markers:[{pos:0.20,label:"Filler cluster",type:"filler"},{pos:0.44,label:"Ramble moment",type:"ramble"},{pos:0.66,label:"Strongest point",type:"strong"}]
     };
     if(!text||text.trim().length<15){
       if(!isRetry){setRound1(mock);setFeedback(mock);}
@@ -683,7 +685,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
       return;
     }
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Brevity":<50-100>,"Focus":<50-100>,"Simplicity":<50-100>},"worked":["<strength 1>","<strength 2>"],"improve":["<single highest-leverage opportunity>"],"insight":"<2 personalised coaching sentences>"}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:900,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nAlso identify 2–4 key moments in the transcript for waveform annotation. For each marker, estimate its proportional position (0.0 = start of transcript, 1.0 = end) based on word count. Only include marker types that genuinely apply:\n- "filler": where filler words (um, uh, like, so, basically, you know) cluster\n- "ramble": where the answer starts repeating or losing focus\n- "strong": where the single clearest/most impactful statement occurs (always include this)\n- "unclear": where meaning becomes hard to follow (only if present)\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Brevity":<50-100>,"Focus":<50-100>,"Simplicity":<50-100>},"worked":["<strength 1>","<strength 2>"],"improve":["<single highest-leverage opportunity>"],"insight":"<2 personalised coaching sentences>","markers":[{"pos":<0.0-1.0>,"label":"<Filler cluster|Ramble moment|Strongest point|Unclear section>","type":"<filler|ramble|strong|unclear>"}]}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -930,11 +932,18 @@ export function D1SimWidget({T, T2, isDesktop}) {
     const gridPoly=(pct)=>RANGLES.map(a=>{const[x,y]=rPt(100,a);return`${(cx+(x-cx)*pct).toFixed(1)},${(cy+(y-cy)*pct).toFixed(1)}`;}).join(' ');
     const dataPoly=RDIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores[d]||50,RANGLES[i]);return`${x.toFixed(1)},${y.toFixed(1)}`;}).join(' ');
     const WBARS=Array.from({length:60},(_,i)=>Math.max(0.08,Math.min(1,Math.sin(i/59*Math.PI)*0.65+0.25+Math.sin(i*4.7)*0.13+Math.cos(i*2.3)*0.11)));
-    const MARKERS=[{pos:0.20,label:"Filler cluster",color:"#C8A46A"},{pos:0.43,label:"Ramble moment",color:"#B05C4A"},{pos:0.65,label:"Strongest point",color:"#527060"},{pos:0.87,label:"Unclear section",color:"#B05C4A"}];
+    const TYPE_COLOR={filler:"#C8A46A",ramble:"#B05C4A",strong:"#527060",unclear:"#B05C4A"};
+    const rawMarkers=feedback.markers&&feedback.markers.length>0?feedback.markers:[{pos:0.20,label:"Filler cluster",type:"filler"},{pos:0.43,label:"Ramble moment",type:"ramble"},{pos:0.65,label:"Strongest point",type:"strong"}];
+    const MARKERS=rawMarkers.map(m=>({...m,color:TYPE_COLOR[m.type]||"#C8A46A"}));
+    const fmtTime=s=>{const m=Math.floor(s/60);const sec=Math.floor(s%60);return m+":"+(sec<10?"0":"")+sec;};
     const scoreColor=s=>s>=80?T.gold:s>=70?"#7A9E84":T2.text3;
     function togglePlay(){
       if(!audioURL){setPlaying(p=>!p);return;}
-      if(!audioRef.current)audioRef.current=new Audio(audioURL);
+      if(!audioRef.current){
+        audioRef.current=new Audio(audioURL);
+        audioRef.current.onloadedmetadata=()=>{ if(audioRef.current.duration&&isFinite(audioRef.current.duration)) setAudioDuration(audioRef.current.duration); };
+        audioRef.current.onended=()=>setPlaying(false);
+      }
       if(playing){audioRef.current.pause();setPlaying(false);}
       else{audioRef.current.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
     }
@@ -1045,7 +1054,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
               {MARKERS.map((m,i)=>(
                 <div key={i} style={{position:"absolute",left:(m.pos*100)+"%",transform:"translateX(-50%)",textAlign:"center",zIndex:2}}>
                   <div style={{fontFamily:T.sans,fontSize:isDesktop?9:7,color:m.color,fontWeight:600,whiteSpace:"nowrap"}}>{m.label}</div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?8:6,color:T2.text4,whiteSpace:"nowrap"}}>{["0:24","0:52","1:24","1:45"][i]}</div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?8:6,color:T2.text4,whiteSpace:"nowrap"}}>{fmtTime(m.pos*audioDuration)}</div>
                 </div>
               ))}
             </div>
@@ -1055,7 +1064,7 @@ export function D1SimWidget({T, T2, isDesktop}) {
             </div>
             <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
               <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>0:00</span>
-              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>2:00</span>
+              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{fmtTime(audioDuration)}</span>
             </div>
           </div>
         </div>
