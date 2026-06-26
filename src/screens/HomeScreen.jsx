@@ -157,9 +157,9 @@ finishDate + ".";
             onClick={() => onStart(finished ? 1 : cur)}
             style={{
               position: "absolute", bottom: "7%", right: "4%",
-              background: "rgba(237,232,223,0.92)",
-              color: "#1a1510",
-              border: "1px solid rgba(237,232,223,0.5)",
+              background: "rgba(148,112,58,0.88)",
+              color: "rgba(255,255,255,0.92)",
+              border: "1px solid rgba(180,140,75,0.4)",
               borderRadius: 6,
               padding: "17px 37px",
               fontSize: 19, fontWeight: 500, fontFamily: T.sans,
@@ -169,8 +169,8 @@ finishDate + ".";
               WebkitBackdropFilter: "blur(8px)",
               transition: "all 0.2s ease",
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = "#F7F3EC"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "rgba(237,232,223,0.92)"; e.currentTarget.style.transform = "none"; }}>
+            onMouseEnter={e => { e.currentTarget.style.background = "rgba(168,130,70,0.95)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(148,112,58,0.88)"; e.currentTarget.style.transform = "none"; }}>
             {finished ? "Revisit Day 1 →" : todayDone ? "Review Session →" : "Begin Session →"}
           </button>
         </div>
