@@ -576,46 +576,147 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> },
   ];
 
+  const [phase, setPhase] = useState('select'); // 'select' | 'record'
   const [sel, setSel] = useState(null);
+  const [isRec, setIsRec] = useState(false);
+  const [recDone, setRecDone] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
+  const timerRef = useRef(null);
+  const mediaRecRef = useRef(null);
+
+  // Wire bottom nav: disabled on select phase, active on record phase
   useEffect(() => {
-    if (sel !== null) {
+    if (phase === 'record') {
       onNavLabel("Next Round →");
-      onNavFn.current = () => onComplete(TOPICS[sel].label);
+      onNavFn.current = () => {
+        if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
+          try { mediaRecRef.current.stop(); } catch(e) {}
+        }
+        clearInterval(timerRef.current);
+        onComplete(TOPICS[sel].label);
+      };
     } else {
       onNavLabel(null);
       onNavFn.current = null;
     }
-  }, [sel]);
+  }, [phase, sel]);
 
-  return (
+  useEffect(() => {
+    if (isRec) {
+      timerRef.current = setInterval(() => setElapsed(e => e + 1), 1000);
+    } else {
+      clearInterval(timerRef.current);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [isRec]);
+
+  function pickTopic(i) {
+    setSel(i);
+    setPhase('record');
+    setIsRec(false);
+    setRecDone(false);
+    setElapsed(0);
+  }
+
+  function startRec() {
+    setIsRec(true);
+    setElapsed(0);
+    if (navigator.mediaDevices?.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        const mr = new MediaRecorder(stream);
+        mr.ondataavailable = () => {};
+        mr.onstop = () => stream.getTracks().forEach(t => t.stop());
+        mr.start();
+        mediaRecRef.current = mr;
+      }).catch(() => {});
+    }
+  }
+
+  function stopRec() {
+    setIsRec(false);
+    setRecDone(true);
+    if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
+      try { mediaRecRef.current.stop(); } catch(e) {}
+    }
+  }
+
+  const fmtTime = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+  // ── Phase: select topic ───────────────────────────────────────────────────
+  if (phase === 'select') return (
     <div style={{ padding: isDesktop ? "44px 52px" : "24px 20px", overflowY: "auto" }}>
       <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Practice · Day 1</div>
-      <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 12 }}>Voice Warm-Up</h2>
-      <div style={{ height: 3, background: "#E8E2D8", borderRadius: 2, marginBottom: 24, overflow: "hidden" }}>
-        <div style={{ height: "100%", width: sel !== null ? "100%" : "0%", background: "#8A9E84", borderRadius: 2, transition: "width 0.4s ease" }}/>
-      </div>
-      <div style={{ background: "#F0EBE2", border: "0.5px solid #DDD5C4", borderRadius: 4, padding: isDesktop ? "18px 20px" : "14px 16px", marginBottom: 20 }}>
-        <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 8 }}>Your Warm-Up</div>
+      <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Voice Warm-Up</h2>
+      <div style={{ background: "#F0EBE2", border: "0.5px solid #DDD5C4", borderRadius: 4, padding: isDesktop ? "16px 20px" : "14px 16px", marginBottom: 20 }}>
+        <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 6 }}>Your Warm-Up</div>
         <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, margin: 0 }}>Choose one topic below and speak for around 20 seconds. This isn't scored — it's just to get you comfortable speaking.</p>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isDesktop ? 12 : 10 }}>
-        {TOPICS.map((topic, i) => {
-          const active = sel === i;
-          return (
-            <button key={i} onClick={() => setSel(i)} style={{
-              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-              gap: 10, padding: isDesktop ? "22px 16px" : "16px 12px",
-              borderRadius: 6, cursor: "pointer", textAlign: "center",
-              border: active ? "1.5px solid #8A9E84" : "0.5px solid #DDD5C4",
-              background: active ? "rgba(138,158,132,0.10)" : "#F7F3EC",
-              transition: "all 0.2s ease", boxShadow: active ? "0 0 0 3px rgba(138,158,132,0.12)" : "none",
-            }}>
-              <div style={{ color: active ? "#8A9E84" : "#A8998A", transition: "color 0.2s" }}>{topic.icon}</div>
-              <span style={{ fontFamily: T.serif, fontSize: isDesktop ? 13 : 12, color: active ? "#2C2416" : "#6B5E44", lineHeight: 1.45, fontWeight: active ? 600 : 400 }}>{topic.label}</span>
-            </button>
-          );
-        })}
+        {TOPICS.map((topic, i) => (
+          <button key={i} onClick={() => pickTopic(i)} style={{
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            gap: 10, padding: isDesktop ? "22px 16px" : "16px 12px",
+            borderRadius: 6, cursor: "pointer", textAlign: "center",
+            border: "0.5px solid #DDD5C4", background: "#F7F3EC",
+            transition: "all 0.15s ease",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #8A9E84"; e.currentTarget.style.background = "rgba(138,158,132,0.08)"; }}
+          onMouseLeave={e => { e.currentTarget.style.border = "0.5px solid #DDD5C4"; e.currentTarget.style.background = "#F7F3EC"; }}>
+            <div style={{ color: "#A8998A" }}>{topic.icon}</div>
+            <span style={{ fontFamily: T.serif, fontSize: isDesktop ? 13 : 12, color: "#6B5E44", lineHeight: 1.45 }}>{topic.label}</span>
+          </button>
+        ))}
       </div>
+    </div>
+  );
+
+  // ── Phase: record ─────────────────────────────────────────────────────────
+  return (
+    <div style={{ padding: isDesktop ? "44px 52px" : "24px 20px", overflowY: "auto" }}>
+      <button onClick={() => { setPhase('select'); setIsRec(false); setRecDone(false); clearInterval(timerRef.current); }} style={{ background: "none", border: "none", fontFamily: T.sans, fontSize: 13, color: "#A8998A", cursor: "pointer", padding: "0 0 24px", display: "flex", alignItems: "center", gap: 6 }}>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        Choose a different topic
+      </button>
+      <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Practice · Day 1</div>
+      <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 36 : 26, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Your topic</h2>
+      <div style={{ background: "rgba(138,158,132,0.10)", border: "1.5px solid #8A9E84", borderRadius: 8, padding: isDesktop ? "22px 24px" : "18px 20px", marginBottom: 28, display: "flex", alignItems: "flex-start", gap: 16 }}>
+        <div style={{ color: "#8A9E84", flexShrink: 0, marginTop: 2 }}>{TOPICS[sel].icon}</div>
+        <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, fontWeight: 500, color: "#2C2416", lineHeight: 1.5, margin: 0 }}>{TOPICS[sel].label}</p>
+      </div>
+      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, marginBottom: 28 }}>Speak about this for around 20 seconds. Don't worry about being perfect — there's no recording saved or scored here.</p>
+
+      {recDone ? (
+        <div style={{ textAlign: "center", padding: "24px 0" }}>
+          <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(138,158,132,0.15)", border: "1.5px solid #8A9E84", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#8A9E84" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
+          <p style={{ fontFamily: T.serif, fontSize: 16, color: "#2C2416", margin: "0 0 4px" }}>Warm-up done.</p>
+          <p style={{ fontFamily: T.sans, fontSize: 13, color: "#A8998A", margin: 0 }}>Click "Next Round →" to continue to your session.</p>
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+          <button onClick={isRec ? stopRec : startRec} style={{
+            width: 80, height: 80, borderRadius: "50%", border: "none", cursor: "pointer",
+            background: isRec ? "#B05C4A" : "#8A9E84",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: isRec ? "0 0 0 8px rgba(176,92,74,0.15)" : "0 0 0 6px rgba(138,158,132,0.12)",
+            transition: "all 0.2s ease",
+          }}>
+            {isRec
+              ? <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="6" y="6" width="12" height="12" rx="2" fill="white"/></svg>
+              : <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" fill="white"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="white" strokeWidth="1.8" strokeLinecap="round"/><line x1="12" y1="19" x2="12" y2="23" stroke="white" strokeWidth="1.8" strokeLinecap="round"/></svg>
+            }
+          </button>
+          {isRec && (
+            <div style={{ fontFamily: T.sans, fontSize: 13, color: "#B05C4A", fontWeight: 600 }}>
+              Recording — {fmtTime(elapsed)} &nbsp;·&nbsp; tap to stop
+            </div>
+          )}
+          {!isRec && (
+            <div style={{ fontFamily: T.sans, fontSize: 13, color: "#A8998A" }}>Tap to start recording</div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
