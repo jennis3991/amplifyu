@@ -742,11 +742,11 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
           <p style={{ fontFamily: T.sans, fontSize: 14, color: "#A8998A", margin: 0 }}>Your coach is listening…</p>
         </div>
       ) : recDone && aiObs ? (
-        <div style={{ background: "#0A0804", borderRadius: 8, padding: "24px 24px 22px", border: "0.5px solid rgba(138,158,132,0.15)" }}>
-          <div style={{ fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: "rgba(138,158,132,0.7)", textTransform: "uppercase", letterSpacing: "2px", marginBottom: 14 }}>Your AmplifyU Coach</div>
-          <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 17 : 16, color: "#F5EFE6", lineHeight: 1.7, margin: "0 0 16px", fontStyle: "italic" }}>{aiObs}</p>
-          <div style={{ height: "0.5px", background: "rgba(138,158,132,0.2)", marginBottom: 16 }} />
-          <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "rgba(245,239,230,0.65)", lineHeight: 1.65, margin: "0 0 20px" }}>
+        <div style={{ background: "#F0EBE2", borderRadius: 8, padding: "24px 24px 22px", border: "0.5px solid #DDD5C4" }}>
+          <div style={{ fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 14 }}>Your AmplifyU Coach</div>
+          <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 19 : 17, color: "#2C2416", lineHeight: 1.72, margin: "0 0 16px" }}>{aiObs}</p>
+          <div style={{ height: "0.5px", background: "#DDD5C4", marginBottom: 16 }} />
+          <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, margin: "0 0 20px" }}>
             Nice. Your voice is warmed up. Now let's apply today's lesson to a real communication scenario.
           </p>
           <button onClick={() => onComplete(TOPICS[sel].label)} style={{
