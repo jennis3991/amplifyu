@@ -87,16 +87,6 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       cols:2,
       feedback:"Pause. Take a breath.\n\nThat single action creates mental clarity and calms the nervous system — and in that moment, you give yourself the best possible chance to find a strong response.\n\nThen deliver a declarative statement.\n\nCalm. Clear. Certain. One idea. One sentence. Full stop. No hedge. No filler. Just the point.",
     },
-    {
-      title:"THE EXPERT QUESTION",
-      prompt:"Someone asks you:",
-      quote:'"What makes you good at your role?"',
-      instruction:"Pause. Take a breath. Then answer.",
-      note:"If you need time to think, pause. Silence sounds more confident than fillers.",
-      options:null,
-      action:"I spoke for 30 seconds",
-      feedback:"The more expertise you have, the less you need to rush. Experts pause because they trust their knowledge.",
-    },
   ];
 
   const cs = {
