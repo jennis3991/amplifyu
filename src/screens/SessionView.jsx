@@ -34,7 +34,7 @@ import { D7SimWidget } from '../modules/Day7.jsx';
 export function SessionView({lesson, isDone, onComplete, onBack, roleId,
 activeRole, dark=false, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
-  const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const i=["Insight","Theory","Theory 1","Theory 2","Example","Practice","Simulation","Review"].indexOf(s); return i>=0?i:0;} }catch{} return 0; });
+  const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory 1","Theory 2","Example","Practice","Simulation","Review"]:["Insight","Theory","Example","Practice","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
   const rightPanelRef = useRef(null);
   useEffect(() => {
     window.scrollTo(0, 0);
