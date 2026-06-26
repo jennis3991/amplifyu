@@ -581,25 +581,32 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   const [isRec, setIsRec] = useState(false);
   const [recDone, setRecDone] = useState(false);
   const [elapsed, setElapsed] = useState(0);
+  const [aiObs, setAiObs] = useState(null);
+  const [analysing, setAnalysing] = useState(false);
   const timerRef = useRef(null);
   const mediaRecRef = useRef(null);
+  const srRef = useRef(null);
+  const liveRef = useRef('');
 
-  // Wire bottom nav: disabled on select phase, active on record phase
+  // Wire bottom nav
   useEffect(() => {
     if (phase === 'record') {
-      onNavLabel("Next Round →");
-      onNavFn.current = () => {
-        if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
-          try { mediaRecRef.current.stop(); } catch(e) {}
-        }
-        clearInterval(timerRef.current);
-        onComplete(TOPICS[sel].label);
-      };
+      if (aiObs) {
+        onNavLabel("Start Simulation →");
+        onNavFn.current = () => onComplete(TOPICS[sel].label);
+      } else if (analysing || isRec) {
+        // disable while recording or while AI is processing
+        onNavLabel(null);
+        onNavFn.current = null;
+      } else {
+        onNavLabel("Skip →");
+        onNavFn.current = () => onComplete(TOPICS[sel].label);
+      }
     } else {
       onNavLabel(null);
       onNavFn.current = null;
     }
-  }, [phase, sel]);
+  }, [phase, sel, aiObs, analysing, isRec]);
 
   useEffect(() => {
     if (isRec) {
@@ -616,11 +623,30 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     setIsRec(false);
     setRecDone(false);
     setElapsed(0);
+    setAiObs(null);
+    setAnalysing(false);
   }
 
   function startRec() {
     setIsRec(true);
     setElapsed(0);
+    liveRef.current = '';
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRec) {
+      const sr = new SpeechRec();
+      sr.continuous = true;
+      sr.interimResults = true;
+      sr.lang = 'en-US';
+      sr.onresult = (e) => {
+        let t = '';
+        for (let i = 0; i < e.results.length; i++) {
+          if (e.results[i].isFinal) t += e.results[i][0].transcript + ' ';
+        }
+        liveRef.current = t;
+      };
+      try { sr.start(); } catch(ex) {}
+      srRef.current = sr;
+    }
     if (navigator.mediaDevices?.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
         const mr = new MediaRecorder(stream);
@@ -632,12 +658,33 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     }
   }
 
-  function stopRec() {
+  async function stopRec() {
     setIsRec(false);
-    setRecDone(true);
+    clearInterval(timerRef.current);
+    if (srRef.current) { try { srRef.current.stop(); } catch(e) {} }
     if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
       try { mediaRecRef.current.stop(); } catch(e) {}
     }
+    const topicText = TOPICS[sel].label;
+    const spoken = liveRef.current.trim();
+    setAnalysing(true);
+    try {
+      const content = spoken.length > 10
+        ? `The user just warmed up their voice for ~20 seconds on this topic: "${topicText}".\n\nHere's roughly what they said: "${spoken}"\n\nWrite a 1–2 sentence coaching observation that SPECIFICALLY references something they actually said — a word, phrase, idea, or example from their transcript. Make the user feel like you genuinely listened. Lead with something positive or strong. Do NOT give generic praise like "good start". Make it feel unmistakably personal to what they just said.\n\nReturn only the observation. No scores. No lists.`
+        : `The user just warmed up their voice for ~20 seconds on this topic: "${topicText}".\n\nGive a warm 1–2 sentence observation that references this specific topic. What does it take to talk about this well? What might they have had to draw on? Make it feel relevant to exactly what they spoke about, not generic coaching.\n\nReturn only the observation. No scores.`;
+      const res = await fetch('/api/claude', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 150, messages: [{ role: 'user', content }] })
+      });
+      const d = await res.json();
+      const obs = (d.content || []).map(b => b.text || '').join('').trim();
+      setAiObs(obs || "Good start — your voice is coming through clearly.");
+    } catch {
+      setAiObs("Good start — your voice is coming through clearly.");
+    }
+    setAnalysing(false);
+    setRecDone(true);
   }
 
   const fmtTime = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
@@ -685,13 +732,27 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       </div>
       <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, marginBottom: 28 }}>Speak about this for around 20 seconds. Don't worry about being perfect — there's no recording saved or scored here.</p>
 
-      {recDone ? (
-        <div style={{ textAlign: "center", padding: "24px 0" }}>
-          <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(138,158,132,0.15)", border: "1.5px solid #8A9E84", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#8A9E84" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </div>
-          <p style={{ fontFamily: T.serif, fontSize: 16, color: "#2C2416", margin: "0 0 4px" }}>Warm-up done.</p>
-          <p style={{ fontFamily: T.sans, fontSize: 13, color: "#A8998A", margin: 0 }}>Click "Next Round →" to continue to your session.</p>
+      {analysing ? (
+        <div style={{ textAlign: "center", padding: "32px 0" }}>
+          <style>{`@keyframes d1spin{to{transform:rotate(360deg)}}`}</style>
+          <div style={{ width: 36, height: 36, border: "2px solid #DDD5C4", borderTop: "2px solid #8A9E84", borderRadius: "50%", margin: "0 auto 16px", animation: "d1spin 0.8s linear infinite" }} />
+          <p style={{ fontFamily: T.sans, fontSize: 14, color: "#A8998A", margin: 0 }}>Your coach is listening…</p>
+        </div>
+      ) : recDone && aiObs ? (
+        <div style={{ background: "#0A0804", borderRadius: 8, padding: "24px 24px 22px", border: "0.5px solid rgba(138,158,132,0.15)" }}>
+          <div style={{ fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: "rgba(138,158,132,0.7)", textTransform: "uppercase", letterSpacing: "2px", marginBottom: 14 }}>Your AmplifyU Coach</div>
+          <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 17 : 16, color: "#F5EFE6", lineHeight: 1.7, margin: "0 0 16px", fontStyle: "italic" }}>{aiObs}</p>
+          <div style={{ height: "0.5px", background: "rgba(138,158,132,0.2)", marginBottom: 16 }} />
+          <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "rgba(245,239,230,0.65)", lineHeight: 1.65, margin: "0 0 20px" }}>
+            Nice. Your voice is warmed up. Now let's apply today's lesson to a real communication scenario.
+          </p>
+          <button onClick={() => onComplete(TOPICS[sel].label)} style={{
+            width: "100%", padding: "13px 20px", borderRadius: 4, border: "none",
+            background: "linear-gradient(135deg, #8A9E84 0%, #527060 100%)",
+            color: "white", fontFamily: T.sans, fontSize: 15, fontWeight: 600, cursor: "pointer",
+          }}>
+            Start Simulation →
+          </button>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>

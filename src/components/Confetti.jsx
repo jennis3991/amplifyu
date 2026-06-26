@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { T } from '../theme.js';
 
 export function Confetti() {
@@ -49,18 +49,7 @@ style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none"}}>
 
 // ─── WELCOME CARD — shown once after first onboarding ─────────────────────
 export function WelcomeCard({ onDismiss }) {
-  const [showButton, setShowButton] = useState(false);
   const [leaving, setLeaving] = useState(false);
-  const videoRef = useRef(null);
-
-  useEffect(() => {
-    const vid = videoRef.current;
-    if (vid) {
-      vid.play().catch(() => setShowButton(true));
-    }
-    const t = setTimeout(() => setShowButton(true), 5000);
-    return () => clearTimeout(t);
-  }, []);
 
   function dismiss() {
     setLeaving(true);
@@ -71,76 +60,56 @@ export function WelcomeCard({ onDismiss }) {
   return (
     <div style={{
       position: "fixed", inset: 0, zIndex: 1000,
-      background: "rgba(10,8,5,0.82)",
+      background: "rgba(10,8,5,0.88)",
       backdropFilter: "blur(18px)",
       WebkitBackdropFilter: "blur(18px)",
-      overflowY: "auto",
-      display: "flex", alignItems: "flex-start", justifyContent: "center",
-      padding: "40px 24px 60px",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      padding: "40px 24px",
       animation: leaving ? "fadeOut 0.55s ease forwards" : "fadeIn 0.5s ease both",
     }}>
       <div style={{
-        width: "100%", maxWidth: 560,
+        width: "100%", maxWidth: 480,
         background: "#F7F3EC",
         borderRadius: 12,
-        padding: "36px 40px 32px",
-        boxShadow: "0 32px 96px rgba(44,36,22,0.18), 0 4px 20px rgba(44,36,22,0.08)",
+        padding: "52px 44px 44px",
+        boxShadow: "0 32px 96px rgba(44,36,22,0.22), 0 4px 20px rgba(44,36,22,0.1)",
         textAlign: "center",
         animation: leaving ? "fadeDown 0.45s ease forwards" : "fadeUp 0.5s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s both",
       }}>
-        {/* Video — height-driven so portrait video shows at natural width, no grey bars */}
-        <video
-          ref={videoRef}
-          src="/welcome.mov"
-          onEnded={() => setShowButton(true)}
-          style={{
-            height: "46vh",
-            width: "auto",
-            maxWidth: "100%",
-            borderRadius: 8,
-            display: "block",
-            margin: "0 auto 24px",
-            border: "6px solid #1A1510",
-            boxSizing: "border-box",
-          }}
-          playsInline
-          autoPlay
-        />
-
-        {/* Heading */}
+        <div style={{ fontFamily: "'Inter',-apple-system,sans-serif", fontSize: 10, fontWeight: 600, color: "#8A9E84", textTransform: "uppercase", letterSpacing: "3px", marginBottom: 28 }}>AmplifyU</div>
         <h2 style={{
           fontFamily: "'Cormorant Garamond','Georgia',serif",
-          fontSize: 28, fontWeight: 600, color: "#2C2416",
-          letterSpacing: "-0.3px", marginBottom: 10, lineHeight: 1.2,
+          fontSize: 34, fontWeight: 600, color: "#2C2416",
+          letterSpacing: "-0.5px", marginBottom: 16, lineHeight: 1.2,
         }}>
-          Welcome to AmplifyU
+          Excellent communicators aren't born—they're trained.
         </h2>
-
-        {/* Subtext */}
+        <div style={{ width: 32, height: "0.5px", background: "#8A9E84", margin: "0 auto 20px", opacity: 0.7 }} />
         <p style={{
           fontFamily: "'Inter',-apple-system,sans-serif",
-          fontSize: 16, color: "#6B5E44", lineHeight: 1.65,
-          marginBottom: 32, fontWeight: 300,
+          fontSize: 15, color: "#6B5E44", lineHeight: 1.7,
+          marginBottom: 10, fontWeight: 300,
         }}>
-          Every great communicator started exactly where you are now.
+          This is your starting point.
         </p>
-
-        {/* Button — fades in after video */}
+        <p style={{
+          fontFamily: "'Inter',-apple-system,sans-serif",
+          fontSize: 15, color: "#6B5E44", lineHeight: 1.7,
+          marginBottom: 40, fontWeight: 300,
+        }}>
+          Let's see how much changes over the next 14 days.
+        </p>
         <button
           onClick={dismiss}
           style={{
             padding: "13px 32px", borderRadius: 4, border: "none",
             background: "#8A9E84", color: "#F7F3EC",
             fontFamily: "'Inter',sans-serif", fontSize: 14, fontWeight: 600,
-            cursor: showButton ? "pointer" : "default",
-            letterSpacing: "0.02em",
-            opacity: showButton ? 1 : 0,
-            transform: showButton ? "translateY(0)" : "translateY(8px)",
-            transition: "opacity 0.5s ease, transform 0.5s ease, background 0.2s ease",
-            pointerEvents: showButton ? "auto" : "none",
+            cursor: "pointer", letterSpacing: "0.02em",
+            transition: "background 0.2s ease",
           }}
-          onMouseEnter={e => { if(showButton) e.currentTarget.style.background = "#2C2416"; }}
-          onMouseLeave={e => { if(showButton) e.currentTarget.style.background = "#8A9E84"; }}
+          onMouseEnter={e => { e.currentTarget.style.background = "#2C2416"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = "#8A9E84"; }}
         >
           Begin Your Programme →
         </button>

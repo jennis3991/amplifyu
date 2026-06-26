@@ -5,7 +5,6 @@ import { useIsDesktop } from '../utils.js';
 
 export function ReflectionScreen({ answers, onContinue }) {
   const isDesktop = useIsDesktop();
-  const [status,     setStatus]     = useState("loading");
   const [reflection, setReflection] = useState(null);
   const [section,    setSection]    = useState(0);
   const role = ROLES.find(r => r.id === answers.role);
@@ -56,8 +55,23 @@ export function ReflectionScreen({ answers, onContinue }) {
 
   const pieEmphasis = role ? (role.pieEmphasis || ["Performance","Image","Exposure"]) : ["Performance","Image","Exposure"];
 
-  // ── API call ──────────────────────────────────────────────────────────────
+  // ── Build fallback text from answers (instant, no API) ───────────────────
+  const fallbackReflection = {
+    summary: "Here is what we are seeing — you want to " + contextLabel.toLowerCase().replace(/^telling /,"tell ").replace(/^building /,"build ").replace(/^influencing /,"influence ").replace(/^navigating /,"navigate ").replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + ", but " + challengeLabel.toLowerCase().replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + " is standing in the way. That gap between your capability and how you're showing up is exactly where AmplifyU works. You already have more than most people start with.",
+    motivation: "The fact that you can name what's holding you back means you're thinking more clearly about this than most. " + (answers.role === "senior" ? "At your level, the difference between good and exceptional is almost never about knowledge — it's about how you land what you know." : "The skills you're building — clarity, presence, story — are the ones that open the doors that matter.") + " Your growth in this area will compound in ways you can't yet see.",
+    forward: "Here is where we will take you — 14 sessions built for someone at your stage, with scenarios drawn from your world as " + roleLabel + ". You will build the communication habits, personal brand, and visibility that turn your real capability into the career you are ready for.",
+  };
+
+  // ── API call — show fallback instantly, upgrade silently when AI responds ─
   useEffect(() => {
+    // Reveal content immediately using computed fallback
+    setReflection(fallbackReflection);
+    setTimeout(() => setSection(1), 150);
+    setTimeout(() => setSection(2), 600);
+    setTimeout(() => setSection(3), 1100);
+    setTimeout(() => setSection(4), 1600);
+
+    // Upgrade in the background with personalised AI copy
     async function generate() {
       const prompt = [
         "You are the voice of AmplifyU — a professional communication coaching platform.",
@@ -79,7 +93,7 @@ export function ReflectionScreen({ answers, onContinue }) {
         const res = await fetch("/api/claude", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 800, messages: [{ role: "user", content: prompt }] }),
+          body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 400, messages: [{ role: "user", content: prompt }] }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error("API error");
@@ -89,34 +103,16 @@ export function ReflectionScreen({ answers, onContinue }) {
           const m = raw.match(/\{[\s\S]*\}/);
           if (m) try { parsed = JSON.parse(m[0]); } catch (_) {}
         }
-        if (!parsed || !parsed.summary) throw new Error("Parse failed");
-        setReflection(parsed);
+        if (parsed && parsed.summary) setReflection(parsed);
       } catch (_) {
-        setReflection({
-          summary: "Here is what we are seeing — you want to " + contextLabel.toLowerCase().replace(/^telling /,"tell ").replace(/^building /,"build ").replace(/^influencing /,"influence ").replace(/^navigating /,"navigate ").replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + ", but " + challengeLabel.toLowerCase().replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + " is standing in the way. That gap between your capability and how you're showing up is exactly where AmplifyU works. You already have more than most people start with.",
-          motivation: "The fact that you can name what's holding you back means you're thinking more clearly about this than most. " + (answers.role === "senior" ? "At your level, the difference between good and exceptional is almost never about knowledge — it's about how you land what you know." : "The skills you're building — clarity, presence, story — are the ones that open the doors that matter.") + " Your growth in this area will compound in ways you can't yet see.",
-          forward: "Here is where we will take you — 14 sessions built for someone at your stage, with scenarios drawn from your world as " + roleLabel + ". You will build the communication habits, personal brand, and visibility that turn your real capability into the career you are ready for.",
-        });
+        // fallback already shown — nothing to do
       }
-      setStatus("done");
-      setTimeout(() => setSection(1), 150);
-      setTimeout(() => setSection(2), 600);
-      setTimeout(() => setSection(3), 1100);
-      setTimeout(() => setSection(4), 1600);
     }
     generate();
   }, []);
 
   // ── DESKTOP ───────────────────────────────────────────────────────────────
   if (isDesktop) {
-    const Shimmer = ({ w = "100%", h = 16, mb = 0 }) => (
-      <div style={{
-        width: w, height: h, borderRadius: 4, marginBottom: mb,
-        background: "linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 100%)",
-        backgroundSize: "400px 100%",
-        animation: "shimmer 1.8s ease infinite",
-      }}/>
-    );
 
     // Right panel — always rendered, uses computed data (no API wait)
     const RightPanel = () => (
@@ -188,43 +184,7 @@ export function ReflectionScreen({ answers, onContinue }) {
       </div>
     );
 
-    // Left panel — loading state
-    if (status === "loading") {
-      return (
-        <div style={{ height: "100vh", display: "flex", fontFamily: T.sans, background: "#1A1713" }} className="au-grain-wrap">
-          {/* Left: loading */}
-          <div style={{ flex: 1, padding: "72px 72px 64px", display: "flex", flexDirection: "column", overflowY: "auto" }}>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "5px", marginBottom: 52, fontFamily: T.sans }}>AmplifyU</div>
-            <div style={{ fontFamily: T.serif, fontSize: 38, fontWeight: 500, color: "rgba(255,255,255,0.88)", letterSpacing: "-1px", lineHeight: 1.1, marginBottom: 12 }}>
-              Reading your<br/>responses…
-            </div>
-            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.3)", marginBottom: 52, fontFamily: T.sans, fontWeight: 300 }}>
-              Building your personalised coaching profile.
-            </p>
-            {/* Shimmer lines */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 480 }}>
-              {[[92,20],[78,16],[85,16],[60,16]].map(([w,h],i) => (
-                <div key={i} style={{
-                  height: h, borderRadius: 4, width: w + "%",
-                  background: "linear-gradient(90deg, rgba(138,158,132,0.06) 0%, rgba(138,158,132,0.12) 50%, rgba(138,158,132,0.06) 100%)",
-                  backgroundSize: "400px 100%",
-                  animation: `shimmer 1.8s ease ${i * 0.15}s infinite`,
-                }}/>
-              ))}
-            </div>
-            {/* Ambient dots */}
-            <div style={{ display: "flex", gap: 6, marginTop: 32 }}>
-              {[0,1,2].map(i => (
-                <div key={i} style={{ width: 5, height: 5, borderRadius: "50%", background: T.gold, animation: `glowPulse 1.4s ease ${i * 0.22}s infinite` }}/>
-              ))}
-            </div>
-          </div>
-          <RightPanel/>
-        </div>
-      );
-    }
-
-    // Left panel — content loaded
+    // Left panel — content
     return (
       <div style={{ height: "100vh", display: "flex", fontFamily: T.sans, background: "#1A1713", overflow: "hidden" }} className="au-grain-wrap">
         {/* ── LEFT: The Coaching Narrative ── */}
@@ -315,28 +275,13 @@ export function ReflectionScreen({ answers, onContinue }) {
       `}</style>
       <div style={{ padding:"52px 24px 0", flexShrink:0 }}>
         <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:16,fontFamily:T.sans }}>AmplifyU</div>
-        {status === "loading" ? (
-          <div>
-            <h2 style={{ fontFamily:T.serif,fontSize:28,fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,0.93)",lineHeight:1.15,marginBottom:8 }}>Reading your responses…</h2>
-            <p style={{ fontFamily:T.sans,fontSize:14,color:"rgba(255,255,255,0.4)",lineHeight:1.6 }}>Building your personalised profile.</p>
-            <div style={{ marginTop:28,display:"flex",flexDirection:"column",gap:10 }}>
-              {[1,0.7,0.5].map((op,i) => (
-                <div key={i} style={{ height:4,borderRadius:2,background:"linear-gradient(90deg,rgba(138,158,132,0.15) 0%,rgba(138,158,132,0.35) 50%,rgba(138,158,132,0.15) 100%)",backgroundSize:"400px 100%",animation:"shimmer 1.6s ease infinite",animationDelay:i*0.2+"s",opacity:op,width:["80%","60%","40%"][i] }}/>
-              ))}
-            </div>
-            <div style={{ display:"flex",gap:6,marginTop:20 }}>
-              {[0,1,2].map(i => (<div key={i} style={{ width:5,height:5,borderRadius:"50%",background:T.gold,animation:"goldPulse 1.2s ease-in-out "+(i*0.2)+"s infinite" }}/>))}
-            </div>
-          </div>
-        ) : (
-          <div>
-            <div style={{ fontSize:9,color:"rgba(255,255,255,0.3)",textTransform:"uppercase",letterSpacing:"3.5px",marginBottom:14,fontFamily:T.sans }}>Your communication profile</div>
-            <h1 style={{ fontFamily:T.serif,fontSize:34,fontWeight:500,color:"rgba(255,255,255,0.93)",lineHeight:1.08,letterSpacing:"-1px",margin:0 }}>Here's what<br/>we're seeing.</h1>
-            {role && <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginTop:14,fontFamily:T.sans }}>{role.label}</div>}
-          </div>
-        )}
+        <div>
+          <div style={{ fontSize:9,color:"rgba(255,255,255,0.3)",textTransform:"uppercase",letterSpacing:"3.5px",marginBottom:14,fontFamily:T.sans }}>Your communication profile</div>
+          <h1 style={{ fontFamily:T.serif,fontSize:34,fontWeight:500,color:"rgba(255,255,255,0.93)",lineHeight:1.08,letterSpacing:"-1px",margin:0 }}>Here's what<br/>we're seeing.</h1>
+          {role && <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginTop:14,fontFamily:T.sans }}>{role.label}</div>}
+        </div>
       </div>
-      {status === "done" && reflection && (
+      {reflection && (
         <div style={{ padding:"28px 24px 0",display:"flex",flexDirection:"column",gap:20,flex:1 }}>
           {/* Section 1 — Summary */}
           {section >= 1 && (<div style={{ animation:"sectionFade 0.6s ease both" }}>
@@ -366,7 +311,6 @@ export function ReflectionScreen({ answers, onContinue }) {
           </div>)}
         </div>
       )}
-      {status === "loading" && <div style={{ flex:1 }}/>}
     </div>
   );
 }
