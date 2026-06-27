@@ -1120,12 +1120,6 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
             ◼ Stop &amp; Analyse
           </button>
         )}
-        {/* Live transcript preview */}
-        {isRec && transcript && (
-          <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,marginTop:16,lineHeight:1.5,fontStyle:"italic",maxHeight:56,overflow:"hidden",textOverflow:"ellipsis"}}>
-            {transcript.slice(-120)}...
-          </p>
-        )}
       </div>
       {/* Text fallback */}
       {!isRec && !SpeechRec && (

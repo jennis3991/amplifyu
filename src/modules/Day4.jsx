@@ -973,7 +973,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
             {waveVals.map((v,i)=><div key={i} style={{width:3,borderRadius:2,background:"rgba(138,158,132,0.7)",height:Math.max(3,v*26),transition:"height 0.15s ease"}}/>)}
           </div>
         )}
-        {isRec&&transcript&&<p style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",lineHeight:1.4,fontStyle:"italic",marginTop:8,marginBottom:0}}>{transcript.slice(-120)}{transcript.length>120?'…':''}</p>}
       </div>
       {!isRec&&!SpeechRec&&(
         <div style={cs.card}>

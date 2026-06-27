@@ -474,9 +474,6 @@ export function D3SimWidget({T, T2, isDesktop}) {
             ))}
           </div>
         )}
-        {isRec&&transcript&&(
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontStyle:"italic",marginBottom:12,maxWidth:480,margin:"0 auto 12px"}}>{transcript.slice(-120)}{transcript.length>120?'…':''}</p>
-        )}
         {!SpeechRec&&isRec&&(
           <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Type as you speak…" style={{width:"100%",minHeight:80,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,marginBottom:12}}/>
         )}

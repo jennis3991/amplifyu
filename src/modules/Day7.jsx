@@ -281,13 +281,6 @@ export function D7SimWidget({ T, T2, isDesktop }) {
           <div key={c} style={{padding:"5px 14px",borderRadius:20,border:"0.5px solid "+T2.border,fontFamily:T.sans,fontSize:11,color:T2.text3}}>{c}</div>
         ))}
       </div>
-      {/* Transcript preview */}
-      {transcript&&(
-        <div style={{...cs.card,padding:"14px 16px"}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Live transcript</div>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.55,margin:0}}>{transcript.length>220?"…"+transcript.slice(-220):transcript}</p>
-        </div>
-      )}
       <button onClick={doSubmit} style={cs.cta}>Submit →</button>
     </div>
     );
