@@ -430,11 +430,9 @@ export function SessionLeftPanel({
         {/* Spacer — lets the book image breathe */}
         <div style={{ flex:1 }}/>
         {/* Bottom: editorial label + headline */}
-        <div style={{ position:"relative", zIndex:2, padding:"0 44px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(200,168,76,0.7)", textTransform:"uppercase", letterSpacing:"4px", marginBottom:24 }}>The Story Architect</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.6vw,42px)", fontWeight:500, color:"rgba(245,239,230,0.93)", lineHeight:1.1, letterSpacing:"-1px", margin:"0 0 20px" }}>Build a story<br/>that moves people.</h2>
-          <div style={{ width:28, height:1, background:"rgba(200,168,76,0.45)", marginBottom:20 }}/>
-          <p style={{ fontFamily:T.sans, fontSize:13, fontWeight:300, color:"rgba(245,239,230,0.45)", lineHeight:1.7, maxWidth:280, margin:0 }}>Craft stories that inspire action<br/>and drive meaningful impact.</p>
+        <div style={{ position:"relative", zIndex:2, padding:"0 44px 56px", animation:"fadeUp 0.6s ease both" }}>
+          <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(200,168,76,0.7)", textTransform:"uppercase", letterSpacing:"4px", marginBottom:16 }}>The Story Architect</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.6vw,42px)", fontWeight:500, color:"rgba(245,239,230,0.93)", lineHeight:1.1, letterSpacing:"-1px", margin:0 }}>Build a story<br/>that moves people.</h2>
         </div>
       </div>
     );
