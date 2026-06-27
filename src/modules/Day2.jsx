@@ -576,9 +576,16 @@ export function D2SimWidget({T, T2, isDesktop}) {
               {MARKERS.map((m,i)=><div key={i} style={{position:"absolute",left:(m.pos*100)+"%",top:0,bottom:0,width:2,background:m.color,opacity:0.6}}/>)}
               {audioProgress>0&&<div style={{position:"absolute",left:(audioProgress*100)+"%",top:0,bottom:0,width:2,background:"rgba(245,239,230,0.9)",zIndex:3,transform:"translateX(-50%)",boxShadow:"0 0 6px rgba(245,239,230,0.5)"}}/>}
             </div>
-            <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
-              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>0:00</span>
-              {recMetrics?.elapsedSec&&<span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{Math.floor(audioProgress*recMetrics.elapsedSec/60)}:{String(Math.round(audioProgress*recMetrics.elapsedSec)%60).padStart(2,'0')}</span>}
+            {/* Seek bar */}
+            <div
+              onClick={(e)=>{const r=e.currentTarget.getBoundingClientRect();seekTo((e.clientX-r.left)/r.width);}}
+              style={{width:"100%",height:4,background:"rgba(138,158,132,0.15)",borderRadius:2,position:"relative",cursor:"pointer",margin:"10px 0 6px",flexShrink:0}}>
+              <div style={{position:"absolute",left:0,top:0,height:"100%",width:(audioProgress*100)+"%",background:"rgba(138,158,132,0.65)",borderRadius:2}}/>
+              {MARKERS.map((m,i)=><div key={i} style={{position:"absolute",top:"50%",left:(m.pos*100)+"%",transform:"translate(-50%,-50%)",width:7,height:7,borderRadius:"50%",background:m.color,zIndex:2,boxShadow:"0 0 0 1.5px rgba(0,0,0,0.15)"}}/>)}
+              <div style={{position:"absolute",top:"50%",left:(audioProgress*100)+"%",transform:"translate(-50%,-50%)",width:12,height:12,borderRadius:"50%",background:"rgba(245,239,230,0.95)",boxShadow:"0 1px 4px rgba(0,0,0,0.3)",zIndex:3,transition:"left 0.1s"}}/>
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",marginTop:2}}>
+              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{recMetrics?.elapsedSec?`${Math.floor(audioProgress*recMetrics.elapsedSec/60)}:${String(Math.round(audioProgress*recMetrics.elapsedSec)%60).padStart(2,'0')}`:"0:00"}</span>
               <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{recMetrics?.elapsedSec?`${Math.floor(recMetrics.elapsedSec/60)}:${String(recMetrics.elapsedSec%60).padStart(2,'0')}`:"1:30"}</span>
             </div>
           </div>
