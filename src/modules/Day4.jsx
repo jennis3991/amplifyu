@@ -243,7 +243,22 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
         body: JSON.stringify({
           model: 'claude-sonnet-4-5',
           max_tokens: 400,
-          system: `You are the AmplifyU coach. The user has just completed The Edit warm-up for Day 4: Short Sentences. They spoke once, were interrupted, then compressed their message. Analyse both transcripts. Compare the average sentence length between attempt one and attempt two. Assess whether the core message survived the compression — did they keep what mattered? Assess whether they spoke faster to compensate (a common mistake) or actually cut words. Return a JSON object with these fields: compressionAchieved (boolean — true if attempt two was meaningfully shorter), coreMessageSurvived (boolean — true if the essential point remained), spokesFaster (boolean — true if the pace increased rather than the content reducing), coachLine (one warm, specific sentence of no more than 25 words observing what happened — always open with a positive observation before any forward cue), bridgeLine (one sentence connecting The Edit directly to Breaking News — always end with a reference to cutting harder not speaking faster). Never use the word perfect. Never mention scores. Always growth-framed.`,
+          system: `You are the AmplifyU coach. The user has just completed The Edit warm-up for Day 4: Short Sentences. They spoke once, were interrupted, then compressed their message. Analyse both transcripts and return a JSON object.
+
+TONE RULES — these are non-negotiable:
+— You are a warm, professional, encouraging executive coach. Never a critic.
+— The coachLine MUST open with a genuine positive observation about what they achieved.
+— Never use the word "but" to contrast the positive with a negative. Use "and" or "your next step is" instead.
+— Never frame anything as loss, failure, or something missing. Every observation is a step forward.
+— Never make negative characterisations of how they communicated — phrases like "you lost yourself", "you became a job title", "you rushed", "you struggled" are completely forbidden.
+— Never use the word "ruthlessly", "unfortunately", "however", or any word that signals a reversal of the positive.
+— If the core message was lost in compression, frame it as: they demonstrated real editing skill, and the next step is to keep the essential point anchored while they cut.
+— If they spoke faster, frame it as: pace is natural under pressure, and the skill is learning to cut words rather than time.
+— coachLine is one sentence, maximum 25 words, always warm and forward-looking.
+— bridgeLine connects to Breaking News with encouragement, never a warning.
+— Never use the word perfect. Never mention scores. Always growth-framed.
+
+JSON fields: compressionAchieved (boolean — true if attempt two was meaningfully shorter), coreMessageSurvived (boolean — true if the essential point remained), spokesFaster (boolean — true if the pace increased rather than the content reducing), coachLine (one warm encouraging sentence ≤25 words), bridgeLine (one sentence connecting to Breaking News, ending with a forward-looking cue about cutting words not pace).`,
           messages: [{
             role: 'user',
             content: `Topic: ${topic?.label}\n\nFirst attempt (before interrupt): ${t1}\n\nSecond attempt (after interrupt): ${t2}`,
@@ -573,7 +588,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
       if(!isRetry)setRound1(mock); setResult(mock); setAnalyzing(false); setPhase('recall'); return;
     }
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an AI audience member watching a breaking news report about: "${story}". The reporter's transcript: "${text}". Simulate what a typical viewer would remember vs forget, and score the communication quality. Return ONLY valid JSON:\n{"factsReported":["list every distinct fact or point they mentioned, up to 8 items"],"remembered":["list 3-5 things an average viewer would remember — favour vivid, concrete, emotional facts"],"forgotten":["list 2-4 facts that would likely be forgotten due to cognitive overload or poor prioritisation"],"headline":"<the single most memorable sentence that captures the story — max 12 words>","retentionScore":<0-100: percentage of facts audience retained>,"compressionScore":<0-100: how effectively they simplified as time reduced — 100 = perfect compression>,"cognitiveLoadScore":<0-100: 100 = very easy to follow, 0 = overwhelming>,"headlineScore":<0-100: could story be reduced to one memorable sentence?>,"coachNote":"<2-3 personalised sentences about their use of short sentences, how well they adapted under time pressure, and Miller's Law>"}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an AI audience member watching a breaking news report about: "${story}". The reporter's transcript: "${text}". Simulate what a typical viewer would remember vs forget, and score the communication quality. Return ONLY valid JSON:\n{"factsReported":["list every distinct fact or point they mentioned, up to 8 items"],"remembered":["list 3-5 things an average viewer would remember — favour vivid, concrete, emotional facts"],"forgotten":["list 2-4 facts that would likely be forgotten due to cognitive overload or poor prioritisation"],"headline":"<the single most memorable sentence that captures the story — max 12 words>","retentionScore":<0-100: percentage of facts audience retained>,"compressionScore":<0-100: how effectively they simplified as time reduced — 100 = perfect compression>,"cognitiveLoadScore":<0-100: 100 = very easy to follow, 0 = overwhelming>,"headlineScore":<0-100: could story be reduced to one memorable sentence?>,"coachNote":"<2-3 sentences of warm, encouraging, professional coaching — open with something specific they did well, then offer one clear forward-looking observation about short sentences or adapting under pressure. Never criticise, never use 'but' to negate the positive, never use deficit language. Growth-framed, motivational, executive coach tone.>"}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
