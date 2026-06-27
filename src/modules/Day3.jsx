@@ -291,6 +291,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
   const [audioURL, setAudioURL] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
+  const [waveAnim, setWaveAnim] = useState(0);
 
   const audioRef = useRef(null);
   const recRef = useRef(null);
@@ -317,7 +318,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
   useEffect(()=>{
     if(!playing)return;
     let id;
-    function tick(){const a=audioRef.current;if(a&&a.duration)setAudioProgress(a.currentTime/a.duration);id=requestAnimationFrame(tick);}
+    function tick(){const a=audioRef.current;if(a&&a.duration)setAudioProgress(a.currentTime/a.duration);setWaveAnim(t=>t+1);id=requestAnimationFrame(tick);}
     id=requestAnimationFrame(tick);
     return()=>cancelAnimationFrame(id);
   },[playing]);
@@ -750,7 +751,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
             <div
               onClick={(e)=>{const r=e.currentTarget.getBoundingClientRect();seekTo((e.clientX-r.left)/r.width);}}
               style={{height:36,display:"flex",alignItems:"center",gap:1,position:"relative",overflow:"hidden",borderRadius:4,cursor:"pointer"}}>
-              {WBARS.map((h,i)=>{const pos=i/WBARS.length;const nm=MARKERS.find(m=>Math.abs(m.pos-pos)<0.04);const played=pos<audioProgress;return<div key={i} style={{flex:1,background:nm?nm.color:played?`rgba(138,158,132,${0.55+h*0.35})`:`rgba(138,158,132,${0.2+h*0.25})`,borderRadius:1,height:Math.round(h*32)+"px",minWidth:2,transition:"background 0.1s"}}/>;} )}
+              {WBARS.map((h,i)=>{const pos=i/WBARS.length;const nm=MARKERS.find(m=>Math.abs(m.pos-pos)<0.04);const played=pos<audioProgress;const near=playing?Math.max(0,1-Math.abs(pos-audioProgress)*18):0;const ah=playing?h*(0.82+0.28*Math.abs(Math.sin(waveAnim*0.07+i*0.45))+0.25*near):h;return<div key={i} style={{flex:1,background:nm?nm.color:played?`rgba(138,158,132,${0.55+ah*0.35})`:`rgba(138,158,132,${0.2+ah*0.25})`,borderRadius:1,height:Math.round(ah*32)+"px",minWidth:2}}/>;} )}
               {MARKERS.map((m,i)=><div key={i} style={{position:"absolute",left:(m.pos*100)+"%",top:0,bottom:0,width:2,background:m.color,opacity:0.6}}/>)}
               {audioProgress>0&&<div style={{position:"absolute",left:(audioProgress*100)+"%",top:0,bottom:0,width:2,background:"rgba(245,239,230,0.9)",zIndex:3,transform:"translateX(-50%)",boxShadow:"0 0 6px rgba(245,239,230,0.5)"}}/>}
             </div>
