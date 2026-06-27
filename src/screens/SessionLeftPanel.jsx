@@ -255,7 +255,6 @@ export function SessionLeftPanel({
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Filler-Free Challenge</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Silence often sounds more confident than fillers.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Three rounds. Practise the pause, notice the difference silence makes, and build the habit of calm, deliberate delivery.</p>
         </div>
       </div>
     );

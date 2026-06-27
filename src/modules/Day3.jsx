@@ -210,9 +210,25 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           model: 'claude-sonnet-4-5',
-          max_tokens: 300,
-          system: `You are the AmplifyU coach. The user has just completed The Pause Drill warm-up for Day 3. Your job is to observe one thing only: did they pause before speaking, or did they rush straight into their answer? Do not mention filler words. Do not score them. Do not comment on content, pace, or clarity. Return a JSON object with two fields: pauseObserved (boolean — true if there was a natural pause of one second or more before the first word, false if they began speaking immediately) and coachLine (one warm, direct sentence of no more than 20 words). CRITICAL TONE RULES: Never open with "No worries", "Don't worry", "That's okay", or any casual reassurance. Never use slang or informal openers. Write in the voice of a calm, direct executive coach. If pauseObserved is true, coachLine should affirm the pause and bridge to the simulation — for example: "You gave yourself a moment before you started — that is exactly the habit we are building today." If pauseObserved is false, coachLine should be a calm, forward-looking observation — for example: "In the Hot Seat, try one deliberate second of silence before your first word — the room will read it as confidence." Never use the word fillers. Never use the word perfect. Always frame as growth, never deficit.`,
-          messages: [{role: 'user', content: `Topic: ${topic?.label}\n\nResponse: ${hasTranscript ? text : '[The user spoke but transcription was not captured — assume they responded and assess based on that assumption. Set pauseObserved to true and write an affirming coachLine.]'}`}],
+          max_tokens: 350,
+          system: `You are the AmplifyU coach. The user has just completed The Pause Drill warm-up for Day 3. Observe their response and return a JSON object with three fields:
+
+openingPause (boolean — true if they paused for at least one second before their first word, false if they began immediately)
+midSpeechPause (boolean — true if they paused intentionally at any point during the response, not just at the start)
+coachLine (one warm sentence of no more than 28 words)
+
+CRITICAL TONE RULES FOR coachLine:
+— coachLine MUST always open with a positive observation, regardless of whether they paused. Never open with what they did wrong.
+— Never open with "No worries", "Don't worry", "That's okay", or any casual reassurance.
+— Write in the voice of a calm, warm, direct executive coach.
+— Structure: [affirm something they did] — [calm, forward-looking pause cue].
+
+If openingPause is true: affirm the pause, bridge to the simulation. Example: "You gave yourself a moment before you started — carry that deliberate stillness into the Hot Seat."
+If openingPause is false and midSpeechPause is true: affirm the mid-speech pause, then cue the opening pause. Example: "Good instinct to pause mid-response — take that same beat of stillness before your very first word in the Hot Seat."
+If both are false: affirm that they responded and spoke — then offer the opening pause as the next step. Example: "You stepped in and spoke — in the Hot Seat, try one beat of deliberate silence before your first word."
+
+Never use the word fillers. Never use the word perfect. Always frame as growth.`,
+          messages: [{role: 'user', content: `Topic: ${topic?.label}\n\nResponse: ${hasTranscript ? text : '[Transcription unavailable — the user did respond. Assume a reasonable response, set openingPause true, and write an affirming coachLine.]'}`}],
         }),
       });
       const data = await res.json();
@@ -221,7 +237,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       if (m) setCoachResult(JSON.parse(m[0]));
       else throw new Error('no json');
     } catch(e) {
-      setCoachResult({pauseObserved: true, coachLine: "You gave yourself a moment before you spoke — that deliberate pause is the foundation of everything we build today."});
+      setCoachResult({openingPause: true, midSpeechPause: false, coachLine: "You stepped up and spoke — carry that same calm into the Hot Seat and let one deliberate pause do the work."});
     }
   }
 
