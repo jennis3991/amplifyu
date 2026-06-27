@@ -282,9 +282,9 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
         const sel = topic?.id === t.id;
         return (
           <button key={t.id} onClick={() => setTopic(t)}
-            style={{padding: '16px 14px', borderRadius: 6, border: `1px solid ${sel ? 'rgba(138,158,132,0.6)' : T2.border}`, background: sel ? 'rgba(138,158,132,0.1)' : T2.surface, cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', gap: 10}}>
-            <div style={{color: sel ? 'rgba(138,158,132,0.9)' : 'rgba(245,239,230,0.4)'}}>{t.icon}</div>
-            <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: sel ? 'rgba(245,239,230,0.92)' : T2.text, lineHeight: 1.4, fontWeight: sel ? 500 : 400}}>{t.label}</span>
+            style={{padding: '16px 14px', borderRadius: 6, border: `${sel ? '2px' : '1px'} solid ${sel ? 'rgba(82,112,96,0.75)' : T2.border}`, background: sel ? 'rgba(82,112,96,0.18)' : T2.surface, cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', gap: 10, outline: 'none'}}>
+            <div style={{color: sel ? 'rgba(82,112,96,0.95)' : T2.text3}}>{t.icon}</div>
+            <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: T2.text, lineHeight: 1.4, fontWeight: sel ? 600 : 400}}>{t.label}</span>
           </button>
         );
       })}
