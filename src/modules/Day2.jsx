@@ -97,6 +97,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
   const [audioURL, setAudioURL] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [selectedFocus, setSelectedFocus] = useState([]);
+  const [recMetrics, setRecMetrics] = useState(null);
 
   const audioRef = useRef(null);
   const recRef = useRef(null);
@@ -105,6 +106,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
   const timerRef = useRef(null);
   const liveRef = useRef('');
   const waveRef = useRef(null);
+  const startTimeRef = useRef(null);
 
   const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
 
@@ -120,12 +122,34 @@ export function D2SimWidget({T, T2, isDesktop}) {
     return ()=>clearInterval(waveRef.current);
   },[isRec]);
 
+  function computeMetrics(text, elapsedSec) {
+    if (!text || text.trim().length < 5 || elapsedSec < 5) return null;
+    const words = text.trim().split(/\s+/).filter(Boolean);
+    const wordCount = words.length;
+    const wpm = Math.round(wordCount / elapsedSec * 60);
+    const fillerRegex = /\b(um+|uh+|er+|ah+|like|you know|sort of|kind of|basically|literally|right\b|yeah)\b/gi;
+    const fillers = (text.match(fillerRegex) || []).length;
+    const fillersPerMin = +(fillers / elapsedSec * 60).toFixed(1);
+    const hedgeRegex = /\b(i think|i guess|maybe|perhaps|kind of|sort of|i suppose|i feel like|possibly)\b/gi;
+    const hedges = (text.match(hedgeRegex) || []).length;
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 3).length || 1;
+    const avgSentLen = Math.round(wordCount / sentences);
+    let paceLabel, paceScore;
+    if (wpm < 100) { paceLabel = 'slow'; paceScore = 58; }
+    else if (wpm < 125) { paceLabel = 'measured'; paceScore = 82; }
+    else if (wpm < 155) { paceLabel = 'ideal'; paceScore = 94; }
+    else if (wpm < 180) { paceLabel = 'slightly fast'; paceScore = 74; }
+    else { paceLabel = 'fast'; paceScore = 55; }
+    return { wordCount, wpm, fillers, fillersPerMin, hedges, avgSentLen, paceLabel, paceScore, elapsedSec };
+  }
+
   function doStart(){
     setIsRec(true);liveRef.current='';setTranscript('');setAudioURL(null);
+    startTimeRef.current = Date.now();
     if(SpeechRec){
       const rec=new SpeechRec();
       rec.continuous=true;rec.interimResults=true;rec.lang='en-US';
-      rec.onresult=(e)=>{let t='';for(let i=0;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+' ';liveRef.current=t;setTranscript(t);};
+      rec.onresult=(e)=>{let t='';for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript+' ';liveRef.current=t;setTranscript(t);};
       try{rec.start();}catch(e){}
       recRef.current=rec;
     }
@@ -141,13 +165,17 @@ export function D2SimWidget({T, T2, isDesktop}) {
   }
 
   function doStop(){
+    const elapsedSec = startTimeRef.current ? Math.round((Date.now() - startTimeRef.current) / 1000) : 0;
     setIsRec(false);clearTimeout(timerRef.current);
     if(recRef.current){try{recRef.current.stop();}catch(e){}}
     if(mediaRecRef.current&&mediaRecRef.current.state!=='inactive'){try{mediaRecRef.current.stop();}catch(e){}}
-    analyzeText(SpeechRec?liveRef.current:fallback);
+    const rawText = SpeechRec ? liveRef.current : fallback;
+    const m = computeMetrics(rawText, elapsedSec);
+    setRecMetrics(m);
+    analyzeText(rawText, m);
   }
 
-  async function analyzeText(text){
+  async function analyzeText(text, metrics){
     setPhase('analyzing');
     const isRetry=!!round1;
     const base=isRetry?8:0;
@@ -166,7 +194,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
       setPhase(isRetry?'comparison':'feedback');return;
     }
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:800,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery for vocal quality and presence.\n\nPrompt: "${prompt}"\nTranscript: "${text}"\n\nProvide detailed, personalised vocal coaching. Return ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important vocal insight>","subtitle":"<one warm encouraging sentence>","scores":{"Pace":<50-100>,"Pitch":<50-100>,"Tone":<50-100>,"Pauses":<50-100>,"Vocal Energy":<50-100>,"Range":<50-100>,"Presence":<50-100>},"habits":["list any notable vocal habits — e.g. rushing, monotone, trailing off, etc."],"worked":["<vocal strength 1>","<vocal strength 2>"],"improve":["<single most impactful vocal opportunity>"],"insight":"<2-3 personalised sentences: what the voice is doing well, what specific change would elevate it most, and why it matters>"}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:800,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery.\n\nSpeaking prompt: "${prompt}"\nTranscript: "${text}"${metrics && metrics.wpm > 0 ? `\n\nMeasured delivery data — reference these specific numbers in your feedback:\n- Speaking pace: ${metrics.wpm} WPM (${metrics.paceLabel}) — ideal executive range is 120–150 WPM\n- Filler words detected: ${metrics.fillers} total (${metrics.fillersPerMin}/min)\n- Confidence hedges ("I think", "maybe", etc.): ${metrics.hedges}\n- Average sentence length: ${metrics.avgSentLen} words` : ''}\n\nReturn ONLY valid JSON. If pace data is available, use the measured paceScore (${metrics?.paceScore||65}) for the Pace dimension:\n{"overall":<50-100>,"headline":"<max 10 words: single most important vocal insight>","subtitle":"<one warm encouraging sentence>","wpmNote":"<1 sentence naming their exact WPM and what it means for their listener — skip if no pace data>","fillerNote":"<1 sentence about their filler count: celebrate if low (0–2), coach if moderate (3–6), direct if high (7+)>","confidenceNote":"<1 sentence about their directness: praise clear statements, gently flag hedging if hedges > 3>","scores":{"Pace":<use ${metrics?.paceScore||65} if available else estimate>,"Pitch":<50-100>,"Tone":<50-100>,"Pauses":<50-100>,"Vocal Energy":<50-100>,"Range":<50-100>,"Presence":<50-100>},"habits":[],"worked":["<vocal strength 1>","<vocal strength 2>"],"improve":["<the single most impactful change, referencing a specific metric if relevant>"],"insight":"<2-3 personalised sentences: what's working in this voice, what one change would elevate it most, and why that matters>"}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -180,7 +208,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
 
   function selectPrompt(p){setPrompt(p);setPhase('recording');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');}
   function surprise(){selectPrompt(ALL_PROMPTS[Math.floor(Math.random()*ALL_PROMPTS.length)]);}
-  function reset(){setPhase('intro');setPrompt(null);setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);setSelectedFocus([]);}
+  function reset(){setPhase('intro');setPrompt(null);setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);setSelectedFocus([]);setRecMetrics(null);}
 
   const FOCUS=["Vary your pace","Use more pauses","Raise your energy","Vary your pitch","Stronger opening","Slow down key points","Increase your range"];
 
@@ -403,6 +431,50 @@ export function D2SimWidget({T, T2, isDesktop}) {
           </div>
         </div>
       </div>
+      {/* DELIVERY BREAKDOWN */}
+      {recMetrics && (
+        <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+          <div style={cs.label}>Delivery Breakdown</div>
+          {/* WPM Gauge */}
+          {recMetrics.wpm > 0 && (
+            <div style={{marginBottom:20}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:8}}>
+                <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>Speaking pace</span>
+                <div style={{display:"flex",alignItems:"baseline",gap:4}}>
+                  <span style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:recMetrics.paceScore>=85?T.gold:recMetrics.paceScore>=70?T2.text:"#B05C4A",lineHeight:1}}>{recMetrics.wpm}</span>
+                  <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>WPM</span>
+                  <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4,marginLeft:4}}>({recMetrics.paceLabel})</span>
+                </div>
+              </div>
+              <div style={{position:"relative",height:8,borderRadius:4,marginBottom:4,overflow:"hidden"}}>
+                <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,rgba(176,92,74,0.5) 0%,rgba(200,164,106,0.6) 18%,rgba(138,158,132,0.85) 30%,rgba(82,112,96,0.9) 55%,rgba(200,164,106,0.6) 72%,rgba(176,92,74,0.5) 100%)"}}/>
+                {(()=>{const min=70,max=230;const pct=Math.max(0,Math.min(100,(recMetrics.wpm-min)/(max-min)*100));const nc=recMetrics.paceScore>=85?T.gold:recMetrics.paceScore>=70?"#F5EFE6":"#B05C4A";return<div style={{position:"absolute",top:"-3px",left:pct+"%",transform:"translateX(-50%)",width:4,height:14,borderRadius:2,background:nc,boxShadow:"0 0 6px "+nc}}/>;})()}
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between"}}>
+                <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>70 slow</span>
+                <span style={{fontFamily:T.sans,fontSize:9,color:T.gold}}>120–150 ideal</span>
+                <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>230 fast</span>
+              </div>
+              {feedback.wpmNote&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.55,margin:"10px 0 0",fontStyle:"italic"}}>{feedback.wpmNote}</p>}
+            </div>
+          )}
+          {/* Filler + Hedge counts */}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:recMetrics.fillers>0||recMetrics.hedges>0?16:0}}>
+            <div style={{background:T2.bg,borderRadius:6,padding:"14px 16px"}}>
+              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Filler words</div>
+              <div style={{fontFamily:T.serif,fontSize:isDesktop?28:24,fontWeight:600,color:recMetrics.fillers<=2?T.gold:recMetrics.fillers<=5?T2.text:"#B05C4A",lineHeight:1}}>{recMetrics.fillers}</div>
+              <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:3}}>{recMetrics.fillersPerMin}/min · um, uh, like…</div>
+            </div>
+            <div style={{background:T2.bg,borderRadius:6,padding:"14px 16px"}}>
+              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Confidence hedges</div>
+              <div style={{fontFamily:T.serif,fontSize:isDesktop?28:24,fontWeight:600,color:recMetrics.hedges===0?T.gold:recMetrics.hedges<=2?T2.text:"#B05C4A",lineHeight:1}}>{recMetrics.hedges}</div>
+              <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:3}}>I think, maybe, perhaps…</div>
+            </div>
+          </div>
+          {feedback.fillerNote&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 8px",fontStyle:"italic"}}>{feedback.fillerNote}</p>}
+          {feedback.confidenceNote&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0,fontStyle:"italic"}}>{feedback.confidenceNote}</p>}
+        </div>
+      )}
       {/* 3 WHAT CAME ACROSS WELL + BIGGEST OPPORTUNITY */}
       <div style={{display:isDesktop?"grid":"flex",gridTemplateColumns:"1fr 1fr",flexDirection:"column",gap:isDesktop?12:10}}>
         <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
