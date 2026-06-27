@@ -8,7 +8,7 @@ import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
 import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidget } from '../modules/Day4.jsx';
-import { D1MobileJargonSwap, D1MobileSim, D1ClarityChallenge, D1SimWidget, D1SimFeedback } from '../modules/Day1.jsx';
+import { D1MobileJargonSwap, D1MobileSim, D1WarmUpWidget, D1SimWidget, D1SimFeedback } from '../modules/Day1.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget, D5SimWidget } from '../modules/Day5.jsx';
 import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
@@ -43,6 +43,7 @@ export function MobileSessionView({
   const [d7Habits, setD7Habits] = useState(new Set());
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
+  const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [d3NavLabel, setD3NavLabel] = useState(null);
   const d3NavFnRef = useRef(null);
   const [d4NavLabel, setD4NavLabel] = useState(null);
@@ -518,12 +519,8 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             {/* Text at bottom */}
             <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Feynman Challenge™</div>
-              <p style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:"#F5EFE6",lineHeight:1.1,marginBottom:14}}>If you can explain it simply, you understand it.</p>
-              <div style={{display:"flex",alignItems:"center",gap:6}}>
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4 minutes</span></span>
-              </div>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Voice Warm-Up</div>
+              <p style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:"#F5EFE6",lineHeight:1.1,marginBottom:14}}>Let's warm up your voice.</p>
             </div>
           </div>
         );
@@ -1813,16 +1810,16 @@ T.goldDark : T2.text4,
       )}
       {isD1 && step==="Practice" && (
         <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Practice · Day 1</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>The Feynman Challenge™</h2>
-          <D1ClarityChallenge T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD1NavLabel} onNavFn={d1NavFnRef}/>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Voice Warm-Up · Day 1</div>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Let's warm up your voice.</h2>
+          <D1WarmUpWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD1NavLabel} onNavFn={d1NavFnRef} onComplete={(topic) => { setD1WarmUpTopic(topic); setIdx(i => i + 1); }}/>
         </>
       )}
       {isD1 && step==="Simulation" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Simulation · Day 1</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Clarity Check-In</h2>
-          <D1SimWidget T={T} T2={T2} isDesktop={false}/>
+          <D1SimWidget T={T} T2={T2} isDesktop={false} warmUpTopic={d1WarmUpTopic}/>
         </>
       )}
        {/* ── NT (Day 8) Mobile Steps ─────────────────────────────────────── */}
