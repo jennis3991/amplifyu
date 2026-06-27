@@ -1,6 +1,25 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
 
+function findFillerClusters(text) {
+  if (!text) return [];
+  const re = /\b(um+|uh+|er+|ah+|like|you know|sort of|kind of|basically|literally)\b/gi;
+  const hits = [];
+  let m;
+  while ((m = re.exec(text)) !== null) hits.push(m.index);
+  const clusters = [];
+  let i = 0;
+  while (i < hits.length) {
+    if (i + 1 < hits.length && hits[i + 1] - hits[i] < 120) {
+      clusters.push(hits[i]);
+      let j = i + 1;
+      while (j < hits.length && hits[j] - hits[i] < 200) j++;
+      i = j;
+    } else { i++; }
+  }
+  return clusters;
+}
+
 export function D2PracticeWidget({T, T2, isDesktop}) {
   const EXERCISES=[
     {id:"sentence",title:"Same Sentence Challenge",sentence:'"That\'s an interesting idea."',
@@ -232,12 +251,11 @@ export function D2SimWidget({T, T2, isDesktop}) {
 
   const rawText = SpeechRec ? transcript : fallback;
   const STATIC_MARKERS=[{pos:0.18,label:"Pace rush",color:"#C8A46A"},{pos:0.44,label:"Energy dip",color:"#B05C4A"},{pos:0.66,label:"Strong moment",color:"#527060"},{pos:0.85,label:"Pitch drop",color:"#B05C4A"}];
-  const MARKERS = (feedback?.moments && rawText)
-    ? feedback.moments.map((m,i)=>{
-        const pos=quoteToPos(rawText,m.quote);
-        return {pos:pos!=null?pos:STATIC_MARKERS[i]?.pos??0.2+i*0.2, label:m.label, color:m.color||"#C8A46A", quote:m.quote};
-      }).sort((a,b)=>a.pos-b.pos)
+  const aiMarkers=(feedback?.moments && rawText)
+    ? feedback.moments.map((m,i)=>{const pos=quoteToPos(rawText,m.quote);return {pos:pos!=null?pos:STATIC_MARKERS[i]?.pos??0.2+i*0.2,label:m.label,color:m.color||"#C8A46A",quote:m.quote};}).sort((a,b)=>a.pos-b.pos)
     : STATIC_MARKERS;
+  const fillerMarkers=rawText?findFillerClusters(rawText).slice(0,3).map(idx=>({pos:Math.max(0.05,Math.min(0.92,idx/rawText.length)),label:"Filler cluster",color:"#C4714A"})):[];
+  const MARKERS=[...aiMarkers,...fillerMarkers].filter((m,i,arr)=>!arr.slice(0,i).some(p=>Math.abs(p.pos-m.pos)<0.06)).sort((a,b)=>a.pos-b.pos);
 
   const FOCUS=["Vary your pace","Use more pauses","Raise your energy","Vary your pitch","Stronger opening","Slow down key points","Increase your range"];
 

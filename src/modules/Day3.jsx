@@ -1,6 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 
+function findFillerClusters(text) {
+  if (!text) return [];
+  const re = /\b(um+|uh+|er+|ah+|like|you know|sort of|kind of|basically|literally)\b/gi;
+  const hits = [];
+  let m;
+  while ((m = re.exec(text)) !== null) hits.push(m.index);
+  const clusters = [];
+  let i = 0;
+  while (i < hits.length) {
+    if (i + 1 < hits.length && hits[i + 1] - hits[i] < 120) {
+      clusters.push(hits[i]);
+      let j = i + 1;
+      while (j < hits.length && hits[j] - hits[i] < 200) j++;
+      i = j;
+    } else { i++; }
+  }
+  return clusters;
+}
+
 export function D3SimFeedback({input}) {
   const [result, setResult] = useState(null); const [loading, setLoading] = useState(false);
   const fillerWords = ["um","uh","like","you know","sort of","kind of","basically","actually","right?","so,"];
@@ -568,7 +587,9 @@ export function D3SimWidget({T, T2, isDesktop}) {
     const gridPoly=(pct)=>RANGLES.map(a=>{const[x,y]=rPt(100,a);return`${(cx+(x-cx)*pct).toFixed(1)},${(cy+(y-cy)*pct).toFixed(1)}`;}).join(' ');
     const dataPoly=DIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores?.[d]||50,RANGLES[i]);return`${x.toFixed(1)},${y.toFixed(1)}`;}).join(' ');
     const WBARS=Array.from({length:60},(_,i)=>Math.max(0.08,Math.min(1,Math.sin(i/59*Math.PI)*0.65+0.25+Math.sin(i*4.7)*0.13+Math.cos(i*2.3)*0.11)));
-    const MARKERS=[{pos:0.18,label:"Filler cluster",color:"#C8A46A"},{pos:0.42,label:"Clean delivery",color:"#527060"},{pos:0.63,label:"Rush moment",color:"#B05C4A"},{pos:0.84,label:"Strong pause",color:"#527060"}];
+    const rawText3=transcript||'';
+    const fillerM3=findFillerClusters(rawText3).slice(0,3).map(idx=>({pos:Math.max(0.05,Math.min(0.92,idx/rawText3.length)),label:"Filler cluster",color:"#C4714A"}));
+    const MARKERS=[...fillerM3,{pos:0.42,label:"Clean delivery",color:"#527060"},{pos:0.63,label:"Rush moment",color:"#B05C4A"},{pos:0.84,label:"Strong pause",color:"#527060"}].filter((m,i,arr)=>!arr.slice(0,i).some(p=>Math.abs(p.pos-m.pos)<0.06)).sort((a,b)=>a.pos-b.pos);
     const scoreColor=s=>s>=80?T.gold:s>=70?"#7A9E84":T2.text3;
     const fillerCount=feedback.fillerCount||(feedback.fillers?.length||0);
     return (

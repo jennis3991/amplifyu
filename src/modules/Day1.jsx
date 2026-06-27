@@ -1,6 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 
+function findFillerClusters(text) {
+  if (!text) return [];
+  const re = /\b(um+|uh+|er+|ah+|like|you know|sort of|kind of|basically|literally)\b/gi;
+  const hits = [];
+  let m;
+  while ((m = re.exec(text)) !== null) hits.push(m.index);
+  const clusters = [];
+  let i = 0;
+  while (i < hits.length) {
+    if (i + 1 < hits.length && hits[i + 1] - hits[i] < 120) {
+      clusters.push(hits[i]);
+      let j = i + 1;
+      while (j < hits.length && hits[j] - hits[i] < 200) j++;
+      i = j;
+    } else { i++; }
+  }
+  return clusters;
+}
+
 export function D1MobileJargonSwap() {
   const [v,setV]=useState(""); const [r,setR]=useState(""); const [l,setL]=useState(false);
   async function go(){if(!v.trim())return;setL(true);try{const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:200,messages:[{role:"user",content:`Simplify this, removing all jargon. Return ONLY the simplified sentence: "${v}"`}]})});const d=await res.json();setR((d.content||[]).map(b=>b.text||"").join("").trim());}catch{setR("Keep it simple enough that a 10-year-old could understand.");}setL(false);}
@@ -1163,9 +1182,12 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     const gridPoly=(pct)=>RANGLES.map(a=>{const[x,y]=rPt(100,a);return`${(cx+(x-cx)*pct).toFixed(1)},${(cy+(y-cy)*pct).toFixed(1)}`;}).join(' ');
     const dataPoly=RDIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores[d]||50,RANGLES[i]);return`${x.toFixed(1)},${y.toFixed(1)}`;}).join(' ');
     const WBARS=Array.from({length:60},(_,i)=>Math.max(0.08,Math.min(1,Math.sin(i/59*Math.PI)*0.65+0.25+Math.sin(i*4.7)*0.13+Math.cos(i*2.3)*0.11)));
-    const TYPE_COLOR={filler:"#C8A46A",ramble:"#B05C4A",strong:"#527060",unclear:"#B05C4A"};
-    const rawMarkers=feedback.markers&&feedback.markers.length>0?feedback.markers:[{pos:0.20,label:"Filler cluster",type:"filler"},{pos:0.43,label:"Ramble moment",type:"ramble"},{pos:0.65,label:"Strongest point",type:"strong"}];
-    const MARKERS=rawMarkers.map(m=>({...m,color:TYPE_COLOR[m.type]||"#C8A46A"}));
+    const TYPE_COLOR={filler:"#C4714A",ramble:"#B05C4A",strong:"#527060",unclear:"#B05C4A"};
+    const rawMarkers=feedback.markers&&feedback.markers.length>0?feedback.markers:[{pos:0.43,label:"Ramble moment",type:"ramble"},{pos:0.65,label:"Strongest point",type:"strong"}];
+    const aiM1=rawMarkers.map(m=>({...m,color:TYPE_COLOR[m.type]||"#C8A46A"}));
+    const rawText1=transcript||'';
+    const fillerM1=findFillerClusters(rawText1).slice(0,3).map(idx=>({pos:Math.max(0.05,Math.min(0.92,idx/rawText1.length)),label:"Filler cluster",color:"#C4714A"}));
+    const MARKERS=[...fillerM1,...aiM1].filter((m,i,arr)=>!arr.slice(0,i).some(p=>Math.abs(p.pos-m.pos)<0.06)).sort((a,b)=>a.pos-b.pos);
     const fmtTime=s=>{const m=Math.floor(s/60);const sec=Math.floor(s%60);return m+":"+(sec<10?"0":"")+sec;};
     const scoreColor=s=>s>=80?T.gold:s>=70?"#7A9E84":T2.text3;
     function getAudio(){
