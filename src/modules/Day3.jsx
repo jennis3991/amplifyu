@@ -220,12 +220,14 @@ coachLine (one warm sentence of no more than 28 words)
 CRITICAL TONE RULES FOR coachLine:
 — coachLine MUST always open with a positive observation, regardless of whether they paused. Never open with what they did wrong.
 — Never open with "No worries", "Don't worry", "That's okay", or any casual reassurance.
-— Write in the voice of a calm, warm, direct executive coach.
-— Structure: [affirm something they did] — [calm, forward-looking pause cue].
+— Write in the voice of a calm, professional, direct executive coach. Motivational, never slangy.
+— Never use informal phrases like "one beat of stillness", "beat of silence", "carry that stillness", or similar. Use clear, professional language.
+— Never reference "the Hot Seat", "the simulation", or any other screen by name. The feedback is self-contained.
+— Structure: [affirm something specific they did] — [clear, professional cue for their next step with the pause technique].
 
-If openingPause is true: affirm the pause, bridge to the simulation. Example: "You gave yourself a moment before you started — carry that deliberate stillness into the Hot Seat."
-If openingPause is false and midSpeechPause is true: affirm the mid-speech pause, then cue the opening pause. Example: "Good instinct to pause mid-response — take that same beat of stillness before your very first word in the Hot Seat."
-If both are false: affirm that they responded and spoke — then offer the opening pause as the next step. Example: "You stepped in and spoke — in the Hot Seat, try one beat of deliberate silence before your first word."
+If openingPause is true: affirm the opening pause specifically. Example: "You took a deliberate pause before you spoke — that discipline is exactly what separates confident communicators."
+If openingPause is false and midSpeechPause is true: affirm the mid-speech pause, then cue the opening pause. Example: "You paused intentionally mid-response — your next step is to bring that same discipline to the very first moment before you speak."
+If both are false: affirm that they responded clearly and spoke to the topic — then offer the opening pause as the next step. Example: "You named a real challenge and spoke about it clearly — your next step is to hold a full second of silence before your first word."
 
 Never use the word fillers. Never use the word perfect. Always frame as growth.`,
           messages: [{role: 'user', content: `Topic: ${topic?.label}\n\nResponse: ${hasTranscript ? text : '[Transcription unavailable — the user did respond. Assume a reasonable response, set openingPause true, and write an affirming coachLine.]'}`}],
@@ -237,7 +239,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
       if (m) setCoachResult(JSON.parse(m[0]));
       else throw new Error('no json');
     } catch(e) {
-      setCoachResult({openingPause: true, midSpeechPause: false, coachLine: "You stepped up and spoke — carry that same calm into the Hot Seat and let one deliberate pause do the work."});
+      setCoachResult({openingPause: true, midSpeechPause: false, coachLine: "You named a real challenge and spoke about it clearly — your next step is to hold a full second of silence before your first word."});
     }
   }
 
@@ -369,7 +371,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
         <div style={{background: '#0A0804', borderRadius: 8, padding: isDesktop ? '32px 36px' : '24px 22px', border: '0.5px solid rgba(138,158,132,0.15)'}}>
           <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 16}}>Your AmplifyU Coach Says</div>
           <p style={{fontFamily: T.serif, fontSize: isDesktop ? 24 : 20, color: 'rgba(245,239,230,0.92)', lineHeight: 1.4, margin: '0 0 20px'}}>{coachResult.coachLine}</p>
-          <p style={{fontFamily: T.sans, fontSize: 12, color: 'rgba(138,158,132,0.45)', margin: 0, letterSpacing: '0.05em'}}>Ready for the Hot Seat?</p>
+          <p style={{fontFamily: T.sans, fontSize: 12, color: 'rgba(138,158,132,0.45)', margin: 0, letterSpacing: '0.05em'}}>Ready for the simulation?</p>
         </div>
         <button
           onClick={() => { if (onSimulation) onSimulation(); }}
