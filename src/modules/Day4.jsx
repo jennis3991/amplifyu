@@ -781,6 +781,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [audioURL, setAudioURL] = useState(null);
   const [playing, setPlaying] = useState(false);
+  const [audioProgress, setAudioProgress] = useState(0);
   const [userPoints, setUserPoints] = useState(['','','']);
   const [result, setResult] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
@@ -875,11 +876,24 @@ export function D4SimWidget({T, T2, isDesktop}) {
 
   function reset(){setPhase('intro');setStory(null);setTimeLeft(60);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setRound1(null);setUserPoints(['','','']);setPointsSubmitted(false);setAudioURL(null);}
 
+  function getAudio(){
+    if(!audioRef.current&&audioURL){
+      audioRef.current=new Audio(audioURL);
+      audioRef.current.addEventListener('timeupdate',()=>{const a=audioRef.current;if(a&&a.duration)setAudioProgress(a.currentTime/a.duration);});
+      audioRef.current.addEventListener('ended',()=>{setPlaying(false);setAudioProgress(0);});
+    }
+    return audioRef.current;
+  }
   function togglePlay(){
     if(!audioURL){setPlaying(p=>!p);return;}
-    if(!audioRef.current)audioRef.current=new Audio(audioURL);
-    if(playing){audioRef.current.pause();setPlaying(false);}
-    else{audioRef.current.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
+    const a=getAudio();if(!a)return;
+    if(playing){a.pause();setPlaying(false);}
+    else{a.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
+  }
+  function seekTo(pos){
+    const a=getAudio();if(!a)return;
+    a.currentTime=pos*(a.duration||0);
+    if(!playing)a.play().then(()=>setPlaying(true)).catch(()=>{});
   }
 
   const cs={
@@ -1035,6 +1049,17 @@ export function D4SimWidget({T, T2, isDesktop}) {
             </button>
             <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)"}}>You reported {totalFacts} facts. Audience retained {remembered}.</div>
           </div>
+          {audioURL&&(
+            <div style={{marginTop:10}}>
+              <div
+                onClick={(e)=>{const r=e.currentTarget.getBoundingClientRect();seekTo((e.clientX-r.left)/r.width);}}
+                style={{width:"100%",height:4,background:"rgba(245,239,230,0.1)",borderRadius:2,position:"relative",cursor:"pointer",marginBottom:4}}>
+                <div style={{position:"absolute",left:0,top:0,height:"100%",width:(audioProgress*100)+"%",background:"rgba(138,158,132,0.65)",borderRadius:2}}/>
+                <div style={{position:"absolute",top:"50%",left:(audioProgress*100)+"%",transform:"translate(-50%,-50%)",width:12,height:12,borderRadius:"50%",background:"rgba(245,239,230,0.95)",boxShadow:"0 1px 4px rgba(0,0,0,0.3)",zIndex:3,transition:"left 0.1s"}}/>
+              </div>
+              <div style={{fontFamily:"var(--sans,'Inter',sans-serif)",fontSize:9,color:"rgba(245,239,230,0.3)",textAlign:"right"}}>{Math.floor(audioProgress*60/60)}:{String(Math.round(audioProgress*60)%60).padStart(2,'0')} / 1:00</div>
+            </div>
+          )}
           {audioURL&&<audio ref={audioRef} src={audioURL} onEnded={()=>setPlaying(false)} style={{display:"none"}}/>}
         </div>
 
