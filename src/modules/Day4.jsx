@@ -789,7 +789,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
   const [round1, setRound1] = useState(null);
 
   const audioRef = useRef(null);
-  const rafRef = useRef(null);
   const recRef = useRef(null);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -818,6 +817,14 @@ export function D4SimWidget({T, T2, isDesktop}) {
     waveRef.current=setInterval(()=>setWaveVals(()=>Array.from({length:9},()=>0.2+Math.random()*0.8)),150);
     return ()=>{clearInterval(timerRef.current);clearInterval(waveRef.current);};
   },[isRec]);
+
+  useEffect(()=>{
+    if(!playing)return;
+    let id;
+    function tick(){const a=audioRef.current;if(a&&a.duration)setAudioProgress(a.currentTime/a.duration);id=requestAnimationFrame(tick);}
+    id=requestAnimationFrame(tick);
+    return()=>cancelAnimationFrame(id);
+  },[playing]);
 
   function doStart(){
     setIsRec(true);setProducerMsg(null);liveRef.current='';setTranscript('');setAudioURL(null);setTimeElapsed(0);setTimeLeft(60);
@@ -877,30 +884,23 @@ export function D4SimWidget({T, T2, isDesktop}) {
 
   function reset(){setPhase('intro');setStory(null);setTimeLeft(60);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setRound1(null);setUserPoints(['','','']);setPointsSubmitted(false);setAudioURL(null);}
 
-  function startRAF(){
-    if(rafRef.current)return;
-    function tick(){const a=audioRef.current;if(a&&a.duration)setAudioProgress(a.currentTime/a.duration);rafRef.current=requestAnimationFrame(tick);}
-    rafRef.current=requestAnimationFrame(tick);
-  }
-  function stopRAF(){if(rafRef.current){cancelAnimationFrame(rafRef.current);rafRef.current=null;}}
   function getAudio(){
     if(!audioRef.current&&audioURL){
       audioRef.current=new Audio(audioURL);
-      audioRef.current.addEventListener('ended',()=>{setPlaying(false);setAudioProgress(0);stopRAF();});
+      audioRef.current.addEventListener('ended',()=>{setPlaying(false);setAudioProgress(0);});
     }
     return audioRef.current;
   }
   function togglePlay(){
     if(!audioURL){setPlaying(p=>!p);return;}
     const a=getAudio();if(!a)return;
-    if(playing){a.pause();setPlaying(false);stopRAF();}
-    else{a.play().then(()=>{setPlaying(true);startRAF();}).catch(()=>setPlaying(false));}
+    if(playing){a.pause();setPlaying(false);}
+    else{a.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
   }
   function seekTo(pos){
     const a=getAudio();if(!a)return;
     a.currentTime=pos*(a.duration||0);
-    if(!playing)a.play().then(()=>{setPlaying(true);startRAF();}).catch(()=>{});
-    else startRAF();
+    if(!playing)a.play().then(()=>setPlaying(true)).catch(()=>{});
   }
 
   const cs={

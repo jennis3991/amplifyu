@@ -832,7 +832,6 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   const [audioProgress, setAudioProgress] = useState(0);
   const [audioDuration, setAudioDuration] = useState(120);
   const audioRef = useRef(null);
-  const rafRef = useRef(null);
   const recRef = useRef(null);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -858,6 +857,14 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     },150);
     return ()=>clearInterval(waveRef.current);
   },[isRec]);
+
+  useEffect(()=>{
+    if(!playing)return;
+    let id;
+    function tick(){const a=audioRef.current;if(a&&a.duration)setAudioProgress(a.currentTime/a.duration);id=requestAnimationFrame(tick);}
+    id=requestAnimationFrame(tick);
+    return()=>cancelAnimationFrame(id);
+  },[playing]);
 
   function doStart(){
     setIsRec(true); liveRef.current=''; setTranscript(''); setAudioURL(null);
@@ -1160,31 +1167,24 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     const MARKERS=rawMarkers.map(m=>({...m,color:TYPE_COLOR[m.type]||"#C8A46A"}));
     const fmtTime=s=>{const m=Math.floor(s/60);const sec=Math.floor(s%60);return m+":"+(sec<10?"0":"")+sec;};
     const scoreColor=s=>s>=80?T.gold:s>=70?"#7A9E84":T2.text3;
-    function startRAF(){
-      if(rafRef.current)return;
-      function tick(){const a=audioRef.current;if(a&&a.duration)setAudioProgress(a.currentTime/a.duration);rafRef.current=requestAnimationFrame(tick);}
-      rafRef.current=requestAnimationFrame(tick);
-    }
-    function stopRAF(){if(rafRef.current){cancelAnimationFrame(rafRef.current);rafRef.current=null;}}
     function getAudio(){
       if(!audioRef.current&&audioURL){
         audioRef.current=new Audio(audioURL);
         audioRef.current.onloadedmetadata=()=>{ if(audioRef.current.duration&&isFinite(audioRef.current.duration)) setAudioDuration(audioRef.current.duration); };
-        audioRef.current.addEventListener('ended',()=>{setPlaying(false);setAudioProgress(0);stopRAF();});
+        audioRef.current.addEventListener('ended',()=>{setPlaying(false);setAudioProgress(0);});
       }
       return audioRef.current;
     }
     function togglePlay(){
       if(!audioURL){setPlaying(p=>!p);return;}
       const a=getAudio();if(!a)return;
-      if(playing){a.pause();setPlaying(false);stopRAF();}
-      else{a.play().then(()=>{setPlaying(true);startRAF();}).catch(()=>setPlaying(false));}
+      if(playing){a.pause();setPlaying(false);}
+      else{a.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
     }
     function seekTo(pos){
       const a=getAudio();if(!a)return;
       a.currentTime=pos*(a.duration||0);
-      if(!playing)a.play().then(()=>{setPlaying(true);startRAF();}).catch(()=>{});
-      else startRAF();
+      if(!playing)a.play().then(()=>setPlaying(true)).catch(()=>{});
     }
     return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
