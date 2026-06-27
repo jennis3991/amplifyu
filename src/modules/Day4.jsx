@@ -46,718 +46,419 @@ export function D4MobileSim() {
   return(<div><textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Write using only short sentences…" style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:100,marginBottom:8,boxSizing:"border-box"}}/><button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:r?10:0}}>{l?"Analysing…":"Get Brevity Score →"}</button>{r&&<div style={{display:"flex",flexDirection:"column",gap:8}}><div style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"#EDE8DF",borderRadius:3}}><span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:36,fontWeight:600,color:"#2C2416",lineHeight:1}}>{r.score}<span style={{fontSize:16,color:"#8A9E84"}}>/10</span></span><span style={{fontSize:11,color:"#6B5E44",fontFamily:"'Inter',sans-serif"}}>Avg. ~{r.avgWords} words/sentence</span></div>{r.rewrite&&<div style={{padding:"10px 12px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>{r.rewrite}</p></div>}</div>}</div>);
 }
 
-// ─── D4 Practice Widget ───────────────────────────────────────────────────────
-export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimulation}) {
-  const [phase, setPhase] = useState('intro');
-  const [round, setRound] = useState(0);
-  const [selected, setSelected] = useState(null);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [memPhase, setMemPhase] = useState('start'); // 'start'|'showing'|'asking'
-  const [memSecs, setMemSecs] = useState(5);
-  const memRef = useRef(null);
-  const [simonStep, setSimonStep] = useState(0); // 0=round1, 1=round2, 2=round3, 3=lesson
-  const [elevatorInput, setElevatorInput] = useState('');
+// ─── D4 Practice Widget — The Edit ───────────────────────────────────────────
 
-  const ROUNDS = [
-    {
-      id:'memory', title:"THE MEMORY CHALLENGE",
-      intro:"Look at this list for 5 seconds. Try to remember as many as you can.",
-      items:["Red umbrella","Dog","Train ticket","Blue bicycle","Coffee","Keys","Sunglasses","Backpack"],
-      shortItems:["🚲 Blue bicycle","☕ Coffee","🔑 Keys","🎒 Backpack"],
-      question:"How many did you remember?",
-      options:[{label:"1–3 items",correct:false},{label:"4–5 items",correct:false},{label:"6–7 items",correct:false},{label:"All 8",correct:false}],
-      lesson:"Your brain can only hold around 7 items in working memory at once — and often fewer under pressure. When there's too much competing for your attention, information slips. That's Miller's Law in action.",
-    },
-    {
-      id:'elevator', title:"THE ELEVATOR TEST",
-      intro:"A senior leader stops you and asks:",
-      prompt:'"What does your team actually do?"',
-      instruction:"Answer in 3 short sentences.",
-      lesson:"Three sentences. Each one direct. No padding, no qualifiers, no jargon.\n\nWhen you can answer that question clearly, you've found your team's core message. Short sentences force you to decide what actually matters.",
-    },
-    {
-      id:'millerlaw', title:"MILLER'S LAW",
-      question:"Why do the world's best communicators use short sentences?",
-      options:[
-        {label:"A.  Because they have less to say",correct:false},
-        {label:"B.  Because audiences remember less than speakers think",correct:true},
-        {label:"C.  Because short sentences sound more professional",correct:false},
-        {label:"D.  Because long sentences are always wrong",correct:false},
-      ],
-      cols:2,
-      lesson:"Speakers know the whole message.\n\nAudiences hear it once.\n\nShort sentences give ideas room to land.\n\nThat's the essence of Miller's Law — and one of the most important communication lessons in AmplifyU.",
-    },
-    {
-      id:'directions', title:"THE DIRECTIONS TEST",
-      intro:"Could you follow these directions right now?",
-      longText:"Leave the station, walk past the bakery, take the second right after the traffic lights, continue for three blocks until you see the church, cross the road, then look for the green building.",
-      shortItems:["Leave the station.","Walk past the bakery.","Take the second right.","Look for the green building."],
-      question:"How easy was Version A to follow?",
-      options:[{label:"Easy — I've got it",correct:false},{label:"I'd have to read it twice",correct:true},{label:"I'd need to write it down",correct:false}],
-      lesson:"The brain prefers information in manageable chunks. When instructions are broken into steps, they become easier to understand, remember, and act upon.",
-    },
-    {
-      id:'scroll', title:"THE SCROLL TEST",
-      intro:"Which version is easier to remember?",
-      versions:[
-        {label:"Version A", text:"To make a great first impression, maintain eye contact, speak clearly, stand with confidence, listen carefully to others, and ensure your body language matches your message."},
-        {label:"Version B", text:"• Make eye contact.\n• Speak clearly.\n• Stand with confidence.\n• Listen carefully.\n• Match your body language."},
-      ],
-      question:"Which version could you repeat back right now?",
-      options:[{label:"Version A",correct:false},{label:"Version B — instantly",correct:true}],
-      lesson:"Humans are incredibly good at detecting cognitive effort. When information is broken into smaller chunks, it feels easier to process, remember, and act on. That's why great communicators use short sentences.",
-    },
-  ];
-
-  useEffect(()=>{
-    if(memPhase==='showing'&&memSecs>0){
-      memRef.current=setTimeout(()=>setMemSecs(s=>s-1),1000);
-    } else if(memPhase==='showing'&&memSecs===0){
-      setMemPhase('asking');
-    }
-    return ()=>clearTimeout(memRef.current);
-  },[memPhase,memSecs]);
-
-  useEffect(()=>{
-    if(!onNavLabel) return;
-    if(phase==='intro'){
-      if(onNavFn) onNavFn.current=()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);setSimonStep(0);};
-      onNavLabel('Begin Challenge');
-    } else if(phase==='done'){
-      if(onNavFn) onNavFn.current=null;
-      onNavLabel(null);
-    } else {
-      if(onNavFn) onNavFn.current=null;
-      onNavLabel(null);
-    }
-  },[phase]);
-
-  const cs={
-    card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"16px 18px"},
-    label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8},
-    cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
-  };
-
-  function advanceRound(){
-    const next=round+1;
-    setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);setSimonStep(0);setElevatorInput('');
-    if(next<ROUNDS.length){setRound(next);}else{setPhase('done');}
-  }
-
-  if(phase==='intro') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={cs.card}>
-        <div style={cs.label}>Your Mission</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:18,fontWeight:600,color:T.gold,lineHeight:1.3,margin:"0 0 8px"}}>
-          Feel why short sentences win — in your own brain.
-        </p>
-        <div style={{display:"flex",flexDirection:"column",gap:2}}>
-          {["Test your memory against Miller's Law.","Notice how chunked information feels clearer.","Build the reflex to break ideas into smaller pieces."].map((t,i)=>(
-            <div key={i} style={{display:"flex",gap:6,alignItems:"flex-start"}}>
-              <span style={{color:T.gold,fontSize:11,flexShrink:0,marginTop:2}}>✦</span>
-              <span style={{fontFamily:T.serif,fontSize:isDesktop?16:17,fontStyle:"italic",color:T2.text,lineHeight:1.5}}>{t}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div style={cs.card}>
-        <div style={cs.label}>The Challenge Journey</div>
-        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
-          {[
-            {n:1,label:"Memory"},
-            {n:2,label:"Elevator Test"},
-            {n:3,label:"Miller's Law"},
-            {n:4,label:"Directions"},
-            {n:5,label:"Scroll Test"},
-          ].map((r,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
-              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
-                <div style={{width:isDesktop?38:32,height:isDesktop?38:32,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.45)"),background:i===0?"rgba(138,158,132,0.1)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:5}}>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?13:11,fontWeight:700,color:i===0?T.gold:T2.text3}}>{r.n}</span>
-                </div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?12:10,color:"#A8998A",fontWeight:500,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?72:50}}>{r.label}</div>
-              </div>
-              {i<4&&<div style={{height:1,width:isDesktop?8:3,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:20}}/>}
-            </div>
-          ))}
-        </div>
-      </div>
-      <div style={cs.card}>
-        <div style={cs.label}>How You Win</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:14}}>Earn points for:</p>
-        <div style={{display:"flex",gap:isDesktop?8:6,flexWrap:"wrap"}}>
-          {["Clarity","Brevity","Simplicity","Cognitive Ease"].map((s,i)=>(
-            <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:isDesktop?"10px 12px":"8px 10px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border,flex:1,minWidth:isDesktop?70:56}}>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:11,color:"#A8998A",fontWeight:400,textAlign:"center",lineHeight:1.3}}>{s}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <button onClick={()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);setSimonStep(0);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Miller's Law Challenge →</button>
-    </div>
-  );
-
-  if(phase==='playing'){
-    const r=ROUNDS[round];
-    return (
-      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-        {/* Progress bar */}
-        <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flexShrink:0}}>Round {round+1} of {ROUNDS.length}</div>
-          <div style={{flex:1,height:2,background:T2.border,borderRadius:2}}>
-            <div style={{height:"100%",width:(((round+1)/ROUNDS.length)*100)+"%",background:T.gold,borderRadius:2,transition:"width 0.4s ease"}}/>
-          </div>
-        </div>
-
-        {/* ── ROUND 1: MEMORY CHALLENGE ── */}
-        {r.id==='memory' && (
-          <>
-            <div style={cs.card}>
-              <div style={cs.label}>{r.title}</div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:16,lineHeight:1.5}}>{r.intro}</p>
-
-              {/* Always show the items grid — greyed out before start, active during timer */}
-              {(memPhase==='start'||memPhase==='showing') && (
-                <>
-                  {memPhase==='showing' && (
-                    <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
-                      <div style={{fontFamily:T.serif,fontSize:isDesktop?40:32,fontWeight:600,color:T.gold,lineHeight:1,flexShrink:0}}>{memSecs}</div>
-                      <div style={{flex:1,height:4,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-                        <div style={{height:"100%",width:((memSecs/5)*100)+"%",background:T.gold,borderRadius:2,transition:"width 1s linear"}}/>
-                      </div>
-                    </div>
-                  )}
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:memPhase==='start'?16:0}}>
-                    {r.items.map((item,i)=>(
-                      <div key={i} style={{padding:"10px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border,minHeight:isDesktop?42:38,display:"flex",alignItems:"center",transition:"all 0.3s ease"}}>
-                        {memPhase==='showing'
-                          ? <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{item}</span>
-                          : <div style={{height:10,borderRadius:4,background:"rgba(138,158,132,0.2)",width:(50+Math.floor(i*17+11)%35)+"%"}}/>
-                        }
-                      </div>
-                    ))}
-                  </div>
-                  {memPhase==='start' && (
-                    <button onClick={()=>setMemPhase('showing')} style={cs.cta}>Start 5-second timer →</button>
-                  )}
-                </>
-              )}
-
-              {memPhase==='asking' && !showFeedback && (
-                <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,lineHeight:1.5,margin:0}}>{r.question}</p>
-              )}
-            </div>
-            {memPhase==='asking' && !showFeedback && (
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                {r.options.map((opt,i)=>(
-                  <button key={i} onClick={()=>{setSelected(i);setShowFeedback(true);}}
-                    style={{padding:"14px 16px",borderRadius:4,border:`0.5px solid ${selected===i?T.gold:T2.border}`,background:selected===i?"rgba(138,158,132,0.08)":"transparent",color:T2.text,fontSize:isDesktop?15:14,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5,transition:"all 0.2s"}}>
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            )}
-            {showFeedback && (
-              <>
-                <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
-                  <div style={cs.label}>Miller's Law in action</div>
-                  <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:0}}>{r.lesson}</p>
-                </div>
-                <button onClick={advanceRound} style={cs.cta}>Round 2 →</button>
-              </>
-            )}
-          </>
-        )}
-
-        {/* ── ROUND 2: ELEVATOR TEST ── */}
-        {r.id==='elevator' && (
-          <>
-            <div style={{...cs.card,textAlign:"center",padding:isDesktop?"28px 32px":"22px 20px"}}>
-              <div style={cs.label}>{r.title}</div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5,marginBottom:16}}>{r.intro}</p>
-              <div style={{padding:"16px 20px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,textAlign:"left",marginBottom:16}}>
-                <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>{r.prompt}</p>
-              </div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,margin:0}}>{r.instruction}</p>
-            </div>
-            {!showFeedback && (
-              <>
-                <textarea
-                  value={elevatorInput}
-                  onChange={e=>setElevatorInput(e.target.value)}
-                  placeholder={"Sentence 1.\n\nSentence 2.\n\nSentence 3."}
-                  rows={5}
-                  style={{width:"100%",padding:"14px 16px",border:"0.5px solid "+T2.border,borderRadius:4,outline:"none",background:T2.bg,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,fontFamily:T.sans,fontWeight:300,boxSizing:"border-box",resize:"none"}}
-                />
-                <button onClick={()=>setShowFeedback(true)} disabled={!elevatorInput.trim()}
-                  style={{...cs.cta,opacity:elevatorInput.trim()?1:0.4,cursor:elevatorInput.trim()?"pointer":"default"}}>
-                  See Feedback →
-                </button>
-              </>
-            )}
-            {showFeedback && (
-              <>
-                <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
-                  <div style={cs.label}>Your Answer</div>
-                  <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,margin:"0 0 14px",whiteSpace:"pre-wrap"}}>{elevatorInput}</p>
-                  <div style={{height:"0.5px",background:T2.border,marginBottom:14}}/>
-                  <div style={cs.label}>AmplifyU Insight</div>
-                  {r.lesson.split('\n\n').map((para,i,arr)=>(
-                    <p key={i} style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:i<arr.length-1?"0 0 10px":0}}>{para}</p>
-                  ))}
-                </div>
-                <button onClick={advanceRound} style={cs.cta}>Round 3 →</button>
-              </>
-            )}
-          </>
-        )}
-
-        {/* ── ROUND 3: MILLER'S LAW ── */}
-        {r.id==='millerlaw' && (
-          <>
-            <div style={{...cs.card,textAlign:"center",padding:isDesktop?"28px 32px":"22px 20px"}}>
-              <div style={cs.label}>{r.title}</div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{r.question}</p>
-            </div>
-            {!showFeedback && (
-              <div style={{display:"grid",gridTemplateColumns:`repeat(${r.cols||r.options.length},1fr)`,gap:isDesktop?10:8}}>
-                {r.options.map((opt,i)=>{
-                  const isSelected=selected===i;
-                  const border=isSelected?(opt.correct?T.gold:"rgba(180,80,60,0.4)"):T2.border;
-                  const bg=isSelected?(opt.correct?"rgba(138,158,132,0.08)":"rgba(180,80,60,0.04)"):T2.bg;
-                  return (
-                    <button key={i} onClick={()=>{setSelected(i);setShowFeedback(true);}}
-                      style={{padding:isDesktop?"14px 12px":"12px 10px",borderRadius:6,border:`1px solid ${border}`,background:bg,cursor:"pointer",transition:"all 0.2s",textAlign:"left",fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.4,fontWeight:400}}>
-                      {opt.label}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-            {showFeedback && (
-              <>
-                <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
-                  <div style={cs.label}>AmplifyU Insight</div>
-                  {r.lesson.split('\n\n').map((para,i,arr)=>(
-                    <p key={i} style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:i<arr.length-1?"0 0 10px":0}}>{para}</p>
-                  ))}
-                </div>
-                <button onClick={advanceRound} style={cs.cta}>Round 4 →</button>
-              </>
-            )}
-          </>
-        )}
-
-        {/* ── ROUND 4: DIRECTIONS TEST ── */}
-        {r.id==='directions' && (
-          <>
-            <div style={cs.card}>
-              <div style={cs.label}>{r.title}</div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:14,lineHeight:1.5}}>{r.intro}</p>
-              <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border,marginBottom:showFeedback?0:12}}>
-                <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.6,margin:0}}>{r.longText}</p>
-              </div>
-              {!showFeedback && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,marginTop:12,marginBottom:0}}>{r.question}</p>}
-            </div>
-            {!showFeedback && (
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                {r.options.map((opt,i)=>(
-                  <button key={i} onClick={()=>{setSelected(i);setShowFeedback(true);}}
-                    style={{padding:"14px 16px",borderRadius:4,border:`0.5px solid ${selected===i?T.gold:T2.border}`,background:selected===i?"rgba(138,158,132,0.08)":"transparent",color:T2.text,fontSize:isDesktop?15:14,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5,transition:"all 0.2s"}}>
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            )}
-            {showFeedback && (
-              <>
-                <div style={cs.card}>
-                  <div style={cs.label}>Now compare</div>
-                  <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                    {r.shortItems.map((item,i)=>(
-                      <div key={i} style={{display:"flex",gap:10,alignItems:"center",padding:"8px 0",borderBottom:i<r.shortItems.length-1?"0.5px solid "+T2.divider:"none"}}>
-                        <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                          <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{i+1}</span>
-                        </div>
-                        <span style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text}}>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:"10px 0 0",fontStyle:"italic",lineHeight:1.5}}>Same information. Much easier to follow.</p>
-                </div>
-                <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
-                  <div style={cs.label}>AmplifyU Insight</div>
-                  <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:0}}>{r.lesson}</p>
-                </div>
-                <button onClick={advanceRound} style={cs.cta}>Round 5 →</button>
-              </>
-            )}
-          </>
-        )}
-
-        {/* ── ROUND 5: SCROLL TEST ── */}
-        {r.id==='scroll' && (
-          <>
-            <div style={cs.card}>
-              <div style={cs.label}>{r.title}</div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:14,lineHeight:1.5}}>{r.intro}</p>
-              <div style={{display:"flex",flexDirection:"column",gap:10}}>
-                {r.versions.map((v,i)=>(
-                  <div key={i} style={{padding:"14px 16px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{v.label}</div>
-                    <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.6,margin:0,whiteSpace:"pre-line"}}>{v.text}</p>
-                  </div>
-                ))}
-              </div>
-              {!showFeedback && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,marginTop:16,marginBottom:0}}>{r.question}</p>}
-            </div>
-            {!showFeedback && (
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                {r.options.map((opt,i)=>(
-                  <button key={i} onClick={()=>{setSelected(i);setShowFeedback(true);}}
-                    style={{padding:"14px 16px",borderRadius:4,border:`0.5px solid ${selected===i?(opt.correct?T.gold:"rgba(180,80,60,0.4)"):T2.border}`,background:selected===i?(opt.correct?"rgba(138,158,132,0.08)":"rgba(180,80,60,0.04)"):"transparent",color:T2.text,fontSize:isDesktop?15:14,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5,transition:"all 0.2s"}}>
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            )}
-            {showFeedback && (
-              <>
-                <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
-                  <div style={cs.label}>AmplifyU Insight</div>
-                  <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:0}}>{r.lesson}</p>
-                </div>
-                <button onClick={advanceRound} style={cs.cta}>See Your Results →</button>
-              </>
-            )}
-          </>
-        )}
-      </div>
-    );
-  }
-
-  if(phase==='done') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Challenge Complete</div>
-        <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Clarity Architect</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 20px"}}>You've experienced Miller's Law five ways. Your brain now knows — short sentences aren't just cleaner. They're kinder to everyone listening.</p>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Short sentences give ideas space to land."</p>
-      </div>
-      <button onClick={()=>{setPhase('intro');setRound(0);setSelected(null);setShowFeedback(false);setMemPhase('start');setMemSecs(5);}} style={{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48}}>
-        Play Again →
-      </button>
-      {onSimulation && (
-        <button onClick={onSimulation} style={{width:"100%",padding:isDesktop?"13px":"12px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:isDesktop?14:13,fontWeight:400,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>
-          Go to Simulation
-        </button>
-      )}
-    </div>
-  );
-
-  return null;
+function useSequentialDots(active) {
+  const [dotCount, setDotCount] = useState(0);
+  useEffect(() => {
+    if (!active) { setDotCount(0); return; }
+    setDotCount(1);
+    const id = setInterval(() => {
+      setDotCount(d => { if (d >= 3) { clearInterval(id); return d; } return d + 1; });
+    }, 600);
+    return () => clearInterval(id);
+  }, [active]);
+  return dotCount;
 }
 
-// ─── dead code removed ──
-function _unusedD4OldRounds() {
-  const PINNED = {
-    title:"THE SCROLL TEST",
-    prompt:"Imagine this lands in your inbox. Which one do you actually read?",
-    versions:[
-      {label:"Version A", text:'We need to have a meeting about the project because there have been some issues with the timeline and the deadline is coming up and people aren\'t entirely sure what they\'re supposed to be doing which is causing a bit of confusion and we really need to get everyone aligned and on the same page before things get worse.'},
-      {label:"Version B", text:"We need a meeting.\n\nThe deadline is close.\n\nPeople aren't sure what to do.\n\nLet's get aligned before it gets worse."},
-    ],
-    options:[{label:"Version A — the dense paragraph",correct:false},{label:"Version B — short, scannable lines",correct:true}],
-    feedback:"Dense paragraphs lose readers instantly. Short sentences with breathing space get read every time.",
-  };
+function SequentialDots({dotCount}) {
+  return (
+    <div style={{display:'flex',gap:10,justifyContent:'center'}}>
+      {[0,1,2].map(i=>(
+        <div key={i} style={{width:9,height:9,borderRadius:'50%',background:i<dotCount?'rgba(138,158,132,0.75)':'rgba(138,158,132,0.12)',transition:'background 0.35s'}}/>
+      ))}
+    </div>
+  );
+}
 
-  const BANK = [
-    {
-      title:"CUT IT IN HALF",
-      type:"write",
-      prompt:"Rewrite this sentence using half the words. Every word you cut increases impact.",
-      quote:'"At this moment in time I\'m currently trying to decide what I want to eat."',
-      placeholder:"Your shorter version…",
-      originalWords:13,
-      reveal:'"I\'m deciding what to eat."',
-      feedback:"Shorter communication often feels clearer and more confident.",
-      aiPrompt:(input)=>`The user was asked to rewrite this sentence using half the words (original: "At this moment in time I'm currently trying to decide what I want to eat." — 13 words, target: ~6-7 words). Ideal answer: "I'm deciding what to eat." (5 words). Their attempt: "${input}" (${input.trim().split(/\s+/).length} words). Return ONLY valid JSON: {"words":${input.trim().split(/\s+/).length},"shorter":${input.trim().split(/\s+/).length<=9},"praise":"<one warm specific sentence about what they did well — max 12 words>","tip":"<one gentle improvement if needed — max 10 words, or empty string if great>"}`,
-    },
-    {
-      title:"SPLIT THE SENTENCE",
-      type:"write",
-      prompt:"Split this into shorter sentences. One idea per sentence.",
-      quote:'"I went to the supermarket after work and forgot my wallet but luckily my friend was there and she paid for everything which was really kind of her."',
-      placeholder:"Your split version…",
-      reveal:'"I went to the supermarket after work. I forgot my wallet. Luckily, my friend was there. She paid for everything. It was really kind of her."',
-      feedback:"One idea per sentence is easier for the brain to process and remember.",
-      aiPrompt:(input)=>`The user was asked to split this sentence into shorter sentences: "I went to the supermarket after work and forgot my wallet but luckily my friend was there and she paid for everything which was really kind of her." Their version: "${input}". Count how many sentences they created. Return ONLY valid JSON: {"sentences":<number of sentences they wrote>,"improved":${true},"praise":"<one warm specific sentence — max 12 words>","tip":"<one gentle tip if needed — max 10 words, or empty string>"}`,
-    },
-    {
-      title:"THE BRAIN PREFERS SIMPLE",
-      prompt:"Which version is easier to understand?",
-      versions:[
-        {label:"Version A", text:'"The atmospheric conditions suggest a high probability of precipitation later this evening."'},
-        {label:"Version B", text:'"It\'s probably going to rain tonight."'},
-      ],
-      options:[{label:"Version A",correct:false},{label:"Version B",correct:true}],
-      feedback:"The brain absorbs information faster when sentences are shorter and simpler. Every word you cut reduces cognitive load.",
-    },
-    {
-      title:"THE BREATH TEST",
-      prompt:"Read both versions out loud. Actually say them.",
-      versions:[
-        {label:"Version A", text:'"I wanted to ask whether anyone might potentially want to go out for dinner later this evening."'},
-        {label:"Version B", text:'"Does anyone want dinner later?"'},
-      ],
-      question:"Which one felt easier to say?",
-      options:[{label:"Version A — the longer one",correct:false},{label:"Version B — the shorter one",correct:true}],
-      feedback:"If a sentence is hard to say out loud, it's hard for your audience to follow. Shorter sentences breathe better.",
-    },
-    {
-      title:"SAY IT LIKE ATTENBOROUGH",
-      prompt:"David Attenborough explains science so simply a child could understand it. Which version sounds most like him?",
-      quote:'"Photosynthesis is the biochemical process through which plants convert light energy into chemical energy."',
-      options:[
-        {label:"Photosynthesis enables plants to synthesise glucose from light-dependent reactions.",correct:false},
-        {label:"Plants use sunlight to make food.",correct:true},
-        {label:"Through photosynthesis, solar energy is converted into storable chemical energy.",correct:false},
-        {label:"Light energy drives the conversion of carbon dioxide into organic compounds.",correct:false},
-      ],
-      feedback:"Simple communication demonstrates deeper understanding. If you can't explain it simply, you don't fully understand it yet.",
-    },
-    {
-      title:"REMOVE THE CLUTTER",
-      prompt:"Which is the cleaner version?",
-      quote:'"I just wanted to quickly let you know that I\'m probably going to be slightly late."',
-      options:[
-        {label:"I just wanted to quickly let you know that I'm probably going to be slightly late.",correct:false},
-        {label:"I'm going to be late.",correct:true},
-      ],
-      feedback:"Most unclear sentences are overloaded with extra words. Clear communicators remove friction before they add.",
-    },
-    {
-      title:"ONE THOUGHT. ONE SENTENCE.",
-      prompt:"Which version feels clearer?",
-      versions:[
-        {label:"Version A", text:'"We decided to leave early because the weather was changing quickly and we didn\'t want to get stuck in traffic."'},
-        {label:"Version B", text:'"The weather was changing quickly. We decided to leave early. We didn\'t want to get stuck in traffic."'},
-      ],
-      options:[{label:"Version A",correct:false},{label:"Version B",correct:true}],
-      feedback:"The brain remembers information better when each idea gets its own sentence. One thought. Full stop. Next thought.",
-    },
-  ];
+const EDIT_ICON = (path) => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{path}</svg>
+);
 
-  const ROUNDS = useMemo(()=>{
-    const shuffled=[...BANK].sort(()=>Math.sin(seed*9301+seed*49297)*0.5);
-    return [PINNED, ...shuffled.slice(0,4)];
-  },[seed]);
+const EDIT_TOPICS = [
+  {
+    id:'meeting',
+    icon: EDIT_ICON(<><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M16 2v4M8 2v4M2 10h20"/></>),
+    label:'Tell your team a meeting has been rescheduled',
+  },
+  {
+    id:'update',
+    icon: EDIT_ICON(<><polyline points="20 6 9 17 4 12"/></>),
+    label:'Share a project update in one sentence',
+  },
+  {
+    id:'recommend',
+    icon: EDIT_ICON(<><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></>),
+    label:"Recommend something you've read or listened to recently",
+  },
+  {
+    id:'win',
+    icon: EDIT_ICON(<><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></>),
+    label:'Share a recent win from your week',
+  },
+  {
+    id:'risk',
+    icon: EDIT_ICON(<><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></>),
+    label:'Flag a risk to a colleague quickly',
+  },
+  {
+    id:'intro',
+    icon: EDIT_ICON(<><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></>),
+    label:"Introduce yourself to someone you've just met",
+  },
+];
 
-  function resetWrite(){setWriteInput('');setWriteResult(null);setWriteLoading(false);}
+export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimulation}) {
+  const [phase, setPhase] = useState('select');
+  const [topic, setTopic] = useState(null);
 
-  async function handleWriteSubmit(r){
-    if(!writeInput.trim()) return;
-    if(r.aiPrompt){
-      setWriteLoading(true);
-      try{
-        const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:200,messages:[{role:"user",content:r.aiPrompt(writeInput)}]})});
-        const d=await res.json();
-        const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
-        const m=raw.match(/\{[\s\S]*\}/);
-        setWriteResult(JSON.parse(m[0]));
-      }catch{setWriteResult({praise:"Great effort — you're thinking about brevity.",tip:""});}
-      setWriteLoading(false);
+  // Recording
+  const [isRec, setIsRec] = useState(false);
+  const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
+  const [transcript1, setTranscript1] = useState('');
+  const [transcript2, setTranscript2] = useState('');
+
+  // Interrupt animation
+  const [dividerFull, setDividerFull] = useState(false);
+  const [interruptTextVisible, setInterruptTextVisible] = useState(false);
+
+  // Coach
+  const [coachResult, setCoachResult] = useState(null);
+
+  const mediaRecRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const recRef = useRef(null);
+  const waveRef = useRef(null);
+  const interruptTimerRef = useRef(null);
+  const liveRef = useRef('');
+
+  const SpeechRec = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
+  const dotCount = useSequentialDots(phase === 'pause');
+
+  useEffect(() => {
+    if (!onNavLabel) return;
+    onNavLabel(null);
+    if (onNavFn) onNavFn.current = null;
+  }, [phase]);
+
+  // Waveform animation during recording
+  useEffect(() => {
+    if (!isRec) { clearInterval(waveRef.current); return; }
+    waveRef.current = setInterval(() => setWaveVals(() => Array.from({length:9}, () => 0.2 + Math.random() * 0.8)), 150);
+    return () => clearInterval(waveRef.current);
+  }, [isRec]);
+
+  // Interrupt screen animation
+  useEffect(() => {
+    if (phase !== 'interrupt') { setDividerFull(false); setInterruptTextVisible(false); return; }
+    setDividerFull(false);
+    setInterruptTextVisible(false);
+    const t1 = setTimeout(() => setDividerFull(true), 60);
+    const t2 = setTimeout(() => setInterruptTextVisible(true), 680);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [phase]);
+
+  function startRecording() {
+    liveRef.current = '';
+    if (SpeechRec) {
+      const rec = new SpeechRec();
+      rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
+      rec.onresult = (e) => {
+        let final = ''; let interim = '';
+        for (let i = 0; i < e.results.length; i++) {
+          if (e.results[i].isFinal) final += e.results[i][0].transcript + ' ';
+          else interim += e.results[i][0].transcript + ' ';
+        }
+        liveRef.current = final || interim;
+      };
+      try { rec.start(); } catch(e) {}
+      recRef.current = rec;
     }
-    setShowFeedback(true);
+    if (navigator.mediaDevices?.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
+        audioChunksRef.current = [];
+        const mr = new MediaRecorder(stream);
+        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+        mr.onstop = () => stream.getTracks().forEach(t => t.stop());
+        mr.start();
+        mediaRecRef.current = mr;
+      }).catch(() => {});
+    }
   }
 
-  useEffect(()=>{
-    if(!onNavLabel) return;
-    if(phase==='intro'){
-      if(onNavFn) onNavFn.current=()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);resetWrite();};
-      onNavLabel('Begin Challenge');
-    } else {
-      if(onNavFn) onNavFn.current=null;
-      onNavLabel(null);
+  function stopRecording(cb) {
+    if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
+      mediaRecRef.current.onstop = () => {};
+      mediaRecRef.current.stop();
     }
-  },[phase]);
+    if (recRef.current) {
+      const rec = recRef.current;
+      recRef.current = null;
+      const fallback = setTimeout(() => cb(liveRef.current), 1800);
+      rec.onend = () => { clearTimeout(fallback); cb(liveRef.current); };
+      try { rec.stop(); } catch(e) { clearTimeout(fallback); cb(liveRef.current); }
+    } else {
+      cb(liveRef.current);
+    }
+  }
 
-  const cs={
-    card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"16px 18px"},
-    label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8},
-    cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
+  // Start rec1 — fires interrupt at 10s
+  function doStart1() {
+    setIsRec(true);
+    startRecording();
+    interruptTimerRef.current = setTimeout(() => {
+      setIsRec(false);
+      // Capture whatever we have synchronously — interrupt is intentional
+      if (recRef.current) { try { recRef.current.stop(); } catch(e) {} recRef.current = null; }
+      if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
+        try { mediaRecRef.current.stop(); } catch(e) {}
+      }
+      setTranscript1(liveRef.current.trim() || '[first attempt]');
+      setPhase('interrupt');
+    }, 10000);
+  }
+
+  // Start rec2 — runs to manual completion
+  function doStart2() {
+    setIsRec(true);
+    liveRef.current = '';
+    startRecording();
+  }
+
+  function doStop2() {
+    setIsRec(false);
+    stopRecording((text) => {
+      const t2 = text.trim() || '[second attempt]';
+      setTranscript2(t2);
+      setPhase('coach');
+      analyzeEdit(transcript1, t2);
+    });
+  }
+
+  async function analyzeEdit(t1, t2) {
+    try {
+      const res = await fetch('/api/claude', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-5',
+          max_tokens: 400,
+          system: `You are the AmplifyU coach. The user has just completed The Edit warm-up for Day 4: Short Sentences. They spoke once, were interrupted, then compressed their message. Analyse both transcripts. Compare the average sentence length between attempt one and attempt two. Assess whether the core message survived the compression — did they keep what mattered? Assess whether they spoke faster to compensate (a common mistake) or actually cut words. Return a JSON object with these fields: compressionAchieved (boolean — true if attempt two was meaningfully shorter), coreMessageSurvived (boolean — true if the essential point remained), spokesFaster (boolean — true if the pace increased rather than the content reducing), coachLine (one warm, specific sentence of no more than 25 words observing what happened — always open with a positive observation before any forward cue), bridgeLine (one sentence connecting The Edit directly to Breaking News — always end with a reference to cutting harder not speaking faster). Never use the word perfect. Never mention scores. Always growth-framed.`,
+          messages: [{
+            role: 'user',
+            content: `Topic: ${topic?.label}\n\nFirst attempt (before interrupt): ${t1}\n\nSecond attempt (after interrupt): ${t2}`,
+          }],
+        }),
+      });
+      const data = await res.json();
+      const raw = (data.content || []).map(b => b.text || '').join('');
+      const m = raw.match(/\{[\s\S]*\}/);
+      if (m) setCoachResult(JSON.parse(m[0]));
+      else throw new Error('no json');
+    } catch(e) {
+      setCoachResult({
+        compressionAchieved: true,
+        coreMessageSurvived: true,
+        spokesFaster: false,
+        coachLine: "You found the shorter version — that compression is exactly the skill Breaking News will test.",
+        bridgeLine: "In Breaking News, the edit gets harder. Cut the words, not the pace.",
+      });
+    }
+  }
+
+  useEffect(() => () => clearTimeout(interruptTimerRef.current), []);
+
+  const cs = {
+    card: {background: T2.surface, borderRadius: 4, border: '0.5px solid ' + T2.border, padding: isDesktop ? '22px 24px' : '16px 18px'},
+    label: {fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 8},
+    cta: {width: '100%', padding: isDesktop ? '14px' : '13px', borderRadius: 4, border: 'none', background: T.ink, color: T.bg, fontSize: isDesktop ? 15 : 14, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans, minHeight: 48, transition: 'all 0.2s'},
+    sageCta: {width: '100%', padding: isDesktop ? '14px' : '13px', borderRadius: 4, border: 'none', background: 'rgba(82,112,96,0.85)', color: '#fff', fontSize: isDesktop ? 15 : 14, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans, minHeight: 48},
   };
 
-  if(phase==='intro') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={cs.card}>
-        <div style={cs.label}>Your Mission</div>
-        <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,margin:"0 0 8px"}}>
-          Train your brain to prefer short, clear sentences.
+  const leftPanel = (
+    <div style={{background: '#0A0804', borderRadius: 8, padding: isDesktop ? '32px 28px' : '22px 20px', border: '0.5px solid rgba(138,158,132,0.15)', display: 'flex', flexDirection: 'column'}}>
+      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 16}}>The Edit</div>
+      <h2 style={{fontFamily: T.serif, fontSize: isDesktop ? 26 : 20, fontWeight: 600, color: 'rgba(245,239,230,0.9)', lineHeight: 1.2, margin: '0 0 20px'}}>
+        Say it once.<br/>Say it short.<br/>Stop.
+      </h2>
+      <div style={{height: '0.5px', background: 'rgba(138,158,132,0.2)', marginBottom: 20}} />
+      <p style={{fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: 'rgba(245,239,230,0.5)', lineHeight: 1.7, margin: '0 0 20px'}}>
+        Pick a message below. Say it naturally — but challenge yourself to use only short sentences. One idea. Full stop. Next idea. Full stop.
+      </p>
+      <div style={{background: 'rgba(138,158,132,0.07)', borderRadius: 4, border: '0.5px solid rgba(138,158,132,0.18)', padding: '16px 18px', marginBottom: 20}}>
+        <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.7)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 10}}>Coach Tip</div>
+        <p style={{fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: 'rgba(245,239,230,0.7)', lineHeight: 1.65, margin: 0, fontStyle: 'italic'}}>
+          Great communicators don't trim their sentences. They end them sooner.
         </p>
-        <div style={{display:"flex",flexDirection:"column",gap:2}}>
-          {["Experience how shorter sentences feel clearer instantly.","Practise splitting long sentences into short ones.","Build the reflex to cut — not add."].map((t,i)=>(
-            <div key={i} style={{display:"flex",gap:6,alignItems:"flex-start"}}>
-              <span style={{color:T.gold,fontSize:11,flexShrink:0,marginTop:2}}>✦</span>
-              <span style={{fontFamily:T.serif,fontSize:isDesktop?16:15,fontStyle:"italic",color:T2.text,lineHeight:1.5}}>{t}</span>
-            </div>
-          ))}
-        </div>
       </div>
-
-      <div style={cs.card}>
-        <div style={cs.label}>The Challenge Journey</div>
-        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
-          {[1,2,3,4,5].map((n,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
-              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
-                <div style={{width:isDesktop?38:32,height:isDesktop?38:32,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.45)"),background:i===0?"rgba(138,158,132,0.1)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:5}}>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?13:11,fontWeight:700,color:i===0?T.gold:T2.text3}}>{n}</span>
-                </div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?12:10,color:T2.text3,fontWeight:500,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?72:50}}>
-                  {["Round 1","Round 2","Round 3","Round 4","Round 5"][i]}
-                </div>
-              </div>
-              {i<4&&<div style={{height:1,width:isDesktop?8:3,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:20}}/>}
-            </div>
-          ))}
-        </div>
+      <div style={{display: 'flex', alignItems: 'center', gap: 6, marginTop: 'auto', paddingTop: 4}}>
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3"/>
+          <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3" strokeLinecap="round"/>
+        </svg>
+        <span style={{fontFamily: T.sans, fontSize: 10, color: 'rgba(138,158,132,0.35)', letterSpacing: '0.05em'}}>1 minute</span>
       </div>
-
-      <div style={cs.card}>
-        <div style={cs.label}>How You Win</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:14}}>Earn points for:</p>
-        <div style={{display:"flex",gap:isDesktop?8:6,flexWrap:"wrap"}}>
-          {["Clarity","Brevity","Simplicity","Cognitive Ease"].map((s,i)=>(
-            <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:isDesktop?"10px 12px":"8px 10px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border,flex:1,minWidth:isDesktop?70:56}}>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:11,color:"#A8998A",fontWeight:400,textAlign:"center",lineHeight:1.3}}>{s}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <button onClick={()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Short Sentences Challenge →</button>
     </div>
   );
 
-  if(phase==='playing'){
-    const r=ROUNDS[round];
+  const grid = (right) => (
+    <div style={{display: 'grid', gridTemplateColumns: isDesktop ? '2fr 3fr' : '1fr', gap: isDesktop ? 20 : 16, alignItems: 'start'}}>
+      {leftPanel}
+      <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>{right}</div>
+    </div>
+  );
+
+  // ── SELECT ──────────────────────────────────────────────────────────────────
+  if (phase === 'select') return grid(<>
+    <div>
+      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 8}}>Practice · Day 4</div>
+      <h3 style={{fontFamily: T.serif, fontSize: isDesktop ? 24 : 20, fontWeight: 600, color: 'rgba(245,239,230,0.92)', margin: 0, lineHeight: 1.2}}>The Edit</h3>
+    </div>
+    <div style={cs.card}>
+      <div style={cs.label}>Your Challenge</div>
+      <p style={{fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text3, lineHeight: 1.65, margin: 0}}>
+        Pick one message below. Speak for around 20 seconds — then the coach will interrupt. Speak naturally. Just speak.
+      </p>
+    </div>
+    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
+      {EDIT_TOPICS.map(t => {
+        const sel = topic?.id === t.id;
+        return (
+          <button key={t.id} onClick={() => setTopic(t)}
+            style={{padding: '16px 14px', borderRadius: 6, border: `${sel ? '2px' : '1px'} solid ${sel ? 'rgba(82,112,96,0.75)' : T2.border}`, background: sel ? 'rgba(82,112,96,0.18)' : T2.surface, cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', gap: 10, outline: 'none'}}>
+            <div style={{color: sel ? 'rgba(82,112,96,0.95)' : T2.text3}}>{t.icon}</div>
+            <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: T2.text, lineHeight: 1.4, fontWeight: sel ? 600 : 400}}>{t.label}</span>
+          </button>
+        );
+      })}
+    </div>
+    <button onClick={() => { if (topic) setPhase('pause'); }}
+      disabled={!topic}
+      style={{...cs.cta, opacity: topic ? 1 : 0.4, cursor: topic ? 'pointer' : 'default'}}>
+      Start The Edit →
+    </button>
+  </>);
+
+  // ── PAUSE MOMENT ────────────────────────────────────────────────────────────
+  if (phase === 'pause') return grid(<>
+    <div style={{...cs.card, textAlign: 'center', padding: isDesktop ? '40px 32px' : '28px 22px'}}>
+      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 20}}>Your Message</div>
+      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 20 : 17, color: T2.text, lineHeight: 1.45, margin: '0 0 32px', fontWeight: 500}}>"{topic.label}"</p>
+      <div style={{marginBottom: 20}}>
+        <SequentialDots dotCount={dotCount} />
+      </div>
+      <p style={{fontFamily: T.sans, fontSize: 12, color: T2.text4, margin: 0, letterSpacing: '0.05em'}}>
+        Speak naturally. We'll handle the rest.
+      </p>
+    </div>
+    <button
+      onClick={() => { doStart1(); setPhase('rec1'); }}
+      disabled={dotCount < 3}
+      style={{...cs.cta, opacity: dotCount < 3 ? 0.3 : 1, cursor: dotCount < 3 ? 'default' : 'pointer'}}>
+      Start Speaking →
+    </button>
+    <p style={{fontFamily: T.sans, fontSize: 10, color: 'rgba(138,158,132,0.4)', textAlign: 'center', margin: 0, letterSpacing: '0.18em', textTransform: 'uppercase'}}>
+      Pause · Breathe · Speak
+    </p>
+  </>);
+
+  // ── REC 1 ───────────────────────────────────────────────────────────────────
+  if (phase === 'rec1') return grid(<>
+    <div style={cs.card}>
+      <div style={cs.label}>Message</div>
+      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: T2.text, lineHeight: 1.4, margin: '0 0 22px'}}>{topic.label}</p>
+      <div style={{display: 'flex', alignItems: 'center', gap: 2, height: 44, marginBottom: 14}}>
+        {waveVals.map((v, i) => (
+          <div key={i} style={{flex: 1, height: Math.round(v * 38) + 'px', background: `rgba(138,158,132,${0.3 + v * 0.5})`, borderRadius: 2, transition: 'height 0.15s'}} />
+        ))}
+      </div>
+      <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+        <div style={{width: 7, height: 7, borderRadius: '50%', background: '#c0392b'}} />
+        <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording — speak naturally</span>
+      </div>
+    </div>
+    <p style={{fontFamily: T.sans, fontSize: 11, color: T2.text4, textAlign: 'center', margin: 0}}>
+      The coach will interrupt when it's time.
+    </p>
+  </>);
+
+  // ── INTERRUPT ───────────────────────────────────────────────────────────────
+  if (phase === 'interrupt') return grid(<>
+    <div style={{padding: isDesktop ? '32px 0' : '24px 0'}}>
+      {/* The film-cut divider */}
+      <div style={{height: 1.5, background: T.gold, width: dividerFull ? '100%' : '0%', transition: 'width 0.6s ease', marginBottom: 36, borderRadius: 1}} />
+      {/* Interrupt text */}
+      <div style={{opacity: interruptTextVisible ? 1 : 0, transition: 'opacity 0.5s ease', textAlign: 'center', padding: '0 8px'}}>
+        <p style={{fontFamily: T.serif, fontSize: isDesktop ? 38 : 28, fontWeight: 600, color: T2.text, lineHeight: 1.3, margin: '0 0 6px'}}>Stop.</p>
+        <p style={{fontFamily: T.serif, fontSize: isDesktop ? 28 : 22, color: T2.text, lineHeight: 1.3, margin: '0 0 6px', fontWeight: 400}}>Now say it again.</p>
+        <p style={{fontFamily: T.serif, fontSize: isDesktop ? 28 : 22, color: T2.text, lineHeight: 1.3, margin: '0 0 28px', fontWeight: 400}}>Half the words.</p>
+        <p style={{fontFamily: T.sans, fontSize: 12, color: T2.text4, margin: '0 0 32px', letterSpacing: '0.05em'}}>
+          Same message. Fewer words. Go.
+        </p>
+        <button
+          onClick={() => { doStart2(); setPhase('rec2'); }}
+          style={{...cs.cta, opacity: interruptTextVisible ? 1 : 0}}>
+          Try Again →
+        </button>
+      </div>
+    </div>
+  </>);
+
+  // ── REC 2 ───────────────────────────────────────────────────────────────────
+  if (phase === 'rec2') return grid(<>
+    <div style={cs.card}>
+      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 12}}>Take 2 — Half the words</div>
+      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: T2.text, lineHeight: 1.4, margin: '0 0 22px'}}>{topic.label}</p>
+      <div style={{display: 'flex', alignItems: 'center', gap: 2, height: 44, marginBottom: 14}}>
+        {waveVals.map((v, i) => (
+          <div key={i} style={{flex: 1, height: Math.round(v * 38) + 'px', background: `rgba(138,158,132,${0.3 + v * 0.5})`, borderRadius: 2, transition: 'height 0.15s'}} />
+        ))}
+      </div>
+      <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+        <div style={{width: 7, height: 7, borderRadius: '50%', background: '#c0392b'}} />
+        <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording — same message, fewer words</span>
+      </div>
+    </div>
+    <button onClick={doStop2}
+      style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
+      Submit →
+    </button>
+  </>);
+
+  // ── COACH ───────────────────────────────────────────────────────────────────
+  if (phase === 'coach') {
+    if (!coachResult) return grid(
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, gap: 16}}>
+        <div style={{width: 32, height: 32, border: '2px solid rgba(138,158,132,0.15)', borderTop: '2px solid rgba(138,158,132,0.65)', borderRadius: '50%'}} />
+        <p style={{fontFamily: T.sans, fontSize: 12, color: T2.text4, margin: 0}}>Reading the edit…</p>
+      </div>
+    );
     return (
-      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-        <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flexShrink:0}}>Round {round+1} of {ROUNDS.length}</div>
-          <div style={{flex:1,height:2,background:T2.border,borderRadius:2}}>
-            <div style={{height:"100%",width:(((round+1)/ROUNDS.length)*100)+"%",background:T.gold,borderRadius:2,transition:"width 0.4s ease"}}/>
-          </div>
-        </div>
-
-        <div style={cs.card}>
-          <div style={cs.label}>{r.title}</div>
-          {r.prompt && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,marginBottom:12,lineHeight:1.5}}>{r.prompt}</p>}
-          {r.quote && <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 12px"}}>{r.quote}</p>}
-          {r.versions && (
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:r.question?12:0}}>
-              {r.versions.map((v,i)=>(
-                <div key={i} style={{padding:"12px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{v.label}</div>
-                  <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,margin:0,whiteSpace:"pre-line"}}>{v.text}</p>
-                </div>
-              ))}
-            </div>
+      <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
+        {/* Verdict panel */}
+        <div style={{background: '#0A0804', borderRadius: 8, padding: isDesktop ? '32px 36px' : '24px 22px', border: '0.5px solid rgba(138,158,132,0.15)'}}>
+          <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 16}}>Your AmplifyU Coach Says</div>
+          <p style={{fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, color: 'rgba(245,239,230,0.92)', lineHeight: 1.4, margin: '0 0 14px'}}>{coachResult.coachLine}</p>
+          <p style={{fontFamily: T.serif, fontSize: isDesktop ? 16 : 14, color: 'rgba(138,158,132,0.8)', lineHeight: 1.55, margin: '0 0 10px', fontStyle: 'italic'}}>{coachResult.bridgeLine}</p>
+          {coachResult.spokesFaster && (
+            <p style={{fontFamily: T.sans, fontSize: 12, color: T2.text4, margin: 0, letterSpacing: '0.03em'}}>
+              In Breaking News — speed is the trap. Cutting is the skill.
+            </p>
           )}
-          {r.instruction && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>{r.instruction}</p>}
-          {r.question && !showFeedback && <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.5,marginTop:14,marginBottom:0}}>{r.question}</p>}
         </div>
-
-        {/* MCQ options */}
-        {r.options && !showFeedback && (
-          <div style={{display:"flex",flexDirection:"column",gap:8}}>
-            {r.options.map((opt,i)=>(
-              <button key={i} onClick={()=>{setSelected(i);setShowFeedback(true);}}
-                style={{padding:"14px 16px",borderRadius:4,border:`0.5px solid ${selected===i?(opt.correct?T.gold:"rgba(180,80,60,0.5)"):T2.border}`,background:selected===i?(opt.correct?"rgba(138,158,132,0.08)":"rgba(180,80,60,0.04)"):"transparent",color:T2.text,fontSize:isDesktop?15:14,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5,transition:"all 0.2s"}}>
-                {opt.label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Write rounds — textarea + AI */}
-        {r.type==='write' && !showFeedback && (
-          <>
-            <textarea
-              value={writeInput}
-              onChange={e=>setWriteInput(e.target.value)}
-              placeholder={r.placeholder}
-              style={{width:"100%",minHeight:isDesktop?80:72,background:"transparent",border:"0.5px solid "+T2.border,borderRadius:4,padding:"12px 14px",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}
-            />
-            <button
-              onClick={()=>handleWriteSubmit(r)}
-              disabled={!writeInput.trim()||writeLoading}
-              style={{...cs.cta,background:!writeInput.trim()||writeLoading?"rgba(44,36,22,0.25)":T.ink,cursor:!writeInput.trim()||writeLoading?"not-allowed":"pointer"}}>
-              {writeLoading?"Checking…":"Get AI Feedback →"}
-            </button>
-          </>
-        )}
-
-        {/* Action rounds (no options, no write) */}
-        {!r.options && r.type!=='write' && !showFeedback && (
-          <button onClick={()=>setShowFeedback(true)} style={cs.cta}>{r.action} →</button>
-        )}
-
-        {showFeedback && (
-          <>
-            {/* Write feedback with AI result */}
-            {r.type==='write' && writeResult && (
-              <div style={{...cs.card,background:"rgba(138,158,132,0.06)",borderLeft:"2px solid "+T.gold}}>
-                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-                  <div style={cs.label}>AmplifyU Coach</div>
-                  {writeResult.words&&<span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginLeft:"auto"}}>{writeResult.words} words{r.originalWords?` (was ${r.originalWords})`:''}</span>}
-                </div>
-                <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:writeResult.tip?"0 0 8px":0}}>{writeResult.praise}</p>
-                {writeResult.tip&&<p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,margin:0,fontStyle:"italic"}}>{writeResult.tip}</p>}
-              </div>
-            )}
-            {r.type==='write' && writeInput && (
-              <div style={{...cs.card,background:"rgba(44,36,22,0.03)"}}>
-                <div style={cs.label}>Your version</div>
-                <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.4,margin:"0 0 10px",fontStyle:"italic"}}>"{writeInput}"</p>
-                {r.reveal&&<><div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>One great version</div><p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.4,margin:0}}>{r.reveal}</p></>}
-              </div>
-            )}
-            {/* Reveal for action rounds */}
-            {!r.type && r.reveal && (
-              <div style={{...cs.card,background:"rgba(138,158,132,0.04)",borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
-                <div style={cs.label}>The shorter version</div>
-                <p style={{fontFamily:T.serif,fontSize:isDesktop?19:16,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{r.reveal}</p>
-              </div>
-            )}
-            <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
-              <div style={cs.label}>Why it works</div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:0}}>{r.feedback}</p>
-            </div>
-            <button onClick={()=>{
-              if(round<ROUNDS.length-1){setRound(v=>v+1);setSelected(null);setShowFeedback(false);resetWrite();}
-              else{setPhase('done');}
-            }} style={cs.cta}>
-              {round<ROUNDS.length-1?`Round ${round+2} →`:"See Your Results →"}
-            </button>
-          </>
-        )}
+        <p style={{fontFamily: T.sans, fontSize: 12, color: 'rgba(138,158,132,0.45)', textAlign: 'center', margin: 0, letterSpacing: '0.05em'}}>
+          Ready for Breaking News?
+        </p>
+        <button onClick={() => { if (onSimulation) onSimulation(); }} style={cs.sageCta}>
+          Enter Breaking News →
+        </button>
+        <button onClick={() => { setPhase('select'); setTopic(null); setCoachResult(null); setTranscript1(''); setTranscript2(''); }}
+          style={{width: '100%', padding: '11px', borderRadius: 4, border: '0.5px solid ' + T2.border, background: 'transparent', color: T2.text3, fontSize: 13, fontWeight: 400, cursor: 'pointer', fontFamily: T.sans, minHeight: 44}}>
+          Try Another Message
+        </button>
       </div>
     );
   }
-
-  if(phase==='done') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Challenge Complete</div>
-        <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Clarity Architect</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 24px"}}>You've trained your brain to see complexity — and cut it. Every sentence you shorten from now on is a gift to your listener.</p>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Short sentences give ideas space to land."</p>
-      </div>
-      <button onClick={()=>{setPhase('intro');setRound(0);setSelected(null);setShowFeedback(false);resetWrite();}} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"8px 0",textAlign:"center",width:"100%"}}>Another Round</button>
-    </div>
-  );
 
   return null;
 }
@@ -998,7 +699,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
       {!isRec&&!SpeechRec&&(
         <div style={cs.card}>
           <div style={cs.label}>Type your report</div>
-          <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Write your live report here…" style={{width:"100%",minHeight:100,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
+          <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Write your live report here…" style={{width:"100%",minHeight:100,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.border,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
         </div>
       )}
       <div style={{display:"flex",gap:10,justifyContent:"center"}}>
@@ -1033,7 +734,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
 
     return (
       <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-        {/* Hero — dark score card */}
         <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Broadcast Results</div>
           <div style={{display:"flex",gap:isDesktop?24:16,alignItems:"flex-start",marginBottom:20,flexWrap:"wrap"}}>
@@ -1070,7 +770,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
           {audioURL&&<audio ref={audioRef} src={audioURL} onEnded={()=>setPlaying(false)} style={{display:"none"}}/>}
         </div>
 
-        {/* Audience Memory Test */}
         <div style={cs.card}>
           <div style={cs.label}>🧠 Viewer Memory Test</div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:14,lineHeight:1.5}}>Here's what the AI audience remembered from your report:</p>
@@ -1094,7 +793,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
           )}
         </div>
 
-        {/* Best Headline */}
         {result.headline&&(
           <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
             <div style={cs.label}>Your story in one sentence</div>
@@ -1102,7 +800,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
           </div>
         )}
 
-        {/* User's 3 key points — the comparison challenge */}
         {!pointsSubmitted?(
           <div style={cs.card}>
             <div style={cs.label}>What were your 3 key points?</div>
@@ -1140,7 +837,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
           </div>
         )}
 
-        {/* AmplifyU Coach */}
         <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
           <div style={cs.label}>Your AmplifyU Coach Says</div>
           <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
@@ -1149,7 +845,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
           </div>
         </div>
 
-        {/* Miller's Law closing */}
         <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"22px 28px":"18px 20px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:"0 0 8px"}}>The strongest communicators know that attention is limited. If people can't remember it, they can't repeat it. And if they can't repeat it, the message is lost.</p>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:700,color:T.gold,margin:0,textTransform:"uppercase",letterSpacing:"1.5px"}}>That is Miller's Law in action.</p>
@@ -1163,4 +858,3 @@ export function D4SimWidget({T, T2, isDesktop}) {
 }
 
 // ─── D1 Mobile helpers ────────────────────────────────────────────────────────
-
