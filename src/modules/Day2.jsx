@@ -187,14 +187,15 @@ export function D2SimWidget({T, T2, isDesktop}) {
       habits:[],
       worked:["Natural, conversational warmth throughout","Good use of pause before key ideas"],
       improve:["Vary your pace more deliberately — slow down on your most important points to give them weight."],
-      insight:"Your voice already has warmth and authenticity. The next level is intentional contrast: slow down when the idea matters most, raise your energy when you want to inspire. The gap between where you are and truly compelling delivery is smaller than you think."
+      insight:"Your voice already has warmth and authenticity. The next level is intentional contrast: slow down when the idea matters most, raise your energy when you want to inspire. The gap between where you are and truly compelling delivery is smaller than you think.",
+      moments:null
     };
     if(!text||text.trim().length<15){
       if(!isRetry){setRound1(mock);setFeedback(mock);}else setFeedback({...mock,prev:round1});
       setPhase(isRetry?'comparison':'feedback');return;
     }
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:800,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery.\n\nSpeaking prompt: "${prompt}"\nTranscript: "${text}"${metrics && metrics.wpm > 0 ? `\n\nMeasured delivery data — reference these specific numbers in your feedback:\n- Speaking pace: ${metrics.wpm} WPM (${metrics.paceLabel}) — ideal executive range is 120–150 WPM\n- Filler words detected: ${metrics.fillers} total (${metrics.fillersPerMin}/min)\n- Confidence hedges ("I think", "maybe", etc.): ${metrics.hedges}\n- Average sentence length: ${metrics.avgSentLen} words` : ''}\n\nReturn ONLY valid JSON. If pace data is available, use the measured paceScore (${metrics?.paceScore||65}) for the Pace dimension:\n{"overall":<50-100>,"headline":"<max 10 words: single most important vocal insight>","subtitle":"<one warm encouraging sentence>","wpmNote":"<1 sentence naming their exact WPM and what it means for their listener — skip if no pace data>","fillerNote":"<1 sentence about their filler count: celebrate if low (0–2), coach if moderate (3–6), direct if high (7+)>","confidenceNote":"<1 sentence about their directness: praise clear statements, gently flag hedging if hedges > 3>","scores":{"Pace":<use ${metrics?.paceScore||65} if available else estimate>,"Pitch":<50-100>,"Tone":<50-100>,"Pauses":<50-100>,"Vocal Energy":<50-100>,"Range":<50-100>,"Presence":<50-100>},"habits":[],"worked":["<vocal strength 1>","<vocal strength 2>"],"improve":["<the single most impactful change, referencing a specific metric if relevant>"],"insight":"<2-3 personalised sentences: what's working in this voice, what one change would elevate it most, and why that matters>"}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1000,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery.\n\nSpeaking prompt: "${prompt}"\nTranscript: "${text}"${metrics && metrics.wpm > 0 ? `\n\nMeasured delivery data — reference these specific numbers in your feedback:\n- Speaking pace: ${metrics.wpm} WPM (${metrics.paceLabel}) — ideal executive range is 120–150 WPM\n- Filler words detected: ${metrics.fillers} total (${metrics.fillersPerMin}/min)\n- Confidence hedges ("I think", "maybe", etc.): ${metrics.hedges}\n- Average sentence length: ${metrics.avgSentLen} words` : ''}\n\nReturn ONLY valid JSON. If pace data is available, use the measured paceScore (${metrics?.paceScore||65}) for the Pace dimension:\n{"overall":<50-100>,"headline":"<max 10 words: single most important vocal insight>","subtitle":"<one warm encouraging sentence>","wpmNote":"<1 sentence naming their exact WPM and what it means for their listener — skip if no pace data>","fillerNote":"<1 sentence about their filler count: celebrate if low (0–2), coach if moderate (3–6), direct if high (7+)>","confidenceNote":"<1 sentence about their directness: praise clear statements, gently flag hedging if hedges > 3>","scores":{"Pace":<use ${metrics?.paceScore||65} if available else estimate>,"Pitch":<50-100>,"Tone":<50-100>,"Pauses":<50-100>,"Vocal Energy":<50-100>,"Range":<50-100>,"Presence":<50-100>},"habits":[],"worked":["<vocal strength 1>","<vocal strength 2>"],"improve":["<the single most impactful change, referencing a specific metric if relevant>"],"insight":"<2-3 personalised sentences: what's working in this voice, what one change would elevate it most, and why that matters>","moments":[{"label":"<moment type e.g. Pace rush / Energy peak / Strong moment / Energy dip / Pitch drop>","quote":"<copy 4-6 consecutive words from the transcript exactly where this moment occurred>","color":"<#C8A46A for pace/energy rush, #527060 for strong moment, #B05C4A for dip/drop>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"}]}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -209,6 +210,24 @@ export function D2SimWidget({T, T2, isDesktop}) {
   function selectPrompt(p){setPrompt(p);setPhase('recording');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');}
   function surprise(){selectPrompt(ALL_PROMPTS[Math.floor(Math.random()*ALL_PROMPTS.length)]);}
   function reset(){setPhase('intro');setPrompt(null);setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);setSelectedFocus([]);setRecMetrics(null);}
+
+  function quoteToPos(fullText, quote) {
+    if (!fullText || !quote) return null;
+    const tLow = fullText.toLowerCase();
+    const words = quote.toLowerCase().replace(/[^a-z\s]/g,'').trim().split(/\s+/).slice(0,4).join(' ');
+    const idx = tLow.indexOf(words);
+    if (idx < 0) return null;
+    return Math.max(0.05, Math.min(0.92, idx / fullText.length));
+  }
+
+  const rawText = SpeechRec ? transcript : fallback;
+  const STATIC_MARKERS=[{pos:0.18,label:"Pace rush",color:"#C8A46A"},{pos:0.44,label:"Energy dip",color:"#B05C4A"},{pos:0.66,label:"Strong moment",color:"#527060"},{pos:0.85,label:"Pitch drop",color:"#B05C4A"}];
+  const MARKERS = (feedback?.moments && rawText)
+    ? feedback.moments.map((m,i)=>{
+        const pos=quoteToPos(rawText,m.quote);
+        return {pos:pos!=null?pos:STATIC_MARKERS[i]?.pos??0.2+i*0.2, label:m.label, color:m.color||"#C8A46A", quote:m.quote};
+      }).sort((a,b)=>a.pos-b.pos)
+    : STATIC_MARKERS;
 
   const FOCUS=["Vary your pace","Use more pauses","Raise your energy","Vary your pitch","Stronger opening","Slow down key points","Increase your range"];
 
@@ -359,7 +378,6 @@ export function D2SimWidget({T, T2, isDesktop}) {
     const gridPoly=(pct)=>RANGLES.map(a=>{const[x,y]=rPt(100,a);return`${(cx+(x-cx)*pct).toFixed(1)},${(cy+(y-cy)*pct).toFixed(1)}`;}).join(' ');
     const dataPoly=DIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores?.[d]||50,RANGLES[i]);return`${x.toFixed(1)},${y.toFixed(1)}`;}).join(' ');
     const WBARS=Array.from({length:60},(_,i)=>Math.max(0.08,Math.min(1,Math.sin(i/59*Math.PI)*0.65+0.25+Math.sin(i*4.7)*0.13+Math.cos(i*2.3)*0.11)));
-    const MARKERS=[{pos:0.18,label:"Pace rush",color:"#C8A46A"},{pos:0.44,label:"Energy dip",color:"#B05C4A"},{pos:0.66,label:"Strong moment",color:"#527060"},{pos:0.85,label:"Pitch flatten",color:"#B05C4A"}];
     const scoreColor=s=>s>=80?T.gold:s>=70?"#7A9E84":T2.text3;
     return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
@@ -525,13 +543,17 @@ export function D2SimWidget({T, T2, isDesktop}) {
             {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
           </button>
           <div style={{flex:1,position:"relative"}}>
-            <div style={{display:"flex",position:"relative",height:isDesktop?20:16,marginBottom:4}}>
-              {MARKERS.map((m,i)=>(
+            <div style={{display:"flex",position:"relative",height:isDesktop?28:22,marginBottom:4}}>
+              {MARKERS.map((m,i)=>{
+                const approxSec=recMetrics?.elapsedSec?Math.round(m.pos*recMetrics.elapsedSec):null;
+                const timeLabel=approxSec!=null?`${Math.floor(approxSec/60)}:${String(approxSec%60).padStart(2,'0')}`:null;
+                return(
                 <div key={i} style={{position:"absolute",left:(m.pos*100)+"%",transform:"translateX(-50%)",textAlign:"center",zIndex:2}}>
                   <div style={{fontFamily:T.sans,fontSize:isDesktop?9:7,color:m.color,fontWeight:600,whiteSpace:"nowrap"}}>{m.label}</div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?8:6,color:T2.text4,whiteSpace:"nowrap"}}>{["0:16","0:40","1:00","1:16"][i]}</div>
+                  {timeLabel&&<div style={{fontFamily:T.sans,fontSize:isDesktop?8:6,color:T2.text4,whiteSpace:"nowrap"}}>{timeLabel}</div>}
+                  {m.quote&&<div style={{fontFamily:T.serif,fontSize:isDesktop?8:6,color:"rgba(245,239,230,0.35)",whiteSpace:"nowrap",fontStyle:"italic",maxWidth:90,overflow:"hidden",textOverflow:"ellipsis"}}>"{m.quote}"</div>}
                 </div>
-              ))}
+              );})}
             </div>
             <div style={{height:36,display:"flex",alignItems:"center",gap:1,position:"relative",overflow:"hidden",borderRadius:4}}>
               {WBARS.map((h,i)=>{const pos=i/WBARS.length;const nm=MARKERS.find(m=>Math.abs(m.pos-pos)<0.04);return<div key={i} style={{flex:1,background:nm?nm.color:`rgba(138,158,132,${0.3+h*0.4})`,borderRadius:1,height:Math.round(h*32)+"px",minWidth:2}}/>;} )}
