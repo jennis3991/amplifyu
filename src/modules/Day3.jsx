@@ -156,9 +156,12 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       const rec = new SpeechRec();
       rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
       rec.onresult = (e) => {
-        let t = '';
-        for (let i = 0; i < e.results.length; i++) if (e.results[i].isFinal) t += e.results[i][0].transcript + ' ';
-        liveRef.current = t;
+        let final = ''; let interim = '';
+        for (let i = 0; i < e.results.length; i++) {
+          if (e.results[i].isFinal) final += e.results[i][0].transcript + ' ';
+          else interim += e.results[i][0].transcript + ' ';
+        }
+        liveRef.current = final || interim;
       };
       try { rec.start(); } catch(e) {}
       recRef.current = rec;
@@ -177,17 +180,30 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
   function doStop() {
     setIsRec(false);
-    if (recRef.current) { try { recRef.current.stop(); } catch(e) {} recRef.current = null; }
-    const captured = liveRef.current.trim() || '[No speech detected]';
     if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
       mediaRecRef.current.onstop = () => {};
       mediaRecRef.current.stop();
     }
-    setPhase('coach');
-    analyzeTranscript(captured);
+
+    function proceed(text) {
+      setPhase('coach');
+      analyzeTranscript(text.trim() || '');
+    }
+
+    if (recRef.current) {
+      const rec = recRef.current;
+      recRef.current = null;
+      // Wait for onend so any final results have been delivered
+      const fallback = setTimeout(() => proceed(liveRef.current), 1800);
+      rec.onend = () => { clearTimeout(fallback); proceed(liveRef.current); };
+      try { rec.stop(); } catch(e) { clearTimeout(fallback); proceed(liveRef.current); }
+    } else {
+      proceed(liveRef.current);
+    }
   }
 
   async function analyzeTranscript(text) {
+    const hasTranscript = text.length > 0;
     try {
       const res = await fetch('/api/claude', {
         method: 'POST',
@@ -195,16 +211,17 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
         body: JSON.stringify({
           model: 'claude-sonnet-4-5',
           max_tokens: 300,
-          system: `You are the AmplifyU coach. The user has just completed The Pause Drill warm-up for Day 3. Your job is to observe one thing only: did they pause before speaking, or did they rush straight into their answer? Do not mention filler words. Do not score them. Do not comment on content, pace, or clarity. Return a JSON object with two fields: pauseObserved (boolean — true if there was a natural pause of one second or more before the first word, false if they began speaking immediately) and coachLine (one warm, encouraging sentence of no more than 20 words). If pauseObserved is true, coachLine should affirm the pause and bridge to the simulation. Example: "You took a moment before you started — that's exactly the habit we're building today." If pauseObserved is false, coachLine should be a gentle forward-looking cue, never critical. Example: "In the Hot Seat, experiment with one second of silence before your first word — the room will read it as confidence." Never use the word fillers. Never use the word perfect. Always frame as growth, never deficit.`,
-          messages: [{role: 'user', content: `Topic: ${topic?.label}\n\nResponse: ${text}`}],
+          system: `You are the AmplifyU coach. The user has just completed The Pause Drill warm-up for Day 3. Your job is to observe one thing only: did they pause before speaking, or did they rush straight into their answer? Do not mention filler words. Do not score them. Do not comment on content, pace, or clarity. Return a JSON object with two fields: pauseObserved (boolean — true if there was a natural pause of one second or more before the first word, false if they began speaking immediately) and coachLine (one warm, direct sentence of no more than 20 words). CRITICAL TONE RULES: Never open with "No worries", "Don't worry", "That's okay", or any casual reassurance. Never use slang or informal openers. Write in the voice of a calm, direct executive coach. If pauseObserved is true, coachLine should affirm the pause and bridge to the simulation — for example: "You gave yourself a moment before you started — that is exactly the habit we are building today." If pauseObserved is false, coachLine should be a calm, forward-looking observation — for example: "In the Hot Seat, try one deliberate second of silence before your first word — the room will read it as confidence." Never use the word fillers. Never use the word perfect. Always frame as growth, never deficit.`,
+          messages: [{role: 'user', content: `Topic: ${topic?.label}\n\nResponse: ${hasTranscript ? text : '[The user spoke but transcription was not captured — assume they responded and assess based on that assumption. Set pauseObserved to true and write an affirming coachLine.]'}`}],
         }),
       });
       const data = await res.json();
       const raw = (data.content || []).map(b => b.text || '').join('');
       const m = raw.match(/\{[\s\S]*\}/);
       if (m) setCoachResult(JSON.parse(m[0]));
+      else throw new Error('no json');
     } catch(e) {
-      setCoachResult({pauseObserved: true, coachLine: "You took a breath before you started — that's the habit we're building today."});
+      setCoachResult({pauseObserved: true, coachLine: "You gave yourself a moment before you spoke — that deliberate pause is the foundation of everything we build today."});
     }
   }
 
@@ -297,6 +314,9 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       style={{...cs.cta, opacity: dotCount < 3 ? 0.3 : 1, cursor: dotCount < 3 ? 'default' : 'pointer'}}>
       Start Speaking →
     </button>
+    <p style={{fontFamily: T.sans, fontSize: 10, color: 'rgba(138,158,132,0.4)', textAlign: 'center', margin: 0, letterSpacing: '0.18em', textTransform: 'uppercase'}}>
+      Pause · Breathe · Speak
+    </p>
   </>);
 
   // ── RECORDING ───────────────────────────────────────────────────────────────
@@ -505,9 +525,12 @@ export function D3SimWidget({T, T2, isDesktop}) {
       const rec = new SpeechRec();
       rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
       rec.onresult = (e) => {
-        let t = '';
-        for (let i = 0; i < e.results.length; i++) if (e.results[i].isFinal) t += e.results[i][0].transcript + ' ';
-        liveRef.current = t;
+        let final = ''; let interim = '';
+        for (let i = 0; i < e.results.length; i++) {
+          if (e.results[i].isFinal) final += e.results[i][0].transcript + ' ';
+          else interim += e.results[i][0].transcript + ' ';
+        }
+        liveRef.current = final || interim;
       };
       try { rec.start(); } catch(e) {}
       recRef.current = rec;
