@@ -96,6 +96,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [audioURL, setAudioURL] = useState(null);
   const [playing, setPlaying] = useState(false);
+  const [audioProgress, setAudioProgress] = useState(0);
   const [selectedFocus, setSelectedFocus] = useState([]);
   const [recMetrics, setRecMetrics] = useState(null);
 
@@ -231,11 +232,27 @@ export function D2SimWidget({T, T2, isDesktop}) {
 
   const FOCUS=["Vary your pace","Use more pauses","Raise your energy","Vary your pitch","Stronger opening","Slow down key points","Increase your range"];
 
+  function getAudio(){
+    if(!audioRef.current&&audioURL){
+      audioRef.current=new Audio(audioURL);
+      audioRef.current.addEventListener('timeupdate',()=>{
+        const a=audioRef.current;
+        if(a&&a.duration)setAudioProgress(a.currentTime/a.duration);
+      });
+      audioRef.current.addEventListener('ended',()=>{setPlaying(false);setAudioProgress(0);});
+    }
+    return audioRef.current;
+  }
   function togglePlay(){
     if(!audioURL){setPlaying(p=>!p);return;}
-    if(!audioRef.current)audioRef.current=new Audio(audioURL);
-    if(playing){audioRef.current.pause();setPlaying(false);}
-    else{audioRef.current.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
+    const a=getAudio();if(!a)return;
+    if(playing){a.pause();setPlaying(false);}
+    else{a.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
+  }
+  function seekTo(pos){
+    const a=getAudio();if(!a)return;
+    a.currentTime=pos*(a.duration||0);
+    if(!playing)a.play().then(()=>setPlaying(true)).catch(()=>{});
   }
 
   const cs={
@@ -545,20 +562,24 @@ export function D2SimWidget({T, T2, isDesktop}) {
                 const approxSec=recMetrics?.elapsedSec?Math.round(m.pos*recMetrics.elapsedSec):null;
                 const timeLabel=approxSec!=null?`${Math.floor(approxSec/60)}:${String(approxSec%60).padStart(2,'0')}`:null;
                 return(
-                <div key={i} style={{position:"absolute",left:(m.pos*100)+"%",transform:"translateX(-50%)",textAlign:"center",zIndex:2}}>
+                <div key={i} onClick={()=>seekTo(m.pos)} style={{position:"absolute",left:(m.pos*100)+"%",transform:"translateX(-50%)",textAlign:"center",zIndex:2,cursor:"pointer"}}>
                   <div style={{fontFamily:T.sans,fontSize:isDesktop?9:7,color:m.color,fontWeight:600,whiteSpace:"nowrap"}}>{m.label}</div>
                   {timeLabel&&<div style={{fontFamily:T.sans,fontSize:isDesktop?8:6,color:T2.text4,whiteSpace:"nowrap"}}>{timeLabel}</div>}
                   {m.quote&&<div style={{fontFamily:T.serif,fontSize:isDesktop?8:6,color:"rgba(245,239,230,0.35)",whiteSpace:"nowrap",fontStyle:"italic",maxWidth:90,overflow:"hidden",textOverflow:"ellipsis"}}>"{m.quote}"</div>}
                 </div>
               );})}
             </div>
-            <div style={{height:36,display:"flex",alignItems:"center",gap:1,position:"relative",overflow:"hidden",borderRadius:4}}>
-              {WBARS.map((h,i)=>{const pos=i/WBARS.length;const nm=MARKERS.find(m=>Math.abs(m.pos-pos)<0.04);return<div key={i} style={{flex:1,background:nm?nm.color:`rgba(138,158,132,${0.3+h*0.4})`,borderRadius:1,height:Math.round(h*32)+"px",minWidth:2}}/>;} )}
+            <div
+              onClick={(e)=>{const r=e.currentTarget.getBoundingClientRect();seekTo((e.clientX-r.left)/r.width);}}
+              style={{height:36,display:"flex",alignItems:"center",gap:1,position:"relative",overflow:"hidden",borderRadius:4,cursor:"pointer"}}>
+              {WBARS.map((h,i)=>{const pos=i/WBARS.length;const nm=MARKERS.find(m=>Math.abs(m.pos-pos)<0.04);const played=pos<audioProgress;return<div key={i} style={{flex:1,background:nm?nm.color:played?`rgba(138,158,132,${0.55+h*0.35})`:`rgba(138,158,132,${0.2+h*0.25})`,borderRadius:1,height:Math.round(h*32)+"px",minWidth:2,transition:"background 0.1s"}}/>;} )}
               {MARKERS.map((m,i)=><div key={i} style={{position:"absolute",left:(m.pos*100)+"%",top:0,bottom:0,width:2,background:m.color,opacity:0.6}}/>)}
+              {audioProgress>0&&<div style={{position:"absolute",left:(audioProgress*100)+"%",top:0,bottom:0,width:2,background:"rgba(245,239,230,0.9)",zIndex:3,transform:"translateX(-50%)",boxShadow:"0 0 6px rgba(245,239,230,0.5)"}}/>}
             </div>
             <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
               <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>0:00</span>
-              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>1:30</span>
+              {recMetrics?.elapsedSec&&<span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{Math.floor(audioProgress*recMetrics.elapsedSec/60)}:{String(Math.round(audioProgress*recMetrics.elapsedSec)%60).padStart(2,'0')}</span>}
+              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{recMetrics?.elapsedSec?`${Math.floor(recMetrics.elapsedSec/60)}:${String(recMetrics.elapsedSec%60).padStart(2,'0')}`:"1:30"}</span>
             </div>
           </div>
         </div>
