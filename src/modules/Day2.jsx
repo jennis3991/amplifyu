@@ -101,6 +101,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
   const [recMetrics, setRecMetrics] = useState(null);
 
   const audioRef = useRef(null);
+  const rafRef = useRef(null);
   const recRef = useRef(null);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -232,27 +233,30 @@ export function D2SimWidget({T, T2, isDesktop}) {
 
   const FOCUS=["Vary your pace","Use more pauses","Raise your energy","Vary your pitch","Stronger opening","Slow down key points","Increase your range"];
 
+  function startRAF(){
+    if(rafRef.current)return;
+    function tick(){const a=audioRef.current;if(a&&a.duration)setAudioProgress(a.currentTime/a.duration);rafRef.current=requestAnimationFrame(tick);}
+    rafRef.current=requestAnimationFrame(tick);
+  }
+  function stopRAF(){if(rafRef.current){cancelAnimationFrame(rafRef.current);rafRef.current=null;}}
   function getAudio(){
     if(!audioRef.current&&audioURL){
       audioRef.current=new Audio(audioURL);
-      audioRef.current.addEventListener('timeupdate',()=>{
-        const a=audioRef.current;
-        if(a&&a.duration)setAudioProgress(a.currentTime/a.duration);
-      });
-      audioRef.current.addEventListener('ended',()=>{setPlaying(false);setAudioProgress(0);});
+      audioRef.current.addEventListener('ended',()=>{setPlaying(false);setAudioProgress(0);stopRAF();});
     }
     return audioRef.current;
   }
   function togglePlay(){
     if(!audioURL){setPlaying(p=>!p);return;}
     const a=getAudio();if(!a)return;
-    if(playing){a.pause();setPlaying(false);}
-    else{a.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
+    if(playing){a.pause();setPlaying(false);stopRAF();}
+    else{a.play().then(()=>{setPlaying(true);startRAF();}).catch(()=>setPlaying(false));}
   }
   function seekTo(pos){
     const a=getAudio();if(!a)return;
     a.currentTime=pos*(a.duration||0);
-    if(!playing)a.play().then(()=>setPlaying(true)).catch(()=>{});
+    if(!playing)a.play().then(()=>{setPlaying(true);startRAF();}).catch(()=>{});
+    else startRAF();
   }
 
   const cs={
@@ -552,6 +556,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
       {/* 5 HEAR IT BACK */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>Hear it back</div>
+        {playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
         <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:isDesktop?14:10}}>
           <button onClick={togglePlay} style={{width:40,height:40,borderRadius:"50%",border:"none",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
             {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
