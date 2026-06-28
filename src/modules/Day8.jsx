@@ -1169,8 +1169,8 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
           return (
             <div key={i} onClick={() => setSelected(i)} style={{ background:sel?"rgba(138,158,132,0.08)":T2.surface, borderRadius:8, border:`1px solid ${sel?T.gold:T2.border}`, padding:"18px 16px 16px", cursor:"pointer", transition:"all 0.18s" }}>
               <div style={{ marginBottom:10 }}>{c.icon(sc)}</div>
-              <div style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T2.text, lineHeight:1.25, marginBottom:6 }}>{c.title}</div>
-              <div style={{ fontFamily:T.sans, fontSize:11, color:T2.text3, lineHeight:1.5, fontWeight:300 }}>{c.sub}</div>
+              <div style={{ fontFamily:T.serif, fontSize:isDesktop?17:16, fontWeight:600, color:T2.text, lineHeight:1.25, marginBottom:6 }}>{c.title}</div>
+              <div style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, lineHeight:1.5, fontWeight:300 }}>{c.sub}</div>
             </div>
           );
         })}
@@ -1197,14 +1197,14 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       </div>
       <div style={{ display:"flex", flexDirection:"column" }}>
         {["The situation before everything changed","What disrupted things or created a turning point","How you responded and what shifted","Where you ended up — the outcome and what it meant"].map((beat, i) => (
-          <div key={i} style={{ padding:"7px 0 7px 14px", borderLeft:"1.5px solid rgba(138,158,132,0.3)" }}>
-            <span style={{ fontFamily:T.serif, fontSize:11, color:T2.text4, lineHeight:1.5, fontStyle:"italic" }}>{beat}</span>
+          <div key={i} style={{ padding:"9px 0 9px 16px", borderLeft:"2px solid rgba(138,158,132,0.4)" }}>
+            <span style={{ fontFamily:T.serif, fontSize:14, color:T2.text, lineHeight:1.5 }}>{beat}</span>
           </div>
         ))}
       </div>
       <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10, padding:"8px 0" }}>
         <D8SequentialDots dotCount={dotCount}/>
-        <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text4, margin:0, fontStyle:"italic" }}>Just speak. We'll find the shape of your story.</p>
+        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, margin:0 }}>Just speak. We'll find the shape of your story.</p>
       </div>
       <button onClick={startRec} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.ink, color:T2.bg||"#F7F3EC", fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
         Start Speaking →
