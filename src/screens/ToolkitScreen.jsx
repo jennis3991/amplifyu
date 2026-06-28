@@ -232,65 +232,108 @@ p];
                   </div>
                 ))}
               </div>
+              {/* Study a Master — full-width card */}
+              <div style={{marginTop:14,background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"18px 20px",cursor:"pointer"}} onClick={()=>setOpenMod('studyMaster')}>
+                <div style={{display:"flex",gap:14,marginBottom:14,alignItems:"flex-start"}}>
+                  <div style={{width:40,height:40,borderRadius:8,background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><ellipse cx="11" cy="11" rx="8.5" ry="5.5" stroke={T2.text3} strokeWidth="1.3"/><circle cx="11" cy="11" r="2.5" stroke={T2.text3} strokeWidth="1.3"/></svg>
+                  </div>
+                  <div style={{flex:1}}>
+                    <div style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:700,color:T2.text,marginBottom:4}}>Study a Master</div>
+                    <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,fontWeight:300}}>Watch someone who inspires you and study how they communicate. Observe the habits that make them exceptional.</div>
+                  </div>
+                </div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
+                  {["Observation","Self-Awareness","Learning"].map((tag,j)=><Tag key={j} label={tag}/>)}
+                </div>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                  <Time n={20}/>
+                  <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text}}>Open →</span>
+                </div>
+              </div>
             </div>
 
-            {/* ── MASTER COMMUNICATORS ─────────────────────────────────── */}
-            <div style={{marginBottom:isDesktop?48:32}}>
-              {sec("Master Communicators")}
-              <div style={{marginTop:16,background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"28px 32px":"20px 22px",marginBottom:14}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Master Communicators</div>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:12}}>Study a Master</div>
-                <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 16px",fontWeight:300}}>Four exceptional communicators — each a master of a different skill. Expand a card, then watch them in action.</p>
-                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",padding:"4px 10px",borderRadius:4,background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)"}}>Week 1 Reference</span>
-              </div>
-              <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:12}}>
-                {MASTER_COMMUNICATORS.map((c,ci)=>{
-                  const open=openMasterCard===ci;
-                  return (
-                    <div key={ci} onClick={()=>setOpenMasterCard(open?null:ci)}
-                      style={{background:T2.surface,borderRadius:8,border:`0.5px solid ${open?T.gold:T2.border}`,cursor:"pointer",transition:"all 0.2s",boxShadow:open?"0 4px 20px rgba(138,158,132,0.1)":"none"}}>
-                      <div style={{padding:"22px 24px 18px"}}>
-                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?0:8}}>
-                          <div style={{flex:1,paddingRight:12}}>
-                            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{c.role}</div>
-                            <div style={{fontFamily:T.serif,fontSize:isDesktop?20:18,fontWeight:600,color:T2.text,lineHeight:1.2}}>{c.name}</div>
-                          </div>
-                          <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.5)",flexShrink:0,marginTop:4,transition:"transform 0.2s",display:"inline-block",transform:open?"rotate(90deg)":"none"}}>▸</span>
-                        </div>
-                      </div>
-                      {open&&(
-                        <div style={{borderTop:"0.5px solid "+T2.divider,padding:"18px 24px 22px",display:"flex",flexDirection:"column",gap:14}}>
-                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,margin:0,fontWeight:300}}>{c.sub}</p>
-                          <div>
-                            <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:8}}>Watch For</div>
-                            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                              {c.watchFor.map((w,wi)=>(
-                                <span key={wi} style={{padding:"5px 12px",borderRadius:20,border:"0.5px solid "+T2.border,fontFamily:T.sans,fontSize:11,color:T2.text,background:T2.bg}}>{w}</span>
-                              ))}
-                            </div>
-                          </div>
-                          <div>
-                            <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:8}}>AmplifyU Connection</div>
-                            <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                              {c.connection.map(([day,principle],di)=>(
-                                <div key={di} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 10px",background:"rgba(138,158,132,0.08)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)"}}>
-                                  <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{day}</span>
-                                  <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>{principle}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                          <div style={{padding:"12px 16px",background:"rgba(138,158,132,0.05)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                            <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:6}}>Reflection Prompt</div>
-                            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{c.reflection}</p>
-                          </div>
-                        </div>
-                      )}
+            {/* Study a Master modal */}
+            {openMod==='studyMaster' && (
+              <div style={{position:"fixed",inset:0,zIndex:200,display:"flex",alignItems:"flex-start",justifyContent:"center",overflowY:"auto",background:"rgba(10,8,5,0.55)",backdropFilter:"blur(4px)",padding:"40px 20px 60px"}}>
+                <div style={{background:T2.bg,borderRadius:12,width:"100%",maxWidth:680,position:"relative",animation:"fadeUp 0.3s ease both"}}>
+                  <div style={{padding:isDesktop?"36px 40px":"24px 22px",borderBottom:"0.5px solid "+T2.divider,display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:16}}>
+                    <div>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Discover · Week 1 Reference</div>
+                      <h2 style={{fontFamily:T.serif,fontSize:isDesktop?32:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:"0 0 12px"}}>Study a Master</h2>
+                      <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,margin:0,fontWeight:300}}>Find someone who inspires you — or someone you think is a master communicator. Watch them. Observe how they communicate, what habits they use, and how they hold presence. Then bring one thing back to your own communication this week.</p>
                     </div>
-                  );
-                })}
+                    <button onClick={()=>{setOpenMod(null);setOpenMasterCard(null);}} style={{background:"none",border:"none",cursor:"pointer",padding:"4px",flexShrink:0,marginTop:4}}>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke={T2.text3} strokeWidth="1.5" strokeLinecap="round"/></svg>
+                    </button>
+                  </div>
+                  <div style={{padding:isDesktop?"28px 40px 36px":"20px 22px 28px"}}>
+                    <div style={{background:"rgba(138,158,132,0.07)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)",padding:"18px 20px",marginBottom:24}}>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your Task</div>
+                      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                        {["Choose someone you find compelling — a speaker, leader, interviewer, advocate, or anyone who communicates in a way you admire.","Watch them with intention. Notice how they speak, how they hold the room, and what specific habits make them effective.","Pick one thing you observed and bring it into a real conversation this week."].map((t,i)=>(
+                          <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+                            <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.15)",border:"0.5px solid rgba(138,158,132,0.35)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                              <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
+                            </div>
+                            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.65,margin:0,fontWeight:300}}>{t}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>Need Inspiration?</div>
+                    <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,fontWeight:300,marginBottom:16}}>Four exceptional communicators — each a master of a different skill. Expand a card for what to watch for.</p>
+                    <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:10}}>
+                      {MASTER_COMMUNICATORS.map((c,ci)=>{
+                        const open=openMasterCard===ci;
+                        return (
+                          <div key={ci} onClick={()=>setOpenMasterCard(open?null:ci)}
+                            style={{background:T2.surface,borderRadius:8,border:`0.5px solid ${open?T.gold:T2.border}`,cursor:"pointer",transition:"all 0.2s",boxShadow:open?"0 4px 20px rgba(138,158,132,0.1)":"none"}}>
+                            <div style={{padding:"18px 20px 14px"}}>
+                              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?0:6}}>
+                                <div style={{flex:1,paddingRight:10}}>
+                                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{c.role}</div>
+                                  <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.2}}>{c.name}</div>
+                                </div>
+                                <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.5)",flexShrink:0,marginTop:3,display:"inline-block",transform:open?"rotate(90deg)":"none",transition:"transform 0.2s"}}>▸</span>
+                              </div>
+                            </div>
+                            {open&&(
+                              <div style={{borderTop:"0.5px solid "+T2.divider,padding:"14px 20px 18px",display:"flex",flexDirection:"column",gap:12}}>
+                                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,margin:0,fontWeight:300}}>{c.sub}</p>
+                                <div>
+                                  <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:7}}>Watch For</div>
+                                  <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                                    {c.watchFor.map((w,wi)=>(
+                                      <span key={wi} style={{padding:"4px 10px",borderRadius:20,border:"0.5px solid "+T2.border,fontFamily:T.sans,fontSize:11,color:T2.text,background:T2.bg}}>{w}</span>
+                                    ))}
+                                  </div>
+                                </div>
+                                <div>
+                                  <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:6}}>AmplifyU Connection</div>
+                                  <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                                    {c.connection.map(([day,principle],di)=>(
+                                      <div key={di} style={{display:"flex",alignItems:"center",gap:5,padding:"3px 8px",background:"rgba(138,158,132,0.08)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)"}}>
+                                        <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{day}</span>
+                                        <span style={{fontFamily:T.sans,fontSize:10,color:T2.text3}}>{principle}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                                <div style={{padding:"10px 14px",background:"rgba(138,158,132,0.05)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                                  <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:5}}>Reflection Prompt</div>
+                                  <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{c.reflection}</p>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* ── PRACTICE SPACE — COMING SOON ─────────────────────────── */}
             <div style={{marginBottom:isDesktop?56:40}}>
