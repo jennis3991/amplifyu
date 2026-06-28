@@ -59,7 +59,7 @@ export function SessionLeftPanel({
         </div>
       </div>
     );
-    if (step === "Practice") return (
+    if (step === "Rehearsal") return (
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
@@ -110,7 +110,7 @@ export function SessionLeftPanel({
         </div>
       </div>
     );
-    if (step === "Practice") return (
+    if (step === "Rehearsal") return (
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
@@ -187,7 +187,7 @@ export function SessionLeftPanel({
         </div>
       </div>
     );
-    if (step === "Practice") return (
+    if (step === "Rehearsal") return (
       <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.08) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
@@ -247,7 +247,7 @@ export function SessionLeftPanel({
         </div>
       </div>
     );
-    if (step === "Practice") return (
+    if (step === "Rehearsal") return (
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
@@ -305,7 +305,7 @@ export function SessionLeftPanel({
         </div>
       </div>
     );
-    if (step === "Practice") return (
+    if (step === "Rehearsal") return (
       <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"80px 48px 64px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
@@ -406,7 +406,7 @@ export function SessionLeftPanel({
         </div>
       </div>
     );
-    if (step === "Practice") return (
+    if (step === "Rehearsal") return (
       <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
@@ -475,7 +475,7 @@ export function SessionLeftPanel({
         </div>
       </div>
     );
-    if (step === "Practice") return (
+    if (step === "Rehearsal") return (
       <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.08) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
@@ -706,7 +706,7 @@ export function SessionLeftPanel({
     );
   }
    // ── Practice — practice-bg.jpg provides the atmosphere from the outer wrapper
-  if (step === "Practice") {
+  if (step === "Rehearsal") {
     if (isD14) return (
       <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 50% 30%, rgba(200,168,76,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
@@ -865,7 +865,6 @@ export function SessionLeftPanel({
         <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>PRE Challenge</div>
         <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Real questions. Real coaching.</p>
         <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-        <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Type your Point, Reason, and Example for each question. Your AmplifyU coach scores the clarity of every component.</p>
       </div>
     </div>
   );

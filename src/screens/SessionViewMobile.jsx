@@ -387,10 +387,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       <span style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.ink,letterSpacing:"-0.3px"}}>AmplifyU</span>
     </div>
      {/* Header image + Exit button overlay */}
-    <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:step==="Practice"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
+    <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:step==="Rehearsal"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
       {(()=>{
         // D5 Practice — PRE Card Sort cinematic dark panel
-        if(isD5 && step==="Practice") return (
+        if(isD5 && step==="Rehearsal") return (
           <div style={{width:"100%",height:280,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 14px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -513,7 +513,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Simulation:null,Review:"/review-chair.jpg"},
         };
         // D1 Practice — cinematic dark panel matching desktop left panel
-        if(isD1 && step==="Practice") return (
+        if(isD1 && step==="Rehearsal") return (
           <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -525,7 +525,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         // D3 Practice — cinematic dark panel
-        if(isD3 && step==="Practice") return (
+        if(isD3 && step==="Rehearsal") return (
           <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -540,7 +540,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         // D6 Practice — cinematic dark panel
-        if(isD6 && step==="Practice") return (
+        if(isD6 && step==="Rehearsal") return (
           <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -552,7 +552,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         // D9 Practice — cinematic dark panel
-        if(isD9 && step==="Practice") return (
+        if(isD9 && step==="Rehearsal") return (
           <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -609,7 +609,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         // D14 Practice — cinematic dark panel
-        if(isD14 && step==="Practice") return (
+        if(isD14 && step==="Rehearsal") return (
           <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 50% 30%, rgba(138,158,132,0.10) 0%, transparent 60%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -621,7 +621,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         // D14 Practice — cinematic dark panel
-        if(isD14 && step==="Practice") return (
+        if(isD14 && step==="Rehearsal") return (
           <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 50% 30%, rgba(200,168,76,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -633,7 +633,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         // D13 Practice — cinematic dark panel
-        if(isD13 && step==="Practice") return (
+        if(isD13 && step==="Rehearsal") return (
           <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -645,7 +645,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         // D12 Practice — cinematic dark panel
-        if(isD12 && step==="Practice") return (
+        if(isD12 && step==="Rehearsal") return (
           <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 60% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -657,7 +657,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         // D11 Practice — cinematic dark panel
-        if(isD11 && step==="Practice") return (
+        if(isD11 && step==="Rehearsal") return (
           <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -680,7 +680,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         // NT Practice — cinematic dark panel
-        if(isNT && step==="Practice") return (
+        if(isNT && step==="Rehearsal") return (
           <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -695,7 +695,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         // D10 Practice — cinematic dark panel
-        if(isD10 && step==="Practice") return (
+        if(isD10 && step==="Rehearsal") return (
           <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -710,7 +710,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           </div>
         );
         // D4 Practice — The Edit cinematic dark panel
-        if(isD4 && step==="Practice") return (
+        if(isD4 && step==="Rehearsal") return (
           <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 14px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
@@ -753,11 +753,11 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:tabletEntry.pos||"center",display:"block",pointerEvents:"none"}}/>
           </picture>
         );
-        if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Practice"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
+        if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Rehearsal"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
         return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
       })()}
       {/* Dark film overlay for Practice only */}
-      {step==="Practice" && <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.52)",pointerEvents:"none"}}/>}
+      {step==="Rehearsal" && <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.52)",pointerEvents:"none"}}/>}
       {/* Exit button — top left over image */}
       <button
         onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
@@ -995,9 +995,9 @@ T.goldDark : T2.text4,
           </div>
         </>
       )}
-      {isD10 && step==="Practice" && d10PracticePhase==='intro' && (
+      {isD10 && step==="Rehearsal" && d10PracticePhase==='intro' && (
         <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Practice · Day 10</div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Rehearsal · Day 10</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The SAR Challenge™</h2>
           <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"16px 18px",marginBottom:12}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The First Step</div>
@@ -1013,7 +1013,7 @@ T.goldDark : T2.text4,
           </button>
         </>
       )}
-      {isD10 && step==="Practice" && d10PracticePhase==='builder' && (
+      {isD10 && step==="Rehearsal" && d10PracticePhase==='builder' && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The SAR Challenge™</div>
           <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>SAR Builder</h2>
@@ -1141,7 +1141,7 @@ T.goldDark : T2.text4,
           </div>
         </>
       )}
-      {isD7 && step==="Practice" && (()=>{
+      {isD7 && step==="Rehearsal" && (()=>{
 
       const D7C=[
         {emoji:"🌍",name:"David Attenborough",role:"Master of Clarity",sub:"Known for explaining the most complex subjects in a way anyone can understand. His communication is calm, precise, and remarkably clear.",watchFor:["Pace and deliberate pacing","Simplicity of language","Precision in word choice","Storytelling"],connection:[["Day 1","Clarity"],["Day 4","Precision"]],reflection:"What makes his explanations so easy to follow?"},
@@ -1621,7 +1621,7 @@ T.goldDark : T2.text4,
           ))}
         </>
       )}
-      {isD3 && step==="Practice" && (
+      {isD3 && step==="Rehearsal" && (
         <>
           <D3PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD3NavLabel} onNavFn={d3NavFnRef} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
         </>
@@ -1708,7 +1708,7 @@ T.goldDark : T2.text4,
           ))}
         </>
       )}
-      {isD4 && step==="Practice" && (
+      {isD4 && step==="Rehearsal" && (
         <>
           <D4PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD4NavLabel} onNavFn={d4NavFnRef} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
         </>
@@ -1803,7 +1803,7 @@ T.goldDark : T2.text4,
           ))}
         </>
       )}
-      {isD1 && step==="Practice" && (
+      {isD1 && step==="Rehearsal" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Voice Warm-Up · Day 1</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Let's warm up your voice.</h2>
@@ -1982,7 +1982,7 @@ T.goldDark : T2.text4,
       {isNT && step==="Simulation" && (
         <StoryArchitectWidget T={T} T2={T2} isDesktop={false}/>
       )}
-      {isNT && step==="Practice" && (
+      {isNT && step==="Rehearsal" && (
         <>
           <StoryBuilderWidget T={T} T2={T2} isDesktop={false} onSave={s=>{setNtStory(s);try{localStorage.setItem("au1_nt_story",s);}catch(_){}}} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
         </>
@@ -2080,9 +2080,9 @@ T.goldDark : T2.text4,
           </div>
         </>
       )}
-      {isD9 && step==="Practice" && (
+      {isD9 && step==="Rehearsal" && (
         <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Practice · Day 9</div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Rehearsal · Day 9</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Build Your Connection Habits</h2>
           <D9PracticeWidget T={T} T2={T2} isDesktop={false}/>
         </>
@@ -2214,7 +2214,7 @@ T.goldDark : T2.text4,
           ))}
         </>
       )}
-       {isD2 && step==="Practice" && (
+       {isD2 && step==="Rehearsal" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Train Your Instrument</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Voice requires repetition. Work through each exercise then take the speed challenge.</p>
@@ -2359,7 +2359,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           </div>
         </>
       )}
-       {isD5 && step==="Practice" && (
+       {isD5 && step==="Rehearsal" && (
         <>
           <D5PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
         </>
@@ -2472,7 +2472,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:4}}>Pressure doesn't create communication habits. It reveals them.</p>
         </>
       )}
-      {isD6 && step==="Practice" && (
+      {isD6 && step==="Rehearsal" && (
         <>
           <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"14px 16px",borderRadius:4}}>
             <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"The phrases that work best under pressure are the ones you've practised until they feel natural — not rehearsed."</p>
@@ -2637,7 +2637,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           </div>
         </>
       )}
-      {isD11 && step==="Practice" && (
+      {isD11 && step==="Rehearsal" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Build Your Brand</h2>
           <D11PracticeWidget T={T} T2={T2} isDesktop={false}/>
@@ -2737,7 +2737,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Great communicators create calm, clarity, and connection."</p>
         </>
       )}
-      {isD12 && step==="Practice" && (
+      {isD12 && step==="Rehearsal" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Presence Challenge</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Seven rounds building gestures, posture, eye contact, expression, and grounded energy.</p>
@@ -2751,7 +2751,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <D12SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
-      {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && !isD12 && !isD13 && !isD14 && step==="Practice" && (
+      {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && !isD12 && !isD13 && !isD14 && step==="Rehearsal" && (
         <>
           <div
 style={{background:T2.surface,borderRadius:16,padding:"18px 20px"}}>
@@ -2949,9 +2949,9 @@ strokeLinecap="round"/></svg>
           </div>
         </>
       )}
-      {isD14 && step==="Practice" && (
+      {isD14 && step==="Rehearsal" && (
         <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Practice · Day 14</div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Rehearsal · Day 14</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>Your Practice</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.7,fontWeight:400,marginBottom:20}}>Have one conversation today where you use everything: PRE structure, a SAR story that passes the 3-Point Test, a confident phrase about your ambition, and deliberate presence.</p>
           <D14PracticeWidget T={T} T2={T2} isDesktop={false}/>
@@ -3073,9 +3073,9 @@ strokeLinecap="round"/></svg>
           </div>
         </>
       )}
-      {isD13 && step==="Practice" && (
+      {isD13 && step==="Rehearsal" && (
         <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Practice · Day 13</div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Rehearsal · Day 13</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Make Your Value Visible</h2>
           <D13PracticeWidget T={T} T2={T2} isDesktop={false}/>
         </>
@@ -3249,38 +3249,38 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
         {idx < STEPS.length-1 && (
           <button
             onClick={()=>{
-              if (isD1 && step==="Practice" && d1NavFnRef.current) { d1NavFnRef.current(); }
-              else if (isD3 && step==="Practice" && d3NavFnRef.current) { d3NavFnRef.current(); }
-              else if (isD4 && step==="Practice" && d4NavFnRef.current) { d4NavFnRef.current(); }
+              if (isD1 && step==="Rehearsal" && d1NavFnRef.current) { d1NavFnRef.current(); }
+              else if (isD3 && step==="Rehearsal" && d3NavFnRef.current) { d3NavFnRef.current(); }
+              else if (isD4 && step==="Rehearsal" && d4NavFnRef.current) { d4NavFnRef.current(); }
               else { setIdx(i=>i+1); }
             }}
-            disabled={(isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)||(isD10 && step==="Practice" && !d10SarDone)}
+            disabled={(isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)}
             style={{
               flex:1,
               padding:"18px 20px",
               borderRadius:14,
               border:"none",
-              background: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)||(isD10 && step==="Practice" && !d10SarDone))
+              background: ((isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone))
                 ? "rgba(44,36,22,0.18)"
                 : idx===0
                   ? "linear-gradient(135deg,"+T.gold+" 0%,"+T.goldDark+" 100%)"
                   : "linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
               color:"white",
               fontSize:15,fontWeight:700,
-              cursor: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)||(isD10 && step==="Practice" && !d10SarDone)) ? "not-allowed" : "pointer",
-              opacity: ((isD1 && step==="Practice" && d1NavLabel===null)||(isD3 && step==="Practice" && d3NavLabel===null)||(isD4 && step==="Practice" && d4NavLabel===null)||(isD10 && step==="Practice" && !d10SarDone)) ? 0.45 : 1,
+              cursor: ((isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)) ? "not-allowed" : "pointer",
+              opacity: ((isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)) ? 0.45 : 1,
               display:"flex",alignItems:"center",justifyContent:"center",gap:10,
               boxShadow:idx===0?"0 4px 16px rgba(138,158,132,0.35)":"0 4px 16px rgba(17,28,46,0.3)",
               letterSpacing:"0.2px",
             }}>
-            <span>{isD1 && step==="Practice" && d1NavLabel
+            <span>{isD1 && step==="Rehearsal" && d1NavLabel
               ? d1NavLabel
-              : isD3 && step==="Practice" && d3NavLabel
+              : isD3 && step==="Rehearsal" && d3NavLabel
                 ? d3NavLabel
-                : isD4 && step==="Practice" && d4NavLabel
+                : isD4 && step==="Rehearsal" && d4NavLabel
                   ? d4NavLabel
                   : isNT
-                  ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Practice":NAV_LABELS[idx])
+                  ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Rehearsal":NAV_LABELS[idx])
                   : isD7 && idx===1
                     ? "See your foundations"
                     : NAV_LABELS[idx]}</span>

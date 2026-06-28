@@ -34,7 +34,7 @@ import { D7SimWidget } from '../modules/Day7.jsx';
 export function SessionView({lesson, isDone, onComplete, onBack, roleId,
 activeRole, dark=false, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
-  const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory 1","Theory 2","Example","Practice","Simulation","Review"]:["Insight","Theory","Example","Practice","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
+  const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory 1","Theory 2","Example","Rehearsal","Simulation","Review"]:["Insight","Theory","Example","Rehearsal","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
   const rightPanelRef = useRef(null);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -107,7 +107,7 @@ setAmbitionSaved(true); } catch {}
   const isD13 = lesson.day === 13;
   const isD14 = lesson.day === 14;
   const STEPS = isNT
-    ? ["Insight","Theory 1","Theory 2","Example","Practice","Simulation","Review"]
+    ? ["Insight","Theory 1","Theory 2","Example","Rehearsal","Simulation","Review"]
     : SESSION_STEPS;
   const step = STEPS[idx];
 
@@ -585,7 +585,7 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice") {
+      if (step === "Rehearsal") {
         const phases = ['intro','inspiration','reflect'];
         const phaseIdx = phases.indexOf(practicePhase);
         const Progress = () => (
@@ -1012,10 +1012,10 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice" && d10PracticePhase==='intro') return (
+      if (step === "Rehearsal" && d10PracticePhase==='intro') return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{marginBottom:24}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Practice · Day 10</div>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Rehearsal · Day 10</div>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>The SAR Challenge™</h2>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:14}}>
@@ -1057,10 +1057,10 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice" && d10PracticePhase==='builder') return (
+      if (step === "Rehearsal" && d10PracticePhase==='builder') return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{marginBottom:24}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Practice · Day 10</div>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Rehearsal · Day 10</div>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>SAR Builder</h2>
           </div>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Situation. Action. Result. Describe what you did — your AmplifyU coach sharpens it into your performance statement.</p>
@@ -1413,7 +1413,7 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice") return (
+      if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Filler-Free Challenge</div>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.2,marginBottom:32}}>Replace fillers with calm, intentional communication.</h2>
@@ -1649,7 +1649,7 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice") return (
+      if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Short Sentences Challenge</div>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.2,marginBottom:32}}>Short sentences give ideas space to land.</h2>
@@ -2225,7 +2225,7 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice") return (
+      if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <StoryBuilderWidget T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
         </div>
@@ -2351,7 +2351,7 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice") return (
+      if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:28 }}>Build Your Connection Habits</h2>
           <D9PracticeWidget T={T} T2={T2} isDesktop={true}/>
@@ -2484,7 +2484,7 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice") return (
+      if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Train Your Instrument</h2>
           <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:560 }}>Voice requires repetition. Work through each exercise, then take the speed challenge.</p>
@@ -2716,7 +2716,7 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice") return (
+      if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <D5PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
         </div>
@@ -2856,7 +2856,7 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice") return (
+      if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:32 }}>
             <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>"The phrases that work best under pressure are the ones you've practised until they feel natural — not rehearsed."</p>
@@ -3107,7 +3107,7 @@ setAmbitionSaved(true); } catch {}
         );
       }
 
-      if (step === "Practice") return (
+      if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:28 }}>Build Your Brand</h2>
           <D11PracticeWidget T={T} T2={T2} isDesktop={true}/>
@@ -3241,7 +3241,7 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Practice") return (
+      if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Presence Challenge</div>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Build Grounded Physical Confidence</h2>
@@ -3379,7 +3379,7 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step==="Practice") return (
+      if (step==="Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:28}}>Make Your Value Visible</h2>
           <D13PracticeWidget T={T} T2={T2} isDesktop={true}/>
@@ -3512,7 +3512,7 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step==="Practice") return (
+      if (step==="Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Your Practice</h2>
           <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.7,fontWeight:400,marginBottom:40,maxWidth:620}}>Have one conversation today where you use everything: PRE structure, a SAR story that passes the 3-Point Test, a confident phrase about your ambition, and deliberate presence.</p>
@@ -3584,7 +3584,7 @@ setAmbitionSaved(true); } catch {}
         )}
 
         {/* ── Practice ─────────────────────────────────────────────────────── */}
-        {step === "Practice" && (
+        {step === "Rehearsal" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
             <div>
               <div style={{ ...RP_LABEL, color: T2.text3, marginBottom: 16 }}>The Exercise</div>
@@ -3856,7 +3856,7 @@ setAmbitionSaved(true); } catch {}
           <div style={{ flex: 1, display: "flex", overflow: "hidden", position: "relative" }}>
 
             {/* Practice step: full-bleed background image behind both panels */}
-            {step === "Practice" && (
+            {step === "Rehearsal" && (
               <img src="/practice-bg.jpg" alt="" style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%",
                 objectFit: "cover", objectPosition: "center 30%",
@@ -3896,7 +3896,7 @@ setAmbitionSaved(true); } catch {}
             {/* RIGHT PANEL — Supporting content (40%) */}
             <div ref={rightPanelRef} style={{
               flex: 1,
-              background: step === "Practice" ? "rgba(247,243,236,0.92)" : T2.bg,
+              background: step === "Rehearsal" ? "rgba(247,243,236,0.92)" : T2.bg,
               overflowY: "auto", position: "relative", zIndex: 1,
               borderLeft: "1px solid " + T2.divider,
             }}>
@@ -3910,7 +3910,7 @@ setAmbitionSaved(true); } catch {}
                 }}/>
               )}
               <div style={{ position: "relative", zIndex: 1 }}>
-                {isD1 && step === "Practice"
+                {isD1 && step === "Rehearsal"
                   ? <D1WarmUpWidget key="d1-warmup" T={T} T2={T2} isDesktop={true}
                       onNavLabel={setD1NavLabel}
                       onNavFn={d1NavFnRef}
@@ -3950,26 +3950,26 @@ setAmbitionSaved(true); } catch {}
             {idx < STEPS.length - 1 && (
               <button
                 onClick={() => {
-                  if (isD1 && step === "Practice" && d1NavFnRef.current) {
+                  if (isD1 && step === "Rehearsal" && d1NavFnRef.current) {
                     d1NavFnRef.current();
                   } else {
                     setIdx(i => i + 1);
                   }
                 }}
-                disabled={isD1 && step === "Practice" && d1NavLabel === null}
+                disabled={isD1 && step === "Rehearsal" && d1NavLabel === null}
                 className="au-cta"
                 style={{
                   display: "flex", alignItems: "center", gap: 10,
                   padding: "9px 24px", borderRadius: 5,
-                  background: isD1 && step === "Practice" && d1NavLabel === null ? "rgba(138,158,132,0.3)" : T.gold,
+                  background: isD1 && step === "Rehearsal" && d1NavLabel === null ? "rgba(138,158,132,0.3)" : T.gold,
                   border: "none",
                   color: "white", fontSize: 13, fontWeight: 600,
-                  cursor: isD1 && step === "Practice" && d1NavLabel === null ? "not-allowed" : "pointer",
+                  cursor: isD1 && step === "Rehearsal" && d1NavLabel === null ? "not-allowed" : "pointer",
                   fontFamily: T.sans, letterSpacing: "0.1px",
                   boxShadow: "0 2px 16px rgba(138,158,132,0.3)",
-                  opacity: isD1 && step === "Practice" && d1NavLabel === null ? 0.5 : 1,
+                  opacity: isD1 && step === "Rehearsal" && d1NavLabel === null ? 0.5 : 1,
                 }}>
-                {isD1 && step === "Practice" && d1NavLabel
+                {isD1 && step === "Rehearsal" && d1NavLabel
                   ? d1NavLabel
                   : idx === 0 ? "Begin" : idx === STEPS.length - 2 ? "Final Chapter" : "Continue"}
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>

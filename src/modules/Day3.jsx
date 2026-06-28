@@ -286,7 +286,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
   // ── SELECT ──────────────────────────────────────────────────────────────────
   if (phase === 'select') return grid(<>
     <div>
-      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 8}}>Practice · Day 3</div>
+      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 8}}>Rehearsal · Day 3</div>
       <h3 style={{fontFamily: T.serif, fontSize: isDesktop ? 24 : 20, fontWeight: 600, color: 'rgba(245,239,230,0.92)', margin: 0, lineHeight: 1.2}}>The Pause Drill</h3>
     </div>
     <div style={{...cs.card}}>

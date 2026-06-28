@@ -143,9 +143,9 @@ p];
               <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:14}}>
                 {[
                   {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="14" height="16" rx="1.5" stroke={T2.text3} strokeWidth="1.3" fill="none"/><path d="M7 8h5M7 11h8M7 14h6" stroke={T2.text3} strokeWidth="1.2" strokeLinecap="round"/><path d="M13 3v4" stroke={T2.text3} strokeWidth="1.2"/></svg>,
-                   label:"SAR Builder", desc:"Turn achievements into compelling stories that get noticed.", tags:["Performance Reviews","Promotions","Interviews"], time:8, day:10, step:"Practice"},
+                   label:"SAR Builder", desc:"Turn achievements into compelling stories that get noticed.", tags:["Performance Reviews","Promotions","Interviews"], time:8, day:10, step:"Rehearsal"},
                   {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/><rect x="12" y="3" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/><rect x="3" y="12" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/><rect x="12" y="12" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/></svg>,
-                   label:"Pixar Story Builder", desc:"Build unforgettable stories using the Pixar framework.", tags:["Storytelling","Presentations","Leadership"], time:4, day:8, step:"Practice"},
+                   label:"Pixar Story Builder", desc:"Build unforgettable stories using the Pixar framework.", tags:["Storytelling","Presentations","Leadership"], time:4, day:8, step:"Rehearsal"},
                 ].map((t,i)=>(
                   <div key={i} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"18px 20px",cursor:"pointer"}} onClick={()=>launch(t.day,t.step)}>
                     <div style={{display:"flex",gap:14,marginBottom:14,alignItems:"flex-start"}}>
@@ -247,8 +247,8 @@ p];
               {sec("Tool Paths","Guided journeys to help you achieve your goals.")}
               <div style={{marginTop:16,display:"flex",flexDirection:"column",gap:12}}>
                 {[
-                  {label:"Promotion Path",     desc:"Stand out and get noticed.",             steps:[{n:"SAR Builder",day:10,step:"Practice"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Leadership Hot Seat",day:6,step:"Simulation"}]},
-                  {label:"Presentation Path",  desc:"Deliver with confidence and impact.",    steps:[{n:"Story Architect",day:8,step:"Simulation"},{n:"Pixar Builder",day:8,step:"Practice"},{n:"Story Sprint",day:8,step:"Simulation"}]},
+                  {label:"Promotion Path",     desc:"Stand out and get noticed.",             steps:[{n:"SAR Builder",day:10,step:"Rehearsal"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Leadership Hot Seat",day:6,step:"Simulation"}]},
+                  {label:"Presentation Path",  desc:"Deliver with confidence and impact.",    steps:[{n:"Story Architect",day:8,step:"Simulation"},{n:"Pixar Builder",day:8,step:"Rehearsal"},{n:"Story Sprint",day:8,step:"Simulation"}]},
                   {label:"Visibility Path",    desc:"Build your brand and expand your reach.",steps:[{n:"Rapport Builder",day:9,step:"Simulation"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Clarity Check-In",day:1,step:"Simulation"}]},
                 ].map((path,i)=>(
                   <div key={i} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 28px":"18px 20px"}}>

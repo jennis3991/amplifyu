@@ -326,7 +326,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
   // ── SELECT ──────────────────────────────────────────────────────────────────
   if (phase === 'select') return grid(<>
     <div>
-      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 8}}>Practice · Day 4</div>
+      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 8}}>Rehearsal · Day 4</div>
       <h3 style={{fontFamily: T.serif, fontSize: isDesktop ? 24 : 20, fontWeight: 600, color: 'rgba(245,239,230,0.92)', margin: 0, lineHeight: 1.2}}>The Edit</h3>
     </div>
     <div style={cs.card}>

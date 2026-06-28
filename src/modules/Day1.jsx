@@ -714,7 +714,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   // ── Phase: select topic ───────────────────────────────────────────────────
   if (phase === 'select') return (
     <div style={{ padding: isDesktop ? "44px 52px" : "24px 20px", overflowY: "auto" }}>
-      <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Practice · Day 1</div>
+      <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Rehearsal · Day 1</div>
       <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Voice Warm-Up</h2>
       <div style={{ background: "#F0EBE2", border: "0.5px solid #DDD5C4", borderRadius: 4, padding: isDesktop ? "16px 20px" : "14px 16px", marginBottom: 20 }}>
         <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 6 }}>Your Warm-Up</div>
@@ -746,7 +746,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
         Choose a different topic
       </button>
-      <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Practice · Day 1</div>
+      <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Rehearsal · Day 1</div>
       <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 36 : 26, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Your topic</h2>
       <div style={{ background: "rgba(138,158,132,0.10)", border: "1.5px solid #8A9E84", borderRadius: 8, padding: isDesktop ? "22px 24px" : "18px 20px", marginBottom: 28, display: "flex", alignItems: "flex-start", gap: 16 }}>
         <div style={{ color: "#8A9E84", flexShrink: 0, marginTop: 2 }}>{TOPICS[sel].icon}</div>

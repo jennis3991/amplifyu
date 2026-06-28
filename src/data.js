@@ -767,8 +767,8 @@ export const WORKPLACE_APPLICATION = [
 
 // ─── SESSION VIEW — 6 steps including Theory
 export const SESSION_STEPS =
-["Insight","Theory","Example","Practice","Simulation","Review"];
-export const NAV_LABELS = ["See the theory","See examples","Start practice","Go to simulation","Go to review"];
+["Insight","Theory","Example","Rehearsal","Simulation","Review"];
+export const NAV_LABELS = ["See the theory","See examples","Start rehearsal","Go to simulation","Go to review"];
 
 // ─── Session constants (pure data, no JSX)
 export const D7_INSIGHT_CARDS = [

@@ -184,7 +184,7 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
   if (phase === 'bridge') return (
     <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
       <div>
-        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Practice · Day 5</div>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Rehearsal · Day 5</div>
         <h2 style={{fontFamily:T.serif, fontSize:isDesktop?30:24, fontWeight:600, color:T2.text, lineHeight:1.15, margin:'0 0 16px', letterSpacing:'-0.5px'}}>The simplest structure in communication.</h2>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.7, margin:'0 0 20px', fontWeight:300}}>PRE is a three-part framework that makes any spoken answer clear, convincing, and easy to follow.</p>
       </div>
@@ -650,7 +650,7 @@ For Q2, apply the same PRE extraction as Q1. Then compare the two. Return a JSON
     <div style={cs.card}>
       <div style={cs.label}>Your Brief</div>
       <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.65, margin:0}}>
-        The AI will ask you one question. You'll have 10 seconds to think. Then answer. Speak for around 45–60 seconds. The coach will analyse your response — without telling you what it's looking for.
+        Your AmplifyU coach will ask you one question. You'll have 10 seconds to think, then answer. Speak for around 45–60 seconds — the coach analyses your response without telling you what it's looking for.
       </p>
     </div>
     <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:10}}>
