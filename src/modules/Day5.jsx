@@ -185,10 +185,28 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
     <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
       <div>
         <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Practice · Day 5</div>
-        <h2 style={{fontFamily:T.serif, fontSize:isDesktop?30:24, fontWeight:600, color:T2.text, lineHeight:1.15, margin:'0 0 16px', letterSpacing:'-0.5px'}}>You just learned PRE. Now it's your turn.</h2>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.7, margin:0, fontWeight:300}}>First, watch how it works in practice. Then try it yourself — before The Boardroom puts you on the spot.</p>
+        <h2 style={{fontFamily:T.serif, fontSize:isDesktop?30:24, fontWeight:600, color:T2.text, lineHeight:1.15, margin:'0 0 16px', letterSpacing:'-0.5px'}}>The simplest structure in communication.</h2>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.7, margin:'0 0 20px', fontWeight:300}}>PRE is a three-part framework that makes any spoken answer clear, convincing, and easy to follow.</p>
       </div>
-      <button onClick={() => setPhase('demo')} style={{...cs.cta, marginTop:4}}>
+      <div style={{background:T2.surface, borderRadius:6, border:'0.5px solid '+T2.border, overflow:'hidden'}}>
+        {[
+          {letter:'P', word:'Point', desc:'Lead with your position. State what you think — clearly, in the first sentence.'},
+          {letter:'R', word:'Reason', desc:'Explain why. Give the logic or evidence behind your view.'},
+          {letter:'E', word:'Example', desc:'Make it real. Ground your reason in something concrete — a story, a stat, a moment.'},
+        ].map((row, i) => (
+          <div key={i} style={{display:'flex', alignItems:'flex-start', gap:16, padding:isDesktop?'16px 20px':'14px 16px', borderBottom:i<2?'0.5px solid '+T2.divider:'none'}}>
+            <div style={{width:32, height:32, borderRadius:6, background:'rgba(138,158,132,0.1)', border:'0.5px solid rgba(138,158,132,0.25)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0}}>
+              <span style={{fontFamily:T.serif, fontSize:16, fontWeight:700, color:T.gold}}>{row.letter}</span>
+            </div>
+            <div>
+              <div style={{fontFamily:T.sans, fontSize:11, fontWeight:700, color:T2.text, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:3}}>{row.word}</div>
+              <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.6, fontWeight:300}}>{row.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.7, margin:0, fontWeight:300}}>First, watch how it works in practice. Then try it yourself — before The Boardroom puts you on the spot.</p>
+      <button onClick={() => setPhase('demo')} style={{...cs.cta}}>
         See It In Action →
       </button>
     </div>
