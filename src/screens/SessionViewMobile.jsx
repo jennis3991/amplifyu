@@ -539,14 +539,13 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           </div>
         );
-        // D6 Practice — cinematic dark panel
+        // D6 Rehearsal — cinematic dark panel
         if(isD6 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)",pointerEvents:"none"}}/>
+          <div style={{width:"100%",height:260,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.06) 0%, transparent 60%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Composure Challenge</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Stay calm. Stay clear. The strongest communicator in the room is the calmest.</p>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Find Your Words</div>
+              <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>The right words under pressure don't come from thinking faster. They come from having them ready.</p>
               <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
@@ -2473,13 +2472,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
         </>
       )}
       {isD6 && step==="Rehearsal" && (
-        <>
-          <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"14px 16px",borderRadius:4}}>
-            <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"The phrases that work best under pressure are the ones you've practised until they feel natural — not rehearsed."</p>
-          </div>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>Scenario Drills</div>
-          <D6PracticeWidget T={T} T2={T2} isDesktop={false}/>
-        </>
+        <D6PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
       )}
       {isD6 && step==="Simulation" && (
         <>

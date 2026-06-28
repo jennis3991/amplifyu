@@ -1,93 +1,320 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 
-export function D6PracticeWidget({T, T2, isDesktop}) {
-  const DRILLS = [
-    {label:"Disagree With Leadership", goal:"Calm disagreement",
-     prompt:'"I respect the direction, but I have a different perspective."',
-     coaching:"Say this slowly. Drop your tone on 'different perspective'. Don't soften the disagreement — honour it. The calm in your voice carries the message.",
-     variations:["Say it as nervous","Say it as calm","Say it as firm and warm","Say it as executive authority"]},
-    {label:"Raise Difficult Feedback", goal:"Warm directness",
-     prompt:'"I wanted to raise something I\'ve noticed."',
-     coaching:"Let the pause after 'noticed' do the work. Composure here signals safety — the other person will lean in rather than close down.",
-     variations:["Say it as hesitant","Say it as compassionate","Say it as overly apologetic","Say it as clear and grounded"]},
-    {label:"Hold a Boundary", goal:"Firm calm",
-     prompt:'"I can\'t commit to that timeline without compromising quality."',
-     coaching:"The word 'quality' is your anchor. Speak it with conviction. This isn't a request — it's a clear position. Calm, not cold.",
-     variations:["Say it as defensive","Say it as firm and professional","Say it as apologetic","Say it as confident and direct"]},
-    {label:"Respond to Criticism", goal:"Non-reactive control",
-     prompt:'"That\'s useful feedback. Let me think about that."',
-     coaching:"This is one of the most powerful phrases in high-stakes communication. Pause before you say it. Mean it. The composure in those seven words builds credibility instantly.",
-     variations:["Say it as rattled","Say it as calm and open","Say it as dismissive","Say it as composed authority"]},
-  ];
-  const [open, setOpen] = useState(null);
+// ── Shared: sequential dot animation ─────────────────────────────────────────
+function useSequentialDots(active) {
+  const [dotCount, setDotCount] = useState(0);
+  useEffect(() => {
+    if (!active) { setDotCount(0); return; }
+    setDotCount(1);
+    const id = setInterval(() => {
+      setDotCount(d => { if (d >= 3) { clearInterval(id); return d; } return d + 1; });
+    }, 600);
+    return () => clearInterval(id);
+  }, [active]);
+  return dotCount;
+}
+function SequentialDots({dotCount}) {
+  return (
+    <div style={{display:'flex', gap:10, justifyContent:'center'}}>
+      {[0,1,2].map(i => (
+        <div key={i} style={{width:9, height:9, borderRadius:'50%', background: i < dotCount ? 'rgba(138,158,132,0.75)' : 'rgba(138,158,132,0.12)', transition:'background 0.35s'}}/>
+      ))}
+    </div>
+  );
+}
 
-  if (isDesktop) return (
-    <>
-      <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,marginBottom:20}}>Scenario Drills</h3>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:40}}>
-        {DRILLS.map((d,i) => (
-          <div key={i} onClick={()=>setOpen(open===i?null:i)}
-            style={{background:T2.surface,borderRadius:4,border:`0.5px solid ${open===i?T.gold:T2.border}`,padding:"22px",cursor:"pointer",transition:"border-color 0.2s"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open===i?16:0}}>
-              <div style={{flex:1}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{d.goal}</div>
-                <p style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,margin:0,lineHeight:1.3}}>{d.label}</p>
-              </div>
-              <span style={{fontFamily:T.sans,fontSize:12,color:open===i?T.gold:T2.text4,marginLeft:12,flexShrink:0}}>{open===i?"▴":"▸"}</span>
-            </div>
-            {open===i && (
-              <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16}}>
-                <div style={{background:T2.bg,borderRadius:4,padding:"16px 18px",marginBottom:16,borderLeft:"2px solid "+T.gold}}>
-                  <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{d.prompt}</p>
-                </div>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,marginBottom:16}}>{d.coaching}</p>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Tone Variations</div>
-                {d.variations.map((v,j) => (
-                  <div key={j} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:j<d.variations.length-1?"0.5px solid "+T2.divider:"none"}}>
-                    <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0}}/>
-                    <span style={{fontFamily:T.sans,fontSize:13,color:T2.text2}}>{v}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+// ── Scenario cards ─────────────────────────────────────────────────────────────
+const SCENARIOS = [
+  { id:'criticised',
+    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+    label: "Your work has just been criticised in front of the room" },
+  { id:'credit',
+    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>,
+    label: "A colleague takes credit for your idea in front of leadership" },
+  { id:'capacity',
+    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+    label: "You're asked to take on work you don't have capacity for" },
+  { id:'expertise',
+    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>,
+    label: "Someone challenges your expertise unexpectedly" },
+  { id:'decision',
+    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 17H3M21 17l-4 4M21 17l-4-4M3 7h18M3 7l4 4M3 7l4-4"/></svg>,
+    label: "A decision you strongly disagree with has just been announced" },
+  { id:'feedback',
+    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>,
+    label: "You receive feedback that feels unfair or inaccurate" },
+];
+
+// ── D6 Rehearsal Widget — Find Your Words ────────────────────────────────────
+export function D6PracticeWidget({T, T2, isDesktop, onSimulation}) {
+  const [phase,       setPhase]       = useState('select');
+  const [scenario,    setScenario]    = useState(null);
+  const [isRec,       setIsRec]       = useState(false);
+  const [waveVals,    setWaveVals]    = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
+  const [coachResult, setCoachResult] = useState(null);
+  const [visCount,    setVisCount]    = useState(0);
+
+  const mediaRecRef = useRef(null);
+  const recRef      = useRef(null);
+  const waveRef     = useRef(null);
+  const liveRef     = useRef('');
+
+  const SpeechRec = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
+  const dotCount  = useSequentialDots(phase === 'ready');
+
+  // Waveform animation during recording
+  useEffect(() => {
+    if (!isRec) { clearInterval(waveRef.current); return; }
+    waveRef.current = setInterval(() => setWaveVals(() => Array.from({length:9}, () => 0.2 + Math.random() * 0.8)), 150);
+    return () => clearInterval(waveRef.current);
+  }, [isRec]);
+
+  // Sequential section reveal on coach screen (500ms between each)
+  useEffect(() => {
+    if (phase !== 'coach') { setVisCount(0); return; }
+    const timers = [1,2,3,4,5,6].map((n, i) => setTimeout(() => setVisCount(n), i * 500));
+    return () => timers.forEach(clearTimeout);
+  }, [phase]);
+
+  function doStart() {
+    setIsRec(true); liveRef.current = '';
+    if (SpeechRec) {
+      const rec = new SpeechRec();
+      rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
+      rec.onresult = (e) => {
+        let f = '', interim = '';
+        for (let i = 0; i < e.results.length; i++) {
+          if (e.results[i].isFinal) f += e.results[i][0].transcript + ' ';
+          else interim += e.results[i][0].transcript + ' ';
+        }
+        liveRef.current = f.trim() || interim.trim();
+      };
+      try { rec.start(); } catch(e) {}
+      recRef.current = rec;
+    }
+    if (navigator.mediaDevices?.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
+        const mr = new MediaRecorder(stream);
+        mr.ondataavailable = () => {};
+        mr.onstop = () => stream.getTracks().forEach(t => t.stop());
+        mr.start();
+        mediaRecRef.current = mr;
+      }).catch(() => {});
+    }
+  }
+
+  function doStop() {
+    setIsRec(false);
+    if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
+      mediaRecRef.current.onstop = () => {};
+      mediaRecRef.current.stop();
+    }
+    function proceed(text) { setPhase('analyzing'); analyzeTranscript(text.trim()); }
+    if (recRef.current) {
+      const rec = recRef.current; recRef.current = null;
+      const fallback = setTimeout(() => proceed(liveRef.current), 1800);
+      rec.onend = () => { clearTimeout(fallback); proceed(liveRef.current); };
+      try { rec.stop(); } catch(e) { clearTimeout(fallback); proceed(liveRef.current); }
+    } else {
+      proceed(liveRef.current);
+    }
+  }
+
+  async function analyzeTranscript(text) {
+    try {
+      const res = await fetch('/api/claude', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001', max_tokens: 500,
+          system: `You are the AmplifyU coach analysing a spoken response for language patterns under pressure. The user was given this high-stakes scenario: ${scenario?.label}. They responded naturally without coaching. Analyse their transcript for the following. languagePattern: classify as one of 'composed' (calm, direct, non-defensive), 'reactive' (rushed, justifying, over-explaining), 'deflecting' (agreeing too quickly, minimising their position), or 'assertive' (strong but potentially combative). openingSentence: extract their actual first sentence verbatim. patternObservation: one specific warm sentence explaining what their language pattern reveals — focus on the words they chose, not their tone or delivery. Never use deficit language. upgradedPhrase: one single sentence that is a stronger, more composed version of their opening — it should feel like something a confident senior professional would say naturally, not a scripted line. It must be specific to what they actually said, not generic. wordBank: an array of exactly six short phrases (2–5 words each) that are powerful in this type of high-stakes moment — these should feel like tools they can reach for, not platitudes. avoidPhrase: one specific word or short phrase detected in their transcript that weakens their position, with one sentence explaining why. If no weak language detected, return null for this field. coachLine: one warm closing sentence bridging to the simulation. Return only valid JSON.`,
+          messages: [{role:'user', content:`Transcript: "${text || '[no spoken response]'}"`}],
+        }),
+      });
+      const data = await res.json();
+      const raw = (data.content || []).map(b => b.text || '').join('');
+      const m = raw.match(/\{[\s\S]*\}/);
+      setCoachResult(JSON.parse(m[0]));
+      setPhase('coach');
+    } catch(e) {
+      setCoachResult({
+        languagePattern: 'composed',
+        openingSentence: text ? (text.split(/[.!?]/)[0] + '.').trim() : 'Your response was noted.',
+        patternObservation: "You stayed in the moment and responded without over-explaining — that restraint is the first signal of composure under pressure.",
+        upgradedPhrase: "I hear that. Here's where I stand.",
+        wordBank: ["I hear that", "Let me be clear", "Here's my position", "That said", "What I know is", "I want to be direct"],
+        avoidPhrase: null,
+        coachLine: "You have the instincts. The simulation will show you how they hold under real pressure.",
+      });
+      setPhase('coach');
+    }
+  }
+
+  const cs = {
+    card:  {background:T2.surface, borderRadius:4, border:'0.5px solid '+T2.border, padding:isDesktop?'22px 24px':'16px 18px'},
+    label: {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2px', marginBottom:8},
+    cta:   {width:'100%', padding:isDesktop?'14px':'13px', borderRadius:4, border:'none', background:T.ink, color:T.bg, fontSize:isDesktop?15:14, fontWeight:600, cursor:'pointer', fontFamily:T.sans, minHeight:48},
+  };
+
+  // ── SELECT ────────────────────────────────────────────────────────────────
+  if (phase === 'select') return (
+    <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
+      <div>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Rehearsal · Day 6</div>
+        <h2 style={{fontFamily:T.serif, fontSize:isDesktop?30:24, fontWeight:600, color:T2.text, lineHeight:1.15, margin:'0 0 10px', letterSpacing:'-0.5px'}}>Find Your Words</h2>
+        <div style={{height:2, background:T2.border, borderRadius:2, marginBottom:0}}>
+          <div style={{height:'100%', width:'0%', background:T.gold, borderRadius:2}}/>
+        </div>
+      </div>
+      <div style={cs.card}>
+        <div style={cs.label}>Your Situation</div>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.65, margin:0}}>
+          Pick one moment below. Respond as you naturally would — don't overthink it. Just say what comes out.
+        </p>
+      </div>
+      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:isDesktop?12:10}}>
+        {SCENARIOS.map(sc => {
+          const sel = scenario?.id === sc.id;
+          return (
+            <button key={sc.id} onClick={() => setScenario(sc)}
+              style={{padding:isDesktop?'18px 16px':'14px 12px', borderRadius:6, border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`, background:sel?'rgba(82,112,96,0.12)':T2.surface, cursor:'pointer', textAlign:'left', transition:'all 0.2s', display:'flex', flexDirection:'column', gap:10, outline:'none'}}>
+              <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3}}>{sc.icon}</div>
+              <span style={{fontFamily:T.sans, fontSize:isDesktop?12:11, color:T2.text, lineHeight:1.4, fontWeight:sel?600:400}}>{sc.label}</span>
+            </button>
+          );
+        })}
+      </div>
+      <button onClick={() => setPhase('ready')} disabled={!scenario}
+        style={{...cs.cta, opacity:scenario?1:0.4, cursor:scenario?'pointer':'not-allowed', fontSize:isDesktop?15:14, padding:isDesktop?'15px':'13px'}}>
+        Respond Naturally →
+      </button>
+    </div>
+  );
+
+  // ── READY ─────────────────────────────────────────────────────────────────
+  if (phase === 'ready') return (
+    <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:isDesktop?28:22, padding:isDesktop?'52px 0':'36px 0'}}>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?21:18, fontWeight:500, color:T2.text, textAlign:'center', lineHeight:1.45, maxWidth:500, margin:0}}>
+        {scenario?.label}
+      </p>
+      <SequentialDots dotCount={dotCount}/>
+      <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, fontStyle:'italic', margin:0, textAlign:'center'}}>
+        Say what comes naturally. Don't filter it.
+      </p>
+      <button onClick={() => { setPhase('rec'); doStart(); }}
+        style={{...cs.cta, maxWidth:340, fontSize:isDesktop?15:14, padding:isDesktop?'14px 28px':'13px 24px'}}>
+        Start Speaking →
+      </button>
+    </div>
+  );
+
+  // ── REC ───────────────────────────────────────────────────────────────────
+  if (phase === 'rec') return (
+    <div style={{display:'flex', flexDirection:'column', gap:isDesktop?18:14, alignItems:'center'}}>
+      <div style={{...cs.card, width:'100%', boxSizing:'border-box', textAlign:'left'}}>
+        <div style={cs.label}>Your Scenario</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.6, margin:0, fontStyle:'italic'}}>{scenario?.label}</p>
+      </div>
+      <div style={{display:'flex', gap:4, alignItems:'center', height:44, padding:'0 8px'}}>
+        {waveVals.map((v, i) => (
+          <div key={i} style={{width:4, borderRadius:2, background:T.gold, height:(v * 36)+'px', transition:'height 0.12s ease', flexShrink:0, opacity:0.85}}/>
         ))}
       </div>
-    </>
+      <p style={{fontFamily:T.sans, fontSize:12, color:T2.text3, margin:0, textAlign:'center'}}>Recording — speak naturally</p>
+      <button onClick={doStop}
+        style={{...cs.cta, maxWidth:340, background:'rgba(82,112,96,0.85)', color:'#fff', fontSize:isDesktop?15:14, padding:isDesktop?'14px 28px':'13px 24px'}}>
+        I've Said It — Stop Recording
+      </button>
+    </div>
   );
 
-  return (
-    <>
-      {DRILLS.map((d,i) => (
-        <div key={i} onClick={()=>setOpen(open===i?null:i)}
-          style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open===i?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px",cursor:"pointer",transition:"border-color 0.2s",marginBottom:10}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:open===i?12:0}}>
-            <div style={{flex:1}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:4}}>{d.goal}</div>
-              <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,margin:0,lineHeight:1.3}}>{d.label}</p>
+  // ── ANALYZING ─────────────────────────────────────────────────────────────
+  if (phase === 'analyzing') return (
+    <div style={{display:'flex', flexDirection:'column', gap:14, alignItems:'center', padding:isDesktop?'52px 0':'36px 0'}}>
+      <div style={{display:'flex', gap:6}}>
+        {[0,1,2].map(i => <div key={i} style={{width:8, height:8, borderRadius:'50%', background:T.gold, animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}
+      </div>
+      <p style={{fontFamily:T.sans, fontSize:14, color:T2.text3, margin:0, textAlign:'center'}}>Your AmplifyU coach is reading your language…</p>
+    </div>
+  );
+
+  // ── COACH FEEDBACK ────────────────────────────────────────────────────────
+  if (phase === 'coach' && coachResult) {
+    const lp = coachResult.languagePattern;
+    const patternColor = lp === 'composed' ? T.gold : lp === 'assertive' ? '#8A9E84' : '#B8903A';
+    return (
+      <div style={{display:'flex', flexDirection:'column', gap:isDesktop?18:14}}>
+
+        {/* 1 — What you said */}
+        {visCount >= 1 && (
+          <div style={{animation:'fadeUp 0.4s ease both'}}>
+            <div style={{...cs.label, color:T2.text3}}>What You Said</div>
+            <div style={{background:T2.surface, border:'0.5px solid '+T2.border, borderRadius:4, padding:isDesktop?'16px 20px':'14px 16px', borderLeft:'2px solid rgba(138,158,132,0.35)'}}>
+              <p style={{fontFamily:T.serif, fontSize:isDesktop?16:15, fontStyle:'italic', color:T2.text, lineHeight:1.6, margin:0}}>"{coachResult.openingSentence}"</p>
             </div>
-            <span style={{fontFamily:T.sans,fontSize:12,color:open===i?T.gold:T2.text4,marginLeft:10,flexShrink:0}}>{open===i?"▴":"▸"}</span>
           </div>
-          {open===i && (
-            <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:12}}>
-              <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"2px solid "+T.gold,padding:"12px 14px",marginBottom:12,borderRadius:3}}>
-                <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{d.prompt}</p>
-              </div>
-              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.65,marginBottom:12}}>{d.coaching}</p>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Tone Variations</div>
-              {d.variations.map((v,j) => (
-                <div key={j} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:j<d.variations.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
-                  <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0}}/>
-                  <span style={{fontFamily:T.sans,fontSize:12,color:T2.text2}}>{v}</span>
-                </div>
+        )}
+
+        {/* 2 — Coach observation (dark ink panel) */}
+        {visCount >= 2 && (
+          <div style={{background:'#0A0804', borderRadius:6, padding:isDesktop?'22px 24px':'18px 20px', border:'0.5px solid rgba(138,158,132,0.12)', animation:'fadeUp 0.4s ease both'}}>
+            <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:12}}>Your AmplifyU Coach Says</div>
+            <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, color:'rgba(245,239,230,0.92)', lineHeight:1.55, margin:'0 0 14px', fontWeight:500}}>{coachResult.patternObservation}</p>
+            <span style={{display:'inline-block', padding:'3px 10px', borderRadius:20, background:`${patternColor}22`, border:`0.5px solid ${patternColor}66`, fontFamily:T.sans, fontSize:10, fontWeight:700, color:patternColor, textTransform:'uppercase', letterSpacing:'1.5px'}}>
+              {lp}
+            </span>
+          </div>
+        )}
+
+        {/* 3 — Upgraded phrase */}
+        {visCount >= 3 && (
+          <div style={{animation:'fadeUp 0.4s ease both'}}>
+            <div style={{...cs.label, color:T.gold}}>A Stronger Opening</div>
+            <div style={{borderLeft:'3px solid '+T.gold, paddingLeft:isDesktop?20:16}}>
+              <p style={{fontFamily:T.serif, fontSize:isDesktop?23:20, fontStyle:'italic', color:T2.text, lineHeight:1.4, margin:0, fontWeight:500}}>{coachResult.upgradedPhrase}</p>
+            </div>
+            <p style={{fontFamily:T.sans, fontSize:11, color:T2.text3, fontStyle:'italic', margin:'8px 0 0', paddingLeft:isDesktop?24:20}}>Read this once. Out loud. Before the simulation begins.</p>
+          </div>
+        )}
+
+        {/* 4 — Word bank */}
+        {visCount >= 4 && (
+          <div style={{animation:'fadeUp 0.4s ease both'}}>
+            <div style={cs.label}>Words That Work in This Moment</div>
+            <div style={{display:'flex', flexWrap:'wrap', gap:8}}>
+              {(coachResult.wordBank || []).map((phrase, i) => (
+                <span key={i} style={{padding:'5px 14px', borderRadius:20, border:'0.5px solid rgba(138,158,132,0.4)', background:T2.bg, fontFamily:T.serif, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.4}}>
+                  {phrase}
+                </span>
               ))}
             </div>
-          )}
-        </div>
-      ))}
-    </>
-  );
+          </div>
+        )}
+
+        {/* 5 — One thing to avoid (only if avoidPhrase is non-null) */}
+        {visCount >= 5 && coachResult.avoidPhrase && (
+          <div style={{animation:'fadeUp 0.4s ease both', borderLeft:'2.5px solid #B8903A', paddingLeft:isDesktop?20:16}}>
+            <div style={{...cs.label, color:'#B8903A', marginLeft:0}}>One Thing to Avoid</div>
+            <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.65, margin:0}}>{coachResult.avoidPhrase}</p>
+          </div>
+        )}
+
+        {/* 6 — Bridge + CTA */}
+        {visCount >= 6 && (
+          <div style={{animation:'fadeUp 0.4s ease both'}}>
+            <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text3, textAlign:'center', lineHeight:1.65, margin:'0 0 16px'}}>{coachResult.coachLine}</p>
+            <button onClick={() => onSimulation?.()}
+              style={{...cs.cta, fontSize:isDesktop?15:14, padding:isDesktop?'15px':'13px'}}>
+              I've Said It — Enter the Simulation →
+            </button>
+          </div>
+        )}
+
+      </div>
+    );
+  }
+
+  return null;
 }
 
 // ─── Custom Dropdown ─────────────────────────────────────────────────────────
