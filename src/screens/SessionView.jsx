@@ -2646,7 +2646,17 @@ setAmbitionSaved(true); } catch {}
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Why Structure Wins</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:600 }}>Structure is how you organise your thinking before you speak. PRE helps you do that: start with your point, explain why it matters, then bring it to life with an example.</p>
+          {/* PRE definition — shown before anything else */}
+          <div style={{ display:"flex", gap:0, marginBottom:28, borderRadius:6, overflow:"hidden", border:"0.5px solid "+T2.border }}>
+            {[{l:"P", word:"Point", desc:"State your view first."},{l:"R", word:"Reason", desc:"Explain why."},{l:"E", word:"Example", desc:"Make it concrete."}].map((item,i) => (
+              <div key={i} style={{ flex:1, padding:"18px 20px", background:i===1?T2.surface:T2.bg, borderLeft:i>0?"0.5px solid "+T2.border:"none" }}>
+                <div style={{ fontFamily:T.serif, fontSize:28, fontWeight:700, color:T.gold, lineHeight:1, marginBottom:6 }}>{item.l}</div>
+                <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:700, color:T2.text, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:4 }}>{item.word}</div>
+                <div style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, lineHeight:1.5, fontWeight:300 }}>{item.desc}</div>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:600 }}>Three parts. Every answer. PRE is the framework that makes your thinking instantly clear to whoever is listening.</p>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
             {[
               {word:"Credibility",    sub:"Leading with your point signals clear thinking.", bullets:["Structured communication creates immediate credibility — your audience knows you have a clear perspective.","When you lead with your conclusion, you sound decisive and confident before you've even explained why."]},

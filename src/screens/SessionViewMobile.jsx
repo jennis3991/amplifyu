@@ -2099,8 +2099,17 @@ T.goldDark : T2.text4,
       {/* ── D5 Mobile Steps ─────────────────────────────────────────────── */}
       {isD5 && step==="Insight" && (
         <>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Structure Wins</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>Structure is how you organise your thinking before you speak. PRE helps you do that: start with your point, explain why it matters, then bring it to life with an example.</p>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Why Structure Wins</h2>
+          <div style={{display:"flex",gap:0,marginBottom:20,borderRadius:6,overflow:"hidden",border:"0.5px solid "+T2.border}}>
+            {[{l:"P",word:"Point",desc:"State your view first."},{l:"R",word:"Reason",desc:"Explain why."},{l:"E",word:"Example",desc:"Make it concrete."}].map((item,i)=>(
+              <div key={i} style={{flex:1,padding:"14px 12px",background:i===1?T2.surface:T2.bg,borderLeft:i>0?"0.5px solid "+T2.divider:"none"}}>
+                <div style={{fontFamily:T.serif,fontSize:22,fontWeight:700,color:T.gold,lineHeight:1,marginBottom:4}}>{item.l}</div>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"1px",marginBottom:3}}>{item.word}</div>
+                <div style={{fontFamily:T.sans,fontSize:10,color:T2.text3,lineHeight:1.4,fontWeight:300}}>{item.desc}</div>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>Three parts. Every answer. PRE is the framework that makes your thinking instantly clear to whoever is listening.</p>
           <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Explore each card to learn more →</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {[
