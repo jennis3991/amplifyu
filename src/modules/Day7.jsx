@@ -138,7 +138,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 400,
-          system: `You analyse a spoken response where the user tries to name six communication habits: ${SIX_SKILLS.join(', ')}. Return ONLY valid JSON with exactly these keys: skillsMentioned (array of skill names from the list that were clearly referenced — use exact names from the list), skillsMissed (array of skill names not clearly referenced), overallReflectionQuality ("strong"|"partial"|"developing"), coachLine (one warm specific sentence acknowledging what they got right, max 25 words), bridgeLine (one short motivational closing sentence max 12 words in first person). No extra text, no markdown fences.`,
+          system: `You are the AmplifyU coach reviewing a Day 7 rehearsal reflection. The user was asked to think of a real upcoming conversation and speak for 30 seconds about which of this week's six communication skills — Clarity, Pace, Fillers, Short Sentences, Structure, Composure — they will use in it and why. Analyse their transcript for the following. identifiedRealSituation (boolean — true if they named or described a specific real upcoming moment, meeting, conversation, or event rather than speaking generically). identifiedSpecificSkill (boolean — true if they connected at least one specific skill to that situation with a reason). skillsReferenced (array — which of the six skills they mentioned explicitly or implicitly). reflectionDepth: one of 'specific' (named a real situation and connected a skill to it with a reason), 'partial' (named a situation or a skill but not both with a clear connection), or 'generic' (spoke about skills generally without connecting to a real moment). coachLine (one warm specific sentence — if reflectionDepth is 'specific', affirm the connection between the skill and the real moment they named; if 'partial' or 'generic', give one forward-looking nudge about connecting skills to real moments, never critical, always growth-framed — maximum 25 words). bridgeLine: always return exactly this text: 'Now explain the whole week to someone who knows nothing about it. That is the real test.' Return only valid JSON.`,
           messages: [{ role: 'user', content: `Transcript: "${text || 'No speech detected.'}"` }]
         })
       });
@@ -146,17 +146,17 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
       const raw = data.content?.[0]?.text || '{}';
       const json = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0] || '{}');
       setCoachResult({
-        skillsMentioned: json.skillsMentioned || [],
-        skillsMissed: json.skillsMissed || SIX_SKILLS,
-        coachLine: json.coachLine || 'Good effort — keep building these habits.',
-        bridgeLine: json.bridgeLine || 'Every rep makes them more automatic.',
+        identifiedRealSituation: json.identifiedRealSituation === true,
+        identifiedSpecificSkill: json.identifiedSpecificSkill === true,
+        coachLine: json.coachLine || 'Good effort — connect these skills to a real moment this week.',
+        bridgeLine: json.bridgeLine || 'Now explain the whole week to someone who knows nothing about it. That is the real test.',
       });
     } catch(_) {
       setCoachResult({
-        skillsMentioned: [],
-        skillsMissed: SIX_SKILLS,
-        coachLine: 'Good effort — keep building these habits.',
-        bridgeLine: 'Every rep makes them more automatic.',
+        identifiedRealSituation: false,
+        identifiedSpecificSkill: false,
+        coachLine: 'Good effort — connect these skills to a real moment this week.',
+        bridgeLine: 'Now explain the whole week to someone who knows nothing about it. That is the real test.',
       });
     }
     setPhase('coach');
@@ -180,12 +180,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
       {progressBar(0)}
       <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"22px 24px" }}>
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Challenge</div>
-        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:"0 0 18px", fontWeight:400 }}>Speak for 30–60 seconds and name all six communication habits you've built this week. Don't read them — recall them.</p>
-        <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
-          {SIX_SKILLS.map(s => (
-            <span key={s} style={{ ...chipBase, background:T2.bg, border:"0.5px solid "+T2.border, color:T2.text3 }}>{s}</span>
-          ))}
-        </div>
+        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:0, fontWeight:400 }}>Think of one real conversation coming up this week — a meeting, a presentation, a difficult discussion. Speak for 30 seconds about which of this week's skills you'll use in it — and why.</p>
       </div>
       <button onClick={startRec} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
         Start Speaking →
@@ -206,14 +201,6 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
           {String(Math.floor(elapsed/60)).padStart(2,'0')}:{String(elapsed%60).padStart(2,'0')}
         </span>
       </div>
-      <div style={{ background:T2.surface, borderRadius:6, border:"0.5px solid "+T2.border, padding:"16px 18px" }}>
-        <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T2.text4, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>Reference</div>
-        <div style={{ display:"flex", flexWrap:"wrap", gap:7 }}>
-          {SIX_SKILLS.map(s => (
-            <span key={s} style={{ ...chipBase, fontSize:11, background:T2.bg, border:"0.5px solid "+T2.border, color:T2.text4 }}>{s}</span>
-          ))}
-        </div>
-      </div>
       <button onClick={doStop} style={{ width:"100%", padding:"15px", borderRadius:4, border:"1px solid "+T2.border, background:"transparent", color:T2.text, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
         Done — Stop Recording
       </button>
@@ -228,39 +215,24 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
   );
 
   if (phase === 'coach' && coachResult) {
-    const { skillsMentioned, skillsMissed, coachLine, bridgeLine } = coachResult;
-    const allMentioned = skillsMissed.length === 0;
-    const nearlyThere = skillsMissed.length <= 2 && !allMentioned;
+    const { identifiedRealSituation, identifiedSpecificSkill, coachLine, bridgeLine } = coachResult;
+    const showConnectionIndicator = identifiedRealSituation && identifiedSpecificSkill;
     return (
       <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
         <div>
           <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>REHEARSAL · DAY 7</div>
           <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>The Six</h2>
         </div>
-        <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"22px 24px" }}>
-          <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:14 }}>Skill Coverage</div>
-          <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
-            {SIX_SKILLS.map(s => {
-              const hit = skillsMentioned.some(m => m.toLowerCase().includes(s.toLowerCase()) || s.toLowerCase().includes(m.toLowerCase()));
-              return (
-                <span key={s} style={{ ...chipBase, background: hit ? "rgba(138,158,132,0.15)" : T2.bg, border: `0.5px solid ${hit ? T.gold : T2.border}`, color: hit ? T.gold : T2.text4 }}>{s}</span>
-              );
-            })}
-          </div>
-          {allMentioned && (
-            <p style={{ fontFamily:T.sans, fontSize:13, color:T.gold, margin:"12px 0 0", fontWeight:600 }}>All six named. Strong recall.</p>
-          )}
-        </div>
         <div style={{ background:"#0E0B08", borderRadius:8, padding:"24px 26px" }}>
-          <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.6)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Coach</div>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.85)", lineHeight:1.7, margin:0, fontWeight:300 }}>{coachLine}</p>
-          {nearlyThere && (
-            <p style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.5)", lineHeight:1.65, margin:"14px 0 0", fontWeight:300 }}>
-              You named {skillsMentioned.length} of 6 this time. Next time, try saying each habit name out loud before you explain it.
-            </p>
-          )}
+          <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.6)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:14 }}>Your AmplifyU Coach Says</div>
+          <p style={{ fontFamily:T.serif, fontSize:isDesktop?20:18, color:"rgba(245,239,230,0.9)", lineHeight:1.55, margin:0, fontWeight:500 }}>{coachLine}</p>
         </div>
-        <p style={{ fontFamily:T.serif, fontSize:isDesktop?18:16, fontStyle:"italic", color:T2.text, lineHeight:1.5, margin:0, textAlign:"center" }}>{bridgeLine}</p>
+        {showConnectionIndicator && (
+          <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+            <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px" }}>✓ Skill connected to a real moment</span>
+          </div>
+        )}
+        <p style={{ fontFamily:T.serif, fontSize:isDesktop?16:15, fontStyle:"italic", color:T2.text3, lineHeight:1.6, margin:0, textAlign:"center" }}>{bridgeLine}</p>
         <button onClick={() => onSimulation?.()} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.gold, color:"white", fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
           Teach It Forward →
         </button>
