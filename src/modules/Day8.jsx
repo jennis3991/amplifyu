@@ -1190,10 +1190,10 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>REHEARSAL · DAY 8</div>
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>Find Your Story</h2>
       </div>
-      <p style={{ fontFamily:T.serif, fontSize:13, fontStyle:"italic", color:T2.text3, margin:0 }}>{STORY_CARDS[selected]?.title}</p>
-      <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"22px 24px" }}>
-        <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:14 }}>Your Story</div>
-        <p style={{ fontFamily:T.serif, fontSize:isDesktop?20:18, color:T2.text, lineHeight:1.55, margin:0, fontWeight:500 }}>Tell me your story. Speak naturally for around 60 seconds. Don't worry about structure — just say what happened.</p>
+      <h3 style={{ fontFamily:T.serif, fontSize:isDesktop?26:22, fontWeight:600, color:T2.text, lineHeight:1.2, margin:0 }}>{STORY_CARDS[selected]?.title}</h3>
+      <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"28px 24px 22px" }}>
+        <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:16 }}>Your Story</div>
+        <p style={{ fontFamily:T.serif, fontSize:isDesktop?22:19, color:T2.text, lineHeight:1.55, margin:0, fontWeight:500 }}>Choose a story. Speak for around 60 seconds. Your AmplifyU coach will find the shape of your story and turn it into something you can use anywhere.</p>
       </div>
       <div style={{ display:"flex", flexDirection:"column" }}>
         {["The situation before everything changed","What disrupted things or created a turning point","How you responded and what shifted","Where you ended up — the outcome and what it meant"].map((beat, i) => (
