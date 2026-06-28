@@ -46,6 +46,231 @@ function RadarChart({ scores, gold, size = 200 }) {
   );
 }
 
+// ─── Sequential dot animation ─────────────────────────────────────────────────
+function useSequentialDots(active) {
+  const [dotCount, setDotCount] = useState(0);
+  useEffect(() => {
+    if (!active) { setDotCount(0); return; }
+    setDotCount(1);
+    const id = setInterval(() => {
+      setDotCount(d => { if (d >= 3) { clearInterval(id); return d; } return d + 1; });
+    }, 600);
+    return () => clearInterval(id);
+  }, [active]);
+  return dotCount;
+}
+function SequentialDots({ dotCount }) {
+  return (
+    <div style={{ display:'flex', gap:10, justifyContent:'center' }}>
+      {[0,1,2].map(i => (
+        <div key={i} style={{ width:9, height:9, borderRadius:'50%', background: i < dotCount ? 'rgba(138,158,132,0.75)' : 'rgba(138,158,132,0.12)', transition:'background 0.35s' }}/>
+      ))}
+    </div>
+  );
+}
+
+const SIX_SKILLS = ['Clarity','Pace','Fillers','Short Sentences','Structure','Composure'];
+
+// ─── D7 Practice Widget — The Six ─────────────────────────────────────────────
+export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
+  const [phase, setPhase] = useState('prompt');
+  const [elapsed, setElapsed] = useState(0);
+  const [transcript, setTranscript] = useState('');
+  const [coachResult, setCoachResult] = useState(null);
+  const recRef = useRef(null);
+  const srRef = useRef(null);
+  const liveRef = useRef('');
+  const timerRef = useRef(null);
+  const dotCount = useSequentialDots(phase === 'analyzing');
+
+  useEffect(() => {
+    if (phase === 'rec') {
+      timerRef.current = setInterval(() => setElapsed(e => e + 1), 1000);
+    } else {
+      clearInterval(timerRef.current);
+      if (phase !== 'coach') setElapsed(0);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [phase]);
+
+  async function startRec() {
+    liveRef.current = '';
+    setTranscript('');
+    setElapsed(0);
+    setPhase('rec');
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SR) {
+      const sr = new SR();
+      sr.continuous = true;
+      sr.interimResults = true;
+      sr.onresult = (e) => {
+        let t = '';
+        for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript + ' ';
+        liveRef.current = t.trim();
+        setTranscript(liveRef.current);
+      };
+      sr.start();
+      srRef.current = sr;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mr = new MediaRecorder(stream);
+      mr.start();
+      recRef.current = mr;
+    } catch(_) {}
+  }
+
+  async function doStop() {
+    srRef.current?.stop();
+    if (recRef.current && recRef.current.state !== 'inactive') recRef.current.stop();
+    await new Promise(r => setTimeout(r, 1800));
+    const final = liveRef.current || transcript || '';
+    setTranscript(final);
+    setPhase('analyzing');
+    await callCoach(final);
+  }
+
+  async function callCoach(text) {
+    try {
+      const res = await fetch('/api/claude', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 400,
+          system: `You analyse a spoken response where the user tries to name six communication habits: ${SIX_SKILLS.join(', ')}. Return ONLY valid JSON with exactly these keys: skillsMentioned (array of skill names from the list that were clearly referenced — use exact names from the list), skillsMissed (array of skill names not clearly referenced), overallReflectionQuality ("strong"|"partial"|"developing"), coachLine (one warm specific sentence acknowledging what they got right, max 25 words), bridgeLine (one short motivational closing sentence max 12 words in first person). No extra text, no markdown fences.`,
+          messages: [{ role: 'user', content: `Transcript: "${text || 'No speech detected.'}"` }]
+        })
+      });
+      const data = await res.json();
+      const raw = data.content?.[0]?.text || '{}';
+      const json = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0] || '{}');
+      setCoachResult({
+        skillsMentioned: json.skillsMentioned || [],
+        skillsMissed: json.skillsMissed || SIX_SKILLS,
+        coachLine: json.coachLine || 'Good effort — keep building these habits.',
+        bridgeLine: json.bridgeLine || 'Every rep makes them more automatic.',
+      });
+    } catch(_) {
+      setCoachResult({
+        skillsMentioned: [],
+        skillsMissed: SIX_SKILLS,
+        coachLine: 'Good effort — keep building these habits.',
+        bridgeLine: 'Every rep makes them more automatic.',
+      });
+    }
+    setPhase('coach');
+  }
+
+  const chipBase = { fontFamily:T.sans, fontSize:12, fontWeight:600, padding:"8px 14px", borderRadius:20, letterSpacing:"0.3px" };
+  const progressBar = (activeIdx) => (
+    <div style={{ display:"flex", gap:4 }}>
+      {[0,1,2].map(i => (
+        <div key={i} style={{ height:3, flex:1, borderRadius:2, background:i<=activeIdx?T.gold:T2.border, transition:"background 0.3s" }}/>
+      ))}
+    </div>
+  );
+
+  if (phase === 'prompt') return (
+    <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+      <div>
+        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>REHEARSAL · DAY 7</div>
+        <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>The Six</h2>
+      </div>
+      {progressBar(0)}
+      <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"22px 24px" }}>
+        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Challenge</div>
+        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:"0 0 18px", fontWeight:400 }}>Speak for 30–60 seconds and name all six communication habits you've built this week. Don't read them — recall them.</p>
+        <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
+          {SIX_SKILLS.map(s => (
+            <span key={s} style={{ ...chipBase, background:T2.bg, border:"0.5px solid "+T2.border, color:T2.text3 }}>{s}</span>
+          ))}
+        </div>
+      </div>
+      <button onClick={startRec} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
+        Start Speaking →
+      </button>
+    </div>
+  );
+
+  if (phase === 'rec') return (
+    <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+      <div>
+        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>REHEARSAL · DAY 7</div>
+        <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>The Six</h2>
+      </div>
+      {progressBar(1)}
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:12, padding:"24px", background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border }}>
+        <div style={{ width:10, height:10, borderRadius:"50%", background:"#C8524A", animation:"pulse 1.2s ease infinite" }}/>
+        <span style={{ fontFamily:T.sans, fontSize:36, fontWeight:300, color:T2.text, letterSpacing:"0.05em" }}>
+          {String(Math.floor(elapsed/60)).padStart(2,'0')}:{String(elapsed%60).padStart(2,'0')}
+        </span>
+      </div>
+      <div style={{ background:T2.surface, borderRadius:6, border:"0.5px solid "+T2.border, padding:"16px 18px" }}>
+        <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T2.text4, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>Reference</div>
+        <div style={{ display:"flex", flexWrap:"wrap", gap:7 }}>
+          {SIX_SKILLS.map(s => (
+            <span key={s} style={{ ...chipBase, fontSize:11, background:T2.bg, border:"0.5px solid "+T2.border, color:T2.text4 }}>{s}</span>
+          ))}
+        </div>
+      </div>
+      <button onClick={doStop} style={{ width:"100%", padding:"15px", borderRadius:4, border:"1px solid "+T2.border, background:"transparent", color:T2.text, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
+        Done — Stop Recording
+      </button>
+    </div>
+  );
+
+  if (phase === 'analyzing') return (
+    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:280, gap:20 }}>
+      <SequentialDots dotCount={dotCount}/>
+      <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, margin:0 }}>Analysing your response…</p>
+    </div>
+  );
+
+  if (phase === 'coach' && coachResult) {
+    const { skillsMentioned, skillsMissed, coachLine, bridgeLine } = coachResult;
+    const allMentioned = skillsMissed.length === 0;
+    const nearlyThere = skillsMissed.length <= 2 && !allMentioned;
+    return (
+      <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+        <div>
+          <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>REHEARSAL · DAY 7</div>
+          <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>The Six</h2>
+        </div>
+        <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"22px 24px" }}>
+          <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:14 }}>Skill Coverage</div>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
+            {SIX_SKILLS.map(s => {
+              const hit = skillsMentioned.some(m => m.toLowerCase().includes(s.toLowerCase()) || s.toLowerCase().includes(m.toLowerCase()));
+              return (
+                <span key={s} style={{ ...chipBase, background: hit ? "rgba(138,158,132,0.15)" : T2.bg, border: `0.5px solid ${hit ? T.gold : T2.border}`, color: hit ? T.gold : T2.text4 }}>{s}</span>
+              );
+            })}
+          </div>
+          {allMentioned && (
+            <p style={{ fontFamily:T.sans, fontSize:13, color:T.gold, margin:"12px 0 0", fontWeight:600 }}>All six named. Strong recall.</p>
+          )}
+        </div>
+        <div style={{ background:"#0E0B08", borderRadius:8, padding:"24px 26px" }}>
+          <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.6)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Coach</div>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.85)", lineHeight:1.7, margin:0, fontWeight:300 }}>{coachLine}</p>
+          {nearlyThere && (
+            <p style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.5)", lineHeight:1.65, margin:"14px 0 0", fontWeight:300 }}>
+              You named {skillsMentioned.length} of 6 this time. Next time, try saying each habit name out loud before you explain it.
+            </p>
+          )}
+        </div>
+        <p style={{ fontFamily:T.serif, fontSize:isDesktop?18:16, fontStyle:"italic", color:T2.text, lineHeight:1.5, margin:0, textAlign:"center" }}>{bridgeLine}</p>
+        <button onClick={() => onSimulation?.()} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.gold, color:"white", fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
+          Teach It Forward →
+        </button>
+      </div>
+    );
+  }
+
+  return null;
+}
+
 // ─── D7 Simulation Widget — Week 1 Master Challenge ───────────────────────────
 export function D7SimWidget({ T, T2, isDesktop }) {
   const [phase,      setPhase]     = useState('intro');

@@ -114,10 +114,18 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Communication Fitness Reps</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Skill fades without repetition. Strength comes from reps.</p>
-          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Choose your practice mode and keep the habits alive.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Six</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>You've built six habits this week. Name them.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65, marginBottom:20 }}>You don't build skills by learning them. You build them by being able to recall them without thinking.</p>
+          <div style={{ background:"rgba(138,158,132,0.07)", borderRadius:4, border:"0.5px solid rgba(138,158,132,0.18)", padding:"16px 18px", marginBottom:20 }}>
+            <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.7)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:8 }}>Coach Tip</div>
+            <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.7)", lineHeight:1.65, margin:0, fontStyle:"italic" }}>Don't rehearse perfection. Rehearse recall. The faster you can name them, the more automatic they become.</p>
+          </div>
+          <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="rgba(138,158,132,0.35)" strokeWidth="1.2"/><path d="M8 5v3l2 1.5" stroke="rgba(138,158,132,0.35)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+            <span style={{ fontFamily:T.sans, fontSize:10, color:"rgba(138,158,132,0.35)" }}>1 minute</span>
+          </div>
         </div>
       </div>
     );
