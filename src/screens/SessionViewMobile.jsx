@@ -675,8 +675,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, rgba(10,8,5,0.55) 0%, rgba(10,8,5,0.1) 40%, rgba(10,8,5,0.85) 100%)"}}/>
             <div style={{position:"absolute",bottom:24,left:24,right:24,zIndex:2}}>
               <div style={{fontSize:9,fontWeight:700,color:"rgba(200,168,76,0.75)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:10,fontFamily:T.sans}}>The Story Architect</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:500,color:"rgba(245,239,230,0.93)",lineHeight:1.2,marginBottom:8}}>Build a story that moves people.</p>
-              <div style={{width:24,height:1,background:"rgba(200,168,76,0.4)"}}/>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:500,color:"rgba(245,239,230,0.93)",lineHeight:1.2,margin:0}}>Build a story that moves people.</p>
             </div>
           </div>
         );
