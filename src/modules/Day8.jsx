@@ -1220,11 +1220,18 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>Find Your Story</h2>
       </div>
       <p style={{ fontFamily:T.serif, fontSize:13, fontStyle:"italic", color:T2.text3, margin:0 }}>{STORY_CARDS[selected]?.title}</p>
-      <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:14, padding:"28px 24px", background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border }}>
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:14, padding:"20px 24px", background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border }}>
         <div style={{ width:10, height:10, borderRadius:"50%", background:"#C8524A", flexShrink:0 }}/>
         <span style={{ fontFamily:T.sans, fontSize:42, fontWeight:300, color:T2.text, letterSpacing:"0.04em" }}>
           {String(Math.floor(elapsed/60)).padStart(2,'0')}:{String(elapsed%60).padStart(2,'0')}
         </span>
+      </div>
+      <div style={{ display:"flex", flexDirection:"column" }}>
+        {["The situation before everything changed","What disrupted things or created a turning point","How you responded and what shifted","Where you ended up — the outcome and what it meant"].map((beat, i) => (
+          <div key={i} style={{ padding:"9px 0 9px 16px", borderLeft:"2px solid rgba(138,158,132,0.4)" }}>
+            <span style={{ fontFamily:T.serif, fontSize:14, color:T2.text, lineHeight:1.5 }}>{beat}</span>
+          </div>
+        ))}
       </div>
       <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text4, margin:0, textAlign:"center" }}>Aim for around 60 seconds · 3 minute max</p>
       <button onClick={doStop} style={{ width:"100%", padding:"15px", borderRadius:4, border:"1px solid "+T2.border, background:"transparent", color:T2.text, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
