@@ -227,6 +227,21 @@ p];
               </div>
             </div>
 
+            {/* ── PRACTICE SPACE — COMING SOON ─────────────────────────── */}
+            <div style={{marginBottom:isDesktop?56:40}}>
+              <div style={{background:T2.surface,borderRadius:12,border:"1px solid rgba(138,158,132,0.3)",padding:isDesktop?"32px 36px":"24px 22px",position:"relative",overflow:"hidden"}}>
+                <div style={{position:"absolute",top:-50,right:-50,width:160,height:160,background:"radial-gradient(circle, rgba(138,158,132,0.07) 0%, transparent 70%)",borderRadius:"50%",pointerEvents:"none"}}/>
+                <div style={{position:"relative",zIndex:1}}>
+                  <div style={{width:isDesktop?48:44,height:isDesktop?48:44,borderRadius:10,background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(138,158,132,0.85)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                  </div>
+                  <div style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:8}}>Practice Space</div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,marginBottom:24,maxWidth:420,fontWeight:300}}>Your own coaching space. Practise before any presentation, meeting, or conversation — with instant AmplifyU feedback.</div>
+                  <button style={{padding:"10px 22px",border:"1px solid rgba(138,158,132,0.4)",borderRadius:6,background:"transparent",color:T2.text3,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"default",letterSpacing:"0.02em"}}>Coming Soon</button>
+                </div>
+              </div>
+            </div>
+
             {/* ── TOOL PATHS ────────────────────────────────────────────── */}
             <div>
               {sec("Tool Paths","Guided journeys to help you achieve your goals.")}

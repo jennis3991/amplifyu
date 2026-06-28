@@ -244,6 +244,29 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
               </div>
             );
           })}
+
+          {/* ── Practice Space — Coming Soon ── */}
+          <div style={{ marginTop: 72, paddingTop: 48, borderTop: "1px solid " + T2.divider }}>
+            <div style={{ marginBottom: 36 }}>
+              <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 10, fontFamily: T.sans }}>Coming Soon</div>
+              <h2 style={{ fontFamily: T.serif, fontSize: 32, fontWeight: 500, color: T2.text, letterSpacing: "-1px", lineHeight: 1.1 }}>Practice Space</h2>
+              <p style={{ fontSize: 13, color: T2.text3, marginTop: 6, fontFamily: T.sans, fontWeight: 300 }}>A dedicated space to practise before your next presentation, meeting, or high-stakes conversation. Coming soon.</p>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 32, padding: "22px 20px 22px 0", borderTop: "1px solid " + T2.divider }}>
+              <div style={{ width: 56, flexShrink: 0, display: "flex", justifyContent: "flex-end" }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={T2.text4} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              </div>
+              <div style={{ width: 1, height: 36, background: T2.divider, flexShrink: 0 }}/>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 9, color: T2.text4, textTransform: "uppercase", letterSpacing: "2.5px", marginBottom: 5, fontFamily: T.sans }}>Practice Space</div>
+                <div style={{ fontFamily: T.serif, fontSize: 22, fontWeight: 500, color: T2.text3, letterSpacing: "-0.4px", lineHeight: 1.2 }}>Available soon — practise any time, on any topic</div>
+              </div>
+              <div style={{ flexShrink: 0 }}>
+                <span style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, background: "rgba(138,158,132,0.1)", border: "1px solid rgba(138,158,132,0.3)", padding: "6px 14px", borderRadius: 20 }}>Coming Soon</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     );
@@ -288,6 +311,29 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
             </div>
           );
         })}
+
+        {/* ── Practice Space — Coming Soon ── */}
+        <div style={{ paddingTop: 32, borderTop: "1px solid " + T2.divider }}>
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 8, fontFamily: T.sans }}>Coming Soon</div>
+            <h2 style={{ fontFamily: T.serif, fontSize: 26, fontWeight: 500, color: T2.text, letterSpacing: "-0.8px", lineHeight: 1.1, margin: 0 }}>Practice Space</h2>
+            <p style={{ fontSize: 12, color: T2.text3, marginTop: 6, fontFamily: T.sans, fontWeight: 300 }}>A dedicated space to practise before your next presentation, meeting, or high-stakes conversation. Coming soon.</p>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "18px 0", borderTop: "0.5px solid " + T2.divider }}>
+            <div style={{ width: 44, flexShrink: 0, display: "flex", justifyContent: "flex-end" }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={T2.text4} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            </div>
+            <div style={{ width: 1, height: 32, background: T2.divider, flexShrink: 0 }}/>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 9, fontFamily: T.sans, fontWeight: 500, color: T2.text4, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 4 }}>Practice Space</div>
+              <div style={{ fontFamily: T.serif, fontSize: 18, fontWeight: 500, color: T2.text3, letterSpacing: "-0.3px", lineHeight: 1.2 }}>Available soon — practise any time, on any topic</div>
+            </div>
+            <div style={{ flexShrink: 0 }}>
+              <span style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 600, color: T.gold, background: "rgba(138,158,132,0.1)", border: "0.5px solid rgba(138,158,132,0.3)", padding: "5px 10px", borderRadius: 20 }}>Coming Soon</span>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       {/* Locked lesson preview bottom sheet */}

@@ -137,12 +137,20 @@ const DAY_BADGES = {
 
 export function Celebrate({day, onClose}) {
   const [phase, setPhase] = useState("burst");
+  const [notifyDone, setNotifyDone] = useState(() => {
+    try { return !!localStorage.getItem("au1_practiceSpaceNotify"); } catch { return false; }
+  });
   useEffect(() => {
     const t = setTimeout(() => setPhase("settled"), 800);
     return () => clearTimeout(t);
   }, []);
 
   const isComplete = day === 14;
+
+  function handleNotify() {
+    try { localStorage.setItem("au1_practiceSpaceNotify", "1"); } catch {}
+    setNotifyDone(true);
+  }
 
   return (
     <div style={{
@@ -177,6 +185,8 @@ export function Celebrate({day, onClose}) {
         animation:"sheetUp 0.42s cubic-bezier(0.22,1,0.36,1)",
         position:"relative",
         overflow:"hidden",
+        maxHeight:"92vh",
+        overflowY:"auto",
       }}>
         {/* Gold top rule */}
         <div
@@ -301,6 +311,24 @@ strokeWidth="1.5"
             {isComplete ? "See your results" : "Keep going →"}
           </button>
         </div>
+
+        {/* What's Next — Practice Space (Day 14 only) */}
+        {isComplete && (
+          <div style={{padding:"28px 28px 0",animation:"textFade 0.5s ease 0.9s both"}}>
+            <div style={{height:1,background:"rgba(255,255,255,0.08)",marginBottom:24}}/>
+            <div style={{fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.75)",textTransform:"uppercase",letterSpacing:"3px",marginBottom:10,fontFamily:T.sans}}>What's Next</div>
+            <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(245,239,230,0.92)",lineHeight:1.2,marginBottom:10}}>Your Practice Space is coming.</div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(255,255,255,0.48)",lineHeight:1.65,fontWeight:300,marginBottom:20}}>Once you've completed the programme, you'll have a dedicated space to practise before any real conversation — presentations, meetings, board updates, and more. We'll let you know when it's ready.</p>
+            {notifyDone ? (
+              <div style={{fontSize:13,color:T.gold,fontFamily:T.sans,fontWeight:500,letterSpacing:"0.02em"}}>✓ We'll let you know.</div>
+            ) : (
+              <button onClick={handleNotify} style={{width:"100%",padding:"13px 20px",border:"1px solid rgba(138,158,132,0.35)",borderRadius:8,background:"transparent",color:"rgba(245,239,230,0.7)",fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",letterSpacing:"0.02em"}}>
+                Notify Me When It's Ready
+              </button>
+            )}
+          </div>
+        )}
+
       </div>
     </div>
   );
