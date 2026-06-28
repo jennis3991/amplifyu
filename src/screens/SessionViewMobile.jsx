@@ -402,16 +402,16 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           </div>
         );
-        // D5 Simulation — PRE Challenge cinematic dark panel
+        // D5 Simulation — The Boardroom cinematic dark panel
         if(isD5 && step==="Simulation") return (
           <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>PRE Challenge</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Real questions. Real coaching.</p>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Boardroom</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>One question. Ten seconds to think. Then answer.</p>
               <div style={{width:36,height:1,background:"rgba(200,180,140,0.4)",marginBottom:12}}/>
-              <p style={{fontFamily:T.serif,fontSize:12,fontStyle:"italic",color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Type your Point, Reason, and Example. Get instant AI feedback on each.</p>
+              <p style={{fontFamily:T.serif,fontSize:12,fontStyle:"italic",color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Every executive structures before they speak. Today you'll do the same.</p>
             </div>
           </div>
         );
@@ -710,17 +710,17 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           </div>
         );
-        // D4 Practice — cinematic dark panel
+        // D4 Practice — The Edit cinematic dark panel
         if(isD4 && step==="Practice") return (
           <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 14px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Short Sentences Challenge™</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Short sentences give ideas space to land.</p>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Edit</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Say it once. Say it short. Stop.</p>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>4 minutes</span></span>
+                <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.45)"}}>Estimated time: <span style={{color:"rgba(245,239,230,0.65)",fontWeight:600}}>1 minute</span></span>
               </div>
             </div>
           </div>
