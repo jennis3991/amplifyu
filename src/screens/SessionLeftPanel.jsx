@@ -733,10 +733,17 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The PRE Card Sort™</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Sort the cards. Train the instinct.</p>
-          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Four scenarios. Three cards each. Identify the Point, Reason, and Example — and build the reflex to structure any answer.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Setup</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Point. Reason. Example. Now make it yours.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
+          <div style={{ background:"rgba(138,158,132,0.07)", borderRadius:4, border:"0.5px solid rgba(138,158,132,0.18)", padding:"16px 18px", marginBottom:20 }}>
+            <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.7)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:8 }}>Coach Tip</div>
+            <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.7)", lineHeight:1.65, margin:0, fontStyle:"italic" }}>The best way to learn a framework is to use it once before the pressure starts.</p>
+          </div>
+          <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3"/><path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3" strokeLinecap="round"/></svg>
+            <span style={{ fontFamily:T.sans, fontSize:10, color:"rgba(138,158,132,0.35)", letterSpacing:"0.05em" }}>2 minutes</span>
+          </div>
         </div>
       </div>
     );

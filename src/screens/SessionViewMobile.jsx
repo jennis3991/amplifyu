@@ -2352,7 +2352,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
        {isD5 && step==="Practice" && (
         <>
-          <D5PracticeWidget T={T} T2={T2} isDesktop={false}/>
+          <D5PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
         </>
       )}
       {isD5 && step==="Simulation" && (

@@ -1,219 +1,336 @@
 import { useState, useEffect, useRef } from 'react';
 
-function shuffle(arr) {
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-  return a;
+// ─── Shared: sequential dot animation (mirrors Day 3) ────────────────────────
+function useSequentialDots(active) {
+  const [dotCount, setDotCount] = useState(0);
+  useEffect(() => {
+    if (!active) { setDotCount(0); return; }
+    setDotCount(1);
+    const id = setInterval(() => {
+      setDotCount(d => { if (d >= 3) { clearInterval(id); return d; } return d + 1; });
+    }, 600);
+    return () => clearInterval(id);
+  }, [active]);
+  return dotCount;
 }
 
-// ─── D5 Practice Widget — PRE Card Sort ──────────────────────────────────────
-export function D5PracticeWidget({T, T2, isDesktop}) {
-  const ROUNDS = [
-    {q:"Where should we go this summer?",        point:"We should go to the South of France.",                        reason:"It has great weather, food, and is easy for a short trip.",              example:"Friends went recently and said Monaco was brilliant."},
-    {q:"What should we watch tonight?",           point:"Let's watch a comedy.",                                       reason:"We've both had a long week and something light will be more enjoyable.",  example:"Like when we watched Mrs Doubtfire — it was easy and fun."},
-    {q:"Is working from home better?",            point:"I think hybrid works best.",                                  reason:"It gives flexibility without losing collaboration.",                      example:"When I'm home I focus better, but office days are better for brainstorming."},
-    {q:"Where should we go for dinner tonight?",  point:"Let's go to the Italian place.",                             reason:"It's relaxed, consistently good, and everyone will find something.",      example:"Last time the food came quickly and everyone enjoyed it."},
-  ];
+function SequentialDots({dotCount}) {
+  return (
+    <div style={{display:'flex', gap:10, justifyContent:'center'}}>
+      {[0,1,2].map(i => (
+        <div key={i} style={{width:9, height:9, borderRadius:'50%', background: i < dotCount ? 'rgba(138,158,132,0.75)' : 'rgba(138,158,132,0.12)', transition:'background 0.35s'}}/>
+      ))}
+    </div>
+  );
+}
 
-  const [phase,   setPhase]   = useState('intro');
-  const [round,   setRound]   = useState(0);
-  const [cards,   setCards]   = useState([]);
-  const [placed,  setPlaced]  = useState({point:null,reason:null,example:null});
-  const [selected,setSelected]= useState(null);
-  const [checked, setChecked] = useState(false);
-  const [total,   setTotal]   = useState(0);
+// ─── D5 Practice Widget — The Setup ──────────────────────────────────────────
+const SETUP_TOPICS = [
+  { id:'confidence', icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l8 4v5c0 5.5-3.5 10.74-8 12-4.5-1.26-8-6.5-8-12V7l8-4z"/></svg>,
+    label:"What's one thing people get wrong about confidence?" },
+  { id:'career',     icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></svg>,
+    label:"What's the best career advice you've ever ignored?" },
+  { id:'success',    icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>,
+    label:"What does success actually look like to you?" },
+  { id:'impression', icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+    label:"What do most people miss in a first impression?" },
+  { id:'managers',   icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+    label:"What's one thing great managers never do?" },
+  { id:'exceptional',icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
+    label:"What separates someone good at their job from someone exceptional?" },
+];
 
-  function mkCards(r){
-    return shuffle([
-      {text:ROUNDS[r].point,   correct:'point'},
-      {text:ROUNDS[r].reason,  correct:'reason'},
-      {text:ROUNDS[r].example, correct:'example'},
-    ]);
-  }
-  function startRound(r){setCards(mkCards(r));setPlaced({point:null,reason:null,example:null});setSelected(null);setChecked(false);}
+export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
+  const [phase,       setPhase]       = useState('bridge');
+  const [revealCount, setRevealCount] = useState(0);
+  const [summaryVis,  setSummaryVis]  = useState(false);
+  const [topic,       setTopic]       = useState(null);
+  const [countdown,   setCountdown]   = useState(10);
+  const [isRec,       setIsRec]       = useState(false);
+  const [waveVals,    setWaveVals]    = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
+  const [coachResult, setCoachResult] = useState(null);
+  const [preRow,      setPreRow]      = useState(0);
 
-  function tapCard(i){
-    if(checked) return;
-    setSelected(s=>s===i?null:i);
-  }
+  const mediaRecRef  = useRef(null);
+  const recRef       = useRef(null);
+  const waveRef      = useRef(null);
+  const liveRef      = useRef('');
+  const cdRef        = useRef(null);
 
-  function tapBucket(bucket){
-    if(checked) return;
-    if(selected===null){
-      // Unplace card already in bucket
-      if(placed[bucket]!==null) setPlaced(p=>({...p,[bucket]:null}));
-      return;
+  const SpeechRec = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
+  const dotCount  = useSequentialDots(phase === 'countdown');
+
+  // Demo sequential reveal
+  useEffect(() => {
+    if (phase !== 'demo') { setRevealCount(0); setSummaryVis(false); return; }
+    setRevealCount(1);
+    const t1 = setTimeout(() => setRevealCount(2), 800);
+    const t2 = setTimeout(() => setRevealCount(3), 1600);
+    const t3 = setTimeout(() => setRevealCount(4), 2400);
+    const t4 = setTimeout(() => setSummaryVis(true), 3400);
+    return () => [t1,t2,t3,t4].forEach(clearTimeout);
+  }, [phase]);
+
+  // Countdown → auto-start
+  useEffect(() => {
+    if (phase !== 'countdown') { clearInterval(cdRef.current); setCountdown(10); return; }
+    let c = 10;
+    setCountdown(10);
+    cdRef.current = setInterval(() => {
+      c--;
+      setCountdown(c);
+      if (c <= 0) {
+        clearInterval(cdRef.current);
+        doStart();
+        setPhase('rec');
+      }
+    }, 1000);
+    return () => clearInterval(cdRef.current);
+  }, [phase]); // eslint-disable-line
+
+  // Waveform animation
+  useEffect(() => {
+    if (!isRec) { clearInterval(waveRef.current); return; }
+    waveRef.current = setInterval(() => setWaveVals(() => Array.from({length:9}, () => 0.2 + Math.random() * 0.8)), 150);
+    return () => clearInterval(waveRef.current);
+  }, [isRec]);
+
+  // PRE rows reveal on coach screen
+  useEffect(() => {
+    if (phase !== 'coach') { setPreRow(0); return; }
+    const t1 = setTimeout(() => setPreRow(1), 600);
+    const t2 = setTimeout(() => setPreRow(2), 1200);
+    const t3 = setTimeout(() => setPreRow(3), 1800);
+    return () => [t1,t2,t3].forEach(clearTimeout);
+  }, [phase]);
+
+  function doStart() {
+    setIsRec(true); liveRef.current = '';
+    if (SpeechRec) {
+      const rec = new SpeechRec();
+      rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
+      rec.onresult = (e) => {
+        let f = '', interim = '';
+        for (let i = 0; i < e.results.length; i++) {
+          if (e.results[i].isFinal) f += e.results[i][0].transcript + ' ';
+          else interim += e.results[i][0].transcript + ' ';
+        }
+        liveRef.current = f.trim() || interim.trim();
+      };
+      try { rec.start(); } catch(e) {}
+      recRef.current = rec;
     }
-    const np={...placed};
-    Object.keys(np).forEach(k=>{if(np[k]===selected) np[k]=null;});
-    np[bucket]=selected;
-    setPlaced(np);
-    setSelected(null);
+    if (navigator.mediaDevices?.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
+        const mr = new MediaRecorder(stream);
+        mr.ondataavailable = e => { if (e.data.size > 0) {} };
+        mr.onstop = () => stream.getTracks().forEach(t => t.stop());
+        mr.start();
+        mediaRecRef.current = mr;
+      }).catch(() => {});
+    }
   }
 
-  function check(){
-    let pts=0;
-    ['point','reason','example'].forEach(b=>{if(placed[b]!==null&&cards[placed[b]].correct===b) pts++;});
-    setTotal(t=>t+pts);
-    setChecked(true);
+  function doStop() {
+    setIsRec(false);
+    if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
+      mediaRecRef.current.onstop = () => {};
+      mediaRecRef.current.stop();
+    }
+    function proceed(text) { setPhase('analyzing'); analyzeTranscript(text.trim() || ''); }
+    if (recRef.current) {
+      const rec = recRef.current; recRef.current = null;
+      const fallback = setTimeout(() => proceed(liveRef.current), 1800);
+      rec.onend = () => { clearTimeout(fallback); proceed(liveRef.current); };
+      try { rec.stop(); } catch(e) { clearTimeout(fallback); proceed(liveRef.current); }
+    } else {
+      proceed(liveRef.current);
+    }
   }
 
-  function next(){
-    if(round<ROUNDS.length-1){const r=round+1;setRound(r);startRound(r);}
-    else setPhase('done');
+  async function analyzeTranscript(text) {
+    try {
+      const res = await fetch('/api/claude', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001', max_tokens: 300,
+          system: `You are the AmplifyU coach. The user has just completed The Setup warm-up for Day 5: Structure PRE. They were explicitly asked to answer using Point, Reason, and Example. Analyse their transcript. Determine: ledWithPosition (boolean — true if their opening sentence stated a clear position or view), reasonPresent (boolean — true if they gave a clear reason or justification), examplePresent (boolean — true if they grounded their answer in something concrete, specific, or real). Return a JSON object with these fields plus coachLine (one warm specific sentence maximum 25 words). If all three are present and ledWithPosition is true, affirm the structure and bridge to The Boardroom. If ledWithPosition is false or one element is missing, give one specific forward-looking nudge — never critical, always growth-framed. Also return bridgeLine — always: "The Boardroom asks one question. Ten seconds to think. Then it's yours." Never use deficit language. Never say perfect.`,
+          messages: [{role:'user', content:`Question: ${topic?.label || 'practice question'}\n\nTranscript: "${text || '[no transcript]'}"`}],
+        }),
+      });
+      const data = await res.json();
+      const raw = (data.content || []).map(b => b.text || '').join('');
+      const m = raw.match(/\{[\s\S]*\}/);
+      setCoachResult(JSON.parse(m[0]));
+      setPhase('coach');
+    } catch(e) {
+      setCoachResult({
+        ledWithPosition: true, reasonPresent: true, examplePresent: false,
+        coachLine: "You opened with a clear position — now ground it in a specific example to make it land.",
+        bridgeLine: "The Boardroom asks one question. Ten seconds to think. Then it's yours.",
+      });
+      setPhase('coach');
+    }
   }
 
-  const allPlaced = placed.point!==null&&placed.reason!==null&&placed.example!==null;
-  const placedSet = new Set(Object.values(placed).filter(v=>v!==null));
-  const unplaced  = cards.map((_,i)=>i).filter(i=>!placedSet.has(i));
-  const allCorrect= ['point','reason','example'].every(b=>placed[b]!==null&&cards[placed[b]].correct===b);
-
-  const cs={
-    card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"20px 24px":"16px 18px"},
-    label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8},
-    cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
+  const cs = {
+    card:    {background:T2.surface, borderRadius:4, border:'0.5px solid '+T2.border, padding:isDesktop?'22px 24px':'16px 18px'},
+    label:   {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2px', marginBottom:8},
+    cta:     {width:'100%', padding:isDesktop?'14px':'13px', borderRadius:4, border:'none', background:T.ink, color:T.bg, fontSize:isDesktop?15:14, fontWeight:600, cursor:'pointer', fontFamily:T.sans, minHeight:48},
+    sageCta: {width:'100%', padding:isDesktop?'14px':'13px', borderRadius:4, border:'none', background:'rgba(82,112,96,0.85)', color:'#fff', fontSize:isDesktop?15:14, fontWeight:600, cursor:'pointer', fontFamily:T.sans, minHeight:48},
   };
 
-  // ── INTRO ──────────────────────────────────────────────────────────────────
-  if(phase==='intro') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={cs.card}>
-        <div style={cs.label}>Your Mission</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:17,fontWeight:600,color:T.gold,lineHeight:1.3,margin:"0 0 12px"}}>Sort the cards into the right buckets.</p>
-        <div style={{display:"flex",flexDirection:"column",gap:5}}>
-          {["Four real scenarios. Three cards each — shuffled.","Identify which statement is the Point, which is the Reason, and which is the Example.","Every correct placement earns a point."].map((t,i)=>(
-            <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-              <span style={{color:T.gold,fontSize:11,flexShrink:0,marginTop:2}}>✦</span>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontStyle:"italic",color:T2.text,lineHeight:1.5}}>{t}</span>
-            </div>
-          ))}
-        </div>
+  // ── BRIDGE ────────────────────────────────────────────────────────────────
+  if (phase === 'bridge') return (
+    <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
+      <div>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Practice · Day 5</div>
+        <h2 style={{fontFamily:T.serif, fontSize:isDesktop?30:24, fontWeight:600, color:T2.text, lineHeight:1.15, margin:'0 0 16px', letterSpacing:'-0.5px'}}>You just learned PRE. Now it's your turn.</h2>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.7, margin:0, fontWeight:300}}>First, watch how it works in practice. Then try it yourself — before The Boardroom puts you on the spot.</p>
       </div>
-
-      <div style={cs.card}>
-        <div style={cs.label}>The Challenge Journey</div>
-        <div style={{display:"flex",alignItems:"flex-start"}}>
-          {["Summer","Tonight","WFH","Dinner"].map((label,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
-              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
-                <div style={{width:isDesktop?34:28,height:isDesktop?34:28,borderRadius:"50%",border:"1.5px solid "+(i===0?T.gold:"rgba(138,158,132,0.35)"),background:i===0?"rgba(138,158,132,0.1)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:5}}>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:10,fontWeight:700,color:i===0?T.gold:T2.text3}}>{i+1}</span>
-                </div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?11:9,color:"#A8998A",fontWeight:500,textAlign:"center",lineHeight:1.3}}>{label}</div>
-              </div>
-              {i<3&&<div style={{height:1,width:isDesktop?8:3,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:18}}/>}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <button onClick={()=>{setPhase('playing');setRound(0);setTotal(0);startRound(0);}}
-        style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
-        Start the PRE Card Sort →
+      <button onClick={() => setPhase('demo')} style={{...cs.cta, marginTop:4}}>
+        See It In Action →
       </button>
     </div>
   );
 
-  // ── PLAYING ────────────────────────────────────────────────────────────────
-  if(phase==='playing') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      {/* Progress bar */}
-      <div style={{display:"flex",alignItems:"center",gap:10}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flexShrink:0}}>Round {round+1} of {ROUNDS.length}</div>
-        <div style={{flex:1,height:2,background:T2.border,borderRadius:2}}>
-          <div style={{height:"100%",width:(((round+1)/ROUNDS.length)*100)+"%",background:T.gold,borderRadius:2,transition:"width 0.4s ease"}}/>
-        </div>
-        <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T2.text3,flexShrink:0}}>{total} pts</div>
-      </div>
+  // ── DEMO ─────────────────────────────────────────────────────────────────
+  const DEMO = {
+    scenario: 'Should your organisation invest more in learning and development?',
+    point:    '"Yes — without question."',
+    reason:   '"Organisations that invest in their people retain them longer and perform better. Skills don\'t develop by accident — they develop by design."',
+    example:  '"At my last company, we introduced a monthly learning hour. Within six months, three people who\'d been considering leaving said it was one of the reasons they stayed."',
+  };
 
-      {/* Question */}
+  const preBlock = (label, text, visible) => (
+    <div style={{opacity:visible?1:0, transform:visible?'translateY(0)':'translateY(8px)', transition:'opacity 0.5s ease, transform 0.5s ease'}}>
+      <div style={{borderLeft:'2px solid rgba(138,158,132,0.5)', paddingLeft:14, marginBottom:14}}>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:6}}>{label}</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?16:15, color:T2.text, lineHeight:1.6, margin:0, fontStyle:'italic'}}>{text}</p>
+      </div>
+    </div>
+  );
+
+  if (phase === 'demo') return (
+    <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
       <div style={cs.card}>
-        <div style={cs.label}>The Scenario</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{ROUNDS[round].q}</p>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>The Scenario</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:18, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 20px'}}>"{DEMO.scenario}"</p>
+        {preBlock('Point',   DEMO.point,   revealCount >= 2)}
+        {preBlock('Reason',  DEMO.reason,  revealCount >= 3)}
+        {preBlock('Example', DEMO.example, revealCount >= 4)}
+        {summaryVis && (
+          <p style={{opacity:summaryVis?1:0, transition:'opacity 0.5s ease', fontFamily:T.sans, fontSize:12, color:T2.text4, margin:'10px 0 0', fontStyle:'italic', textAlign:'center'}}>
+            Point. Reason. Example. Clear. Structured. Memorable.
+          </p>
+        )}
       </div>
-
-      {/* Card tray — unplaced cards */}
-      {unplaced.length>0&&(
-        <div style={{display:"flex",flexDirection:"column",gap:7}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px"}}>
-            {selected===null?"Tap a card to select it":"Card selected — tap a bucket below to place it"}
-          </div>
-          {unplaced.map(i=>(
-            <div key={i} onClick={()=>tapCard(i)}
-              style={{padding:"13px 16px",borderRadius:4,border:`1px solid ${selected===i?T.gold:T2.border}`,background:selected===i?"rgba(138,158,132,0.08)":T2.bg,cursor:"pointer",transition:"all 0.15s",boxShadow:selected===i?"0 0 0 2px rgba(138,158,132,0.15)":"none",userSelect:"none"}}>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0}}>{cards[i].text}</p>
-            </div>
-          ))}
-        </div>
+      {summaryVis && (
+        <button onClick={() => setPhase('select')} style={cs.sageCta}>
+          Now Your Turn →
+        </button>
       )}
+    </div>
+  );
 
-      {/* Buckets */}
-      <div style={{display:"flex",flexDirection:isDesktop?"row":"column",gap:10}}>
-        {['point','reason','example'].map(bucket=>{
-          const idx=placed[bucket];
-          const correct=checked&&idx!==null&&cards[idx].correct===bucket;
-          const wrong  =checked&&idx!==null&&cards[idx].correct!==bucket;
-          const highlight=!checked&&selected!==null&&idx===null;
+  // ── SELECT ────────────────────────────────────────────────────────────────
+  if (phase === 'select') return (
+    <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
+      <div>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Your Turn</div>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0, fontWeight:300}}>Pick one question below. Answer it using Point, Reason, and Example. Speak for around 30 seconds.</p>
+      </div>
+      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:10}}>
+        {SETUP_TOPICS.map(t => {
+          const sel = topic?.id === t.id;
           return (
-            <div key={bucket} onClick={()=>tapBucket(bucket)}
-              style={{flex:1,borderRadius:4,border:`1.5px solid ${correct?"#527060":wrong?"#B05C4A":highlight?"rgba(138,158,132,0.5)":T2.border}`,background:correct?"rgba(82,112,96,0.06)":wrong?"rgba(176,92,74,0.06)":highlight?"rgba(138,158,132,0.04)":"transparent",cursor:!checked?"pointer":"default",transition:"all 0.15s",minHeight:isDesktop?96:76,display:"flex",flexDirection:"column",padding:"11px 14px",gap:8}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:correct?"#527060":wrong?"#B05C4A":T.gold,textTransform:"uppercase",letterSpacing:"2px"}}>{bucket}</span>
-                {correct&&<span style={{color:"#527060",fontSize:13}}>✓</span>}
-                {wrong  &&<span style={{color:"#B05C4A",fontSize:13}}>✗</span>}
-                {idx===null&&!checked&&<span style={{fontFamily:T.sans,fontSize:10,color:"rgba(138,158,132,0.4)"}}>place here</span>}
-              </div>
-              {idx!==null&&(
-                <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.55,margin:0}}>{cards[idx].text}</p>
-              )}
-            </div>
+            <button key={t.id} onClick={() => { setTopic(t); setPhase('countdown'); }}
+              style={{padding:isDesktop?'16px 14px':'13px 12px', borderRadius:6, border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`, background:sel?'rgba(82,112,96,0.1)':T2.surface, cursor:'pointer', textAlign:'left', display:'flex', flexDirection:'column', gap:10, outline:'none', transition:'all 0.15s'}}>
+              <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3, opacity:0.8}}>{t.icon}</div>
+              <span style={{fontFamily:T.sans, fontSize:isDesktop?12:11, color:T2.text, lineHeight:1.4, fontWeight:sel?600:400}}>{t.label}</span>
+            </button>
           );
         })}
       </div>
-
-      {/* Actions */}
-      {!checked&&allPlaced&&(
-        <button onClick={check} style={cs.cta}>Check My Answers →</button>
-      )}
-      {checked&&(
-        <>
-          <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
-            <div style={cs.label}>AmplifyU Insight</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.65,margin:0}}>
-              {allCorrect
-                ?"Perfect round. You understand how PRE is structured — now build the reflex to use it in real conversations."
-                :"PRE works because it mirrors how listeners naturally process information. Point first gives them your position. Reason explains why. Example makes it real."}
-            </p>
-          </div>
-          <button onClick={next} style={cs.cta}>
-            {round<ROUNDS.length-1?`Round ${round+2} →`:"See Your Score →"}
-          </button>
-        </>
-      )}
     </div>
   );
 
-  // ── DONE ───────────────────────────────────────────────────────────────────
-  const max=ROUNDS.length*3;
-  const pct=Math.round((total/max)*100);
-  return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"36px 32px":"28px 24px"}}>
-        <div style={{fontFamily:T.serif,fontSize:isDesktop?68:52,fontWeight:600,color:T2.text,lineHeight:0.85,letterSpacing:"-3px",marginBottom:4}}>
-          {total}<span style={{fontSize:isDesktop?26:20,color:T.gold,letterSpacing:"-1px"}}>/{max}</span>
+  // ── COUNTDOWN ────────────────────────────────────────────────────────────
+  if (phase === 'countdown') return (
+    <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
+      <div style={cs.card}>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Your Question</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 28px'}}>"{topic?.label}"</p>
+        <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:16}}>
+          <SequentialDots dotCount={dotCount}/>
+          <p style={{fontFamily:T.sans, fontSize:12, color:T2.text4, margin:0, fontStyle:'italic', textAlign:'center'}}>Start with your point. Then your reason. Then one example.</p>
+          <div style={{fontFamily:T.serif, fontSize:isDesktop?52:44, fontWeight:600, color:T2.text, lineHeight:1, letterSpacing:'-2px'}}>{countdown}</div>
         </div>
-        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,letterSpacing:"2px",textTransform:"uppercase",marginTop:10,marginBottom:18}}>points scored</div>
-        <div style={{height:1,background:T2.divider,marginBottom:18,maxWidth:200,margin:"0 auto 18px"}}/>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:16,fontStyle:"italic",color:T.gold,lineHeight:1.55,margin:0}}>
-          {pct>=90?"Instinctive. You've internalised the PRE structure.":pct>=66?"Solid. A few more rounds and PRE will be second nature.":"Good start. The pattern becomes automatic with repetition."}
-        </p>
       </div>
-      <button onClick={()=>{setPhase('intro');setRound(0);setTotal(0);setCards([]);}}
-        style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"8px 0",textAlign:"center",width:"100%"}}>
-        Play Again
+    </div>
+  );
+
+  // ── REC ───────────────────────────────────────────────────────────────────
+  if (phase === 'rec') return (
+    <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
+      <div style={cs.card}>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?19:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 6px'}}>"{topic?.label}"</p>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.4)', textTransform:'uppercase', letterSpacing:'3px', marginBottom:20}}>Point · Reason · Example</div>
+        <div style={{display:'flex', alignItems:'center', gap:2, height:40, marginBottom:14}}>
+          {waveVals.map((v,i) => <div key={i} style={{flex:1, height:Math.round(v*34)+'px', background:`rgba(138,158,132,${0.3+v*0.5})`, borderRadius:2, transition:'height 0.15s'}}/>)}
+        </div>
+        <div style={{display:'flex', alignItems:'center', gap:8}}>
+          <div style={{width:7, height:7, borderRadius:'50%', background:'#c0392b'}}/>
+          <span style={{fontFamily:T.sans, fontSize:11, color:T2.text3}}>Recording — tap Done when finished.</span>
+        </div>
+      </div>
+      <button onClick={doStop} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
+        Done →
       </button>
     </div>
   );
+
+  // ── ANALYZING ─────────────────────────────────────────────────────────────
+  if (phase === 'analyzing') return (
+    <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', minHeight:200, gap:16}}>
+      <div style={{display:'flex', gap:8}}>{[0,1,2].map(i => <div key={i} style={{width:7, height:7, borderRadius:'50%', background:'rgba(138,158,132,0.6)'}}/>)}</div>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:T2.text, margin:0, textAlign:'center'}}>Reading your answer…</p>
+      <p style={{fontFamily:T.sans, fontSize:12, color:T2.text3, margin:0, textAlign:'center'}}>Checking for Point, Reason, and Example.</p>
+    </div>
+  );
+
+  // ── COACH ─────────────────────────────────────────────────────────────────
+  if (phase === 'coach' && coachResult) {
+    const rows = [
+      {label:'Point',   present:coachResult.ledWithPosition},
+      {label:'Reason',  present:coachResult.reasonPresent},
+      {label:'Example', present:coachResult.examplePresent},
+    ];
+    return (
+      <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
+        <div style={{background:'#0A0804', borderRadius:8, padding:isDesktop?'28px 32px':'22px 22px', border:'0.5px solid rgba(138,158,132,0.15)'}}>
+          <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:14}}>Your AmplifyU Coach Says</div>
+          <p style={{fontFamily:T.serif, fontSize:isDesktop?22:18, color:'rgba(245,239,230,0.92)', lineHeight:1.45, margin:0}}>{coachResult.coachLine}</p>
+        </div>
+        <div style={cs.card}>
+          {rows.map((row, i) => (
+            <div key={i} style={{opacity:preRow>i?1:0, transform:preRow>i?'translateY(0)':'translateY(6px)', transition:'opacity 0.45s ease, transform 0.45s ease', display:'flex', alignItems:'center', gap:14, padding:'10px 0', borderBottom:i<2?'0.5px solid '+T2.divider:'none'}}>
+              <span style={{color:row.present?'rgba(82,112,96,0.9)':'rgba(200,150,60,0.85)', fontSize:16, fontWeight:700, width:20, textAlign:'center', flexShrink:0}}>{row.present?'✓':'△'}</span>
+              <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, fontWeight:700, color:T2.text, textTransform:'uppercase', letterSpacing:'1.5px'}}>{row.label}</span>
+            </div>
+          ))}
+          {preRow >= 3 && (
+            <p style={{fontFamily:T.sans, fontSize:12, color:T2.text4, margin:'14px 0 0', lineHeight:1.6, fontStyle:'italic'}}>{coachResult.bridgeLine}</p>
+          )}
+        </div>
+        <button onClick={() => onSimulation?.()} style={cs.sageCta}>
+          Enter the Boardroom →
+        </button>
+      </div>
+    );
+  }
+
+  return null;
 }
 
 // ─── D5 Simulation Widget — The Boardroom ────────────────────────────────────
