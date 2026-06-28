@@ -3,7 +3,7 @@ import { T } from '../theme.js';
 import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS, D14_EXAMPLES } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
-import { StoryBuilderWidget, StoryArchitectWidget } from '../modules/Day8.jsx';
+import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
@@ -1798,9 +1798,7 @@ T.goldDark : T2.text4,
         <StoryArchitectWidget T={T} T2={T2} isDesktop={false}/>
       )}
       {isNT && step==="Rehearsal" && (
-        <>
-          <StoryBuilderWidget T={T} T2={T2} isDesktop={false} onSave={s=>{setNtStory(s);try{localStorage.setItem("au1_nt_story",s);}catch(_){}}} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
-        </>
+        <D8PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
       )}
        {/* ── D9 (Day 9) Mobile Steps ─────────────────────────────────────── */}
       {/* ── D9 Connection Mobile Steps ─────────────────────────────────── */}

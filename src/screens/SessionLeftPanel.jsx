@@ -424,10 +424,17 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Pixar Framework Challenge™</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Turn a real experience into a story people remember.</p>
-          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65, marginBottom:0 }}>Seven beats. Five minutes. One story you can use in presentations, interviews, meetings, and conversations.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Find Your Story</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Every great communicator has a handful of stories they return to throughout their career. Let's build one of yours.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65, marginBottom:20 }}>Choose a story. Speak for around 60 seconds. Your AmplifyU coach will find the shape of your story and turn it into something you can use anywhere.</p>
+          <div style={{ padding:"14px 16px", borderLeft:"2px solid rgba(138,158,132,0.4)", background:"rgba(138,158,132,0.05)" }}>
+            <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.55)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:6 }}>Coach Tip</div>
+            <p style={{ fontFamily:T.serif, fontSize:13, fontStyle:"italic", color:"rgba(245,239,230,0.45)", margin:0, lineHeight:1.6 }}>The best professional stories aren't invented. They're already lived — they just need to be found.</p>
+          </div>
+          <div style={{ display:"inline-flex", alignItems:"center", gap:6, marginTop:16, padding:"4px 10px", border:"0.5px solid rgba(138,158,132,0.25)", borderRadius:20 }}>
+            <span style={{ fontFamily:T.sans, fontSize:10, color:"rgba(245,239,230,0.3)" }}>2 minutes</span>
+          </div>
         </div>
       </div>
     );

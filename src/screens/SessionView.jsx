@@ -9,7 +9,7 @@ import { D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_NEURO, THEORY_DATA, F
 import { SessionLeftPanel, ExCard } from './SessionLeftPanel.jsx';
 import { MobileSessionView } from './SessionViewMobile.jsx';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
-import { StoryBuilderWidget, StoryArchitectWidget } from '../modules/Day8.jsx';
+import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
@@ -2034,7 +2034,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <StoryBuilderWidget T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
+          <D8PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
         </div>
       );
 
