@@ -184,9 +184,9 @@
 <body>
 
 <nav id="nav">
-  <a href="index.html" class="nav-logo">Amplify<span>U</span></a>
+  <a href="home.html" class="nav-logo">Amplify<span>U</span></a>
   <div class="nav-links">
-    <a href="index.html" class="nav-link" data-page="home">Home</a>
+    <a href="home.html" class="nav-link" data-page="home">Home</a>
     <a href="programme.html" class="nav-link" data-page="programme">Programme</a>
     <a href="coach.html" class="nav-link" data-page="coach">Coach</a>
     <a href="features.html" class="nav-link" data-page="features">Features</a>
@@ -489,7 +489,7 @@
     var path = window.location.pathname;
     document.querySelectorAll('.nav-link').forEach(function(el) {
       var page = el.dataset.page;
-      if (page === 'home' && (path === '/' || path.endsWith('index.html'))) el.classList.add('active');
+      if (page === 'home' && (path === '/' || path.endsWith('home.html'))) el.classList.add('active');
       else if (page !== 'home' && path.includes(page)) el.classList.add('active');
     });
   })();
