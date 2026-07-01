@@ -716,15 +716,12 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     <div style={{ padding: isDesktop ? "44px 52px" : "24px 20px", overflowY: "auto" }}>
       <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Rehearsal · Day 1</div>
       <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Voice Warm-Up</h2>
-      <div style={{ background: "#F0EBE2", border: "0.5px solid #DDD5C4", borderRadius: 4, padding: isDesktop ? "16px 20px" : "14px 16px", marginBottom: 20 }}>
-        <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 6 }}>Your Warm-Up</div>
-        <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, margin: 0 }}>Choose one topic below and speak for around 20 seconds. This isn't scored — it's just to get you comfortable speaking.</p>
-      </div>
+      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 16 : 15, color: "#6B5E44", lineHeight: 1.7, marginBottom: 24 }}>Choose one topic below and speak for around 20 seconds. This is simply a chance to find your voice. There's no right or wrong answer. Just speak naturally, and we'll take care of the rest.</p>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isDesktop ? 12 : 10 }}>
         {TOPICS.map((topic, i) => (
           <button key={i} onClick={() => pickTopic(i)} style={{
             display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-            gap: 10, padding: isDesktop ? "22px 16px" : "16px 12px",
+            gap: 10, padding: isDesktop ? "22px 16px" : "18px 14px",
             borderRadius: 6, cursor: "pointer", textAlign: "center",
             border: "0.5px solid #DDD5C4", background: "#F7F3EC",
             transition: "all 0.15s ease",
@@ -732,7 +729,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
           onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #8A9E84"; e.currentTarget.style.background = "rgba(138,158,132,0.08)"; }}
           onMouseLeave={e => { e.currentTarget.style.border = "0.5px solid #DDD5C4"; e.currentTarget.style.background = "#F7F3EC"; }}>
             <div style={{ color: "#A8998A" }}>{topic.icon}</div>
-            <span style={{ fontFamily: T.serif, fontSize: isDesktop ? 13 : 12, color: "#6B5E44", lineHeight: 1.45 }}>{topic.label}</span>
+            <span style={{ fontFamily: T.serif, fontSize: isDesktop ? 16 : 15, color: "#6B5E44", lineHeight: 1.45 }}>{topic.label}</span>
           </button>
         ))}
       </div>
