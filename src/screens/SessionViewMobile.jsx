@@ -1301,36 +1301,6 @@ T.goldDark : T2.text4,
                 );
               })}
             </div>
-            {/* Single expandable challenge card below */}
-            <div onClick={()=>setD2MobCard(challengeOpen?null:"challenge")}
-              style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${challengeOpen?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:challengeOpen?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                <div style={{flex:1}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Now try it yourself</div>
-                  <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:4}}>Can you say it four ways?</div>
-                  <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300}}>Same sentence. Completely different voice.</div>
-                </div>
-                <span style={{fontFamily:T.sans,fontSize:16,color:challengeOpen?T.gold:"rgba(138,158,132,0.7)",marginLeft:12,flexShrink:0,transition:"color 0.2s"}}>{challengeOpen?"▴":"▸"}</span>
-              </div>
-              {challengeOpen && (
-                <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:16,marginTop:14}}>
-                  {D2_MOB_CARDS.map((card,ci)=>(
-                    <div key={ci} style={{marginBottom:ci<D2_MOB_CARDS.length-1?20:0}}>
-                      <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>{card.name}</div>
-                      <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:10}}>{card.challenge.sentence}</p>
-                      <div style={{display:"flex",flexDirection:"column"}}>
-                        {card.challenge.modes.map((m,i,arr)=>(
-                          <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:i<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
-                            <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,width:14,flexShrink:0}}>{i+1}.</span>
-                            <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:400}}>{m}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </>
         );
       })()}
