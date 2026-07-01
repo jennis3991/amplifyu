@@ -2268,26 +2268,6 @@ setAmbitionSaved(true); } catch {}
               </div>
             ))}
           </div>
-          <div style={{ background:T2.cardDark, borderRadius:8, padding:"28px 32px" }}>
-            <div style={{ fontSize:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12, fontFamily:T.sans }}>Hear the Difference</div>
-            <p style={{ fontFamily:T.serif, fontSize:24, fontWeight:600, color:"rgba(245,239,230,0.9)", marginBottom:20, lineHeight:1.3 }}>"I think this could work."</p>
-            <div style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:20 }}>
-              {["Fast","Slow","High Pitch","Low Pitch","Monotone","Warm / Confident"].map((label,i)=>(
-                <button key={i} style={{
-                  background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.12)",
-                  borderRadius:6, padding:"10px 18px", cursor:"pointer",
-                  display:"flex", alignItems:"center", gap:8,
-                  fontFamily:T.sans,
-                }}>
-                  <svg width="16" height="16" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(138,158,132,0.8)" strokeWidth="1.2"/><path d="M5.5 4.5l4 2.5-4 2.5V4.5z" fill="rgba(138,158,132,0.8)"/></svg>
-                  <span style={{ fontSize:13, color:"rgba(245,239,230,0.7)", fontWeight:500 }}>{label}</span>
-                </button>
-              ))}
-            </div>
-            <div style={{ borderTop:"0.5px solid rgba(255,255,255,0.08)", paddingTop:16 }}>
-              <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T.gold, margin:0, lineHeight:1.6 }}>What changed? Not the words. The meaning.</p>
-            </div>
-          </div>
         </div>
       );
 

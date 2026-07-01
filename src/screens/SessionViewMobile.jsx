@@ -2090,27 +2090,6 @@ T.goldDark : T2.text4,
               </div>
             ))}
           </div>
-          {/* Audio interaction */}
-          <div style={{background:T2.cardDark,borderRadius:8,padding:"20px",marginBottom:4}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Hear the Difference</div>
-            <p style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"rgba(245,239,230,0.9)",marginBottom:16,lineHeight:1.3}}>"I think this could work."</p>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:16}}>
-              {["Fast","Slow","High Pitch","Low Pitch","Monotone","Warm / Confident"].map((label,i)=>(
-                <button key={i} style={{
-                  background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",
-                  borderRadius:6,padding:"10px 6px",cursor:"pointer",
-                  display:"flex",flexDirection:"column",alignItems:"center",gap:6,
-                  fontFamily:T.sans,minHeight:32,
-                }}>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(138,158,132,0.8)" strokeWidth="1.2"/><path d="M5.5 4.5l4 2.5-4 2.5V4.5z" fill="rgba(138,158,132,0.8)"/></svg>
-                  <span style={{fontSize:10,color:"rgba(245,239,230,0.6)",fontWeight:500,textAlign:"center",lineHeight:1.2}}>{label}</span>
-                </button>
-              ))}
-            </div>
-            <div style={{borderTop:"0.5px solid rgba(255,255,255,0.08)",paddingTop:14}}>
-              <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.6}}>What changed? Not the words. The meaning.</p>
-            </div>
-          </div>
         </>
       )}
        {!isNT && !isD9 && !isD1 && !isD2 && !isD3 && !isD4 && !isD5 && !isD6 && !isD7 && !isD10 && !isD11 && !isD12 && !isD13 && !isD14 && step==="Insight" && (
