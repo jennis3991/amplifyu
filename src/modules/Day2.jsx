@@ -86,11 +86,11 @@ export function D2SimWidget({T, T2, isDesktop}) {
       "Tell me about a challenge that turned out to be a gift.",
     ],
     Persuade:[
-      "Convince me that silence is more powerful than words.",
-      "Make the case for doing less — but doing it better.",
-      "Persuade me that one skill matters more than any other.",
-      "Convince me that slowing down is a competitive advantage.",
-      "Make the case for listening over speaking.",
+      "Convince your team to embrace a difficult change.",
+      "Persuade a sceptical stakeholder to support your idea.",
+      "Make the case for investing in people over technology.",
+      "Convince a client to choose your proposal.",
+      "Persuade someone to take a chance on you.",
     ],
     Presence:[
       "Introduce yourself as if you're speaking to a room of 500 people.",
