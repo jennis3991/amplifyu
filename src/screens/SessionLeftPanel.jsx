@@ -349,7 +349,6 @@ export function SessionLeftPanel({
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
             <span style={{ fontFamily:T.serif, fontSize:13, color:"rgba(245,239,230,0.45)" }}>Estimated time: <span style={{ color:"rgba(245,239,230,0.65)", fontWeight:600 }}>4–5 minutes</span></span>
           </div>
-          <p style={{ fontFamily:T.serif, fontSize:13, color:"rgba(245,239,230,0.35)", lineHeight:1.6, margin:0 }}>Awareness is the first move. Clarity is the advantage.</p>
         </div>
       </div>
     );
