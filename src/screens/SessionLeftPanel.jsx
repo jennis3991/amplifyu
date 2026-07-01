@@ -325,13 +325,7 @@ export function SessionLeftPanel({
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Voice Warm-Up</div>
           <p style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.4vw,44px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.1, marginBottom:20, maxWidth:400 }}>Let's warm up your voice.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:24 }}/>
-          <div style={{ display:"flex", alignItems:"flex-start", gap:14, padding:"16px 20px", background:"rgba(138,158,132,0.08)", borderRadius:8, border:"0.5px solid rgba(138,158,132,0.2)", maxWidth:380 }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{flexShrink:0,marginTop:2}}><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z" stroke={T.gold} strokeWidth="1.3"/><circle cx="12" cy="9" r="2.5" stroke={T.gold} strokeWidth="1.3"/></svg>
-            <div>
-              <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:4 }}>Coach Tip</div>
-              <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.65)", lineHeight:1.6, margin:0 }}>There's no right or wrong answer. Just speak naturally — we'll handle the rest.</p>
-            </div>
-          </div>
+          <p style={{ fontFamily:T.serif, fontSize:15, color:"rgba(245,239,230,0.65)", lineHeight:1.7, margin:0, maxWidth:380 }}>Choose one topic below and speak for around 20 seconds. This is simply a chance to find your voice. There's no right or wrong answer. Just speak naturally, and we'll take care of the rest.</p>
         </div>
       </div>
     );
