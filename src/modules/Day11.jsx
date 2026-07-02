@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { T } from '../theme.js';
 
-export function D11PracticeWidget({T, T2, isDesktop}) {
+export function D11PracticeWidget({T, T2, isDesktop, onWordsChange}) {
   const SIGNAL_AREAS = ["Wardrobe","LinkedIn & bio","Voice & pace","Posture & presence","Storytelling","Energy","Online presence","Communication style"];
   const STORY_TYPES = [
     {label:"Origin Story",   desc:"Where you came from and what shaped your values.",        prompt:"Start with where you were before. What happened, and what did it make you believe?"},
@@ -21,6 +21,8 @@ export function D11PracticeWidget({T, T2, isDesktop}) {
   const [loading,     setLoading]     = useState(false);
   const [copied,      setCopied]      = useState(false);
   const [validMsg,    setValidMsg]    = useState('');
+
+  useEffect(() => { if(onWordsChange) onWordsChange(words); }, [words]);
 
   const cs = {
     card:  {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"16px"},
@@ -305,347 +307,265 @@ Keep the whole response under 200 words. No bullet symbols — use the section l
   return null;
 }
 
-// ─── D11 Simulation Widget — Brand Coherence Audit ───────────────────────────
-export function D11SimWidget({T, T2, isDesktop}) {
-  const [phase, setPhase] = useState('intro');
-  const [mode, setMode] = useState(null);
-  const [brandWords, setBrandWords] = useState(['','','']);
-  const [profileText, setProfileText] = useState('');
-  const [results, setResults] = useState(null);
-  const [buildRole, setBuildRole] = useState('');
-  const [buildAchievement, setBuildAchievement] = useState('');
-  const [buildAudience, setBuildAudience] = useState('');
-  const [buildResults, setBuildResults] = useState(null);
-  const [copied, setCopied] = useState(false);
+// ─── D11 Simulation Widget — The Mirror Test ─────────────────────────────────
+export function D11SimWidget({T, T2, isDesktop, brandWords=["","",""]}) {
+  const wordsFromProps = brandWords.every(w=>w&&w.trim().length>0);
 
-  const reset = () => { setPhase('intro'); setMode(null); setBrandWords(['','','']); setProfileText(''); setResults(null); setBuildRole(''); setBuildAchievement(''); setBuildAudience(''); setBuildResults(null); setCopied(false); };
+  const [step,       setStep]       = useState(1);
+  const [localWords, setLocalWords] = useState(["","",""]);
+  const [headline,   setHeadline]   = useState('');
+  const [about,      setAbout]      = useState('');
+  const [loading,    setLoading]    = useState(false);
+  const [result,     setResult]     = useState(null);
+  const [apiError,   setApiError]   = useState(false);
+  const [copied,     setCopied]     = useState(null);
+  const [saved,      setSaved]      = useState(false);
+
+  const activeWords  = wordsFromProps ? brandWords : localWords;
+  const wordsReady   = activeWords.every(w=>w&&w.trim().length>0);
+  const headlineValid= headline.trim().length>0;
+  const headlineLong = headline.length>220;
+
+  const STEP_LABELS = ["Your Brand Intent","Your LinkedIn Now","Your Stronger Profile"];
 
   const cs = {
-    card: { background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px" },
-    label: { fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8 },
+    card:  {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"16px"},
+    label: {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10},
   };
-  const cta = (disabled) => ({ width:"100%", padding:"15px", borderRadius:4, border:"none", background:disabled?"rgba(44,36,22,0.25)":T.ink, color:T.bg, fontSize:isDesktop?15:14, fontWeight:600, cursor:disabled?"not-allowed":"pointer", fontFamily:T.sans, minHeight:50, transition:"all 0.2s" });
-  const back = { background:"none", border:"none", fontFamily:T.sans, fontSize:12, color:T2.text4, cursor:"pointer", padding:"8px 0", textAlign:"left" };
+  const ctaStyle = (disabled) => ({
+    width:"100%", padding:"15px", borderRadius:4, border:"none",
+    background:disabled?"rgba(44,36,22,0.18)":T.ink,
+    color:disabled?"rgba(44,36,22,0.35)":(T2.bg||"#F7F3EC"),
+    fontSize:isDesktop?15:14, fontWeight:600, cursor:disabled?"not-allowed":"pointer",
+    fontFamily:T.sans, minHeight:50, transition:"all 0.2s",
+  });
+  const backStyle = {background:"none",border:"none",fontFamily:T.sans,fontSize:13,color:T2.text4,cursor:"pointer",padding:"6px 0",textAlign:"left"};
 
-  const runAudit = async () => {
-    setPhase('analyzing');
-    const r = (min,max) => Math.floor(Math.random()*(max-min+1))+min;
-    const signalPool = ['Strategic','Analytical','Experienced','Results-oriented','Delivery-focused','Credible','Diligent','Professional'];
-    const currentWords = signalPool.sort(()=>Math.random()-0.5).slice(0,3);
-    const desired = brandWords.filter(w=>w.trim());
-    const d = desired.length > 0 ? desired.map(w=>w.trim()) : ['strategic','trusted','inspiring'];
-    const COHERENCE_AREAS = ["LinkedIn Bio","Headline","Communication Style","Online Presence","Personal Story","Professional Positioning"];
-    const icons = ["✅","❌","⚠️"];
-    const coherence = COHERENCE_AREAS.map(area => ({area, status:icons[r(0,2)]}));
-    const riskPool = [
-      `Your profile reads as generic — it could describe hundreds of other professionals.`,
-      `There's little evidence connecting your day-to-day work to the words "${d.join(', ')}".`,
-      `Your headline leads with a job title rather than the impact or value you bring.`,
-      `Key achievements are buried or missing, so your credibility isn't immediately clear.`,
-      `The tone feels neutral rather than distinctive — it doesn't sound like "you".`,
-    ];
-    const risks = riskPool.sort(()=>Math.random()-0.5).slice(0,3);
-    const profileSnippet = profileText.trim().length > 200
-      ? profileText.trim().slice(0,200).trim() + '…'
-      : profileText.trim();
+  function StepPills() {
+    return (
+      <div style={{display:"flex",gap:isDesktop?8:5,marginBottom:24}}>
+        {STEP_LABELS.map((s,i)=>{
+          const n=i+1; const done=n<step; const active=n===step;
+          return (
+            <div key={i} style={{display:"flex",alignItems:"center",flex:1,minWidth:0}}>
+              <div style={{flex:1,padding:isDesktop?"7px 12px":"6px 8px",borderRadius:20,border:`0.5px solid ${active?T.ink:done?"rgba(138,158,132,0.4)":T2.border}`,background:active?(T.ink||"#2C2416"):done?"rgba(138,158,132,0.08)":"transparent",fontFamily:T.sans,fontSize:isDesktop?11:9,fontWeight:active?600:400,color:active?"#F7F3EC":done?"rgba(138,158,132,0.85)":T2.text4,textAlign:"center",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",transition:"all 0.2s"}}>
+                {done?"✓ ":""}{s}
+              </div>
+              {i<2&&<div style={{width:isDesktop?10:6,height:1,background:T2.border,flexShrink:0,margin:"0 3px"}}/>}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
-    const d0=d[0].toLowerCase(), d1=(d[1]||d[0]).toLowerCase(), d2=(d[2]||d[0]).toLowerCase();
-    let rewriteHeadline = `${d0.charAt(0).toUpperCase()+d0.slice(1)} professional delivering results through ${d1} thinking and ${d2} leadership.`;
-    let rewriteAbout = `Known for being ${d.map(w=>w.toLowerCase()).join(', ')} — I bring clarity, rigour, and genuine commitment to every room I enter.\n\nMy work creates impact that compounds over time. I believe the best outcomes come from clear communication, deliberate decisions, and people who care deeply about their craft.\n\nIf you want to work with someone who is ${d0} and genuinely ${d2} — let's connect.`;
+  function parseResult(raw) {
+    const KEYS = ["BRAND SIGNAL SCORE","WHAT'S ALREADY WORKING","WHERE THE GAP IS","THREE STRONGER HEADLINES","YOUR ABOUT SECTION OPENING"];
+    const out = {};
+    KEYS.forEach((k,i)=>{
+      const upper=raw.toUpperCase(); const start=upper.indexOf(k);
+      if(start===-1) return;
+      const contentStart=start+k.length;
+      const nextIdx=i<KEYS.length-1?upper.indexOf(KEYS[i+1]):raw.length;
+      out[k]=raw.slice(contentStart,nextIdx>-1?nextIdx:raw.length).replace(/^[\s:*#\n]+/,"").trim();
+    });
+    const scoreRaw=out["BRAND SIGNAL SCORE"]||"";
+    const scoreMatch=scoreRaw.match(/(\d+)\s*\/\s*10/);
+    out._score=scoreMatch?scoreMatch[1]:null;
+    out._scoreText=scoreRaw.replace(/^\d+\s*\/\s*10\s*[—–\-]?\s*/,"").trim();
+    out._headlines=(out["THREE STRONGER HEADLINES"]||"").split("\n").filter(l=>l.trim().match(/^\d+[.)]\s+/)).map(l=>l.replace(/^\d+[.)]\s+/,"").trim()).filter(l=>l.length>0);
+    if(!out._headlines.length) out._headlines=(out["THREE STRONGER HEADLINES"]||"").split("\n").filter(l=>l.trim()).slice(0,3);
+    return out;
+  }
+
+  async function runMirrorTest() {
+    setLoading(true); setApiError(false);
+    const w=activeWords.map(w=>w.trim());
+    const prompt=`You are an expert personal brand strategist and LinkedIn coach. A professional has completed a brand identity exercise and defined the three words they want to be known for. You are now auditing their LinkedIn profile against that intent.
+
+Their three brand words: ${w.join(', ')}
+
+Their current LinkedIn headline:
+${headline.trim()}
+
+Their current LinkedIn About section (may be empty):
+${about.trim()||"No About section provided — analyse the headline only."}
+
+Analyse their LinkedIn profile against their brand words and return your response in the following exact structure. Use the section labels exactly as written. Do not use bullet symbols. Write in second person ("Your headline…", "You come across as…"). Tone: warm, direct, expert, empowering — never critical or discouraging.
+
+BRAND SIGNAL SCORE
+Give a score out of 10 for how strongly their current LinkedIn signals their three brand words. Format: X/10. Follow with one sentence explaining the score.
+
+WHAT'S ALREADY WORKING
+Two to three sentences identifying the strongest elements of their current profile in relation to their brand words. Be specific — reference actual words or phrases from their profile where possible.
+
+WHERE THE GAP IS
+Two to three sentences identifying the clearest disconnect between their profile and their brand intent. Frame as an opportunity, not a failure. Do not use the word "lacking" or "missing".
+
+THREE STRONGER HEADLINES
+Write exactly three alternative LinkedIn headlines. Each should signal all three brand words more strongly than the current headline. Each headline must be under 180 characters. Format each on its own line, preceded by a number (1. 2. 3.). No explanation needed — just the three headlines.
+
+YOUR ABOUT SECTION OPENING
+Write a rewritten opening paragraph (3–4 sentences) for their About section. It should open with a hook, reflect all three brand words naturally, and sound like a confident, senior professional — not a CV. Use their own language and details where possible. If no About section was provided, write a strong opening based on their headline and brand words alone.`;
 
     try {
-      const res = await fetch("/api/claude", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-5",
-          max_tokens: 700,
-          messages: [{
-            role: "user",
-            content: `You are a personal branding coach. Rewrite this LinkedIn profile so it clearly communicates the following three brand words: ${d.join(', ')}.\n\nKeep the person's actual role, experience, and achievements — but reframe the language so every sentence reinforces who they want to be known as.\n\nCurrent profile:\n"${profileText.trim()}"\n\nReturn ONLY valid JSON:\n{"headline":"<punchy LinkedIn headline under 15 words that naturally embeds the brand words>","about":"<rewritten About section, 3 short paragraphs, warm professional tone, first person, brand words woven in naturally — not forced>"}`
-          }]
-        })
-      });
-      const data = await res.json();
-      const raw = (data.content||[]).map(b=>b.text||'').join('').trim();
-      const m = raw.match(/\{[\s\S]*\}/);
-      if (m) {
-        const parsed = JSON.parse(m[0]);
-        if (parsed.headline) rewriteHeadline = parsed.headline;
-        if (parsed.about)    rewriteAbout    = parsed.about;
-      }
-    } catch(_) {}
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:900,messages:[{role:"user",content:prompt}]})});
+      const data=await res.json();
+      const raw=(data.content||[]).map(b=>b.text||"").join("").trim();
+      setResult(parseResult(raw));
+      setStep(3);
+    } catch(_) { setApiError(true); }
+    setLoading(false);
+  }
 
-    setResults({
-      currentWords, desired, signals: currentWords, risks,
-      scores:[
-        {label:"Clarity",        val:r(6,8)},
-        {label:"Credibility",    val:r(7,9)},
-        {label:"Memorability",   val:r(3,5)},
-        {label:"Differentiation",val:r(2,5)},
-        {label:"Consistency",    val:r(6,9)},
-      ],
-      coherence, profileSnippet,
-      rewriteHeadline, rewrite: rewriteAbout,
-    });
-    setPhase('results');
-  };
-
-  const runBuild = () => {
-    const desired = brandWords.filter(w=>w.trim());
-    const d = desired.length > 0 ? desired.map(w=>w.trim()) : ['strategic','trusted','inspiring'];
-    const role = buildRole.trim() || 'professional';
-    const audience = buildAudience.trim() || 'organisations and teams';
-    const achievement = buildAchievement.trim();
-
-    if (mode === 'linkedin') {
-      const headline = `${role} | Helping ${audience} achieve clarity, growth, and lasting results`;
-      const about = `I help ${audience} achieve the kind of results that compound over time — through ${d[0]?.toLowerCase()}, ${d[1]?.toLowerCase() || 'deliberate'} leadership, and clear communication.\n\nAs a ${role}, I've built a career around ${d.join(', ').toLowerCase()}${achievement ? ` — most recently, ${achievement}` : ''}.\n\nI believe the best outcomes come from people who are clear on who they are, what they stand for, and the value they create. That belief shapes everything I do.\n\nIf you want to work with someone who brings ${d[0]?.toLowerCase()} and genuine care to every room they enter — let's connect.`;
-      const cv = `${role} with a proven track record of helping ${audience} achieve meaningful outcomes. Known for ${d.join(', ').toLowerCase()}, with a clear ability to turn complexity into clarity and strategy into action.${achievement ? ` ${achievement}.` : ''} Motivated by doing work that matters — and doing it with the highest standards.`;
-      setBuildResults({ headline, linkedin: about, cv });
-    } else {
-      const summary = `${role} with a track record of helping ${audience} achieve exceptional results. Known for being ${d.join(', ').toLowerCase()} — bringing clarity, rigour, and genuine commitment to every engagement.${achievement ? `\n\nKey achievement: ${achievement}.` : ''}\n\nA natural communicator and leader who translates complex challenges into clear, actionable strategy. Driven by the belief that the best outcomes come from ${d[0]?.toLowerCase()} thinking and ${d[d.length-1]?.toLowerCase()} execution.`;
-      setBuildResults({ cv: summary });
-    }
-    setPhase('build-results');
-  };
-
-  if (phase === 'intro') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={cs.card}>
-        <div style={cs.label}>Real · Personal · Actionable</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 10px"}}>Your brand is the story people tell about you when you're not in the room.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0}}>Choose what you'd like to do. Your AmplifyU coach scores your positioning, identifies the gaps, and writes stronger copy for you.</p>
+  // Loading state
+  if(loading) return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <StepPills/>
+      <div style={{...cs.card,display:"flex",flexDirection:"column",alignItems:"center",padding:isDesktop?"64px 24px":"48px 20px",gap:24}}>
+        <img src="/logo-mark.png" alt="AmplifyU" style={{width:52,height:52,objectFit:"cover",mixBlendMode:"multiply",filter:"brightness(0.55) sepia(0.4)",animation:"breathe 2s ease infinite"}}/>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,margin:0,textAlign:"center",lineHeight:1.3}}>Reading your brand signal…</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0,textAlign:"center",lineHeight:1.6}}>Your coach is comparing your LinkedIn against your brand intent.</p>
       </div>
-      {[
-        {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.3"/><path d="M9 6v3l2 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><path d="M13.5 13.5l3 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>,
-         label:"Audit my LinkedIn profile", sub:"Already have a profile? Find the gap between how you're seen and how you want to be known.", action:()=>{setMode('audit');setPhase('paste');}},
-        {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M14.5 2.5l3 3-10 10H4.5v-3l10-10z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M12 5l3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><path d="M4.5 14.5l1-1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
-         label:"Build a LinkedIn profile from scratch", sub:"No profile yet? Build one around your brand — headline, About section, and messaging.", action:()=>{setMode('linkedin');setPhase('build-form');}},
-        {icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="2" width="12" height="16" rx="1.5" stroke="currentColor" strokeWidth="1.3"/><path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
-         label:"Write my CV profile statement", sub:"Create a compelling professional summary that positions you powerfully from the first line.", action:()=>{setMode('cv');setPhase('build-form');}},
-      ].map((opt,i)=>(
-        <button key={i} onClick={opt.action} style={{...cs.card,cursor:"pointer",textAlign:"left",border:`0.5px solid ${T2.border}`,display:"flex",gap:14,alignItems:"flex-start",transition:"border-color 0.2s, box-shadow 0.2s"}}
-          onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.boxShadow="0 2px 12px rgba(138,158,132,0.12)";}}
-          onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.boxShadow="none";}}>
-          <span style={{color:T2.text3,flexShrink:0,marginTop:3}}>{opt.icon}</span>
-          <div>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,marginBottom:4,lineHeight:1.2}}>{opt.label}</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,lineHeight:1.5}}>{opt.sub}</p>
-          </div>
-          <span style={{fontFamily:T.sans,fontSize:14,color:T.gold,marginLeft:"auto",flexShrink:0,paddingTop:2}}>→</span>
-        </button>
-      ))}
     </div>
   );
 
-  if (phase === 'build-form') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+  // Error state
+  if(apiError) return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <StepPills/>
+      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"48px 24px":"36px 20px"}}>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 20px"}}>Your coach couldn't connect right now. Check your connection and try again.</p>
+        <button onClick={runMirrorTest} style={{...ctaStyle(false),width:"auto",padding:"12px 28px",display:"inline-block"}}>Try Again →</button>
+      </div>
+      <button onClick={()=>{setApiError(false);setStep(2);}} style={backStyle}>← Back</button>
+    </div>
+  );
+
+  // Step 1: Brand Intent
+  if(step===1) return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <StepPills/>
       <div style={cs.card}>
-        <div style={cs.label}>{mode==='linkedin'?"Build Your LinkedIn Profile":"Write Your CV Profile"}</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:"0 0 16px"}}>Answer three questions. Your AmplifyU coach writes the rest.</p>
-        <div style={{display:"flex",flexDirection:"column",gap:14}}>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Your role or title</div>
-            <input value={buildRole} onChange={e=>setBuildRole(e.target.value)} placeholder={mode==='linkedin'?"e.g. Senior Marketing Manager":"e.g. Operations Director"} className="au-input" style={{width:"100%",padding:"10px 14px",fontSize:isDesktop?14:13,boxSizing:"border-box"}}/>
-          </div>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Who you help / your target audience</div>
-            <input value={buildAudience} onChange={e=>setBuildAudience(e.target.value)} placeholder="e.g. fast-growing startups, global marketing teams" className="au-input" style={{width:"100%",padding:"10px 14px",fontSize:isDesktop?14:13,boxSizing:"border-box"}}/>
-          </div>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>One key achievement or strength</div>
-            <textarea value={buildAchievement} onChange={e=>setBuildAchievement(e.target.value)} placeholder={mode==='linkedin'?"e.g. Led a team of 12 to deliver a £4M transformation programme on time and under budget":"e.g. Reduced operational costs by 30% while maintaining team engagement scores above 85%"} style={{width:"100%",minHeight:isDesktop?80:70,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
-          </div>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Three words you want to be known for</div>
-            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-              {brandWords.map((w,i)=>(
-                <input key={i} value={w} onChange={e=>{const n=[...brandWords];n[i]=e.target.value;setBrandWords(n);}} placeholder={["e.g. Strategic","e.g. Trusted","e.g. Inspiring"][i]} className="au-input" style={{flex:"1 1 80px",padding:"9px 12px",fontSize:isDesktop?13:12,minWidth:80}}/>
+        <div style={cs.label}>Your Brand Intent</div>
+        {wordsFromProps ? (
+          <>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text4,margin:"0 0 12px"}}>You want to be known as</p>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?30:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:"0 0 20px",letterSpacing:"-0.3px"}}>
+              {brandWords.filter(w=>w.trim()).map((w,i,arr)=>(
+                <span key={i}>{w}{i<arr.length-1&&<span style={{color:T.gold,fontWeight:300,padding:"0 10px"}}>·</span>}</span>
               ))}
-            </div>
-          </div>
-        </div>
-      </div>
-      <button onClick={runBuild} disabled={!buildRole.trim()} style={cta(!buildRole.trim())}>
-        {mode==='linkedin'?"Build My LinkedIn Profile →":"Write My CV Profile →"}
-      </button>
-      <button onClick={reset} style={back}>← Back</button>
-    </div>
-  );
-
-  if (phase === 'build-results' && buildResults) return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      {mode==='linkedin' && buildResults.headline && (
-        <div style={cs.card}>
-          <div style={cs.label}>LinkedIn Headline</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 10px"}}>{buildResults.headline}</p>
-          <button onClick={()=>{navigator.clipboard?.writeText(buildResults.headline).then(()=>{setCopied('h');setTimeout(()=>setCopied(false),2000);});}} style={{padding:"7px 14px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied==='h'?"rgba(138,158,132,0.15)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}>{copied==='h'?"Copied ✓":"Copy headline"}</button>
-        </div>
-      )}
-      {mode==='linkedin' && buildResults.linkedin && (
-        <div style={cs.card}>
-          <div style={cs.label}>LinkedIn About Section</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.75,margin:"0 0 14px",whiteSpace:"pre-wrap"}}>{buildResults.linkedin}</p>
-          <button onClick={()=>{navigator.clipboard?.writeText(buildResults.linkedin).then(()=>{setCopied('l');setTimeout(()=>setCopied(false),2000);});}} style={{padding:"7px 14px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied==='l'?"rgba(138,158,132,0.15)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}>{copied==='l'?"Copied ✓":"Copy About section"}</button>
-        </div>
-      )}
-      {buildResults.cv && (
-        <div style={cs.card}>
-          <div style={cs.label}>{mode==='linkedin'?"CV Profile Statement":"Your CV Profile"}</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.75,margin:"0 0 14px",whiteSpace:"pre-wrap"}}>{buildResults.cv}</p>
-          <button onClick={()=>{navigator.clipboard?.writeText(buildResults.cv).then(()=>{setCopied('c');setTimeout(()=>setCopied(false),2000);});}} style={{padding:"7px 14px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied==='c'?"rgba(138,158,132,0.15)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}>{copied==='c'?"Copied ✓":"Copy profile statement"}</button>
-        </div>
-      )}
-      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
-        <div style={cs.label}>Next step</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0}}>Use this as your starting point. Personalise it with specific numbers, stories, and your own voice — the goal is to sound unmistakably like you. Then run the Brand Audit to check every signal is aligned.</p>
-      </div>
-      <button onClick={reset} style={{width:"100%",padding:"15px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:50}}>Start Again →</button>
-    </div>
-  );
-
-  if (phase === 'words' || phase === 'paste') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={cs.card}>
-        <div style={cs.label}>Your LinkedIn Profile</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 16px"}}>Paste your current LinkedIn headline, About section, or professional bio. The more you include, the deeper the analysis.</p>
-        <textarea
-          value={profileText}
-          onChange={e=>setProfileText(e.target.value)}
-          placeholder={"Paste your LinkedIn headline, About section, or professional bio here…\n\nExample:\nSenior manager with 15 years' experience leading teams and delivering projects across multiple industries."}
-          style={{width:"100%",minHeight:isDesktop?160:130,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.65,boxSizing:"border-box"}}
-        />
-        {profileText.trim().length>0 && (
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text4,margin:"10px 0 0"}}>{profileText.trim().split(/\s+/).length} words</p>
+            </p>
+          </>
+        ) : (
+          <>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text4,margin:"0 0 14px"}}>You want to be known as</p>
+            {localWords.map((w,i)=>(
+              <div key={i} style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                <div style={{width:24,height:24,borderRadius:"50%",background:w.trim()?T.gold:"rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
+                  <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:"white"}}>{i+1}</span>
+                </div>
+                <input value={w} onChange={e=>{const n=[...localWords];n[i]=e.target.value;setLocalWords(n);}} placeholder={["e.g. trustworthy","e.g. creative","e.g. calm"][i]} className="au-input" style={{flex:1,padding:"10px 14px",fontSize:14}}/>
+              </div>
+            ))}
+          </>
         )}
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>This is your brand mirror. In the next step, we'll check if your LinkedIn reflects it.</p>
       </div>
-      <div style={cs.card}>
-        <div style={cs.label}>How do you want to be known?</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 12px"}}>Three words you want people to associate with your name.</p>
-        <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:12}}>
-          {brandWords.map((w,i)=>(
-            <input key={i} value={w} onChange={e=>{const n=[...brandWords];n[i]=e.target.value;setBrandWords(n);}} placeholder={["e.g. Trusted","e.g. Strategic","e.g. Inspiring"][i]} className="au-input" style={{flex:"1 1 80px",padding:"9px 12px",fontSize:isDesktop?14:13,minWidth:80}}/>
-          ))}
-        </div>
-        <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-          {["Trusted","Strategic","Innovative","Confident","Inspiring","Credible","Decisive","Empathetic","Visionary","Calm"].map((ex,i)=>{
-            const sel=brandWords.includes(ex);
-            return <button key={i} onClick={()=>{if(sel){setBrandWords(brandWords.map(w=>w===ex?"":w));}else{const idx=brandWords.findIndex(w=>!w);if(idx>=0){const n=[...brandWords];n[idx]=ex;setBrandWords(n);}}}} style={{padding:"5px 12px",borderRadius:20,border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.15)":"transparent",color:sel?T.gold:T2.text3,fontSize:12,cursor:"pointer",fontFamily:T.sans,minHeight:30,transition:"all 0.15s"}}>{ex}</button>;
-          })}
-        </div>
-      </div>
-      <button onClick={runAudit} disabled={profileText.trim().length<10} style={cta(profileText.trim().length<10)}>Run the Audit →</button>
-      <button onClick={reset} style={back}>← Back</button>
+      <button onClick={()=>{if(wordsReady)setStep(2);}} style={ctaStyle(!wordsReady)}>Check my LinkedIn →</button>
     </div>
   );
 
-  if (phase === 'analyzing') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"56px 0":"36px 0"}}>
-      <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}</div>
-      <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,margin:0,textAlign:"center"}}>Auditing your brand…</p>
-      <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,textAlign:"center",lineHeight:1.6}}>Analysing your profile against your brand intent and writing a stronger version.</p>
+  // Step 2: LinkedIn Now
+  if(step===2) return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <StepPills/>
+      <div style={cs.card}>
+        <div style={cs.label}>Your LinkedIn Now</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 20px",fontStyle:"italic"}}>Paste your current LinkedIn headline and About section below. The more you include, the sharper the analysis.</p>
+        <div style={{marginBottom:20}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Headline</div>
+          <input value={headline} onChange={e=>setHeadline(e.target.value)} placeholder="e.g. Senior Programme Manager | Digital Transformation | Shell" className="au-input" style={{width:"100%",padding:"10px 14px",fontSize:isDesktop?14:13,boxSizing:"border-box"}}/>
+          <div style={{display:"flex",justifyContent:"space-between",marginTop:6}}>
+            <span style={{fontFamily:T.sans,fontSize:11,color:headlineLong?"rgba(180,80,60,0.8)":T2.text4}}>{headline.length} characters</span>
+            {headlineLong&&<span style={{fontFamily:T.sans,fontSize:11,color:"rgba(180,80,60,0.8)"}}>LinkedIn allows 220 characters — yours may be truncated</span>}
+          </div>
+        </div>
+        <div style={{marginBottom:16}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your About Section</div>
+          <textarea value={about} onChange={e=>setAbout(e.target.value)} placeholder="Paste your LinkedIn About section here. If you don't have one yet, write a few sentences about what you do and who you help." rows={isDesktop?8:6} style={{width:"100%",background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.65,boxSizing:"border-box"}}/>
+          <div style={{fontFamily:T.sans,fontSize:11,color:T2.text4,marginTop:6}}>{about.trim().split(/\s+/).filter(w=>w).length} words</div>
+        </div>
+        {headlineValid&&!about.trim()&&<p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontStyle:"italic",margin:"0 0 4px",lineHeight:1.55}}>Adding your About section gives you a much richer analysis — but you can continue with just your headline.</p>}
+        <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,margin:"12px 0 0"}}>Your text is used only to generate your analysis. It is not stored.</p>
+      </div>
+      <button onClick={runMirrorTest} style={ctaStyle(!headlineValid)}>Run the Mirror Test →</button>
+      <button onClick={()=>setStep(1)} style={backStyle}>← Back to Brand Intent</button>
     </div>
   );
 
-  if (phase === 'results' && results) return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={cs.card}>
-        <div style={cs.label}>Your Current Brand Signals</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px"}}>Based on your profile, you currently signal:</p>
-        <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:16}}>
-          {results.signals.map((s,i)=>(
-            <span key={i} style={{padding:"6px 14px",borderRadius:20,background:"rgba(138,158,132,0.12)",border:"0.5px solid rgba(138,158,132,0.35)",fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:600,color:T.gold}}>{s}</span>
+  // Step 3: Results
+  if(step===3&&result) {
+    const hl=result._headlines||[];
+    const fullText=[
+      `BRAND SIGNAL SCORE\n${result._score}/10 — ${result._scoreText}`,
+      `\nWHAT'S ALREADY WORKING\n${result["WHAT'S ALREADY WORKING"]||""}`,
+      `\nWHERE THE GAP IS\n${result["WHERE THE GAP IS"]||""}`,
+      `\nTHREE STRONGER HEADLINES\n${hl.map((h,i)=>`${i+1}. ${h}`).join("\n")}`,
+      `\nYOUR ABOUT SECTION OPENING\n${result["YOUR ABOUT SECTION OPENING"]||""}`,
+    ].join("");
+    return (
+      <div style={{display:"flex",flexDirection:"column",gap:16}}>
+        <StepPills/>
+        {/* Card 1: Score */}
+        <div style={{background:T.ink||"#2C2416",borderRadius:4,padding:isDesktop?"28px 24px":"20px 16px"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"rgba(200,168,76,0.7)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Brand Signal Score</div>
+          {result._score&&<div style={{fontFamily:T.serif,fontSize:isDesktop?52:42,fontWeight:600,color:"#F5EFE6",lineHeight:1,margin:"0 0 10px",letterSpacing:"-1px"}}>{result._score}<span style={{fontSize:isDesktop?24:20,fontWeight:400,color:"rgba(245,239,230,0.45)"}}>/10</span></div>}
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.72)",lineHeight:1.6,margin:0}}>{result._scoreText}</p>
+        </div>
+        {/* Card 2: What's working */}
+        <div style={cs.card}>
+          <div style={cs.label}>What's Already Working</div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0}}>{result["WHAT'S ALREADY WORKING"]||""}</p>
+        </div>
+        {/* Card 3: Gap */}
+        <div style={cs.card}>
+          <div style={cs.label}>Where the Gap Is</div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0}}>{result["WHERE THE GAP IS"]||""}</p>
+        </div>
+        {/* Card 4: Headlines */}
+        <div style={cs.card}>
+          <div style={cs.label}>Three Stronger Headlines</div>
+          {hl.map((h,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12,padding:"12px 0",borderBottom:i<hl.length-1?"0.5px solid "+T2.divider:"none"}}>
+              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.55,flex:1}}>{h}</span>
+              <button onClick={()=>{navigator.clipboard?.writeText(h).then(()=>{setCopied("h"+i);setTimeout(()=>setCopied(null),2000);});}} style={{padding:"5px 10px",borderRadius:3,border:"0.5px solid "+T2.border,background:copied==="h"+i?"rgba(138,158,132,0.12)":"transparent",color:copied==="h"+i?T.gold:T2.text4,fontSize:11,fontFamily:T.sans,cursor:"pointer",flexShrink:0,fontWeight:500,transition:"all 0.15s",whiteSpace:"nowrap"}}>
+                {copied==="h"+i?"Copied ✓":"Copy"}
+              </button>
+            </div>
           ))}
         </div>
-        <div style={cs.label}>Potential Risks</div>
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          {results.risks.map((r,i)=>(
-            <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-              <span style={{fontFamily:T.sans,fontSize:13,color:"rgba(180,80,60,0.8)",flexShrink:0,marginTop:1}}>×</span>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{r}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div style={cs.card}>
-        <div style={cs.label}>Brand Alignment Score</div>
-        {results.scores.map((s,i)=>(
-          <div key={i} style={{marginBottom:i<results.scores.length-1?14:0}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:6}}>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,fontWeight:500}}>{s.label}</span>
-              <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:700,color:s.val>=7?T.gold:s.val>=5?"#7A9E84":T2.text3}}>{s.val}<span style={{fontSize:11,fontWeight:400,color:T2.text4}}>/10</span></span>
-            </div>
-            <div style={{height:4,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-              <div style={{height:"100%",width:(s.val*10)+"%",background:s.val>=7?T.gold:s.val>=5?"rgba(138,158,132,0.7)":"rgba(180,80,60,0.35)",borderRadius:2,transition:"width 0.9s ease"}}/>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
-        <div style={cs.label}>Reflection</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:"0 0 12px"}}>If someone read this profile for 15 seconds, they would likely describe you as:</p>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:"0 0 16px"}}>"{results.signals.join('. ')}."</p>
-        {results.desired.length>0 && <>
-          <div style={{display:"flex",flexDirection:"column",gap:10,padding:"14px 16px",background:T2.bg,borderRadius:4}}>
-            <div>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>You want to be known for</div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T.gold,lineHeight:1.5,margin:0}}>{results.desired.join('. ')}.</p>
-            </div>
-            <div style={{height:"0.5px",background:T2.divider}}/>
-            <div>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Your profile currently communicates</div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text3,lineHeight:1.5,margin:0}}>{results.currentWords.join('. ')}.</p>
-            </div>
-          </div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:600,color:"rgba(180,80,60,0.8)",margin:"12px 0 0"}}>There is a gap.</p>
-        </>}
-      </div>
-      <div style={cs.card}>
-        <div style={cs.label}>Brand Coherence Audit</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px"}}>How consistently does your brand show up across every touchpoint?</p>
-        {results.coherence.map((row,i)=>(
-          <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:i<results.coherence.length-1?"0.5px solid "+T2.divider:"none"}}>
-            <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text}}>{row.area}</span>
-            <span style={{fontSize:16}}>{row.status}</span>
-          </div>
-        ))}
-        <div style={{marginTop:16,padding:"12px 14px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>Repeated signals become reputation. Reputation becomes brand.</p>
-        </div>
-      </div>
-      <div style={cs.card}>
-        <div style={cs.label}>Your Rewritten Profile</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 16px"}}>Written around <span style={{fontWeight:600,color:T.gold}}>{results.desired.join(', ')}</span> — use this as your starting point and personalise with your specific numbers and voice.</p>
-        <div style={{padding:"12px 14px",background:T2.bg,borderRadius:4,marginBottom:10}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(180,80,60,0.65)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your current profile</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,fontStyle:"italic",color:T2.text3,lineHeight:1.65,margin:0}}>{results.profileSnippet}</p>
-        </div>
-        {results.rewriteHeadline && (
-          <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.07)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.3)",marginBottom:10}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>New headline</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 12px"}}>{results.rewriteHeadline}</p>
-            <button onClick={()=>{navigator.clipboard?.writeText(results.rewriteHeadline).then(()=>{setCopied('h');setTimeout(()=>setCopied(false),2000);});}}
-              style={{padding:"7px 14px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied==='h'?"rgba(138,158,132,0.15)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}>
-              {copied==='h'?"Copied ✓":"Copy headline"}
-            </button>
-          </div>
-        )}
-        <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.07)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.3)"}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>New About section</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.75,margin:"0 0 14px",whiteSpace:"pre-wrap"}}>{results.rewrite}</p>
-          <button onClick={()=>{navigator.clipboard?.writeText(results.rewrite).then(()=>{setCopied('a');setTimeout(()=>setCopied(false),2000);});}}
-            style={{padding:"7px 14px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied==='a'?"rgba(138,158,132,0.15)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}>
-            {copied==='a'?"Copied ✓":"Copy About section"}
+        {/* Card 5: About Opening */}
+        <div style={cs.card}>
+          <div style={cs.label}>Your About Section Opening</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.75,margin:"0 0 16px"}}>{result["YOUR ABOUT SECTION OPENING"]||""}</p>
+          <button onClick={()=>{navigator.clipboard?.writeText(result["YOUR ABOUT SECTION OPENING"]||"").then(()=>{setCopied("about");setTimeout(()=>setCopied(null),2000);});}} style={{padding:"7px 14px",borderRadius:3,border:"0.5px solid "+T.gold,background:copied==="about"?"rgba(138,158,132,0.12)":"transparent",color:T.gold,fontSize:12,fontFamily:T.sans,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}>
+            {copied==="about"?"Copied ✓":"Copy"}
           </button>
         </div>
-        <div style={{marginTop:12,padding:"11px 13px",background:"rgba(44,36,22,0.04)",borderRadius:3,borderLeft:"2px solid "+T2.border}}>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text4,lineHeight:1.6,margin:0}}>Personalise with specific numbers, stories, and your own voice — the goal is to sound unmistakably like you.</p>
+        {/* Actions */}
+        <div style={{display:"flex",flexDirection:"column",gap:12,alignItems:"center"}}>
+          <button onClick={()=>{setResult(null);runMirrorTest();}} style={{background:"none",border:"none",fontFamily:T.sans,fontSize:13,color:T2.text3,cursor:"pointer",padding:"4px 0",textDecoration:"underline",textUnderlineOffset:3}}>Regenerate analysis</button>
+          <button onClick={()=>{navigator.clipboard?.writeText(fullText).then(()=>{setSaved(true);setTimeout(()=>setSaved(false),3000);});}} style={{width:"100%",padding:"15px",borderRadius:4,border:"none",background:T.ink,color:T2.bg||"#F7F3EC",fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:50,transition:"all 0.2s"}}>
+            {saved?"Copied to clipboard ✓":"Save to Toolkit"}
+          </button>
         </div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text4,lineHeight:1.65,margin:0,textAlign:"center"}}>Your LinkedIn is your always-on brand signal. Now you know exactly what to strengthen.</p>
+        <button onClick={()=>setStep(2)} style={backStyle}>← Back</button>
       </div>
-      <button onClick={reset} style={{width:"100%",padding:"15px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:50}}>Run Another Audit →</button>
-    </div>
-  );
+    );
+  }
 
   return null;
 }
+

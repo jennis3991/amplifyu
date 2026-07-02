@@ -33,7 +33,7 @@ export function MobileSessionView({
   d1MobCard, setD1MobCard, d2MobCard, setD2MobCard,
   d3MobCard, setD3MobCard, d4MobCard, setD4MobCard,
   d5MobCard, setD5MobCard, d6MobCard, setD6MobCard,
-  d7MobCard, setD7MobCard, d10MobCard, setD10MobCard, d11MobCard, setD11MobCard, d11FormulaCard, setD11FormulaCard, d12MobCard, setD12MobCard, ntMobCard, setNtMobCard,
+  d7MobCard, setD7MobCard, d10MobCard, setD10MobCard, d11MobCard, setD11MobCard, d11FormulaCard, setD11FormulaCard, d11BrandWords, setD11BrandWords, d12MobCard, setD12MobCard, ntMobCard, setNtMobCard,
   activeSc, scenarios, ambitionDraft, saveAmbition, ambitionSaved,
   roleId, activeRole, swipeRef, note, saveNote, checks, setChecks,
   ntOpenCard, setNtOpenCard, ntStory,
@@ -2430,14 +2430,14 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       {isD11 && step==="Rehearsal" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Build Your Brand</h2>
-          <D11PracticeWidget T={T} T2={T2} isDesktop={false}/>
+          <D11PracticeWidget T={T} T2={T2} isDesktop={false} onWordsChange={setD11BrandWords}/>
         </>
       )}
       {isD11 && step==="Simulation" && (
         <>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The LinkedIn Brand Audit</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>The fastest way to find the gap between how you're seen and how you want to be known — and close it.</p>
-          <D11SimWidget T={T} T2={T2} isDesktop={false}/>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Mirror Test</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Compare your LinkedIn against your brand intent — and get stronger copy, instantly.</p>
+          <D11SimWidget T={T} T2={T2} isDesktop={false} brandWords={d11BrandWords}/>
         </>
       )}
       {isD12 && step==="Insight" && (

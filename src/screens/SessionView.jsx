@@ -86,6 +86,7 @@ setAmbitionSaved(true); } catch {}
   const [d10MobCard, setD10MobCard] = useState(null);
   const [d11MobCard, setD11MobCard] = useState(null);
   const [d11FormulaCard, setD11FormulaCard] = useState(null);
+  const [d11BrandWords, setD11BrandWords] = useState(["","",""]);
   const [d12MobCard, setD12MobCard] = useState(null);
   const [ntMobCard, setNtMobCard] = useState(null);
   const [pixarOpen, setPixarOpen] = useState(false);
@@ -2854,15 +2855,15 @@ setAmbitionSaved(true); } catch {}
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:28 }}>Build Your Brand</h2>
-          <D11PracticeWidget T={T} T2={T2} isDesktop={true}/>
+          <D11PracticeWidget T={T} T2={T2} isDesktop={true} onWordsChange={setD11BrandWords}/>
         </div>
       );
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:12 }}>The LinkedIn Brand Audit</h2>
-          <p style={{ fontFamily:T.sans, fontSize:17, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:600 }}>The fastest way to find the gap between how you're seen and how you want to be known — and close it.</p>
-          <D11SimWidget T={T} T2={T2} isDesktop={true}/>
+          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:12 }}>The Mirror Test</h2>
+          <p style={{ fontFamily:T.sans, fontSize:17, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:600 }}>Compare your LinkedIn against your brand intent — and get stronger copy, instantly.</p>
+          <D11SimWidget T={T} T2={T2} isDesktop={true} brandWords={d11BrandWords}/>
         </div>
       );
 
@@ -3764,6 +3765,7 @@ setAmbitionSaved(true); } catch {}
       d10MobCard={d10MobCard} setD10MobCard={setD10MobCard}
       d11MobCard={d11MobCard} setD11MobCard={setD11MobCard}
       d11FormulaCard={d11FormulaCard} setD11FormulaCard={setD11FormulaCard}
+      d11BrandWords={d11BrandWords} setD11BrandWords={setD11BrandWords}
       d12MobCard={d12MobCard} setD12MobCard={setD12MobCard}
       ntMobCard={ntMobCard} setNtMobCard={setNtMobCard}
       activeSc={activeSc} scenarios={scenarios}
