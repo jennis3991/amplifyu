@@ -2039,7 +2039,7 @@ T.goldDark : T2.text4,
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>The 88 Keys</h2>
           <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",marginBottom:20,borderRadius:4}}>
-            <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0,fontStyle:"italic"}}>"Your voice is a piano with 88 keys. You've been playing the same 5 your whole life."</p>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.35,margin:0,fontStyle:"italic"}}>"Your voice is a piano with 88 keys. You've been playing the same 5 your whole life."</p>
           </div>
           {/* Science cards — expandable */}
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>The Science of Vocal Influence</div>
