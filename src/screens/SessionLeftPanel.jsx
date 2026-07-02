@@ -323,8 +323,7 @@ export function SessionLeftPanel({
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Voice Warm-Up</div>
           <p style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.4vw,44px)", fontWeight:600, color:"#F5EFE6", lineHeight:1.1, marginBottom:20, maxWidth:400 }}>Let's warm up your voice.</p>
-          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:24 }}/>
-          <p style={{ fontFamily:T.serif, fontSize:15, color:"rgba(245,239,230,0.65)", lineHeight:1.7, margin:0, maxWidth:380 }}>Choose one topic below and speak for around 30 seconds. This is simply a chance to find your voice. There's no right or wrong answer. Just speak naturally, and we'll take care of the rest.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
     );
