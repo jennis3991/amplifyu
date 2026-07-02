@@ -2310,12 +2310,12 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science of Personal Brand</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Halo Effect</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>When people notice one standout positive trait, they often assume other positive qualities must be true too.</p>
-          <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:14}}>
-            {[["Clear","Intelligence"],["Calm","Competence"],["Stylish","Success"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([s,r],i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:5,padding:"6px 12px",background:T2.surface,borderRadius:20,border:"0.5px solid "+T2.border}}>
-                <span style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text}}>{s}</span>
-                <span style={{fontFamily:T.sans,fontSize:11,color:T.gold}}>→</span>
-                <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold}}>{r}</span>
+          <div style={{display:"flex",flexWrap:"nowrap",gap:6,marginBottom:14}}>
+            {[["Clear","Intelligence"],["Calm","Competence"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([s,r],i)=>(
+              <div key={i} style={{display:"flex",alignItems:"center",gap:4,padding:"5px 9px",background:T2.surface,borderRadius:20,border:"0.5px solid "+T2.border,flexShrink:0}}>
+                <span style={{fontFamily:T.sans,fontSize:11,fontWeight:500,color:T2.text}}>{s}</span>
+                <span style={{fontFamily:T.sans,fontSize:10,color:T.gold}}>→</span>
+                <span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold}}>{r}</span>
               </div>
             ))}
           </div>

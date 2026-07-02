@@ -2798,8 +2798,8 @@ setAmbitionSaved(true); } catch {}
             {/* Halo Effect — first */}
             <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The Halo Effect</h2>
             <p style={{ fontFamily:T.sans, fontSize:16, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:20, maxWidth:640 }}>Whether intentional or not, people are constantly building a story about who you are. Psychologists call this the Halo Effect: one standout positive trait shapes how they judge everything else.</p>
-            <div style={{ display:"flex", flexWrap:"wrap", gap:10, marginBottom:20 }}>
-              {[["Clear","Intelligence"],["Calm","Competence"],["Stylish","Success"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([sig,res],i) => (
+            <div style={{ display:"flex", flexWrap:"nowrap", gap:10, marginBottom:20 }}>
+              {[["Clear","Intelligence"],["Calm","Competence"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([sig,res],i) => (
                 <div key={i} style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", background:T2.surface, borderRadius:20, border:"0.5px solid "+T2.border }}>
                   <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:500, color:T2.text }}>{sig}</span>
                   <span style={{ fontFamily:T.sans, fontSize:12, color:T.gold }}>→</span>
