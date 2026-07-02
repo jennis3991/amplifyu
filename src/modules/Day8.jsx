@@ -1161,7 +1161,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>REHEARSAL · DAY 8</div>
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>Find Your Story</h2>
       </div>
-      <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, margin:0 }}>Choose the story territory that feels most true right now.</p>
+      <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, margin:0 }}>Choose the story territory that feels most true right now. Speak for around 60 seconds. Your AmplifyU coach will find the shape of your story and turn it into something you can use anywhere.</p>
       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
         {STORY_CARDS.map((c, i) => {
           const sel = selected === i;
@@ -1193,9 +1193,10 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       <h3 style={{ fontFamily:T.serif, fontSize:isDesktop?26:22, fontWeight:600, color:T2.text, lineHeight:1.2, margin:0 }}>{STORY_CARDS[selected]?.title}</h3>
       <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"28px 24px 22px" }}>
         <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:16 }}>Your Story</div>
-        <p style={{ fontFamily:T.serif, fontSize:isDesktop?22:19, color:T2.text, lineHeight:1.55, margin:0, fontWeight:500 }}>Choose a story. Speak for around 60 seconds. Your AmplifyU coach will find the shape of your story and turn it into something you can use anywhere.</p>
+        <p style={{ fontFamily:T.serif, fontSize:isDesktop?22:19, color:T2.text, lineHeight:1.55, margin:0, fontWeight:500 }}>Speak for around 60 seconds. Your AmplifyU coach will find the shape of your story and turn it into something you can use anywhere.</p>
       </div>
-      <div style={{ display:"flex", flexDirection:"column" }}>
+      <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
+        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T2.text3, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:6 }}>As you speak, try to touch on</div>
         {["The situation before everything changed","What disrupted things or created a turning point","How you responded and what shifted","Where you ended up — the outcome and what it meant"].map((beat, i) => (
           <div key={i} style={{ padding:"9px 0 9px 16px", borderLeft:"2px solid rgba(138,158,132,0.4)" }}>
             <span style={{ fontFamily:T.serif, fontSize:14, color:T2.text, lineHeight:1.5 }}>{beat}</span>
