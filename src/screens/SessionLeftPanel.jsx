@@ -777,8 +777,9 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Build Your Brand</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Three exercises. Three layers of your brand architecture.</p>
-          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.15, marginBottom:20 }}>Every career has a reputation. The best careers have one by design.</p>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
+          <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.7, maxWidth:340 }}>Today you'll define the professional you're becoming — and uncover the gap between how you're seen today and how you want to be remembered.</p>
         </div>
       </div>
     );
@@ -879,13 +880,14 @@ export function SessionLeftPanel({
     </div>
   );
    if (step === "Simulation" && isD11) return (
-    <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
+    <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+      <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
+      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
       <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
         <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Brand — In Action</div>
-        <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Your brand is built in every room you enter. Shape it.</p>
-        <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-        <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.55)", lineHeight:1.65 }}>Find the gap between how you're seen and how you want to be known — then close it.</p>
+        <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, lineHeight:1.15, marginBottom:20 }}>Your brand isn't what you say about yourself. It's what people believe after experiencing you.</p>
+        <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
+        <p style={{ fontFamily:T.sans, fontSize:14, color:"rgba(245,239,230,0.5)", lineHeight:1.7, maxWidth:340 }}>Let's see how closely your professional profile reflects the future you're building — and write something stronger.</p>
       </div>
     </div>
   );

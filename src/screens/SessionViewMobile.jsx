@@ -679,15 +679,29 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           </div>
         );
-        // D11 Practice — cinematic dark panel
+        // D11 Rehearsal — cinematic dark panel
         if(isD11 && step==="Rehearsal") return (
           <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Build Your Brand</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Three exercises. Three layers of your brand architecture.</p>
-              <div style={{width:36,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:12}}>Every career has a reputation. The best careers have one by design.</p>
+              <div style={{width:36,height:1.5,background:"rgba(138,158,132,0.5)",marginBottom:12}}/>
+              <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Define the professional you're becoming — and uncover the gap between how you're seen today and how you want to be remembered.</p>
+            </div>
+          </div>
+        );
+        // D11 Simulation — cinematic dark panel
+        if(isD11 && step==="Simulation") return (
+          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Brand — In Action</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:12}}>Your brand isn't what you say about yourself. It's what people believe after experiencing you.</p>
+              <div style={{width:36,height:1.5,background:"rgba(138,158,132,0.5)",marginBottom:12}}/>
+              <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Let's see how closely your professional profile reflects the future you're building.</p>
             </div>
           </div>
         );
@@ -2429,14 +2443,11 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
       {isD11 && step==="Rehearsal" && (
         <>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Build Your Brand</h2>
           <D11PracticeWidget T={T} T2={T2} isDesktop={false} onWordsChange={setD11BrandWords}/>
         </>
       )}
       {isD11 && step==="Simulation" && (
         <>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Mirror Test</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Compare your LinkedIn against your brand intent — and get stronger copy, instantly.</p>
           <D11SimWidget T={T} T2={T2} isDesktop={false} brandWords={d11BrandWords}/>
         </>
       )}
