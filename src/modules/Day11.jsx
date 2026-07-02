@@ -32,7 +32,7 @@ export function D11PracticeWidget({T, T2, isDesktop, onWordsChange}) {
   const [stmtLoading,    setStmtLoading]    = useState(false);
   const [stmtSaved,      setStmtSaved]      = useState(false);
 
-  useEffect(() => { if(onWordsChange) onWordsChange(futureWords); }, [futureWords]);
+  useEffect(() => { if(onWordsChange && futureWords.length > 0) onWordsChange(futureWords); }, [futureWords]);
 
   useEffect(() => {
     if(screen === 4 && !brandStatement && !stmtLoading) generateStatement();
