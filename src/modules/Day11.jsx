@@ -1,184 +1,308 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { T } from '../theme.js';
 
 export function D11PracticeWidget({T, T2, isDesktop}) {
   const SIGNAL_AREAS = ["Wardrobe","LinkedIn & bio","Voice & pace","Posture & presence","Storytelling","Energy","Online presence","Communication style"];
   const STORY_TYPES = [
-    {label:"Origin Story",      desc:"Where you came from and what shaped your values."},
-    {label:"Turning Point",     desc:"A moment that changed your direction or thinking."},
-    {label:"Failure Story",     desc:"A challenge you faced and what you learned."},
-    {label:"Values Story",      desc:"A decision that shows what you stand for."},
+    {label:"Origin Story",   desc:"Where you came from and what shaped your values.",        prompt:"Start with where you were before. What happened, and what did it make you believe?"},
+    {label:"Turning Point",  desc:"A moment that changed your direction or thinking.",        prompt:"Describe the moment. What shifted — and what did you do differently after?"},
+    {label:"Failure Story",  desc:"A challenge you faced and what you learned.",             prompt:"What went wrong? Be honest about your part — then tell us what it taught you."},
+    {label:"Values Story",   desc:"A decision that shows what you stand for.",               prompt:"What was the situation? What did you choose, and what does that say about what you stand for?"},
   ];
   const BRAND_WORDS = ["calm","sharp","trustworthy","creative","premium","warm","fearless","visionary","precise","driven","empathetic","decisive","authentic","bold","considered"];
-  const [words, setWords] = useState(["","",""]);
-  const [auditDone, setAuditDone] = useState({});
-  const [activeStory, setActiveStory] = useState(null);
-  const [storyText, setStoryText] = useState({});
-  const [tab, setTab] = useState(0);
-  const [phase, setPhase] = useState('intro');
+  const STAGE_NAMES = ["Brand Mirror","Signal Audit","Story Curation","Brand Identity"];
 
-  const tabs = ["Brand Mirror","Signal Audit","Story Curation"];
+  const [stage,       setStage]       = useState(1);
+  const [words,       setWords]       = useState(["","",""]);
+  const [auditDone,   setAuditDone]   = useState({});
+  const [activeStory, setActiveStory] = useState(null);
+  const [storyTexts,  setStoryTexts]  = useState({});
+  const [aiResult,    setAiResult]    = useState(null);
+  const [loading,     setLoading]     = useState(false);
+  const [copied,      setCopied]      = useState(false);
+  const [validMsg,    setValidMsg]    = useState('');
+
   const cs = {
-    card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"16px"},
+    card:  {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"16px"},
     label: {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8},
   };
-  const cta = {width:"100%",padding:"15px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:50,transition:"all 0.2s"};
+  const ctaStyle = (disabled) => ({
+    width:"100%", padding:"15px", borderRadius:4, border:"none",
+    background: disabled ? "rgba(44,36,22,0.18)" : T.ink,
+    color: disabled ? "rgba(44,36,22,0.35)" : (T2.bg||"#F7F3EC"),
+    fontSize: isDesktop?15:14, fontWeight:600, cursor: disabled?"not-allowed":"pointer",
+    fontFamily:T.sans, minHeight:50, transition:"all 0.2s",
+  });
+  const backStyle = {background:"none",border:"none",fontFamily:T.sans,fontSize:13,color:T2.text4,cursor:"pointer",padding:"6px 0",textAlign:"left"};
 
-  if (phase === 'intro') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      {/* YOUR MISSION */}
-      <div style={cs.card}>
-        <div style={cs.label}>Your Mission</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T.gold,lineHeight:1.25,margin:"0 0 14px"}}>Build a brand that gets you remembered for the right reasons.</p>
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          {[
-            "Build your Brand Mirror — know exactly what you want to stand for.",
-            "Audit your signals — check every touchpoint you send to the world.",
-            "Curate your stories — the narratives that make your brand stick.",
-          ].map((t,i)=>(
-            <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-              <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:3}}>✦</span>
-              <span style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.45}}>{t}</span>
-            </div>
+  // Derived validation
+  const wordsValid   = words.every(w=>w.trim().length>0);
+  const auditCount   = Object.keys(auditDone).length;
+  const auditValid   = auditCount >= 6;
+  const activeText   = activeStory !== null ? (storyTexts[activeStory]||"") : "";
+  const storyValid   = activeStory !== null && activeText.trim().length >= 80;
+  const alignedCount = Object.values(auditDone).filter(v=>v==="aligned").length;
+  const filledWords  = words.filter(w=>w.trim());
+
+  function goTo(n) { setStage(n); setValidMsg(''); }
+
+  // ── Step indicator ─────────────────────────────────────────────────────────
+  function StepIndicator() {
+    return (
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>
+          {stage} of 4 — {STAGE_NAMES[stage-1]}
+        </div>
+        <div style={{display:"flex",gap:4}}>
+          {[1,2,3,4].map(s=>(
+            <div key={s} style={{width:s===stage?20:6,height:4,borderRadius:2,background:s<stage?"rgba(138,158,132,0.55)":s===stage?T.gold:T2.border,transition:"all 0.3s ease"}}/>
           ))}
         </div>
       </div>
+    );
+  }
 
-      {/* THE CHALLENGE JOURNEY */}
+  // ── AI Summary ─────────────────────────────────────────────────────────────
+  async function generateSummary() {
+    setLoading(true);
+    const aligned  = SIGNAL_AREAS.filter(a=>auditDone[a]==="aligned");
+    const needsWork= SIGNAL_AREAS.filter(a=>auditDone[a]==="needs");
+    const storyType= STORY_TYPES[activeStory]?.label||"Story";
+    const storyTxt = storyTexts[activeStory]||"";
+    const w = words.map(w=>w.trim());
+
+    const prompt =
+`You are a personal brand strategist. Based on the following inputs from a professional who has completed a brand identity exercise, write a short, powerful Brand Identity Summary.
+
+Their three brand words: ${w.join(', ')}
+
+Their signal audit:
+- Aligned: ${aligned.length ? aligned.join(', ') : 'none selected'}
+- Needs work: ${needsWork.length ? needsWork.join(', ') : 'none selected'}
+
+Their story (type: ${storyType}):
+${storyTxt}
+
+Write the following — in second person ("You are…"), warm, direct, and empowering tone:
+
+1. BRAND ESSENCE (2 sentences): Capture who they are and what makes them distinctive.
+2. YOUR SIGNAL STRENGTHS (1 sentence): Acknowledge what's already working.
+3. YOUR GROWTH EDGE (1 sentence): Frame what to develop next as an exciting opportunity, not a gap.
+4. YOUR BRAND STORY HOOK (2–3 sentences): A polished, usable version of their story that they could use in an introduction or LinkedIn summary — refined but authentic to their own words.
+
+Keep the whole response under 200 words. No bullet symbols — use the section labels as headers only.`;
+
+    const fallback = `BRAND ESSENCE\nYou are someone who leads with ${w[0]} and brings ${w[1]||'conviction'} to every room you enter. What makes you distinctive is that rare combination of ${w[2]||'intention'} and authentic action.\n\nYOUR SIGNAL STRENGTHS\n${aligned.length>0?`Your ${aligned.slice(0,2).join(' and ')} are already working hard for your brand.`:'Your self-awareness of where you stand is your greatest signal strength.'}\n\nYOUR GROWTH EDGE\n${needsWork.length>0?`Developing your ${needsWork[0]} is your next exciting chapter — it's where your brand becomes unmistakable.`:'Consistency across every signal is your next frontier.'}\n\nYOUR BRAND STORY HOOK\n${storyTxt.trim().slice(0,220)}${storyTxt.length>220?"…":""}`;
+
+    try {
+      const res = await fetch("/api/claude", {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:600,messages:[{role:"user",content:prompt}]})
+      });
+      const data = await res.json();
+      const text = (data.content||[]).map(b=>b.text||'').join('').trim();
+      setAiResult(text || fallback);
+    } catch(_) { setAiResult(fallback); }
+    setLoading(false);
+  }
+
+  // ── Parse AI sections ──────────────────────────────────────────────────────
+  function parseSections(raw) {
+    if (!raw) return {};
+    const keys = ['BRAND ESSENCE','YOUR SIGNAL STRENGTHS','YOUR GROWTH EDGE','YOUR BRAND STORY HOOK'];
+    const out = {};
+    keys.forEach((k,i) => {
+      const upper = raw.toUpperCase();
+      const start = upper.indexOf(k);
+      if (start === -1) return;
+      const contentStart = start + k.length;
+      const nextIdx = i<keys.length-1 ? upper.indexOf(keys[i+1]) : raw.length;
+      out[k] = raw.slice(contentStart, nextIdx>-1?nextIdx:raw.length).replace(/^[\s:*#\n]+/,'').trim();
+    });
+    return out;
+  }
+
+  // ── STAGE 1: Brand Mirror ──────────────────────────────────────────────────
+  if (stage === 1) return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <StepIndicator/>
       <div style={cs.card}>
-        <div style={cs.label}>The Challenge Journey</div>
-        <div style={{display:"flex",alignItems:"flex-start"}}>
-          {[
-            {n:1, label:"Brand Mirror"},
-            {n:2, label:"Signal Audit"},
-            {n:3, label:"Story Curation"},
-          ].map((r,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
-              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
-                <div style={{width:isDesktop?50:44,height:isDesktop?50:44,borderRadius:"50%",border:`1.5px solid ${i===0?T.gold:"rgba(138,158,132,0.35)"}`,background:i===0?"rgba(138,158,132,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?16:15,fontWeight:600,color:i===0?T.gold:"rgba(138,158,132,0.55)"}}>{r.n}</span>
-                </div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,fontWeight:500,color:"#A8998A",textAlign:"center",lineHeight:1.3,maxWidth:88}}>{r.label}</div>
+        <div style={cs.label}>Your Brand in Three Words</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>What three words do you <em>want</em> people to use to describe you? Be specific. These become your brand intent.</p>
+        <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
+          {words.map((w,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
+              <div style={{width:24,height:24,borderRadius:"50%",background:w.trim()?T.gold:"rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
+                <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:"white"}}>{i+1}</span>
               </div>
-              {i<2 && <div style={{height:1,width:isDesktop?12:8,background:"rgba(138,158,132,0.25)",flexShrink:0,marginBottom:28}}/>}
+              <input value={w} onChange={e=>{const n=[...words];n[i]=e.target.value;setWords(n);}} placeholder={["e.g. trustworthy","e.g. creative","e.g. calm"][i]} className="au-input" style={{flex:1,padding:"10px 14px",fontSize:14}}/>
             </div>
           ))}
         </div>
+        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:10}}>Or choose from these</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:7}}>
+          {BRAND_WORDS.map((bw,i)=>{
+            const sel=words.includes(bw);
+            return (
+              <button key={i} onClick={()=>{
+                if(sel){setWords(words.map(w=>w===bw?"":w));}
+                else{const emptyIdx=words.findIndex(w=>!w.trim());const n=[...words];if(emptyIdx>=0){n[emptyIdx]=bw;}else{n[2]=bw;}setWords(n);}
+              }} style={{padding:"6px 12px",borderRadius:20,border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.15)":"transparent",color:sel?T.gold:T2.text3,fontSize:12,cursor:"pointer",fontFamily:T.sans,minHeight:32,transition:"all 0.15s"}}>{bw}</button>
+            );
+          })}
+        </div>
       </div>
-
-      <button onClick={()=>setPhase('challenge')} style={cta}>Begin the Challenge →</button>
+      {wordsValid && (
+        <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+          <div style={cs.label}>Now ask yourself</div>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>Does the way you currently show up — your wardrobe, your LinkedIn, your communication style, your energy — consistently signal <em style={{color:T.gold}}>{filledWords.join(", ")}</em>?</p>
+        </div>
+      )}
+      {validMsg && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(180,80,60,0.8)",margin:0,textAlign:"center"}}>{validMsg}</p>}
+      <button onClick={()=>{wordsValid?goTo(2):setValidMsg('Fill in all three brand words to continue.');}} style={ctaStyle(!wordsValid)}>
+        Continue →
+      </button>
     </div>
   );
 
-  return (
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-        {tabs.map((t,i) => (
-          <button key={i} onClick={()=>setTab(i)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${tab===i?T.gold:T2.border}`,background:tab===i?"rgba(138,158,132,0.1)":"transparent",color:tab===i?T.gold:T2.text3,fontSize:12,fontWeight:tab===i?600:400,cursor:"pointer",fontFamily:T.sans,transition:"all 0.15s",minHeight:36}}>{t}</button>
+  // ── STAGE 2: Signal Audit ──────────────────────────────────────────────────
+  if (stage === 2) return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <StepIndicator/>
+      <div style={cs.card}>
+        <div style={cs.label}>Signal Audit</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:12}}>For each area below, mark whether your current signal is intentional and aligned with the brand you want.</p>
+        <div style={{marginBottom:16,padding:"12px 14px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.35)"}}>
+          <div style={{display:"flex",flexWrap:"wrap",gap:4,alignItems:"center"}}>
+            {["People see you","hear you","experience you","remember you","research you"].map((s,i,arr)=>(
+              <span key={i} style={{display:"flex",alignItems:"center",gap:4}}>
+                <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:600,color:T.gold}}>{s}</span>
+                {i<arr.length-1 && <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4,opacity:0.5}}>→</span>}
+              </span>
+            ))}
+          </div>
+        </div>
+        {SIGNAL_AREAS.map((area,i)=>(
+          <div key={i} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:i<SIGNAL_AREAS.length-1?"0.5px solid "+T2.divider:"none"}}>
+            <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{area}</span>
+            <div style={{display:"flex",gap:7}}>
+              <button onClick={()=>setAuditDone({...auditDone,[area]:"aligned"})} style={{padding:"5px 11px",borderRadius:3,border:`0.5px solid ${auditDone[area]==="aligned"?"rgba(138,158,132,0.8)":T2.border}`,background:auditDone[area]==="aligned"?"rgba(138,158,132,0.15)":"transparent",color:auditDone[area]==="aligned"?"#6A9B6A":T2.text4,fontSize:11,cursor:"pointer",fontFamily:T.sans,minHeight:32,fontWeight:auditDone[area]==="aligned"?600:400,transition:"all 0.15s"}}>✓ Aligned</button>
+              <button onClick={()=>setAuditDone({...auditDone,[area]:"needs"})} style={{padding:"5px 11px",borderRadius:3,border:`0.5px solid ${auditDone[area]==="needs"?"rgba(200,150,80,0.8)":T2.border}`,background:auditDone[area]==="needs"?"rgba(200,150,80,0.12)":"transparent",color:auditDone[area]==="needs"?"#C8A46A":T2.text4,fontSize:11,cursor:"pointer",fontFamily:T.sans,minHeight:32,fontWeight:auditDone[area]==="needs"?600:400,transition:"all 0.15s"}}>Needs work</button>
+            </div>
+          </div>
         ))}
+        {auditCount>0 && (
+          <div style={{marginTop:16,padding:"12px 14px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>
+              {alignedCount} of 8 signals aligned with <em style={{color:T.gold}}>{filledWords.join(", ")}</em>
+            </p>
+          </div>
+        )}
       </div>
-
-      {tab===0 && (
-        <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          <div style={cs.card}>
-            <div style={cs.label}>Your Brand in Three Words</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:16}}>What three words do you <em>want</em> people to use to describe you? Be specific. These become your brand intent.</p>
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
-              {words.map((w,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
-                  <div style={{width:24,height:24,borderRadius:"50%",background:w?T.gold:"rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
-                    <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:"white"}}>{i+1}</span>
-                  </div>
-                  <input value={w} onChange={e=>{const n=[...words];n[i]=e.target.value;setWords(n);}} placeholder={["e.g. trustworthy","e.g. creative","e.g. calm"][i]} className="au-input" style={{flex:1,padding:"10px 14px",fontSize:14}}/>
-                </div>
-              ))}
-            </div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:10}}>Or choose from these</div>
-            <div style={{display:"flex",flexWrap:"wrap",gap:7}}>
-              {BRAND_WORDS.map((bw,i)=>{
-                const selected=words.includes(bw);
-                return (
-                  <button key={i} onClick={()=>{if(selected){setWords(words.map(w=>w===bw?"":w));}else{const idx=words.findIndex(w=>!w);if(idx>=0){const n=[...words];n[idx]=bw;setWords(n);}}}} style={{padding:"6px 12px",borderRadius:20,border:`0.5px solid ${selected?T.gold:T2.border}`,background:selected?"rgba(138,158,132,0.15)":"transparent",color:selected?T.gold:T2.text3,fontSize:12,cursor:"pointer",fontFamily:T.sans,minHeight:32,transition:"all 0.15s"}}>{bw}</button>
-                );
-              })}
-            </div>
-          </div>
-          {words.some(w=>w.trim()) && (
-            <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
-              <div style={cs.label}>Now ask yourself</div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>Does the way you currently show up — your wardrobe, your LinkedIn, your communication style, your energy — consistently signal <em style={{color:T.gold}}>{words.filter(w=>w.trim()).join(", ")}</em>?</p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {tab===1 && (
-        <div style={cs.card}>
-          <div style={cs.label}>Signal Audit</div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,marginBottom:12}}>For each area below, mark whether your current signal is intentional and aligned with the brand you want.</p>
-          <div style={{marginBottom:16,padding:"12px 14px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.35)"}}>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 8px"}}>That progression mirrors how personal brands are formed in the real world.</p>
-            <div style={{display:"flex",flexWrap:"wrap",gap:4,alignItems:"center"}}>
-              {["People see you","hear you","experience you","remember you","research you"].map((s,i,arr)=>(
-                <span key={i} style={{display:"flex",alignItems:"center",gap:4}}>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:600,color:T.gold}}>{s}</span>
-                  {i<arr.length-1 && <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4,opacity:0.6}}>→</span>}
-                </span>
-              ))}
-            </div>
-          </div>
-          {SIGNAL_AREAS.map((area,i) => (
-            <div key={i} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:i<SIGNAL_AREAS.length-1?"0.5px solid "+T2.divider:"none"}}>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{area}</span>
-              <div style={{display:"flex",gap:8}}>
-                {["✓ Aligned","Needs work"].map((label,j)=>(
-                  <button key={j} onClick={()=>setAuditDone({...auditDone,[area]:j===0?"aligned":"needs"})} style={{padding:"5px 12px",borderRadius:3,border:`0.5px solid ${auditDone[area]===(j===0?"aligned":"needs")?T.gold:T2.border}`,background:auditDone[area]===(j===0?"aligned":"needs")?"rgba(138,158,132,0.12)":"transparent",color:auditDone[area]===(j===0?"aligned":"needs")?T.gold:T2.text4,fontSize:11,cursor:"pointer",fontFamily:T.sans,minHeight:32,fontWeight:auditDone[area]===(j===0?"aligned":"needs")?600:400,transition:"all 0.15s"}}>{label}</button>
-                ))}
-              </div>
-            </div>
-          ))}
-          {Object.keys(auditDone).length>0 && (
-            <div style={{marginTop:14,padding:"12px 14px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>
-                {Object.values(auditDone).filter(v=>v==="needs").length===0?"Every signal is aligned. Your brand is consistent.":
-                 `${Object.values(auditDone).filter(v=>v==="needs").length} area${Object.values(auditDone).filter(v=>v==="needs").length>1?"s":""} to work on. Start with the one most visible to the people who matter most.`}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {tab===2 && (
-        <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          <div style={{paddingBottom:4}}>
-            <div style={cs.label}>Your Story Portfolio</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:0}}>Every powerful personal brand is built on a few key stories. Choose one story type below and write your version.</p>
-          </div>
-          {STORY_TYPES.map((st,i)=>(
-            <div key={i} onClick={()=>setActiveStory(activeStory===i?null:i)} style={{...cs.card,cursor:"pointer",transition:"border-color 0.2s",borderColor:activeStory===i?T.gold:T2.border}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                <div style={{flex:1}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{st.label}</div>
-                  <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0,lineHeight:1.5}}>{st.desc}</p>
-                </div>
-                <span style={{fontFamily:T.sans,fontSize:12,color:activeStory===i?T.gold:T2.text4,marginLeft:12,flexShrink:0}}>{activeStory===i?"▴":"▸"}</span>
-              </div>
-              {activeStory===i && (
-                <div style={{marginTop:14,paddingTop:14,borderTop:"0.5px solid "+T2.divider}} onClick={e=>e.stopPropagation()}>
-                  <textarea value={storyText[i]||""} onChange={e=>setStoryText({...storyText,[i]:e.target.value})} placeholder={`Write your ${st.label.toLowerCase()} here…`} style={{width:"100%",minHeight:isDesktop?100:80,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6}}/>
-                  {(storyText[i]||"").trim().length>0 && (
-                    <div style={{marginTop:10,padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:3,borderLeft:"2px solid "+T.gold}}>
-                      <p style={{fontFamily:T.serif,fontSize:12,fontStyle:"italic",color:T2.text3,margin:0,lineHeight:1.6}}>Good. Now trim it to under 90 seconds when spoken aloud. The best stories are the ones that feel effortless to tell.</p>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+      {validMsg && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(180,80,60,0.8)",margin:0,textAlign:"center"}}>{validMsg}</p>}
+      <button onClick={()=>{auditValid?goTo(3):setValidMsg('Rate a few more signals to get your full picture.');}} style={ctaStyle(!auditValid)}>
+        Continue →
+      </button>
+      <button onClick={()=>goTo(1)} style={backStyle}>← Back</button>
     </div>
   );
+
+  // ── STAGE 3: Story Curation ────────────────────────────────────────────────
+  if (stage === 3) return (
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <StepIndicator/>
+      <div>
+        <div style={cs.label}>Your Story Portfolio</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:0}}>Every powerful personal brand is built on a few key stories. Choose one story type and write your version.</p>
+      </div>
+      {STORY_TYPES.map((st,i)=>{
+        const isOpen = activeStory===i;
+        const text   = storyTexts[i]||"";
+        const chars  = text.trim().length;
+        return (
+          <div key={i} onClick={()=>setActiveStory(isOpen?null:i)} style={{...cs.card,cursor:"pointer",transition:"border-color 0.2s",borderColor:isOpen?T.gold:T2.border}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+              <div style={{flex:1}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{st.label}</div>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0,lineHeight:1.5}}>{st.desc}</p>
+              </div>
+              <span style={{fontFamily:T.sans,fontSize:12,color:isOpen?T.gold:T2.text4,marginLeft:12,flexShrink:0,marginTop:2}}>{isOpen?"▴":"▸"}</span>
+            </div>
+            {isOpen && (
+              <div style={{marginTop:14,paddingTop:14,borderTop:"0.5px solid "+T2.divider}} onClick={e=>e.stopPropagation()}>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontStyle:"italic",color:T2.text4,lineHeight:1.6,margin:"0 0 10px"}}>{st.prompt}</p>
+                <textarea value={text} onChange={e=>setStoryTexts({...storyTexts,[i]:e.target.value})} placeholder="Write your story here…" style={{width:"100%",minHeight:isDesktop?100:80,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:8}}>
+                  <span style={{fontFamily:T.sans,fontSize:11,color:chars>=80?T.gold:T2.text4}}>{chars} characters</span>
+                  {chars>0&&chars<80&&<span style={{fontFamily:T.sans,fontSize:11,color:"rgba(180,80,60,0.7)",fontStyle:"italic"}}>Add a little more — the best stories have texture.</span>}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+      {validMsg && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(180,80,60,0.8)",margin:0,textAlign:"center"}}>{validMsg}</p>}
+      <button onClick={()=>{
+        if(storyValid){goTo(4);generateSummary();}
+        else{setValidMsg(activeStory===null?'Select a story type first.':'Add a little more — aim for at least 80 characters.');}
+      }} style={ctaStyle(!storyValid)}>
+        Continue →
+      </button>
+      <button onClick={()=>goTo(2)} style={backStyle}>← Back</button>
+    </div>
+  );
+
+  // ── STAGE 4: AI Brand Identity Summary ────────────────────────────────────
+  if (stage === 4) {
+    if (loading) return (
+      <div style={{display:"flex",flexDirection:"column",gap:16}}>
+        <StepIndicator/>
+        <div style={{...cs.card,display:"flex",flexDirection:"column",alignItems:"center",padding:isDesktop?"64px 24px":"48px 20px",gap:24}}>
+          <img src="/logo-mark.png" alt="AmplifyU" style={{width:52,height:52,objectFit:"cover",mixBlendMode:"multiply",filter:"brightness(0.55) sepia(0.4)",animation:"breathe 2s ease infinite"}}/>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,fontWeight:600,color:T2.text,margin:0,textAlign:"center",lineHeight:1.3}}>Building your brand identity…</p>
+        </div>
+      </div>
+    );
+
+    const sections = parseSections(aiResult||"");
+    const DISPLAY = [
+      {key:"BRAND ESSENCE",           label:"Brand Essence"},
+      {key:"YOUR SIGNAL STRENGTHS",   label:"Your Signal Strengths"},
+      {key:"YOUR GROWTH EDGE",        label:"Your Growth Edge"},
+      {key:"YOUR BRAND STORY HOOK",   label:"Your Brand Story Hook"},
+    ];
+
+    return (
+      <div style={{display:"flex",flexDirection:"column",gap:16}}>
+        <StepIndicator/>
+        <div style={cs.card}>
+          <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:24,fontWeight:600,color:T2.text,lineHeight:1.1,margin:"0 0 24px",letterSpacing:"-0.5px"}}>Your Brand Identity</h2>
+          {DISPLAY.map(({key,label},i)=>{
+            const text = sections[key]||"";
+            return text ? (
+              <div key={i} style={{marginBottom:i<DISPLAY.length-1?20:0}}>
+                <div style={cs.label}>{label}</div>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0}}>{text}</p>
+                {i<DISPLAY.length-1 && <div style={{height:"0.5px",background:T2.divider,marginTop:20}}/>}
+              </div>
+            ) : null;
+          })}
+        </div>
+        <div style={{display:"flex",gap:10}}>
+          <button onClick={()=>{navigator.clipboard?.writeText(aiResult||"").then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2500);});}} style={{flex:1,padding:"13px",borderRadius:4,border:"0.5px solid "+T.gold,background:copied?"rgba(138,158,132,0.12)":"transparent",color:T.gold,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,transition:"all 0.2s"}}>
+            {copied?"Copied ✓":"Save to Toolkit"}
+          </button>
+          <button onClick={()=>{setAiResult(null);generateSummary();}} style={{flex:1,padding:"13px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,transition:"all 0.2s"}}>
+            Regenerate
+          </button>
+        </div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text4,lineHeight:1.65,margin:0,textAlign:"center"}}>Your brand identity is your foundation. In tomorrow's session, you'll practise communicating it under pressure.</p>
+        <button onClick={()=>goTo(3)} style={backStyle}>← Back</button>
+      </div>
+    );
+  }
+
+  return null;
 }
 
 // ─── D11 Simulation Widget — Brand Coherence Audit ───────────────────────────
@@ -225,7 +349,6 @@ export function D11SimWidget({T, T2, isDesktop}) {
       ? profileText.trim().slice(0,200).trim() + '…'
       : profileText.trim();
 
-    // Default template fallback in case API is unavailable
     const d0=d[0].toLowerCase(), d1=(d[1]||d[0]).toLowerCase(), d2=(d[2]||d[0]).toLowerCase();
     let rewriteHeadline = `${d0.charAt(0).toUpperCase()+d0.slice(1)} professional delivering results through ${d1} thinking and ${d2} leadership.`;
     let rewriteAbout = `Known for being ${d.map(w=>w.toLowerCase()).join(', ')} — I bring clarity, rigour, and genuine commitment to every room I enter.\n\nMy work creates impact that compounds over time. I believe the best outcomes come from clear communication, deliberate decisions, and people who care deeply about their craft.\n\nIf you want to work with someone who is ${d0} and genuinely ${d2} — let's connect.`;
@@ -321,7 +444,6 @@ export function D11SimWidget({T, T2, isDesktop}) {
       <div style={cs.card}>
         <div style={cs.label}>{mode==='linkedin'?"Build Your LinkedIn Profile":"Write Your CV Profile"}</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:"0 0 16px"}}>Answer three questions. Your AmplifyU coach writes the rest.</p>
-
         <div style={{display:"flex",flexDirection:"column",gap:14}}>
           <div>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Your role or title</div>
@@ -428,8 +550,6 @@ export function D11SimWidget({T, T2, isDesktop}) {
 
   if (phase === 'results' && results) return (
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
-
-      {/* Current Brand Signals */}
       <div style={cs.card}>
         <div style={cs.label}>Your Current Brand Signals</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px"}}>Based on your profile, you currently signal:</p>
@@ -448,8 +568,6 @@ export function D11SimWidget({T, T2, isDesktop}) {
           ))}
         </div>
       </div>
-
-      {/* Brand Alignment Score */}
       <div style={cs.card}>
         <div style={cs.label}>Brand Alignment Score</div>
         {results.scores.map((s,i)=>(
@@ -464,8 +582,6 @@ export function D11SimWidget({T, T2, isDesktop}) {
           </div>
         ))}
       </div>
-
-      {/* Reflection */}
       <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
         <div style={cs.label}>Reflection</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:"0 0 12px"}}>If someone read this profile for 15 seconds, they would likely describe you as:</p>
@@ -485,8 +601,6 @@ export function D11SimWidget({T, T2, isDesktop}) {
           <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:600,color:"rgba(180,80,60,0.8)",margin:"12px 0 0"}}>There is a gap.</p>
         </>}
       </div>
-
-      {/* Brand Coherence Table */}
       <div style={cs.card}>
         <div style={cs.label}>Brand Coherence Audit</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px"}}>How consistently does your brand show up across every touchpoint?</p>
@@ -500,19 +614,13 @@ export function D11SimWidget({T, T2, isDesktop}) {
           <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T2.text,margin:0,lineHeight:1.6}}>Repeated signals become reputation. Reputation becomes brand.</p>
         </div>
       </div>
-
-      {/* Recommended Rewrite */}
       <div style={cs.card}>
         <div style={cs.label}>Your Rewritten Profile</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 16px"}}>Written around <span style={{fontWeight:600,color:T.gold}}>{results.desired.join(', ')}</span> — use this as your starting point and personalise with your specific numbers and voice.</p>
-
-        {/* Current snippet */}
         <div style={{padding:"12px 14px",background:T2.bg,borderRadius:4,marginBottom:10}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(180,80,60,0.65)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your current profile</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,fontStyle:"italic",color:T2.text3,lineHeight:1.65,margin:0}}>{results.profileSnippet}</p>
         </div>
-
-        {/* Rewritten headline */}
         {results.rewriteHeadline && (
           <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.07)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.3)",marginBottom:10}}>
             <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>New headline</div>
@@ -523,8 +631,6 @@ export function D11SimWidget({T, T2, isDesktop}) {
             </button>
           </div>
         )}
-
-        {/* Rewritten About */}
         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.07)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.3)"}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>New About section</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.75,margin:"0 0 14px",whiteSpace:"pre-wrap"}}>{results.rewrite}</p>
@@ -533,18 +639,13 @@ export function D11SimWidget({T, T2, isDesktop}) {
             {copied==='a'?"Copied ✓":"Copy About section"}
           </button>
         </div>
-
         <div style={{marginTop:12,padding:"11px 13px",background:"rgba(44,36,22,0.04)",borderRadius:3,borderLeft:"2px solid "+T2.border}}>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text4,lineHeight:1.6,margin:0}}>Personalise with specific numbers, stories, and your own voice — the goal is to sound unmistakably like you.</p>
         </div>
       </div>
-
       <button onClick={reset} style={{width:"100%",padding:"15px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:50}}>Run Another Audit →</button>
     </div>
   );
 
   return null;
 }
-
-
-
