@@ -745,6 +745,18 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           </div>
         );
+        // D2 Rehearsal — cinematic dark panel (voice warm-up)
+        if(isD2 && step==="Rehearsal") return (
+          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Voice Warm-Up · Day 2</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>The way you sound changes everything. Let's hear your voice.</p>
+              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
+            </div>
+          </div>
+        );
         const TABLET_IMGS={
           1:{Insight:{src:"/day1-insight.jpg"},Example:{src:"/day1-insight.jpg"}},
           2:{Insight:{src:"/d2-insight-tablet.jpg"},Practice:{src:"/d2-practice-tablet.jpg"}},
