@@ -152,7 +152,7 @@ finishDate + ".";
         {/* Hero — full-width, natural height so chess pieces show complete */}
         <div style={{ marginTop: NAV_H, background: "#0a0805", position: "relative", overflow: "hidden" }}>
           <style>{`@keyframes heroFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }`}</style>
-          <img src="/home-hero-8.png" alt="The Six Pillars of Communication Mastery" style={{ width: "100%", height: "auto", display: "block" }}/>
+          <img src="/home-hero-8.jpg" alt="The Six Pillars of Communication Mastery" style={{ width: "100%", height: "auto", display: "block" }}/>
           {/* Begin Session button — overlaid on hero */}
           <button
             onClick={() => onStart(finished ? 1 : cur)}
@@ -339,7 +339,7 @@ finishDate + ".";
 
       {/* ── SECTION 1: Hero — full image ── */}
       <div style={{marginTop:NAV_H,background:"#0a0805",position:"relative"}}>
-        <img src="/home-hero-mobile.png" alt="The Six Pillars of Communication Mastery" style={{width:"100%",height:"auto",display:"block"}}/>
+        <img src="/home-hero-mobile.jpg" alt="The Six Pillars of Communication Mastery" style={{width:"100%",height:"auto",display:"block"}}/>
       </div>
 
       {/* ── Static CTA bar — directly below hero ── */}

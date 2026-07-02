@@ -6,6 +6,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+    <!-- Preload critical first-render images -->
+    <link rel="preload" href="/home-hero-mobile.jpg" as="image" media="(max-width: 1023px)"/>
+    <link rel="preload" href="/home-hero-8.jpg" as="image" media="(min-width: 1024px)"/>
+    <link rel="preload" href="/logo-mark.png" as="image"/>
+    <!-- Prefetch first-session images so they're cached before user taps Day 1 -->
+    <link rel="prefetch" href="/day1-insight.jpg"/>
+    <link rel="prefetch" href="/feynman-technique.jpg"/>
+    <link rel="prefetch" href="/day1-simulation.jpg"/>
+    <link rel="prefetch" href="/review-chair.jpg"/>
+    <link rel="prefetch" href="/d2-insight.jpg"/>
+    <link rel="prefetch" href="/day3-insight.jpg"/>
+    <link rel="prefetch" href="/day4-insight.jpg"/>
+
     <!-- PWA -->
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#2C2416" />
