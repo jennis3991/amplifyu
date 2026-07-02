@@ -257,9 +257,6 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
         Today's goal isn't to speak faster. It's to become comfortable with silence.
       </h2>
       <div style={{height: '0.5px', background: 'rgba(138,158,132,0.2)', marginBottom: 20}} />
-      <p style={{fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: 'rgba(245,239,230,0.5)', lineHeight: 1.7, margin: '0 0 20px'}}>
-        Pick one topic below. Before you answer, pause for two seconds. Then speak naturally for around 20 seconds. Don't worry about filler words yet — just practise replacing the urge to fill silence with a deliberate pause.
-      </p>
       <div style={{background: 'rgba(138,158,132,0.07)', borderRadius: 4, border: '0.5px solid rgba(138,158,132,0.18)', padding: '16px 18px', marginBottom: 20}}>
         <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.7)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 10}}>Coach Tip</div>
         <p style={{fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: 'rgba(245,239,230,0.7)', lineHeight: 1.65, margin: 0, fontStyle: 'italic'}}>
@@ -292,7 +289,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
     <div style={{...cs.card}}>
       <div style={cs.label}>Your Warm-Up</div>
       <p style={{fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text3, lineHeight: 1.65, margin: 0}}>
-        Choose one topic below. Before you speak — pause for two seconds. Recording starts when you're ready.
+        Choose one topic below. Before you speak, pause for two full seconds. Then speak naturally for around 20 seconds — don't worry about filler words yet, just practise starting with a deliberate pause.
       </p>
     </div>
     <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
