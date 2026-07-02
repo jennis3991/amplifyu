@@ -723,11 +723,12 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
             display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
             gap: 10, padding: isDesktop ? "22px 16px" : "18px 14px",
             borderRadius: 6, cursor: "pointer", textAlign: "center",
-            border: "0.5px solid #DDD5C4", background: "#F7F3EC",
+            border: isDesktop ? "0.5px solid #DDD5C4" : "1.5px solid #C4B095",
+            background: isDesktop ? "#F7F3EC" : "#EDE7DB",
             transition: "all 0.15s ease",
           }}
           onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #8A9E84"; e.currentTarget.style.background = "rgba(138,158,132,0.08)"; }}
-          onMouseLeave={e => { e.currentTarget.style.border = "0.5px solid #DDD5C4"; e.currentTarget.style.background = "#F7F3EC"; }}>
+          onMouseLeave={e => { e.currentTarget.style.border = isDesktop ? "0.5px solid #DDD5C4" : "1.5px solid #C4B095"; e.currentTarget.style.background = isDesktop ? "#F7F3EC" : "#EDE7DB"; }}>
             <div style={{ color: "#A8998A" }}>{topic.icon}</div>
             <span style={{ fontFamily: T.serif, fontSize: isDesktop ? 16 : 15, color: "#6B5E44", lineHeight: 1.45 }}>{topic.label}</span>
           </button>
