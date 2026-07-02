@@ -1632,7 +1632,9 @@ T.goldDark : T2.text4,
       {isNT && step==="Insight" && (
         <>
           <div style={{borderLeft:"3px solid "+T.gold,padding:"16px 20px",background:"rgba(247,243,236,0.7)",borderRadius:4,marginBottom:16}}>
-            <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.35,margin:0}}>We are more engaged when we feel inside the story.</p>
+            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:8}}>Day 8 · Storytelling</div>
+            <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.1,margin:"0 0 10px"}}>Narrative Transportation</h2>
+            <p style={{fontFamily:T.serif,fontSize:16,fontWeight:400,fontStyle:"italic",color:T2.text3,lineHeight:1.45,margin:0}}>We are more engaged when we feel inside the story.</p>
           </div>
           <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Explore each card to learn more →</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
