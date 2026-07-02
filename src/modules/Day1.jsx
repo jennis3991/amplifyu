@@ -716,7 +716,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     <div style={{ padding: isDesktop ? "44px 52px" : "24px 20px", overflowY: "auto" }}>
       <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Rehearsal · Day 1</div>
       <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Voice Warm-Up</h2>
-      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 16 : 15, color: "#6B5E44", lineHeight: 1.7, marginBottom: 24 }}>Choose one topic below and speak for around 20 seconds. This is simply a chance to find your voice. There's no right or wrong answer. Just speak naturally, and we'll take care of the rest.</p>
+      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 16 : 15, color: "#6B5E44", lineHeight: 1.7, marginBottom: 24 }}>Choose one topic below and speak for around 30 seconds. This is simply a chance to find your voice. There's no right or wrong answer. Just speak naturally, and we'll take care of the rest.</p>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isDesktop ? 12 : 10 }}>
         {TOPICS.map((topic, i) => (
           <button key={i} onClick={() => pickTopic(i)} style={{
@@ -749,7 +749,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
         <div style={{ color: "#8A9E84", flexShrink: 0, marginTop: 2 }}>{TOPICS[sel].icon}</div>
         <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, fontWeight: 500, color: "#2C2416", lineHeight: 1.5, margin: 0 }}>{TOPICS[sel].label}</p>
       </div>
-      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, marginBottom: 28 }}>Speak about this for around 20 seconds. Don't worry about being perfect — there's no recording saved or scored here.</p>
+      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, marginBottom: 28 }}>Speak about this for around 30 seconds. Don't worry about being perfect — there's no recording saved or scored here.</p>
 
       {analysing ? (
         <div style={{ textAlign: "center", padding: "32px 0" }}>

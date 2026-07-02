@@ -289,7 +289,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
     <div style={{...cs.card}}>
       <div style={cs.label}>Your Warm-Up</div>
       <p style={{fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text3, lineHeight: 1.65, margin: 0}}>
-        Choose one topic below. Before you speak, pause for two full seconds. Then speak naturally for around 20 seconds — don't worry about filler words yet, just practise starting with a deliberate pause.
+        Choose one topic below. Before you speak, pause for two full seconds. Then speak naturally for around 30 seconds — don't worry about filler words yet, just practise starting with a deliberate pause.
       </p>
     </div>
     <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
@@ -346,7 +346,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
       </div>
       <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
         <div style={{width: 7, height: 7, borderRadius: '50%', background: '#c0392b'}} />
-        <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording — speak for around 20 seconds</span>
+        <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording — speak for around 30 seconds</span>
       </div>
     </div>
     <button onClick={doStop}
