@@ -39,6 +39,7 @@ export function MobileSessionView({
   ntOpenCard, setNtOpenCard, ntStory,
 }) {
   const [d9OpenCard, setD9OpenCard] = useState(null);
+  const [pixarOpen, setPixarOpen] = useState(false);
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
@@ -1734,44 +1735,53 @@ T.goldDark : T2.text4,
               )}
             </div>
           ))}
-          {/* Pixar Framework */}
-          <div style={{background:"rgba(237,232,223,0.6)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.25)",padding:"18px 20px",marginTop:4}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The Pixar Framework</div>
-            <h3 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The most replicable story structure ever invented.</h3>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Pixar used the same template for every film. It works because it mirrors how the human brain processes experience.</p>
-            <div style={{display:"flex",flexDirection:"column",border:"0.5px solid rgba(138,158,132,0.25)",borderRadius:6,overflow:"hidden",marginBottom:14}}>
-              {[
-                {prompt:"Once upon a time…", desc:"Set the scene and introduce the protagonist."},
-                {prompt:"Every day…",         desc:"Establish the normal world."},
-                {prompt:"Until one day…",     desc:"Something disrupts the status quo."},
-                {prompt:"Because of that…",   desc:"The chain of consequences begins."},
-                {prompt:"Because of that…",   desc:"The stakes deepen."},
-                {prompt:"Until finally…",     desc:"Resolution. What changed, and why it matters."},
-              ].map((s,i)=>(
-                <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"11px 14px",background:i%2===0?"rgba(237,232,223,0.5)":"transparent",borderBottom:i<5?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
-                  <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,minWidth:145,flexShrink:0}}>{s.prompt}</span>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:0}}>{s.desc}</p>
-                </div>
-              ))}
-            </div>
-            <div style={{background:"rgba(138,158,132,0.06)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",padding:"14px 16px"}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Applied Example</div>
-              <div style={{display:"flex",flexDirection:"column",gap:9}}>
-                {[
-                  {prompt:"Once upon a time…", text:"I thought confidence meant sounding polished."},
-                  {prompt:"Every day…",         text:"I overprepared for meetings — scripts, rehearsed answers, perfect sentences."},
-                  {prompt:"Until one day…",     text:"I completely froze mid-presentation."},
-                  {prompt:"Because of that…",   text:"I changed how I prepared — focusing on clarity, not performance."},
-                  {prompt:"Because of that…",   text:"I started listening more in meetings instead of waiting to speak."},
-                  {prompt:"Until finally…",     text:"People started genuinely listening to me."},
-                ].map((s,i)=>(
-                  <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-                    <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,minWidth:145,flexShrink:0}}>{s.prompt}</span>
-                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.55,margin:0}}>{s.text}</p>
-                  </div>
-                ))}
+          {/* Pixar Framework — expandable card */}
+          <div onClick={()=>setPixarOpen(o=>!o)} style={{background:pixarOpen?"rgba(237,232,223,0.92)":"rgba(237,232,223,0.6)",border:`1px solid ${pixarOpen?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginTop:4,cursor:"pointer",transition:"border-color 0.2s"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+              <div style={{flex:1}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>The Pixar Framework</div>
+                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>The most replicable story structure ever invented.</div>
               </div>
+              <span style={{fontFamily:T.sans,fontSize:12,color:pixarOpen?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{pixarOpen?"▴":"▸"}</span>
             </div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>Pixar used the same template for every film. It works because it mirrors how the human brain processes experience.</p>
+            {pixarOpen && (
+              <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                <div style={{display:"flex",flexDirection:"column",border:"0.5px solid rgba(138,158,132,0.25)",borderRadius:6,overflow:"hidden",marginBottom:14}}>
+                  {[
+                    {prompt:"Once upon a time…", desc:"Set the scene and introduce the protagonist."},
+                    {prompt:"Every day…",         desc:"Establish the normal world."},
+                    {prompt:"Until one day…",     desc:"Something disrupts the status quo."},
+                    {prompt:"Because of that…",   desc:"The chain of consequences begins."},
+                    {prompt:"Because of that…",   desc:"The stakes deepen."},
+                    {prompt:"Until finally…",     desc:"Resolution. What changed, and why it matters."},
+                  ].map((s,i)=>(
+                    <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"11px 14px",background:i%2===0?"rgba(237,232,223,0.5)":"transparent",borderBottom:i<5?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
+                      <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,minWidth:145,flexShrink:0}}>{s.prompt}</span>
+                      <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:0}}>{s.desc}</p>
+                    </div>
+                  ))}
+                </div>
+                <div style={{background:"rgba(138,158,132,0.06)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",padding:"14px 16px"}}>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Applied Example</div>
+                  <div style={{display:"flex",flexDirection:"column",gap:9}}>
+                    {[
+                      {prompt:"Once upon a time…", text:"I thought confidence meant sounding polished."},
+                      {prompt:"Every day…",         text:"I overprepared for meetings — scripts, rehearsed answers, perfect sentences."},
+                      {prompt:"Until one day…",     text:"I completely froze mid-presentation."},
+                      {prompt:"Because of that…",   text:"I changed how I prepared — focusing on clarity, not performance."},
+                      {prompt:"Because of that…",   text:"I started listening more in meetings instead of waiting to speak."},
+                      {prompt:"Until finally…",     text:"People started genuinely listening to me."},
+                    ].map((s,i)=>(
+                      <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+                        <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,minWidth:145,flexShrink:0}}>{s.prompt}</span>
+                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.55,margin:0}}>{s.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T.gold,lineHeight:1.6,marginTop:14,marginBottom:0}}>When people feel meaning, they remember the message.</p>
         </>

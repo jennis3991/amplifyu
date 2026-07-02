@@ -88,6 +88,7 @@ setAmbitionSaved(true); } catch {}
   const [d11FormulaCard, setD11FormulaCard] = useState(null);
   const [d12MobCard, setD12MobCard] = useState(null);
   const [ntMobCard, setNtMobCard] = useState(null);
+  const [pixarOpen, setPixarOpen] = useState(false);
   const swipeRef = useRef({x:0,y:0});
   // step is derived from STEPS (NT uses 7-step array, all others use 6-step)
   const scenarios = roleId ? getScenariosForDay(roleId, lesson.day) : lesson.scenarios;
@@ -1971,44 +1972,55 @@ setAmbitionSaved(true); } catch {}
             <ExCard T2={T2} name="Barack Obama and the Citizen" preview="A Story That Created Connection. When discussing policy, Obama always started with a person. Not a statistic. A person."
               full={"When discussing healthcare, jobs, or education, Barack Obama often began with a single person.\n\nNot a policy. Not a statistic. A person.\n\nA mother struggling to pay bills.\nA worker trying to support a family.\nA student chasing a dream.\n\nThe audience connected with the human story before hearing the argument.\n\nLesson: People care about people before they care about issues.\n\nWorkplace Application: Start with a customer, colleague, or client before presenting the data."}/>
           </div>
-          {/* Pixar Framework */}
-          <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"28px 32px",marginBottom:24}}>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>The Pixar Framework</div>
-            <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The most replicable story structure ever invented.</h3>
-            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>Pixar used the same template for every film. It works because it mirrors how the human brain processes experience.</p>
-            <div style={{display:"flex",flexDirection:"column",marginBottom:24,border:"0.5px solid "+T2.border,borderRadius:4,overflow:"hidden"}}>
-              {[
-                {prompt:"Once upon a time…", desc:"Set the scene and introduce the protagonist."},
-                {prompt:"Every day…",         desc:"Establish the normal world — before everything changes."},
-                {prompt:"Until one day…",     desc:"The inciting incident. Something disrupts the status quo."},
-                {prompt:"Because of that…",   desc:"The chain of consequences begins."},
-                {prompt:"Because of that…",   desc:"The stakes deepen. Your protagonist is tested."},
-                {prompt:"Until finally…",     desc:"Resolution. What changed, and why it matters."},
-              ].map((s,i)=>(
-                <div key={i} style={{display:"flex",gap:20,alignItems:"flex-start",padding:"14px 20px",background:i%2===0?T2.surface:"transparent",borderBottom:i<5?"0.5px solid "+T2.border:"none"}}>
-                  <span style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,minWidth:190,flexShrink:0}}>{s.prompt}</span>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{s.desc}</p>
-                </div>
-              ))}
-            </div>
-            <div style={{background:"rgba(138,158,132,0.06)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.25)",padding:"20px 24px"}}>
-              <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>Applied Example</div>
-              <div style={{display:"flex",flexDirection:"column",gap:12}}>
-                {[
-                  {prompt:"Once upon a time…", text:"I thought confidence meant sounding polished."},
-                  {prompt:"Every day…",         text:"I overprepared for meetings — scripts, rehearsed answers, perfect sentences."},
-                  {prompt:"Until one day…",     text:"I completely froze mid-presentation."},
-                  {prompt:"Because of that…",   text:"I changed how I prepared — focusing on clarity, not performance."},
-                  {prompt:"Because of that…",   text:"I started listening more in meetings instead of waiting to speak."},
-                  {prompt:"Until finally…",     text:"People started genuinely listening to me."},
-                ].map((s,i)=>(
-                  <div key={i} style={{display:"flex",gap:16,alignItems:"flex-start"}}>
-                    <span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.gold,minWidth:190,flexShrink:0}}>{s.prompt}</span>
-                    <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.6,margin:0}}>{s.text}</p>
-                  </div>
-                ))}
+          {/* Pixar Framework — expandable card */}
+          <div onClick={()=>setPixarOpen(o=>!o)} style={{padding:"28px 24px",borderRadius:8,background:pixarOpen?"rgba(237,232,223,0.92)":"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",cursor:"pointer",transition:"all 0.25s ease",userSelect:"none",marginBottom:24}}
+            onMouseEnter={e=>{if(!pixarOpen){e.currentTarget.style.background="rgba(237,232,223,0.85)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 12px rgba(44,36,22,0.08)";}}}
+            onMouseLeave={e=>{if(!pixarOpen){e.currentTarget.style.background="rgba(237,232,223,0.6)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+              <div>
+                <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>The Pixar Framework</div>
+                <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3}}>The most replicable story structure ever invented.</div>
               </div>
+              <span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginLeft:12,flexShrink:0,marginTop:4}}>{pixarOpen?"▴":"▸"}</span>
             </div>
+            <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,margin:0,fontWeight:400}}>Pixar used the same template for every film. It works because it mirrors how the human brain processes experience.</p>
+            {pixarOpen && (
+              <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
+                <div style={{display:"flex",flexDirection:"column",marginBottom:20,border:"0.5px solid "+T2.border,borderRadius:4,overflow:"hidden"}}>
+                  {[
+                    {prompt:"Once upon a time…", desc:"Set the scene and introduce the protagonist."},
+                    {prompt:"Every day…",         desc:"Establish the normal world — before everything changes."},
+                    {prompt:"Until one day…",     desc:"The inciting incident. Something disrupts the status quo."},
+                    {prompt:"Because of that…",   desc:"The chain of consequences begins."},
+                    {prompt:"Because of that…",   desc:"The stakes deepen. Your protagonist is tested."},
+                    {prompt:"Until finally…",     desc:"Resolution. What changed, and why it matters."},
+                  ].map((s,i)=>(
+                    <div key={i} style={{display:"flex",gap:20,alignItems:"flex-start",padding:"14px 20px",background:i%2===0?T2.surface:"transparent",borderBottom:i<5?"0.5px solid "+T2.border:"none"}}>
+                      <span style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,minWidth:190,flexShrink:0}}>{s.prompt}</span>
+                      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{s.desc}</p>
+                    </div>
+                  ))}
+                </div>
+                <div style={{background:"rgba(138,158,132,0.06)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.25)",padding:"20px 24px"}}>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>Applied Example</div>
+                  <div style={{display:"flex",flexDirection:"column",gap:12}}>
+                    {[
+                      {prompt:"Once upon a time…", text:"I thought confidence meant sounding polished."},
+                      {prompt:"Every day…",         text:"I overprepared for meetings — scripts, rehearsed answers, perfect sentences."},
+                      {prompt:"Until one day…",     text:"I completely froze mid-presentation."},
+                      {prompt:"Because of that…",   text:"I changed how I prepared — focusing on clarity, not performance."},
+                      {prompt:"Because of that…",   text:"I started listening more in meetings instead of waiting to speak."},
+                      {prompt:"Until finally…",     text:"People started genuinely listening to me."},
+                    ].map((s,i)=>(
+                      <div key={i} style={{display:"flex",gap:16,alignItems:"flex-start"}}>
+                        <span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T.gold,minWidth:190,flexShrink:0}}>{s.prompt}</span>
+                        <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.6,margin:0}}>{s.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,marginBottom:8}}>The best storytellers don't just share information. They create meaning.</p>
           <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T.gold,lineHeight:1.5,margin:0}}>And when people feel meaning, they remember the message.</p>
