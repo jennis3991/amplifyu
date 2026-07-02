@@ -726,9 +726,8 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   const [apiError, setApiError]= useState(false);
 
   const EXAMPLE_BRIEFS = [
-    "A magical story about the lifecycle of a butterfly for my 5-year-old — wonder and joy, bedtime story style",
-    "A cybersecurity risk presentation for our board — make it feel like breaking news, urgent and specific",
     "A TED-style pitch for a new product — emotional, direct, show real human impact",
+    "A cybersecurity risk presentation for our board — make it feel like breaking news, urgent and specific",
   ];
 
   function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); }
@@ -808,7 +807,7 @@ Return ONLY valid JSON:
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Describe the subject, audience, and feeling. The AI builds a complete cinematic world — brief, storyboard, and narrative.</p>
       </div>
       <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"}}>
-        <textarea value={brief} onChange={e=>setBrief(e.target.value)} placeholder={"e.g. A magical story about the lifecycle of a butterfly for my 5-year-old — full of wonder, bedtime story style, make it feel like a Pixar film"} rows={isDesktop?5:4} style={{width:"100%",background:"transparent",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,resize:"none",boxSizing:"border-box",fontWeight:300}}/>
+        <textarea value={brief} onChange={e=>setBrief(e.target.value)} placeholder={"e.g. A TED-style pitch for a new product — emotional, direct, show real human impact"} rows={isDesktop?5:4} style={{width:"100%",background:"transparent",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,resize:"none",boxSizing:"border-box",fontWeight:300}}/>
         {brief.trim()&&<div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:6,textAlign:"right"}}>{brief.trim().split(/\s+/).length} words</div>}
       </div>
       <div>
