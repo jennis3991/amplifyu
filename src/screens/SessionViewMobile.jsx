@@ -683,10 +683,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isNT && step==="Simulation") return (
           <div style={{width:"100%",height:300,position:"relative",overflow:"hidden"}}>
             <img src="/d8-story-book.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, rgba(10,8,5,0.55) 0%, rgba(10,8,5,0.1) 40%, rgba(10,8,5,0.85) 100%)"}}/>
-            <div style={{position:"absolute",bottom:24,left:24,right:24,zIndex:2}}>
-              <div style={{fontSize:9,fontWeight:700,color:"rgba(200,168,76,0.75)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:10,fontFamily:T.sans}}>The Story Architect</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:500,color:"rgba(245,239,230,0.93)",lineHeight:1.2,margin:0}}>Build a story that moves people.</p>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, rgba(10,8,5,0.72) 0%, rgba(10,8,5,0.25) 40%, rgba(10,8,5,0.3) 60%, rgba(10,8,5,0.88) 100%)"}}/>
+            <div style={{position:"absolute",bottom:28,left:24,right:24,zIndex:2,animation:"fadeUp 0.6s ease both"}}>
+              <div style={{fontSize:9,fontWeight:700,color:"rgba(200,168,76,0.7)",textTransform:"uppercase",letterSpacing:"4px",marginBottom:16,fontFamily:T.sans}}>The Story Architect</div>
+              <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:500,color:"rgba(245,239,230,0.93)",lineHeight:1.1,letterSpacing:"-1px",margin:0}}>Build a story<br/>that moves people.</h2>
             </div>
           </div>
         );
