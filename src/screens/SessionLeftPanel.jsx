@@ -137,8 +137,8 @@ export function SessionLeftPanel({
     if (step === "Theory") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#1A1610" }}>
         <img
-          src="/d7-habit-loop.jpg"
-          alt="The Habit Loop"
+          src="/d7-theory.png"
+          alt="Words and Images — Dual Coding"
           style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}
         />
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(8,6,3,0.8) 0%, rgba(8,6,3,0.1) 50%, transparent 75%)" }}/>
