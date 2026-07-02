@@ -483,6 +483,18 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             </div>
           );
         }
+        // NT (Day 8) Example — high-impact stat quote
+        if(isNT && step==="Example") return (
+          <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 32px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 40% 30%, rgba(183,154,107,0.06) 0%, transparent 60%)",pointerEvents:"none"}}/>
+            <div style={{position:"relative",zIndex:2,animation:"fadeUp 0.6s ease both"}}>
+              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:16}}>Storytelling in the Wild</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:20}}>Stories create empathy. Empathy creates trust. Trust creates influence.</p>
+              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)",marginBottom:20}}/>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,fontStyle:"italic",color:"#F5EFE6",lineHeight:1.25,margin:0}}>The same facts — told as a story — land 22× more powerfully in the human brain.</p>
+            </div>
+          </div>
+        );
         // Example tab: dark cinematic text panel instead of image (D13/D14 use STEP_IMGS)
         if(step==="Example" && !isD13 && !isD14){
           const EX_HEADERS={
