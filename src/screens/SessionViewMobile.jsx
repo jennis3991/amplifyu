@@ -376,13 +376,26 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         </div>
       </div>
     )}
-     {/* Top nav bar — AmplifyU logo only */}
-    <div style={{
-      background:T.bg,
-      padding:"14px 20px",
-      borderBottom:"0.5px solid rgba(44,36,22,0.08)",
-    }}>
-      <span style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.ink,letterSpacing:"-0.3px"}}>AmplifyU</span>
+     {/* Top nav bar — matches home screen header */}
+    <div style={{background:"#0F0D0A",height:64,borderBottom:"0.5px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 20px",flexShrink:0}}>
+      <div style={{display:"flex",alignItems:"center",gap:10}}>
+        <img src="/logo-mark.png" alt="AmplifyU" style={{width:30,height:30,objectFit:"cover",mixBlendMode:"screen",filter:"brightness(3) contrast(1.2)"}}/>
+        <span style={{fontFamily:"'Inter',sans-serif",fontSize:11,fontWeight:600,letterSpacing:"3px",textTransform:"uppercase",color:"rgba(255,255,255,0.88)"}}>AmplifyU</span>
+      </div>
+      <div style={{display:"flex",alignItems:"center",gap:8}}>
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+          <rect x="2.5" y="3.5" width="15" height="13" rx="1.5" stroke="#c9a96e" strokeWidth="2"/>
+          <path d="M2.5 7.5h15" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M7 2v3M13 2v3" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round"/>
+          <circle cx="6.5" cy="11" r="1" fill="#c9a96e"/>
+          <circle cx="10" cy="11" r="1" fill="#c9a96e"/>
+          <circle cx="13.5" cy="11" r="1" fill="#c9a96e"/>
+          <circle cx="6.5" cy="14" r="1" fill="#c9a96e"/>
+          <circle cx="10" cy="14" r="1" fill="#c9a96e"/>
+          <circle cx="13.5" cy="14" r="1" fill="#c9a96e"/>
+        </svg>
+        <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,fontWeight:600,color:"#c9a96e",letterSpacing:"0.3px"}}>Day {lesson.day}</span>
+      </div>
     </div>
      {/* Header image + Exit button overlay */}
     <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:step==="Rehearsal"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
