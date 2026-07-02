@@ -137,8 +137,8 @@ export function SessionLeftPanel({
     if (step === "Theory") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#1A1610" }}>
         <img
-          src="/d7-theory.png"
-          alt="Words and Images — Dual Coding"
+          src="/d7-habit-loop.jpg"
+          alt="The Habit Loop"
           style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}
         />
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(8,6,3,0.8) 0%, rgba(8,6,3,0.1) 50%, transparent 75%)" }}/>
@@ -368,9 +368,9 @@ export function SessionLeftPanel({
     if (step === "Theory 1") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"center" }}>
         {/* Blurred bg fill */}
-        <img src="/dual-coding-theory.jpg" alt="" style={{ position:"absolute", inset:"-20px", width:"calc(100% + 40px)", height:"calc(100% + 40px)", objectFit:"cover", filter:"blur(18px) brightness(0.6)", pointerEvents:"none" }}/>
+        <img src="/d7-theory.png" alt="" style={{ position:"absolute", inset:"-20px", width:"calc(100% + 40px)", height:"calc(100% + 40px)", objectFit:"cover", filter:"blur(18px) brightness(0.6)", pointerEvents:"none" }}/>
         {/* Sharp image — scaled up to reduce blurred border */}
-        <img src="/dual-coding-theory.jpg" alt="Dual Coding Theory" style={{ position:"relative", zIndex:1, width:"140%", marginLeft:"-20%", height:"auto", display:"block" }}/>
+        <img src="/d7-theory.png" alt="Words and Images — Dual Coding" style={{ position:"relative", zIndex:1, width:"140%", marginLeft:"-20%", height:"auto", display:"block" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.55) 0%, transparent 40%)", zIndex:2 }}/>
       </div>
     );
