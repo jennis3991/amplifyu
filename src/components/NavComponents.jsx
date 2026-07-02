@@ -12,16 +12,16 @@ export function PBar({pct, h=2, color=T.gold}) {
 export function TabBar({tab, setTab}) {
   const tabs = [
     { id:"home", label:"Home",
-      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 9L10 3l7 6v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-5h4v5" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 9L10 3l7 6v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-5h4v5" stroke={a?"#8A9E84":"rgba(247,243,236,0.78)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
     },
     { id:"sessions", label:"Programme",
-      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="1.5" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5"/><path d="M3 8h14M7 2v4M13 2v4" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5" strokeLinecap="round"/></svg>
+      Icon: ({a}) => { const c = a?"#8A9E84":"rgba(247,243,236,0.78)"; return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5" stroke={c} strokeWidth="2"/><path d="M2.5 7.5h15" stroke={c} strokeWidth="2" strokeLinecap="round"/><path d="M7 2v3M13 2v3" stroke={c} strokeWidth="2" strokeLinecap="round"/><circle cx="6.5" cy="11" r="1" fill={c}/><circle cx="10" cy="11" r="1" fill={c}/><circle cx="13.5" cy="11" r="1" fill={c}/><circle cx="6.5" cy="14" r="1" fill={c}/><circle cx="10" cy="14" r="1" fill={c}/><circle cx="13.5" cy="14" r="1" fill={c}/></svg>; }
     },
     { id:"progress", label:"Progress",
-      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15l4-5 3 3 4-6 3 3" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15l4-5 3 3 4-6 3 3" stroke={a?"#8A9E84":"rgba(247,243,236,0.78)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
     },
     { id:"toolkit", label:"Toolkit",
-      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="8" width="14" height="9" rx="1" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5"/><path d="M7 8V6a3 3 0 016 0v2" stroke={a?"#8A9E84":"rgba(247,243,236,0.45)"} strokeWidth="1.5" strokeLinecap="round"/></svg>
+      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="8" width="14" height="9" rx="1" stroke={a?"#8A9E84":"rgba(247,243,236,0.78)"} strokeWidth="2"/><path d="M7 8V6a3 3 0 016 0v2" stroke={a?"#8A9E84":"rgba(247,243,236,0.78)"} strokeWidth="2" strokeLinecap="round"/></svg>
     },
   ];
   return (
