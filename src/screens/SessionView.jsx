@@ -2854,7 +2854,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <D11PracticeWidget T={T} T2={T2} isDesktop={true} onWordsChange={setD11BrandWords}/>
+          <D11PracticeWidget T={T} T2={T2} isDesktop={true} onWordsChange={setD11BrandWords} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
         </div>
       );
 

@@ -30,7 +30,9 @@ const ANALYSIS_MSGS = [
   "Building your Professional Signature...",
 ];
 
-export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange }) {
+export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulation }) {
+  const SAGE = '#3D5940';
+  const SAGE_CARD = '#0e0e0e';
   const [phase,          setPhase]         = useState('intro');
   const [qIdx,           setQIdx]          = useState(0);
   const [transcripts,    setTranscripts]   = useState(['', '', '']);
@@ -182,8 +184,8 @@ Return ONLY valid JSON:
   function cta(disabled) {
     return {
       width: "100%", padding: "15px", borderRadius: 4, border: "none",
-      background: disabled ? "rgba(44,36,22,0.15)" : (T.ink || "#2C2416"),
-      color: disabled ? "rgba(44,36,22,0.3)" : (T2.bg || "#F7F3EC"),
+      background: disabled ? "rgba(61,89,64,0.12)" : SAGE,
+      color: disabled ? "rgba(200,220,200,0.3)" : "#F5EFE6",
       fontSize: isDesktop ? 14 : 13, fontWeight: 600,
       cursor: disabled ? "not-allowed" : "pointer",
       fontFamily: T.sans, minHeight: 48, transition: "all 0.2s",
@@ -211,7 +213,7 @@ Return ONLY valid JSON:
         <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.65, margin: 0 }}>I'll ask you three simple questions. Just speak naturally — I'll identify the patterns and uncover your unique professional signature.</p>
       </div>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, padding: isDesktop ? "26px 0" : "20px 0" }}>
-        <div style={{ width: isDesktop ? 80 : 68, height: isDesktop ? 80 : 68, borderRadius: "50%", background: T.ink || "#2C2416", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 0 14px rgba(200,164,106,0.06), 0 0 0 28px rgba(200,164,106,0.025)` }}>
+        <div style={{ width: isDesktop ? 80 : 68, height: isDesktop ? 80 : 68, borderRadius: "50%", background: SAGE_CARD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 0 14px rgba(61,89,64,0.1), 0 0 0 28px rgba(61,89,64,0.04)` }}>
           <span style={{ fontSize: isDesktop ? 30 : 24 }}>🎙</span>
         </div>
         {!speechAvailable && <p style={{ ...sn, fontSize: 11, color: T2.text4, textAlign: "center", margin: 0 }}>Voice not supported in this browser — you'll type your answers instead.</p>}
@@ -237,7 +239,7 @@ Return ONLY valid JSON:
           </>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, padding: isDesktop ? "18px 0" : "12px 0" }}>
-            <button onClick={startRecording} style={{ width: isDesktop ? 76 : 64, height: isDesktop ? 76 : 64, borderRadius: "50%", background: T.ink || "#2C2416", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 0 12px rgba(200,164,106,0.07)`, transition: "all 0.2s" }}>
+            <button onClick={startRecording} style={{ width: isDesktop ? 76 : 64, height: isDesktop ? 76 : 64, borderRadius: "50%", background: SAGE, border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 0 12px rgba(61,89,64,0.1)`, transition: "all 0.2s" }}>
               <span style={{ fontSize: isDesktop ? 28 : 22 }}>🎙</span>
             </button>
             <span style={{ ...sn, fontSize: 11, color: T2.text4 }}>Tap to speak</span>
@@ -325,18 +327,18 @@ Return ONLY valid JSON:
             ))}
           </div>
         </div>
-        <div style={{ background: T.ink || "#2C2416", borderRadius: 6, padding: isDesktop ? "24px 20px" : "18px 15px" }}>
-          <div style={{ ...lbl, color: "rgba(200,164,106,0.5)", marginBottom: 10 }}>YOUR BRAND STATEMENT</div>
+        <div style={{ background: SAGE_CARD, borderRadius: 6, border: "0.5px solid rgba(61,89,64,0.35)", padding: isDesktop ? "24px 20px" : "18px 15px" }}>
+          <div style={{ ...lbl, color: "rgba(138,158,132,0.7)", marginBottom: 10 }}>YOUR BRAND STATEMENT</div>
           <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 20 : 17, fontStyle: "italic", color: "#F5EFE6", lineHeight: 1.55, margin: "0 0 14px", fontWeight: 500 }}>{result.statement}</p>
-          <button onClick={() => { navigator.clipboard?.writeText((result.statement || "").replace(/^"|"$/g, '')).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2200); }); }} style={{ padding: "6px 14px", borderRadius: 3, border: `0.5px solid ${T.gold}`, background: copied ? "rgba(138,158,132,0.12)" : "transparent", color: T.gold, fontSize: 11, fontFamily: T.sans, cursor: "pointer", fontWeight: 600, transition: "all 0.2s" }}>
+          <button onClick={() => { navigator.clipboard?.writeText((result.statement || "").replace(/^"|"$/g, '')).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2200); }); }} style={{ padding: "6px 14px", borderRadius: 3, border: "0.5px solid rgba(138,158,132,0.5)", background: copied ? "rgba(138,158,132,0.12)" : "transparent", color: "rgba(138,158,132,0.85)", fontSize: 11, fontFamily: T.sans, cursor: "pointer", fontWeight: 600, transition: "all 0.2s" }}>
             {copied ? "Copied ✓" : "Copy"}
           </button>
         </div>
-        <div style={{ borderLeft: "2px solid rgba(200,164,106,0.22)", paddingLeft: 15 }}>
+        <div style={{ borderLeft: "2px solid rgba(61,89,64,0.4)", paddingLeft: 15 }}>
           <div style={{ ...lbl, marginBottom: 9 }}>COACH REFLECTION</div>
           <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 13, fontStyle: "italic", color: T2.text3, lineHeight: 1.8, margin: 0 }}>{result.coachNote}</p>
         </div>
-        <button style={cta(false)}>Continue to Brand Analysis →</button>
+        <button onClick={() => onSimulation?.()} style={cta(false)}>Continue to Brand Analysis →</button>
       </div>
     );
   }

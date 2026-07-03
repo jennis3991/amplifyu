@@ -2443,7 +2443,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
       {isD11 && step==="Rehearsal" && (
         <>
-          <D11PracticeWidget T={T} T2={T2} isDesktop={false} onWordsChange={setD11BrandWords}/>
+          <D11PracticeWidget T={T} T2={T2} isDesktop={false} onWordsChange={setD11BrandWords} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
         </>
       )}
       {isD11 && step==="Simulation" && (
