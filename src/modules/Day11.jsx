@@ -1,278 +1,503 @@
 import { useState, useEffect, useRef } from 'react';
 
-// ─── D11 Rehearsal Widget ─────────────────────────────────────────────────────
-export function D11PracticeWidget({T, T2, isDesktop, onWordsChange}) {
+// ─── D11 Rehearsal Widget — AI Coaching Conversation ─────────────────────────
 
-  const GOAL_CARDS = [
-    { icon:"🚀", label:"Become a Leader",         sub:"Lead teams, influence strategy, and shape culture" },
-    { icon:"⭐", label:"Build Executive Presence", sub:"Be the person trusted with the biggest decisions" },
-    { icon:"📈", label:"Accelerate My Career",     sub:"Get promoted, land a new role, or attract new opportunities" },
-    { icon:"💼", label:"Build My Own Business",    sub:"Create something that's truly yours" },
-    { icon:"✨", label:"Something Else",            sub:"Tell me in your own words", isOther:true },
-  ];
-  const DEFAULT_CURRENT = ["reliable","helpful","collaborative","professional","diligent"];
-  const MORE_CURRENT    = ["analytical","creative","supportive","technical","organised","calm","driven","empathetic","innovative","curious","precise","thoughtful","strategic","friendly","hard-working"];
+const QUESTIONS = [
+  {
+    q:    "What do people consistently come to you for?",
+    hint: "Think about the problems people ask you to solve, the advice they seek, or the situations where they naturally rely on you.",
+    duration: 30,
+    ack:  "That's helpful. I'm starting to see a pattern.",
+  },
+  {
+    q:    "What makes you different from other people in your role?",
+    hint: "Imagine someone recommended you for an important project. What would they say about you? What makes you memorable?",
+    duration: 30,
+    ack:  "Interesting. One more question.",
+  },
+  {
+    q:    "Tell me about a piece of work you're genuinely proud of.",
+    hint: "What happened? Why are you proud of it? What does that story reveal about you?",
+    duration: 45,
+    ack:  null,
+  },
+];
 
-  const [screen,        setScreen]       = useState(1);
-  const [goal,          setGoal]         = useState('');
-  const [goalOther,     setGoalOther]    = useState('');
-  const [goalWhy,       setGoalWhy]      = useState('');
-  const [futureText,    setFutureText]   = useState('');
-  const [futureWords,   setFutureWords]  = useState([]);
-  const [futureLoading, setFutureLoading]= useState(false);
-  const [currentChips,  setCurrentChips] = useState([...DEFAULT_CURRENT]);
-  const [chipInput,     setChipInput]    = useState('');
-  const [brandStmt,     setBrandStmt]    = useState('');
-  const [stmtLoading,   setStmtLoading]  = useState(false);
-  const [stmtSaved,     setStmtSaved]    = useState(false);
-  const [oppOpen,       setOppOpen]      = useState(false);
+const ANALYSIS_MSGS = [
+  "Listening carefully...",
+  "Finding recurring patterns...",
+  "Understanding how you create value...",
+  "Building your Professional Signature...",
+];
+
+export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange }) {
+  // phase: intro | question | recording | ack | analyzing | results
+  const [phase,          setPhase]         = useState('intro');
+  const [qIdx,           setQIdx]          = useState(0);
+  const [transcripts,    setTranscripts]   = useState(['', '', '']);
+  const [liveText,       setLiveText]      = useState('');
+  const [textAnswer,     setTextAnswer]    = useState('');
+  const [timer,          setTimer]         = useState(0);
+  const [useText,        setUseText]       = useState(false);
+  const [analysisMsgIdx, setAnalysisMsgIdx]= useState(0);
+  const [result,         setResult]        = useState(null);
+  const [copied,         setCopied]        = useState(false);
+
+  const recognitionRef  = useRef(null);
+  const timerRef        = useRef(null);
+  const analysisMsgRef  = useRef(null);
+  const liveTextRef     = useRef('');
+
+  const speechAvailable = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 
   useEffect(() => {
-    if(onWordsChange && futureWords.length > 0) onWordsChange(futureWords);
-  }, [futureWords]);
+    if (result?.strengths?.length > 0 && onWordsChange) {
+      onWordsChange(result.strengths.slice(0, 3).map(s => s.toLowerCase()));
+    }
+  }, [result]);
 
   useEffect(() => {
-    if(screen === 3 && !brandStmt && !stmtLoading) generateStatement();
-  }, [screen]);
+    if (phase === 'analyzing') {
+      setAnalysisMsgIdx(0);
+      const interval = setInterval(() => {
+        setAnalysisMsgIdx(i => Math.min(i + 1, ANALYSIS_MSGS.length - 1));
+      }, 1800);
+      analysisMsgRef.current = interval;
+      return () => clearInterval(interval);
+    }
+  }, [phase]);
 
-  async function extractFutureWords() {
-    setFutureLoading(true);
-    const goalLabel = goal === 'Other' ? goalOther : goal;
-    if(futureText.trim().length < 10) {
-      const dflt = {
-        "Become a Leader":["strategic","trusted","inspiring"],
-        "Build Executive Presence":["executive","credible","influential"],
-        "Accelerate My Career":["high impact","decisive","confident"],
-        "Build My Own Business":["visionary","bold","commercial"],
-      };
-      setTimeout(()=>{ setFutureWords(dflt[goalLabel]||["strategic","trusted","influential"]); setFutureLoading(false); }, 800);
+  function submitAnswer(text) {
+    const updated = [...transcripts];
+    updated[qIdx] = text || '';
+    setTranscripts(updated);
+    setLiveText('');
+    liveTextRef.current = '';
+    setTextAnswer('');
+    if (qIdx < 2) {
+      setPhase('ack');
+      setTimeout(() => { setQIdx(i => i + 1); setPhase('question'); }, 2600);
+    } else {
+      setPhase('analyzing');
+      runAnalysis(updated);
+    }
+  }
+
+  function startRecording() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { setUseText(true); return; }
+
+    const recognition = new SR();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+    recognition.onresult = (e) => {
+      let t = '';
+      for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript + ' ';
+      const trimmed = t.trim();
+      liveTextRef.current = trimmed;
+      setLiveText(trimmed);
+    };
+    recognition.onerror = (e) => {
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+        clearInterval(timerRef.current);
+        if (recognitionRef.current) { try { recognitionRef.current.stop(); } catch (_) {} recognitionRef.current = null; }
+        setUseText(true);
+        setPhase('question');
+      }
+    };
+    try {
+      recognition.start();
+      recognitionRef.current = recognition;
+    } catch (_) {
+      setUseText(true);
       return;
     }
-    const prompt = `Career goal: ${goalLabel}. They wrote: "${futureText.trim()}".
-Extract exactly 3 aspirational professional brand themes (single words or max 3-word phrases).
-Return ONLY: WORD1|WORD2|WORD3`;
-    try {
-      const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:60,messages:[{role:"user",content:prompt}]})});
-      const data = await res.json();
-      const text = (data.content||[]).map(b=>b.text||'').join('').trim();
-      const parts = text.split('|').map(p=>p.trim().toLowerCase()).filter(p=>p.length>0&&p.length<30);
-      setFutureWords(parts.length>=3 ? parts.slice(0,3) : ["strategic","trusted","influential"]);
-    } catch(_){ setFutureWords(["strategic","trusted","influential"]); }
-    setFutureLoading(false);
+
+    setPhase('recording');
+    const duration = QUESTIONS[qIdx].duration;
+    setTimer(duration);
+    let t = duration;
+    timerRef.current = setInterval(() => {
+      t--;
+      setTimer(t);
+      if (t <= 0) { clearInterval(timerRef.current); stopRecording(); }
+    }, 1000);
   }
 
-  async function generateStatement() {
-    setStmtLoading(true);
-    const w = futureWords.map(x=>x.trim());
-    const c = currentChips.slice(0,4);
-    const goalLabel = goal==='Other' ? goalOther : goal;
-    const prompt = `Career goal: ${goalLabel}. Currently seen as: ${c.join(', ')}. Wants to be known as: ${w.join(', ')}.
-Write a 25-35 word brand statement (third person) a senior sponsor would say. Powerful, personal. Return ONLY the sentence.`;
-    const fallback = `A ${goalLabel.toLowerCase().replace(/^(become |build )/,'')||'rising professional'} building a reputation for ${w[0]||'leadership'} and ${w[1]||'impact'} — combining ${c[0]||'dedication'} with ${w[2]||'vision'} to create lasting change.`;
-    try {
-      const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:150,messages:[{role:"user",content:prompt}]})});
-      const data = await res.json();
-      const text = (data.content||[]).map(b=>b.text||'').join('').trim();
-      setBrandStmt(text||fallback);
-    } catch(_){ setBrandStmt(fallback); }
-    setStmtLoading(false);
+  function stopRecording() {
+    clearInterval(timerRef.current);
+    if (recognitionRef.current) {
+      try { recognitionRef.current.stop(); } catch (_) {}
+      recognitionRef.current = null;
+    }
+    submitAnswer(liveTextRef.current);
   }
 
-  const cs = {
-    label: {fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8},
-    card:  {background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"20px":"14px"},
-  };
-  function cta(disabled){return{width:"100%",padding:"14px",borderRadius:4,border:"none",background:disabled?"rgba(44,36,22,0.15)":T.ink,color:disabled?"rgba(44,36,22,0.3)":(T2.bg||"#F7F3EC"),fontSize:isDesktop?14:13,fontWeight:600,cursor:disabled?"not-allowed":"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"};}
-  const back={background:"none",border:"none",fontFamily:T.sans,fontSize:13,color:T2.text4,cursor:"pointer",padding:"4px 0",textAlign:"left"};
+  async function runAnalysis(answers) {
+    const prompt = `You are an elite executive coach conducting a personal brand discovery session.
 
-  function ProgressBar({current,total=3}){
-    return(
-      <div style={{display:"flex",gap:4,marginBottom:18}}>
-        {Array.from({length:total},(_,i)=>i+1).map(i=>(
-          <div key={i} style={{height:3,borderRadius:2,flex:i===current?2:1,background:i<current?"rgba(200,164,106,0.6)":i===current?T.gold:T2.border,transition:"all 0.4s ease"}}/>
+The professional answered three questions:
+
+Q1 – What people come to them for:
+"${answers[0] || '(not provided)'}"
+
+Q2 – What makes them different:
+"${answers[1] || '(not provided)'}"
+
+Q3 – Work they're genuinely proud of:
+"${answers[2] || '(not provided)'}"
+
+Based on their responses, identify their professional signature. Focus on HOW they work and the unique value they create — not their job title.
+
+Return ONLY valid JSON with this structure:
+{
+  "signature": "<2-3 sentence paragraph. Warm, specific, second person. Describes their unique professional identity and the value they create.>",
+  "strengths": ["<2-4 word label>", "<2-4 word label>", "<2-4 word label>", "<2-4 word label>", "<2-4 word label>"],
+  "statement": "<One sentence, in quotes, 15-25 words. Written as if a sponsor is introducing them.>",
+  "coachNote": "<2-3 sentences. Warm coaching insight. Reference something specific from what they said. What stood out. What to build on.>"
+}`;
+
+    try {
+      const res = await fetch("/api/claude", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 700, messages: [{ role: "user", content: prompt }] }),
+      });
+      const data = await res.json();
+      const raw = (data.content || []).map(b => b.text || '').join('').trim();
+      const m = raw.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error();
+      const parsed = JSON.parse(m[0]);
+      clearInterval(analysisMsgRef.current);
+      setTimeout(() => { setResult(parsed); setPhase('results'); }, 700);
+    } catch (_) {
+      clearInterval(analysisMsgRef.current);
+      setTimeout(() => {
+        setResult({
+          signature: "You bring a distinctive combination of clarity and care to everything you do. People rely on you not just for your expertise, but for your ability to cut through complexity and help others move forward with confidence. Your professional identity is built on earned trust.",
+          strengths: ["Clear Thinking", "Trusted Judgement", "Calm Leadership", "Practical Expertise", "Building Trust"],
+          statement: '"The person others turn to when clarity and calm matter most."',
+          coachNote: "What came through was the trust others place in you — that's not something you can manufacture, it's earned. That quiet reliability is a powerful brand foundation. Everything we build next will amplify that so it becomes unmistakable.",
+        });
+        setPhase('results');
+      }, 700);
+    }
+  }
+
+  // Shared styles
+  const sf = { fontFamily: T.serif, color: T2.text };
+  const sn = { fontFamily: T.sans };
+  const lbl = { ...sn, fontSize: 9, fontWeight: 700, color: T2.text4, textTransform: "uppercase", letterSpacing: "2px" };
+
+  function cta(disabled) {
+    return {
+      width: "100%", padding: "15px", borderRadius: 4, border: "none",
+      background: disabled ? "rgba(44,36,22,0.15)" : (T.ink || "#2C2416"),
+      color: disabled ? "rgba(44,36,22,0.3)" : (T2.bg || "#F7F3EC"),
+      fontSize: isDesktop ? 14 : 13, fontWeight: 600,
+      cursor: disabled ? "not-allowed" : "pointer",
+      fontFamily: T.sans, minHeight: 48, transition: "all 0.2s",
+    };
+  }
+
+  function ProgressBar() {
+    return (
+      <div style={{ display: "flex", gap: 5, marginBottom: 4 }}>
+        {[0, 1, 2].map(i => (
+          <div key={i} style={{
+            height: 2, flex: 1, borderRadius: 1,
+            background: i <= qIdx ? T.gold : T2.border,
+            opacity: i < qIdx ? 0.4 : 1,
+            transition: "all 0.5s",
+          }} />
         ))}
       </div>
     );
   }
 
-  // ── Screen 1: Define Your Brand ────────────────────────────────────────────
-  if(screen===1){
-    const goalSet = goal&&(goal!=='Other'||goalOther.trim());
-    return(
-      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?15:12}}>
-        <ProgressBar current={1}/>
-        <div>
-          <div style={cs.label}>Define Your Brand</div>
-          <h3 style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T2.text,lineHeight:1.25,margin:"0 0 4px"}}>Where do you want your career to take you?</h3>
-        </div>
+  // ── INTRO ─────────────────────────────────────────────────────────────────
+  if (phase === 'intro') return (
+    <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 26 : 20, animation: "fadeUp 0.5s ease both" }}>
+      <div>
+        <div style={{ ...lbl, marginBottom: 11, letterSpacing: "2.5px" }}>ALL STRONG BRANDS ARE KNOWN FOR SOMETHING</div>
+        <h2 style={{ ...sf, fontSize: isDesktop ? 30 : 24, fontWeight: 600, margin: 0, lineHeight: 1.2 }}>Let's find yours.</h2>
+      </div>
 
-        <div style={{display:"flex",flexDirection:"column",gap:isDesktop?7:6}}>
-          {GOAL_CARDS.map(card=>{
-            const sel=goal===card.label||(card.isOther&&goal==='Other');
-            return(
-              <button key={card.label} onClick={()=>setGoal(card.isOther?'Other':card.label)}
-                style={{display:"flex",alignItems:"center",gap:12,padding:isDesktop?"13px 15px":"10px 12px",borderRadius:6,border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(200,164,106,0.07)":"transparent",cursor:"pointer",textAlign:"left",transition:"all 0.18s"}}>
-                <div style={{width:isDesktop?36:30,height:isDesktop?36:30,borderRadius:8,background:sel?"rgba(200,164,106,0.14)":T2.bg,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:isDesktop?16:14,transition:"background 0.18s"}}>{card.icon}</div>
-                <div style={{flex:1}}>
-                  <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:2}}>{card.label}</div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:T2.text3,lineHeight:1.4}}>{card.sub}</div>
-                </div>
-                <div style={{width:15,height:15,borderRadius:"50%",border:`1.5px solid ${sel?T.gold:T2.border}`,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s"}}>
-                  {sel&&<div style={{width:7,height:7,borderRadius:"50%",background:T.gold}}/>}
-                </div>
-              </button>
-            );
-          })}
-        </div>
+      <div style={{ borderLeft: "2px solid " + T.gold, paddingLeft: 15, display: "flex", flexDirection: "column", gap: 10 }}>
+        <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.65, margin: 0 }}>
+          Your personal brand isn't your job title. It's what people remember you for after you've left the room.
+        </p>
+        <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.65, margin: 0 }}>
+          I'll ask you three simple questions. Just speak naturally — I'll identify the patterns and uncover your unique professional signature.
+        </p>
+      </div>
 
-        {goal==='Other'&&(
-          <input value={goalOther} onChange={e=>setGoalOther(e.target.value)} placeholder="What are you trying to achieve?" className="au-input"
-            style={{width:"100%",padding:"10px 14px",fontSize:isDesktop?14:13,boxSizing:"border-box",animation:"fadeUp 0.3s ease both"}}/>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, padding: isDesktop ? "26px 0" : "20px 0" }}>
+        <div style={{
+          width: isDesktop ? 80 : 68, height: isDesktop ? 80 : 68, borderRadius: "50%",
+          background: T.ink || "#2C2416", display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: `0 0 0 14px rgba(200,164,106,0.06), 0 0 0 28px rgba(200,164,106,0.025)`,
+        }}>
+          <span style={{ fontSize: isDesktop ? 30 : 24 }}>🎙</span>
+        </div>
+        {!speechAvailable && (
+          <p style={{ ...sn, fontSize: 11, color: T2.text4, textAlign: "center", margin: 0 }}>
+            Voice not supported in this browser — you'll type your answers instead.
+          </p>
         )}
+      </div>
 
-        {goalSet&&(
-          <div style={{animation:"fadeUp 0.3s ease both",display:"flex",flexDirection:"column",gap:13}}>
-            <div>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>Why does this matter?</div>
-              <textarea value={goalWhy} onChange={e=>setGoalWhy(e.target.value)} placeholder="Describe the future you're trying to create…" rows={2}
-                style={{width:"100%",background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"6px 0",fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box",fontStyle:"italic"}}/>
-            </div>
-            <div>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>What would people say about you?</div>
-              <textarea value={futureText} onChange={e=>setFutureText(e.target.value)} placeholder="'I'd love people to say I was someone who…'" rows={isDesktop?3:2}
-                style={{width:"100%",background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"6px 0",fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box",fontStyle:"italic"}}/>
-            </div>
+      <button onClick={() => { setQIdx(0); setPhase('question'); }} style={cta(false)}>
+        Start Conversation →
+      </button>
+    </div>
+  );
+
+  // ── QUESTION ──────────────────────────────────────────────────────────────
+  if (phase === 'question') {
+    const showText = useText || !speechAvailable;
+    const q = QUESTIONS[qIdx];
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 20 : 15, animation: "fadeUp 0.4s ease both" }}>
+        <ProgressBar />
+        <div style={{ ...sn, fontSize: 10, fontWeight: 600, color: T2.text4, textTransform: "uppercase", letterSpacing: "1.5px" }}>
+          Question {qIdx + 1} of 3
+        </div>
+
+        <h3 style={{ ...sf, fontSize: isDesktop ? 22 : 19, fontWeight: 600, lineHeight: 1.35, margin: 0 }}>{q.q}</h3>
+        <p style={{ ...sn, fontSize: isDesktop ? 13 : 12, color: T2.text4, lineHeight: 1.6, margin: 0, fontStyle: "italic" }}>{q.hint}</p>
+
+        {showText ? (
+          <>
+            <textarea
+              value={textAnswer}
+              onChange={e => setTextAnswer(e.target.value)}
+              placeholder="Type your answer here..."
+              rows={isDesktop ? 5 : 4}
+              style={{
+                width: "100%", background: "transparent", border: "none",
+                borderBottom: "0.5px solid " + T2.divider, padding: "8px 0",
+                fontFamily: T.serif, fontSize: isDesktop ? 16 : 14, color: T2.text,
+                resize: "none", outline: "none", lineHeight: 1.7,
+                boxSizing: "border-box", fontStyle: "italic",
+              }}
+            />
+            <button onClick={() => submitAnswer(textAnswer)} disabled={textAnswer.trim().length < 8} style={cta(textAnswer.trim().length < 8)}>
+              Next →
+            </button>
+          </>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, padding: isDesktop ? "18px 0" : "12px 0" }}>
+            <button
+              onClick={startRecording}
+              style={{
+                width: isDesktop ? 76 : 64, height: isDesktop ? 76 : 64, borderRadius: "50%",
+                background: T.ink || "#2C2416", border: "none", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: `0 0 0 12px rgba(200,164,106,0.07)`,
+                transition: "transform 0.15s, box-shadow 0.15s",
+              }}
+            >
+              <span style={{ fontSize: isDesktop ? 28 : 22 }}>🎙</span>
+            </button>
+            <span style={{ ...sn, fontSize: 11, color: T2.text4 }}>Tap to speak</span>
+            <button
+              onClick={() => setUseText(true)}
+              style={{ background: "none", border: "none", ...sn, fontSize: 11, color: T2.text4, cursor: "pointer", textDecoration: "underline", padding: 0 }}
+            >
+              Type instead
+            </button>
           </div>
         )}
-
-        <button onClick={()=>{ if(goalSet){ setScreen(2); extractFutureWords(); } }} style={cta(!goalSet)}>Continue →</button>
       </div>
     );
   }
 
-  // ── Screen 2: See Yourself Clearly ──────────────────────────────────────────
-  if(screen===2){
-    function addChip(w){const c=w.trim().toLowerCase();if(!c||currentChips.includes(c))return;setCurrentChips(p=>[...p,c]);}
-    const suggestions=MORE_CURRENT.filter(w=>!currentChips.includes(w));
-    return(
-      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?15:12}}>
-        <ProgressBar current={2}/>
-        <div>
-          <div style={cs.label}>See Yourself Clearly</div>
-          <h3 style={{fontFamily:T.serif,fontSize:isDesktop?22:19,fontWeight:600,color:T2.text,lineHeight:1.25,margin:"0 0 3px"}}>How do people see you today?</h3>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,margin:0}}>Remove any that don't fit. Add your own.</p>
-        </div>
+  // ── RECORDING ─────────────────────────────────────────────────────────────
+  if (phase === 'recording') {
+    const q = QUESTIONS[qIdx];
+    const sz = isDesktop ? 84 : 72;
+    const r = sz / 2 - 4;
+    const circ = 2 * Math.PI * r;
+    const progress = 1 - (timer / q.duration);
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 20 : 15, animation: "fadeUp 0.3s ease both" }}>
+        <ProgressBar />
+        <h3 style={{ ...sf, fontSize: isDesktop ? 18 : 16, fontWeight: 500, lineHeight: 1.35, margin: 0, color: T2.text3, fontStyle: "italic" }}>
+          {q.q}
+        </h3>
 
-        <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
-          {currentChips.map(w=>(
-            <div key={w} style={{display:"flex",alignItems:"center",gap:6,padding:isDesktop?"7px 13px":"6px 10px",borderRadius:30,background:"rgba(138,158,132,0.09)",border:"0.5px solid rgba(138,158,132,0.28)",fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,fontWeight:500}}>
-              {w}
-              <button onClick={()=>setCurrentChips(p=>p.filter(c=>c!==w))} style={{background:"none",border:"none",color:T2.text4,cursor:"pointer",padding:"0 0 0 2px",fontSize:14,lineHeight:1,fontFamily:T.sans}}>×</button>
-            </div>
-          ))}
-          <div style={{display:"flex",alignItems:"center",gap:5,padding:isDesktop?"5px 11px":"4px 9px",borderRadius:30,border:"0.5px dashed "+T2.border}}>
-            <input value={chipInput} onChange={e=>setChipInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"||e.key===","){e.preventDefault();addChip(chipInput);setChipInput('');}}}
-              placeholder="Add…" style={{background:"none",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,width:isDesktop?72:60}}/>
-            {chipInput.trim()&&<button onClick={()=>{addChip(chipInput);setChipInput('');}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",padding:0,fontSize:13,fontFamily:T.sans,fontWeight:700}}>+</button>}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
+          <div style={{ position: "relative", width: sz, height: sz }}>
+            <svg width={sz} height={sz} style={{ position: "absolute", top: 0, left: 0, transform: "rotate(-90deg)" }}>
+              <circle cx={sz / 2} cy={sz / 2} r={r} fill="none" stroke={T2.border} strokeWidth="1.5" />
+              <circle cx={sz / 2} cy={sz / 2} r={r} fill="none" stroke={T.gold} strokeWidth="2.5"
+                strokeDasharray={circ}
+                strokeDashoffset={circ * (1 - progress)}
+                strokeLinecap="round"
+                style={{ transition: "stroke-dashoffset 1s linear" }} />
+            </svg>
+            <button
+              onClick={stopRecording}
+              style={{
+                position: "absolute", top: 0, left: 0, width: sz, height: sz, borderRadius: "50%",
+                background: "rgba(200,60,60,0.08)", border: "none", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                animation: "breathe 1.5s ease infinite",
+              }}
+            >
+              <span style={{ fontSize: isDesktop ? 26 : 20 }}>⏹</span>
+            </button>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", background: "rgba(200,60,60,0.75)", animation: "breathe 1.5s ease infinite" }} />
+            <span style={{ ...sn, fontSize: 11, color: T2.text4 }}>{timer}s remaining · tap to finish</span>
           </div>
         </div>
 
-        <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-          {suggestions.slice(0,8).map(w=>(
-            <button key={w} onClick={()=>addChip(w)} style={{padding:"4px 10px",borderRadius:20,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text4,fontSize:isDesktop?11:10,fontFamily:T.sans,cursor:"pointer",transition:"all 0.15s"}}>+ {w}</button>
-          ))}
-        </div>
-
-        {/* Gap mini-visual — animates in when AI extraction completes */}
-        {(futureLoading||futureWords.length>0)&&(
-          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:13,animation:"fadeUp 0.4s ease both"}}>
-            {futureLoading?(
-              <div style={{display:"flex",alignItems:"center",gap:10}}>
-                <img src="/logo-mark.png" alt="" style={{width:20,height:20,objectFit:"cover",filter:"brightness(0.55) sepia(0.4)",animation:"breathe 2s ease infinite"}}/>
-                <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,fontStyle:"italic"}}>Finding your themes…</span>
-              </div>
-            ):(
-              <div style={{animation:"fadeUp 0.45s ease both"}}>
-                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:9}}>Your brand journey</div>
-                <div style={{display:"flex",alignItems:"center",gap:isDesktop?12:9,flexWrap:"wrap"}}>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-                    {currentChips.slice(0,3).map(w=><span key={w} style={{padding:"4px 10px",borderRadius:20,background:"rgba(255,255,255,0.04)",border:"0.5px solid rgba(255,255,255,0.08)",fontFamily:T.sans,fontSize:11,color:T2.text4}}>{w}</span>)}
-                  </div>
-                  <span style={{fontFamily:T.serif,fontSize:16,color:T.gold,fontWeight:300}}>→</span>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-                    {futureWords.map(w=><span key={w} style={{padding:"4px 10px",borderRadius:20,background:"rgba(200,164,106,0.13)",border:`0.5px solid ${T.gold}`,fontFamily:T.sans,fontSize:11,color:T.gold,fontWeight:600}}>{w}</span>)}
-                  </div>
-                </div>
-              </div>
-            )}
+        {liveText ? (
+          <div style={{ borderLeft: "2px solid " + T.gold, paddingLeft: 14, animation: "fadeUp 0.3s ease both" }}>
+            <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 13, fontStyle: "italic", color: T2.text3, lineHeight: 1.75, margin: 0 }}>
+              {liveText}
+            </p>
           </div>
+        ) : (
+          <p style={{ ...sn, fontSize: 12, color: T2.text4, textAlign: "center", fontStyle: "italic", margin: 0 }}>Listening...</p>
         )}
-
-        <button onClick={()=>futureWords.length>0&&setScreen(3)} style={cta(futureWords.length===0)}>
-          {futureLoading ? "Finding your themes…" : "Continue →"}
-        </button>
-        <button onClick={()=>setScreen(1)} style={back}>← Back</button>
       </div>
     );
   }
 
-  // ── Screen 3: Your Brand ─────────────────────────────────────────────────────
-  if(screen===3){
-    return(
-      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?15:12}}>
-        <ProgressBar current={3}/>
+  // ── ACKNOWLEDGMENT ────────────────────────────────────────────────────────
+  if (phase === 'ack') return (
+    <div style={{
+      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+      gap: 20, padding: isDesktop ? "52px 12px" : "44px 0", animation: "fadeUp 0.45s ease both",
+    }}>
+      <img src="/logo-mark.png" alt=""
+        style={{ width: 30, height: 30, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
+      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, fontStyle: "italic", color: T2.text, lineHeight: 1.5, textAlign: "center", margin: 0 }}>
+        "{QUESTIONS[qIdx].ack}"
+      </p>
+    </div>
+  );
 
-        <div style={{background:T.ink||"#2C2416",borderRadius:6,padding:isDesktop?"24px 22px":"17px 14px",animation:"fadeUp 0.5s ease both"}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(200,164,106,0.45)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Your Brand</div>
-          <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:12}}>
-            {currentChips.slice(0,5).map(w=><span key={w} style={{padding:"4px 11px",borderRadius:20,background:"rgba(255,255,255,0.05)",border:"0.5px solid rgba(255,255,255,0.09)",fontFamily:T.sans,fontSize:isDesktop?12:11,color:"rgba(245,239,230,0.38)"}}>{w}</span>)}
+  // ── ANALYZING ─────────────────────────────────────────────────────────────
+  if (phase === 'analyzing') return (
+    <div style={{
+      display: "flex", flexDirection: "column", alignItems: "center",
+      gap: isDesktop ? 28 : 22, padding: isDesktop ? "44px 0" : "32px 0",
+      animation: "fadeUp 0.5s ease both",
+    }}>
+      <img src="/logo-mark.png" alt=""
+        style={{ width: 38, height: 38, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
+      <p style={{
+        fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, fontStyle: "italic",
+        color: T2.text, textAlign: "center", margin: 0, lineHeight: 1.45,
+        minHeight: isDesktop ? 64 : 52,
+      }}>
+        {ANALYSIS_MSGS[analysisMsgIdx]}
+      </p>
+      <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 8 }}>
+        {ANALYSIS_MSGS.map((_, i) => (
+          <div key={i} style={{
+            height: 2, borderRadius: 1,
+            background: T2.border, overflow: "hidden",
+            opacity: i <= analysisMsgIdx ? 1 : 0.15,
+            transition: "opacity 0.5s",
+          }}>
+            <div style={{
+              height: "100%", borderRadius: 1,
+              background: `linear-gradient(to right, rgba(200,164,106,0.45), ${T.gold})`,
+              width: i < analysisMsgIdx ? "100%" : i === analysisMsgIdx ? "52%" : "0%",
+              transition: "width 1.8s ease",
+            }} />
           </div>
-          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
-            <div style={{flex:1,height:"0.5px",background:"rgba(255,255,255,0.06)"}}/>
-            <span style={{fontFamily:T.serif,fontSize:16,color:T.gold,fontWeight:300}}>↓</span>
-            <div style={{flex:1,height:"0.5px",background:"rgba(255,255,255,0.06)"}}/>
-          </div>
-          <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-            {futureWords.map(w=><span key={w} style={{padding:"4px 11px",borderRadius:20,background:"rgba(200,164,106,0.14)",border:`0.5px solid ${T.gold}`,fontFamily:T.sans,fontSize:isDesktop?12:11,color:T.gold,fontWeight:600}}>{w}</span>)}
-          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // ── RESULTS ───────────────────────────────────────────────────────────────
+  if (phase === 'results' && result) {
+    const strengths = (result.strengths || []).slice(0, 5);
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 22 : 16, animation: "fadeUp 0.5s ease both" }}>
+
+        <div>
+          <div style={{ ...lbl, marginBottom: 10 }}>YOUR PROFESSIONAL SIGNATURE</div>
+          <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 17 : 15, color: T2.text, lineHeight: 1.8, margin: 0 }}>
+            {result.signature}
+          </p>
         </div>
 
-        <div style={{...cs.card,animation:"fadeUp 0.5s 0.1s ease both"}}>
-          <div style={cs.label}>Your Brand Statement</div>
-          {stmtLoading?(
-            <div style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0"}}>
-              <img src="/logo-mark.png" alt="" style={{width:22,height:22,objectFit:"cover",filter:"brightness(0.55) sepia(0.4)",animation:"breathe 2s ease infinite"}}/>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,fontStyle:"italic"}}>Writing your brand statement…</span>
-            </div>
-          ):(
-            <>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,lineHeight:1.6,margin:"0 0 12px",fontStyle:"italic"}}>"{brandStmt}"</p>
-              <button onClick={()=>{navigator.clipboard?.writeText(brandStmt).then(()=>{setStmtSaved(true);setTimeout(()=>setStmtSaved(false),2500);});}}
-                style={{padding:"7px 16px",borderRadius:4,border:"none",background:stmtSaved?"rgba(138,158,132,0.14)":T.ink,color:stmtSaved?"#7A9E84":(T2.bg||"#F7F3EC"),fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:T.sans,transition:"all 0.2s"}}>
-                {stmtSaved?"Saved ✓":"Save"}
-              </button>
-            </>
-          )}
-        </div>
-
-        <button onClick={()=>setOppOpen(o=>!o)}
-          style={{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",cursor:"pointer",padding:0,fontFamily:T.sans,fontSize:isDesktop?12:11,color:T.gold,fontWeight:600,textAlign:"left"}}>
-          <span style={{transform:oppOpen?"rotate(90deg)":"rotate(0deg)",transition:"transform 0.2s",display:"inline-block",fontSize:10}}>▸</span>
-          <span>Your opportunity</span>
-        </button>
-        {oppOpen&&(
-          <div style={{paddingLeft:14,animation:"fadeUp 0.3s ease both"}}>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:"0 0 9px"}}>There's a gap between today's reputation and the one you're building — and that gap is your opportunity.</p>
-            {["Communicate with greater authority","Tell stronger stories","Build visible expertise","Create a professional identity that matches your ambition"].map((item,i)=>(
-              <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:5}}>
-                <span style={{color:T.gold,fontSize:11,flexShrink:0,marginTop:2}}>✓</span>
-                <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text4,lineHeight:1.5}}>{item}</span>
+        <div>
+          <div style={{ ...lbl, marginBottom: 13 }}>YOU'RE KNOWN FOR...</div>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: isDesktop ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
+            gap: isDesktop ? 10 : 8,
+          }}>
+            {strengths.map((s, i) => (
+              <div key={i} style={{
+                padding: isDesktop ? "20px 16px" : "15px 12px",
+                borderRadius: 6,
+                background: i === 0 ? "rgba(200,164,106,0.07)" : (T2.surface || "rgba(255,255,255,0.025)"),
+                border: `0.5px solid ${i === 0 ? T.gold : T2.border}`,
+                display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center",
+                gridColumn: (!isDesktop && i === 4) ? "1 / -1" : "auto",
+                boxShadow: i === 0 ? `0 0 0 1px rgba(200,164,106,0.1)` : "none",
+                animation: `fadeUp 0.4s ${i * 0.07}s ease both`,
+              }}>
+                <span style={{
+                  fontFamily: T.sans, fontSize: isDesktop ? 13 : 11, fontWeight: 600,
+                  color: i === 0 ? T.gold : T2.text, letterSpacing: "0.3px",
+                }}>
+                  {s}
+                </span>
               </div>
             ))}
           </div>
-        )}
+        </div>
 
-        <button onClick={()=>setScreen(2)} style={back}>← Back</button>
+        <div style={{ background: T.ink || "#2C2416", borderRadius: 6, padding: isDesktop ? "24px 20px" : "18px 15px" }}>
+          <div style={{ ...lbl, color: "rgba(200,164,106,0.5)", marginBottom: 10 }}>YOUR BRAND STATEMENT</div>
+          <p style={{
+            fontFamily: T.serif, fontSize: isDesktop ? 20 : 17, fontStyle: "italic",
+            color: "#F5EFE6", lineHeight: 1.55, margin: "0 0 14px", fontWeight: 500,
+          }}>
+            {result.statement}
+          </p>
+          <button
+            onClick={() => {
+              navigator.clipboard?.writeText((result.statement || "").replace(/^"|"$/g, '')).then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2200);
+              });
+            }}
+            style={{
+              padding: "6px 14px", borderRadius: 3, border: `0.5px solid ${T.gold}`,
+              background: copied ? "rgba(138,158,132,0.12)" : "transparent",
+              color: T.gold, fontSize: 11, fontFamily: T.sans, cursor: "pointer",
+              fontWeight: 600, transition: "all 0.2s",
+            }}
+          >
+            {copied ? "Copied ✓" : "Copy"}
+          </button>
+        </div>
+
+        <div style={{ borderLeft: "2px solid rgba(200,164,106,0.22)", paddingLeft: 15 }}>
+          <div style={{ ...lbl, marginBottom: 9 }}>COACH REFLECTION</div>
+          <p style={{
+            fontFamily: T.serif, fontSize: isDesktop ? 15 : 13, fontStyle: "italic",
+            color: T2.text3, lineHeight: 1.8, margin: 0,
+          }}>
+            {result.coachNote}
+          </p>
+        </div>
+
+        <button style={cta(false)}>Continue to Brand Analysis →</button>
       </div>
     );
   }
