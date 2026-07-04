@@ -50,9 +50,7 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Example") return (
-      <div style={d4Dark}>
-        <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="clarity" height={900} day={4}/></div>
-        {d4Ol}
+      <div style={{...d4Dark, background:"#000"}}>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Masters of Brevity</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:380, lineHeight:1.2 }}>The best communicators say more with less.</p>

@@ -1553,7 +1553,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D4_EDITORIAL = [
-          { id:"hemingway", img:"/d4-hemingway.png", imgPos:"center 40%", cardBg:"#000", name:"Ernest Hemingway", superpower:"Master of Brevity",
+          { id:"hemingway", img:"/d4-hemingway.png", imgPos:"center 40%", name:"Ernest Hemingway", superpower:"Master of Brevity",
             superpowerText:"Every word earns its place — or it goes.",
             summary:"He won the Nobel Prize with short, precise sentences.",
             quote:"\"The old man fished alone. Eighty-four days. No fish.\"",
@@ -2968,6 +2968,8 @@ setAmbitionSaved(true); } catch {}
     const D6RightContent = () => {
       const [openD6, setOpenD6] = useState(null);
       const [d6ExOpen, setD6ExOpen] = useState(null);
+      const [d6ExObserved, setD6ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d6ExObserved')||'{}'); } catch { return {}; } });
+      const [d6ExOpenCard, setD6ExOpenCard] = useState(null);
       const D6_INSIGHT = [
         {word:"Emotion",    sub:"Stress narrows thinking and makes reactive communication more likely.", bullets:["Composure keeps your thinking wide open when it matters most.","In high-pressure moments, the first thing to go is nuance — unless you've trained for composure."]},
         {word:"Perception", sub:"When others escalate, composure signals leadership.",                   bullets:["Calm in the room reads as confidence — and earns instant credibility.","The person who stays grounded when everyone else reacts is the one people look to."]},
@@ -3042,79 +3044,120 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Example") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:12 }}>Masters Under Pressure</h2>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28, maxWidth:640 }}>Two communicators whose influence grew not despite difficult moments — but because of how they handled them.</p>
-          <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:24 }}>
-            {[
-              {name:"Lewis Hamilton", role:"7× Formula 1 World Champion",
-               preview:'"Firstly, a big congratulations to Max."',
-               trait:"Master of Composure Under Pressure",
-               body:"Throughout his career, Hamilton has faced criticism, controversy, public scrutiny, and championship-defining setbacks while performing on one of the world's biggest stages.\n\nAbu Dhabi 2021 — one lap away from a record-breaking eighth world title. One of the most controversial endings in sporting history. With millions watching, his first public words were:\n\n\"Firstly, a big congratulations to Max.\"\n\nExtreme disappointment. Global audience. Massive controversy. Years of work lost in seconds. Yet his first response was composure.\n\nYears later, he admitted he felt wronged — but also said he had found peace with it.\n\nHamilton has also spoken openly about struggling with depression from a young age: \"I had no one to talk to.\" And about his growth: \"I am so much more refined.\"\n\nElite communicators aren't naturally calm. They learn how to manage their reactions.",
-               quote:'"Firstly, a big congratulations to Max."',
-               year:"Abu Dhabi Grand Prix, 2021",
-               lesson:"Emotional control is often most visible when you have every reason to lose it. Pressure doesn't create character. It reveals it.",
-               tryIt:null},
-              {name:"👑 Queen Elizabeth II", role:"70 Years of Service · Master of Calm Leadership",
-               preview:'"We will meet again."',
-               trait:"Calm under pressure",
-               body:"For over 70 years, Queen Elizabeth II communicated through wars, political upheaval, economic crises, family scandals, and moments of national grief. Throughout it all, she became a symbol of stability.\n\nDuring the COVID-19 pandemic, millions of people were facing uncertainty, isolation, and fear. In a rare televised address to the nation, she delivered a message that was simple, calm, and reassuring:\n\n\"We will meet again.\"\n\nNo dramatic promises. No false certainty. Just confidence, clarity, and hope.\n\nThe speech became one of the defining communication moments of the pandemic because it gave people something they needed most: reassurance without denying reality.\n\nHer leadership style was rarely loud. She understood that in times of uncertainty, people often look first for composure.\n\nThe Queen's influence wasn't built through constant communication. It was built through consistency. For decades, people knew what to expect: calmness, dignity, and steadiness under pressure.\n\nGreat communicators don't always have the most to say. They know when a few carefully chosen words can have the greatest impact.",
-               quote:'"We will meet again."',
-               year:"COVID-19 Address to the Nation, 2020",
-               lesson:"In moments of uncertainty, people don't need perfect answers. They need confidence that someone is steady. When emotions rise, consistency builds trust. Calm is contagious.",
-               tryIt:null},
-            ].map((card,ci)=>{
-              const open = d6ExOpen===ci;
-              return (
-                <div key={ci} onClick={()=>setD6ExOpen(open?null:ci)}
-                  style={{ background:T2.surface, borderRadius:4, border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`, cursor:"pointer", transition:"border-color 0.2s, box-shadow 0.2s", boxShadow:open?"0 2px 16px rgba(138,158,132,0.1)":"none" }}>
-                  {/* Header */}
-                  <div style={{ padding:"22px 28px", display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
-                    <div style={{ flex:1, minWidth:0 }}>
-                      <div style={{ display:"flex", alignItems:"baseline", gap:12, marginBottom:6 }}>
-                        <span style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.2 }}>{card.name}</span>
-                        <span style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, fontWeight:400 }}>{card.role}</span>
+      if (step === "Example") {
+        const D6_EDITORIAL = [
+          { id:"hamilton", img:"/d6-hamilton.png", imgPos:"center 50%", name:"Lewis Hamilton", superpower:"Master of Composure Under Pressure",
+            superpowerText:"Calm when every reason says otherwise.",
+            summary:"Seven world championships — and his most powerful moment was how he handled losing one.",
+            quote:"\"Firstly, a big congratulations to Max.\"",
+            exploreLabel:"Explore his techniques",
+            body1:"Throughout his career, Hamilton has faced criticism, controversy, public scrutiny, and championship-defining setbacks while performing on one of the world's biggest stages.",
+            body2:"Abu Dhabi 2021 — one lap from a record-breaking eighth world title. One of the most controversial endings in sporting history. With millions watching, his first public words were: \"Firstly, a big congratulations to Max.\" Extreme disappointment. Global audience. Massive controversy. Yet his first response was composure.",
+            body3:"Elite communicators aren't naturally calm. They learn how to manage their reactions. Years later, Hamilton admitted he felt wronged — but also said he had found peace with it.",
+            whyItWorks:"When everyone expects a reaction, composure is the most powerful response available. Hamilton's calm didn't signal indifference — it signalled control. That's what leadership looks like under the most intense public scrutiny imaginable.",
+            technique:"Before responding in a high-pressure moment, give yourself one breath. Ask: what do I want people to remember about how I handled this? Respond to that — not to the emotion in the room.",
+            lesson:"Emotional control is often most visible when you have every reason to lose it. Pressure doesn't create character. It reveals it.",
+          },
+          { id:"amal", img:"/d6-amal.png", imgPos:"center 50%", name:"Amal Clooney", superpower:"Master of Composure Under Pressure",
+            superpowerText:"Every word chosen. Every sentence deliberate.",
+            summary:"She argues the world's most consequential legal cases — calm, precise and measured when the stakes couldn't be higher.",
+            quote:"\"Pressure rarely rewards the loudest voice. It rewards the clearest mind.\"",
+            exploreLabel:"Explore her techniques",
+            body1:"Amal Clooney argues some of the world's most consequential legal cases, where every sentence can influence justice, diplomacy and human lives.",
+            body2:"Whether addressing international courts, questioning witnesses or speaking before world leaders, she remains calm, precise and measured — even when the stakes couldn't be higher.",
+            body3:"Amal doesn't rush, interrupt or react emotionally. She relies on preparation, evidence and deliberate communication, allowing facts — not emotion — to carry the greatest weight.",
+            whyItWorks:"Pressure rarely rewards the loudest voice. It rewards the clearest mind. When others escalate, composure signals leadership and earns instant credibility.",
+            technique:"Slow your pace before answering. Respond to the question, not the emotion behind it. When pressure rises, focus on clear, deliberate language rather than filling the silence.",
+            lesson:"Pressure doesn't demand more words. It demands better ones.",
+          },
+        ];
+        const openReading = (id) => {
+          if (!d6ExObserved[id]) {
+            const next = {...d6ExObserved, [id]:true};
+            setD6ExObserved(next);
+            try { localStorage.setItem('d6ExObserved', JSON.stringify(next)); } catch {}
+          }
+          setD6ExOpenCard(id);
+        };
+        const reading = D6_EDITORIAL.find(c => c.id === d6ExOpenCard);
+        if (reading) return (
+          <div key={"d6read"+reading.id} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",maxWidth:680}}>
+            <button onClick={()=>setD6ExOpenCard(null)} style={{fontFamily:T.sans,fontSize:13,color:T2.text3,background:"transparent",border:"none",cursor:"pointer",padding:"0 0 28px",display:"flex",alignItems:"center",gap:6}}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              Back to Gallery
+            </button>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
+            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
+            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>
+            </div>
+            <div style={{marginBottom:28}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Steal This Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.technique}</p>
+            </div>
+            <div style={{padding:"22px 28px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>AmplifyU Lesson</div>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{reading.lesson}</p>
+            </div>
+          </div>
+        );
+        return (
+          <div key={idx} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters Under Pressure</h2>
+            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Two voices that stayed composed when everything was on the line.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
+              {D6_EDITORIAL.map(card=>{
+                const obs = d6ExObserved[card.id];
+                return (
+                  <div key={card.id} onClick={()=>openReading(card.id)}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    onMouseEnter={e=>{
+                      e.currentTarget.style.transform="translateY(-4px)";
+                      e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
+                      e.currentTarget.style.borderColor="rgba(200,164,106,0.4)";
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="scale(1.02)";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="translateX(4px)";
+                    }}
+                    onMouseLeave={e=>{
+                      e.currentTarget.style.transform="";
+                      e.currentTarget.style.boxShadow="";
+                      e.currentTarget.style.borderColor=T2.border;
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
+                    }}>
+                    <div style={{height:240,overflow:"hidden",position:"relative"}}>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:card.imgPos||"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <div style={{position:"absolute",top:12,right:12,padding:"4px 10px",borderRadius:20,background:obs?"rgba(97,145,100,0.9)":"rgba(30,26,20,0.7)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",gap:5}}>
+                        <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
-                      <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8 }}>{card.trait}</div>
-                      <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>{card.preview}</p>
                     </div>
-                    <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.5)", marginLeft:20, flexShrink:0, marginTop:4 }}>{open?"▴":"▸"}</span>
-                  </div>
-                  {/* Expanded */}
-                  {open && (
-                    <div style={{ borderTop:"0.5px solid "+T2.divider, padding:"24px 28px", display:"flex", flexDirection:"column", gap:18 }}>
-                      <div>
-                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>{ci===0?"Why He's Relevant":"Why She's Relevant"}</div>
-                        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0, whiteSpace:"pre-line" }}>{card.body}</p>
-                      </div>
-                      <div>
-                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Quote</div>
-                        <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T2.text, lineHeight:1.65, margin:"0 0 4px" }}>{card.quote}</p>
-                        <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, margin:0 }}>{card.year}</p>
-                      </div>
-                      <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:16 }}>
-                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Lesson</div>
-                        <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
-                      </div>
-                      {card.tryIt && (
-                        <div style={{ background:T2.bg, borderRadius:4, padding:"14px 16px", border:"0.5px solid "+T2.border }}>
-                          <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:8 }}>Try it</div>
-                          <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text, lineHeight:1.5, margin:"0 0 6px" }}>{card.tryIt.phrase}</p>
-                          <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, margin:0 }}>{card.tryIt.instruction}</p>
+                    <div style={{padding:"18px 20px 20px"}}>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>{card.superpower}</div>
+                      <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,margin:"0 0 8px"}}>{card.name}</h3>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+                        <div>
+                          <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>✦ SUPERPOWER</div>
+                          <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300,maxWidth:160}}>{card.superpowerText}</div>
                         </div>
-                      )}
+                        <span data-arrow style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:400,whiteSpace:"nowrap",transition:"transform 0.2s ease"}}>{card.exploreLabel} →</span>
+                      </div>
                     </div>
-                  )}
-                </div>
-              );
-            })}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
-            <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0 }}>Pressure doesn't create communication habits. It reveals them.</p>
-          </div>
-        </div>
-      );
+        );
+      }
 
       return <RightContent/>;
     };
