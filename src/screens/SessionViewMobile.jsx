@@ -1608,36 +1608,105 @@ T.goldDark : T2.text4,
           <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Teaching forces you to understand. Simplifying forces you to think.</p>
         </>
       )}
-      {isD1 && step==="Example" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Examples · Day 1</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Clear Communication</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how they do it.</p>
-          {[
-            {id:"attenborough",name:"David Attenborough",preview:"Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon. Instead, he uses language anyone can picture.",quote:'"The rainforest is like a vast, green lung breathing life into our planet."',why:"He translates scientific complexity into vivid, everyday language. You don't need a biology degree to understand the Amazon.",technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",lesson:"Clarity comes from choosing words that create images, not confusion."},
-            {id:"branson",name:"Sir Richard Branson",preview:"Branson built a global empire. But he speaks like he's chatting with a friend.",quote:'"We just try to make things better for people. If we do that, they\'ll choose us."',why:"He uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.",technique:"Remove every word a 10-year-old wouldn't understand. If what's left still makes sense, you've found clarity.",lesson:"The clearest speakers use the simplest words."},
-          ].map(card=>(
-            <div key={card.id} onClick={()=>setD1MobCard(d1MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d1MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
-                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
-                <span style={{fontFamily:T.sans,fontSize:12,color:d1MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{d1MobCard===card.id?"▴":"▸"}</span>
-              </div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
-              {d1MobCard===card.id && (
-                <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-                  <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:12}}>{card.quote}</p>
-                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why It Works</div>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.why}</p>
-                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>The Technique</div>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.technique}</p>
-                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>AmplifyU Lesson</div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
+      {isD1 && step==="Example" && (()=>{
+        const D1_EDITORIAL = [
+          { id:"attenborough", img:"/d11-attenborough.png", name:"David Attenborough", superpower:"Master of Clarity",
+            summary:"He explains nature's complexity using words anyone can picture.",
+            quote:"“The rainforest is like a vast, green lung breathing life into our planet.”",
+            body1:"Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon.",
+            body2:"Instead, he uses language anyone can picture:",
+            body3:"No technical terms. Just an image you can see.",
+            whyItWorks:"He translates scientific complexity into vivid, everyday language. You don't need a biology degree to understand the Amazon.",
+            technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",
+            lesson:"Clarity comes from choosing words that create images, not confusion. The best explainers make you see what they're saying.",
+          },
+          { id:"branson", img:"/d11-branson.png", name:"Sir Richard Branson", superpower:"Conversation over Corporation",
+            summary:"He built a global empire speaking like he's chatting with a friend.",
+            quote:"“We just try to make things better for people. If we do that, they’ll choose us.”",
+            body1:"Branson built a global empire. But he speaks like he’s chatting with a friend.",
+            body2:"When asked about Virgin’s strategy:",
+            body3:"No “synergies.” No “value propositions.” No corporate fluff.",
+            whyItWorks:"He uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.",
+            technique:"Remove every word a 10-year-old wouldn’t understand. If what’s left still makes sense, you’ve found clarity.",
+            lesson:"Jargon doesn’t make you sound smart. It makes you hard to understand. The clearest speakers use the simplest words.",
+          },
+        ];
+        let d1ExObs = {}; try { d1ExObs = JSON.parse(localStorage.getItem('d1ExObserved')||'{}'); } catch {}
+        return (
+          <>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Clear Communication</h2>
+            <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>Tap each card to explore how they do it.</p>
+            {D1_EDITORIAL.map(card=>{
+              const open = d1MobCard===card.id;
+              const obs = d1ExObs[card.id];
+              return (
+                <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:`0.5px solid ${open?"rgba(200,164,106,0.4)":T2.border}`,marginBottom:16,background:T2.surface,transition:"border-color 0.25s"}}>
+                  <div style={{height:200,overflow:"hidden",position:"relative",cursor:"pointer"}}
+                    onClick={()=>{
+                      const next = open ? null : card.id;
+                      setD1MobCard(next);
+                      if (next && !d1ExObs[card.id]) {
+                        d1ExObs[card.id] = true;
+                        localStorage.setItem('d1ExObserved', JSON.stringify(d1ExObs));
+                      }
+                    }}>
+                    <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+                    <div style={{position:"absolute",bottom:0,left:0,right:0,height:"60%",background:"linear-gradient(transparent,rgba(20,18,14,0.6))"}}/>
+                    <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"16px"}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(200,164,106,0.9)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{card.superpower}</div>
+                      <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"#F5EFE6",lineHeight:1.2}}>{card.name}</div>
+                    </div>
+                    <div style={{position:"absolute",top:12,right:12,fontFamily:T.sans,fontSize:11,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.7)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.4)",padding:"4px 8px",borderRadius:20}}>
+                      <span style={{fontSize:12}}>{obs?"✓":"◉"}</span>
+                      <span>Observed</span>
+                    </div>
+                  </div>
+                  <div style={{padding:"16px 20px 4px",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}}
+                    onClick={()=>{
+                      const next = open ? null : card.id;
+                      setD1MobCard(next);
+                      if (next && !d1ExObs[card.id]) {
+                        d1ExObs[card.id] = true;
+                        localStorage.setItem('d1ExObserved', JSON.stringify(d1ExObs));
+                      }
+                    }}>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0,flex:1,paddingRight:12}}>{card.summary}</p>
+                    <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,flexShrink:0,display:"flex",alignItems:"center",gap:3}}>
+                      <span>{open?"Close":"Read"}</span>
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.25s"}}><path d="M3 6l5 5 5-5" stroke={T.gold} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                  </div>
+                  {open && (
+                    <div style={{padding:"0 20px 20px",animation:"fadeUp 0.3s ease both"}}>
+                      <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16,marginTop:12}}>
+                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body1}</p>
+                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body2}</p>
+                        <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 10px"}}>
+                          <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                        </div>
+                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
+                        <div style={{marginBottom:12}}>
+                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why It Works</div>
+                          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
+                        </div>
+                        <div style={{marginBottom:12}}>
+                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Steal This Technique</div>
+                          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
+                        </div>
+                        <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+                          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>AmplifyU Lesson</div>
+                          <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{card.lesson}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
-        </>
-      )}
+              );
+            })}
+          </>
+        );
+      })()}
       {isD1 && step==="Rehearsal" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Voice Warm-Up · Day 1</div>
