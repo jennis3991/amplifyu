@@ -2955,42 +2955,84 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic",marginTop:4}}>"The body helps people understand the message."</p>
         </>
       )}
-      {isD12 && step==="Example" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Presence in Action</div>
-          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>The Strongest Communicators Create Calm, Clarity, and Connection</h2>
-          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>
-            {D12_EXAMPLES.map(card=>{
-              const open=d12MobCard===card.id;
+      {isD12 && step==="Example" && (()=>{
+        const D12_EDITORIAL = [
+          { id:"obama", img:"/d12-obama.png", imgPos:"center 50%", name:"Michelle Obama", superpower:"Master of Warm Presence",
+            superpowerText:"Making every room feel smaller.",
+            summary:"Whether speaking to thousands or having a one-to-one conversation, her body language projects warmth, confidence, and authenticity — before she says a word.",
+            quote:"\"Presence isn't about commanding attention — it's about creating connection.\"",
+            body1:"Michelle Obama has a way of making every room feel smaller. Whether speaking to thousands of people or having a one-to-one conversation, her body language projects warmth, confidence, and authenticity.",
+            body2:"Her open posture, genuine smile, and natural gestures make people feel at ease before she even says a word. She reminds us that presence isn't about commanding attention — it's about creating connection.",
+            body3:"People decide how they feel about you long before they've analysed your words. Open body language, steady eye contact, and relaxed movement signal confidence, trust, and approachability. When your non-verbal signals match your message, people are far more likely to believe and remember you.",
+            whyItWorks:"People decide how they feel about you long before they've analysed your words. Open body language, steady eye contact, and relaxed movement signal confidence, trust, and approachability. When your non-verbal signals match your message, people are far more likely to believe and remember you.",
+            technique:"Before your next conversation or presentation, check your posture before your script. Stand tall, relax your shoulders, keep your hands open, and make eye contact before you begin speaking. Let your body communicate confidence before your voice does.",
+            lesson:"Your body is always communicating — even when you're silent. Great communicators understand that influence isn't just about what you say; it's about how you make people feel the moment you walk into the room. When your words and body language are aligned, your presence becomes your greatest strength.",
+          },
+          { id:"jobs", img:"/d12-jobs.png", imgPos:"center 40%", name:"Steve Jobs", superpower:"Master of Purposeful Presence",
+            superpowerText:"When every movement has purpose, every message carries more weight.",
+            summary:"On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message — not the speaker.",
+            quote:"\"Confident body language creates clarity. Calm presence made complex ideas feel simple and memorable.\"",
+            body1:"Steve Jobs understood that powerful presentations aren't just about great ideas — they're about how those ideas are delivered. On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message rather than the speaker.",
+            body2:"He proved that confidence doesn't need to be loud to be influential. His philosophy was simple: when every movement has purpose, every message carries more weight.",
+            body3:"The next time you're presenting, resist the urge to fill every silence or pace constantly. Stand still to emphasise an important point, use deliberate gestures rather than constant movement, and allow pauses to give your audience time to think.",
+            whyItWorks:"Confident body language creates clarity. By eliminating unnecessary movement and using pauses deliberately, Jobs directed the audience's attention exactly where he wanted it. His calm presence made complex ideas feel simple and memorable.",
+            technique:"The next time you're presenting, resist the urge to fill every silence or pace constantly. Stand still to emphasise an important point, use deliberate gestures rather than constant movement, and allow pauses to give your audience time to think.",
+            lesson:"Your presence is shaped as much by what you don't do as what you do. Purposeful movement, calm posture, and intentional pauses communicate confidence before you've even finished your first sentence. Sometimes the most powerful body language is knowing when to stand still.",
+          },
+        ];
+        let d12ExObs = {}; try { d12ExObs = JSON.parse(localStorage.getItem('d12ExObserved')||'{}'); } catch {}
+        return (
+          <>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Presence in Action</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Two communicators who prove that how you carry yourself speaks louder than words.</p>
+            {D12_EDITORIAL.map(card=>{
+              const open = d12MobCard===card.id;
+              const obs = d12ExObs[card.id];
               return (
-                <div key={card.id} onClick={()=>setD12MobCard(open?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px",cursor:"pointer",transition:"border-color 0.2s"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                    <div style={{flex:1}}>
-                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{card.name}</div>
-                      <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,lineHeight:1.2}}>{card.headline}</div>
+                <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
+                  {!open && <div style={{height:"auto",overflow:"hidden"}} onClick={()=>{ const next={...d12ExObs,[card.id]:true}; try{localStorage.setItem('d12ExObserved',JSON.stringify(next));}catch{} setD12MobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:card.imgPos||"center top"}}/></div>}
+                  {!open && <div onClick={()=>{ const next={...d12ExObs,[card.id]:true}; try{localStorage.setItem('d12ExObserved',JSON.stringify(next));}catch{} setD12MobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                    <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
+                  </div>}
+                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setD12MobCard(open?null:card.id)}>
+                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                      <div>
+                        <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
+                        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
+                      </div>
+                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
                     </div>
-                    <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  {open && (
-                    <div style={{marginTop:12,paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,marginBottom:12,fontWeight:300}}>{card.body}</p>
-                      <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}}>
-                        {card.signals.map((s,i)=>(
-                          <span key={i} style={{padding:"3px 10px",borderRadius:20,border:"0.5px solid rgba(138,158,132,0.3)",background:"rgba(138,158,132,0.06)",fontFamily:T.sans,fontSize:11,color:T2.text3}}>{s}</span>
-                        ))}
-                      </div>
-                      <div style={{padding:"12px 14px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                        <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{card.lesson}</p>
-                      </div>
+                  {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
+                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
                     </div>
-                  )}
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
+                    <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
+                    </div>
+                    <div style={{marginBottom:14}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Steal This Technique</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
+                    </div>
+                    <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>AmplifyU Lesson</div>
+                      <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{card.lesson}</p>
+                    </div>
+                  </div>}
                 </div>
               );
             })}
-          </div>
-          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Great communicators create calm, clarity, and connection."</p>
-        </>
-      )}
+          </>
+        );
+      })()}
       {isD12 && step==="Rehearsal" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Presence Challenge</h2>
