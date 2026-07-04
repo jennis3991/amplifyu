@@ -2283,6 +2283,8 @@ setAmbitionSaved(true); } catch {}
     const D2RightContent = () => {
       const [d2InsightOpen, setD2InsightOpen] = useState(null);
       const [d2TheoryOpen, setD2TheoryOpen] = useState(null);
+      const [d2ExObserved, setD2ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d2ExObserved')||'{}'); } catch { return {}; } });
+      const [d2ExOpenCard, setD2ExOpenCard] = useState(null);
 
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
@@ -2392,83 +2394,122 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Example") {
-        const D2_EX_CARDS = [
-          {id:0, name:"Robin Williams", headline:"The Master of Vocal Range",
-           sub:"From the explosive Genie in Aladdin to the emotional stillness of Good Will Hunting — he transformed how a message felt using only his voice.",
-           quote:'"No matter what people tell you, words and ideas can change the world."',
-           roles:[
-             {role:"The Genie", film:"Aladdin", voice:"Explosive, shape-shifting, relentless. He recorded over 16 hours of improvised audio. Every line a different character, accent, pace, pitch. The voice is the performance — pure kinetic energy with no ceiling."},
-             {role:"Mrs Doubtfire", film:"Mrs Doubtfire", voice:"Warmth and precision in one. The character only works because the voice is completely believable — soft, maternal, unhurried. He didn't shout his way into the role. He listened his way in."},
-             {role:"Sean Maguire", film:"Good Will Hunting", voice:"Stillness as a weapon. Long pauses. A voice barely above a murmur. The most emotionally powerful scenes have almost no volume. He trusted silence to carry the weight that words couldn't."},
-           ],
-           levers:[{k:"Pace",v:"Rapid-fire energy or slow emotional weight"},{k:"Pitch",v:"Playful highs to grounded seriousness"},{k:"Tone",v:"Humour, warmth, intensity, vulnerability"},{k:"Pauses",v:"Creating anticipation, emotion, and impact"}],
-           lesson:"Range creates engagement. Contrast creates emotion. A flat voice fades. A dynamic voice keeps people listening.",
-           challenge:{sentence:'"Ah... now this is where things get interesting."',modes:["Playful Genie energy","Thoughtful mentor","Urgent excitement","Calm inspiration"]}},
-          {id:1, name:"Meryl Streep", headline:"The Master of Precision and Presence",
-           sub:"Three iconic roles. Three completely different voices. Streep proves that the most powerful communicators don't get louder — they get more precise.",
-           quote:'"Take your broken heart, make it into art."',
-           roles:[
-             {role:"Miranda Priestly", film:"The Devil Wears Prada", voice:"Barely above a whisper. Ice-cold authority. Every pause a threat. She never raises her voice — and that's exactly what makes her terrifying. Precision over volume."},
-             {role:"Sophie Zawistowski", film:"Sophie's Choice", voice:"Raw, fractured, accent-laden grief. Her voice breaks where words can't. The emotional weight lives in the trembling pauses between sentences."},
-             {role:"Margaret Thatcher", film:"The Iron Lady", voice:"Deliberate, elevated, sculpted. She researched Thatcher's vocal coaching and rebuilt the register from scratch. Every word placed with political intention."},
-           ],
-           levers:[{k:"Pace",v:"Deliberate control or sharp urgency"},{k:"Pitch",v:"Subtle tonal shifts that change emotional meaning"},{k:"Tone",v:"Authority, vulnerability, wit, empathy, strength"},{k:"Pauses",v:"Creating tension, emphasis, and dramatic impact"}],
-           lesson:"Precision creates presence. Control creates impact. A rushed voice can feel uncertain. An intentional voice commands attention.",
-           challenge:{sentence:'"This moment matters more than you think."',modes:["Sharp executive authority","Calm conviction","Warm encouragement","Emotionally vulnerable"]}},
+        const D2_EDITORIAL = [
+          { id:"streep", img:"/d2-streep.png", name:"Meryl Streep", superpower:"Master of Precision and Presence",
+            superpowerText:"Precision over volume. Control over noise.",
+            summary:"Three iconic roles. Three completely different voices.",
+            quote:"\"Take your broken heart, make it into art.\"",
+            exploreLabel:"Explore her techniques",
+            body1:"Streep proves that the most powerful communicators don't get louder — they get more precise.",
+            body2:"Three iconic roles. Three completely different voices, each built from the same instrument: Miranda Priestly barely above a whisper, Sophie in raw fractured grief, Thatcher in deliberate political authority.",
+            body3:"She never reaches for volume. She reaches for control.",
+            whyItWorks:"Precision creates presence. A whisper can command a room. A pause can carry more weight than a raised voice. The voice in complete control is the voice people follow.",
+            technique:"Don't reach for volume — reach for control. Slow down before your most important word. Let silence carry what a raised voice never can.",
+            lesson:"Precision creates presence. Control creates impact. A rushed voice can feel uncertain. An intentional voice commands attention.",
+          },
+          { id:"sinek", img:"/d2-sinek.png", name:"Simon Sinek", superpower:"Master of Voice",
+            superpowerText:"Makes big ideas land through deliberate delivery.",
+            summary:"His voice carries the emotion before the words do.",
+            quote:"\"People don't buy what you do. They buy why you do it.\"",
+            exploreLabel:"Explore his techniques",
+            body1:"Sinek doesn't just explain ideas. He performs them with his voice.",
+            body2:"He changes pace. Lowers his tone. Speeds up with excitement. Slows down before the idea that matters most.",
+            body3:"Simple words. Deliberate delivery.",
+            whyItWorks:"Great speakers don't speak at one speed. Sinek constantly varies his pace, emphasis and tone to keep attention and guide the listener through his thinking. His voice gives structure to the message.",
+            technique:"Highlight important ideas with your voice, not just your words. Slow down before your biggest point. Speed up when telling a story. Change your pitch and emphasis to signal what matters. If your voice stays flat, your message will too.",
+            lesson:"People don't just listen to what you say. They listen to how you say it. A dynamic voice turns information into influence.",
+          },
         ];
-        const [d2ExOpen, setD2ExOpen] = useState(null);
+        const reading = D2_EDITORIAL.find(c => c.id === d2ExOpenCard);
+        const openReading = (id) => {
+          setD2ExOpenCard(id);
+          if (!d2ExObserved[id]) {
+            const next = {...d2ExObserved, [id]: true};
+            setD2ExObserved(next);
+            localStorage.setItem('d2ExObserved', JSON.stringify(next));
+          }
+        };
+        if (reading) return (
+          <div key={"d2read"+reading.id} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",maxWidth:680}}>
+            <button onClick={()=>setD2ExOpenCard(null)} style={{fontFamily:T.sans,fontSize:13,color:T2.text3,background:"transparent",border:"none",cursor:"pointer",padding:"0 0 28px",display:"flex",alignItems:"center",gap:6}}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              Back to Gallery
+            </button>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
+            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
+            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>
+            </div>
+            <div style={{marginBottom:28}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Steal This Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.technique}</p>
+            </div>
+            <div style={{padding:"22px 28px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>AmplifyU Lesson</div>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{reading.lesson}</p>
+            </div>
+          </div>
+        );
         return (
-          <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-            <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Voice in Action</h2>
-            <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>Two masters of vocal craft — and what they can teach you about range, control, and deliberate delivery.</p>
-            {/* Row 1: both person cards — grid equalises heights automatically */}
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:0 }}>
-              {D2_EX_CARDS.map((card)=>{
-                const open = d2ExOpen===card.id;
+          <div key={idx} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Voice & Delivery</h2>
+            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Two voices. Two styles. One lesson in deliberate delivery.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
+              {D2_EDITORIAL.map(card=>{
+                const obs = d2ExObserved[card.id];
                 return (
-                  <div key={card.id} onClick={()=>setD2ExOpen(open?null:card.id)} className="au-lift"
-                    style={{ background:T2.surface, borderRadius:4, border:`0.5px solid ${open?T.gold:T2.border}`, padding:"24px", cursor:"pointer", transition:"border-color 0.2s, box-shadow 0.2s, transform 0.2s" }}
-                    onMouseEnter={e=>{ if(!open){e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.boxShadow="0 4px 20px rgba(138,158,132,0.22), 0 1px 6px rgba(138,158,132,0.12)";} }}
-                    onMouseLeave={e=>{ if(!open){e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.boxShadow="none";} }}>
-                    <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
-                      <h3 style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T.gold, lineHeight:1.2, margin:0 }}>{card.name}</h3>
-                      <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.7)", marginLeft:10, flexShrink:0, transition:"color 0.2s" }}>{open?"▴":"▸"}</span>
-                    </div>
-                    <p style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T2.text3, textTransform:"uppercase", letterSpacing:"1px", marginBottom:10 }}>{card.headline}</p>
-                    <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.65, fontWeight:300, margin:open?"0 0 20px":0 }}>{card.sub}</p>
-                    {open && (
-                      <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:18 }}>
-                        <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T2.text2, lineHeight:1.6, marginBottom:16, borderLeft:"2px solid "+T.gold, paddingLeft:14 }}>{card.quote}</p>
-                        {card.roles && (
-                          <div style={{ marginBottom:18 }}>
-                            <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Three Roles. Three Voices.</div>
-                            {card.roles.map((r,i)=>(
-                              <div key={i} style={{ marginBottom:i<card.roles.length-1?12:0, paddingBottom:i<card.roles.length-1?12:0, borderBottom:i<card.roles.length-1?"0.5px solid "+T2.divider:"none" }}>
-                                <div style={{ display:"flex", gap:8, alignItems:"baseline", marginBottom:4 }}>
-                                  <span style={{ fontFamily:T.serif, fontSize:15, fontWeight:600, color:T2.text }}>{r.role}</span>
-                                  <span style={{ fontFamily:T.sans, fontSize:11, color:T2.text3, fontStyle:"italic" }}>{r.film}</span>
-                                </div>
-                                <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.6, margin:0, fontWeight:300 }}>{r.voice}</p>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                        <div style={{ marginBottom:14 }}>
-                          {card.levers.map((l,i)=>(
-                            <div key={i} style={{ display:"flex", gap:8, marginBottom:6 }}>
-                              <span style={{ fontFamily:T.sans, fontSize:11, fontWeight:700, color:T.gold, flexShrink:0 }}>{l.k} →</span>
-                              <span style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.5 }}>{l.v}</span>
-                            </div>
-                          ))}
-                        </div>
-                        <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.6, margin:0 }}>{card.lesson}</p>
+                  <div key={card.id} onClick={()=>openReading(card.id)}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    onMouseEnter={e=>{
+                      e.currentTarget.style.transform="translateY(-4px)";
+                      e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
+                      e.currentTarget.style.borderColor="rgba(200,164,106,0.4)";
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="scale(1.02)";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="translateX(4px)";
+                    }}
+                    onMouseLeave={e=>{
+                      e.currentTarget.style.transform="";
+                      e.currentTarget.style.boxShadow="";
+                      e.currentTarget.style.borderColor=T2.border;
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
+                    }}>
+                    <div style={{height:240,overflow:"hidden",position:"relative"}}>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
+                        <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
-                    )}
+                    </div>
+                    <div style={{padding:"18px 20px 20px"}}>
+                      <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:4}}>{card.name}</h3>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:10}}>{card.superpower}</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:12}}>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
+                            <span style={{fontSize:9,color:T.gold}}>✦</span>
+                            <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.8px"}}>Superpower</span>
+                          </div>
+                          <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
+                        </div>
+                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:400,color:T2.text3,display:"flex",alignItems:"center",gap:2,flexShrink:0,whiteSpace:"nowrap"}}>
+                          <span>{card.exploreLabel}</span>
+                          <span data-arrow style={{transition:"transform 0.25s ease",display:"inline-block"}}>→</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 );
               })}
             </div>
-            {/* Challenge card — single expandable box */}
           </div>
         );
       }
