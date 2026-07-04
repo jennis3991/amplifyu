@@ -2136,35 +2136,84 @@ T.goldDark : T2.text4,
           <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Speak to people the way they need to be spoken to, not the way you prefer to communicate."</p>
         </>
       )}
-      {isD9 && step==="Example" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Example · Day 9</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Connection in Action</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Four stories. One truth: the most connected people listen more than they speak.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:12}}>
-            {D9_EXAMPLES.map(card=>{
-              const open=d9OpenCard===("d9ex"+card.id);
+      {isD9 && step==="Example" && (()=>{
+        const D9_EDITORIAL = [
+          { id:"william", img:"/d9-william.png", imgPos:"center 50%", name:"Prince William", superpower:"Master of Connection Through Listening",
+            superpowerText:"Makes others feel heard, not just met.",
+            summary:"Whether speaking with emergency responders, veterans, or young people, he creates space for others to share — and they remember how he made them feel.",
+            quote:"\"Mental health is just as important as physical health.\"",
+            body1:"Prince William is known for making people feel comfortable. Whether he's speaking with emergency responders, young people, veterans, or families, he rarely dominates the conversation. Instead, he creates space for others to speak.",
+            body2:"His communication isn't built on having the perfect answer. It's built on making the other person feel heard.",
+            body3:"In your next conversation, focus less on what you'll say next and more on understanding the other person's perspective. Ask one more question than you normally would. Let silence do some of the work.",
+            whyItWorks:"Connection begins with listening. By asking thoughtful questions, maintaining genuine curiosity, and giving people time to share their experiences, he builds trust quickly. People remember how he made them feel, not just what he said.",
+            technique:"In your next conversation, focus less on what you'll say next and more on understanding the other person's perspective. Ask one more question than you normally would. Let silence do some of the work.",
+            lesson:"Strong communicators don't connect because they speak the most. They connect because they make others feel valued. Listening isn't the pause between speaking — it's where connection begins.",
+          },
+          { id:"jacinda", img:"/d9-jacinda.png", imgPos:"center 50%", name:"Jacinda Ardern", superpower:"Master of Empathetic Leadership",
+            superpowerText:"Warmth, humility, and authenticity — every time.",
+            summary:"She communicates with warmth, empathy, and authenticity. She doesn't create distance between herself and others — she closes it.",
+            quote:"\"One of the criticisms I've faced over the years is that I'm not aggressive enough... I totally rebel against that.\"",
+            body1:"Jacinda Ardern has a remarkable ability to make leadership feel personal. Whether speaking to a nation after tragedy or chatting informally online from home, she communicates with warmth, empathy, and authenticity.",
+            body2:"She doesn't create distance between herself and others — she closes it. Her message is simple: people come first.",
+            body3:"People connect with leaders who feel genuine. By showing empathy, acknowledging emotions, and speaking with humility, she builds trust before asking for action. When people feel understood, they're far more willing to listen.",
+            whyItWorks:"People connect with leaders who feel genuine. By showing empathy, acknowledging emotions, and speaking with humility, she builds trust before asking for action. When people feel understood, they're far more willing to listen.",
+            technique:"Before trying to persuade someone, show that you understand their perspective. Acknowledge how they might be feeling, ask questions with genuine curiosity, and respond with empathy before offering your own view.",
+            lesson:"Connection isn't about being the most charismatic person in the room. It's about making other people feel seen, heard, and understood. Empathy turns conversations into relationships, and relationships build lasting influence.",
+          },
+        ];
+        let d9ExObs = {}; try { d9ExObs = JSON.parse(localStorage.getItem('d9ExObserved')||'{}'); } catch {}
+        return (
+          <>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Connection in Action</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Two communicators who connect by making others feel heard.</p>
+            {D9_EDITORIAL.map(card=>{
+              const open = d9OpenCard===("d9ex"+card.id);
+              const obs = d9ExObs[card.id];
               return (
-                <div key={card.id} onClick={()=>setD9OpenCard(open?null:("d9ex"+card.id))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px",cursor:"pointer",transition:"border-color 0.2s"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                    <div style={{flex:1}}>
-                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{card.headline}</div>
-                      <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,lineHeight:1.2}}>{card.name}</div>
+                <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
+                  {!open && <div style={{height:"auto",overflow:"hidden"}} onClick={()=>{ const next={...d9ExObs,[card.id]:true}; try{localStorage.setItem('d9ExObserved',JSON.stringify(next));}catch{} setD9OpenCard("d9ex"+card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:card.imgPos||"center top"}}/></div>}
+                  {!open && <div onClick={()=>{ const next={...d9ExObs,[card.id]:true}; try{localStorage.setItem('d9ExObserved',JSON.stringify(next));}catch{} setD9OpenCard("d9ex"+card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                    <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
+                  </div>}
+                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setD9OpenCard(open?null:("d9ex"+card.id))}>
+                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                      <div>
+                        <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
+                        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
+                      </div>
+                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
                     </div>
-                    <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  {open && <div style={{marginTop:12,paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>{card.body}</p>
-                    <div style={{padding:"10px 12px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                      <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{card.lesson}</p>
+                  {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
+                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                    </div>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
+                    <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
+                    </div>
+                    <div style={{marginBottom:14}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Steal This Technique</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
+                    </div>
+                    <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>AmplifyU Lesson</div>
+                      <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{card.lesson}</p>
                     </div>
                   </div>}
                 </div>
               );
             })}
-          </div>
-        </>
-      )}
+          </>
+        );
+      })()}
       {isD9 && step==="Rehearsal" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Rehearsal · Day 9</div>
