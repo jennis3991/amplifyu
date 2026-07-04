@@ -1454,38 +1454,112 @@ T.goldDark : T2.text4,
           })}
         </>
       )}
-      {isD3 && step==="Example" && (
-        <>
-          <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of the Pause</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Tap each card to explore how they use silence.</p>
-          {[
-            {id:"freeman",name:"Morgan Freeman",preview:'No "ums." No "uhs." Just measured, deliberate speech. When he needs to think, he pauses.',quote:'"Hope is a good thing. Maybe the best of things. And no good thing ever dies."',why:"Silence creates anticipation. Fillers create distraction.",technique:"When you don't know what to say next, stop talking. Pause. Breathe. Continue.",lesson:"The pause is not your enemy. It's your tool."},
-            {id:"wintour",name:"Anna Wintour",preview:'When asked "What makes a good editor?" she paused 3 seconds. Then: "Decisiveness." One word. Perfect answer.',quote:'"Decisiveness."',why:"Fillers signal uncertainty. Pauses signal control. She knows what she wants to say.",technique:"Prepare your answer before you speak. If you haven't decided what to say, don't start talking yet.",lesson:"Filler-free speech starts with knowing your point."},
-            {id:"ginsburg",name:"Ruth Bader Ginsburg",preview:"Every pause was intentional. Every word was chosen. Her arguments were surgical: Pause. Point. Evidence. Pause. Next point.",quote:'"The question before the Court is... whether the statute applies in this case."',why:"In high-stakes environments, fillers cost you credibility. Precision builds trust.",technique:"Structure your thoughts before you speak. Point 1. Pause. Point 2. Pause. Conclusion.",lesson:"The higher the stakes, the fewer words you should use. And zero fillers."},
-            {id:"obama3",name:"Barack Obama",preview:"Mid-sentence, he'll stop. Think. Then continue. That pause? Not a filler. A choice.",quote:'"The question is... what kind of country are we going to leave our children?"',why:"Pauses let your audience catch up. Fillers just fill time.",technique:"When you make an important point, pause after it. Let it land before you move on.",lesson:"Silence isn't empty space. It's emphasis."},
-          ].map(card=>(
-            <div key={card.id} onClick={()=>setD3MobCard(d3MobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${d3MobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
-                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
-                <span style={{fontFamily:T.sans,fontSize:12,color:d3MobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{d3MobCard===card.id?"▴":"▸"}</span>
-              </div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
-              {d3MobCard===card.id && (
-                <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-                  <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:12}}>{card.quote}</p>
-                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why It Works</div>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.why}</p>
-                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>The Technique</div>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.technique}</p>
-                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>AmplifyU Lesson</div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
+      {isD3 && step==="Example" && (()=>{
+        const D3_EDITORIAL = [
+          { id:"freeman", img:"/d3-freeman.png", name:"Morgan Freeman", superpower:"Master of the Pause",
+            superpowerText:"Turns silence into emphasis.",
+            summary:"No ums. No uhs. Just measured, deliberate speech.",
+            quote:"\"Hope is a good thing. Maybe the best of things. And no good thing ever dies.\"",
+            body1:"Listen to Morgan Freeman narrate anything. You'll notice what he doesn't say.",
+            body2:"No ums. No uhs. No fillers. Just measured, deliberate speech.",
+            body3:"When he needs to think, he pauses. That pause doesn't weaken his delivery — it strengthens it.",
+            whyItWorks:"Silence creates anticipation. Fillers create distraction. When Freeman pauses, your attention sharpens — you lean in to hear what comes next. The pause is the tool, not the gap.",
+            technique:"When you don't know what to say next, stop talking. Pause. Breathe. Then continue. Practice letting the silence sit — it signals confidence, not uncertainty.",
+            lesson:"The pause is not your enemy. It's your most underused communication tool. Use it deliberately.",
+          },
+          { id:"wintour", img:"/d3-wintour.png", name:"Anna Wintour", superpower:"Filler-Free Authority",
+            superpowerText:"Every word chosen. Zero wasted.",
+            summary:"She pauses between thoughts — no fillers, no hedging, just control.",
+            quote:"\"Decisiveness.\"",
+            body1:"Anna Wintour runs Vogue. When she speaks, there's no fluff.",
+            body2:"A journalist asked: \"What makes a good editor?\" She paused for three seconds. Then: one word. Perfect answer.",
+            body3:"Fillers signal uncertainty. Pauses signal control. She always knows what she wants to say.",
+            whyItWorks:"She prepares before she speaks. That means she never needs to fill space with ums or uhs. The pause is deliberate — it communicates that the answer was worth waiting for.",
+            technique:"Prepare your answer before you speak. If you haven't decided what to say, don't start talking yet. Wait. Think. Then deliver.",
+            lesson:"Filler-free speech starts with knowing your point. The cleaner your thinking, the cleaner your delivery.",
+          },
+        ];
+        let d3ExObs = {}; try { d3ExObs = JSON.parse(localStorage.getItem('d3ExObserved')||'{}'); } catch {}
+        return (
+          <>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of the Pause</h2>
+            <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>Two speakers who turned silence into a superpower.</p>
+            {D3_EDITORIAL.map(card=>{
+              const open = d3MobCard===card.id;
+              const obs = d3ExObs[card.id];
+              return (
+                <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:`0.5px solid ${open?"rgba(200,164,106,0.4)":T2.border}`,marginBottom:16,background:T2.surface,transition:"border-color 0.25s"}}>
+                  {!open && (
+                    <div style={{overflow:"hidden",position:"relative",cursor:"pointer"}}
+                      onClick={()=>{
+                        setD3MobCard(card.id);
+                        if (!d3ExObs[card.id]) { d3ExObs[card.id]=true; localStorage.setItem('d3ExObserved',JSON.stringify(d3ExObs)); }
+                      }}>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block"}}/>
+                    </div>
+                  )}
+                  {!open && (
+                    <div style={{padding:"8px 18px",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:8}}>
+                      <div style={{width:20,height:20,borderRadius:"50%",border:`1.5px solid ${obs?"#619164":"rgba(160,128,90,0.4)"}`,background:obs?"rgba(97,145,100,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.25s"}}>
+                        {obs && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2.5" stroke="#619164" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                      </div>
+                      <span style={{fontFamily:T.sans,fontSize:12,fontWeight:obs?600:400,color:obs?"#619164":"rgba(160,128,90,0.6)",letterSpacing:"0.02em"}}>{obs?"Observed":"Mark as observed"}</span>
+                    </div>
+                  )}
+                  <div style={{padding:"16px 18px 4px",cursor:"pointer"}}
+                    onClick={()=>{
+                      const next = open ? null : card.id;
+                      setD3MobCard(next);
+                      if (next && !d3ExObs[card.id]) { d3ExObs[card.id]=true; localStorage.setItem('d3ExObserved',JSON.stringify(d3ExObs)); }
+                    }}>
+                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:3}}>{card.name}</h3>
+                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>
+                    <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:10,marginBottom:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:10}}>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:2}}>
+                          <span style={{fontSize:8,color:T.gold}}>✦</span>
+                          <span style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.8px"}}>Superpower</span>
+                        </div>
+                        <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
+                      </div>
+                      <div style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0}}>
+                        <span>{open?"Close":"Read"}</span>
+                        <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.25s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                  {open && (
+                    <div style={{padding:"0 18px 20px",animation:"fadeUp 0.3s ease both"}}>
+                      <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16}}>
+                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body1}</p>
+                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body2}</p>
+                        <div style={{padding:"14px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 10px"}}>
+                          <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                        </div>
+                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
+                        <div style={{marginBottom:12}}>
+                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why It Works</div>
+                          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
+                        </div>
+                        <div style={{marginBottom:12}}>
+                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Steal This Technique</div>
+                          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
+                        </div>
+                        <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+                          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>AmplifyU Lesson</div>
+                          <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{card.lesson}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
-        </>
-      )}
+              );
+            })}
+          </>
+        );
+      })()}
       {isD3 && step==="Rehearsal" && (
         <>
           <D3PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD3NavLabel} onNavFn={d3NavFnRef} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
@@ -1543,27 +1617,27 @@ T.goldDark : T2.text4,
       )}
       {isD4 && step==="Example" && (()=>{
         const D4_EDITORIAL = [
-          { id:"freeman", img:"/d4-freeman.png", name:"Morgan Freeman", superpower:"Master of Deliberate Words",
-            superpowerText:"Says less. Lands more. Every word chosen.",
-            summary:"He speaks slowly, deliberately — and every word lands.",
-            quote:"\"You can't trust somebody who doesn't know they're flawed.\"",
-            body1:"Freeman never rushes. He doesn't fill silence with words. He chooses them.",
-            body2:"Whether narrating a documentary or answering an interview question, his sentences are short, measured, and complete.",
-            body3:"When he stops talking, it's because he's finished. Not because he's paused. There's a difference.",
-            whyItWorks:"Short sentences signal conviction. When you stop at the end of a complete thought, the listener absorbs it fully before the next arrives. Freeman never gives you the chance to drift — each sentence demands attention.",
-            technique:"Say the sentence. Stop. Don't add another to soften it. Don't explain what you just said. Let the silence confirm it.",
-            lesson:"Power isn't in the volume of words. It's in the precision. The most trusted voices say only what's needed.",
+          { id:"hemingway", img:"/d4-hemingway.png", name:"Ernest Hemingway", superpower:"Master of Brevity",
+            superpowerText:"Every word earns its place — or it goes.",
+            summary:"He won the Nobel Prize with short, precise sentences.",
+            quote:"\"The old man fished alone. Eighty-four days. No fish.\"",
+            body1:"Hemingway won the Nobel Prize for literature. His secret? Short sentences.",
+            body2:"No flourish. No decoration. Just truth.",
+            body3:"Short sentences force precision. You can't hide weak ideas behind long ones. Every word earns its place or it goes.",
+            whyItWorks:"Brevity forces clarity. When you limit words, you're forced to keep only the ones that matter. Long sentences let weak ideas hide behind structure. Short sentences expose them.",
+            technique:"Write your first draft. Then cut every unnecessary word. Read each sentence aloud — if you run out of breath before the full stop, it's too long. Over 15 words? Split it.",
+            lesson:"Every word you add dilutes your message. The best writers know what to leave out. Clarity is a discipline.",
           },
-          { id:"wintour", img:"/d4-wintour.png", name:"Anna Wintour", superpower:"Master of Economy",
-            superpowerText:"Every word earns its place. Nothing survives that doesn't.",
-            summary:"She says what needs to be said. Then stops.",
-            quote:"\"You either know fashion or you don't.\"",
-            body1:"Wintour doesn't speak in paragraphs. She speaks in verdicts.",
-            body2:"In meetings, in decisions, in direction — she uses the minimum number of words to communicate the maximum amount of weight.",
-            body3:"Three words from Wintour carry more meaning than three paragraphs from anyone else.",
-            whyItWorks:"Brevity signals authority. When every word is intentional, nothing is wasted — and nothing can be misread. Wintour's communication is a masterclass in knowing what matters and cutting everything else.",
-            technique:"Before you speak, ask: what is the one thing I need this person to understand? Say that. One sentence. Nothing more.",
-            lesson:"Power doesn't need many words. The most decisive communicators say the least — and mean all of it.",
+          { id:"chanel", img:"/d4-chanel.png", name:"Coco Chanel", superpower:"Elegance Through Elimination",
+            superpowerText:"Short sentences. Maximum impact. Every time.",
+            summary:"She built an empire on less is more — in fashion and in words.",
+            quote:"\"Fashion fades. Style remains.\"",
+            body1:"Chanel revolutionised fashion with one principle: remove everything that isn't essential.",
+            body2:"The same principle shaped how she spoke.",
+            body3:"Short sentences. Maximum impact. Every time.",
+            whyItWorks:"Each of her quotes is a complete thought. No wasted words. Just precision. The discipline of cutting in fashion is the same discipline as cutting in speech — both demand you decide what's essential and remove everything else.",
+            technique:"Take your last important email or message. Find the three most essential sentences. Delete the rest. See if the meaning survives. It almost always does.",
+            lesson:"Elegance in language, like elegance in fashion, is about knowing what to leave out. The most powerful sentences are the ones with nothing left to remove.",
           },
         ];
         let d4ExObs = {}; try { d4ExObs = JSON.parse(localStorage.getItem('d4ExObserved')||'{}'); } catch {}
