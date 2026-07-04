@@ -1988,87 +1988,84 @@ T.goldDark : T2.text4,
 
         </>
       )}
-      {isNT && step==="Example" && (
-        <>
-          <img src="/day1-lounge.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",display:"none"}}/>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Storytelling in the Wild</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Four stories. Four superpowers. Tap each card to explore.</p>
-          {[
-            {id:"janitor",name:"The NASA Janitor",preview:"JFK asked a janitor what he did at NASA. His answer created purpose in a single sentence.",quote:'"I\'m helping put a man on the moon."',why:"He wasn't describing his task — he was describing his mission. Great stories connect everyday actions to a bigger purpose.",technique:"Don't tell people what they're doing. Help them understand why it matters.",lesson:"Purpose — the most powerful story creates meaning, not just instruction."},
-            {id:"surgeons",name:"The Two Surgeons",preview:"Two surgeons deliver the same message. One delivers data. The other paints a future.",quote:'"A year from now, you\'ll be playing football with your son."',why:"Same information. Completely different experience. One statistic, one story — the story creates hope where data creates anxiety.",technique:"Don't describe features. Describe outcomes. Paint the future your audience wants to live in.",lesson:"Hope — the best stories make people feel the result before it arrives."},
-            {id:"jobs",name:"Steve Jobs and the Envelope",preview:"When introducing the MacBook Air, Jobs didn't lead with specs. He reached into a manila envelope.",quote:'"The world\'s thinnest notebook."',why:"The product wasn't the story. The reveal was. Curiosity is one of the most powerful forces in communication.",technique:"Don't reveal everything immediately. Create anticipation before delivering the answer.",lesson:"Curiosity — great stories hold something back until exactly the right moment."},
-            {id:"obama_citizen",name:"Barack Obama and the Citizen",preview:"When discussing policy, Obama always started with a person. Not a policy. Not a statistic. A person.",quote:'"A mother struggling to pay bills. A worker supporting a family."',why:"The audience connected with the human story before hearing the argument. People care about people before they care about issues.",technique:"Start with a customer, colleague, or client before presenting the data.",lesson:"Connection — stories about people create empathy before logic."},
-          ].map(card=>(
-            <div key={card.id} onClick={()=>setNtMobCard(ntMobCard===card.id?null:card.id)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${ntMobCard===card.id?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginBottom:12,cursor:"pointer",transition:"border-color 0.2s"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
-                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>{card.name}</div>
-                <span style={{fontFamily:T.sans,fontSize:12,color:ntMobCard===card.id?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{ntMobCard===card.id?"▴":"▸"}</span>
-              </div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{card.preview}</p>
-              {ntMobCard===card.id && (
-                <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-                  <p style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:12}}>{card.quote}</p>
-                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why It Works</div>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.why}</p>
-                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>The Technique</div>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.7,fontWeight:400,marginBottom:10}}>{card.technique}</p>
-                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>AmplifyU Lesson</div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>{card.lesson}</p>
-                </div>
-              )}
-            </div>
-          ))}
-          {/* Pixar Framework — expandable card */}
-          <div onClick={()=>setPixarOpen(o=>!o)} style={{background:pixarOpen?"rgba(237,232,223,0.92)":"rgba(237,232,223,0.6)",border:`1px solid ${pixarOpen?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"20px",marginTop:4,cursor:"pointer",transition:"border-color 0.2s"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
-              <div style={{flex:1}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>The Pixar Framework</div>
-                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3}}>The most replicable story structure ever invented.</div>
-              </div>
-              <span style={{fontFamily:T.sans,fontSize:12,color:pixarOpen?T.gold:T2.text3,marginLeft:10,flexShrink:0,transition:"color 0.2s"}}>{pixarOpen?"▴":"▸"}</span>
-            </div>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>Pixar used the same template for every film. It works because it mirrors how the human brain processes experience.</p>
-            {pixarOpen && (
-              <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-                <div style={{display:"flex",flexDirection:"column",border:"0.5px solid rgba(138,158,132,0.25)",borderRadius:6,overflow:"hidden",marginBottom:14}}>
-                  {[
-                    {prompt:"Once upon a time…", desc:"Set the scene and introduce the protagonist."},
-                    {prompt:"Every day…",         desc:"Establish the normal world."},
-                    {prompt:"Until one day…",     desc:"Something disrupts the status quo."},
-                    {prompt:"Because of that…",   desc:"The chain of consequences begins."},
-                    {prompt:"Because of that…",   desc:"The stakes deepen."},
-                    {prompt:"Until finally…",     desc:"Resolution. What changed, and why it matters."},
-                  ].map((s,i)=>(
-                    <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"11px 14px",background:i%2===0?"rgba(237,232,223,0.5)":"transparent",borderBottom:i<5?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
-                      <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,minWidth:145,flexShrink:0}}>{s.prompt}</span>
-                      <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:0}}>{s.desc}</p>
-                    </div>
-                  ))}
-                </div>
-                <div style={{background:"rgba(138,158,132,0.06)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",padding:"14px 16px"}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Applied Example</div>
-                  <div style={{display:"flex",flexDirection:"column",gap:9}}>
-                    {[
-                      {prompt:"Once upon a time…", text:"I thought confidence meant sounding polished."},
-                      {prompt:"Every day…",         text:"I overprepared for meetings — scripts, rehearsed answers, perfect sentences."},
-                      {prompt:"Until one day…",     text:"I completely froze mid-presentation."},
-                      {prompt:"Because of that…",   text:"I changed how I prepared — focusing on clarity, not performance."},
-                      {prompt:"Because of that…",   text:"I started listening more in meetings instead of waiting to speak."},
-                      {prompt:"Until finally…",     text:"People started genuinely listening to me."},
-                    ].map((s,i)=>(
-                      <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-                        <span style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,minWidth:145,flexShrink:0}}>{s.prompt}</span>
-                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.55,margin:0}}>{s.text}</p>
+      {isNT && step==="Example" && (()=>{
+        const D8_EDITORIAL = [
+          { id:"obama", img:"/d8-obama.png", imgPos:"center 40%", name:"Barack Obama", superpower:"Master of Human-First Storytelling",
+            superpowerText:"Every policy begins with a person.",
+            summary:"When discussing healthcare, jobs, or education, Obama always started with a single human story — not a statistic.",
+            quote:"\"Change will not come if we wait for some other person or some other time.\"",
+            body1:"When discussing healthcare, jobs, or education, Barack Obama often began with a single person. Not a policy. Not a statistic. A person.",
+            body2:"A mother struggling to pay bills. A worker trying to support a family. A student chasing a dream. The audience connected with the human story before hearing the argument.",
+            body3:"People care about people before they care about issues. By leading with one specific individual, Obama made abstract policy feel personal — and personal means memorable.",
+            whyItWorks:"Narrative transportation theory tells us that when we follow a character's story, we lower our defences. We stop arguing and start feeling. Obama used this to make audiences emotionally invested before making his case.",
+            technique:"Start with a customer, colleague, or client before presenting the data. Give them a name. Give them a challenge. Then connect that story to your point.",
+            lesson:"Facts tell. Stories sell. The most persuasive communicators don't lead with data — they lead with a human being.",
+          },
+          { id:"pixar", img:"/d8-pixar.png", imgPos:"center 45%", name:"The Pixar Framework", superpower:"The Most Replicable Story Structure Ever Invented",
+            superpowerText:"Once upon a time... until finally.",
+            summary:"Pixar used the same six-beat template for every film. It works because it mirrors how the human brain processes experience.",
+            quote:"\"The story is not in the plot but in the telling.\"",
+            body1:"Pixar's story team discovered something remarkable: every great story follows the same six-beat structure. They used it for Up, Finding Nemo, Toy Story — and it works just as powerfully in a boardroom as it does on screen.",
+            body2:"Once upon a time... Every day... Until one day... Because of that... Because of that... Until finally. Six beats. Every story ever told fits this shape.",
+            body3:"The framework works because it mirrors how the human brain actually processes experience: we need a normal world, a disruption, and a resolution. Skip any beat and the story feels incomplete.",
+            whyItWorks:"Narrative structure creates cognitive anticipation. When you establish a normal world and then disrupt it, the brain instinctively wants resolution. The audience stays engaged because they need to know how it ends.",
+            technique:"Next time you present a challenge or pitch an idea, map it to the Pixar beats: set the normal world, name the disruption, trace the consequences, deliver the resolution. It takes 90 seconds and makes any message land harder.",
+            lesson:"Structure doesn't constrain stories — it liberates them. The Pixar framework gives you a proven skeleton. Your job is simply to fill it with truth.",
+          },
+        ];
+        let d8ExObs = {}; try { d8ExObs = JSON.parse(localStorage.getItem('d8ExObserved')||'{}'); } catch {}
+        return (
+          <>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Storytelling in the Wild</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Two examples of narrative transportation at its most powerful.</p>
+            {D8_EDITORIAL.map(card=>{
+              const open = ntMobCard===card.id;
+              const obs = d8ExObs[card.id];
+              return (
+                <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
+                  {!open && <div style={{height:"auto",overflow:"hidden"}} onClick={()=>{ const next={...d8ExObs,[card.id]:true}; try{localStorage.setItem('d8ExObserved',JSON.stringify(next));}catch{} setNtMobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:card.imgPos||"center top"}}/></div>}
+                  {!open && <div onClick={()=>{ const next={...d8ExObs,[card.id]:true}; try{localStorage.setItem('d8ExObserved',JSON.stringify(next));}catch{} setNtMobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                    <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
+                  </div>}
+                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setNtMobCard(open?null:card.id)}>
+                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                      <div>
+                        <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
+                        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
                       </div>
-                    ))}
+                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
+                    </div>
                   </div>
+                  {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
+                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                    </div>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
+                    <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
+                    </div>
+                    <div style={{marginBottom:14}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Steal This Technique</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
+                    </div>
+                    <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>AmplifyU Lesson</div>
+                      <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{card.lesson}</p>
+                    </div>
+                  </div>}
                 </div>
-              </div>
-            )}
-          </div>
-          <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T.gold,lineHeight:1.6,marginTop:14,marginBottom:0}}>When people feel meaning, they remember the message.</p>
-        </>
-      )}
+              );
+            })}
+          </>
+        );
+      })()}
       {isNT && step==="Simulation" && (
         <StoryArchitectWidget T={T} T2={T2} isDesktop={false}/>
       )}
