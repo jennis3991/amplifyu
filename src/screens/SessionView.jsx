@@ -1913,9 +1913,9 @@ setAmbitionSaved(true); } catch {}
                             <span style={{fontSize:9,color:T.gold}}>✦</span>
                             <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.8px"}}>Superpower</span>
                           </div>
-                          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
+                          <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
                         </div>
-                        <div style={{fontFamily:T.sans,fontSize:12,fontWeight:400,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0,whiteSpace:"nowrap"}}>
+                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:400,color:T2.text3,display:"flex",alignItems:"center",gap:2,flexShrink:0,whiteSpace:"nowrap"}}>
                           <span>Explore his techniques</span>
                           <span data-arrow style={{transition:"transform 0.25s ease",display:"inline-block"}}>→</span>
                         </div>
