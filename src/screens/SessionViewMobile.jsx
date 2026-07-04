@@ -1652,9 +1652,15 @@ T.goldDark : T2.text4,
                         if (!d1ExObs[card.id]) { d1ExObs[card.id]=true; localStorage.setItem('d1ExObserved',JSON.stringify(d1ExObs)); }
                       }}>
                       <img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block"}}/>
-                      <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.7)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.4)",padding:"4px 8px",borderRadius:20}}>
-                        <span>{obs?"✓":"◉"}</span><span>Observed</span>
+                    </div>
+                  )}
+                  {/* Observed badge — full-width strip below image */}
+                  {!open && (
+                    <div style={{padding:"8px 18px",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:8}}>
+                      <div style={{width:20,height:20,borderRadius:"50%",border:`1.5px solid ${obs?"#619164":"rgba(160,128,90,0.4)"}`,background:obs?"rgba(97,145,100,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.25s"}}>
+                        {obs && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2.5" stroke="#619164" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                       </div>
+                      <span style={{fontFamily:T.sans,fontSize:12,fontWeight:obs?600:400,color:obs?"#619164":"rgba(160,128,90,0.6)",letterSpacing:"0.02em"}}>{obs?"Observed":"Mark as observed"}</span>
                     </div>
                   )}
                   {/* Text area — name, eyebrow, summary, superpower row */}
