@@ -1843,14 +1843,14 @@ setAmbitionSaved(true); } catch {}
           }
         };
         if (reading) return (
-          <div key={"d1read"+reading.id} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-            <button onClick={()=>setD1ExOpenCard(null)} style={{fontFamily:T.sans,fontSize:13,color:T2.text3,background:"transparent",border:"none",cursor:"pointer",padding:"0 0 32px",display:"flex",alignItems:"center",gap:6}}>
+          <div key={"d1read"+reading.id} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
+            <button onClick={()=>setD1ExOpenCard(null)} style={{fontFamily:T.sans,fontSize:13,color:T2.text3,background:"transparent",border:"none",cursor:"pointer",padding:"0 0 20px",display:"flex",alignItems:"center",gap:6}}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
               Back to Gallery
             </button>
-            <div style={{display:"flex",gap:48,alignItems:"flex-start"}}>
-              <div style={{flex:"0 0 360px",borderRadius:8,overflow:"hidden",flexShrink:0}}>
-                <img src={reading.img} alt={reading.name} style={{width:"100%",display:"block",objectFit:"cover"}}/>
+            <div style={{display:"flex",gap:36,alignItems:"stretch"}}>
+              <div style={{flex:"0 0 42%",borderRadius:8,overflow:"hidden",minHeight:440}}>
+                <img src={reading.img} alt={reading.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover"}}/>
               </div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>{reading.superpower}</div>
@@ -1878,11 +1878,11 @@ setAmbitionSaved(true); } catch {}
           </div>
         );
         return (
-          <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Communication Collection</div>
-            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>Masters of Clear Communication</h2>
-            <p style={{fontFamily:T.sans,fontSize:17,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32}}>Two speakers who make complex ideas accessible.</p>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:24}}>
+          <div key={idx} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Clear Communication</h2>
+            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Two speakers who make complex ideas accessible.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
               {D1_EDITORIAL.map(card=>{
                 const obs = d1ExObserved[card.id];
                 return (
@@ -1902,7 +1902,7 @@ setAmbitionSaved(true); } catch {}
                       const img=e.currentTarget.querySelector("img");if(img)img.style.transform="";
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
-                    <div style={{height:260,overflow:"hidden",position:"relative"}}>
+                    <div style={{height:200,overflow:"hidden",position:"relative"}}>
                       <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",display:"block",transition:"transform 0.35s ease"}}/>
                       <div style={{position:"absolute",bottom:0,left:0,right:0,height:"50%",background:"linear-gradient(transparent,rgba(20,18,14,0.45))"}}/>
                     </div>
