@@ -1014,34 +1014,84 @@ T.goldDark : T2.text4,
           })}
         </>
       )}
-      {isD10 && step==="Example" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Example · Day 10</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Same Work. Different Career.</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,marginBottom:16}}>Three stories. One lesson.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
-            {D10_EXAMPLES_DATA.map((ex)=>(
-              <div key={ex.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border}}
-                onClick={()=>setD10MobCard(d10MobCard===ex.id?null:ex.id)}>
-                <div style={{padding:"14px 16px",background:T2.surface,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <div>
-                    <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,marginBottom:2}}>{ex.title}</div>
-                    <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{ex.sub}</div>
-                  </div>
-                  <span style={{color:d10MobCard===ex.id?T.gold:T2.text3,fontSize:16,marginLeft:10}}>{d10MobCard===ex.id?"▴":"▸"}</span>
-                </div>
-                {d10MobCard===ex.id && (
-                  <div style={{padding:"12px 14px",background:T2.bg,borderTop:"0.5px solid "+T2.divider}}>
-                    <div style={{padding:"10px 12px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                      <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{ex.lesson}</p>
+      {isD10 && step==="Example" && (()=>{
+        const D10_EDITORIAL = [
+          { id:"dyson", img:"/d10-dyson.png", imgPos:"center 45%", name:"James Dyson", superpower:"Master of Relentless Improvement",
+            superpowerText:"Every iteration makes the next one better.",
+            summary:"He built thousands of prototypes before success. While others saw failure, he saw feedback.",
+            quote:"\"I wanted to give up almost every day. But one of the things I did when I wanted to give up was to think, why was I giving up? Fear of failure.\"",
+            body1:"James Dyson didn't invent a breakthrough product on his first attempt. He famously built thousands of prototypes, refining, testing, and improving his designs over many years before achieving success. While others saw failure, he saw feedback.",
+            body2:"His philosophy is simple: every iteration makes the next one better.",
+            body3:"Stop aiming for perfect on the first attempt. Ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
+            whyItWorks:"Exceptional performance isn't the result of one brilliant idea — it's the result of relentless improvement. By treating mistakes as data rather than defeat, Dyson built a culture of experimentation where progress comes from refining the process, not chasing perfection.",
+            technique:"Stop aiming for perfect on the first attempt. Whether you're preparing a presentation, writing a proposal, or practising a difficult conversation, ask: \"What's one thing I can improve before the next version?\"",
+            lesson:"High performance isn't about talent alone. It's about showing up, testing, learning, and improving — again and again. The people who consistently excel aren't those who avoid failure; they're the ones who use every attempt to get better.",
+          },
+          { id:"bezos", img:"/d10-bezos.png", imgPos:"center 50%", name:"Jeff Bezos", superpower:"Master of Repeatable Excellence",
+            superpowerText:"Consistency beats occasional brilliance.",
+            summary:"He built one of the world's largest companies by obsessing over systems — so that great performance happened at scale, not by accident.",
+            quote:"\"If you do build a great experience, customers tell each other about that. Word of mouth is very powerful.\"",
+            body1:"Jeff Bezos built one of the world's largest companies by obsessing over systems rather than individual moments of brilliance. From warehouses to customer service, every process was designed to deliver the same high standard, every single time.",
+            body2:"His focus wasn't just on working harder — it was on building systems that made excellence repeatable. His philosophy is simple: consistency beats occasional brilliance.",
+            body3:"Exceptional performance doesn't come from heroic effort every day. It comes from creating reliable processes that produce great results at scale. When your systems are strong, quality becomes predictable rather than accidental.",
+            whyItWorks:"Exceptional performance doesn't come from heroic effort every day. It comes from creating reliable processes that produce great results at scale. When your systems are strong, quality becomes predictable rather than accidental.",
+            technique:"Don't rely on memory or motivation alone. Create simple checklists, routines, and repeatable processes for your most important work. Ask yourself: \"If I had to do this a hundred times, what system would make it consistently excellent?\"",
+            lesson:"Top performers don't leave success to chance. They build habits and systems that make great performance repeatable. Excellence isn't something you occasionally achieve — it's something you design into the way you work.",
+          },
+        ];
+        let d10ExObs = {}; try { d10ExObs = JSON.parse(localStorage.getItem('d10ExObserved')||'{}'); } catch {}
+        return (
+          <>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Performance in Action</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Two leaders who built exceptional performance through process, not just talent.</p>
+            {D10_EDITORIAL.map(card=>{
+              const open = d10MobCard===card.id;
+              const obs = d10ExObs[card.id];
+              return (
+                <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
+                  {!open && <div style={{height:"auto",overflow:"hidden"}} onClick={()=>{ const next={...d10ExObs,[card.id]:true}; try{localStorage.setItem('d10ExObserved',JSON.stringify(next));}catch{} setD10MobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:card.imgPos||"center top"}}/></div>}
+                  {!open && <div onClick={()=>{ const next={...d10ExObs,[card.id]:true}; try{localStorage.setItem('d10ExObserved',JSON.stringify(next));}catch{} setD10MobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                    <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
+                  </div>}
+                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setD10MobCard(open?null:card.id)}>
+                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                      <div>
+                        <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
+                        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
+                      </div>
+                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
                     </div>
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </>
-      )}
+                  {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
+                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                    </div>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
+                    <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
+                    </div>
+                    <div style={{marginBottom:14}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Steal This Technique</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
+                    </div>
+                    <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>AmplifyU Lesson</div>
+                      <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{card.lesson}</p>
+                    </div>
+                  </div>}
+                </div>
+              );
+            })}
+          </>
+        );
+      })()}
       {isD10 && step==="Rehearsal" && d10PracticePhase==='intro' && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Rehearsal · Day 10</div>

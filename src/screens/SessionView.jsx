@@ -654,6 +654,8 @@ setAmbitionSaved(true); } catch {}
       const [sarResult, setSarResult] = useState(""); const [sarLoading, setSarLoading] = useState(false);
       const [storyCard, setStoryCard] = useState(null);
       const [openInsight, setOpenInsight] = useState(null);
+      const [d10ExObserved, setD10ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d10ExObserved')||'{}'); } catch { return {}; } });
+      const [d10ExOpenCard, setD10ExOpenCard] = useState(null);
       // Simulation voice states
       const [d10PracticePhase, setD10PracticePhase] = useState('intro');
       const [simPhase, setSimPhase] = useState('intro');
@@ -792,34 +794,120 @@ setAmbitionSaved(true); } catch {}
         );
       }
 
-      if (step === "Example") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",marginBottom:10,lineHeight:1.1}}>Same Work. Different Career.</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text2,fontWeight:300,lineHeight:1.6,marginBottom:32}}>Three stories. One lesson.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:16}}>
-            {D10_EXAMPLES_DATA.map((ex,i)=>(
-              <div key={ex.id} style={{borderRadius:6,overflow:"hidden",border:"0.5px solid "+T2.border}}>
-                <div onClick={()=>setStoryCard(storyCard===ex.id?null:ex.id)}
-                  style={{padding:"20px 24px",background:T2.surface,cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <div>
-                    <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,marginBottom:2}}>{ex.title}</div>
-                    <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>{ex.sub}</div>
-                  </div>
-                  <span style={{fontFamily:T.sans,fontSize:14,color:storyCard===ex.id?T.gold:T2.text3,marginLeft:16,flexShrink:0}}>{storyCard===ex.id?"▴ close":"▸ read"}</span>
-                </div>
-                {storyCard===ex.id && (
-                  <div style={{padding:"20px 24px",background:T2.bg,borderTop:"0.5px solid "+T2.divider}}>
-                    <div style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.85,whiteSpace:"pre-line",marginBottom:16}}>{ex.story}</div>
-                    <div style={{padding:"12px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                      <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>{ex.lesson}</p>
+      if (step === "Example") {
+        const D10_EDITORIAL = [
+          { id:"dyson", img:"/d10-dyson.png", imgPos:"center 45%", name:"James Dyson", superpower:"Master of Relentless Improvement",
+            superpowerText:"Every iteration makes the next one better.",
+            summary:"He built thousands of prototypes before success. While others saw failure, he saw feedback.",
+            quote:"\"I wanted to give up almost every day. But one of the things I did when I wanted to give up was to think, why was I giving up? Fear of failure.\"",
+            exploreLabel:"Explore his techniques",
+            body1:"James Dyson didn't invent a breakthrough product on his first attempt. He famously built thousands of prototypes, refining, testing, and improving his designs over many years before achieving success. While others saw failure, he saw feedback.",
+            body2:"His philosophy is simple: every iteration makes the next one better.",
+            body3:"Stop aiming for perfect on the first attempt. Whether you're preparing a presentation, writing a proposal, or practising a difficult conversation, ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
+            whyItWorks:"Exceptional performance isn't the result of one brilliant idea — it's the result of relentless improvement. By treating mistakes as data rather than defeat, Dyson built a culture of experimentation where progress comes from refining the process, not chasing perfection.",
+            technique:"Stop aiming for perfect on the first attempt. Ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
+            lesson:"High performance isn't about talent alone. It's about showing up, testing, learning, and improving — again and again. The people who consistently excel aren't those who avoid failure; they're the ones who use every attempt to get better.",
+          },
+          { id:"bezos", img:"/d10-bezos.png", imgPos:"center 50%", name:"Jeff Bezos", superpower:"Master of Repeatable Excellence",
+            superpowerText:"Consistency beats occasional brilliance.",
+            summary:"He built one of the world's largest companies by obsessing over systems — so that great performance happened at scale, not by accident.",
+            quote:"\"If you do build a great experience, customers tell each other about that. Word of mouth is very powerful.\"",
+            exploreLabel:"Explore his techniques",
+            body1:"Jeff Bezos built one of the world's largest companies by obsessing over systems rather than individual moments of brilliance. From warehouses to customer service, every process was designed to deliver the same high standard, every single time.",
+            body2:"His focus wasn't just on working harder — it was on building systems that made excellence repeatable. His philosophy is simple: consistency beats occasional brilliance.",
+            body3:"Exceptional performance doesn't come from heroic effort every day. It comes from creating reliable processes that produce great results at scale. When your systems are strong, quality becomes predictable rather than accidental.",
+            whyItWorks:"Exceptional performance doesn't come from heroic effort every day. It comes from creating reliable processes that produce great results at scale. When your systems are strong, quality becomes predictable rather than accidental.",
+            technique:"Don't rely on memory or motivation alone. Create simple checklists, routines, and repeatable processes for your most important work. Ask yourself: \"If I had to do this a hundred times, what system would make it consistently excellent?\"",
+            lesson:"Top performers don't leave success to chance. They build habits and systems that make great performance repeatable. Excellence isn't something you occasionally achieve — it's something you design into the way you work.",
+          },
+        ];
+        const openReading = (id) => {
+          if (!d10ExObserved[id]) {
+            const next = {...d10ExObserved, [id]:true};
+            setD10ExObserved(next);
+            try { localStorage.setItem('d10ExObserved', JSON.stringify(next)); } catch {}
+          }
+          setD10ExOpenCard(id);
+        };
+        const reading = D10_EDITORIAL.find(c => c.id === d10ExOpenCard);
+        if (reading) return (
+          <div key={"d10read"+reading.id} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",maxWidth:680}}>
+            <button onClick={()=>setD10ExOpenCard(null)} style={{fontFamily:T.sans,fontSize:13,color:T2.text3,background:"transparent",border:"none",cursor:"pointer",padding:"0 0 28px",display:"flex",alignItems:"center",gap:6}}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              Back to Gallery
+            </button>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
+            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
+            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>
+            </div>
+            <div style={{marginBottom:28}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Steal This Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.technique}</p>
+            </div>
+            <div style={{padding:"22px 28px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>AmplifyU Lesson</div>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{reading.lesson}</p>
+            </div>
+          </div>
+        );
+        return (
+          <div key={idx} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Performance in Action</h2>
+            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Two leaders who built exceptional performance through process, not just talent.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
+              {D10_EDITORIAL.map(card=>{
+                const obs = d10ExObserved[card.id];
+                return (
+                  <div key={card.id} onClick={()=>openReading(card.id)}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    onMouseEnter={e=>{
+                      e.currentTarget.style.transform="translateY(-4px)";
+                      e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
+                      e.currentTarget.style.borderColor="rgba(200,164,106,0.4)";
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="scale(1.02)";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="translateX(4px)";
+                    }}
+                    onMouseLeave={e=>{
+                      e.currentTarget.style.transform="";
+                      e.currentTarget.style.boxShadow="";
+                      e.currentTarget.style.borderColor=T2.border;
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
+                    }}>
+                    <div style={{height:240,overflow:"hidden",position:"relative"}}>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:card.imgPos||"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <div style={{position:"absolute",top:12,right:12,padding:"4px 10px",borderRadius:20,background:obs?"rgba(97,145,100,0.9)":"rgba(30,26,20,0.7)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",gap:5}}>
+                        <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
+                      </div>
+                    </div>
+                    <div style={{padding:"18px 20px 20px"}}>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>{card.superpower}</div>
+                      <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,margin:"0 0 8px"}}>{card.name}</h3>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+                        <div>
+                          <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>✦ SUPERPOWER</div>
+                          <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300,maxWidth:160}}>{card.superpowerText}</div>
+                        </div>
+                        <span data-arrow style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:400,whiteSpace:"nowrap",transition:"transform 0.2s ease"}}>{card.exploreLabel} →</span>
+                      </div>
                     </div>
                   </div>
-                )}
-              </div>
-            ))}
+                );
+              })}
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
 
       if (step === "Rehearsal" && d10PracticePhase==='intro') return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
