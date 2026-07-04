@@ -1812,25 +1812,27 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D1_EDITORIAL = [
-          { id:"attenborough", img:"/d11-attenborough.png", name:"David Attenborough", superpower:"Master of Clarity",
-            summary:"He explains nature's complexity using words anyone can picture.",
-            quote:"“The rainforest is like a vast, green lung breathing life into our planet.”",
-            body1:"Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon.",
-            body2:"Instead, he uses language anyone can picture:",
-            body3:"No technical terms. Just an image you can see.",
-            whyItWorks:"He translates scientific complexity into vivid, everyday language. You don't need a biology degree to understand the Amazon.",
-            technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",
-            lesson:"Clarity comes from choosing words that create images, not confusion. The best explainers make you see what they're saying.",
+          { id:”attenborough”, img:”/d11-attenborough.png”, name:”Sir David Attenborough”, superpower:”Master of Clarity”,
+            superpowerText:”Makes the complex feel beautifully simple.”,
+            summary:”He explains the natural world so everyone can see it.”,
+            quote:””The rainforest is like a vast, green lung breathing life into our planet.””,
+            body1:”Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon.”,
+            body2:”Instead, he uses language anyone can picture:”,
+            body3:”No technical terms. Just an image you can see.”,
+            whyItWorks:”He translates scientific complexity into vivid, everyday language. You don’t need a biology degree to understand the Amazon.”,
+            technique:”Replace technical terms with pictures people already have in their heads. Make the abstract concrete.”,
+            lesson:”Clarity comes from choosing words that create images, not confusion. The best explainers make you see what they’re saying.”,
           },
-          { id:"branson", img:"/d11-branson.png", name:"Sir Richard Branson", superpower:"Conversation over Corporation",
-            summary:"He built a global empire speaking like he’s chatting with a friend.",
-            quote:"“We just try to make things better for people. If we do that, they’ll choose us.”",
-            body1:"Branson built a global empire. But he speaks like he’s chatting with a friend.",
-            body2:"When asked about Virgin’s strategy:",
-            body3:"No “synergies.” No “value propositions.” No corporate fluff.",
-            whyItWorks:"He uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.",
-            technique:"Remove every word a 10-year-old wouldn’t understand. If what’s left still makes sense, you’ve found clarity.",
-            lesson:"Jargon doesn’t make you sound smart. It makes you hard to understand. The clearest speakers use the simplest words.",
+          { id:”branson”, img:”/d11-branson.png”, name:”Sir Richard Branson”, superpower:”Conversation over Corporation”,
+            superpowerText:”Makes big ideas feel personal.”,
+            summary:”He speaks like a friend — even when addressing millions.”,
+            quote:””We just try to make things better for people. If we do that, they’ll choose us.””,
+            body1:”Branson built a global empire. But he speaks like he’s chatting with a friend.”,
+            body2:”When asked about Virgin’s strategy:”,
+            body3:”No “synergies.” No “value propositions.” No corporate fluff.”,
+            whyItWorks:”He uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.”,
+            technique:”Remove every word a 10-year-old wouldn’t understand. If what’s left still makes sense, you’ve found clarity.”,
+            lesson:”Jargon doesn’t make you sound smart. It makes you hard to understand. The clearest speakers use the simplest words.”,
           },
         ];
         const reading = D1_EDITORIAL.find(c => c.id === d1ExOpenCard);
@@ -1843,37 +1845,30 @@ setAmbitionSaved(true); } catch {}
           }
         };
         if (reading) return (
-          <div key={"d1read"+reading.id} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
-            <button onClick={()=>setD1ExOpenCard(null)} style={{fontFamily:T.sans,fontSize:13,color:T2.text3,background:"transparent",border:"none",cursor:"pointer",padding:"0 0 20px",display:"flex",alignItems:"center",gap:6}}>
+          <div key={"d1read"+reading.id} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",maxWidth:680}}>
+            <button onClick={()=>setD1ExOpenCard(null)} style={{fontFamily:T.sans,fontSize:13,color:T2.text3,background:"transparent",border:"none",cursor:"pointer",padding:"0 0 28px",display:"flex",alignItems:"center",gap:6}}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
               Back to Gallery
             </button>
-            <div style={{display:"flex",gap:36,alignItems:"stretch"}}>
-              <div style={{flex:"0 0 42%",borderRadius:8,overflow:"hidden",minHeight:440}}>
-                <img src={reading.img} alt={reading.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover"}}/>
-              </div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>{reading.superpower}</div>
-                <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:24}}>{reading.name}</h2>
-                <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
-                <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
-                <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
-                  <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
-                </div>
-                <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 28px"}}>{reading.body3}</p>
-                <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:24,marginBottom:20}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>
-                </div>
-                <div style={{marginBottom:24}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Steal This Technique</div>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{reading.technique}</p>
-                </div>
-                <div style={{padding:"20px 24px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>AmplifyU Lesson</div>
-                  <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{reading.lesson}</p>
-                </div>
-              </div>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
+            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
+            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>
+            </div>
+            <div style={{marginBottom:28}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Steal This Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.technique}</p>
+            </div>
+            <div style={{padding:"22px 28px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>AmplifyU Lesson</div>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{reading.lesson}</p>
             </div>
           </div>
         );
@@ -1902,23 +1897,28 @@ setAmbitionSaved(true); } catch {}
                       const img=e.currentTarget.querySelector("img");if(img)img.style.transform="";
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
-                    <div style={{height:200,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",display:"block",transition:"transform 0.35s ease"}}/>
-                      <div style={{position:"absolute",bottom:0,left:0,right:0,height:"50%",background:"linear-gradient(transparent,rgba(20,18,14,0.45))"}}/>
-                    </div>
-                    <div style={{padding:"20px 24px 24px"}}>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-                        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>{card.superpower}</div>
-                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:obs?"rgba(97,145,100,0.9)":T2.text4,display:"flex",alignItems:"center",gap:4,transition:"color 0.3s"}}>
-                          <span style={{fontSize:13}}>{obs?"✓":"◉"}</span>
-                          <span>Observed</span>
-                        </div>
+                    <div style={{height:240,overflow:"hidden",position:"relative"}}>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
+                        <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
-                      <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:8}}>{card.name}</h3>
-                      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 16px"}}>{card.summary}</p>
-                      <div style={{display:"flex",alignItems:"center",gap:4,fontFamily:T.sans,fontSize:13,fontWeight:600,color:T.gold}}>
-                        <span>Explore his techniques</span>
-                        <span data-arrow style={{transition:"transform 0.25s ease",display:"inline-block"}}>{"→"}</span>
+                    </div>
+                    <div style={{padding:"18px 20px 20px"}}>
+                      <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:4}}>{card.name}</h3>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:10}}>{card.superpower}</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:12}}>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
+                            <span style={{fontSize:9,color:T.gold}}>✦</span>
+                            <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.8px"}}>Superpower</span>
+                          </div>
+                          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
+                        </div>
+                        <div style={{fontFamily:T.sans,fontSize:12,fontWeight:400,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0,whiteSpace:"nowrap"}}>
+                          <span>Explore his techniques</span>
+                          <span data-arrow style={{transition:"transform 0.25s ease",display:"inline-block"}}>→</span>
+                        </div>
                       </div>
                     </div>
                   </div>

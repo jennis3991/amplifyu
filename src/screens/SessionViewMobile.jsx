@@ -1610,25 +1610,27 @@ T.goldDark : T2.text4,
       )}
       {isD1 && step==="Example" && (()=>{
         const D1_EDITORIAL = [
-          { id:"attenborough", img:"/d11-attenborough.png", name:"David Attenborough", superpower:"Master of Clarity",
-            summary:"He explains nature's complexity using words anyone can picture.",
-            quote:"“The rainforest is like a vast, green lung breathing life into our planet.”",
-            body1:"Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon.",
-            body2:"Instead, he uses language anyone can picture:",
-            body3:"No technical terms. Just an image you can see.",
-            whyItWorks:"He translates scientific complexity into vivid, everyday language. You don't need a biology degree to understand the Amazon.",
-            technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",
-            lesson:"Clarity comes from choosing words that create images, not confusion. The best explainers make you see what they're saying.",
+          { id:”attenborough”, img:”/d11-attenborough.png”, name:”Sir David Attenborough”, superpower:”Master of Clarity”,
+            superpowerText:”Makes the complex feel beautifully simple.”,
+            summary:”He explains the natural world so everyone can see it.”,
+            quote:””The rainforest is like a vast, green lung breathing life into our planet.””,
+            body1:”Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon.”,
+            body2:”Instead, he uses language anyone can picture:”,
+            body3:”No technical terms. Just an image you can see.”,
+            whyItWorks:”He translates scientific complexity into vivid, everyday language. You don’t need a biology degree to understand the Amazon.”,
+            technique:”Replace technical terms with pictures people already have in their heads. Make the abstract concrete.”,
+            lesson:”Clarity comes from choosing words that create images, not confusion. The best explainers make you see what they’re saying.”,
           },
-          { id:"branson", img:"/d11-branson.png", name:"Sir Richard Branson", superpower:"Conversation over Corporation",
-            summary:"He built a global empire speaking like he's chatting with a friend.",
-            quote:"“We just try to make things better for people. If we do that, they’ll choose us.”",
-            body1:"Branson built a global empire. But he speaks like he’s chatting with a friend.",
-            body2:"When asked about Virgin’s strategy:",
-            body3:"No “synergies.” No “value propositions.” No corporate fluff.",
-            whyItWorks:"He uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.",
-            technique:"Remove every word a 10-year-old wouldn’t understand. If what’s left still makes sense, you’ve found clarity.",
-            lesson:"Jargon doesn’t make you sound smart. It makes you hard to understand. The clearest speakers use the simplest words.",
+          { id:”branson”, img:”/d11-branson.png”, name:”Sir Richard Branson”, superpower:”Conversation over Corporation”,
+            superpowerText:”Makes big ideas feel personal.”,
+            summary:”He speaks like a friend — even when addressing millions.”,
+            quote:””We just try to make things better for people. If we do that, they’ll choose us.””,
+            body1:”Branson built a global empire. But he speaks like he’s chatting with a friend.”,
+            body2:”When asked about Virgin’s strategy:”,
+            body3:”No “synergies.” No “value propositions.” No corporate fluff.”,
+            whyItWorks:”He uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.”,
+            technique:”Remove every word a 10-year-old wouldn’t understand. If what’s left still makes sense, you’ve found clarity.”,
+            lesson:”Jargon doesn’t make you sound smart. It makes you hard to understand. The clearest speakers use the simplest words.”,
           },
         ];
         let d1ExObs = {}; try { d1ExObs = JSON.parse(localStorage.getItem('d1ExObserved')||'{}'); } catch {}
@@ -1642,47 +1644,49 @@ T.goldDark : T2.text4,
               const obs = d1ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:`0.5px solid ${open?"rgba(200,164,106,0.4)":T2.border}`,marginBottom:16,background:T2.surface,transition:"border-color 0.25s"}}>
-                  <div style={{overflow:"hidden",position:"relative",cursor:"pointer"}}
+                  {/* Image — gallery only, hidden when open */}
+                  {!open && (
+                    <div style={{overflow:"hidden",position:"relative",cursor:"pointer"}}
+                      onClick={()=>{
+                        setD1MobCard(card.id);
+                        if (!d1ExObs[card.id]) { d1ExObs[card.id]=true; localStorage.setItem('d1ExObserved',JSON.stringify(d1ExObs)); }
+                      }}>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block"}}/>
+                      <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.7)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.4)",padding:"4px 8px",borderRadius:20}}>
+                        <span>{obs?"✓":"◉"}</span><span>Observed</span>
+                      </div>
+                    </div>
+                  )}
+                  {/* Text area — name, eyebrow, summary, superpower row */}
+                  <div style={{padding:"16px 18px 4px",cursor:"pointer"}}
                     onClick={()=>{
                       const next = open ? null : card.id;
                       setD1MobCard(next);
-                      if (next && !d1ExObs[card.id]) {
-                        d1ExObs[card.id] = true;
-                        localStorage.setItem('d1ExObserved', JSON.stringify(d1ExObs));
-                      }
+                      if (next && !d1ExObs[card.id]) { d1ExObs[card.id]=true; localStorage.setItem('d1ExObserved',JSON.stringify(d1ExObs)); }
                     }}>
-                    <img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block"}}/>
-                    <div style={{position:"absolute",bottom:0,left:0,right:0,height:"60%",background:"linear-gradient(transparent,rgba(20,18,14,0.6))"}}/>
-                    <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"16px"}}>
-                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(200,164,106,0.9)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{card.superpower}</div>
-                      <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"#F5EFE6",lineHeight:1.2}}>{card.name}</div>
-                    </div>
-                    <div style={{position:"absolute",top:12,right:12,fontFamily:T.sans,fontSize:11,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.7)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.4)",padding:"4px 8px",borderRadius:20}}>
-                      <span style={{fontSize:12}}>{obs?"✓":"◉"}</span>
-                      <span>Observed</span>
-                    </div>
-                  </div>
-                  <div style={{padding:"16px 20px 4px",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}}
-                    onClick={()=>{
-                      const next = open ? null : card.id;
-                      setD1MobCard(next);
-                      if (next && !d1ExObs[card.id]) {
-                        d1ExObs[card.id] = true;
-                        localStorage.setItem('d1ExObserved', JSON.stringify(d1ExObs));
-                      }
-                    }}>
-                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0,flex:1,paddingRight:12}}>{card.summary}</p>
-                    <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,flexShrink:0,display:"flex",alignItems:"center",gap:3}}>
-                      <span>{open?"Close":"Read"}</span>
-                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.25s"}}><path d="M3 6l5 5 5-5" stroke={T.gold} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:3}}>{card.name}</h3>
+                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>
+                    <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:10,marginBottom:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:10}}>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:2}}>
+                          <span style={{fontSize:8,color:T.gold}}>✦</span>
+                          <span style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.8px"}}>Superpower</span>
+                        </div>
+                        <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
+                      </div>
+                      <div style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0}}>
+                        <span>{open?"Close":"Read"}</span>
+                        <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.25s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </div>
                     </div>
                   </div>
                   {open && (
-                    <div style={{padding:"0 20px 20px",animation:"fadeUp 0.3s ease both"}}>
-                      <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16,marginTop:12}}>
+                    <div style={{padding:"0 18px 20px",animation:"fadeUp 0.3s ease both"}}>
+                      <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16}}>
                         <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body1}</p>
                         <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body2}</p>
-                        <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 10px"}}>
+                        <div style={{padding:"14px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 10px"}}>
                           <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
                         </div>
                         <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
