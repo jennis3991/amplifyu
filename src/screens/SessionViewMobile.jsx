@@ -1078,7 +1078,7 @@ T.goldDark : T2.text4,
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
                     </div>
                     <div style={{marginBottom:14}}>
-                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Steal This Technique</div>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Make It Yours</div>
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
                     </div>
                     <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
@@ -1418,7 +1418,7 @@ T.goldDark : T2.text4,
                           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
                         </div>
                         <div style={{marginBottom:12}}>
-                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Steal This Technique</div>
+                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Make It Yours</div>
                           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
                         </div>
                         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
@@ -1594,7 +1594,7 @@ T.goldDark : T2.text4,
                           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
                         </div>
                         <div style={{marginBottom:12}}>
-                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Steal This Technique</div>
+                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Make It Yours</div>
                           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
                         </div>
                         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
@@ -1755,7 +1755,7 @@ T.goldDark : T2.text4,
                           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
                         </div>
                         <div style={{marginBottom:12}}>
-                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Steal This Technique</div>
+                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Make It Yours</div>
                           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
                         </div>
                         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
@@ -1929,7 +1929,7 @@ T.goldDark : T2.text4,
                           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
                         </div>
                         <div style={{marginBottom:12}}>
-                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Steal This Technique</div>
+                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Make It Yours</div>
                           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
                         </div>
                         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
@@ -2102,7 +2102,7 @@ T.goldDark : T2.text4,
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
                     </div>
                     <div style={{marginBottom:14}}>
-                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Steal This Technique</div>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Make It Yours</div>
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
                     </div>
                     <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
@@ -2250,7 +2250,7 @@ T.goldDark : T2.text4,
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
                     </div>
                     <div style={{marginBottom:14}}>
-                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Steal This Technique</div>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Make It Yours</div>
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
                     </div>
                     <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
@@ -2442,7 +2442,7 @@ T.goldDark : T2.text4,
                           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
                         </div>
                         <div style={{marginBottom:12}}>
-                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Steal This Technique</div>
+                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Make It Yours</div>
                           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
                         </div>
                         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
@@ -2713,7 +2713,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
                     </div>
                     <div style={{marginBottom:14}}>
-                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Steal This Technique</div>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Make It Yours</div>
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
                     </div>
                     <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
@@ -2880,7 +2880,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
                     </div>
                     <div style={{marginBottom:14}}>
-                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Steal This Technique</div>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Make It Yours</div>
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
                     </div>
                     <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
@@ -3019,7 +3019,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
                     </div>
                     <div style={{marginBottom:14}}>
-                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Steal This Technique</div>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Make It Yours</div>
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
                     </div>
                     <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
