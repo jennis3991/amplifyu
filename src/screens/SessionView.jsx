@@ -1210,7 +1210,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D3_EDITORIAL = [
-          { id:"freeman", img:"/d3-freeman.png", name:"Morgan Freeman", superpower:"Master of the Pause",
+          { id:"freeman", img:"/d3-freeman.png", imgPos:"center 55%", name:"Morgan Freeman", superpower:"Master of the Pause",
             superpowerText:"Turns silence into emphasis.",
             summary:"No ums. No uhs. Just measured, deliberate speech.",
             quote:"\"Hope is a good thing. Maybe the best of things. And no good thing ever dies.\"",
@@ -1222,7 +1222,7 @@ setAmbitionSaved(true); } catch {}
             technique:"When you don't know what to say next, stop talking. Pause. Breathe. Then continue. Practice letting the silence sit — it signals confidence, not uncertainty.",
             lesson:"The pause is not your enemy. It's your most underused communication tool. Use it deliberately.",
           },
-          { id:"wintour", img:"/d3-wintour.png", name:"Anna Wintour", superpower:"Filler-Free Authority",
+          { id:"wintour", img:"/d3-wintour.png", imgPos:"center 45%", name:"Anna Wintour", superpower:"Filler-Free Authority",
             superpowerText:"Every word chosen. Zero wasted.",
             summary:"She pauses between thoughts — no fillers, no hedging, just control.",
             quote:"\"Decisiveness.\"",
@@ -1553,7 +1553,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D4_EDITORIAL = [
-          { id:"hemingway", img:"/d4-hemingway.png", imgPos:"center 25%", cardBg:"#000", name:"Ernest Hemingway", superpower:"Master of Brevity",
+          { id:"hemingway", img:"/d4-hemingway.png", imgPos:"center 40%", cardBg:"#000", name:"Ernest Hemingway", superpower:"Master of Brevity",
             superpowerText:"Every word earns its place — or it goes.",
             summary:"He won the Nobel Prize with short, precise sentences.",
             quote:"\"The old man fished alone. Eighty-four days. No fish.\"",
@@ -1565,7 +1565,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Write your first draft. Then cut every unnecessary word. Read each sentence aloud — if you run out of breath before the full stop, it's too long. Over 15 words? Split it.",
             lesson:"Every word you add dilutes your message. The best writers know what to leave out. Clarity is a discipline.",
           },
-          { id:"chanel", img:"/d4-chanel.png", imgPos:"center 25%", name:"Coco Chanel", superpower:"Elegance Through Elimination",
+          { id:"chanel", img:"/d4-chanel.png", imgPos:"center 40%", name:"Coco Chanel", superpower:"Elegance Through Elimination",
             superpowerText:"Short sentences. Maximum impact. Every time.",
             summary:"She built an empire on less is more — in fashion and in words.",
             quote:"\"Fashion fades. Style remains.\"",
@@ -2843,7 +2843,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D5_EDITORIAL = [
-          { id:"jensen", img:"/d5-jensen.png", name:"Jensen Huang", superpower:"PRE in Every Pitch",
+          { id:"jensen", img:"/d5-jensen.png", imgPos:"center 40%", name:"Jensen Huang", superpower:"PRE in Every Pitch",
             superpowerText:"Point. Reason. Example. Every time.",
             summary:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof.",
             quote:"\"I don't need to build a killer product overnight, I just need to build a winning product.\"",
@@ -2855,7 +2855,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Lead with your point — don't build to it. Then give your reason in one sentence. Then make it concrete with a real example or analogy. Stop there.",
             lesson:"PRE isn't a template — it's how clear thinkers communicate. Your point tells people where to look. Your reason tells them why it matters. Your example makes it stick.",
           },
-          { id:"indra", img:"/d5-indra.png", name:"Indra Nooyi", superpower:"Performance With Purpose",
+          { id:"indra", img:"/d5-indra.png", imgPos:"center 35%", name:"Indra Nooyi", superpower:"Performance With Purpose",
             superpowerText:"Big belief. Clear reason. Concrete execution.",
             summary:"Two decades leading PepsiCo — structured the same way every time.",
             quote:"\"Performance must be married with purpose.\"",
