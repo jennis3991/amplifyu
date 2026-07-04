@@ -2753,6 +2753,8 @@ setAmbitionSaved(true); } catch {}
 
     const D5RightContent = () => {
       const [d5OpenCard, setD5OpenCard] = useState(null);
+      const [d5ExObserved, setD5ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d5ExObserved')||'{}'); } catch { return {}; } });
+      const [d5ExOpenCard, setD5ExOpenCard] = useState(null);
 
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
@@ -2839,67 +2841,126 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Example") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:12 }}>PRE in Action</h2>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>Two of the world's most effective communicators — whether they name it or not, both use PRE every time.</p>
-          <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-            {[
-              {name:"Jensen Huang", role:"Founder of Nvidia",
-                point:'"I don\'t need to build a killer product overnight, I just need to build a winning product."',
-                reason:'"And the goal of winning is so that you can play again."',
-                example:'"It\'s just like pinball. If you could just play well enough to get another game, you could be there for a long time."',
-                proofLabel:"Nvidia Is The Proof",
-                proof:"NVIDIA itself — for years, GPUs were niche, gaming seemed narrow, and AI wasn't commercially obvious. NVIDIA kept making bets and staying in the game until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth.",
-                lesson:"Said in 1993 — decades before the breakthrough that proved it true. Sharp thesis. Strategic rationale. Lived proof. That's what powerful communicators do."},
-              {name:"Indra Nooyi", role:"CEO of PepsiCo",
-                point:'"Performance must be married with purpose."',
-                reason:'"The world around us is changing. Consumers are changing. Governments are changing. Society is changing."',
-                example:'"At PepsiCo, we\'ve transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people."',
-                proofLabel:"PepsiCo Is The Proof",
-                proof:"At PepsiCo this became tangible action: healthier product innovation, reducing sugar, salt and fat, sustainability initiatives, packaging redesign, and environmental commitments. She didn't leave it as philosophy — she operationalised it.",
-                lesson:"Point → big strategic belief. Reason → why the market demands it. Example → concrete execution. That's why she feels persuasive, intelligent, and trustworthy."},
-            ].map((card,ci)=>{
-              const open = d5OpenCard===ci;
-              return (
-                <div key={ci} onClick={()=>setD5OpenCard(open?null:ci)}
-                  style={{ background:T2.surface, borderRadius:4, border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`, cursor:"pointer", transition:"border-color 0.2s, box-shadow 0.2s", boxShadow:open?"0 2px 16px rgba(138,158,132,0.1)":"none" }}>
-                  {/* Header — always visible */}
-                  <div style={{ padding:"22px 28px", display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
-                    <div style={{ flex:1, minWidth:0 }}>
-                      <div style={{ display:"flex", alignItems:"baseline", gap:12, marginBottom:10 }}>
-                        <span style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.2 }}>{card.name}</span>
-                        <span style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, fontWeight:400 }}>{card.role}</span>
-                      </div>
-                      <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text, lineHeight:1.6, margin:0, maxWidth:560 }}>{card.point}</p>
-                    </div>
-                    <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.5)", marginLeft:20, flexShrink:0, marginTop:2 }}>{open?"▴":"▸"}</span>
-                  </div>
-                  {/* Expanded body */}
-                  {open && (
-                    <div style={{ borderTop:"0.5px solid "+T2.divider, padding:"24px 28px", display:"flex", flexDirection:"column", gap:18 }}>
-                      {[{label:"Point",text:card.point},{label:"Reason",text:card.reason},{label:"Example",text:card.example}].map((block,i)=>(
-                        <div key={i}>
-                          <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:7 }}>{block.label}</div>
-                          <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T2.text, lineHeight:1.65, margin:0 }}>{block.text}</p>
-                        </div>
-                      ))}
-                      <div>
-                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:7 }}>{card.proofLabel}</div>
-                        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.7, fontWeight:300, margin:0 }}>{card.proof}</p>
-                      </div>
-                      <div style={{ borderTop:"0.5px solid rgba(138,158,132,0.2)", paddingTop:16 }}>
-                        <div style={{ fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", fontFamily:T.sans, marginBottom:7 }}>Why This Works</div>
-                        <p style={{ fontFamily:T.serif, fontSize:14, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>{card.lesson}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+      if (step === "Example") {
+        const D5_EDITORIAL = [
+          { id:"jensen", img:"/d5-jensen.png", name:"Jensen Huang", superpower:"PRE in Every Pitch",
+            superpowerText:"Point. Reason. Example. Every time.",
+            summary:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof.",
+            quote:"\"I don't need to build a killer product overnight, I just need to build a winning product.\"",
+            exploreLabel:"Explore his techniques",
+            body1:"Huang's most famous idea sounds simple. But it's structured.",
+            body2:"Point: \"I just need to build a winning product.\" Reason: \"The goal of winning is so you can play again.\" Example: \"It's just like pinball — play well enough to get another game, and you could be there for a long time.\"",
+            body3:"Said in 1993 — decades before the AI breakthrough that proved it true.",
+            whyItWorks:"NVIDIA kept making bets and staying in the game until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth. Sharp thesis. Strategic rationale. Lived proof.",
+            technique:"Lead with your point — don't build to it. Then give your reason in one sentence. Then make it concrete with a real example or analogy. Stop there.",
+            lesson:"PRE isn't a template — it's how clear thinkers communicate. Your point tells people where to look. Your reason tells them why it matters. Your example makes it stick.",
+          },
+          { id:"indra", img:"/d5-indra.png", name:"Indra Nooyi", superpower:"Performance With Purpose",
+            superpowerText:"Big belief. Clear reason. Concrete execution.",
+            summary:"Two decades leading PepsiCo — structured the same way every time.",
+            quote:"\"Performance must be married with purpose.\"",
+            exploreLabel:"Explore her techniques",
+            body1:"Nooyi ran one of the world's largest companies for 12 years. She led with structure.",
+            body2:"Point: \"Performance must be married with purpose.\" Reason: \"The world is changing — consumers, governments, society.\" Example: \"At PepsiCo we've transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people.\"",
+            body3:"She didn't leave it as philosophy — she operationalised it.",
+            whyItWorks:"Point then reason then example. That's why she feels persuasive, intelligent, and trustworthy. Every statement is accountable to the next. Nothing floats without support.",
+            technique:"Start with your belief — not the context, not the background. One sentence. Then say why the world demands it. Then show what you did about it.",
+            lesson:"Structured communication isn't just clear — it's credible. When your point leads to your reason leads to your example, people trust your thinking.",
+          },
+        ];
+        const reading = D5_EDITORIAL.find(c => c.id === d5ExOpenCard);
+        const openReading = (id) => {
+          setD5ExOpenCard(id);
+          if (!d5ExObserved[id]) {
+            const next = {...d5ExObserved, [id]: true};
+            setD5ExObserved(next);
+            localStorage.setItem('d5ExObserved', JSON.stringify(next));
+          }
+        };
+        if (reading) return (
+          <div key={"d5read"+reading.id} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",maxWidth:680}}>
+            <button onClick={()=>setD5ExOpenCard(null)} style={{fontFamily:T.sans,fontSize:13,color:T2.text3,background:"transparent",border:"none",cursor:"pointer",padding:"0 0 28px",display:"flex",alignItems:"center",gap:6}}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              Back to Gallery
+            </button>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
+            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
+            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>
+            </div>
+            <div style={{marginBottom:28}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Steal This Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.technique}</p>
+            </div>
+            <div style={{padding:"22px 28px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>AmplifyU Lesson</div>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{reading.lesson}</p>
+            </div>
           </div>
-        </div>
-      );
+        );
+        return (
+          <div key={idx} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>PRE in Action</h2>
+            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Two world-class leaders who use PRE every time — whether they name it or not.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
+              {D5_EDITORIAL.map(card=>{
+                const obs = d5ExObserved[card.id];
+                return (
+                  <div key={card.id} onClick={()=>openReading(card.id)}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    onMouseEnter={e=>{
+                      e.currentTarget.style.transform="translateY(-4px)";
+                      e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
+                      e.currentTarget.style.borderColor="rgba(200,164,106,0.4)";
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="scale(1.02)";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="translateX(4px)";
+                    }}
+                    onMouseLeave={e=>{
+                      e.currentTarget.style.transform="";
+                      e.currentTarget.style.boxShadow="";
+                      e.currentTarget.style.borderColor=T2.border;
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
+                    }}>
+                    <div style={{height:240,overflow:"hidden",position:"relative"}}>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
+                        <span>{obs?"✓":"◉"}</span><span>Observed</span>
+                      </div>
+                    </div>
+                    <div style={{padding:"18px 20px 20px"}}>
+                      <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:4}}>{card.name}</h3>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:10}}>{card.superpower}</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:12}}>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
+                            <span style={{fontSize:9,color:T.gold}}>✦</span>
+                            <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.8px"}}>Superpower</span>
+                          </div>
+                          <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
+                        </div>
+                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:400,color:T2.text3,display:"flex",alignItems:"center",gap:2,flexShrink:0,whiteSpace:"nowrap"}}>
+                          <span>{card.exploreLabel}</span>
+                          <span data-arrow style={{transition:"transform 0.25s ease",display:"inline-block"}}>→</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      }
 
       return <RightContent/>;
     };
