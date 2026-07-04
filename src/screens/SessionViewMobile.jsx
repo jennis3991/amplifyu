@@ -1642,7 +1642,7 @@ T.goldDark : T2.text4,
               const obs = d1ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:`0.5px solid ${open?"rgba(200,164,106,0.4)":T2.border}`,marginBottom:16,background:T2.surface,transition:"border-color 0.25s"}}>
-                  <div style={{height:200,overflow:"hidden",position:"relative",cursor:"pointer"}}
+                  <div style={{overflow:"hidden",position:"relative",cursor:"pointer"}}
                     onClick={()=>{
                       const next = open ? null : card.id;
                       setD1MobCard(next);
@@ -1651,7 +1651,7 @@ T.goldDark : T2.text4,
                         localStorage.setItem('d1ExObserved', JSON.stringify(d1ExObs));
                       }
                     }}>
-                    <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+                    <img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block"}}/>
                     <div style={{position:"absolute",bottom:0,left:0,right:0,height:"60%",background:"linear-gradient(transparent,rgba(20,18,14,0.6))"}}/>
                     <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"16px"}}>
                       <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(200,164,106,0.9)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{card.superpower}</div>
