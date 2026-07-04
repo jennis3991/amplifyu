@@ -2816,76 +2816,84 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           </div>
         </>
       )}
-      {isD11 && step==="Example" && (
-        <>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Iconic Brands. Intentional Choices.</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>A personal brand built by design — not by accident.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:24}}>
-            {D11_EXAMPLES.map(card=>{
+      {isD11 && step==="Example" && (()=>{
+        const D11_EDITORIAL = [
+          { id:"swift", img:"/d11-swift.png", imgPos:"center 40%", name:"Taylor Swift", superpower:"Master of Personal Brand",
+            superpowerText:"Making people feel part of the journey.",
+            summary:"She didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel personally invested in her story.",
+            quote:"\"People didn't just buy Taylor Swift's music. They bought into her journey.\"",
+            body1:"Taylor Swift didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel like they were part of her journey. From teenage country songwriter to global cultural icon, her brand evolved without losing its emotional core: authenticity, storytelling, reinvention, and direct connection with her audience.",
+            body2:"Fans don't just consume her work. They feel personally invested in her story. Behind-the-scenes access, fan easter eggs, emotional honesty, long-form storytelling, meaningful audience interaction — every touchpoint was designed to reward attention and deepen connection.",
+            body3:"Taylor made global fame feel personal. She openly shares heartbreak, ambition, growth, mistakes, reinvention, and vulnerability. People feel like they've grown alongside her. That's the most powerful form of personal branding: making your story feel like their story.",
+            whyItWorks:"Exceptional personal brands don't just broadcast achievement — they invite people into a journey. When audiences feel emotionally invested in someone's story, they become advocates, not just fans. Taylor Swift understood this intuitively, building a brand on authenticity, emotional honesty, and consistent reinvention.",
+            technique:"Before your next presentation or professional interaction, ask yourself: \"What part of my journey could I share that the audience would recognise in themselves?\" Vulnerability and honesty create connection faster than credentials ever will.",
+            lesson:"People didn't just buy Taylor Swift's music. They bought into her journey. The strongest personal brands make people feel like they are part of the story — not just observers of it.",
+          },
+          { id:"disney", img:"/d11-disney.png", imgPos:"center 40%", name:"Disney", superpower:"Master of Brand Consistency",
+            superpowerText:"100 years of one word: Magic.",
+            summary:"Disney has spent a century staying true to one emotional promise across every format, generation, and medium — Magic, Wonder, and Imagination.",
+            quote:"\"Disney didn't build a brand. They built a feeling — and then protected it for 100 years.\"",
+            body1:"Disney has spent a century doing something most organisations never achieve: staying completely true to a brand identity across every format, generation, and medium. From Steamboat Willie in 1928 to Marvel, Pixar, and Star Wars today, every Disney product carries the same emotional promise — Magic, Wonder, and Imagination.",
+            body2:"The brand has survived leadership changes, financial crises, the death of its founder, and a complete technological revolution. It did this by protecting its emotional core with ruthless consistency. The logo, the music, the storytelling structure, the feeling of walking through the gates — all of it reinforces one message: you are entering somewhere extraordinary.",
+            body3:"Disney spent 100 years becoming associated with one word: Magic. Not entertainment. Not movies. Magic. The most powerful brands are known for one thing. The strongest personal brands work the same way.",
+            whyItWorks:"Brand strength comes from consistency over time. Disney didn't reinvent itself every few years — it protected one emotional promise across a century of change. People trust what they see repeatedly, and connection deepens with every consistent interaction.",
+            technique:"Identify the one word you want people to associate with you. Then audit every professional interaction — meetings, emails, presentations, conversations — and ask: \"Does this reinforce that word?\" Consistency is not boring. It's how trust is built.",
+            lesson:"Disney didn't build a brand. They built a feeling — and then protected it for 100 years. Your personal brand is built the same way: one consistent interaction at a time.",
+          },
+        ];
+        let d11ExObs = {}; try { d11ExObs = JSON.parse(localStorage.getItem('d11ExObserved')||'{}'); } catch {}
+        return (
+          <>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Iconic Brands. Intentional Choices.</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>A personal brand built by design — not by accident.</p>
+            {D11_EDITORIAL.map(card=>{
               const open = d11MobCard===card.id;
+              const obs = d11ExObs[card.id];
               return (
-                <div key={card.id} style={{display:"flex",flexDirection:"column",gap:12}}>
-                  <div style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,borderRadius:8,overflow:"hidden",transition:"border-color 0.2s"}}>
-                    <div onClick={()=>setD11MobCard(open?null:card.id)} style={{padding:"20px",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                      <div style={{flex:1}}>
-                        <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:3}}>{card.name}</div>
-                        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginBottom:8,fontWeight:300}}>{card.role}</div>
-                        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>{card.headline}</div>
+                <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
+                  {!open && <div style={{height:"auto",overflow:"hidden"}} onClick={()=>{ const next={...d11ExObs,[card.id]:true}; try{localStorage.setItem('d11ExObserved',JSON.stringify(next));}catch{} setD11MobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:card.imgPos||"center top"}}/></div>}
+                  {!open && <div onClick={()=>{ const next={...d11ExObs,[card.id]:true}; try{localStorage.setItem('d11ExObserved',JSON.stringify(next));}catch{} setD11MobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                    <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
+                  </div>}
+                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setD11MobCard(open?null:card.id)}>
+                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                      <div>
+                        <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
+                        <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
                       </div>
-                      <div style={{display:"flex",alignItems:"center",gap:6,marginLeft:12,flexShrink:0,paddingTop:2}}>
-                        <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:300}}>{open?"Close":"Read more"}</span>
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.2s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </div>
+                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
                     </div>
-                    {open && (
-                      <div style={{padding:"0 20px 20px",borderTop:"0.5px solid "+T2.border}}>
-                        <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,fontWeight:300,margin:"16px 0 14px"}}>{card.body}</p>
-                        <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                          <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>{card.lesson}</p>
-                        </div>
-                      </div>
-                    )}
                   </div>
-                  <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
-                    <div onClick={()=>setD11FormulaCard(d11FormulaCard===card.id?null:card.id)} style={{padding:"14px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer"}}>
-                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>How they map to the Brand Formula</div>
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{transform:d11FormulaCard===card.id?"rotate(180deg)":"none",transition:"transform 0.2s",flexShrink:0,marginLeft:12}}><path d="M3 6l5 5 5-5" stroke={T.gold} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
+                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
                     </div>
-                    {d11FormulaCard===card.id && (
-                      <div style={{padding:"0 20px 20px",borderTop:"0.5px solid "+T2.border}}>
-                        <div style={{marginTop:16}}>
-                          {card.ingredients.map((ing,i)=>(
-                            <div key={i} style={{display:"flex",gap:10,paddingBottom:i<card.ingredients.length-1?12:0,marginBottom:i<card.ingredients.length-1?12:0,borderBottom:i<card.ingredients.length-1?"0.5px solid "+T2.border:"none",alignItems:"flex-start"}}>
-                              <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.35)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                                <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
-                              </div>
-                              <div style={{flex:1}}>
-                                <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T2.text,marginBottom:3}}>{ing.n}</div>
-                                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0,marginBottom:ing.lesson?8:0}}>{ing.detail}</p>
-                                {ing.lesson && (
-                                  <div style={{padding:"9px 12px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
-                                    <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",display:"block",marginBottom:3}}>AmplifyU Lesson</span>
-                                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.6,fontWeight:400,fontStyle:"italic",margin:0}}>{ing.lesson}</p>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                          {card.closing && (
-                            <div style={{marginTop:16,padding:"16px",background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.25)",textAlign:"center"}}>
-                              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{card.closing}</p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
+                    <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
+                    </div>
+                    <div style={{marginBottom:14}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Steal This Technique</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.technique}</p>
+                    </div>
+                    <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>AmplifyU Lesson</div>
+                      <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{card.lesson}</p>
+                    </div>
+                  </div>}
                 </div>
               );
             })}
-          </div>
-        </>
-      )}
+          </>
+        );
+      })()}
       {isD11 && step==="Rehearsal" && (
         <>
           <D11PracticeWidget T={T} T2={T2} isDesktop={false} onWordsChange={setD11BrandWords} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>

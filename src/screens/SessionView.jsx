@@ -3452,6 +3452,8 @@ setAmbitionSaved(true); } catch {}
     const D11RightContent = () => {
       const [d11Test, setD11Test] = useState(null);
       const [d11CardOpen, setD11CardOpen] = useState(null);
+      const [d11ExObserved, setD11ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d11ExObserved')||'{}'); } catch { return {}; } });
+      const [d11ExOpenCard, setD11ExOpenCard] = useState(null);
 
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
@@ -3552,16 +3554,120 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Example") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Iconic Brands. Intentional Choices.</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>A personal brand built by design — not by accident.</p>
-
-          <div style={{ display:"flex", flexDirection:"column", gap:32 }}>
-            {D11_EXAMPLES.map(card=><D11ExCard key={card.id} card={card}/>)}
+      if (step === "Example") {
+        const D11_EDITORIAL = [
+          { id:"swift", img:"/d11-swift.png", imgPos:"center 40%", name:"Taylor Swift", superpower:"Master of Personal Brand",
+            superpowerText:"Making people feel part of the journey.",
+            summary:"She didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel personally invested in her story.",
+            quote:"\"People didn't just buy Taylor Swift's music. They bought into her journey.\"",
+            exploreLabel:"Explore her brand",
+            body1:"Taylor Swift didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel like they were part of her journey. From teenage country songwriter to global cultural icon, her brand evolved without losing its emotional core: authenticity, storytelling, reinvention, and direct connection with her audience.",
+            body2:"Fans don't just consume her work. They feel personally invested in her story. Behind-the-scenes access, fan easter eggs, emotional honesty, long-form storytelling, meaningful audience interaction — every touchpoint was designed to reward attention and deepen connection.",
+            body3:"Taylor made global fame feel personal. She openly shares heartbreak, ambition, growth, mistakes, reinvention, and vulnerability. People feel like they've grown alongside her. That's the most powerful form of personal branding: making your story feel like their story.",
+            whyItWorks:"Exceptional personal brands don't just broadcast achievement — they invite people into a journey. When audiences feel emotionally invested in someone's story, they become advocates, not just fans. Taylor Swift understood this intuitively, building a brand on authenticity, emotional honesty, and consistent reinvention.",
+            technique:"Before your next presentation or professional interaction, ask yourself: \"What part of my journey could I share that the audience would recognise in themselves?\" Vulnerability and honesty create connection faster than credentials ever will.",
+            lesson:"People didn't just buy Taylor Swift's music. They bought into her journey. The strongest personal brands make people feel like they are part of the story — not just observers of it.",
+          },
+          { id:"disney", img:"/d11-disney.png", imgPos:"center 40%", name:"Disney", superpower:"Master of Brand Consistency",
+            superpowerText:"100 years of one word: Magic.",
+            summary:"Disney has spent a century staying true to one emotional promise across every format, generation, and medium — Magic, Wonder, and Imagination.",
+            quote:"\"Disney didn't build a brand. They built a feeling — and then protected it for 100 years.\"",
+            exploreLabel:"Explore their brand",
+            body1:"Disney has spent a century doing something most organisations never achieve: staying completely true to a brand identity across every format, generation, and medium. From Steamboat Willie in 1928 to Marvel, Pixar, and Star Wars today, every Disney product carries the same emotional promise — Magic, Wonder, and Imagination.",
+            body2:"The brand has survived leadership changes, financial crises, the death of its founder, and a complete technological revolution. It did this by protecting its emotional core with ruthless consistency. The logo, the music, the storytelling structure, the feeling of walking through the gates — all of it reinforces one message: you are entering somewhere extraordinary.",
+            body3:"Disney spent 100 years becoming associated with one word: Magic. Not entertainment. Not movies. Magic. The most powerful brands are known for one thing. The strongest personal brands work the same way.",
+            whyItWorks:"Brand strength comes from consistency over time. Disney didn't reinvent itself every few years — it protected one emotional promise across a century of change. People trust what they see repeatedly, and connection deepens with every consistent interaction.",
+            technique:"Identify the one word you want people to associate with you. Then audit every professional interaction — meetings, emails, presentations, conversations — and ask: \"Does this reinforce that word?\" Consistency is not boring. It's how trust is built.",
+            lesson:"Disney didn't build a brand. They built a feeling — and then protected it for 100 years. Your personal brand is built the same way: one consistent interaction at a time.",
+          },
+        ];
+        const openReading = (id) => {
+          if (!d11ExObserved[id]) {
+            const next = {...d11ExObserved, [id]:true};
+            setD11ExObserved(next);
+            try { localStorage.setItem('d11ExObserved', JSON.stringify(next)); } catch {}
+          }
+          setD11ExOpenCard(id);
+        };
+        const reading = D11_EDITORIAL.find(c => c.id === d11ExOpenCard);
+        if (reading) return (
+          <div key={"d11read"+reading.id} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",maxWidth:680}}>
+            <button onClick={()=>setD11ExOpenCard(null)} style={{fontFamily:T.sans,fontSize:13,color:T2.text3,background:"transparent",border:"none",cursor:"pointer",padding:"0 0 28px",display:"flex",alignItems:"center",gap:6}}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              Back to Gallery
+            </button>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
+            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
+            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>
+            </div>
+            <div style={{marginBottom:28}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Steal This Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.technique}</p>
+            </div>
+            <div style={{padding:"22px 28px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>AmplifyU Lesson</div>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{reading.lesson}</p>
+            </div>
           </div>
-        </div>
-      );
+        );
+        return (
+          <div key={idx} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Iconic Brands. Intentional Choices.</h2>
+            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>A personal brand built by design — not by accident.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
+              {D11_EDITORIAL.map(card=>{
+                const obs = d11ExObserved[card.id];
+                return (
+                  <div key={card.id} onClick={()=>openReading(card.id)}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    onMouseEnter={e=>{
+                      e.currentTarget.style.transform="translateY(-4px)";
+                      e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
+                      e.currentTarget.style.borderColor="rgba(200,164,106,0.4)";
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="scale(1.02)";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="translateX(4px)";
+                    }}
+                    onMouseLeave={e=>{
+                      e.currentTarget.style.transform="";
+                      e.currentTarget.style.boxShadow="";
+                      e.currentTarget.style.borderColor=T2.border;
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
+                    }}>
+                    <div style={{height:240,overflow:"hidden",position:"relative"}}>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:card.imgPos||"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <div style={{position:"absolute",top:12,right:12,padding:"4px 10px",borderRadius:20,background:obs?"rgba(97,145,100,0.9)":"rgba(30,26,20,0.7)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",gap:5}}>
+                        <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
+                      </div>
+                    </div>
+                    <div style={{padding:"18px 20px 20px"}}>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>{card.superpower}</div>
+                      <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,margin:"0 0 8px"}}>{card.name}</h3>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+                        <div>
+                          <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>✦ SUPERPOWER</div>
+                          <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300,maxWidth:160}}>{card.superpowerText}</div>
+                        </div>
+                        <span data-arrow style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:400,whiteSpace:"nowrap",transition:"transform 0.2s ease"}}>{card.exploreLabel} →</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      }
 
       return <RightContent/>;
     };
