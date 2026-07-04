@@ -1553,7 +1553,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D4_EDITORIAL = [
-          { id:"hemingway", img:"/d4-hemingway.png", imgPos:"center 25%", name:"Ernest Hemingway", superpower:"Master of Brevity",
+          { id:"hemingway", img:"/d4-hemingway.png", imgPos:"center 25%", cardBg:"#000", name:"Ernest Hemingway", superpower:"Master of Brevity",
             superpowerText:"Every word earns its place — or it goes.",
             summary:"He won the Nobel Prize with short, precise sentences.",
             quote:"\"The old man fished alone. Eighty-four days. No fish.\"",
@@ -1625,7 +1625,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d4ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:card.cardBg||T2.surface}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
