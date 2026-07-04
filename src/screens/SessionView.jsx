@@ -1298,7 +1298,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:card.imgPos||"center top",display:"block",transition:"transform 0.35s ease"}}/>
                       <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
@@ -1553,7 +1553,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D4_EDITORIAL = [
-          { id:"hemingway", img:"/d4-hemingway.png", name:"Ernest Hemingway", superpower:"Master of Brevity",
+          { id:"hemingway", img:"/d4-hemingway.png", imgPos:"center 25%", name:"Ernest Hemingway", superpower:"Master of Brevity",
             superpowerText:"Every word earns its place — or it goes.",
             summary:"He won the Nobel Prize with short, precise sentences.",
             quote:"\"The old man fished alone. Eighty-four days. No fish.\"",
@@ -1565,7 +1565,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Write your first draft. Then cut every unnecessary word. Read each sentence aloud — if you run out of breath before the full stop, it's too long. Over 15 words? Split it.",
             lesson:"Every word you add dilutes your message. The best writers know what to leave out. Clarity is a discipline.",
           },
-          { id:"chanel", img:"/d4-chanel.png", name:"Coco Chanel", superpower:"Elegance Through Elimination",
+          { id:"chanel", img:"/d4-chanel.png", imgPos:"center 25%", name:"Coco Chanel", superpower:"Elegance Through Elimination",
             superpowerText:"Short sentences. Maximum impact. Every time.",
             summary:"She built an empire on less is more — in fashion and in words.",
             quote:"\"Fashion fades. Style remains.\"",
@@ -1641,7 +1641,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:card.imgPos||"center top",display:"block",transition:"transform 0.35s ease"}}/>
                       <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
@@ -2112,7 +2112,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:card.imgPos||"center top",display:"block",transition:"transform 0.35s ease"}}/>
                       <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
@@ -2697,7 +2697,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:card.imgPos||"center top",display:"block",transition:"transform 0.35s ease"}}/>
                       <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
@@ -2931,7 +2931,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:card.imgPos||"center top",display:"block",transition:"transform 0.35s ease"}}/>
                       <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
