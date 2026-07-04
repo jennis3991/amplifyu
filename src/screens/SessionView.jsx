@@ -1353,6 +1353,8 @@ setAmbitionSaved(true); } catch {}
       const [connInput, setConnInput] = useState(""); const [connResult, setConnResult] = useState(null); const [connLoading, setConnLoading] = useState(false);
       const [heming, setHeming] = useState(""); const [hemResult, setHemResult] = useState(null); const [hemLoading, setHemLoading] = useState(false);
       const [simInput, setSimInput] = useState("");
+      const [d4ExObserved, setD4ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d4ExObserved')||'{}'); } catch { return {}; } });
+      const [d4ExOpenCard, setD4ExOpenCard] = useState(null);
       const openCard = D4_EXAMPLES_DATA.find(c=>c.id===d4Card);
 
       const wordCount = (s) => s.trim().split(/\s+/).filter(Boolean).length;
@@ -1442,21 +1444,126 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Example") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>Masters of Brevity</h2>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
-            <ExCard T2={T2} compact name="Ernest Hemingway" preview="Hemingway won the Nobel Prize with short, precise sentences."
-              full={"Short sentences. That was Hemingway's secret.\n\n\"The old man fished alone. Eighty-four days. No fish.\"\n\nNo flourish. No decoration. Just truth.\n\nShort sentences force precision. You can't hide weak ideas behind long ones. Every word earns its place or it goes.\n\nBrevity forces clarity. When you limit words, you're forced to keep only the ones that matter.\n\nWrite your sentence. Count the words. Over 15? Split it. Read each sentence aloud. If you run out of breath before the full stop, it's too long.\n\nShort sentences are a discipline. Every word must earn its place. If it doesn't add meaning, cut it."}/>
-            <ExCard T2={T2} compact name="Albert Einstein" preview="Einstein explained the universe using simple words and short sentences."
-              full={"Einstein had a rule: if you can't explain it simply, you don't understand it well enough.\n\n\"Put your hand on a hot stove for a minute. It feels like an hour. Sit with a pretty girl for an hour. It feels like a minute. That's relativity.\"\n\nComplex physics. Simple words. Clear image.\n\nHe could have filled a textbook. Instead, he used a story you can picture. Short sentences force you to find the image at the heart of the idea.\n\nFor every complex idea you need to communicate, find the simple image that explains it. Then build your short sentences around that image.\n\nIf the world's most complex thinker could explain his greatest theory in two sentences, you can explain your idea clearly too."}/>
-            <ExCard T2={T2} compact name="Coco Chanel" preview="Chanel's philosophy of elegance through elimination extended to her words."
-              full={"Chanel built a fashion empire on one principle: remove everything that isn't essential.\n\nThe same principle shaped how she spoke.\n\n\"Fashion fades. Style remains.\"\n\"Simplicity is the keynote of all true elegance.\"\n\"The most courageous act is still to think for yourself.\"\n\nShort sentences. Maximum impact. Every time.\n\nThe discipline of cutting in fashion is the discipline of cutting in speech. Both require you to decide what's essential — and remove everything else.\n\nTake your last important email or presentation. Find the three most essential sentences. Delete the rest. See if the message survives.\n\nElegance in language, like elegance in fashion, is about knowing what to leave out."}/>
-            <ExCard T2={T2} compact name="Jane Goodall" preview="Goodall makes 60 years of research accessible through simple language."
-              full={"Jane Goodall spent decades in the jungle studying chimpanzees. She could talk in scientific abstractions. She doesn't.\n\n\"Chimps use tools. They have emotions. They're not so different from us.\"\n\nDecades of research. Three short sentences.\n\nThe best educators don't simplify their ideas — they find the clearest path to them. Short sentences are that path.\n\nAfter you've written a long explanation, ask: what are the three things I actually want this person to understand? Write those three things as short sentences. Lead with them.\n\nThe goal isn't to sound impressive. The goal is to be understood. Short sentences are how you get there."}/>
+      if (step === "Example") {
+        const D4_EDITORIAL = [
+          { id:"freeman", img:"/d4-freeman.png", name:"Morgan Freeman", superpower:"Master of Deliberate Words",
+            superpowerText:"Says less. Lands more. Every word chosen.",
+            summary:"He speaks slowly, deliberately — and every word lands.",
+            quote:"\"You can't trust somebody who doesn't know they're flawed.\"",
+            exploreLabel:"Explore his techniques",
+            body1:"Freeman never rushes. He doesn't fill silence with words. He chooses them.",
+            body2:"Whether narrating a documentary or answering an interview question, his sentences are short, measured, and complete.",
+            body3:"When he stops talking, it's because he's finished. Not because he's paused. There's a difference.",
+            whyItWorks:"Short sentences signal conviction. When you stop at the end of a complete thought, the listener absorbs it fully before the next arrives. Freeman never gives you the chance to drift — each sentence demands attention.",
+            technique:"Say the sentence. Stop. Don't add another to soften it. Don't explain what you just said. Let the silence confirm it.",
+            lesson:"Power isn't in the volume of words. It's in the precision. The most trusted voices say only what's needed.",
+          },
+          { id:"wintour", img:"/d4-wintour.png", name:"Anna Wintour", superpower:"Master of Economy",
+            superpowerText:"Every word earns its place. Nothing survives that doesn't.",
+            summary:"She says what needs to be said. Then stops.",
+            quote:"\"You either know fashion or you don't.\"",
+            exploreLabel:"Explore her techniques",
+            body1:"Wintour doesn't speak in paragraphs. She speaks in verdicts.",
+            body2:"In meetings, in decisions, in direction — she uses the minimum number of words to communicate the maximum amount of weight.",
+            body3:"Three words from Wintour carry more meaning than three paragraphs from anyone else.",
+            whyItWorks:"Brevity signals authority. When every word is intentional, nothing is wasted — and nothing can be misread. Wintour's communication is a masterclass in knowing what matters and cutting everything else.",
+            technique:"Before you speak, ask: what is the one thing I need this person to understand? Say that. One sentence. Nothing more.",
+            lesson:"Power doesn't need many words. The most decisive communicators say the least — and mean all of it.",
+          },
+        ];
+        const reading = D4_EDITORIAL.find(c => c.id === d4ExOpenCard);
+        const openReading = (id) => {
+          setD4ExOpenCard(id);
+          if (!d4ExObserved[id]) {
+            const next = {...d4ExObserved, [id]: true};
+            setD4ExObserved(next);
+            localStorage.setItem('d4ExObserved', JSON.stringify(next));
+          }
+        };
+        if (reading) return (
+          <div key={"d4read"+reading.id} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",maxWidth:680}}>
+            <button onClick={()=>setD4ExOpenCard(null)} style={{fontFamily:T.sans,fontSize:13,color:T2.text3,background:"transparent",border:"none",cursor:"pointer",padding:"0 0 28px",display:"flex",alignItems:"center",gap:6}}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              Back to Gallery
+            </button>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
+            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
+            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+            </div>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>
+            </div>
+            <div style={{marginBottom:28}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Steal This Technique</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.technique}</p>
+            </div>
+            <div style={{padding:"22px 28px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>AmplifyU Lesson</div>
+              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{reading.lesson}</p>
+            </div>
           </div>
-        </div>
-      );
+        );
+        return (
+          <div key={idx} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
+            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Brevity</h2>
+            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Two voices that prove less is always more.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
+              {D4_EDITORIAL.map(card=>{
+                const obs = d4ExObserved[card.id];
+                return (
+                  <div key={card.id} onClick={()=>openReading(card.id)}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    onMouseEnter={e=>{
+                      e.currentTarget.style.transform="translateY(-4px)";
+                      e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
+                      e.currentTarget.style.borderColor="rgba(200,164,106,0.4)";
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="scale(1.02)";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="translateX(4px)";
+                    }}
+                    onMouseLeave={e=>{
+                      e.currentTarget.style.transform="";
+                      e.currentTarget.style.boxShadow="";
+                      e.currentTarget.style.borderColor=T2.border;
+                      const img=e.currentTarget.querySelector("img");if(img)img.style.transform="";
+                      const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
+                    }}>
+                    <div style={{height:240,overflow:"hidden",position:"relative"}}>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block",transition:"transform 0.35s ease"}}/>
+                      <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
+                        <span>{obs?"✓":"◉"}</span><span>Observed</span>
+                      </div>
+                    </div>
+                    <div style={{padding:"18px 20px 20px"}}>
+                      <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:4}}>{card.name}</h3>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:10}}>{card.superpower}</div>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:12}}>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
+                            <span style={{fontSize:9,color:T.gold}}>✦</span>
+                            <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.8px"}}>Superpower</span>
+                          </div>
+                          <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
+                        </div>
+                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:400,color:T2.text3,display:"flex",alignItems:"center",gap:2,flexShrink:0,whiteSpace:"nowrap"}}>
+                          <span>{card.exploreLabel}</span>
+                          <span data-arrow style={{transition:"transform 0.25s ease",display:"inline-block"}}>→</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      }
 
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
