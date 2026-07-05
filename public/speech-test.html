@@ -1,21 +1,141 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Speech Test</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speech Test — AmplifyU</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1C1712;
+      color: #F7F3EC;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: #241E17;
+      border: 1px solid #3A3128;
+      border-radius: 14px;
+      padding: 28px 24px;
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #8A9E84;
+      margin-bottom: 16px;
+    }
+
+    textarea {
+      width: 100%;
+      background: #1C1712;
+      border: 1px solid #3A3128;
+      border-radius: 8px;
+      color: #F7F3EC;
+      font-family: inherit;
+      font-size: 16px;
+      line-height: 1.65;
+      padding: 14px;
+      resize: vertical;
+      min-height: 120px;
+      outline: none;
+    }
+    textarea:focus { border-color: #8A9E84; }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    button {
+      flex: 1;
+      padding: 14px 8px;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    button:active { transform: scale(0.96); }
+    button:disabled { opacity: 0.3; pointer-events: none; }
+
+    #btn-play  { background: #8A9E84; color: #1C1712; }
+    #btn-pause { background: #2E2820; color: #8A9E84; border: 1px solid #3A3128; }
+    #btn-stop  { background: #2E2820; color: #F7F3EC; border: 1px solid #3A3128; }
+
+    .status {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #7A6F62;
+      text-align: center;
+      min-height: 16px;
+    }
+  </style>
 </head>
-<body style="padding:2rem;font-family:sans-serif;max-width:400px;margin:0 auto">
-<textarea id="text" rows="4" style="width:100%;font-size:16px;padding:8px">Your voice is one of your most powerful professional tools. The way you speak shapes how others perceive your confidence, credibility and presence.</textarea>
-<div style="display:flex;gap:12px;margin-top:1rem">
-<button onclick="play()" style="flex:1;padding:12px;font-size:16px">Play</button>
-<button onclick="pause()" style="flex:1;padding:12px;font-size:16px">Pause</button>
-<button onclick="stop()" style="flex:1;padding:12px;font-size:16px">Stop</button>
-</div>
-<script>
-let u;
-function play(){stop();u=new SpeechSynthesisUtterance(document.getElementById('text').value);window.speechSynthesis.speak(u)}
-function pause(){window.speechSynthesis.paused?window.speechSynthesis.resume():window.speechSynthesis.pause()}
-function stop(){window.speechSynthesis.cancel()}
-</script>
+<body>
+  <div class="card">
+    <div class="label">Speech Test</div>
+
+    <textarea id="text">Your voice is one of your most powerful professional tools. The way you speak shapes how others perceive your confidence, credibility and presence.</textarea>
+
+    <div class="buttons">
+      <button id="btn-play">Play</button>
+      <button id="btn-pause" disabled>Pause</button>
+      <button id="btn-stop" disabled>Stop</button>
+    </div>
+
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    const synth = window.speechSynthesis;
+    const text = document.getElementById('text');
+    const btnPlay = document.getElementById('btn-play');
+    const btnPause = document.getElementById('btn-pause');
+    const btnStop = document.getElementById('btn-stop');
+    const status = document.getElementById('status');
+
+    function setState(s) {
+      btnPlay.disabled = s === 'playing';
+      btnPause.disabled = s === 'idle';
+      btnStop.disabled = s === 'idle';
+      btnPause.textContent = s === 'paused' ? 'Resume' : 'Pause';
+      status.textContent = s === 'playing' ? 'Speaking...' : s === 'paused' ? 'Paused' : '';
+    }
+
+    btnPlay.addEventListener('click', () => {
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text.value.trim());
+      u.rate = 0.95;
+      u.onstart = () => setState('playing');
+      u.onend = () => setState('idle');
+      u.onerror = () => setState('idle');
+      synth.speak(u);
+    });
+
+    btnPause.addEventListener('click', () => {
+      if (synth.paused) { synth.resume(); setState('playing'); }
+      else { synth.pause(); setState('paused'); }
+    });
+
+    btnStop.addEventListener('click', () => {
+      synth.cancel();
+      setState('idle');
+    });
+  </script>
 </body>
 </html>
