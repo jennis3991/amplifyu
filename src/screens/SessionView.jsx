@@ -2006,7 +2006,6 @@ setAmbitionSaved(true); } catch {}
       const [breathLoading, setBreathLoading] = useState(false);
       const [simInput, setSimInput] = useState("");
       const [d1TheoryWhyOpen, setD1TheoryWhyOpen] = useState(false);
-      const [d1TheoryDone, setD1TheoryDone] = useState(() => { try { return JSON.parse(localStorage.getItem('d1TheoryDone')||'{}'); } catch { return {}; } });
       const [d1ExObserved, setD1ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d1ExObserved')||'{}'); } catch { return {}; } });
       const [d1ExOpenCard, setD1ExOpenCard] = useState(null);
       const openCard = D1_EXAMPLES.find(c=>c.id===d1OpenCard);
@@ -2112,11 +2111,10 @@ setAmbitionSaved(true); } catch {}
               </div>
             ))}
             <div style={{border:"0.5px solid "+T2.border,borderRadius:6,marginBottom:22,overflow:"hidden"}}>
-              <button onClick={()=>{ if(!d1TheoryWhyOpen){ const next={why:true}; setD1TheoryDone(next); try{localStorage.setItem("d1TheoryDone",JSON.stringify(next));}catch{} } setD1TheoryWhyOpen(v=>!v); }} style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 18px",background:T2.surface,border:"none",cursor:"pointer"}}>
+              <button onClick={()=>setD1TheoryWhyOpen(v=>!v)} style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 18px",background:T2.surface,border:"none",cursor:"pointer"}}>
                 <div>
                   <div style={{display:"flex",alignItems:"center",gap:7}}>
                     <span style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text}}>Why it works</span>
-                    {d1TheoryDone.why && <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" fill="rgba(97,145,100,0.12)" stroke="#619164" strokeWidth="1"/><path d="M4 6.5l2 2 3-3" stroke="#619164" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                   </div>
                 </div>
                 <span style={{color:T2.text4,fontSize:11,fontFamily:T.sans}}>{d1TheoryWhyOpen?"▴":"▸"}</span>
@@ -2145,12 +2143,6 @@ setAmbitionSaved(true); } catch {}
               <div style={{width:24,height:1,background:T.gold,opacity:0.35,marginBottom:11}}/>
               <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>This loop doesn't just make you a better communicator — it makes you a better thinker.</p>
             </div>
-            {d1TheoryDone.why && (
-              <div style={{display:"flex",alignItems:"center",gap:7,justifyContent:"center",padding:"4px 0"}}>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(97,145,100,0.12)" stroke="#619164" strokeWidth="1"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#619164" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                <span style={{fontFamily:T.sans,fontSize:12,color:"#619164",fontWeight:500}}>Theory complete</span>
-              </div>
-            )}
           </div>
         );
       }

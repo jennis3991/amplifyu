@@ -51,7 +51,6 @@ export function MobileSessionView({
   const [d10PracticePhase, setD10PracticePhase] = useState('intro');
   const [d10SarDone, setD10SarDone] = useState(false);
   const [d1TheoryWhyOpen, setD1TheoryWhyOpen] = useState(false);
-  const [d1TheoryDone, setD1TheoryDone] = useState(() => { try { return JSON.parse(localStorage.getItem('d1TheoryDone')||'{}'); } catch { return {}; } });
 
   const D10_EXAMPLES_DATA = [
   { id:"priya",     title:"The Invisible Fixer",        sub:"Same performance. No visibility.",  lesson:"Performance without communication is philanthropy." },
@@ -1851,11 +1850,10 @@ T.goldDark : T2.text4,
               </div>
             ))}
             <div style={{border:"0.5px solid "+T2.border,borderRadius:6,marginBottom:18,overflow:"hidden"}}>
-              <button onClick={()=>{ if(!d1TheoryWhyOpen){ const next={why:true}; setD1TheoryDone(next); try{localStorage.setItem("d1TheoryDone",JSON.stringify(next));}catch{} } setD1TheoryWhyOpen(v=>!v); }} style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"13px 16px",background:T2.surface,border:"none",cursor:"pointer"}}>
+              <button onClick={()=>setD1TheoryWhyOpen(v=>!v)} style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"13px 16px",background:T2.surface,border:"none",cursor:"pointer"}}>
                 <div>
                   <div style={{display:"flex",alignItems:"center",gap:7}}>
                     <span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text}}>Why it works</span>
-                    {d1TheoryDone.why && <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" fill="rgba(97,145,100,0.12)" stroke="#619164" strokeWidth="1"/><path d="M4 6.5l2 2 3-3" stroke="#619164" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                   </div>
                 </div>
                 <span style={{color:T2.text4,fontSize:11,fontFamily:T.sans}}>{d1TheoryWhyOpen?"▴":"▸"}</span>
@@ -1884,12 +1882,6 @@ T.goldDark : T2.text4,
               <div style={{width:22,height:1,background:T.gold,opacity:0.35,marginBottom:9}}/>
               <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:0}}>This loop doesn't just make you a better communicator — it makes you a better thinker.</p>
             </div>
-            {d1TheoryDone.why && (
-              <div style={{display:"flex",alignItems:"center",gap:7,justifyContent:"center",padding:"8px 0 4px"}}>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(97,145,100,0.12)" stroke="#619164" strokeWidth="1"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#619164" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                <span style={{fontFamily:T.sans,fontSize:12,color:"#619164",fontWeight:500}}>Theory complete</span>
-              </div>
-            )}
           </>
         );
       })()}
