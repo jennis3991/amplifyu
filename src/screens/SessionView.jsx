@@ -2103,9 +2103,9 @@ setAmbitionSaved(true); } catch {}
               </div>
             ))}
             <div style={{marginBottom:22}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:16}}>The Real Lesson</div>
-              <div style={{fontFamily:T.serif,fontSize:36,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:10}}>Teaching forces you to understand.</div>
-              <div style={{fontFamily:T.serif,fontSize:36,fontWeight:400,color:T2.text,lineHeight:1.15}}>Simplifying forces you to think.</div>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Real Lesson</div>
+              <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.35,marginBottom:4}}>Teaching forces you to understand.</div>
+              <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.35}}>Simplifying forces you to think.</div>
             </div>
           </div>
         );

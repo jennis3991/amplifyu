@@ -1842,9 +1842,9 @@ T.goldDark : T2.text4,
               </div>
             ))}
             <div style={{marginBottom:18}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:13}}>The Real Lesson</div>
-              <div style={{fontFamily:T.serif,fontSize:30,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:8}}>Teaching forces you to understand.</div>
-              <div style={{fontFamily:T.serif,fontSize:30,fontWeight:400,color:T2.text,lineHeight:1.15}}>Simplifying forces you to think.</div>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Real Lesson</div>
+              <div style={{fontFamily:T.serif,fontSize:20,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.35,marginBottom:3}}>Teaching forces you to understand.</div>
+              <div style={{fontFamily:T.serif,fontSize:20,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.35}}>Simplifying forces you to think.</div>
             </div>
           </>
         );
