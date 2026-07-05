@@ -3977,6 +3977,18 @@ setAmbitionSaved(true); } catch {}
             technique:"Treat every meeting, project, and conversation as an audition for your reputation. Deliver great work, be generous with your time, and leave people feeling respected. Ask yourself: \"If my name came up in a room I wasn't in, what would people say?\"",
             lesson:"The most valuable opportunities rarely come from applying online — they come through people who know your work and trust your character. Build a reputation that people are proud to recommend, because the strongest professional brand is the one that continues speaking for you when you're not in the room.",
           },
+          { id:"diana", img:"/d13-diana.png", imgPos:"center center", name:"Princess Diana", superpower:"Master of Visibility",
+            superpowerText:"Visibility has the greatest impact when it stops being about you.",
+            summary:"She used public attention to change public conversations — bringing compassion to causes many had ignored.",
+            quote:"\"Visibility has the greatest impact when it stops being about you and starts becoming about something bigger than yourself.\"",
+            exploreLabel:"Explore her approach",
+            body1:"Princess Diana understood something few people ever master: visibility is a powerful tool when it's used to serve others. Long before social media, she recognised that every appearance, photograph, and conversation was an opportunity to shine a light on causes that might otherwise go unnoticed.",
+            body2:"She didn't seek attention simply to be seen. She used public attention to change public conversations — bringing compassion, empathy, and humanity to issues that many people had ignored.",
+            body3:"Being visible isn't about collecting followers or standing in the spotlight. It's about deciding what people will remember after they've looked your way. The most influential people use their platform to educate, inspire, and create opportunities for others — not simply to promote themselves.",
+            whyItWorks:"Visibility creates opportunity, but purpose creates influence. People are naturally drawn to those who stand for something beyond personal success. When your expertise is paired with generosity, authenticity, and a genuine desire to help others, your visibility becomes meaningful rather than performative. The result isn't just recognition — it's trust, credibility, and lasting influence.",
+            technique:"Think about what you want to become known for beyond your job title. Share ideas that help others. Celebrate your colleagues' successes. Speak about work that matters. Use your LinkedIn posts, presentations, conversations, and meetings to create value rather than simply seeking attention. Ask yourself: \"If more people noticed my work tomorrow, what message would I want them to remember?\"",
+            lesson:"Exposure isn't the goal — impact is. The most respected professionals don't chase visibility for its own sake. They earn attention by consistently adding value and using their platform to elevate ideas, people, and causes that matter. Build a reputation for making others better, and your influence will continue growing long after the spotlight has moved on.",
+          },
         ];
         const openReading = (id) => {
           if (!d13ExObserved[id]) {
