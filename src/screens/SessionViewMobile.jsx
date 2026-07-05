@@ -1050,7 +1050,7 @@ T.goldDark : T2.text4,
               const obs = d10ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d10ExObs,[card.id]:true}; try{localStorage.setItem('d10ExObserved',JSON.stringify(next));}catch{} setD10MobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center center"}}/></div>}
+                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d10ExObs,[card.id]:true}; try{localStorage.setItem('d10ExObserved',JSON.stringify(next));}catch{} setD10MobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top"}}/></div>}
                   {!open && <div onClick={()=>{ const next={...d10ExObs,[card.id]:true}; try{localStorage.setItem('d10ExObserved',JSON.stringify(next));}catch{} setD10MobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
@@ -1707,7 +1707,7 @@ T.goldDark : T2.text4,
                         setD4MobCard(card.id);
                         if (!d4ExObs[card.id]) { d4ExObs[card.id]=true; localStorage.setItem('d4ExObserved',JSON.stringify(d4ExObs)); }
                       }}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center"}}/>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center top"}}/>
                     </div>
                   )}
                   {!open && (
@@ -2074,7 +2074,7 @@ T.goldDark : T2.text4,
               const obs = d8ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d8ExObs,[card.id]:true}; try{localStorage.setItem('d8ExObserved',JSON.stringify(next));}catch{} setNtMobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center center"}}/></div>}
+                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d8ExObs,[card.id]:true}; try{localStorage.setItem('d8ExObserved',JSON.stringify(next));}catch{} setNtMobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top"}}/></div>}
                   {!open && <div onClick={()=>{ const next={...d8ExObs,[card.id]:true}; try{localStorage.setItem('d8ExObserved',JSON.stringify(next));}catch{} setNtMobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
@@ -2222,7 +2222,7 @@ T.goldDark : T2.text4,
               const obs = d9ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d9ExObs,[card.id]:true}; try{localStorage.setItem('d9ExObserved',JSON.stringify(next));}catch{} setD9OpenCard("d9ex"+card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center center"}}/></div>}
+                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d9ExObs,[card.id]:true}; try{localStorage.setItem('d9ExObserved',JSON.stringify(next));}catch{} setD9OpenCard("d9ex"+card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top"}}/></div>}
                   {!open && <div onClick={()=>{ const next={...d9ExObs,[card.id]:true}; try{localStorage.setItem('d9ExObserved',JSON.stringify(next));}catch{} setD9OpenCard("d9ex"+card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
@@ -2685,7 +2685,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               const obs = d6ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d6ExObs,[card.id]:true}; try{localStorage.setItem('d6ExObserved',JSON.stringify(next));}catch{} setD6MobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center center"}}/></div>}
+                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d6ExObs,[card.id]:true}; try{localStorage.setItem('d6ExObserved',JSON.stringify(next));}catch{} setD6MobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top"}}/></div>}
                   {!open && <div onClick={()=>{ const next={...d6ExObs,[card.id]:true}; try{localStorage.setItem('d6ExObserved',JSON.stringify(next));}catch{} setD6MobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
@@ -2852,7 +2852,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               const obs = d11ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d11ExObs,[card.id]:true}; try{localStorage.setItem('d11ExObserved',JSON.stringify(next));}catch{} setD11MobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center center"}}/></div>}
+                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d11ExObs,[card.id]:true}; try{localStorage.setItem('d11ExObserved',JSON.stringify(next));}catch{} setD11MobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top"}}/></div>}
                   {!open && <div onClick={()=>{ const next={...d11ExObs,[card.id]:true}; try{localStorage.setItem('d11ExObserved',JSON.stringify(next));}catch{} setD11MobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
@@ -2991,7 +2991,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               const obs = d12ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d12ExObs,[card.id]:true}; try{localStorage.setItem('d12ExObserved',JSON.stringify(next));}catch{} setD12MobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center center"}}/></div>}
+                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d12ExObs,[card.id]:true}; try{localStorage.setItem('d12ExObserved',JSON.stringify(next));}catch{} setD12MobCard(card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top"}}/></div>}
                   {!open && <div onClick={()=>{ const next={...d12ExObs,[card.id]:true}; try{localStorage.setItem('d12ExObserved',JSON.stringify(next));}catch{} setD12MobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
@@ -3365,7 +3365,7 @@ strokeLinecap="round"/></svg>
               const obs = d13ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d13ExObs,[card.id]:true}; try{localStorage.setItem('d13ExObserved',JSON.stringify(next));}catch{} setD12MobCard("d13ex"+card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center center"}}/></div>}
+                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d13ExObs,[card.id]:true}; try{localStorage.setItem('d13ExObserved',JSON.stringify(next));}catch{} setD12MobCard("d13ex"+card.id); }}><img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top"}}/></div>}
                   {!open && <div onClick={()=>{ const next={...d13ExObs,[card.id]:true}; try{localStorage.setItem('d13ExObserved',JSON.stringify(next));}catch{} setD12MobCard("d13ex"+card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
