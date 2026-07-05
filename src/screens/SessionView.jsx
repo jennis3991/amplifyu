@@ -2005,6 +2005,8 @@ setAmbitionSaved(true); } catch {}
       const [breathResult, setBreathResult] = useState(null);
       const [breathLoading, setBreathLoading] = useState(false);
       const [simInput, setSimInput] = useState("");
+      const [d1TheoryWhyOpen, setD1TheoryWhyOpen] = useState(false);
+      const [d1TheoryDone, setD1TheoryDone] = useState(() => { try { return JSON.parse(localStorage.getItem('d1TheoryDone')||'{}'); } catch { return {}; } });
       const [d1ExObserved, setD1ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d1ExObserved')||'{}'); } catch { return {}; } });
       const [d1ExOpenCard, setD1ExOpenCard] = useState(null);
       const openCard = D1_EXAMPLES.find(c=>c.id===d1OpenCard);
@@ -2076,41 +2078,112 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:16}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The Feynman Technique</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Richard Feynman won the Nobel Prize in Physics — and could explain quantum mechanics to a 12-year-old.</p>
-          <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
-            <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>If you can't explain it simply, you don't understand it well enough.</p>
-          </div>
-          <p style={{fontFamily:T.serif,fontSize:17,color:T2.text,lineHeight:1.4,fontWeight:600,marginBottom:20}}>His secret? The 4-step clarity loop:</p>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:24}}>
-            {[
-              {label:"1. Understand", body:"Choose a concept and study it deeply."},
-              {label:"2. Explain",    body:"Teach it in simple words as if to someone else. No jargon."},
-              {label:"3. Simplify",   body:"When you stumble, that's a gap. Go back and fill it."},
-              {label:"4. Refine",     body:"Review, clarify, improve. Repeat until a child could follow."},
-            ].map((p,i)=>(
-              <div key={i} style={{padding:"16px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:10}}>{p.label}</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:400,margin:0}}>{p.body}</p>
+      if (step === "Theory") {
+        const whyItems = [
+          {title:"Retrieval Practice",desc:"Pulling information from memory strengthens understanding."},
+          {title:"Elaboration",desc:"Explaining in your own words creates deeper connections."},
+          {title:"Generation Effect",desc:"Creating explanations yourself improves long-term retention."},
+          {title:"Cognitive Load Reduction",desc:"Simplifying reduces mental clutter and improves comprehension."},
+          {title:"Metacognition",desc:"You become aware of what you know — and what you don't."},
+        ];
+        const steps = [
+          {n:"01",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><rect x="3" y="2" width="11" height="13" rx="1.5" stroke={T2.text4} strokeWidth="1.1"/><line x1="5.5" y1="5.5" x2="11.5" y2="5.5" stroke={T2.text4} strokeWidth="0.9"/><line x1="5.5" y1="8.5" x2="11.5" y2="8.5" stroke={T2.text4} strokeWidth="0.9"/><line x1="5.5" y1="11.5" x2="9.5" y2="11.5" stroke={T2.text4} strokeWidth="0.9"/></svg>,label:"Understand",desc:"Choose one concept and study it deeply.",focus:"Knowledge before communication."},
+          {n:"02",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M13.5 3h-10A1.5 1.5 0 002 4.5v5A1.5 1.5 0 003.5 11h2l2.5 3 2.5-3h3A1.5 1.5 0 0015 9.5v-5A1.5 1.5 0 0013.5 3z" stroke={T2.text4} strokeWidth="1.1"/></svg>,label:"Explain",desc:"Teach it in simple words as if to someone else.",focus:"Mastery is demonstrated through clarity."},
+          {n:"03",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M12.5 3.5l1 1-7.5 7.5H4.5v-1.5l7.5-7.5z" stroke={T2.text4} strokeWidth="1.1" strokeLinejoin="round"/><line x1="4.5" y1="14" x2="12.5" y2="14" stroke={T2.text4} strokeWidth="0.9" strokeLinecap="round" strokeDasharray="1.5 1.5"/></svg>,label:"Simplify",desc:"Identify gaps and remove unnecessary complexity.",focus:"Simplicity isn't about dumbing down. It's about stripping away everything that isn't essential."},
+          {n:"04",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M14 8.5A5.5 5.5 0 013.5 6.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><path d="M3 8.5A5.5 5.5 0 0113.5 10.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><path d="M12 5l2 1.5-1.5 2" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 12l-2-1.5 1.5-2" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/></svg>,label:"Refine",desc:"Review, clarify, and improve. Repeat until it sticks.",focus:"Clarity is built through iteration, not perfection."},
+        ];
+        return (
+          <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>The Science</div>
+            <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>The Feynman Technique</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Richard Feynman won the Nobel Prize in Physics — and could explain quantum mechanics to a 12-year-old.</p>
+            <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:28}}>
+              <p style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 5px"}}>"If you can't explain it simply, you don't understand it well enough."</p>
+              <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,margin:0}}>— Richard Feynman</p>
+            </div>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:7}}>The Method</div>
+            <h3 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:7}}>Four steps to clarity</h3>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,marginBottom:22}}>Feynman's approach turns complex ideas into clear understanding — and better communication.</p>
+            {steps.map((s,i)=>(
+              <div key={i} style={{display:"flex",gap:18,paddingBottom:18,marginBottom:18,borderBottom:"0.5px solid "+T2.divider}}>
+                <div style={{fontFamily:T.serif,fontSize:24,fontWeight:300,color:T.gold,opacity:0.3,lineHeight:1,minWidth:28,paddingTop:3}}>{s.n}</div>
+                <div style={{flex:1}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text}}>{s.label}</div></div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:400,margin:"0 0 9px"}}>{s.desc}</p>
+                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>Focus</div>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:0}}>{s.focus}</p>
+                </div>
               </div>
             ))}
-          </div>
-          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:20}}>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Why It Works</div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-              <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>Teaching forces you to understand. If you can explain it clearly, you know it.</p>
-              </div>
-              <div style={{padding:"16px 18px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",margin:0}}>Simplifying forces you to think. The clearest thinkers are the clearest speakers.</p>
+            <div style={{background:"rgba(138,158,132,0.07)",borderRadius:6,padding:"14px 16px",marginBottom:22,display:"flex",gap:11,alignItems:"flex-start"}}>
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style={{flexShrink:0,marginTop:1}}><circle cx="7.5" cy="7.5" r="6.5" stroke="rgba(138,158,132,0.4)" strokeWidth="1"/><line x1="7.5" y1="5" x2="7.5" y2="8" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><circle cx="7.5" cy="10.5" r="0.65" fill={T.gold}/></svg>
+              <div>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>Insight</div>
+                <p style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,lineHeight:1.5,margin:"0 0 3px"}}>Confusion is feedback.</p>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:0}}>When you stumble, you've found the exact place your understanding needs attention.</p>
               </div>
             </div>
+            <div style={{border:"0.5px solid "+T2.border,borderRadius:6,marginBottom:22,overflow:"hidden"}}>
+              <button onClick={()=>{ if(!d1TheoryWhyOpen){ const next={why:true}; setD1TheoryDone(next); try{localStorage.setItem("d1TheoryDone",JSON.stringify(next));}catch{} } setD1TheoryWhyOpen(v=>!v); }} style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 18px",background:T2.surface,border:"none",cursor:"pointer"}}>
+                <div>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>Research</div>
+                  <div style={{display:"flex",alignItems:"center",gap:7}}>
+                    <span style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text}}>Why it works</span>
+                    {d1TheoryDone.why && <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" fill="rgba(97,145,100,0.12)" stroke="#619164" strokeWidth="1"/><path d="M4 6.5l2 2 3-3" stroke="#619164" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                  </div>
+                </div>
+                <span style={{color:T2.text4,fontSize:11,fontFamily:T.sans}}>{d1TheoryWhyOpen?"▴":"▸"}</span>
+              </button>
+              {d1TheoryWhyOpen && (
+                <div style={{padding:"2px 18px 18px"}}>
+                  {whyItems.map((item,i)=>(
+                    <div key={i} style={{display:"flex",gap:11,alignItems:"flex-start",paddingTop:13,borderTop:i>0?"0.5px solid "+T2.divider:"none"}}>
+                      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style={{flexShrink:0,marginTop:2}}><circle cx="7.5" cy="7.5" r="6.5" stroke="rgba(138,158,132,0.3)" strokeWidth="1"/><path d="M4.5 7.5l2 2 4-4" stroke="#8A9E84" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      <div><div style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,marginBottom:2}}>{item.title}</div><p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.55,margin:0,fontWeight:300}}>{item.desc}</p></div>
+                    </div>
+                  ))}
+                  <div style={{marginTop:14,padding:"13px 15px",background:T2.surface,borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>Remember</div>
+                    <p style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,lineHeight:1.5,margin:"0 0 2px"}}>The goal isn't to sound smart.</p>
+                    <p style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,lineHeight:1.5,margin:"0 0 7px"}}>It's to be understood.</p>
+                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.55,margin:0,fontWeight:300}}>Clarity is a service to your audience.</p>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div style={{marginBottom:22}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:13}}>The Real Lesson</div>
+              <div style={{fontFamily:T.serif,fontSize:27,fontWeight:400,color:T2.text,lineHeight:1.2,marginBottom:9}}>Teaching forces you to understand.</div>
+              <div style={{fontFamily:T.serif,fontSize:27,fontWeight:400,color:T2.text,lineHeight:1.2,marginBottom:13}}>Simplifying forces you to think.</div>
+              <div style={{width:24,height:1,background:T.gold,opacity:0.35,marginBottom:11}}/>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>This loop doesn't just make you a better communicator — it makes you a better thinker.</p>
+            </div>
+            <div style={{background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:8,padding:"20px 22px",marginBottom:d1TheoryDone.why?14:0}}>
+              <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:11}}>
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="8.5" cy="8.5" r="7" stroke="rgba(138,158,132,0.4)" strokeWidth="1"/><path d="M8.5 5.5v3l2 2" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>In One Minute</div>
+              </div>
+              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,marginBottom:12}}>The Feynman Technique</div>
+              {["Study until you understand.","Explain it simply.","Notice where you struggle.","Refine and repeat."].map((item,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:9,marginBottom:i<3?7:12}}>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.5" fill="rgba(138,158,132,0.1)"/><path d="M4 7l2 2 4-4" stroke="#8A9E84" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:400}}>{item}</span>
+                </div>
+              ))}
+              <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:11}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:5}}>Why it matters</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>If you can't explain it clearly, you probably don't understand it yet.</p>
+              </div>
+            </div>
+            {d1TheoryDone.why && (
+              <div style={{display:"flex",alignItems:"center",gap:7,justifyContent:"center",padding:"4px 0"}}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(97,145,100,0.12)" stroke="#619164" strokeWidth="1"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#619164" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <span style={{fontFamily:T.sans,fontSize:12,color:"#619164",fontWeight:500}}>Theory complete</span>
+              </div>
+            )}
           </div>
-        </div>
-      );
+        );
+      }
 
       if (step === "Example") {
         const D1_EDITORIAL = [
