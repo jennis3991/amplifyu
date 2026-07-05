@@ -2104,8 +2104,7 @@ setAmbitionSaved(true); } catch {}
             ))}
             <div style={{marginTop:28,marginBottom:22}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Real Lesson</div>
-              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.4,marginBottom:4}}>Teaching forces you to understand.</div>
-              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.4}}>Simplifying forces you to think.</div>
+              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.4}}>Teaching forces you to understand. Simplifying forces you to think.</div>
             </div>
           </div>
         );
