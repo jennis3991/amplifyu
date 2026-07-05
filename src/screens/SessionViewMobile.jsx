@@ -1836,28 +1836,23 @@ T.goldDark : T2.text4,
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Feynman Technique</h2>
             <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Richard Feynman won the Nobel Prize in Physics — and could explain quantum mechanics to a 12-year-old.</p>
-            <div style={{padding:"16px 18px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:22}}>
+            <div style={{padding:"16px 18px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:22}}>
               <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 5px"}}>"If you can't explain it simply, you don't understand it well enough."</p>
               <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,margin:0}}>— Richard Feynman</p>
             </div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>The Method</div>
-            <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:5}}>Four steps to clarity</h3>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,marginBottom:16}}>Feynman's approach turns complex ideas into clear understanding.</p>
             {mSteps.map((s,i)=>(
               <div key={i} style={{display:"flex",gap:14,paddingBottom:16,marginBottom:16,borderBottom:"0.5px solid "+T2.divider}}>
                 <div style={{fontFamily:T.serif,fontSize:20,fontWeight:300,color:T.gold,opacity:0.3,lineHeight:1,minWidth:24,paddingTop:2}}>{s.n}</div>
                 <div style={{flex:1}}>
                   <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:6}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text}}>{s.label}</div></div>
-                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 7px"}}>{s.desc}</p>
-                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>Focus</div>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{s.focus}</p>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 4px"}}>{s.desc}</p>
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,fontStyle:"italic",margin:0}}>{s.focus}</p>
                 </div>
               </div>
             ))}
             <div style={{border:"0.5px solid "+T2.border,borderRadius:6,marginBottom:18,overflow:"hidden"}}>
               <button onClick={()=>{ if(!d1TheoryWhyOpen){ const next={why:true}; setD1TheoryDone(next); try{localStorage.setItem("d1TheoryDone",JSON.stringify(next));}catch{} } setD1TheoryWhyOpen(v=>!v); }} style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"13px 16px",background:T2.surface,border:"none",cursor:"pointer"}}>
                 <div>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>Research</div>
                   <div style={{display:"flex",alignItems:"center",gap:7}}>
                     <span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text}}>Why it works</span>
                     {d1TheoryDone.why && <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" fill="rgba(97,145,100,0.12)" stroke="#619164" strokeWidth="1"/><path d="M4 6.5l2 2 3-3" stroke="#619164" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
