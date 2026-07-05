@@ -1707,7 +1707,7 @@ T.goldDark : T2.text4,
                         setD4MobCard(card.id);
                         if (!d4ExObs[card.id]) { d4ExObs[card.id]=true; localStorage.setItem('d4ExObserved',JSON.stringify(d4ExObs)); }
                       }}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center top"}}/>
+                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center 25%"}}/>
                     </div>
                   )}
                   {!open && (
