@@ -307,6 +307,7 @@ export function MobileSessionView({
   // ── D1 shared constants (used by both desktop and mobile) ─────────────────
 
 return (
+  <>
   <div
     style={{background:T2.bg,minHeight:"100vh",paddingBottom:40}}
     onTouchStart={e=>{swipeRef.current={x:e.touches[0].clientX,y:e.touches[0].clientY};}}
@@ -3680,5 +3681,6 @@ style={{fontSize:10,color:T2.text4,marginLeft:6,fontWeight:500}}>{idx+1} /
       </div>
     </>
   )}
+  </>
 );
 }
