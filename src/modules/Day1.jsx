@@ -716,21 +716,21 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     <div style={{ padding: isDesktop ? "44px 52px" : "24px 20px", overflowY: "auto" }}>
       <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Rehearsal · Day 1</div>
       <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Voice Warm-Up</h2>
-      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 16 : 15, color: "#6B5E44", lineHeight: 1.7, marginBottom: 24 }}>Choose one topic below and speak for around 30 seconds. This is simply a chance to find your voice. There's no right or wrong answer. Just speak naturally, and we'll take care of the rest.</p>
+      <p style={{ fontFamily: T.sans, fontSize: isDesktop ? 16 : 15, color: "#A8998A", lineHeight: 1.6, fontWeight: 400, marginBottom: 24 }}>Choose one topic below and speak for around 30 seconds. This is simply a chance to find your voice. There's no right or wrong answer. Just speak naturally, and we'll take care of the rest.</p>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isDesktop ? 12 : 10 }}>
         {TOPICS.map((topic, i) => (
           <button key={i} onClick={() => pickTopic(i)} style={{
             display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
             gap: 10, padding: isDesktop ? "22px 16px" : "18px 14px",
             borderRadius: 6, cursor: "pointer", textAlign: "center",
-            border: isDesktop ? "0.5px solid #DDD5C4" : "1.5px solid #C4B095",
-            background: isDesktop ? "#F7F3EC" : "#EDE7DB",
+            border: "0.5px solid " + T2.border,
+            background: T2.surface,
             transition: "all 0.15s ease",
           }}
-          onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #8A9E84"; e.currentTarget.style.background = "rgba(138,158,132,0.08)"; }}
-          onMouseLeave={e => { e.currentTarget.style.border = isDesktop ? "0.5px solid #DDD5C4" : "1.5px solid #C4B095"; e.currentTarget.style.background = isDesktop ? "#F7F3EC" : "#EDE7DB"; }}>
+          onMouseEnter={e => { e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.boxShadow = "0 4px 20px rgba(138,158,132,0.15)"; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = T2.border; e.currentTarget.style.boxShadow = "none"; }}>
             <div style={{ color: "#A8998A" }}>{topic.icon}</div>
-            <span style={{ fontFamily: T.serif, fontSize: isDesktop ? 16 : 15, color: "#6B5E44", lineHeight: 1.45 }}>{topic.label}</span>
+            <span style={{ fontFamily: T.sans, fontSize: isDesktop ? 14 : 13, color: T2.text, lineHeight: 1.45, fontWeight: 400 }}>{topic.label}</span>
           </button>
         ))}
       </div>
@@ -1091,7 +1091,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       <div style={{display:"flex",flexDirection:"column",gap:8}}>
         {PROMPTS[cat].map((p,i)=>(
           <div key={i} onClick={()=>{setPrompt(p);setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');}} style={{...cs.card,cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}} className="au-lift">
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,margin:0,flex:1}}>{p}</p>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.5,margin:0,flex:1,fontWeight:400}}>{p}</p>
             <span style={{color:T.gold,fontSize:18,flexShrink:0}}>→</span>
           </div>
         ))}
