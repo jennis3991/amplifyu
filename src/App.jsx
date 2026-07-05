@@ -3,6 +3,7 @@ import { applyUpdate } from "./pwa.js";
 import { T } from "./theme.js";
 import { LESSONS, ROLES } from "./data.js";
 import { useIsDesktop, getStreak, ls, lsSet } from "./utils.js";
+import { SpeechTest } from "./screens/SpeechTest.jsx";
 import { SessionView } from "./screens/SessionView.jsx";
 import { HomeScreen } from "./screens/HomeScreen.jsx";
 import { SessionsScreen } from "./screens/SessionsScreen.jsx";
@@ -167,6 +168,9 @@ lsSet("au1_dark",d); }
     navyLight:"rgba(138,158,132,0.1)", goldLight:"rgba(138,158,132,0.12)",
     goldDark:T.gold, greenBg:"rgba(82,112,96,0.2)", green:"#8A9E84",
   } : {};
+
+  // Speech test route — bypass all app state
+  if (window.location.pathname === "/speech-test") return <SpeechTest />;
 
   // Reflection screen — check FIRST, before the !boarded onboarding check
   if (reflectionData) {
