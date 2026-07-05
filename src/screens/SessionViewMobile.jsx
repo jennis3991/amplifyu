@@ -1819,7 +1819,7 @@ T.goldDark : T2.text4,
         const mSteps = [
           {n:"01",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><rect x="3" y="2" width="11" height="13" rx="1.5" stroke={T2.text4} strokeWidth="1.1"/><line x1="5.5" y1="5.5" x2="11.5" y2="5.5" stroke={T2.text4} strokeWidth="0.9"/><line x1="5.5" y1="8.5" x2="11.5" y2="8.5" stroke={T2.text4} strokeWidth="0.9"/><line x1="5.5" y1="11.5" x2="9.5" y2="11.5" stroke={T2.text4} strokeWidth="0.9"/></svg>,label:"Understand",desc:"Choose one concept and study it deeply.",focus:"Knowledge before communication."},
           {n:"02",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><path d="M13.5 3h-10A1.5 1.5 0 002 4.5v5A1.5 1.5 0 003.5 11h2l2.5 3 2.5-3h3A1.5 1.5 0 0015 9.5v-5A1.5 1.5 0 0013.5 3z" stroke={T2.text4} strokeWidth="1.1"/></svg>,label:"Explain",desc:"Teach it in simple words as if to someone else.",focus:"Mastery is demonstrated through clarity."},
-          {n:"03",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><path d="M12.5 3.5l1 1-7.5 7.5H4.5v-1.5l7.5-7.5z" stroke={T2.text4} strokeWidth="1.1" strokeLinejoin="round"/><line x1="4.5" y1="14" x2="12.5" y2="14" stroke={T2.text4} strokeWidth="0.9" strokeLinecap="round" strokeDasharray="1.5 1.5"/></svg>,label:"Simplify",desc:"Identify gaps and remove unnecessary complexity.",focus:"Simplicity isn't about dumbing down. It's about stripping away everything that isn't essential."},
+          {n:"03",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><path d="M12.5 3.5l1 1-7.5 7.5H4.5v-1.5l7.5-7.5z" stroke={T2.text4} strokeWidth="1.1" strokeLinejoin="round"/><line x1="4.5" y1="14" x2="12.5" y2="14" stroke={T2.text4} strokeWidth="0.9" strokeLinecap="round" strokeDasharray="1.5 1.5"/></svg>,label:"Simplify",desc:"Identify gaps and remove unnecessary complexity.",focus:"Simplicity is precision. Remove what obscures and keep what illuminates."},
           {n:"04",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><path d="M14 8.5A5.5 5.5 0 013.5 6.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><path d="M3 8.5A5.5 5.5 0 0113.5 10.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><path d="M12 5l2 1.5-1.5 2" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 12l-2-1.5 1.5-2" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/></svg>,label:"Refine",desc:"Review, clarify, and improve. Repeat until it sticks.",focus:"Clarity is built through iteration, not perfection."},
         ];
         return (
@@ -1832,7 +1832,7 @@ T.goldDark : T2.text4,
               <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,margin:0}}>— Richard Feynman</p>
             </div>
             {mSteps.map((s,i)=>(
-              <div key={i} style={{display:"flex",gap:14,paddingBottom:16,marginBottom:16,borderBottom:"0.5px solid "+T2.divider}}>
+              <div key={i} style={{display:"flex",gap:14,padding:"14px 16px",marginBottom:6,borderRadius:6,background:`rgba(44,36,22,${0.03+i*0.03})`}}>
                 <div style={{fontFamily:T.serif,fontSize:20,fontWeight:300,color:T.gold,opacity:0.3,lineHeight:1,minWidth:24,paddingTop:2}}>{s.n}</div>
                 <div style={{flex:1}}>
                   <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:6}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text}}>{s.label}</div></div>
