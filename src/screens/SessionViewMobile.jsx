@@ -50,7 +50,6 @@ export function MobileSessionView({
   const [reviewTab, setReviewTab] = useState('learned');
   const [d10PracticePhase, setD10PracticePhase] = useState('intro');
   const [d10SarDone, setD10SarDone] = useState(false);
-  const [d1TheoryWhyOpen, setD1TheoryWhyOpen] = useState(false);
 
   const D10_EXAMPLES_DATA = [
   { id:"priya",     title:"The Invisible Fixer",        sub:"Same performance. No visibility.",  lesson:"Performance without communication is philanthropy." },
@@ -1823,13 +1822,6 @@ T.goldDark : T2.text4,
           {n:"03",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><path d="M12.5 3.5l1 1-7.5 7.5H4.5v-1.5l7.5-7.5z" stroke={T2.text4} strokeWidth="1.1" strokeLinejoin="round"/><line x1="4.5" y1="14" x2="12.5" y2="14" stroke={T2.text4} strokeWidth="0.9" strokeLinecap="round" strokeDasharray="1.5 1.5"/></svg>,label:"Simplify",desc:"Identify gaps and remove unnecessary complexity.",focus:"Simplicity isn't about dumbing down. It's about stripping away everything that isn't essential."},
           {n:"04",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><path d="M14 8.5A5.5 5.5 0 013.5 6.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><path d="M3 8.5A5.5 5.5 0 0113.5 10.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><path d="M12 5l2 1.5-1.5 2" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 12l-2-1.5 1.5-2" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/></svg>,label:"Refine",desc:"Review, clarify, and improve. Repeat until it sticks.",focus:"Clarity is built through iteration, not perfection."},
         ];
-        const mWhyItems = [
-          {title:"Retrieval Practice",desc:"Pulling information from memory strengthens understanding."},
-          {title:"Elaboration",desc:"Explaining in your own words creates deeper connections."},
-          {title:"Generation Effect",desc:"Creating explanations yourself improves long-term retention."},
-          {title:"Cognitive Load Reduction",desc:"Simplifying reduces mental clutter and improves comprehension."},
-          {title:"Metacognition",desc:"You become aware of what you know — and what you don't."},
-        ];
         return (
           <>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
@@ -1849,32 +1841,6 @@ T.goldDark : T2.text4,
                 </div>
               </div>
             ))}
-            <div style={{border:"0.5px solid "+T2.border,borderRadius:6,marginBottom:18,overflow:"hidden"}}>
-              <button onClick={()=>setD1TheoryWhyOpen(v=>!v)} style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"13px 16px",background:T2.surface,border:"none",cursor:"pointer"}}>
-                <div>
-                  <div style={{display:"flex",alignItems:"center",gap:7}}>
-                    <span style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text}}>Why it works</span>
-                  </div>
-                </div>
-                <span style={{color:T2.text4,fontSize:11,fontFamily:T.sans}}>{d1TheoryWhyOpen?"▴":"▸"}</span>
-              </button>
-              {d1TheoryWhyOpen && (
-                <div style={{padding:"2px 16px 16px"}}>
-                  {mWhyItems.map((item,i)=>(
-                    <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",paddingTop:12,borderTop:i>0?"0.5px solid "+T2.divider:"none"}}>
-                      <svg width="14" height="14" viewBox="0 0 15 15" fill="none" style={{flexShrink:0,marginTop:2}}><circle cx="7.5" cy="7.5" r="6.5" stroke="rgba(138,158,132,0.3)" strokeWidth="1"/><path d="M4.5 7.5l2 2 4-4" stroke="#8A9E84" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      <div><div style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,marginBottom:2}}>{item.title}</div><p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{item.desc}</p></div>
-                    </div>
-                  ))}
-                  <div style={{marginTop:13,padding:"12px 14px",background:T2.surface,borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>Remember</div>
-                    <p style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,lineHeight:1.5,margin:"0 0 2px"}}>The goal isn't to sound smart.</p>
-                    <p style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,lineHeight:1.5,margin:"0 0 6px"}}>It's to be understood.</p>
-                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>Clarity is a service to your audience.</p>
-                  </div>
-                </div>
-              )}
-            </div>
             <div style={{marginBottom:18}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Real Lesson</div>
               <div style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,marginBottom:7}}>Teaching forces you to understand.</div>

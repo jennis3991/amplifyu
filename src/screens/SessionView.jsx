@@ -2005,7 +2005,6 @@ setAmbitionSaved(true); } catch {}
       const [breathResult, setBreathResult] = useState(null);
       const [breathLoading, setBreathLoading] = useState(false);
       const [simInput, setSimInput] = useState("");
-      const [d1TheoryWhyOpen, setD1TheoryWhyOpen] = useState(false);
       const [d1ExObserved, setD1ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d1ExObserved')||'{}'); } catch { return {}; } });
       const [d1ExOpenCard, setD1ExOpenCard] = useState(null);
       const openCard = D1_EXAMPLES.find(c=>c.id===d1OpenCard);
@@ -2078,13 +2077,6 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Theory") {
-        const whyItems = [
-          {title:"Retrieval Practice",desc:"Pulling information from memory strengthens understanding."},
-          {title:"Elaboration",desc:"Explaining in your own words creates deeper connections."},
-          {title:"Generation Effect",desc:"Creating explanations yourself improves long-term retention."},
-          {title:"Cognitive Load Reduction",desc:"Simplifying reduces mental clutter and improves comprehension."},
-          {title:"Metacognition",desc:"You become aware of what you know — and what you don't."},
-        ];
         const steps = [
           {n:"01",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><rect x="3" y="2" width="11" height="13" rx="1.5" stroke={T2.text4} strokeWidth="1.1"/><line x1="5.5" y1="5.5" x2="11.5" y2="5.5" stroke={T2.text4} strokeWidth="0.9"/><line x1="5.5" y1="8.5" x2="11.5" y2="8.5" stroke={T2.text4} strokeWidth="0.9"/><line x1="5.5" y1="11.5" x2="9.5" y2="11.5" stroke={T2.text4} strokeWidth="0.9"/></svg>,label:"Understand",desc:"Choose one concept and study it deeply.",focus:"Knowledge before communication."},
           {n:"02",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M13.5 3h-10A1.5 1.5 0 002 4.5v5A1.5 1.5 0 003.5 11h2l2.5 3 2.5-3h3A1.5 1.5 0 0015 9.5v-5A1.5 1.5 0 0013.5 3z" stroke={T2.text4} strokeWidth="1.1"/></svg>,label:"Explain",desc:"Teach it in simple words as if to someone else.",focus:"Mastery is demonstrated through clarity."},
@@ -2110,32 +2102,6 @@ setAmbitionSaved(true); } catch {}
                 </div>
               </div>
             ))}
-            <div style={{border:"0.5px solid "+T2.border,borderRadius:6,marginBottom:22,overflow:"hidden"}}>
-              <button onClick={()=>setD1TheoryWhyOpen(v=>!v)} style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 18px",background:T2.surface,border:"none",cursor:"pointer"}}>
-                <div>
-                  <div style={{display:"flex",alignItems:"center",gap:7}}>
-                    <span style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text}}>Why it works</span>
-                  </div>
-                </div>
-                <span style={{color:T2.text4,fontSize:11,fontFamily:T.sans}}>{d1TheoryWhyOpen?"▴":"▸"}</span>
-              </button>
-              {d1TheoryWhyOpen && (
-                <div style={{padding:"2px 18px 18px"}}>
-                  {whyItems.map((item,i)=>(
-                    <div key={i} style={{display:"flex",gap:11,alignItems:"flex-start",paddingTop:13,borderTop:i>0?"0.5px solid "+T2.divider:"none"}}>
-                      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style={{flexShrink:0,marginTop:2}}><circle cx="7.5" cy="7.5" r="6.5" stroke="rgba(138,158,132,0.3)" strokeWidth="1"/><path d="M4.5 7.5l2 2 4-4" stroke="#8A9E84" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      <div><div style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,marginBottom:2}}>{item.title}</div><p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.55,margin:0,fontWeight:300}}>{item.desc}</p></div>
-                    </div>
-                  ))}
-                  <div style={{marginTop:14,padding:"13px 15px",background:T2.surface,borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
-                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>Remember</div>
-                    <p style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,lineHeight:1.5,margin:"0 0 2px"}}>The goal isn't to sound smart.</p>
-                    <p style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,lineHeight:1.5,margin:"0 0 7px"}}>It's to be understood.</p>
-                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.55,margin:0,fontWeight:300}}>Clarity is a service to your audience.</p>
-                  </div>
-                </div>
-              )}
-            </div>
             <div style={{marginBottom:22}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:13}}>The Real Lesson</div>
               <div style={{fontFamily:T.serif,fontSize:27,fontWeight:400,color:T2.text,lineHeight:1.2,marginBottom:9}}>Teaching forces you to understand.</div>
