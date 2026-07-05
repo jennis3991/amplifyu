@@ -170,7 +170,7 @@ lsSet("au1_dark",d); }
   } : {};
 
   // Speech test route — bypass all app state
-  if (window.location.pathname === "/speech-test") return <SpeechTest />;
+  if (window.location.pathname === '/speech-test') return <SpeechTest />;
 
   // Reflection screen — check FIRST, before the !boarded onboarding check
   if (reflectionData) {
