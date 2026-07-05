@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
 import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_EXAMPLES, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS, D14_EXAMPLES } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
@@ -50,6 +50,13 @@ export function MobileSessionView({
   const [reviewTab, setReviewTab] = useState('learned');
   const [d10PracticePhase, setD10PracticePhase] = useState('intro');
   const [d10SarDone, setD10SarDone] = useState(false);
+  const [swipeHint, setSwipeHint] = useState(() => { try { return !localStorage.getItem('au_swipe_hint_seen'); } catch { return true; } });
+  const [swipeHintVisible, setSwipeHintVisible] = useState(true);
+  useEffect(() => {
+    if (!swipeHint) return;
+    const t = setTimeout(() => { setSwipeHintVisible(false); setTimeout(() => { setSwipeHint(false); try { localStorage.setItem('au_swipe_hint_seen','1'); } catch {} }, 400); }, 3000);
+    return () => clearTimeout(t);
+  }, [swipeHint]);
 
   const D10_EXAMPLES_DATA = [
   { id:"priya",     title:"The Invisible Fixer",        sub:"Same performance. No visibility.",  lesson:"Performance without communication is philanthropy." },
@@ -3663,5 +3670,16 @@ style={{fontSize:10,color:T2.text4,marginLeft:6,fontWeight:500}}>{idx+1} /
       </div>
     </div>
   </div>
+  {swipeHint && (
+    <>
+      <style>{`@keyframes au-swipe-hand{0%{transform:translateX(6px)}50%{transform:translateX(-10px)}100%{transform:translateX(6px)}}@keyframes au-hint-in{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}@keyframes au-hint-out{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(8px)}}`}</style>
+      <div style={{position:"fixed",bottom:110,left:"50%",transform:"translateX(-50%)",zIndex:999,pointerEvents:"none",animation:swipeHintVisible?"au-hint-in 0.35s ease forwards":"au-hint-out 0.4s ease forwards"}}>
+        <div style={{display:"flex",alignItems:"center",gap:10,background:"rgba(28,23,18,0.88)",backdropFilter:"blur(10px)",borderRadius:24,padding:"10px 18px 10px 14px",boxShadow:"0 4px 24px rgba(0,0,0,0.25)"}}>
+          <span style={{fontSize:20,animation:"au-swipe-hand 1.2s ease-in-out infinite",display:"inline-block"}}>👆</span>
+          <span style={{fontFamily:"'Inter',-apple-system,sans-serif",fontSize:13,fontWeight:500,color:"rgba(247,243,236,0.92)",whiteSpace:"nowrap"}}>Swipe to move between steps</span>
+        </div>
+      </div>
+    </>
+  )}
 );
 }
