@@ -2096,16 +2096,16 @@ setAmbitionSaved(true); } catch {}
               <div key={i} style={{display:"flex",gap:18,padding:"16px 18px",marginBottom:6,borderRadius:6,background:`rgba(44,36,22,${0.03+i*0.03})`}}>
                 <div style={{fontFamily:T.serif,fontSize:24,fontWeight:300,color:T.gold,opacity:0.3,lineHeight:1,minWidth:28,paddingTop:3}}>{s.n}</div>
                 <div style={{flex:1}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text}}>{s.label}</div></div>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"#8A9E84"}}>{s.label}</div></div>
                   <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:400,margin:"0 0 5px"}}>{s.desc}</p>
                   <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.55,fontWeight:300,fontStyle:"italic",margin:0}}>{s.focus}</p>
                 </div>
               </div>
             ))}
-            <div style={{marginBottom:22}}>
+            <div style={{marginTop:28,marginBottom:22}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Real Lesson</div>
-              <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.35,marginBottom:4}}>Teaching forces you to understand.</div>
-              <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.35}}>Simplifying forces you to think.</div>
+              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.4,marginBottom:4}}>Teaching forces you to understand.</div>
+              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.4}}>Simplifying forces you to think.</div>
             </div>
           </div>
         );
