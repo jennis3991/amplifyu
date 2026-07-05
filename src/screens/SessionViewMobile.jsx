@@ -1842,11 +1842,9 @@ T.goldDark : T2.text4,
               </div>
             ))}
             <div style={{marginBottom:18}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Real Lesson</div>
-              <div style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,marginBottom:7}}>Teaching forces you to understand.</div>
-              <div style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,marginBottom:10}}>Simplifying forces you to think.</div>
-              <div style={{width:22,height:1,background:T.gold,opacity:0.35,marginBottom:9}}/>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:0}}>This loop doesn't just make you a better communicator — it makes you a better thinker.</p>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:13}}>The Real Lesson</div>
+              <div style={{fontFamily:T.serif,fontSize:30,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:8}}>Teaching forces you to understand.</div>
+              <div style={{fontFamily:T.serif,fontSize:30,fontWeight:400,color:T2.text,lineHeight:1.15}}>Simplifying forces you to think.</div>
             </div>
           </>
         );

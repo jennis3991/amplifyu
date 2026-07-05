@@ -2103,11 +2103,9 @@ setAmbitionSaved(true); } catch {}
               </div>
             ))}
             <div style={{marginBottom:22}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:13}}>The Real Lesson</div>
-              <div style={{fontFamily:T.serif,fontSize:27,fontWeight:400,color:T2.text,lineHeight:1.2,marginBottom:9}}>Teaching forces you to understand.</div>
-              <div style={{fontFamily:T.serif,fontSize:27,fontWeight:400,color:T2.text,lineHeight:1.2,marginBottom:13}}>Simplifying forces you to think.</div>
-              <div style={{width:24,height:1,background:T.gold,opacity:0.35,marginBottom:11}}/>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>This loop doesn't just make you a better communicator — it makes you a better thinker.</p>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:16}}>The Real Lesson</div>
+              <div style={{fontFamily:T.serif,fontSize:36,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:10}}>Teaching forces you to understand.</div>
+              <div style={{fontFamily:T.serif,fontSize:36,fontWeight:400,color:T2.text,lineHeight:1.15}}>Simplifying forces you to think.</div>
             </div>
           </div>
         );
