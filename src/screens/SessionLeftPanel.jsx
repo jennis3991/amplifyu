@@ -27,11 +27,11 @@ export function SessionLeftPanel({
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
         <img src="/day4-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 72%" }}/>
-        {/* Minimal top gradient for label only */}
-        <div style={{ position:"absolute", top:0, left:0, right:0, height:"25%", background:"linear-gradient(to bottom, rgba(10,8,5,0.5) 0%, transparent 100%)", pointerEvents:"none" }}/>
-        <div style={{ position:"absolute", top:36, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", display:"flex", alignItems:"center", justifyContent:"space-between", right:48 }}>
-          <div style={{ ...LP_LABEL, color:T.gold, textShadow:"0 1px 4px rgba(0,0,0,0.5)" }}>The Evidence</div>
-          
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, rgba(10,8,5,0.3) 50%, transparent 80%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+          <div style={{ ...LP_LABEL, marginBottom:12 }}>DAY 4 · BREVITY</div>
+          <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>Less Is More</h2>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Short sentences make ideas easier to hear.</p>
         </div>
       </div>
     );
@@ -90,10 +90,10 @@ export function SessionLeftPanel({
         <img src="/day7-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.35)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, rgba(10,8,5,0.15) 50%, transparent 75%)" }}/>
-        <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-          <div style={{ ...LP_LABEL, marginBottom:16 }}>Day {lesson.day} · {lesson.tag}</div>
-          <h2 style={{ ...LP_HEADING, fontSize:"clamp(20px,1.8vw,26px)", marginBottom:18, letterSpacing:"-0.3px" }}>{lesson.title}</h2>
-          <p style={{ fontFamily:T.sans, fontSize:14, fontWeight:400, color:"rgba(245,239,230,0.55)", lineHeight:1.6, margin:0, fontStyle:"italic", maxWidth:360 }}>{lesson.quote}</p>
+        <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+          <div style={{ ...LP_LABEL, marginBottom:12 }}>DAY 7 · FOUNDATIONS</div>
+          <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>The Complete Picture</h2>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Great communication starts with the right base.</p>
         </div>
       </div>
     );
@@ -165,13 +165,11 @@ export function SessionLeftPanel({
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
         <img src="/day10-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
-        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.2) 45%, transparent 65%)" }}/>
-        <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both", display:"flex", alignItems:"flex-start", justifyContent:"space-between" }}>
-          <div>
-            <div style={{ ...LP_LABEL, color:T.gold, marginBottom:12 }}>The Evidence</div>
-            <p style={{ fontFamily:T.serif, fontSize:"clamp(24px,2vw,34px)", fontWeight:600, fontStyle:"italic", color:"#F5EFE6", lineHeight:1.3, margin:0, maxWidth:320 }}>Brilliant work in silence<br/>is still silence.</p>
-          </div>
-          
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, rgba(10,8,5,0.3) 50%, transparent 80%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+          <div style={{ ...LP_LABEL, marginBottom:12 }}>DAY 10 · VISIBILITY</div>
+          <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>Be Seen</h2>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Your work is only as good as people's awareness of it.</p>
         </div>
       </div>
     );
@@ -231,10 +229,11 @@ export function SessionLeftPanel({
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
         <img src="/day3-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
-        <div style={{ position:"absolute", top:0, left:0, right:0, height:"25%", background:"linear-gradient(to bottom, rgba(10,8,5,0.55) 0%, transparent 100%)", pointerEvents:"none" }}/>
-        <div style={{ position:"absolute", top:36, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, textShadow:"0 1px 4px rgba(0,0,0,0.5)" }}>The Problem</div>
-          
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, rgba(10,8,5,0.3) 50%, transparent 80%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+          <div style={{ ...LP_LABEL, marginBottom:12 }}>DAY 3 · PAUSE</div>
+          <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>The Power of Silence</h2>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>A well-placed pause says more than words.</p>
         </div>
       </div>
     );
@@ -358,10 +357,10 @@ export function SessionLeftPanel({
         <img src="/nt-insight.jpg" alt="Narrative Transportation" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.38)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.82) 0%, rgba(10,8,5,0.15) 55%, transparent 80%)" }}/>
-        <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-          <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(200,168,76,0.7)", textTransform:"uppercase", letterSpacing:"4px", marginBottom:12 }}>Day 8 · Storytelling</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:"clamp(28px,2.8vw,42px)", fontWeight:500, color:"#F5EFE6", lineHeight:1.1, letterSpacing:"-0.5px", margin:"0 0 16px" }}>Narrative Transportation</h2>
-          <p style={{ fontFamily:T.serif, fontSize:18, fontWeight:400, fontStyle:"italic", color:"rgba(245,239,230,0.72)", lineHeight:1.45, margin:0, maxWidth:340 }}>We are more engaged when we feel inside the story.</p>
+        <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+          <div style={{ ...LP_LABEL, marginBottom:12 }}>DAY 8 · STORYTELLING</div>
+          <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>Make It Memorable</h2>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>The best communicators think in stories.</p>
         </div>
       </div>
     );
@@ -444,13 +443,14 @@ export function SessionLeftPanel({
     </>;
     const d9Label = (txt) => <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>{txt}</div>;
     if (step === "Insight") return (
-      <div style={d9Dark}>
+      <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
         <img src="/day9-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
-        {d9Overlay}
-        <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
-          {d9Label("The Missing Skill")}
-          <p style={{ ...LP_HEADING, fontSize:"clamp(24px,2vw,34px)", maxWidth:360, marginBottom:16, lineHeight:1.2 }}>How to make people feel understood.</p>
-          <div style={{ width:32, height:1, background:T.gold, opacity:0.45 }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.62)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 55%, transparent 80%)" }}/>
+        <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
+          <div style={{ ...LP_LABEL, marginBottom:12 }}>DAY 9 · LISTENING</div>
+          <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>Hear More, Say Less</h2>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>The best communicators listen twice as much as they speak.</p>
         </div>
       </div>
     );
@@ -542,9 +542,9 @@ export function SessionLeftPanel({
       <div style={{ position: "absolute", inset: 0, background: lesson.day === 1 ? "rgba(10,8,5,0.50)" : "rgba(10,8,5,0.5)" }}/>
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.5) 40%, transparent 75%)" }}/>
       <div style={{ position: "relative", zIndex: 2, padding: "40px 48px", animation: "fadeUp 0.7s ease both" }}>
-        <div style={{ ...LP_LABEL, marginBottom: 16 }}>Day {lesson.day} · {lesson.tag}</div>
-        <h2 style={{ ...LP_HEADING, fontSize: "clamp(20px,1.8vw,26px)", marginBottom: 18, letterSpacing: "-0.3px" }}>{lesson.title}</h2>
-        {!isD12 && <p style={{ fontFamily:T.sans, fontSize:14, fontWeight:400, color:"rgba(245,239,230,0.55)", lineHeight:1.6, margin:0, fontStyle:"italic", maxWidth:360 }}>{lesson.quote}</p>}
+        <div style={{ ...LP_LABEL, marginBottom:12 }}>{isD2?"DAY 2 · PACE":isD5?"DAY 5 · CONFIDENCE":isD6?"DAY 6 · GRAVITAS":isD11?"DAY 11 · SIMPLICITY":isD12?"DAY 12 · PRESENCE":isD13?"DAY 13 · INFLUENCE":isD14?"DAY 14 · MASTERY":`Day ${lesson.day} · ${lesson.tag}`}</div>
+        <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>{isD2?"Speak with Purpose":isD5?"Own the Room":isD6?"Command Attention":isD11?"Strip It Back":isD12?"Show Up Fully":isD13?"Lead the Room":isD14?"The Complete Communicator":lesson.title}</h2>
+        <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>{isD2?"The right pace makes every word land.":isD5?"Confidence is a skill, not a personality trait.":isD6?"True authority is felt before it is heard.":isD11?"Complexity is the enemy of connection.":isD12?"Presence is the difference between being heard and being remembered.":isD13?"Influence isn't about volume — it's about weight.":isD14?"Everything you've learned. Every day it compounds.":lesson.quote}</p>
       </div>
     </div>
   );
