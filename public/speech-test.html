@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speech Test</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0c09;
+      color: #e8e0d4;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+    }
+
+    h1 {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #c8a46a;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 480px;
+      min-height: 140px;
+      background: #1c1712;
+      border: 1px solid #3a3128;
+      border-radius: 10px;
+      color: #e8e0d4;
+      font-family: inherit;
+      font-size: 16px;
+      line-height: 1.6;
+      padding: 14px 16px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea:focus { border-color: #c8a46a; }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    button {
+      flex: 1;
+      padding: 14px 10px;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    button:active { transform: scale(0.97); }
+    button:disabled { opacity: 0.35; cursor: default; transform: none; }
+
+    #btn-play  { background: #c8a46a; color: #0f0c09; }
+    #btn-pause { background: #2e2820; color: #c8a46a; border: 1px solid #3a3128; }
+    #btn-stop  { background: #2e2820; color: #e8e0d4; border: 1px solid #3a3128; }
+
+    #status {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #7a6f62;
+      min-height: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Speech Test</h1>
+
+  <textarea id="text">Great communicators know that silence is not empty — it is full of power. The pause before your most important word is the moment the audience leans in.</textarea>
+
+  <div class="controls">
+    <button id="btn-play">&#9654; Play</button>
+    <button id="btn-pause" disabled>&#10074;&#10074; Pause</button>
+    <button id="btn-stop" disabled>&#9632; Stop</button>
+  </div>
+
+  <p id="status"></p>
+
+  <script>
+    const synth = window.speechSynthesis;
+    const textarea = document.getElementById('text');
+    const btnPlay  = document.getElementById('btn-play');
+    const btnPause = document.getElementById('btn-pause');
+    const btnStop  = document.getElementById('btn-stop');
+    const status   = document.getElementById('status');
+
+    let utterance = null;
+
+    function setState(state) {
+      // state: idle | playing | paused
+      btnPlay.disabled  = state === 'playing';
+      btnPause.disabled = state !== 'playing';
+      btnStop.disabled  = state === 'idle';
+      btnPause.textContent = state === 'paused' ? '▶ Resume' : '⏸ Pause';
+      status.textContent = state === 'idle' ? '' : state === 'playing' ? 'Speaking...' : 'Paused';
+    }
+
+    btnPlay.addEventListener('click', () => {
+      if (synth.paused) {
+        synth.resume();
+        setState('playing');
+        return;
+      }
+      synth.cancel();
+      utterance = new SpeechSynthesisUtterance(textarea.value.trim());
+      utterance.rate = 0.95;
+      utterance.pitch = 1;
+      utterance.onstart  = () => setState('playing');
+      utterance.onend    = () => setState('idle');
+      utterance.onerror  = () => setState('idle');
+      utterance.onpause  = () => setState('paused');
+      utterance.onresume = () => setState('playing');
+      synth.speak(utterance);
+    });
+
+    btnPause.addEventListener('click', () => {
+      if (synth.speaking && !synth.paused) {
+        synth.pause();
+        setState('paused');
+      } else if (synth.paused) {
+        synth.resume();
+        setState('playing');
+      }
+    });
+
+    btnStop.addEventListener('click', () => {
+      synth.cancel();
+      setState('idle');
+    });
+
+    // Reset if tab loses focus mid-speech (mobile browsers cancel automatically)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { synth.cancel(); setState('idle'); }
+    });
+  </script>
+</body>
+</html>
