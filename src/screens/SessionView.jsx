@@ -2115,14 +2115,6 @@ setAmbitionSaved(true); } catch {}
                 </div>
               </div>
             ))}
-            <div style={{background:"rgba(138,158,132,0.07)",borderRadius:6,padding:"14px 16px",marginBottom:22,display:"flex",gap:11,alignItems:"flex-start"}}>
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style={{flexShrink:0,marginTop:1}}><circle cx="7.5" cy="7.5" r="6.5" stroke="rgba(138,158,132,0.4)" strokeWidth="1"/><line x1="7.5" y1="5" x2="7.5" y2="8" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><circle cx="7.5" cy="10.5" r="0.65" fill={T.gold}/></svg>
-              <div>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>Insight</div>
-                <p style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,lineHeight:1.5,margin:"0 0 3px"}}>Confusion is feedback.</p>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:0}}>When you stumble, you've found the exact place your understanding needs attention.</p>
-              </div>
-            </div>
             <div style={{border:"0.5px solid "+T2.border,borderRadius:6,marginBottom:22,overflow:"hidden"}}>
               <button onClick={()=>{ if(!d1TheoryWhyOpen){ const next={why:true}; setD1TheoryDone(next); try{localStorage.setItem("d1TheoryDone",JSON.stringify(next));}catch{} } setD1TheoryWhyOpen(v=>!v); }} style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 18px",background:T2.surface,border:"none",cursor:"pointer"}}>
                 <div>
@@ -2157,23 +2149,6 @@ setAmbitionSaved(true); } catch {}
               <div style={{fontFamily:T.serif,fontSize:27,fontWeight:400,color:T2.text,lineHeight:1.2,marginBottom:13}}>Simplifying forces you to think.</div>
               <div style={{width:24,height:1,background:T.gold,opacity:0.35,marginBottom:11}}/>
               <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>This loop doesn't just make you a better communicator — it makes you a better thinker.</p>
-            </div>
-            <div style={{background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:8,padding:"20px 22px",marginBottom:d1TheoryDone.why?14:0}}>
-              <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:11}}>
-                <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="8.5" cy="8.5" r="7" stroke="rgba(138,158,132,0.4)" strokeWidth="1"/><path d="M8.5 5.5v3l2 2" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>In One Minute</div>
-              </div>
-              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,marginBottom:12}}>The Feynman Technique</div>
-              {["Study until you understand.","Explain it simply.","Notice where you struggle.","Refine and repeat."].map((item,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:9,marginBottom:i<3?7:12}}>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.5" fill="rgba(138,158,132,0.1)"/><path d="M4 7l2 2 4-4" stroke="#8A9E84" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,fontWeight:400}}>{item}</span>
-                </div>
-              ))}
-              <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:11}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:5}}>Why it matters</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>If you can't explain it clearly, you probably don't understand it yet.</p>
-              </div>
             </div>
             {d1TheoryDone.why && (
               <div style={{display:"flex",alignItems:"center",gap:7,justifyContent:"center",padding:"4px 0"}}>
