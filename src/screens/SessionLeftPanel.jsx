@@ -290,9 +290,8 @@ export function SessionLeftPanel({
         <img src="/day1-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
         {d1Overlay}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
-          <div style={{ ...LP_LABEL, marginBottom:16 }}>Day {lesson.day} · {lesson.tag}</div>
-          <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>{lesson.title}</h2>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:360 }}>Transform complexity into clarity.</p>
+          <div style={{ ...LP_LABEL, marginBottom:16 }}>Day {lesson.day} - {lesson.tag}</div>
+          <p style={{ ...LP_BODY, fontSize:22, maxWidth:360 }}>Transform complexity into clarity.</p>
         </div>
       </div>
     );
