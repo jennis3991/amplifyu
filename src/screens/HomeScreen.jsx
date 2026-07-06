@@ -12,8 +12,8 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
   return (
     <div style={{ background:"#17140f", borderRadius:14, padding:"24px" }}>
       <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:mobile?12:20 }}>
-        <div style={{ width:36, height:36, borderRadius:"50%", background:"#0d0b08", display:"flex", alignItems:"center", justifyContent:"center" }}>
-          <i className="ti ti-calendar-month" style={{ fontSize:18, color:"#ffffff" }}/>
+        <div style={{ width:44, height:44, borderRadius:"50%", background:"#0d0b08", display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <i className="ti ti-calendar-month" style={{ fontSize:22, color:"#ffffff" }}/>
         </div>
         <span style={{ fontSize:12, letterSpacing:"0.15em", color:"#c9a961", fontWeight:500, fontFamily:T.sans }}>YOUR JOURNEY</span>
       </div>
