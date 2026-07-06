@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { T } from '../theme.js';
 import { LESSONS, ROLES } from '../data.js';
+import { PIECES, getPieceInfo } from '../utils.js';
 
 export function ProgressScreen({done, cur, streak, roleId, activeRole,
 onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
@@ -48,6 +49,8 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
     {label:"Clarity",     pct: Math.min(100, 15 + done.filter(d=>d<=4).length*17)},
     {label:"Confidence",  pct: Math.min(100, 10 + done.filter(d=>d>=9).length*10)},
   ];
+
+  const pieceInfo = getPieceInfo(done.length);
 
   const sec = (label) => (
     <div style={{fontFamily:T.sans,fontSize:isDesktop?11:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"2px",marginBottom:isDesktop?20:14}}>{label}</div>
@@ -134,6 +137,37 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
                 </div>
               </div>
             </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── PIECE LADDER ─────────────────────────────────────────────────── */}
+      <div style={{...W,paddingTop:isDesktop?40:28}}>
+        {sec("Your Rank")}
+        <div style={{background:"#0D0B08",borderRadius:10,padding:isDesktop?"24px 28px":"20px 20px"}}>
+          <div style={{position:"relative",display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20}}>
+            <div style={{position:"absolute",top:20,left:"8%",right:"8%",height:1,background:"rgba(255,255,255,0.1)",zIndex:0}}/>
+            {PIECES.map((piece,i) => {
+              const isCurrent = i === pieceInfo.currentIndex;
+              const isNext = i === pieceInfo.currentIndex + 1;
+              return (
+                <div key={piece.name} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,position:"relative",zIndex:1}}>
+                  <div style={{width:40,height:40,borderRadius:"50%",background:isCurrent?"#c9a961":"transparent",border:isCurrent?"none":isNext?"1.5px solid #c9a961":"1.5px solid rgba(255,255,255,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <i className={"ti "+piece.icon} style={{fontSize:18,color:isCurrent?"#17140f":isNext?"#c9a961":"rgba(255,255,255,0.2)"}}/>
+                  </div>
+                  <span style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:isCurrent?"#c9a961":isNext?"rgba(245,239,230,0.5)":"rgba(255,255,255,0.18)",textTransform:"uppercase",letterSpacing:"1px",textAlign:"center"}}>{piece.name}</span>
+                </div>
+              );
+            })}
+          </div>
+          {pieceInfo.next ? (
+            <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.5)",margin:0,textAlign:"center"}}>
+              {pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"} until {pieceInfo.next.name}
+            </p>
+          ) : (
+            <p style={{fontFamily:T.sans,fontSize:13,color:"#c9a961",margin:0,textAlign:"center"}}>
+              {"You've reached the highest rank — King"}
+            </p>
           )}
         </div>
       </div>

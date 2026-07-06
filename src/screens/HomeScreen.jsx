@@ -6,6 +6,50 @@ import { PBar, NAV_H } from '../components/NavComponents.jsx';
 import { Scene } from '../scenes.jsx';
 import { HourglassIcon } from '../components/HourglassIcon.jsx';
 import { PhraseStrip } from '../components/PhraseStrip.jsx';
+import { ls, lsSet, getPieceInfo, getCategoryProgress } from '../utils.js';
+
+function JourneyCard({ pieceInfo, catProgress, showStrongest, done, T }) {
+  return (
+    <div style={{ background:"#17140f", borderRadius:14, padding:"24px" }}>
+      <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:20 }}>
+        <div style={{ width:32, height:32, borderRadius:"50%", background:"#2a251c", display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <i className="ti ti-calendar" style={{ fontSize:16, color:"#c9a961" }}/>
+        </div>
+        <span style={{ fontSize:12, letterSpacing:"0.15em", color:"#c9a961", fontWeight:500, fontFamily:T.sans }}>YOUR JOURNEY</span>
+      </div>
+      {pieceInfo.next ? (
+        <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20, marginBottom:20 }}>
+          <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:4 }}>
+            <span style={{ fontFamily:T.serif, fontSize:34, color:"#f4f1ea" }}>{pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"}</span>
+            <i className={"ti "+pieceInfo.next.icon} style={{ fontSize:26, color:"#c9a961" }}/>
+          </div>
+          <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>until you reach {pieceInfo.next.name}{done.length<6?" — your next rank":""}</p>
+        </div>
+      ) : (
+        <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20, marginBottom:20 }}>
+          <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:4 }}>
+            <span style={{ fontFamily:T.serif, fontSize:34, color:"#c9a961" }}>King</span>
+            <i className="ti ti-chess-king" style={{ fontSize:26, color:"#c9a961" }}/>
+          </div>
+          <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>{"You've reached the highest rank"}</p>
+        </div>
+      )}
+      {showStrongest && (
+        <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20 }}>
+          <p style={{ fontSize:12, letterSpacing:"0.1em", color:"#9c9384", margin:"0 0 10px", fontFamily:T.sans }}>STRONGEST SO FAR</p>
+          {catProgress.map((cat,i) => (
+            <div key={cat.label} style={{ display:"flex", alignItems:"center", gap:10, marginBottom:i<catProgress.length-1?8:0 }}>
+              <span style={{ fontSize:13, color:i===0?"#f4f1ea":"#9c9384", width:128, flexShrink:0, fontFamily:T.sans }}>{cat.label}</span>
+              <div style={{ flex:1, height:4, background:"#2a251c", borderRadius:2, overflow:"hidden" }}>
+                <div style={{ width:cat.pct+"%", height:"100%", background:i===0?"#c9a961":"#5f5a4c" }}/>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function HomeScreen({done, cur, streak, onStart, roleId, activeRole,
 dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false}) {
@@ -44,6 +88,11 @@ finishDate + ".";
   })();
   const quote = QUOTES[cur%QUOTES.length];
   const insight = { label: lesson.tag, headline: lesson.quote, body: lesson.teaser };
+  const pieceInfo = getPieceInfo(done.length);
+  const catProgress = getCategoryProgress(done);
+  const showStrongest = catProgress.some(c => c.count > 1);
+  const [showPieceModal, setShowPieceModal] = useState(() => !ls("au1_piece_intro", false));
+  function dismissPieceModal() { lsSet("au1_piece_intro", true); setShowPieceModal(false); }
   // ── shared blocks used in both layouts ──────────────────────────────────
   const storedAmbition = (() => { try { return localStorage.getItem("au1_ambition") || ""; } catch { return ""; } })();
   const InsightCard = () => (
@@ -201,62 +250,7 @@ finishDate + ".";
             </div>
 
             {/* Right: YOUR JOURNEY card */}
-            <div style={{ background: "#1a1714", borderRadius: 14, overflow: "hidden" }}>
-              {/* Header */}
-              <div style={{ padding: "22px 26px", display: "flex", alignItems: "center", gap: 14 }}>
-                <div style={{ width: 42, height: 42, borderRadius: "50%", background: "#111009", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
-                    {/* Calendar outline */}
-                    <rect x="2" y="3.5" width="18" height="15" rx="2" stroke="white" strokeWidth="1.2"/>
-                    {/* Header bar */}
-                    <path d="M2 8h18" stroke="white" strokeWidth="1.2"/>
-                    {/* Hanging tabs */}
-                    <path d="M7 1.5v4M15 1.5v4" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
-                    {/* 3×3 dot grid */}
-                    <circle cx="7"  cy="12" r="1" fill="white"/>
-                    <circle cx="11" cy="12" r="1" fill="white"/>
-                    <circle cx="15" cy="12" r="1" fill="white"/>
-                    <circle cx="7"  cy="15.5" r="1" fill="white"/>
-                    <circle cx="11" cy="15.5" r="1" fill="white"/>
-                    <circle cx="15" cy="15.5" r="1" fill="white"/>
-                  </svg>
-                </div>
-                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", color: "#c9a96e", fontFamily: T.sans }}>Your Journey</span>
-              </div>
-
-              {/* Divider */}
-              <div style={{ height: "0.5px", background: "rgba(255,255,255,0.08)", margin: "0 26px" }}/>
-
-              {/* Stats */}
-              <div style={{ padding: "20px 26px", display: "flex", flexDirection: "column", gap: 13 }}>
-                {[
-                  `Day ${cur} of 14`,
-                  streak > 0 ? `${streak} day streak` : "Start your streak",
-                  `${done.length} of 14 complete`,
-                ].map((item, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <span style={{ color: "#c9a96e", fontSize: 9, lineHeight: 1 }}>♦</span>
-                    <span style={{ fontFamily: T.sans, fontSize: 14, color: "rgba(255,255,255,0.78)", fontWeight: 300, letterSpacing: "0.01em" }}>{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Divider */}
-              <div style={{ height: "0.5px", background: "rgba(255,255,255,0.08)", margin: "0 26px" }}/>
-
-              {/* CTA */}
-              <div style={{ padding: "18px 26px" }}>
-                <button onClick={() => onStart(finished ? 1 : cur)}
-                  style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, padding: 0, transition: "opacity 0.2s" }}
-                  onMouseEnter={e => e.currentTarget.style.opacity = "0.7"}
-                  onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
-                  <span style={{ fontFamily: T.sans, fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.82)" }}>
-                    {finished ? "Revisit Day 1" : todayDone ? "Review Session" : "Begin Session"}
-                  </span>
-                  <span style={{ color: "#c9a96e", fontSize: 16, lineHeight: 1 }}>→</span>
-                </button>
-              </div>
-            </div>
+            <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} showStrongest={showStrongest} done={done} T={T} />
 
           </div>
         </div>
@@ -315,6 +309,28 @@ finishDate + ".";
 
         </div>
 
+      {showPieceModal && (
+        <div style={{position:"fixed",inset:0,background:"rgba(10,9,7,0.72)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:"24px"}} onClick={dismissPieceModal}>
+          <div style={{width:"100%",maxWidth:340,background:"#17140f",borderRadius:12,padding:"28px",textAlign:"center"}} onClick={e=>e.stopPropagation()}>
+            <div style={{display:"flex",justifyContent:"center",gap:8,marginBottom:20}}>
+              <div style={{width:40,height:40,borderRadius:"50%",background:"#c9a961",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <i className="ti ti-chess" style={{fontSize:20,color:"#17140f"}}/>
+              </div>
+              {["ti-chess-knight","ti-chess-bishop","ti-chess-rook","ti-chess-queen","ti-chess-king"].map(icon=>(
+                <i key={icon} className={"ti "+icon} style={{fontSize:20,color:"#4a4437",alignSelf:"center"}}/>
+              ))}
+            </div>
+            <h2 style={{fontFamily:T.serif,fontSize:24,color:"#f4f1ea",fontWeight:400,margin:"0 0 10px"}}>Six pieces, one journey</h2>
+            <p style={{fontSize:14,color:"#9c9384",lineHeight:1.6,margin:"0 0 24px"}}>
+              {"You'll progress through six pieces as you build your presence — Pawn, Knight, Bishop, Rook, Queen, King. Each one unlocks as your skills grow."}
+            </p>
+            <button onClick={dismissPieceModal} style={{width:"100%",background:"#c9a961",border:"none",color:"#17140f",fontSize:14,fontWeight:500,padding:"12px",borderRadius:8,cursor:"pointer"}}>
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
+
       </div>
     );
   }
@@ -372,17 +388,7 @@ finishDate + ".";
       <section style={{padding:"48px 24px 56px",background:T2.bg}}>
         <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Journey</div>
         <div style={{width:20,height:1,background:T.gold,marginBottom:28,opacity:0.5}}/>
-        <div style={{display:"flex",alignItems:"flex-end",gap:28,marginBottom:24,flexWrap:"wrap"}}>
-          <div>
-            <div style={{fontFamily:T.serif,fontSize:72,fontWeight:500,color:T2.text,lineHeight:0.85,letterSpacing:"-4px"}}>{pct}<span style={{fontSize:26,letterSpacing:"-1px",color:T.gold}}>%</span></div>
-            <div style={{fontSize:11,color:T2.text3,letterSpacing:"2px",textTransform:"uppercase",marginTop:10,fontFamily:T.sans}}>{done.length} of 14 sessions complete</div>
-          </div>
-          {onTrackMsg && (
-            <div style={{paddingBottom:10,maxWidth:260,borderLeft:"2px solid "+T.gold,paddingLeft:16}}>
-              <p style={{fontSize:13,color:streak>=2?T.green:T.goldDark,lineHeight:1.55,fontFamily:T.sans}}>{onTrackMsg}</p>
-            </div>
-          )}
-        </div>
+        <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} showStrongest={showStrongest} done={done} T={T} />
       </section>
 
       {/* ── SECTION 4: All Sessions ── */}
@@ -423,6 +429,28 @@ finishDate + ".";
           )}
         </div>
       </section>
+
+      {showPieceModal && (
+        <div style={{position:"fixed",inset:0,background:"rgba(10,9,7,0.72)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:"24px"}} onClick={dismissPieceModal}>
+          <div style={{width:"100%",maxWidth:340,background:"#17140f",borderRadius:12,padding:"28px",textAlign:"center"}} onClick={e=>e.stopPropagation()}>
+            <div style={{display:"flex",justifyContent:"center",gap:8,marginBottom:20}}>
+              <div style={{width:40,height:40,borderRadius:"50%",background:"#c9a961",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <i className="ti ti-chess" style={{fontSize:20,color:"#17140f"}}/>
+              </div>
+              {["ti-chess-knight","ti-chess-bishop","ti-chess-rook","ti-chess-queen","ti-chess-king"].map(icon=>(
+                <i key={icon} className={"ti "+icon} style={{fontSize:20,color:"#4a4437",alignSelf:"center"}}/>
+              ))}
+            </div>
+            <h2 style={{fontFamily:T.serif,fontSize:24,color:"#f4f1ea",fontWeight:400,margin:"0 0 10px"}}>Six pieces, one journey</h2>
+            <p style={{fontSize:14,color:"#9c9384",lineHeight:1.6,margin:"0 0 24px"}}>
+              {"You'll progress through six pieces as you build your presence — Pawn, Knight, Bishop, Rook, Queen, King. Each one unlocks as your skills grow."}
+            </p>
+            <button onClick={dismissPieceModal} style={{width:"100%",background:"#c9a961",border:"none",color:"#17140f",fontSize:14,fontWeight:500,padding:"12px",borderRadius:8,cursor:"pointer"}}>
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
 
     </div>
   );
