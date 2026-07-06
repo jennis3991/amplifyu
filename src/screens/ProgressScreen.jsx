@@ -4,7 +4,7 @@ import { LESSONS, ROLES } from '../data.js';
 import { PIECES, getPieceInfo } from '../utils.js';
 
 export function ProgressScreen({done, cur, streak, roleId, activeRole,
-onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
+onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart}) {
   const T2 = Object.assign({}, T, DK);
   const pct = Math.round((done.length/14)*100);
   const nextLesson = LESSONS.find(l=>l.day===cur);
@@ -92,7 +92,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
       {/* ── OVERVIEW ─────────────────────────────────────────────────────── */}
       <div style={{...W,paddingTop:isDesktop?40:24,marginTop:0}}>
         {sec("Overview")}
-        <div style={{display:"grid",gridTemplateColumns:isDesktop?"auto 1fr 1fr 1fr 1fr":"1fr 1fr",gap:isDesktop?14:10,alignItems:"stretch"}}>
+        <div style={{display:"grid",gridTemplateColumns:isDesktop?"auto 1fr 1fr":"1fr 1fr",gap:isDesktop?14:10,alignItems:"stretch"}}>
 
           {/* Overall Progress — dark card */}
           <div style={{background:"#0D0B08",borderRadius:10,padding:isDesktop?"22px 24px":"18px",minWidth:isDesktop?160:undefined}}>
@@ -100,20 +100,6 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
             <div style={{fontFamily:T.serif,fontSize:isDesktop?44:38,fontWeight:600,color:"#F5EFE6",letterSpacing:"-2px",lineHeight:1,marginBottom:6}}>{pct}<span style={{fontSize:isDesktop?20:16,color:T.gold}}>%</span></div>
             <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.45)",marginBottom:12}}>{done.length} of 14 sessions complete</div>
             <div style={{height:2,background:"rgba(255,255,255,0.1)",borderRadius:1}}><div style={{width:pct+"%",height:"100%",background:T.gold,borderRadius:1,transition:"width 0.8s ease"}}/></div>
-          </div>
-
-          {/* Sessions Completed */}
-          <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"16px"}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Sessions Completed</div>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?36:30,fontWeight:600,color:T2.text,letterSpacing:"-1.5px",lineHeight:1,marginBottom:4}}>{done.length}</div>
-            <div style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>of 14</div>
-          </div>
-
-          {/* Day Streak */}
-          <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"16px"}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Day Streak</div>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?36:30,fontWeight:600,color:streak>0?T.gold:T2.text,letterSpacing:"-1.5px",lineHeight:1,marginBottom:4}}>{streak}</div>
-            <div style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{streak>0?"Keep it going!":"Start your streak"}</div>
           </div>
 
           {/* Time Invested */}
@@ -132,7 +118,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
                 <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,fontWeight:300}}>{nextLesson.title}</div>
               </div>
               <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end",marginTop:12}}>
-                <div style={{width:32,height:32,borderRadius:"50%",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}>
+                <div onClick={()=>onStart&&onStart(cur)} style={{width:32,height:32,borderRadius:"50%",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}>
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke={T2.bg} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </div>
               </div>
@@ -208,80 +194,31 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false}) {
       {/* ── SKILLS DEVELOPMENT ───────────────────────────────────────────── */}
       <div style={{...W,paddingTop:isDesktop?40:28}}>
         {sec("Skills Development")}
-        <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 280px":"1fr",gap:isDesktop?24:14}}>
-          <div style={{display:"flex",flexDirection:"column",gap:0,background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
-            {SKILLS.map((sk,i)=>{
-              const p = Math.round((sk.days.filter(d=>done.includes(d)).length/sk.days.length)*100);
-              return (
-                <div key={sk.label} style={{padding:isDesktop?"20px 24px":"16px 20px",borderBottom:i<SKILLS.length-1?"0.5px solid "+T2.divider:"none"}}>
-                  <div style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:12}}>
-                    <div style={{width:32,height:32,borderRadius:7,background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{sk.icon}</div>
-                    <div style={{flex:1}}>
-                      <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,marginBottom:2}}>{sk.label}</div>
-                      <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,fontWeight:300}}>{sk.sub}</div>
-                    </div>
-                    <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:700,color:p>=50?T.gold:T2.text3,flexShrink:0}}>{p}%</div>
+        <div style={{display:"flex",flexDirection:"column",gap:0,background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+          {SKILLS.map((sk,i)=>{
+            const p = Math.round((sk.days.filter(d=>done.includes(d)).length/sk.days.length)*100);
+            return (
+              <div key={sk.label} style={{padding:isDesktop?"20px 24px":"16px 20px",borderBottom:i<SKILLS.length-1?"0.5px solid "+T2.divider:"none"}}>
+                <div style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:12}}>
+                  <div style={{width:32,height:32,borderRadius:7,background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{sk.icon}</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,marginBottom:2}}>{sk.label}</div>
+                    <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,fontWeight:300}}>{sk.sub}</div>
                   </div>
-                  <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-                    <div style={{width:p+"%",height:"100%",background:p>=50?T.gold:"rgba(138,158,132,0.5)",borderRadius:2,transition:"width 0.8s ease"}}/>
-                  </div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:700,color:p>=50?T.gold:T2.text3,flexShrink:0}}>{p}%</div>
                 </div>
-              );
-            })}
-          </div>
-
-          {/* Skill Focus This Week */}
-          <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px 20px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
-            <div>
-              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:20}}>Skill Focus This Week</div>
-              <div style={{width:64,height:64,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke={T.gold} strokeWidth="1.5" fill="none"/><circle cx="14" cy="14" r="5" stroke={T.gold} strokeWidth="1.3" fill="none"/><circle cx="14" cy="14" r="1.5" fill={T.gold}/></svg>
+                <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+                  <div style={{width:p+"%",height:"100%",background:p>=50?T.gold:"rgba(138,158,132,0.5)",borderRadius:2,transition:"width 0.8s ease"}}/>
+                </div>
               </div>
-              <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,marginBottom:8}}>{skillFocus.label}</div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,fontWeight:300,marginBottom:20}}>
-                {skillFocus.label==="Connection"?"Build deeper relationships through active listening and empathy."
-                :skillFocus.label==="Presence & Influence"?"Develop confidence, delivery and non-verbal communication."
-                :skillFocus.label==="Storytelling"?"Create narratives that make your ideas memorable."
-                :"Sharpen clarity, structure and precision in everything you say."}
-              </p>
-            </div>
-            <button style={{width:"100%",padding:"12px",borderRadius:6,border:"none",background:T2.text,color:T2.bg,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer"}}>View Recommended Tools</button>
-          </div>
+            );
+          })}
         </div>
       </div>
 
       {/* ── STREAK + ACHIEVEMENTS ─────────────────────────────────────────── */}
       <div style={{...W,paddingTop:isDesktop?40:28}}>
-        <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:isDesktop?24:14}}>
-
-          {/* Streak Card */}
-          <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"24px 28px":"18px 20px"}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:16}}>Your Streak</div>
-            <div style={{display:"flex",alignItems:"flex-end",gap:isDesktop?32:24,marginBottom:16,flexWrap:"wrap"}}>
-              <div>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?52:40,fontWeight:600,color:streak>0?T.gold:T2.text,letterSpacing:"-2px",lineHeight:1}}>{streak}</div>
-                <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginTop:4}}>day streak</div>
-              </div>
-              <div style={{display:"flex",gap:6,alignItems:"center",paddingBottom:4}}>
-                {DAYS_OF_WEEK.map((d,i)=>{
-                  const active = i < weekDone;
-                  return (
-                    <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
-                      <div style={{fontFamily:T.sans,fontSize:8,color:T2.text4}}>{d}</div>
-                      <div style={{width:22,height:22,borderRadius:"50%",background:active?"rgba(138,158,132,0.15)":T2.bg,border:`1px solid ${active?"rgba(138,158,132,0.4)":T2.border}`,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                        {active&&<svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 5l3 3 5-5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/></svg>}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            <p style={{fontFamily:T.sans,fontSize:12,color:T2.text4,lineHeight:1.5,marginBottom:16}}>{streak>0?"Complete a session tomorrow to keep your streak alive.":"Start a session today to begin your streak."}</p>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-              <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>Best streak: <strong>{Math.max(streak,1)} days</strong></div>
-              <button style={{padding:"9px 18px",borderRadius:6,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontFamily:T.sans,fontSize:12,fontWeight:600,cursor:"pointer"}}>Continue learning</button>
-            </div>
-          </div>
+        <div>
 
           {/* Achievements */}
           <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"24px 28px":"18px 20px"}}>
