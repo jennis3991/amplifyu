@@ -182,7 +182,7 @@ export function SessionLeftPanel({
         />
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(8,6,3,0.75) 0%, rgba(8,6,3,0.1) 50%, transparent 75%)" }}/>
         <div style={{ position:"absolute", bottom:40, left:48, right:48, zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, margin:0 }}>90% of your hardest work lives below the waterline.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(18px,2vw,26px)", maxWidth:320, lineHeight:1.3, margin:0 }}>90% of your hardest work lives below the waterline.</p>
         </div>
       </div>
     );
