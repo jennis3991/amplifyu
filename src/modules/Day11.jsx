@@ -372,11 +372,15 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [] }) {
   const savedSig  = (() => { try { return localStorage.getItem('d11Sig')  || ''; } catch(_) { return ''; } })();
   const futureWords = (brandWords || []).filter(w => w && w.trim().length > 0);
 
+  const savedStmt = (() => { try { return localStorage.getItem('d11Stmt') || ''; } catch(_) { return ''; } })();
+
   const hasProfile = inputMode === 'paste'
     ? profileText.trim().length > 20
     : inputMode === 'screenshot'
       ? screenshots.length > 0
-      : cvText.trim().length > 20;
+      : inputMode === 'summary'
+        ? savedSig.trim().length > 0
+        : cvText.trim().length > 20;
 
   const sn  = { fontFamily: T.sans };
   const sf  = { fontFamily: T.serif, color: T2.text };
@@ -423,8 +427,9 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [] }) {
   }
 
   async function getProfileContent() {
-    if (inputMode === 'paste')  return profileText;
-    if (inputMode === 'cv')     return cvText;
+    if (inputMode === 'paste')   return profileText;
+    if (inputMode === 'cv')      return cvText;
+    if (inputMode === 'summary') return [savedSig, savedStmt].filter(Boolean).join('\n\n');
     if (inputMode === 'screenshot' && screenshots.length > 0) {
       try {
         const imageBlocks = screenshots.slice(0, 4).map(s => ({
@@ -575,9 +580,10 @@ Keep it under 280 words. Make every word earn its place.`;
   // ── IMPORT ────────────────────────────────────────────────────────────────
   if (phase === 'import') {
     const tabs = [
-      { id: 'paste',      label: 'Paste Profile',     recommended: true },
-      { id: 'screenshot', label: 'Upload Screenshots', recommended: false },
-      { id: 'cv',         label: 'Upload CV',          recommended: false },
+      { id: 'paste',      label: 'Paste Profile',      recommended: false },
+      { id: 'summary',    label: 'My Rehearsal',        recommended: true  },
+      { id: 'screenshot', label: 'Upload Screenshots',  recommended: false },
+      { id: 'cv',         label: 'Upload CV',           recommended: false },
     ];
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 18 : 16, animation: "fadeUp 0.5s ease both" }}>
@@ -608,6 +614,22 @@ Keep it under 280 words. Make every word earn its place.`;
               rows={isDesktop ? 9 : 8}
               style={{ width: "100%", background: "rgba(255,255,255,0.02)", border: "0.5px solid " + T2.border, borderRadius: 4, padding: "12px 14px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box" }}
             />
+          </div>
+        )}
+
+        {inputMode === 'summary' && (
+          <div style={{ animation: "fadeUp 0.25s ease both" }}>
+            {savedSig ? (
+              <div style={{ background: "rgba(200,164,106,0.06)", border: "0.5px solid rgba(200,164,106,0.25)", borderRadius: 6, padding: "16px 18px" }}>
+                <div style={{ ...lbl, color: "rgba(200,164,106,0.6)", marginBottom: 10 }}>Your Professional Signature</div>
+                <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text, lineHeight: 1.65, margin: 0 }}>{savedSig}</p>
+                {savedStmt && <p style={{ ...sn, fontSize: isDesktop ? 13 : 12, color: T2.text3, lineHeight: 1.6, marginTop: 10, fontStyle: "italic" }}>{savedStmt}</p>}
+              </div>
+            ) : (
+              <div style={{ background: "rgba(255,255,255,0.02)", border: "0.5px dashed " + T2.border, borderRadius: 6, padding: "24px 20px", textAlign: "center" }}>
+                <p style={{ ...sn, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: 0 }}>Complete the Rehearsal step first to generate your Professional Signature.</p>
+              </div>
+            )}
           </div>
         )}
 
