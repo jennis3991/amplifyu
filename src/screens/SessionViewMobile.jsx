@@ -24,6 +24,23 @@ import { Timer } from '../components/Timer.jsx';
 import { PBar } from '../components/NavComponents.jsx';
 import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 
+function TabHeroPane({ label, headline, liveIndicator = false }) {
+  return (
+    <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box"}}>
+      <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{label}</div>
+      {liveIndicator ? (
+        <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10}}>
+          <div style={{width:10,height:10,borderRadius:"50%",background:"#CC4444",flexShrink:0,marginTop:6,animation:"glowPulse 1s ease infinite",boxShadow:"0 0 8px rgba(204,68,68,0.55)"}}/>
+          <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,margin:0}}>{headline}</p>
+        </div>
+      ) : (
+        <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{headline}</p>
+      )}
+      <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)"}}/>
+    </div>
+  );
+}
+
 export function MobileSessionView({
   T2, step, STEPS, idx, setIdx, lesson, isDone, onComplete, onBack,
   isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isD14, isNT,
@@ -409,122 +426,59 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
      {/* Header image + Exit button overlay */}
     <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:step==="Rehearsal"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
       {(()=>{
-        // D5 Practice — PRE Card Sort cinematic dark panel
-        if(isD5 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The PRE Card Sort</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Sort the cards. Train the instinct.</p>
-              <div style={{width:36,height:1,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D5 Simulation — The Boardroom cinematic dark panel
-        if(isD5 && step==="Simulation") return (
-          <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Boardroom</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>One question. Ten seconds to think. Then answer.</p>
-              <div style={{width:36,height:1,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D4 Simulation — Breaking News Live cinematic dark panel
-        if(isD4 && step==="Simulation") return (
-          <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Breaking News Live</div>
-              <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14}}>
-                <div style={{width:10,height:10,borderRadius:"50%",background:"#CC4444",flexShrink:0,marginTop:6,animation:"glowPulse 1s ease infinite",boxShadow:"0 0 8px rgba(204,68,68,0.55)"}}/>
-                <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,margin:0}}>Report it live. Watch what your audience remembers.</p>
-              </div>
-              <div style={{width:40,height:1,background:"rgba(245,239,230,0.3)"}}/>
-            </div>
-          </div>
-        );
-        // D1 Simulation — cinematic dark panel matching desktop left panel
-        if(isD1 && step==="Simulation") return (
-          <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Simulation · Day 1</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:12}}>Awareness is where every great communicator begins.</p>
-              <div style={{padding:"8px 12px",background:"rgba(138,158,132,0.1)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",marginBottom:10}}>
-                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>Today's Goal</div>
-                <div style={{fontFamily:T.serif,fontSize:13,color:"rgba(245,239,230,0.85)"}}>Establish your clarity baseline.</div>
-              </div>
-            </div>
-          </div>
-        );
-        // Simulation tab: dark cinematic panel for most modules (D13/D14 handle their own)
-        if(step==="Simulation" && !isD13 && !isD14){
-          const SIM_HEADERS={
-            1:{label:"SPEAK CLEARLY — IN ACTION",   heading:"Clarity under pressure. This is the real test."},
-            2:{label:"REAL-WORLD VOICE COACHING",   heading:"This is where voice training becomes real."},
-            3:{label:"FILLER-FREE — IN ACTION",     heading:"60 seconds. Zero fillers. Real stakes."},
-            4:{label:"BREVITY — IN ACTION",         heading:"Short sentences. High stakes. Go."},
-            5:{label:"PRE — IN ACTION",             heading:"Structure your thinking. Speak with precision."},
-            6:{label:"AI CONVERSATION PREP",           heading:"Prepare for the conversations that matter most."},
-            7:{label:"WEEK 1 MASTER CHALLENGE",      heading:"Teach It Forward. Prove what you know."},
-            8:{label:"NARRATIVE — IN ACTION",       heading:"Tell the story. Transport your audience."},
-            9:{label:"THE RAPPORT BUILDER",          heading:"Four conversations. Four personalities. Build genuine rapport."},
-            10:{label:"PERFORMANCE — IN ACTION",    heading:"Communicate your impact with conviction."},
-            11:{label:"BRAND — IN ACTION",           heading:"Your brand is built in every room you enter. Shape it."},
+        // ── Simulation panes ───────────────────────────────────────────────
+        if(isD4 && step==="Simulation") return <TabHeroPane label="Breaking News Live" headline="Report it live. Watch what your audience remembers." liveIndicator />;
+        if(isD1 && step==="Simulation") return <TabHeroPane label="Simulation · Day 1" headline="Awareness is where every great communicator begins." />;
+        if(isD13 && step==="Simulation") return <TabHeroPane label="The Promotion Room" headline="You're not in the room. Find out what they're saying — and change it." />;
+        if(isD14 && step==="Simulation") return <TabHeroPane label="Your Communication Blueprint" headline="Build the system you'll use for the rest of your career." />;
+        if(step==="Simulation"){
+          const SIM={
+            1:{label:"SPEAK CLEARLY — IN ACTION",heading:"Clarity under pressure. This is the real test."},
+            2:{label:"REAL-WORLD VOICE COACHING",heading:"This is where voice training becomes real."},
+            3:{label:"FILLER-FREE — IN ACTION",heading:"60 seconds. Zero fillers. Real stakes."},
+            4:{label:"BREVITY — IN ACTION",heading:"Short sentences. High stakes. Go."},
+            5:{label:"PRE — IN ACTION",heading:"Structure your thinking. Speak with precision."},
+            6:{label:"AI CONVERSATION PREP",heading:"Prepare for the conversations that matter most."},
+            7:{label:"WEEK 1 MASTER CHALLENGE",heading:"Teach It Forward. Prove what you know."},
+            8:{label:"NARRATIVE — IN ACTION",heading:"Tell the story. Transport your audience."},
+            9:{label:"THE RAPPORT BUILDER",heading:"Four conversations. Four personalities. Build genuine rapport."},
+            10:{label:"PERFORMANCE — IN ACTION",heading:"Communicate your impact with conviction."},
+            11:{label:"BRAND — IN ACTION",heading:"Your brand is built in every room you enter. Shape it."},
+            12:{label:"PRESENCE — IN ACTION",heading:"Every signal you send shapes what people believe."},
           };
-          const sh=SIM_HEADERS[lesson.day]||{label:"SIMULATION",heading:"Real scenario. Real pressure. Real coaching."};
-          return (
-            <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:lesson.day===2?"24px 24px 12px":"24px 24px 28px",boxSizing:"border-box"}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{sh.label}</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{sh.heading}</p>
-              <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
-              {lesson.day !== 2 && <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>Day {lesson.day} · {lesson.tag}</p>}
-            </div>
-          );
+          const sh=SIM[lesson.day]||{label:"SIMULATION",heading:"Real scenario. Real pressure. Real coaching."};
+          return <TabHeroPane label={sh.label} headline={sh.heading} />;
         }
-        // NT (Day 8) Example — high-impact stat quote
+        // ── Example panes ──────────────────────────────────────────────────
         if(isNT && step==="Example") return (
-          <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 32px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
+          <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 40% 30%, rgba(183,154,107,0.06) 0%, transparent 60%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2,animation:"fadeUp 0.6s ease both"}}>
-              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:16}}>Storytelling in the Wild</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:20}}>Stories create empathy. Empathy creates trust. Trust creates influence.</p>
-              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)",marginBottom:20}}/>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,fontStyle:"italic",color:"#F5EFE6",lineHeight:1.25,margin:0}}>The same facts — told as a story — land 22× more powerfully in the human brain.</p>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Storytelling in the Wild</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Stories create empathy. Empathy creates trust. Trust creates influence.</p>
+              <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)"}}/>
             </div>
           </div>
         );
-        // Example tab: dark cinematic text panel instead of image (D13/D14 use STEP_IMGS)
-        if(step==="Example" && !isD13 && !isD14){
-          const EX_HEADERS={
-            1:{label:"MASTERS OF CLARITY",      heading:"The simplest words carry the most weight.",                                  body:"Clear communicators don't use more words. They use better ones."},
-            2:{label:"VOICE IN ACTION",           heading:"Range creates engagement. Contrast creates emotion.",                        body:null},
-            3:{label:"MASTERS OF THE PAUSE",     heading:"The strongest speakers pause. Confident speakers own the silence.",          body:null},
-            4:{label:"MASTERS OF BREVITY",        heading:"Say less. Mean more. Be remembered.",                                       body:null},
-            5:{label:"PRE IN ACTION",             heading:"Point. Reason. Example. The architecture of every great professional answer.", body:null},
-            6:{label:"MASTERS UNDER PRESSURE",      heading:"Composure is a skill. The calmest person in the room shapes the room.",  body:"How elite communicators handle the conversations most people avoid."},
-            7:{label:"COMMUNICATION IN ACTION",  heading:"Every skill. One conversation.",                                            body:"This is what a week of deliberate practice looks like in the real world."},
-            8:{label:"STORYTELLING IN THE WILD", heading:"Stories create empathy. Empathy creates trust. Trust creates influence.",    body:"The same facts — told as a story — land 22× more powerfully in the human brain."},
-            9:{label:"CONNECTION IN ACTION",      heading:"The most connected people listen more than they speak.",                  body:"Four stories. One truth: connection is the skill that changes everything."},
-            10:{label:"PERFORMANCE IN ACTION",   heading:"Visible performance is communicated performance.",                          body:"Your work is exceptional. Make sure people know it."},
-            11:{label:"ICONIC BRANDS. INTENTIONAL CHOICES.", heading:"Brand isn't what you say about yourself. It's what others say when you're not there.", body:"Three people whose personal brands became cultural forces — not by accident, but by design."},
+        if(isD14 && step==="Example") return <TabHeroPane label="Great Communicators Are Made" headline="None of them started where they finished. The same process is available to you." />;
+        if(step==="Example" && !isD13){
+          const EX={
+            1:{label:"MASTERS OF CLARITY",heading:"The simplest words carry the most weight."},
+            2:{label:"VOICE IN ACTION",heading:"Range creates engagement. Contrast creates emotion."},
+            3:{label:"MASTERS OF THE PAUSE",heading:"The strongest speakers pause. Confident speakers own the silence."},
+            4:{label:"MASTERS OF BREVITY",heading:"Say less. Mean more. Be remembered."},
+            5:{label:"PRE IN ACTION",heading:"Point. Reason. Example. The architecture of every great professional answer."},
+            6:{label:"MASTERS UNDER PRESSURE",heading:"Composure is a skill. The calmest person in the room shapes the room."},
+            7:{label:"COMMUNICATION IN ACTION",heading:"Every skill. One conversation."},
+            8:{label:"STORYTELLING IN THE WILD",heading:"Stories create empathy. Empathy creates trust. Trust creates influence."},
+            9:{label:"CONNECTION IN ACTION",heading:"The most connected people listen more than they speak."},
+            10:{label:"PERFORMANCE IN ACTION",heading:"Visible performance is communicated performance."},
+            11:{label:"ICONIC BRANDS. INTENTIONAL CHOICES.",heading:"Brand isn't what you say about yourself. It's what others say when you're not there."},
           };
-          const h=EX_HEADERS[lesson.day]||EX_HEADERS[1];
-          return (
-            <div style={{width:"100%",height:320,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:(lesson.day===2||lesson.day===3||lesson.day===4||lesson.day===5)?"24px 24px 12px":"24px 24px 28px",boxSizing:"border-box"}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{h.label}</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{h.heading}</p>
-              <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
-              {h.body && <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>{h.body}</p>}
-            </div>
-          );
+          const h=EX[lesson.day]||EX[1];
+          return <TabHeroPane label={h.label} headline={h.heading} />;
         }
+        // ── Image lookup tables ────────────────────────────────────────────
         const STEP_IMGS={
           1:{Insight:"/day1-insight.jpg",Theory:"/feynman-technique.jpg",Example:"/day1-insight.jpg",Practice:"/practice-bg.jpg",Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           2:{Insight:"/d2-insight.jpg",Theory:"/d2-theory.jpg",Practice:"/d2-practice.jpg",Review:"/review-chair.jpg"},
@@ -541,244 +495,20 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           12:{Insight:"/day12-insight.jpg",Theory:"/day12-theory.jpg",Practice:null,Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Simulation:null,Review:"/review-chair.jpg"},
         };
-        // D1 Practice — cinematic dark panel matching desktop left panel
-        if(isD1 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            {/* Text at bottom */}
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Voice Warm-Up</div>
-              <p style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:"#F5EFE6",lineHeight:1.1,marginBottom:14}}>Let's warm up your voice.</p>
-            </div>
-          </div>
-        );
-        // D3 Practice — cinematic dark panel
-        if(isD3 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Filler-Free Challenge™</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:0}}>Silence often sounds more confident than fillers.</p>
-            </div>
-          </div>
-        );
-        // D6 Rehearsal — cinematic dark panel
-        if(isD6 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:260,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.06) 0%, transparent 60%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Find Your Words</div>
-              <p style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>The right words under pressure don't come from thinking faster. They come from having them ready.</p>
-              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D9 Practice — cinematic dark panel
-        if(isD9 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Build Your Connection Habits</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Five exercises. Build the habits of the world's most connected communicators.</p>
-              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D6 Simulation — cinematic dark panel
-        if(isD6 && step==="Simulation") return (
-          <div style={{width:"100%",height:260,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>AI Conversation Prep</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Prepare for the conversations that matter most.</p>
-              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D13 Simulation — cinematic dark panel
-        if(isD13 && step==="Simulation") return (
-          <div style={{width:"100%",height:260,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Promotion Room</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>You're not in the room. Find out what they're saying — and change it.</p>
-              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D14 Example — cinematic dark panel
-        if(isD14 && step==="Example") return (
-          <div style={{width:"100%",height:260,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Great Communicators Are Made</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>None of them started where they finished. The same process is available to you.</p>
-              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D14 Simulation — cinematic dark panel
-        if(isD14 && step==="Simulation") return (
-          <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 50% 30%, rgba(200,168,76,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Your Communication Blueprint</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Build the system you'll use for the rest of your career.</p>
-              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D14 Practice — cinematic dark panel
-        if(isD14 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 50% 30%, rgba(138,158,132,0.10) 0%, transparent 60%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Day 14 · Capstone</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>You are not the communicator you were 14 days ago.</p>
-              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D14 Practice — cinematic dark panel
-        if(isD14 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:260,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 50% 30%, rgba(200,168,76,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Day 14 · Your Practice</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>One conversation. Use everything you've built.</p>
-              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D13 Practice — cinematic dark panel
-        if(isD13 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Make Your Value Visible</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Four exercises. Make your value impossible to ignore.</p>
-              <div style={{width:36,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D12 Practice — cinematic dark panel
-        if(isD12 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 60% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Presence Challenge</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Seven rounds. Every physical signal that shapes how communication lands.</p>
-              <div style={{width:36,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D11 Rehearsal — cinematic dark panel
-        if(isD11 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Build Your Brand</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:12}}>Every career has a reputation. The best careers have one by design.</p>
-              <div style={{width:36,height:1.5,background:"rgba(138,158,132,0.5)",marginBottom:12}}/>
-              <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Define the professional you're becoming — and uncover the gap between how you're seen today and how you want to be remembered.</p>
-            </div>
-          </div>
-        );
-        // D11 Simulation — cinematic dark panel
-        if(isD11 && step==="Simulation") return (
-          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Brand — In Action</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:12}}>Your brand isn't what you say about yourself. It's what people believe after experiencing you.</p>
-              <div style={{width:36,height:1.5,background:"rgba(138,158,132,0.5)",marginBottom:12}}/>
-              <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.5)",lineHeight:1.6,margin:0}}>Let's see how closely your professional profile reflects the future you're building.</p>
-            </div>
-          </div>
-        );
-        // NT Simulation — cinematic dark panel
-        if(isNT && step==="Simulation") return (
-          <div style={{width:"100%",height:300,position:"relative",overflow:"hidden"}}>
-            <img src="/d8-story-book.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, rgba(10,8,5,0.72) 0%, rgba(10,8,5,0.25) 40%, rgba(10,8,5,0.3) 60%, rgba(10,8,5,0.88) 100%)"}}/>
-            <div style={{position:"absolute",bottom:28,left:24,right:24,zIndex:2,animation:"fadeUp 0.6s ease both"}}>
-              <div style={{fontSize:9,fontWeight:700,color:"rgba(200,168,76,0.7)",textTransform:"uppercase",letterSpacing:"4px",marginBottom:16,fontFamily:T.sans}}>The Story Architect</div>
-              <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:500,color:"rgba(245,239,230,0.93)",lineHeight:1.1,letterSpacing:"-1px",margin:0}}>Build a story<br/>that moves people.</h2>
-            </div>
-          </div>
-        );
-        // NT Practice — cinematic dark panel
-        if(isNT && step==="Rehearsal") return (
-          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Find Your Story</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:12}}>Every great communicator has a handful of stories they return to throughout their career. Let's build one of yours.</p>
-              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)",marginBottom:12}}/>
-              <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.55)",lineHeight:1.6,margin:0}}>Choose the story territory that feels most true right now. Speak for around 60 seconds. Your AmplifyU coach will find the shape of your story and turn it into something you can use anywhere.</p>
-            </div>
-          </div>
-        );
-        // D10 Practice — cinematic dark panel
-        if(isD10 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The SAR Challenge™</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Turn what you do into a story people remember.</p>
-              <div style={{display:"flex",alignItems:"center",gap:6}}>
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.7)"}}>Estimated time: <span style={{color:"#F5EFE6",fontWeight:600}}>5 minutes</span></span>
-              </div>
-            </div>
-          </div>
-        );
-        // D4 Practice — The Edit cinematic dark panel
-        if(isD4 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Edit</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Say it once. Say it short. Stop.</p>
-              <div style={{width:36,height:1,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
-        // D3 Simulation — cinematic dark panel
-        if(isD3 && step==="Simulation") return (
-          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:0}}>Speak without filling the silence.</p>
-            </div>
-          </div>
-        );
-        // D2 Rehearsal — cinematic dark panel (voice warm-up)
-        if(isD2 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:320,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Voice Warm-Up · Day 2</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>The way you sound changes everything. Let's hear your voice.</p>
-              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
-            </div>
-          </div>
-        );
+        // ── Rehearsal panes ────────────────────────────────────────────────
+        if(isD1 && step==="Rehearsal") return <TabHeroPane label="Voice Warm-Up" headline="Let's warm up your voice." />;
+        if(isD2 && step==="Rehearsal") return <TabHeroPane label="Voice Warm-Up · Day 2" headline="The way you sound changes everything. Let's hear your voice." />;
+        if(isD3 && step==="Rehearsal") return <TabHeroPane label="The Filler-Free Challenge" headline="Silence often sounds more confident than fillers." />;
+        if(isD4 && step==="Rehearsal") return <TabHeroPane label="The Edit" headline="Say it once. Say it short. Stop." />;
+        if(isD5 && step==="Rehearsal") return <TabHeroPane label="The PRE Card Sort" headline="Sort the cards. Train the instinct." />;
+        if(isD6 && step==="Rehearsal") return <TabHeroPane label="Find Your Words" headline="The right words under pressure don't come from thinking faster. They come from having them ready." />;
+        if(isD9 && step==="Rehearsal") return <TabHeroPane label="Build Your Connection Habits" headline="Five exercises. Build the habits of the world's most connected communicators." />;
+        if(isD10 && step==="Rehearsal") return <TabHeroPane label="The SAR Challenge" headline="Turn what you do into a story people remember." />;
+        if(isD11 && step==="Rehearsal") return <TabHeroPane label="Build Your Brand" headline="Every career has a reputation. The best careers have one by design." />;
+        if(isD12 && step==="Rehearsal") return <TabHeroPane label="The Presence Challenge" headline="Seven rounds. Every physical signal that shapes how communication lands." />;
+        if(isD13 && step==="Rehearsal") return <TabHeroPane label="Make Your Value Visible" headline="Four exercises. Make your value impossible to ignore." />;
+        if(isD14 && step==="Rehearsal") return <TabHeroPane label="Day 14 · Capstone" headline="You are not the communicator you were 14 days ago." />;
+        if(isNT && step==="Rehearsal") return <TabHeroPane label="Find Your Story" headline="Every great communicator has a handful of stories they return to throughout their career. Let's build one of yours." />;
         const TABLET_IMGS={
           1:{Insight:{src:"/day1-insight.jpg"},Example:{src:"/day1-insight.jpg"}},
           2:{Insight:{src:"/d2-insight-tablet.jpg"},Practice:{src:"/d2-practice-tablet.jpg"}},
