@@ -208,7 +208,7 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
       <div style={wrapStyle}>
         <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
         {cel && <Celebrate day={cel} onClose={() => { setCel(null); setView("main"); setTab("home"); }}/>}
-        {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole} inSession={view==="session"} onExitToTab={(t)=>{setTab(t);setView("main");}}/>}
+        {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole} inSession={view==="session"} onExitToTab={(t)=>{setTab(t);setView("main");}} day={selDay}/>}
         <SessionView lesson={LESSONS[Math.min(selDay-1,13)]}
 isDone={done.includes(selDay)} onComplete={() => completeDay(selDay)}
 onBack={() => setView("main")} roleId={roleId} activeRole={activeRole}
@@ -261,11 +261,11 @@ reset</button>
           </div>
         </div>
       )}
-      {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole} inSession={view==="session"} onExitToTab={(t)=>{setTab(t);setView("main");}}/>}
+      {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole} inSession={view==="session"} onExitToTab={(t)=>{setTab(t);setView("main");}} day={cur}/>}
       <div ref={scrollRef} className="au-grain-wrap" style={{flex:1,overflowY:"auto",marginLeft:0,paddingBottom:0,background:dark?"#19160F":T.bg}}>
         {tab==="home" && <HomeScreen done={done} cur={cur} streak={streak} onStart={startSession} roleId={roleId} activeRole={activeRole} dark={dark} DK={DK} showNudge={showNudge} onDismissNudge={()=>setShowNudge(false)} isDesktop={isDesktop}/>}
         {tab==="sessions" && <SessionsScreen done={done} cur={cur} onStart={startSession} roleId={roleId} dark={dark} DK={DK} isDesktop={isDesktop}/>}
-        {tab==="progress" && <ProgressScreen done={done} cur={cur} streak={streak} roleId={roleId} activeRole={activeRole} onChangeRole={(r)=>{setRoleId(r);lsSet("au1_role",r);}} dark={dark} toggleDark={toggleDark} DK={DK} onReset={()=>setConfirmReset(true)} isDesktop={isDesktop}/>}
+        {tab==="progress" && <ProgressScreen done={done} cur={cur} streak={streak} roleId={roleId} activeRole={activeRole} onChangeRole={(r)=>{setRoleId(r);lsSet("au1_role",r);}} dark={dark} toggleDark={toggleDark} DK={DK} onReset={()=>setConfirmReset(true)} isDesktop={isDesktop} onStart={startSession}/>}
         {tab==="toolkit" && <ToolkitScreen onQuickPrep={() => setView("quickprep")} onStartSession={startSessionAtStep} dark={dark} DK={DK} isDesktop={isDesktop}/>}
       </div>
       {!isDesktop && <TabBar tab={tab} setTab={setTab} dark={dark}/>}

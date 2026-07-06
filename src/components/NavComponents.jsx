@@ -65,8 +65,7 @@ export const NAV_H = 64;
 // SIDEBAR_W kept at 0 — sidebar is gone on desktop
 const SIDEBAR_W = 0;
 
-export function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSession=false, onExitToTab }) {
-  const pct = Math.round(done.length / 14 * 100);
+export function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSession=false, onExitToTab, day=1 }) {
   const [confirmTab, setConfirmTab] = useState(null);
 
   function handleNavClick(id) {
@@ -142,11 +141,19 @@ export function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSes
               <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "2px", fontFamily: T.sans }}>streak</span>
             </div>
           )}
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 80, height: 1, background: "rgba(255,255,255,0.1)", borderRadius: 1, overflow: "hidden" }}>
-              <div style={{ width: pct + "%", height: "100%", background: "linear-gradient(90deg,#b8956a,#c9a96e)", borderRadius: 1, transition: "width 1s ease" }}/>
-            </div>
-            <span style={{ fontSize: 10.5, color: "#c9a96e", fontWeight: 500, fontFamily: T.sans }}>{pct}%</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+              <rect x="2.5" y="3.5" width="15" height="13" rx="1.5" stroke="#c9a96e" strokeWidth="1.8"/>
+              <path d="M2.5 7.5h15" stroke="#c9a96e" strokeWidth="1.8" strokeLinecap="round"/>
+              <path d="M7 2v3M13 2v3" stroke="#c9a96e" strokeWidth="1.8" strokeLinecap="round"/>
+              <circle cx="6.5" cy="11" r="1" fill="#c9a96e"/>
+              <circle cx="10" cy="11" r="1" fill="#c9a96e"/>
+              <circle cx="13.5" cy="11" r="1" fill="#c9a96e"/>
+              <circle cx="6.5" cy="14" r="1" fill="#c9a96e"/>
+              <circle cx="10" cy="14" r="1" fill="#c9a96e"/>
+              <circle cx="13.5" cy="14" r="1" fill="#c9a96e"/>
+            </svg>
+            <span style={{ fontSize: 13, color: "#c9a96e", fontWeight: 600, fontFamily: T.sans, letterSpacing:"0.3px" }}>Day {day}</span>
           </div>
         </div>
       </div>
