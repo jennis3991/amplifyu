@@ -884,7 +884,7 @@ export function SessionLeftPanel({
       <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
         <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Brand In Action</div>
         <div style={{ width:40, height:1.5, background:"rgba(245,239,230,0.35)", marginBottom:20 }}/>
-        <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.15, color:CREAM, fontStyle:"normal" }}>{"Let's find out how powerfully your professional profile signals the future you're already building."}</p>
+        <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.15, color:CREAM, fontStyle:"normal" }}>{"Let's see how closely your professional profile reflects the future you're building — and write something stronger."}</p>
       </div>
     </div>
   );
