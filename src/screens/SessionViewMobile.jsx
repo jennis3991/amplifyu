@@ -415,7 +415,9 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:0}}>Sort the cards. Train the instinct.</p>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The PRE Card Sort</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Sort the cards. Train the instinct.</p>
+              <div style={{width:36,height:1,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
         );
@@ -425,7 +427,9 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:0}}>One question. Ten seconds to think. Then answer.</p>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Boardroom</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>One question. Ten seconds to think. Then answer.</p>
+              <div style={{width:36,height:1,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
         );
@@ -435,10 +439,12 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
-              <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Breaking News Live</div>
+              <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14}}>
                 <div style={{width:10,height:10,borderRadius:"50%",background:"#CC4444",flexShrink:0,marginTop:6,animation:"glowPulse 1s ease infinite",boxShadow:"0 0 8px rgba(204,68,68,0.55)"}}/>
                 <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,margin:0}}>Report it live. Watch what your audience remembers.</p>
               </div>
+              <div style={{width:40,height:1,background:"rgba(245,239,230,0.3)"}}/>
             </div>
           </div>
         );
@@ -475,12 +481,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           const sh=SIM_HEADERS[lesson.day]||{label:"SIMULATION",heading:"Real scenario. Real pressure. Real coaching."};
           return (
             <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:lesson.day===2?"24px 24px 12px":"24px 24px 28px",boxSizing:"border-box"}}>
-              {lesson.day !== 2 && <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{sh.label}</div>}
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{sh.label}</div>
               <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{sh.heading}</p>
-              {lesson.day !== 2 && <>
-                <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
-                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>Day {lesson.day} · {lesson.tag}</p>
-              </>}
+              <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
+              {lesson.day !== 2 && <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>Day {lesson.day} · {lesson.tag}</p>}
             </div>
           );
         }
@@ -500,10 +504,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(step==="Example" && !isD13 && !isD14){
           const EX_HEADERS={
             1:{label:"MASTERS OF CLARITY",      heading:"The simplest words carry the most weight.",                                  body:"Clear communicators don't use more words. They use better ones."},
-            2:{label:null,                        heading:"Range creates engagement. Contrast creates emotion.",                        body:"The most compelling voices are the most controlled — and the most dynamic."},
+            2:{label:"VOICE IN ACTION",           heading:"Range creates engagement. Contrast creates emotion.",                        body:null},
             3:{label:"MASTERS OF THE PAUSE",     heading:"The strongest speakers pause. Confident speakers own the silence.",          body:null},
-            4:{label:null,                        heading:"Say less. Mean more. Be remembered.",                                       body:"The most persuasive lines ever spoken? All under 10 words."},
-            5:{label:null,                        heading:"Point. Reason. Example. The architecture of every great professional answer.", body:"The world's most effective communicators all follow the same structure — whether they know it or not."},
+            4:{label:"MASTERS OF BREVITY",        heading:"Say less. Mean more. Be remembered.",                                       body:null},
+            5:{label:"PRE IN ACTION",             heading:"Point. Reason. Example. The architecture of every great professional answer.", body:null},
             6:{label:"MASTERS UNDER PRESSURE",      heading:"Composure is a skill. The calmest person in the room shapes the room.",  body:"How elite communicators handle the conversations most people avoid."},
             7:{label:"COMMUNICATION IN ACTION",  heading:"Every skill. One conversation.",                                            body:"This is what a week of deliberate practice looks like in the real world."},
             8:{label:"STORYTELLING IN THE WILD", heading:"Stories create empathy. Empathy creates trust. Trust creates influence.",    body:"The same facts — told as a story — land 22× more powerfully in the human brain."},
@@ -514,12 +518,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           const h=EX_HEADERS[lesson.day]||EX_HEADERS[1];
           return (
             <div style={{width:"100%",height:320,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:(lesson.day===2||lesson.day===3||lesson.day===4||lesson.day===5)?"24px 24px 12px":"24px 24px 28px",boxSizing:"border-box"}}>
-              {h.label && <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{h.label}</div>}
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{h.label}</div>
               <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{h.heading}</p>
-              {lesson.day !== 2 && h.body && <>
-                <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
-                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>{h.body}</p>
-              </>}
+              <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
+              {h.body && <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>{h.body}</p>}
             </div>
           );
         }
@@ -749,7 +751,9 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:0}}>Say it once. Say it short. Stop.</p>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Edit</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Say it once. Say it short. Stop.</p>
+              <div style={{width:36,height:1,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
         );
@@ -769,7 +773,9 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:0}}>The way you sound changes everything. Let's hear your voice.</p>
+              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Voice Warm-Up · Day 2</div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>The way you sound changes everything. Let's hear your voice.</p>
+              <div style={{width:32,height:1.5,background:"rgba(138,158,132,0.5)"}}/>
             </div>
           </div>
         );
