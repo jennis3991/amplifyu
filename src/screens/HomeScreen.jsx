@@ -50,7 +50,7 @@ function JourneyCard({ pieceInfo, catProgress, done, T }) {
 }
 
 export function HomeScreen({done, cur, streak, onStart, roleId, activeRole,
-dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false}) {
+dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false, showWelcome=false}) {
   const T2 = Object.assign({}, T, DK);
   const [selectedDay, setSelectedDay] = useState(1);
   const selectedLesson = selectedDay ? LESSONS.find(l => l.day === selectedDay) : null;
@@ -88,7 +88,10 @@ finishDate + ".";
   const insight = { label: lesson.tag, headline: lesson.quote, body: lesson.teaser };
   const pieceInfo = getPieceInfo(done.length);
   const catProgress = getCategoryProgress(done);
-  const [showPieceModal, setShowPieceModal] = useState(() => !ls("au1_piece_intro", false));
+  const [showPieceModal, setShowPieceModal] = useState(false);
+  useEffect(() => {
+    if (!showWelcome && !ls("au1_piece_intro", false)) setShowPieceModal(true);
+  }, [showWelcome]);
   function dismissPieceModal() { lsSet("au1_piece_intro", true); setShowPieceModal(false); }
   // ── shared blocks used in both layouts ──────────────────────────────────
   const storedAmbition = (() => { try { return localStorage.getItem("au1_ambition") || ""; } catch { return ""; } })();
