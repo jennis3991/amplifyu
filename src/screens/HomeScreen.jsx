@@ -299,7 +299,10 @@ finishDate + ".";
                         <button onClick={() => setSelectedDay(null)} style={{ background: "none", border: "none", color: T2.text3, fontSize: 20, cursor: "pointer", padding: "0 0 0 16px", lineHeight: 1 }}>×</button>
                       </div>
                       <p style={{ fontFamily: T.sans, fontSize: 14, color: T2.text3, lineHeight: 1.7, margin: "0 0 10px", fontWeight: 300 }}>{selectedLesson.insight}</p>
-                      {selectedLesson.promise && <p style={{ fontFamily: T.serif, fontSize: 13, fontStyle: "italic", color: T.gold, lineHeight: 1.55, margin: 0 }}>{selectedLesson.promise}</p>}
+                      {selectedLesson.promise && <p style={{ fontFamily: T.serif, fontSize: 13, fontStyle: "italic", color: T.gold, lineHeight: 1.55, margin: "0 0 14px" }}>{selectedLesson.promise}</p>}
+                      <button onClick={() => { setSelectedDay(null); onStart(selectedLesson.day); }} style={{ width: "100%", background: T.ink, color: T.bg, border: "none", borderRadius: 4, padding: "10px 16px", fontSize: 13, fontWeight: 500, fontFamily: T.sans, cursor: "pointer", textAlign: "left" }}>
+                        {done.includes(selectedLesson.day) ? "Review →" : "Begin →"}
+                      </button>
                     </div>
                   )}
                 </div>
@@ -424,7 +427,10 @@ finishDate + ".";
                 <button onClick={()=>setSelectedDay(null)} style={{background:"none",border:"none",color:T2.text3,fontSize:20,cursor:"pointer",padding:"0 0 0 12px",lineHeight:1}}>×</button>
               </div>
               <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,margin:"0 0 8px",fontWeight:300}}>{selectedLesson.insight}</p>
-              {selectedLesson.promise&&<p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.gold,lineHeight:1.55,margin:0}}>{selectedLesson.promise}</p>}
+              {selectedLesson.promise&&<p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.gold,lineHeight:1.55,margin:"0 0 14px"}}>{selectedLesson.promise}</p>}
+              <button onClick={()=>{setSelectedDay(null);onStart(selectedLesson.day);}} style={{width:"100%",background:T.ink,color:T.bg,border:"none",borderRadius:4,padding:"10px 16px",fontSize:13,fontWeight:500,fontFamily:T.sans,cursor:"pointer",textAlign:"left"}}>
+                {done.includes(selectedLesson.day)?"Review →":"Begin →"}
+              </button>
             </div>
           )}
         </div>
