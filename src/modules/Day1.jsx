@@ -1019,7 +1019,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
           Your AmplifyU coach will analyse your clarity, communication patterns, structure, pacing, and presence.
         </p>
         <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>
-          This recording becomes your baseline — not a test, expert coaching.
+          This is expert coaching designed to help you become a clearer, more confident communicator.
         </p>
       </div>
       )}
@@ -1068,7 +1068,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
           <strong>This recording becomes your baseline.</strong> The clearer you understand where you are today, the faster you improve tomorrow.
         </p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic"}}>
-          This isn't a test — it's expert coaching designed to help you become a clearer, more confident communicator.
+          This is expert coaching designed to help you become a clearer, more confident communicator.
         </p>
       </div>
 
