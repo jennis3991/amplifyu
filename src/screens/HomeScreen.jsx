@@ -252,12 +252,15 @@ finishDate + ".";
               <p style={{ fontSize: 15, color: T2.text3, lineHeight: 1.8, maxWidth: 500, fontFamily: T.sans, fontWeight: 300, marginBottom: 32 }}>
                 {insight.body}
               </p>
-              <button onClick={() => onStart(finished ? 1 : cur)}
-                style={{ display: "inline-flex", alignItems: "center", gap: 10, background: T.ink, color: T.bg, border: "none", borderRadius: 8, padding: "17px 40px", fontSize: 15, fontWeight: 600, fontFamily: T.sans, cursor: "pointer", transition: "all 0.25s ease", boxShadow: "0 2px 8px rgba(44,36,22,0.1)" }}
-                onMouseEnter={e => { e.currentTarget.style.background = "#c9a96e"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = T.ink; e.currentTarget.style.transform = "none"; }}>
-                {finished ? "Revisit Day 1" : todayDone ? "Review Session" : "Begin Session"} →
-              </button>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                {["Insight", "Theory", "Example", "Rehearsal", "Simulation", "Review"].map((stage, i) => (
+                  <span key={stage} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 14px", borderRadius: 20, border: "0.5px solid rgba(44,36,22,0.18)", background: "rgba(44,36,22,0.05)", fontFamily: T.sans, fontSize: 12, fontWeight: 500, color: T2.text3, letterSpacing: "0.2px" }}>
+                    {i > 0 && <span style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(201,169,110,0.4)", display: "inline-block", marginRight: 2 }}/>}
+                    {stage}
+                  </span>
+                ))}
+                <span style={{ padding: "6px 14px", borderRadius: 20, border: "0.5px solid rgba(201,169,110,0.3)", background: "rgba(201,169,110,0.07)", fontFamily: T.sans, fontSize: 12, fontWeight: 600, color: "#c9a96e", letterSpacing: "0.2px" }}>~15 min</span>
+              </div>
             </div>
 
             {/* Right: YOUR JOURNEY card */}
