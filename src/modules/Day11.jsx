@@ -580,7 +580,6 @@ Keep it under 280 words. Make every word earn its place.`;
   // ── IMPORT ────────────────────────────────────────────────────────────────
   if (phase === 'import') {
     const tabs = [
-      { id: 'paste',      label: 'Paste Profile',      recommended: false },
       { id: 'summary',    label: 'My Rehearsal',        recommended: true  },
       { id: 'screenshot', label: 'Upload Screenshots',  recommended: false },
       { id: 'cv',         label: 'Upload CV',           recommended: false },
@@ -595,27 +594,29 @@ Keep it under 280 words. Make every word earn its place.`;
           </p>
         </div>
 
+        <textarea
+          value={profileText}
+          onChange={e => { setProfileText(e.target.value); if (inputMode !== 'paste') setInputMode('paste'); }}
+          placeholder={"Paste your LinkedIn profile content here...\n\nHeadline:\ne.g. Senior Marketing Manager | Brand Strategy | Consumer Insights\n\nAbout:\ne.g. I help brands find their voice and connect with the people who matter most...\n\nExperience:\ne.g. Marketing Manager at Acme Corp (2020-present)\n- Led rebranding campaign reaching 2M+ customers\n- Managed cross-functional team of 12 across 3 regions"}
+          rows={isDesktop ? 7 : 6}
+          style={{ width: "100%", background: "rgba(255,255,255,0.02)", border: "0.5px solid " + (inputMode === 'paste' ? T2.border : "rgba(255,255,255,0.06)"), borderRadius: 4, padding: "12px 14px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box", opacity: inputMode === 'paste' ? 1 : 0.4 }}
+        />
+
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ flex: 1, height: "0.5px", background: T2.border }}/>
+          <span style={{ ...lbl, fontSize: 9 }}>or use</span>
+          <div style={{ flex: 1, height: "0.5px", background: T2.border }}/>
+        </div>
+
         <div style={{ display: "flex", gap: 6 }}>
           {tabs.map(tab => (
-            <button key={tab.id} onClick={() => setInputMode(tab.id)}
+            <button key={tab.id} onClick={() => setInputMode(inputMode === tab.id ? 'paste' : tab.id)}
               style={{ flex: 1, padding: isDesktop ? "10px 6px" : "8px 4px", borderRadius: 4, border: `0.5px solid ${inputMode === tab.id ? T.gold : T2.border}`, background: inputMode === tab.id ? "rgba(200,164,106,0.07)" : "transparent", fontFamily: T.sans, fontSize: isDesktop ? 11 : 10, fontWeight: inputMode === tab.id ? 600 : 400, color: inputMode === tab.id ? T.gold : T2.text4, cursor: "pointer", transition: "all 0.15s", position: "relative", lineHeight: 1.3 }}>
               {tab.label}
               {tab.recommended && <span style={{ position: "absolute", top: -9, right: -2, fontSize: 8, background: "#4a7c59", color: "#fff", padding: "2px 6px", borderRadius: 10, fontWeight: 700, letterSpacing: "0.4px" }}>Recommended</span>}
             </button>
           ))}
         </div>
-
-        {inputMode === 'paste' && (
-          <div style={{ animation: "fadeUp 0.25s ease both", display: "flex", flexDirection: "column", gap: 10 }}>
-            <textarea
-              value={profileText}
-              onChange={e => setProfileText(e.target.value)}
-              placeholder={"Paste your LinkedIn profile content here...\n\nHeadline:\ne.g. Senior Marketing Manager | Brand Strategy | Consumer Insights\n\nAbout:\ne.g. I help brands find their voice and connect with the people who matter most...\n\nExperience:\ne.g. Marketing Manager at Acme Corp (2020-present)\n- Led rebranding campaign reaching 2M+ customers\n- Managed cross-functional team of 12 across 3 regions"}
-              rows={isDesktop ? 9 : 8}
-              style={{ width: "100%", background: "rgba(255,255,255,0.02)", border: "0.5px solid " + T2.border, borderRadius: 4, padding: "12px 14px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box" }}
-            />
-          </div>
-        )}
 
         {inputMode === 'summary' && (
           <div style={{ animation: "fadeUp 0.25s ease both" }}>
