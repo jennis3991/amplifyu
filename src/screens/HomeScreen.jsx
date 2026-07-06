@@ -276,11 +276,9 @@ finishDate + ".";
 
           {/* ── All Sessions ── */}
           <section style={{ padding: "36px 88px 56px" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 60, alignItems: "start" }}>
-              <div style={{ paddingTop: 8 }}>
-                <div style={{ fontSize: 9.5, fontWeight: 500, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", fontFamily: T.sans }}>All Sessions</div>
-                <div style={{ width: 20, height: 1, background: T.gold, marginTop: 10, opacity: 0.5 }}/>
-              </div>
+            <div style={{ fontSize: 9.5, fontWeight: 500, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", fontFamily: T.sans, marginBottom: 10 }}>All Sessions</div>
+            <div style={{ width: 20, height: 1, background: T.gold, opacity: 0.5, marginBottom: 24 }}/>
+            <div>
               <div>
                 <div style={{ background: T2.surface, borderRadius: 10, border: "0.5px solid " + T2.border, padding: "24px 28px" }}>
                   {/* Day number picker */}
