@@ -599,7 +599,7 @@ Keep it under 280 words. Make every word earn its place.`;
           onChange={e => { setProfileText(e.target.value); if (inputMode !== 'paste') setInputMode('paste'); }}
           placeholder={"Paste your LinkedIn profile content here...\n\nHeadline:\ne.g. Senior Marketing Manager | Brand Strategy | Consumer Insights\n\nAbout:\ne.g. I help brands find their voice and connect with the people who matter most...\n\nExperience:\ne.g. Marketing Manager at Acme Corp (2020-present)\n- Led rebranding campaign reaching 2M+ customers\n- Managed cross-functional team of 12 across 3 regions"}
           rows={isDesktop ? 7 : 6}
-          style={{ width: "100%", background: "rgba(255,255,255,0.02)", border: "0.5px solid " + (inputMode === 'paste' ? T2.border : "rgba(255,255,255,0.06)"), borderRadius: 4, padding: "12px 14px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box", opacity: inputMode === 'paste' ? 1 : 0.4 }}
+          style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: "0.5px solid " + (inputMode === 'paste' ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.08)"), borderRadius: 4, padding: "12px 14px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box", opacity: inputMode === 'paste' ? 1 : 0.4 }}
         />
 
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
