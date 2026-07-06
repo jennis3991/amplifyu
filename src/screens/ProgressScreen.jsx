@@ -132,13 +132,13 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
         {sec("Your Rank")}
         <div style={{background:"#0D0B08",borderRadius:10,padding:isDesktop?"24px 28px":"20px 20px"}}>
           <div style={{position:"relative",display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20}}>
-            <div style={{position:"absolute",top:20,left:"calc(8% + 20px)",right:"calc(8% + 20px)",height:1,background:"rgba(255,255,255,0.1)",zIndex:0}}/>
+            <div style={{position:"absolute",top:20,left:"5%",right:"5%",height:1,background:"rgba(255,255,255,0.1)",zIndex:0}}/>
             {PIECES.map((piece,i) => {
               const isCurrent = i === pieceInfo.currentIndex;
               const isNext = i === pieceInfo.currentIndex + 1;
               return (
                 <div key={piece.name} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,position:"relative",zIndex:1}}>
-                  <div style={{width:40,height:40,borderRadius:"50%",background:isCurrent?"#c9a961":isNext?"rgba(201,169,97,0.08)":"rgba(255,255,255,0.05)",border:isCurrent?"none":isNext?"1.5px solid #c9a961":"1.5px solid rgba(255,255,255,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <div style={{width:40,height:40,borderRadius:"50%",background:isCurrent?"#c9a961":isNext?"#1d1a10":"#1c1916",border:isCurrent?"none":isNext?"1.5px solid #c9a961":"1.5px solid rgba(255,255,255,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                     <i className={"ti "+piece.icon} style={{fontSize:18,color:isCurrent?"#17140f":isNext?"#c9a961":"rgba(255,255,255,0.2)"}}/>
                   </div>
                   <span style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:isCurrent?"#c9a961":isNext?"rgba(245,239,230,0.5)":"rgba(255,255,255,0.18)",textTransform:"uppercase",letterSpacing:"1px",textAlign:"center"}}>{piece.name}</span>

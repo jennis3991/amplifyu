@@ -22,10 +22,11 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
           <div style={{ position:"absolute", top:"50%", left:"5%", right:"5%", height:1, background:"rgba(255,255,255,0.1)", transform:"translateY(-50%)", zIndex:0 }}/>
           {PIECES.map((piece,i) => {
             const isCurrent = i === pieceInfo.currentIndex;
+            const isNext = i === pieceInfo.currentIndex + 1;
             return (
               <div key={piece.name} style={{ position:"relative", zIndex:1 }}>
-                <div style={{ width:26, height:26, borderRadius:"50%", background:isCurrent?"#c9a961":"transparent", border:isCurrent?"none":"1.5px solid rgba(255,255,255,0.15)", display:"flex", alignItems:"center", justifyContent:"center" }}>
-                  <i className={"ti "+piece.icon} style={{ fontSize:12, color:isCurrent?"#17140f":"rgba(255,255,255,0.2)" }}/>
+                <div style={{ width:26, height:26, borderRadius:"50%", background:isCurrent?"#c9a961":isNext?"#252015":"#231f18", border:isCurrent?"none":isNext?"1.5px solid #c9a961":"1.5px solid rgba(255,255,255,0.15)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                  <i className={"ti "+piece.icon} style={{ fontSize:12, color:isCurrent?"#17140f":isNext?"#c9a961":"rgba(255,255,255,0.2)" }}/>
                 </div>
               </div>
             );
