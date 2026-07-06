@@ -509,6 +509,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD13 && step==="Rehearsal") return <TabHeroPane label="Make Your Value Visible" headline="Four exercises. Make your value impossible to ignore." />;
         if(isD14 && step==="Rehearsal") return <TabHeroPane label="Day 14 · Capstone" headline="You are not the communicator you were 14 days ago." />;
         if(isNT && step==="Rehearsal") return <TabHeroPane label="Find Your Story" headline="Every great communicator has a handful of stories they return to throughout their career. Let's build one of yours." />;
+        if(isD7 && step==="Rehearsal") return <TabHeroPane label="Teach It Forward" headline="The best test of what you know is whether you can teach it." />;
         const TABLET_IMGS={
           1:{Insight:{src:"/day1-insight.jpg"},Example:{src:"/day1-insight.jpg"}},
           2:{Insight:{src:"/d2-insight-tablet.jpg"},Practice:{src:"/d2-practice-tablet.jpg"}},
@@ -530,8 +531,6 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Rehearsal"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
         return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
       })()}
-      {/* Dark film overlay for Practice only */}
-      {step==="Rehearsal" && <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.52)",pointerEvents:"none"}}/>}
       {/* Exit button — top left over image */}
       <button
         onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
