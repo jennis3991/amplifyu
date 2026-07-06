@@ -575,50 +575,43 @@ Keep it under 280 words. Make every word earn its place.`;
   // ── IMPORT ────────────────────────────────────────────────────────────────
   if (phase === 'import') {
     const tabs = [
-      { id: 'paste',      label: 'Paste',       recommended: true },
-      { id: 'screenshot', label: 'Screenshots',  recommended: false },
-      { id: 'cv',         label: 'CV',           recommended: false },
+      { id: 'paste',      label: 'Paste Profile',     recommended: true },
+      { id: 'screenshot', label: 'Upload Screenshots', recommended: false },
+      { id: 'cv',         label: 'Upload CV',          recommended: false },
     ];
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 22 : 17, animation: "fadeUp 0.5s ease both" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 18 : 16, animation: "fadeUp 0.5s ease both" }}>
         <div>
-          <h2 style={{ ...sf, fontSize: isDesktop ? 26 : 22, fontWeight: 600, margin: "0 0 6px", lineHeight: 1.2 }}>Bring your brand to life</h2>
+          <div style={{ ...lbl, color: T.gold, marginBottom: 10, letterSpacing: "2px", fontSize: 10 }}>LINKEDIN AUDIT</div>
+          <h2 style={{ ...sf, fontSize: isDesktop ? 28 : 22, fontWeight: 600, margin: "0 0 8px", lineHeight: 1.15 }}>Bring your brand to life</h2>
           <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.6, margin: 0 }}>
-            We've discovered what makes you memorable. Now let's make sure your LinkedIn tells the same story.
+            {"We've discovered what makes you memorable. Now let's make sure your LinkedIn tells the same story."}
           </p>
         </div>
-
-        {futureWords.length > 0 && (
-          <div style={{ background: "rgba(200,164,106,0.07)", border: `0.5px solid ${T.gold}`, borderRadius: 6, padding: isDesktop ? "14px 16px" : "11px 13px" }}>
-            <div style={{ ...lbl, color: "rgba(200,164,106,0.6)", marginBottom: 6 }}>Your Professional Signature</div>
-            <div style={{ fontFamily: T.serif, fontSize: isDesktop ? 18 : 15, fontWeight: 600, color: T2.text, lineHeight: 1.3, letterSpacing: "-0.2px" }}>
-              {futureWords.map((w, i, arr) => (
-                <span key={i}>{w}{i < arr.length - 1 && <span style={{ color: T.gold, fontWeight: 300, padding: "0 7px" }}>·</span>}</span>
-              ))}
-            </div>
-          </div>
-        )}
 
         <div style={{ display: "flex", gap: 6 }}>
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setInputMode(tab.id)}
-              style={{ flex: 1, padding: isDesktop ? "9px 0" : "7px 0", borderRadius: 4, border: `0.5px solid ${inputMode === tab.id ? T.gold : T2.border}`, background: inputMode === tab.id ? "rgba(200,164,106,0.07)" : "transparent", fontFamily: T.sans, fontSize: isDesktop ? 12 : 10, fontWeight: inputMode === tab.id ? 600 : 400, color: inputMode === tab.id ? T.gold : T2.text4, cursor: "pointer", transition: "all 0.15s", position: "relative" }}>
+              style={{ flex: 1, padding: isDesktop ? "10px 6px" : "8px 4px", borderRadius: 4, border: `0.5px solid ${inputMode === tab.id ? T.gold : T2.border}`, background: inputMode === tab.id ? "rgba(200,164,106,0.07)" : "transparent", fontFamily: T.sans, fontSize: isDesktop ? 11 : 10, fontWeight: inputMode === tab.id ? 600 : 400, color: inputMode === tab.id ? T.gold : T2.text4, cursor: "pointer", transition: "all 0.15s", position: "relative", lineHeight: 1.3 }}>
               {tab.label}
-              {tab.recommended && <span style={{ position: "absolute", top: -8, right: -2, fontSize: 8, background: T.gold, color: T.ink || "#2C2416", padding: "1px 5px", borderRadius: 10, fontWeight: 700, letterSpacing: "0.5px" }}>REC</span>}
+              {tab.recommended && <span style={{ position: "absolute", top: -9, right: -2, fontSize: 8, background: "#4a7c59", color: "#fff", padding: "2px 6px", borderRadius: 10, fontWeight: 700, letterSpacing: "0.4px" }}>Recommended</span>}
             </button>
           ))}
         </div>
 
         {inputMode === 'paste' && (
-          <div style={{ animation: "fadeUp 0.25s ease both" }}>
+          <div style={{ animation: "fadeUp 0.25s ease both", display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ background: "rgba(74,124,89,0.08)", border: "0.5px solid rgba(74,124,89,0.35)", borderRadius: 6, padding: "12px 14px" }}>
+              <div style={{ ...sn, fontSize: 12, fontWeight: 600, color: "#6aaa82", marginBottom: 4 }}>{"★  Recommended — fastest and most accurate"}</div>
+              <div style={{ ...sn, fontSize: 12, color: T2.text3, lineHeight: 1.55 }}>Paste your headline, about section and experience for the most accurate results.</div>
+            </div>
             <textarea
               value={profileText}
               onChange={e => setProfileText(e.target.value)}
-              placeholder="Paste your headline, About section and Experience here..."
-              rows={isDesktop ? 10 : 8}
+              placeholder={"Paste your LinkedIn profile content here...\n\nHeadline:\ne.g. Senior Marketing Manager | Brand Strategy | Consumer Insights\n\nAbout:\ne.g. I help brands find their voice and connect with the people who matter most...\n\nExperience:\ne.g. Marketing Manager at Acme Corp (2020-present)\n- Led rebranding campaign reaching 2M+ customers\n- Managed cross-functional team of 12 across 3 regions"}
+              rows={isDesktop ? 9 : 8}
               style={{ width: "100%", background: "rgba(255,255,255,0.02)", border: "0.5px solid " + T2.border, borderRadius: 4, padding: "12px 14px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box" }}
             />
-            <p style={{ ...sn, fontSize: 10, color: T2.text4, margin: "5px 0 0" }}>Copy directly from your LinkedIn profile. The more you include, the better the analysis.</p>
           </div>
         )}
 
@@ -628,7 +621,7 @@ Keep it under 280 words. Make every word earn its place.`;
               <input type="file" accept="image/*" multiple onChange={e => handleScreenshots(e.target.files)} style={{ display: "none" }} />
               {screenshots.length === 0 ? (
                 <>
-                  <div style={{ fontSize: 28, marginBottom: 10 }}>📸</div>
+                  <div style={{ fontSize: 28, marginBottom: 10 }}>{"📸"}</div>
                   <div style={{ ...sn, fontSize: isDesktop ? 13 : 12, color: T2.text3, marginBottom: 4 }}>Upload LinkedIn screenshots</div>
                   <div style={{ ...sn, fontSize: 11, color: T2.text4 }}>Headline · About · Experience</div>
                 </>
@@ -654,15 +647,22 @@ Keep it under 280 words. Make every word earn its place.`;
               value={cvText}
               onChange={e => setCvText(e.target.value)}
               placeholder="Paste your CV content here..."
-              rows={isDesktop ? 10 : 8}
+              rows={isDesktop ? 9 : 8}
               style={{ width: "100%", background: "rgba(255,255,255,0.02)", border: "0.5px solid " + T2.border, borderRadius: 4, padding: "12px 14px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box" }}
             />
           </div>
         )}
 
-        <button onClick={runAnalysis} disabled={!hasProfile} style={cta(!hasProfile)}>
-          Analyse My LinkedIn →
-        </button>
+        <div style={{ display: "flex", gap: 10, alignItems: "stretch" }}>
+          <button onClick={runAnalysis} disabled={!hasProfile} style={{ ...cta(!hasProfile), flex: 1 }}>
+            {"✦  Analyse My LinkedIn →"}
+          </button>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, background: "rgba(255,255,255,0.03)", border: "0.5px solid " + T2.border, borderRadius: 6, padding: "10px 14px", flexShrink: 0 }}>
+            <span style={{ fontSize: 14 }}>{"🛡"}</span>
+            <span style={{ ...sn, fontSize: 10, color: T2.text4, fontWeight: 600, textAlign: "center", lineHeight: 1.3 }}>100% Private & Secure</span>
+            <span style={{ ...sn, fontSize: 10, color: T2.text4, textAlign: "center", lineHeight: 1.3 }}>Your data is never shared.</span>
+          </div>
+        </div>
       </div>
     );
   }
