@@ -3675,7 +3675,14 @@ style={{fontSize:10,color:T2.text4,marginLeft:6,fontWeight:500}}>{idx+1} /
       <style>{`@keyframes au-swipe-hand{0%{transform:translateX(6px)}50%{transform:translateX(-10px)}100%{transform:translateX(6px)}}@keyframes au-hint-in{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}@keyframes au-hint-out{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(8px)}}`}</style>
       <div style={{position:"fixed",bottom:110,left:"50%",transform:"translateX(-50%)",zIndex:999,pointerEvents:"none",animation:swipeHintVisible?"au-hint-in 0.35s ease forwards":"au-hint-out 0.4s ease forwards"}}>
         <div style={{display:"flex",alignItems:"center",gap:10,background:"rgba(28,23,18,0.88)",backdropFilter:"blur(10px)",borderRadius:24,padding:"10px 18px 10px 14px",boxShadow:"0 4px 24px rgba(0,0,0,0.25)"}}>
-          <span style={{fontSize:20,animation:"au-swipe-hand 1.2s ease-in-out infinite",display:"inline-block"}}>👆</span>
+          <span style={{animation:"au-swipe-hand 1.2s ease-in-out infinite",display:"inline-block",lineHeight:0}}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(247,243,236,0.88)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 11V6a2 2 0 0 0-4 0v5"/>
+              <path d="M14 10V4a2 2 0 0 0-4 0v6"/>
+              <path d="M10 10.5a2 2 0 0 0-4 0V13"/>
+              <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+            </svg>
+          </span>
           <span style={{fontFamily:"'Inter',-apple-system,sans-serif",fontSize:13,fontWeight:500,color:"rgba(247,243,236,0.92)",whiteSpace:"nowrap"}}>Swipe to move between steps</span>
         </div>
       </div>
