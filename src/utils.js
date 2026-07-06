@@ -61,8 +61,8 @@ export const PIECES = [
   { name:"Knight", icon:"ti-chess-knight", threshold:3  },
   { name:"Bishop", icon:"ti-chess-bishop", threshold:6  },
   { name:"Rook",   icon:"ti-chess-rook",   threshold:9  },
-  { name:"Queen",  icon:"ti-chess-queen",  threshold:12 },
-  { name:"King",   icon:"ti-chess-king",   threshold:14 },
+  { name:"King",   icon:"ti-chess-king",   threshold:12 },
+  { name:"Queen",  icon:"ti-chess-queen",  threshold:14 },
 ];
 
 export function getPieceInfo(doneCount) {

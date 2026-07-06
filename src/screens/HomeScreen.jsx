@@ -43,8 +43,8 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
       ) : (
         <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20, marginBottom:20 }}>
           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:4 }}>
-            <span style={{ fontFamily:T.serif, fontSize:mobile?22:34, color:"#c9a961" }}>King</span>
-            <i className="ti ti-chess-king" style={{ fontSize:26, color:"#c9a961" }}/>
+            <span style={{ fontFamily:T.serif, fontSize:mobile?22:34, color:"#c9a961" }}>{pieceInfo.current.name}</span>
+            <i className={"ti "+pieceInfo.current.icon} style={{ fontSize:26, color:"#c9a961" }}/>
           </div>
           <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>{"You've reached the highest rank"}</p>
         </div>

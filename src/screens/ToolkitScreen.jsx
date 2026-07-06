@@ -150,7 +150,7 @@ p];
               <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:14}}>
                 {[
                   {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="14" height="16" rx="1.5" stroke={T2.text3} strokeWidth="1.3" fill="none"/><path d="M7 8h5M7 11h8M7 14h6" stroke={T2.text3} strokeWidth="1.2" strokeLinecap="round"/><path d="M13 3v4" stroke={T2.text3} strokeWidth="1.2"/></svg>,
-                   label:"SAR Builder", desc:"Turn achievements into compelling stories that get noticed.", tags:["Performance Reviews","Promotions","Interviews"], time:8, day:10, step:"Rehearsal"},
+                   label:"Achievement Story Builder", desc:"Structure your wins into compelling stories for interviews, reviews and promotions. SAR — Situation, Action, Result", tags:["Performance Reviews","Promotions","Interviews"], time:8, day:10, step:"Rehearsal"},
                   {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/><rect x="12" y="3" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/><rect x="3" y="12" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/><rect x="12" y="12" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/></svg>,
                    label:"Pixar Story Builder", desc:"Build unforgettable stories using the Pixar framework.", tags:["Storytelling","Presentations","Leadership"], time:4, day:8, step:"Rehearsal"},
                 ].map((t,i)=>(
@@ -180,7 +180,7 @@ p];
               <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr 1fr":"1fr 1fr",gap:12}}>
                 {[
                   {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M12 3l-8 11h8l-2 5 8-11h-8l2-5z" stroke={T2.text3} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>,
-                   label:"PRE Challenge", desc:"Think clearly under pressure.", tag:"Meetings", time:3, day:5, step:"Simulation"},
+                   label:"Pressure Response Drill", desc:"Build sharp, structured answers when it counts most. PRE Challenge", tag:"Meetings", time:3, day:5, step:"Simulation"},
                   {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="8" cy="8" r="3" stroke={T2.text3} strokeWidth="1.3" fill="none"/><circle cx="14" cy="8" r="3" stroke={T2.text3} strokeWidth="1.3" fill="none"/><path d="M4 18c0-3 2-4 4-4h6c2 0 4 1 4 4" stroke={T2.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>,
                    label:"Rapport Builder", desc:"Connect with anyone, anywhere.", tag:"Networking", time:5, day:9, step:"Simulation"},
                   {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 6h14a1 1 0 011 1v7a1 1 0 01-1 1h-5l-4 3v-3H5a1 1 0 01-1-1V7a1 1 0 011-1z" stroke={T2.text3} strokeWidth="1.3" fill="none"/></svg>,
