@@ -8,7 +8,7 @@ import { HourglassIcon } from '../components/HourglassIcon.jsx';
 import { PhraseStrip } from '../components/PhraseStrip.jsx';
 import { ls, lsSet, getPieceInfo, getCategoryProgress } from '../utils.js';
 
-function JourneyCard({ pieceInfo, catProgress, showStrongest, done, T }) {
+function JourneyCard({ pieceInfo, catProgress, done, T }) {
   return (
     <div style={{ background:"#17140f", borderRadius:14, padding:"24px" }}>
       <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:20 }}>
@@ -34,8 +34,7 @@ function JourneyCard({ pieceInfo, catProgress, showStrongest, done, T }) {
           <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>{"You've reached the highest rank"}</p>
         </div>
       )}
-      {showStrongest && (
-        <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20 }}>
+      <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20 }}>
           <p style={{ fontSize:12, letterSpacing:"0.1em", color:"#9c9384", margin:"0 0 10px", fontFamily:T.sans }}>STRONGEST SO FAR</p>
           {catProgress.map((cat,i) => (
             <div key={cat.label} style={{ display:"flex", alignItems:"center", gap:10, marginBottom:i<catProgress.length-1?8:0 }}>
@@ -46,7 +45,6 @@ function JourneyCard({ pieceInfo, catProgress, showStrongest, done, T }) {
             </div>
           ))}
         </div>
-      )}
     </div>
   );
 }
@@ -90,7 +88,6 @@ finishDate + ".";
   const insight = { label: lesson.tag, headline: lesson.quote, body: lesson.teaser };
   const pieceInfo = getPieceInfo(done.length);
   const catProgress = getCategoryProgress(done);
-  const showStrongest = catProgress.some(c => c.count > 1);
   const [showPieceModal, setShowPieceModal] = useState(() => !ls("au1_piece_intro", false));
   function dismissPieceModal() { lsSet("au1_piece_intro", true); setShowPieceModal(false); }
   // ── shared blocks used in both layouts ──────────────────────────────────
@@ -250,7 +247,7 @@ finishDate + ".";
             </div>
 
             {/* Right: YOUR JOURNEY card */}
-            <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} showStrongest={showStrongest} done={done} T={T} />
+            <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} done={done} T={T} />
 
           </div>
         </div>
@@ -391,7 +388,7 @@ finishDate + ".";
       <section style={{padding:"48px 24px 56px",background:T2.bg}}>
         <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Journey</div>
         <div style={{width:20,height:1,background:T.gold,marginBottom:28,opacity:0.5}}/>
-        <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} showStrongest={showStrongest} done={done} T={T} />
+        <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} done={done} T={T} />
       </section>
 
       {/* ── SECTION 4: All Sessions ── */}
