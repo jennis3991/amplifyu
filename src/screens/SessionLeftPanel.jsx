@@ -882,10 +882,10 @@ export function SessionLeftPanel({
       <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.07) 0%, transparent 55%)", pointerEvents:"none" }}/>
       <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
       <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Brand — In Action</div>
-        <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.15, marginBottom:20 }}>Your brand isn't what you say about yourself. It's what people believe after experiencing you.</p>
+        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Brand In Action</div>
         <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
-        <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Let's see how closely your professional profile reflects the future you're building — and write something stronger.</p>
+        <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.15, marginBottom:20 }}>{"Let's see how closely your professional profile reflects the "}<em style={{ color:T.gold, fontStyle:"italic" }}>future</em>{" you're building."}</p>
+        <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>{"We'll uncover what's working, what's holding you back, and the opportunities to communicate your value with clarity, confidence and impact."}</p>
       </div>
     </div>
   );
