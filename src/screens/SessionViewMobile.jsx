@@ -510,7 +510,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           const EX_HEADERS={
             1:{label:"MASTERS OF CLARITY",      heading:"The simplest words carry the most weight.",                                  body:"Clear communicators don't use more words. They use better ones."},
             2:{label:"VOICE IN ACTION",          heading:"Range creates engagement. Contrast creates emotion.",                        body:"The most compelling voices are the most controlled — and the most dynamic."},
-            3:{label:"MASTERS OF THE PAUSE",     heading:"Silence is more powerful than the word that fills it.",                     body:"The strongest speakers pause. Confident speakers own the silence."},
+            3:{label:"MASTERS OF THE PAUSE",     heading:"The strongest speakers pause. Confident speakers own the silence.",          body:null},
             4:{label:"MASTERS OF BREVITY",       heading:"Say less. Mean more. Be remembered.",                                       body:"The most persuasive lines ever spoken? All under 10 words."},
             5:{label:"PRE IN ACTION",            heading:"Point. Reason. Example. The architecture of every great professional answer.", body:"The world's most effective communicators all follow the same structure — whether they know it or not."},
             6:{label:"MASTERS UNDER PRESSURE",      heading:"Composure is a skill. The calmest person in the room shapes the room.",  body:"How elite communicators handle the conversations most people avoid."},
@@ -522,10 +522,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           };
           const h=EX_HEADERS[lesson.day]||EX_HEADERS[1];
           return (
-            <div style={{width:"100%",height:320,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:lesson.day===2?"24px 24px 12px":"24px 24px 28px",boxSizing:"border-box"}}>
+            <div style={{width:"100%",height:320,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:(lesson.day===2||lesson.day===3)?"24px 24px 12px":"24px 24px 28px",boxSizing:"border-box"}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{h.label}</div>
               <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{h.heading}</p>
-              {lesson.day !== 2 && <>
+              {lesson.day !== 2 && h.body && <>
                 <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
                 <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>{h.body}</p>
               </>}
@@ -562,16 +562,12 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         );
         // D3 Practice — cinematic dark panel
         if(isD3 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Filler-Free Challenge™</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Silence often sounds more confident than fillers.</p>
-              <div style={{display:"flex",alignItems:"center",gap:6}}>
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                <span style={{fontFamily:T.serif,fontSize:12,color:"rgba(245,239,230,0.7)"}}>Estimated time: <span style={{color:"#F5EFE6",fontWeight:600}}>3 minutes</span></span>
-              </div>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:0}}>Silence often sounds more confident than fillers.</p>
             </div>
           </div>
         );
@@ -773,12 +769,11 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         );
         // D3 Simulation — cinematic dark panel
         if(isD3 && step==="Simulation") return (
-          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Simulation · Day 3</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Speak without filling the silence.</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:0}}>Speak without filling the silence.</p>
             </div>
           </div>
         );
