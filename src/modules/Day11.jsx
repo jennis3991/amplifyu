@@ -601,10 +601,6 @@ Keep it under 280 words. Make every word earn its place.`;
 
         {inputMode === 'paste' && (
           <div style={{ animation: "fadeUp 0.25s ease both", display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ background: "rgba(74,124,89,0.08)", border: "0.5px solid rgba(74,124,89,0.35)", borderRadius: 6, padding: "12px 14px" }}>
-              <div style={{ ...sn, fontSize: 12, fontWeight: 600, color: "#6aaa82", marginBottom: 4 }}>{"★  Recommended — fastest and most accurate"}</div>
-              <div style={{ ...sn, fontSize: 12, color: T2.text3, lineHeight: 1.55 }}>Paste your headline, about section and experience for the most accurate results.</div>
-            </div>
             <textarea
               value={profileText}
               onChange={e => setProfileText(e.target.value)}
