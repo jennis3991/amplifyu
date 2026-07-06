@@ -691,7 +691,6 @@ T.goldDark : T2.text4,
       )}
       {isD10 && step==="Theory" && (
         <>
-          <img src="/performance-iceberg.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           {/* Label + Title — matches Day 1 style */}
           <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>The Performance Iceberg</h2>
@@ -899,7 +898,6 @@ T.goldDark : T2.text4,
       )}
       {isD7 && step==="Theory" && (
         <>
-          <img src="/d7-habit-loop.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Habit Loop</h2>
           <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Charles Duhigg — The Power of Habit, 2012</p>
@@ -1198,7 +1196,6 @@ T.goldDark : T2.text4,
       )}
       {isD3 && step==="Theory" && (
         <>
-          <img src="/day3-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center 30%",borderRadius:8,marginBottom:16,display:"block"}}/>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Cognitive Load Principle</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Fillers happen when your brain is multitasking faster than it can think.</p>
@@ -1380,7 +1377,6 @@ T.goldDark : T2.text4,
       )}
       {isD4 && step==="Theory" && (
         <>
-          <img src="/millers-law.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Miller's Law</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>In 1956, psychologist George Miller discovered something fundamental about how humans think.</p>
@@ -1552,7 +1548,6 @@ T.goldDark : T2.text4,
         ];
         return (
           <>
-            <img src="/feynman-technique.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Feynman Technique</h2>
             <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Richard Feynman won the Nobel Prize in Physics — and could explain quantum mechanics to a 12-year-old.</p>
@@ -1732,7 +1727,6 @@ T.goldDark : T2.text4,
       )}
       {isNT && step==="Theory 1" && (
         <>
-          <img src="/dual-coding-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Dual Coding Theory</h2>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Green &amp; Brock, 2000</div>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Stories activate more of the brain than facts. They trigger emotion, memory, and meaning simultaneously. In professional settings, a well-placed story is the most powerful persuasion tool available.</p>
@@ -1754,7 +1748,6 @@ T.goldDark : T2.text4,
       )}
       {isNT && step==="Theory 2" && (
         <>
-          <img src="/nt-6beat-framework.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The 6-Beat Framework</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Every great story follows a learnable pattern. Master these six beats and you can tell any story.</p>
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
@@ -1895,7 +1888,6 @@ T.goldDark : T2.text4,
       )}
       {isD9 && step==="Theory" && (
         <>
-          <img src="/day9-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why some people make everyone feel understood</h2>
           <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
@@ -2074,7 +2066,6 @@ T.goldDark : T2.text4,
       )}
       {isD5 && step==="Theory" && (
         <>
-          <img src="/d5-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The PRE Framework</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Two powerful findings from memory science explain exactly why PRE works — and why it's one of the most reliable communication frameworks available.</p>
@@ -2217,7 +2208,6 @@ T.goldDark : T2.text4,
       )}
       {isD2 && step==="Theory" && (
         <>
-          <img src="/d2-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>The 88 Keys</h2>
           <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"16px 20px",marginBottom:20,borderRadius:4}}>
@@ -2372,7 +2362,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
       {isD6 && step==="Theory" && (
         <>
-          <img src="/d6-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science of Composure</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>What Happens Under Pressure</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>High-stakes conversations trigger biology before logic. Elite communicators understand the mechanics — and train to override them.</p>
@@ -2513,7 +2502,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
       {isD11 && step==="Theory" && (
         <>
-          <img src="/d11-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science of Personal Brand</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Halo Effect</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>When people notice one standout positive trait, they often assume other positive qualities must be true too.</p>
@@ -2681,7 +2669,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
       {isD12 && step==="Theory" && (
         <>
-          <img src="/day12-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Nonverbal Congruence</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>The brain constantly compares words with body language — when they align, communication feels more authentic and clear.</p>
@@ -2944,7 +2931,6 @@ strokeLinecap="round"/></svg>
       )}
       {isD14 && step==="Theory" && (
         <>
-          <img src="/day14-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science Behind Growth</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>The Competence–Confidence Loop</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,marginBottom:14}}>Many people believe confidence comes first. The reality is the opposite.</p>
@@ -3068,7 +3054,6 @@ strokeLinecap="round"/></svg>
       )}
       {isD13 && step==="Theory" && (
         <>
-          <img src="/day13-theory.jpg" alt="" style={{width:"100%",height:180,objectFit:"cover",objectPosition:"center",borderRadius:8,marginBottom:16,display:"block"}}/>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why visibility shapes careers</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Four evidence-based principles that explain how exposure drives advancement.</p>
