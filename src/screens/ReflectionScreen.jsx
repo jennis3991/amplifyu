@@ -195,7 +195,7 @@ export function ReflectionScreen({ answers, onContinue }) {
           {/* Headline */}
           {section >= 0 && (
             <div style={{ marginBottom: 48 }} className="au-step-enter">
-              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.25)", textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 16, fontFamily: T.sans }}>Your communication profile</div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 16, fontFamily: T.sans }}>Your communication profile</div>
               <h1 style={{ fontFamily: T.serif, fontSize: "clamp(34px, 3.5vw, 54px)", fontWeight: 500, color: "rgba(255,255,255,0.93)", lineHeight: 1.08, letterSpacing: "-1.5px", margin: 0 }}>
                 Here's what<br/>we're seeing.
               </h1>
@@ -254,7 +254,7 @@ export function ReflectionScreen({ answers, onContinue }) {
                   <span>Begin Day 1</span>
                   <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </button>
-                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", fontFamily: T.sans }}>~15 minutes · Your first session is ready</span>
+                <span style={{ fontSize: 13, color: "rgba(255,255,255,0.72)", fontFamily: T.sans }}>~15 minutes · Your first session is ready</span>
               </div>
             </div>
           )}
@@ -276,7 +276,7 @@ export function ReflectionScreen({ answers, onContinue }) {
       <div style={{ padding:"52px 24px 0", flexShrink:0 }}>
         <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:16,fontFamily:T.sans }}>AmplifyU</div>
         <div>
-          <div style={{ fontSize:9,color:"rgba(255,255,255,0.3)",textTransform:"uppercase",letterSpacing:"3.5px",marginBottom:14,fontFamily:T.sans }}>Your communication profile</div>
+          <div style={{ fontSize:11,color:"rgba(255,255,255,0.65)",textTransform:"uppercase",letterSpacing:"3.5px",marginBottom:14,fontFamily:T.sans }}>Your communication profile</div>
           <h1 style={{ fontFamily:T.serif,fontSize:34,fontWeight:500,color:"rgba(255,255,255,0.93)",lineHeight:1.08,letterSpacing:"-1px",margin:0 }}>Here's what<br/>we're seeing.</h1>
           {role && <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginTop:14,fontFamily:T.sans }}>{role.label}</div>}
         </div>
@@ -307,7 +307,7 @@ export function ReflectionScreen({ answers, onContinue }) {
             <button onClick={onContinue} style={{ width:"100%",padding:"16px 24px",borderRadius:6,border:"none",background:T.gold,color:"white",fontSize:15,fontFamily:T.sans,fontWeight:600,cursor:"pointer",letterSpacing:"0.2px" }}>
               Begin Day 1 →
             </button>
-            <p style={{ fontSize:12,color:"rgba(255,255,255,0.2)",textAlign:"center",marginTop:12,fontFamily:T.sans }}>~15 minutes · Your first session is ready</p>
+            <p style={{ fontSize:14,color:"rgba(255,255,255,0.72)",textAlign:"center",marginTop:12,fontFamily:T.sans }}>~15 minutes · Your first session is ready</p>
           </div>)}
         </div>
       )}
