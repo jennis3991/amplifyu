@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { T } from '../theme.js';
 import { LESSONS, QUOTES, DAILY_INSIGHTS, POWER_PHRASES, FURTHER_READING } from '../data.js';
 import { MODULE_ICONS } from '../diagrams.jsx';
@@ -6,21 +6,36 @@ import { PBar, NAV_H } from '../components/NavComponents.jsx';
 import { Scene } from '../scenes.jsx';
 import { HourglassIcon } from '../components/HourglassIcon.jsx';
 import { PhraseStrip } from '../components/PhraseStrip.jsx';
-import { ls, lsSet, getPieceInfo, getCategoryProgress } from '../utils.js';
+import { PIECES, getPieceInfo, getCategoryProgress } from '../utils.js';
 
-function JourneyCard({ pieceInfo, catProgress, done, T }) {
+function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
   return (
     <div style={{ background:"#17140f", borderRadius:14, padding:"24px" }}>
-      <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:20 }}>
+      <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:mobile?12:20 }}>
         <div style={{ width:32, height:32, borderRadius:"50%", background:"#2a251c", display:"flex", alignItems:"center", justifyContent:"center" }}>
           <i className="ti ti-calendar" style={{ fontSize:16, color:"#c9a961" }}/>
         </div>
         <span style={{ fontSize:12, letterSpacing:"0.15em", color:"#c9a961", fontWeight:500, fontFamily:T.sans }}>YOUR JOURNEY</span>
       </div>
+      {mobile && (
+        <div style={{ position:"relative", display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
+          <div style={{ position:"absolute", top:"50%", left:"5%", right:"5%", height:1, background:"rgba(255,255,255,0.1)", transform:"translateY(-50%)", zIndex:0 }}/>
+          {PIECES.map((piece,i) => {
+            const isCurrent = i === pieceInfo.currentIndex;
+            return (
+              <div key={piece.name} style={{ position:"relative", zIndex:1 }}>
+                <div style={{ width:26, height:26, borderRadius:"50%", background:isCurrent?"#c9a961":"transparent", border:isCurrent?"none":"1.5px solid rgba(255,255,255,0.15)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                  <i className={"ti "+piece.icon} style={{ fontSize:12, color:isCurrent?"#17140f":"rgba(255,255,255,0.2)" }}/>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
       {pieceInfo.next ? (
         <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20, marginBottom:20 }}>
           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:4 }}>
-            <span style={{ fontFamily:T.serif, fontSize:34, color:"#f4f1ea" }}>{pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"}</span>
+            <span style={{ fontFamily:T.serif, fontSize:mobile?22:34, color:"#f4f1ea" }}>{pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"}</span>
             <i className={"ti "+pieceInfo.next.icon} style={{ fontSize:26, color:"#c9a961" }}/>
           </div>
           <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>until you reach {pieceInfo.next.name}{done.length<6?" — your next rank":""}</p>
@@ -28,29 +43,29 @@ function JourneyCard({ pieceInfo, catProgress, done, T }) {
       ) : (
         <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20, marginBottom:20 }}>
           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:4 }}>
-            <span style={{ fontFamily:T.serif, fontSize:34, color:"#c9a961" }}>King</span>
+            <span style={{ fontFamily:T.serif, fontSize:mobile?22:34, color:"#c9a961" }}>King</span>
             <i className="ti ti-chess-king" style={{ fontSize:26, color:"#c9a961" }}/>
           </div>
           <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>{"You've reached the highest rank"}</p>
         </div>
       )}
       <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20 }}>
-          <p style={{ fontSize:12, letterSpacing:"0.1em", color:"#9c9384", margin:"0 0 10px", fontFamily:T.sans }}>STRONGEST SO FAR</p>
-          {catProgress.map((cat,i) => (
-            <div key={cat.label} style={{ display:"flex", alignItems:"center", gap:10, marginBottom:i<catProgress.length-1?8:0 }}>
-              <span style={{ fontSize:13, color:i===0?"#f4f1ea":"#9c9384", width:128, flexShrink:0, fontFamily:T.sans }}>{cat.label}</span>
-              <div style={{ flex:1, height:4, background:"#2a251c", borderRadius:2, overflow:"hidden" }}>
-                <div style={{ width:cat.pct+"%", height:"100%", background:i===0?"#c9a961":"#5f5a4c" }}/>
-              </div>
+        <p style={{ fontSize:12, letterSpacing:"0.1em", color:"#9c9384", margin:"0 0 10px", fontFamily:T.sans }}>STRONGEST SO FAR</p>
+        {catProgress.map((cat,i) => (
+          <div key={cat.label} style={{ display:"flex", alignItems:"center", gap:10, marginBottom:i<catProgress.length-1?8:0 }}>
+            <span style={{ fontSize:13, color:i===0?"#f4f1ea":"#9c9384", width:128, flexShrink:0, fontFamily:T.sans }}>{cat.label}</span>
+            <div style={{ flex:1, height:4, background:"#2a251c", borderRadius:2, overflow:"hidden" }}>
+              <div style={{ width:cat.pct+"%", height:"100%", background:i===0?"#c9a961":"#5f5a4c" }}/>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
 export function HomeScreen({done, cur, streak, onStart, roleId, activeRole,
-dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false, showWelcome=false}) {
+dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
   const [selectedDay, setSelectedDay] = useState(1);
   const selectedLesson = selectedDay ? LESSONS.find(l => l.day === selectedDay) : null;
@@ -88,11 +103,6 @@ finishDate + ".";
   const insight = { label: lesson.tag, headline: lesson.quote, body: lesson.teaser };
   const pieceInfo = getPieceInfo(done.length);
   const catProgress = getCategoryProgress(done);
-  const [showPieceModal, setShowPieceModal] = useState(false);
-  useEffect(() => {
-    if (!showWelcome && !ls("au1_piece_intro", false)) setShowPieceModal(true);
-  }, [showWelcome]);
-  function dismissPieceModal() { lsSet("au1_piece_intro", true); setShowPieceModal(false); }
   // ── shared blocks used in both layouts ──────────────────────────────────
   const storedAmbition = (() => { try { return localStorage.getItem("au1_ambition") || ""; } catch { return ""; } })();
   const InsightCard = () => (
@@ -312,28 +322,6 @@ finishDate + ".";
 
         </div>
 
-      {showPieceModal && (
-        <div style={{position:"fixed",inset:0,background:"rgba(10,9,7,0.72)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:"24px"}} onClick={dismissPieceModal}>
-          <div style={{width:"100%",maxWidth:340,background:"#17140f",borderRadius:12,padding:"28px",textAlign:"center"}} onClick={e=>e.stopPropagation()}>
-            <div style={{display:"flex",justifyContent:"center",gap:8,marginBottom:20}}>
-              <div style={{width:40,height:40,borderRadius:"50%",background:"#c9a961",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <i className="ti ti-chess" style={{fontSize:20,color:"#17140f"}}/>
-              </div>
-              {["ti-chess-knight","ti-chess-bishop","ti-chess-rook","ti-chess-queen","ti-chess-king"].map(icon=>(
-                <i key={icon} className={"ti "+icon} style={{fontSize:20,color:"#4a4437",alignSelf:"center"}}/>
-              ))}
-            </div>
-            <h2 style={{fontFamily:T.serif,fontSize:24,color:"#f4f1ea",fontWeight:400,margin:"0 0 10px"}}>Six pieces, one journey</h2>
-            <p style={{fontSize:14,color:"#9c9384",lineHeight:1.6,margin:"0 0 24px"}}>
-              {"You'll progress through six pieces as you build your presence — Pawn, Knight, Bishop, Rook, Queen, King. Each one unlocks as your skills grow."}
-            </p>
-            <button onClick={dismissPieceModal} style={{width:"100%",background:"#c9a961",border:"none",color:"#17140f",fontSize:14,fontWeight:500,padding:"12px",borderRadius:8,cursor:"pointer"}}>
-              Got it
-            </button>
-          </div>
-        </div>
-      )}
-
       </div>
     );
   }
@@ -391,7 +379,7 @@ finishDate + ".";
       <section style={{padding:"48px 24px 56px",background:T2.bg}}>
         <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Journey</div>
         <div style={{width:20,height:1,background:T.gold,marginBottom:28,opacity:0.5}}/>
-        <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} done={done} T={T} />
+        <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} done={done} T={T} mobile={true} />
       </section>
 
       {/* ── SECTION 4: All Sessions ── */}
@@ -436,27 +424,6 @@ finishDate + ".";
         </div>
       </section>
 
-      {showPieceModal && (
-        <div style={{position:"fixed",inset:0,background:"rgba(10,9,7,0.72)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:"24px"}} onClick={dismissPieceModal}>
-          <div style={{width:"100%",maxWidth:340,background:"#17140f",borderRadius:12,padding:"28px",textAlign:"center"}} onClick={e=>e.stopPropagation()}>
-            <div style={{display:"flex",justifyContent:"center",gap:8,marginBottom:20}}>
-              <div style={{width:40,height:40,borderRadius:"50%",background:"#c9a961",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <i className="ti ti-chess" style={{fontSize:20,color:"#17140f"}}/>
-              </div>
-              {["ti-chess-knight","ti-chess-bishop","ti-chess-rook","ti-chess-queen","ti-chess-king"].map(icon=>(
-                <i key={icon} className={"ti "+icon} style={{fontSize:20,color:"#4a4437",alignSelf:"center"}}/>
-              ))}
-            </div>
-            <h2 style={{fontFamily:T.serif,fontSize:24,color:"#f4f1ea",fontWeight:400,margin:"0 0 10px"}}>Six pieces, one journey</h2>
-            <p style={{fontSize:14,color:"#9c9384",lineHeight:1.6,margin:"0 0 24px"}}>
-              {"You'll progress through six pieces as you build your presence — Pawn, Knight, Bishop, Rook, Queen, King. Each one unlocks as your skills grow."}
-            </p>
-            <button onClick={dismissPieceModal} style={{width:"100%",background:"#c9a961",border:"none",color:"#17140f",fontSize:14,fontWeight:500,padding:"12px",borderRadius:8,cursor:"pointer"}}>
-              Got it
-            </button>
-          </div>
-        </div>
-      )}
 
     </div>
   );
