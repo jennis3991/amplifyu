@@ -483,11 +483,13 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           };
           const sh=SIM_HEADERS[lesson.day]||{label:"SIMULATION",heading:"Real scenario. Real pressure. Real coaching."};
           return (
-            <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box"}}>
+            <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:lesson.day===2?"24px 24px 12px":"24px 24px 28px",boxSizing:"border-box"}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{sh.label}</div>
               <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{sh.heading}</p>
-              <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
-              <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>Day {lesson.day} · {lesson.tag}</p>
+              {lesson.day !== 2 && <>
+                <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
+                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>Day {lesson.day} · {lesson.tag}</p>
+              </>}
             </div>
           );
         }
@@ -520,11 +522,13 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           };
           const h=EX_HEADERS[lesson.day]||EX_HEADERS[1];
           return (
-            <div style={{width:"100%",height:320,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box"}}>
+            <div style={{width:"100%",height:320,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:lesson.day===2?"24px 24px 12px":"24px 24px 28px",boxSizing:"border-box"}}>
               <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{h.label}</div>
               <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{h.heading}</p>
-              <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
-              <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>{h.body}</p>
+              {lesson.day !== 2 && <>
+                <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)",marginBottom:14}}/>
+                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:0}}>{h.body}</p>
+              </>}
             </div>
           );
         }
@@ -780,7 +784,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         );
         // D2 Rehearsal — cinematic dark panel (voice warm-up)
         if(isD2 && step==="Rehearsal") return (
-          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 28px",boxSizing:"border-box",position:"relative"}}>
+          <div style={{width:"100%",height:280,background:"#0A0804",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 35% 20%, rgba(138,158,132,0.07) 0%, transparent 55%)",pointerEvents:"none"}}/>
             <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.2) 55%, transparent 80%)",pointerEvents:"none"}}/>
             <div style={{position:"relative",zIndex:2}}>
