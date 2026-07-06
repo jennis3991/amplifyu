@@ -868,7 +868,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d10ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
@@ -889,10 +889,10 @@ setAmbitionSaved(true); } catch {}
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>{card.superpower}</div>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,margin:"0 0 8px"}}>{card.name}</h3>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
                         <div>
                           <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>✦ SUPERPOWER</div>
@@ -1370,7 +1370,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d3ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
@@ -1391,10 +1391,10 @@ setAmbitionSaved(true); } catch {}
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:4}}>{card.name}</h3>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:10}}>{card.superpower}</div>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:12}}>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
@@ -1734,10 +1734,10 @@ setAmbitionSaved(true); } catch {}
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:4}}>{card.name}</h3>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:10}}>{card.superpower}</div>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:12}}>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
@@ -2182,7 +2182,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d1ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
@@ -2203,10 +2203,10 @@ setAmbitionSaved(true); } catch {}
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:4}}>{card.name}</h3>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:10}}>{card.superpower}</div>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:12}}>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
@@ -2443,7 +2443,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d8ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
@@ -2464,10 +2464,10 @@ setAmbitionSaved(true); } catch {}
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>{card.superpower}</div>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,margin:"0 0 8px"}}>{card.name}</h3>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
                         <div>
                           <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>✦ SUPERPOWER</div>
@@ -2654,7 +2654,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d9ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
@@ -2675,10 +2675,10 @@ setAmbitionSaved(true); } catch {}
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>{card.superpower}</div>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,margin:"0 0 8px"}}>{card.name}</h3>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
                         <div>
                           <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>✦ SUPERPOWER</div>
@@ -2900,7 +2900,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d2ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
@@ -2921,10 +2921,10 @@ setAmbitionSaved(true); } catch {}
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:4}}>{card.name}</h3>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:10}}>{card.superpower}</div>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:12}}>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
@@ -3134,7 +3134,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d5ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
@@ -3155,10 +3155,10 @@ setAmbitionSaved(true); } catch {}
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:4}}>{card.name}</h3>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:10}}>{card.superpower}</div>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:12}}>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
@@ -3337,7 +3337,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d6ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
@@ -3358,10 +3358,10 @@ setAmbitionSaved(true); } catch {}
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>{card.superpower}</div>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,margin:"0 0 8px"}}>{card.name}</h3>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
                         <div>
                           <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>✦ SUPERPOWER</div>
@@ -3626,7 +3626,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d11ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
@@ -3647,10 +3647,10 @@ setAmbitionSaved(true); } catch {}
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>{card.superpower}</div>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,margin:"0 0 8px"}}>{card.name}</h3>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
                         <div>
                           <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>✦ SUPERPOWER</div>
@@ -3812,7 +3812,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d12ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
@@ -3833,10 +3833,10 @@ setAmbitionSaved(true); } catch {}
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>{card.superpower}</div>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,margin:"0 0 8px"}}>{card.name}</h3>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
                         <div>
                           <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>✦ SUPERPOWER</div>
@@ -4035,7 +4035,7 @@ setAmbitionSaved(true); } catch {}
                 const obs = d13ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
@@ -4056,10 +4056,10 @@ setAmbitionSaved(true); } catch {}
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
                     </div>
-                    <div style={{padding:"18px 20px 20px"}}>
+                    <div style={{padding:"18px 20px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>{card.superpower}</div>
                       <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:400,color:T2.text,lineHeight:1.2,margin:"0 0 8px"}}>{card.name}</h3>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px"}}>{card.summary}</p>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 14px",flex:1}}>{card.summary}</p>
                       <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
                         <div>
                           <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>✦ SUPERPOWER</div>
