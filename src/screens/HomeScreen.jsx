@@ -260,7 +260,7 @@ finishDate + ".";
             </div>
 
             {/* Right: YOUR JOURNEY card */}
-            <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} done={done} T={T} />
+            <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} done={done} T={T} mobile={true} />
 
           </div>
         </div>
