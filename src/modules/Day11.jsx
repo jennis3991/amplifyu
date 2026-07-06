@@ -594,40 +594,36 @@ Keep it under 280 words. Make every word earn its place.`;
           </p>
         </div>
 
-        <textarea
-          value={profileText}
-          onChange={e => { setProfileText(e.target.value); if (inputMode !== 'paste') setInputMode('paste'); }}
-          placeholder={"Paste your LinkedIn profile content here...\n\nHeadline:\ne.g. Senior Marketing Manager | Brand Strategy | Consumer Insights\n\nAbout:\ne.g. I help brands find their voice and connect with the people who matter most...\n\nExperience:\ne.g. Marketing Manager at Acme Corp (2020-present)\n- Led rebranding campaign reaching 2M+ customers\n- Managed cross-functional team of 12 across 3 regions"}
-          rows={isDesktop ? 7 : 6}
-          style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: "0.5px solid " + (inputMode === 'paste' ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.08)"), borderRadius: 4, padding: "12px 14px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box", opacity: inputMode === 'paste' ? 1 : 0.4 }}
-        />
-
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ flex: 1, height: "0.5px", background: T2.border }}/>
-          <span style={{ ...lbl, fontSize: 9 }}>or use</span>
-          <div style={{ flex: 1, height: "0.5px", background: T2.border }}/>
-        </div>
-
         <div style={{ display: "flex", gap: 6 }}>
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setInputMode(inputMode === tab.id ? 'paste' : tab.id)}
-              style={{ flex: 1, padding: isDesktop ? "10px 6px" : "8px 4px", borderRadius: 4, border: `0.5px solid ${inputMode === tab.id ? T.gold : T2.border}`, background: inputMode === tab.id ? "rgba(200,164,106,0.07)" : "transparent", fontFamily: T.sans, fontSize: isDesktop ? 11 : 10, fontWeight: inputMode === tab.id ? 600 : 400, color: inputMode === tab.id ? T.gold : T2.text4, cursor: "pointer", transition: "all 0.15s", position: "relative", lineHeight: 1.3 }}>
+              style={{ flex: 1, padding: isDesktop ? "10px 6px" : "8px 4px", borderRadius: 4, border: `0.5px solid ${inputMode === tab.id ? T.gold : T2.border}`, background: inputMode === tab.id ? "rgba(200,164,106,0.07)" : "transparent", fontFamily: T.sans, fontSize: isDesktop ? 11 : 10, fontWeight: inputMode === tab.id ? 600 : 400, color: inputMode === tab.id ? T.gold : T2.text3, cursor: "pointer", transition: "all 0.15s", position: "relative", lineHeight: 1.3 }}>
               {tab.label}
-              {tab.recommended && <span style={{ position: "absolute", top: -9, right: -2, fontSize: 8, background: "#4a7c59", color: "#fff", padding: "2px 6px", borderRadius: 10, fontWeight: 700, letterSpacing: "0.4px" }}>Recommended</span>}
+              {tab.recommended && <span style={{ position: "absolute", top: -9, left: "50%", transform: "translateX(-50%)", fontSize: 8, background: "#4a7c59", color: "#fff", padding: "2px 7px", borderRadius: 10, fontWeight: 700, letterSpacing: "0.4px", whiteSpace: "nowrap" }}>Recommended</span>}
             </button>
           ))}
         </div>
 
+        {inputMode === 'paste' && (
+          <textarea
+            value={profileText}
+            onChange={e => setProfileText(e.target.value)}
+            placeholder={"Paste your LinkedIn profile content here...\n\nHeadline:\ne.g. Senior Marketing Manager | Brand Strategy | Consumer Insights\n\nAbout:\ne.g. I help brands find their voice and connect with the people who matter most...\n\nExperience:\ne.g. Marketing Manager at Acme Corp (2020-present)\n- Led rebranding campaign reaching 2M+ customers\n- Managed cross-functional team of 12 across 3 regions"}
+            rows={isDesktop ? 8 : 6}
+            style={{ width: "100%", background: "rgba(44,36,22,0.05)", border: "1px solid rgba(44,36,22,0.2)", borderRadius: 6, padding: "14px 16px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box" }}
+          />
+        )}
+
         {inputMode === 'summary' && (
           <div style={{ animation: "fadeUp 0.25s ease both" }}>
             {savedSig ? (
-              <div style={{ background: "rgba(200,164,106,0.06)", border: "0.5px solid rgba(200,164,106,0.25)", borderRadius: 6, padding: "16px 18px" }}>
+              <div style={{ background: "rgba(200,164,106,0.06)", border: "1px solid rgba(200,164,106,0.25)", borderRadius: 6, padding: "16px 18px" }}>
                 <div style={{ ...lbl, color: "rgba(200,164,106,0.6)", marginBottom: 10 }}>Your Professional Signature</div>
                 <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text, lineHeight: 1.65, margin: 0 }}>{savedSig}</p>
                 {savedStmt && <p style={{ ...sn, fontSize: isDesktop ? 13 : 12, color: T2.text3, lineHeight: 1.6, marginTop: 10, fontStyle: "italic" }}>{savedStmt}</p>}
               </div>
             ) : (
-              <div style={{ background: "rgba(255,255,255,0.02)", border: "0.5px dashed " + T2.border, borderRadius: 6, padding: "24px 20px", textAlign: "center" }}>
+              <div style={{ background: "rgba(44,36,22,0.03)", border: "1px dashed rgba(44,36,22,0.15)", borderRadius: 6, padding: "24px 20px", textAlign: "center" }}>
                 <p style={{ ...sn, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: 0 }}>Complete the Rehearsal step first to generate your Professional Signature.</p>
               </div>
             )}
@@ -636,11 +632,11 @@ Keep it under 280 words. Make every word earn its place.`;
 
         {inputMode === 'screenshot' && (
           <div style={{ animation: "fadeUp 0.25s ease both" }}>
-            <label style={{ display: "block", border: `0.5px dashed ${T2.border}`, borderRadius: 6, padding: isDesktop ? "32px 20px" : "24px 16px", textAlign: "center", cursor: "pointer", transition: "border-color 0.2s" }}>
+            <label style={{ display: "block", border: "1px dashed rgba(44,36,22,0.2)", borderRadius: 6, padding: isDesktop ? "32px 20px" : "24px 16px", textAlign: "center", cursor: "pointer", transition: "border-color 0.2s", background: "rgba(44,36,22,0.03)" }}>
               <input type="file" accept="image/*" multiple onChange={e => handleScreenshots(e.target.files)} style={{ display: "none" }} />
               {screenshots.length === 0 ? (
                 <>
-                  <div style={{ fontSize: 28, marginBottom: 10 }}>{"📸"}</div>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style={{ marginBottom: 10, opacity: 0.4 }}><rect x="3" y="6" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.5"/><circle cx="12" cy="13" r="3.5" stroke="currentColor" strokeWidth="1.5"/><path d="M9 6V5a1 1 0 011-1h4a1 1 0 011 1v1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
                   <div style={{ ...sn, fontSize: isDesktop ? 13 : 12, color: T2.text3, marginBottom: 4 }}>Upload LinkedIn screenshots</div>
                   <div style={{ ...sn, fontSize: 11, color: T2.text4 }}>Headline · About · Experience</div>
                 </>
@@ -666,8 +662,8 @@ Keep it under 280 words. Make every word earn its place.`;
               value={cvText}
               onChange={e => setCvText(e.target.value)}
               placeholder="Paste your CV content here..."
-              rows={isDesktop ? 9 : 8}
-              style={{ width: "100%", background: "rgba(255,255,255,0.02)", border: "0.5px solid " + T2.border, borderRadius: 4, padding: "12px 14px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box" }}
+              rows={isDesktop ? 8 : 7}
+              style={{ width: "100%", background: "rgba(44,36,22,0.05)", border: "1px solid rgba(44,36,22,0.2)", borderRadius: 6, padding: "14px 16px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box" }}
             />
           </div>
         )}
@@ -676,10 +672,13 @@ Keep it under 280 words. Make every word earn its place.`;
           <button onClick={runAnalysis} disabled={!hasProfile} style={{ ...cta(!hasProfile), flex: 1 }}>
             {"✦  Analyse My LinkedIn →"}
           </button>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, background: "rgba(255,255,255,0.03)", border: "0.5px solid " + T2.border, borderRadius: 6, padding: "10px 14px", flexShrink: 0 }}>
-            <span style={{ fontSize: 14 }}>{"🛡"}</span>
-            <span style={{ ...sn, fontSize: 10, color: T2.text4, fontWeight: 600, textAlign: "center", lineHeight: 1.3 }}>100% Private & Secure</span>
-            <span style={{ ...sn, fontSize: 10, color: T2.text4, textAlign: "center", lineHeight: 1.3 }}>Your data is never shared.</span>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4, background: "rgba(44,36,22,0.04)", border: "0.5px solid rgba(44,36,22,0.12)", borderRadius: 6, padding: "10px 16px", flexShrink: 0 }}>
+            <svg width="16" height="18" viewBox="0 0 16 20" fill="none" style={{ opacity: 0.55 }}>
+              <path d="M8 1L1 4v6c0 5 3.5 8.5 7 9.5C11.5 18.5 15 15 15 10V4L8 1Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+              <path d="M5 10l2.5 2.5L11 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span style={{ ...sn, fontSize: 10, color: T2.text3, fontWeight: 600, textAlign: "center", lineHeight: 1.3 }}>100% Private</span>
+            <span style={{ ...sn, fontSize: 10, color: T2.text4, textAlign: "center", lineHeight: 1.3 }}>Never shared.</span>
           </div>
         </div>
       </div>
