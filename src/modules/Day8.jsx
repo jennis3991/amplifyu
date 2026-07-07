@@ -724,14 +724,15 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   const [brief,      setBrief]     = useState('');
   const [result,     setResult]    = useState(null);
   const [apiError,   setApiError]  = useState(false);
-  const [storyImage, setStoryImage]= useState(null); // null | 'loading' | url-string | 'error'
+  const [storyImage,     setStoryImage]    = useState(null); // null | 'loading' | url-string | 'error'
+  const [storyImageErr,  setStoryImageErr] = useState('');
 
   const EXAMPLE_BRIEFS = [
     "A TED-style pitch for a new product — emotional, direct, show real human impact",
     "A cybersecurity risk presentation for our board — make it feel like breaking news, urgent and specific",
   ];
 
-  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); setStoryImage(null); }
+  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); setStoryImage(null); setStoryImageErr(''); }
 
   async function generateStoryImage(scenes, storyWorld) {
     try {
@@ -741,9 +742,14 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
         body: JSON.stringify({ scenes, storyWorld }),
       });
       const data = await res.json();
-      if (data.url) setStoryImage(data.url);
-      else setStoryImage('error');
-    } catch (_) {
+      if (data.url) {
+        setStoryImage(data.url);
+      } else {
+        setStoryImageErr(data.error || 'Unknown error');
+        setStoryImage('error');
+      }
+    } catch (err) {
+      setStoryImageErr(err.message || 'Network error');
       setStoryImage('error');
     }
   }
@@ -932,16 +938,24 @@ Return ONLY valid JSON:
                 </div>
               : storyImage && storyImage!=='error'
                 ? <img src={storyImage} alt="Storyboard" style={{width:"100%",height:"auto",display:"block"}}/>
-                : <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(6,1fr)":"repeat(2,1fr)"}}>
-                    {scenes.map((scene,i)=>(
-                      <div key={i} style={{position:"relative",height:isDesktop?130:100,background:CREAM,borderRight:i<scenes.length-1?"0.5px solid "+T2.border:"none",overflow:"hidden"}}>
-                        <SketchIllustration scene={scene} idx={i}/>
-                        <div style={{position:"absolute",top:7,left:7,width:20,height:20,borderRadius:"50%",background:"rgba(58,48,40,0.12)",border:"0.5px solid "+INK_D,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                          <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:INK,opacity:0.7}}>{scene.number}</span>
+                : <>
+                    <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(6,1fr)":"repeat(2,1fr)"}}>
+                      {scenes.map((scene,i)=>(
+                        <div key={i} style={{position:"relative",height:isDesktop?130:100,background:CREAM,borderRight:i<scenes.length-1?"0.5px solid "+T2.border:"none",overflow:"hidden"}}>
+                          <SketchIllustration scene={scene} idx={i}/>
+                          <div style={{position:"absolute",top:7,left:7,width:20,height:20,borderRadius:"50%",background:"rgba(58,48,40,0.12)",border:"0.5px solid "+INK_D,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                            <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:INK,opacity:0.7}}>{scene.number}</span>
+                          </div>
                         </div>
+                      ))}
+                    </div>
+                    {storyImage==='error'&&(
+                      <div style={{padding:"8px 14px",borderTop:"0.5px solid "+T2.border,background:"rgba(200,82,74,0.04)",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
+                        <span style={{fontFamily:T.sans,fontSize:10,color:"rgba(200,82,74,0.8)",fontWeight:300}}>{storyImageErr||"Image generation failed"}</span>
+                        <button onClick={()=>{setStoryImage('loading');setStoryImageErr('');generateStoryImage(scenes,sw);}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:10,fontWeight:600,padding:0,flexShrink:0}}>Retry →</button>
                       </div>
-                    ))}
-                  </div>
+                    )}
+                  </>
             }
           </div>
           {/* Scene text cards */}
