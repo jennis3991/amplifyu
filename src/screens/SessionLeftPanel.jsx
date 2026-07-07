@@ -330,20 +330,6 @@ export function SessionLeftPanel({
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>SIMULATION · DAY 1</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:24, maxWidth:400 }}>Awareness is where every great communicator begins.</p>
-          <div style={{ padding:"16px 20px", background:"rgba(138,158,132,0.08)", borderRadius:8, border:"0.5px solid rgba(138,158,132,0.2)", marginBottom:24, display:"flex", alignItems:"center", gap:12 }}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="4.5" stroke={T.gold} strokeWidth="1.3"/><circle cx="10" cy="10" r="1.5" fill={T.gold}/></svg>
-            <div>
-              <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:3 }}>Today's Goal</div>
-              <div style={{ fontFamily:T.serif, fontSize:15, fontWeight:500, color:"rgba(245,239,230,0.85)" }}>Establish your clarity baseline.</div>
-            </div>
-          </div>
-        </div>
-        <div style={{ flex:1 }}/>
-        <div style={{ position:"relative", zIndex:2 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-            <span style={{ fontFamily:T.serif, fontSize:13, color:"rgba(245,239,230,0.45)" }}>Estimated time: <span style={{ color:"rgba(245,239,230,0.65)", fontWeight:600 }}>4–5 minutes</span></span>
-          </div>
         </div>
       </div>
     );
