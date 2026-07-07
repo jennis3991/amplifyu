@@ -1682,11 +1682,7 @@ T.goldDark : T2.text4,
         );
       })()}
       {isD1 && step==="Rehearsal" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Voice Warm-Up · Day 1</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Let's warm up your voice.</h2>
-          <D1WarmUpWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD1NavLabel} onNavFn={d1NavFnRef} onComplete={(topic) => { setD1WarmUpTopic(topic); setIdx(i => i + 1); }}/>
-        </>
+        <D1WarmUpWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD1NavLabel} onNavFn={d1NavFnRef} onComplete={(topic) => { setD1WarmUpTopic(topic); setIdx(i => i + 1); }}/>
       )}
       {isD1 && step==="Simulation" && (
         <>
