@@ -648,31 +648,32 @@ export function D3SimWidget({T, T2, isDesktop}) {
   );
 
   // ── SCREEN 1: SELECT ────────────────────────────────────────────────────────
-  if (phase === 'select') return grid(<>
-    <div>
-      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.6)', textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 8}}>Simulation · Day 3</div>
-      <h3 style={{fontFamily: T.serif, fontSize: isDesktop ? 24 : 20, fontWeight: 600, color: 'rgba(245,239,230,0.92)', margin: 0, lineHeight: 1.2}}>The Hot Seat</h3>
+  if (phase === 'select') return (
+    <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
+      <div style={{display: 'grid', gridTemplateColumns: isDesktop ? '2fr 3fr' : '1fr', gap: isDesktop ? 20 : 16, alignItems: 'start'}}>
+        {leftPanel}
+        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
+          {scenarios.map(sc => {
+            const sel = scenario?.id === sc.id;
+            return (
+              <button key={sc.id}
+                onClick={() => { if (!sc.placeholder) setScenario(sc); }}
+                disabled={!!sc.placeholder}
+                style={{padding: '16px 14px', borderRadius: 6, border: `${sel ? '2px' : '1px'} solid ${sel ? 'rgba(138,158,132,0.6)' : T2.border}`, background: sel ? 'rgba(138,158,132,0.1)' : T2.surface, cursor: sc.placeholder ? 'default' : 'pointer', textAlign: 'center', transition: 'all 0.2s', opacity: sc.placeholder ? 0.35 : 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, outline: 'none'}}>
+                <div style={{color: sel ? 'rgba(82,112,96,0.95)' : T2.text3}}>{sc.icon}</div>
+                <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: T2.text, lineHeight: 1.4, fontWeight: sel ? 600 : 400}}>{sc.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <button onClick={() => { if (scenario) { setPhase('brief'); setBriefSecs(45); setBriefDone(false); } }}
+        disabled={!scenario}
+        style={{...cs.cta, opacity: scenario ? 1 : 0.4, cursor: scenario ? 'pointer' : 'default'}}>
+        Enter the Hot Seat →
+      </button>
     </div>
-    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
-      {scenarios.map(sc => {
-        const sel = scenario?.id === sc.id;
-        return (
-          <button key={sc.id}
-            onClick={() => { if (!sc.placeholder) setScenario(sc); }}
-            disabled={!!sc.placeholder}
-            style={{padding: '16px 14px', borderRadius: 6, border: `1px solid ${sel ? 'rgba(138,158,132,0.6)' : T2.border}`, background: sel ? 'rgba(138,158,132,0.1)' : T2.surface, cursor: sc.placeholder ? 'default' : 'pointer', textAlign: 'left', transition: 'all 0.2s', opacity: sc.placeholder ? 0.35 : 1, display: 'flex', flexDirection: 'column', gap: 10}}>
-            <div style={{color: sel ? 'rgba(138,158,132,0.9)' : 'rgba(245,239,230,0.4)'}}>{sc.icon}</div>
-            <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: sel ? 'rgba(245,239,230,0.92)' : T2.text, lineHeight: 1.4, fontWeight: sel ? 500 : 400}}>{sc.label}</span>
-          </button>
-        );
-      })}
-    </div>
-    <button onClick={() => { if (scenario) { setPhase('brief'); setBriefSecs(45); setBriefDone(false); } }}
-      disabled={!scenario}
-      style={{...cs.cta, opacity: scenario ? 1 : 0.4, cursor: scenario ? 'pointer' : 'default'}}>
-      Enter the Hot Seat →
-    </button>
-  </>);
+  );
 
   // ── SCREEN 2: BRIEF ─────────────────────────────────────────────────────────
   if (phase === 'brief') return grid(<>
