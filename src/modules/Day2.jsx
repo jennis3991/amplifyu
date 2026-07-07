@@ -281,6 +281,8 @@ export function D2SimWidget({T, T2, isDesktop}) {
   const cs={
     card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"16px 18px"},
     label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8},
+    h2:{fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12},
+    body:{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.65,margin:0},
     cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
     ghost:{width:"100%",padding:"11px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44},
   };
@@ -321,25 +323,25 @@ export function D2SimWidget({T, T2, isDesktop}) {
 
   // ── CHOOSE ──────────────────────────────────────────────────────────────────
   if(phase==='choose') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={cs.card}>
-        <div style={cs.label}>Choose Your Category</div>
-        <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>
-          {Object.keys(PROMPTS).map(c=>(
-            <button key={c} onClick={()=>setCat(c)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${cat===c?T.gold:T2.border}`,background:cat===c?"rgba(138,158,132,0.1)":"transparent",color:cat===c?T.gold:T2.text3,fontSize:12,fontWeight:cat===c?600:400,cursor:"pointer",fontFamily:T.sans,minHeight:36,transition:"all 0.15s"}}>{c}</button>
-          ))}
-        </div>
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          {PROMPTS[cat].map((p,i)=>(
-            <button key={i} onClick={()=>selectPrompt(p)}
-              style={{padding:"14px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:isDesktop?15:14,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",lineHeight:1.4,transition:"all 0.2s"}}>
-              {p}
-            </button>
-          ))}
-        </div>
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <div>
+        <h2 style={cs.h2}>Choose a speaking prompt</h2>
+        <p style={{...cs.body,marginBottom:16}}>{"Pick a topic, speak for 60-90 seconds. Your coach listens for pace, pitch, pauses, and energy."}</p>
       </div>
-      <button onClick={surprise} style={{...cs.ghost}}>Surprise me →</button>
-      <button onClick={()=>setPhase('intro')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
+      <div style={{display:"flex",gap:8,marginBottom:4}}>
+        {Object.keys(PROMPTS).map(c=>(
+          <button key={c} onClick={()=>setCat(c)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${cat===c?T.gold:T2.border}`,background:cat===c?"rgba(138,158,132,0.1)":"transparent",color:cat===c?T.gold:T2.text3,fontSize:12,fontWeight:cat===c?600:400,cursor:"pointer",fontFamily:T.sans,minHeight:36,transition:"all 0.15s"}}>{c}</button>
+        ))}
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+        {PROMPTS[cat].map((p,i)=>(
+          <div key={i} onClick={()=>selectPrompt(p)} style={{...cs.card,cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}} className="au-lift">
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.5,margin:0,flex:1,fontWeight:400}}>{p}</p>
+            <span style={{color:T.gold,fontSize:18,flexShrink:0}}>{"→"}</span>
+          </div>
+        ))}
+      </div>
+      <button onClick={surprise} style={{...cs.ghost,marginTop:4}}>{"✦ Surprise Me"}</button>
     </div>
   );
 
