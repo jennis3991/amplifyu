@@ -12,20 +12,23 @@ Structure:
 • Generous warm ivory (#F7F3EC) margins between everything
 • Thin hairline borders around each panel
 
-COLOUR GRADE — CRITICAL
-Use a rich cinematic colour grade. Do NOT tint the entire image one colour. Do NOT make everything yellow, sepia, or monochromatic brown.
+COLOUR GRADE — CRITICAL — READ THIS CAREFULLY
+Do NOT apply any yellow, amber, sepia, or warm filter to the overall image. Do NOT tint everything one colour.
 
-Include all of the following colours naturally across the panels:
-• Deep charcoal shadows (#292623) — rich, not muddy
-• Warm walnut browns (#655244) — wood, leather, earth tones
-• Natural skin tones — warm peachy-beige, not orange or yellow
-• Soft olive greens (#7A806C) — plants, fabric, background accents
-• Warm cream interiors (#F2ECE2) — walls, linen, light sources
-• Golden afternoon sunlight (#C7A46A) — light shafts, window glow
-• Subtle blue-grey ambient shadows — cool shadow fill, counterbalancing the warmth
-• Rich contrast between lit and shadow areas
+The base white balance must be NEUTRAL DAYLIGHT — whites are white, not yellow. Window light is cool blue-white, not amber.
 
-Each panel should have its OWN distinct colour feel — do not apply the same grade to all six.
+Colour appears SELECTIVELY, where it naturally belongs:
+• Walls, ceilings, linen: true white or very light neutral grey — NOT cream or yellow
+• Wood surfaces (desk, floor, shelves): natural walnut brown (#655244) — contained to the object only
+• Deep charcoal shadows (#292623) — rich and dark but not muddy
+• Natural skin tones — peachy-beige, accurate flesh tones, NOT orange or yellow-tinted
+• Plants and nature: soft olive green (#7A806C) and sage — actual green, not yellowed
+• Window light: cool blue-white daylight, the way afternoon light actually looks through glass
+• Shadow fill: cool blue-grey ambient — counterbalances any warmth in the scene
+• Selective accent warmth: a single lamp, a candle, a shaft of late sun — warm ONLY in that small area, not spread across the whole frame
+• Rich contrast — deep blacks, bright whites, full tonal range
+
+Each of the six panels must have a DISTINCT colour feel — do not apply the same grade to all six. Some panels cooler, some warmer, all accurate.
 
 PHOTOGRAPHY STYLE
 Each panel is a still frame from a beautifully photographed feature film.
@@ -34,10 +37,11 @@ Each panel is a still frame from a beautifully photographed feature film.
 • Film grain — subtle, authentic, not digital noise
 • Visible depth — foreground, midground, background layers
 • Lens compression on tighter shots
-• Natural window light as the primary source
+• PRIMARY light source: cool natural daylight through windows — blue-white, clean, not golden
 • Authentic environments — nothing staged or sterile
-• Rich shadows with detail, luminous highlights
-• Natural skin tones and organic imperfections
+• Rich shadows with detail, bright clean highlights
+• Accurate natural skin tones — no yellow or orange cast
+• Organic imperfections — real spaces, lived-in, human
 
 CHARACTER CONSISTENCY — MOST IMPORTANT RULE
 The protagonist must be visually identical in every single panel. Treat her as the same actress in sequential shots of the same film.
