@@ -11,7 +11,7 @@ Structure:
 • Top header: small-caps label "NARRATIVE FRAMES" on the left — story title in large elegant serif on the right
 • Six cinematic panels arranged in TWO ROWS of THREE equal panels
 • Below each panel on the cream background (NOT inside the panel): small panel number, scene title in serif, italic caption, emotion word in spaced small caps
-• Generous warm ivory (#F7F3EC) margins between everything
+• Background and margins: pure white (#FFFFFF) or very faint warm white (#FAFAF8) — NOT cream, NOT ivory, NOT yellow
 • Thin hairline borders around each panel
 
 COLOUR GRADE — CRITICAL — READ THIS CAREFULLY
@@ -39,11 +39,12 @@ Each panel is a still frame from a beautifully photographed feature film.
 • Film grain — subtle, authentic, not digital noise
 • Visible depth — foreground, midground, background layers
 • Lens compression on tighter shots
-• PRIMARY light source: cool natural daylight through windows — blue-white, clean, not golden
-• Authentic environments — nothing staged or sterile
-• Rich shadows with detail, bright clean highlights
-• Accurate natural skin tones — no yellow or orange cast
-• Organic imperfections — real spaces, lived-in, human
+• PRIMARY light source: bright natural daylight flooding through windows — clean, well-exposed, like a sunny afternoon
+• Panels must be BRIGHT and WELL-LIT — like a beautifully exposed magazine photograph, not a dark film still
+• Exposed for the subject's face — never underexposed, never silhouetted, never murky
+• Shadows exist but are never dominant — rich contrast with lifted, bright midtones
+• Accurate natural skin tones — no yellow, orange, or dark cast
+• Authentic environments — real spaces, lived-in, organic imperfections
 
 CHARACTER CONSISTENCY — MOST IMPORTANT RULE
 The protagonist must be visually identical in every single panel. Treat her as the same actress in sequential shots of the same film.
@@ -78,7 +79,7 @@ TYPOGRAPHY (in cream margins only — never inside the panel illustrations)
 • Text colour: Walnut (#655244) or Espresso (#342A22) — never pure black
 
 AVOID
-Monochromatic yellow/sepia wash. Oil painting look. Illustration of any kind. Cartoon. Anime. Manga. Oversaturated colours. Staged or stock-photo feel. Text inside panel illustrations. Watermarks. Logos. Speech bubbles. Inconsistent character faces. Protagonist centred in every frame.`;
+Dark underexposed panels. Yellow or cream document background. Monochromatic yellow/sepia wash. Oil painting look. Illustration of any kind. Cartoon. Anime. Manga. Oversaturated colours. Staged or stock-photo feel. Text inside panel illustrations. Watermarks. Logos. Speech bubbles. Inconsistent character faces. Protagonist centred in every frame.`;
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
