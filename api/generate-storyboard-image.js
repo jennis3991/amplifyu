@@ -78,37 +78,42 @@ The emotion labels below each panel (e.g. FRUSTRATION, TENSION, CLARITY, CONTROL
 A character feeling FRUSTRATION still exists in a well-lit, warm, aspirational environment. They might look worried or stressed — but the room around them is still bright and professional, not dark and sinister. Never make a panel look threatening or scary simply because the emotion label is negative.
 
 ═══════════════════════════════════════════════
-VISUAL STYLE
+VISUAL STYLE — MATCH THIS EXACTLY
 ═══════════════════════════════════════════════
 
-Each panel is a premium editorial illustration in a soft watercolour and gouache style — like the illustrations used in high-end magazines (Monocle, The New Yorker, Bloomberg Businessweek) or a luxury brand lookbook.
+Each panel must be rendered as a PREMIUM EDITORIAL STORYBOARD ILLUSTRATION — pencil and ink sketch with warm sepia watercolour wash. This is the exact style of a high-end hand-drawn film storyboard or a cinematic graphic novel.
 
-ILLUSTRATION STYLE:
-• Watercolour washes with soft gouache highlights — painterly, expressive, not hyper-realistic
-• Warm neutral palette: ivory, sage green, dusty blue, warm taupe, soft terracotta — clean and editorial
-• Characters are rendered as confident portrait illustrations — expressive faces with clear emotions, but painterly rather than photographic. This avoids distorted AI faces.
-• Subtle botanical or architectural elements in backgrounds — leaves, geometric shapes, architectural lines — simple and elegant
-• Soft diffused light — no harsh shadows, no dark underlighting. Warm and inviting throughout.
-• Loose, confident brush strokes visible — especially in backgrounds and clothing
-• Faces are the focal point — well-lit, warm skin tones, clear expression, centred or slightly off-centre
+TECHNIQUE:
+• Base: pencil sketch with confident ink outlines — visible line work, architectural and figurative
+• Wash: warm sepia and amber watercolour wash over the ink — the entire panel has a warm golden-brown tonal grade
+• Highlights: soft warm cream or white highlights on faces and light sources — hand-brushed feel
+• Texture: paper grain visible throughout — feels like illustration on premium cartridge paper
+• NOT photorealistic. NOT digital 3D. NOT anime. NOT flat vector. Hand-drawn cinematic illustration.
 
-COLOUR PALETTE (adapt to scene but stay within this family):
-• Backgrounds: warm cream (#F5EFE6), soft sage (#C8D5C0), dusty slate (#B8C4CC), warm sand (#E8D9C4)
-• Skin tones: warm peachy-beige, natural and healthy
-• Clothing: muted professional tones — navy, charcoal, warm white, forest green
-• Accents: terracotta, gold, deep teal — used sparingly
+COLOUR PALETTE — CRITICAL:
+• The overall tonal palette is warm sepia/amber — like aged parchment or a vintage film photograph
+• Dominant tones: warm amber (#C8A97A), sepia brown (#8B6B4A), warm cream (#F5EDE0), charcoal ink (#2C2416)
+• Skin tones: warm golden-brown wash, naturally lit — faces are the brightest, warmest element in each panel
+• Shadows: warm brown ink hatching — never cold grey or blue
+• Accents: pools of warm lamplight or window light in amber/gold
+• The DOCUMENT BACKGROUND (margins, gutters, header area) should be warm cream/parchment (#F2E8D8) — this is intentional for this illustration style
 
-COMPOSITION — vary across six panels:
-• Portrait (face and shoulders), medium (waist up), environmental (full figure in setting), detail (hands, objects), over-shoulder, two-person scene — distribute naturally across the six panels
+COMPOSITION — vary across all six panels:
+• Close-up portrait (face fills frame), over-the-shoulder (subject from behind looking at something), wide environmental (figure small in a detailed interior), hands-and-object detail shot, medium shot (waist up off-centre), two-person scene — distribute all six types across the panels
 
-CHARACTER CONSISTENCY
-The protagonist must look visually identical in every panel — same face shape, hair, skin tone, clothing style. Only expression and body language change.
+LIGHTING (in illustration style):
+• Warm lamp light or window light as the primary source — rendered as amber-gold wash
+• Directional and cinematic — light falls on the face, shadows hatched in warm ink
+• Each panel can have a different light source (desk lamp, window, screen glow, overhead) — vary them
+
+CHARACTER CONSISTENCY:
+The protagonist must look visually identical across all six panels — same face shape, hair colour/style, build, clothing. Only expression and body language change. Treat her as the same illustrated character appearing throughout a graphic novel.
 
 ═══════════════════════════════════════════════
 AVOID
 ═══════════════════════════════════════════════
 
-Photorealistic or hyper-detailed faces. Dark or sinister lighting for positive stories. Cold blue or grey colour casts. Heavy shadows. Ominous or threatening atmosphere for personal/professional growth stories. Anime, manga, or cartoon style. Cream or yellow document background (the document margins must be white). Text or logos inside panel illustrations. Inconsistent character faces across panels. All six panels looking identical.`;
+Photorealistic photography or 3D rendering. Cold or blue-toned panels. Flat colour fills without ink texture. Anime, manga, or cartoon style. Hard digital edges. Inconsistent character appearance across panels. All panels looking compositionally identical. Pure black-and-white with no warm wash.`;
 
   try {
     console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
