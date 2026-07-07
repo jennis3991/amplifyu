@@ -1,17 +1,20 @@
 export const config = { maxDuration: 60 };
 
-const STYLE_INSTRUCTIONS = `Design this as if Apple and A24 collaborated on a luxury editorial feature about storytelling. The storyboard should look like a page from a premium coffee-table book, using cinematic film stills with rich, natural colour grading, deep contrast, warm ivory paper, and a single consistent protagonist photographed across sequential scenes. The overall impression should be timeless, understated, and emotionally authentic — not AI-generated, illustrated, or comic-like.
+const STYLE_INSTRUCTIONS = `Design this as if Apple and A24 collaborated on a luxury editorial feature about storytelling. The storyboard should look like a page from a premium coffee-table book, using cinematic film stills with rich, natural colour grading, deep contrast, and a single consistent protagonist photographed across sequential scenes. The overall impression should be timeless, understated, and emotionally authentic — not AI-generated, illustrated, or comic-like.
 
 Render this as a premium editorial feature using cinematic film stills with luxury magazine art direction, where each panel looks like a frame from an A24 film or an Apple keynote video — not a traditional storyboard illustration.
 
+DOCUMENT BACKGROUND — CRITICAL — THIS IS THE MOST IMPORTANT RULE
+The entire document background — all margins, gutters, header area, and text areas surrounding the panels — MUST be pure white (#FFFFFF) or very light neutral grey (#F5F5F5). There must be ZERO warmth, cream, ivory, or yellow in the document background. Think of a clean Apple.com product page or a minimal Monocle magazine spread — stark, clean, white. If you render a cream, ivory, yellow, tan, or warm background, the output is wrong. WHITE ONLY.
+
 DOCUMENT LAYOUT
-A single landscape image formatted as a premium story development board — like a page from Kinfolk, Cereal Magazine, or a luxury coffee-table book.
+A single landscape image formatted as a premium story development board.
 
 Structure:
 • Top header: small-caps label "NARRATIVE FRAMES" on the left — story title in large elegant serif on the right
 • Six cinematic panels arranged in TWO ROWS of THREE equal panels
-• Below each panel on the cream background (NOT inside the panel): small panel number, scene title in serif, italic caption, emotion word in spaced small caps
-• Background and margins: pure white (#FFFFFF) or very faint warm white (#FAFAF8) — NOT cream, NOT ivory, NOT yellow
+• Below each panel on the WHITE background (NOT inside the panel): small panel number, scene title in serif, italic caption, emotion word in spaced small caps
+• Background and margins: pure white (#FFFFFF) or light neutral grey (#F5F5F5) — NEVER cream, NEVER ivory, NEVER yellow, NEVER tan, NEVER warm
 • Thin hairline borders around each panel
 
 COLOUR GRADE — CRITICAL — READ THIS CAREFULLY
