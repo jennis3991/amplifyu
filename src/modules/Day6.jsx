@@ -349,16 +349,31 @@ function DropDown({field, value, placeholder, options, onSelect, open, onToggle,
 // ─── D6 Simulation Widget — AI Conversation Prep ────────────────────────────
 export function D6SimWidget({T, T2, isDesktop}) {
   const INDUSTRIES = ['Technology','Finance','Healthcare','Education','Hospitality','Retail','Sales','Marketing','Legal','Consulting','Other'];
-  const STAKEHOLDERS = ['CEO','Manager','Client','Investor','Team Member','Board Member','Customer','Colleague'];
+  const MEETING_OPTIONS = [
+    {id:'manager',   label:'Manager',      icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>},
+    {id:'colleague', label:'Colleague',    icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>},
+    {id:'client',    label:'Client',       icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg>},
+    {id:'executive', label:'Executive',    icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><rect x="4" y="6" width="16" height="16"/><path d="M2 6l10-4 10 6"/><line x1="8" y1="22" x2="8" y2="12"/><line x1="12" y1="22" x2="12" y2="12"/><line x1="16" y1="22" x2="16" y2="12"/></svg>},
+    {id:'interview', label:'Interview',    icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>},
+    {id:'other',     label:'Someone else', icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg>},
+  ];
+  const TOPIC_OPTIONS = [
+    {id:'pitch',     label:'Pitch an idea',      icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14z"/></svg>},
+    {id:'budget',    label:'Budget approval',    icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v1m0 5v1M9.5 10a2.5 2.5 0 0 1 5 0c0 1.5-1 2-2.5 2.5S9.5 13 9.5 14a2.5 2.5 0 0 0 5 0"/></svg>},
+    {id:'promotion', label:'Promotion',          icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>},
+    {id:'feedback',  label:'Difficult feedback', icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="15.5" r="0.5" fill="currentColor"/></svg>},
+    {id:'other',     label:'Something else',     icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>},
+  ];
   const PRESSURES = [
-    {id:'friendly',    label:'Friendly',    desc:'Supportive questions'},
-    {id:'challenging', label:'Challenging', desc:'Pushback and probing'},
-    {id:'executive',   label:'Executive',   desc:'Short, direct, sceptical'},
-    {id:'boardroom',   label:'Boardroom',   desc:'High pressure, scrutiny'},
+    {id:'friendly',    label:'Friendly',    desc:'Supportive & open dialogue',        icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>},
+    {id:'challenging', label:'Challenging', desc:'Pushback & probing questions',      icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 22 22 22"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>},
+    {id:'executive',   label:'Executive',   desc:'Direct, sceptical, time-conscious', icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l2 6-2 2-2-2z"/><path d="M10 8l-3 13h10L14 8"/></svg>},
+    {id:'boardroom',   label:'Boardroom',   desc:'High pressure & high scrutiny',     icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><rect x="2" y="8" width="20" height="14"/><path d="M2 8l10-6 10 6"/><line x1="7" y1="22" x2="7" y2="12"/><line x1="12" y1="22" x2="12" y2="12"/><line x1="17" y1="22" x2="17" y2="12"/></svg>},
   ];
 
-  const [phase,          setPhase]         = useState('intro');
+  const [phase,          setPhase]         = useState('setup');
   const [form,           setForm]          = useState({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging'});
+  const [purposeOther,   setPurposeOther]  = useState('');
   const [profile,        setProfile]       = useState(null);
   const [questions,      setQuestions]     = useState([]);
   const [qIdx,           setQIdx]          = useState(0);
@@ -368,8 +383,9 @@ export function D6SimWidget({T, T2, isDesktop}) {
   const [recTime,        setRecTime]       = useState(0);
   const [result,         setResult]        = useState(null);
   const [openDrop,       setOpenDrop]      = useState(null);
-  const recRef  = useRef(null);
-  const timerRef = useRef(null);
+  const recRef           = useRef(null);
+  const timerRef         = useRef(null);
+  const purposeForAnalysis = useRef('');
   const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
 
   useEffect(()=>{
@@ -379,10 +395,12 @@ export function D6SimWidget({T, T2, isDesktop}) {
   },[isListening]);
 
   async function generate(){
+    const ap=form.purpose==='Something else'?purposeOther:form.purpose;
+    purposeForAnalysis.current=ap;
     setPhase('analyzing');
     const pressureLabel = PRESSURES.find(p=>p.id===form.pressure)?.label||'Challenging';
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:800,messages:[{role:"user",content:`You are a senior executive coach preparing someone for a high-stakes conversation.\n\nContext:\n- Industry: ${form.industry}\n- Their role: ${form.role}\n- Meeting: ${form.stakeholder}\n- About: ${form.purpose}\n- Pressure style: ${pressureLabel}\n\nGenerate a conversation profile and the 5 most important, highest-impact questions this stakeholder is likely to ask. Prioritise the questions they would definitely ask — the ones that probe rationale, risk, and evidence. Questions should feel specific, real, and build in difficulty.\n\nReturn ONLY valid JSON:\n{"profile":{"stakeholderLabel":"${form.stakeholder}","goal":"<1-4 word goal>","riskLevel":"High|Medium|Low","concerns":["concern1","concern2","concern3","concern4"],"insight":"<2-3 sentences about what this stakeholder cares about and how they will challenge>"},"questions":["q1","q2","q3","q4","q5"]}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:800,messages:[{role:"user",content:`You are a senior executive coach preparing someone for a high-stakes conversation.\n\nContext:\n- Industry: ${form.industry}\n- Their role: ${form.role}\n- Meeting: ${form.stakeholder}\n- About: ${ap}\n- Pressure style: ${pressureLabel}\n\nGenerate a conversation profile and the 5 most important, highest-impact questions this stakeholder is likely to ask. Prioritise the questions they would definitely ask — the ones that probe rationale, risk, and evidence. Questions should feel specific, real, and build in difficulty.\n\nReturn ONLY valid JSON:\n{"profile":{"stakeholderLabel":"${form.stakeholder}","goal":"<1-4 word goal>","riskLevel":"High|Medium|Low","concerns":["concern1","concern2","concern3","concern4"],"insight":"<2-3 sentences about what this stakeholder cares about and how they will challenge>"},"questions":["q1","q2","q3","q4","q5"]}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -428,7 +446,7 @@ export function D6SimWidget({T, T2, isDesktop}) {
       recommendation:"Your strongest answers were backed by evidence. Before the real conversation, prepare clearer responses to risk and objection questions — those are where hesitation tends to show."
     };
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an executive communication coach. Analyse these conversation practice responses.\n\nContext: ${form.role} preparing to meet ${form.stakeholder} about ${form.purpose}\n\n${qa}\n\nReturn ONLY valid JSON:\n{"scores":{"composure":{"score":<1-10>,"note":"<8 words>"},"clarity":{"score":<1-10>,"note":"<8 words>"},"confidence":{"score":<1-10>,"note":"<8 words>"},"evidence":{"score":<1-10>,"note":"<8 words>"},"brevity":{"score":<1-10>,"note":"<8 words>"}},"strengths":["<strength1>","<strength2>"],"development":["<area1>","<area2>"],"hardestQuestion":"<question text that got weakest response>","recommendation":"<2-3 sentence personalised coaching recommendation>"}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an executive communication coach. Analyse these conversation practice responses.\n\nContext: ${form.role} preparing to meet ${form.stakeholder} about ${purposeForAnalysis.current}\n\n${qa}\n\nReturn ONLY valid JSON:\n{"scores":{"composure":{"score":<1-10>,"note":"<8 words>"},"clarity":{"score":<1-10>,"note":"<8 words>"},"confidence":{"score":<1-10>,"note":"<8 words>"},"evidence":{"score":<1-10>,"note":"<8 words>"},"brevity":{"score":<1-10>,"note":"<8 words>"}},"strengths":["<strength1>","<strength2>"],"development":["<area1>","<area2>"],"hardestQuestion":"<question text that got weakest response>","recommendation":"<2-3 sentence personalised coaching recommendation>"}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -449,73 +467,92 @@ export function D6SimWidget({T, T2, isDesktop}) {
     cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
   };
   const scoreColor=s=>s>=8?"#527060":s>=5?T.gold:"#B05C4A";
-  const canGenerate=form.industry&&form.role&&form.stakeholder&&form.purpose;
-
-  // ── INTRO ──
-  if(phase==='intro') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={cs.card}>
-        <div style={cs.label}>AI Conversation Prep</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?22:20,fontWeight:600,color:T.gold,lineHeight:1.25,margin:"0 0 14px"}}>Prepare for the conversations that matter most.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 16px"}}>Most people prepare what they want to say. Elite communicators prepare for what they'll be asked.</p>
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          {[{n:"1",t:"Tell us about your upcoming conversation."},
-            {n:"2",t:"AmplifyU analyses your stakeholder and generates 10 likely tough questions."},
-            {n:"3",t:"Answer each question. Get coaching on composure, clarity, and confidence."},
-          ].map((s,i)=>(
-            <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"10px 12px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
-              <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{s.n}</span>
-              </div>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>{s.t}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <button onClick={()=>setPhase('setup')} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Prepare My Conversation →</button>
-    </div>
-  );
+  const actualPurpose=form.purpose==='Something else'?purposeOther:form.purpose;
+  const canGenerate=form.industry&&form.role&&form.stakeholder&&actualPurpose;
 
   // ── SETUP ──
   if(phase==='setup') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
-      <div style={cs.card}>
-        <div style={cs.label}>Step 1 — Your Conversation</div>
-        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
+      <div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.15,margin:"0 0 6px"}}>AI Conversation Prep</h2>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>Choose your scenario, add a few details, and get ready for high-stakes conversations. Your coach will generate tough questions and help you deliver with confidence.</p>
+      </div>
+      {/* Section 1 */}
+      <div style={{display:"flex",flexDirection:"column",gap:14}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <div style={{width:26,height:26,borderRadius:"50%",background:T.ink,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T.bg}}>1</span>
+          </div>
+          <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text}}>Your Conversation</span>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
           <div>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>Industry</div>
-            <DropDown field="industry" value={form.industry} placeholder="Select industry…" options={INDUSTRIES}
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text,marginBottom:6}}>Industry</div>
+            <DropDown field="industry" value={form.industry} placeholder="Select industry" options={INDUSTRIES}
               onSelect={v=>setForm(f=>({...f,industry:v}))} open={openDrop==='industry'} onToggle={()=>setOpenDrop(openDrop==='industry'?null:'industry')} onClose={()=>setOpenDrop(null)} T={T} T2={T2} isDesktop={isDesktop}/>
           </div>
           <div>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>Your Role</div>
-            <input value={form.role} onChange={e=>setForm(f=>({...f,role:e.target.value}))} placeholder="e.g. Product Manager, Founder, Teacher…" style={cs.inp}/>
-          </div>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>Who Are You Meeting?</div>
-            <DropDown field="stakeholder" value={form.stakeholder} placeholder="Select stakeholder…" options={STAKEHOLDERS}
-              onSelect={v=>setForm(f=>({...f,stakeholder:v}))} open={openDrop==='stakeholder'} onToggle={()=>setOpenDrop(openDrop==='stakeholder'?null:'stakeholder')} onClose={()=>setOpenDrop(null)} T={T} T2={T2} isDesktop={isDesktop}/>
-          </div>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:6}}>What's the Conversation About?</div>
-            <textarea value={form.purpose} onChange={e=>setForm(f=>({...f,purpose:e.target.value}))} placeholder="e.g. Asking for a promotion, pitching a new project, requesting budget approval…" style={{...cs.inp,resize:"none",height:72,lineHeight:1.5}}/>
-          </div>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text,marginBottom:8}}>Pressure Level</div>
-            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-              {PRESSURES.map(p=>(
-                <button key={p.id} onClick={()=>setForm(f=>({...f,pressure:p.id}))}
-                  style={{flex:"1 1 auto",padding:"8px 10px",borderRadius:4,border:`1px solid ${form.pressure===p.id?T.gold:T2.border}`,background:form.pressure===p.id?"rgba(138,158,132,0.08)":"transparent",cursor:"pointer",textAlign:"left",transition:"all 0.15s",minWidth:isDesktop?100:80}}>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:form.pressure===p.id?T.gold:T2.text}}>{p.label}</div>
-                  <div style={{fontFamily:T.sans,fontSize:10,color:T2.text3,marginTop:2}}>{p.desc}</div>
-                </button>
-              ))}
-            </div>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text,marginBottom:6}}>Your Role</div>
+            <input value={form.role} onChange={e=>setForm(f=>({...f,role:e.target.value}))} placeholder="e.g. Product Manager..." style={cs.inp}/>
           </div>
         </div>
+        <div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Who Are You Meeting?</div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
+            {MEETING_OPTIONS.map(opt=>{
+              const sel=form.stakeholder===opt.label;
+              return (
+                <button key={opt.id} onClick={()=>setForm(f=>({...f,stakeholder:opt.label}))}
+                  style={{padding:"14px 8px",borderRadius:6,border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`,background:sel?'rgba(82,112,96,0.1)':T2.surface,cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:8,outline:'none',transition:'all 0.15s'}}>
+                  <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3}}>{opt.icon}</div>
+                  <span style={{fontFamily:T.sans,fontSize:11,color:T2.text,lineHeight:1.3,fontWeight:sel?600:400,textAlign:'center'}}>{opt.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>{"What's the Conversation About?"}</div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:form.purpose==='Something else'?8:0}}>
+            {TOPIC_OPTIONS.map(opt=>{
+              const sel=form.purpose===opt.label;
+              return (
+                <button key={opt.id} onClick={()=>{setForm(f=>({...f,purpose:opt.label}));if(opt.id!=='other')setPurposeOther('');}}
+                  style={{padding:"14px 8px",borderRadius:6,border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`,background:sel?'rgba(82,112,96,0.1)':T2.surface,cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:8,outline:'none',transition:'all 0.15s'}}>
+                  <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3}}>{opt.icon}</div>
+                  <span style={{fontFamily:T.sans,fontSize:11,color:T2.text,lineHeight:1.3,fontWeight:sel?600:400,textAlign:'center'}}>{opt.label}</span>
+                </button>
+              );
+            })}
+          </div>
+          {form.purpose==='Something else' && (
+            <textarea value={purposeOther} onChange={e=>setPurposeOther(e.target.value)} placeholder="Describe what the conversation is about..." style={{...cs.inp,resize:'none',height:64,lineHeight:1.5}}/>
+          )}
+        </div>
       </div>
-      <button onClick={generate} disabled={!canGenerate} style={{...cs.cta,opacity:canGenerate?1:0.45,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Generate My Questions →</button>
-      <button onClick={()=>setPhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:"6px 0",textAlign:"center"}}>← Back</button>
+      {/* Section 2 — Pressure Level */}
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <div style={{width:26,height:26,borderRadius:"50%",background:T.ink,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T.bg}}>2</span>
+          </div>
+          <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text}}>Pressure Level</span>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
+          {PRESSURES.map(p=>{
+            const sel=form.pressure===p.id;
+            return (
+              <button key={p.id} onClick={()=>setForm(f=>({...f,pressure:p.id}))}
+                style={{padding:"14px 6px",borderRadius:6,border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`,background:sel?'rgba(82,112,96,0.1)':T2.surface,cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:6,outline:'none',transition:'all 0.15s'}}>
+                <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3}}>{p.icon}</div>
+                <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:sel?'rgba(82,112,96,0.9)':T2.text,textAlign:'center'}}>{p.label}</div>
+                <div style={{fontFamily:T.sans,fontSize:10,color:T2.text3,textAlign:'center',lineHeight:1.3}}>{p.desc}</div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <button onClick={generate} disabled={!canGenerate} style={{...cs.cta,opacity:canGenerate?1:0.4,fontSize:isDesktop?15:14,padding:isDesktop?"16px":"14px"}}>Generate My Questions →</button>
     </div>
   );
 
