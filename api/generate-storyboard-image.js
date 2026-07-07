@@ -88,16 +88,33 @@ Each panel is a cinematic film still — the quality of a premium Apple campaign
 • Default lighting: bright natural daylight through windows, clean and well-exposed. Lift the shadows. Bright midtones. The kind of light that makes people look confident and capable.
 • Rich contrast — but with bright, lifted midtones, not crushed dark shadows
 • Each panel has a DISTINCT visual feel — vary colour temperature, shot distance, and composition across the six panels
-• Composition variety: wide environmental shot, medium off-centre, over-the-shoulder, foreground blur, intimate close-up, hero shot — distribute across the six panels
+COMPOSITION RULE — CRITICAL — FACE LIMIT:
+The protagonist's face must appear clearly in NO MORE THAN 2 of the 6 panels. For the remaining 4 panels, use these face-free shot types instead:
+
+• SHOT FROM BEHIND — subject facing away from camera, looking at a screen, window, whiteboard, or audience. We see their back, shoulders, posture — not their face.
+• DETAIL / CLOSE-UP OF HANDS AND OBJECT — extreme close-up of hands holding a phone, typing on a laptop, writing in a notebook, pointing at a chart. Character is implied, not shown.
+• OBJECT IN FOREGROUND, CHARACTER SOFT IN BACKGROUND — a phone, laptop, coffee cup, document, or prop is sharp in the foreground; the protagonist is a warm blurred presence behind it.
+• WIDE ENVIRONMENTAL SHOT — subject is small in the frame, dwarfed by the room, city, or setting. Face is too small to be a focal point.
+• OVER-THE-SHOULDER — camera is behind and above the subject; we see what they see (a screen, a room full of people, a view from a window).
+
+Distribute the 6 panels like this:
+— Panel 1: behind-shot or wide environmental (no face)
+— Panel 2: detail shot — hands/object close-up (no face)
+— Panel 3: FACE SHOT — one of the two permitted clear face panels
+— Panel 4: over-the-shoulder or object-foreground (no face)
+— Panel 5: detail or environmental (no face)
+— Panel 6: FACE SHOT — the second and final permitted clear face panel
+
+This variety makes the storyboard feel cinematic and avoids the face-distortion problem of AI-generated portraits.
 
 CHARACTER CONSISTENCY
-The protagonist must look identical in every panel they appear in. Same face, hair, skin tone, clothing. Only expression and body language change. If the visual world has multiple characters (e.g. "the security team"), keep them consistent.
+When the protagonist's face does appear (panels 3 and 6), they must look identical — same face shape, hair, skin tone, clothing. For non-face panels, maintain consistent hair, body proportions, and clothing so the character is still recognisable.
 
 ═══════════════════════════════════════════════
 AVOID
 ═══════════════════════════════════════════════
 
-Dark, sinister, or threatening-looking panels for positive/personal stories. Silhouettes as the main subject. Cold blue or green colour casts on human subjects. Ominous shadows. Making "frustrated" or "tense" emotions look scary or dangerous. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Text or logos inside the panel photographs. Inconsistent character faces across panels. All six panels looking the same.`;
+More than 2 panels with a clear face-forward portrait of the protagonist. All six panels showing the character's face. Dark, sinister, or threatening panels for positive stories. Silhouettes. Cold blue or green colour casts. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Text or logos inside the panel photographs. All six panels looking compositionally identical.`;
 
   try {
     console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
