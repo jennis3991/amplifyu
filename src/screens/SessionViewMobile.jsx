@@ -467,7 +467,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             2:{label:"VOICE IN ACTION",heading:"Range creates engagement. Contrast creates emotion."},
             3:{label:"MASTERS OF THE PAUSE",heading:"The strongest speakers pause. Confident speakers own the silence."},
             4:{label:"MASTERS OF BREVITY",heading:"Say less. Mean more. Be remembered."},
-            5:{label:"PRE IN ACTION",heading:"Point. Reason. Example. The architecture of every great professional answer."},
+            5:{label:"PRE IN ACTION",heading:"Point. Reason. Example."},
             6:{label:"MASTERS UNDER PRESSURE",heading:"Composure is a skill. The calmest person in the room shapes the room."},
             7:{label:"COMMUNICATION IN ACTION",heading:"Every skill. One conversation."},
             8:{label:"STORYTELLING IN THE WILD",heading:"Stories create empathy. Empathy creates trust. Trust creates influence."},
@@ -2063,7 +2063,7 @@ T.goldDark : T2.text4,
       {isD5 && step==="Theory" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The PRE Framework</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The architecture of every great professional answer</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Two powerful findings from memory science explain exactly why PRE works — and why it's one of the most reliable communication frameworks available.</p>
           <div style={{background:"rgba(247,243,236,0.7)",borderLeft:"3px solid "+T.gold,padding:"18px 20px",marginBottom:20,borderRadius:4}}>
             <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>People remember the beginning and end of information most clearly. The middle is forgotten.</p>
@@ -2113,8 +2113,8 @@ T.goldDark : T2.text4,
         return (
           <>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Communication Collection</div>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>PRE in Action</h2>
-            <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>Two world-class leaders who use PRE every time — whether they name it or not.</p>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Structure in Action</h2>
+            <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>Two world-class communicators who organise their ideas so every message is clear, memorable, and easy to follow.</p>
             {D5_EDITORIAL.map(card=>{
               const open = d5MobCard===card.id;
               const obs = d5ExObs[card.id];
