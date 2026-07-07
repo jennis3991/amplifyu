@@ -724,15 +724,17 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   const [brief,      setBrief]     = useState('');
   const [result,     setResult]    = useState(null);
   const [apiError,   setApiError]  = useState(false);
-  const [storyImage,     setStoryImage]    = useState(null); // null | 'loading' | url-string | 'error'
+  const [storyImage,     setStoryImage]    = useState(null);
   const [storyImageErr,  setStoryImageErr] = useState('');
+  const [activeScene,    setActiveScene]   = useState(0);
+  const [briefOpen,      setBriefOpen]     = useState(false);
 
   const EXAMPLE_BRIEFS = [
     "A TED-style pitch for a new product — emotional, direct, show real human impact",
     "A cybersecurity risk presentation for our board — make it feel like breaking news, urgent and specific",
   ];
 
-  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); setStoryImage(null); setStoryImageErr(''); }
+  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); setStoryImage(null); setStoryImageErr(''); setActiveScene(0); setBriefOpen(false); }
 
   async function generateStoryImage(scenes, storyWorld) {
     try {
@@ -868,39 +870,41 @@ Return ONLY valid JSON:
 
   // ── RESULTS ────────────────────────────────────────────────────────────────
   if (phase==='results' && result) {
-    const sw      = result.storyWorld || {};
-    const scenes  = result.scenes || [];
-    const expMode = deriveExperienceMode(sw);
+    const sw     = result.storyWorld || {};
+    const scenes = result.scenes || [];
+    const sc     = scenes[activeScene] || scenes[0] || {};
 
-    const BRIEF_ICONS = {
-      subject:    <svg width="16" height="16" viewBox="0 0 60 60" fill="none" style={{color:T2.text3}}><rect x="17" y="16" width="26" height="28" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><ellipse cx="30" cy="16" rx="13" ry="4" fill="none" stroke="currentColor" strokeWidth="1.3"/><ellipse cx="30" cy="44" rx="13" ry="4" fill="none" stroke="currentColor" strokeWidth="1.3"/><line x1="23" y1="25" x2="37" y2="25" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/><line x1="23" y1="30" x2="37" y2="30" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/><line x1="23" y1="35" x2="33" y2="35" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/><path d="M34 13 C42 20 40 32 34 40" fill="none" stroke="#B8964A" strokeWidth="1.4" strokeLinecap="round"/><path d="M34 13 C28 20 32 32 34 40" fill="none" stroke="#B8964A" strokeWidth="1.4" strokeLinecap="round"/><circle cx="34" cy="13" r="1.8" fill="#B8964A" opacity="0.7"/></svg>,
-      audience:   <svg width="16" height="16" viewBox="0 0 60 60" fill="none" style={{color:T2.text3}}><circle cx="37" cy="18" r="6" fill="none" stroke="currentColor" strokeWidth="1.3" opacity="0.5"/><path d="M29 32 Q37 27 45 32 L44 44 Q37 40 30 44 Z" fill="none" stroke="currentColor" strokeWidth="1.3" opacity="0.45"/><circle cx="25" cy="19" r="7" fill="none" stroke="currentColor" strokeWidth="1.3"/><path d="M13 35 Q25 28 37 35 L36 46 Q25 42 12 46 Z" fill="none" stroke="currentColor" strokeWidth="1.3"/><circle cx="25" cy="19" r="9" fill="none" stroke="#B8964A" strokeWidth="0.9" opacity="0.4" strokeDasharray="2 3"/><circle cx="25" cy="19" r="2.5" fill="#B8964A" opacity="0.55"/></svg>,
-      emotion:    <svg width="16" height="16" viewBox="0 0 60 60" fill="none" style={{color:T2.text3}}><path d="M30 42 Q15 33 19 23 Q21 14 30 21 Q39 14 41 23 Q45 33 30 42Z" fill="#B8964A" opacity="0.18"/><path d="M30 42 Q15 33 19 23 Q21 14 30 21 Q39 14 41 23 Q45 33 30 42Z" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M25 26 Q27 22 30 24" fill="none" stroke="currentColor" strokeWidth="0.9" opacity="0.4"/><line x1="44" y1="14" x2="44" y2="7" stroke="#B8964A" strokeWidth="1.4" strokeLinecap="round"/><line x1="40.5" y1="10.5" x2="47.5" y2="10.5" stroke="#B8964A" strokeWidth="1.4" strokeLinecap="round"/><line x1="49" y1="23" x2="49" y2="18" stroke="#B8964A" strokeWidth="1" strokeLinecap="round"/><line x1="46.5" y1="20.5" x2="51.5" y2="20.5" stroke="#B8964A" strokeWidth="1" strokeLinecap="round"/><line x1="41" y1="4" x2="41" y2="1" stroke="#B8964A" strokeWidth="0.8" strokeLinecap="round"/><line x1="39.5" y1="2.5" x2="42.5" y2="2.5" stroke="#B8964A" strokeWidth="0.8" strokeLinecap="round"/></svg>,
-      style:      <svg width="16" height="16" viewBox="0 0 60 60" fill="none" style={{color:T2.text3}}><rect x="15" y="23" width="30" height="24" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.3"/><rect x="19" y="27" width="22" height="16" rx="1.5" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/><rect x="15" y="10" width="30" height="13" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.3"/><line x1="21" y1="10" x2="25" y2="23" stroke="#B8964A" strokeWidth="1.4" strokeLinecap="round"/><line x1="28" y1="10" x2="32" y2="23" stroke="#B8964A" strokeWidth="1.4" strokeLinecap="round"/><line x1="35" y1="10" x2="39" y2="23" stroke="#B8964A" strokeWidth="1.4" strokeLinecap="round"/><path d="M26 31 L26 43 L40 37 Z" fill="#B8964A" opacity="0.18"/><path d="M26 31 L26 43 L40 37 Z" fill="none" stroke="#B8964A" strokeWidth="1.1" strokeLinejoin="round"/></svg>,
-      lesson:     <svg width="16" height="16" viewBox="0 0 60 60" fill="none" style={{color:T2.text3}}><path d="M30 43 Q21 43 21 35 Q21 19 30 12 Q39 19 39 35 Q39 43 30 43Z" fill="#B8964A" opacity="0.18"/><path d="M30 43 Q21 43 21 35 Q21 19 30 12 Q39 19 39 35 Q39 43 30 43Z" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="24" y1="43" x2="36" y2="43" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="25" y1="47" x2="35" y2="47" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="27" y1="51" x2="33" y2="51" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><path d="M26 33 Q30 28 34 33" fill="none" stroke="#B8964A" strokeWidth="1.2" strokeLinecap="round"/><line x1="30" y1="28" x2="30" y2="32" stroke="#B8964A" strokeWidth="1.2" strokeLinecap="round"/><line x1="30" y1="9" x2="30" y2="4" stroke="#B8964A" strokeWidth="1.4" strokeLinecap="round"/><line x1="41" y1="14" x2="44" y2="10" stroke="#B8964A" strokeWidth="1.4" strokeLinecap="round"/><line x1="19" y1="14" x2="16" y2="10" stroke="#B8964A" strokeWidth="1.4" strokeLinecap="round"/><line x1="43" y1="25" x2="47" y2="25" stroke="#B8964A" strokeWidth="0.9" strokeLinecap="round"/><line x1="13" y1="25" x2="17" y2="25" stroke="#B8964A" strokeWidth="0.9" strokeLinecap="round"/></svg>,
-      visualWorld:<svg width="16" height="16" viewBox="0 0 60 60" fill="none" style={{color:T2.text3}}><circle cx="30" cy="30" r="18" fill="#B8964A" opacity="0.06"/><circle cx="30" cy="30" r="18" fill="none" stroke="currentColor" strokeWidth="1.3"/><ellipse cx="30" cy="30" rx="18" ry="7" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/><ellipse cx="30" cy="30" rx="10" ry="18" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/><path d="M14 20 Q30 16 46 20" fill="none" stroke="currentColor" strokeWidth="0.7" opacity="0.35"/><path d="M14 40 Q30 44 46 40" fill="none" stroke="currentColor" strokeWidth="0.7" opacity="0.35"/><circle cx="35" cy="24" r="4" fill="#B8964A" opacity="0.2"/><circle cx="35" cy="24" r="4" fill="none" stroke="#B8964A" strokeWidth="1.4"/><circle cx="35" cy="24" r="1.5" fill="#B8964A" opacity="0.8"/><line x1="35" y1="28" x2="35" y2="34" stroke="#B8964A" strokeWidth="1.4" strokeLinecap="round"/><path d="M32 34 Q35 37 38 34" fill="none" stroke="#B8964A" strokeWidth="0.9" strokeLinecap="round"/></svg>,
-    };
-    const BRIEF_FIELDS = [
-      {key:'subject',    label:'Subject'},
-      {key:'audience',   label:'Audience'},
-      {key:'emotion',    label:'Emotion'},
-      {key:'style',      label:'Style'},
-      {key:'lesson',     label:'Lesson'},
-      {key:'visualWorld',label:'Visual World'},
+    const COACH_INSIGHTS = [
+      { heading:"The Status Quo Hook", body:"Every great story opens by making the familiar feel slightly wrong. This first scene plants a quiet unease that compels the audience to lean forward and ask: what happens next?" },
+      { heading:"Raising the Stakes", body:"Tension is the engine of narrative transportation. By introducing a meaningful obstacle here, you create the emotional fuel that carries your audience through every scene that follows." },
+      { heading:"The Turning Point", body:"The most memorable talks pivot on a single reframe. This scene functions as your insight moment — the point where the audience's mental model shifts and they see the world differently." },
+      { heading:"The Path Forward", body:"After tension comes momentum. This scene shows your audience that movement is possible, converting abstract insight into concrete direction and building belief in the outcome." },
+      { heading:"The Proof Point", body:"Stories convince only when they feel inevitable in hindsight. This scene provides the evidence — the real, specific detail that anchors the narrative in lived experience rather than theory." },
+      { heading:"The Call to Action", body:"The most powerful endings don't tell the audience what to do — they make the audience want to act. This scene uses emotional resolution to transfer ownership of the story to the listener." },
     ];
 
-    const EXP_FIELDS = [
-      {icon:<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke={T2.text3} strokeWidth="1.1"/><path d="M7 4v3l2 1.5" stroke={T2.text3} strokeWidth="1" strokeLinecap="round"/></svg>, label:'Tone',        val:expMode.tone},
-      {icon:<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke={T2.text3} strokeWidth="1.1"/><path d="M7 4v3l2 1.5" stroke={T2.text3} strokeWidth="1" strokeLinecap="round"/></svg>, label:'Duration',   val:expMode.duration},
-      {icon:<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M4 5l3-3 3 3M4 9l3 3 3-3" stroke={T2.text3} strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/></svg>, label:'Narration',  val:expMode.narration},
-      {icon:<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 5v4l3-1.5v-1L2 5zM5 5v4l7-2V7L5 5z" stroke={T2.text3} strokeWidth="1" strokeLinejoin="round" fill="none"/></svg>, label:'Music',      val:expMode.music},
-      {icon:<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke={T2.text3} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/></svg>, label:'Transitions', val:expMode.transitions},
+    const SCORES = [
+      { label:"Story Flow",          stars:5 },
+      { label:"Emotional Journey",   stars:5 },
+      { label:"Audience Connection", stars:4 },
+      { label:"Visual Narrative",    stars:4 },
     ];
+
+    const StarRow = ({ stars }) => (
+      <div style={{display:"flex",gap:3}}>
+        {[1,2,3,4,5].map(n=>(
+          <svg key={n} width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1.5l1.5 3 3.3.5-2.4 2.3.6 3.2L7 9l-3 1.5.6-3.2L2.2 5l3.3-.5z"
+              fill={n<=stars?"#B8964A":"none"} stroke="#B8964A"
+              strokeWidth="0.9" strokeLinejoin="round" opacity={n<=stars?1:0.3}/>
+          </svg>
+        ))}
+      </div>
+    );
 
     return (
       <div style={{display:"flex",flexDirection:"column",gap:0}}>
 
-        {/* API error notice */}
         {apiError&&(
           <div style={{background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.18)",padding:"10px 16px",marginBottom:20,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
             <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>AI coach unavailable — showing a template story based on your brief.</span>
@@ -908,115 +912,165 @@ Return ONLY valid JSON:
           </div>
         )}
 
-        {/* ── STORY BRIEF ─────────────────────────────────────────────────── */}
-        <div style={{marginBottom:isDesktop?28:20}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?14:12}}>Story Brief</div>
-          <div style={{display:"flex",flexWrap:isDesktop?"wrap":"nowrap",gap:"0",borderRadius:8,border:"0.5px solid "+T2.border,overflow:isDesktop?"hidden":"auto",background:T2.surface,WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
-            {BRIEF_FIELDS.filter(f=>sw[f.key]).map((f,i,arr)=>(
-              <div key={f.key} style={{padding:isDesktop?"14px 18px":"11px 14px",borderRight:i<arr.length-1?"0.5px solid "+T2.border:"none",flex:isDesktop?"1 1 auto":"0 0 auto",minWidth:isDesktop?120:130}}>
-                <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}>
-                  {BRIEF_ICONS[f.key]}
-                  <span style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px"}}>{f.label}</span>
-                </div>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?15:13,color:T2.text,lineHeight:1.2,fontWeight:500}}>{sw[f.key]}</div>
-              </div>
-            ))}
+        {/* ── HEADER ──────────────────────────────────────────────────────── */}
+        <div style={{marginBottom:isDesktop?24:18}}>
+          <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12,marginBottom:6}}>
+            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"3px",marginTop:4}}>Narrative Frames</div>
+            <button onClick={()=>setBriefOpen(v=>!v)} style={{background:"none",border:"0.5px solid "+T2.border,borderRadius:4,padding:"5px 12px",cursor:"pointer",fontFamily:T.sans,fontSize:11,color:T2.text3,display:"flex",alignItems:"center",gap:6,flexShrink:0,whiteSpace:"nowrap"}}>
+              Story Brief
+              <span style={{fontSize:9,opacity:0.6,transform:briefOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
+            </button>
           </div>
+          <h2 style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:500,color:T2.text,lineHeight:1.1,letterSpacing:"-0.3px",margin:"0 0 4px"}}>{sw.subject||"Your Story"}</h2>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,margin:0,fontWeight:300}}>{sw.lesson||sw.audience||""}</p>
+
+          {briefOpen&&(
+            <div style={{marginTop:14,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:isDesktop?"16px 20px":"13px 16px",display:"flex",flexWrap:"wrap",gap:isDesktop?0:10}}>
+              {[{k:"audience",l:"Audience"},{k:"emotion",l:"Emotion"},{k:"style",l:"Style"},{k:"visualWorld",l:"Visual World"},{k:"character",l:"Protagonist"}]
+                .filter(f=>sw[f.k])
+                .map((f,i,arr)=>(
+                  <div key={f.k} style={{flex:"1 1 0",minWidth:120,paddingRight:isDesktop?18:0,borderRight:isDesktop&&i<arr.length-1?"0.5px solid "+T2.border:"none"}}>
+                    <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>{f.l}</div>
+                    <div style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.3}}>{sw[f.k]}</div>
+                  </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* ── STORYBOARD ──────────────────────────────────────────────────── */}
-        <div style={{marginBottom:isDesktop?32:24}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?14:12}}>Storyboard — {scenes.length} Key Scenes</div>
-          {/* AI-generated image strip */}
-          <div style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:isDesktop?10:8,background:CREAM}}>
+        {/* ── HERO STORYBOARD ─────────────────────────────────────────────── */}
+        <div style={{marginBottom:isDesktop?28:22}}>
+          <div style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:isDesktop?12:10,background:CREAM}}>
             {storyImage==='loading'
-              ? <div style={{height:isDesktop?190:140,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:10,background:CREAM}}>
-                  <div style={{display:"flex",gap:6}}>
-                    {[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:"rgba(58,48,40,0.3)",animation:`glowPulse 1.4s ease ${i*0.2}s infinite`}}/>)}
-                  </div>
+              ? <div style={{height:isDesktop?200:150,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:10,background:CREAM}}>
+                  <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:"rgba(58,48,40,0.3)",animation:`glowPulse 1.4s ease ${i*0.2}s infinite`}}/>)}</div>
                   <span style={{fontFamily:T.sans,fontSize:11,color:INK_D,fontWeight:300,letterSpacing:"0.02em"}}>Generating storyboard image…</span>
                 </div>
               : storyImage && storyImage!=='error'
                 ? <img src={storyImage} alt="Storyboard" style={{width:"100%",height:"auto",display:"block"}}/>
-                : <>
-                    <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(6,1fr)":"repeat(2,1fr)"}}>
-                      {scenes.map((scene,i)=>(
-                        <div key={i} style={{position:"relative",height:isDesktop?130:100,background:CREAM,borderRight:i<scenes.length-1?"0.5px solid "+T2.border:"none",overflow:"hidden"}}>
-                          <SketchIllustration scene={scene} idx={i}/>
-                          <div style={{position:"absolute",top:7,left:7,width:20,height:20,borderRadius:"50%",background:"rgba(58,48,40,0.12)",border:"0.5px solid "+INK_D,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                            <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:INK,opacity:0.7}}>{scene.number}</span>
-                          </div>
+                : <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(6,1fr)":"repeat(3,1fr)"}}>
+                    {scenes.map((scene,i)=>(
+                      <div key={i} style={{position:"relative",height:isDesktop?120:90,background:CREAM,borderRight:i<scenes.length-1?"0.5px solid "+T2.border:"none",overflow:"hidden"}}>
+                        <SketchIllustration scene={scene} idx={i}/>
+                        <div style={{position:"absolute",top:6,left:6,width:18,height:18,borderRadius:"50%",background:"rgba(58,48,40,0.12)",border:"0.5px solid "+INK_D,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                          <span style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:INK,opacity:0.7}}>{scene.number}</span>
                         </div>
-                      ))}
-                    </div>
-                    {storyImage==='error'&&(
-                      <div style={{padding:"8px 14px",borderTop:"0.5px solid "+T2.border,background:"rgba(200,82,74,0.04)",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
-                        <span style={{fontFamily:T.sans,fontSize:10,color:"rgba(200,82,74,0.8)",fontWeight:300}}>{storyImageErr||"Image generation failed"}</span>
-                        <button onClick={()=>{setStoryImage('loading');setStoryImageErr('');generateStoryImage(scenes,sw);}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:10,fontWeight:600,padding:0,flexShrink:0}}>Retry →</button>
                       </div>
-                    )}
-                  </>
+                    ))}
+                  </div>
             }
+            {storyImage==='error'&&(
+              <div style={{padding:"8px 14px",borderTop:"0.5px solid "+T2.border,background:"rgba(200,82,74,0.04)",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
+                <span style={{fontFamily:T.sans,fontSize:10,color:"rgba(200,82,74,0.8)",fontWeight:300}}>{storyImageErr||"Image generation failed"}</span>
+                <button onClick={()=>{setStoryImage('loading');setStoryImageErr('');generateStoryImage(scenes,sw);}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:10,fontWeight:600,padding:0}}>Retry →</button>
+              </div>
+            )}
           </div>
-          {/* Scene text cards */}
+
+          {/* Clickable scene cards */}
           <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(6,1fr)":"repeat(3,1fr)",gap:isDesktop?8:6}}>
-            {scenes.map((scene,i)=>(
-              <div key={i} style={{padding:isDesktop?"10px 11px":"8px 9px",background:CREAM,borderRadius:6,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,marginBottom:3}}>Scene {scene.number}</div>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?12:11,fontWeight:600,color:INK,lineHeight:1.25,marginBottom:5}}>{scene.title}</div>
-                <p style={{fontFamily:T.sans,fontSize:isDesktop?10:9,color:"rgba(58,48,40,0.55)",lineHeight:1.4,margin:"0 0 5px",fontWeight:300}}>{scene.caption}</p>
-                <div style={{display:"inline-block",padding:"2px 9px",borderRadius:20,border:"0.5px solid rgba(58,48,40,0.2)",background:"rgba(58,48,40,0.04)"}}>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?9:8,color:INK,opacity:0.6,fontWeight:500}}>{scene.emotion}</span>
-                </div>
-              </div>
-            ))}
+            {scenes.map((scene,i)=>{
+              const active = i===activeScene;
+              return (
+                <button key={i} onClick={()=>setActiveScene(i)} style={{padding:isDesktop?"10px 11px":"8px 9px",background:active?INK:CREAM,borderRadius:6,border:"0.5px solid "+(active?INK:T2.border),cursor:"pointer",textAlign:"left",transition:"all 0.18s"}}>
+                  <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:active?"rgba(248,245,239,0.5)":T2.text4,marginBottom:3}}>Scene {scene.number}</div>
+                  <div style={{fontFamily:T.serif,fontSize:isDesktop?12:11,fontWeight:600,color:active?"#F8F5EF":INK,lineHeight:1.25,marginBottom:4}}>{scene.title}</div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,color:active?"rgba(248,245,239,0.55)":"rgba(58,48,40,0.5)",lineHeight:1.4,fontWeight:300,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{scene.caption}</div>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* ── EXPERIENCE MODE ──────────────────────────────────────────────── */}
-        <div style={{marginBottom:isDesktop?28:20}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?14:12}}>Experience</div>
-          <div style={{display:"flex",flexDirection:"row",flexWrap:isDesktop?"nowrap":"wrap",gap:0,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
-            {EXP_FIELDS.map((f,i,arr)=>(
-              <div key={i} style={{padding:isDesktop?"14px 18px":"11px 14px",borderRight:i<arr.length-1?"0.5px solid "+T2.border:"none",flex:"1 1 0",display:"flex",gap:10,alignItems:"flex-start",minWidth:isDesktop?0:110}}>
-                <div style={{marginTop:2,flexShrink:0,opacity:0.6}}>{f.icon}</div>
-                <div>
-                  <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>{f.label}</div>
-                  <div style={{fontFamily:T.sans,fontSize:11,color:T2.text,fontWeight:400,lineHeight:1.4}}>{f.val}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* ── INTERACTIVE STORY EXPLORER ───────────────────────────────────── */}
+        <div style={{marginBottom:isDesktop?28:22,background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+          <div style={{display:"flex",flexDirection:isDesktop?"row":"column"}}>
 
-        {/* ── STORY NARRATIVE ──────────────────────────────────────────────── */}
-        <div>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?16:12}}>Story Narrative</div>
-          <div>
-            {/* Story text */}
-            <div style={{flex:1,background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:isDesktop?"28px 32px":"18px 20px"}}>
-              {result.story
-                ? result.story.split('\n\n').map((para,i)=>{
-                    const isTitle = para.trim().endsWith(':');
-                    const text = para.trim().replace(/:$/,'');
-                    return text ? (
-                      <p key={i} style={{fontFamily:isTitle?T.sans:T.serif,fontSize:isTitle?(isDesktop?9:8):(isDesktop?17:15),fontWeight:isTitle?700:400,color:isTitle?T.gold:T2.text,textTransform:isTitle?"uppercase":undefined,letterSpacing:isTitle?"2.5px":"-0.1px",lineHeight:isTitle?1:(isDesktop?1.85:1.75),margin:isTitle?"20px 0 10px":"0 0 16px"}}>{text}</p>
-                    ) : null;
-                  })
-                : scenes.map((s,i)=>(
-                    <div key={i} style={{marginBottom:i<scenes.length-1?20:0}}>
-                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{s.title}</div>
-                      <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.8,margin:0}}>{s.narrative}</p>
+            {/* Left: scene nav */}
+            <div style={{width:isDesktop?180:undefined,borderRight:isDesktop?"0.5px solid "+T2.border:"none",borderBottom:isDesktop?"none":"0.5px solid "+T2.border,flexShrink:0,padding:isDesktop?"20px 0":"12px 0",overflowX:isDesktop?"visible":"auto",display:"flex",flexDirection:isDesktop?"column":"row",WebkitOverflowScrolling:"touch"}}>
+              {scenes.map((scene,i)=>{
+                const active = i===activeScene;
+                return (
+                  <button key={i} onClick={()=>setActiveScene(i)} style={{display:"flex",alignItems:"center",gap:10,padding:isDesktop?"9px 20px":"8px 16px",background:"none",border:"none",cursor:"pointer",textAlign:"left",width:isDesktop?"100%":"auto",flexShrink:0,transition:"background 0.15s",borderLeft:isDesktop&&active?"2px solid "+INK:"2px solid transparent"}}>
+                    <div style={{width:22,height:22,borderRadius:"50%",background:active?INK:"transparent",border:"1.5px solid "+(active?INK:T2.border),display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.18s"}}>
+                      <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:active?"#F8F5EF":T2.text4}}>{i+1}</span>
                     </div>
-                  ))
-              }
+                    <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:active?T2.text:T2.text3,fontWeight:active?600:300,lineHeight:1.3,whiteSpace:isDesktop?"normal":"nowrap"}}>{scene.title}</span>
+                  </button>
+                );
+              })}
             </div>
 
+            {/* Right: scene detail */}
+            <div style={{flex:1,padding:isDesktop?"28px 32px":"20px 18px"}}>
+              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:14}}>Scene {activeScene+1} of {scenes.length}</div>
+              <blockquote style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:400,color:T2.text,lineHeight:1.45,letterSpacing:"-0.2px",margin:"0 0 16px",padding:0}}>"{sc.caption}"</blockquote>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,margin:"0 0 16px",fontWeight:300}}>{sc.narrative}</p>
+
+              {/* Emotion badge */}
+              <div style={{display:"inline-flex",alignItems:"center",gap:7,padding:"5px 14px",borderRadius:20,border:"0.5px solid "+T2.border,background:CREAM,marginBottom:20}}>
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M7 11.5Q2 8 3.5 4.5 4 2.5 7 5 10 2.5 10.5 4.5 12 8 7 11.5Z" fill="#B8964A" opacity="0.35" stroke="#B8964A" strokeWidth="0.8" strokeLinejoin="round"/></svg>
+                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"#B8964A",textTransform:"uppercase",letterSpacing:"1.5px"}}>{sc.emotion}</span>
+              </div>
+
+              {/* Coach Insight */}
+              <div style={{background:"rgba(138,158,132,0.07)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)",padding:isDesktop?"18px 20px":"14px 16px"}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5Q10.5 1.5 10.5 5.2 10.5 7.5 8.5 8.5L8.5 10.5 5.5 10.5 5.5 8.5Q3.5 7.5 3.5 5.2 3.5 1.5 7 1.5Z" fill="none" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/><line x1="5.5" y1="11.5" x2="8.5" y2="11.5" stroke={T.gold} strokeWidth="1.1" strokeLinecap="round"/><line x1="6" y1="12.8" x2="8" y2="12.8" stroke={T.gold} strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px"}}>Coach Insight</span>
+                </div>
+                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text,marginBottom:6,letterSpacing:"0.3px"}}>{COACH_INSIGHTS[activeScene]?.heading}</div>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>{COACH_INSIGHTS[activeScene]?.body}</p>
+              </div>
+
+              {/* Prev / Next */}
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:20}}>
+                <button onClick={()=>setActiveScene(v=>Math.max(0,v-1))} disabled={activeScene===0} style={{background:"none",border:"0.5px solid "+T2.border,borderRadius:4,padding:"7px 14px",cursor:activeScene===0?"default":"pointer",fontFamily:T.sans,fontSize:12,color:activeScene===0?T2.text4:T2.text,opacity:activeScene===0?0.35:1}}>← Previous</button>
+                <span style={{fontFamily:T.sans,fontSize:10,color:T2.text4,fontWeight:300}}>Scene {activeScene+1} of {scenes.length}</span>
+                <button onClick={()=>setActiveScene(v=>Math.min(scenes.length-1,v+1))} disabled={activeScene===scenes.length-1} style={{background:"none",border:"0.5px solid "+T2.border,borderRadius:4,padding:"7px 14px",cursor:activeScene===scenes.length-1?"default":"pointer",fontFamily:T.sans,fontSize:12,color:activeScene===scenes.length-1?T2.text4:T2.text,opacity:activeScene===scenes.length-1?0.35:1}}>Next →</button>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Footer actions */}
-        <div style={{marginTop:isDesktop?24:18,display:"flex",gap:10,flexWrap:"wrap"}}>
+        {/* ── STORY STRENGTH ──────────────────────────────────────────────── */}
+        <div style={{marginBottom:isDesktop?28:22,background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+          <div style={{padding:isDesktop?"18px 24px 14px":"14px 18px 12px",borderBottom:"0.5px solid "+T2.border}}>
+            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"2.5px"}}>Story Strength</div>
+          </div>
+          <div style={{display:"flex",flexWrap:"wrap"}}>
+            {SCORES.map((s,i)=>(
+              <div key={i} style={{flex:"1 1 0",minWidth:130,padding:isDesktop?"16px 24px":"13px 18px",borderRight:i%2===0&&isDesktop?"0.5px solid "+T2.border:"none",borderBottom:i<2&&!isDesktop?"0.5px solid "+T2.border:i<2&&isDesktop?"0.5px solid "+T2.border:i>=2&&!isDesktop&&i<3?"0.5px solid "+T2.border:"none"}}>
+                <div style={{fontFamily:T.sans,fontSize:11,color:T2.text,fontWeight:500,marginBottom:6}}>{s.label}</div>
+                <StarRow stars={s.stars}/>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── PREMIUM ACTIONS ─────────────────────────────────────────────── */}
+        <div style={{marginBottom:isDesktop?24:18}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12}}>Take it Further</div>
+          <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:8}}>
+            {[
+              {label:"Reimagine Story",         sub:"Generate a completely new narrative arc"},
+              {label:"Make it More Emotional",  sub:"Amplify the feeling throughout each scene"},
+              {label:"Turn into TED Talk",       sub:"Restructure for a 15-minute keynote format"},
+              {label:"Export Story",             sub:"Download as PDF or copy to clipboard"},
+            ].map((a,i)=>(
+              <button key={i} style={{padding:isDesktop?"13px 18px":"12px 16px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.surface,cursor:"pointer",textAlign:"left",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,transition:"background 0.15s"}}>
+                <div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,fontWeight:500,marginBottom:2}}>{a.label}</div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:T2.text3,fontWeight:300}}>{a.sub}</div>
+                </div>
+                <span style={{color:T2.text4,fontSize:14,flexShrink:0}}>→</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
           <button onClick={reset} style={{flex:1,padding:isDesktop?"13px":"12px",borderRadius:4,border:"none",background:T.ink||"#2C2416",color:T2.bg||"#F7F3EC",fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Build Another Story →</button>
           <button onClick={()=>{setResult(null);setPhase('brief');}} style={{padding:isDesktop?"13px 18px":"12px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:isDesktop?13:12,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>← Edit Brief</button>
         </div>
