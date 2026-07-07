@@ -310,14 +310,10 @@ export function D2SimWidget({T, T2, isDesktop}) {
         </div>
       </div>
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
-        <div style={cs.label}>This Is Different From Day 1</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>Day 1 assessed your clarity — what you said and how well your message landed. Today is about something different: <strong>how your voice itself sounds.</strong></p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>Your coach will specifically analyse your pace, pitch, pauses, and vocal energy — the four dimensions of voice that change how people feel when they listen to you.</p>
-      </div>
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
-        <div style={cs.label}>What Your Coach Is Listening For</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>Same words. Completely different impact. Your AI vocal coach will identify whether you're speaking too fast, too flat, or too quietly — and show you exactly where the opportunity is.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>This isn't a repeat of Day 1. This is your vocal baseline.</p>
+        <div style={cs.label}>Find Your Voice</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>Yesterday measured <strong>what you said</strong>. Today measures <strong>how you sound</strong>.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>{"Your AI coach analyses the four dimensions of vocal presence — "}<strong>pace, pitch, pauses, and energy</strong>{" — to reveal how your voice shapes the way people experience your message."}</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>{"This is your vocal baseline: a snapshot of the habits that build authority, confidence, and connection."}</p>
       </div>
       <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose a Speaking Prompt →</button>
     </div>
