@@ -1,27 +1,60 @@
 export const config = { maxDuration: 60 };
 
-const STYLE_INSTRUCTIONS = `Create ONE premium cinematic storyboard sheet.
+const STYLE_INSTRUCTIONS = `Create a premium cinematic storyboard design sheet — a single landscape image that looks like a page from an award-winning film pitch book or a luxury editorial magazine.
 
-The output must be a SINGLE landscape image containing FOUR equally sized storyboard panels arranged horizontally. Do not create separate images.
+OVERALL LAYOUT
+The output is ONE complete storyboard design document:
+• A clean header area at the top: large elegant serif story title on the left, small-caps subtitle on the right
+• Six storyboard illustration panels arranged in TWO ROWS of THREE equal panels
+• Below each panel: scene title in medium serif, one-line caption in small italic serif, emotion label in small caps with extra letter-spacing
+• Thin dark borders framing each panel, generous cream margins between everything
+• The whole document sits on a warm cream (#F5EEE3) background
 
-The storyboard should feel like concept art from an award-winning feature film or a premium editorial magazine — not a comic strip.
+ILLUSTRATION STYLE — THIS IS CRITICAL
+Rich, warm, painterly editorial illustration. Hand-rendered concept art with digital refinement. NOT a pencil sketch. NOT monochrome. NOT flat.
+Think: Pixar concept art book meets Vanity Fair editorial meets a luxury brand campaign film.
+Each panel is a fully realised scene — rich in atmosphere, detail, and depth.
 
-ART DIRECTION
-Museum-quality illustration. Elegant graphite linework with subtle ink shading. Soft sepia and warm cream colour palette. Gentle cinematic lighting. Sophisticated editorial aesthetic. Beautiful negative space. Refined composition. Architectural concept art quality. Quiet luxury aesthetic. Soho House interior mood. Apple-level visual design. Premium storytelling.
+COLOUR PALETTE — MORE COLOUR THAN SEPIA
+Use the FULL warmth of a rich amber and sienna palette:
+• Deep burnt umber shadows with strong contrast
+• Warm amber and golden midtones
+• Creamy ivory highlights and light sources
+• Subtle colour variation per panel — cooler blue-grey in shadow areas, rich gold in lit areas
+• Each panel glows with atmospheric depth, not a flat wash
+Do NOT produce flat sepia or washed-out monochrome.
 
-CHARACTER CONSISTENCY
-The same protagonist must appear in every panel. Maintain identical face, hair, clothing, age, body proportions, ethnicity, and expression style. Never redesign the character between scenes.
+CINEMATIC LIGHTING — EVOLVING ACROSS PANELS
+Panel 1 (top-left): dim interior evening light, cool shadows, single warm lamp glow
+Panel 2 (top-centre): soft diffused morning light through a window
+Panel 3 (top-right): warm golden afternoon, directional light casting long shadows
+Panel 4 (bottom-left): moody interior with strong contrast, determination energy
+Panel 5 (bottom-centre): bright warm light, a sense of momentum and progress
+Panel 6 (bottom-right): confident bright daylight or spotlight, triumphant feeling
 
-VISUAL STORYTELLING
-Each panel communicates ONE clear emotional moment. Every panel has a different cinematic camera angle: wide shot, medium shot, close-up, hero shot. The emotional progression moves from struggle toward hope.
+CHARACTER CONSISTENCY ACROSS ALL SIX PANELS
+The same protagonist appears in every panel. Identical: face, hair colour and style, clothing, age, body proportions, ethnicity. Never redesign or alter the character. The character should feel like a real person across all six frames.
 
-LIGHTING PROGRESSION
-Panel 1: dim cool evening light. Panel 2: soft morning light. Panel 3: warm golden afternoon. Panel 4: bright inspiring daylight.
+CAMERA ANGLES — VARY ACROSS THE SIX PANELS
+Mix these deliberately: wide establishing shot, medium two-shot, intimate close-up on face, over-the-shoulder, hero wide shot, tight detail shot.
 
-COMPOSITION
-Beautiful designer storyboard sheet. Four clean panels. Thin cream borders between panels. Consistent spacing. Premium layout. No clutter. No text, captions, speech bubbles, watermarks, or labels inside any panel.
+QUALITY BENCHMARKS
+• Each panel has detailed environmental storytelling — objects, textures, furniture, architecture that reveal character and story
+• Lighting has clear, motivated sources with beautiful fall-off
+• Figures have expressive body language and authentic emotion
+• Backgrounds are atmospheric but not distracting
+• The overall feel is premium, quiet luxury, Soho House aesthetic — like a still from a beautifully lit A24 film translated into editorial illustration
 
-AVOID: comic book style, cartoon, anime, Pixar, manga, children's illustration, clip art, thick outlines, oversaturated colours, distorted anatomy, different character faces between panels, random camera angles.`;
+TYPOGRAPHY INSIDE THE IMAGE
+The design document must include rendered text:
+• Top-left header: story title in large elegant serif (e.g. 36–42pt weight, dark ink)
+• Top-right: subtitle or tagline in small caps (e.g. 10pt, letter-spaced)
+• Below each panel: scene title (serif, ~13pt), caption text (italic serif, ~10pt), emotion word (all-caps, ~8pt letter-spaced)
+• Panel numbers (1–6) in the top-left corner of each panel frame
+Typography style: editorial, refined, Vogue or Kinfolk magazine quality
+
+AVOID ENTIRELY
+Comic book style, cartoon, anime, Pixar CG look, manga, children's illustration, clip art, thick black outlines, flat colour fills, oversaturated colours, photorealism, watermarks, logos, speech bubbles, distorted faces, inconsistent character appearance.`;
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -39,29 +72,37 @@ export default async function handler(req, res) {
   const { scenes, storyWorld } = req.body;
   if (!scenes?.length) return res.status(400).json({ error: 'No scenes provided' });
 
-  // Pick 4 dramatically spread scenes from the 6 (opening, rising, turning point, resolution)
-  const s = scenes;
-  const four = [s[0], s[1], s[3] || s[2], s[5] || s[4]].filter(Boolean);
+  const character   = storyWorld?.character   || 'the protagonist';
+  const audience    = storyWorld?.audience    || 'professional adult';
+  const emotion     = storyWorld?.emotion     || 'Hopeful determination';
+  const visualWorld = storyWorld?.visualWorld || 'Contemporary professional setting';
+  const subject     = storyWorld?.subject     || 'A Story of Purpose';
+  const lesson      = storyWorld?.lesson      || '';
 
-  const character  = storyWorld?.character   || 'the protagonist';
-  const audience   = storyWorld?.audience    || 'professional adult';
-  const emotion    = storyWorld?.emotion     || 'hopeful determination';
-  const visualWorld= storyWorld?.visualWorld || 'contemporary professional setting';
+  // Use all 6 scenes for the panel layout
+  const six = scenes.slice(0, 6);
 
-  const dynamicContent = `Create a four-panel cinematic storyboard.
+  const panelList = six.map((sc, i) =>
+    `Panel ${i + 1} — Title: "${sc.title}" | Scene: ${sc.visual} | Caption: "${sc.caption}" | Emotion label: ${sc.emotion}`
+  ).join('\n');
 
-Story Summary:
-${four.map((sc, i) => `Panel ${i + 1} — "${sc.title}": ${sc.visual} Emotion: ${sc.emotion}.`).join('\n')}
+  const dynamicContent = `---
 
-Main Character: ${character}. ${audience}. Authentic, human, and relatable.
+STORY TITLE (render in header): ${subject}
+SUBTITLE (render in header, small caps): ${lesson || audience}
 
-Emotion arc: ${emotion}.
+MAIN CHARACTER: ${character}. ${audience}. Authentic, human, and emotionally present. Keep this person identical across all 6 panels.
 
-Visual world: ${visualWorld}.
+EMOTIONAL ARC: ${emotion}
+VISUAL WORLD: ${visualWorld}
 
-Overall feeling: like a still from a beautifully shot A24 film or an Apple keynote film. No text inside the storyboard. A single premium storyboard sheet — four cinematic panels, each larger and richer in detail than a traditional storyboard.`;
+SIX PANEL CONTENT — render each as a rich editorial illustration with the text below it:
 
-  const prompt = `${STYLE_INSTRUCTIONS}\n\n---\n\n${dynamicContent}`;
+${panelList}
+
+Produce a single premium storyboard design sheet. Make it feel like it belongs in a luxury creative agency pitch deck or a Soho House coffee table book. Rich colour, cinematic atmosphere, beautiful typography, emotional storytelling.`;
+
+  const prompt = `${STYLE_INSTRUCTIONS}\n\n${dynamicContent}`;
 
   try {
     console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
