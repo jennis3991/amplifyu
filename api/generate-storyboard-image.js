@@ -39,7 +39,6 @@ export default async function handler(req, res) {
         n: 1,
         size: '1792x1024',
         quality: 'standard',
-        response_format: 'url',
       }),
     });
 
