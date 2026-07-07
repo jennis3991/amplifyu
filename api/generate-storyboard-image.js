@@ -59,15 +59,34 @@ Produce a single landscape image formatted as a premium editorial storyboard.
 • Document background: pure white (#FFFFFF) or very light neutral grey (#F5F5F5) — NEVER cream, ivory, yellow, or warm. White only.
 
 ═══════════════════════════════════════════════
+EMOTIONAL TONE — READ THIS BEFORE RENDERING
+═══════════════════════════════════════════════
+
+The OVERALL EMOTIONAL ARC is: ${emotion}
+
+Use this to set the visual mood for the ENTIRE storyboard:
+
+• If the arc is hopeful, determined, purposeful, inspiring, triumphant, or personal/professional growth → ALL panels must be WARM, BRIGHT, and ASPIRATIONAL. Think Apple campaign, LinkedIn success story, premium business documentary. Bright offices, natural daylight, warm skin tones, optimistic colour palette. Even struggle scenes show a person who is clearly going to win.
+
+• If the arc is urgent, alarming, or crisis-driven (e.g. cybersecurity breach, emergency, threat) → use dramatic high-contrast lighting appropriate to that world (screen glow, red alerts, command centre). But ONLY when the brief explicitly calls for it.
+
+• DEFAULT: When in doubt, render panels BRIGHT, WARM, and ENERGETIC. Most stories are about growth, achievement, and change — they should look and feel positive, not dark or threatening.
+
+CRITICAL EMOTION LABEL RULE:
+The emotion labels below each panel (e.g. FRUSTRATION, TENSION, CLARITY, CONTROL) describe the CHARACTER'S INTERNAL STATE — not the lighting, atmosphere, or colour palette of the scene.
+
+A character feeling FRUSTRATION still exists in a well-lit, warm, aspirational environment. They might look worried or stressed — but the room around them is still bright and professional, not dark and sinister. Never make a panel look threatening or scary simply because the emotion label is negative.
+
+═══════════════════════════════════════════════
 VISUAL QUALITY
 ═══════════════════════════════════════════════
 
-Each panel is a cinematic film still — the quality of an A24 feature film or premium documentary.
+Each panel is a cinematic film still — the quality of a premium Apple campaign or inspirational documentary.
 
 • Full-frame cinema camera, 50mm or 85mm prime lens, shallow depth of field
 • Film grain — subtle and authentic
-• Lighting adapts to what the scene demands: dark war rooms use screen glow and dramatic underlighting; outdoor scenes use natural daylight; crisis scenes use harsh fluorescent or red emergency light. Match the mood of the scene.
-• Rich contrast — deep blacks, full tonal range
+• Default lighting: bright natural daylight through windows, clean and well-exposed. Lift the shadows. Bright midtones. The kind of light that makes people look confident and capable.
+• Rich contrast — but with bright, lifted midtones, not crushed dark shadows
 • Each panel has a DISTINCT visual feel — vary colour temperature, shot distance, and composition across the six panels
 • Composition variety: wide environmental shot, medium off-centre, over-the-shoulder, foreground blur, intimate close-up, hero shot — distribute across the six panels
 
@@ -78,7 +97,7 @@ The protagonist must look identical in every panel they appear in. Same face, ha
 AVOID
 ═══════════════════════════════════════════════
 
-Generic person-at-desk imagery when the scene calls for something else. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Oversaturated colours. Text or logos inside the panel photographs. Inconsistent character faces across panels. All six panels looking the same.`;
+Dark, sinister, or threatening-looking panels for positive/personal stories. Silhouettes as the main subject. Cold blue or green colour casts on human subjects. Ominous shadows. Making "frustrated" or "tense" emotions look scary or dangerous. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Text or logos inside the panel photographs. Inconsistent character faces across panels. All six panels looking the same.`;
 
   try {
     console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
