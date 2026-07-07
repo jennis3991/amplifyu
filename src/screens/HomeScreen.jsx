@@ -68,7 +68,7 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
 export function HomeScreen({done, cur, streak, onStart, roleId, activeRole,
 dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
-  const [selectedDay, setSelectedDay] = useState(1);
+  const [selectedDay, setSelectedDay] = useState(cur);
   const selectedLesson = selectedDay ? LESSONS.find(l => l.day === selectedDay) : null;
   const pct = Math.round((done.length/14)*100);
   const lesson = LESSONS[Math.min(cur-1,13)];
