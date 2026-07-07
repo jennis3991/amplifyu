@@ -739,20 +739,35 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
 
   async function generateStoryImage(scenes, storyWorld) {
     try {
-      const res = await fetch('/api/generate-storyboard-image', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ scenes, storyWorld }),
-      });
-      const data = await res.json();
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 90000);
+      let res;
+      try {
+        res = await fetch('/api/generate-storyboard-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scenes, storyWorld }),
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
+      const text = await res.text();
+      let data;
+      try { data = JSON.parse(text); } catch(_) {
+        setStoryImageErr('Server timed out — tap Retry to try again');
+        setStoryImage('error');
+        return;
+      }
       if (data.url) {
         setStoryImage(data.url);
       } else {
-        setStoryImageErr(data.error || 'Unknown error');
+        setStoryImageErr(data.error || 'Image generation failed');
         setStoryImage('error');
       }
     } catch (err) {
-      setStoryImageErr(err.message || 'Network error');
+      const msg = err.name === 'AbortError' ? 'Timed out — tap Retry to try again' : (err.message || 'Network error');
+      setStoryImageErr(msg);
       setStoryImage('error');
     }
   }
