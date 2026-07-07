@@ -1,60 +1,68 @@
 export const config = { maxDuration: 60 };
 
-const STYLE_INSTRUCTIONS = `Create a premium cinematic storyboard design sheet — a single landscape image that looks like a page from an award-winning film pitch book or a luxury editorial magazine.
+const STYLE_INSTRUCTIONS = `Render this as a premium editorial feature using cinematic film stills with luxury magazine art direction, where each panel looks like a frame from an A24 film or an Apple keynote video — not a traditional storyboard illustration.
 
-OVERALL LAYOUT
-The output is ONE complete storyboard design document:
-• A clean header area at the top: large elegant serif story title on the left, small-caps subtitle on the right
-• Six storyboard illustration panels arranged in TWO ROWS of THREE equal panels
-• Below each panel: scene title in medium serif, one-line caption in small italic serif, emotion label in small caps with extra letter-spacing
-• Thin dark borders framing each panel, generous cream margins between everything
-• The whole document sits on a warm cream (#F5EEE3) background
+DOCUMENT LAYOUT
+A single landscape image formatted as a premium story development board — like a page from Kinfolk, Cereal Magazine, or a luxury coffee-table book.
 
-ILLUSTRATION STYLE — THIS IS CRITICAL
-Rich, warm, painterly editorial illustration. Hand-rendered concept art with digital refinement. NOT a pencil sketch. NOT monochrome. NOT flat.
-Think: Pixar concept art book meets Vanity Fair editorial meets a luxury brand campaign film.
-Each panel is a fully realised scene — rich in atmosphere, detail, and depth.
+Structure:
+• Top header: small-caps label "NARRATIVE FRAMES" on the left — story title in large elegant serif on the right
+• Six cinematic panels arranged in TWO ROWS of THREE equal panels
+• Below each panel on the cream background (NOT inside the panel): small panel number, scene title in serif, italic caption, emotion word in spaced small caps
+• Generous warm ivory margins (#F7F3EC) between everything
+• Thin hairline borders around each panel
 
-COLOUR PALETTE — MORE COLOUR THAN SEPIA
-Use the FULL warmth of a rich amber and sienna palette:
-• Deep burnt umber shadows with strong contrast
-• Warm amber and golden midtones
-• Creamy ivory highlights and light sources
-• Subtle colour variation per panel — cooler blue-grey in shadow areas, rich gold in lit areas
-• Each panel glows with atmospheric depth, not a flat wash
-Do NOT produce flat sepia or washed-out monochrome.
+PHOTOGRAPHY STYLE — THIS IS THE MOST IMPORTANT INSTRUCTION
+Each panel must look like a still frame from a beautifully lit, professionally shot film.
+• Shot on a full-frame cinema camera with 50mm or 85mm prime lens
+• Shallow depth of field with beautiful bokeh in backgrounds
+• Rich texture — skin, fabric, wood grain, paper, ceramic, glass
+• Natural organic imperfections — not sterile or stock photo
+• Cinematic colour grading — warm golden tones, rich shadows, luminous highlights
+• Real-looking humans with authentic expressions and body language
+• Contemporary, beautifully designed interiors — minimal Scandinavian, Soho House aesthetic
+• Natural materials: oak, walnut, linen, stone, brass, warm plaster
 
-CINEMATIC LIGHTING — EVOLVING ACROSS PANELS
-Panel 1 (top-left): dim interior evening light, cool shadows, single warm lamp glow
-Panel 2 (top-centre): soft diffused morning light through a window
-Panel 3 (top-right): warm golden afternoon, directional light casting long shadows
-Panel 4 (bottom-left): moody interior with strong contrast, determination energy
-Panel 5 (bottom-centre): bright warm light, a sense of momentum and progress
-Panel 6 (bottom-right): confident bright daylight or spotlight, triumphant feeling
+COLOUR PALETTE — BRIGHT AND WARM, NOT DARK
+Background document: Warm Ivory #F7F3EC and Soft Linen #EFE7DB
+Panel images should use this palette with BRIGHT lighting:
+• Ivory highlights and window light: #F7F3EC
+• Warm linen midtones: #EFE7DB, #E8DFCF
+• Golden hour light and warmth: #F3D08A
+• Walnut browns for wood and shadow: #5B4636
+• Soft sage accents for plants and nature: #A6AE9B
+• Deep espresso for darks (used sparingly): #2F241C
+Panels should feel BRIGHT and WARM — flooded with natural window light and golden hour sun. NOT dark, NOT moody, NOT oil-painting brown.
 
-CHARACTER CONSISTENCY ACROSS ALL SIX PANELS
-The same protagonist appears in every panel. Identical: face, hair colour and style, clothing, age, body proportions, ethnicity. Never redesign or alter the character. The character should feel like a real person across all six frames.
+LIGHTING
+• Natural window light flooding into contemporary interior spaces
+• Golden hour sunlight casting warm long shadows
+• Soft ambient fill with beautiful shadow falloff
+• Filmic lighting with subtle volumetric light through windows
+• Warm cinematic contrast — lifted shadows, luminous highlights
+• Each panel feels like it was shot on a beautiful afternoon in a well-designed home or workspace
+• NO harsh artificial lighting, NO dark dramatic chiaroscuro, NO oil-painting darkness
 
-CAMERA ANGLES — VARY ACROSS THE SIX PANELS
-Mix these deliberately: wide establishing shot, medium two-shot, intimate close-up on face, over-the-shoulder, hero wide shot, tight detail shot.
+INTERIORS AND SPACES
+Modern minimal interiors: natural oak floors, white linen sofas, clean architectural lines, potted plants, stacked books, ceramic mugs, linen curtains diffusing light. Think: beautiful home office, a Soho House workspace, a light-filled kitchen, a quiet corner of a co-working space. Warm but contemporary. Aspirational but human.
 
-QUALITY BENCHMARKS
-• Each panel has detailed environmental storytelling — objects, textures, furniture, architecture that reveal character and story
-• Lighting has clear, motivated sources with beautiful fall-off
-• Figures have expressive body language and authentic emotion
-• Backgrounds are atmospheric but not distracting
-• The overall feel is premium, quiet luxury, Soho House aesthetic — like a still from a beautifully lit A24 film translated into editorial illustration
+CHARACTER
+The same person in all six panels. Authentic, real-looking. Professional but warm. Natural expressions. Contemporary clothing — linen, cashmere, tailored blazer. Consistent throughout.
 
-TYPOGRAPHY INSIDE THE IMAGE
-The design document must include rendered text:
-• Top-left header: story title in large elegant serif (e.g. 36–42pt weight, dark ink)
-• Top-right: subtitle or tagline in small caps (e.g. 10pt, letter-spaced)
-• Below each panel: scene title (serif, ~13pt), caption text (italic serif, ~10pt), emotion word (all-caps, ~8pt letter-spaced)
-• Panel numbers (1–6) in the top-left corner of each panel frame
-Typography style: editorial, refined, Vogue or Kinfolk magazine quality
+CAMERA ANGLES — VARY ACROSS SIX PANELS
+Mix deliberately across the six panels: wide establishing interior, medium shot at desk, intimate close-up on face, over-the-shoulder, hero shot standing, detail shot of hands.
 
-AVOID ENTIRELY
-Comic book style, cartoon, anime, Pixar CG look, manga, children's illustration, clip art, thick black outlines, flat colour fills, oversaturated colours, photorealism, watermarks, logos, speech bubbles, distorted faces, inconsistent character appearance.`;
+TYPOGRAPHY (rendered in the cream margins of the document, NOT inside the panels)
+• Top of document: "NARRATIVE FRAMES" in small-caps Inter/sans-serif, tracked wide, warm taupe colour
+• Story title: large elegant Cormorant Garamond Semibold or similar serif
+• Below each panel: panel number in small sans-serif, scene title in serif ~14pt, caption in italic serif ~11pt, emotion word in small-caps sans ~9pt with 0.25em tracking
+• All text in Walnut (#5B4636) or Espresso (#2F241C), never black
+
+MOOD
+Calm. Reflective. Hopeful. Sophisticated. Timeless. Human. Authentic. Like watching someone's life change for the better in the most beautiful light imaginable.
+
+AVOID COMPLETELY
+Illustration style of any kind. Oil painting. Dark and moody chiaroscuro. Comic book. Anime. Cartoon. Manga. Oversaturated colours. Harsh artificial lighting. Sterile stock photo look. Watermarks. Logos. Text INSIDE the panel illustrations. Speech bubbles. AI visual clichés. Heavy vignetting. Dark brown muddy tones throughout.`;
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -79,28 +87,29 @@ export default async function handler(req, res) {
   const subject     = storyWorld?.subject     || 'A Story of Purpose';
   const lesson      = storyWorld?.lesson      || '';
 
-  // Use all 6 scenes for the panel layout
   const six = scenes.slice(0, 6);
 
   const panelList = six.map((sc, i) =>
-    `Panel ${i + 1} — Title: "${sc.title}" | Scene: ${sc.visual} | Caption: "${sc.caption}" | Emotion label: ${sc.emotion}`
+    `Panel ${i + 1} — Scene title: "${sc.title}" | What is seen: ${sc.visual} | Caption: "${sc.caption}" | Emotion: ${sc.emotion}`
   ).join('\n');
 
   const dynamicContent = `---
 
-STORY TITLE (render in header): ${subject}
-SUBTITLE (render in header, small caps): ${lesson || audience}
+DOCUMENT HEADER
+Left label: NARRATIVE FRAMES
+Right title: ${subject}
+Right subtitle (small caps): ${lesson || audience}
 
-MAIN CHARACTER: ${character}. ${audience}. Authentic, human, and emotionally present. Keep this person identical across all 6 panels.
+MAIN CHARACTER
+${character}. ${audience}. Warm, authentic, real-looking. Keep identical across all six panels.
 
-EMOTIONAL ARC: ${emotion}
+OVERALL EMOTIONAL ARC: ${emotion}
 VISUAL WORLD: ${visualWorld}
 
-SIX PANEL CONTENT — render each as a rich editorial illustration with the text below it:
-
+SIX PANELS — each a beautiful cinematic film still:
 ${panelList}
 
-Produce a single premium storyboard design sheet. Make it feel like it belongs in a luxury creative agency pitch deck or a Soho House coffee table book. Rich colour, cinematic atmosphere, beautiful typography, emotional storytelling.`;
+Make each panel feel like a real moment captured by a cinematographer on a beautiful day. Bright. Warm. Human. Premium. The kind of image that makes you stop scrolling.`;
 
   const prompt = `${STYLE_INSTRUCTIONS}\n\n${dynamicContent}`;
 
