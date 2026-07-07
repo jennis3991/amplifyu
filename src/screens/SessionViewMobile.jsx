@@ -2465,7 +2465,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       {isD6 && step==="Simulation" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Real-World Conversation Coaching</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Choose a scenario. Write your response. Your coach evaluates composure, clarity, empathy, and executive presence.</p>
           <D6SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
