@@ -773,16 +773,7 @@ export function SessionLeftPanel({
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Find Your Words</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>The right words under pressure don't come from thinking faster. They come from having them ready.</p>
-          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380, marginBottom:20 }}>Pick a situation below. Respond naturally. Your AmplifyU coach will show you a stronger way to say it — then you'll say it once before the simulation begins.</p>
-          <div style={{ background:"rgba(138,158,132,0.07)", borderRadius:4, border:"0.5px solid rgba(138,158,132,0.18)", padding:"16px 18px", marginBottom:20 }}>
-            <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.7)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:8 }}>Coach Tip</div>
-            <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.7)", lineHeight:1.65, margin:0, fontStyle:"italic" }}>You don't need to be perfect. You need to have the language loaded before the pressure starts.</p>
-          </div>
-          <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-            <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3"/><path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3" strokeLinecap="round"/></svg>
-            <span style={{ fontFamily:T.sans, fontSize:10, color:"rgba(138,158,132,0.35)", letterSpacing:"0.05em" }}>1 minute</span>
-          </div>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
     );

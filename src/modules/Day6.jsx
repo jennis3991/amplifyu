@@ -167,9 +167,9 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation}) {
         </div>
       </div>
       <div style={cs.card}>
-        <div style={cs.label}>Your Situation</div>
+        <div style={cs.label}>Your task</div>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.65, margin:0}}>
-          Pick one moment below. Respond as you naturally would — don't overthink it. Just say what comes out.
+          Choose one of the scenarios below and respond naturally. Your AmplifyU coach will help you refine your response, then you'll deliver your improved version before the simulation begins.
         </p>
       </div>
       <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:isDesktop?12:10}}>
@@ -177,7 +177,7 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation}) {
           const sel = scenario?.id === sc.id;
           return (
             <button key={sc.id} onClick={() => setScenario(sc)}
-              style={{padding:isDesktop?'18px 16px':'14px 12px', borderRadius:6, border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`, background:sel?'rgba(82,112,96,0.12)':T2.surface, cursor:'pointer', textAlign:'left', transition:'all 0.2s', display:'flex', flexDirection:'column', gap:10, outline:'none'}}>
+              style={{padding:isDesktop?'18px 16px':'14px 12px', borderRadius:6, border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`, background:sel?'rgba(82,112,96,0.12)':T2.surface, cursor:'pointer', textAlign:'center', alignItems:'center', transition:'all 0.2s', display:'flex', flexDirection:'column', gap:10, outline:'none'}}>
               <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3}}>{sc.icon}</div>
               <span style={{fontFamily:T.sans, fontSize:isDesktop?12:11, color:T2.text, lineHeight:1.4, fontWeight:sel?600:400}}>{sc.label}</span>
             </button>

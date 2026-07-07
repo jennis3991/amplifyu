@@ -4552,14 +4552,6 @@ setAmbitionSaved(true); } catch {}
           /* ── Standard 60/40 split for all other steps ── */
           <div style={{ flex: 1, display: "flex", overflow: "hidden", position: "relative" }}>
 
-            {/* Practice step: full-bleed background image behind both panels */}
-            {step === "Rehearsal" && (
-              <img src="/practice-bg.jpg" alt="" style={{
-                position: "absolute", inset: 0, width: "100%", height: "100%",
-                objectFit: "cover", objectPosition: "center 30%",
-                zIndex: 0, pointerEvents: "none",
-              }}/>
-            )}
 
             {/* LEFT PANEL — Primary stage: visual atmosphere + theory diagram */}
             <div style={{
@@ -4597,15 +4589,6 @@ setAmbitionSaved(true); } catch {}
               overflowY: "auto", position: "relative", zIndex: 1,
               borderLeft: "1px solid " + T2.divider,
             }}>
-              {/* Day 1 only: very subtle lounge image at 7% — warmth without distraction */}
-              {lesson.day === 1 && step === "Insight" && (
-                <img src="/day1-lounge.jpg" alt="" style={{
-                  position: "absolute", inset: 0, width: "100%", height: "100%",
-                  objectFit: "cover", objectPosition: "center 30%",
-                  opacity: 0.07, pointerEvents: "none", zIndex: 0,
-                  mixBlendMode: "multiply",
-                }}/>
-              )}
               <div style={{ position: "relative", zIndex: 1 }}>
                 {isD1 && step === "Rehearsal"
                   ? <D1WarmUpWidget key="d1-warmup" T={T} T2={T2} isDesktop={true}
