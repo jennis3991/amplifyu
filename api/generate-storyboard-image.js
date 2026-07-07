@@ -1,5 +1,28 @@
 export const config = { maxDuration: 60 };
 
+const STYLE_INSTRUCTIONS = `Create ONE premium cinematic storyboard sheet.
+
+The output must be a SINGLE landscape image containing FOUR equally sized storyboard panels arranged horizontally. Do not create separate images.
+
+The storyboard should feel like concept art from an award-winning feature film or a premium editorial magazine — not a comic strip.
+
+ART DIRECTION
+Museum-quality illustration. Elegant graphite linework with subtle ink shading. Soft sepia and warm cream colour palette. Gentle cinematic lighting. Sophisticated editorial aesthetic. Beautiful negative space. Refined composition. Architectural concept art quality. Quiet luxury aesthetic. Soho House interior mood. Apple-level visual design. Premium storytelling.
+
+CHARACTER CONSISTENCY
+The same protagonist must appear in every panel. Maintain identical face, hair, clothing, age, body proportions, ethnicity, and expression style. Never redesign the character between scenes.
+
+VISUAL STORYTELLING
+Each panel communicates ONE clear emotional moment. Every panel has a different cinematic camera angle: wide shot, medium shot, close-up, hero shot. The emotional progression moves from struggle toward hope.
+
+LIGHTING PROGRESSION
+Panel 1: dim cool evening light. Panel 2: soft morning light. Panel 3: warm golden afternoon. Panel 4: bright inspiring daylight.
+
+COMPOSITION
+Beautiful designer storyboard sheet. Four clean panels. Thin cream borders between panels. Consistent spacing. Premium layout. No clutter. No text, captions, speech bubbles, watermarks, or labels inside any panel.
+
+AVOID: comic book style, cartoon, anime, Pixar, manga, children's illustration, clip art, thick outlines, oversaturated colours, distorted anatomy, different character faces between panels, random camera angles.`;
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -16,17 +39,32 @@ export default async function handler(req, res) {
   const { scenes, storyWorld } = req.body;
   if (!scenes?.length) return res.status(400).json({ error: 'No scenes provided' });
 
-  const visualWorld = storyWorld?.visualWorld || '';
-  const emotion     = storyWorld?.emotion     || '';
+  // Pick 4 dramatically spread scenes from the 6 (opening, rising, turning point, resolution)
+  const s = scenes;
+  const four = [s[0], s[1], s[3] || s[2], s[5] || s[4]].filter(Boolean);
 
-  const panelDescs = scenes.slice(0, 6).map((s, i) =>
-    `Panel ${i + 1} titled "${s.title}": ${s.visual}`
-  ).join('. ');
+  const character  = storyWorld?.character   || 'the protagonist';
+  const audience   = storyWorld?.audience    || 'professional adult';
+  const emotion    = storyWorld?.emotion     || 'hopeful determination';
+  const visualWorld= storyWorld?.visualWorld || 'contemporary professional setting';
 
-  const prompt = `A horizontal 6-panel cinematic storyboard filmstrip. Fine-line editorial illustration style. Warm cream paper background (#F8F5EF). Thin dark ink lines. All 6 panels are equal width, arranged side by side as a single continuous strip, separated by thin vertical dividers. ${visualWorld ? `Visual world: ${visualWorld}.` : ''} ${emotion ? `Overall emotional tone: ${emotion}.` : ''} ${panelDescs}. Consistent illustration style, line weight, and mood across all 6 panels. Sophisticated, minimal, editorial feel. No text or written captions inside the image itself.`;
+  const dynamicContent = `Create a four-panel cinematic storyboard.
+
+Story Summary:
+${four.map((sc, i) => `Panel ${i + 1} — "${sc.title}": ${sc.visual} Emotion: ${sc.emotion}.`).join('\n')}
+
+Main Character: ${character}. ${audience}. Authentic, human, and relatable.
+
+Emotion arc: ${emotion}.
+
+Visual world: ${visualWorld}.
+
+Overall feeling: like a still from a beautifully shot A24 film or an Apple keynote film. No text inside the storyboard. A single premium storyboard sheet — four cinematic panels, each larger and richer in detail than a traditional storyboard.`;
+
+  const prompt = `${STYLE_INSTRUCTIONS}\n\n---\n\n${dynamicContent}`;
 
   try {
-    console.log('[storyboard-image] Calling DALL-E 3...');
+    console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
     const response = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
       headers: {
@@ -38,7 +76,7 @@ export default async function handler(req, res) {
         prompt,
         n: 1,
         size: '1536x1024',
-        quality: 'medium',
+        quality: 'high',
       }),
     });
 
