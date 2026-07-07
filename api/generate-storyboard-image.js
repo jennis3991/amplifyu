@@ -1,6 +1,8 @@
 export const config = { maxDuration: 60 };
 
-const STYLE_INSTRUCTIONS = `Render this as a premium editorial feature using cinematic film stills with luxury magazine art direction, where each panel looks like a frame from an A24 film or an Apple keynote video — not a traditional storyboard illustration.
+const STYLE_INSTRUCTIONS = `Design this as if Apple and A24 collaborated on a luxury editorial feature about storytelling. The storyboard should look like a page from a premium coffee-table book, using cinematic film stills with rich, natural colour grading, deep contrast, warm ivory paper, and a single consistent protagonist photographed across sequential scenes. The overall impression should be timeless, understated, and emotionally authentic — not AI-generated, illustrated, or comic-like.
+
+Render this as a premium editorial feature using cinematic film stills with luxury magazine art direction, where each panel looks like a frame from an A24 film or an Apple keynote video — not a traditional storyboard illustration.
 
 DOCUMENT LAYOUT
 A single landscape image formatted as a premium story development board — like a page from Kinfolk, Cereal Magazine, or a luxury coffee-table book.
