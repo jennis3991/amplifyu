@@ -1,89 +1,5 @@
 export const config = { maxDuration: 60 };
 
-const STYLE_INSTRUCTIONS = `Design this as if Apple and A24 collaborated on a luxury editorial feature about storytelling. The storyboard should look like a page from a premium coffee-table book, using cinematic film stills with rich, natural colour grading, deep contrast, and a single consistent protagonist photographed across sequential scenes. The overall impression should be timeless, understated, and emotionally authentic — not AI-generated, illustrated, or comic-like.
-
-Render this as a premium editorial feature using cinematic film stills with luxury magazine art direction, where each panel looks like a frame from an A24 film or an Apple keynote video — not a traditional storyboard illustration.
-
-DOCUMENT BACKGROUND — CRITICAL — THIS IS THE MOST IMPORTANT RULE
-The entire document background — all margins, gutters, header area, and text areas surrounding the panels — MUST be pure white (#FFFFFF) or very light neutral grey (#F5F5F5). There must be ZERO warmth, cream, ivory, or yellow in the document background. Think of a clean Apple.com product page or a minimal Monocle magazine spread — stark, clean, white. If you render a cream, ivory, yellow, tan, or warm background, the output is wrong. WHITE ONLY.
-
-DOCUMENT LAYOUT
-A single landscape image formatted as a premium story development board.
-
-Structure:
-• Top header: small-caps label "NARRATIVE FRAMES" on the left — story title in large elegant serif on the right
-• Six cinematic panels arranged in TWO ROWS of THREE equal panels
-• Below each panel on the WHITE background (NOT inside the panel): small panel number, scene title in serif, italic caption, emotion word in spaced small caps
-• Background and margins: pure white (#FFFFFF) or light neutral grey (#F5F5F5) — NEVER cream, NEVER ivory, NEVER yellow, NEVER tan, NEVER warm
-• Thin hairline borders around each panel
-
-COLOUR GRADE — CRITICAL — READ THIS CAREFULLY
-Do NOT apply any yellow, amber, sepia, or warm filter to the overall image. Do NOT tint everything one colour.
-
-The base white balance must be NEUTRAL DAYLIGHT — whites are white, not yellow. Window light is cool blue-white, not amber.
-
-Colour appears SELECTIVELY, where it naturally belongs:
-• Walls, ceilings, linen: true white or very light neutral grey — NOT cream or yellow
-• Wood surfaces (desk, floor, shelves): natural walnut brown (#655244) — contained to the object only
-• Deep charcoal shadows (#292623) — rich and dark but not muddy
-• Natural skin tones — peachy-beige, accurate flesh tones, NOT orange or yellow-tinted
-• Plants and nature: soft olive green (#7A806C) and sage — actual green, not yellowed
-• Window light: cool blue-white daylight, the way afternoon light actually looks through glass
-• Shadow fill: cool blue-grey ambient — counterbalances any warmth in the scene
-• Selective accent warmth: a single lamp, a candle, a shaft of late sun — warm ONLY in that small area, not spread across the whole frame
-• Rich contrast — deep blacks, bright whites, full tonal range
-
-Each of the six panels must have a DISTINCT colour feel — do not apply the same grade to all six. Some panels cooler, some warmer, all accurate.
-
-PHOTOGRAPHY STYLE
-Each panel is a still frame from a beautifully photographed feature film.
-• Full-frame cinema camera, 50mm or 85mm prime lens
-• Shallow depth of field — foreground objects soft, subject sharp, background bokeh
-• Film grain — subtle, authentic, not digital noise
-• Visible depth — foreground, midground, background layers
-• Lens compression on tighter shots
-• PRIMARY light source: bright natural daylight flooding through windows — clean, well-exposed, like a sunny afternoon
-• Panels must be BRIGHT and WELL-LIT — like a beautifully exposed magazine photograph, not a dark film still
-• Exposed for the subject's face — never underexposed, never silhouetted, never murky
-• Shadows exist but are never dominant — rich contrast with lifted, bright midtones
-• Accurate natural skin tones — no yellow, orange, or dark cast
-• Authentic environments — real spaces, lived-in, organic imperfections
-
-CHARACTER CONSISTENCY — MOST IMPORTANT RULE
-The protagonist must be visually identical in every single panel. Treat her as the same actress in sequential shots of the same film.
-
-Never redesign the face. Maintain across all six panels:
-• Identical eye shape, nose, jawline, hairline
-• Same hair length, hair colour, and style
-• Same skin tone and complexion
-• Same body proportions
-• Same clothing and accessories
-
-Only facial expression and body language may change between panels.
-
-COMPOSITION — VARY NATURALLY ACROSS THE SIX PANELS
-Do not centre the protagonist in every frame. Use:
-• Environmental wide shot — subject small in a beautiful interior
-• Medium shot — subject off-centre, natural framing
-• Over-the-shoulder — shot from behind, looking at something
-• Foreground blur — an object soft in the foreground, subject behind
-• Intimate close-up — face cropped, emotional expression
-• Hero shot — subject confident, environment supporting
-
-Some panels crop the subject. Some use leading lines. Some show hands or detail. Nothing perfectly composed — natural, alive, cinematic.
-
-INTERIORS AND ENVIRONMENTS
-Contemporary minimal interiors: oak floors, white and warm linen walls, clean lines, potted plants, stacked books, ceramic mugs, brass fixtures, linen curtains diffusing window light. Beautiful home offices, Soho House workspaces, light-filled kitchens, quiet reading corners. Warm, aspirational, human.
-
-TYPOGRAPHY (in cream margins only — never inside the panel illustrations)
-• Header label: "NARRATIVE FRAMES" — small-caps sans-serif, tracked wide, warm taupe
-• Story title: large elegant serif (Cormorant Garamond weight)
-• Below each panel: panel number small sans, scene title serif ~14pt, italic caption ~11pt, emotion word small-caps ~9pt spaced
-• Text colour: Walnut (#655244) or Espresso (#342A22) — never pure black
-
-AVOID
-Dark underexposed panels. Yellow or cream document background. Monochromatic yellow/sepia wash. Oil painting look. Illustration of any kind. Cartoon. Anime. Manga. Oversaturated colours. Staged or stock-photo feel. Text inside panel illustrations. Watermarks. Logos. Speech bubbles. Inconsistent character faces. Protagonist centred in every frame.`;
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -110,28 +26,59 @@ export default async function handler(req, res) {
   const six = scenes.slice(0, 6);
 
   const panelList = six.map((sc, i) =>
-    `Panel ${i + 1} — Scene title: "${sc.title}" | What is seen: ${sc.visual} | Caption: "${sc.caption}" | Emotion: ${sc.emotion}`
-  ).join('\n');
+    `PANEL ${i + 1}: "${sc.title}"\n  SHOW EXACTLY THIS: ${sc.visual}\n  Caption below panel: "${sc.caption}"\n  Emotion label: ${sc.emotion}`
+  ).join('\n\n');
 
-  const dynamicContent = `---
+  const prompt = `You are rendering a six-panel cinematic storyboard document. Read every word below carefully — the scenes, setting, and character are the SINGLE SOURCE OF TRUTH for what appears in each panel. Do not substitute generic imagery. Render exactly what each scene describes.
 
-DOCUMENT HEADER
-Left label: NARRATIVE FRAMES
-Right title: ${subject}
-Right subtitle (small caps): ${lesson || audience}
+═══════════════════════════════════════════════
+STORY CONTENT — RENDER THIS EXACTLY
+═══════════════════════════════════════════════
 
-MAIN CHARACTER
-${character}. ${audience}. Warm, authentic, real-looking. Keep identical across all six panels.
-
-OVERALL EMOTIONAL ARC: ${emotion}
+TITLE: ${subject}
+SUBTITLE: ${lesson || audience}
+PROTAGONIST: ${character}
 VISUAL WORLD: ${visualWorld}
+OVERALL EMOTIONAL ARC: ${emotion}
 
-SIX PANELS — each a beautiful cinematic film still:
+SCENE DESCRIPTIONS — EACH PANEL MUST SHOW EXACTLY WHAT IS WRITTEN:
+
 ${panelList}
 
-Make each panel feel like a real moment captured by a cinematographer on a beautiful day. Bright. Warm. Human. Premium. The kind of image that makes you stop scrolling.`;
+CRITICAL SCENE RULE: If a scene says "red warning alerts on screens in a dark command centre" — show that. If it says "a city under cyber attack" — show that. If it says "a boardroom in crisis" — show that. The visual description is a direct instruction. Never replace it with a person sitting at a desk writing.
 
-  const prompt = `${STYLE_INSTRUCTIONS}\n\n${dynamicContent}`;
+═══════════════════════════════════════════════
+DOCUMENT LAYOUT
+═══════════════════════════════════════════════
+
+Produce a single landscape image formatted as a premium editorial storyboard.
+
+• Top header bar: "NARRATIVE FRAMES" in small-caps sans-serif on the left — "${subject}" in large elegant serif on the right
+• Six panels in TWO ROWS of THREE, equal size, with thin hairline borders
+• Below each panel on the white background (never inside the panel): panel number, scene title in serif, italic caption, emotion word in small caps
+• Document background: pure white (#FFFFFF) or very light neutral grey (#F5F5F5) — NEVER cream, ivory, yellow, or warm. White only.
+
+═══════════════════════════════════════════════
+VISUAL QUALITY
+═══════════════════════════════════════════════
+
+Each panel is a cinematic film still — the quality of an A24 feature film or premium documentary.
+
+• Full-frame cinema camera, 50mm or 85mm prime lens, shallow depth of field
+• Film grain — subtle and authentic
+• Lighting adapts to what the scene demands: dark war rooms use screen glow and dramatic underlighting; outdoor scenes use natural daylight; crisis scenes use harsh fluorescent or red emergency light. Match the mood of the scene.
+• Rich contrast — deep blacks, full tonal range
+• Each panel has a DISTINCT visual feel — vary colour temperature, shot distance, and composition across the six panels
+• Composition variety: wide environmental shot, medium off-centre, over-the-shoulder, foreground blur, intimate close-up, hero shot — distribute across the six panels
+
+CHARACTER CONSISTENCY
+The protagonist must look identical in every panel they appear in. Same face, hair, skin tone, clothing. Only expression and body language change. If the visual world has multiple characters (e.g. "the security team"), keep them consistent.
+
+═══════════════════════════════════════════════
+AVOID
+═══════════════════════════════════════════════
+
+Generic person-at-desk imagery when the scene calls for something else. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Oversaturated colours. Text or logos inside the panel photographs. Inconsistent character faces across panels. All six panels looking the same.`;
 
   try {
     console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
