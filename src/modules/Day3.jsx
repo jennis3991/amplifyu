@@ -281,35 +281,30 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
   );
 
   // ── SELECT ──────────────────────────────────────────────────────────────────
-  if (phase === 'select') return grid(<>
-    <div>
-      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 8}}>Rehearsal · Day 3</div>
-      <h3 style={{fontFamily: T.serif, fontSize: isDesktop ? 24 : 20, fontWeight: 600, color: 'rgba(245,239,230,0.92)', margin: 0, lineHeight: 1.2}}>The Pause Drill</h3>
+  if (phase === 'select') return (
+    <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
+      <div style={{display: 'grid', gridTemplateColumns: isDesktop ? '2fr 3fr' : '1fr', gap: isDesktop ? 20 : 16, alignItems: 'start'}}>
+        {leftPanel}
+        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
+          {TOPICS.map(t => {
+            const sel = topic?.id === t.id;
+            return (
+              <button key={t.id} onClick={() => setTopic(t)}
+                style={{padding: '16px 14px', borderRadius: 6, border: `${sel ? '2px' : '1px'} solid ${sel ? 'rgba(82,112,96,0.75)' : T2.border}`, background: sel ? 'rgba(82,112,96,0.18)' : T2.surface, cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', gap: 10, outline: 'none'}}>
+                <div style={{color: sel ? 'rgba(82,112,96,0.95)' : T2.text3}}>{t.icon}</div>
+                <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: T2.text, lineHeight: 1.4, fontWeight: sel ? 600 : 400}}>{t.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <button onClick={() => { if (topic) setPhase('pause'); }}
+        disabled={!topic}
+        style={{...cs.cta, opacity: topic ? 1 : 0.4, cursor: topic ? 'pointer' : 'default'}}>
+        Continue →
+      </button>
     </div>
-    <div style={{...cs.card}}>
-      <div style={cs.label}>Your Warm-Up</div>
-      <p style={{fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text3, lineHeight: 1.65, margin: 0}}>
-        Choose one topic below. Before you speak, pause for two full seconds. Then speak naturally for around 30 seconds — don't worry about filler words yet, just practise starting with a deliberate pause.
-      </p>
-    </div>
-    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
-      {TOPICS.map(t => {
-        const sel = topic?.id === t.id;
-        return (
-          <button key={t.id} onClick={() => setTopic(t)}
-            style={{padding: '16px 14px', borderRadius: 6, border: `${sel ? '2px' : '1px'} solid ${sel ? 'rgba(82,112,96,0.75)' : T2.border}`, background: sel ? 'rgba(82,112,96,0.18)' : T2.surface, cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', gap: 10, outline: 'none'}}>
-            <div style={{color: sel ? 'rgba(82,112,96,0.95)' : T2.text3}}>{t.icon}</div>
-            <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: T2.text, lineHeight: 1.4, fontWeight: sel ? 600 : 400}}>{t.label}</span>
-          </button>
-        );
-      })}
-    </div>
-    <button onClick={() => { if (topic) setPhase('pause'); }}
-      disabled={!topic}
-      style={{...cs.cta, opacity: topic ? 1 : 0.4, cursor: topic ? 'pointer' : 'default'}}>
-      Continue →
-    </button>
-  </>);
+  );
 
   // ── PAUSE MOMENT ────────────────────────────────────────────────────────────
   if (phase === 'pause') return grid(<>
