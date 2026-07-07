@@ -424,7 +424,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       </div>
     </div>
      {/* Header image + Exit button overlay */}
-    <div style={{position:"relative",height:step==="Theory 2"?260:320,overflow:"hidden",background:step==="Rehearsal"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
+    <div style={{position:"relative",height:320,overflow:"hidden",background:step==="Rehearsal"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
       {(()=>{
         // ── Simulation panes ───────────────────────────────────────────────
         if(isD4 && step==="Simulation") return <TabHeroPane label="Breaking News Live" headline="Report it live. Watch what your audience remembers." liveIndicator />;
@@ -493,7 +493,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           13:{Insight:"/day13-insight.jpg",Theory:"/day13-theory.jpg",Example:"/day13-insight.jpg",Review:"/review-chair.jpg"},
           14:{Insight:"/day14-insight.jpg",Theory:"/day14-theory.jpg",Review:"/review-chair.jpg"},
           12:{Insight:"/day12-insight.jpg",Theory:"/day12-theory.jpg",Practice:null,Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
-          8:{Insight:"/nt-insight.jpg","Theory 1":"/dual-coding-theory.jpg","Theory 2":"/nt-6beat-framework.jpg",Practice:"/practice-bg.jpg",Simulation:null,Review:"/review-chair.jpg"},
+          8:{Insight:"/nt-insight.jpg",Theory:"/dual-coding-theory.jpg",Practice:"/practice-bg.jpg",Simulation:null,Review:"/review-chair.jpg"},
         };
         // ── Rehearsal panes ────────────────────────────────────────────────
         if(isD1 && step==="Rehearsal") return <TabHeroPane label="Voice Warm-Up" headline="Let's warm up your voice." />;
@@ -516,7 +516,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           3:{Theory:{src:"/day3-theory-tablet.jpg"}},
           4:{Insight:{src:"/day4-insight-tablet.jpg"},Theory:{src:"/day4-theory-tablet.jpg"}},
           6:{Theory:{src:"/d6-theory-tablet.jpg"}},
-          8:{Insight:{src:"/nt-insight-tablet.jpg"},"Theory 1":{src:"/nt-theory1-tablet.jpg"},"Theory 2":{src:"/nt-theory2-tablet.jpg",pos:"center 68%"}},
+          8:{Insight:{src:"/nt-insight-tablet.jpg"},Theory:{src:"/nt-theory1-tablet.jpg"}},
           10:{Theory:{src:"/performance-iceberg-tablet.jpg"}},
         };
         const src=STEP_IMGS[lesson.day]?.[step];
@@ -528,7 +528,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:tabletEntry.pos||"center",display:"block",pointerEvents:"none"}}/>
           </picture>
         );
-        if(src) return <img src={src} alt="" style={{width:"100%",height:step==="Theory 2"?260:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Rehearsal"?"center 40%":step==="Example"?"center 30%":step==="Theory 2"?"center 55%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
+        if(src) return <img src={src} alt="" style={{width:"100%",height:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Rehearsal"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
         return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
       })()}
       {/* Exit button — top left over image */}
@@ -538,11 +538,11 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           position:"absolute",top:14,left:14,zIndex:50,
           height:36,padding:"0 14px 0 10px",
           borderRadius:4,border:"none",
-          background:step==="Theory 2"?"rgba(247,243,236,0.45)":"rgba(247,243,236,0.92)",
+          background:"rgba(247,243,236,0.92)",
           color:"#2C2416",
           display:"flex",alignItems:"center",gap:5,
           cursor:"pointer",fontFamily:T.sans,
-          boxShadow:step==="Theory 2"?"none":"0 1px 6px rgba(44,36,22,0.15)",
+          boxShadow:"0 1px 6px rgba(44,36,22,0.15)",
         }}>
         <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
           <path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1721,7 +1721,7 @@ T.goldDark : T2.text4,
           <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Facts explain. Stories move people.</p>
         </>
       )}
-      {isNT && step==="Theory 1" && (
+      {isNT && step==="Theory" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Dual Coding Theory</h2>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Green &amp; Brock, 2000</div>
@@ -1740,34 +1740,6 @@ T.goldDark : T2.text4,
             ))}
           </div>
           <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.7,marginTop:8}}>The brain encodes story. It files away data.</p>
-        </>
-      )}
-      {isNT && step==="Theory 2" && (
-        <>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The 6-Beat Framework</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Every great story follows a learnable pattern. Master these six beats and you can tell any story.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:8}}>
-            {[
-              {n:1,beat:"Hook",         sub:"It starts with tension."},
-              {n:2,beat:"Character",    sub:"Make it human. Make it real."},
-              {n:3,beat:"Problem",      sub:"What broke? What's at stake?"},
-              {n:4,beat:"Turning Point",sub:"What changes? Everything shifts."},
-              {n:5,beat:"Resolution",   sub:"What happened? Why it matters."},
-              {n:6,beat:"Meaning",      sub:"What stayed with us?"},
-            ].map((b,i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:14,padding:"14px 16px",background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8}}>
-                <div style={{width:32,height:32,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                  <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T.gold}}>{b.n}</span>
-                </div>
-                <div style={{flex:1}}>
-                  <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,marginBottom:2}}>{b.beat}</div>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{b.sub}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.7,marginTop:8,marginBottom:24}}>No tension = no story. No shift = no meaning.</p>
-
         </>
       )}
       {isNT && step==="Example" && (()=>{

@@ -350,37 +350,12 @@ export function SessionLeftPanel({
         </div>
       </div>
     );
-    if (step === "Theory 1") return (
+    if (step === "Theory") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", alignItems:"center", justifyContent:"center" }}>
         <img src="/d8-theory.png" alt="" style={{ position:"absolute", inset:"-20px", width:"calc(100% + 40px)", height:"calc(100% + 40px)", objectFit:"cover", filter:"blur(24px) brightness(0.4)", pointerEvents:"none" }}/>
         <img src="/d8-theory.png" alt="Words and Images — Dual Coding" style={{ position:"relative", zIndex:1, width:"100%", height:"100%", objectFit:"contain", display:"block", transform:"scale(1.5)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.5) 0%, transparent 40%)", zIndex:2, pointerEvents:"none" }}/>
       </div>
-    );
-    if (step === "Theory 2") return (
-      <>
-        {imgZoom && (
-          <div onClick={()=>setImgZoom(false)} style={{position:"fixed",inset:0,zIndex:1000,background:"rgba(10,8,5,0.92)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"zoom-out",backdropFilter:"blur(4px)"}}>
-            <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{maxWidth:"92vw",maxHeight:"92vh",objectFit:"contain",borderRadius:4,boxShadow:"0 24px 80px rgba(0,0,0,0.5)"}}/>
-            <div style={{position:"absolute",top:24,right:28,color:"rgba(255,255,255,0.5)",fontSize:28,lineHeight:1}}>×</div>
-          </div>
-        )}
-        <div onClick={()=>setImgZoom(true)} style={{ height:"100%", position:"relative", overflow:"hidden", cursor:"zoom-in", background:"#E8E2D8", display:"flex", flexDirection:"column", justifyContent:"center" }}>
-          {/* Blurred bg fill — hides any gap above/below */}
-          <img src="/nt-6beat-framework.jpg" alt="" style={{ position:"absolute", inset:"-20px", width:"calc(100% + 40px)", height:"calc(100% + 40px)", objectFit:"cover", filter:"blur(18px) brightness(0.55)", pointerEvents:"none" }}/>
-          {/* Sharp full-width image */}
-          <img src="/nt-6beat-framework.jpg" alt="The 6-Beat Story Framework" style={{ position:"relative", zIndex:1, width:"100%", height:"auto", display:"block" }}/>
-          <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.65) 0%, transparent 40%)", zIndex:2 }}/>
-          <div style={{ position:"absolute", top:20, right:20, zIndex:3, background:"rgba(10,8,5,0.45)", backdropFilter:"blur(4px)", borderRadius:4, padding:"6px 10px", display:"flex", alignItems:"center", gap:6 }}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2"/><path d="M9.5 9.5l2.5 2.5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2" strokeLinecap="round"/><path d="M4.5 6h3M6 4.5v3" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-            <span style={{fontSize:10,color:"rgba(255,255,255,0.7)",fontFamily:T.sans,fontWeight:500}}>Click to enlarge</span>
-          </div>
-          <div style={{ position:"absolute", bottom:32, left:48, zIndex:3, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
-            <div style={{ ...LP_LABEL, marginBottom:8 }}>The Framework</div>
-            <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", margin:0 }}>Every great story follows a learnable pattern.</p>
-          </div>
-        </div>
-      </>
     );
     if (step === "Example") return (
       <div style={{ background:"#0E0B08", height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>

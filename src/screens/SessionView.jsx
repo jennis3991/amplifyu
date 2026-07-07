@@ -34,7 +34,7 @@ import { D7SimWidget, D7PracticeWidget } from '../modules/Day7.jsx';
 export function SessionView({lesson, isDone, onComplete, onBack, roleId,
 activeRole, dark=false, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
-  const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory 1","Theory 2","Example","Rehearsal","Simulation","Review"]:["Insight","Theory","Example","Rehearsal","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
+  const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory","Example","Rehearsal","Simulation","Review"]:["Insight","Theory","Example","Rehearsal","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
   const rightPanelRef = useRef(null);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -109,7 +109,7 @@ setAmbitionSaved(true); } catch {}
   const isD13 = lesson.day === 13;
   const isD14 = lesson.day === 14;
   const STEPS = isNT
-    ? ["Insight","Theory 1","Theory 2","Example","Rehearsal","Simulation","Review"]
+    ? ["Insight","Theory","Example","Rehearsal","Simulation","Review"]
     : SESSION_STEPS;
   const step = STEPS[idx];
 
@@ -2312,7 +2312,7 @@ setAmbitionSaved(true); } catch {}
         );
       }
 
-      if (step === "Theory 1") return (
+      if (step === "Theory") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Green &amp; Brock, 2000</div>
           <h2 style={{ fontFamily:T.serif, fontSize:34, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Dual Coding Theory</h2>
@@ -2334,38 +2334,6 @@ setAmbitionSaved(true); } catch {}
             ))}
           </div>
           <p style={{ fontFamily:T.serif, fontSize:15, fontStyle:"italic", color:T.gold, lineHeight:1.7 }}>The brain encodes story. It files away data.</p>
-        </div>
-      );
-
-      if (step === "Theory 2") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Framework</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The 6-Beat Framework</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:24 }}>Every great story follows a learnable pattern. Master these six beats and you can tell any story.</p>
-          <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:28 }}>
-            {[
-              {n:1,beat:"Hook",         sub:"It starts with tension."},
-              {n:2,beat:"Character",    sub:"Make it human. Make it real."},
-              {n:3,beat:"Problem",      sub:"What broke? What's at stake?"},
-              {n:4,beat:"Turning Point",sub:"What changes? Everything shifts."},
-              {n:5,beat:"Resolution",   sub:"What happened? Why it matters."},
-              {n:6,beat:"Meaning",      sub:"What stayed with us?"},
-            ].map((b,i)=>(
-              <div key={i} style={{ display:"flex", alignItems:"center", gap:20, padding:"16px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
-                <div style={{ width:36, height:36, borderRadius:"50%", background:"rgba(138,158,132,0.1)", border:"1px solid rgba(138,158,132,0.3)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                  <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:700, color:T.gold }}>{b.n}</span>
-                </div>
-                <div style={{ flex:1 }}>
-                  <div style={{ fontFamily:T.serif, fontSize:20, fontWeight:600, color:T2.text, marginBottom:4 }}>{b.beat}</div>
-                  <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.5, fontWeight:300, margin:0 }}>{b.sub}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ padding:"20px 24px", background:"rgba(138,158,132,0.06)", borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:40 }}>
-            <p style={{ fontFamily:T.serif, fontSize:20, fontStyle:"italic", color:T.gold, lineHeight:1.5, margin:0 }}>No tension = no story. No shift = no meaning.</p>
-          </div>
-
         </div>
       );
 
