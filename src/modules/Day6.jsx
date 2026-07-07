@@ -324,7 +324,7 @@ function DropDown({field, value, placeholder, options, onSelect, open, onToggle,
       <button
         onMouseDown={e=>{e.preventDefault();onToggle();}}
         onBlur={()=>setTimeout(onClose,150)}
-        style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px",borderRadius:3,border:`0.5px solid ${open?T.gold:T2.border}`,background:T2.bg,color:value?T2.text:T2.text3||"#A8998A",fontFamily:T.sans,fontSize:isDesktop?14:13,cursor:"pointer",textAlign:"left",transition:"border-color 0.2s",outline:"none",minHeight:42}}>
+        style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px",borderRadius:3,border:`0.5px solid ${open?T.gold:T2.border}`,background:T2.bg,color:value?T2.text:T2.text3||"#A8998A",fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:400,letterSpacing:"0.01em",cursor:"pointer",textAlign:"left",transition:"border-color 0.2s",outline:"none",minHeight:42}}>
         <span style={{flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{value||placeholder}</span>
         <svg width="12" height="8" viewBox="0 0 12 8" fill="none" style={{flexShrink:0,marginLeft:8,transform:open?"rotate(180deg)":"none",transition:"transform 0.2s"}}>
           <path d="M1 1.5l5 5 5-5" stroke={open?T.gold:"#A8998A"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -334,7 +334,7 @@ function DropDown({field, value, placeholder, options, onSelect, open, onToggle,
         <div style={{position:"absolute",top:"calc(100% + 4px)",left:0,right:0,zIndex:100,background:T2.surface,border:"0.5px solid "+T.gold,borderRadius:4,boxShadow:"0 8px 28px rgba(44,36,22,0.13)",overflow:"hidden",maxHeight:220,overflowY:"auto"}}>
           {options.map((opt,i)=>(
             <div key={opt} onMouseDown={e=>{e.preventDefault();onSelect(opt);onClose();}}
-              style={{padding:"10px 14px",fontFamily:T.sans,fontSize:isDesktop?14:13,color:opt===value?T.gold:T2.text,background:opt===value?"rgba(138,158,132,0.08)":"transparent",cursor:"pointer",borderBottom:i<options.length-1?"0.5px solid "+T2.divider:"none",transition:"background 0.12s"}}
+              style={{padding:"10px 14px",fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:400,letterSpacing:"0.01em",color:opt===value?T.gold:T2.text,background:opt===value?"rgba(138,158,132,0.08)":"transparent",cursor:"pointer",borderBottom:i<options.length-1?"0.5px solid "+T2.divider:"none",transition:"background 0.12s"}}
               onMouseEnter={e=>e.currentTarget.style.background=opt===value?"rgba(138,158,132,0.12)":"rgba(138,158,132,0.05)"}
               onMouseLeave={e=>e.currentTarget.style.background=opt===value?"rgba(138,158,132,0.08)":"transparent"}>
               {opt}
