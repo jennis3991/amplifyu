@@ -361,8 +361,9 @@ export function D6SimWidget({T, T2, isDesktop}) {
     {id:'pitch',     label:'Pitch an idea',      icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14z"/></svg>},
     {id:'budget',    label:'Budget approval',    icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v1m0 5v1M9.5 10a2.5 2.5 0 0 1 5 0c0 1.5-1 2-2.5 2.5S9.5 13 9.5 14a2.5 2.5 0 0 0 5 0"/></svg>},
     {id:'promotion', label:'Promotion',          icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>},
-    {id:'feedback',  label:'Difficult feedback', icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="15.5" r="0.5" fill="currentColor"/></svg>},
-    {id:'other',     label:'Something else',     icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>},
+    {id:'feedback',  label:'Difficult feedback',   icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="15.5" r="0.5" fill="currentColor"/></svg>},
+    {id:'performance',label:'Performance review', icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>},
+    {id:'other',     label:'Something else',      icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>},
   ];
   const PRESSURES = [
     {id:'friendly',    label:'Friendly',    desc:'Supportive & open dialogue',        icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>},
@@ -480,8 +481,8 @@ export function D6SimWidget({T, T2, isDesktop}) {
       {/* Section 1 */}
       <div style={{display:"flex",flexDirection:"column",gap:14}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{width:26,height:26,borderRadius:"50%",background:T.ink,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T.bg}}>1</span>
+          <div style={{width:26,height:26,borderRadius:"50%",background:"#527060",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:"#F5EFE6"}}>1</span>
           </div>
           <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text}}>Your Conversation</span>
         </div>
@@ -497,30 +498,30 @@ export function D6SimWidget({T, T2, isDesktop}) {
           </div>
         </div>
         <div>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Who Are You Meeting?</div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Who Are You Meeting?</div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
             {MEETING_OPTIONS.map(opt=>{
               const sel=form.stakeholder===opt.label;
               return (
                 <button key={opt.id} onClick={()=>setForm(f=>({...f,stakeholder:opt.label}))}
                   style={{padding:"14px 8px",borderRadius:6,border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`,background:sel?'rgba(82,112,96,0.1)':T2.surface,cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:8,outline:'none',transition:'all 0.15s'}}>
-                  <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3}}>{opt.icon}</div>
-                  <span style={{fontFamily:T.sans,fontSize:11,color:T2.text,lineHeight:1.3,fontWeight:sel?600:400,textAlign:'center'}}>{opt.label}</span>
+                  <div style={{color:sel?'rgba(82,112,96,0.9)':'#8A9E84'}}>{opt.icon}</div>
+                  <span style={{fontFamily:T.sans,fontSize:11,color:sel?'#527060':T2.text,lineHeight:1.3,fontWeight:sel?600:400,textAlign:'center'}}>{opt.label}</span>
                 </button>
               );
             })}
           </div>
         </div>
         <div>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>{"What's the Conversation About?"}</div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>{"What's the Conversation About?"}</div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:form.purpose==='Something else'?8:0}}>
             {TOPIC_OPTIONS.map(opt=>{
               const sel=form.purpose===opt.label;
               return (
                 <button key={opt.id} onClick={()=>{setForm(f=>({...f,purpose:opt.label}));if(opt.id!=='other')setPurposeOther('');}}
                   style={{padding:"14px 8px",borderRadius:6,border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`,background:sel?'rgba(82,112,96,0.1)':T2.surface,cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:8,outline:'none',transition:'all 0.15s'}}>
-                  <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3}}>{opt.icon}</div>
-                  <span style={{fontFamily:T.sans,fontSize:11,color:T2.text,lineHeight:1.3,fontWeight:sel?600:400,textAlign:'center'}}>{opt.label}</span>
+                  <div style={{color:sel?'rgba(82,112,96,0.9)':'#8A9E84'}}>{opt.icon}</div>
+                  <span style={{fontFamily:T.sans,fontSize:11,color:sel?'#527060':T2.text,lineHeight:1.3,fontWeight:sel?600:400,textAlign:'center'}}>{opt.label}</span>
                 </button>
               );
             })}
@@ -533,8 +534,8 @@ export function D6SimWidget({T, T2, isDesktop}) {
       {/* Section 2 — Pressure Level */}
       <div style={{display:"flex",flexDirection:"column",gap:12}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{width:26,height:26,borderRadius:"50%",background:T.ink,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T.bg}}>2</span>
+          <div style={{width:26,height:26,borderRadius:"50%",background:"#527060",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:"#F5EFE6"}}>2</span>
           </div>
           <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text}}>Pressure Level</span>
         </div>
@@ -544,8 +545,8 @@ export function D6SimWidget({T, T2, isDesktop}) {
             return (
               <button key={p.id} onClick={()=>setForm(f=>({...f,pressure:p.id}))}
                 style={{padding:"14px 6px",borderRadius:6,border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`,background:sel?'rgba(82,112,96,0.1)':T2.surface,cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:6,outline:'none',transition:'all 0.15s'}}>
-                <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3}}>{p.icon}</div>
-                <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:sel?'rgba(82,112,96,0.9)':T2.text,textAlign:'center'}}>{p.label}</div>
+                <div style={{color:sel?'rgba(82,112,96,0.9)':'#8A9E84'}}>{p.icon}</div>
+                <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:sel?'#527060':T2.text,textAlign:'center'}}>{p.label}</div>
                 <div style={{fontFamily:T.sans,fontSize:10,color:T2.text3,textAlign:'center',lineHeight:1.3}}>{p.desc}</div>
               </button>
             );
