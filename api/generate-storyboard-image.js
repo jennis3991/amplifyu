@@ -9,60 +9,70 @@ Structure:
 • Top header: small-caps label "NARRATIVE FRAMES" on the left — story title in large elegant serif on the right
 • Six cinematic panels arranged in TWO ROWS of THREE equal panels
 • Below each panel on the cream background (NOT inside the panel): small panel number, scene title in serif, italic caption, emotion word in spaced small caps
-• Generous warm ivory margins (#F7F3EC) between everything
+• Generous warm ivory (#F7F3EC) margins between everything
 • Thin hairline borders around each panel
 
-PHOTOGRAPHY STYLE — THIS IS THE MOST IMPORTANT INSTRUCTION
-Each panel must look like a still frame from a beautifully lit, professionally shot film.
-• Shot on a full-frame cinema camera with 50mm or 85mm prime lens
-• Shallow depth of field with beautiful bokeh in backgrounds
-• Rich texture — skin, fabric, wood grain, paper, ceramic, glass
-• Natural organic imperfections — not sterile or stock photo
-• Cinematic colour grading — warm golden tones, rich shadows, luminous highlights
-• Real-looking humans with authentic expressions and body language
-• Contemporary, beautifully designed interiors — minimal Scandinavian, Soho House aesthetic
-• Natural materials: oak, walnut, linen, stone, brass, warm plaster
+COLOUR GRADE — CRITICAL
+Use a rich cinematic colour grade. Do NOT tint the entire image one colour. Do NOT make everything yellow, sepia, or monochromatic brown.
 
-COLOUR PALETTE — BRIGHT AND WARM, NOT DARK
-Background document: Warm Ivory #F7F3EC and Soft Linen #EFE7DB
-Panel images should use this palette with BRIGHT lighting:
-• Ivory highlights and window light: #F7F3EC
-• Warm linen midtones: #EFE7DB, #E8DFCF
-• Golden hour light and warmth: #F3D08A
-• Walnut browns for wood and shadow: #5B4636
-• Soft sage accents for plants and nature: #A6AE9B
-• Deep espresso for darks (used sparingly): #2F241C
-Panels should feel BRIGHT and WARM — flooded with natural window light and golden hour sun. NOT dark, NOT moody, NOT oil-painting brown.
+Include all of the following colours naturally across the panels:
+• Deep charcoal shadows (#292623) — rich, not muddy
+• Warm walnut browns (#655244) — wood, leather, earth tones
+• Natural skin tones — warm peachy-beige, not orange or yellow
+• Soft olive greens (#7A806C) — plants, fabric, background accents
+• Warm cream interiors (#F2ECE2) — walls, linen, light sources
+• Golden afternoon sunlight (#C7A46A) — light shafts, window glow
+• Subtle blue-grey ambient shadows — cool shadow fill, counterbalancing the warmth
+• Rich contrast between lit and shadow areas
 
-LIGHTING
-• Natural window light flooding into contemporary interior spaces
-• Golden hour sunlight casting warm long shadows
-• Soft ambient fill with beautiful shadow falloff
-• Filmic lighting with subtle volumetric light through windows
-• Warm cinematic contrast — lifted shadows, luminous highlights
-• Each panel feels like it was shot on a beautiful afternoon in a well-designed home or workspace
-• NO harsh artificial lighting, NO dark dramatic chiaroscuro, NO oil-painting darkness
+Each panel should have its OWN distinct colour feel — do not apply the same grade to all six.
 
-INTERIORS AND SPACES
-Modern minimal interiors: natural oak floors, white linen sofas, clean architectural lines, potted plants, stacked books, ceramic mugs, linen curtains diffusing light. Think: beautiful home office, a Soho House workspace, a light-filled kitchen, a quiet corner of a co-working space. Warm but contemporary. Aspirational but human.
+PHOTOGRAPHY STYLE
+Each panel is a still frame from a beautifully photographed feature film.
+• Full-frame cinema camera, 50mm or 85mm prime lens
+• Shallow depth of field — foreground objects soft, subject sharp, background bokeh
+• Film grain — subtle, authentic, not digital noise
+• Visible depth — foreground, midground, background layers
+• Lens compression on tighter shots
+• Natural window light as the primary source
+• Authentic environments — nothing staged or sterile
+• Rich shadows with detail, luminous highlights
+• Natural skin tones and organic imperfections
 
-CHARACTER
-The same person in all six panels. Authentic, real-looking. Professional but warm. Natural expressions. Contemporary clothing — linen, cashmere, tailored blazer. Consistent throughout.
+CHARACTER CONSISTENCY — MOST IMPORTANT RULE
+The protagonist must be visually identical in every single panel. Treat her as the same actress in sequential shots of the same film.
 
-CAMERA ANGLES — VARY ACROSS SIX PANELS
-Mix deliberately across the six panels: wide establishing interior, medium shot at desk, intimate close-up on face, over-the-shoulder, hero shot standing, detail shot of hands.
+Never redesign the face. Maintain across all six panels:
+• Identical eye shape, nose, jawline, hairline
+• Same hair length, hair colour, and style
+• Same skin tone and complexion
+• Same body proportions
+• Same clothing and accessories
 
-TYPOGRAPHY (rendered in the cream margins of the document, NOT inside the panels)
-• Top of document: "NARRATIVE FRAMES" in small-caps Inter/sans-serif, tracked wide, warm taupe colour
-• Story title: large elegant Cormorant Garamond Semibold or similar serif
-• Below each panel: panel number in small sans-serif, scene title in serif ~14pt, caption in italic serif ~11pt, emotion word in small-caps sans ~9pt with 0.25em tracking
-• All text in Walnut (#5B4636) or Espresso (#2F241C), never black
+Only facial expression and body language may change between panels.
 
-MOOD
-Calm. Reflective. Hopeful. Sophisticated. Timeless. Human. Authentic. Like watching someone's life change for the better in the most beautiful light imaginable.
+COMPOSITION — VARY NATURALLY ACROSS THE SIX PANELS
+Do not centre the protagonist in every frame. Use:
+• Environmental wide shot — subject small in a beautiful interior
+• Medium shot — subject off-centre, natural framing
+• Over-the-shoulder — shot from behind, looking at something
+• Foreground blur — an object soft in the foreground, subject behind
+• Intimate close-up — face cropped, emotional expression
+• Hero shot — subject confident, environment supporting
 
-AVOID COMPLETELY
-Illustration style of any kind. Oil painting. Dark and moody chiaroscuro. Comic book. Anime. Cartoon. Manga. Oversaturated colours. Harsh artificial lighting. Sterile stock photo look. Watermarks. Logos. Text INSIDE the panel illustrations. Speech bubbles. AI visual clichés. Heavy vignetting. Dark brown muddy tones throughout.`;
+Some panels crop the subject. Some use leading lines. Some show hands or detail. Nothing perfectly composed — natural, alive, cinematic.
+
+INTERIORS AND ENVIRONMENTS
+Contemporary minimal interiors: oak floors, white and warm linen walls, clean lines, potted plants, stacked books, ceramic mugs, brass fixtures, linen curtains diffusing window light. Beautiful home offices, Soho House workspaces, light-filled kitchens, quiet reading corners. Warm, aspirational, human.
+
+TYPOGRAPHY (in cream margins only — never inside the panel illustrations)
+• Header label: "NARRATIVE FRAMES" — small-caps sans-serif, tracked wide, warm taupe
+• Story title: large elegant serif (Cormorant Garamond weight)
+• Below each panel: panel number small sans, scene title serif ~14pt, italic caption ~11pt, emotion word small-caps ~9pt spaced
+• Text colour: Walnut (#655244) or Espresso (#342A22) — never pure black
+
+AVOID
+Monochromatic yellow/sepia wash. Oil painting look. Illustration of any kind. Cartoon. Anime. Manga. Oversaturated colours. Staged or stock-photo feel. Text inside panel illustrations. Watermarks. Logos. Speech bubbles. Inconsistent character faces. Protagonist centred in every frame.`;
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
