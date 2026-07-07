@@ -374,7 +374,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Find Your Story</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, margin:0 }}>Every great communicator has a handful of stories they return to throughout their career. Let's build one of yours.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(22px,2.4vw,34px)", maxWidth:360, lineHeight:1.25, margin:0 }}>The best communicators have a handful of go-to stories. Let's find one of yours.</p>
         </div>
       </div>
     );
