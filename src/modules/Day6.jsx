@@ -373,7 +373,7 @@ export function D6SimWidget({T, T2, isDesktop}) {
   ];
 
   const [phase,          setPhase]         = useState('setup');
-  const [form,           setForm]          = useState({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging'});
+  const [form,           setForm]          = useState({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging',details:''});
   const [purposeOther,   setPurposeOther]  = useState('');
   const [profile,        setProfile]       = useState(null);
   const [questions,      setQuestions]     = useState([]);
@@ -401,7 +401,7 @@ export function D6SimWidget({T, T2, isDesktop}) {
     setPhase('analyzing');
     const pressureLabel = PRESSURES.find(p=>p.id===form.pressure)?.label||'Challenging';
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:800,messages:[{role:"user",content:`You are a senior executive coach preparing someone for a high-stakes conversation.\n\nContext:\n- Industry: ${form.industry}\n- Their role: ${form.role}\n- Meeting: ${form.stakeholder}\n- About: ${ap}\n- Pressure style: ${pressureLabel}\n\nGenerate a conversation profile and the 5 most important, highest-impact questions this stakeholder is likely to ask. Prioritise the questions they would definitely ask — the ones that probe rationale, risk, and evidence. Questions should feel specific, real, and build in difficulty.\n\nReturn ONLY valid JSON:\n{"profile":{"stakeholderLabel":"${form.stakeholder}","goal":"<1-4 word goal>","riskLevel":"High|Medium|Low","concerns":["concern1","concern2","concern3","concern4"],"insight":"<2-3 sentences about what this stakeholder cares about and how they will challenge>"},"questions":["q1","q2","q3","q4","q5"]}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:800,messages:[{role:"user",content:`You are a senior executive coach preparing someone for a high-stakes conversation.\n\nContext:\n- Industry: ${form.industry}\n- Their role: ${form.role}\n- Meeting: ${form.stakeholder}\n- About: ${ap}\n- Pressure style: ${pressureLabel}${form.details?`\n- Additional context: ${form.details}`:''}\n\nGenerate a conversation profile and the 5 most important, highest-impact questions this stakeholder is likely to ask. Prioritise the questions they would definitely ask — the ones that probe rationale, risk, and evidence. Questions should feel specific, real, and build in difficulty.\n\nReturn ONLY valid JSON:\n{"profile":{"stakeholderLabel":"${form.stakeholder}","goal":"<1-4 word goal>","riskLevel":"High|Medium|Low","concerns":["concern1","concern2","concern3","concern4"],"insight":"<2-3 sentences about what this stakeholder cares about and how they will challenge>"},"questions":["q1","q2","q3","q4","q5"]}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -527,8 +527,14 @@ export function D6SimWidget({T, T2, isDesktop}) {
             })}
           </div>
           {form.purpose==='Something else' && (
-            <textarea value={purposeOther} onChange={e=>setPurposeOther(e.target.value)} placeholder="Describe what the conversation is about..." style={{...cs.inp,resize:'none',height:64,lineHeight:1.5}}/>
+            <textarea value={purposeOther} onChange={e=>setPurposeOther(e.target.value)} placeholder="Describe what the conversation is about..." style={{...cs.inp,resize:'none',height:64,lineHeight:1.5,marginTop:8}}/>
           )}
+        </div>
+        <div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Specific Context <span style={{fontFamily:T.sans,fontSize:10,fontWeight:400,color:T2.text3,textTransform:"none",letterSpacing:0}}>(optional)</span></div>
+          <textarea value={form.details} onChange={e=>setForm(f=>({...f,details:e.target.value}))}
+            placeholder="e.g. They've pushed back on budget before, I need to ask for a 20% raise, this is a third interview round..."
+            style={{...cs.inp,resize:'none',height:72,lineHeight:1.6}}/>
         </div>
       </div>
       {/* Section 2 — Pressure Level */}
