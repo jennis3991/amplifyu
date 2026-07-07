@@ -78,26 +78,37 @@ The emotion labels below each panel (e.g. FRUSTRATION, TENSION, CLARITY, CONTROL
 A character feeling FRUSTRATION still exists in a well-lit, warm, aspirational environment. They might look worried or stressed — but the room around them is still bright and professional, not dark and sinister. Never make a panel look threatening or scary simply because the emotion label is negative.
 
 ═══════════════════════════════════════════════
-VISUAL QUALITY
+VISUAL STYLE
 ═══════════════════════════════════════════════
 
-Each panel is a cinematic film still — the quality of a premium Apple campaign or inspirational documentary.
+Each panel is a premium editorial illustration in a soft watercolour and gouache style — like the illustrations used in high-end magazines (Monocle, The New Yorker, Bloomberg Businessweek) or a luxury brand lookbook.
 
-• Full-frame cinema camera, 50mm or 85mm prime lens, shallow depth of field
-• Film grain — subtle and authentic
-• Default lighting: bright natural daylight through windows, clean and well-exposed. Lift the shadows. Bright midtones. The kind of light that makes people look confident and capable.
-• Rich contrast — but with bright, lifted midtones, not crushed dark shadows
-• Each panel has a DISTINCT visual feel — vary colour temperature, shot distance, and composition across the six panels
-• Composition variety: wide environmental shot, medium off-centre, over-the-shoulder, foreground blur, intimate close-up, hero shot — distribute across the six panels
+ILLUSTRATION STYLE:
+• Watercolour washes with soft gouache highlights — painterly, expressive, not hyper-realistic
+• Warm neutral palette: ivory, sage green, dusty blue, warm taupe, soft terracotta — clean and editorial
+• Characters are rendered as confident portrait illustrations — expressive faces with clear emotions, but painterly rather than photographic. This avoids distorted AI faces.
+• Subtle botanical or architectural elements in backgrounds — leaves, geometric shapes, architectural lines — simple and elegant
+• Soft diffused light — no harsh shadows, no dark underlighting. Warm and inviting throughout.
+• Loose, confident brush strokes visible — especially in backgrounds and clothing
+• Faces are the focal point — well-lit, warm skin tones, clear expression, centred or slightly off-centre
+
+COLOUR PALETTE (adapt to scene but stay within this family):
+• Backgrounds: warm cream (#F5EFE6), soft sage (#C8D5C0), dusty slate (#B8C4CC), warm sand (#E8D9C4)
+• Skin tones: warm peachy-beige, natural and healthy
+• Clothing: muted professional tones — navy, charcoal, warm white, forest green
+• Accents: terracotta, gold, deep teal — used sparingly
+
+COMPOSITION — vary across six panels:
+• Portrait (face and shoulders), medium (waist up), environmental (full figure in setting), detail (hands, objects), over-shoulder, two-person scene — distribute naturally across the six panels
 
 CHARACTER CONSISTENCY
-The protagonist must look identical in every panel they appear in. Same face, hair, skin tone, clothing. Only expression and body language change. If the visual world has multiple characters (e.g. "the security team"), keep them consistent.
+The protagonist must look visually identical in every panel — same face shape, hair, skin tone, clothing style. Only expression and body language change.
 
 ═══════════════════════════════════════════════
 AVOID
 ═══════════════════════════════════════════════
 
-Dark, sinister, or threatening-looking panels for positive/personal stories. Silhouettes as the main subject. Cold blue or green colour casts on human subjects. Ominous shadows. Making "frustrated" or "tense" emotions look scary or dangerous. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Text or logos inside the panel photographs. Inconsistent character faces across panels. All six panels looking the same.`;
+Photorealistic or hyper-detailed faces. Dark or sinister lighting for positive stories. Cold blue or grey colour casts. Heavy shadows. Ominous or threatening atmosphere for personal/professional growth stories. Anime, manga, or cartoon style. Cream or yellow document background (the document margins must be white). Text or logos inside panel illustrations. Inconsistent character faces across panels. All six panels looking identical.`;
 
   try {
     console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
