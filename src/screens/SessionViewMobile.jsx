@@ -508,7 +508,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD12 && step==="Rehearsal") return <TabHeroPane label="The Presence Challenge" headline="Seven rounds. Every physical signal that shapes how communication lands." />;
         if(isD13 && step==="Rehearsal") return <TabHeroPane label="Make Your Value Visible" headline="Four exercises. Make your value impossible to ignore." />;
         if(isD14 && step==="Rehearsal") return <TabHeroPane label="Day 14 · Capstone" headline="You are not the communicator you were 14 days ago." />;
-        if(isNT && step==="Rehearsal") return <TabHeroPane label="Find Your Story" headline="The best communicators have a handful of go-to stories. Let's find one of yours." />;
+        if(isNT && step==="Rehearsal") return <TabHeroPane label="Story Lab" headline="The best communicators have a handful of go-to stories. Let's find one of yours." />;
         if(isD7 && step==="Rehearsal") return <TabHeroPane label="Teach It Forward" headline="The best test of what you know is whether you can teach it." />;
         const TABLET_IMGS={
           1:{Insight:{src:"/day1-insight.jpg"},Example:{src:"/day1-insight.jpg"}},
