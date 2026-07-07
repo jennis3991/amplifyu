@@ -78,42 +78,26 @@ The emotion labels below each panel (e.g. FRUSTRATION, TENSION, CLARITY, CONTROL
 A character feeling FRUSTRATION still exists in a well-lit, warm, aspirational environment. They might look worried or stressed — but the room around them is still bright and professional, not dark and sinister. Never make a panel look threatening or scary simply because the emotion label is negative.
 
 ═══════════════════════════════════════════════
-VISUAL STYLE — MATCH THIS EXACTLY
+VISUAL QUALITY
 ═══════════════════════════════════════════════
 
-Each panel must be rendered as a PREMIUM EDITORIAL STORYBOARD ILLUSTRATION — pencil and ink sketch with warm sepia watercolour wash. This is the exact style of a high-end hand-drawn film storyboard or a cinematic graphic novel.
+Each panel is a cinematic film still — the quality of a premium Apple campaign or inspirational documentary.
 
-TECHNIQUE:
-• Base: pencil sketch with confident ink outlines — visible line work, architectural and figurative
-• Wash: warm sepia and amber watercolour wash over the ink — the entire panel has a warm golden-brown tonal grade
-• Highlights: soft warm cream or white highlights on faces and light sources — hand-brushed feel
-• Texture: paper grain visible throughout — feels like illustration on premium cartridge paper
-• NOT photorealistic. NOT digital 3D. NOT anime. NOT flat vector. Hand-drawn cinematic illustration.
+• Full-frame cinema camera, 50mm or 85mm prime lens, shallow depth of field
+• Film grain — subtle and authentic
+• Default lighting: bright natural daylight through windows, clean and well-exposed. Lift the shadows. Bright midtones. The kind of light that makes people look confident and capable.
+• Rich contrast — but with bright, lifted midtones, not crushed dark shadows
+• Each panel has a DISTINCT visual feel — vary colour temperature, shot distance, and composition across the six panels
+• Composition variety: wide environmental shot, medium off-centre, over-the-shoulder, foreground blur, intimate close-up, hero shot — distribute across the six panels
 
-COLOUR PALETTE — CRITICAL:
-• The overall tonal palette is warm sepia/amber — like aged parchment or a vintage film photograph
-• Dominant tones: warm amber (#C8A97A), sepia brown (#8B6B4A), warm cream (#F5EDE0), charcoal ink (#2C2416)
-• Skin tones: warm golden-brown wash, naturally lit — faces are the brightest, warmest element in each panel
-• Shadows: warm brown ink hatching — never cold grey or blue
-• Accents: pools of warm lamplight or window light in amber/gold
-• The DOCUMENT BACKGROUND (margins, gutters, header area) should be warm cream/parchment (#F2E8D8) — this is intentional for this illustration style
-
-COMPOSITION — vary across all six panels:
-• Close-up portrait (face fills frame), over-the-shoulder (subject from behind looking at something), wide environmental (figure small in a detailed interior), hands-and-object detail shot, medium shot (waist up off-centre), two-person scene — distribute all six types across the panels
-
-LIGHTING (in illustration style):
-• Warm lamp light or window light as the primary source — rendered as amber-gold wash
-• Directional and cinematic — light falls on the face, shadows hatched in warm ink
-• Each panel can have a different light source (desk lamp, window, screen glow, overhead) — vary them
-
-CHARACTER CONSISTENCY:
-The protagonist must look visually identical across all six panels — same face shape, hair colour/style, build, clothing. Only expression and body language change. Treat her as the same illustrated character appearing throughout a graphic novel.
+CHARACTER CONSISTENCY
+The protagonist must look identical in every panel they appear in. Same face, hair, skin tone, clothing. Only expression and body language change. If the visual world has multiple characters (e.g. "the security team"), keep them consistent.
 
 ═══════════════════════════════════════════════
 AVOID
 ═══════════════════════════════════════════════
 
-Photorealistic photography or 3D rendering. Cold or blue-toned panels. Flat colour fills without ink texture. Anime, manga, or cartoon style. Hard digital edges. Inconsistent character appearance across panels. All panels looking compositionally identical. Pure black-and-white with no warm wash.`;
+Dark, sinister, or threatening-looking panels for positive/personal stories. Silhouettes as the main subject. Cold blue or green colour casts on human subjects. Ominous shadows. Making "frustrated" or "tense" emotions look scary or dangerous. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Text or logos inside the panel photographs. Inconsistent character faces across panels. All six panels looking the same.`;
 
   try {
     console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
