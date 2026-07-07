@@ -720,17 +720,33 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   }
 
   // ── State ─────────────────────────────────────────────────────────────────
-  const [phase,    setPhase]   = useState('brief');
-  const [brief,    setBrief]   = useState('');
-  const [result,   setResult]  = useState(null);
-  const [apiError, setApiError]= useState(false);
+  const [phase,      setPhase]     = useState('brief');
+  const [brief,      setBrief]     = useState('');
+  const [result,     setResult]    = useState(null);
+  const [apiError,   setApiError]  = useState(false);
+  const [storyImage, setStoryImage]= useState(null); // null | 'loading' | url-string | 'error'
 
   const EXAMPLE_BRIEFS = [
     "A TED-style pitch for a new product — emotional, direct, show real human impact",
     "A cybersecurity risk presentation for our board — make it feel like breaking news, urgent and specific",
   ];
 
-  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); }
+  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); setStoryImage(null); }
+
+  async function generateStoryImage(scenes, storyWorld) {
+    try {
+      const res = await fetch('/api/generate-storyboard-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scenes, storyWorld }),
+      });
+      const data = await res.json();
+      if (data.url) setStoryImage(data.url);
+      else setStoryImage('error');
+    } catch (_) {
+      setStoryImage('error');
+    }
+  }
 
   function buildFallback(b) {
     const bl = b.toLowerCase();
@@ -793,8 +809,10 @@ Return ONLY valid JSON:
       const parsed = JSON.parse(m[0]);
       if (!parsed.scenes?.length) throw new Error('No scenes');
       setResult(parsed); setPhase('results');
+      setStoryImage('loading');
+      generateStoryImage(parsed.scenes, parsed.storyWorld);
     } catch(_) {
-      setApiError(true); setResult(buildFallback(brief)); setPhase('results');
+      setApiError(true); setResult(buildFallback(brief)); setPhase('results'); setStoryImage('error');
     }
   }
 
@@ -903,24 +921,38 @@ Return ONLY valid JSON:
         {/* ── STORYBOARD ──────────────────────────────────────────────────── */}
         <div style={{marginBottom:isDesktop?32:24}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:isDesktop?14:12}}>Storyboard — {scenes.length} Key Scenes</div>
-          <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(6,1fr)":"repeat(2,1fr)",gap:isDesktop?10:8}}>
-            {scenes.map((scene,i)=>(
-              <div key={i} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,background:CREAM}}>
-                {/* Sketch area */}
-                <div style={{position:"relative",height:isDesktop?130:100,background:CREAM,overflow:"hidden"}}>
-                  <SketchIllustration scene={scene} idx={i}/>
-                  {/* Scene number */}
-                  <div style={{position:"absolute",top:7,left:7,width:20,height:20,borderRadius:"50%",background:"rgba(58,48,40,0.12)",border:"0.5px solid "+INK_D,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                    <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:INK,opacity:0.7}}>{scene.number}</span>
+          {/* AI-generated image strip */}
+          <div style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:isDesktop?10:8,background:CREAM}}>
+            {storyImage==='loading'
+              ? <div style={{height:isDesktop?190:140,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:10,background:CREAM}}>
+                  <div style={{display:"flex",gap:6}}>
+                    {[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:"rgba(58,48,40,0.3)",animation:`glowPulse 1.4s ease ${i*0.2}s infinite`}}/>)}
                   </div>
+                  <span style={{fontFamily:T.sans,fontSize:11,color:INK_D,fontWeight:300,letterSpacing:"0.02em"}}>Generating storyboard image…</span>
                 </div>
-                {/* Text area */}
-                <div style={{padding:isDesktop?"11px 12px":"9px 10px",borderTop:"0.5px solid "+T2.border,background:"#fff"}}>
-                  <div style={{fontFamily:T.serif,fontSize:isDesktop?12:11,fontWeight:600,color:INK,marginBottom:3,lineHeight:1.25}}>{scene.title}</div>
-                  <p style={{fontFamily:T.sans,fontSize:isDesktop?10:9,color:"rgba(58,48,40,0.55)",lineHeight:1.4,margin:"0 0 6px",fontWeight:300}}>{scene.caption}</p>
-                  <div style={{display:"inline-block",padding:"2px 9px",borderRadius:20,border:"0.5px solid rgba(58,48,40,0.2)",background:"rgba(58,48,40,0.04)"}}>
-                    <span style={{fontFamily:T.sans,fontSize:isDesktop?9:8,color:INK,opacity:0.6,fontWeight:500}}>{scene.emotion}</span>
+              : storyImage && storyImage!=='error'
+                ? <img src={storyImage} alt="Storyboard" style={{width:"100%",height:"auto",display:"block"}}/>
+                : <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(6,1fr)":"repeat(2,1fr)"}}>
+                    {scenes.map((scene,i)=>(
+                      <div key={i} style={{position:"relative",height:isDesktop?130:100,background:CREAM,borderRight:i<scenes.length-1?"0.5px solid "+T2.border:"none",overflow:"hidden"}}>
+                        <SketchIllustration scene={scene} idx={i}/>
+                        <div style={{position:"absolute",top:7,left:7,width:20,height:20,borderRadius:"50%",background:"rgba(58,48,40,0.12)",border:"0.5px solid "+INK_D,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                          <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:INK,opacity:0.7}}>{scene.number}</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
+            }
+          </div>
+          {/* Scene text cards */}
+          <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(6,1fr)":"repeat(3,1fr)",gap:isDesktop?8:6}}>
+            {scenes.map((scene,i)=>(
+              <div key={i} style={{padding:isDesktop?"10px 11px":"8px 9px",background:CREAM,borderRadius:6,border:"0.5px solid "+T2.border}}>
+                <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T2.text4,marginBottom:3}}>Scene {scene.number}</div>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?12:11,fontWeight:600,color:INK,lineHeight:1.25,marginBottom:5}}>{scene.title}</div>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?10:9,color:"rgba(58,48,40,0.55)",lineHeight:1.4,margin:"0 0 5px",fontWeight:300}}>{scene.caption}</p>
+                <div style={{display:"inline-block",padding:"2px 9px",borderRadius:20,border:"0.5px solid rgba(58,48,40,0.2)",background:"rgba(58,48,40,0.04)"}}>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?9:8,color:INK,opacity:0.6,fontWeight:500}}>{scene.emotion}</span>
                 </div>
               </div>
             ))}
