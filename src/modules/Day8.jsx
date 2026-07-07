@@ -728,13 +728,14 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   const [storyImageErr,  setStoryImageErr] = useState('');
   const [activeScene,    setActiveScene]   = useState(0);
   const [briefOpen,      setBriefOpen]     = useState(false);
+  const [coachOpen,      setCoachOpen]     = useState(false);
 
   const EXAMPLE_BRIEFS = [
     "A TED-style pitch for a new product — emotional, direct, show real human impact",
     "A cybersecurity risk presentation for our board — make it feel like breaking news, urgent and specific",
   ];
 
-  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); setStoryImage(null); setStoryImageErr(''); setActiveScene(0); setBriefOpen(false); }
+  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); setStoryImage(null); setStoryImageErr(''); setActiveScene(0); setBriefOpen(false); setCoachOpen(false); }
 
   async function generateStoryImage(scenes, storyWorld) {
     try {
@@ -1014,13 +1015,20 @@ Return ONLY valid JSON:
               </div>
 
               {/* Coach Insight */}
-              <div style={{background:"rgba(138,158,132,0.07)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)",padding:isDesktop?"18px 20px":"14px 16px"}}>
-                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5Q10.5 1.5 10.5 5.2 10.5 7.5 8.5 8.5L8.5 10.5 5.5 10.5 5.5 8.5Q3.5 7.5 3.5 5.2 3.5 1.5 7 1.5Z" fill="none" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/><line x1="5.5" y1="11.5" x2="8.5" y2="11.5" stroke={T.gold} strokeWidth="1.1" strokeLinecap="round"/><line x1="6" y1="12.8" x2="8" y2="12.8" stroke={T.gold} strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px"}}>Coach Insight</span>
-                </div>
-                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text,marginBottom:6,letterSpacing:"0.3px"}}>{COACH_INSIGHTS[activeScene]?.heading}</div>
-                <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>{COACH_INSIGHTS[activeScene]?.body}</p>
+              <div style={{background:"rgba(138,158,132,0.07)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)"}}>
+                <button onClick={()=>setCoachOpen(v=>!v)} style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,padding:isDesktop?"14px 20px":"12px 16px",background:"none",border:"none",cursor:"pointer",textAlign:"left"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8}}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5Q10.5 1.5 10.5 5.2 10.5 7.5 8.5 8.5L8.5 10.5 5.5 10.5 5.5 8.5Q3.5 7.5 3.5 5.2 3.5 1.5 7 1.5Z" fill="none" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/><line x1="5.5" y1="11.5" x2="8.5" y2="11.5" stroke={T.gold} strokeWidth="1.1" strokeLinecap="round"/><line x1="6" y1="12.8" x2="8" y2="12.8" stroke={T.gold} strokeWidth="1.1" strokeLinecap="round"/></svg>
+                    <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px"}}>Coach Insight</span>
+                  </div>
+                  <span style={{fontSize:10,color:T.gold,opacity:0.7,transform:coachOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
+                </button>
+                {coachOpen&&(
+                  <div style={{padding:isDesktop?"0 20px 16px":"0 16px 14px"}}>
+                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text,marginBottom:6,letterSpacing:"0.3px"}}>{COACH_INSIGHTS[activeScene]?.heading}</div>
+                    <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>{COACH_INSIGHTS[activeScene]?.body}</p>
+                  </div>
+                )}
               </div>
 
               {/* Prev / Next */}
