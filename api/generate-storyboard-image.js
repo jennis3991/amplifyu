@@ -34,11 +34,11 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'dall-e-3',
+        model: 'gpt-image-1',
         prompt,
         n: 1,
-        size: '1792x1024',
-        quality: 'standard',
+        size: '1536x1024',
+        quality: 'medium',
       }),
     });
 
@@ -48,10 +48,10 @@ export default async function handler(req, res) {
       console.error('[storyboard-image] OpenAI error:', msg);
       return res.status(500).json({ error: msg });
     }
-    const url = data.data?.[0]?.url;
-    if (!url) throw new Error('No image URL returned');
+    const b64 = data.data?.[0]?.b64_json;
+    if (!b64) throw new Error('No image data returned');
     console.log('[storyboard-image] Success');
-    return res.status(200).json({ url });
+    return res.status(200).json({ url: `data:image/png;base64,${b64}` });
   } catch (err) {
     console.error('[storyboard-image] Caught error:', err.message);
     return res.status(500).json({ error: err.message });
