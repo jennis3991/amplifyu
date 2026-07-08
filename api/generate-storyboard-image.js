@@ -88,33 +88,36 @@ Each panel is a cinematic film still — the quality of a premium Apple campaign
 • Default lighting: bright natural daylight through windows, clean and well-exposed. Lift the shadows. Bright midtones. The kind of light that makes people look confident and capable.
 • Rich contrast — but with bright, lifted midtones, not crushed dark shadows
 • Each panel has a DISTINCT visual feel — vary colour temperature, shot distance, and composition across the six panels
-COMPOSITION RULE — CRITICAL — FACE LIMIT:
-The protagonist's face must appear clearly in NO MORE THAN 2 of the 6 panels. For the remaining 4 panels, use these face-free shot types instead:
+COMPOSITION RULE — ABSOLUTE — PERSON LIMIT:
+The protagonist may appear as a visible human figure in EXACTLY 2 of the 6 panels. In the other 4 panels NO PERSON should be the main subject — not from behind, not as a silhouette, not blurred, not in a photo frame, not reflected in glass. People-free panels only.
 
-• SHOT FROM BEHIND — subject facing away from camera, looking at a screen, window, whiteboard, or audience. We see their back, shoulders, posture — not their face.
-• DETAIL / CLOSE-UP OF HANDS AND OBJECT — extreme close-up of hands holding a phone, typing on a laptop, writing in a notebook, pointing at a chart. Character is implied, not shown.
-• OBJECT IN FOREGROUND, CHARACTER SOFT IN BACKGROUND — a phone, laptop, coffee cup, document, or prop is sharp in the foreground; the protagonist is a warm blurred presence behind it.
-• WIDE ENVIRONMENTAL SHOT — subject is small in the frame, dwarfed by the room, city, or setting. Face is too small to be a focal point.
-• OVER-THE-SHOULDER — camera is behind and above the subject; we see what they see (a screen, a room full of people, a view from a window).
+EXACTLY 2 PANELS WITH A PERSON (panels 3 and 6):
+— Panel 3: medium or portrait shot of the protagonist, face visible, well-lit, confident
+— Panel 6: medium or portrait shot of the protagonist, face visible, well-lit, confident
+These are the ONLY two panels where a human figure is the main subject.
 
-Distribute the 6 panels like this:
-— Panel 1: behind-shot or wide environmental (no face)
-— Panel 2: detail shot — hands/object close-up (no face)
-— Panel 3: FACE SHOT — one of the two permitted clear face panels
-— Panel 4: over-the-shoulder or object-foreground (no face)
-— Panel 5: detail or environmental (no face)
-— Panel 6: FACE SHOT — the second and final permitted clear face panel
+THE OTHER 4 PANELS MUST BE PEOPLE-FREE. Use only these shot types:
+• CLOSE-UP OF HANDS AND OBJECT — extreme close-up of hands typing on a laptop, holding a phone showing an app, writing in a notebook, gripping a pen, pointing at a document. No arms above the elbow. No face. No body.
+• OBJECT ONLY — a phone lying on a desk, a laptop screen glowing with content, an open notebook with handwriting, a coffee mug next to a keyboard, a whiteboard covered in diagrams, a phone screen showing a notification. No person at all.
+• SCREEN CLOSE-UP — fill the panel with a laptop screen, phone screen, or monitor showing relevant content (an app, a presentation, a message, a dashboard). Slightly angled, cinematic lighting.
+• ENVIRONMENTAL / ROOM SHOT — a beautiful empty or near-empty room: a sunlit home office, a boardroom before a meeting starts, a desk with books and a lamp. No person visible.
 
-This variety makes the storyboard feel cinematic and avoids the face-distortion problem of AI-generated portraits.
+Distribute like this:
+— Panel 1: object-only or environment shot (NO PERSON)
+— Panel 2: hands + object close-up (NO PERSON, just hands from wrist down)
+— Panel 3: PERSON SHOT — protagonist face visible (one of only two)
+— Panel 4: screen close-up or object-only (NO PERSON)
+— Panel 5: object or environment shot (NO PERSON)
+— Panel 6: PERSON SHOT — protagonist face visible (second and final)
 
 CHARACTER CONSISTENCY
-When the protagonist's face does appear (panels 3 and 6), they must look identical — same face shape, hair, skin tone, clothing. For non-face panels, maintain consistent hair, body proportions, and clothing so the character is still recognisable.
+In panels 3 and 6, the protagonist must look identical — same face, hair, skin tone, clothing.
 
 ═══════════════════════════════════════════════
 AVOID
 ═══════════════════════════════════════════════
 
-More than 2 panels with a clear face-forward portrait of the protagonist. All six panels showing the character's face. Dark, sinister, or threatening panels for positive stories. Silhouettes. Cold blue or green colour casts. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Text or logos inside the panel photographs. All six panels looking compositionally identical.`;
+Any person — protagonist or otherwise — appearing in more than 2 panels. Shots from behind counting as "no person" — they do not. Silhouettes. People blurred in backgrounds. Portraits in photo frames on walls. Reflections of people in glass or mirrors. Characters in more than 2 panels under any circumstances. Dark or sinister panels for positive stories. Cold blue or green colour casts. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Text or logos inside panel photographs. All panels looking compositionally identical.`;
 
   try {
     console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
