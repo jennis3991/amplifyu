@@ -668,9 +668,19 @@ setAmbitionSaved(true); } catch {}
       const [simWave, setSimWave] = useState(Array(10).fill(0.3));
       const simRecRef = useRef(null); const simTimerRef = useRef(null); const simWaveRef = useRef(null); const simLiveRef = useRef('');
       const SpeechRec10 = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
+      // SAR voice builder state
+      const [sarStep, setSarStep] = useState(0);
+      const [sarTranscribing, setSarTranscribing] = useState(false);
+      const [sarIsRec, setSarIsRec] = useState(false);
+      const [sarWave, setSarWave] = useState(Array(14).fill(0.05));
+      const [sarGuideTime, setSarGuideTime] = useState(20);
+      const sarMRRef = useRef(null); const sarChunksRef = useRef([]); const sarMimeRef = useRef("audio/webm");
+      const sarStreamRef = useRef(null); const sarWaveIntRef = useRef(null); const sarCtxRef = useRef(null);
 
       useEffect(()=>{ if(!simIsRec){clearInterval(simWaveRef.current);return;} simWaveRef.current=setInterval(()=>setSimWave(Array.from({length:10},()=>0.15+Math.random()*0.85)),130); return()=>clearInterval(simWaveRef.current); },[simIsRec]);
       useEffect(()=>{ if(simIsRec&&simTimeLeft>0){simTimerRef.current=setTimeout(()=>setSimTimeLeft(t=>t-1),1000);} else if(simIsRec&&simTimeLeft===0){doSimStop();} return()=>clearTimeout(simTimerRef.current); },[simIsRec,simTimeLeft]);
+      useEffect(()=>{ if(!sarIsRec||sarGuideTime<=0)return; const t=setTimeout(()=>setSarGuideTime(g=>Math.max(0,g-1)),1000); return()=>clearTimeout(t); },[sarIsRec,sarGuideTime]);
+      useEffect(()=>()=>{ clearInterval(sarWaveIntRef.current); if(sarStreamRef.current)sarStreamRef.current.getTracks().forEach(t=>t.stop()); try{if(sarCtxRef.current)sarCtxRef.current.close();}catch{} },[]);
 
       function doSimStart(){
         simLiveRef.current=''; setSimTranscript(''); setSimIsRec(true); setSimTimeLeft(30); setSimPhase('recording');
@@ -694,6 +704,59 @@ setAmbitionSaved(true); } catch {}
       }
       function resetSim(){setSimPhase('intro');setActiveScenario(null);setSimTranscript('');setSimFallback('');setSimResult(null);setSimIsRec(false);setSimTimeLeft(30);}
       const scoreColor=s=>s>=80?"#527060":s>=65?T.gold:"#B05C4A";
+
+      function sarBlobToB64(blob){return new Promise((ok,fail)=>{const r=new FileReader();r.onload=()=>ok(r.result.split(",")[1]);r.onerror=fail;r.readAsDataURL(blob);});}
+      async function sarStartRec(){
+        try{
+          const stream=await navigator.mediaDevices.getUserMedia({audio:true,video:false});
+          sarStreamRef.current=stream;
+          const ctx=new(window.AudioContext||window.webkitAudioContext)();
+          sarCtxRef.current=ctx;
+          const src=ctx.createMediaStreamSource(stream);
+          const analyser=ctx.createAnalyser();analyser.fftSize=64;src.connect(analyser);
+          const fd=new Uint8Array(analyser.frequencyBinCount);
+          const mt=MediaRecorder.isTypeSupported("audio/webm;codecs=opus")?"audio/webm;codecs=opus":MediaRecorder.isTypeSupported("audio/mp4")?"audio/mp4":"audio/webm";
+          sarMimeRef.current=mt;
+          const mr=new MediaRecorder(stream,{mimeType:mt});
+          sarChunksRef.current=[];
+          mr.ondataavailable=e=>{if(e.data.size>0)sarChunksRef.current.push(e.data);};
+          mr.start(100);sarMRRef.current=mr;
+          setSarIsRec(true);setSarGuideTime(20);
+          sarWaveIntRef.current=setInterval(()=>{analyser.getByteFrequencyData(fd);setSarWave(Array.from({length:14},(_,i)=>Math.max(0.05,fd[Math.floor(i*fd.length/14)]/255)));},80);
+        }catch(err){console.error("[SAR] mic error",err);}
+      }
+      function sarStopRec(){
+        setSarIsRec(false);clearInterval(sarWaveIntRef.current);setSarWave(Array(14).fill(0.05));
+        const mr=sarMRRef.current;const step=sarStep;
+        if(mr&&mr.state!=="inactive"){
+          mr.onstop=async()=>{try{const blob=new Blob(sarChunksRef.current,{type:sarMimeRef.current});await sarDoTranscribe(blob,sarMimeRef.current,step);}catch(e){console.error("[SAR] onstop",e);}};
+          mr.stop();
+        }
+        if(sarStreamRef.current){sarStreamRef.current.getTracks().forEach(t=>t.stop());sarStreamRef.current=null;}
+        try{if(sarCtxRef.current){sarCtxRef.current.close();sarCtxRef.current=null;}}catch{}
+      }
+      async function sarDoTranscribe(blob,mimeType,step){
+        setSarTranscribing(true);
+        try{
+          const b64=await sarBlobToB64(blob);
+          const res=await fetch("/api/transcribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({b64,mimeType})});
+          const data=await res.json();
+          const text=(data.text||"").trim();
+          const parts=[sarS,sarA,sarR];parts[step]=text;
+          if(step===0)setSarS(text);else if(step===1)setSarA(text);else setSarR(text);
+          if(parts[0]&&parts[1]&&parts[2])await sarPolish(parts);
+        }catch(err){console.error("[SAR] transcribe error",err);}
+        setSarTranscribing(false);
+      }
+      function sarRedo(i){if(i===0)setSarS("");else if(i===1)setSarA("");else setSarR("");setSarStep(i);setSarResult("");}
+      async function sarPolish(parts){
+        setSarLoading(true);
+        try{
+          const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:350,messages:[{role:"user",content:`You are an executive communication coach. Sharpen this SAR story into 2-3 crisp sentences that communicate impact and ownership. Lead with the result. Make it specific and memorable. Return ONLY the sharpened story:\n\nSituation: ${parts[0]}\nAction: ${parts[1]}\nResult: ${parts[2]}`}]})});
+          const d=await res.json();setSarResult((d.content||[]).map(b=>b.text||"").join("").trim());
+        }catch{setSarResult("Lead with the result, then show how you got there. Specifics beat adjectives.");}
+        setSarLoading(false);
+      }
 
       async function buildSAR() {
         if (!sarS.trim()||!sarA.trim()||!sarR.trim()) return; setSarLoading(true);
@@ -954,43 +1017,128 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Rehearsal" && d10PracticePhase==='builder') return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{marginBottom:24}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Rehearsal · Day 10</div>
-            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>SAR Builder</h2>
-          </div>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Situation. Action. Result. Describe what you did — your AmplifyU coach sharpens it into your performance statement.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:20}}>
-            {[
-              {label:"Situation",val:sarS,set:setSarS,ph:"Set the context briefly. What was the challenge or starting point?"},
-              {label:"Action",   val:sarA,set:setSarA,ph:"What did YOU specifically do? Use 'I' — not 'we.'"},
-              {label:"Result",   val:sarR,set:setSarR,ph:"What was the measurable outcome? Be specific."},
-            ].map(({label,val,set,ph},i)=>(
-              <div key={i}>
-                <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6,fontFamily:T.sans}}>{label}</div>
-                <textarea value={val} onChange={e=>set(e.target.value)} placeholder={ph} className="au-input" style={{height:72,resize:"none",fontSize:14}}/>
-              </div>
-            ))}
-          </div>
-          <button onClick={buildSAR} disabled={sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()}
-            style={{padding:"13px 28px",borderRadius:4,border:"none",background:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?T2.border:T.ink,color:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?T2.text3:T.bg,fontSize:14,fontWeight:600,cursor:sarLoading||!sarS.trim()||!sarA.trim()||!sarR.trim()?"not-allowed":"pointer",fontFamily:T.sans,marginBottom:sarResult?16:0}}>
-            {sarLoading?"Building your SAR…":"Build My SAR Story →"}
-          </button>
-          {sarResult && (
-            <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginTop:16}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>Your performance statement</div>
-              <p style={{fontFamily:T.serif,fontSize:17,color:T2.text,lineHeight:1.7,margin:0}}>{sarResult}</p>
+      if (step === "Rehearsal" && d10PracticePhase==='builder') {
+        const SAR_DEF = [
+          {label:"Situation", prompt:"Set the context briefly. What was the challenge or starting point?"},
+          {label:"Action",    prompt:"What did YOU specifically do? Use 'I' — not 'we.'"},
+          {label:"Result",    prompt:"What was the measurable outcome? Be specific."},
+        ];
+        const sarParts = [sarS, sarA, sarR];
+        const allCaptured = sarS.trim() && sarA.trim() && sarR.trim();
+        const curPart = sarParts[sarStep];
+        const MicIcon = ({color})=><svg width={26} height={26} viewBox="0 0 26 26" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round"><rect x="9" y="3" width="8" height="13" rx="4" fill="none"/><path d="M5 13a8 8 0 0016 0M13 21v3M10 24h6"/></svg>;
+        const RedoIcon = ({color})=><svg width={11} height={11} viewBox="0 0 11 11" fill="none" stroke={color} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 2H4.5a3.5 3.5 0 000 7H9"/><path d="M7 0l2 2-2 2"/></svg>;
+        return (
+          <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+            <div style={{marginBottom:24}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Rehearsal · Day 10</div>
+              <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>SAR Builder</h2>
             </div>
-          )}
-          {sarResult && (
-            <button onClick={()=>setIdx(STEPS.indexOf('Simulation'))} style={{width:"100%",padding:"16px",borderRadius:4,border:"none",background:"rgba(82,112,96,0.85)",color:"white",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,marginTop:16}}>
-              Go to Simulation →
-            </button>
-          )}
-          <button onClick={()=>setD10PracticePhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"12px 0 0",textAlign:"left"}}>← Back</button>
-        </div>
-      );
+
+            {/* S → A → R step indicator */}
+            <div style={{display:"flex",alignItems:"center",marginBottom:28}}>
+              {SAR_DEF.map((s,i)=>{
+                const done=sarParts[i].trim();
+                const active=sarStep===i&&!allCaptured;
+                return (
+                  <div key={i} style={{display:"flex",alignItems:"center",flex:i<2?1:"unset"}}>
+                    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+                      <div style={{width:36,height:36,borderRadius:"50%",background:done?T.gold:active?"rgba(138,158,132,0.12)":"transparent",border:"1.5px solid "+(done?T.gold:active?T.gold:T2.border),display:"flex",alignItems:"center",justifyContent:"center",color:done?"white":active?T.gold:T2.text3,fontSize:done?16:13,fontWeight:700,fontFamily:T.sans,transition:"all 0.2s"}}>
+                        {done?"✓":s.label[0]}
+                      </div>
+                      <span style={{fontFamily:T.sans,fontSize:10,color:active?T.gold:T2.text3,fontWeight:active?600:400,transition:"color 0.2s"}}>{s.label}</span>
+                    </div>
+                    {i<2&&<div style={{flex:1,height:1,background:T2.border,margin:"0 8px",marginBottom:20}}/>}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Reveal card — shown when polish is done */}
+            {sarResult && (
+              <div className="au-step-enter" style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"24px 28px",marginBottom:16}}>
+                <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Your Performance Statement</div>
+                <p style={{fontFamily:T.serif,fontSize:18,color:T2.text,lineHeight:1.7,margin:"0 0 20px",borderLeft:"2px solid "+T.gold,paddingLeft:14}}>{sarResult}</p>
+                <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:16,display:"flex",flexDirection:"column",gap:12}}>
+                  {SAR_DEF.map((s,i)=>(
+                    <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10}}>
+                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginTop:3,flexShrink:0,width:64}}>{s.label}</div>
+                      <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text3,lineHeight:1.5,flex:1,margin:0}}>"{sarParts[i]}"</p>
+                      <button onClick={()=>sarRedo(i)} style={{display:"flex",alignItems:"center",gap:5,background:"none",border:"0.5px solid "+T2.border,borderRadius:3,padding:"4px 10px",cursor:"pointer",fontFamily:T.sans,fontSize:11,color:T2.text3,flexShrink:0}}>
+                        <RedoIcon color={T2.text3}/> Redo
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <button onClick={()=>setIdx(STEPS.indexOf("Simulation"))} style={{width:"100%",padding:"15px",borderRadius:4,border:"none",background:"rgba(82,112,96,0.85)",color:"white",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,marginTop:20}}>
+                  Enter the Hot Seat →
+                </button>
+              </div>
+            )}
+
+            {/* Polishing state */}
+            {sarLoading&&!sarResult&&(
+              <div style={{textAlign:"center",padding:"32px 0",color:T2.text3,fontFamily:T.sans,fontSize:13,fontStyle:"italic"}}>Sharpening your statement...</div>
+            )}
+
+            {/* Voice prompter — one step at a time */}
+            {!sarResult&&!sarLoading&&(
+              <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"24px 28px"}}>
+                <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8,fontFamily:T.sans}}>
+                  {SAR_DEF[sarStep].label} &middot; Step {sarStep+1} of 3
+                </div>
+                <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.6,margin:"0 0 24px",fontWeight:300}}>
+                  {SAR_DEF[sarStep].prompt}
+                </p>
+
+                {sarIsRec ? (
+                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+                    <div style={{display:"flex",alignItems:"center",gap:3,height:48}}>
+                      {sarWave.map((h,i)=>(
+                        <div key={i} style={{width:4,borderRadius:2,height:Math.max(4,h*44)+"px",background:T.gold,opacity:0.45+h*0.55,transition:"height 0.08s ease"}}/>
+                      ))}
+                    </div>
+                    <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>
+                      {sarGuideTime>0?sarGuideTime+"s guide remaining":"Take your time — tap to stop when ready"}
+                    </div>
+                    <button onClick={sarStopRec} style={{width:60,height:60,borderRadius:"50%",border:"2px solid #B05C4A",background:"rgba(176,92,74,0.08)",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <svg width={18} height={18} viewBox="0 0 18 18" fill="#B05C4A"><rect x="4" y="4" width="10" height="10" rx="2"/></svg>
+                    </button>
+                  </div>
+                ) : sarTranscribing ? (
+                  <div style={{textAlign:"center",padding:"20px 0",color:T2.text3,fontFamily:T.sans,fontSize:13,fontStyle:"italic"}}>Transcribing...</div>
+                ) : curPart ? (
+                  <div>
+                    <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14}}>
+                      <div style={{color:T.gold,fontSize:18,flexShrink:0,marginTop:1}}>&#10003;</div>
+                      <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>"{curPart}"</p>
+                    </div>
+                    <div style={{display:"flex",gap:10,alignItems:"center"}}>
+                      <button onClick={()=>sarRedo(sarStep)} style={{display:"flex",alignItems:"center",gap:6,background:"none",border:"0.5px solid "+T2.border,borderRadius:3,padding:"7px 13px",cursor:"pointer",fontFamily:T.sans,fontSize:12,color:T2.text3}}>
+                        <RedoIcon color={T2.text3}/> Redo
+                      </button>
+                      {sarStep<2&&(
+                        <button onClick={()=>setSarStep(sarStep+1)} style={{flex:1,padding:"9px 16px",borderRadius:3,border:"none",background:T.ink,color:T.bg,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans}}>
+                          Next: {SAR_DEF[sarStep+1].label} →
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
+                    <button onClick={sarStartRec} style={{width:72,height:72,borderRadius:"50%",border:"2px solid "+T.gold,background:"rgba(138,158,132,0.08)",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.2s"}}>
+                      <MicIcon color={T.gold}/>
+                    </button>
+                    <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>Tap to record &middot; 20 seconds suggested</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <button onClick={()=>setD10PracticePhase("intro")} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"16px 0 0",textAlign:"left"}}>&#8592; Back</button>
+          </div>
+        );
+      }
 
       if (step === "Simulation") {
         const HOT_SEAT_SCENARIOS = [
