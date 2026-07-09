@@ -3,6 +3,17 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import { registerSW } from "./pwa.js";
 
+// Inject x-access-code header on every /api/ request so server-side
+// validation can reject unauthenticated callers.
+const _fetch = window.fetch.bind(window);
+window.fetch = function (url, opts = {}) {
+  if (typeof url === "string" && url.startsWith("/api/")) {
+    const code = import.meta.env.VITE_ACCESS_CODE || "";
+    opts = { ...opts, headers: { ...opts.headers, "x-access-code": code } };
+  }
+  return _fetch(url, opts);
+};
+
 class ErrorBoundary extends Component {
   constructor(props) { super(props); this.state = { err: null }; }
   static getDerivedStateFromError(err) { return { err }; }

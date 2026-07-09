@@ -51,12 +51,23 @@ You are calm under pressure. You never rush, shame or lecture. You make difficul
 
 After every interaction, the user should think: "I'm better than I was five minutes ago." The hero is always the user.`;
 
+function validateAccessCode(req) {
+  const expected = process.env.ACCESS_CODE || process.env.VITE_ACCESS_CODE || "";
+  if (!expected) {
+    console.error("[auth] ACCESS_CODE env var is not set — /api/claude is OPEN to all callers");
+    return true;
+  }
+  const provided = req.headers["x-access-code"] || "";
+  return provided === expected;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-access-code');
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!validateAccessCode(req)) return res.status(401).json({ error: 'Unauthorized' });
   const apiKey = process.env.ANTHROPIC_KEY || process.env.VITE_ANTHROPIC_KEY;
   if (!apiKey) return res.status(500).json({ error: 'Missing API key' });
   const { messages, max_tokens, model, system } = req.body;

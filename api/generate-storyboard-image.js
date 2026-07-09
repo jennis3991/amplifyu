@@ -1,11 +1,22 @@
 export const config = { maxDuration: 60 };
 
+function validateAccessCode(req) {
+  const expected = process.env.ACCESS_CODE || process.env.VITE_ACCESS_CODE || "";
+  if (!expected) {
+    console.error("[auth] ACCESS_CODE env var is not set — /api/generate-storyboard-image is OPEN to all callers");
+    return true;
+  }
+  const provided = req.headers["x-access-code"] || "";
+  return provided === expected;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-access-code');
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!validateAccessCode(req)) return res.status(401).json({ error: 'Unauthorized' });
 
   const apiKey = process.env.OPENAI_KEY;
   if (!apiKey) {
