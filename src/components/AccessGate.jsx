@@ -16,12 +16,14 @@ export function AccessGate({ onSuccess }) {
     if (!entered) return;
     const expected = import.meta.env.VITE_ACCESS_CODE || "";
     if (entered === expected) {
+      console.log("[AccessGate] correct code — starting logo-rise animation");
       setLogoRise(true);
+      // Rise plays 0→600ms. At 700ms start fade. onSuccess fires after fade completes.
       setTimeout(() => {
         try { localStorage.setItem("au1_authed", "true"); } catch (_) {}
         setExiting(true);
-        setTimeout(onSuccess, 450);
-      }, 550);
+        setTimeout(onSuccess, 550);
+      }, 700);
     } else {
       setShake(true);
       setTimeout(() => setShake(false), 620);
@@ -36,7 +38,7 @@ export function AccessGate({ onSuccess }) {
       alignItems: "center", justifyContent: "center",
       fontFamily: "'Inter', -apple-system, sans-serif",
       opacity: exiting ? 0 : 1,
-      transition: "opacity 0.45s ease",
+      transition: "opacity 0.55s ease",
       padding: "0 24px",
     }}>
 
@@ -45,22 +47,15 @@ export function AccessGate({ onSuccess }) {
         position: "relative",
         width: 92, height: 92,
         marginBottom: 20,
-        transform: logoRise ? "translateY(-8px)" : "translateY(0)",
-        transition: "transform 0.5s ease-out",
+        transform: logoRise ? "translateY(-16px) scale(1.06)" : "translateY(0) scale(1)",
+        transition: "transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)",
+        filter: logoRise ? "drop-shadow(0 0 18px rgba(255,255,255,0.55))" : "drop-shadow(0 0 0px rgba(255,255,255,0))",
       }}>
         <img
           src="/logo-mark.png"
           alt="AmplifyU"
           style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
         />
-        <div style={{
-          position: "absolute", inset: 0,
-          borderRadius: 6,
-          background: "radial-gradient(ellipse at center, rgba(255,255,255,0.18) 0%, transparent 68%)",
-          opacity: logoRise ? 1 : 0,
-          transition: "opacity 0.5s ease-out",
-          pointerEvents: "none",
-        }} />
       </div>
 
       {/* Wordmark */}
@@ -116,7 +111,6 @@ export function AccessGate({ onSuccess }) {
           type="password"
           value={code}
           onChange={e => setCode(e.target.value)}
-          onKeyDown={e => e.key === "Enter" && handleSubmit()}
           placeholder="••••••••"
           autoComplete="off"
           autoFocus
