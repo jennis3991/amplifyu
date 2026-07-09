@@ -796,7 +796,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D10_EDITORIAL = [
-          { id:"dyson", img:"/d10-dyson.png", imgPos:"center 45%", name:"James Dyson", superpower:"Master of Relentless Improvement",
+          { id:"dyson", img:"/d10-dyson.png?v=2", imgPos:"center 45%", name:"James Dyson", superpower:"Master of Relentless Improvement",
             superpowerText:"Every iteration makes the next one better.",
             summary:"He built thousands of prototypes before success. While others saw failure, he saw feedback.",
             quote:"\"I wanted to give up almost every day. But one of the things I did when I wanted to give up was to think, why was I giving up? Fear of failure.\"",
@@ -808,7 +808,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Stop aiming for perfect on the first attempt. Ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
             lesson:"High performance isn't about talent alone. It's about showing up, testing, learning, and improving — again and again. The people who consistently excel aren't those who avoid failure; they're the ones who use every attempt to get better.",
           },
-          { id:"bezos", img:"/d10-bezos.png", imgPos:"center 50%", name:"Jeff Bezos", superpower:"Master of Repeatable Excellence",
+          { id:"bezos", img:"/d10-bezos.png?v=2", imgPos:"center 50%", name:"Jeff Bezos", superpower:"Master of Repeatable Excellence",
             superpowerText:"Consistency beats occasional brilliance.",
             summary:"He built one of the world's largest companies by obsessing over systems — so that great performance happened at scale, not by accident.",
             quote:"\"If you do build a great experience, customers tell each other about that. Word of mouth is very powerful.\"",
@@ -1298,7 +1298,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D3_EDITORIAL = [
-          { id:"freeman", img:"/d3-freeman.png", imgPos:"center 55%", name:"Morgan Freeman", superpower:"Master of the Pause",
+          { id:"freeman", img:"/d3-freeman.png?v=2", imgPos:"center 55%", name:"Morgan Freeman", superpower:"Master of the Pause",
             superpowerText:"Turns silence into emphasis.",
             summary:"No ums. No uhs. Just measured, deliberate speech.",
             quote:"\"Hope is a good thing. Maybe the best of things. And no good thing ever dies.\"",
@@ -1310,7 +1310,7 @@ setAmbitionSaved(true); } catch {}
             technique:"When you don't know what to say next, stop talking. Pause. Breathe. Then continue. Practice letting the silence sit — it signals confidence, not uncertainty.",
             lesson:"The pause is not your enemy. It's your most underused communication tool. Use it deliberately.",
           },
-          { id:"wintour", img:"/d3-wintour.png", imgPos:"center 45%", name:"Anna Wintour", superpower:"Filler-Free Authority",
+          { id:"wintour", img:"/d3-wintour.png?v=2", imgPos:"center 45%", name:"Anna Wintour", superpower:"Filler-Free Authority",
             superpowerText:"Every word chosen. Zero wasted.",
             summary:"She pauses between thoughts — no fillers, no hedging, just control.",
             quote:"\"Decisiveness.\"",
@@ -1641,7 +1641,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D4_EDITORIAL = [
-          { id:"hemingway", img:"/d4-hemingway.png", imgPos:"center 40%", name:"Ernest Hemingway", superpower:"Master of Brevity",
+          { id:"hemingway", img:"/d4-hemingway.png?v=2", imgPos:"center 40%", name:"Ernest Hemingway", superpower:"Master of Brevity",
             superpowerText:"Every word earns its place — or it goes.",
             summary:"He won the Nobel Prize with short, precise sentences.",
             quote:"\"The old man fished alone. Eighty-four days. No fish.\"",
@@ -1653,7 +1653,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Write your first draft. Then cut every unnecessary word. Read each sentence aloud — if you run out of breath before the full stop, it's too long. Over 15 words? Split it.",
             lesson:"Every word you add dilutes your message. The best writers know what to leave out. Clarity is a discipline.",
           },
-          { id:"chanel", img:"/d4-chanel.png", imgPos:"center 55%", name:"Coco Chanel", superpower:"Elegance Through Elimination",
+          { id:"chanel", img:"/d4-chanel.png?v=2", imgPos:"center 55%", name:"Coco Chanel", superpower:"Elegance Through Elimination",
             superpowerText:"Short sentences. Maximum impact. Every time.",
             summary:"She built an empire on less is more — in fashion and in words.",
             quote:"\"Fashion fades. Style remains.\"",
@@ -2112,7 +2112,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D1_EDITORIAL = [
-          { id:"attenborough", img:"/d11-attenborough.png", name:"Sir David Attenborough", superpower:"Master of Clarity",
+          { id:"attenborough", img:"/d11-attenborough.png?v=2", name:"Sir David Attenborough", superpower:"Master of Clarity",
             superpowerText:"Makes the complex feel beautifully simple.",
             summary:"He explains the natural world so everyone can see it.",
             quote:"\"The rainforest is like a vast, green lung breathing life into our planet.\"",
@@ -2123,7 +2123,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",
             lesson:"Clarity comes from choosing words that create images, not confusion. The best explainers make you see what they’re saying.",
           },
-          { id:"branson", img:"/d11-branson.png", name:"Sir Richard Branson", superpower:"Conversation over Corporation",
+          { id:"branson", img:"/d11-branson.png?v=2", name:"Sir Richard Branson", superpower:"Conversation over Corporation",
             superpowerText:"Makes big ideas feel personal.",
             summary:"He speaks like a friend — even when addressing millions.",
             quote:"\"We just try to make things better for people. If we do that, they’ll choose us.\"",
@@ -2339,7 +2339,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D8_EDITORIAL = [
-          { id:"obama", img:"/d8-obama.png", imgPos:"center 40%", name:"Barack Obama", superpower:"Master of Human-First Storytelling",
+          { id:"obama", img:"/d8-obama.png?v=2", imgPos:"center 40%", name:"Barack Obama", superpower:"Master of Human-First Storytelling",
             superpowerText:"Every policy begins with a person.",
             summary:"When discussing healthcare, jobs, or education, Obama always started with a single human story — not a statistic.",
             quote:"\"Change will not come if we wait for some other person or some other time.\"",
@@ -2351,7 +2351,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Start with a customer, colleague, or client before presenting the data. Give them a name. Give them a challenge. Then connect that story to your point.",
             lesson:"Facts tell. Stories sell. The most persuasive communicators don't lead with data — they lead with a human being.",
           },
-          { id:"pixar", img:"/d8-pixar.png", imgPos:"center 45%", name:"The Pixar Framework", superpower:"The Most Replicable Story Structure Ever Invented",
+          { id:"pixar", img:"/d8-pixar.png?v=2", imgPos:"center 45%", name:"The Pixar Framework", superpower:"The Most Replicable Story Structure Ever Invented",
             superpowerText:"Once upon a time... until finally.",
             summary:"Pixar used the same six-beat template for every film. It works because it mirrors how the human brain processes experience.",
             quote:"\"The story is not in the plot but in the telling.\"",
@@ -2550,7 +2550,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D9_EDITORIAL = [
-          { id:"william", img:"/d9-william.png", imgPos:"center 50%", name:"Prince William", superpower:"Master of Connection Through Listening",
+          { id:"william", img:"/d9-william.png?v=2", imgPos:"center 50%", name:"Prince William", superpower:"Master of Connection Through Listening",
             superpowerText:"Makes others feel heard, not just met.",
             summary:"Whether speaking with emergency responders, veterans, or young people, he creates space for others to share — and they remember how he made them feel.",
             quote:"\"Mental health is just as important as physical health.\"",
@@ -2562,7 +2562,7 @@ setAmbitionSaved(true); } catch {}
             technique:"In your next conversation, focus less on what you'll say next and more on understanding the other person's perspective. Ask one more question than you normally would. Let silence do some of the work.",
             lesson:"Strong communicators don't connect because they speak the most. They connect because they make others feel valued. Listening isn't the pause between speaking — it's where connection begins.",
           },
-          { id:"jacinda", img:"/d9-jacinda.png", imgPos:"center 50%", name:"Jacinda Ardern", superpower:"Master of Empathetic Leadership",
+          { id:"jacinda", img:"/d9-jacinda.png?v=2", imgPos:"center 50%", name:"Jacinda Ardern", superpower:"Master of Empathetic Leadership",
             superpowerText:"Warmth, humility, and authenticity — every time.",
             summary:"She communicates with warmth, empathy, and authenticity. She doesn't create distance between herself and others — she closes it.",
             quote:"\"One of the criticisms I've faced over the years is that I'm not aggressive enough or assertive enough, or maybe somehow, because I'm empathetic, it means I'm weak. I totally rebel against that.\"",
@@ -2796,7 +2796,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D2_EDITORIAL = [
-          { id:"streep", img:"/d2-streep.png", name:"Meryl Streep", superpower:"Master of Precision and Presence",
+          { id:"streep", img:"/d2-streep.png?v=2", name:"Meryl Streep", superpower:"Master of Precision and Presence",
             superpowerText:"Precision over volume. Control over noise.",
             summary:"Three iconic roles. Three completely different voices.",
             quote:"\"Take your broken heart, make it into art.\"",
@@ -2808,7 +2808,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Don't reach for volume — reach for control. Slow down before your most important word. Let silence carry what a raised voice never can.",
             lesson:"Precision creates presence. Control creates impact. A rushed voice can feel uncertain. An intentional voice commands attention.",
           },
-          { id:"sinek", img:"/d2-sinek.png", name:"Simon Sinek", superpower:"Master of Voice",
+          { id:"sinek", img:"/d2-sinek.png?v=2", name:"Simon Sinek", superpower:"Master of Voice",
             superpowerText:"Makes big ideas land through deliberate delivery.",
             summary:"His voice carries the emotion before the words do.",
             quote:"\"People don't buy what you do. They buy why you do it.\"",
@@ -3030,7 +3030,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D5_EDITORIAL = [
-          { id:"jensen", img:"/d5-jensen.png", imgPos:"center 40%", name:"Jensen Huang", superpower:"PRE in Every Pitch",
+          { id:"jensen", img:"/d5-jensen.png?v=2", imgPos:"center 40%", name:"Jensen Huang", superpower:"PRE in Every Pitch",
             superpowerText:"Point. Reason. Example. Every time.",
             summary:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof.",
             quote:"\"I don't need to build a killer product overnight, I just need to build a winning product.\"",
@@ -3042,7 +3042,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Lead with your point — don't build to it. Then give your reason in one sentence. Then make it concrete with a real example or analogy. Stop there.",
             lesson:"PRE isn't a template — it's how clear thinkers communicate. Your point tells people where to look. Your reason tells them why it matters. Your example makes it stick.",
           },
-          { id:"indra", img:"/d5-indra.png", imgPos:"center 35%", name:"Indra Nooyi", superpower:"Performance With Purpose",
+          { id:"indra", img:"/d5-indra.png?v=2", imgPos:"center 35%", name:"Indra Nooyi", superpower:"Performance With Purpose",
             superpowerText:"Big belief. Clear reason. Concrete execution.",
             summary:"Two decades leading PepsiCo — structured the same way every time.",
             quote:"\"Performance must be married with purpose.\"",
@@ -3231,7 +3231,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D6_EDITORIAL = [
-          { id:"hamilton", img:"/d6-hamilton.png", imgPos:"center 50%", name:"Lewis Hamilton", superpower:"Master of Composure Under Pressure",
+          { id:"hamilton", img:"/d6-hamilton.png?v=2", imgPos:"center 50%", name:"Lewis Hamilton", superpower:"Master of Composure Under Pressure",
             superpowerText:"Calm when every reason says otherwise.",
             summary:"Seven world championships — and his most powerful moment was how he handled losing one.",
             quote:"\"Firstly, a big congratulations to Max.\"",
@@ -3243,7 +3243,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Before responding in a high-pressure moment, give yourself one breath. Ask: what do I want people to remember about how I handled this? Respond to that — not to the emotion in the room.",
             lesson:"Emotional control is often most visible when you have every reason to lose it. Pressure doesn't create character. It reveals it.",
           },
-          { id:"amal", img:"/d6-amal.png", imgPos:"center 50%", name:"Amal Clooney", superpower:"Master of Composure Under Pressure",
+          { id:"amal", img:"/d6-amal.png?v=2", imgPos:"center 50%", name:"Amal Clooney", superpower:"Master of Composure Under Pressure",
             superpowerText:"Every word chosen. Every sentence deliberate.",
             summary:"She argues the world's most consequential legal cases — calm, precise and measured when the stakes couldn't be higher.",
             quote:"\"Pressure rarely rewards the loudest voice. It rewards the clearest mind.\"",
@@ -3520,7 +3520,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D11_EDITORIAL = [
-          { id:"swift", img:"/d11-swift.png", imgPos:"center 40%", name:"Taylor Swift", superpower:"Master of Personal Brand",
+          { id:"swift", img:"/d11-swift.png?v=2", imgPos:"center 40%", name:"Taylor Swift", superpower:"Master of Personal Brand",
             superpowerText:"Making people feel part of the journey.",
             summary:"She didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel personally invested in her story.",
             quote:"\"People didn't just buy Taylor Swift's music. They bought into her journey.\"",
@@ -3532,7 +3532,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Before your next presentation or professional interaction, ask yourself: \"What part of my journey could I share that the audience would recognise in themselves?\" Vulnerability and honesty create connection faster than credentials ever will.",
             lesson:"People didn't just buy Taylor Swift's music. They bought into her journey. The strongest personal brands make people feel like they are part of the story — not just observers of it.",
           },
-          { id:"disney", img:"/d11-disney.png", imgPos:"center 40%", name:"Disney", superpower:"Master of Brand Consistency",
+          { id:"disney", img:"/d11-disney.png?v=2", imgPos:"center 40%", name:"Disney", superpower:"Master of Brand Consistency",
             superpowerText:"100 years of one word: Magic.",
             summary:"Disney has spent a century staying true to one emotional promise across every format, generation, and medium — Magic, Wonder, and Imagination.",
             quote:"\"Disney didn't build a brand. They built a feeling — and then protected it for 100 years.\"",
@@ -3706,7 +3706,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D12_EDITORIAL = [
-          { id:"obama", img:"/d12-obama.png", imgPos:"center 50%", name:"Michelle Obama", superpower:"Master of Warm Presence",
+          { id:"obama", img:"/d12-obama.png?v=2", imgPos:"center 50%", name:"Michelle Obama", superpower:"Master of Warm Presence",
             superpowerText:"Making every room feel smaller.",
             summary:"Whether speaking to thousands or having a one-to-one conversation, her body language projects warmth, confidence, and authenticity — before she says a word.",
             quote:"\"Presence isn't about commanding attention — it's about creating connection.\"",
@@ -3718,7 +3718,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Before your next conversation or presentation, check your posture before your script. Stand tall, relax your shoulders, keep your hands open, and make eye contact before you begin speaking. Let your body communicate confidence before your voice does.",
             lesson:"Your body is always communicating — even when you're silent. Great communicators understand that influence isn't just about what you say; it's about how you make people feel the moment you walk into the room. When your words and body language are aligned, your presence becomes your greatest strength.",
           },
-          { id:"jobs", img:"/d12-jobs.png", imgPos:"center 40%", name:"Steve Jobs", superpower:"Master of Purposeful Presence",
+          { id:"jobs", img:"/d12-jobs.png?v=2", imgPos:"center 40%", name:"Steve Jobs", superpower:"Master of Purposeful Presence",
             superpowerText:"When every movement has purpose, every message carries more weight.",
             summary:"On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message — not the speaker.",
             quote:"\"Confident body language creates clarity. Calm presence made complex ideas feel simple and memorable.\"",
@@ -3929,7 +3929,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step==="Example") {
         const D13_EDITORIAL = [
-          { id:"dench", img:"/d13-dench.png", imgPos:"center 30%", name:"Dame Judi Dench", superpower:"Master of Reputation",
+          { id:"dench", img:"/d13-dench.png?v=2", imgPos:"center 30%", name:"Dame Judi Dench", superpower:"Master of Reputation",
             superpowerText:"Her reputation became her greatest introduction.",
             summary:"Dame Judi Dench has spent more than six decades building one of the most respected reputations in theatre and film — and opportunities have followed her ever since.",
             quote:"\"The most valuable opportunities rarely come from applying online — they come through people who know your work and trust your character.\"",
@@ -3941,7 +3941,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Treat every meeting, project, and conversation as an audition for your reputation. Deliver great work, be generous with your time, and leave people feeling respected. Ask yourself: \"If my name came up in a room I wasn't in, what would people say?\"",
             lesson:"The most valuable opportunities rarely come from applying online — they come through people who know your work and trust your character. Build a reputation that people are proud to recommend, because the strongest professional brand is the one that continues speaking for you when you're not in the room.",
           },
-          { id:"diana", img:"/d13-diana.png", imgPos:"center center", name:"Jamie Oliver", superpower:"Master of Approachable Authority",
+          { id:"diana", img:"/d13-diana.png?v=2", imgPos:"center center", name:"Jamie Oliver", superpower:"Master of Approachable Authority",
             superpowerText:"People don't trust you because you sound clever. They trust you because they understand you.",
             summary:"He built one of the world's most recognisable personal brands without trying to sound like the smartest person in the room.",
             quote:"\"People don't trust you because you sound clever. They trust you because they understand you.\"",
