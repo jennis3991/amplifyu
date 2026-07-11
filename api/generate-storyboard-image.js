@@ -36,9 +36,12 @@ export default async function handler(req, res) {
 
   const six = scenes.slice(0, 6);
 
-  const panelList = six.map((sc, i) =>
-    `PANEL ${i + 1}: "${sc.title}"\n  SHOW EXACTLY THIS: ${sc.visual}\n  Caption below panel: "${sc.caption}"\n  Emotion label: ${sc.emotion}`
-  ).join('\n\n');
+  const panelList = six.map((sc, i) => {
+    const faceTag = (i === 2 || i === 5)
+      ? '[FACE PANEL — protagonist face visible, medium/portrait shot]'
+      : '[NO FACE — object, hands, screen, or empty room ONLY. Zero humans. Zero faces. Zero bodies.]';
+    return `PANEL ${i + 1} ${faceTag}:\n  SCENE: "${sc.title}"\n  VISUAL: ${sc.visual}\n  EMOTION: ${sc.emotion}`;
+  }).join('\n\n');
 
   const prompt = `██████████████████████████████████████████████████████████
 HARD LIMIT — READ THIS FIRST — NON-NEGOTIABLE:
@@ -76,9 +79,10 @@ DOCUMENT LAYOUT
 
 Produce a single landscape image formatted as a premium editorial storyboard.
 
-• Top header bar: "NARRATIVE FRAMES" in small-caps sans-serif on the left — "${subject}" in large elegant serif on the right
-• Six panels in TWO ROWS of THREE, equal size, with thin hairline borders
-• Below each panel on the white background (never inside the panel): panel number, scene title in serif, italic caption, emotion word in small caps
+• Top header bar: title "${subject}" in large elegant serif on the right, "NARRATIVE FRAMES" in tiny caps on the left
+• Six panels in TWO ROWS of THREE, equal size, thin hairline borders
+• Below each panel (on the white margin, NEVER inside the photograph): scene number only (e.g. "01") and ONE emotion word (e.g. "Curiosity") in small caps. Nothing else below the panel. No long sentences. No captions. No titles. Maximum 2 words per panel label.
+• NO TEXT RENDERED INSIDE ANY PANEL PHOTOGRAPH. The photographic image inside each panel border must contain zero letters, zero words, zero captions, zero labels. Pure image only.
 • Document background: pure white (#FFFFFF) or very light neutral grey (#F5F5F5) — NEVER cream, ivory, yellow, or warm. White only.
 
 ═══════════════════════════════════════════════
@@ -136,7 +140,7 @@ In panels 3 and 6, the protagonist must look identical — same face, hair, skin
 AVOID
 ═══════════════════════════════════════════════
 
-Human faces or bodies in panels 1, 2, 4, or 5 under any circumstances. Shots from behind counting as "no person" — they do not. Silhouettes. People blurred in backgrounds. Portraits in photo frames on walls. Reflections of people in glass or mirrors. Dark or sinister panels for positive stories. Cold blue or green colour casts. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Text or logos inside panel photographs. All panels looking compositionally identical.`;
+Human faces or bodies in panels 1, 2, 4, or 5 under any circumstances. Shots from behind. Silhouettes. People blurred in backgrounds. Portraits in photo frames on walls. Reflections of people in glass or mirrors. ANY text, words, letters, numbers, or captions rendered inside a panel photograph — panels must be pure photography with zero overlaid text. Long captions below panels. Dark or sinister panels for positive stories. Cold blue or green colour casts. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. All panels looking compositionally identical.`;
 
   try {
     console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
