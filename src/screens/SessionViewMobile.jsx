@@ -1821,7 +1821,9 @@ T.goldDark : T2.text4,
         );
       })()}
       {isNT && step==="Simulation" && (
-        <StoryArchitectWidget T={T} T2={T2} isDesktop={false}/>
+        <div onTouchStart={e=>e.stopPropagation()} onTouchEnd={e=>e.stopPropagation()}>
+          <StoryArchitectWidget T={T} T2={T2} isDesktop={false}/>
+        </div>
       )}
       {isNT && step==="Rehearsal" && (
         <D8PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>

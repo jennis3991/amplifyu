@@ -897,12 +897,13 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       try{rec.start();}catch(e){}
       recRef.current=rec;
     }
-    if(navigator.mediaDevices?.getUserMedia){
+    if(navigator.mediaDevices?.getUserMedia && window.MediaRecorder){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-        const mr=new MediaRecorder(stream);
+        const mimeType=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg'].find(t=>MediaRecorder.isTypeSupported(t))||'';
+        const mr=mimeType?new MediaRecorder(stream,{mimeType}):new MediaRecorder(stream);
         audioChunksRef.current=[];
         mr.ondataavailable=e=>audioChunksRef.current.push(e.data);
-        mr.onstop=()=>{const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});setAudioURL(URL.createObjectURL(blob));stream.getTracks().forEach(t=>t.stop());};
+        mr.onstop=()=>{const blobType=mr.mimeType||mimeType||'audio/webm';const blob=new Blob(audioChunksRef.current,{type:blobType});setAudioURL(URL.createObjectURL(blob));stream.getTracks().forEach(t=>t.stop());};
         mr.start(); mediaRecRef.current=mr;
       }).catch(()=>{});
     }
@@ -1222,6 +1223,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
             <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.55)",margin:0,lineHeight:1.5}}>{feedback.subtitle||"A solid starting point. Now let's sharpen it."}</p>
           </div>
         </div>
+        {audioURL?(
         <div style={{display:"flex",alignItems:"center",gap:14}}>
           <button onClick={togglePlay} style={{display:"flex",alignItems:"center",gap:8,padding:"9px 18px",background:"rgba(245,239,230,0.08)",border:"0.5px solid rgba(245,239,230,0.2)",borderRadius:4,color:"#F5EFE6",fontFamily:T.serif,fontSize:13,cursor:"pointer",flexShrink:0}}>
             {playing?<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/><rect x="8" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/></svg>:<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 1l9 5-9 5V1z" fill="#F5EFE6"/></svg>}
@@ -1231,6 +1233,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
             {WBARS.map((h,i)=><div key={i} style={{flex:1,background:`rgba(138,158,132,${0.25+h*0.35})`,borderRadius:1,height:Math.round(h*22)+"px",minWidth:2}}/>)}
           </div>
         </div>
+        ):null}
       </div>
       {/* 2 CLARITY PROFILE */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
@@ -1303,8 +1306,9 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       {/* 5 HEAR IT BACK */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>Hear it back</div>
-        {playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
-        <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:isDesktop?14:10}}>
+        {!audioURL&&<p style={{fontFamily:T.serif,fontSize:13,color:T2.text3,margin:"8px 0 0",lineHeight:1.5}}>Audio playback is not supported on this device or browser.</p>}
+        {audioURL&&playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
+        {audioURL&&<div style={{display:"flex",alignItems:"center",gap:12,marginBottom:isDesktop?14:10}}>
           <button onClick={togglePlay} style={{width:40,height:40,borderRadius:"50%",border:"none",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
             {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
           </button>
@@ -1337,7 +1341,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
               <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{fmtTime(audioDuration)}</span>
             </div>
           </div>
-        </div>
+        </div>}
       </div>
       {/* 6 FOCUS NEXT ROUND */}
       <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>

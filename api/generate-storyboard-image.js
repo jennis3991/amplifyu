@@ -40,7 +40,19 @@ export default async function handler(req, res) {
     `PANEL ${i + 1}: "${sc.title}"\n  SHOW EXACTLY THIS: ${sc.visual}\n  Caption below panel: "${sc.caption}"\n  Emotion label: ${sc.emotion}`
   ).join('\n\n');
 
-  const prompt = `You are rendering a six-panel cinematic storyboard document. Read every word below carefully — the scenes, setting, and character are the SINGLE SOURCE OF TRUTH for what appears in each panel. Do not substitute generic imagery. Render exactly what each scene describes.
+  const prompt = `██████████████████████████████████████████████████████████
+HARD LIMIT — READ THIS FIRST — NON-NEGOTIABLE:
+
+A HUMAN FACE OR FULL BODY MAY APPEAR IN EXACTLY 2 PANELS.
+2 PANELS WITH PEOPLE. 4 PANELS WITH NO PEOPLE.
+THIS IS A HARD LIMIT. DO NOT PUT PEOPLE IN MORE THAN 2 PANELS.
+
+Panel 3 = person. Panel 6 = person. Panels 1, 2, 4, 5 = NO PERSON.
+Not from behind. Not blurred. Not silhouetted. Not reflected. Not in a frame on a wall.
+PANELS 1, 2, 4, 5: ZERO HUMANS. ZERO FACES. ZERO BODIES.
+██████████████████████████████████████████████████████████
+
+You are rendering a six-panel cinematic storyboard document. Read every word below carefully — the scenes, setting, and character are the SINGLE SOURCE OF TRUTH for what appears in each panel. Do not substitute generic imagery. Render exactly what each scene describes.
 
 ═══════════════════════════════════════════════
 STORY CONTENT — RENDER THIS EXACTLY
@@ -99,36 +111,32 @@ Each panel is a cinematic film still — the quality of a premium Apple campaign
 • Default lighting: bright natural daylight through windows, clean and well-exposed. Lift the shadows. Bright midtones. The kind of light that makes people look confident and capable.
 • Rich contrast — but with bright, lifted midtones, not crushed dark shadows
 • Each panel has a DISTINCT visual feel — vary colour temperature, shot distance, and composition across the six panels
-COMPOSITION RULE — ABSOLUTE — PERSON LIMIT:
-The protagonist may appear as a visible human figure in EXACTLY 2 of the 6 panels. In the other 4 panels NO PERSON should be the main subject — not from behind, not as a silhouette, not blurred, not in a photo frame, not reflected in glass. People-free panels only.
 
-EXACTLY 2 PANELS WITH A PERSON (panels 3 and 6):
-— Panel 3: medium or portrait shot of the protagonist, face visible, well-lit, confident
-— Panel 6: medium or portrait shot of the protagonist, face visible, well-lit, confident
-These are the ONLY two panels where a human figure is the main subject.
+═══════════════════════════════════════════════
+PANEL-BY-PANEL PERSON RULE — ABSOLUTE
+═══════════════════════════════════════════════
 
-THE OTHER 4 PANELS MUST BE PEOPLE-FREE. Use only these shot types:
-• CLOSE-UP OF HANDS AND OBJECT — extreme close-up of hands typing on a laptop, holding a phone showing an app, writing in a notebook, gripping a pen, pointing at a document. No arms above the elbow. No face. No body.
-• OBJECT ONLY — a phone lying on a desk, a laptop screen glowing with content, an open notebook with handwriting, a coffee mug next to a keyboard, a whiteboard covered in diagrams, a phone screen showing a notification. No person at all.
-• SCREEN CLOSE-UP — fill the panel with a laptop screen, phone screen, or monitor showing relevant content (an app, a presentation, a message, a dashboard). Slightly angled, cinematic lighting.
-• ENVIRONMENTAL / ROOM SHOT — a beautiful empty or near-empty room: a sunlit home office, a boardroom before a meeting starts, a desk with books and a lamp. No person visible.
+PANEL 1 — NO PERSON. Object or environment only. No face, no body, no silhouette, no hands-above-wrist.
+PANEL 2 — NO PERSON. Hands + object close-up only (wrists and below, no arms, no face, no body).
+PANEL 3 — PERSON: protagonist, face fully visible, medium or portrait shot, well-lit, confident.
+PANEL 4 — NO PERSON. Screen close-up or object only. No face, no body, no reflection of a person.
+PANEL 5 — NO PERSON. Object or environmental room shot. No face, no body, no silhouette.
+PANEL 6 — PERSON: protagonist, face fully visible, medium or portrait shot, well-lit, confident. Same face as panel 3.
 
-Distribute like this:
-— Panel 1: object-only or environment shot (NO PERSON)
-— Panel 2: hands + object close-up (NO PERSON, just hands from wrist down)
-— Panel 3: PERSON SHOT — protagonist face visible (one of only two)
-— Panel 4: screen close-up or object-only (NO PERSON)
-— Panel 5: object or environment shot (NO PERSON)
-— Panel 6: PERSON SHOT — protagonist face visible (second and final)
+PEOPLE-FREE SHOT TYPES (panels 1, 2, 4, 5):
+• CLOSE-UP OF HANDS AND OBJECT — extreme close-up of hands typing on a laptop, holding a phone, writing in a notebook. No arms above the elbow. No face. No body.
+• OBJECT ONLY — a phone on a desk, a laptop screen glowing, an open notebook, a coffee mug, a whiteboard with diagrams. No person at all.
+• SCREEN CLOSE-UP — fill the panel with a laptop, phone, or monitor showing relevant content. No person visible, not even as a reflection.
+• ENVIRONMENTAL / ROOM SHOT — a beautiful empty room: sunlit home office, boardroom before a meeting, desk with books. No person visible anywhere.
 
-CHARACTER CONSISTENCY
+CHARACTER CONSISTENCY:
 In panels 3 and 6, the protagonist must look identical — same face, hair, skin tone, clothing.
 
 ═══════════════════════════════════════════════
 AVOID
 ═══════════════════════════════════════════════
 
-Any person — protagonist or otherwise — appearing in more than 2 panels. Shots from behind counting as "no person" — they do not. Silhouettes. People blurred in backgrounds. Portraits in photo frames on walls. Reflections of people in glass or mirrors. Characters in more than 2 panels under any circumstances. Dark or sinister panels for positive stories. Cold blue or green colour casts. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Text or logos inside panel photographs. All panels looking compositionally identical.`;
+Human faces or bodies in panels 1, 2, 4, or 5 under any circumstances. Shots from behind counting as "no person" — they do not. Silhouettes. People blurred in backgrounds. Portraits in photo frames on walls. Reflections of people in glass or mirrors. Dark or sinister panels for positive stories. Cold blue or green colour casts. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. Text or logos inside panel photographs. All panels looking compositionally identical.`;
 
   try {
     console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
