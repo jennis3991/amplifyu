@@ -70,6 +70,12 @@ export function MobileSessionView({
   const [swipeHint, setSwipeHint] = useState(() => { try { return !localStorage.getItem('au_swipe_hint_seen'); } catch { return true; } });
   const [swipeHintVisible, setSwipeHintVisible] = useState(true);
   useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [idx]);
+
+  useEffect(() => {
     if (!swipeHint) return;
     const t = setTimeout(() => { setSwipeHintVisible(false); setTimeout(() => { setSwipeHint(false); try { localStorage.setItem('au_swipe_hint_seen','1'); } catch {} }, 400); }, 3000);
     return () => clearTimeout(t);

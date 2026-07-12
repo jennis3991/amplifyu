@@ -106,8 +106,13 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   const [view, setView] = useState("main");
   const scrollRef = useRef(null);
   useEffect(() => {
+    try { history.scrollRestoration = 'manual'; } catch(_) {}
+  }, []);
+  useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
     window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, [tab, view]);
   const [selDay, setSelDay] = useState(1);
   const [cel, setCel] = useState(null);

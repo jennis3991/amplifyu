@@ -865,7 +865,7 @@ function _unused_D2SimScenarios() {
           <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>AmplifyU Coach</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?17:14,fontStyle:"italic",color:cream,margin:0,lineHeight:1.5}}>{aiMsg}</p>
         </div>
-        <textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Speak your response…" autoFocus rows={isDesktop?5:4} style={{width:"100%",background:T2.surface,border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,padding:"14px 16px",fontFamily:T.serif,fontSize:isDesktop?16:14,color:cream,lineHeight:1.65,resize:"none",outline:"none",boxSizing:"border-box",caretColor:T.gold}}/>
+        <textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Speak your response…" rows={isDesktop?5:4} style={{width:"100%",background:T2.surface,border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,padding:"14px 16px",fontFamily:T.serif,fontSize:isDesktop?16:14,color:cream,lineHeight:1.65,resize:"none",outline:"none",boxSizing:"border-box",caretColor:T.gold}}/>
         <div style={{display:"flex",gap:10,marginTop:14}}>
           <button onClick={submit} disabled={loading||!input.trim()} style={{flex:1,padding:"13px",borderRadius:4,border:"none",background:loading||!input.trim()?T2.surface:T.gold,color:loading||!input.trim()?creamDim:"white",fontSize:isDesktop?14:13,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:T.sans,minHeight:44}}>
             {loading?"Coaching in progress…":"Get Voice Coaching →"}

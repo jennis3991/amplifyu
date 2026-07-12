@@ -38,6 +38,8 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const rightPanelRef = useRef(null);
   useEffect(() => {
     window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     if (rightPanelRef.current) rightPanelRef.current.scrollTop = 0;
   }, [idx]);
   const [selSc, setSelSc] = useState(0);
