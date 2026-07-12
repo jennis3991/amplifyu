@@ -341,7 +341,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
           {PROMPTS[cat].map((p,i)=>(
             <div key={i} onClick={()=>selectPrompt(p)} className="au-lift" style={{...cs.card,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",padding:isDesktop?"28px 18px 24px":"22px 14px 20px",gap:14,transition:"border-color 0.2s,box-shadow 0.2s"}}>
               <div style={{color:"rgba(44,36,22,0.3)",lineHeight:0}}>{D2ICONS[i%D2ICONS.length]}</div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.5,margin:0,fontWeight:500}}>{p}</p>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.45,margin:0,fontWeight:400}}>{p}</p>
             </div>
           ))}
         </div>
