@@ -274,7 +274,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
   );
 
   const grid = (right) => (
-    <div style={{display: 'grid', gridTemplateColumns: isDesktop ? '2fr 3fr' : '1fr', gap: isDesktop ? 20 : 16, alignItems: 'start'}}>
+    <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
       {leftPanel}
       <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>{right}</div>
     </div>
@@ -283,20 +283,18 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
   // ── SELECT ──────────────────────────────────────────────────────────────────
   if (phase === 'select') return (
     <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
-      <div style={{display: 'grid', gridTemplateColumns: isDesktop ? '2fr 3fr' : '1fr', gap: isDesktop ? 20 : 16, alignItems: 'start'}}>
-        {leftPanel}
-        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
-          {TOPICS.map(t => {
-            const sel = topic?.id === t.id;
-            return (
-              <button key={t.id} onClick={() => setTopic(t)}
-                style={{padding: '16px 14px', borderRadius: 6, border: `${sel ? '2px' : '1px'} solid ${sel ? 'rgba(82,112,96,0.75)' : T2.border}`, background: sel ? 'rgba(82,112,96,0.18)' : T2.surface, cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, outline: 'none'}}>
-                <div style={{color: sel ? 'rgba(82,112,96,0.95)' : T2.text3}}>{t.icon}</div>
-                <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: T2.text, lineHeight: 1.4, fontWeight: sel ? 600 : 400}}>{t.label}</span>
-              </button>
-            );
-          })}
-        </div>
+      {leftPanel}
+      <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
+        {TOPICS.map(t => {
+          const sel = topic?.id === t.id;
+          return (
+            <button key={t.id} onClick={() => setTopic(t)}
+              style={{padding: '16px 14px', borderRadius: 6, border: `${sel ? '2px' : '1px'} solid ${sel ? 'rgba(82,112,96,0.75)' : T2.border}`, background: sel ? 'rgba(82,112,96,0.18)' : T2.surface, cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, outline: 'none'}}>
+              <div style={{color: sel ? 'rgba(82,112,96,0.95)' : T2.text3}}>{t.icon}</div>
+              <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: T2.text, lineHeight: 1.4, fontWeight: sel ? 600 : 400}}>{t.label}</span>
+            </button>
+          );
+        })}
       </div>
       <button onClick={() => { if (topic) setPhase('pause'); }}
         disabled={!topic}
@@ -641,7 +639,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
   );
 
   const grid = (right) => (
-    <div style={{display: 'grid', gridTemplateColumns: isDesktop ? '2fr 3fr' : '1fr', gap: isDesktop ? 20 : 16, alignItems: 'start'}}>
+    <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
       {leftPanel}
       <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>{right}</div>
     </div>
@@ -650,22 +648,20 @@ export function D3SimWidget({T, T2, isDesktop}) {
   // ── SCREEN 1: SELECT ────────────────────────────────────────────────────────
   if (phase === 'select') return (
     <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
-      <div style={{display: 'grid', gridTemplateColumns: isDesktop ? '2fr 3fr' : '1fr', gap: isDesktop ? 20 : 16, alignItems: 'start'}}>
-        {leftPanel}
-        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
-          {scenarios.map(sc => {
-            const sel = scenario?.id === sc.id;
-            return (
-              <button key={sc.id}
-                onClick={() => { if (!sc.placeholder) setScenario(sc); }}
-                disabled={!!sc.placeholder}
-                style={{padding: '16px 14px', borderRadius: 6, border: `${sel ? '2px' : '1px'} solid ${sel ? 'rgba(138,158,132,0.6)' : T2.border}`, background: sel ? 'rgba(138,158,132,0.1)' : T2.surface, cursor: sc.placeholder ? 'default' : 'pointer', textAlign: 'center', transition: 'all 0.2s', opacity: sc.placeholder ? 0.35 : 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, outline: 'none'}}>
-                <div style={{color: sel ? 'rgba(82,112,96,0.95)' : T2.text3}}>{sc.icon}</div>
-                <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: T2.text, lineHeight: 1.4, fontWeight: sel ? 600 : 400}}>{sc.label}</span>
-              </button>
-            );
-          })}
-        </div>
+      {leftPanel}
+      <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
+        {scenarios.map(sc => {
+          const sel = scenario?.id === sc.id;
+          return (
+            <button key={sc.id}
+              onClick={() => { if (!sc.placeholder) setScenario(sc); }}
+              disabled={!!sc.placeholder}
+              style={{padding: '16px 14px', borderRadius: 6, border: `${sel ? '2px' : '1px'} solid ${sel ? 'rgba(138,158,132,0.6)' : T2.border}`, background: sel ? 'rgba(138,158,132,0.1)' : T2.surface, cursor: sc.placeholder ? 'default' : 'pointer', textAlign: 'center', transition: 'all 0.2s', opacity: sc.placeholder ? 0.35 : 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, outline: 'none'}}>
+              <div style={{color: sel ? 'rgba(82,112,96,0.95)' : T2.text3}}>{sc.icon}</div>
+              <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: T2.text, lineHeight: 1.4, fontWeight: sel ? 600 : 400}}>{sc.label}</span>
+            </button>
+          );
+        })}
       </div>
       <button onClick={() => { if (scenario) { setPhase('brief'); setBriefSecs(45); setBriefDone(false); } }}
         disabled={!scenario}
