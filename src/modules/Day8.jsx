@@ -931,8 +931,9 @@ h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;line-he
 .narrative-body{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;line-height:1.85;color:#2C2416}
 .narrative-body p{margin-bottom:18px}
 .footer{margin-top:64px;font-size:9px;color:#C4B9AC;letter-spacing:1px;text-transform:uppercase}
-@media print{body{padding:40px 56px}@page{margin:0;size:A4}}
+@media print{body{padding:40px 56px}@page{margin:0;size:A4}.back-btn{display:none!important}}
 </style></head><body>
+<button class="back-btn" onclick="if(window.opener){window.opener.focus();} window.close();" style="position:fixed;top:18px;right:24px;background:#2C2416;color:#F7F3EC;border:none;border-radius:4px;padding:9px 18px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.3px;z-index:999">&#8592; Back to App</button>
 <div class="label">Narrative Frames &mdash; AmplifyU</div>
 <h1>${sw.subject||'Your Story'}</h1>
 <div class="subtitle">${sw.lesson||sw.audience||''}</div>
