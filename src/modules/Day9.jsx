@@ -453,39 +453,11 @@ Return ONLY valid JSON:
           );
         })}
       </div>
-      <button onClick={()=>{if(char){resetSession();setPhase('mock');}}} disabled={!char}
+      <button onClick={()=>{if(char){resetSession();setPhase('turn1');}}} disabled={!char}
         style={{...cs.cta,opacity:char?1:0.4,cursor:char?'pointer':'default'}}>
-        See the Example →
+        Start the Conversation →
       </button>
       <button onClick={()=>setPhase('intro')} style={cs.ghost}>← Back</button>
-    </div>
-  );
-
-  // ── MOCK EXAMPLE ─────────────────────────────────────────────────────────────
-  if(phase==='mock'&&char) return(
-    <div style={{display:'flex',flexDirection:'column',gap:isDesktop?14:12}}>
-      <div>
-        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>{char.label} · {char.scenario}</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0}}>{char.scenarioDesc}</p>
-      </div>
-      <div style={{padding:'12px 14px',background:T2.bg,borderRadius:4}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>They open with</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontStyle:'italic',color:T2.text,lineHeight:1.4,margin:0}}>"{char.opener}"</p>
-      </div>
-      <div style={{display:'flex',flexDirection:'column',gap:8}}>
-        <div style={{padding:'12px 14px',background:'rgba(180,80,60,0.06)',borderRadius:4,border:'0.5px solid rgba(180,80,60,0.2)'}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:'rgba(180,80,60,0.75)',textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>What most people do</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:'italic',color:T2.text2,lineHeight:1.5,margin:'0 0 6px'}}>{char.mockBad}</p>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>{char.mockBadNote}</p>
-        </div>
-        <div style={{padding:'12px 14px',background:'rgba(82,112,96,0.06)',borderRadius:4,border:'0.5px solid rgba(82,112,96,0.2)'}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:'rgba(82,112,96,0.75)',textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>What works</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:'italic',color:T2.text2,lineHeight:1.5,margin:'0 0 6px'}}>{char.mockGood}</p>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>{char.mockGoodNote}</p>
-        </div>
-      </div>
-      <button onClick={()=>setPhase('turn1')} style={cs.sage}>I'm Ready — Start the Conversation →</button>
-      <button onClick={()=>setPhase('select')} style={cs.ghost}>← Choose a different character</button>
     </div>
   );
 
@@ -577,7 +549,19 @@ Return ONLY valid JSON:
           <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:'0 0 14px'}}>{debrief.insight}</p>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:'italic',color:T.gold,margin:0,lineHeight:1.5}}>"{debrief.quote}"</p>
         </div>
-        <button onClick={()=>{resetSession();setPhase('mock');}} style={cs.sage}>Try Again with {char.label} →</button>
+        <div style={{display:'flex',flexDirection:'column',gap:8}}>
+          <div style={{padding:'12px 14px',background:'rgba(180,80,60,0.06)',borderRadius:4,border:'0.5px solid rgba(180,80,60,0.2)'}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:'rgba(180,80,60,0.75)',textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>What tends to go wrong</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:'italic',color:T2.text2,lineHeight:1.5,margin:'0 0 5px'}}>{char.mockBad}</p>
+            <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>{char.mockBadNote}</p>
+          </div>
+          <div style={{padding:'12px 14px',background:'rgba(82,112,96,0.06)',borderRadius:4,border:'0.5px solid rgba(82,112,96,0.2)'}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:'rgba(82,112,96,0.75)',textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>What to aim for next time</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:'italic',color:T2.text2,lineHeight:1.5,margin:'0 0 5px'}}>{char.mockGood}</p>
+            <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>{char.mockGoodNote}</p>
+          </div>
+        </div>
+        <button onClick={()=>{resetSession();setPhase('turn1');}} style={cs.sage}>Try Again with {char.label} →</button>
         <button onClick={()=>{resetSession();setChar(null);setPhase('select');}} style={cs.cta}>Try a Different Character →</button>
       </div>
     );
