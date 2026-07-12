@@ -508,7 +508,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD4 && step==="Rehearsal") return null;
         if(isD5 && step==="Rehearsal") return <TabHeroPane label="The PRE Card Sort" headline="Sort the cards. Train the instinct." />;
         if(isD6 && step==="Rehearsal") return <TabHeroPane label="Find Your Words" headline="The right words under pressure don't come from thinking faster. They come from having them ready." />;
-        if(isD9 && step==="Rehearsal") return <TabHeroPane label="Build Your Connection Habits" headline="Five exercises. Build the habits of the world's most connected communicators." />;
+        if(isD9 && step==="Rehearsal") return null;
         if(isD10 && step==="Rehearsal") return <TabHeroPane label="The SAR Challenge" headline="Turn what you do into a story people remember." />;
         if(isD11 && step==="Rehearsal") return <TabHeroPane label="Build Your Brand" headline="Every career has a reputation. The best careers have one by design." />;
         if(isD12 && step==="Rehearsal") return <TabHeroPane label="The Presence Challenge" headline="Seven rounds. Every physical signal that shapes how communication lands." />;
