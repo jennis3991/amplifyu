@@ -190,12 +190,12 @@ export function ReflectionScreen({ answers, onContinue }) {
         {/* ── LEFT: The Coaching Narrative ── */}
         <div style={{ flex: 1, overflowY: "auto", padding: "72px 72px 64px", display: "flex", flexDirection: "column" }}>
           {/* Brand mark */}
-          <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "5px", marginBottom: 52, fontFamily: T.sans }}>AmplifyU</div>
+          <div style={{ fontSize: 13, color: T.gold, textTransform: "uppercase", letterSpacing: "5px", marginBottom: 52, fontFamily: T.sans }}>AmplifyU</div>
 
           {/* Headline */}
           {section >= 0 && (
             <div style={{ marginBottom: 48 }} className="au-step-enter">
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 16, fontFamily: T.sans }}>Your communication profile</div>
+              <div style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 16, fontFamily: T.sans }}>Your communication profile</div>
               <h1 style={{ fontFamily: T.serif, fontSize: "clamp(34px, 3.5vw, 54px)", fontWeight: 500, color: "rgba(255,255,255,0.93)", lineHeight: 1.08, letterSpacing: "-1.5px", margin: 0 }}>
                 Here's what<br/>we're seeing.
               </h1>
@@ -218,7 +218,7 @@ export function ReflectionScreen({ answers, onContinue }) {
               {/* Large decorative mark */}
               <div style={{ fontFamily: T.serif, fontSize: 96, lineHeight: 0.6, color: "rgba(138,158,132,0.1)", position: "absolute", top: -8, left: -12, userSelect: "none" }}>"</div>
               <div style={{ borderLeft: "2px solid rgba(138,158,132,0.3)", paddingLeft: 28, position: "relative", zIndex: 1 }}>
-                <p style={{ fontFamily: T.serif, fontSize: "clamp(14px, 1.5vw, 17px)", fontStyle: "italic", color: "rgba(255,255,255,0.55)", lineHeight: 1.75, margin: 0, letterSpacing: "-0.1px" }}>
+                <p style={{ fontFamily: T.serif, fontSize: "clamp(17px, 1.6vw, 21px)", fontStyle: "italic", color: "rgba(255,255,255,0.72)", lineHeight: 1.75, margin: 0, letterSpacing: "-0.1px" }}>
                   {reflection.motivation}
                 </p>
               </div>
@@ -229,7 +229,7 @@ export function ReflectionScreen({ answers, onContinue }) {
           {section >= 3 && reflection && (
             <div style={{ marginBottom: 48, animation: "fadeUp 0.7s ease both" }}>
               <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 16, fontFamily: T.sans }}>The path ahead</div>
-              <p style={{ fontSize: "clamp(13px, 1.3vw, 15px)", color: "rgba(255,255,255,0.45)", lineHeight: 1.8, margin: 0, fontFamily: T.sans, fontWeight: 300 }}>
+              <p style={{ fontSize: "clamp(15px, 1.4vw, 17px)", color: "rgba(255,255,255,0.78)", lineHeight: 1.8, margin: 0, fontFamily: T.sans, fontWeight: 400 }}>
                 {reflection.forward}
               </p>
             </div>
@@ -274,9 +274,9 @@ export function ReflectionScreen({ answers, onContinue }) {
         @keyframes goldPulse { 0%,100% { opacity:0.6; } 50% { opacity:1; } }
       `}</style>
       <div style={{ padding:"52px 24px 0", flexShrink:0 }}>
-        <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:16,fontFamily:T.sans }}>AmplifyU</div>
+        <div style={{ fontSize:14,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:16,fontFamily:T.sans }}>AmplifyU</div>
         <div>
-          <div style={{ fontSize:11,color:"rgba(255,255,255,0.65)",textTransform:"uppercase",letterSpacing:"3.5px",marginBottom:14,fontFamily:T.sans }}>Your communication profile</div>
+          <div style={{ fontSize:13,color:"rgba(255,255,255,0.75)",textTransform:"uppercase",letterSpacing:"3.5px",marginBottom:14,fontFamily:T.sans }}>Your communication profile</div>
           <h1 style={{ fontFamily:T.serif,fontSize:34,fontWeight:500,color:"rgba(255,255,255,0.93)",lineHeight:1.08,letterSpacing:"-1px",margin:0 }}>Here's what<br/>we're seeing.</h1>
           {role && <div style={{ fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginTop:14,fontFamily:T.sans }}>{role.label}</div>}
         </div>
@@ -292,13 +292,13 @@ export function ReflectionScreen({ answers, onContinue }) {
           {section >= 2 && (<div style={{ animation:"sectionFade 0.6s ease both",position:"relative" }}>
             <div style={{ fontFamily:T.serif,fontSize:72,lineHeight:0.6,color:"rgba(138,158,132,0.1)",position:"absolute",top:-4,left:-8,userSelect:"none" }}>"</div>
             <div style={{ borderLeft:"2px solid rgba(138,158,132,0.3)",paddingLeft:20,position:"relative",zIndex:1 }}>
-              <p style={{ fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:"rgba(255,255,255,0.55)",lineHeight:1.75,margin:0,letterSpacing:"-0.1px" }}>{reflection.motivation}</p>
+              <p style={{ fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:"rgba(255,255,255,0.72)",lineHeight:1.75,margin:0,letterSpacing:"-0.1px" }}>{reflection.motivation}</p>
             </div>
           </div>)}
           {/* Section 3 — Path ahead */}
           {section >= 3 && (<div style={{ animation:"sectionFade 0.6s ease both" }}>
             <div style={{ fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:12,fontFamily:T.sans }}>The path ahead</div>
-            <p style={{ fontFamily:T.sans,fontSize:14,color:"rgba(255,255,255,0.45)",lineHeight:1.8,margin:0,fontWeight:300 }}>{reflection.forward}</p>
+            <p style={{ fontFamily:T.sans,fontSize:16,color:"rgba(255,255,255,0.78)",lineHeight:1.8,margin:0,fontWeight:400 }}>{reflection.forward}</p>
           </div>)}
           {/* Section 4 — CTA */}
           {section >= 4 && (<div style={{ animation:"sectionFade 0.6s ease both",paddingBottom:52 }}>
