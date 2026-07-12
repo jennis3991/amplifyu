@@ -306,18 +306,18 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
           Great communicators don't trim their sentences. They end them sooner.
         </p>
       </div>
-      <div style={{display: 'flex', alignItems: 'center', gap: 6, marginTop: 'auto', paddingTop: 4}}>
-        <svg width="13" height="13" viewBox="0 0 20 20" fill="none">
-          <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3"/>
-          <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3" strokeLinecap="round"/>
+      <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:'auto',alignSelf:'flex-start'}}>
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
+          <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
         </svg>
-        <span style={{fontFamily: T.sans, fontSize: 10, color: 'rgba(138,158,132,0.35)', letterSpacing: '0.05em'}}>1 minute</span>
+        <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
       </div>
     </div>
   );
 
   const grid = (right) => (
-    <div style={{display: 'grid', gridTemplateColumns: isDesktop ? '2fr 3fr' : '1fr', gap: isDesktop ? 20 : 16, alignItems: 'start'}}>
+    <div style={{display:'flex', flexDirection:'column', gap:16}}>
       {leftPanel}
       <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>{right}</div>
     </div>
@@ -326,20 +326,18 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
   // ── SELECT ──────────────────────────────────────────────────────────────────
   if (phase === 'select') return (
     <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
-      <div style={{display: 'grid', gridTemplateColumns: isDesktop ? '2fr 3fr' : '1fr', gap: isDesktop ? 20 : 16, alignItems: 'start'}}>
-        {leftPanel}
-        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
-          {EDIT_TOPICS.map(t => {
-            const sel = topic?.id === t.id;
-            return (
-              <button key={t.id} onClick={() => setTopic(t)}
-                style={{padding: '16px 14px', borderRadius: 6, border: `${sel ? '2px' : '1px'} solid ${sel ? 'rgba(82,112,96,0.75)' : T2.border}`, background: sel ? 'rgba(82,112,96,0.18)' : T2.surface, cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, outline: 'none'}}>
-                <div style={{color: sel ? 'rgba(82,112,96,0.95)' : T2.text3}}>{t.icon}</div>
-                <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: T2.text, lineHeight: 1.4, fontWeight: sel ? 600 : 400}}>{t.label}</span>
-              </button>
-            );
-          })}
-        </div>
+      {leftPanel}
+      <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10}}>
+        {EDIT_TOPICS.map(t => {
+          const sel = topic?.id === t.id;
+          return (
+            <button key={t.id} onClick={() => setTopic(t)}
+              style={{padding: '16px 14px', borderRadius: 6, border: `${sel ? '2px' : '1px'} solid ${sel ? 'rgba(82,112,96,0.75)' : T2.border}`, background: sel ? 'rgba(82,112,96,0.18)' : T2.surface, cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, outline: 'none'}}>
+              <div style={{color: sel ? 'rgba(82,112,96,0.95)' : T2.text3}}>{t.icon}</div>
+              <span style={{fontFamily: T.sans, fontSize: isDesktop ? 12 : 11, color: T2.text, lineHeight: 1.4, fontWeight: sel ? 600 : 400}}>{t.label}</span>
+            </button>
+          );
+        })}
       </div>
       <button onClick={() => { if (topic) setPhase('pause'); }}
         disabled={!topic}

@@ -623,12 +623,12 @@ For Q2, apply the same PRE extraction as Q1. Then compare the two. Return a JSON
           There's no right answer. There's only a clear one.
         </p>
       </div>
-      <div style={{display:'flex', alignItems:'center', gap:6, marginTop:'auto', paddingTop:4}}>
-        <svg width="13" height="13" viewBox="0 0 20 20" fill="none">
-          <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3"/>
-          <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3" strokeLinecap="round"/>
+      <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:'auto',alignSelf:'flex-start'}}>
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
+          <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
         </svg>
-        <span style={{fontFamily:T.sans, fontSize:10, color:'rgba(138,158,132,0.35)', letterSpacing:'0.05em'}}>3 minutes</span>
+        <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>3 min warm-up</span>
       </div>
     </div>
   );
