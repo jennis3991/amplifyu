@@ -400,11 +400,14 @@ Return ONLY valid JSON:
     <div style={{display:'flex',flexDirection:'column',gap:isDesktop?16:14}}>
       <div>
         <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:12}}>The Rapport Builder · Simulation</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:'0 0 10px'}}>
-          Adapt your style.<br/>Build genuine rapport.
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:'0 0 14px'}}>
+          Four conversations.<br/>Four personalities.
         </h2>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>
-          Pick a communication style to practise. Three turns. Real coaching after.
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:'0 0 10px'}}>
+          Choose one connection habit to focus on, then navigate four realistic workplace conversations where every person communicates differently.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:0}}>
+          Your AI Communication Coach will assess how well you adapt your style and provide personalised feedback on your listening, curiosity, empathy and ability to build genuine rapport.
         </p>
       </div>
       <div style={{...cs.card,borderLeft:'2px solid '+T.gold}}>
