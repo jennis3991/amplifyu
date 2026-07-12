@@ -442,7 +442,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           {d9Label("Build Your Connection Habits")}
-          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Five exercises. Build the habits of the world's most connected communicators.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Four exercises. Build the habits of the world's most connected communicators.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>

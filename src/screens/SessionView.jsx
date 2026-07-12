@@ -1679,8 +1679,6 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Simulation · Day 3</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:32}}>Speak Without Filling the Silence</h2>
           <D3SimWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
