@@ -962,13 +962,12 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
         {title:"Reduce filler pauses between ideas",detail:"A silent pause reads as confidence. Replacing hesitation sounds with a beat of silence keeps your listener focused on your words."}
       ],
       wordUpgrades:[
-        {word:"basically",upgrade:"the core reason is"},
-        {word:"stuff",upgrade:"the specifics"},
-        {word:"really good",upgrade:"genuinely effective"}
+        {word:"really good communicator",upgrade:"someone who commands a room",type:"word"},
+        {word:"I kind of just went with it",upgrade:"I committed to the direction",type:"rephrase"},
+        {word:"stuff like that",upgrade:"specifics like delivery and pacing",type:"word"}
       ],
       insight:"Your delivery felt natural and genuine. The opportunity is structure: if you lead with your clearest point in the first sentence, everything that follows lands harder.",
       priorityFocus:"Lead with your main point first",
-      fillerCounts:{"um":3,"like":2,"basically":1},
       restructure:["Open with your core message in the first 5–10 seconds — context and evidence can follow.","Group related ideas together rather than alternating between points. You switched topics 3 times.","End with a single, memorable takeaway rather than trailing off. A strong last sentence doubles retention."],
       markers:[{pos:0.20,label:"Filler cluster",type:"filler"},{pos:0.44,label:"Ramble moment",type:"ramble"},{pos:0.66,label:"Strongest point",type:"strong"}]
     };
@@ -980,7 +979,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     }
     try{
       const warmCtx = warmUpTopic ? `\n\nContext: Before this, the user warmed up by speaking about: "${warmUpTopic}". If naturally relevant, briefly reference this in your insight to personalise the coaching.` : '';
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1200,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.${warmCtx}\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nIMPORTANT: All feedback must be PERSONALISED to what this specific person actually said. Reference their actual words, phrases, and ideas. Do not write generic feedback.\n\nFILLER WORD DETECTION — READ CAREFULLY:\nCount only words used as genuine verbal fillers (hesitation sounds or meaningless padding). Do NOT count the same word when used with real grammatical meaning.\n- "like" → filler ONLY when used as hesitation (e.g. "it was like, really good", "I was like nervous"). NOT a filler when used as a preposition or comparison ("feel like", "looks like", "someone like you", "like a rock").\n- "you know" → filler ONLY when used as a standalone verbal tic (e.g. "...you know?", "...you know, it's just..."). NOT a filler inside a relative clause ("someone you know", "the people you know").\n- "so" → filler ONLY when used as a sentence-starter tic ("So, I think...", "So basically..."). NOT a filler as a conjunction or result word ("so that", "and so it worked").\n- "right" → filler ONLY as a tag question tic ("...right?" used repeatedly). NOT a filler as an adjective or adverb ("the right answer", "turn right").\n- um, uh, er, ah → always fillers.\n- basically, literally, actually → count only if used repeatedly (3+ times) as padding rather than for genuine emphasis.\n\nAlso identify 2–4 key moments in the transcript for waveform annotation. For each marker, estimate its proportional position (0.0 = start, 1.0 = end) based on word count.\n\nMarker types (only include if genuinely present):\n- "filler": where hesitation sounds (um, uh) cluster\n- "ramble": where the answer starts repeating or losing focus\n- "strong": where the single clearest/most impactful statement occurs (always include one)\n- "unclear": where meaning becomes hard to follow\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Brevity":<50-100>,"Focus":<50-100>,"Simplicity":<50-100>},"worked":["<strength 1: short title, specific to what they said>","<strength 2: short title, specific to what they said>"],"workedSubs":["<1 sentence expanding on strength 1, quoting or paraphrasing something they actually said>","<1 sentence expanding on strength 2, quoting or paraphrasing something they actually said>"],"opportunities":[{"title":"<4-7 word title for opportunity 1, specific to what they said>","detail":"<1-2 sentences referencing a specific moment from their response>"},{"title":"<4-7 word title for opportunity 2, different from opportunity 1>","detail":"<1-2 sentences referencing another specific moment from their response>"}],"wordUpgrades":[{"word":"<word or phrase they actually used>","upgrade":"<a clearer, stronger alternative>"},{"word":"<another word they used>","upgrade":"<stronger alternative>"},{"word":"<third word or phrase>","upgrade":"<stronger alternative>"}],"insight":"<2 sentences of personalised coaching, referencing specific moments or phrases from their response>","priorityFocus":"<single most important thing to work on next — 5-8 words>","fillerCounts":{"<word genuinely used as filler>": <count>, ...},"restructure":["<specific rewrite instruction 1 referencing what they actually said — e.g. move the point about X to the opening>","<specific rewrite instruction 2 — e.g. cut or compress the section where they said Y>","<specific rewrite instruction 3 — e.g. close with Z as a memorable final line>"],"markers":[{"pos":<0.0-1.0>,"label":"<Filler cluster|Ramble moment|Strongest point|Unclear section>","type":"<filler|ramble|strong|unclear>"}]}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1200,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.${warmCtx}\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nIMPORTANT: All feedback must be PERSONALISED to what this specific person actually said. Reference their actual words, phrases, and ideas. Do not write generic feedback.\n\nWORD UPGRADES — identify 2–4 phrases the speaker actually used that could land harder. Two types:\nTYPE "word": Swap a vague or weak word/phrase for an elevated, precise alternative. Target: "really good" → "exceptional", "kind of" → "precisely", "stuff" → "specifics", "just" used as a weakener → remove it, passive or generic verbs → power verbs. Replace the word or short phrase.\nTYPE "rephrase": Rewrite a wordy or roundabout clause for punch and clarity — the rewrite should be noticeably sharper. Target: buried points, hedged statements, long-winded phrasing. Include the full original clause in "word" and the sharper version in "upgrade".\n\nCRITICAL — NEVER flatten intentional rhetorical devices. If the speaker repeats a word or phrase for emphasis (tripling, anaphora — e.g. "grew and grew and grew", "again and again", "day after day") this is DELIBERATE rhetoric for impact. Do NOT simplify to a flat word like "grew rapidly" — that destroys the effect. Either skip it or suggest an amplified version that preserves the device (e.g. "grew, expanded, and dominated"). Only target genuinely weak, vague, or unclear language.\n\nAlso identify 2–4 key moments in the transcript for waveform annotation. For each marker, estimate its proportional position (0.0 = start, 1.0 = end) based on word count.\n\nMarker types (only include if genuinely present):\n- "filler": where hesitation sounds (um, uh) cluster\n- "ramble": where the answer starts repeating or losing focus\n- "strong": where the single clearest/most impactful statement occurs (always include one)\n- "unclear": where meaning becomes hard to follow\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Brevity":<50-100>,"Focus":<50-100>,"Simplicity":<50-100>},"worked":["<strength 1: short title, specific to what they said>","<strength 2: short title, specific to what they said>"],"workedSubs":["<1 sentence expanding on strength 1, quoting or paraphrasing something they actually said>","<1 sentence expanding on strength 2, quoting or paraphrasing something they actually said>"],"opportunities":[{"title":"<4-7 word title for opportunity 1, specific to what they said>","detail":"<1-2 sentences referencing a specific moment from their response>"},{"title":"<4-7 word title for opportunity 2, different from opportunity 1>","detail":"<1-2 sentences referencing another specific moment from their response>"}],"wordUpgrades":[{"word":"<exact phrase from transcript>","upgrade":"<elevated word OR sharper rewrite>","type":"<word|rephrase>"},{"word":"<another phrase>","upgrade":"<stronger version>","type":"<word|rephrase>"},{"word":"<third phrase>","upgrade":"<stronger version>","type":"<word|rephrase>"}],"insight":"<2 sentences of personalised coaching, referencing specific moments or phrases from their response>","priorityFocus":"<single most important thing to work on next — 5-8 words>","restructure":["<specific rewrite instruction 1 referencing what they actually said — e.g. move the point about X to the opening>","<specific rewrite instruction 2 — e.g. cut or compress the section where they said Y>","<specific rewrite instruction 3 — e.g. close with Z as a memorable final line>"],"markers":[{"pos":<0.0-1.0>,"label":"<Filler cluster|Ramble moment|Strongest point|Unclear section>","type":"<filler|ramble|strong|unclear>"}]}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -1203,12 +1202,6 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       a.currentTime=pos*(a.duration||0);
       if(!playing)a.play().then(()=>setPlaying(true)).catch(()=>{});
     }
-    const fillerCounts=(feedback.fillerCounts&&Object.keys(feedback.fillerCounts).length>0)
-      ? feedback.fillerCounts
-      : countFillers(transcript||'');
-    const fillerEntries=Object.entries(fillerCounts).sort((a,b)=>b[1]-a[1]);
-    const totalFillers=fillerEntries.reduce((s,[,n])=>s+n,0);
-    const transcriptParts=highlightFillers(transcript||'',Object.keys(fillerCounts));
     return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
 
@@ -1367,56 +1360,25 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
         </div>
       </div>
 
-      {/* 6 FILLER DASHBOARD + TRANSCRIPT */}
-      <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px"}}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
-          <div style={cs.label}>Filler word analysis</div>
-          {transcript&&<button onClick={()=>setShowTranscript(v=>!v)} style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,background:"none",border:"0.5px solid rgba(138,158,132,0.35)",borderRadius:4,padding:"4px 12px",cursor:"pointer",letterSpacing:"0.5px"}}>{showTranscript?"Hide transcript":"See transcript"}</button>}
-        </div>
-        {totalFillers===0&&transcript?(
-          <div style={{display:"flex",alignItems:"center",gap:8}}>
-            <div style={{width:8,height:8,borderRadius:"50%",background:"#527060",flexShrink:0}}/>
-            <span style={{fontFamily:T.sans,fontSize:13,color:"#527060",fontWeight:600}}>No filler words detected — clean delivery.</span>
-          </div>
-        ):(
-          <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:transcript?12:0}}>
-            {fillerEntries.length>0?fillerEntries.map(([word,count])=>(
-              <div key={word} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 12px",background:"rgba(196,113,74,0.07)",borderRadius:4,border:"0.5px solid rgba(196,113,74,0.25)"}}>
-                <span style={{fontFamily:T.sans,fontSize:12,color:"#C4714A",fontWeight:600}}>{word}</span>
-                <span style={{fontFamily:T.serif,fontSize:14,fontWeight:700,color:"#C4714A"}}>{count}×</span>
-              </div>
-            )):(
-              transcript?null:<span style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>Speak to see filler word analysis.</span>
-            )}
-          </div>
-        )}
-        {feedback.wordUpgrades&&feedback.wordUpgrades.length>0&&(
-          <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid "+T2.divider}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Word upgrades</div>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text3,margin:"0 0 12px",lineHeight:1.5}}>The best communicators choose precise words. Here are some swaps based on what you said:</p>
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {feedback.wordUpgrades.map((u,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"#C4714A",background:"rgba(196,113,74,0.08)",border:"0.5px solid rgba(196,113,74,0.2)",borderRadius:3,padding:"3px 8px"}}>{u.word}</span>
+      {/* 6 WORD UPGRADES */}
+      {feedback.wordUpgrades&&feedback.wordUpgrades.length>0&&(
+        <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px"}}>
+          <div style={cs.label}>Word Upgrades</div>
+          <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,margin:"0 0 14px",lineHeight:1.5}}>The best communicators choose precise words. Here are personalised upgrades based on what you said:</p>
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {feedback.wordUpgrades.map((u,i)=>(
+              <div key={i} style={{display:"flex",flexDirection:"column",gap:5}}>
+                {u.type==="rephrase"&&<div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"1.5px"}}>Rephrase for impact</div>}
+                <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"#C4714A",background:"rgba(196,113,74,0.08)",border:"0.5px solid rgba(196,113,74,0.2)",borderRadius:3,padding:"4px 10px",lineHeight:1.5}}>{u.word}</span>
                   <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke={T2.text4} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T.gold,background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",borderRadius:3,padding:"3px 8px"}}>{u.upgrade}</span>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T.gold,background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",borderRadius:3,padding:"4px 10px",lineHeight:1.5}}>{u.upgrade}</span>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        )}
-        {showTranscript&&transcript&&(
-          <div style={{marginTop:12,paddingTop:12,borderTop:"0.5px solid "+T2.divider}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your transcript — filler words highlighted</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.8,margin:0}}>
-              {transcriptParts.map((p,i)=>p.f
-                ?<mark key={i} style={{background:"rgba(196,113,74,0.18)",color:"#C4714A",borderRadius:2,padding:"0 2px",fontWeight:600}}>{p.t}</mark>
-                :<span key={i}>{p.t}</span>
-              )}
-            </p>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* 7 FOCUS NEXT ROUND — #1 priority highlighted */}
       <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
