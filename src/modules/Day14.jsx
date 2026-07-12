@@ -4,7 +4,6 @@ import { ROLES, LESSONS } from '../data.js';
 // ─── D14 Practice Widget — Your Journey ─────────────────────────────────────
 export function D14PracticeWidget({T, T2, isDesktop}) {
   const stored = (() => { try { return JSON.parse(localStorage.getItem('au1_d14_reflection') || '{}'); } catch { return {}; } })();
-  const quiz = (() => { try { return JSON.parse(localStorage.getItem('au1_quiz') || '{}'); } catch { return {}; } })();
   const storedAmbition = (() => { try { return localStorage.getItem('au1_ambition') || ''; } catch { return ''; } })();
 
   const [phase, setPhase] = useState('intro');
@@ -14,42 +13,44 @@ export function D14PracticeWidget({T, T2, isDesktop}) {
   const [proud, setProud] = useState(stored.proud || '');
   const [hard, setHard] = useState(stored.hard || '');
 
-  const save = () => {
-    try { localStorage.setItem('au1_d14_reflection', JSON.stringify({jobTitle, knownFor, shift, proud, hard})); } catch {}
+  const save = (s, p, h) => {
+    try { localStorage.setItem('au1_d14_reflection', JSON.stringify({jobTitle, knownFor, shift:s, proud:p, hard:h})); } catch {}
   };
 
   const cs = {
     card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px"},
-    label: {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8},
+    label: {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10},
     cta: {width:"100%", padding:isDesktop?"14px":"13px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:isDesktop?15:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:48, transition:"all 0.2s"},
-    textarea: {width:"100%", minHeight:isDesktop?90:75, background:"transparent", border:"none", borderBottom:"0.5px solid "+T2.divider, padding:"8px 0 10px", fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, resize:"none", outline:"none", lineHeight:1.65, boxSizing:"border-box"},
     input: {width:"100%", background:"transparent", border:"none", borderBottom:"0.5px solid "+T2.divider, padding:"8px 0 10px", fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, outline:"none", lineHeight:1.65, boxSizing:"border-box"},
-    back: {background:"none", border:"none", fontFamily:T.sans, fontSize:12, color:T2.text4, cursor:"pointer", padding:"4px 0", textAlign:"left"},
   };
 
-  const Bars = ({filled}) => (
-    <div style={{display:"flex", gap:5, marginBottom:4}}>
-      {[0,1,2].map(i => <div key={i} style={{height:3, flex:1, borderRadius:2, background:i<filled?T.gold:T2.border, transition:"background 0.3s"}}/>)}
+  const Chip = ({label, selected, onClick}) => (
+    <button onClick={onClick} style={{
+      width:"100%", padding:isDesktop?"12px 16px":"11px 14px", borderRadius:4, textAlign:"left", cursor:"pointer", transition:"all 0.15s",
+      border:"0.5px solid "+(selected?T.gold:T2.border),
+      background:selected?"rgba(138,158,132,0.12)":"transparent",
+      fontFamily:T.sans, fontSize:isDesktop?13:12, fontWeight:selected?600:400,
+      color:selected?T.gold:T2.text, lineHeight:1.4,
+    }}>{label}</button>
+  );
+
+  const Q = ({label, options, value, onChange}) => (
+    <div style={cs.card}>
+      <div style={cs.label}>{label}</div>
+      <div style={{display:"flex", flexDirection:"column", gap:7}}>
+        {options.map((o,i) => <Chip key={i} label={o} selected={value===o} onClick={() => onChange(o)}/>)}
+      </div>
     </div>
   );
 
-  const Coach = ({children}) => (
-    <div style={{...cs.card, background:"rgba(138,158,132,0.05)", borderLeft:"2px solid "+T.gold}}>
-      <div style={cs.label}>Your Coach</div>
-      <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.7, margin:0}}>{children}</p>
-    </div>
-  );
-
-  const Btn = ({onClick, disabled, children}) => (
-    <button onClick={onClick} disabled={!!disabled} style={{...cs.cta, background:disabled?"rgba(44,36,22,0.2)":T.ink, cursor:disabled?"not-allowed":"pointer"}}>{children}</button>
-  );
+  const canSubmit = jobTitle.trim() && knownFor.trim() && shift && proud && hard;
 
   if (phase === 'intro') return (
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
       <div style={cs.card}>
         <div style={cs.label}>Your Communication Blueprint</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>14 days. One journey. Time to see how far you have come.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Answer three short reflection questions before your coach generates your blueprint. Your honest answers make the difference between a generic plan and one that is genuinely yours.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Five quick taps and two short answers — then your coach generates your personalised blueprint.</p>
       </div>
       <div style={{...cs.card, background:"rgba(138,158,132,0.04)"}}>
         <div style={cs.label}>What you will receive</div>
@@ -71,73 +72,75 @@ export function D14PracticeWidget({T, T2, isDesktop}) {
           ))}
         </div>
       </div>
-      <button onClick={() => setPhase('facts')} style={cs.cta}>Begin Your Reflection</button>
+      <button onClick={() => setPhase('form')} style={cs.cta}>Get Started</button>
     </div>
   );
 
-  if (phase === 'facts') return (
+  if (phase === 'form') return (
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
-      <Coach>Two quick facts before we dive into your journey.</Coach>
+
       <div style={cs.card}>
         <div style={cs.label}>Your role</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?18:15, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>What is your current job title?</p>
-        <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} placeholder="e.g. Senior Consultant, Head of Product, Marketing Director" style={cs.input}/>
+        <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} placeholder="Current job title — e.g. Head of Product, Senior Consultant" style={cs.input}/>
+        <div style={{marginTop:18}}>
+          <div style={cs.label}>In 12 months, what do you most want to be known for?</div>
+          <input value={knownFor} onChange={e => setKnownFor(e.target.value)} placeholder="e.g. Strategic clarity, inspiring leadership, visible expertise" style={cs.input}/>
+        </div>
       </div>
-      <div style={cs.card}>
-        <div style={cs.label}>Your ambition</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?18:15, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>In 12 months, what do you most want to be known for?</p>
-        <input value={knownFor} onChange={e => setKnownFor(e.target.value)} placeholder="e.g. Strategic clarity, inspiring leadership, visible expertise" style={cs.input}/>
-      </div>
-      <Btn onClick={() => { save(); setPhase('q0'); }} disabled={!jobTitle.trim() || !knownFor.trim()}>Next</Btn>
-    </div>
-  );
 
-  if (phase === 'q0') return (
-    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
-      <Bars filled={1}/>
-      <Coach>When you started this programme, what was holding you back? What has changed since then — if anything?</Coach>
-      <div style={cs.card}>
-        <div style={cs.label}>Reflection 1 of 3</div>
-        <textarea value={shift} onChange={e => setShift(e.target.value)} placeholder="Be honest — some things shift quickly, others take longer. Either is a valid answer." style={cs.textarea}/>
-      </div>
-      <Btn onClick={() => { save(); setPhase('q1'); }} disabled={shift.trim().length < 5}>Next</Btn>
-    </div>
-  );
+      <Q
+        label="What held you back most at the start?"
+        options={[
+          "Speaking up confidently with senior leaders",
+          "Structuring my thoughts clearly under pressure",
+          "Making my work visible and getting credit for it",
+          "Setting boundaries and asserting myself",
+        ]}
+        value={shift}
+        onChange={setShift}
+      />
 
-  if (phase === 'q1') return (
-    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
-      <Bars filled={2}/>
-      <Coach>What is one moment from the past 14 days you are most proud of — a conversation, a rehearsal, or something you did differently?</Coach>
-      <div style={cs.card}>
-        <div style={cs.label}>Reflection 2 of 3</div>
-        <textarea value={proud} onChange={e => setProud(e.target.value)} placeholder="Be specific. The more real the moment, the more personal your blueprint will be..." style={cs.textarea}/>
-      </div>
-      <Btn onClick={() => { save(); setPhase('q2'); }} disabled={proud.trim().length < 5}>Last Question</Btn>
-      <button onClick={() => setPhase('q0')} style={cs.back}>Back</button>
-    </div>
-  );
+      <Q
+        label="Where did you feel the biggest change?"
+        options={[
+          "My confidence when I speak",
+          "How I structure and land my points",
+          "How I tell stories and make ideas stick",
+          "Honestly — not much has changed yet",
+        ]}
+        value={proud}
+        onChange={setProud}
+      />
 
-  if (phase === 'q2') return (
-    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
-      <Bars filled={3}/>
-      <Coach>What still feels like your hardest thing to change? Be honest — the gaps you name here become the focus of your action plan.</Coach>
-      <div style={cs.card}>
-        <div style={cs.label}>Reflection 3 of 3</div>
-        <textarea value={hard} onChange={e => setHard(e.target.value)} placeholder="e.g. Speaking up in senior rooms, making my ambition visible without it feeling forced..." style={cs.textarea}/>
-      </div>
-      <Btn onClick={() => { save(); setPhase('done'); }} disabled={hard.trim().length < 5}>Save My Reflections</Btn>
-      <button onClick={() => setPhase('q1')} style={cs.back}>Back</button>
+      <Q
+        label="What still feels hardest?"
+        options={[
+          "Speaking up in high-stakes or senior moments",
+          "Making my ambition visible without it feeling forced",
+          "Staying calm and present under pressure",
+          "Turning good ideas into clear, compelling messages",
+        ]}
+        value={hard}
+        onChange={setHard}
+      />
+
+      <button
+        onClick={() => { save(shift, proud, hard); setPhase('done'); }}
+        disabled={!canSubmit}
+        style={{...cs.cta, background:canSubmit?T.ink:"rgba(44,36,22,0.2)", cursor:canSubmit?"pointer":"not-allowed"}}>
+        Save and Continue
+      </button>
     </div>
   );
 
   return (
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
       <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px":"24px"}}>
-        <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12}}>Reflection Complete</div>
+        <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12}}>Done</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?22:18, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>Your answers are saved.</p>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Head to the Simulation tab to generate your personalised Communication Blueprint.</p>
       </div>
-      <button onClick={() => setPhase('facts')} style={{...cs.cta, background:"transparent", border:"0.5px solid "+T2.border, color:T2.text3}}>Edit My Answers</button>
+      <button onClick={() => setPhase('form')} style={{...cs.cta, background:"transparent", border:"0.5px solid "+T2.border, color:T2.text3}}>Edit My Answers</button>
     </div>
   );
 }
