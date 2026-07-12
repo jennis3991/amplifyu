@@ -95,11 +95,7 @@ export function D14PracticeWidget({T, T2, isDesktop}) {
   if (phase === 'q0') return (
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
       <Bars filled={1}/>
-      <Coach>
-        {quiz.challenge
-          ? ('When you started, you told us: "' + quiz.challenge + '". When did that start to feel different?')
-          : "When you started this programme, what was your biggest challenge — and when did something shift?"}
-      </Coach>
+      <Coach>When you started this programme, what was holding you back — and when did that start to shift?</Coach>
       <div style={cs.card}>
         <div style={cs.label}>Reflection 1 of 3</div>
         <textarea value={shift} onChange={e => setShift(e.target.value)} placeholder="Think about a specific moment, conversation or exercise where something clicked..." style={cs.textarea}/>
