@@ -960,8 +960,15 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       scores:mockScores(),
       worked:["Natural and conversational tone","Confident, assured delivery"],
       workedSubs:["Your language stayed grounded and jargon-free — easy to follow from the first sentence.","You didn't hedge or qualify unnecessarily. That directness builds trust."],
-      opportunityTitle:"Get to your main point sooner",
-      improve:["Your core idea took about 30 seconds to appear. Try opening with it directly — context can follow."],
+      opportunities:[
+        {title:"Get to your main point sooner",detail:"Your core idea took about 30 seconds to appear. Try opening with it directly — context can follow."},
+        {title:"Reduce filler pauses between ideas",detail:"A silent pause reads as confidence. Replacing hesitation sounds with a beat of silence keeps your listener focused on your words."}
+      ],
+      wordUpgrades:[
+        {word:"basically",upgrade:"the core reason is"},
+        {word:"stuff",upgrade:"the specifics"},
+        {word:"really good",upgrade:"genuinely effective"}
+      ],
       insight:"Your delivery felt natural and genuine. The opportunity is structure: if you lead with your clearest point in the first sentence, everything that follows lands harder.",
       priorityFocus:"Lead with your main point first",
       fillerCounts:{"um":3,"like":2,"basically":1},
@@ -976,7 +983,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     }
     try{
       const warmCtx = warmUpTopic ? `\n\nContext: Before this, the user warmed up by speaking about: "${warmUpTopic}". If naturally relevant, briefly reference this in your insight to personalise the coaching.` : '';
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1200,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.${warmCtx}\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nIMPORTANT: All feedback must be PERSONALISED to what this specific person actually said. Reference their actual words, phrases, and ideas. Do not write generic feedback.\n\nFILLER WORD DETECTION — READ CAREFULLY:\nCount only words used as genuine verbal fillers (hesitation sounds or meaningless padding). Do NOT count the same word when used with real grammatical meaning.\n- "like" → filler ONLY when used as hesitation (e.g. "it was like, really good", "I was like nervous"). NOT a filler when used as a preposition or comparison ("feel like", "looks like", "someone like you", "like a rock").\n- "you know" → filler ONLY when used as a standalone verbal tic (e.g. "...you know?", "...you know, it's just..."). NOT a filler inside a relative clause ("someone you know", "the people you know").\n- "so" → filler ONLY when used as a sentence-starter tic ("So, I think...", "So basically..."). NOT a filler as a conjunction or result word ("so that", "and so it worked").\n- "right" → filler ONLY as a tag question tic ("...right?" used repeatedly). NOT a filler as an adjective or adverb ("the right answer", "turn right").\n- um, uh, er, ah → always fillers.\n- basically, literally, actually → count only if used repeatedly (3+ times) as padding rather than for genuine emphasis.\n\nAlso identify 2–4 key moments in the transcript for waveform annotation. For each marker, estimate its proportional position (0.0 = start, 1.0 = end) based on word count.\n\nMarker types (only include if genuinely present):\n- "filler": where hesitation sounds (um, uh) cluster\n- "ramble": where the answer starts repeating or losing focus\n- "strong": where the single clearest/most impactful statement occurs (always include one)\n- "unclear": where meaning becomes hard to follow\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Brevity":<50-100>,"Focus":<50-100>,"Simplicity":<50-100>},"worked":["<strength 1: short title, specific to what they said>","<strength 2: short title, specific to what they said>"],"workedSubs":["<1 sentence expanding on strength 1, quoting or paraphrasing something they actually said>","<1 sentence expanding on strength 2, quoting or paraphrasing something they actually said>"],"opportunityTitle":"<4-7 word title for their biggest opportunity>","improve":["<1-2 sentences describing the opportunity, referencing what they specifically said and where it happened>"],"insight":"<2 sentences of personalised coaching, referencing specific moments or phrases from their response>","priorityFocus":"<single most important thing to work on next — 5-8 words>","fillerCounts":{"<word genuinely used as filler>": <count>, ...},"restructure":["<specific rewrite instruction 1 referencing what they actually said — e.g. move the point about X to the opening>","<specific rewrite instruction 2 — e.g. cut or compress the section where they said Y>","<specific rewrite instruction 3 — e.g. close with Z as a memorable final line>"],"markers":[{"pos":<0.0-1.0>,"label":"<Filler cluster|Ramble moment|Strongest point|Unclear section>","type":"<filler|ramble|strong|unclear>"}]}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1200,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.${warmCtx}\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nIMPORTANT: All feedback must be PERSONALISED to what this specific person actually said. Reference their actual words, phrases, and ideas. Do not write generic feedback.\n\nFILLER WORD DETECTION — READ CAREFULLY:\nCount only words used as genuine verbal fillers (hesitation sounds or meaningless padding). Do NOT count the same word when used with real grammatical meaning.\n- "like" → filler ONLY when used as hesitation (e.g. "it was like, really good", "I was like nervous"). NOT a filler when used as a preposition or comparison ("feel like", "looks like", "someone like you", "like a rock").\n- "you know" → filler ONLY when used as a standalone verbal tic (e.g. "...you know?", "...you know, it's just..."). NOT a filler inside a relative clause ("someone you know", "the people you know").\n- "so" → filler ONLY when used as a sentence-starter tic ("So, I think...", "So basically..."). NOT a filler as a conjunction or result word ("so that", "and so it worked").\n- "right" → filler ONLY as a tag question tic ("...right?" used repeatedly). NOT a filler as an adjective or adverb ("the right answer", "turn right").\n- um, uh, er, ah → always fillers.\n- basically, literally, actually → count only if used repeatedly (3+ times) as padding rather than for genuine emphasis.\n\nAlso identify 2–4 key moments in the transcript for waveform annotation. For each marker, estimate its proportional position (0.0 = start, 1.0 = end) based on word count.\n\nMarker types (only include if genuinely present):\n- "filler": where hesitation sounds (um, uh) cluster\n- "ramble": where the answer starts repeating or losing focus\n- "strong": where the single clearest/most impactful statement occurs (always include one)\n- "unclear": where meaning becomes hard to follow\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Brevity":<50-100>,"Focus":<50-100>,"Simplicity":<50-100>},"worked":["<strength 1: short title, specific to what they said>","<strength 2: short title, specific to what they said>"],"workedSubs":["<1 sentence expanding on strength 1, quoting or paraphrasing something they actually said>","<1 sentence expanding on strength 2, quoting or paraphrasing something they actually said>"],"opportunities":[{"title":"<4-7 word title for opportunity 1, specific to what they said>","detail":"<1-2 sentences referencing a specific moment from their response>"},{"title":"<4-7 word title for opportunity 2, different from opportunity 1>","detail":"<1-2 sentences referencing another specific moment from their response>"}],"wordUpgrades":[{"word":"<word or phrase they actually used>","upgrade":"<a clearer, stronger alternative>"},{"word":"<another word they used>","upgrade":"<stronger alternative>"},{"word":"<third word or phrase>","upgrade":"<stronger alternative>"}],"insight":"<2 sentences of personalised coaching, referencing specific moments or phrases from their response>","priorityFocus":"<single most important thing to work on next — 5-8 words>","fillerCounts":{"<word genuinely used as filler>": <count>, ...},"restructure":["<specific rewrite instruction 1 referencing what they actually said — e.g. move the point about X to the opening>","<specific rewrite instruction 2 — e.g. cut or compress the section where they said Y>","<specific rewrite instruction 3 — e.g. close with Z as a memorable final line>"],"markers":[{"pos":<0.0-1.0>,"label":"<Filler cluster|Ramble moment|Strongest point|Unclear section>","type":"<filler|ramble|strong|unclear>"}]}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -1397,15 +1404,19 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
           ))}
         </div>
         <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#B07A40",textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>Biggest Opportunity</div>
-          <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-            <div style={{width:36,height:36,borderRadius:"50%",background:"rgba(176,122,64,0.1)",border:"1px solid rgba(176,122,64,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2a5 5 0 014 8l-1 1v2H7v-2L6 10a5 5 0 014-8z" stroke="#B07A40" strokeWidth="1.2"/><path d="M7 15h6M8 17h4" stroke="#B07A40" strokeWidth="1.2" strokeLinecap="round"/></svg>
-            </div>
-            <div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 8px"}}>{feedback.opportunityTitle||"Lead with your strongest point."}</p>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.6,margin:0}}>{feedback.improve[0]||"Your core message took too long to land."}</p>
-            </div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#B07A40",textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>Biggest Opportunities</div>
+          <div style={{display:"flex",flexDirection:"column",gap:14}}>
+            {(feedback.opportunities||[{title:"Lead with your strongest point.",detail:"Your core message took too long to land. Start with it next time."},{title:"Reduce filler pauses",detail:"Replace hesitation sounds with a confident beat of silence."}]).map((opp,i)=>(
+              <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",paddingBottom:i===0?14:0,borderBottom:i===0?"0.5px solid rgba(176,122,64,0.15)":"none"}}>
+                <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(176,122,64,0.1)",border:"1px solid rgba(176,122,64,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>
+                  <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"#B07A40"}}>{i+1}</span>
+                </div>
+                <div>
+                  <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 5px"}}>{opp.title}</p>
+                  <p style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:T2.text3,lineHeight:1.6,margin:0}}>{opp.detail}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -1431,6 +1442,21 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
             )):(
               transcript?null:<span style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>Speak to see filler word analysis.</span>
             )}
+          </div>
+        )}
+        {feedback.wordUpgrades&&feedback.wordUpgrades.length>0&&(
+          <div style={{marginTop:16,paddingTop:16,borderTop:"0.5px solid "+T2.divider}}>
+            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Word upgrades</div>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text3,margin:"0 0 12px",lineHeight:1.5}}>The best communicators choose precise words. Here are some swaps based on what you said:</p>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {feedback.wordUpgrades.map((u,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"#C4714A",background:"rgba(196,113,74,0.08)",border:"0.5px solid rgba(196,113,74,0.2)",borderRadius:3,padding:"3px 8px"}}>{u.word}</span>
+                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke={T2.text4} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T.gold,background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",borderRadius:3,padding:"3px 8px"}}>{u.upgrade}</span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
         {showTranscript&&transcript&&(
