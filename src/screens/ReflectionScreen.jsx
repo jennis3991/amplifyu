@@ -62,53 +62,13 @@ export function ReflectionScreen({ answers, onContinue }) {
     forward: "Here is where we will take you — 14 sessions built for someone at your stage, with scenarios drawn from your world as " + roleLabel + ". You will build the communication habits, personal brand, and visibility that turn your real capability into the career you are ready for.",
   };
 
-  // ── API call — show fallback instantly, upgrade silently when AI responds ─
+  // ── Reveal content using computed profile (personalised from quiz answers) ─
   useEffect(() => {
-    // Reveal content immediately using computed fallback
     setReflection(fallbackReflection);
     setTimeout(() => setSection(1), 150);
     setTimeout(() => setSection(2), 600);
     setTimeout(() => setSection(3), 1100);
     setTimeout(() => setSection(4), 1600);
-
-    // Upgrade in the background with personalised AI copy
-    async function generate() {
-      const prompt = [
-        "You are the voice of AmplifyU — a professional communication coaching platform.",
-        "A user has just completed onboarding. Here are their answers:",
-        "- What holds them back: " + challengeLabel,
-        "- Where they want to grow: " + contextLabel,
-        "- How they describe themselves: " + levelLabel,
-        "- Role: " + roleLabel,
-        "",
-        "Write a personalised reflection in exactly 3 sections. Return ONLY a JSON object.",
-        "Schema: { summary: string, motivation: string, forward: string }",
-        "summary: 2-3 sentences starting with 'Here is what we are seeing —' that reflect their specific gap and goal. Warm, direct, coach-like.",
-        "motivation: 2-3 sentences of specific, genuine motivation. Reference PIE (Performance/Image/Exposure) or storytelling. No clichés.",
-        "forward: 2 sentences starting with 'Here is where we will take you —' naming specific skills they will build.",
-        "Tone: Intelligent, warm, direct. Like a coach who sees exactly what this person is capable of.",
-      ].join("\n");
-
-      try {
-        const res = await fetch("/api/claude", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 400, messages: [{ role: "user", content: prompt }] }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error("API error");
-        const raw = (data.content || []).map(b => b.text || "").join("").trim();
-        let parsed = null;
-        try { parsed = JSON.parse(raw.replace(/```json|```/g, "").trim()); } catch (_) {
-          const m = raw.match(/\{[\s\S]*\}/);
-          if (m) try { parsed = JSON.parse(m[0]); } catch (_) {}
-        }
-        if (parsed && parsed.summary) setReflection(parsed);
-      } catch (_) {
-        // fallback already shown — nothing to do
-      }
-    }
-    generate();
   }, []);
 
   // ── DESKTOP ───────────────────────────────────────────────────────────────
