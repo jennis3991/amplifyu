@@ -2953,9 +2953,6 @@ strokeLinecap="round"/></svg>
       )}
       {isD14 && step==="Rehearsal" && (
         <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Rehearsal · Day 14</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>Your Practice</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.7,fontWeight:400,marginBottom:20}}>Have one conversation today where you use everything: PRE structure, a SAR story that passes the 3-Point Test, a confident phrase about your ambition, and deliberate presence.</p>
           <D14PracticeWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
