@@ -169,8 +169,8 @@ export const FURTHER_READING = [
     { title: "Storyworthy", author: "Matthew Dicks", quote: "Every story is about a five-second moment.", rating: "4.8", reviewCount: "7,200 reviews", why: "A multiple Moth GrandSLAM winner teaches you how to find stories in everyday life and craft them into moments people never forget. The practitioner's craft guide.", connection: "Dicks' method for finding and telling stories from everyday life — the practitioner's craft behind narrative transportation.", amazon: "https://www.amazon.co.uk/s?k=Storyworthy+Matthew+Dicks" },
   ]},
   { books: [ // Day 9
-    { title: "Talk Like TED", author: "Carmine Gallo", quote: "Passion is the great equaliser.", rating: "4.6", reviewCount: "12,000 reviews", why: "The go-to guide for powerful delivery. Gallo's nine habits cover everything from vocal variety to storytelling to the strategic use of pause.", connection: "The science behind the world's most inspiring presentations — every delivery principle in this module is evidenced here.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
-    { title: "Speak with No Fear", author: "Mike Acker", quote: "Own the room by owning yourself first.", rating: "4.5", reviewCount: "8,300 reviews", why: "Practical, honest, and grounded in real speaking experience. Acker gives you the tools to calm nerves, control your voice, and command any room.", connection: "Practical techniques for confident delivery — directly complements the 5 Ps framework you practised today.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
+    { title: "Just Listen", author: "Mark Goulston", quote: "The secret to influencing people is making them feel understood before you try to be understood.", rating: "4.6", reviewCount: "9,200 reviews", why: "A former FBI hostage negotiation trainer and psychiatrist reveals the listening techniques that work in the most high-stakes human moments. The most practical guide to genuine connection ever written.", connection: "The direct companion to today's session — the science and skill of making people feel truly heard.", amazon: "https://www.amazon.co.uk/s?k=Just+Listen+Mark+Goulston" },
+    { title: "Surrounded by Idiots", author: "Thomas Erikson", quote: "There are no difficult people — only people you have not yet learned to understand.", rating: "4.4", reviewCount: "22,000 reviews", why: "Erikson's DISC-based model of human communication styles has sold millions of copies for a reason. Once you can spot a Driver, Analytical, Expressive, or Amiable, every conversation becomes easier to navigate.", connection: "The practical framework behind adapting your communication style to every personality in the room.", amazon: "https://www.amazon.co.uk/s?k=Surrounded+by+Idiots+Thomas+Erikson" },
   ]},
   { books: [ // Day 10
     { title: "Crucial Conversations", author: "Patterson, Grenny, McMillan & Switzler", quote: "The conversation is the relationship.", rating: "4.6", reviewCount: "31,000 reviews", why: "The most widely used framework for high-stakes dialogue. Millions of leaders have applied these tools to conversations that define careers, teams, and organisations.", connection: "The essential toolkit for high-stakes dialogue — the direct companion to this module.", amazon: "https://www.amazon.co.uk/s?k=Crucial+Conversations+Patterson+Grenny" },
@@ -204,7 +204,7 @@ export const REVIEW_CLOSING = [
   "The story you tell becomes the one they remember.",
   "Performance is invisible until someone sees it.",
   "You've learned the framework. You've built your story. Now make it unforgettable.",
-  "You know how to build a story. You know how to deliver it. Now you can command any room.",
+  "Connection is not a personality type. It is a learnable skill.",
   "Performance without visibility is philanthropy.",
   "What you stand for is more powerful than what you do.",
   "Every relationship begins with genuine curiosity.",
@@ -221,7 +221,7 @@ export const REVIEW_BULLETS = [
   ["Stories move people to places that facts cannot reach", "Every great professional story has a before, a shift, and an after", "Narrative transportation changes minds without triggering resistance"],
   ["Performance alone does not build careers — visibility multiplies it", "Image and exposure are not vanity — they are strategy", "Being known for the right things in the right rooms is a learnable skill"],
   ["You learned why storytelling creates influence faster than information alone", "You mastered the 6-beat story arc: Hook, Character, Problem, Turning Point, Resolution, Meaning", "You built and rehearsed your own professional story with AI coaching"],
-  ["You learned the 5 elements of powerful delivery: Pace, Pause, Presence, Projection, Precision", "You studied how Brené Brown, Simon Sinek, Amy Cuddy, and Steve Jobs deliver with impact", "You prepared and rehearsed your story for confident performance"],
+  ["Genuine connection starts with curiosity — asking better questions, not delivering better answers", "The 70/30 rule: listen 70% of the time. People feel most understood when they do most of the talking", "Different people need different conversations — adapting your style to theirs is the mark of a master communicator", "Empathy is not agreement. It is the practice of making people feel genuinely heard before you respond"],
   ["Invisible excellence does not scale — visibility is a communication skill, not a personality trait", "Performance without visibility is philanthropy — your work needs a voice", "The gap between actual and perceived contribution is where careers stall. Communication closes it."],
   ["Your brand is what people say about you when you leave the room", "Consistency of voice and presence builds trust over years, not weeks", "You cannot be known for everything — choose your niche deliberately"],
   ["Give first, always — generosity is the foundation of every lasting network", "People remember how you made them feel, never just what you said", "A warm, curious introduction is worth ten cold connections"],
@@ -721,12 +721,12 @@ export const WORKPLACE_APPLICATION = [
     "Use the Pixar Framework (Once upon a time… Until finally…) to structure your next project update.",
     "Replace the first data slide in your next deck with a human example that shows the same point.",
   ],
-  // Day 9 — Delivery
+  // Day 9 — Connections
   [
-    "Record yourself delivering a key message on video — watch without sound first, then with.",
-    "In your next meeting, maintain eye contact for 3–5 seconds at a time.",
-    "Stand during your next presentation instead of sitting — it changes your energy and theirs.",
-    "Use open gestures: hands visible, away from your body, and deliberate.",
+    "Before your next one-to-one, prepare three genuine questions about the other person's work, priorities, or challenges — and ask them before you share your own agenda.",
+    "In meetings this week, practise the 70/30 rule: listen more than you speak, and reflect back what you hear before you respond.",
+    "Identify one colleague whose communication style differs from yours — a Driver, Analytical, or Expressive — and consciously adapt your pace and approach to match theirs.",
+    "End every significant conversation this week with: 'Is there anything else on your mind?' Then stay silent and listen fully.",
   ],
   // Day 10 — Visibility
   [
