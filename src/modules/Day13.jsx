@@ -171,40 +171,44 @@ const CIRCUIT_CHARS = [
     name: 'Marcus Chen',
     role: 'Senior VP, Strategy',
     challenge: 'Polite but distracted — has somewhere to be',
-    opener: "Good evening. [Glances at phone] Sorry — just dealing with something. You were saying?",
-    sysPrompt: (hist) => "You are Marcus Chen, Senior VP of Strategy at a global consulting firm. You are at a professional networking event after a long day. You are polite but distracted — you have been checking your phone and have a dinner reservation in 30 minutes. Keep your responses brief (1-2 sentences) unless the person says something genuinely specific, surprising, or relevant to strategy or business. If they impress you, engage more. Never break character or offer coaching advice.\n\nConversation so far:\n" + hist,
+    questions: [
+      "Marcus Chen, Senior VP of Strategy, is walking past you at a networking event. He glances at his phone and pauses briefly. What's your opening line?",
+      "He replies: \"Sorry — just a lot on tonight.\" He's still half-distracted. What do you say to keep him engaged?",
+    ],
   },
   {
     id: 'priya',
     name: 'Priya Sharma',
     role: 'Head of Product, TechVenture',
     challenge: 'Direct and quietly sceptical of small talk',
-    opener: "Hi. I don't think we've met before. What do you do?",
-    sysPrompt: (hist) => "You are Priya Sharma, Head of Product at a fast-growing tech company. You are at a post-conference drinks reception. You have no patience for small talk or generic answers — you are direct and only open up when someone says something genuinely interesting or asks a question that shows real curiosity. Respond politely but briefly to generic answers. Engage warmly when they impress you. Never break character or offer coaching advice.\n\nConversation so far:\n" + hist,
+    questions: [
+      "Priya Sharma, Head of Product, introduces herself and asks directly: \"What do you do?\" She has no patience for vague answers. What do you say?",
+      "She nods and says: \"Interesting.\" Then silence. She's waiting to be genuinely impressed. What do you say next?",
+    ],
   },
   {
     id: 'james',
     name: 'James Okafor',
     role: "Tonight's Keynote Speaker",
     challenge: 'Warm but in high demand — the queue is forming',
-    opener: "Hi, great to meet you. [Briefly glances over your shoulder] Hope you enjoyed the talk — what brought you tonight?",
-    sysPrompt: (hist) => "You are James Okafor, tonight's keynote speaker at a professional conference. You are warm and energetic but in extremely high demand — there is a queue of people waiting. Give each person genuine but brief responses. If someone gives a generic compliment, respond warmly but briefly. If they say something specific and thoughtful, engage more deeply. After 3 exchanges, naturally begin to close (e.g. mention you should circulate but would love to continue another time). Never break character or offer coaching advice.\n\nConversation so far:\n" + hist,
+    questions: [
+      "James Okafor just finished his keynote. You have about 15 seconds before someone else pulls him away. What's your opening?",
+      "He smiles and asks: \"What specifically resonated with you?\" He wants a real answer, not flattery. What do you say?",
+    ],
   },
 ];
 
 export function D13SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
   const [charIdx, setCharIdx] = useState(0);
-  const [turn, setTurn] = useState(0);
+  const [qIdx, setQIdx] = useState(0);
   const [input, setInput] = useState('');
-  const [msgs, setMsgs] = useState(CIRCUIT_CHARS.map(sc => [{role:'char', text:sc.opener}]));
   const [scores, setScores] = useState([null, null, null]);
   const [debrief, setDebrief] = useState(null);
 
-  const transcriptsRef = useRef(CIRCUIT_CHARS.map(sc => [{role:'assistant', content:sc.opener}]));
+  const answersRef = useRef([['',''],['',''],['','']]);
   const scoresRef = useRef([null, null, null]);
   const charIdxRef = useRef(0);
-  const turnRef = useRef(0);
 
   const cs = {
     card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px"},
@@ -214,20 +218,18 @@ export function D13SimWidget({T, T2, isDesktop}) {
 
   const scoreChar = async (ci) => {
     const sc = CIRCUIT_CHARS[ci];
-    const transcript = transcriptsRef.current[ci]
-      .map(m => (m.role === 'assistant' ? sc.name : 'User') + ": " + m.content)
-      .join('\n');
-    const prompt = "You are an expert communication coach reviewing a professional networking conversation.\n\nCharacter: " + sc.name + " — " + sc.role + "\nChallenge: " + sc.challenge + "\n\nConversation:\n" + transcript + "\n\nScore the user (1-5) on three dimensions:\n- opening: How strong was their opening line — did it make the character want to engage?\n- adaptability: How well did they read and respond to the character's energy and style?\n- impression: How memorable and positive was the overall impression they left?\n\nRespond ONLY with valid JSON on a single line: {\"opening\":X,\"adaptability\":X,\"impression\":X,\"note\":\"one specific sentence about what worked or what to try differently\"}";
+    const [a1, a2] = answersRef.current[ci];
+    const prompt = "You are an expert communication coach evaluating how someone handled two networking moments.\n\nCharacter: " + sc.name + " — " + sc.role + "\nChallenge: " + sc.challenge + "\n\nQ1 — " + sc.questions[0] + "\nTheir answer: \"" + a1 + "\"\n\nQ2 — " + sc.questions[1] + "\nTheir answer: \"" + a2 + "\"\n\nScore them 1-5 on:\n- opening: Was the opening specific, confident, and engaging — not generic?\n- adaptability: Did they read the character's energy and respond to it?\n- impression: Would this leave a memorable, positive impression?\n\nRespond ONLY with valid JSON on a single line: {\"opening\":X,\"adaptability\":X,\"impression\":X,\"note\":\"one specific sentence — what worked or what to try differently next time\"}";
     try {
       const res = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-5', messages:[{role:'user', content:prompt}], max_tokens:200})});
       const data = await res.json();
       const text = data.content?.[0]?.text || '{}';
       const m = text.match(/\{[\s\S]*\}/);
-      const parsed = m ? JSON.parse(m[0]) : {opening:3, adaptability:3, impression:3, note:'Good effort in a challenging conversation.'};
+      const parsed = m ? JSON.parse(m[0]) : {opening:3, adaptability:3, impression:3, note:'Good effort in a challenging moment.'};
       scoresRef.current = scoresRef.current.map((s, i) => i === ci ? parsed : s);
       setScores(prev => prev.map((s, i) => i === ci ? parsed : s));
     } catch(e) {
-      const fb = {opening:3, adaptability:3, impression:3, note:'Good effort in a challenging conversation.'};
+      const fb = {opening:3, adaptability:3, impression:3, note:'Good effort in a challenging moment.'};
       scoresRef.current = scoresRef.current.map((s, i) => i === ci ? fb : s);
       setScores(prev => prev.map((s, i) => i === ci ? fb : s));
     }
@@ -236,57 +238,34 @@ export function D13SimWidget({T, T2, isDesktop}) {
 
   const runDebrief = async () => {
     const all = CIRCUIT_CHARS.map((sc, i) => {
-      const t = transcriptsRef.current[i].map(m => (m.role === 'assistant' ? sc.name : 'User') + ": " + m.content).join('\n');
+      const [a1, a2] = answersRef.current[i];
       const s = scoresRef.current[i];
-      return "--- " + sc.name + " (" + sc.role + ") ---\n" + t + "\nScores: Opening " + (s?.opening||0) + "/5, Adaptability " + (s?.adaptability||0) + "/5, Impression " + (s?.impression||0) + "/5";
+      return "--- " + sc.name + " (" + sc.role + ") ---\nQ1: " + sc.questions[0] + "\nAnswer: " + a1 + "\nQ2: " + sc.questions[1] + "\nAnswer: " + a2 + "\nScores: Opening " + (s?.opening||0) + "/5, Adaptability " + (s?.adaptability||0) + "/5, Impression " + (s?.impression||0) + "/5";
     }).join('\n\n');
-    const prompt = "You are an expert communication coach. A user just completed The Networking Circuit — three back-to-back conversations with different professional characters. Analyse their performance based on what they actually said.\n\n" + all + "\n\nGive specific, direct, encouraging coaching.\n\nRespond ONLY with valid JSON on a single line: {\"insight\":\"2-3 specific sentences about their communication pattern across all three conversations\",\"practice\":\"one concrete thing to focus on next time\",\"quote\":\"a short inspiring quote about connection or confidence\"}";
+    const prompt = "You are an expert communication coach. A user just completed The Networking Circuit — two questions each with three different professional characters. Analyse their answers across all three.\n\n" + all + "\n\nGive specific, direct, encouraging coaching based on what they actually wrote.\n\nRespond ONLY with valid JSON on a single line: {\"insight\":\"2-3 specific sentences about their communication pattern\",\"practice\":\"one concrete thing to focus on next time\",\"quote\":\"a short inspiring quote about connection or confidence\"}";
     try {
       const res = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-5', messages:[{role:'user', content:prompt}], max_tokens:350})});
       const data = await res.json();
       const text = data.content?.[0]?.text || '{}';
       const m = text.match(/\{[\s\S]*\}/);
       const parsed = m ? JSON.parse(m[0]) : null;
-      setDebrief(parsed || {insight:'You completed all three conversations.', practice:'Focus on making your opening line specific to the person in front of you.', quote:'Every great professional relationship began with one brave sentence.'});
+      setDebrief(parsed || {insight:'You completed the full circuit.', practice:'Focus on making your opening line specific to the person in front of you.', quote:'Every great professional relationship began with one brave sentence.'});
     } catch(e) {
-      setDebrief({insight:'You completed all three conversations.', practice:'Focus on making your opening line specific to the person in front of you.', quote:'Every great professional relationship began with one brave sentence.'});
+      setDebrief({insight:'You completed the full circuit.', practice:'Focus on making your opening line specific to the person in front of you.', quote:'Every great professional relationship began with one brave sentence.'});
     }
     setPhase('debrief');
   };
 
-  const handleSend = async () => {
-    if (!input.trim() || phase !== 'conv') return;
-    const userText = input.trim();
+  const handleSubmit = async () => {
+    if (!input.trim()) return;
     const ci = charIdxRef.current;
+    answersRef.current[ci][qIdx] = input.trim();
     setInput('');
-
-    setMsgs(prev => prev.map((a, i) => i === ci ? [...a, {role:'user', text:userText}] : a));
-    transcriptsRef.current[ci] = [...transcriptsRef.current[ci], {role:'user', content:userText}];
-    setPhase('thinking');
-
-    try {
-      const hist = transcriptsRef.current[ci]
-        .map(m => (m.role === 'assistant' ? CIRCUIT_CHARS[ci].name : 'You') + ": " + m.content)
-        .join('\n');
-      const res = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-haiku-4-5-20251001', system:CIRCUIT_CHARS[ci].sysPrompt(hist), messages:[{role:'user', content:userText}], max_tokens:150})});
-      const data = await res.json();
-      const reply = (data.content?.[0]?.text || '...').trim();
-
-      transcriptsRef.current[ci] = [...transcriptsRef.current[ci], {role:'assistant', content:reply}];
-      setMsgs(prev => prev.map((a, i) => i === ci ? [...a, {role:'char', text:reply}] : a));
-
-      const newTurn = turnRef.current + 1;
-      turnRef.current = newTurn;
-      setTurn(newTurn);
-
-      if (newTurn < 3) {
-        setPhase('conv');
-      } else {
-        setPhase('analyzing');
-        await scoreChar(ci);
-      }
-    } catch(e) {
-      setPhase('conv');
+    if (qIdx === 0) {
+      setQIdx(1);
+    } else {
+      setPhase('analyzing');
+      await scoreChar(ci);
     }
   };
 
@@ -294,10 +273,9 @@ export function D13SimWidget({T, T2, isDesktop}) {
     const nextIdx = charIdxRef.current + 1;
     if (nextIdx < 3) {
       charIdxRef.current = nextIdx;
-      turnRef.current = 0;
       setCharIdx(nextIdx);
-      setTurn(0);
-      setPhase('conv');
+      setQIdx(0);
+      setPhase('question');
     } else {
       setPhase('debriefing');
       await runDebrief();
@@ -306,14 +284,12 @@ export function D13SimWidget({T, T2, isDesktop}) {
 
   const reset = () => {
     charIdxRef.current = 0;
-    turnRef.current = 0;
-    transcriptsRef.current = CIRCUIT_CHARS.map(sc => [{role:'assistant', content:sc.opener}]);
+    answersRef.current = [['',''],['',''],['','']];
     scoresRef.current = [null, null, null];
     setCharIdx(0);
-    setTurn(0);
+    setQIdx(0);
     setPhase('intro');
     setInput('');
-    setMsgs(CIRCUIT_CHARS.map(sc => [{role:'char', text:sc.opener}]));
     setScores([null, null, null]);
     setDebrief(null);
   };
@@ -323,7 +299,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
       <div style={cs.card}>
         <div style={cs.label}>The Networking Circuit · Simulation</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Three people. Three conversations. One chance to make an impression.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Each character presents a different social challenge. You have 3 exchanges with each. Your AI coach will score your opening, adaptability, and the impression you leave — then give you a full debrief.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AI Communication Coach sets the scene and asks you two questions per person. Write what you would actually say — then get scored on your opening, adaptability, and the impression you leave.</p>
       </div>
       {CIRCUIT_CHARS.map((sc, i) => (
         <div key={sc.id} style={{...cs.card, display:"flex", alignItems:"flex-start", gap:14}}>
@@ -337,54 +313,49 @@ export function D13SimWidget({T, T2, isDesktop}) {
           </div>
         </div>
       ))}
-      <button onClick={() => setPhase('conv')} style={cs.cta}>Enter the Circuit →</button>
+      <button onClick={() => setPhase('question')} style={cs.cta}>Enter the Circuit →</button>
     </div>
   );
 
-  if (phase === 'conv' || phase === 'thinking') {
+  if (phase === 'question') {
     const sc = CIRCUIT_CHARS[charIdx];
-    const currentMsgs = msgs[charIdx];
     return (
       <div style={{display:"flex", flexDirection:"column", gap:isDesktop?12:10}}>
-        <div style={{...cs.card, display:"flex", alignItems:"center", justifyContent:"space-between", gap:12, padding:isDesktop?"16px 24px":"12px 16px"}}>
+        <div style={{...cs.card, display:"flex", alignItems:"center", justifyContent:"space-between", gap:12, padding:isDesktop?"14px 24px":"10px 16px"}}>
           <div>
-            <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:2}}>Conversation {charIdx+1} of 3</div>
+            <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:2}}>Person {charIdx+1} of 3</div>
             <div style={{fontFamily:T.sans, fontSize:isDesktop?14:13, fontWeight:600, color:T2.text}}>{sc.name} — <span style={{fontWeight:400, color:T2.text4}}>{sc.role}</span></div>
           </div>
           <div style={{background:"rgba(138,158,132,0.08)", border:"0.5px solid rgba(138,158,132,0.25)", borderRadius:3, padding:"4px 10px", flexShrink:0}}>
-            <span style={{fontFamily:T.sans, fontSize:11, color:T.gold}}>Turn {Math.min(turn+1,3)} / 3</span>
+            <span style={{fontFamily:T.sans, fontSize:11, color:T.gold}}>Q{qIdx+1} of 2</span>
           </div>
         </div>
 
-        <div style={{display:"flex", flexDirection:"column", gap:10}}>
-          {currentMsgs.map((m, i) => (
-            <div key={i} style={{display:"flex", justifyContent:m.role==='user'?"flex-end":"flex-start"}}>
-              <div style={{maxWidth:"82%", padding:"10px 14px", borderRadius:8, background:m.role==='user'?T.ink:T2.surface, border:m.role==='char'?"0.5px solid "+T2.border:"none", fontFamily:T.sans, fontSize:isDesktop?14:13, color:m.role==='user'?T.bg:T2.text, lineHeight:1.55}}>{m.text}</div>
-            </div>
-          ))}
-          {phase === 'thinking' && (
-            <div style={{display:"flex", justifyContent:"flex-start"}}>
-              <div style={{padding:"10px 16px", borderRadius:8, background:T2.surface, border:"0.5px solid "+T2.border}}>
-                <span style={{fontFamily:T.sans, fontSize:13, color:T2.text4, letterSpacing:2}}>...</span>
-              </div>
-            </div>
-          )}
+        <div style={{...cs.card, background:"rgba(138,158,132,0.05)", borderLeft:"2px solid "+T.gold}}>
+          <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10}}>Your Coach</div>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, margin:0}}>{sc.questions[qIdx]}</p>
         </div>
 
-        {phase === 'conv' && (
-          <div style={{display:"flex", gap:8}}>
-            <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }}} placeholder="Type your response..." className="au-input" style={{flex:1, padding:"10px 14px", fontSize:isDesktop?14:13}}/>
-            <button onClick={handleSend} disabled={!input.trim()} style={{padding:"10px 20px", borderRadius:4, border:"none", background:input.trim()?T.gold:"rgba(138,158,132,0.15)", color:input.trim()?"white":T2.text4, fontFamily:T.sans, fontSize:14, fontWeight:600, cursor:input.trim()?"pointer":"not-allowed", transition:"all 0.2s", flexShrink:0}}>Send</button>
-          </div>
-        )}
+        <div style={cs.card}>
+          <div style={cs.label}>Your Response</div>
+          <textarea
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            placeholder="Write exactly what you would say..."
+            style={{width:"100%", minHeight:isDesktop?80:70, background:"transparent", border:"none", borderBottom:"0.5px solid "+T2.divider, padding:"6px 0 10px", fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, resize:"none", outline:"none", lineHeight:1.6, boxSizing:"border-box"}}
+          />
+          <button onClick={handleSubmit} disabled={!input.trim()} style={{...cs.cta, marginTop:14, background:input.trim()?T.ink:"rgba(44,36,22,0.2)", cursor:input.trim()?"pointer":"not-allowed"}}>
+            {qIdx === 0 ? "Next Question →" : "Submit — Get Scored →"}
+          </button>
+        </div>
       </div>
     );
   }
 
   if (phase === 'analyzing') return (
     <div style={{...cs.card, textAlign:"center", padding:isDesktop?"40px":"28px"}}>
-      <div style={cs.label}>Analysing your conversation</div>
-      <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>Your coach is reviewing your exchange with {CIRCUIT_CHARS[charIdx].name}...</p>
+      <div style={cs.label}>Your coach is reviewing</div>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>Scoring your responses for {CIRCUIT_CHARS[charIdx].name}...</p>
     </div>
   );
 
@@ -396,13 +367,13 @@ export function D13SimWidget({T, T2, isDesktop}) {
     return (
       <div style={{display:"flex", flexDirection:"column", gap:isDesktop?12:10}}>
         <div style={cs.card}>
-          <div style={cs.label}>{sc.name} · Complete</div>
+          <div style={cs.label}>{sc.name} · Scored</div>
           <div style={{display:"flex", flexDirection:"column", gap:14}}>
             {dims.map(d => (
               <div key={d.key}>
                 <div style={{display:"flex", justifyContent:"space-between", marginBottom:6}}>
                   <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text}}>{d.label}</span>
-                  <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, fontWeight:600, color:T.gold}}>{score?.[d.key] || 0}/5</span>
+                  <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, fontWeight:600, color:T.gold}}>{score?.[d.key]||0}/5</span>
                 </div>
                 <div style={{height:4, borderRadius:2, background:T2.border, overflow:"hidden"}}>
                   <div style={{height:"100%", width:((score?.[d.key]||0)/5*100)+"%", background:T.gold, borderRadius:2, transition:"width 0.7s ease"}}/>
@@ -463,7 +434,6 @@ export function D13SimWidget({T, T2, isDesktop}) {
             })}
           </div>
         </div>
-
         {debrief && (
           <>
             <div style={{...cs.card, background:"rgba(138,158,132,0.06)", borderLeft:"2px solid "+T.gold}}>
