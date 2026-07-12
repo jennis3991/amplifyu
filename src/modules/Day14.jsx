@@ -95,10 +95,10 @@ export function D14PracticeWidget({T, T2, isDesktop}) {
   if (phase === 'q0') return (
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
       <Bars filled={1}/>
-      <Coach>When you started this programme, what was holding you back — and when did that start to shift?</Coach>
+      <Coach>When you started this programme, what was holding you back? What has changed since then — if anything?</Coach>
       <div style={cs.card}>
         <div style={cs.label}>Reflection 1 of 3</div>
-        <textarea value={shift} onChange={e => setShift(e.target.value)} placeholder="Think about a specific moment, conversation or exercise where something clicked..." style={cs.textarea}/>
+        <textarea value={shift} onChange={e => setShift(e.target.value)} placeholder="Be honest — some things shift quickly, others take longer. Either is a valid answer." style={cs.textarea}/>
       </div>
       <Btn onClick={() => { save(); setPhase('q1'); }} disabled={shift.trim().length < 5}>Next</Btn>
     </div>
