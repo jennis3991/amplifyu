@@ -291,22 +291,21 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
   };
 
   const leftPanel = (
-    <div style={{background: '#0A0804', borderRadius: 8, padding: isDesktop ? '32px 28px' : '22px 20px', border: '0.5px solid rgba(138,158,132,0.15)', display: 'flex', flexDirection: 'column'}}>
-      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 16}}>The Edit</div>
-      <h2 style={{fontFamily: T.serif, fontSize: isDesktop ? 26 : 20, fontWeight: 600, color: 'rgba(245,239,230,0.9)', lineHeight: 1.2, margin: '0 0 20px'}}>
+    <div>
+      <div style={{fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:12}}>The Edit · Rehearsal</div>
+      <h2 style={{fontFamily:T.serif, fontSize:isDesktop?40:28, fontWeight:600, color:T2.text, lineHeight:1.1, margin:'0 0 16px'}}>
         Say it once.<br/>Say it short.<br/>Stop.
       </h2>
-      <div style={{height: '0.5px', background: 'rgba(138,158,132,0.2)', marginBottom: 20}} />
-      <p style={{fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: 'rgba(245,239,230,0.5)', lineHeight: 1.7, margin: '0 0 20px'}}>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?16:15, color:T2.text3, lineHeight:1.6, fontWeight:400, margin:'0 0 20px'}}>
         Pick a message below. Say it naturally — but challenge yourself to use only short sentences. One idea. Full stop. Next idea. Full stop.
       </p>
-      <div style={{background: 'rgba(138,158,132,0.07)', borderRadius: 4, border: '0.5px solid rgba(138,158,132,0.18)', padding: '16px 18px', marginBottom: 20}}>
-        <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.7)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 10}}>Coach Tip</div>
-        <p style={{fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: 'rgba(245,239,230,0.7)', lineHeight: 1.65, margin: 0, fontStyle: 'italic'}}>
+      <div style={{background:'rgba(138,158,132,0.07)', borderRadius:6, border:'0.5px solid rgba(138,158,132,0.18)', padding:'14px 16px', marginBottom:20}}>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.7)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:8}}>Coach Tip</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text2, lineHeight:1.65, margin:0}}>
           Great communicators don't trim their sentences. They end them sooner.
         </p>
       </div>
-      <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:'auto',alignSelf:'flex-start'}}>
+      <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
           <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
           <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>

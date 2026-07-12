@@ -251,19 +251,18 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
   };
 
   const leftPanel = (
-    <div style={{background: '#0A0804', borderRadius: 8, padding: isDesktop ? '32px 28px' : '22px 20px', border: '0.5px solid rgba(138,158,132,0.15)', display: 'flex', flexDirection: 'column'}}>
-      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 16}}>The Pause Drill</div>
-      <h2 style={{fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, fontWeight: 600, color: 'rgba(245,239,230,0.9)', lineHeight: 1.35, margin: '0 0 20px'}}>
+    <div>
+      <div style={{fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:12}}>The Pause Drill · Rehearsal</div>
+      <h2 style={{fontFamily:T.serif, fontSize:isDesktop?40:28, fontWeight:600, color:T2.text, lineHeight:1.1, margin:'0 0 16px'}}>
         Today's goal isn't to speak faster. It's to become comfortable with silence.
       </h2>
-      <div style={{height: '0.5px', background: 'rgba(138,158,132,0.2)', marginBottom: 20}} />
-      <div style={{background: 'rgba(138,158,132,0.07)', borderRadius: 4, border: '0.5px solid rgba(138,158,132,0.18)', padding: '16px 18px', marginBottom: 20}}>
-        <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.7)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 10}}>Coach Tip</div>
-        <p style={{fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: 'rgba(245,239,230,0.7)', lineHeight: 1.65, margin: 0, fontStyle: 'italic'}}>
+      <div style={{background:'rgba(138,158,132,0.07)', borderRadius:6, border:'0.5px solid rgba(138,158,132,0.18)', padding:'14px 16px', marginBottom:20}}>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.7)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:8}}>Coach Tip</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text2, lineHeight:1.65, margin:0}}>
           The strongest communicators don't rush to answer. They give themselves permission to think.
         </p>
       </div>
-      <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:'auto',alignSelf:'flex-start'}}>
+      <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
           <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
           <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
@@ -622,15 +621,14 @@ export function D3SimWidget({T, T2, isDesktop}) {
   const scenarios = HOT_SEAT_SCENARIOS[track] || HOT_SEAT_SCENARIOS.ic;
 
   const leftPanel = (
-    <div style={{background: '#0A0804', borderRadius: 8, padding: isDesktop ? '32px 28px' : '22px 20px', border: '0.5px solid rgba(138,158,132,0.15)', display: 'flex', flexDirection: 'column', gap: 0}}>
-      <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 16}}>The Hot Seat</div>
-      <h2 style={{fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, fontWeight: 600, color: 'rgba(245,239,230,0.9)', lineHeight: 1.35, margin: '0 0 20px'}}>
+    <div>
+      <div style={{fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:12}}>The Hot Seat · Simulation</div>
+      <h2 style={{fontFamily:T.serif, fontSize:isDesktop?40:28, fontWeight:600, color:T2.text, lineHeight:1.1, margin:'0 0 16px'}}>
         Today's challenge isn't giving the perfect answer. It's staying calm when you're put on the spot.
       </h2>
-      <div style={{height: '0.5px', background: 'rgba(138,158,132,0.2)', marginBottom: 20}} />
-      <div style={{background: 'rgba(138,158,132,0.07)', borderRadius: 4, border: '0.5px solid rgba(138,158,132,0.18)', padding: '16px 18px'}}>
-        <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.7)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 10}}>Coach Tip</div>
-        <p style={{fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: 'rgba(245,239,230,0.7)', lineHeight: 1.65, margin: 0, fontStyle: 'italic'}}>
+      <div style={{background:'rgba(138,158,132,0.07)', borderRadius:6, border:'0.5px solid rgba(138,158,132,0.18)', padding:'14px 16px', marginBottom: phase !== 'select' ? 12 : 0}}>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.7)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:8}}>Coach Tip</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text2, lineHeight:1.65, margin:0}}>
           When you feel the urge to fill the silence — pause instead. Great communicators don't fill silence. They use it.
         </p>
       </div>
