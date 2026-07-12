@@ -509,7 +509,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD5 && step==="Rehearsal") return <TabHeroPane label="The PRE Card Sort" headline="Sort the cards. Train the instinct." />;
         if(isD6 && step==="Rehearsal") return <TabHeroPane label="Find Your Words" headline="The right words under pressure don't come from thinking faster. They come from having them ready." />;
         if(isD9 && step==="Rehearsal") return null;
-        if(isD10 && step==="Rehearsal") return <TabHeroPane label="The SAR Challenge" headline="Turn what you do into a story people remember." />;
+        if(isD10 && step==="Rehearsal") return <TabHeroPane label="Make Your Work Visible" headline="Turn what you do into a story people remember." />;
         if(isD11 && step==="Rehearsal") return <TabHeroPane label="Build Your Brand" headline="Every career has a reputation. The best careers have one by design." />;
         if(isD12 && step==="Rehearsal") return <TabHeroPane label="The Presence Challenge" headline="Seven rounds. Every physical signal that shapes how communication lands." />;
         if(isD13 && step==="Rehearsal") return <TabHeroPane label="Make Your Value Visible" headline="Four exercises. Make your value impossible to ignore." />;
@@ -827,7 +827,7 @@ T.goldDark : T2.text4,
       {isD10 && step==="Rehearsal" && d10PracticePhase==='intro' && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Rehearsal · Day 10</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The SAR Challenge™</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Make Your Work Visible</h2>
           <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"16px 18px",marginBottom:12}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The First Step</div>
             <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:0,fontWeight:300}}>Think of something you did recently — a project, a problem you solved, a result you created. Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
@@ -844,7 +844,7 @@ T.goldDark : T2.text4,
       )}
       {isD10 && step==="Rehearsal" && d10PracticePhase==='builder' && (
         <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The SAR Challenge™</div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Make Your Work Visible</div>
           <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>SAR Builder</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Situation. Action. Result. Describe what you did — your AmplifyU coach sharpens it into your performance statement.</p>
           <D10MobileSAR onComplete={()=>setD10SarDone(true)}/>
