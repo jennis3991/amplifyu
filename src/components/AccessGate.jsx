@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const DUSTY_ROSE = "#C9A8A0";
+const DUSTY_ROSE = "#8A9E84";
 const CREAM = "#F5EDE0";
 const INK = "#1A1510";
 

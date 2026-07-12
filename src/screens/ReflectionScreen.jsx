@@ -186,7 +186,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
     // Left panel — content
     return (
-      <div style={{ height: "100vh", display: "flex", fontFamily: T.sans, background: "#1A1713", overflow: "hidden" }} className="au-grain-wrap">
+      <div style={{ height: "100vh", display: "flex", fontFamily: T.sans, background: "#000000", overflow: "hidden" }} className="au-grain-wrap">
         {/* ── LEFT: The Coaching Narrative ── */}
         <div style={{ flex: 1, overflowY: "auto", padding: "72px 72px 64px", display: "flex", flexDirection: "column" }}>
           {/* Brand mark */}
@@ -240,7 +240,7 @@ export function ReflectionScreen({ answers, onContinue }) {
             <div style={{ animation: "fadeUp 0.7s ease both", marginTop: "auto", paddingTop: 16 }}>
               <div style={{ height: 1, background: "linear-gradient(90deg, rgba(138,158,132,0.3) 0%, transparent 100%)", marginBottom: 36 }}/>
               <p style={{ fontFamily: T.serif, fontSize: 19, fontWeight: 500, color: "rgba(255,255,255,0.85)", lineHeight: 1.4, marginBottom: 32, letterSpacing: "-0.3px" }}>
-                This is your moment.{" "}<span style={{ color: T.gold }}>AmplifyU.</span>
+                This is your moment.{" "}<span style={{ color: T.gold }}>AMPLIFYU.</span>
               </p>
               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                 <button onClick={onContinue} className="au-cta" style={{
@@ -268,7 +268,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
   // ── MOBILE (original, preserved) ─────────────────────────────────────────
   return (
-    <div style={{ minHeight:"100vh", background:"#1A1510", fontFamily:T.sans, display:"flex", flexDirection:"column", overflowY:"auto" }}>
+    <div style={{ minHeight:"100vh", background:"#000000", fontFamily:T.sans, display:"flex", flexDirection:"column", overflowY:"auto" }}>
       <style>{`
         @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
         @keyframes goldPulse { 0%,100% { opacity:0.6; } 50% { opacity:1; } }
