@@ -505,7 +505,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD1 && step==="Rehearsal") return <TabHeroPane label="Voice Warm-Up" headline="Let's warm up your voice." />;
         if(isD2 && step==="Rehearsal") return <TabHeroPane label="Voice Warm-Up · Day 2" headline="The way you sound changes everything. Let's hear your voice." />;
         if(isD3 && step==="Rehearsal") return null;
-        if(isD4 && step==="Rehearsal") return <TabHeroPane label="The Edit" headline="Say it once. Say it short. Stop." />;
+        if(isD4 && step==="Rehearsal") return null;
         if(isD5 && step==="Rehearsal") return <TabHeroPane label="The PRE Card Sort" headline="Sort the cards. Train the instinct." />;
         if(isD6 && step==="Rehearsal") return <TabHeroPane label="Find Your Words" headline="The right words under pressure don't come from thinking faster. They come from having them ready." />;
         if(isD9 && step==="Rehearsal") return <TabHeroPane label="Build Your Connection Habits" headline="Five exercises. Build the habits of the world's most connected communicators." />;
