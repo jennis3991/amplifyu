@@ -447,7 +447,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             6:{label:"AI CONVERSATION PREP",heading:"Prepare for the conversations that matter most."},
             7:{label:"WEEK 1 MASTER CHALLENGE",heading:"Teach It Forward. Prove what you know."},
             8:{label:"NARRATIVE — IN ACTION",heading:"Tell the story. Transport your audience."},
-            9:{label:"THE RAPPORT BUILDER",heading:"Four conversations. Four personalities. Build genuine rapport."},
+            9:{label:"THE RAPPORT BUILDER",heading:"Adapt your style. Build genuine rapport."},
             10:{label:"PERFORMANCE — IN ACTION",heading:"Communicate your impact with conviction."},
             11:{label:"BRAND — IN ACTION",heading:"Your brand is built in every room you enter. Shape it."},
             12:{label:"PRESENCE — IN ACTION",heading:"Every signal you send shapes what people believe."},
@@ -1985,9 +1985,6 @@ T.goldDark : T2.text4,
       )}
       {isD9 && step==="Simulation" && (
         <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Simulation · Day 9</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Rapport Builder</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Four conversations. Four personalities. Adapt your style and build genuine rapport.</p>
           <D9SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}

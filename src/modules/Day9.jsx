@@ -400,11 +400,11 @@ Return ONLY valid JSON:
     <div style={{display:'flex',flexDirection:'column',gap:isDesktop?16:14}}>
       <div>
         <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:12}}>The Rapport Builder · Simulation</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:'0 0 14px'}}>
-          Connect with anyone.<br/>Even the people who make you nervous.
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:'0 0 10px'}}>
+          Adapt your style.<br/>Build genuine rapport.
         </h2>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:0}}>
-          Different people need different things from a conversation. This simulation puts you inside real workplace moments — and coaches you on how to adapt.
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>
+          Pick a communication style to practise. Three turns. Real coaching after.
         </p>
       </div>
       <div style={{...cs.card,borderLeft:'2px solid '+T.gold}}>
