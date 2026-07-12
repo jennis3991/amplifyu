@@ -1569,7 +1569,7 @@ setAmbitionSaved(true); } catch {}
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Filler-Free Challenge</div>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,letterSpacing:"-0.5px",lineHeight:1.2,marginBottom:32}}>Replace fillers with calm, intentional communication.</h2>
-          <D3PracticeWidget T={T} T2={T2} isDesktop={true}/>
+          <D3PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
         </div>
       );
       if (step === "Practice_OLD_UNUSED") return (
