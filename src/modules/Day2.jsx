@@ -83,21 +83,18 @@ export function D2SimWidget({T, T2, isDesktop}) {
       "Describe the best piece of advice you've ever received — and why it stuck.",
       "Tell me about someone who shaped who you are today.",
       "Describe a moment where you surprised yourself.",
-      "Tell me about a challenge that turned out to be a gift.",
     ],
     Persuade:[
       "Convince your team to embrace a difficult change.",
       "Persuade a sceptical stakeholder to support your idea.",
       "Make the case for investing in people over technology.",
       "Convince a client to choose your proposal.",
-      "Persuade someone to take a chance on you.",
     ],
     Presence:[
       "Introduce yourself as if you're speaking to a room of 500 people.",
       "Describe what you do — in a way that makes people lean in.",
       "Give a 90-second opening to a talk on the topic you care most about.",
       "Speak about something you believe most people get wrong.",
-      "Inspire someone who is about to give up on something important.",
     ],
   };
   const ALL_PROMPTS = Object.values(PROMPTS).flat();
@@ -322,28 +319,36 @@ export function D2SimWidget({T, T2, isDesktop}) {
   );
 
   // ── CHOOSE ──────────────────────────────────────────────────────────────────
-  if(phase==='choose') return (
-    <div style={{display:"flex",flexDirection:"column",gap:16}}>
-      <div>
-        <h2 style={cs.h2}>Choose a speaking prompt</h2>
-        <p style={{...cs.body,marginBottom:16}}>{"Pick a topic, speak for 60-90 seconds. Your coach listens for pace, pitch, pauses, and energy."}</p>
+  if(phase==='choose') {
+    const D2ICONS=[
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 19V5a2 2 0 012-2h13a1 1 0 011 1v14" stroke="currentColor" strokeWidth="1.3"/><path d="M4 19a2 2 0 002 2h13a1 1 0 001-1v-1" stroke="currentColor" strokeWidth="1.3"/><path d="M8 7h8M8 11h5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 6.5h6.5L16 12.5l2.5 7L12 16l-6.5 3.5 2.5-7L3.5 8.5H10z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.3"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2a7 7 0 014.9 11.9L16 15v2H8v-2l-.9-1.1A7 7 0 0112 2z" stroke="currentColor" strokeWidth="1.3"/><path d="M9 19h6M10 21h4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+    ];
+    return (
+      <div style={{display:"flex",flexDirection:"column",gap:16}}>
+        <div>
+          <h2 style={cs.h2}>Choose a speaking prompt</h2>
+          <p style={{...cs.body,marginBottom:16}}>{"Pick a topic, speak for 60-90 seconds. Your coach listens for pace, pitch, pauses, and energy."}</p>
+        </div>
+        <div style={{display:"flex",gap:8,marginBottom:4}}>
+          {Object.keys(PROMPTS).map(c=>(
+            <button key={c} onClick={()=>setCat(c)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${cat===c?T.gold:T2.border}`,background:cat===c?"rgba(138,158,132,0.1)":"transparent",color:cat===c?T.gold:T2.text3,fontSize:12,fontWeight:cat===c?600:400,cursor:"pointer",fontFamily:T.sans,minHeight:36,transition:"all 0.15s"}}>{c}</button>
+          ))}
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:isDesktop?12:10}}>
+          {PROMPTS[cat].map((p,i)=>(
+            <div key={i} onClick={()=>selectPrompt(p)} className="au-lift" style={{...cs.card,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",padding:isDesktop?"28px 18px 24px":"22px 14px 20px",gap:14,transition:"border-color 0.2s,box-shadow 0.2s"}}>
+              <div style={{color:"rgba(44,36,22,0.3)",lineHeight:0}}>{D2ICONS[i%D2ICONS.length]}</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.5,margin:0,fontWeight:500}}>{p}</p>
+            </div>
+          ))}
+        </div>
+        <button onClick={surprise} style={{...cs.ghost,marginTop:4}}>{"✦ Surprise Me"}</button>
       </div>
-      <div style={{display:"flex",gap:8,marginBottom:4}}>
-        {Object.keys(PROMPTS).map(c=>(
-          <button key={c} onClick={()=>setCat(c)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${cat===c?T.gold:T2.border}`,background:cat===c?"rgba(138,158,132,0.1)":"transparent",color:cat===c?T.gold:T2.text3,fontSize:12,fontWeight:cat===c?600:400,cursor:"pointer",fontFamily:T.sans,minHeight:36,transition:"all 0.15s"}}>{c}</button>
-        ))}
-      </div>
-      <div style={{display:"flex",flexDirection:"column",gap:8}}>
-        {PROMPTS[cat].map((p,i)=>(
-          <div key={i} onClick={()=>selectPrompt(p)} style={{...cs.card,cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}} className="au-lift">
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.5,margin:0,flex:1,fontWeight:400}}>{p}</p>
-            <span style={{color:T.gold,fontSize:18,flexShrink:0}}>{"→"}</span>
-          </div>
-        ))}
-      </div>
-      <button onClick={surprise} style={{...cs.ghost,marginTop:4}}>{"✦ Surprise Me"}</button>
-    </div>
-  );
+    );
+  }
 
   // ── RECORDING ───────────────────────────────────────────────────────────────
   if(phase==='recording') return (

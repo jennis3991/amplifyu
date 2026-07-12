@@ -839,20 +839,17 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       "What makes a team truly effective?",
       "Describe the best leader you've worked with.",
       "Tell us about a difficult decision you made.",
-      "What frustrates you most at work — and why?",
     ],
     Personal:[
       "What belief has genuinely changed your life?",
       "What motivates you more than anything else?",
       "What's something people misunderstand about you?",
       "Describe a moment that changed your perspective.",
-      "What advice would you give your younger self?",
     ],
     Spontaneous:[
       "Is social media helping or harming us?",
       "What makes someone truly charismatic?",
       "Should schools teach negotiation?",
-      "Is talent overrated compared to consistency?",
       "What creates a strong first impression?",
     ],
   };
@@ -1121,28 +1118,38 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   );
 
   // ── PROMPT SELECTION ──────────────────────────────────────────────────────
-  if(phase==='prompt') return (
-    <div style={{display:"flex",flexDirection:"column",gap:16}}>
-      <div>
-        <h2 style={cs.h2}>Choose a conversation starter</h2>
-        <p style={{...cs.body,marginBottom:16}}>Speak naturally. No preparation. The goal is not perfection — it's awareness.</p>
+  if(phase==='prompt') {
+    const D1ICONS=[
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="13" rx="2" stroke="currentColor" strokeWidth="1.3"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3.5" stroke="currentColor" strokeWidth="1.3"/><circle cx="17" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.3"/><path d="M2 20c0-4.4 3.1-8 7-8s7 3.6 7 8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><path d="M20 14c1.8.8 3 2.6 3 4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 6.5h6.5L16 12.5l2.5 7L12 16l-6.5 3.5 2.5-7L3.5 8.5H10z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.3"/><path d="M12 7v5l3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2a7 7 0 014.9 11.9L16 15v2H8v-2l-.9-1.1A7 7 0 0112 2z" stroke="currentColor" strokeWidth="1.3"/><path d="M9 19h6M10 21h4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+    ];
+    const go=(p)=>{setPrompt(p);setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');};
+    return (
+      <div style={{display:"flex",flexDirection:"column",gap:16}}>
+        <div>
+          <h2 style={cs.h2}>Choose a conversation starter</h2>
+          <p style={{...cs.body,marginBottom:16}}>Speak naturally. No preparation. The goal is not perfection — it's awareness.</p>
+        </div>
+        <div style={{display:"flex",gap:8,marginBottom:4}}>
+          {Object.keys(PROMPTS).map(c=>(
+            <button key={c} onClick={()=>setCat(c)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${cat===c?T.gold:T2.border}`,background:cat===c?"rgba(138,158,132,0.1)":"transparent",color:cat===c?T.gold:T2.text3,fontSize:12,fontWeight:cat===c?600:400,cursor:"pointer",fontFamily:T.sans,minHeight:36,transition:"all 0.15s"}}>{c}</button>
+          ))}
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:isDesktop?12:10}}>
+          {PROMPTS[cat].map((p,i)=>(
+            <div key={i} onClick={()=>go(p)} className="au-lift" style={{...cs.card,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",padding:isDesktop?"28px 18px 24px":"22px 14px 20px",gap:14,transition:"border-color 0.2s,box-shadow 0.2s"}}>
+              <div style={{color:"rgba(44,36,22,0.3)",lineHeight:0}}>{D1ICONS[i%D1ICONS.length]}</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.5,margin:0,fontWeight:500}}>{p}</p>
+            </div>
+          ))}
+        </div>
+        <button onClick={surprise} style={{...cs.ghost,marginTop:4}}>✦ Surprise Me</button>
       </div>
-      <div style={{display:"flex",gap:8,marginBottom:4}}>
-        {Object.keys(PROMPTS).map(c=>(
-          <button key={c} onClick={()=>setCat(c)} style={{padding:"8px 16px",borderRadius:3,border:`0.5px solid ${cat===c?T.gold:T2.border}`,background:cat===c?"rgba(138,158,132,0.1)":"transparent",color:cat===c?T.gold:T2.text3,fontSize:12,fontWeight:cat===c?600:400,cursor:"pointer",fontFamily:T.sans,minHeight:36,transition:"all 0.15s"}}>{c}</button>
-        ))}
-      </div>
-      <div style={{display:"flex",flexDirection:"column",gap:8}}>
-        {PROMPTS[cat].map((p,i)=>(
-          <div key={i} onClick={()=>{setPrompt(p);setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');}} style={{...cs.card,cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}} className="au-lift">
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.5,margin:0,flex:1,fontWeight:400}}>{p}</p>
-            <span style={{color:T.gold,fontSize:18,flexShrink:0}}>→</span>
-          </div>
-        ))}
-      </div>
-      <button onClick={surprise} style={{...cs.ghost,marginTop:4}}>✦ Surprise Me</button>
-    </div>
-  );
+    );
+  }
 
   // ── RECORDING ────────────────────────────────────────────────────────────
   if(phase==='recording') return (
