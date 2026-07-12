@@ -4699,7 +4699,7 @@ setAmbitionSaved(true); } catch {}
             </div>
 
             {/* RIGHT PANEL — Supporting content (40%) */}
-            <div ref={rightPanelRef} style={{
+            <div id="au-right-panel" ref={rightPanelRef} style={{
               flex: 1,
               background: step === "Rehearsal" ? "rgba(247,243,236,0.92)" : T2.bg,
               overflowY: "auto", position: "relative", zIndex: 1,

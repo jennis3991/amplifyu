@@ -888,6 +888,13 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   const SpeechRec = typeof window!=='undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
 
   useEffect(()=>{
+    window.scrollTo(0,0);
+    document.documentElement.scrollTop=0;
+    document.body.scrollTop=0;
+    try{const p=document.getElementById('au-right-panel');if(p)p.scrollTop=0;}catch(_){}
+  },[phase]);
+
+  useEffect(()=>{
     if(isRec && timeLeft>0){
       timerRef.current=setTimeout(()=>setTimeLeft(t=>t-1),1000);
     } else if(isRec && timeLeft===0){
@@ -1126,9 +1133,12 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
         {!isRec && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20}}>Speak naturally for up to 2 minutes.</p>}
         {/* Record button */}
         {!isRec ? (
-          <button onClick={doStart} style={{...cs.cta,maxWidth:240,margin:"0 auto",display:"block",borderRadius:40,background:T.ink,color:T.bg}}>
-            🎤 Start Recording
-          </button>
+          <>
+            <button onClick={doStart} style={{...cs.cta,maxWidth:240,margin:"0 auto",display:"block",borderRadius:40,background:T.ink,color:T.bg}}>
+              🎤 Start Recording
+            </button>
+            {prompt&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,fontStyle:"italic",marginTop:14,lineHeight:1.5,textAlign:"center"}}>{prompt}</p>}
+          </>
         ) : (
           <button onClick={doStop} style={{...cs.cta,maxWidth:240,margin:"0 auto",display:"block",borderRadius:40,background:"rgba(176,92,74,0.15)",color:"#B05C4A",border:"0.5px solid rgba(176,92,74,0.4)"}}>
             ◼ Stop &amp; Analyse
