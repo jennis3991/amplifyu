@@ -879,6 +879,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   const [waveAnim, setWaveAnim] = useState(0);
   const [audioDuration, setAudioDuration] = useState(120);
   const [showTranscript, setShowTranscript] = useState(false);
+  const [hoveredDim, setHoveredDim] = useState(null);
   const audioRef = useRef(null);
   const recRef = useRef(null);
   const mediaRecRef = useRef(null);
@@ -963,6 +964,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       improve:["Your core idea took about 30 seconds to appear. Try opening with it directly — context can follow."],
       insight:"Your delivery felt natural and genuine. The opportunity is structure: if you lead with your clearest point in the first sentence, everything that follows lands harder.",
       priorityFocus:"Lead with your main point first",
+      restructure:["Open with your core message in the first 5–10 seconds — context and evidence can follow.","Group related ideas together rather than alternating between points. You switched topics 3 times.","End with a single, memorable takeaway rather than trailing off. A strong last sentence doubles retention."],
       markers:[{pos:0.20,label:"Filler cluster",type:"filler"},{pos:0.44,label:"Ramble moment",type:"ramble"},{pos:0.66,label:"Strongest point",type:"strong"}]
     };
     if(!text||text.trim().length<15){
@@ -973,7 +975,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     }
     try{
       const warmCtx = warmUpTopic ? `\n\nContext: Before this, the user warmed up by speaking about: "${warmUpTopic}". If naturally relevant, briefly reference this in your insight to personalise the coaching.` : '';
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1200,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.${warmCtx}\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nIMPORTANT: All feedback must be PERSONALISED to what this specific person actually said. Reference their actual words, phrases, and ideas. Do not write generic feedback.\n\nAlso identify 2–4 key moments in the transcript for waveform annotation. For each marker, estimate its proportional position (0.0 = start, 1.0 = end) based on word count.\n\nMarker types (only include if genuinely present):\n- "filler": where filler words (um, uh, like, so, basically, you know) cluster\n- "ramble": where the answer starts repeating or losing focus\n- "strong": where the single clearest/most impactful statement occurs (always include one)\n- "unclear": where meaning becomes hard to follow\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Brevity":<50-100>,"Focus":<50-100>,"Simplicity":<50-100>},"worked":["<strength 1: short title, specific to what they said>","<strength 2: short title, specific to what they said>"],"workedSubs":["<1 sentence expanding on strength 1, quoting or paraphrasing something they actually said>","<1 sentence expanding on strength 2, quoting or paraphrasing something they actually said>"],"opportunityTitle":"<4-7 word title for their biggest opportunity>","improve":["<1-2 sentences describing the opportunity, referencing what they specifically said and where it happened>"],"insight":"<2 sentences of personalised coaching, referencing specific moments or phrases from their response>","priorityFocus":"<single most important thing to work on next — 5-8 words>","markers":[{"pos":<0.0-1.0>,"label":"<Filler cluster|Ramble moment|Strongest point|Unclear section>","type":"<filler|ramble|strong|unclear>"}]}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1200,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.${warmCtx}\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nIMPORTANT: All feedback must be PERSONALISED to what this specific person actually said. Reference their actual words, phrases, and ideas. Do not write generic feedback.\n\nAlso identify 2–4 key moments in the transcript for waveform annotation. For each marker, estimate its proportional position (0.0 = start, 1.0 = end) based on word count.\n\nMarker types (only include if genuinely present):\n- "filler": where filler words (um, uh, like, so, basically, you know) cluster\n- "ramble": where the answer starts repeating or losing focus\n- "strong": where the single clearest/most impactful statement occurs (always include one)\n- "unclear": where meaning becomes hard to follow\n\nReturn ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Brevity":<50-100>,"Focus":<50-100>,"Simplicity":<50-100>},"worked":["<strength 1: short title, specific to what they said>","<strength 2: short title, specific to what they said>"],"workedSubs":["<1 sentence expanding on strength 1, quoting or paraphrasing something they actually said>","<1 sentence expanding on strength 2, quoting or paraphrasing something they actually said>"],"opportunityTitle":"<4-7 word title for their biggest opportunity>","improve":["<1-2 sentences describing the opportunity, referencing what they specifically said and where it happened>"],"insight":"<2 sentences of personalised coaching, referencing specific moments or phrases from their response>","priorityFocus":"<single most important thing to work on next — 5-8 words>","restructure":["<specific rewrite instruction 1 referencing what they actually said — e.g. move the point about X to the opening>","<specific rewrite instruction 2 — e.g. cut or compress the section where they said Y>","<specific rewrite instruction 3 — e.g. close with Z as a memorable final line>"],"markers":[{"pos":<0.0-1.0>,"label":"<Filler cluster|Ramble moment|Strongest point|Unclear section>","type":"<filler|ramble|strong|unclear>"}]}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -1208,6 +1210,14 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     const RDIMS=["Clarity","Structure","Brevity","Simplicity","Focus"];
     const RANGLES=[-90,-18,54,126,198];
     const cx=100,cy=100,rMax=72;
+    const lPt=(aDeg)=>{const a=aDeg*Math.PI/180;return[cx+80*Math.cos(a),cy+80*Math.sin(a)];};
+    const DIM_TIPS={
+      "Clarity":"How easy your words were to understand at first hearing — clear language, no ambiguity.",
+      "Structure":"How logically your ideas flowed — did you have a beginning, middle, and point that landed?",
+      "Brevity":"How concisely you made your point. High scores mean no wasted words.",
+      "Focus":"How tightly you stayed on topic — high scores mean no tangents or drift.",
+      "Simplicity":"How free your language was from jargon or unnecessary complexity."
+    };
     const rPt=(sc,aDeg)=>{const a=aDeg*Math.PI/180;return[cx+(sc/100)*rMax*Math.cos(a),cy+(sc/100)*rMax*Math.sin(a)];};
     const gridPoly=(pct)=>RANGLES.map(a=>{const[x,y]=rPt(100,a);return`${(cx+(x-cx)*pct).toFixed(1)},${(cy+(y-cy)*pct).toFixed(1)}`;}).join(' ');
     const dataPoly=RDIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores[d]||50,RANGLES[i]);return`${x.toFixed(1)},${y.toFixed(1)}`;}).join(' ');
@@ -1320,13 +1330,25 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
               {RANGLES.map((a,i)=>{const[x,y]=rPt(100,a);return<line key={i} x1={cx} y1={cy} x2={x.toFixed(1)} y2={y.toFixed(1)} stroke={T2.border} strokeWidth="0.5"/>;})}
               <polygon points={dataPoly} fill="rgba(138,158,132,0.18)" stroke="rgba(82,112,96,0.7)" strokeWidth="1.5"/>
               {RDIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores[d]||50,RANGLES[i]);return<circle key={i} cx={x.toFixed(1)} cy={y.toFixed(1)} r="3" fill={T.gold} opacity="0.9"/>;})}
-              {RDIMS.map((d,i)=>{const[x,y]=rPt(114,RANGLES[i]);const anch=x<cx-4?"end":x>cx+4?"start":"middle";return<text key={i} x={x.toFixed(1)} y={y.toFixed(1)} textAnchor={anch} dominantBaseline="middle" style={{fontFamily:"'Inter',sans-serif",fontSize:"8px",fill:"rgba(44,36,22,0.55)",fontWeight:500}}>{d}</text>;})}
+              {RDIMS.map((d,i)=>{const[lx,ly]=lPt(RANGLES[i]);return<text key={i} x={lx.toFixed(1)} y={ly.toFixed(1)} textAnchor="middle" dominantBaseline="middle" style={{fontFamily:"'Inter',sans-serif",fontSize:"7px",fill:"rgba(44,36,22,0.65)",fontWeight:500}}>{d}</text>;})}
             </svg>
           </div>
           <div style={{flex:1,display:"flex",flexDirection:"column",gap:10,marginTop:isDesktop?0:10}}>
             {RDIMS.map((d,i)=>{const sc=feedback.scores[d]||50;return(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
-                <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,width:isDesktop?80:72,flexShrink:0}}>{d}</span>
+              <div key={i} style={{display:"flex",alignItems:"center",gap:10,position:"relative"}}>
+                <div style={{width:isDesktop?88:76,flexShrink:0,display:"flex",alignItems:"center",gap:4}}>
+                  <span
+                    style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,cursor:"pointer",borderBottom:"1px dashed rgba(44,36,22,0.2)"}}
+                    onMouseEnter={()=>setHoveredDim(d)}
+                    onMouseLeave={()=>setHoveredDim(null)}
+                    onClick={()=>setHoveredDim(hoveredDim===d?null:d)}
+                  >{d}</span>
+                </div>
+                {hoveredDim===d&&(
+                  <div style={{position:"absolute",left:0,top:"calc(100% + 4px)",background:"#2C2416",borderRadius:6,padding:"8px 12px",zIndex:20,width:220,boxShadow:"0 4px 20px rgba(0,0,0,0.25)",pointerEvents:"none"}}>
+                    <p style={{fontFamily:T.sans,fontSize:10,color:"rgba(245,239,230,0.85)",margin:0,lineHeight:1.5}}>{DIM_TIPS[d]}</p>
+                  </div>
+                )}
                 <div style={{flex:1,height:4,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
                   <div style={{height:"100%",width:sc+"%",background:"linear-gradient(90deg,rgba(138,158,132,0.5),rgba(82,112,96,0.85))",borderRadius:2,transition:"width 1s ease"}}/>
                 </div>
@@ -1336,6 +1358,26 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
           </div>
         </div>
       </div>
+
+      {/* 4b HOW TO RESTRUCTURE */}
+      {feedback.restructure&&feedback.restructure.length>0&&(
+      <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px"}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}>
+          <div style={cs.label}>How to hit 80%+ on Structure</div>
+        </div>
+        <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,margin:"0 0 14px",lineHeight:1.5}}>Based on your response, here is exactly how to restructure it next time:</p>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          {feedback.restructure.map((tip,i)=>(
+            <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+              <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
+              </div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.6,margin:0}}>{tip}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      )}
 
       {/* 5 STRENGTHS + OPPORTUNITY — personalised */}
       <div style={{display:isDesktop?"grid":"flex",gridTemplateColumns:"1fr 1fr",flexDirection:"column",gap:isDesktop?12:10}}>
