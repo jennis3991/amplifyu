@@ -208,6 +208,7 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
   if (!boarded) {
     return <Onboarding onDone={(ans) => {
       if (ans.role) { setRoleId(ans.role); lsSet("au1_role", ans.role); }
+      lsSet("au1_quiz", ans);
       setReflectionData(ans);
     }}/>;
   }

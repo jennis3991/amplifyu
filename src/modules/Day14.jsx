@@ -1,301 +1,409 @@
 import { useState } from 'react';
+import { ROLES, LESSONS } from '../data.js';
 
-// ─── D14 Practice Widget — AmplifyU Reflection ────────────────────────────
+// ─── D14 Practice Widget — Your Journey ─────────────────────────────────────
 export function D14PracticeWidget({T, T2, isDesktop}) {
+  const stored = (() => { try { return JSON.parse(localStorage.getItem('au1_d14_reflection') || '{}'); } catch { return {}; } })();
+  const quiz = (() => { try { return JSON.parse(localStorage.getItem('au1_quiz') || '{}'); } catch { return {}; } })();
+  const storedAmbition = (() => { try { return localStorage.getItem('au1_ambition') || ''; } catch { return ''; } })();
+
   const [phase, setPhase] = useState('intro');
-  const [answers, setAnswers] = useState(Array(7).fill(''));
-  const [principle, setPrinciple] = useState('');
+  const [jobTitle, setJobTitle] = useState(stored.jobTitle || '');
+  const [knownFor, setKnownFor] = useState(stored.knownFor || storedAmbition || '');
+  const [shift, setShift] = useState(stored.shift || '');
+  const [proud, setProud] = useState(stored.proud || '');
+  const [hard, setHard] = useState(stored.hard || '');
 
-  const PRINCIPLES = ["Clarity","Voice","Storytelling","Presence","Brand","Exposure"];
-
-  const QUESTIONS = [
-    { label:"Round 1 · Your Growth", prompt:"What communication skill improved most during AmplifyU?", placeholder:"e.g. Structuring my ideas under pressure, telling stories that land, reducing filler words…" },
-    { label:"Round 2 · Your Edge", prompt:"What communication habit still needs the most work?", placeholder:"e.g. Confidence in senior rooms, vocal variety, making my ambition visible…" },
-    { label:"Round 3 · Your Brand", prompt:"What do you want to be known for professionally?", placeholder:"e.g. Strategic clarity, inspiring leadership, bold and honest communication…" },
-    { label:"Round 4 · Your Ambition", prompt:"What opportunity, role or ambition are you working towards?", placeholder:"e.g. A promotion to Head of Strategy, building my own business, leading a bigger team…" },
-    { label:"Round 5 · Your Principle", prompt:"Which AmplifyU principle had the biggest impact — and why?", placeholder:"Tell us which principle changed something for you, and what shifted…" },
-    { label:"Round 6 · Your Commitment", prompt:"What one communication behaviour will you commit to practising every week?", placeholder:"e.g. Telling one SAR story per week, pausing before I answer, sharing my ambition in one conversation…" },
-    { label:"Round 7 · Your Vision", prompt:"One year from now, I want people to describe me as…", placeholder:"Write it as if it's already true. Be specific. Be bold." },
-  ];
-
-  const cs = {
-    card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"},
-    label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8},
-    cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
+  const save = () => {
+    try { localStorage.setItem('au1_d14_reflection', JSON.stringify({jobTitle, knownFor, shift, proud, hard})); } catch {}
   };
 
-  const Progress = ({round}) => (
-    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:isDesktop?18:14}}>
-      <div style={{display:"flex",gap:4,flex:1}}>
-        {QUESTIONS.map((_,i)=>(
-          <div key={i} style={{height:3,borderRadius:2,flex:1,background:i<round?T.gold:i===round?"rgba(138,158,132,0.6)":T2.border,transition:"background 0.3s"}}/>
-        ))}
-      </div>
-      <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4,flexShrink:0}}>Reflection {round+1} of 7</span>
+  const cs = {
+    card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px"},
+    label: {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8},
+    cta: {width:"100%", padding:isDesktop?"14px":"13px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:isDesktop?15:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:48, transition:"all 0.2s"},
+    textarea: {width:"100%", minHeight:isDesktop?90:75, background:"transparent", border:"none", borderBottom:"0.5px solid "+T2.divider, padding:"8px 0 10px", fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, resize:"none", outline:"none", lineHeight:1.65, boxSizing:"border-box"},
+    input: {width:"100%", background:"transparent", border:"none", borderBottom:"0.5px solid "+T2.divider, padding:"8px 0 10px", fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, outline:"none", lineHeight:1.65, boxSizing:"border-box"},
+    back: {background:"none", border:"none", fontFamily:T.sans, fontSize:12, color:T2.text4, cursor:"pointer", padding:"4px 0", textAlign:"left"},
+  };
+
+  const Bars = ({filled}) => (
+    <div style={{display:"flex", gap:5, marginBottom:4}}>
+      {[0,1,2].map(i => <div key={i} style={{height:3, flex:1, borderRadius:2, background:i<filled?T.gold:T2.border, transition:"background 0.3s"}}/>)}
     </div>
   );
 
-  if (phase==='intro') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+  const Coach = ({children}) => (
+    <div style={{...cs.card, background:"rgba(138,158,132,0.05)", borderLeft:"2px solid "+T.gold}}>
+      <div style={cs.label}>Your Coach</div>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.7, margin:0}}>{children}</p>
+    </div>
+  );
+
+  const Btn = ({onClick, disabled, children}) => (
+    <button onClick={onClick} disabled={!!disabled} style={{...cs.cta, background:disabled?"rgba(44,36,22,0.2)":T.ink, cursor:disabled?"not-allowed":"pointer"}}>{children}</button>
+  );
+
+  if (phase === 'intro') return (
+    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
       <div style={cs.card}>
-        <div style={cs.label}>Your AmplifyU Reflection</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T.gold,lineHeight:1.25,margin:"0 0 14px"}}>Take a moment to reflect on your journey.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 14px"}}>Seven questions. Your honest answers will be used to create your personal Communication Blueprint.</p>
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          {["What changed most in how you communicate?","What still needs the most work?","What do you want to be known for?","Where are you going next?","Which principle had the biggest impact?","What will you commit to practising?","Who do you want to become?"].map((t,i)=>(
-            <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-              <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,flexShrink:0,minWidth:16}}>{i+1}.</span>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{t}</span>
+        <div style={cs.label}>Your Communication Blueprint</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>14 days. One journey. Time to see how far you have come.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Answer three short reflection questions before your coach generates your blueprint. Your honest answers make the difference between a generic plan and one that is genuinely yours.</p>
+      </div>
+      <div style={{...cs.card, background:"rgba(138,158,132,0.04)"}}>
+        <div style={cs.label}>What you will receive</div>
+        <div style={{display:"flex", flexDirection:"column", gap:8}}>
+          {[
+            "Your Communication Archetype and personal profile",
+            "Your journey — where you started and what shifted",
+            "Strengths you have built and gaps to close",
+            "Your Personal Brand Statement",
+            "Daily, weekly and monthly communication habits",
+            "Three conversations to have in the next 30 days",
+            "Three opportunities to create in the next 90 days",
+            "Your personalised 90-Day Action Plan",
+          ].map((t,i) => (
+            <div key={i} style={{display:"flex", gap:10, alignItems:"flex-start"}}>
+              <span style={{color:T.gold, fontSize:12, flexShrink:0, marginTop:2}}>&#10022;</span>
+              <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.5}}>{t}</span>
             </div>
           ))}
         </div>
       </div>
-      <button onClick={()=>setPhase('q0')} style={cs.cta}>Begin Your Reflection →</button>
+      <button onClick={() => setPhase('facts')} style={cs.cta}>Begin Your Reflection</button>
     </div>
   );
 
-  const qIdx = phase==='done' ? 7 : +phase.replace('q','');
-
-  if (phase!=='done') {
-    const q = QUESTIONS[qIdx];
-    const isLast = qIdx===6;
-    const isPrinciple = qIdx===4;
-    return (
-      <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-        <Progress round={qIdx}/>
-        <div style={cs.card}>
-          <div style={cs.label}>{q.label}</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 16px"}}>{q.prompt}</p>
-          {isPrinciple && (
-            <div style={{display:"flex",flexWrap:"wrap",gap:7,marginBottom:14}}>
-              {PRINCIPLES.map((p,i)=>(
-                <button key={i} onClick={()=>setPrinciple(p)} style={{padding:"7px 14px",borderRadius:20,border:`0.5px solid ${principle===p?T.gold:T2.border}`,background:principle===p?"rgba(138,158,132,0.12)":"transparent",color:principle===p?T.gold:T2.text3,fontSize:12,fontWeight:principle===p?700:400,cursor:"pointer",fontFamily:T.sans,transition:"all 0.15s"}}>{p}</button>
-              ))}
-            </div>
-          )}
-          <textarea
-            value={answers[qIdx]}
-            onChange={e=>{const n=[...answers];n[qIdx]=e.target.value;setAnswers(n);}}
-            placeholder={q.placeholder}
-            style={{width:"100%",minHeight:isDesktop?100:85,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}
-          />
-          {answers[qIdx].trim().length>5 && qIdx===6 && (
-            <div style={{marginTop:12,padding:"12px 14px",background:"rgba(138,158,132,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0,lineHeight:1.6}}>Say it out loud. That's the communicator you are becoming.</p>
-            </div>
-          )}
-        </div>
-        <button
-          onClick={()=>setPhase(isLast?'done':('q'+(qIdx+1)))}
-          disabled={answers[qIdx].trim().length<3}
-          style={{...cs.cta,background:answers[qIdx].trim().length<3?"rgba(44,36,22,0.25)":T.ink,cursor:answers[qIdx].trim().length<3?"not-allowed":"pointer"}}>
-          {isLast?"Complete My Reflection →":(`Reflection ${qIdx+2} →`)}
-        </button>
-        {qIdx>0 && <button onClick={()=>setPhase('q'+(qIdx-1))} style={{background:"none",border:"none",fontFamily:T.sans,fontSize:12,color:T2.text4,cursor:"pointer",padding:"4px 0",textAlign:"left"}}>← Back</button>}
+  if (phase === 'facts') return (
+    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
+      <Coach>Two quick facts before we dive into your journey.</Coach>
+      <div style={cs.card}>
+        <div style={cs.label}>Your role</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?18:15, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>What is your current job title?</p>
+        <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} placeholder="e.g. Senior Consultant, Head of Product, Marketing Director" style={cs.input}/>
       </div>
-    );
-  }
+      <div style={cs.card}>
+        <div style={cs.label}>Your ambition</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?18:15, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>In 12 months, what do you most want to be known for?</p>
+        <input value={knownFor} onChange={e => setKnownFor(e.target.value)} placeholder="e.g. Strategic clarity, inspiring leadership, visible expertise" style={cs.input}/>
+      </div>
+      <Btn onClick={() => { save(); setPhase('q0'); }} disabled={!jobTitle.trim() || !knownFor.trim()}>Next</Btn>
+    </div>
+  );
+
+  if (phase === 'q0') return (
+    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
+      <Bars filled={1}/>
+      <Coach>
+        {quiz.challenge
+          ? ('When you started, you told us: "' + quiz.challenge + '". When did that start to feel different?')
+          : "When you started this programme, what was your biggest challenge — and when did something shift?"}
+      </Coach>
+      <div style={cs.card}>
+        <div style={cs.label}>Reflection 1 of 3</div>
+        <textarea value={shift} onChange={e => setShift(e.target.value)} placeholder="Think about a specific moment, conversation or exercise where something clicked..." style={cs.textarea}/>
+      </div>
+      <Btn onClick={() => { save(); setPhase('q1'); }} disabled={shift.trim().length < 5}>Next</Btn>
+    </div>
+  );
+
+  if (phase === 'q1') return (
+    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
+      <Bars filled={2}/>
+      <Coach>What is one moment from the past 14 days you are most proud of — a conversation, a rehearsal, or something you did differently?</Coach>
+      <div style={cs.card}>
+        <div style={cs.label}>Reflection 2 of 3</div>
+        <textarea value={proud} onChange={e => setProud(e.target.value)} placeholder="Be specific. The more real the moment, the more personal your blueprint will be..." style={cs.textarea}/>
+      </div>
+      <Btn onClick={() => { save(); setPhase('q2'); }} disabled={proud.trim().length < 5}>Last Question</Btn>
+      <button onClick={() => setPhase('q0')} style={cs.back}>Back</button>
+    </div>
+  );
+
+  if (phase === 'q2') return (
+    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
+      <Bars filled={3}/>
+      <Coach>What still feels like your hardest thing to change? Be honest — the gaps you name here become the focus of your action plan.</Coach>
+      <div style={cs.card}>
+        <div style={cs.label}>Reflection 3 of 3</div>
+        <textarea value={hard} onChange={e => setHard(e.target.value)} placeholder="e.g. Speaking up in senior rooms, making my ambition visible without it feeling forced..." style={cs.textarea}/>
+      </div>
+      <Btn onClick={() => { save(); setPhase('done'); }} disabled={hard.trim().length < 5}>Save My Reflections</Btn>
+      <button onClick={() => setPhase('q1')} style={cs.back}>Back</button>
+    </div>
+  );
 
   return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Reflection Complete</div>
-        <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>You know who you're becoming.</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 20px"}}>Your reflections are the foundation of your Communication Blueprint. Head to the Simulation tab to generate it.</p>
-        {answers[6].trim() && (
-          <div style={{padding:"16px 20px",background:T2.bg,borderRadius:6,border:"0.5px solid rgba(138,158,132,0.3)",marginBottom:16}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Vision</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"{answers[6]}"</p>
-          </div>
-        )}
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"You are not the communicator you were 14 days ago."</p>
+    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
+      <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px":"24px"}}>
+        <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12}}>Reflection Complete</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?22:18, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>Your answers are saved.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Head to the Simulation tab to generate your personalised Communication Blueprint.</p>
       </div>
-      <button onClick={()=>setPhase('intro')} style={{...cs.cta,background:"transparent",border:"0.5px solid "+T2.border,color:T2.text}}>Review My Reflections</button>
+      <button onClick={() => setPhase('facts')} style={{...cs.cta, background:"transparent", border:"0.5px solid "+T2.border, color:T2.text3}}>Edit My Answers</button>
     </div>
   );
 }
 
-// ─── D14 Simulation Widget — Communication Blueprint ──────────────────────
+// ─── D14 Simulation Widget — AI Communication Blueprint ──────────────────────
 export function D14SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
-  const [role, setRole] = useState('');
-  const [strengths, setStrengths] = useState(['','','']);
-  const [growthArea, setGrowthArea] = useState('');
-  const [ambition, setAmbition] = useState('');
-  const [archetype, setArchetype] = useState('');
   const [blueprint, setBlueprint] = useState(null);
-
-  const ARCHETYPES = ["Trusted Expert","Strategic Leader","Inspiring Storyteller","Influential Operator","Visionary Communicator"];
+  const [error, setError] = useState('');
 
   const cs = {
-    card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"},
-    label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8},
-    cta:(d)=>({width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:d?"rgba(44,36,22,0.25)":T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:d?"not-allowed":"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"}),
+    card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px"},
+    label: {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8},
+    cta: {width:"100%", padding:isDesktop?"14px":"13px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:isDesktop?15:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:48, transition:"all 0.2s"},
   };
 
-  const generateBlueprint = () => {
-    const s = strengths.filter(s=>s.trim());
-    const arch = archetype || ARCHETYPES[0];
-    const daily = [
-      `Use the PRE framework (Point, Reason, Example) in your next ${role||"professional"} conversation.`,
-      `Pause for one full second before you answer any difficult question.`,
-      `Notice one moment each day where you could have communicated more clearly — and write it down.`,
-    ];
-    const weekly = [
-      `Tell one SAR story (Situation, Action, Result) in a meeting or conversation.`,
-      `Share your ambition — "${ambition||"where you're going"}" — with one senior stakeholder.`,
-      `Review: what communication moment this week am I most proud of? What would I do differently?`,
-    ];
-    const monthly = [
-      `Record yourself speaking for two minutes on a professional topic. Watch it back.`,
-      `Reach out to one person in your network you haven't spoken to in 3+ months.`,
-      `Revisit one AmplifyU module that felt most relevant to your current challenge.`,
-    ];
-    const conversations = [
-      `A conversation where you share your ambition clearly with someone who can help.`,
-      `A conversation where you apply full PRE structure from start to finish.`,
-      `A conversation where you practise deliberate presence — stillness, eye contact, grounded energy.`,
-    ];
-    const opportunities = [
-      `Volunteer to present or speak in the next relevant context — internal meeting, team briefing, or senior update.`,
-      `Identify one stakeholder who doesn't know your ${s[0]||"greatest strength"} and create a reason to show them.`,
-      `Start one visible project or initiative that gives your ${arch.toLowerCase()} positioning a platform.`,
-    ];
-    setBlueprint({ arch, daily, weekly, monthly, conversations, opportunities,
-      brandStatement:`I am a ${role||"professional"} known for ${s.slice(0,2).join(" and ").toLowerCase()||"clarity and impact"}. I am building toward ${ambition||"the next level of my career"} — and I communicate my value with intention, clarity, and confidence.`,
-      profileSummary:`Your responses reveal a communicator who is ${s[0]?.toLowerCase()||"capable"}, ${s[1]?.toLowerCase()||"ambitious"}, and committed to growth. Your primary growth edge is ${growthArea||"continued deliberate practice"}. Your communication archetype — ${arch} — reflects both who you are today and the direction you are moving in.`,
+  const generate = async () => {
+    setPhase('generating');
+    setError('');
+
+    const safe = (k, d) => { try { const v = localStorage.getItem(k); return v !== null ? JSON.parse(v) : d; } catch { return d; } };
+    const quiz = safe('au1_quiz', {});
+    const done = safe('au1_done', []);
+    const roleId = safe('au1_role', null);
+    const roleObj = ROLES.find(r => r.id === roleId) || null;
+    const ambition = (() => { try { return localStorage.getItem('au1_ambition') || ''; } catch { return ''; } })();
+    const reflection = safe('au1_d14_reflection', {});
+    const ntStory = (() => { try { return localStorage.getItem('au1_nt_story') || ''; } catch { return ''; } })();
+
+    // Layer 2: backend data slots — gracefully omitted until backend integration
+    const l2 = {
+      clarityScoreDay1: safe('au1_clarity_score_day1', null),
+      speechRateDay2: safe('au1_speech_rate_day2', null),
+      fillerRateDay3: safe('au1_filler_rate_day3', null),
+      d8Story: (() => { try { return localStorage.getItem('au1_d8_story') || (ntStory ? ntStory.slice(0, 300) : null); } catch { return null; } })(),
+      d9Scores: safe('au1_d9_scores', null),
+      d10Sar: safe('au1_d10_sar', null),
+      d13Scores: safe('au1_d13_scores', null),
+    };
+
+    const completedTitles = [...done].sort((a,b) => a-b).map(d => {
+      const lesson = LESSONS[d-1];
+      return lesson ? ('Day ' + d + ': ' + lesson.title) : ('Day ' + d);
     });
-    setPhase('results');
+
+    const l2Lines = [];
+    if (l2.clarityScoreDay1) l2Lines.push('Day 1 clarity baseline: ' + l2.clarityScoreDay1);
+    if (l2.speechRateDay2) l2Lines.push('Day 2 speech rate: ' + l2.speechRateDay2 + ' wpm');
+    if (l2.fillerRateDay3) l2Lines.push('Day 3 filler word rate: ' + l2.fillerRateDay3);
+    if (l2.d8Story) l2Lines.push('Day 8 personal story: ' + l2.d8Story);
+    if (l2.d9Scores) l2Lines.push('Day 9 delivery scores: ' + JSON.stringify(l2.d9Scores));
+    if (l2.d13Scores) l2Lines.push('Day 13 networking circuit scores: ' + JSON.stringify(l2.d13Scores));
+
+    const roleLine = roleObj ? (roleObj.label + (roleObj.challenge ? ' — ' + roleObj.challenge : '')) : 'Professional';
+
+    const prompt = 'You are an expert communication coach creating a deeply personalised Communication Blueprint for someone who has just completed a 14-day communication development programme.\n\n'
+      + 'PROFILE:\n'
+      + 'Role: ' + roleLine + '\n'
+      + 'Job title: ' + (reflection.jobTitle || 'not provided') + '\n'
+      + 'Days completed (' + done.length + ' of 14): ' + (completedTitles.join(', ') || 'not recorded') + '\n\n'
+      + 'ONBOARDING BASELINE (Day 1):\n'
+      + 'What held them back: ' + (quiz.challenge || 'not recorded') + '\n'
+      + 'Where they wanted to grow: ' + (quiz.context || 'not recorded') + '\n'
+      + 'Starting self-assessment: ' + (quiz.level || 'not recorded') + '\n'
+      + '18-month ambition: ' + (quiz.ambition || ambition || 'not recorded') + '\n\n'
+      + 'THEIR JOURNEY (in their own words):\n'
+      + 'When things shifted: ' + (reflection.shift || 'not provided') + '\n'
+      + 'Proudest moment: ' + (reflection.proud || 'not provided') + '\n'
+      + 'Biggest remaining gap: ' + (reflection.hard || 'not provided') + '\n'
+      + 'What they want to be known for: ' + (reflection.knownFor || 'not provided') + '\n'
+      + (l2Lines.length > 0 ? '\nPERFORMANCE DATA:\n' + l2Lines.join('\n') + '\n' : '')
+      + '\nCreate a comprehensive, deeply personalised Communication Blueprint. Use their own words where possible. Be specific, direct, warm and motivating. Tailor everything to their role, level, and the gaps they named.\n\n'
+      + 'Respond ONLY with valid JSON (no markdown, no preamble):\n'
+      + '{"journey":"3-4 sentences telling their communication story — where they started, the shift, what has been built. Quote their own words where powerful.","archetype":"their communication archetype name (2-4 words)","archetypeDesc":"2-3 sentences on this archetype and why it fits this person specifically","strengths":["strength 1 specific to their journey","strength 2","strength 3"],"gaps":["gap 1 honest and specific","gap 2"],"brandStatement":"personal brand statement in first person tailored to their role and ambition","daily":["daily habit 1 specific to them","daily habit 2","daily habit 3"],"weekly":["weekly habit 1","weekly habit 2","weekly habit 3"],"monthly":["monthly habit 1","monthly habit 2","monthly habit 3"],"conversations":[{"who":"specific person or type","what":"exactly what to say or do","why":"why this conversation matters now"},{"who":"...","what":"...","why":"..."},{"who":"...","what":"...","why":"..."}],"opportunities":[{"title":"short title","action":"specific action","timeline":"30 days"},{"title":"...","action":"...","timeline":"60 days"},{"title":"...","action":"...","timeline":"90 days"}],"planPhases":[{"phase":"Days 1-30","focus":"one-line focus","actions":["action 1","action 2","action 3"]},{"phase":"Days 31-60","focus":"one-line focus","actions":["action 1","action 2","action 3"]},{"phase":"Days 61-90","focus":"one-line focus","actions":["action 1","action 2","action 3"]}],"closing":"one powerful personal closing sentence"}';
+
+    try {
+      const res = await fetch('/api/claude', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-5',
+          messages: [{role: 'user', content: prompt}],
+          max_tokens: 2000,
+        }),
+      });
+      const data = await res.json();
+      const text = (data.content && data.content[0] && data.content[0].text) || '';
+      const m = text.match(/\{[\s\S]*\}/);
+      const parsed = m ? JSON.parse(m[0]) : null;
+      if (parsed && parsed.journey) {
+        setBlueprint(parsed);
+        setPhase('blueprint');
+      } else {
+        setError('Something went wrong generating your blueprint. Please try again.');
+        setPhase('intro');
+      }
+    } catch(e) {
+      setError('Something went wrong. Please try again.');
+      setPhase('intro');
+    }
   };
 
-  if (phase==='intro') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+  const hasReflection = (() => {
+    try { const r = JSON.parse(localStorage.getItem('au1_d14_reflection') || '{}'); return !!(r.shift || r.proud || r.hard); } catch { return false; }
+  })();
+
+  if (phase === 'intro') return (
+    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
       <div style={cs.card}>
-        <div style={cs.label}>Your Communication Blueprint</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 12px"}}>You have spent 14 days developing your communication. Now turn those insights into a system you'll use every day.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>Your AmplifyU coach will analyse your profile and generate: your Communication Archetype, a personal Brand Statement, daily and weekly habits, and your 90-Day Action Plan.</p>
+        <div style={cs.label}>Communication Blueprint</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Your personalised plan. Built from 14 days of work.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AI coach will analyse your role, your journey, your strengths and gaps — and generate a blueprint that is specific to you.</p>
       </div>
-      <div style={cs.card}>
-        <div style={cs.label}>What you'll receive</div>
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>
-          {["Your Communication Profile and Archetype","Your personal Brand Statement","Daily, weekly and monthly communication habits","Three conversations to have in the next 30 days","Three opportunities to create in the next 90 days","Your 90-Day Action Plan"].map((t,i)=>(
-            <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-              <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:2}}>✦</span>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>{t}</span>
-            </div>
-          ))}
+      {!hasReflection && (
+        <div style={{...cs.card, background:"rgba(201,120,70,0.06)", border:"0.5px solid rgba(201,120,70,0.25)"}}>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#C97846", lineHeight:1.6, margin:0}}>For a more personal blueprint, complete the Rehearsal tab first — your reflection answers make a significant difference.</p>
         </div>
-      </div>
-      <button onClick={()=>setPhase('form')} style={cs.cta(false)}>Build My Blueprint →</button>
+      )}
+      {error && (
+        <div style={{...cs.card, background:"rgba(201,120,70,0.06)", border:"0.5px solid rgba(201,120,70,0.25)"}}>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#C97846", lineHeight:1.6, margin:0}}>{error}</p>
+        </div>
+      )}
+      <button onClick={generate} style={cs.cta}>Generate My Blueprint</button>
     </div>
   );
 
-  if (phase==='form') return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={cs.card}>
-        <div style={cs.label}>Your Profile</div>
-        <div style={{display:"flex",flexDirection:"column",gap:16}}>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Your role or title</div>
-            <input value={role} onChange={e=>setRole(e.target.value)} placeholder="e.g. Marketing Director, Senior Consultant, Head of Product" className="au-input" style={{width:"100%",padding:"10px 14px",fontSize:isDesktop?14:13,boxSizing:"border-box"}}/>
-          </div>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Three communication strengths you've built</div>
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {strengths.map((s,i)=>(
-                <input key={i} value={s} onChange={e=>{const n=[...strengths];n[i]=e.target.value;setStrengths(n);}} placeholder={["e.g. Clarity and structure","e.g. Storytelling","e.g. Visible ambition"][i]} className="au-input" style={{width:"100%",padding:"9px 12px",fontSize:isDesktop?13:12,boxSizing:"border-box"}}/>
-              ))}
-            </div>
-          </div>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Your biggest growth opportunity</div>
-            <input value={growthArea} onChange={e=>setGrowthArea(e.target.value)} placeholder="e.g. Vocal presence, senior stakeholder confidence, making ambition visible" className="au-input" style={{width:"100%",padding:"10px 14px",fontSize:isDesktop?14:13,boxSizing:"border-box"}}/>
-          </div>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>Your ambition in one sentence</div>
-            <input value={ambition} onChange={e=>setAmbition(e.target.value)} placeholder="e.g. Become Head of Strategy within two years" className="au-input" style={{width:"100%",padding:"10px 14px",fontSize:isDesktop?14:13,boxSizing:"border-box"}}/>
-          </div>
-          <div>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Choose your Communication Archetype</div>
-            <div style={{display:"flex",flexDirection:"column",gap:7}}>
-              {ARCHETYPES.map((a,i)=>(
-                <button key={i} onClick={()=>setArchetype(a)} style={{padding:"11px 14px",borderRadius:4,border:`0.5px solid ${archetype===a?T.gold:T2.border}`,background:archetype===a?"rgba(138,158,132,0.08)":"transparent",color:archetype===a?T.gold:T2.text,fontSize:isDesktop?14:13,fontFamily:T.serif,fontStyle:"italic",textAlign:"left",cursor:"pointer",transition:"all 0.2s"}}>{a}</button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-      <button onClick={generateBlueprint} disabled={!role.trim()||!strengths[0].trim()} style={cs.cta(!role.trim()||!strengths[0].trim())}>Generate My Blueprint →</button>
-      <button onClick={()=>setPhase('intro')} style={{background:"none",border:"none",fontFamily:T.sans,fontSize:12,color:T2.text4,cursor:"pointer",textAlign:"left",padding:0}}>← Back</button>
+  if (phase === 'generating') return (
+    <div style={{...cs.card, textAlign:"center", padding:isDesktop?"48px 32px":"32px 24px"}}>
+      <div style={cs.label}>Your Coach is Working</div>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.4, margin:"0 0 12px"}}>Building your personalised blueprint...</p>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text4, lineHeight:1.6, margin:0}}>Analysing your journey, your role, and your reflection. This takes around 15 seconds.</p>
     </div>
   );
 
-  if (phase==='results' && blueprint) return (
-    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-
-      <div style={{...cs.card,background:"rgba(138,158,132,0.06)",border:"0.5px solid rgba(138,158,132,0.3)"}}>
-        <div style={cs.label}>Your Communication Archetype</div>
-        <div style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T.gold,marginBottom:10}}>{blueprint.arch}</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>{blueprint.profileSummary}</p>
+  if (phase === 'blueprint' && blueprint) {
+    const Sec = ({label, children, accent}) => (
+      <div style={{...cs.card, ...(accent ? {background:"rgba(138,158,132,0.05)", borderLeft:"2px solid "+T.gold} : {})}}>
+        <div style={cs.label}>{label}</div>
+        {children}
       </div>
+    );
 
-      <div style={cs.card}>
-        <div style={cs.label}>Your Personal Brand Statement</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:"0 0 10px"}}>{blueprint.brandStatement}</p>
-        <p style={{fontFamily:T.sans,fontSize:12,color:T2.text4,margin:0,lineHeight:1.6}}>Use this as your starting point. Refine it in your own voice — then own it.</p>
-      </div>
+    return (
+      <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
 
-      {[
-        {label:"Daily Habits", items:blueprint.daily, note:"Do these every day. Consistency beats intensity."},
-        {label:"Weekly Habits", items:blueprint.weekly, note:"Set a reminder. Keep the momentum."},
-        {label:"Monthly Habits", items:blueprint.monthly, note:"Step back. Review. Recommit."},
-      ].map((section,si)=>(
-        <div key={si} style={cs.card}>
-          <div style={cs.label}>{section.label}</div>
-          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:10}}>
-            {section.items.map((item,i)=>(
-              <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-                <div style={{width:20,height:20,borderRadius:"50%",border:"1px solid rgba(138,158,132,0.4)",background:"rgba(138,158,132,0.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                  <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{i+1}</span>
+        <Sec label="Your Journey" accent>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.8, margin:0}}>{blueprint.journey}</p>
+        </Sec>
+
+        <Sec label="Communication Archetype">
+          <div style={{fontFamily:T.serif, fontSize:isDesktop?26:21, fontWeight:600, color:T.gold, marginBottom:10}}>{blueprint.archetype}</div>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, lineHeight:1.7, margin:0}}>{blueprint.archetypeDesc}</p>
+        </Sec>
+
+        <div style={{display:"flex", flexDirection:isDesktop?"row":"column", gap:12}}>
+          <div style={{...cs.card, flex:1, background:"rgba(138,158,132,0.05)"}}>
+            <div style={cs.label}>Strengths Built</div>
+            <div style={{display:"flex", flexDirection:"column", gap:10}}>
+              {(blueprint.strengths||[]).map((s,i) => (
+                <div key={i} style={{display:"flex", gap:10, alignItems:"flex-start"}}>
+                  <span style={{color:T.gold, fontSize:14, flexShrink:0, marginTop:1, lineHeight:1}}>&#10003;</span>
+                  <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.6}}>{s}</span>
                 </div>
-                <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.6}}>{item}</span>
+              ))}
+            </div>
+          </div>
+          <div style={{...cs.card, flex:1, background:"rgba(201,120,70,0.04)", border:"0.5px solid rgba(201,120,70,0.2)"}}>
+            <div style={{...cs.label, color:"#C97846"}}>Gaps to Close</div>
+            <div style={{display:"flex", flexDirection:"column", gap:10}}>
+              {(blueprint.gaps||[]).map((g,i) => (
+                <div key={i} style={{display:"flex", gap:10, alignItems:"flex-start"}}>
+                  <span style={{color:"#C97846", fontSize:14, flexShrink:0, marginTop:1, lineHeight:1}}>&#8594;</span>
+                  <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.6}}>{g}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <Sec label="Your Personal Brand Statement" accent>
+          <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, fontStyle:"italic", color:T2.text, lineHeight:1.7, margin:"0 0 10px"}}>{blueprint.brandStatement}</p>
+          <p style={{fontFamily:T.sans, fontSize:11, color:T2.text4, margin:0}}>Say it out loud. Refine it in your voice. Then own it.</p>
+        </Sec>
+
+        {[
+          {key:"daily", label:"Daily Habits", note:"Every day. Consistency beats intensity."},
+          {key:"weekly", label:"Weekly Habits", note:"Set a reminder. Keep the momentum."},
+          {key:"monthly", label:"Monthly Habits", note:"Step back. Review. Recommit."},
+        ].map(({key, label, note}) => (
+          <Sec key={key} label={label}>
+            <div style={{display:"flex", flexDirection:"column", gap:10, marginBottom:8}}>
+              {(blueprint[key]||[]).map((h,i) => (
+                <div key={i} style={{display:"flex", gap:12, alignItems:"flex-start"}}>
+                  <div style={{width:20, height:20, borderRadius:"50%", border:"1px solid rgba(138,158,132,0.4)", background:"rgba(138,158,132,0.1)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:1}}>
+                    <span style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold}}>{i+1}</span>
+                  </div>
+                  <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.65}}>{h}</span>
+                </div>
+              ))}
+            </div>
+            <p style={{fontFamily:T.sans, fontSize:11, fontStyle:"italic", color:T2.text4, margin:0}}>{note}</p>
+          </Sec>
+        ))}
+
+        <Sec label="Three Conversations to Have in the Next 30 Days">
+          <div style={{display:"flex", flexDirection:"column", gap:14}}>
+            {(blueprint.conversations||[]).map((c,i) => (
+              <div key={i} style={{paddingBottom:i<2?14:0, borderBottom:i<2?"0.5px solid "+T2.divider:"none"}}>
+                <div style={{fontFamily:T.sans, fontSize:11, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1px", marginBottom:5}}>{"Conversation " + (i+1) + " · " + c.who}</div>
+                <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, lineHeight:1.65, margin:"0 0 5px"}}>{c.what}</p>
+                <p style={{fontFamily:T.sans, fontSize:12, color:T2.text4, margin:0, fontStyle:"italic"}}>{c.why}</p>
               </div>
             ))}
           </div>
-          <p style={{fontFamily:T.sans,fontSize:11,fontStyle:"italic",color:T2.text4,margin:0}}>{section.note}</p>
-        </div>
-      ))}
+        </Sec>
 
-      <div style={cs.card}>
-        <div style={cs.label}>Your 90-Day Action Plan</div>
-        <div style={{marginBottom:16}}>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Three conversations to initiate</div>
-          {blueprint.conversations.map((c,i)=>(
-            <div key={i} style={{display:"flex",gap:10,marginBottom:i<2?10:0,alignItems:"flex-start"}}>
-              <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:2}}>→</span>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.6}}>{c}</span>
-            </div>
-          ))}
+        <Sec label="Three Opportunities to Create in the Next 90 Days">
+          <div style={{display:"flex", flexDirection:"column", gap:14}}>
+            {(blueprint.opportunities||[]).map((o,i) => (
+              <div key={i} style={{paddingBottom:i<2?14:0, borderBottom:i<2?"0.5px solid "+T2.divider:"none"}}>
+                <div style={{display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:5}}>
+                  <div style={{fontFamily:T.sans, fontSize:11, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1px"}}>{o.title}</div>
+                  <div style={{fontFamily:T.sans, fontSize:10, color:T2.text4, flexShrink:0, marginLeft:8}}>{o.timeline}</div>
+                </div>
+                <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, lineHeight:1.65, margin:0}}>{o.action}</p>
+              </div>
+            ))}
+          </div>
+        </Sec>
+
+        <Sec label="Your 90-Day Action Plan">
+          <div style={{display:"flex", flexDirection:"column", gap:16}}>
+            {(blueprint.planPhases||[]).map((p,i) => (
+              <div key={i} style={{paddingBottom:i<2?16:0, borderBottom:i<2?"0.5px solid "+T2.divider:"none"}}>
+                <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:8}}>
+                  <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1px", flexShrink:0}}>{p.phase}</div>
+                  <div style={{height:1, flex:1, background:T2.divider}}/>
+                  <div style={{fontFamily:T.sans, fontSize:11, color:T2.text3, fontStyle:"italic", flexShrink:0}}>{p.focus}</div>
+                </div>
+                <div style={{display:"flex", flexDirection:"column", gap:7}}>
+                  {(p.actions||[]).map((a,ai) => (
+                    <div key={ai} style={{display:"flex", gap:10, alignItems:"flex-start"}}>
+                      <span style={{color:T.gold, fontSize:12, flexShrink:0, marginTop:3}}>&#8594;</span>
+                      <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.6}}>{a}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Sec>
+
+        <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px":"24px", background:"rgba(138,158,132,0.04)", border:"0.5px solid rgba(138,158,132,0.2)"}}>
+          <p style={{fontFamily:T.serif, fontSize:isDesktop?18:16, fontWeight:600, color:T2.text, lineHeight:1.55, margin:"0 0 12px"}}>{blueprint.closing}</p>
+          <p style={{fontFamily:T.serif, fontSize:isDesktop?14:13, fontStyle:"italic", color:T.gold, margin:0}}>You are not the communicator you were 14 days ago.</p>
         </div>
-        <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14}}>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Three opportunities to create</div>
-          {blueprint.opportunities.map((o,i)=>(
-            <div key={i} style={{display:"flex",gap:10,marginBottom:i<2?10:0,alignItems:"flex-start"}}>
-              <span style={{color:T.gold,fontSize:13,flexShrink:0,marginTop:2}}>→</span>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.6}}>{o}</span>
-            </div>
-          ))}
-        </div>
+
+        <button onClick={() => { setPhase('intro'); setBlueprint(null); }} style={{...cs.cta, background:"transparent", border:"0.5px solid "+T2.border, color:T2.text3}}>Regenerate Blueprint</button>
       </div>
-
-      <div style={{...cs.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)",textAlign:"center"}}>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.5,margin:"0 0 12px"}}>You are not the communicator you were 14 days ago.</p>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>And this is only the beginning.</p>
-      </div>
-
-      <button onClick={()=>{setPhase('intro');setBlueprint(null);setRole('');setStrengths(['','','']);setGrowthArea('');setAmbition('');setArchetype('');}} style={{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:isDesktop?14:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Build Another Blueprint</button>
-    </div>
-  );
+    );
+  }
 
   return null;
 }
