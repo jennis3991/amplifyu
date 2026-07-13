@@ -239,7 +239,7 @@ finishDate + ".";
 
         {/* ── Two-column: Today's session (left) + YOUR JOURNEY card (right) ── */}
         <div style={{ background: T2.bg, borderBottom: "1px solid " + T2.divider }}>
-          <div style={{ maxWidth: 1400, margin: "0 auto", padding: "40px 88px", display: "grid", gridTemplateColumns: "1fr 280px", gap: 52, alignItems: "start" }}>
+          <div style={{ maxWidth: 1400, margin: "0 auto", padding: "40px 88px", display: "grid", gridTemplateColumns: "1fr 280px", gap: 52, alignItems: "end" }}>
 
             {/* Left: today's session */}
             <div>
