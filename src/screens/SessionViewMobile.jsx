@@ -978,56 +978,6 @@ T.goldDark : T2.text4,
           <D7SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
-      {isD7 && step==="Review" && (
-        <>
-          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Shift</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>What changed this week.</h2>
-          {/* Before / Now */}
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>
-            <div style={{padding:"14px",background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:8}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:10}}>Before</div>
-              {["Reacting without thinking","Rambling to fill silence","Over-explaining under pressure","Communication on autopilot"].map((b,i)=>(
-                <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:i<3?8:0}}>
-                  <div style={{width:4,height:4,borderRadius:"50%",background:T2.text4,flexShrink:0,marginTop:5}}/>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{b}</p>
-                </div>
-              ))}
-            </div>
-            <div style={{padding:"14px",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",borderRadius:8}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",marginBottom:10}}>Now</div>
-              {["Thinking before speaking","Pausing with intention","Leading with structure","Choosing words deliberately"].map((b,i)=>(
-                <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:i<3?8:0}}>
-                  <div style={{width:4,height:4,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
-                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.5,margin:0,fontWeight:400}}>{b}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Identity statement */}
-          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:T.sans}}>Your Communication Identity</div>
-          <h3 style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:12}}>Complete this statement.</h3>
-          <CoachWidget lesson={lesson} scenario={"Generate a personalised one-line Communication Identity Statement. Ask the user to complete: 'This week I discovered I communicate best when I...' — then respond with a single, powerful sentence that names their communication authority. Example format: 'You communicate best when you slow down, lead with structure, and trust the pause — that's where your authority lives.' Save-worthy. Read before high-stakes conversations."}/>
-          <div style={{height:"0.5px",background:T2.divider,margin:"20px 0"}}/>
-          {/* 4 takeaway cards */}
-          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>Your Four Takeaways</div>
-          {[
-            "Invisible excellence does not scale. Visibility is a communication skill.",
-            "Awareness creates intentions. Repetition creates habits. Only one shows up under pressure.",
-            "Confidence is clarity — not performance.",
-            "Mastery is conditioned, not studied.",
-          ].map((q,i)=>(
-            <div key={i} style={{padding:"14px 16px",background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:6,marginBottom:8}}>
-              <p style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.55,margin:0}}>"{q}"</p>
-            </div>
-          ))}
-          {/* Closing */}
-          <div style={{marginTop:8,padding:"20px",background:T2.cardDark,borderRadius:8}}>
-            <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.65,margin:"0 0 12px"}}>Your communication conditioning is now in motion.</p>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(255,255,255,0.5)",lineHeight:1.7,margin:"0 0 8px",fontWeight:300}}>Six habits. Seven days. The foundations are set.</p>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(255,255,255,0.5)",lineHeight:1.7,margin:0,fontWeight:300}}>Week 2 doesn't start from zero. It starts from here.</p>
-          </div>
-        </>
-      )}
       {isD2 && step==="Insight" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Way You Speak Changes the Way People Listen</h2>
@@ -2846,31 +2796,6 @@ strokeLinecap="round"/></svg>
           <AICoachTab dayNumber={lesson.day} dayTitle={lesson.title} />
         </>
       )}
-      {isD12 && step==="Review" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Review & Reflect</div>
-          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Strong Communication Is Experienced Physically As Well As Verbally</h2>
-          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
-            {[
-              {title:"Presence Shapes Perception",   body:"Body language influences how communication feels before words are fully processed."},
-              {title:"Gestures Improve Understanding",body:"Visual communication helps people process and remember ideas."},
-              {title:"Calm Presence Creates Clarity", body:"Grounded movement helps communication feel calm, intentional, and engaging."},
-              {title:"Congruence Builds Connection",  body:"Aligned words, tone, and body language help communication feel more emotionally clear and authentic."},
-            ].map((c,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{c.title}</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:400,margin:0}}>{c.body}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px",marginBottom:16}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Suggested Exploration</div>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:400,marginBottom:8}}>Watch: Keanu Reeves interviews · Kate Winslet interviews · Vinh Giang communication clips</p>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,fontWeight:400,margin:0}}>Observe: gestures · pauses · posture · facial expression · grounded energy · emotional congruence</p>
-          </div>
-          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Great communicators don't just speak clearly. They communicate presence."</p>
-        </>
-      )}
       {/* ── D13 Mobile Steps ──────────────────────────────────────────────── */}
       {/* ── D14 Mobile Steps ──────────────────────────────────────────────── */}
       {isD14 && step==="Insight" && (
@@ -2962,35 +2887,6 @@ strokeLinecap="round"/></svg>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Your Communication Blueprint</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Build the personalised communication system you'll use every day from here.</p>
           <D14SimWidget T={T} T2={T2} isDesktop={false}/>
-        </>
-      )}
-      {isD14 && step==="Review" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The AmplifyU Framework</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>Everything You've Built</h2>
-          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
-            {[["Clarity","People understand your ideas."],["Voice","People listen to your message."],["Storytelling","People remember your message."],["Presence","People notice your message."],["Brand","People associate you with something valuable."],["Exposure","The right people know who you are."]].map(([skill,desc],i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"12px 14px",display:"flex",gap:12,alignItems:"flex-start"}}>
-                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1px",flexShrink:0,paddingTop:1}}>{skill}</span>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,margin:0}}>{desc}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{padding:"16px",background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.25)",marginBottom:14}}>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:"0 0 8px"}}>Together they create:</p>
-            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-              {["Understanding","Attention","Trust","Opportunity","Impact"].map((s,i)=><span key={i} style={{padding:"4px 10px",borderRadius:20,background:"rgba(138,158,132,0.12)",border:"0.5px solid rgba(138,158,132,0.3)",fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold}}>{s}</span>)}
-            </div>
-          </div>
-          <div style={{padding:"20px",background:T2.surface,borderRadius:8,border:"0.5px solid rgba(138,158,132,0.3)",marginBottom:14}}>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,margin:"0 0 12px"}}>You showed up. You practised. You reflected. You improved.</p>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,margin:"0 0 12px"}}>You are not the communicator you were 14 days ago.</p>
-            <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.5,fontStyle:"italic",margin:0}}>"Every conversation from this point forward is another opportunity to practise, improve, and amplify your impact."</p>
-          </div>
-          <div style={{padding:"16px",background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.25)"}}>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:"0 0 8px",fontWeight:500}}>Keep learning. Keep practising. Keep amplifying.</p>
-            <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.5,fontStyle:"italic",margin:0}}>"Now go make your voice count."</p>
-          </div>
         </>
       )}
       {isD13 && step==="Insight" && (
@@ -3136,42 +3032,47 @@ strokeLinecap="round"/></svg>
           <D13SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
-      {isD13 && step==="Review" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Final Piece</div>
-          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Do the people who can change your future know what you're capable of?</h2>
-          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
-            {[
-              {title:"Visibility amplifies value",  body:"Great work is valuable. Visible great work is powerful."},
-              {title:"Opportunities move through people", body:"Relationships matter. Invest in them before you need them."},
-              {title:"Communicate where you're going", body:"People cannot support ambitions they don't know about."},
-              {title:"Exposure is not self-promotion", body:"It's making your value visible to the people who can act on it."},
-              {title:"Your network is a multiplier", body:"Invest in it intentionally — before you need it, not after."},
-            ].map((c,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{c.title}</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:400,margin:0}}>{c.body}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{padding:"16px",background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.25)",marginBottom:12}}>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:"0 0 8px"}}>You have developed:</p>
-            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:10}}>
-              {["Clarity","Voice","Storytelling","Presence","Brand","Exposure"].map((s,i)=><span key={i} style={{padding:"4px 10px",borderRadius:20,background:"rgba(138,158,132,0.12)",border:"0.5px solid rgba(138,158,132,0.3)",fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold}}>{s}</span>)}
-            </div>
-          </div>
-          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Communication helps people understand you. Exposure helps opportunities find you."</p>
-        </>
-      )}
-       {!isD13 && !isD14 && step==="Review" && (
+       {step==="Review" && (
         <>
           {/* Header */}
           <div style={{padding:"28px 24px 4px"}}>
             <div style={{fontSize:11,fontWeight:500,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:16,fontFamily:T.sans}}>Day {lesson.day} Complete ✓</div>
+          </div>
+          {/* What You Learned / Workplace Application tabs */}
+          <div style={{margin:"0 4px",paddingTop:4}}>
+            <div style={{display:"flex",gap:0,borderBottom:"0.5px solid "+T2.border,marginBottom:16}}>
+              {[{id:"learned",label:"What You Learned"},{id:"workplace",label:"Workplace Application"}].map(t=>(
+                <button key={t.id} onClick={()=>setReviewTab(t.id)} style={{flex:1,padding:"10px 8px",border:"none",background:"transparent",fontFamily:T.sans,fontSize:13,fontWeight:reviewTab===t.id?600:400,color:reviewTab===t.id?T2.text:T2.text3,cursor:"pointer",borderBottom:reviewTab===t.id?"2px solid "+T.gold:"2px solid transparent",marginBottom:-1}}>{t.label}</button>
+              ))}
+            </div>
+            {reviewTab==="learned" && REVIEW_BULLETS[lesson.day-1].map((b,i)=>(
+              <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
+                <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                  <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+                <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
+              </div>
+            ))}
+            {reviewTab==="workplace" && (
+              <>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,marginBottom:12,fontWeight:300}}>How to put today's techniques to work immediately.</p>
+                {(WORKPLACE_APPLICATION[lesson.day-1]||[]).map((b,i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
+                    <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                      <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
+                    </div>
+                    <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+          {/* Go Deeper heading */}
+          <div style={{padding:"20px 24px 4px"}}>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.05,letterSpacing:"-0.5px",marginBottom:12}}>Go Deeper</h2>
             <p style={{fontFamily:T.sans,fontSize:14,fontWeight:300,color:T2.text2,lineHeight:1.65,marginBottom:0}}>You've learned the techniques. These books will make you unstoppable.</p>
           </div>
-           {/* Book cards */}
+          {/* Book cards */}
           {(()=>{
             const fr = FURTHER_READING[lesson.day-1];
             if(!fr) return null;
@@ -3224,36 +3125,7 @@ strokeLinecap="round"/></svg>
               );
             });
           })()}
-           {/* What You Learned / Workplace Application tabs */}
-          <div style={{borderTop:"1px solid rgba(138,158,132,0.25)",margin:"0 4px",paddingTop:16}}>
-            <div style={{display:"flex",gap:0,borderBottom:"0.5px solid "+T2.border,marginBottom:16}}>
-              {[{id:"learned",label:"What You Learned"},{id:"workplace",label:"Workplace Application"}].map(t=>(
-                <button key={t.id} onClick={()=>setReviewTab(t.id)} style={{flex:1,padding:"10px 8px",border:"none",background:"transparent",fontFamily:T.sans,fontSize:13,fontWeight:reviewTab===t.id?600:400,color:reviewTab===t.id?T2.text:T2.text3,cursor:"pointer",borderBottom:reviewTab===t.id?"2px solid "+T.gold:"2px solid transparent",marginBottom:-1}}>{t.label}</button>
-              ))}
-            </div>
-            {reviewTab==="learned" && REVIEW_BULLETS[lesson.day-1].map((b,i)=>(
-              <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
-                <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                  <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </div>
-                <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
-              </div>
-            ))}
-            {reviewTab==="workplace" && (
-              <>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,marginBottom:12,fontWeight:300}}>How to put today's techniques to work immediately.</p>
-                {(WORKPLACE_APPLICATION[lesson.day-1]||[]).map((b,i)=>(
-                  <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
-                    <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                      <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
-                    </div>
-                    <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
-                  </div>
-                ))}
-              </>
-            )}
-          </div>
-           {/* Ambition Statement — only on Day 7 */}
+          {/* Ambition Statement — only on Day 7 */}
           {lesson.day === 7 && (
             <div style={{background:T.cardDark,borderRadius:8,overflow:"hidden",border:"1px solid rgba(138,158,132,0.2)",margin:"0 4px"}}>
               <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.15))"}}/>
@@ -3263,16 +3135,16 @@ strokeLinecap="round"/></svg>
                   {ambitionSaved && <span style={{marginLeft:"auto",fontSize:10,color:T.gold,background:"rgba(138,158,132,0.12)",padding:"2px 8px",borderRadius:8}}>Saved ✓</span>}
                 </div>
                 <p style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.6,marginBottom:12}}>Complete this sentence. Say it as if you're telling a trusted senior leader — one sentence, direct, owned.</p>
-                <textarea value={ambitionDraft} onChange={e=>saveAmbition(e.target.value)} placeholder="…operating at director level, leading a team that matters…" rows={2} style={{width:"100%",padding:"10px 14px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,outline:"none",resize:"none",background:"rgba(255,255,255,0.05)",fontSize:13,color:"rgba(255,255,255,0.85)",lineHeight:1.55,fontFamily:T.sans,boxSizing:"border-box"}}/>
+                <textarea value={ambitionDraft} onChange={e=>saveAmbition(e.target.value)} placeholder="...operating at director level, leading a team that matters..." rows={2} style={{width:"100%",padding:"10px 14px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,outline:"none",resize:"none",background:"rgba(255,255,255,0.05)",fontSize:13,color:"rgba(255,255,255,0.85)",lineHeight:1.55,fontFamily:T.sans,boxSizing:"border-box"}}/>
               </div>
             </div>
           )}
-           {/* Next session CTA */}
+          {/* Next session CTA */}
           {(()=>{
             const nextDay = lesson.day < 14 ? lesson.day + 1 : null;
             return (
               <button onClick={onComplete} style={{width:"100%",background:T.gold,color:"#F5EFE6",padding:"18px",borderRadius:4,border:"none",fontFamily:T.sans,fontSize:15,fontWeight:600,cursor:"pointer",textAlign:"center"}}>
-                {nextDay ? `Next: Day ${nextDay} — ${LESSONS[nextDay-1]?.title} →` : "Complete Programme →"}
+                {nextDay ? "Next: Day " + nextDay + " — " + (LESSONS[nextDay-1]?.title||"") + " →" : "Complete Programme →"}
               </button>
             );
           })()}
