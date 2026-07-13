@@ -10,23 +10,23 @@ import { PIECES, getPieceInfo, getCategoryProgress } from '../utils.js';
 
 function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
   return (
-    <div style={{ background:"#17140f", borderRadius:14, padding:"24px" }}>
-      <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:mobile?12:20 }}>
-        <div style={{ width:44, height:44, borderRadius:"50%", background:"#0d0b08", display:"flex", alignItems:"center", justifyContent:"center" }}>
-          <i className="ti ti-calendar-month" style={{ fontSize:22, color:"#ffffff" }}/>
+    <div style={{ background:"#17140f", borderRadius:12, padding:"18px 20px" }}>
+      <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:mobile?10:16 }}>
+        <div style={{ width:36, height:36, borderRadius:"50%", background:"#0d0b08", display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <i className="ti ti-calendar-month" style={{ fontSize:18, color:"#ffffff" }}/>
         </div>
-        <span style={{ fontSize:12, letterSpacing:"0.15em", color:"#c9a961", fontWeight:500, fontFamily:T.sans }}>YOUR JOURNEY</span>
+        <span style={{ fontSize:11, letterSpacing:"0.15em", color:"#c9a961", fontWeight:500, fontFamily:T.sans }}>YOUR JOURNEY</span>
       </div>
       {mobile && (
-        <div style={{ position:"relative", display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
+        <div style={{ position:"relative", display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
           <div style={{ position:"absolute", top:"50%", left:"5%", right:"5%", height:1, background:"rgba(255,255,255,0.1)", transform:"translateY(-50%)", zIndex:0 }}/>
           {PIECES.map((piece,i) => {
             const isCurrent = i === pieceInfo.currentIndex;
             const isNext = i === pieceInfo.currentIndex + 1;
             return (
               <div key={piece.name} style={{ position:"relative", zIndex:1 }}>
-                <div style={{ width:26, height:26, borderRadius:"50%", background:isCurrent?"#c9a961":isNext?"#252015":"#231f18", border:isCurrent?"none":isNext?"1.5px solid #c9a961":"1.5px solid rgba(255,255,255,0.15)", display:"flex", alignItems:"center", justifyContent:"center" }}>
-                  <i className={"ti "+piece.icon} style={{ fontSize:12, color:isCurrent?"#17140f":isNext?"#c9a961":"rgba(255,255,255,0.2)" }}/>
+                <div style={{ width:22, height:22, borderRadius:"50%", background:isCurrent?"#c9a961":isNext?"#252015":"#231f18", border:isCurrent?"none":isNext?"1.5px solid #c9a961":"1.5px solid rgba(255,255,255,0.15)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                  <i className={"ti "+piece.icon} style={{ fontSize:10, color:isCurrent?"#17140f":isNext?"#c9a961":"rgba(255,255,255,0.2)" }}/>
                 </div>
               </div>
             );
@@ -34,28 +34,28 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
         </div>
       )}
       {pieceInfo.next ? (
-        <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20, marginBottom:20 }}>
-          <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:4 }}>
-            <span style={{ fontFamily:T.serif, fontSize:mobile?22:34, color:"#f4f1ea" }}>{pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"}</span>
-            <i className={"ti "+pieceInfo.next.icon} style={{ fontSize:26, color:"#c9a961" }}/>
+        <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:14, marginBottom:14 }}>
+          <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:3 }}>
+            <span style={{ fontFamily:T.serif, fontSize:mobile?18:26, color:"#f4f1ea" }}>{pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"}</span>
+            <i className={"ti "+pieceInfo.next.icon} style={{ fontSize:20, color:"#c9a961" }}/>
           </div>
-          <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>until you reach {pieceInfo.next.name}{done.length<6?" — your next rank":""}</p>
+          <p style={{ fontSize:12, color:"#9c9384", margin:0 }}>until you reach {pieceInfo.next.name}{done.length<6?" — your next rank":""}</p>
         </div>
       ) : (
-        <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20, marginBottom:20 }}>
-          <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:4 }}>
-            <span style={{ fontFamily:T.serif, fontSize:mobile?22:34, color:"#c9a961" }}>{pieceInfo.current.name}</span>
-            <i className={"ti "+pieceInfo.current.icon} style={{ fontSize:26, color:"#c9a961" }}/>
+        <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:14, marginBottom:14 }}>
+          <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:3 }}>
+            <span style={{ fontFamily:T.serif, fontSize:mobile?18:26, color:"#c9a961" }}>{pieceInfo.current.name}</span>
+            <i className={"ti "+pieceInfo.current.icon} style={{ fontSize:20, color:"#c9a961" }}/>
           </div>
-          <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>{"You've reached the highest rank"}</p>
+          <p style={{ fontSize:12, color:"#9c9384", margin:0 }}>{"You've reached the highest rank"}</p>
         </div>
       )}
-      <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:20 }}>
-        <p style={{ fontSize:12, letterSpacing:"0.1em", color:"#9c9384", margin:"0 0 10px", fontFamily:T.sans }}>STRONGEST SO FAR</p>
+      <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:14 }}>
+        <p style={{ fontSize:11, letterSpacing:"0.1em", color:"#9c9384", margin:"0 0 8px", fontFamily:T.sans }}>STRONGEST SO FAR</p>
         {catProgress.map((cat,i) => (
-          <div key={cat.label} style={{ display:"flex", alignItems:"center", gap:10, marginBottom:i<catProgress.length-1?8:0 }}>
-            <span style={{ fontSize:13, color:i===0?"#f4f1ea":"#9c9384", width:128, flexShrink:0, fontFamily:T.sans }}>{cat.label}</span>
-            <div style={{ flex:1, height:4, background:"#2a251c", borderRadius:2, overflow:"hidden" }}>
+          <div key={cat.label} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:i<catProgress.length-1?6:0 }}>
+            <span style={{ fontSize:12, color:i===0?"#f4f1ea":"#9c9384", width:118, flexShrink:0, fontFamily:T.sans }}>{cat.label}</span>
+            <div style={{ flex:1, height:3, background:"#2a251c", borderRadius:2, overflow:"hidden" }}>
               <div style={{ width:cat.pct+"%", height:"100%", background:i===0?"#c9a961":"#5f5a4c" }}/>
             </div>
           </div>
@@ -239,7 +239,7 @@ finishDate + ".";
 
         {/* ── Two-column: Today's session (left) + YOUR JOURNEY card (right) ── */}
         <div style={{ background: T2.bg, borderBottom: "1px solid " + T2.divider }}>
-          <div style={{ maxWidth: 1400, margin: "0 auto", padding: "56px 88px", display: "grid", gridTemplateColumns: "1fr 320px", gap: 64, alignItems: "start" }}>
+          <div style={{ maxWidth: 1400, margin: "0 auto", padding: "40px 88px", display: "grid", gridTemplateColumns: "1fr 280px", gap: 52, alignItems: "start" }}>
 
             {/* Left: today's session */}
             <div>
@@ -249,18 +249,49 @@ finishDate + ".";
               <h2 style={{ fontFamily: T.serif, fontSize: 42, fontWeight: 500, color: T2.text, letterSpacing: "-1.5px", lineHeight: 1.1, maxWidth: 600, marginBottom: 18 }}>
                 {finished ? "You communicate differently now." : insight.headline}
               </h2>
-              <p style={{ fontSize: 15, color: T2.text3, lineHeight: 1.8, maxWidth: 500, fontFamily: T.sans, fontWeight: 300, marginBottom: 32 }}>
+              <p style={{ fontSize: 15, color: T2.text3, lineHeight: 1.8, maxWidth: 500, fontFamily: T.sans, fontWeight: 300, marginBottom: 24 }}>
                 {insight.body}
               </p>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                {["Insight", "Theory", "Example", "Rehearsal", "Simulation", "Review"].map((stage, i) => (
-                  <span key={stage} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 14px", borderRadius: 20, border: "0.5px solid rgba(44,36,22,0.18)", background: "rgba(44,36,22,0.05)", fontFamily: T.sans, fontSize: 12, fontWeight: 500, color: T2.text3, letterSpacing: "0.2px" }}>
-                    {i > 0 && <span style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(201,169,110,0.4)", display: "inline-block", marginRight: 2 }}/>}
-                    {stage}
-                  </span>
-                ))}
-                <span style={{ padding: "6px 14px", borderRadius: 20, border: "0.5px solid rgba(201,169,110,0.3)", background: "rgba(201,169,110,0.07)", fontFamily: T.sans, fontSize: 12, fontWeight: 600, color: "#c9a96e", letterSpacing: "0.2px" }}>~15 min</span>
-              </div>
+              {done.length === 0 ? (
+                <div>
+                  <div style={{ display:"flex", alignItems:"flex-start", gap:0, marginBottom:20 }}>
+                    {[
+                      {icon:"ti-notes", label:"Learn"},
+                      {icon:"ti-user-circle", label:"Practice"},
+                      {icon:"ti-brain", label:"AI Feedback"},
+                      {icon:"ti-trending-up", label:"Improve"},
+                    ].map((step, i) => (
+                      <div key={i} style={{ display:"flex", alignItems:"center" }}>
+                        <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:7 }}>
+                          <div style={{ width:44, height:44, borderRadius:"50%", background:"rgba(44,36,22,0.06)", border:"0.5px solid rgba(44,36,22,0.14)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                            <i className={"ti "+step.icon} style={{ fontSize:18, color:T2.text3 }}/>
+                          </div>
+                          <span style={{ fontFamily:T.sans, fontSize:11, color:T2.text3, whiteSpace:"nowrap" }}>{step.label}</span>
+                        </div>
+                        {i < 3 && <span style={{ color:"rgba(44,36,22,0.25)", fontSize:13, margin:"0 10px", paddingBottom:18 }}>&#8594;</span>}
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+                    {["14 sessions", "6 steps each", "Persona-based", "Science-backed"].map((pill, i) => (
+                      <span key={i} style={{ padding:"5px 13px", borderRadius:20, border:"0.5px solid rgba(44,36,22,0.18)", background:"rgba(44,36,22,0.05)", fontFamily:T.sans, fontSize:12, fontWeight:500, color:T2.text3 }}>{pill}</span>
+                    ))}
+                  </div>
+                </div>
+              ) : (() => {
+                const lastDone = Math.max(...done);
+                const lastLesson = LESSONS[lastDone - 1];
+                return lastLesson && lastLesson.recap ? (
+                  <div style={{ borderLeft:"2px solid rgba(201,169,110,0.4)", paddingLeft:16 }}>
+                    <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:"#c9a96e", textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8 }}>
+                      {"Day " + lastDone + " · " + lastLesson.tag}
+                    </div>
+                    <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.75, margin:0 }}>
+                      {lastLesson.recap}
+                    </p>
+                  </div>
+                ) : null;
+              })()}
             </div>
 
             {/* Right: YOUR JOURNEY card */}

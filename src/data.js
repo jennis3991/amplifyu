@@ -243,7 +243,8 @@ export const LESSONS = [
    scenarios:["Your manager asks for an update","A senior leader asks what you do","Someone asks a question you find difficult to answer clearly"],
    review:["Did I make my point without jargon?","Was I clear in under 30 seconds?","Could someone repeat back what I said?"],
    promise:"Clarity is a habit. The more you practice it, the more authority you project.",
-   teaser:"You'll learn to strip out the noise and say exactly what you mean — in a way that commands instant respect."},
+   teaser:"You'll learn to strip out the noise and say exactly what you mean — in a way that commands instant respect.",
+   recap:"Yesterday you learned that clarity is the most powerful form of intelligence — say exactly what you mean, strip out the rest. The clearest communicators use fewer words, not more."},
 
   {day:2,week:1,title:"The Voice Advantage",tag:"Voice",scene:"voice",
    quote:"Master the instrument behind your message.",
@@ -256,7 +257,8 @@ export const LESSONS = [
    scenarios:["Presenting to the board","A high-stakes negotiation","An unexpected question"],
    review:["Did I pause before answering?","Did I avoid rushing through my points?","Did I sound calm, even under pressure?"],
    promise:"Speed is anxiety. Pace is confidence. Today you chose pace.",
-   teaser:"Discover why your voice is your most underused asset — and how mastering four simple levers changes how every room responds to you."},
+   teaser:"Discover why your voice is your most underused asset — and how mastering four simple levers changes how every room responds to you.",
+   recap:"Yesterday you worked on your voice — the pace, tone, and control that signals confidence before a word lands. Slowing down is not hesitation; it is authority."},
 
   {day:3,week:1,title:"Eliminate Fillers",tag:"Credibility",scene:"clarity",
    quote:"What you don't say is as powerful as what you do.",
@@ -269,7 +271,8 @@ export const LESSONS = [
    scenarios:["A difficult question from leadership","A panel presentation","A one-on-one with your manager"],
    review:["Did I pause instead of filling?","Was I comfortable with silence?","Did I feel more authoritative?"],
    promise:"Every filler word you remove is replaced by credibility.",
-   teaser:"Discover why filler words quietly erode your authority — and how one simple shift makes you sound more credible, confident, and in control."},
+   teaser:"Discover why filler words quietly erode your authority — and how one simple shift makes you sound more credible, confident, and in control.",
+   recap:"Yesterday you tackled fillers — the ums, ahs, and you-knows that signal uncertainty. Silence is more powerful than filler; it tells the room you are thinking, not floundering."},
 
   {day:4,week:1,title:"Short Sentences",tag:"Editing",scene:"clarity",
    quote:"Short sentences are easier to follow. Easier to remember. And far more persuasive.",
@@ -282,7 +285,8 @@ export const LESSONS = [
    scenarios:["Briefing a CEO","Summarising a complex project","Making a recommendation under time pressure"],
    review:["Did I cut unnecessary words?","Were my sentences short and punchy?","Did my message land faster?"],
    promise:"Short sentences are a gift to the listener. This discipline will make your stories land harder than anything else you practise this week.",
-   teaser:"Find out why short sentences are strategic, not simple — and why mastering this is the hidden foundation of every great professional story."},
+   teaser:"Find out why short sentences are strategic, not simple — and why mastering this is the hidden foundation of every great professional story.",
+   recap:"Yesterday you practised editing ruthlessly — short sentences land hard, long ones bury the point. Every word you cut increases impact."},
 
   {day:5,week:1,title:"Structure: PRE",tag:"Framework",scene:"structure",
    quote:"Structure is the backbone of every powerful communication.",
@@ -295,7 +299,8 @@ export const LESSONS = [
    scenarios:["A senior leader asks your opinion","You're asked to present without preparation","A sponsor asks what you want next"],
    review:["Did I lead with my point?","Did I give one clear reason?","Did I ground it with an example?"],
    promise:"Structure is not a constraint — it's a superpower. PRE is the skeleton. Story is the skin. Both together is what makes ideas move people.",
-   teaser:"The PRE framework gives you a three-part structure that makes every answer land with precision — and turns out to be the skeleton inside every great professional story."},
+   teaser:"The PRE framework gives you a three-part structure that makes every answer land with precision — and turns out to be the skeleton inside every great professional story.",
+   recap:"Yesterday you learned the PRE framework — Point, Reason, Example. Three components that give every answer, opinion, and presentation a structure that commands instant respect."},
 
   {day:6,week:1,title:"High-Stakes Conversations",tag:"Composure",scene:"structure",
    quote:"The strongest communicator is often the calmest person in the room.",
@@ -308,7 +313,8 @@ export const LESSONS = [
    scenarios:["A senior leader dismisses your input in a meeting","A colleague gives you harsh feedback you disagree with","You need to push back on an unrealistic deadline"],
    review:["Did I stay calm when the pressure rose?","Did I lead with composure before content?","Did I listen before I responded?"],
    promise:"Week 1 ends here — with the skill that reveals everything else. Structure, voice, clarity, and brevity all collapse under pressure unless composure holds them together. You've built the foundation. Now hold it when it matters.",
-   teaser:"Understand the biology of pressure responses and the techniques elite communicators use to stay composed when stakes are highest."},
+   teaser:"Understand the biology of pressure responses and the techniques elite communicators use to stay composed when stakes are highest.",
+   recap:"Yesterday you prepared for high-stakes conversations — the moments that define careers, relationships, and trust. The communicators who stay calm under pressure gain the advantage."},
 
   {day:7,week:1,title:"Week 1 Review",tag:"Integration",scene:"structure",
    quote:"Excellence is not an act — it's a habit. And habits are built one rep at a time.",
@@ -321,7 +327,8 @@ export const LESSONS = [
    scenarios:["A team meeting where you need to be heard","A 1:1 with your manager about your development","Any conversation that matters this week"],
    review:["Which of the six habits felt most natural?","Which one is hardest under pressure?","What story do you most want to be able to tell with confidence?"],
    promise:"One week in. You communicate differently already. Week 2 takes everything you've built and turns it into a precision storytelling instrument.",
-   teaser:"Bring together all six Week 1 habits and prepare for a storytelling deep-dive that will change how you show up in every professional room."},
+   teaser:"Bring together all six Week 1 habits and prepare for a storytelling deep-dive that will change how you show up in every professional room.",
+   recap:"This week you built six core habits: clarity, voice control, no fillers, short sentences, PRE structure, and composure under pressure. These are the foundations everything else is built on."},
 
   // ── WEEK 2 
   {day:8,week:2,title:"Narrative Transportation",tag:"Storytelling",scene:"story",
@@ -335,7 +342,8 @@ export const LESSONS = [
    scenarios:["Your MD asks you to open a board presentation — no slides, just your opening words to set the stakes","You're in an interview and the panel asks: Tell me about yourself. Give them the version that makes them lean forward.","A sceptical stakeholder thinks your proposal is too risky. Open with a story that changes the energy in the room."],
    review:["I can name all 6 beats of the story arc framework","I understand why storytelling activates a different response in the brain than facts alone","I've built and rehearsed at least one version of my own professional story"],
    promise:"You now have a framework that turns your experience into influence. Use it in your very next meeting.",
-   teaser:"Learn the exact 6-beat storytelling framework used by the world's most compelling communicators — and build your own story with AI coaching."},
+   teaser:"Learn the exact 6-beat storytelling framework used by the world's most compelling communicators — and build your own story with AI coaching.",
+   recap:"Yesterday you discovered the power of story — how a well-told narrative transports rather than informs. A great story activates the brain like lived experience; it is your most powerful professional tool."},
 
   {day:9,week:2,title:"Connection",tag:"Rapport",scene:"voice",
    quote:"People may forget what you said. They rarely forget how you made them feel.",
@@ -348,7 +356,8 @@ export const LESSONS = [
    scenarios:["A networking event where you want to build meaningful connections","A first meeting with a new stakeholder or senior leader","A team meeting where you want to create a stronger connection"],
    review:["Did I listen more than I spoke?","Did I ask at least one question that opened a genuine conversation?","Did I adapt my communication style to the person I was talking to?"],
    promise:"The ability to make people feel understood is one of the rarest and most valuable skills in professional life. You now know how to build it.",
-   teaser:"Discover how the world's most connected professionals build trust, rapport, and influence — through curiosity, empathy, and the art of making people feel heard."},
+   teaser:"Discover how the world's most connected professionals build trust, rapport, and influence — through curiosity, empathy, and the art of making people feel heard.",
+   recap:"Yesterday you built connection — the ability to make people feel genuinely heard and understood. Strong relationships are not built through charisma; they are built through curiosity."},
 
   {day:10,week:2,title:"Performance",tag:"Impact",scene:"pie",theoryImageDay:11,
    quote:"Great work does not automatically create visibility.",
@@ -361,7 +370,8 @@ export const LESSONS = [
    scenarios:["Performance review — make your top contributions specific and outcome-led","A senior stakeholder asks what you've been focused on","Someone takes credit for your work in a meeting"],
    review:["Did I name my contribution or just describe my effort?","Did I connect my work to a measurable outcome?","Do the right people know what I delivered this week?"],
    promise:"Part of leadership is making value visible. You now have the language, the structure, and the mindset to do it with confidence.",
-   teaser:"Discover why 90% of career advancement depends on how visible your work is — not just how good it is."},
+   teaser:"Discover why 90% of career advancement depends on how visible your work is — not just how good it is.",
+   recap:"Yesterday you confronted a surprising truth: performance accounts for just 10% of career success. Making your work visible and getting credit for it is not optional — it is essential."},
 
   {day:11,week:2,title:"Brand Identity",tag:"Presence",scene:"presence",
    quote:"Your personal brand is what people say about you when you're not in the room.",
@@ -374,7 +384,8 @@ export const LESSONS = [
    scenarios:["Walking into a room with a new senior stakeholder","Introducing yourself at a networking event","Updating your LinkedIn profile"],
    review:["Do my signals match my intentions?","Do I have a consistent story about who I am?","Have I chosen my brand — or let others choose it for me?"],
    promise:"Your image is already being built, in every room you enter. This is where you take control.",
-   teaser:"Discover how to shape the way others perceive you — with intentional signals, consistent behaviour, and stories that make your brand unforgettable."},
+   teaser:"Discover how to shape the way others perceive you — with intentional signals, consistent behaviour, and stories that make your brand unforgettable.",
+   recap:"Yesterday you explored your personal brand — the signals that shape how others perceive you before you speak. Perception is not random; it is built from your appearance, your stories, and your consistency."},
 
   {day:12,week:2,title:"Influence",tag:"Nonverbal",scene:"presence",
    quote:"People don't just hear confidence. They see it.",
@@ -385,7 +396,8 @@ export const LESSONS = [
    scenarios:["A high-stakes presentation where your energy matters as much as your content","A difficult conversation where calm presence changes the outcome","Any moment where how you show up is as important as what you say"],
    review:["Did my body language support my message today?","Was I physically calm and grounded in difficult moments?","Did I make people feel at ease through my presence?"],
    promise:"Presence is not a personality trait. It is a set of physical habits. You are building them.",
-   teaser:"Learn how gestures, posture, eye contact, and calm energy shape how every conversation you have is experienced."},
+   teaser:"Learn how gestures, posture, eye contact, and calm energy shape how every conversation you have is experienced.",
+   recap:"Yesterday you worked on presence — the nonverbal signals that communicate confidence and warmth before a word is said. How you move, stand, and hold space is communication."},
 
   {day:13,week:2,title:"Exposure",tag:"Visibility",scene:"pie",theoryImageDay:12,
    quote:"Performance gets you in the door. Exposure opens the next one.",
@@ -398,7 +410,8 @@ export const LESSONS = [
    scenarios:["A sponsor asks where you see yourself going","A senior leader asks what you want next","A skip-level conversation where you need to be remembered"],
    review:["Do the right people know what I want next?","Have I said my ambition out loud to someone who matters this week?","Am I being visible, or am I being visible with direction?"],
    promise:"Exposure without stated ambition is presence. Exposure with stated ambition is momentum. You now know the difference.",
-   teaser:"Discover why being visible isn't enough — and how to become visible with direction so the right people know exactly where you're going and how to help you get there."},
+   teaser:"Discover why being visible isn't enough — and how to become visible with direction so the right people know exactly where you're going and how to help you get there.",
+   recap:"Yesterday you focused on exposure — being understood by the people who influence your career, not just being seen. Presence without stated ambition is just attendance."},
 
   {day:14,week:2,title:"Amplified",tag:"Capstone",scene:"clarity",
    quote:"Your future will be shaped by the conversations you choose to have, the stories you choose to tell, and the clarity with which you communicate who you are.",
