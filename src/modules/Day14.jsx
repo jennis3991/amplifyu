@@ -395,8 +395,8 @@ export function D14SimWidget({T, T2, isDesktop}) {
         </Sec>
 
         <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px":"24px", background:"rgba(138,158,132,0.04)", border:"0.5px solid rgba(138,158,132,0.2)"}}>
-          <p style={{fontFamily:T.serif, fontSize:isDesktop?18:16, fontWeight:600, color:T2.text, lineHeight:1.55, margin:"0 0 12px"}}>{blueprint.closing}</p>
-          <p style={{fontFamily:T.serif, fontSize:isDesktop?14:13, fontStyle:"italic", color:T.gold, margin:0}}>You are not the communicator you were 14 days ago.</p>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?18:16, fontWeight:600, color:T2.text, lineHeight:1.55, margin:"0 0 12px"}}>{blueprint.closing}</p>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, fontStyle:"italic", color:T.gold, margin:0}}>You are not the communicator you were 14 days ago.</p>
         </div>
 
         <button onClick={() => { setPhase('intro'); setBlueprint(null); }} style={{...cs.cta, background:"transparent", border:"0.5px solid "+T2.border, color:T2.text3}}>Regenerate Blueprint</button>
