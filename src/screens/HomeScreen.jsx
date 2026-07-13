@@ -284,7 +284,7 @@ finishDate + ".";
                 return lastLesson && lastLesson.recap ? (
                   <div style={{ borderLeft:"2px solid rgba(201,169,110,0.4)", paddingLeft:16 }}>
                     <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:600, color:"#c9a96e", textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8 }}>
-                      {"Day " + lastDone + " · " + lastLesson.tag}
+                      {"DAY " + lastDone + " - RECAP"}
                     </div>
                     <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.75, margin:0 }}>
                       {lastLesson.recap}
