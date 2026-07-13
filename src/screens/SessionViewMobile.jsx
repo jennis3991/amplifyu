@@ -1569,7 +1569,7 @@ T.goldDark : T2.text4,
                         setD1MobCard(card.id);
                         if (!d1ExObs[card.id]) { d1ExObs[card.id]=true; localStorage.setItem('d1ExObserved',JSON.stringify(d1ExObs)); }
                       }}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center"}}/>
+                      <img src={card.img} alt={card.name} loading="lazy" style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center"}}/>
                     </div>
                   )}
                   {/* Observed badge — full-width strip below image */}
