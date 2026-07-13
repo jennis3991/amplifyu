@@ -311,7 +311,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
         <div style={cs.label}>Find Your Voice</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>Yesterday measured <strong>what you said</strong>. Today measures <strong>how you sound</strong>.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>{"Your AI coach analyses the four dimensions of vocal presence — "}<strong>pace, pitch, pauses, and energy</strong>{" — to reveal how your voice shapes the way people experience your message."}</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>{"Your AI coach analyses seven dimensions of your vocal delivery — "}<strong>pace, pitch, tone, pauses, vocal energy, range and presence</strong>{" — to reveal how your voice shapes the way people experience your message."}</p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>{"This is your vocal baseline: a snapshot of the habits that build authority, confidence, and connection."}</p>
       </div>
       <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose a Speaking Prompt →</button>
@@ -330,7 +330,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
       <div style={{display:"flex",flexDirection:"column",gap:16}}>
         <div>
           <h2 style={cs.h2}>Choose a speaking prompt</h2>
-          <p style={{...cs.body,marginBottom:16}}>{"Pick a topic, speak for 60-90 seconds. Your coach listens for pace, pitch, pauses, and energy."}</p>
+          <p style={{...cs.body,marginBottom:16}}>{"Pick a topic, speak for 60-90 seconds. Your coach listens for pace, pitch, tone, pauses, vocal energy, range and presence."}</p>
         </div>
         <div style={{display:"flex",gap:8,marginBottom:4}}>
           {Object.keys(PROMPTS).map(c=>(
