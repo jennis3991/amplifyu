@@ -284,7 +284,7 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation}) {
             <div style={{display:'flex', flexWrap:'wrap', gap:8}}>
               {(coachResult.wordBank || []).map((phrase, i) => (
                 <span key={i} style={{padding:'5px 14px', borderRadius:20, border:'0.5px solid rgba(138,158,132,0.4)', background:T2.bg, fontFamily:T.serif, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.4}}>
-                  {phrase}
+                  {typeof phrase === 'string' ? phrase : (phrase.phrase || phrase.text || '')}
                 </span>
               ))}
             </div>
