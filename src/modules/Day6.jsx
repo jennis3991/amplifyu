@@ -383,6 +383,8 @@ export function D6SimWidget({T, T2, isDesktop}) {
   const [isListening,    setIsListening]   = useState(false);
   const [recTime,        setRecTime]       = useState(0);
   const [result,         setResult]        = useState(null);
+  const [perFeedback,    setPerFeedback]   = useState(null);
+  const [perFeedLoading, setPerFeedLoading]= useState(false);
   const [openDrop,       setOpenDrop]      = useState(null);
   const recRef           = useRef(null);
   const timerRef         = useRef(null);
@@ -428,13 +430,31 @@ export function D6SimWidget({T, T2, isDesktop}) {
   }
   function stopListening(){if(recRef.current)recRef.current.stop();setIsListening(false);}
 
-  function nextQuestion(){
+  async function submitAnswer(){
     if(isListening)stopListening();
     const newAnswers=[...answers,currentAnswer];
     setAnswers(newAnswers);
-    setCurrentAnswer('');setRecTime(0);
-    if(qIdx<questions.length-1){setQIdx(i=>i+1);}
-    else{setPhase('reviewing');analyze(newAnswers);}
+    setPerFeedback(null);
+    setPerFeedLoading(true);
+    setPhase('per-feedback');
+    try{
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:200,messages:[{role:"user",content:"You are a senior executive communication coach giving rapid in-session feedback.\n\nContext: "+form.role+" practising for a meeting with "+form.stakeholder+" about "+purposeForAnalysis.current+"\n\nQuestion: \""+questions[qIdx]+"\"\nTheir spoken answer: \""+(currentAnswer.trim()||"(no response given)")+"\"\n\nReturn ONLY valid JSON with two short fields:\n{\"landed\":\"<one specific thing that worked — max 15 words>\",\"sharpen\":\"<one specific thing to do better next time — max 15 words>\"}"}]})});
+      const d=await res.json();
+      const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
+      const m=raw.match(/\{[\s\S]*\}/);
+      setPerFeedback(m?JSON.parse(m[0]):{landed:"Composed and direct — good foundation.",sharpen:"Lead with your main point before the supporting detail."});
+    }catch{
+      setPerFeedback({landed:"Composed and direct — good foundation.",sharpen:"Lead with your main point before the supporting detail."});
+    }finally{
+      setPerFeedLoading(false);
+    }
+    setAnswers(newAnswers);
+  }
+
+  function continueToNext(){
+    setCurrentAnswer('');setRecTime(0);setPerFeedback(null);
+    if(qIdx<questions.length-1){setQIdx(i=>i+1);setPhase('simulation');}
+    else{setPhase('reviewing');analyze(answers);}
   }
 
   async function analyze(ans){
@@ -621,8 +641,8 @@ export function D6SimWidget({T, T2, isDesktop}) {
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flexShrink:0}}>Question {qIdx+1} of {questions.length}</div>
         <div style={{flex:1,height:2,background:T2.border,borderRadius:2}}><div style={{height:"100%",width:(((qIdx+1)/questions.length)*100)+"%",background:T.gold,borderRadius:2,transition:"width 0.4s"}}/></div>
       </div>
-      <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}><span style={{fontWeight:600,color:T2.text}}>{form.stakeholder}</span> asks:</div>
       <div style={{...cs.card,borderLeft:"2px solid "+T.gold,padding:isDesktop?"22px 28px":"18px 22px"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>{form.stakeholder}</div>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{questions[qIdx]}</p>
       </div>
       <div style={cs.card}>
@@ -637,10 +657,47 @@ export function D6SimWidget({T, T2, isDesktop}) {
           <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,fontStyle:"italic"}}>Speech recording is not supported in this browser. Try Chrome or Safari.</p>
         )}
       </div>
-      <button onClick={nextQuestion} style={{...cs.cta,background:currentAnswer.trim()?T.gold:T.ink,color:"white",fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
-        {qIdx<questions.length-1?"Next Question →":"Get My Feedback →"}
+      <button onClick={submitAnswer} style={{...cs.cta,background:T.gold,color:"white",fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
+        Submit Answer →
       </button>
       <button onClick={()=>{if(isListening)stopListening();setAnswers([]);setQIdx(0);setCurrentAnswer('');setPhase('questions');}} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:"6px 0",textAlign:"center"}}>← Back to questions</button>
+    </div>
+  );
+
+  // ── PER-QUESTION COACHING ──
+  if(phase==='per-feedback') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{display:"flex",alignItems:"center",gap:10}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flexShrink:0}}>Question {qIdx+1} of {questions.length}</div>
+        <div style={{flex:1,height:2,background:T2.border,borderRadius:2}}><div style={{height:"100%",width:(((qIdx+1)/questions.length)*100)+"%",background:T.gold,borderRadius:2,transition:"width 0.4s"}}/></div>
+      </div>
+      <div style={{...cs.card,borderLeft:"2px solid "+T.gold,padding:isDesktop?"22px 28px":"18px 22px"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>{form.stakeholder}</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{questions[qIdx]}</p>
+      </div>
+      {perFeedLoading ? (
+        <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px"}}>
+          <div style={{display:"flex",gap:6,justifyContent:"center",marginBottom:10}}>{[0,1,2].map(i=><div key={i} style={{width:7,height:7,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}</div>
+          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Your coach is reviewing your answer…</p>
+        </div>
+      ) : perFeedback ? (
+        <div style={{...cs.card,background:"rgba(138,158,132,0.04)",borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>Your AmplifyU Coach</div>
+          <div style={{display:"flex",flexDirection:"column",gap:12}}>
+            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+              <span style={{color:"#527060",fontSize:16,flexShrink:0,lineHeight:1.4}}>✓</span>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>{perFeedback.landed}</p>
+            </div>
+            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+              <span style={{color:T.gold,fontSize:14,flexShrink:0,lineHeight:1.6}}>→</span>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>{perFeedback.sharpen}</p>
+            </div>
+          </div>
+        </div>
+      ) : null}
+      <button onClick={continueToNext} disabled={perFeedLoading} style={{...cs.cta,background:perFeedLoading?"rgba(44,36,22,0.25)":T.gold,color:"white",fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px",cursor:perFeedLoading?"not-allowed":"pointer"}}>
+        {qIdx<questions.length-1?"Next Question →":"See Full Report →"}
+      </button>
     </div>
   );
 
