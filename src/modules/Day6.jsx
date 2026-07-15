@@ -438,13 +438,13 @@ export function D6SimWidget({T, T2, isDesktop}) {
     setPerFeedLoading(true);
     setPhase('per-feedback');
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:200,messages:[{role:"user",content:"You are a senior executive communication coach giving rapid in-session feedback.\n\nContext: "+form.role+" practising for a meeting with "+form.stakeholder+" about "+purposeForAnalysis.current+"\n\nQuestion: \""+questions[qIdx]+"\"\nTheir spoken answer: \""+(currentAnswer.trim()||"(no response given)")+"\"\n\nReturn ONLY valid JSON with two short fields:\n{\"landed\":\"<one specific thing that worked — max 15 words>\",\"sharpen\":\"<one specific thing to do better next time — max 15 words>\"}"}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:800,messages:[{role:"user",content:"You are a senior executive communication coach giving detailed in-session feedback on a high-stakes conversation practice.\n\nContext: "+form.role+" preparing to meet "+form.stakeholder+" about "+purposeForAnalysis.current+"\n\nQuestion asked: \""+questions[qIdx]+"\"\nTheir spoken answer: \""+(currentAnswer.trim()||"(no response given)")+"\"\n\nGive a full coaching critique. Be specific — reference their actual words and phrases. Do not be vague or generic.\n\nReturn ONLY valid JSON:\n{\"overall\":\"<2-3 sentence overall assessment of this answer — what impression it would leave on "+form.stakeholder+", be honest>\",\"landed\":\"<1-2 sentences on what specifically worked in this answer and why it would land well>\",\"improve\":\"<2-3 sentences on what was missing, unclear, or weak — be direct and specific, referencing what they actually said>\",\"rewrite\":\"<A stronger version of their opening sentence or key point — how a confident senior professional would say it>\",\"landing\":\"<1-2 sentences of specific advice on how to make this point land more powerfully with "+form.stakeholder+">\"}" }]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
-      setPerFeedback(m?JSON.parse(m[0]):{landed:"Composed and direct — good foundation.",sharpen:"Lead with your main point before the supporting detail."});
+      setPerFeedback(m?JSON.parse(m[0]):{overall:"Good attempt under pressure.",landed:"You stayed on topic and showed composure.",improve:"Lead with your clearest point first, then support it with evidence.",rewrite:"Here is a stronger opening — direct, specific, and confident.",landing:"Frame your answer around what "+form.stakeholder+" cares about most, not what feels comfortable to say."});
     }catch{
-      setPerFeedback({landed:"Composed and direct — good foundation.",sharpen:"Lead with your main point before the supporting detail."});
+      setPerFeedback({overall:"Good attempt under pressure.",landed:"You stayed on topic and showed composure.",improve:"Lead with your clearest point first, then support it with evidence.",rewrite:"Here is a stronger opening — direct, specific, and confident.",landing:"Frame your answer around what "+form.stakeholder+" cares about most, not what feels comfortable to say."});
     }finally{
       setPerFeedLoading(false);
     }
@@ -689,18 +689,40 @@ export function D6SimWidget({T, T2, isDesktop}) {
           <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Your coach is reviewing your answer…</p>
         </div>
       ) : perFeedback ? (
-        <div style={{...cs.card,background:"rgba(138,158,132,0.04)",borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>Your AmplifyU Coach</div>
-          <div style={{display:"flex",flexDirection:"column",gap:12}}>
-            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-              <span style={{color:"#527060",fontSize:16,flexShrink:0,lineHeight:1.4}}>✓</span>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>{perFeedback.landed}</p>
-            </div>
-            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-              <span style={{color:T.gold,fontSize:14,flexShrink:0,lineHeight:1.6}}>→</span>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>{perFeedback.sharpen}</p>
-            </div>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          {/* Overall assessment */}
+          <div style={{...cs.card,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Your AmplifyU Coach</div>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>{perFeedback.overall}</p>
           </div>
+          {/* What landed */}
+          {perFeedback.landed && (
+            <div style={{...cs.card,background:"rgba(82,112,96,0.06)",border:"0.5px solid rgba(82,112,96,0.2)"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>What Landed</div>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>{perFeedback.landed}</p>
+            </div>
+          )}
+          {/* What to improve */}
+          {perFeedback.improve && (
+            <div style={{...cs.card,background:"rgba(176,92,74,0.04)",border:"0.5px solid rgba(176,92,74,0.15)"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>What to Improve</div>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>{perFeedback.improve}</p>
+            </div>
+          )}
+          {/* Stronger rewrite */}
+          {perFeedback.rewrite && (
+            <div style={{...cs.card,background:T2.surface,borderLeft:"2px solid "+T.gold}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Try It This Way</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.65,margin:0}}>"{perFeedback.rewrite}"</p>
+            </div>
+          )}
+          {/* How to land the point */}
+          {perFeedback.landing && (
+            <div style={{...cs.card}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>How to Make It Land</div>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>{perFeedback.landing}</p>
+            </div>
+          )}
         </div>
       ) : null}
       <button onClick={continueToNext} disabled={perFeedLoading} style={{...cs.cta,background:perFeedLoading?"rgba(44,36,22,0.25)":T.gold,color:"white",fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px",cursor:perFeedLoading?"not-allowed":"pointer"}}>
