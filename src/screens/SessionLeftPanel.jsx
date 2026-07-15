@@ -782,7 +782,7 @@ export function SessionLeftPanel({
         <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>AI Conversation Prep</div>
         <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Prepare for the conversations that matter most.</p>
         <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-        <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Tell the AI who you're meeting and why. It generates the 10 toughest questions you're likely to face — then coaches your responses.</p>
+        <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Tell the AI who you're meeting and why. It generates the 5 toughest questions you're likely to face — then coaches your responses.</p>
       </div>
     </div>
   );

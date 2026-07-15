@@ -626,18 +626,22 @@ export function D6SimWidget({T, T2, isDesktop}) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>{questions[qIdx]}</p>
       </div>
       <div style={cs.card}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px"}}>Your Response</div>
-          {SpeechRec&&(
-            <button onClick={isListening?stopListening:startListening}
-              style={{display:"flex",alignItems:"center",gap:6,padding:"5px 12px",borderRadius:20,border:`1px solid ${isListening?"#CC4444":T2.border}`,background:isListening?"rgba(204,68,68,0.08)":"transparent",cursor:"pointer",fontFamily:T.sans,fontSize:11,fontWeight:600,color:isListening?"#CC4444":T2.text3,transition:"all 0.2s"}}>
-              <div style={{width:7,height:7,borderRadius:"50%",background:isListening?"#CC4444":"rgba(138,158,132,0.5)",animation:isListening?"glowPulse 1s ease infinite":"none"}}/>
-              {isListening?`Recording ${recTime}s`:"Speak to record"}
-            </button>
-          )}
-        </div>
-        <textarea value={currentAnswer} onChange={e=>setCurrentAnswer(e.target.value)} placeholder="Speak your answer or type it here…" style={{...cs.inp,resize:"none",height:isDesktop?96:80,lineHeight:1.6,padding:"10px 12px"}}/>
-        {!SpeechRec&&<p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,margin:"6px 0 0",fontStyle:"italic"}}>Say your answer out loud, then type your key points.</p>}
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Your Response</div>
+        {SpeechRec ? (
+          <button onClick={isListening?stopListening:startListening}
+            style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center",gap:10,padding:"18px",borderRadius:4,border:`1.5px solid ${isListening?"#CC4444":T2.border}`,background:isListening?"rgba(204,68,68,0.06)":"transparent",cursor:"pointer",fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:isListening?"#CC4444":T2.text3,transition:"all 0.2s"}}>
+            <div style={{width:10,height:10,borderRadius:"50%",background:isListening?"#CC4444":"rgba(138,158,132,0.5)",animation:isListening?"glowPulse 1s ease infinite":"none",flexShrink:0}}/>
+            {isListening?`Recording… ${recTime}s — tap to stop`:"Tap to speak your answer"}
+          </button>
+        ) : (
+          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,fontStyle:"italic"}}>Speech recording is not supported in this browser. Try Chrome or Safari.</p>
+        )}
+        {currentAnswer.trim() && (
+          <div style={{marginTop:12,padding:"10px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:4}}>Recorded</div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,margin:0}}>{currentAnswer}</p>
+          </div>
+        )}
       </div>
       <button onClick={nextQuestion} style={{...cs.cta,background:currentAnswer.trim()?T.gold:T.ink,color:"white",fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
         {qIdx<questions.length-1?"Next Question →":"Get My Feedback →"}
