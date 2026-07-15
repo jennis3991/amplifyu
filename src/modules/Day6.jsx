@@ -595,25 +595,33 @@ export function D6SimWidget({T, T2, isDesktop}) {
   // ── QUESTIONS ──
   if(phase==='questions'&&profile) return (
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={{...cs.card,background:"#0A0804",border:"0.5px solid rgba(138,158,132,0.15)"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Conversation Profile</div>
-        <div style={{display:"flex",gap:isDesktop?20:12,flexWrap:"wrap",marginBottom:14}}>
+      <div style={{...cs.card,background:T2.surface,border:"0.5px solid "+T2.border}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Conversation Profile</div>
+        {/* Stakeholder / Goal / Risk row */}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:16}}>
           {[{l:"Stakeholder",v:profile.stakeholderLabel||form.stakeholder},{l:"Goal",v:profile.goal},{l:"Risk Level",v:profile.riskLevel}].map(({l,v})=>(
-            <div key={l}>
-              <div style={{fontFamily:T.sans,fontSize:9,color:"rgba(245,239,230,0.4)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:3}}>{l}</div>
-              <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:"#F5EFE6"}}>{v}</div>
+            <div key={l} style={{padding:"12px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{l}</div>
+              <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,lineHeight:1.3}}>{v}</div>
             </div>
           ))}
         </div>
-        <div style={{marginBottom:14}}>
-          <div style={{fontFamily:T.sans,fontSize:9,color:"rgba(245,239,230,0.4)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Likely Concerns</div>
-          <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-            {(profile.concerns||[]).map((c,i)=><span key={i} style={{padding:"3px 10px",borderRadius:20,border:"0.5px solid rgba(138,158,132,0.3)",fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.65)"}}>{c}</span>)}
+        {/* Likely concerns */}
+        <div style={{marginBottom:16}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Likely Concerns</div>
+          <div style={{display:"flex",flexDirection:"column",gap:6}}>
+            {(profile.concerns||[]).map((c,i)=>(
+              <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"10px 12px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
+                <span style={{color:T.gold,fontSize:12,flexShrink:0,marginTop:1}}>—</span>
+                <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>{c}</span>
+              </div>
+            ))}
           </div>
         </div>
-        <div style={{borderTop:"0.5px solid rgba(138,158,132,0.15)",paddingTop:12}}>
-          <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Coach Insight</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.65,margin:0}}>{profile.insight}</p>
+        {/* Coach insight */}
+        <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Coach Insight</div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>{profile.insight}</p>
         </div>
       </div>
       <div style={cs.card}>
