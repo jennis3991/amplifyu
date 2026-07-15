@@ -636,12 +636,6 @@ export function D6SimWidget({T, T2, isDesktop}) {
         ) : (
           <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,fontStyle:"italic"}}>Speech recording is not supported in this browser. Try Chrome or Safari.</p>
         )}
-        {currentAnswer.trim() && (
-          <div style={{marginTop:12,padding:"10px 14px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:4}}>Recorded</div>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,margin:0}}>{currentAnswer}</p>
-          </div>
-        )}
       </div>
       <button onClick={nextQuestion} style={{...cs.cta,background:currentAnswer.trim()?T.gold:T.ink,color:"white",fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
         {qIdx<questions.length-1?"Next Question →":"Get My Feedback →"}
