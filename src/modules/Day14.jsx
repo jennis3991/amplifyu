@@ -50,10 +50,10 @@ export function D14PracticeWidget({T, T2, isDesktop}) {
       <div style={cs.card}>
         <div style={cs.label}>Your Communication Blueprint</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>14 days. One journey. Time to see how far you have come.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Five quick taps and two short answers — then your coach generates your personalised blueprint.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Most training is forgotten within 24 hours. AmplifyU works differently — 14 days of embedded practice, built into your routine, crystallising today into a blueprint that is yours to keep.</p>
       </div>
       <div style={{...cs.card, background:"rgba(138,158,132,0.04)"}}>
-        <div style={cs.label}>What you will receive</div>
+        <div style={cs.label}>Your Day 14 Blueprint includes</div>
         <div style={{display:"flex", flexDirection:"column", gap:8}}>
           {[
             "Your Communication Archetype and personal profile",
