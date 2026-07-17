@@ -238,17 +238,17 @@ export function ReflectionScreen({ answers, onContinue }) {
             </div>
           )}
 
-          {/* Your Strengths */}
+          {/* What We'll Build */}
           {section >= 2 && (
             <div style={{ marginBottom: 48, animation: "fadeUp 0.7s ease both" }}>
-              <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 20, fontFamily: T.sans }}>Your Strengths</div>
+              <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 20, fontFamily: T.sans }}>{"What We'll Build"}</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 {strengthCards.map((s, i) => (
                   <div key={i} style={{ padding: "18px 20px", background: "white", borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 10 }}>
                     <div style={{ fontSize: 18, color: T.gold, lineHeight: 1 }}>{s.icon}</div>
                     <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.25 }}>{s.label}</div>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                      <div style={{ fontSize: 10, fontFamily: T.sans, color: T.goldDark, background: T.goldLight, padding: "2px 9px", borderRadius: 20 }}>Strength</div>
+                      <div style={{ fontSize: 10, fontFamily: T.sans, color: T.goldDark, background: T.goldLight, padding: "2px 9px", borderRadius: 20 }}>{"We'll develop"}</div>
                       <span style={{ fontSize: 11, color: T.text3, fontFamily: T.sans }}>{s.trait}</span>
                     </div>
                   </div>
@@ -269,7 +269,7 @@ export function ReflectionScreen({ answers, onContinue }) {
                       <span style={{ fontFamily: T.serif, fontSize: 15, color: T.ink }}>{area}</span>
                     </div>
                     <div style={{ fontSize: 10, fontFamily: T.sans, color: impact === "High" ? T.goldDark : T.text3, textTransform: "uppercase", letterSpacing: "1.5px", background: impact === "High" ? T.goldLight : T.surface, padding: "3px 9px", borderRadius: 4 }}>
-                      {impact + " Impact"}
+                      {impact === "High" ? "Priority" : "Foundation"}
                     </div>
                   </div>
                 ))}
@@ -320,7 +320,7 @@ export function ReflectionScreen({ answers, onContinue }) {
                 { label: "14 sessions", sub: "One per day, ~15 minutes each" },
                 { label: "6 core skills", sub: "Presence, Clarity, Influence, Story, Visibility, Composure" },
                 { label: "AI coaching", sub: "Personalised feedback throughout" },
-                { label: "Day 1 ready", sub: "Speak Simply — your first session" },
+                { label: "Day 14 · Your Blueprint", sub: "A personal communication plan built around you" },
               ].map((item, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 0", borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.08)" : "none" }}>
                   <div style={{ width: 5, height: 5, borderRadius: "50%", background: T.gold, flexShrink: 0, marginTop: 7, opacity: 0.8 }}/>
@@ -447,16 +447,16 @@ export function ReflectionScreen({ answers, onContinue }) {
           </div>
         )}
 
-        {/* Your Strengths */}
+        {/* What We'll Build */}
         {section >= 2 && (
           <div style={{ animation: "sectionFade 0.7s ease both" }}>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 16, fontFamily: T.sans }}>Your Strengths</div>
+            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 16, fontFamily: T.sans }}>{"What We'll Build"}</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
               {strengthCards.map((s, i) => (
                 <div key={i} style={{ padding: "16px", background: "white", borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8 }}>
                   <div style={{ fontSize: 16, color: T.gold }}>{s.icon}</div>
                   <div style={{ fontFamily: T.serif, fontSize: 14, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{s.label}</div>
-                  <div style={{ fontSize: 10, fontFamily: T.sans, color: T.goldDark, background: T.goldLight, padding: "2px 8px", borderRadius: 20, display: "inline-block", width: "fit-content" }}>Strength</div>
+                  <div style={{ fontSize: 10, fontFamily: T.sans, color: T.goldDark, background: T.goldLight, padding: "2px 8px", borderRadius: 20, display: "inline-block", width: "fit-content" }}>{"We'll develop"}</div>
                 </div>
               ))}
             </div>
@@ -475,7 +475,7 @@ export function ReflectionScreen({ answers, onContinue }) {
                     <span style={{ fontFamily: T.serif, fontSize: 14, color: T.ink }}>{area}</span>
                   </div>
                   <div style={{ fontSize: 9, fontFamily: T.sans, color: impact === "High" ? T.goldDark : T.text3, textTransform: "uppercase", letterSpacing: "1.5px", background: impact === "High" ? T.goldLight : T.surface, padding: "3px 8px", borderRadius: 4 }}>
-                    {impact}
+                    {impact === "High" ? "Priority" : "Foundation"}
                   </div>
                 </div>
               ))}
