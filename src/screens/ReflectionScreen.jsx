@@ -278,22 +278,22 @@ export function ReflectionScreen({ answers, onContinue }) {
           )}
         </div>
 
-        {/* RIGHT: profile panel */}
-        <div style={{ width: 360, flexShrink: 0, borderLeft: "1px solid " + T.border, background: "white", overflowY: "auto", padding: "64px 40px 120px", display: "flex", flexDirection: "column", gap: 32 }}>
+        {/* RIGHT: profile panel — dark */}
+        <div style={{ width: 360, flexShrink: 0, borderLeft: "1px solid rgba(255,255,255,0.08)", background: T.cardDark, overflowY: "auto", padding: "64px 40px 120px", display: "flex", flexDirection: "column", gap: 32 }}>
 
           {/* Your Profile */}
           <div>
             <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 16, fontFamily: T.sans }}>Your Profile</div>
             {role && (
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 14px", background: T.goldLight, borderRadius: 6, border: "1px solid " + T.border, marginBottom: 14 }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 14px", background: "rgba(138,158,132,0.12)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.1)", marginBottom: 14 }}>
                 <span style={{ fontSize: 16 }}>{role.icon}</span>
-                <span style={{ fontFamily: T.serif, fontSize: 14, color: T.ink }}>{role.label}</span>
+                <span style={{ fontFamily: T.serif, fontSize: 14, color: "rgba(255,255,255,0.9)" }}>{role.label}</span>
               </div>
             )}
-            <div style={{ padding: "14px 16px", background: T.bg, borderRadius: 6, border: "1px solid " + T.border }}>
-              <div style={{ fontSize: 10, color: T.text3, fontFamily: T.sans, marginBottom: 4, textTransform: "uppercase", letterSpacing: "2px" }}>Communication Style</div>
-              <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, marginBottom: 3 }}>{tendency.label}</div>
-              <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{tendency.sub}</div>
+            <div style={{ padding: "14px 16px", background: "rgba(255,255,255,0.05)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.38)", fontFamily: T.sans, marginBottom: 4, textTransform: "uppercase", letterSpacing: "2px" }}>Communication Style</div>
+              <div style={{ fontFamily: T.serif, fontSize: 15, color: "rgba(255,255,255,0.9)", marginBottom: 3 }}>{tendency.label}</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", fontFamily: T.sans, lineHeight: 1.5 }}>{tendency.sub}</div>
             </div>
           </div>
 
@@ -303,10 +303,10 @@ export function ReflectionScreen({ answers, onContinue }) {
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {goals.map((goal, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                  <div style={{ width: 20, height: 20, borderRadius: "50%", background: T.goldLight, border: "1px solid " + T.gold, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
-                    <span style={{ fontSize: 10, color: T.goldDark, fontFamily: T.sans, fontWeight: 600 }}>{i + 1}</span>
+                  <div style={{ width: 20, height: 20, borderRadius: "50%", background: "rgba(138,158,132,0.15)", border: "1px solid rgba(138,158,132,0.4)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                    <span style={{ fontSize: 10, color: T.gold, fontFamily: T.sans, fontWeight: 600 }}>{i + 1}</span>
                   </div>
-                  <div style={{ fontFamily: T.sans, fontSize: 13, color: T.ink, lineHeight: 1.55 }}>{goal}</div>
+                  <div style={{ fontFamily: T.sans, fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.55 }}>{goal}</div>
                 </div>
               ))}
             </div>
@@ -322,11 +322,11 @@ export function ReflectionScreen({ answers, onContinue }) {
                 { label: "AI coaching", sub: "Personalised feedback throughout" },
                 { label: "Day 1 ready", sub: "Speak Simply — your first session" },
               ].map((item, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 0", borderBottom: i < 3 ? "1px solid " + T.border : "none" }}>
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 0", borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.08)" : "none" }}>
                   <div style={{ width: 5, height: 5, borderRadius: "50%", background: T.gold, flexShrink: 0, marginTop: 7, opacity: 0.8 }}/>
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 500, color: T.ink, fontFamily: T.sans, marginBottom: 2 }}>{item.label}</div>
-                    <div style={{ fontSize: 11, color: T.text3, fontFamily: T.sans, lineHeight: 1.4 }}>{item.sub}</div>
+                    <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.85)", fontFamily: T.sans, marginBottom: 2 }}>{item.label}</div>
+                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.38)", fontFamily: T.sans, lineHeight: 1.4 }}>{item.sub}</div>
                   </div>
                 </div>
               ))}
@@ -334,21 +334,21 @@ export function ReflectionScreen({ answers, onContinue }) {
           </div>
 
           {/* Personalised for you */}
-          <div style={{ padding: "18px 20px", background: T.goldLight, border: "1px solid " + T.border, borderRadius: 8 }}>
-            <div style={{ fontSize: 10, color: T.goldDark, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 8, fontFamily: T.sans }}>Personalised for you</div>
-            <div style={{ fontFamily: T.serif, fontSize: 14, color: T.ink, lineHeight: 1.65 }}>
+          <div style={{ padding: "18px 20px", background: "rgba(138,158,132,0.1)", border: "1px solid rgba(138,158,132,0.25)", borderRadius: 8 }}>
+            <div style={{ fontSize: 10, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 8, fontFamily: T.sans }}>Personalised for you</div>
+            <div style={{ fontFamily: T.serif, fontSize: 14, color: "rgba(255,255,255,0.82)", lineHeight: 1.65 }}>
               {"Tailored for " + roleLabel + " who want to " + contextLabel.toLowerCase().replace(/\.$/, "").replace(/\bmy\b/g,"their").replace(/\bmyself\b/g,"themselves") + "."}
             </div>
           </div>
         </div>
 
-        {/* STICKY BOTTOM BAR */}
-        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "white", borderTop: "1px solid " + T.border, padding: "14px 72px", display: "flex", alignItems: "center", justifyContent: "space-between", zIndex: 100 }}>
-          <div style={{ fontFamily: T.serif, fontSize: 17, color: T.ink, letterSpacing: "-0.2px" }}>
+        {/* STICKY BOTTOM BAR — dark */}
+        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: T.cardDark, borderTop: "1px solid rgba(255,255,255,0.08)", padding: "14px 72px", display: "flex", alignItems: "center", justifyContent: "space-between", zIndex: 100 }}>
+          <div style={{ fontFamily: T.serif, fontSize: 17, color: "rgba(255,255,255,0.9)", letterSpacing: "-0.2px" }}>
             Ready to begin?
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <span style={{ fontSize: 13, color: T.text3, fontFamily: T.sans }}>~15 minutes · Day 1 is ready</span>
+            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.42)", fontFamily: T.sans }}>~15 minutes · Day 1 is ready</span>
             <button onClick={onContinue} className="au-cta" style={{ display: "flex", alignItems: "center", gap: 10, padding: "13px 28px", borderRadius: 6, border: "none", background: T.gold, color: "white", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.2px" }}>
               <span>Begin Day 1</span>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -512,12 +512,12 @@ export function ReflectionScreen({ answers, onContinue }) {
         )}
       </div>
 
-      {/* STICKY BOTTOM CTA */}
-      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "white", borderTop: "1px solid " + T.border, padding: "14px 24px", zIndex: 100 }}>
+      {/* STICKY BOTTOM CTA — dark */}
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: T.cardDark, borderTop: "1px solid rgba(255,255,255,0.08)", padding: "14px 24px", zIndex: 100 }}>
         <button onClick={onContinue} style={{ width: "100%", padding: "15px 24px", borderRadius: 6, border: "none", background: T.gold, color: "white", fontSize: 15, fontFamily: T.sans, fontWeight: 600, cursor: "pointer", letterSpacing: "0.2px" }}>
           Begin Day 1 →
         </button>
-        <div style={{ fontSize: 12, color: T.text3, textAlign: "center", marginTop: 8, fontFamily: T.sans }}>~15 minutes · Your first session is ready</div>
+        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.38)", textAlign: "center", marginTop: 8, fontFamily: T.sans }}>~15 minutes · Your first session is ready</div>
       </div>
     </div>
   );
