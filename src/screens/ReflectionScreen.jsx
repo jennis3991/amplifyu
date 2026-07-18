@@ -121,111 +121,84 @@ export function ReflectionScreen({ answers, onContinue }) {
           {/* Brand */}
           <div style={{ fontSize: 11, color: T.gold, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 52, fontFamily: T.sans }}>AmplifyU</div>
 
-          {/* Header + Archetype badge */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40, marginBottom: 40 }}>
+          {/* Two-column row: heading + text LEFT | programme focus RIGHT */}
+          <div style={{ display: "flex", gap: 56, alignItems: "flex-start", marginBottom: 44 }}>
 
-            <div>
+            {/* LEFT: heading + paragraph + read more */}
+            <div style={{ flex: "0 0 52%" }}>
               <div style={{ fontSize: 11, color: T.text3, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 14, fontFamily: T.sans }}>Your communication profile</div>
-              <h1 style={{ fontFamily: T.serif, fontSize: "clamp(32px,3vw,52px)", fontWeight: 500, color: T.ink, lineHeight: 1.08, letterSpacing: "-1.5px", margin: 0 }}>
+              <h1 style={{ fontFamily: T.serif, fontSize: "clamp(32px,3vw,52px)", fontWeight: 500, color: T.ink, lineHeight: 1.08, letterSpacing: "-1.5px", margin: "0 0 32px" }}>
                 {"Here's what"}
                 <br/>{"we're seeing."}
               </h1>
-            </div>
 
-            {/* Archetype badge — double-ring circle */}
-            <div style={{ flexShrink: 0, width: 196, height: 196, borderRadius: "50%", border: "1px solid rgba(138,158,132,0.22)", padding: 9 }}>
-              <div style={{
-                width: "100%", height: "100%", borderRadius: "50%",
-                background: "linear-gradient(145deg, #2C231A 0%, #1A150F 100%)",
-                border: "1px solid rgba(138,158,132,0.5)",
-                boxShadow: "inset 0 2px 20px rgba(0,0,0,0.5), 0 8px 32px rgba(0,0,0,0.25)",
-                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-              }}>
-                <div style={{ fontSize: 7, color: "rgba(138,158,132,0.65)", textTransform: "uppercase", letterSpacing: "4px", fontFamily: T.sans, marginBottom: 11 }}>Your Type</div>
-                <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 12 }}>
-                  <div style={{ width: 18, height: 1, background: "rgba(138,158,132,0.45)" }}/>
-                  <div style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(138,158,132,0.7)" }}/>
-                  <div style={{ width: 18, height: 1, background: "rgba(138,158,132,0.45)" }}/>
+              {section >= 1 && reflection && (
+                <div style={{ marginBottom: 20, animation: "fadeUp 0.6s ease both" }}>
+                  <div style={{ width: 24, height: 1, background: T.gold, marginBottom: 20, opacity: 0.6 }}/>
+                  <p style={{ fontFamily: T.serif, fontSize: "clamp(15px,1.4vw,17px)", color: T.ink, lineHeight: 1.78, letterSpacing: "-0.1px", margin: 0 }}>
+                    {reflection.summary}
+                  </p>
                 </div>
-                <div style={{ fontFamily: T.serif, fontSize: 16, color: "rgba(255,255,255,0.93)", textAlign: "center", lineHeight: 1.28, padding: "0 24px", letterSpacing: "-0.2px" }}>{tendency.label}</div>
-                <div style={{ display: "flex", alignItems: "center", gap: 7, marginTop: 12 }}>
-                  <div style={{ width: 18, height: 1, background: "rgba(138,158,132,0.45)" }}/>
-                  <div style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(138,158,132,0.7)" }}/>
-                  <div style={{ width: 18, height: 1, background: "rgba(138,158,132,0.45)" }}/>
-                </div>
-              </div>
-            </div>
+              )}
 
-          </div>
+              {section >= 1 && (
+                <div>
+                  <button
+                    onClick={() => setExpanded(!expanded)}
+                    style={{ background: "none", border: "none", cursor: "pointer", fontFamily: T.sans, fontSize: 13, color: T.gold, display: "flex", alignItems: "center", gap: 6, padding: "6px 0", letterSpacing: "0.2px" }}
+                  >
+                    {expanded ? "Read less ↑" : "Read more ↓"}
+                  </button>
 
-          {/* First paragraph — always visible */}
-          {section >= 1 && reflection && (
-            <div style={{ marginBottom: 20, animation: "fadeUp 0.6s ease both" }}>
-              <div style={{ width: 24, height: 1, background: T.gold, marginBottom: 20, opacity: 0.6 }}/>
-              <p style={{ fontFamily: T.serif, fontSize: "clamp(16px,1.6vw,19px)", color: T.ink, lineHeight: 1.78, letterSpacing: "-0.1px", margin: 0 }}>
-                {reflection.summary}
-              </p>
-            </div>
-          )}
-
-          {/* Read more toggle */}
-          {section >= 1 && (
-            <div style={{ marginBottom: 44 }}>
-              <button
-                onClick={() => setExpanded(!expanded)}
-                style={{ background: "none", border: "none", cursor: "pointer", fontFamily: T.sans, fontSize: 13, color: T.gold, display: "flex", alignItems: "center", gap: 6, padding: "6px 0", letterSpacing: "0.2px" }}
-              >
-                {expanded ? "Read less ↑" : "Read more ↓"}
-              </button>
-
-              {expanded && reflection && (
-                <div style={{ marginTop: 24 }}>
-                  {/* Motivation pull quote */}
-                  <div style={{ position: "relative", marginBottom: 28 }}>
-                    <div style={{ fontFamily: T.serif, fontSize: 80, lineHeight: 0.6, color: "rgba(138,158,132,0.12)", position: "absolute", top: -8, left: -10, userSelect: "none" }}>{'"'}</div>
-                    <div style={{ borderLeft: "2px solid " + T.gold, position: "absolute", left: 0, top: 0, bottom: 0, opacity: 0.5 }}/>
-                    <div style={{ paddingLeft: 24, position: "relative", zIndex: 1 }}>
-                      <p style={{ fontFamily: T.serif, fontSize: "clamp(15px,1.5vw,18px)", fontStyle: "italic", color: T.text2, lineHeight: 1.78, margin: 0 }}>
-                        {reflection.motivation}
-                      </p>
+                  {expanded && reflection && (
+                    <div style={{ marginTop: 24 }}>
+                      <div style={{ position: "relative", marginBottom: 28 }}>
+                        <div style={{ fontFamily: T.serif, fontSize: 80, lineHeight: 0.6, color: "rgba(138,158,132,0.12)", position: "absolute", top: -8, left: -10, userSelect: "none" }}>{'"'}</div>
+                        <div style={{ borderLeft: "2px solid " + T.gold, position: "absolute", left: 0, top: 0, bottom: 0, opacity: 0.5 }}/>
+                        <div style={{ paddingLeft: 24, position: "relative", zIndex: 1 }}>
+                          <p style={{ fontFamily: T.serif, fontSize: "clamp(15px,1.5vw,18px)", fontStyle: "italic", color: T.text2, lineHeight: 1.78, margin: 0 }}>
+                            {reflection.motivation}
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 12, fontFamily: T.sans }}>The path ahead</div>
+                        <p style={{ fontFamily: T.sans, fontSize: "clamp(14px,1.3vw,16px)", color: T.text2, lineHeight: 1.85, margin: 0, fontWeight: 400 }}>
+                          {reflection.forward}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  {/* Path ahead */}
-                  <div>
-                    <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 12, fontFamily: T.sans }}>The path ahead</div>
-                    <p style={{ fontFamily: T.sans, fontSize: "clamp(14px,1.3vw,16px)", color: T.text2, lineHeight: 1.85, margin: 0, fontWeight: 400 }}>
-                      {reflection.forward}
-                    </p>
-                  </div>
+                  )}
                 </div>
               )}
             </div>
-          )}
+
+            {/* RIGHT: Programme Focus — compact */}
+            {section >= 2 && (
+              <div style={{ flex: 1, paddingTop: 4, animation: "fadeUp 0.6s ease both" }}>
+                <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 6, fontFamily: T.sans }}>Programme Focus</div>
+                <div style={{ fontSize: 12, color: T.text2, marginBottom: 22, fontFamily: T.sans, lineHeight: 1.55 }}>Where your 14 sessions will focus — built around your goals and profile.</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  {programmeWeights.map(({ area, weight }) => (
+                    <div key={area}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                        <span style={{ fontFamily: T.serif, fontSize: 13, color: T.ink, letterSpacing: "-0.1px" }}>{area}</span>
+                        <span style={{ fontSize: 10, color: T.text3, fontFamily: T.sans }}>{weight + "%"}</span>
+                      </div>
+                      <div style={{ height: 2, background: T.border, borderRadius: 2, overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: weight + "%", background: T.gold, borderRadius: 2 }}/>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+          </div>
 
           {/* Section divider */}
           {section >= 2 && (
             <div style={{ height: 1, background: T.border, marginBottom: 44, animation: "fadeUp 0.5s ease both" }}/>
-          )}
-
-          {/* Programme Focus bars */}
-          {section >= 2 && (
-            <div style={{ marginBottom: 48, animation: "fadeUp 0.6s ease both" }}>
-              <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 8, fontFamily: T.sans }}>Programme Focus</div>
-              <div style={{ fontSize: 13, color: T.text2, marginBottom: 28, fontFamily: T.sans, lineHeight: 1.5 }}>Where your 14 sessions will focus — built around your goals and profile.</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-                {programmeWeights.map(({ area, weight }) => (
-                  <div key={area}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 7 }}>
-                      <span style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, letterSpacing: "-0.1px" }}>{area}</span>
-                      <span style={{ fontSize: 11, color: T.text3, fontFamily: T.sans }}>{weight + "%"}</span>
-                    </div>
-                    <div style={{ height: 3, background: T.border, borderRadius: 2, overflow: "hidden" }}>
-                      <div style={{ height: "100%", width: weight + "%", background: T.gold, borderRadius: 2 }}/>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           )}
 
           {/* By Day 14 outcome cards */}
