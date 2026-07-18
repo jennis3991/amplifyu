@@ -104,6 +104,13 @@ export function ReflectionScreen({ answers, onContinue }) {
   if (isDesktop) {
     return (
       <div style={{ height: "100vh", display: "flex", fontFamily: T.sans, background: T.bg, overflow: "hidden" }}>
+        <style>{`
+          @keyframes ctaGlow {
+            0%, 100% { box-shadow: 0 4px 18px rgba(0,0,0,0.22), 0 0 18px rgba(196,176,154,0.35), 0 0 40px rgba(196,176,154,0.15); transform: translateX(-50%) translateY(0); }
+            50%       { box-shadow: 0 6px 28px rgba(0,0,0,0.28), 0 0 32px rgba(196,176,154,0.6),  0 0 64px rgba(196,176,154,0.28); transform: translateX(-50%) translateY(-3px); }
+          }
+          @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+        `}</style>
 
         {/* LEFT: main content */}
         <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
@@ -252,8 +259,8 @@ export function ReflectionScreen({ answers, onContinue }) {
           </div>
 
         </div>
-        {/* Floating CTA — fixed bottom right */}
-        <button onClick={onContinue} className="au-cta" style={{ position: "fixed", bottom: 28, right: 28, zIndex: 200, display: "flex", alignItems: "center", gap: 10, padding: "14px 28px", borderRadius: 8, border: "1px solid #A8957F", background: "#C4B09A", color: "#1a1510", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.2px", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }}>
+        {/* Floating CTA — fixed, centred, glowing */}
+        <button onClick={onContinue} className="au-cta" style={{ position: "fixed", bottom: 32, left: "50%", zIndex: 200, display: "flex", alignItems: "center", gap: 10, padding: "15px 36px", borderRadius: 10, border: "1px solid #C8A87E", background: "linear-gradient(135deg, #D4C0A6 0%, #C4B09A 50%, #B89D84 100%)", color: "#1a1510", fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.3px", animation: "ctaGlow 2.6s ease-in-out infinite", whiteSpace: "nowrap" }}>
           <span>{"Let's Begin"}</span>
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#1a1510" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </button>
