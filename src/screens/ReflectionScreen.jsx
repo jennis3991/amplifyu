@@ -279,13 +279,10 @@ export function ReflectionScreen({ answers, onContinue }) {
               {"Tailored for " + roleLabel + " who want to " + contextLabel.toLowerCase().replace(/\.$/, "").replace(/\bmy\b/g,"their").replace(/\bmyself\b/g,"themselves") + "."}
             </div>
           </div>
-        </div>
 
-        {/* STICKY BOTTOM BAR — dark */}
-        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: T.cardDark, borderTop: "1px solid rgba(255,255,255,0.08)", padding: "14px 72px", display: "flex", alignItems: "center", justifyContent: "flex-end", zIndex: 100 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.42)", fontFamily: T.sans }}>~15 minutes · Day 1 is ready</span>
-            <button onClick={onContinue} className="au-cta" style={{ display: "flex", alignItems: "center", gap: 10, padding: "13px 28px", borderRadius: 6, border: "1px solid #A8957F", background: "#C4B09A", color: "#1a1510", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.2px" }}>
+          {/* Begin Day 1 CTA */}
+          <div style={{ marginTop: "auto", paddingTop: 8 }}>
+            <button onClick={onContinue} className="au-cta" style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "15px 28px", borderRadius: 6, border: "1px solid #A8957F", background: "#C4B09A", color: "#1a1510", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.2px" }}>
               <span>Begin Day 1</span>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#1a1510" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
@@ -297,7 +294,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
   // ── MOBILE ────────────────────────────────────────────────────────────────
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 100 }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column" }}>
       <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
       {/* Banner image */}
@@ -423,12 +420,12 @@ export function ReflectionScreen({ answers, onContinue }) {
         )}
       </div>
 
-      {/* STICKY BOTTOM CTA — dark */}
-      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: T.cardDark, borderTop: "1px solid rgba(255,255,255,0.08)", padding: "14px 24px", zIndex: 100 }}>
-        <button onClick={onContinue} style={{ width: "100%", padding: "15px 24px", borderRadius: 6, border: "none", background: T.gold, color: "white", fontSize: 15, fontFamily: T.sans, fontWeight: 600, cursor: "pointer", letterSpacing: "0.2px" }}>
-          Begin Day 1 →
+      {/* Begin Day 1 — mobile, inline at bottom of content */}
+      <div style={{ padding: "8px 24px 40px" }}>
+        <button onClick={onContinue} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "15px 24px", borderRadius: 6, border: "1px solid #A8957F", background: "#C4B09A", color: "#1a1510", fontSize: 15, fontFamily: T.sans, fontWeight: 600, cursor: "pointer", letterSpacing: "0.2px" }}>
+          <span>Begin Day 1</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#1a1510" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </button>
-        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.38)", textAlign: "center", marginTop: 8, fontFamily: T.sans }}>~15 minutes · Your first session is ready</div>
       </div>
     </div>
   );
