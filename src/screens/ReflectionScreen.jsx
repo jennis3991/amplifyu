@@ -106,7 +106,14 @@ export function ReflectionScreen({ answers, onContinue }) {
       <div style={{ height: "100vh", display: "flex", fontFamily: T.sans, background: T.bg, overflow: "hidden" }}>
 
         {/* LEFT: main content */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "64px 72px 120px", display: "flex", flexDirection: "column" }}>
+        <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
+
+          {/* Banner image */}
+          <div style={{ width: "100%", flexShrink: 0 }}>
+            <img src="/profile-banner.png" alt="" style={{ width: "100%", display: "block", objectFit: "cover" }}/>
+          </div>
+
+          <div style={{ padding: "52px 72px 120px", display: "flex", flexDirection: "column" }}>
 
           {/* Brand */}
           <div style={{ fontSize: 11, color: T.gold, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 52, fontFamily: T.sans }}>AmplifyU</div>
@@ -207,6 +214,7 @@ export function ReflectionScreen({ answers, onContinue }) {
             </div>
           )}
 
+          </div>{/* end padded content */}
         </div>
 
         {/* RIGHT: profile panel — dark */}
@@ -292,8 +300,11 @@ export function ReflectionScreen({ answers, onContinue }) {
     <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 100 }}>
       <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
+      {/* Banner image */}
+      <img src="/profile-banner.png" alt="" style={{ width: "100%", display: "block", objectFit: "cover" }}/>
+
       {/* Header */}
-      <div style={{ padding: "52px 24px 0" }}>
+      <div style={{ padding: "32px 24px 0" }}>
         <div style={{ fontSize: 12, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 16, fontFamily: T.sans }}>AmplifyU</div>
         <div style={{ fontSize: 11, color: T.text3, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 14, fontFamily: T.sans }}>Your communication profile</div>
         <h1 style={{ fontFamily: T.serif, fontSize: 34, fontWeight: 500, color: T.ink, lineHeight: 1.08, letterSpacing: "-1px", margin: 0 }}>
