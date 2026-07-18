@@ -264,10 +264,9 @@ export function ReflectionScreen({ answers, onContinue }) {
             <div style={{ display: "flex", flexDirection: "column" }}>
               {[
                 { label: "14 sessions", sub: "One per day, ~15 minutes each" },
-                { label: "6 core skills", sub: "Presence, Clarity, Influence, Story, Visibility, Composure" },
                 { label: "AI coaching", sub: "Personalised feedback throughout" },
               ].map((item, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "11px 0", borderBottom: i < 2 ? "1px solid rgba(255,255,255,0.07)" : "none" }}>
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "11px 0", borderBottom: i < 1 ? "1px solid rgba(255,255,255,0.07)" : "none" }}>
                   <div style={{ width: 4, height: 4, borderRadius: "50%", background: T.gold, flexShrink: 0, marginTop: 7, opacity: 0.75 }}/>
                   <div>
                     <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.85)", fontFamily: T.sans, marginBottom: 2 }}>{item.label}</div>
@@ -279,10 +278,15 @@ export function ReflectionScreen({ answers, onContinue }) {
           </div>
 
         </div>
-        {/* Floating CTA — fixed bottom right */}
-        <button onClick={onContinue} className="au-cta" style={{ position: "fixed", bottom: 32, right: 32, zIndex: 200, display: "flex", alignItems: "center", gap: 10, padding: "15px 36px", borderRadius: 10, border: "1px solid #A8957F", background: "#C4B09A", color: "#1a1510", fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.3px", boxShadow: "0 4px 16px rgba(0,0,0,0.2)", whiteSpace: "nowrap" }}>
-          <span>{"Let's Begin"}</span>
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#1a1510" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        {/* Floating CTA — fixed bottom right, ENTER pill style */}
+        <button
+          onClick={onContinue}
+          className="au-cta"
+          style={{ position: "fixed", bottom: 32, right: 32, zIndex: 200, background: "transparent", border: "1px solid rgba(255,255,255,0.22)", borderRadius: 40, padding: "14px 44px", color: "rgba(255,255,255,0.82)", fontSize: 12, fontWeight: 400, letterSpacing: "2px", textTransform: "uppercase", cursor: "pointer", fontFamily: T.sans, transition: "all 0.3s ease", whiteSpace: "nowrap" }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.color = T.gold; e.currentTarget.style.boxShadow = "0 0 18px rgba(138,158,132,0.35)"; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)"; e.currentTarget.style.color = "rgba(255,255,255,0.82)"; e.currentTarget.style.boxShadow = "none"; }}
+        >
+          {"Let's Begin"}
         </button>
       </div>
     );
