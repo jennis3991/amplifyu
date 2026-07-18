@@ -16,22 +16,22 @@ export function ReflectionScreen({ answers, onContinue }) {
   const roleLabel      = role ? role.label : "professional";
 
   const focusAreaMap = {
-    "Speaking up confidently with senior leaders.":        ["Executive Presence", "Confidence"],
-    "Speaking up confidently with senior leaders":         ["Executive Presence", "Confidence"],
-    "Structuring my thoughts clearly under pressure.":     ["Clarity & Structure", "Precision Editing"],
-    "Structuring my thoughts under pressure":              ["Clarity & Structure", "Precision Editing"],
+    "Speaking up confidently with senior leaders.":        ["Executive Presence", "Clarity & Structure"],
+    "Speaking up confidently with senior leaders":         ["Executive Presence", "Clarity & Structure"],
+    "Structuring my thoughts clearly under pressure.":     ["Clarity & Structure", "Executive Presence"],
+    "Structuring my thoughts under pressure":              ["Clarity & Structure", "Executive Presence"],
     "Making my work visible — and getting credit for it.": ["Visibility", "Personal Brand"],
     "Promoting my work and making it visible":             ["Visibility", "Personal Brand"],
-    "Setting boundaries and asserting myself.":            ["Assertiveness", "Executive Authority"],
-    "Setting boundaries and asserting myself":             ["Assertiveness", "Executive Authority"],
-    "Influencing and communicating with real impact.":     ["Influence", "Strategic Communication"],
-    "Influencing and communicating with impact":           ["Influence", "Strategic Communication"],
-    "Building a personal brand and presence that lasts.":  ["Personal Brand", "Presence"],
-    "Building my personal brand and presence":             ["Personal Brand", "Presence"],
-    "Telling stories that make people lean in.":           ["Storytelling", "Narrative Craft"],
-    "Telling stories that land":                           ["Storytelling", "Narrative Craft"],
-    "Navigating high-stakes conversations with confidence.":["High-Stakes Composure", "Confidence"],
-    "Navigating high-stakes conversations":                ["High-Stakes Composure", "Confidence"],
+    "Setting boundaries and asserting myself.":            ["Assertiveness", "Presence"],
+    "Setting boundaries and asserting myself":             ["Assertiveness", "Presence"],
+    "Influencing and communicating with real impact.":     ["Influence", "Storytelling"],
+    "Influencing and communicating with impact":           ["Influence", "Storytelling"],
+    "Building a personal brand and presence that lasts.":  ["Personal Brand", "Visibility"],
+    "Building my personal brand and presence":             ["Personal Brand", "Visibility"],
+    "Telling stories that make people lean in.":           ["Storytelling", "Influence"],
+    "Telling stories that land":                           ["Storytelling", "Influence"],
+    "Navigating high-stakes conversations with confidence.":["High-Stakes Composure", "Assertiveness"],
+    "Navigating high-stakes conversations":                ["High-Stakes Composure", "Assertiveness"],
   };
 
   const rawAreas = [
