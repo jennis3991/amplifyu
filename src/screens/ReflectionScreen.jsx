@@ -274,13 +274,10 @@ export function ReflectionScreen({ answers, onContinue }) {
         </div>
 
         {/* STICKY BOTTOM BAR — dark */}
-        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: T.cardDark, borderTop: "1px solid rgba(255,255,255,0.08)", padding: "14px 72px", display: "flex", alignItems: "center", justifyContent: "space-between", zIndex: 100 }}>
-          <div style={{ fontFamily: T.serif, fontSize: 17, color: "rgba(255,255,255,0.9)", letterSpacing: "-0.2px" }}>
-            Ready to begin?
-          </div>
+        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: T.cardDark, borderTop: "1px solid rgba(255,255,255,0.08)", padding: "14px 72px", display: "flex", alignItems: "center", justifyContent: "flex-end", zIndex: 100 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             <span style={{ fontSize: 13, color: "rgba(255,255,255,0.42)", fontFamily: T.sans }}>~15 minutes · Day 1 is ready</span>
-            <button onClick={onContinue} className="au-cta" style={{ display: "flex", alignItems: "center", gap: 10, padding: "13px 28px", borderRadius: 6, border: "1px solid #B8923A", background: "#C4A04A", color: "#1a1510", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.2px" }}>
+            <button onClick={onContinue} className="au-cta" style={{ display: "flex", alignItems: "center", gap: 10, padding: "13px 28px", borderRadius: 6, border: "1px solid rgba(220,210,195,0.5)", background: "#EDE8DF", color: "#1a1510", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.2px" }}>
               <span>Begin Day 1</span>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#1a1510" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
