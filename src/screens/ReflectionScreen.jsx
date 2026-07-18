@@ -53,19 +53,10 @@ export function ReflectionScreen({ answers, onContinue }) {
   };
   const tendency = tendencyMap[levelLabel] || { label: "The Growth Professional", sub: "Ready to build. Ready to lead." };
 
-  // Snapshot score — quiz-derived, always 70%+
-  const snapshotScoreMap = {
-    "I stay quiet when I should speak up.":                 71,
-    "I stay quiet when I should speak up":                  71,
-    "I speak but don't always land my point.":              74,
-    "I speak but don't always land my point":               74,
-    "I land my points but lack consistent presence.":       77,
-    "I land my points but lack consistent presence":        77,
-    "I'm already strong. I want to go to the next level.": 80,
-    "I'm strong — I want to go to the next level":         80,
-  };
-  const snapshotScore = snapshotScoreMap[levelLabel] || 73;
-  const gapPct = 100 - snapshotScore;
+  // Programme focus weights — derived from focus area priority order
+  const focusWeightsBySize = { 5:[30,25,20,15,10], 4:[35,28,22,15], 3:[45,35,20], 2:[60,40] };
+  const focusWeights = focusWeightsBySize[focusAreas.length] || focusWeightsBySize[4];
+  const programmeWeights = focusAreas.map((area, i) => ({ area, weight: focusWeights[i] || 10 }));
 
   // Strength cards (up to 4, from focus areas)
   const strengthDetails = {
@@ -117,23 +108,6 @@ export function ReflectionScreen({ answers, onContinue }) {
     setTimeout(() => setSection(2), 800);
   }, []);
 
-  // Circular progress gauge constants
-  const R_GAUGE = 52;
-  const CIRC = 2 * Math.PI * R_GAUGE;
-
-  function CircularGauge({ score }) {
-    const dash = (score / 100) * CIRC;
-    return (
-      <svg width="136" height="136" viewBox="0 0 136 136" style={{ display: "block" }}>
-        <circle cx="68" cy="68" r={R_GAUGE} fill="none" stroke={T.border} strokeWidth="9"/>
-        <circle cx="68" cy="68" r={R_GAUGE} fill="none" stroke={T.gold} strokeWidth="9"
-          strokeDasharray={dash + " " + CIRC}
-          strokeLinecap="round"
-          transform="rotate(-90 68 68)"
-        />
-      </svg>
-    );
-  }
 
   // ── DESKTOP ───────────────────────────────────────────────────────────────
   if (isDesktop) {
@@ -204,36 +178,23 @@ export function ReflectionScreen({ answers, onContinue }) {
             <div style={{ height: 1, background: T.border, marginBottom: 44, animation: "fadeUp 0.5s ease both" }}/>
           )}
 
-          {/* Communication Snapshot */}
+          {/* Programme Focus bars */}
           {section >= 2 && (
             <div style={{ marginBottom: 48, animation: "fadeUp 0.6s ease both" }}>
-              <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 24, fontFamily: T.sans }}>Communication Snapshot</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 36 }}>
-                <div style={{ position: "relative", width: 136, height: 136, flexShrink: 0 }}>
-                  <CircularGauge score={snapshotScore} />
-                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 2 }}>
-                    <div style={{ fontFamily: T.serif, fontSize: 30, fontWeight: 600, color: T.ink, lineHeight: 1 }}>{snapshotScore + "%"}</div>
-                    <div style={{ fontSize: 9, color: T.text3, fontFamily: T.sans, textTransform: "uppercase", letterSpacing: "1.5px", marginTop: 2 }}>today</div>
-                  </div>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontFamily: T.serif, fontSize: 17, color: T.ink, marginBottom: 10, letterSpacing: "-0.2px", lineHeight: 1.4 }}>
-                    {"You're already ahead of where most people start."}
-                  </div>
-                  <div style={{ fontSize: 13, color: T.text2, lineHeight: 1.65, fontFamily: T.sans }}>
-                    {"AmplifyU closes the last " + gapPct + "% — turning your existing capability into consistent, visible impact."}
-                  </div>
-                  <div style={{ marginTop: 14, display: "flex", gap: 16, flexWrap: "wrap" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                      <div style={{ width: 10, height: 10, borderRadius: 2, background: T.gold }}/>
-                      <span style={{ fontSize: 11, color: T.text3, fontFamily: T.sans }}>{"Today: " + snapshotScore + "%"}</span>
+              <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 8, fontFamily: T.sans }}>Programme Focus</div>
+              <div style={{ fontSize: 13, color: T.text2, marginBottom: 28, fontFamily: T.sans, lineHeight: 1.5 }}>Where your 14 sessions will focus — built around your goals and profile.</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+                {programmeWeights.map(({ area, weight }) => (
+                  <div key={area}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 7 }}>
+                      <span style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, letterSpacing: "-0.1px" }}>{area}</span>
+                      <span style={{ fontSize: 11, color: T.text3, fontFamily: T.sans }}>{weight + "%"}</span>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                      <div style={{ width: 10, height: 10, borderRadius: 2, background: T.border, border: "1.5px dashed " + T.gold }}/>
-                      <span style={{ fontSize: 11, color: T.text3, fontFamily: T.sans }}>After AmplifyU: 100%</span>
+                    <div style={{ height: 3, background: T.border, borderRadius: 2, overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: weight + "%", background: T.gold, borderRadius: 2 }}/>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           )}
@@ -257,25 +218,6 @@ export function ReflectionScreen({ answers, onContinue }) {
             </div>
           )}
 
-          {/* Focus Areas */}
-          {section >= 2 && (
-            <div style={{ marginBottom: 40, animation: "fadeUp 0.8s ease both" }}>
-              <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 20, fontFamily: T.sans }}>Focus Areas</div>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                {focusAreasWithImpact.map(({ area, impact }, i) => (
-                  <div key={area} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0", borderBottom: i < focusAreasWithImpact.length - 1 ? "1px solid " + T.border : "none" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <div style={{ width: 7, height: 7, borderRadius: "50%", background: impact === "High" ? T.gold : T.border, flexShrink: 0 }}/>
-                      <span style={{ fontFamily: T.serif, fontSize: 15, color: T.ink }}>{area}</span>
-                    </div>
-                    <div style={{ fontSize: 10, fontFamily: T.sans, color: impact === "High" ? T.goldDark : T.text3, textTransform: "uppercase", letterSpacing: "1.5px", background: impact === "High" ? T.goldLight : T.surface, padding: "3px 9px", borderRadius: 4 }}>
-                      {impact === "High" ? "Priority" : "Foundation"}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* RIGHT: profile panel — dark */}
@@ -418,33 +360,23 @@ export function ReflectionScreen({ answers, onContinue }) {
         {/* Divider */}
         {section >= 2 && <div style={{ height: 1, background: T.border }}/>}
 
-        {/* Communication Snapshot */}
+        {/* Programme Focus bars */}
         {section >= 2 && (
           <div style={{ animation: "sectionFade 0.6s ease both" }}>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 20, fontFamily: T.sans }}>Communication Snapshot</div>
-            <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-              <div style={{ position: "relative", width: 110, height: 110, flexShrink: 0 }}>
-                <svg width="110" height="110" viewBox="0 0 136 136" style={{ display: "block" }}>
-                  <circle cx="68" cy="68" r={R_GAUGE} fill="none" stroke={T.border} strokeWidth="9"/>
-                  <circle cx="68" cy="68" r={R_GAUGE} fill="none" stroke={T.gold} strokeWidth="9"
-                    strokeDasharray={(snapshotScore / 100 * CIRC) + " " + CIRC}
-                    strokeLinecap="round"
-                    transform="rotate(-90 68 68)"
-                  />
-                </svg>
-                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                  <div style={{ fontFamily: T.serif, fontSize: 24, fontWeight: 600, color: T.ink, lineHeight: 1 }}>{snapshotScore + "%"}</div>
-                  <div style={{ fontSize: 8, color: T.text3, fontFamily: T.sans, textTransform: "uppercase", letterSpacing: "1px", marginTop: 2 }}>today</div>
+            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 8, fontFamily: T.sans }}>Programme Focus</div>
+            <div style={{ fontSize: 12, color: T.text2, marginBottom: 20, fontFamily: T.sans, lineHeight: 1.5 }}>Where your 14 sessions will focus — built around your goals.</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {programmeWeights.map(({ area, weight }) => (
+                <div key={area}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                    <span style={{ fontFamily: T.serif, fontSize: 14, color: T.ink }}>{area}</span>
+                    <span style={{ fontSize: 11, color: T.text3, fontFamily: T.sans }}>{weight + "%"}</span>
+                  </div>
+                  <div style={{ height: 3, background: T.border, borderRadius: 2, overflow: "hidden" }}>
+                    <div style={{ height: "100%", width: weight + "%", background: T.gold, borderRadius: 2 }}/>
+                  </div>
                 </div>
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, lineHeight: 1.4, marginBottom: 8 }}>
-                  {"You're already ahead of where most people start."}
-                </div>
-                <div style={{ fontSize: 12, color: T.text2, lineHeight: 1.6, fontFamily: T.sans }}>
-                  {"AmplifyU closes the last " + gapPct + "%."}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         )}
@@ -465,25 +397,6 @@ export function ReflectionScreen({ answers, onContinue }) {
           </div>
         )}
 
-        {/* Focus Areas */}
-        {section >= 2 && (
-          <div style={{ animation: "sectionFade 0.8s ease both" }}>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 16, fontFamily: T.sans }}>Focus Areas</div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {focusAreasWithImpact.map(({ area, impact }, i) => (
-                <div key={area} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 0", borderBottom: i < focusAreasWithImpact.length - 1 ? "1px solid " + T.border : "none" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: impact === "High" ? T.gold : T.border, flexShrink: 0 }}/>
-                    <span style={{ fontFamily: T.serif, fontSize: 14, color: T.ink }}>{area}</span>
-                  </div>
-                  <div style={{ fontSize: 9, fontFamily: T.sans, color: impact === "High" ? T.goldDark : T.text3, textTransform: "uppercase", letterSpacing: "1.5px", background: impact === "High" ? T.goldLight : T.surface, padding: "3px 8px", borderRadius: 4 }}>
-                    {impact === "High" ? "Priority" : "Foundation"}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* Communication Style card */}
         {section >= 2 && (
