@@ -67,7 +67,7 @@ export function ReflectionScreen({ answers, onContinue }) {
     "Personal Brand":          { icon: "✦", title: "Own your presence",          sub: "Build a reputation that works for you in every room" },
     "Assertiveness":           { icon: "→", title: "Hold your ground",           sub: "Communicate directly, confidently and without apology" },
     "Executive Authority":     { icon: "◆", title: "Lead with weight",           sub: "Carry natural authority in every conversation" },
-    "Influence":               { icon: "◈", title: "Move people forward",        sub: "Shape decisions and get buy-in that sticks" },
+    "Influence":               { icon: "◈", title: "Move people forward",        sub: "Shape decisions and earn buy-in that lasts" },
     "Strategic Communication": { icon: "▲", title: "Land your message",          sub: "Communicate with intention and strategic precision" },
     "Storytelling":            { icon: "◎", title: "Tell stories that stick",    sub: "Make people lean in and remember what you said" },
     "Narrative Craft":         { icon: "✦", title: "Shape how people see things",sub: "Craft stories that shift perspective and drive action" },
