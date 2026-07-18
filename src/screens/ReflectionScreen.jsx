@@ -38,7 +38,13 @@ export function ReflectionScreen({ answers, onContinue }) {
     ...(focusAreaMap[challengeLabel] || ["Communication Clarity"]),
     ...(focusAreaMap[contextLabel]   || ["Presence"]),
   ];
-  const focusAreas = [...new Set(rawAreas)].slice(0, 4);
+  const supplementaryPool = ["Influence", "Storytelling", "Executive Presence", "Assertiveness", "High-Stakes Composure", "Clarity & Structure"];
+  const uniqueAreas = [...new Set(rawAreas)];
+  for (const area of supplementaryPool) {
+    if (uniqueAreas.length >= 4) break;
+    if (!uniqueAreas.includes(area)) uniqueAreas.push(area);
+  }
+  const focusAreas = uniqueAreas.slice(0, 4);
 
   const tendencyMap = {
     "I stay quiet when I should speak up.":                 { label: "The Quiet Expert",        sub: "Depth and capability waiting to be heard." },
@@ -282,9 +288,9 @@ export function ReflectionScreen({ answers, onContinue }) {
         <button
           onClick={onContinue}
           className="au-cta"
-          style={{ position: "fixed", bottom: 32, right: 32, zIndex: 200, background: "transparent", border: "1px solid rgba(255,255,255,0.22)", borderRadius: 40, padding: "14px 44px", color: "rgba(255,255,255,0.82)", fontSize: 12, fontWeight: 400, letterSpacing: "2px", textTransform: "uppercase", cursor: "pointer", fontFamily: T.sans, transition: "all 0.3s ease", whiteSpace: "nowrap" }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.color = T.gold; e.currentTarget.style.boxShadow = "0 0 18px rgba(138,158,132,0.35)"; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)"; e.currentTarget.style.color = "rgba(255,255,255,0.82)"; e.currentTarget.style.boxShadow = "none"; }}
+          style={{ position: "fixed", bottom: 32, right: 148, zIndex: 200, background: "transparent", border: "1px solid rgba(255,255,255,0.22)", borderRadius: 40, padding: "14px 44px", color: "rgba(255,255,255,0.82)", fontSize: 12, fontWeight: 400, letterSpacing: "2px", textTransform: "uppercase", cursor: "pointer", fontFamily: T.sans, transition: "all 0.3s ease", whiteSpace: "nowrap", boxShadow: "0 0 16px rgba(255,255,255,0.1)" }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.color = T.gold; e.currentTarget.style.boxShadow = "0 0 22px rgba(138,158,132,0.5)"; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)"; e.currentTarget.style.color = "rgba(255,255,255,0.82)"; e.currentTarget.style.boxShadow = "0 0 16px rgba(255,255,255,0.1)"; }}
         >
           {"Let's Begin"}
         </button>
