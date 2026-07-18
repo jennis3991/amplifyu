@@ -108,9 +108,9 @@ export function ReflectionScreen({ answers, onContinue }) {
         {/* LEFT: main content */}
         <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
 
-          {/* Banner image */}
-          <div style={{ width: "100%", flexShrink: 0 }}>
-            <img src="/profile-banner.png" alt="" style={{ width: "100%", display: "block", objectFit: "cover" }}/>
+          {/* Banner image — cropped to hero section only */}
+          <div style={{ width: "100%", height: 300, flexShrink: 0, overflow: "hidden" }}>
+            <img src="/profile-banner.png" alt="" style={{ width: "100%", display: "block", objectFit: "cover", objectPosition: "top" }}/>
           </div>
 
           <div style={{ padding: "52px 72px 120px", display: "flex", flexDirection: "column" }}>
@@ -280,25 +280,25 @@ export function ReflectionScreen({ answers, onContinue }) {
             </div>
           </div>
 
-          {/* Begin Day 1 CTA */}
-          <div style={{ marginTop: "auto", paddingTop: 8 }}>
-            <button onClick={onContinue} className="au-cta" style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "15px 28px", borderRadius: 6, border: "1px solid #A8957F", background: "#C4B09A", color: "#1a1510", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.2px" }}>
-              <span>Begin Day 1</span>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#1a1510" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </button>
-          </div>
         </div>
+        {/* Floating CTA — fixed bottom right */}
+        <button onClick={onContinue} className="au-cta" style={{ position: "fixed", bottom: 28, right: 28, zIndex: 200, display: "flex", alignItems: "center", gap: 10, padding: "14px 28px", borderRadius: 8, border: "1px solid #A8957F", background: "#C4B09A", color: "#1a1510", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.2px", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }}>
+          <span>{"Let's Begin"}</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#1a1510" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </button>
       </div>
     );
   }
 
   // ── MOBILE ────────────────────────────────────────────────────────────────
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 90 }}>
       <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
-      {/* Banner image */}
-      <img src="/profile-banner.png" alt="" style={{ width: "100%", display: "block", objectFit: "cover" }}/>
+      {/* Banner image — cropped to hero section only */}
+      <div style={{ width: "100%", height: 200, overflow: "hidden", flexShrink: 0 }}>
+        <img src="/profile-banner.png" alt="" style={{ width: "100%", display: "block", objectFit: "cover", objectPosition: "top" }}/>
+      </div>
 
       {/* Header */}
       <div style={{ padding: "32px 24px 0" }}>
@@ -420,10 +420,10 @@ export function ReflectionScreen({ answers, onContinue }) {
         )}
       </div>
 
-      {/* Begin Day 1 — mobile, inline at bottom of content */}
-      <div style={{ padding: "8px 24px 40px" }}>
-        <button onClick={onContinue} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "15px 24px", borderRadius: 6, border: "1px solid #A8957F", background: "#C4B09A", color: "#1a1510", fontSize: 15, fontFamily: T.sans, fontWeight: 600, cursor: "pointer", letterSpacing: "0.2px" }}>
-          <span>Begin Day 1</span>
+      {/* Let's Begin — mobile fixed bottom */}
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "14px 20px 20px", background: "linear-gradient(to top, " + T.bg + " 60%, transparent)", zIndex: 100 }}>
+        <button onClick={onContinue} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "15px 24px", borderRadius: 8, border: "1px solid #A8957F", background: "#C4B09A", color: "#1a1510", fontSize: 15, fontFamily: T.sans, fontWeight: 600, cursor: "pointer", letterSpacing: "0.2px", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}>
+          <span>{"Let's Begin"}</span>
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#1a1510" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </button>
       </div>
