@@ -173,9 +173,17 @@ export function ReflectionScreen({ answers, onContinue }) {
               )}
             </div>
 
-            {/* RIGHT: Programme Focus — compact */}
+            {/* RIGHT: Communication Style + Programme Focus — compact */}
             {section >= 2 && (
               <div style={{ flex: 1, paddingTop: 4, animation: "fadeUp 0.6s ease both" }}>
+
+                {/* Communication Style card */}
+                <div style={{ padding: "14px 16px", background: "white", borderRadius: 7, border: "1px solid " + T.border, marginBottom: 24 }}>
+                  <div style={{ fontSize: 9, color: T.text3, textTransform: "uppercase", letterSpacing: "2.5px", marginBottom: 6, fontFamily: T.sans }}>Communication Style</div>
+                  <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, marginBottom: 3 }}>{tendency.label}</div>
+                  <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{tendency.sub}</div>
+                </div>
+
                 <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 6, fontFamily: T.sans }}>Programme Focus</div>
                 <div style={{ fontSize: 12, color: T.text2, marginBottom: 22, fontFamily: T.sans, lineHeight: 1.55 }}>Where your 14 sessions will focus — built around your goals and profile.</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -228,18 +236,13 @@ export function ReflectionScreen({ answers, onContinue }) {
           <div>
             <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 16, fontFamily: T.sans }}>Your Profile</div>
             {role && (
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 14px", background: "rgba(138,158,132,0.12)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.1)", marginBottom: 14 }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 14px", background: "rgba(138,158,132,0.12)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.1)" }}>
                 <div style={{ width: 26, height: 26, borderRadius: "50%", background: "rgba(138,158,132,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <span style={{ fontSize: 13, filter: "brightness(0) invert(1)" }}>{role.icon}</span>
                 </div>
                 <span style={{ fontFamily: T.serif, fontSize: 14, color: "rgba(255,255,255,0.9)" }}>{role.label}</span>
               </div>
             )}
-            <div style={{ padding: "14px 16px", background: "rgba(255,255,255,0.05)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.08)" }}>
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.38)", fontFamily: T.sans, marginBottom: 4, textTransform: "uppercase", letterSpacing: "2px" }}>Communication Style</div>
-              <div style={{ fontFamily: T.serif, fontSize: 15, color: "rgba(255,255,255,0.9)", marginBottom: 3 }}>{tendency.label}</div>
-              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", fontFamily: T.sans, lineHeight: 1.5 }}>{tendency.sub}</div>
-            </div>
           </div>
 
           {/* Your Goals — 2 cards */}
@@ -250,6 +253,26 @@ export function ReflectionScreen({ answers, onContinue }) {
                 <div key={i} style={{ padding: "14px 16px", background: "rgba(255,255,255,0.04)", borderRadius: 7, borderLeft: "2px solid " + T.gold, border: "1px solid rgba(255,255,255,0.07)", borderLeftWidth: 2, borderLeftColor: T.gold }}>
                   <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 6, fontFamily: T.sans }}>{g.label}</div>
                   <div style={{ fontFamily: T.serif, fontSize: 13, color: "rgba(255,255,255,0.82)", lineHeight: 1.6 }}>{g.text}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Your Programme */}
+          <div>
+            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 14, fontFamily: T.sans }}>Your Programme</div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {[
+                { label: "14 sessions", sub: "One per day, ~15 minutes each" },
+                { label: "6 core skills", sub: "Presence, Clarity, Influence, Story, Visibility, Composure" },
+                { label: "AI coaching", sub: "Personalised feedback throughout" },
+              ].map((item, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "11px 0", borderBottom: i < 2 ? "1px solid rgba(255,255,255,0.07)" : "none" }}>
+                  <div style={{ width: 4, height: 4, borderRadius: "50%", background: T.gold, flexShrink: 0, marginTop: 7, opacity: 0.75 }}/>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.85)", fontFamily: T.sans, marginBottom: 2 }}>{item.label}</div>
+                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", fontFamily: T.sans, lineHeight: 1.4 }}>{item.sub}</div>
+                  </div>
                 </div>
               ))}
             </div>
