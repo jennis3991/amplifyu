@@ -37,9 +37,8 @@ export function ReflectionScreen({ answers, onContinue }) {
   const rawAreas = [
     ...(focusAreaMap[challengeLabel] || ["Communication Clarity"]),
     ...(focusAreaMap[contextLabel]   || ["Presence"]),
-    "Structured Thinking",
   ];
-  const focusAreas = [...new Set(rawAreas)].slice(0, 5);
+  const focusAreas = [...new Set(rawAreas)].slice(0, 4);
 
   const tendencyMap = {
     "I stay quiet when I should speak up.":                 { label: "The Quiet Expert",        sub: "Depth and capability waiting to be heard." },
@@ -58,42 +57,34 @@ export function ReflectionScreen({ answers, onContinue }) {
   const focusWeights = focusWeightsBySize[focusAreas.length] || focusWeightsBySize[4];
   const programmeWeights = focusAreas.map((area, i) => ({ area, weight: focusWeights[i] || 10 }));
 
-  // Strength cards (up to 4, from focus areas)
-  const strengthDetails = {
-    "Executive Presence":      { icon: "◆", trait: "Authority and weight in the room" },
-    "Confidence":              { icon: "●", trait: "Inner conviction, outer clarity" },
-    "Clarity & Structure":     { icon: "▲", trait: "Logical, precise communication" },
-    "Precision Editing":       { icon: "◈", trait: "Saying more with less" },
-    "Visibility":              { icon: "◎", trait: "Making your work seen" },
-    "Personal Brand":          { icon: "✦", trait: "A presence that lasts" },
-    "Assertiveness":           { icon: "→", trait: "Direct, confident voice" },
-    "Executive Authority":     { icon: "◆", trait: "Leading with impact" },
-    "Influence":               { icon: "◈", trait: "Moving people forward" },
-    "Strategic Communication": { icon: "▲", trait: "Targeted, intentional messaging" },
-    "Storytelling":            { icon: "◎", trait: "Stories that make people lean in" },
-    "Narrative Craft":         { icon: "✦", trait: "Shaping how people see things" },
-    "High-Stakes Composure":   { icon: "●", trait: "Calm and clear under pressure" },
-    "Structured Thinking":     { icon: "▲", trait: "Ideas that land with clarity" },
-    "Presence":                { icon: "◆", trait: "Commanding attention naturally" },
-    "Communication Clarity":   { icon: "◎", trait: "Clear, precise expression" },
+  // Outcome cards — "By Day 14 you will be able to..." framing
+  const outcomeMap = {
+    "Executive Presence":      { icon: "◆", title: "Command the room",          sub: "Speak with authority in any environment, at any level" },
+    "Confidence":              { icon: "●", title: "Back yourself",              sub: "Communicate with conviction and inner confidence" },
+    "Clarity & Structure":     { icon: "▲", title: "Make your point land",       sub: "Structured, clear thinking under any pressure" },
+    "Precision Editing":       { icon: "◈", title: "Say more with less",         sub: "Cut to what matters and make every word count" },
+    "Visibility":              { icon: "◎", title: "Be seen for your work",      sub: "Make your impact visible to the people who matter" },
+    "Personal Brand":          { icon: "✦", title: "Own your presence",          sub: "Build a reputation that works for you in every room" },
+    "Assertiveness":           { icon: "→", title: "Hold your ground",           sub: "Communicate directly, confidently and without apology" },
+    "Executive Authority":     { icon: "◆", title: "Lead with weight",           sub: "Carry natural authority in every conversation" },
+    "Influence":               { icon: "◈", title: "Move people forward",        sub: "Shape decisions and get buy-in that sticks" },
+    "Strategic Communication": { icon: "▲", title: "Land your message",          sub: "Communicate with intention and strategic precision" },
+    "Storytelling":            { icon: "◎", title: "Tell stories that stick",    sub: "Make people lean in and remember what you said" },
+    "Narrative Craft":         { icon: "✦", title: "Shape how people see things",sub: "Craft stories that shift perspective and drive action" },
+    "High-Stakes Composure":   { icon: "●", title: "Stay sharp under pressure",  sub: "Navigate tough conversations with calm clarity" },
+    "Presence":                { icon: "◆", title: "Command attention",          sub: "Become someone people remember and trust" },
+    "Communication Clarity":   { icon: "◎", title: "Get your point across",      sub: "With clarity, structure and real impact every time" },
   };
-  const strengthCards = focusAreas.slice(0, 4).map(area => ({
-    label: area,
-    ...(strengthDetails[area] || { icon: "◈", trait: "Core strength" }),
-  }));
-
-  // 3 goals from quiz answers
-  const goals = [
-    challengeLabel.replace(/\.$/, ""),
-    contextLabel.replace(/\.$/, ""),
-    "Complete 14 sessions with your AI coach",
-  ];
-
-  // Focus areas with impact labels
-  const focusAreasWithImpact = focusAreas.map((area, i) => ({
+  const outcomeCards = focusAreas.slice(0, 4).map(area => ({
     area,
-    impact: i < 2 ? "High" : "Medium",
+    ...(outcomeMap[area] || { icon: "◈", title: area, sub: "A skill you will master" }),
   }));
+
+  // 2 goal cards for right panel
+  const goalCards = [
+    { label: "Your challenge", text: challengeLabel.replace(/\.$/, "") },
+    { label: "Your ambition",  text: contextLabel.replace(/\.$/, "") },
+  ];
 
   // Reflection text (quiz-derived, no API)
   const fallbackReflection = {
@@ -199,19 +190,17 @@ export function ReflectionScreen({ answers, onContinue }) {
             </div>
           )}
 
-          {/* What We'll Build */}
+          {/* By Day 14 outcome cards */}
           {section >= 2 && (
-            <div style={{ marginBottom: 48, animation: "fadeUp 0.7s ease both" }}>
-              <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 20, fontFamily: T.sans }}>{"What We'll Build"}</div>
+            <div style={{ marginBottom: 40, animation: "fadeUp 0.7s ease both" }}>
+              <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 8, fontFamily: T.sans }}>By Day 14</div>
+              <div style={{ fontSize: 13, color: T.text2, marginBottom: 20, fontFamily: T.sans }}>{"You'll be able to..."}</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                {strengthCards.map((s, i) => (
-                  <div key={i} style={{ padding: "18px 20px", background: "white", borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 10 }}>
-                    <div style={{ fontSize: 18, color: T.gold, lineHeight: 1 }}>{s.icon}</div>
-                    <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.25 }}>{s.label}</div>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                      <div style={{ fontSize: 10, fontFamily: T.sans, color: T.goldDark, background: T.goldLight, padding: "2px 9px", borderRadius: 20 }}>{"We'll develop"}</div>
-                      <span style={{ fontSize: 11, color: T.text3, fontFamily: T.sans }}>{s.trait}</span>
-                    </div>
+                {outcomeCards.map((o, i) => (
+                  <div key={i} style={{ padding: "18px 20px", background: "white", borderRadius: 8, border: "1px solid " + T.border, borderTop: "2px solid " + T.gold, display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div style={{ fontSize: 16, color: T.gold, lineHeight: 1 }}>{o.icon}</div>
+                    <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{o.title}</div>
+                    <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{o.sub}</div>
                   </div>
                 ))}
               </div>
@@ -241,16 +230,14 @@ export function ReflectionScreen({ answers, onContinue }) {
             </div>
           </div>
 
-          {/* Your Goals */}
+          {/* Your Goals — 2 cards */}
           <div>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 16, fontFamily: T.sans }}>Your Goals</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {goals.map((goal, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                  <div style={{ width: 20, height: 20, borderRadius: "50%", background: "rgba(138,158,132,0.15)", border: "1px solid rgba(138,158,132,0.4)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
-                    <span style={{ fontSize: 10, color: T.gold, fontFamily: T.sans, fontWeight: 600 }}>{i + 1}</span>
-                  </div>
-                  <div style={{ fontFamily: T.sans, fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.55 }}>{goal}</div>
+            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 14, fontFamily: T.sans }}>Your Goals</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {goalCards.map((g, i) => (
+                <div key={i} style={{ padding: "14px 16px", background: "rgba(255,255,255,0.04)", borderRadius: 7, borderLeft: "2px solid " + T.gold, border: "1px solid rgba(255,255,255,0.07)", borderLeftWidth: 2, borderLeftColor: T.gold }}>
+                  <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 6, fontFamily: T.sans }}>{g.label}</div>
+                  <div style={{ fontFamily: T.serif, fontSize: 13, color: "rgba(255,255,255,0.82)", lineHeight: 1.6 }}>{g.text}</div>
                 </div>
               ))}
             </div>
@@ -293,7 +280,7 @@ export function ReflectionScreen({ answers, onContinue }) {
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             <span style={{ fontSize: 13, color: "rgba(255,255,255,0.42)", fontFamily: T.sans }}>~15 minutes · Day 1 is ready</span>
-            <button onClick={onContinue} className="au-cta" style={{ display: "flex", alignItems: "center", gap: 10, padding: "13px 28px", borderRadius: 6, border: "1px solid rgba(220,205,180,0.4)", background: "rgba(220,205,180,0.92)", color: "#1a1510", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.2px" }}>
+            <button onClick={onContinue} className="au-cta" style={{ display: "flex", alignItems: "center", gap: 10, padding: "13px 28px", borderRadius: 6, border: "1px solid #B8923A", background: "#C4A04A", color: "#1a1510", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: T.sans, letterSpacing: "0.2px" }}>
               <span>Begin Day 1</span>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#1a1510" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
@@ -381,16 +368,17 @@ export function ReflectionScreen({ answers, onContinue }) {
           </div>
         )}
 
-        {/* What We'll Build */}
+        {/* By Day 14 outcome cards */}
         {section >= 2 && (
           <div style={{ animation: "sectionFade 0.7s ease both" }}>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 16, fontFamily: T.sans }}>{"What We'll Build"}</div>
+            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 6, fontFamily: T.sans }}>By Day 14</div>
+            <div style={{ fontSize: 12, color: T.text2, marginBottom: 16, fontFamily: T.sans }}>{"You'll be able to..."}</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              {strengthCards.map((s, i) => (
-                <div key={i} style={{ padding: "16px", background: "white", borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8 }}>
-                  <div style={{ fontSize: 16, color: T.gold }}>{s.icon}</div>
-                  <div style={{ fontFamily: T.serif, fontSize: 14, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{s.label}</div>
-                  <div style={{ fontSize: 10, fontFamily: T.sans, color: T.goldDark, background: T.goldLight, padding: "2px 8px", borderRadius: 20, display: "inline-block", width: "fit-content" }}>{"We'll develop"}</div>
+              {outcomeCards.map((o, i) => (
+                <div key={i} style={{ padding: "14px 16px", background: "white", borderRadius: 8, border: "1px solid " + T.border, borderTop: "2px solid " + T.gold, display: "flex", flexDirection: "column", gap: 7 }}>
+                  <div style={{ fontSize: 15, color: T.gold }}>{o.icon}</div>
+                  <div style={{ fontFamily: T.serif, fontSize: 14, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{o.title}</div>
+                  <div style={{ fontSize: 11, color: T.text2, fontFamily: T.sans, lineHeight: 1.45 }}>{o.sub}</div>
                 </div>
               ))}
             </div>
