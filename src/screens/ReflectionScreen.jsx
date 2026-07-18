@@ -217,8 +217,8 @@ export function ReflectionScreen({ answers, onContinue }) {
           </div>{/* end padded content */}
         </div>
 
-        {/* RIGHT: profile panel — dark */}
-        <div style={{ width: 360, flexShrink: 0, borderLeft: "1px solid rgba(255,255,255,0.08)", background: T.cardDark, overflowY: "auto", padding: "64px 40px 120px", display: "flex", flexDirection: "column", gap: 32 }}>
+        {/* RIGHT: profile panel — dark, static */}
+        <div style={{ width: 360, flexShrink: 0, borderLeft: "1px solid rgba(255,255,255,0.08)", background: T.cardDark, overflow: "hidden", padding: "64px 40px 100px", display: "flex", flexDirection: "column", gap: 32 }}>
 
           {/* Your Profile */}
           <div>
@@ -248,35 +248,6 @@ export function ReflectionScreen({ answers, onContinue }) {
                   <div style={{ fontFamily: T.serif, fontSize: 13, color: "rgba(255,255,255,0.82)", lineHeight: 1.6 }}>{g.text}</div>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Your Programme */}
-          <div>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 16, fontFamily: T.sans }}>Your Programme</div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {[
-                { label: "14 sessions", sub: "One per day, ~15 minutes each" },
-                { label: "6 core skills", sub: "Presence, Clarity, Influence, Story, Visibility, Composure" },
-                { label: "AI coaching", sub: "Personalised feedback throughout" },
-                { label: "Day 14 · Your Blueprint", sub: "A personal communication plan built around you" },
-              ].map((item, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 0", borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.08)" : "none" }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", background: T.gold, flexShrink: 0, marginTop: 7, opacity: 0.8 }}/>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.85)", fontFamily: T.sans, marginBottom: 2 }}>{item.label}</div>
-                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.38)", fontFamily: T.sans, lineHeight: 1.4 }}>{item.sub}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Personalised for you */}
-          <div style={{ padding: "18px 20px", background: "rgba(138,158,132,0.1)", border: "1px solid rgba(138,158,132,0.25)", borderRadius: 8 }}>
-            <div style={{ fontSize: 10, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 8, fontFamily: T.sans }}>Personalised for you</div>
-            <div style={{ fontFamily: T.serif, fontSize: 14, color: "rgba(255,255,255,0.82)", lineHeight: 1.65 }}>
-              {"Tailored for " + roleLabel + " who want to " + contextLabel.toLowerCase().replace(/\.$/, "").replace(/\bmy\b/g,"their").replace(/\bmyself\b/g,"themselves") + "."}
             </div>
           </div>
 
