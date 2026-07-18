@@ -125,13 +125,41 @@ export function ReflectionScreen({ answers, onContinue }) {
           {/* Brand */}
           <div style={{ fontSize: 11, color: T.gold, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 52, fontFamily: T.sans }}>AmplifyU</div>
 
-          {/* Header */}
-          <div style={{ marginBottom: 40 }}>
-            <div style={{ fontSize: 11, color: T.text3, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 14, fontFamily: T.sans }}>Your communication profile</div>
-            <h1 style={{ fontFamily: T.serif, fontSize: "clamp(32px,3vw,52px)", fontWeight: 500, color: T.ink, lineHeight: 1.08, letterSpacing: "-1.5px", margin: 0 }}>
-              {"Here's what"}
-              <br/>{"we're seeing."}
-            </h1>
+          {/* Header + Archetype badge */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40, marginBottom: 40 }}>
+
+            <div>
+              <div style={{ fontSize: 11, color: T.text3, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 14, fontFamily: T.sans }}>Your communication profile</div>
+              <h1 style={{ fontFamily: T.serif, fontSize: "clamp(32px,3vw,52px)", fontWeight: 500, color: T.ink, lineHeight: 1.08, letterSpacing: "-1.5px", margin: 0 }}>
+                {"Here's what"}
+                <br/>{"we're seeing."}
+              </h1>
+            </div>
+
+            {/* Archetype badge — double-ring circle */}
+            <div style={{ flexShrink: 0, width: 196, height: 196, borderRadius: "50%", border: "1px solid rgba(138,158,132,0.22)", padding: 9 }}>
+              <div style={{
+                width: "100%", height: "100%", borderRadius: "50%",
+                background: "linear-gradient(145deg, #2C231A 0%, #1A150F 100%)",
+                border: "1px solid rgba(138,158,132,0.5)",
+                boxShadow: "inset 0 2px 20px rgba(0,0,0,0.5), 0 8px 32px rgba(0,0,0,0.25)",
+                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+              }}>
+                <div style={{ fontSize: 7, color: "rgba(138,158,132,0.65)", textTransform: "uppercase", letterSpacing: "4px", fontFamily: T.sans, marginBottom: 11 }}>Your Type</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 12 }}>
+                  <div style={{ width: 18, height: 1, background: "rgba(138,158,132,0.45)" }}/>
+                  <div style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(138,158,132,0.7)" }}/>
+                  <div style={{ width: 18, height: 1, background: "rgba(138,158,132,0.45)" }}/>
+                </div>
+                <div style={{ fontFamily: T.serif, fontSize: 16, color: "rgba(255,255,255,0.93)", textAlign: "center", lineHeight: 1.28, padding: "0 24px", letterSpacing: "-0.2px" }}>{tendency.label}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 7, marginTop: 12 }}>
+                  <div style={{ width: 18, height: 1, background: "rgba(138,158,132,0.45)" }}/>
+                  <div style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(138,158,132,0.7)" }}/>
+                  <div style={{ width: 18, height: 1, background: "rgba(138,158,132,0.45)" }}/>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           {/* First paragraph — always visible */}
