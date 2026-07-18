@@ -270,9 +270,8 @@ export function ReflectionScreen({ answers, onContinue }) {
             <div style={{ display: "flex", flexDirection: "column" }}>
               {[
                 { label: "14 sessions", sub: "One per day, ~15 minutes each" },
-                { label: "AI coaching", sub: "Personalised feedback throughout" },
               ].map((item, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "11px 0", borderBottom: i < 1 ? "1px solid rgba(255,255,255,0.07)" : "none" }}>
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "11px 0" }}>
                   <div style={{ width: 4, height: 4, borderRadius: "50%", background: T.gold, flexShrink: 0, marginTop: 7, opacity: 0.75 }}/>
                   <div>
                     <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.85)", fontFamily: T.sans, marginBottom: 2 }}>{item.label}</div>
