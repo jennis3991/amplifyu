@@ -3087,6 +3087,7 @@ setAmbitionSaved(true); } catch {}
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Why Structure Wins</h2>
+          <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text3, lineHeight:1.7, fontWeight:300, margin:"0 0 28px" }}>Great communicators don't just have better ideas. They organise them better. Structure helps people understand faster, remember longer, and act with confidence.</p>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
             {[
               {word:"Credibility",    sub:"Leading with your point signals clear thinking.", bullets:["Structured communication creates immediate credibility — your audience knows you have a clear perspective.","When you lead with your conclusion, you sound decisive and confident before you've even explained why."]},

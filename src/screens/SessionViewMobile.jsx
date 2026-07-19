@@ -1941,6 +1941,7 @@ T.goldDark : T2.text4,
       {isD5 && step==="Insight" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Why Structure Wins</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:"0 0 16px"}}>Great communicators don't just have better ideas. They organise them better. Structure helps people understand faster, remember longer, and act with confidence.</p>
           <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Explore each card to learn more →</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {[
