@@ -3861,6 +3861,18 @@ setAmbitionSaved(true); } catch {}
             technique:"The next time you're presenting, resist the urge to fill every silence or pace constantly. Stand still to emphasise an important point, use deliberate gestures rather than constant movement, and allow pauses to give your audience time to think.",
             lesson:"Your presence is shaped as much by what you don't do as what you do. Purposeful movement, calm posture, and intentional pauses communicate confidence before you've even finished your first sentence. Sometimes the most powerful body language is knowing when to stand still.",
           },
+          { id:"kennedy", img:"/d12-kennedy.png", imgPos:"center 35%", name:"Kennedy vs Nixon", superpower:"Master of Executive Presence", featured:true,
+            superpowerText:"People don't just hear confidence. They see it.",
+            summary:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio believed Nixon won. People who watched on television overwhelmingly believed Kennedy won. The difference wasn't their arguments — it was their presence.",
+            quote:"\"People don't just hear confidence. They see it.\"",
+            exploreLabel:"Explore the debate",
+            body1:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio generally believed Richard Nixon had won. People who watched on television overwhelmingly believed John F. Kennedy had won.",
+            body2:"The difference wasn't their arguments. It was their presence. Kennedy appeared calm, composed and confident. He looked directly into the camera, maintained steady eye contact, stood comfortably and projected quiet authority. Nixon, recovering from illness, appeared tense, perspired under the studio lights and avoided looking directly at viewers.",
+            body3:"The debate became one of the clearest demonstrations that how you deliver a message can influence people just as much as the message itself.",
+            whyItWorks:"Before people evaluate your ideas, they evaluate you. Within seconds, your posture, eye contact, facial expression and composure shape how trustworthy, capable and confident you appear. When your non-verbal communication projects calm authority, people are more likely to listen, believe and remember what you say.",
+            technique:"Before your next important conversation, imagine the camera is already on you. Stand tall, relax your shoulders, make steady eye contact and pause before you begin speaking. Let people see confidence before they hear it.",
+            lesson:"The Kennedy–Nixon debate reminds us that communication is never just about words. Every movement, expression and pause tells its own story. Great communicators understand that presence begins long before the first sentence — and often determines how every sentence that follows is received.",
+          },
         ];
         const openReading = (id) => {
           if (!d12ExObserved[id]) {
@@ -3903,13 +3915,13 @@ setAmbitionSaved(true); } catch {}
           <div key={idx} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Presence in Action</h2>
-            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Two communicators who prove that how you carry yourself speaks louder than words.</p>
+            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Three communicators who prove that how you carry yourself speaks louder than words.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
               {D12_EDITORIAL.map(card=>{
                 const obs = d12ExObserved[card.id];
                 return (
                   <div key={card.id} onClick={()=>openReading(card.id)}
-                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column"}}
+                    style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,cursor:"pointer",transition:"transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",background:T2.surface,display:"flex",flexDirection:"column",...(card.featured?{gridColumn:"1 / -1"}:{})}}
                     onMouseEnter={e=>{
                       e.currentTarget.style.transform="translateY(-4px)";
                       e.currentTarget.style.boxShadow="0 12px 40px rgba(44,36,22,0.15)";
