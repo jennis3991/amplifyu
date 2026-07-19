@@ -91,34 +91,24 @@ const DRILL_ICON = (path) => (
 
 const TOPICS = [
   {
-    id: 'book',
-    icon: DRILL_ICON(<><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></>),
-    label: 'Recommend a book everyone should read',
+    id: 'advice',
+    icon: DRILL_ICON(<><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></>),
+    label: "If someone asked you for one piece of advice, what would it be?",
   },
   {
-    id: 'lesson',
-    icon: DRILL_ICON(<><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></>),
-    label: "Explain one lesson you've learned recently",
+    id: 'hours',
+    icon: DRILL_ICON(<><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>),
+    label: "If you had five extra hours every week, how would you spend them?",
   },
   {
     id: 'habit',
     icon: DRILL_ICON(<><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></>),
-    label: "Describe a habit that's improved your life",
+    label: "Describe a habit that's had a positive impact on your life.",
   },
   {
     id: 'skill',
     icon: DRILL_ICON(<><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></>),
     label: "What's one skill you'd like to master?",
-  },
-  {
-    id: 'lookforward',
-    icon: DRILL_ICON(<><circle cx="12" cy="12" r="4"/><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/></>),
-    label: "Tell me about something you're looking forward to",
-  },
-  {
-    id: 'growth',
-    icon: DRILL_ICON(<><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></>),
-    label: "Explain something you've become better at over the last year",
   },
 ];
 
@@ -258,6 +248,9 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
       </h2>
       <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text3, lineHeight:1.7, margin:'0 0 10px'}}>
         Pick a topic below and speak for around 30 seconds. Before your first word, take a deliberate pause — even just one second. The strongest communicators don't rush to answer. They give themselves permission to think.
+      </p>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px', fontStyle:'italic'}}>
+        If you feel the urge to use a filler word — just pause instead.
       </p>
       <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:14}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
