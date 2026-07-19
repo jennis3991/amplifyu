@@ -25,29 +25,52 @@ function SequentialDots({dotCount}) {
 }
 
 // ── Scenario cards ─────────────────────────────────────────────────────────────
-const SCENARIOS = [
-  { id:'criticised',
-    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
-    label: "Your work has just been criticised in front of the room" },
-  { id:'credit',
-    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>,
-    label: "A colleague takes credit for your idea in front of leadership" },
-  { id:'capacity',
-    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-    label: "You're asked to take on work you don't have capacity for" },
-  { id:'expertise',
-    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>,
-    label: "Someone challenges your expertise unexpectedly" },
-  { id:'decision',
-    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 17H3M21 17l-4 4M21 17l-4-4M3 7h18M3 7l4 4M3 7l4-4"/></svg>,
-    label: "A decision you strongly disagree with has just been announced" },
-  { id:'feedback',
-    icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>,
-    label: "You receive feedback that feels unfair or inaccurate" },
-];
+const S6_WARN    = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
+const S6_CREDIT  = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>;
+const S6_CLOCK   = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
+const S6_CHAT    = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>;
+const S6_RISK    = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>;
+const S6_PEOPLE  = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>;
+const S6_SHIELD  = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
+const S6_ARROW   = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
+const S6_STAR    = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>;
 
 // ── D6 Rehearsal Widget — Find Your Words ────────────────────────────────────
 export function D6PracticeWidget({T, T2, isDesktop, onSimulation}) {
+  const _roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
+
+  const SCENARIOS = ({
+    individual: [
+      { id:'criticised', icon:S6_WARN,   label:"Your work is criticised during a meeting." },
+      { id:'challenged',  icon:S6_CHAT,   label:"Someone challenges your recommendation unexpectedly." },
+      { id:'capacity',   icon:S6_CLOCK,  label:"You're asked to take on work you don't have capacity for." },
+      { id:'credit',     icon:S6_CREDIT, label:"A colleague takes credit for your idea." },
+    ],
+    delivery: [
+      { id:'milestone',  icon:S6_RISK,   label:"A critical project milestone is at risk." },
+      { id:'stakeholder',icon:S6_SHIELD, label:"A senior stakeholder disagrees with your recommendation." },
+      { id:'priorities', icon:S6_ARROW,  label:"Your project priorities suddenly change." },
+      { id:'teams',      icon:S6_PEOPLE, label:"Two teams disagree on the way forward." },
+    ],
+    people: [
+      { id:'expectations',icon:S6_WARN,  label:"A team member isn't meeting expectations." },
+      { id:'challenged',  icon:S6_CHAT,  label:"Someone on your team challenges your decision." },
+      { id:'feedback',   icon:S6_STAR,   label:"You need to deliver difficult feedback." },
+      { id:'conflict',   icon:S6_PEOPLE, label:"Two members of your team are in conflict." },
+    ],
+    senior: [
+      { id:'strategy',   icon:S6_SHIELD, label:"Your strategy is challenged by another executive." },
+      { id:'questioned', icon:S6_WARN,   label:"Leadership questions a major decision you've made." },
+      { id:'change',     icon:S6_ARROW,  label:"You need to announce an unpopular change." },
+      { id:'unexpected', icon:S6_CHAT,   label:"An executive asks you a question you weren't expecting." },
+    ],
+  }[_roleId] || [
+    { id:'criticised', icon:S6_WARN,   label:"Your work is criticised during a meeting." },
+    { id:'capacity',   icon:S6_CLOCK,  label:"You're asked to take on work you don't have capacity for." },
+    { id:'credit',     icon:S6_CREDIT, label:"A colleague takes credit for your idea." },
+    { id:'feedback',   icon:S6_CHAT,   label:"You receive feedback that feels unfair or inaccurate." },
+  ]);
+
   const [phase,       setPhase]       = useState('select');
   const [scenario,    setScenario]    = useState(null);
   const [isRec,       setIsRec]       = useState(false);
@@ -169,7 +192,7 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation}) {
       <div style={cs.card}>
         <div style={cs.label}>Your task</div>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.65, margin:0}}>
-          Choose one of the scenarios below and respond naturally. Your AmplifyU coach will help you refine your response, then you'll deliver your improved version before the simulation begins.
+          Choose one scenario below and respond naturally. Don't worry about finding the perfect words. Your AmplifyU coach will help you refine your response before you step into the simulation.
         </p>
       </div>
       <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:isDesktop?12:10}}>
