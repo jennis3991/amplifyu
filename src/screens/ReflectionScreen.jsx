@@ -228,7 +228,7 @@ export function ReflectionScreen({ answers, onContinue }) {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 {outcomeCards.map((o, i) => (
                   <div key={i} style={{ padding: "18px 20px", background: "white", borderRadius: 8, border: "1px solid " + T.border, borderTop: "2px solid " + T.gold, display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ width: 30, height: 30, borderRadius: 6, background: T.surface, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center" }}>{o.svg}</div>
+                    <div style={{ width: 30, height: 30, borderRadius: 6, background: T.surface, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center", alignSelf: "center" }}>{o.svg}</div>
                     <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{o.title}</div>
                     <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{o.sub}</div>
                   </div>
@@ -393,7 +393,7 @@ export function ReflectionScreen({ answers, onContinue }) {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
               {outcomeCards.map((o, i) => (
                 <div key={i} style={{ padding: "14px 16px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8 }}>
-                  <div style={{ width: 30, height: 30, borderRadius: 6, background: T.bg, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ width: 30, height: 30, borderRadius: 6, background: T.bg, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center", alignSelf: "center" }}>
                     {o.svg}
                   </div>
                   <div style={{ fontFamily: T.serif, fontSize: 14, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{o.title}</div>
