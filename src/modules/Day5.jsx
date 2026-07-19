@@ -600,19 +600,13 @@ For Q2, apply the same PRE extraction as Q1. Then compare the two. Return a JSON
 
   const leftPanel = (
     <div>
-      <div style={{fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:12}}>The Boardroom · Rehearsal</div>
+      <div style={{fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:12}}>The Boardroom · Simulation</div>
       <h2 style={{fontFamily:T.serif, fontSize:isDesktop?40:28, fontWeight:600, color:T2.text, lineHeight:1.1, margin:'0 0 16px'}}>
         One question.<br/>Ten seconds to think.<br/>Then answer.
       </h2>
-      <p style={{fontFamily:T.sans, fontSize:isDesktop?16:15, color:T2.text3, lineHeight:1.6, fontWeight:400, margin:'0 0 20px'}}>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?16:15, color:T2.text3, lineHeight:1.6, fontWeight:400, margin:0}}>
         Every executive structures before they speak. Today you'll do the same — without being told how.
       </p>
-      <div style={{background:'rgba(138,158,132,0.07)', borderRadius:6, border:'0.5px solid rgba(138,158,132,0.18)', padding:'14px 16px', marginBottom:20}}>
-        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.7)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:8}}>Coach Tip</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text2, lineHeight:1.65, margin:0}}>
-          There's no right answer. There's only a clear one.
-        </p>
-      </div>
     </div>
   );
 
@@ -624,36 +618,31 @@ For Q2, apply the same PRE extraction as Q1. Then compare the two. Return a JSON
   );
 
   // ── SELECT ─────────────────────────────────────────────────────────────────
-  if (phase === 'select') return grid(<>
-    <div>
-      <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:8}}>Simulation · Day 5</div>
-      <h3 style={{fontFamily:T.serif, fontSize:isDesktop?24:20, fontWeight:600, color:T2.text, margin:'0 0 4px', lineHeight:1.2}}>The Boardroom</h3>
-      <div style={{height:2, background:T2.border, borderRadius:2, marginTop:10}}/>
-    </div>
-    <div style={cs.card}>
-      <div style={cs.label}>Your Brief</div>
-      <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.65, margin:0}}>
-        Your AmplifyU coach will ask you one question. You'll have 10 seconds to think, then answer. Speak for around 45–60 seconds — the coach analyses your response without telling you what it's looking for.
+  if (phase === 'select') return (
+    <div style={{display:'flex', flexDirection:'column', gap:isDesktop?28:20}}>
+      {leftPanel}
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.65, margin:0, fontWeight:300}}>
+        Choose a topic. You'll have 10 seconds to think, then answer. Speak for around 45–60 seconds — the coach analyses your structure without telling you what it's looking for.
       </p>
+      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:isDesktop?14:10}}>
+        {BOARDROOM_TOPICS.map(t => {
+          const sel = topic?.id === t.id;
+          return (
+            <button key={t.id} onClick={() => { setTopic(t); topicRef.current = t; }}
+              style={{padding:isDesktop?'24px 18px':'18px 14px', borderRadius:6, border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`, background:sel?'rgba(82,112,96,0.18)':T2.surface, cursor:'pointer', textAlign:'center', alignItems:'center', transition:'all 0.2s', display:'flex', flexDirection:'column', gap:12, outline:'none', minHeight:isDesktop?120:100}}>
+              <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3}}>{BOARDROOM_ICONS[t.id]}</div>
+              <span style={{fontFamily:T.sans, fontSize:isDesktop?12:11, color:T2.text, lineHeight:1.5, fontWeight:sel?600:400}}>{t.label}</span>
+            </button>
+          );
+        })}
+      </div>
+      <button onClick={() => { if (topic) { thinkingTargetRef.current='rec1'; setPhase('thinking'); } }}
+        disabled={!topic}
+        style={{...cs.cta, opacity:topic?1:0.4, cursor:topic?'pointer':'default'}}>
+        Enter the Boardroom →
+      </button>
     </div>
-    <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:10}}>
-      {BOARDROOM_TOPICS.map(t => {
-        const sel = topic?.id === t.id;
-        return (
-          <button key={t.id} onClick={() => { setTopic(t); topicRef.current = t; }}
-            style={{padding:'16px 14px', borderRadius:6, border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`, background:sel?'rgba(82,112,96,0.18)':T2.surface, cursor:'pointer', textAlign:'center', alignItems:'center', transition:'all 0.2s', display:'flex', flexDirection:'column', gap:10, outline:'none'}}>
-            <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3}}>{BOARDROOM_ICONS[t.id]}</div>
-            <span style={{fontFamily:T.sans, fontSize:isDesktop?12:11, color:T2.text, lineHeight:1.4, fontWeight:sel?600:400}}>{t.label}</span>
-          </button>
-        );
-      })}
-    </div>
-    <button onClick={() => { if (topic) { thinkingTargetRef.current='rec1'; setPhase('thinking'); } }}
-      disabled={!topic}
-      style={{...cs.cta, opacity:topic?1:0.4, cursor:topic?'pointer':'default'}}>
-      Enter the Boardroom →
-    </button>
-  </>);
+  );
 
   const currentQ = thinkingTargetRef.current === 'rec2' ? topicRef.current?.q2 : topicRef.current?.question;
 
