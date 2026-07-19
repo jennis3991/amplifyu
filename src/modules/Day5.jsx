@@ -248,7 +248,7 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
     <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
       <div>
         <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Your Turn</div>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0, fontWeight:300}}>Pick one question below. Answer it using Point, Reason, and Example. Speak for around 30 seconds.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0, fontWeight:300}}>Pick one question below. Answer it using Point, Reason, and Example.</p>
       </div>
       <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:10}}>
         {SETUP_TOPICS.map(t => {
