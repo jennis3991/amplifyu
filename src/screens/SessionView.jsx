@@ -2238,7 +2238,7 @@ setAmbitionSaved(true); } catch {}
             </div>
             {steps.map((s,i)=>(
               <div key={i} style={{display:"flex",gap:18,padding:"16px 18px",marginBottom:6,borderRadius:6,background:`rgba(44,36,22,${0.03+i*0.03})`}}>
-                <div style={{fontFamily:T.serif,fontSize:24,fontWeight:300,color:T.gold,opacity:0.3,lineHeight:1,minWidth:28,paddingTop:3}}>{s.n}</div>
+                <div style={{fontFamily:T.serif,fontSize:24,fontWeight:500,color:T.gold,opacity:0.85,lineHeight:1,minWidth:28,paddingTop:3}}>{s.n}</div>
                 <div style={{flex:1}}>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"#8A9E84"}}>{s.label}</div></div>
                   <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:400,margin:"0 0 5px"}}>{s.desc}</p>

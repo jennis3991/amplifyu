@@ -1511,7 +1511,7 @@ T.goldDark : T2.text4,
             </div>
             {mSteps.map((s,i)=>(
               <div key={i} style={{display:"flex",gap:14,padding:"14px 16px",marginBottom:6,borderRadius:6,background:`rgba(44,36,22,${0.03+i*0.03})`}}>
-                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:300,color:T.gold,opacity:0.3,lineHeight:1,minWidth:24,paddingTop:2}}>{s.n}</div>
+                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:500,color:T.gold,opacity:0.85,lineHeight:1,minWidth:24,paddingTop:2}}>{s.n}</div>
                 <div style={{flex:1}}>
                   <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:6}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"#8A9E84"}}>{s.label}</div></div>
                   <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 4px"}}>{s.desc}</p>
