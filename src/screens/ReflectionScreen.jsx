@@ -63,27 +63,32 @@ export function ReflectionScreen({ answers, onContinue }) {
   const focusWeights = focusWeightsBySize[focusAreas.length] || focusWeightsBySize[4];
   const programmeWeights = focusAreas.map((area, i) => ({ area, weight: focusWeights[i] || 10 }));
 
+  const svgLines   = <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 9h10M3 13h7" stroke={T.text3} strokeWidth="1.4" strokeLinecap="round"/></svg>;
+  const svgDoc     = <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 4h8l4 4v8H3V4z" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M10 4v5h5" stroke={T.text3} strokeWidth="1.3"/></svg>;
+  const svgPeople  = <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="7" r="3" stroke={T.text3} strokeWidth="1.4" fill="none"/><circle cx="13" cy="7" r="3" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M3 17c0-3 2-4 4-4h6c2 0 4 1 4 4" stroke={T.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>;
+  const svgPerson  = <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M4 17c0-3 2.7-5 6-5s6 2 6 5" stroke={T.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>;
+
   // Outcome cards — "By Day 14 you will be able to..." framing
   const outcomeMap = {
-    "Executive Presence":      { icon: "◆", title: "Command the room",          sub: "Speak with authority in any environment, at any level" },
-    "Confidence":              { icon: "●", title: "Back yourself",              sub: "Communicate with conviction and inner confidence" },
-    "Clarity & Structure":     { icon: "▲", title: "Make your point land",       sub: "Structured, clear thinking under any pressure" },
-    "Precision Editing":       { icon: "◈", title: "Say more with less",         sub: "Cut to what matters and make every word count" },
-    "Visibility":              { icon: "◎", title: "Be seen for your work",      sub: "Make your impact visible to the people who matter" },
-    "Personal Brand":          { icon: "✦", title: "Own your presence",          sub: "Build a reputation that works for you in every room" },
-    "Assertiveness":           { icon: "→", title: "Hold your ground",           sub: "Communicate directly, confidently and without apology" },
-    "Executive Authority":     { icon: "◆", title: "Lead with weight",           sub: "Carry natural authority in every conversation" },
-    "Influence":               { icon: "◈", title: "Move people forward",        sub: "Shape decisions and earn buy-in that lasts" },
-    "Strategic Communication": { icon: "▲", title: "Land your message",          sub: "Communicate with intention and strategic precision" },
-    "Storytelling":            { icon: "◎", title: "Tell stories that stick",    sub: "Make people lean in and remember what you said" },
-    "Narrative Craft":         { icon: "✦", title: "Shape how people see things",sub: "Craft stories that shift perspective and drive action" },
-    "High-Stakes Composure":   { icon: "●", title: "Stay sharp under pressure",  sub: "Navigate tough conversations with calm clarity" },
-    "Presence":                { icon: "◆", title: "Command attention",          sub: "Become someone people remember and trust" },
-    "Communication Clarity":   { icon: "◎", title: "Get your point across",      sub: "With clarity, structure and real impact every time" },
+    "Executive Presence":      { svg: svgPerson,  title: "Command the room",          sub: "Speak with authority in any environment, at any level" },
+    "Confidence":              { svg: svgPerson,  title: "Back yourself",              sub: "Communicate with conviction and inner confidence" },
+    "Clarity & Structure":     { svg: svgLines,   title: "Make your point land",       sub: "Structured, clear thinking under any pressure" },
+    "Precision Editing":       { svg: svgLines,   title: "Say more with less",         sub: "Cut to what matters and make every word count" },
+    "Visibility":              { svg: svgPerson,  title: "Be seen for your work",      sub: "Make your impact visible to the people who matter" },
+    "Personal Brand":          { svg: svgPerson,  title: "Own your presence",          sub: "Build a reputation that works for you in every room" },
+    "Assertiveness":           { svg: svgPerson,  title: "Hold your ground",           sub: "Communicate directly, confidently and without apology" },
+    "Executive Authority":     { svg: svgPerson,  title: "Lead with weight",           sub: "Carry natural authority in every conversation" },
+    "Influence":               { svg: svgPeople,  title: "Move people forward",        sub: "Shape decisions and earn buy-in that lasts" },
+    "Strategic Communication": { svg: svgLines,   title: "Land your message",          sub: "Communicate with intention and strategic precision" },
+    "Storytelling":            { svg: svgDoc,     title: "Tell stories that stick",    sub: "Make people lean in and remember what you said" },
+    "Narrative Craft":         { svg: svgDoc,     title: "Shape how people see things",sub: "Craft stories that shift perspective and drive action" },
+    "High-Stakes Composure":   { svg: svgPeople,  title: "Stay sharp under pressure",  sub: "Navigate tough conversations with calm clarity" },
+    "Presence":                { svg: svgPerson,  title: "Command attention",          sub: "Become someone people remember and trust" },
+    "Communication Clarity":   { svg: svgLines,   title: "Get your point across",      sub: "With clarity, structure and real impact every time" },
   };
   const outcomeCards = focusAreas.slice(0, 4).map(area => ({
     area,
-    ...(outcomeMap[area] || { icon: "◈", title: area, sub: "A skill you will master" }),
+    ...(outcomeMap[area] || { svg: svgLines, title: area, sub: "A skill you will master" }),
   }));
 
   // 2 goal cards for right panel
@@ -223,7 +228,7 @@ export function ReflectionScreen({ answers, onContinue }) {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 {outcomeCards.map((o, i) => (
                   <div key={i} style={{ padding: "18px 20px", background: "white", borderRadius: 8, border: "1px solid " + T.border, borderTop: "2px solid " + T.gold, display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontSize: 16, color: T.gold, lineHeight: 1 }}>{o.icon}</div>
+                    <div style={{ width: 30, height: 30, borderRadius: 6, background: T.surface, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center" }}>{o.svg}</div>
                     <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{o.title}</div>
                     <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{o.sub}</div>
                   </div>
@@ -389,7 +394,7 @@ export function ReflectionScreen({ answers, onContinue }) {
               {outcomeCards.map((o, i) => (
                 <div key={i} style={{ padding: "14px 16px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8 }}>
                   <div style={{ width: 30, height: 30, borderRadius: 6, background: T.bg, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ fontSize: 13, color: T.text3 }}>{o.icon}</span>
+                    {o.svg}
                   </div>
                   <div style={{ fontFamily: T.serif, fontSize: 14, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{o.title}</div>
                   <div style={{ fontSize: 11, color: T.text2, fontFamily: T.sans, lineHeight: 1.45 }}>{o.sub}</div>
