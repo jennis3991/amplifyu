@@ -3182,15 +3182,13 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
               border:"none",
               background: ((isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone))
                 ? "rgba(44,36,22,0.18)"
-                : idx===0
-                  ? "linear-gradient(135deg,"+T.gold+" 0%,"+T.goldDark+" 100%)"
-                  : "linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
+                : "linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
               color:"white",
               fontSize:15,fontWeight:700,
               cursor: ((isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)) ? "not-allowed" : "pointer",
               opacity: ((isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)) ? 0.45 : 1,
               display:"flex",alignItems:"center",justifyContent:"center",gap:10,
-              boxShadow:idx===0?"0 4px 16px rgba(138,158,132,0.35)":"0 4px 16px rgba(17,28,46,0.3)",
+              boxShadow:"0 4px 16px rgba(17,28,46,0.3)",
               letterSpacing:"0.2px",
             }}>
             <span>{isD1 && step==="Rehearsal" && d1NavLabel
