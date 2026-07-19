@@ -303,8 +303,8 @@ export function ReflectionScreen({ answers, onContinue }) {
       <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
       {/* Banner image */}
-      <div style={{ width: "100%", height: 260, overflow: "hidden", flexShrink: 0 }}>
-        <img src="/profile-banner-3.png" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "center" }}/>
+      <div style={{ width: "100%", height: 220, overflow: "hidden", flexShrink: 0 }}>
+        <img src="/profile-banner-3.png" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "25% center" }}/>
       </div>
 
       {/* Header */}
