@@ -463,8 +463,8 @@ export function SessionLeftPanel({
   if (step === "Insight") return (
     <div style={{ position: "relative", height: "100%", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
       {lesson.day === 1 ? (
-        <img src="/day1-lounge.jpg" alt=""
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
+        <img src="/day1-insight.jpg" alt=""
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
         />
       ) : isD2 ? (
         <img src="/d2-insight.jpg" alt=""
