@@ -840,7 +840,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       "Describe the best leader you've worked with.",
       "Tell us about a difficult decision you made.",
     ],
-    "🌿 Reflective":[
+    "🌿 Reflection":[
       "Describe your perfect day from start to finish.",
       "Which season of the year do you enjoy most, and why?",
       "What's something you've always wanted to try?",
@@ -1074,7 +1074,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     return (
       <div style={{display:"flex",flexDirection:"column",gap:16}}>
         <div>
-          <h2 style={{...cs.h2,fontSize:isDesktop?15:14}}>Choose a conversation starter</h2>
+          <p style={{...cs.body,marginBottom:0}}>Choose a conversation starter</p>
           <p style={{...cs.body,marginBottom:16}}>Speak naturally. No preparation. The goal is not perfection — it's awareness.</p>
         </div>
         <div style={{display:"flex",gap:8,marginBottom:4}}>
@@ -1085,7 +1085,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:isDesktop?12:10}}>
           {PROMPTS[cat].map((p,i)=>(
             <div key={i} onClick={()=>go(p)} className="au-lift" style={{...cs.card,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",padding:isDesktop?"28px 18px 24px":"22px 14px 20px",gap:14,transition:"border-color 0.2s,box-shadow 0.2s"}}>
-              <div style={{color:"rgba(44,36,22,0.3)",lineHeight:0}}>{D1ICONS[i%D1ICONS.length]}</div>
+              {cat==='Work' && <div style={{color:"rgba(44,36,22,0.3)",lineHeight:0}}>{D1ICONS[i%D1ICONS.length]}</div>}
               <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.45,margin:0,fontWeight:400}}>{p}</p>
             </div>
           ))}
