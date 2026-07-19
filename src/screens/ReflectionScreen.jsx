@@ -119,7 +119,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
           {/* Banner image — cropped to hero section only */}
           <div style={{ width: "100%", height: 300, flexShrink: 0, overflow: "hidden" }}>
-            <img src="/profile-banner.png" alt="" style={{ width: "100%", display: "block", objectFit: "cover", objectPosition: "top" }}/>
+            <img src="/profile-banner-2.png" alt="" style={{ width: "100%", display: "block", objectFit: "cover", objectPosition: "top" }}/>
           </div>
 
           <div style={{ padding: "52px 72px 120px", display: "flex", flexDirection: "column" }}>
@@ -302,9 +302,9 @@ export function ReflectionScreen({ answers, onContinue }) {
     <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 90 }}>
       <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
-      {/* Banner image — force wider-than-viewport so height scales enough to crop beige section */}
-      <div style={{ width: "100%", height: 220, overflow: "hidden", flexShrink: 0, position: "relative" }}>
-        <img src="/profile-banner.png" alt="" style={{ position: "absolute", top: 0, left: "-50%", width: "200%", display: "block" }}/>
+      {/* Banner image */}
+      <div style={{ width: "100%", height: 260, overflow: "hidden", flexShrink: 0 }}>
+        <img src="/profile-banner-2.png" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "top" }}/>
       </div>
 
       {/* Header */}
