@@ -695,11 +695,7 @@ export function SessionLeftPanel({
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Setup</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Point. Reason. Example. Now make it yours.</p>
-          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
-          <div style={{ background:"rgba(138,158,132,0.07)", borderRadius:4, border:"0.5px solid rgba(138,158,132,0.18)", padding:"16px 18px", marginBottom:20 }}>
-            <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.7)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:8 }}>Coach Tip</div>
-            <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.7)", lineHeight:1.65, margin:0, fontStyle:"italic" }}>The best way to learn a framework is to use it once before the pressure starts.</p>
-          </div>
+          <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
     );
