@@ -56,7 +56,7 @@ export function ReflectionScreen({ answers, onContinue }) {
     "I'm already strong. I want to go to the next level.": { label: "The High Performer",      sub: "Strong foundation. Optimising for excellence." },
     "I'm strong — I want to go to the next level":         { label: "The High Performer",      sub: "Strong foundation. Optimising for excellence." },
   };
-  const tendency = tendencyMap[levelLabel] || { label: "The Growth Professional", sub: "Ready to build. Ready to lead." };
+  const tendency = tendencyMap[levelLabel] || { label: "The Growth Professional", sub: "The drive to communicate with clarity and impact." };
 
   // Programme focus weights — derived from focus area priority order
   const focusWeightsBySize = { 5:[30,25,20,15,10], 4:[35,28,22,15], 3:[45,35,20], 2:[60,40] };
