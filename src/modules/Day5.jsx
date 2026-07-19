@@ -688,14 +688,24 @@ Return only valid JSON with all fields present.`,
     <div style={cs.card}>
       <div style={cs.label}>Your Question</div>
       <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 20px'}}>"{topicRef.current?.question}"</p>
-      <div style={{display:'flex', alignItems:'center', gap:2, height:40, marginBottom:14}}>
+      <div style={{display:'flex', alignItems:'center', gap:2, height:40, marginBottom:16}}>
         {waveVals.map((v,i)=><div key={i} style={{flex:1, height:Math.round(v*34)+'px', background:`rgba(138,158,132,${0.3+v*0.5})`, borderRadius:2, transition:'height 0.15s'}}/>)}
       </div>
-      <div style={{fontFamily:T.sans, fontSize:11, letterSpacing:'0.12em', color:'rgba(138,158,132,0.75)', textAlign:'center', marginBottom:12}}>Point &middot; Reason &middot; Example</div>
       <div style={{display:'flex', alignItems:'center', gap:8}}>
         <div style={{width:7, height:7, borderRadius:'50%', background:'#c0392b'}}/>
         <span style={{fontFamily:T.sans, fontSize:11, color:T2.text3}}>Answer when you're ready.</span>
       </div>
+    </div>
+    <div style={{display:'flex', gap:8}}>
+      {[{n:'1', label:'Point', hint:'Lead with your view'},
+        {n:'2', label:'Reason', hint:'Explain why'},
+        {n:'3', label:'Example', hint:'Make it concrete'}].map((s,i) => (
+        <div key={i} style={{flex:1, background:'rgba(138,158,132,0.08)', border:'1px solid rgba(138,158,132,0.3)', borderRadius:6, padding:'14px 10px', textAlign:'center'}}>
+          <div style={{fontFamily:T.serif, fontSize:isDesktop?22:18, fontWeight:700, color:T.gold, lineHeight:1, marginBottom:6}}>{s.n}</div>
+          <div style={{fontFamily:T.sans, fontSize:isDesktop?13:11, fontWeight:700, color:T2.text, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:4}}>{s.label}</div>
+          <div style={{fontFamily:T.sans, fontSize:isDesktop?11:10, color:T2.text3, lineHeight:1.4}}>{s.hint}</div>
+        </div>
+      ))}
     </div>
     <button onClick={doStop1} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
       Done →
@@ -762,14 +772,24 @@ Return only valid JSON with all fields present.`,
     <div style={cs.card}>
       <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:12}}>Question 2</div>
       <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 20px'}}>"{topicRef.current?.q2}"</p>
-      <div style={{display:'flex', alignItems:'center', gap:2, height:40, marginBottom:14}}>
+      <div style={{display:'flex', alignItems:'center', gap:2, height:40, marginBottom:16}}>
         {waveVals.map((v,i)=><div key={i} style={{flex:1, height:Math.round(v*34)+'px', background:`rgba(138,158,132,${0.3+v*0.5})`, borderRadius:2, transition:'height 0.15s'}}/>)}
       </div>
-      <div style={{fontFamily:T.sans, fontSize:11, letterSpacing:'0.12em', color:'rgba(138,158,132,0.75)', textAlign:'center', marginBottom:12}}>Point &middot; Reason &middot; Example</div>
       <div style={{display:'flex', alignItems:'center', gap:8}}>
         <div style={{width:7, height:7, borderRadius:'50%', background:'#c0392b'}}/>
         <span style={{fontFamily:T.sans, fontSize:11, color:T2.text3}}>Answer when you're ready.</span>
       </div>
+    </div>
+    <div style={{display:'flex', gap:8}}>
+      {[{n:'1', label:'Point', hint:'Lead with your view'},
+        {n:'2', label:'Reason', hint:'Explain why'},
+        {n:'3', label:'Example', hint:'Make it concrete'}].map((s,i) => (
+        <div key={i} style={{flex:1, background:'rgba(138,158,132,0.08)', border:'1px solid rgba(138,158,132,0.3)', borderRadius:6, padding:'14px 10px', textAlign:'center'}}>
+          <div style={{fontFamily:T.serif, fontSize:isDesktop?22:18, fontWeight:700, color:T.gold, lineHeight:1, marginBottom:6}}>{s.n}</div>
+          <div style={{fontFamily:T.sans, fontSize:isDesktop?13:11, fontWeight:700, color:T2.text, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:4}}>{s.label}</div>
+          <div style={{fontFamily:T.sans, fontSize:isDesktop?11:10, color:T2.text3, lineHeight:1.4}}>{s.hint}</div>
+        </div>
+      ))}
     </div>
     <button onClick={doStop2} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
       Done →
