@@ -189,7 +189,7 @@ export function ReflectionScreen({ answers, onContinue }) {
               <div style={{ flex: 1, paddingTop: 4, animation: "fadeUp 0.6s ease both" }}>
 
                 {/* Communication Style card */}
-                <div style={{ padding: "14px 16px", background: "white", borderRadius: 7, border: "1px solid " + T.border, marginBottom: 24 }}>
+                <div style={{ padding: "14px 16px", background: T.surface, borderRadius: 7, border: "1px solid " + T.border, marginBottom: 24 }}>
                   <div style={{ fontSize: 9, color: T.text3, textTransform: "uppercase", letterSpacing: "2.5px", marginBottom: 6, fontFamily: T.sans }}>Communication Style</div>
                   <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, marginBottom: 3 }}>{tendency.label}</div>
                   <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{tendency.sub}</div>
@@ -227,8 +227,8 @@ export function ReflectionScreen({ answers, onContinue }) {
               <div style={{ fontSize: 13, color: T.text2, marginBottom: 20, fontFamily: T.sans }}>{"You'll be able to..."}</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 {outcomeCards.map((o, i) => (
-                  <div key={i} style={{ padding: "18px 20px", background: "white", borderRadius: 8, border: "1px solid " + T.border, borderTop: "2px solid " + T.gold, display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ width: 30, height: 30, borderRadius: 6, background: T.surface, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center", alignSelf: "center" }}>{o.svg}</div>
+                  <div key={i} style={{ padding: "18px 20px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div style={{ width: 30, height: 30, borderRadius: 6, background: T.bg, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center", alignSelf: "center" }}>{o.svg}</div>
                     <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{o.title}</div>
                     <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{o.sub}</div>
                   </div>
