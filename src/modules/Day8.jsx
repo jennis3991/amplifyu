@@ -1178,44 +1178,52 @@ function D8SequentialDots({ dotCount }) {
   );
 }
 
-const STORY_CARDS = [
-  {
-    icon: s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><path d="M3 9h6"/><path d="M3 15h6"/></svg>,
-    title: "The project I'll always remember",
-    sub:   "A project that challenged you, taught you something, or made a real difference",
-  },
-  {
-    icon: s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8 7a4 4 0 108 0 4 4 0 00-8 0"/><path d="M6 21v-2a4 4 0 014-4h2.5"/><path d="M19.5 17.5c.5-.5 1.5-1.5 1.5-2.5a2 2 0 00-4 0c0 1 1 2 1.5 2.5"/></svg>,
-    title: "The mentor who changed my career",
-    sub:   "Someone whose advice, belief, or challenge changed how you think, work, or lead",
-  },
-  {
-    icon: s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
-    title: "The mistake that made me better",
-    sub:   "A setback that became one of your greatest lessons",
-  },
-  {
-    icon: s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 20h18L13 4a1 1 0 00-1.73 0L3 20z"/><line x1="12" y1="11" x2="12" y2="15"/></svg>,
-    title: "The challenge that changed me",
-    sub:   "A moment that stretched you further than you thought possible",
-  },
-  {
-    icon: s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>,
-    title: "The decision that shaped my future",
-    sub:   "A choice that changed the direction of your career or life",
-  },
-  {
-    icon: s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V16a2 2 0 002 2h4a2 2 0 002-2v-1.3A7 7 0 0012 2z"/></svg>,
-    title: "The moment everything clicked",
-    sub:   "A breakthrough that completely changed how you see your work or yourself",
-  },
-];
+const SC_PROJECT  = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><path d="M3 9h6"/><path d="M3 15h6"/></svg>;
+const SC_MISTAKE  = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
+const SC_SEARCH   = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
+const SC_SPARK    = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>;
+const SC_RISK     = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>;
+const SC_ALIGN    = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>;
+const SC_GROW     = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22V12"/><path d="M12 12C12 12 7 10 7 5c0 0 5 0 5 7z"/><path d="M12 12C12 12 17 10 17 5c0 0-5 0-5 7z"/></svg>;
+const SC_CONVO    = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>;
+const SC_SHIELD   = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
+const SC_CHANGE   = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
+const SC_MOUNTAIN = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 20h18L13 4a1 1 0 00-1.73 0L3 20z"/><line x1="12" y1="11" x2="12" y2="15"/></svg>;
+const SC_MENTOR   = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8 7a4 4 0 108 0 4 4 0 00-8 0"/><path d="M6 21v-2a4 4 0 014-4h2.5"/><path d="M19.5 17.5c.5-.5 1.5-1.5 1.5-2.5a2 2 0 00-4 0c0 1 1 2 1.5 2.5"/></svg>;
 
 const BEAT_LABELS = ["Once upon a time…","Every day…","Until one day…","Because of that…","Because of that…","Until finally…"];
 
 export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulation }) {
   const T  = Tp  || Timport;
   const T2 = T2p || T2D;
+
+  const _roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
+
+  const STORY_CARDS = [
+    { icon: SC_PROJECT, title: "The project I'll always remember", sub: "A project that challenged you, taught you something, or made a real difference." },
+    { icon: SC_MISTAKE, title: "The mistake that made me better",  sub: "A setback that became one of your greatest lessons." },
+    ...({
+      individual: [
+        { icon: SC_SEARCH,   title: "The problem only I spotted",      sub: "A moment where your expertise made the difference." },
+        { icon: SC_SPARK,    title: "The idea that changed the outcome", sub: "A suggestion or improvement that had a bigger impact than expected." },
+      ],
+      delivery: [
+        { icon: SC_RISK,    title: "The project that almost went wrong",        sub: "A moment where you kept a project on track." },
+        { icon: SC_ALIGN,   title: "The decision that brought everyone together", sub: "A time you aligned people around a common direction." },
+      ],
+      people: [
+        { icon: SC_GROW,  title: "The person I helped grow",            sub: "A moment where coaching or support changed someone's confidence or performance." },
+        { icon: SC_CONVO, title: "The conversation that changed a team", sub: "A difficult conversation that ultimately strengthened relationships." },
+      ],
+      senior: [
+        { icon: SC_SHIELD, title: "The decision that shaped the business", sub: "A decision that created long-term impact." },
+        { icon: SC_CHANGE, title: "The change I asked people to believe in", sub: "A time you brought others with you through uncertainty." },
+      ],
+    }[_roleId] || [
+      { icon: SC_MOUNTAIN, title: "The challenge that changed me",      sub: "A moment that stretched you further than you thought possible." },
+      { icon: SC_MENTOR,   title: "The mentor who changed my career",   sub: "Someone whose advice, belief, or challenge changed how you think, work or lead." },
+    ]),
+  ];
 
   const [phase,       setPhase]       = useState('select');
   const [selected,    setSelected]    = useState(null);
@@ -1337,7 +1345,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>STORY LAB · DAY 8</div>
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>Story Lab</h2>
       </div>
-      <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, margin:0 }}>Choose the story territory that feels most true right now. Speak for around 60 seconds. Your AmplifyU coach will find the shape of your story and turn it into something you can use anywhere.</p>
+      <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, margin:0 }}>Choose the story that feels most meaningful to you. Speak for around 60 seconds. Don't worry about telling it perfectly — just tell it naturally. Your AmplifyU coach will identify the strongest parts of your story and help shape it into one you can use again and again.</p>
       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
         {STORY_CARDS.map((c, i) => {
           const sel = selected === i;
