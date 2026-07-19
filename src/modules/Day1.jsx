@@ -840,17 +840,17 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       "Describe the best leader you've worked with.",
       "Tell us about a difficult decision you made.",
     ],
-    Personal:[
-      "What belief has genuinely changed your life?",
-      "What motivates you more than anything else?",
-      "What's something people misunderstand about you?",
-      "Describe a moment that changed your perspective.",
+    "🌿 Reflective":[
+      "Describe your perfect day from start to finish.",
+      "Which season of the year do you enjoy most, and why?",
+      "What's something you've always wanted to try?",
+      "Describe a place you always enjoy going back to.",
     ],
-    Spontaneous:[
-      "Is social media helping or harming us?",
-      "What makes someone truly charismatic?",
-      "Should schools teach negotiation?",
-      "What creates a strong first impression?",
+    "💡 Perspectives":[
+      "Which decade would you most like to live in and why?",
+      "What invention couldn't you live without and why?",
+      "Would you rather have more time or more money?",
+      "What's a skill everyone should learn?",
     ],
   };
   const ALL_PROMPTS = Object.values(PROMPTS).flat();
