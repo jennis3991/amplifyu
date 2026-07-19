@@ -387,8 +387,10 @@ export function ReflectionScreen({ answers, onContinue }) {
             <div style={{ fontSize: 12, color: T.text2, marginBottom: 16, fontFamily: T.sans }}>{"You'll be able to..."}</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
               {outcomeCards.map((o, i) => (
-                <div key={i} style={{ padding: "14px 16px", background: "white", borderRadius: 8, border: "1px solid " + T.border, borderTop: "2px solid " + T.gold, display: "flex", flexDirection: "column", gap: 7 }}>
-                  <div style={{ fontSize: 15, color: T.gold }}>{o.icon}</div>
+                <div key={i} style={{ padding: "14px 16px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8 }}>
+                  <div style={{ width: 30, height: 30, borderRadius: 6, background: T.bg, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <span style={{ fontSize: 13, color: T.text3 }}>{o.icon}</span>
+                  </div>
                   <div style={{ fontFamily: T.serif, fontSize: 14, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{o.title}</div>
                   <div style={{ fontSize: 11, color: T.text2, fontFamily: T.sans, lineHeight: 1.45 }}>{o.sub}</div>
                 </div>
@@ -400,7 +402,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
         {/* Communication Style card */}
         {section >= 2 && (
-          <div style={{ padding: "16px", background: "white", borderRadius: 8, border: "1px solid " + T.border, animation: "sectionFade 0.9s ease both" }}>
+          <div style={{ padding: "16px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, animation: "sectionFade 0.9s ease both" }}>
             <div style={{ fontSize: 9, color: T.text3, textTransform: "uppercase", letterSpacing: "2.5px", marginBottom: 8, fontFamily: T.sans }}>Communication Style</div>
             <div style={{ fontFamily: T.serif, fontSize: 16, color: T.ink, marginBottom: 3 }}>{tendency.label}</div>
             <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{tendency.sub}</div>
@@ -417,7 +419,7 @@ export function ReflectionScreen({ answers, onContinue }) {
                 { label: "~15", sub: "min / day" },
                 { label: "AI", sub: "coaching" },
               ].map((item, i) => (
-                <div key={i} style={{ flex: 1, padding: "14px 12px", background: "white", borderRadius: 8, border: "1px solid " + T.border, textAlign: "center" }}>
+                <div key={i} style={{ flex: 1, padding: "14px 12px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, textAlign: "center" }}>
                   <div style={{ fontFamily: T.serif, fontSize: 22, color: T.ink, fontWeight: 500 }}>{item.label}</div>
                   <div style={{ fontSize: 10, color: T.text3, fontFamily: T.sans, marginTop: 2 }}>{item.sub}</div>
                 </div>
