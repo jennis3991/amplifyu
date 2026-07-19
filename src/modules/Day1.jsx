@@ -1074,7 +1074,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     return (
       <div style={{display:"flex",flexDirection:"column",gap:16}}>
         <div>
-          <h2 style={cs.h2}>Choose a conversation starter</h2>
+          <h2 style={{...cs.h2,fontSize:isDesktop?15:14}}>Choose a conversation starter</h2>
           <p style={{...cs.body,marginBottom:16}}>Speak naturally. No preparation. The goal is not perfection — it's awareness.</p>
         </div>
         <div style={{display:"flex",gap:8,marginBottom:4}}>
