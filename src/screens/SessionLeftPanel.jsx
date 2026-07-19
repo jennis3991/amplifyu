@@ -458,6 +458,14 @@ export function SessionLeftPanel({
     );
     return null;
   }
+   // ── Day 5: fixed theory image across all steps ───────────────────────────
+  if (isD5) return (
+    <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#1A1510", display:"flex", flexDirection:"column", justifyContent:"center" }}>
+      <img src="/d5-theory.jpg" alt="" style={{ position:"absolute", inset:"-20px", width:"calc(100% + 40px)", height:"calc(100% + 40px)", objectFit:"cover", filter:"blur(18px) brightness(0.45)", pointerEvents:"none" }}/>
+      <img src="/d5-theory.jpg" alt="" style={{ position:"relative", zIndex:1, width:"140%", marginLeft:"-20%", height:"auto", display:"block" }}/>
+      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.55) 0%, transparent 40%)", zIndex:2 }}/>
+    </div>
+  );
    // ── Insight — cinematic scene hero ──────────────────────────────────────
   if (step === "Insight") return (
     <div style={{ position: "relative", height: "100%", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
