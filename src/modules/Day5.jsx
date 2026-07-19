@@ -26,18 +26,10 @@ function SequentialDots({dotCount}) {
 
 // ─── D5 Practice Widget — The Setup ──────────────────────────────────────────
 const SETUP_TOPICS = [
-  { id:'confidence', icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l8 4v5c0 5.5-3.5 10.74-8 12-4.5-1.26-8-6.5-8-12V7l8-4z"/></svg>,
-    label:"What's one thing people get wrong about confidence?" },
-  { id:'career',     icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></svg>,
-    label:"What's the best career advice you've ever ignored?" },
-  { id:'success',    icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>,
-    label:"What does success actually look like to you?" },
-  { id:'impression', icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
-    label:"What do most people miss in a first impression?" },
-  { id:'managers',   icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+  { id:'managers', icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
     label:"What's one thing great managers never do?" },
-  { id:'exceptional',icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
-    label:"What separates someone good at their job from someone exceptional?" },
+  { id:'fourday',  icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/></svg>,
+    label:"Four-day weeks should become standard." },
 ];
 
 export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
@@ -356,21 +348,17 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
 
 // ─── D5 Simulation Widget — The Boardroom ────────────────────────────────────
 const BOARDROOM_TOPICS = [
-  {id:'ai',       label:'Your company should invest more in AI',                        question:'Should your company be investing more in AI — and why?',                      q2:'A sceptical colleague says AI investment is overhyped. Respond.'},
-  {id:'remote',   label:'Remote work improves productivity',                            question:'Does remote work genuinely improve productivity — and why?',                   q2:'Your leadership team wants everyone back in the office. Make your case.'},
-  {id:'fourday',  label:'Four-day weeks should become standard',                        question:'Should four-day weeks become standard — and why?',                            q2:"The CFO says a four-day week will hurt revenue. What's your response?"},
-  {id:'comms',    label:'Communication skills should be taught in every workplace',     question:'Should communication skills be taught in every workplace — and why?',         q2:"A senior leader says communication training is a nice-to-have. Disagree."},
-  {id:'meetings', label:'Meetings should require a written agenda to exist',            question:'Should every meeting require a written agenda to exist — and why?',           q2:'Someone says agenda requirements will slow teams down. Respond.'},
-  {id:'learning', label:'Your organisation should invest more in learning and development', question:'Should organisations invest more in learning and development — and why?', q2:'The board wants to cut the L&D budget. Make the case against it.'},
+  {id:'remote', label:'Remote work improves productivity',                        question:'Does remote work genuinely improve productivity — and why?',              q2:'Your leadership team wants everyone back in the office. Make your case.'},
+  {id:'ai',     label:'All companies should invest in AI',                        question:'Should all companies be investing in AI — and why?',                      q2:'A sceptical colleague says AI investment is overhyped for most businesses. Respond.'},
+  {id:'comms',  label:'Communication skills should be taught in every workplace', question:'Should communication skills be taught in every workplace — and why?',     q2:"A senior leader says communication training is a nice-to-have. Disagree."},
+  {id:'trust',  label:'How do you build trust in a team?',                        question:'How do you build trust in a team — and what makes it break down?',       q2:'A new team member says trust takes years to build. Do you agree?'},
 ];
 
 const BOARDROOM_ICONS = {
-  ai: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a4 4 0 018 0v2"/><circle cx="9" cy="14" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="14" r="1.2" fill="currentColor" stroke="none"/><path d="M9 18h6M1 12h2M21 12h2"/></svg>,
   remote: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12L12 4l9 8"/><path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/></svg>,
-  fourday: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>,
-  comms: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>,
-  meetings: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>,
-  learning: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13 16 9 12 2 19"/><polyline points="16 7 22 7 22 13"/></svg>,
+  ai:     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a4 4 0 018 0v2"/><circle cx="9" cy="14" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="14" r="1.2" fill="currentColor" stroke="none"/><path d="M9 18h6M1 12h2M21 12h2"/></svg>,
+  comms:  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>,
+  trust:  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>,
 };
 
 export function D5SimWidget({T, T2, isDesktop}) {
