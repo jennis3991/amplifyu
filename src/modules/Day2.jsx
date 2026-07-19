@@ -78,11 +78,11 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
 // ─── D2 SIM WIDGET — voice recording + AI vocal coach ────────────────────────
 export function D2SimWidget({T, T2, isDesktop}) {
   const PROMPTS = {
-    Story:[
-      "Tell me about a moment that genuinely changed how you see the world.",
-      "Describe the best piece of advice you've ever received — and why it stuck.",
-      "Tell me about someone who shaped who you are today.",
-      "Describe a moment where you surprised yourself.",
+    Presence:[
+      "Introduce yourself as if you're speaking to a room of 500 people.",
+      "Describe what you do — in a way that makes people lean in.",
+      "Give a 90-second opening to a talk on the topic you care most about.",
+      "Speak about something you believe most people get wrong.",
     ],
     Persuade:[
       "Convince your team to embrace a difficult change.",
@@ -90,18 +90,18 @@ export function D2SimWidget({T, T2, isDesktop}) {
       "Make the case for investing in people over technology.",
       "Convince a client to choose your proposal.",
     ],
-    Presence:[
-      "Introduce yourself as if you're speaking to a room of 500 people.",
-      "Describe what you do — in a way that makes people lean in.",
-      "Give a 90-second opening to a talk on the topic you care most about.",
-      "Speak about something you believe most people get wrong.",
+    Story:[
+      "Tell me about a moment that genuinely changed how you see the world.",
+      "Describe the best piece of advice you've ever received — and why it stuck.",
+      "Tell me about someone who shaped who you are today.",
+      "Describe a moment where you surprised yourself.",
     ],
   };
   const ALL_PROMPTS = Object.values(PROMPTS).flat();
   const DIMS = ["Pace","Pitch","Tone","Pauses","Vocal Energy","Range","Presence"];
 
   const [phase, setPhase] = useState('intro');
-  const [cat, setCat] = useState('Story');
+  const [cat, setCat] = useState('Presence');
   const [prompt, setPrompt] = useState(null);
   const [timeLeft, setTimeLeft] = useState(90);
   const [isRec, setIsRec] = useState(false);
