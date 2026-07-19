@@ -302,9 +302,9 @@ export function ReflectionScreen({ answers, onContinue }) {
     <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 90 }}>
       <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
-      {/* Banner image — cropped to hero section only */}
-      <div style={{ width: "100%", height: 200, overflow: "hidden", flexShrink: 0 }}>
-        <img src="/profile-banner.png" alt="" style={{ width: "100%", display: "block", objectFit: "cover", objectPosition: "top" }}/>
+      {/* Banner image — force wider-than-viewport so height scales enough to crop beige section */}
+      <div style={{ width: "100%", height: 220, overflow: "hidden", flexShrink: 0, position: "relative" }}>
+        <img src="/profile-banner.png" alt="" style={{ position: "absolute", top: 0, left: "-50%", width: "200%", display: "block" }}/>
       </div>
 
       {/* Header */}
@@ -427,11 +427,10 @@ export function ReflectionScreen({ answers, onContinue }) {
         )}
       </div>
 
-      {/* Let's Begin — mobile fixed bottom */}
-      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "14px 20px 20px", background: "linear-gradient(to top, " + T.bg + " 60%, transparent)", zIndex: 100 }}>
-        <button onClick={onContinue} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "15px 24px", borderRadius: 8, border: "1px solid #A8957F", background: "#C4B09A", color: "#1a1510", fontSize: 15, fontFamily: T.sans, fontWeight: 600, cursor: "pointer", letterSpacing: "0.2px", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}>
-          <span>{"Let's Begin"}</span>
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#1a1510" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      {/* Let's Begin — mobile fixed bottom, dark Begin Session style */}
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "14px 20px 24px", background: "linear-gradient(to top, " + T.bg + " 70%, transparent)", zIndex: 100 }}>
+        <button onClick={onContinue} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 24px", borderRadius: 6, border: "none", background: T.ink, color: T.bg, fontSize: 14, fontFamily: T.sans, fontWeight: 600, cursor: "pointer", transition: "all 0.25s ease" }}>
+          {"Let's Begin"} →
         </button>
       </div>
     </div>
