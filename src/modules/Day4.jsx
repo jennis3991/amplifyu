@@ -472,8 +472,8 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
 // ─── D4 Simulation Widget — Breaking News Live ───────────────────────────────
 export function D4SimWidget({T, T2, isDesktop}) {
   const STORIES = [
-    {cat:"🔬 Science", items:["Scientists Confirm Evidence of Life on Mars","Asteroid Narrowly Misses Earth"]},
     {cat:"💼 Business", items:["Four-Day Work Week Announced Nationwide","Major Cyber Attack Takes Down Global Tech Giant"]},
+    {cat:"🔬 Science", items:["Scientists Confirm Evidence of Life on Mars","Asteroid Narrowly Misses Earth"]},
     {cat:"🎲 Wild Card", items:["Loch Ness Monster Spotted in Scotland","Penguins Escape Zoo in Real-Life Madagascar Chase"]},
   ];
 
