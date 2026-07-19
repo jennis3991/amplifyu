@@ -554,7 +554,19 @@ TONE RULES — non-negotiable:
 — takeaway is memorable and empowering, framed as a habit not a rule.
 — Growth-framed, motivational, professional executive coach tone throughout.
 
-For Q2, apply the same PRE extraction as Q1. Then compare the two. Return a JSON object with: q2PointQuote, q2PointStrength, q2ReasonQuote, q2ReasonStrength, q2ExampleQuote, q2ExampleStrength, q2OverallStructure, improvement (boolean — true if Q2 showed clearer or earlier PRE structure than Q1), headlineVerdict (one warm encouraging sentence ≤25 words opening with a positive), comparisonInsight (one specific sentence about Q1 vs Q2 — structure or timing — framed as progress), takeaway (one memorable empowering sentence framed as a habit). Return only valid JSON.`,
+Extract PRE structure from Q2 with these exact fields:
+q2PointQuote: the exact sentence or short phrase where they stated their main point, or null if absent.
+q2PointStrength: one of 'strong' (clear confident opening position), 'present' (point exists but not leading), 'weak' (vague or buried), 'missing' (no discernible point).
+q2ReasonQuote: the exact sentence where they gave their reasoning or logic, or null if absent.
+q2ReasonStrength: one of 'strong', 'present', 'weak', 'missing'.
+q2ExampleQuote: the exact sentence where they gave a concrete example, story, stat, or evidence, or null if absent.
+q2ExampleStrength: one of 'strong', 'present', 'weak', 'missing'.
+q2OverallStructure: one of 'instinctive' (all three in order), 'emerging' (two present), 'developing' (one or less).
+improvement: boolean — true if Q2 showed clearer or earlier PRE structure than Q1.
+headlineVerdict: one warm encouraging sentence ≤25 words opening with a positive observation.
+comparisonInsight: one specific sentence about Q1 vs Q2 framed as progress or growth.
+takeaway: one memorable empowering sentence framed as a habit.
+Return only valid JSON with all fields present.`,
           messages:[{role:'user', content:`Topic: ${t?.label}\nQ1 Question: ${t?.question}\nQ2 Question: ${t?.q2}\n\nQ1 Transcript: "${t1}"\n\nQ2 Transcript: "${t2}"`}],
         }),
       });
