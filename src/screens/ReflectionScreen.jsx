@@ -258,7 +258,7 @@ export function ReflectionScreen({ answers, onContinue }) {
                 <div style={{ width: 26, height: 26, borderRadius: "50%", background: "rgba(138,158,132,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <span style={{ fontSize: 13, filter: "brightness(0) invert(1)" }}>{role.icon}</span>
                 </div>
-                <span style={{ fontFamily: T.serif, fontSize: 14, color: "rgba(255,255,255,0.9)" }}>{role.label}</span>
+                <span style={{ fontFamily: T.serif, fontSize: 13, color: "rgba(255,255,255,0.9)" }}>{role.label}</span>
               </div>
             )}
           </div>
@@ -270,7 +270,7 @@ export function ReflectionScreen({ answers, onContinue }) {
               {goalCards.map((g, i) => (
                 <div key={i} style={{ padding: "14px 16px", background: "rgba(255,255,255,0.04)", borderRadius: 7, borderLeft: "2px solid " + T.gold, border: "1px solid rgba(255,255,255,0.07)", borderLeftWidth: 2, borderLeftColor: T.gold }}>
                   <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 6, fontFamily: T.sans }}>{g.label}</div>
-                  <div style={{ fontFamily: T.serif, fontSize: 13, color: "rgba(255,255,255,0.82)", lineHeight: 1.6 }}>{g.text}</div>
+                  <div style={{ fontFamily: T.serif, fontSize: 12, color: "rgba(255,255,255,0.82)", lineHeight: 1.6 }}>{g.text}</div>
                 </div>
               ))}
             </div>
@@ -286,8 +286,8 @@ export function ReflectionScreen({ answers, onContinue }) {
                 <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "11px 0" }}>
                   <div style={{ width: 4, height: 4, borderRadius: "50%", background: T.gold, flexShrink: 0, marginTop: 7, opacity: 0.75 }}/>
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.85)", fontFamily: T.sans, marginBottom: 2 }}>{item.label}</div>
-                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", fontFamily: T.sans, lineHeight: 1.4 }}>{item.sub}</div>
+                    <div style={{ fontSize: 12, fontWeight: 500, color: "rgba(255,255,255,0.85)", fontFamily: T.sans, marginBottom: 2 }}>{item.label}</div>
+                    <div style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", fontFamily: T.sans, lineHeight: 1.4 }}>{item.sub}</div>
                   </div>
                 </div>
               ))}
