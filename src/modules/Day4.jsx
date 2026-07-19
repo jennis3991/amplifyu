@@ -75,40 +75,45 @@ const EDIT_ICON = (path) => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{path}</svg>
 );
 
-const EDIT_TOPICS = [
-  {
-    id:'meeting',
-    icon: EDIT_ICON(<><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M16 2v4M8 2v4M2 10h20"/></>),
-    label:'Tell your team a meeting has been rescheduled',
-  },
-  {
-    id:'update',
-    icon: EDIT_ICON(<><polyline points="20 6 9 17 4 12"/></>),
-    label:'Share a project update in one sentence',
-  },
-  {
-    id:'recommend',
-    icon: EDIT_ICON(<><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></>),
-    label:"Recommend something you've read or listened to recently",
-  },
-  {
-    id:'win',
-    icon: EDIT_ICON(<><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></>),
-    label:'Share a recent win from your week',
-  },
-  {
-    id:'risk',
-    icon: EDIT_ICON(<><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></>),
-    label:'Flag a risk to a colleague quickly',
-  },
-  {
-    id:'intro',
-    icon: EDIT_ICON(<><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></>),
-    label:"Introduce yourself to someone you've just met",
-  },
-];
+const EI_UPDATE  = EDIT_ICON(<><polyline points="20 6 9 17 4 12"/></>);
+const EI_CHAT    = EDIT_ICON(<><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></>);
+const EI_BULB    = EDIT_ICON(<><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></>);
+const EI_RISK    = EDIT_ICON(<><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></>);
+const EI_CLIP    = EDIT_ICON(<><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></>);
+const EI_STAR    = EDIT_ICON(<><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></>);
+const EI_TARGET  = EDIT_ICON(<><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></>);
+const EI_ARROW   = EDIT_ICON(<><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></>);
+const EI_PERSON  = EDIT_ICON(<><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></>);
 
 export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimulation}) {
+  const _roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
+
+  const EDIT_TOPICS = [
+    { id:'update',   icon: EI_UPDATE, label: "Share one important update from your week." },
+    { id:'recommend',icon: EI_CHAT,   label: "Recommend one tool, book, podcast or resource you've found useful recently." },
+    ...({
+      individual: [
+        { id:'problem', icon: EI_BULB,   label: "Explain a problem you solved this week." },
+        { id:'risk',    icon: EI_RISK,   label: "Flag a risk to your manager in under one minute." },
+      ],
+      delivery: [
+        { id:'status',  icon: EI_CLIP,   label: "Give a concise project status update." },
+        { id:'prisk',   icon: EI_RISK,   label: "Explain the biggest project risk right now." },
+      ],
+      people: [
+        { id:'recognise', icon: EI_STAR,   label: "Recognise a team member for great work." },
+        { id:'priority',  icon: EI_TARGET, label: "Explain a priority for your team this week." },
+      ],
+      senior: [
+        { id:'qpriority', icon: EI_TARGET, label: "Explain this quarter's top priority." },
+        { id:'change',    icon: EI_ARROW,  label: "Announce a change in direction to your leadership team." },
+      ],
+    }[_roleId] || [
+      { id:'problem', icon: EI_BULB,   label: "Explain a problem you solved this week." },
+      { id:'intro',   icon: EI_PERSON, label: "Introduce yourself to someone you've just met." },
+    ]),
+  ];
+
   const [phase, setPhase] = useState('select');
   const [topic, setTopic] = useState(null);
 
@@ -297,7 +302,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
         Say it once.<br/>Say it short.<br/>Stop.
       </h2>
       <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text3, lineHeight:1.7, fontWeight:400, margin:'0 0 10px'}}>
-        Pick a message below. Say it naturally — but challenge yourself to use only short sentences. One idea. Full stop. Next idea. Full stop. Great communicators don't trim their sentences. They end them sooner.
+        Choose one prompt below and speak for 45–60 seconds. Challenge yourself to use only short sentences. One idea. Stop. Next idea. Stop. If your message still makes sense without a sentence, leave it out. Great communicators don't trim their sentences. They end them sooner.
       </p>
       <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:14}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
