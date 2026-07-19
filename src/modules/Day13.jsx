@@ -45,7 +45,7 @@ const SCENARIOS = [
 // ─── D13 Practice Widget ───────────────────────────────────────────────────
 export function D13PracticeWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
-  const [selected, setSelected] = useState(null);
+  const [scIdx, setScIdx] = useState(0);
   const [timerState, setTimerState] = useState('idle');
   const [timeLeft, setTimeLeft] = useState(20);
 
@@ -56,22 +56,16 @@ export function D13PracticeWidget({T, T2, isDesktop}) {
     return () => clearTimeout(t);
   }, [timerState, timeLeft]);
 
-  const pickScenario = (sc) => {
-    setSelected(sc);
-    setTimerState('idle');
-    setTimeLeft(20);
-    setPhase('practice');
-  };
+  const startTimer = () => { setTimeLeft(20); setTimerState('running'); };
+  const tryAgain  = () => { setTimerState('idle'); setTimeLeft(20); };
 
-  const startTimer = () => {
-    setTimeLeft(20);
-    setTimerState('running');
-  };
-
-  const tryAgain = () => {
+  const nextScenario = () => {
+    setScIdx(i => i + 1);
     setTimerState('idle');
     setTimeLeft(20);
   };
+
+  const restart = () => { setPhase('intro'); setScIdx(0); setTimerState('idle'); setTimeLeft(20); };
 
   const cs = {
     card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px"},
@@ -84,31 +78,28 @@ export function D13PracticeWidget({T, T2, isDesktop}) {
       <div style={cs.card}>
         <div style={cs.label}>Opportunities Travel Through People</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>Most career-defining moments come from conversations, not job boards.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>The problem is not knowing this — it's that most people freeze when the moment arrives. Choose one scenario and practise the opening that makes them stop, lean in, and want to continue.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>The problem is not knowing this — it's that most people freeze when the moment arrives. You'll practise three real moments, one at a time. Each one is 20 seconds. All of them will happen to you.</p>
       </div>
-      <button onClick={() => setPhase('select')} style={cs.cta}>Choose Your Scenario →</button>
+      <button onClick={() => { setScIdx(0); setTimerState('idle'); setTimeLeft(20); setPhase('practice'); }} style={cs.cta}>Let's Begin →</button>
     </div>
   );
 
-  if (phase === 'select') return (
-    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?12:10}}>
-      <div style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.6, marginBottom:4}}>Pick the moment that feels most relevant to you right now.</div>
-      {SCENARIOS.map(sc => (
-        <button key={sc.id} onClick={() => pickScenario(sc)} style={{textAlign:"left", background:T2.surface, border:"0.5px solid "+T2.border, borderRadius:4, padding:isDesktop?"20px 24px":"16px 18px", cursor:"pointer", transition:"all 0.2s"}}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = T.gold; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = T2.border; }}
-        >
-          <div style={{fontFamily:T.sans, fontSize:isDesktop?15:14, fontWeight:600, color:T2.text, marginBottom:4}}>{sc.label}</div>
-          <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text4}}>{sc.sub}</div>
-        </button>
-      ))}
-    </div>
-  );
-
-  if (phase === 'practice' && selected) {
-    const sc = selected;
+  if (phase === 'practice') {
+    const sc = SCENARIOS[scIdx];
+    const isLast = scIdx === SCENARIOS.length - 1;
     return (
       <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
+
+        {/* Progress dots */}
+        <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+          <div style={{fontFamily:T.sans, fontSize:10, fontWeight:600, color:T2.text4, textTransform:"uppercase", letterSpacing:"1px"}}>Scenario {scIdx + 1} of {SCENARIOS.length}</div>
+          <div style={{display:"flex", gap:6}}>
+            {SCENARIOS.map((_, i) => (
+              <div key={i} style={{width:6, height:6, borderRadius:"50%", background: i <= scIdx ? T.gold : T2.border, transition:"background 0.3s"}}/>
+            ))}
+          </div>
+        </div>
+
         <div style={cs.card}>
           <div style={cs.label}>{sc.label}</div>
           <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, fontWeight:600, color:T2.text, lineHeight:1.35, margin:"0 0 12px"}}>{sc.context}</p>
@@ -134,10 +125,7 @@ export function D13PracticeWidget({T, T2, isDesktop}) {
         </div>
 
         {timerState === 'idle' && (
-          <>
-            <button onClick={startTimer} style={cs.cta}>Start 20s Timer — Speak Your Opening</button>
-            <button onClick={() => setPhase('select')} style={{background:"none", border:"none", fontFamily:T.sans, fontSize:12, color:T2.text4, cursor:"pointer", padding:"4px 0", textAlign:"left"}}>← Change Scenario</button>
-          </>
+          <button onClick={startTimer} style={cs.cta}>Start 20s Timer — Speak Your Opening</button>
         )}
 
         {timerState === 'running' && (
@@ -151,15 +139,38 @@ export function D13PracticeWidget({T, T2, isDesktop}) {
           <>
             <div style={{...cs.card, textAlign:"center", padding:isDesktop?"28px":"22px"}}>
               <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12}}>Nice work</div>
-              <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>That's the moment. The more you practise it out loud, the more natural it becomes when it counts.</p>
+              <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>
+                {isLast
+                  ? "Three moments. All practised. The more you do this out loud, the more natural it becomes when it counts."
+                  : "That's the moment. The more you practise it out loud, the more natural it becomes when it counts."}
+              </p>
             </div>
             <button onClick={tryAgain} style={cs.cta}>Try Again →</button>
-            <button onClick={() => setPhase('select')} style={{background:"none", border:"none", fontFamily:T.sans, fontSize:12, color:T2.text4, cursor:"pointer", padding:"4px 0", textAlign:"left"}}>← Try a Different Scenario</button>
+            {isLast
+              ? <button onClick={() => setPhase('complete')} style={{...cs.cta, marginTop:0, background:"rgba(138,158,132,0.15)", color:T2.text, border:"0.5px solid "+T.gold}}>Finish →</button>
+              : <button onClick={nextScenario} style={{...cs.cta, marginTop:0, background:"rgba(138,158,132,0.15)", color:T2.text, border:"0.5px solid "+T.gold}}>Next: {SCENARIOS[scIdx+1].label} →</button>
+            }
           </>
         )}
       </div>
     );
   }
+
+  if (phase === 'complete') return (
+    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
+      <div style={{display:"flex", gap:6, justifyContent:"center", marginBottom:4}}>
+        {SCENARIOS.map((_, i) => (
+          <div key={i} style={{width:6, height:6, borderRadius:"50%", background:T.gold}}/>
+        ))}
+      </div>
+      <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px 28px":"26px 20px"}}>
+        <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:14}}>All Three Done</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.35, margin:"0 0 12px"}}>You've rehearsed every moment.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Every time you practise out loud, the real moment gets easier. The next time one of these arrives, you'll be ready.</p>
+      </div>
+      <button onClick={restart} style={cs.cta}>Start Again →</button>
+    </div>
+  );
 
   return null;
 }
@@ -202,19 +213,91 @@ export function D13SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
   const [charIdx, setCharIdx] = useState(0);
   const [qIdx, setQIdx] = useState(0);
-  const [input, setInput] = useState('');
   const [scores, setScores] = useState([null, null, null]);
   const [debrief, setDebrief] = useState(null);
+  const [transcript, setTranscript] = useState('');
+  const [interimText, setInterimText] = useState('');
+  const [recordState, setRecordState] = useState('idle'); // 'idle' | 'recording' | 'done'
+  const [speechSupported, setSpeechSupported] = useState(true);
+  const [fallbackInput, setFallbackInput] = useState('');
 
   const answersRef = useRef([['',''],['',''],['','']]);
   const scoresRef = useRef([null, null, null]);
   const charIdxRef = useRef(0);
+  const recognitionRef = useRef(null);
+  const transcriptRef = useRef('');
+
+  useEffect(() => {
+    return () => { recognitionRef.current?.abort(); };
+  }, []);
+
+  const startRecording = () => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { setSpeechSupported(false); return; }
+    transcriptRef.current = '';
+    setTranscript('');
+    setInterimText('');
+    const r = new SR();
+    r.continuous = true;
+    r.interimResults = true;
+    r.lang = 'en-US';
+    r.onresult = (e) => {
+      let finalChunk = '';
+      let interimChunk = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) finalChunk += e.results[i][0].transcript;
+        else interimChunk += e.results[i][0].transcript;
+      }
+      if (finalChunk) {
+        transcriptRef.current += (transcriptRef.current ? ' ' : '') + finalChunk.trim();
+        setTranscript(transcriptRef.current);
+      }
+      setInterimText(interimChunk);
+    };
+    r.onend = () => { setInterimText(''); setRecordState('done'); };
+    r.onerror = (err) => {
+      console.warn('[speech]', err.error);
+      setInterimText('');
+      setRecordState(transcriptRef.current ? 'done' : 'idle');
+    };
+    recognitionRef.current = r;
+    r.start();
+    setRecordState('recording');
+  };
+
+  const stopRecording = () => { recognitionRef.current?.stop(); };
+
+  const reRecord = () => {
+    recognitionRef.current?.abort();
+    transcriptRef.current = '';
+    setTranscript('');
+    setInterimText('');
+    setRecordState('idle');
+  };
+
+  const resetRecording = () => {
+    recognitionRef.current?.abort();
+    transcriptRef.current = '';
+    setTranscript('');
+    setInterimText('');
+    setRecordState('idle');
+    setFallbackInput('');
+  };
 
   const cs = {
     card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px"},
     label: {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8},
     cta: {width:"100%", padding:isDesktop?"14px":"13px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:isDesktop?15:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:48, transition:"all 0.2s"},
   };
+
+  const MIC_SVG = (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="9" y="2" width="6" height="11" rx="3"/>
+      <path d="M5 10a7 7 0 0 0 14 0"/>
+      <line x1="12" y1="19" x2="12" y2="22"/>
+      <line x1="8" y1="22" x2="16" y2="22"/>
+    </svg>
+  );
 
   const scoreChar = async (ci) => {
     const sc = CIRCUIT_CHARS[ci];
@@ -257,10 +340,11 @@ export function D13SimWidget({T, T2, isDesktop}) {
   };
 
   const handleSubmit = async () => {
-    if (!input.trim()) return;
+    const answer = (speechSupported ? transcript : fallbackInput).trim();
+    if (!answer) return;
     const ci = charIdxRef.current;
-    answersRef.current[ci][qIdx] = input.trim();
-    setInput('');
+    answersRef.current[ci][qIdx] = answer;
+    resetRecording();
     if (qIdx === 0) {
       setQIdx(1);
     } else {
@@ -275,6 +359,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
       charIdxRef.current = nextIdx;
       setCharIdx(nextIdx);
       setQIdx(0);
+      resetRecording();
       setPhase('question');
     } else {
       setPhase('debriefing');
@@ -289,9 +374,9 @@ export function D13SimWidget({T, T2, isDesktop}) {
     setCharIdx(0);
     setQIdx(0);
     setPhase('intro');
-    setInput('');
     setScores([null, null, null]);
     setDebrief(null);
+    resetRecording();
   };
 
   if (phase === 'intro') return (
@@ -299,7 +384,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
       <div style={cs.card}>
         <div style={cs.label}>The Networking Circuit · Simulation</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Three people. Three conversations. One chance to make an impression.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AI Communication Coach sets the scene and asks you two questions per person. Write what you would actually say — then get scored on your opening, adaptability, and the impression you leave.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AI Communication Coach sets the scene and asks you two questions per person. Speak out loud what you would actually say — then get scored on your opening, adaptability, and the impression you leave.</p>
       </div>
       {CIRCUIT_CHARS.map((sc, i) => (
         <div key={sc.id} style={{...cs.card, display:"flex", alignItems:"flex-start", gap:14}}>
@@ -336,18 +421,67 @@ export function D13SimWidget({T, T2, isDesktop}) {
           <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, margin:0}}>{sc.questions[qIdx]}</p>
         </div>
 
-        <div style={cs.card}>
-          <div style={cs.label}>Your Response</div>
-          <textarea
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            placeholder="Write exactly what you would say..."
-            style={{width:"100%", minHeight:isDesktop?80:70, background:"transparent", border:"none", borderBottom:"0.5px solid "+T2.divider, padding:"6px 0 10px", fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, resize:"none", outline:"none", lineHeight:1.6, boxSizing:"border-box"}}
-          />
-          <button onClick={handleSubmit} disabled={!input.trim()} style={{...cs.cta, marginTop:14, background:input.trim()?T.ink:"rgba(44,36,22,0.2)", cursor:input.trim()?"pointer":"not-allowed"}}>
-            {qIdx === 0 ? "Next Question →" : "Submit — Get Scored →"}
-          </button>
-        </div>
+        {/* ── Voice recorder ─────────────────────────────────────────── */}
+        {speechSupported ? (
+          <>
+            {recordState === 'idle' && (
+              <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px 28px":"24px 20px"}}>
+                <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, marginBottom:20, lineHeight:1.5}}>Speak your response out loud — tap when you're ready</div>
+                <button
+                  onClick={startRecording}
+                  style={{width:72, height:72, borderRadius:"50%", border:"1.5px solid "+T.gold, background:"rgba(138,158,132,0.08)", color:T.gold, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", transition:"all 0.2s"}}
+                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(138,158,132,0.18)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(138,158,132,0.08)"; }}
+                >
+                  {MIC_SVG}
+                </button>
+              </div>
+            )}
+
+            {recordState === 'recording' && (
+              <div style={{...cs.card, padding:isDesktop?"24px":"18px"}}>
+                <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:16}}>
+                  <div style={{width:8, height:8, borderRadius:"50%", background:"#C97B5A", animation:"glowPulse 1s ease infinite"}}/>
+                  <span style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:"#C97B5A", textTransform:"uppercase", letterSpacing:"1.5px"}}>Recording</span>
+                </div>
+                <div style={{minHeight:60, fontFamily:T.serif, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, marginBottom:16}}>
+                  {transcript || interimText
+                    ? <span>{transcript}{interimText && <span style={{color:T2.text4, fontStyle:"italic"}}>{(transcript ? " " : "") + interimText}</span>}</span>
+                    : <span style={{color:T2.text4, fontStyle:"italic"}}>Listening...</span>
+                  }
+                </div>
+                <button onClick={stopRecording} style={cs.cta}>Done Speaking →</button>
+              </div>
+            )}
+
+            {recordState === 'done' && (
+              <div style={{...cs.card, padding:isDesktop?"24px":"18px"}}>
+                <div style={cs.label}>You said</div>
+                <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, margin:"0 0 20px"}}>
+                  {transcript || <span style={{color:T2.text4, fontStyle:"italic"}}>Nothing captured — try again</span>}
+                </p>
+                <button onClick={handleSubmit} disabled={!transcript.trim()} style={{...cs.cta, marginBottom:10, background:transcript.trim()?T.ink:"rgba(44,36,22,0.2)", cursor:transcript.trim()?"pointer":"not-allowed"}}>
+                  {qIdx === 0 ? "Next Question →" : "Submit — Get Scored →"}
+                </button>
+                <button onClick={reRecord} style={{background:"none", border:"none", fontFamily:T.sans, fontSize:12, color:T2.text4, cursor:"pointer", padding:"4px 0", width:"100%", textAlign:"center"}}>Record Again</button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div style={cs.card}>
+            <div style={cs.label}>Your Response</div>
+            <div style={{fontFamily:T.sans, fontSize:11, color:"#A8998A", marginBottom:10, fontStyle:"italic"}}>Voice not available in this browser — type your response below</div>
+            <textarea
+              value={fallbackInput}
+              onChange={e => setFallbackInput(e.target.value)}
+              placeholder="Write exactly what you would say..."
+              style={{width:"100%", minHeight:isDesktop?80:70, background:"transparent", border:"none", borderBottom:"0.5px solid "+T2.divider, padding:"6px 0 10px", fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, resize:"none", outline:"none", lineHeight:1.6, boxSizing:"border-box"}}
+            />
+            <button onClick={handleSubmit} disabled={!fallbackInput.trim()} style={{...cs.cta, marginTop:14, background:fallbackInput.trim()?T.ink:"rgba(44,36,22,0.2)", cursor:fallbackInput.trim()?"pointer":"not-allowed"}}>
+              {qIdx === 0 ? "Next Question →" : "Submit — Get Scored →"}
+            </button>
+          </div>
+        )}
       </div>
     );
   }
