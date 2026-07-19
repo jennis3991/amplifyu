@@ -63,10 +63,10 @@ export function ReflectionScreen({ answers, onContinue }) {
   const focusWeights = focusWeightsBySize[focusAreas.length] || focusWeightsBySize[4];
   const programmeWeights = focusAreas.map((area, i) => ({ area, weight: focusWeights[i] || 10 }));
 
-  const svgLines   = <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 9h10M3 13h7" stroke={T.text3} strokeWidth="1.4" strokeLinecap="round"/></svg>;
-  const svgDoc     = <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 4h8l4 4v8H3V4z" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M10 4v5h5" stroke={T.text3} strokeWidth="1.3"/></svg>;
-  const svgPeople  = <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="7" r="3" stroke={T.text3} strokeWidth="1.4" fill="none"/><circle cx="13" cy="7" r="3" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M3 17c0-3 2-4 4-4h6c2 0 4 1 4 4" stroke={T.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>;
-  const svgPerson  = <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M4 17c0-3 2.7-5 6-5s6 2 6 5" stroke={T.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>;
+  const svgLines   = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M3 5h14M3 9h10M3 13h7" stroke={T.text3} strokeWidth="1.4" strokeLinecap="round"/></svg>;
+  const svgDoc     = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M3 4h8l4 4v8H3V4z" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M10 4v5h5" stroke={T.text3} strokeWidth="1.3"/></svg>;
+  const svgPeople  = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><circle cx="7" cy="7" r="3" stroke={T.text3} strokeWidth="1.4" fill="none"/><circle cx="13" cy="7" r="3" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M3 17c0-3 2-4 4-4h6c2 0 4 1 4 4" stroke={T.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>;
+  const svgPerson  = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><circle cx="10" cy="7" r="3.5" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M4 17c0-3 2.7-5 6-5s6 2 6 5" stroke={T.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>;
 
   // Outcome cards — "By Day 14 you will be able to..." framing
   const outcomeMap = {
