@@ -227,7 +227,7 @@ export function ReflectionScreen({ answers, onContinue }) {
               <div style={{ fontSize: 13, color: T.text2, marginBottom: 20, fontFamily: T.sans }}>{"You'll be able to..."}</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 {outcomeCards.map((o, i) => (
-                  <div key={i} style={{ padding: "18px 20px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8 }}>
+                  <div key={i} style={{ padding: "18px 20px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8, textAlign: "center" }}>
                     <div style={{ width: 30, height: 30, borderRadius: 6, background: T.bg, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center", alignSelf: "center" }}>{o.svg}</div>
                     <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{o.title}</div>
                     <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{o.sub}</div>
@@ -292,9 +292,9 @@ export function ReflectionScreen({ answers, onContinue }) {
         <button
           onClick={onContinue}
           className="au-cta"
-          style={{ position: "fixed", bottom: 32, right: 148, zIndex: 200, background: "transparent", border: "1px solid rgba(255,255,255,0.22)", borderRadius: 40, padding: "14px 44px", color: "rgba(255,255,255,0.82)", fontSize: 12, fontWeight: 400, letterSpacing: "2px", textTransform: "uppercase", cursor: "pointer", fontFamily: T.sans, transition: "all 0.3s ease", whiteSpace: "nowrap", boxShadow: "0 0 16px rgba(255,255,255,0.1)" }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.color = T.gold; e.currentTarget.style.boxShadow = "0 0 22px rgba(138,158,132,0.5)"; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)"; e.currentTarget.style.color = "rgba(255,255,255,0.82)"; e.currentTarget.style.boxShadow = "0 0 16px rgba(255,255,255,0.1)"; }}
+          style={{ position: "fixed", bottom: 36, right: 40, zIndex: 200, background: "rgba(255,255,255,0.07)", border: "1.5px solid rgba(255,255,255,0.55)", borderRadius: 40, padding: "15px 48px", color: "rgba(255,255,255,0.95)", fontSize: 12, fontWeight: 500, letterSpacing: "2.5px", textTransform: "uppercase", cursor: "pointer", fontFamily: T.sans, transition: "all 0.3s ease", whiteSpace: "nowrap", boxShadow: "0 0 28px rgba(255,255,255,0.18), inset 0 1px 0 rgba(255,255,255,0.12)" }}
+          onMouseEnter={e => { e.currentTarget.style.background = "rgba(138,158,132,0.15)"; e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.color = T.gold; e.currentTarget.style.boxShadow = "0 0 36px rgba(138,158,132,0.65), inset 0 1px 0 rgba(255,255,255,0.1)"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.07)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.55)"; e.currentTarget.style.color = "rgba(255,255,255,0.95)"; e.currentTarget.style.boxShadow = "0 0 28px rgba(255,255,255,0.18), inset 0 1px 0 rgba(255,255,255,0.12)"; }}
         >
           {"Let's Begin"}
         </button>
@@ -392,7 +392,7 @@ export function ReflectionScreen({ answers, onContinue }) {
             <div style={{ fontSize: 12, color: T.text2, marginBottom: 16, fontFamily: T.sans }}>{"You'll be able to..."}</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
               {outcomeCards.map((o, i) => (
-                <div key={i} style={{ padding: "14px 16px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8 }}>
+                <div key={i} style={{ padding: "14px 16px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8, textAlign: "center" }}>
                   <div style={{ width: 30, height: 30, borderRadius: 6, background: T.bg, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center", alignSelf: "center" }}>
                     {o.svg}
                   </div>
