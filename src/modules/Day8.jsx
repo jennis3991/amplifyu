@@ -729,15 +729,17 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   const [activeScene,    setActiveScene]   = useState(0);
   const [briefOpen,      setBriefOpen]     = useState(false);
   const [coachOpen,      setCoachOpen]     = useState(false);
+  const [coverTitle,     setCoverTitle]    = useState('');
+  const [coverSubtitle,  setCoverSubtitle] = useState('');
 
   const EXAMPLE_BRIEFS = [
     "A TED-style pitch for a new product — emotional, direct, show real human impact",
     "A cybersecurity risk presentation for our board — make it feel like breaking news, urgent and specific",
   ];
 
-  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); setStoryImage(null); setStoryImageErr(''); setActiveScene(0); setBriefOpen(false); setCoachOpen(false); }
+  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); setStoryImage(null); setStoryImageErr(''); setActiveScene(0); setBriefOpen(false); setCoachOpen(false); setCoverTitle(''); setCoverSubtitle(''); }
 
-  async function generateStoryImage(scenes, storyWorld) {
+  async function generateStoryImage(scenes, storyWorld, ctitle, csub) {
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 90000);
@@ -746,7 +748,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
         res = await fetch('/api/generate-storyboard-image', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ scenes, storyWorld }),
+          body: JSON.stringify({ coverMode: true, coverTitle: ctitle || storyWorld?.subject || '', coverSubtitle: csub || storyWorld?.lesson || '', storyWorld, scenes }),
           signal: controller.signal,
         });
       } finally {
@@ -818,6 +820,8 @@ Return ONLY valid JSON:
       "narrative": "2-3 sentences of story prose in exactly the style the brief calls for"
     }
   ],
+  "coverTitle": "An editorial story title — 4-7 words, specific and compelling, like a documentary or non-fiction book (e.g. 'The Meeting That Changed Everything', 'Finding My Voice', 'Leading Through Uncertainty')",
+  "coverSubtitle": "One short sentence capturing the transformation at the heart of this story.",
   "story": "Complete narrative — all scenes woven together, written entirely in the style the brief demands. Use scene titles as section breaks (write them as: TITLE:). Aim for 150-200 words."
 }
 
@@ -832,9 +836,12 @@ Return ONLY valid JSON:
       if (!m) throw new Error('Parse');
       const parsed = JSON.parse(m[0]);
       if (!parsed.scenes?.length) throw new Error('No scenes');
+      const ct = parsed.coverTitle || parsed.storyWorld?.subject || '';
+      const cs = parsed.coverSubtitle || parsed.storyWorld?.lesson || '';
+      setCoverTitle(ct); setCoverSubtitle(cs);
       setResult(parsed); setPhase('results');
       setStoryImage('loading');
-      generateStoryImage(parsed.scenes, parsed.storyWorld);
+      generateStoryImage(parsed.scenes, parsed.storyWorld, ct, cs);
     } catch(_) {
       setApiError(true); setResult(buildFallback(brief)); setPhase('results'); setStoryImage('error');
     }
@@ -1008,47 +1015,42 @@ h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;line-he
           )}
         </div>
 
-        {/* ── HERO STORYBOARD ─────────────────────────────────────────────── */}
+        {/* ── STORY COVER ──────────────────────────────────────────────────── */}
         <div style={{marginBottom:isDesktop?28:22}}>
-          <div style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:isDesktop?12:10,background:CREAM}}>
+          <div style={{borderRadius:10,overflow:"hidden",border:"0.5px solid "+T2.border,background:INK}}>
+
+            {/* Image */}
             {storyImage==='loading'
-              ? <div style={{height:isDesktop?200:150,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:10,background:CREAM}}>
-                  <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:"rgba(58,48,40,0.3)",animation:`glowPulse 1.4s ease ${i*0.2}s infinite`}}/>)}</div>
-                  <span style={{fontFamily:T.sans,fontSize:11,color:INK_D,fontWeight:300,letterSpacing:"0.02em"}}>Generating storyboard image…</span>
+              ? <div style={{height:isDesktop?300:220,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:10,background:"#0E0B08"}}>
+                  <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:"rgba(248,245,239,0.3)",animation:`glowPulse 1.4s ease ${i*0.2}s infinite`}}/>)}</div>
+                  <span style={{fontFamily:T.sans,fontSize:11,color:"rgba(248,245,239,0.4)",fontWeight:300,letterSpacing:"0.04em"}}>Generating cover image…</span>
                 </div>
               : storyImage && storyImage!=='error'
-                ? <img src={storyImage} alt="Storyboard" style={{width:"100%",height:"auto",display:"block"}}/>
-                : <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(6,1fr)":"repeat(3,1fr)"}}>
-                    {scenes.map((scene,i)=>(
-                      <div key={i} style={{position:"relative",height:isDesktop?120:90,background:CREAM,borderRight:i<scenes.length-1?"0.5px solid "+T2.border:"none",overflow:"hidden"}}>
-                        <SketchIllustration scene={scene} idx={i}/>
-                        <div style={{position:"absolute",top:6,left:6,width:18,height:18,borderRadius:"50%",background:"rgba(58,48,40,0.12)",border:"0.5px solid "+INK_D,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                          <span style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:INK,opacity:0.7}}>{scene.number}</span>
-                        </div>
-                      </div>
-                    ))}
+                ? <img src={storyImage} alt="Story Cover" style={{width:"100%",height:isDesktop?340:240,objectFit:"cover",display:"block"}}/>
+                : <div style={{height:isDesktop?280:200,background:"linear-gradient(160deg,#1A1410 0%,#2C2416 100%)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                    <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                      <circle cx="28" cy="28" r="26" stroke="rgba(138,158,132,0.25)" strokeWidth="0.5"/>
+                      <circle cx="28" cy="28" r="16" stroke="rgba(138,158,132,0.15)" strokeWidth="0.5"/>
+                      <circle cx="28" cy="28" r="6"  stroke="rgba(138,158,132,0.1)"  strokeWidth="0.5"/>
+                      <circle cx="28" cy="28" r="2"  fill="rgba(138,158,132,0.35)"/>
+                    </svg>
                   </div>
             }
+
+            {/* Title block */}
+            <div style={{padding:isDesktop?"24px 28px 26px":"18px 20px 22px",background:INK}}>
+              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:10}}>Story Architect · AmplifyU</div>
+              <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:500,color:"#F8F5EF",lineHeight:1.15,margin:"0 0 8px",letterSpacing:"-0.3px"}}>{coverTitle||sw.subject||"Your Story"}</h2>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(248,245,239,0.5)",margin:0,fontWeight:300,lineHeight:1.55}}>{coverSubtitle||sw.lesson||""}</p>
+            </div>
+
+            {/* Error bar */}
             {storyImage==='error'&&(
-              <div style={{padding:"8px 14px",borderTop:"0.5px solid "+T2.border,background:"rgba(200,82,74,0.04)",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
-                <span style={{fontFamily:T.sans,fontSize:10,color:"rgba(200,82,74,0.8)",fontWeight:300}}>{storyImageErr||"Image generation failed"}</span>
-                <button onClick={()=>{setStoryImage('loading');setStoryImageErr('');generateStoryImage(scenes,sw);}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:10,fontWeight:600,padding:0}}>Retry →</button>
+              <div style={{padding:"8px 14px",borderTop:"0.5px solid rgba(248,245,239,0.08)",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
+                <span style={{fontFamily:T.sans,fontSize:10,color:"rgba(200,82,74,0.8)",fontWeight:300}}>{storyImageErr||"Cover image generation failed"}</span>
+                <button onClick={()=>{setStoryImage('loading');setStoryImageErr('');generateStoryImage(scenes,sw,coverTitle,coverSubtitle);}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:10,fontWeight:600,padding:0}}>Retry →</button>
               </div>
             )}
-          </div>
-
-          {/* Clickable scene cards */}
-          <div style={{display:"grid",gridTemplateColumns:isDesktop?"repeat(6,1fr)":"repeat(3,1fr)",gap:isDesktop?8:6}}>
-            {scenes.map((scene,i)=>{
-              const active = i===activeScene;
-              return (
-                <button key={i} onClick={()=>setActiveScene(i)} style={{padding:isDesktop?"10px 11px":"8px 9px",background:active?INK:CREAM,borderRadius:6,border:"0.5px solid "+(active?INK:T2.border),cursor:"pointer",textAlign:"left",transition:"all 0.18s"}}>
-                  <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:active?"rgba(248,245,239,0.5)":T2.text4,marginBottom:3}}>Scene {scene.number}</div>
-                  <div style={{fontFamily:T.serif,fontSize:isDesktop?12:11,fontWeight:600,color:active?"#F8F5EF":INK,lineHeight:1.25,marginBottom:4}}>{scene.title}</div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,color:active?"rgba(248,245,239,0.55)":"rgba(58,48,40,0.5)",lineHeight:1.4,fontWeight:300,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{scene.caption}</div>
-                </button>
-              );
-            })}
           </div>
         </div>
 

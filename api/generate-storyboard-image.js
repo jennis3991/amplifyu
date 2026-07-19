@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Missing OPENAI_KEY environment variable' });
   }
 
-  const { scenes, storyWorld } = req.body;
+  const { scenes, storyWorld, coverMode, coverTitle, coverSubtitle } = req.body;
   if (!scenes?.length) return res.status(400).json({ error: 'No scenes provided' });
 
   const character   = storyWorld?.character   || 'the protagonist';
@@ -33,6 +33,67 @@ export default async function handler(req, res) {
   const visualWorld = storyWorld?.visualWorld || 'Contemporary professional setting';
   const subject     = storyWorld?.subject     || 'A Story of Purpose';
   const lesson      = storyWorld?.lesson      || '';
+
+  // ── COVER IMAGE MODE ────────────────────────────────────────────────────────
+  if (coverMode) {
+    const title = coverTitle || subject;
+    const sub   = coverSubtitle || lesson || audience;
+
+    const coverPrompt = `You are creating a single premium editorial cover image for a career story.
+
+STORY TITLE: "${title}"
+STORY ESSENCE: "${sub}"
+STORY THEME: ${subject} — emotional tone: ${emotion}
+
+This image should feel like:
+• A bestselling non-fiction book cover
+• A Netflix documentary poster
+• A TED Talk title card
+• A premium editorial magazine feature
+
+Choose the single strongest visual metaphor. Intelligently select whichever fits the story best:
+• Leadership / influence: lighthouse at dawn, compass on a wooden desk, empty chair at the head of a boardroom table
+• Career growth / change: open doorway with light beyond, staircase viewed from below, sunrise over a city skyline
+• Communication / voice: microphone on a stage, spotlight on an empty stage, open notebook with a pen
+• Business transformation: glass-walled office at dawn, modern boardroom window overlooking a city at golden hour
+• Innovation / thinking: architectural blueprint on a light table, chessboard, bridge structure against sky
+• Personal breakthrough: morning light through a window, open road stretching to the horizon, single candle in a dark room
+
+Style references: Apple campaign photography · Kinfolk Magazine · Monocle · Penguin modern non-fiction · premium documentary still
+
+Technical requirements:
+• Single image — NOT a collage or multi-panel layout
+• Warm, natural light — not dark or horror-style
+• Shallow depth of field
+• Generous negative space, especially at the top
+• Film-grain texture, rich but lifted tones
+• NO people, NO faces, NO text or words inside the image
+• Portrait or landscape orientation — whichever suits the metaphor
+• Minimal, elegant, emotionally resonant`;
+
+    try {
+      console.log('[cover-image] Calling gpt-image-1 (high quality)...');
+      const response = await fetch('https://api.openai.com/v1/images/generations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+        body: JSON.stringify({ model: 'gpt-image-1', prompt: coverPrompt, n: 1, size: '1024x1536', quality: 'high' }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        const msg = data.error?.message || JSON.stringify(data);
+        console.error('[cover-image] OpenAI error:', msg);
+        return res.status(500).json({ error: msg });
+      }
+      const b64 = data.data?.[0]?.b64_json;
+      if (!b64) throw new Error('No image data returned');
+      console.log('[cover-image] Success');
+      return res.status(200).json({ url: `data:image/png;base64,${b64}` });
+    } catch (err) {
+      console.error('[cover-image] Caught error:', err.message);
+      return res.status(500).json({ error: err.message });
+    }
+  }
+  // ── END COVER IMAGE MODE ─────────────────────────────────────────────────────
 
   const six = scenes.slice(0, 6);
 
