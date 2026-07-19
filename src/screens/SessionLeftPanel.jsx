@@ -708,10 +708,6 @@ export function SessionLeftPanel({
             <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.7)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:8 }}>Coach Tip</div>
             <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.7)", lineHeight:1.65, margin:0, fontStyle:"italic" }}>The best way to learn a framework is to use it once before the pressure starts.</p>
           </div>
-          <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-            <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3"/><path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.35)" strokeWidth="1.3" strokeLinecap="round"/></svg>
-            <span style={{ fontFamily:T.sans, fontSize:10, color:"rgba(138,158,132,0.35)", letterSpacing:"0.05em" }}>2 minutes</span>
-          </div>
         </div>
       </div>
     );
