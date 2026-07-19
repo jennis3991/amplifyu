@@ -400,28 +400,12 @@ const HOT_SEAT_SCENARIOS = {
       q2:'A colleague thinks the alternative approach is lower risk. How do you respond?',
     },
     {
-      id:'delay',
-      icon: IC_ICON(<><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></>),
-      label:'Handling a project delay',
-      brief:`A key milestone on your project has slipped by three weeks due to a technical issue your team discovered late. Your manager has called an unplanned check-in with you and one other senior stakeholder. You know what happened. You have a recovery plan. But you haven't presented it yet.`,
-      q1:'Tell us what happened and where things stand.',
-      q2:'Should this have been caught earlier?',
-    },
-    {
       id:'feedback',
       icon: IC_ICON(<><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></>),
       label:'Responding to feedback',
       brief:`Your manager has just shared some feedback from a stakeholder: your last project update email was described as "hard to follow." Your manager isn't criticising you — they're giving you a heads up before a wider review meeting this afternoon and asking for your reaction.`,
       q1:"What's your initial reaction to that feedback?",
       q2:'What would you do differently next time?',
-    },
-    {
-      id:'technical',
-      icon: IC_ICON(<><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></>),
-      label:'Explaining a technical idea',
-      brief:`You're in a cross-functional meeting. A non-technical senior leader asks you to explain the approach your team is taking to solve a technical problem. You have two minutes. The room doesn't know the detail — they need to understand the logic and feel confident in the approach.`,
-      q1:"Can you walk us through what your team is doing and why?",
-      q2:"In simple terms — what's the risk if this doesn't work?",
     },
     {
       id:'priorities',
