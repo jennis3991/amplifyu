@@ -1200,8 +1200,8 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
   const _roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
 
   const STORY_CARDS = [
-    { icon: SC_PROJECT, title: "The project I'll always remember", sub: "A project that challenged you, taught you something, or made a real difference." },
-    { icon: SC_MISTAKE, title: "The mistake that made me better",  sub: "A setback that became one of your greatest lessons." },
+    { icon: SC_MOUNTAIN, title: "The decision that shaped my future", sub: "A choice that changed the direction of your career or life." },
+    { icon: SC_SPARK,    title: "The moment everything clicked",      sub: "A breakthrough that completely changed how you see your work or yourself." },
     ...({
       individual: [
         { icon: SC_SEARCH,   title: "The problem only I spotted",      sub: "A moment where your expertise made the difference." },
