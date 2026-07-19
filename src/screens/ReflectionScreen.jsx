@@ -77,21 +77,21 @@ export function ReflectionScreen({ answers, onContinue }) {
 
   // Outcome cards — "By Day 14 you will be able to..." framing
   const outcomeMap = {
-    "Executive Presence":      { svg: svgMic,     title: "Command the room",           sub: "Speak with authority in any environment, at any level" },
+    "Executive Presence":      { svg: svgMic,     title: "Command the room",           sub: "Speak with authority in any environment" },
     "Confidence":              { svg: svgBolt,    title: "Back yourself",              sub: "Communicate with conviction and inner confidence" },
-    "Clarity & Structure":     { svg: svgLines,   title: "Make your point land",       sub: "Structured, clear thinking under any pressure" },
+    "Clarity & Structure":     { svg: svgLines,   title: "Make your point land",       sub: "Structure your thinking clearly under pressure" },
     "Precision Editing":       { svg: svgLines,   title: "Say more with less",         sub: "Cut to what matters and make every word count" },
     "Visibility":              { svg: svgEye,     title: "Be seen for your work",      sub: "Make your impact visible to the people who matter" },
     "Personal Brand":          { svg: svgDiamond, title: "Own your presence",          sub: "Build a reputation that works for you in every room" },
     "Assertiveness":           { svg: svgShield,  title: "Hold your ground",           sub: "Communicate directly, confidently and without apology" },
     "Executive Authority":     { svg: svgChart,   title: "Lead with weight",           sub: "Carry natural authority in every conversation" },
-    "Influence":               { svg: svgPeople,  title: "Move people forward",        sub: "Shape decisions and earn buy-in that lasts" },
+    "Influence":               { svg: svgPeople,  title: "Move people forward",        sub: "Shape decisions and earn buy-in" },
     "Strategic Communication": { svg: svgLines,   title: "Land your message",          sub: "Communicate with intention and strategic precision" },
     "Storytelling":            { svg: svgDoc,     title: "Tell stories that stick",    sub: "Make people lean in and remember what you said" },
     "Narrative Craft":         { svg: svgDoc,     title: "Shape how people see things",sub: "Craft stories that shift perspective and drive action" },
     "High-Stakes Composure":   { svg: svgTarget,  title: "Stay sharp under pressure",  sub: "Navigate tough conversations with calm clarity" },
-    "Presence":                { svg: svgStar,    title: "Command attention",          sub: "Become someone people remember and trust" },
-    "Communication Clarity":   { svg: svgLines,   title: "Get your point across",      sub: "With clarity, structure and real impact every time" },
+    "Presence":                { svg: svgStar,    title: "Command attention",          sub: "Be someone people remember and trust" },
+    "Communication Clarity":   { svg: svgLines,   title: "Get your point across",      sub: "Communicate with clarity and real impact every time" },
   };
   const outcomeCards = focusAreas.slice(0, 4).map(area => ({
     area,
