@@ -612,7 +612,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
     label: {fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 8},
     cta: {width: '100%', padding: isDesktop ? '14px' : '13px', borderRadius: 4, border: 'none', background: T.ink, color: T.bg, fontSize: isDesktop ? 15 : 14, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans, minHeight: 48, transition: 'all 0.2s'},
     ghost: {width: '100%', padding: '11px', borderRadius: 4, border: '0.5px solid ' + T2.border, background: 'transparent', color: T2.text, fontSize: 13, fontWeight: 500, cursor: 'pointer', fontFamily: T.sans, minHeight: 44},
-    cue: {fontFamily: T.sans, fontSize: 10, letterSpacing: '0.18em', color: 'rgba(138,158,132,0.45)', textAlign: 'center', marginTop: 16, paddingTop: 14, borderTop: '0.5px solid rgba(138,158,132,0.1)'},
+    cue: {fontFamily: T.sans, fontSize: 12, letterSpacing: '0.18em', color: 'rgba(138,158,132,0.8)', textAlign: 'center', marginTop: 16, paddingTop: 14, borderTop: '0.5px solid rgba(138,158,132,0.15)'},
   };
 
   const scenarios = HOT_SEAT_SCENARIOS[track] || HOT_SEAT_SCENARIOS.ic;
@@ -671,7 +671,7 @@ export function D3SimWidget({T, T2, isDesktop}) {
     <div style={cs.card}>
       <div style={cs.label}>Your Scenario</div>
       <p style={{fontFamily: T.serif, fontSize: isDesktop ? 17 : 15, color: T2.text, lineHeight: 1.75, margin: '0 0 18px'}}>{scenario.brief}</p>
-      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 14 : 13, color: 'rgba(138,158,132,0.65)', fontStyle: 'italic', margin: 0}}>You'll be asked two questions. Remember: Pause. Breathe. Respond.</p>
+      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: 'rgba(138,158,132,0.9)', fontStyle: 'italic', margin: 0}}>You'll be asked two questions. Remember: Pause. Breathe. Respond.</p>
     </div>
     <div style={{display: 'flex', flexDirection: 'column', gap: 6}}>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
