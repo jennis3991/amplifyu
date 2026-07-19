@@ -1,4 +1,4 @@
-export const config = { maxDuration: 60 };
+export const config = { maxDuration: 120 };
 
 function validateAccessCode(req) {
   const expected = process.env.ACCESS_CODE || process.env.VITE_ACCESS_CODE || "";
@@ -39,38 +39,97 @@ export default async function handler(req, res) {
     const title = coverTitle || subject;
     const sub   = coverSubtitle || lesson || audience;
 
-    const coverPrompt = `You are creating a single premium editorial cover image for a career story.
+    // ── Step 1: Claude acts as editorial art director ──────────────────────
+    // Analyse the full narrative and write a story-specific image prompt.
+    const anthropicKey = process.env.ANTHROPIC_KEY || process.env.VITE_ANTHROPIC_KEY;
 
-STORY TITLE: "${title}"
-STORY ESSENCE: "${sub}"
-STORY THEME: ${subject} — emotional tone: ${emotion}
+    const sceneList = scenes.map((sc, i) =>
+      `Scene ${i + 1} — ${sc.title || ''}${sc.description ? ': ' + sc.description : ''}${sc.visual ? ' | Visual: ' + sc.visual : ''}${sc.emotion ? ' | Emotion: ' + sc.emotion : ''}`
+    ).join('\n');
 
-This image should feel like:
-• A bestselling non-fiction book cover
-• A Netflix documentary poster
-• A TED Talk title card
-• A premium editorial magazine feature
+    const artDirectorSystemPrompt = `You are a senior editorial art director at a world-class creative agency. You work with Netflix, Apple Books, Penguin Press, and Monocle. Your specialty is translating finished narratives into single, emotionally resonant cover images.
 
-Choose the single strongest visual metaphor. Intelligently select whichever fits the story best:
-• Leadership / influence: lighthouse at dawn, compass on a wooden desk, empty chair at the head of a boardroom table
-• Career growth / change: open doorway with light beyond, staircase viewed from below, sunrise over a city skyline
-• Communication / voice: microphone on a stage, spotlight on an empty stage, open notebook with a pen
-• Business transformation: glass-walled office at dawn, modern boardroom window overlooking a city at golden hour
-• Innovation / thinking: architectural blueprint on a light table, chessboard, bridge structure against sky
-• Personal breakthrough: morning light through a window, open road stretching to the horizon, single candle in a dark room
+You never illustrate the story literally. You find the symbolic essence — the one image that makes someone think "I need to know the story behind this."`;
 
-Style references: Apple campaign photography · Kinfolk Magazine · Monocle · Penguin modern non-fiction · premium documentary still
+    const artDirectorUserPrompt = `Analyse this completed story and write a precise image generation prompt for its book cover.
 
-Technical requirements:
-• Single image — NOT a collage or multi-panel layout
-• Warm, natural light — not dark or horror-style
-• Shallow depth of field
-• Generous negative space, especially at the top
-• Film-grain texture, rich but lifted tones
-• NO people, NO faces, NO text or words inside the image
-• Portrait or landscape orientation — whichever suits the metaphor
-• Minimal, elegant, emotionally resonant`;
+TITLE: "${title}"
+SUBTITLE: "${sub}"
+THEME: ${subject}
+EMOTIONAL ARC: ${emotion}
+VISUAL WORLD: ${visualWorld}
+CHARACTER: ${character}
 
+COMPLETE NARRATIVE:
+${sceneList}
+
+YOUR PROCESS:
+1. Identify the Core Theme (e.g. Crisis Leadership, Career Growth, Innovation, Resilience, Communication, Decision Making)
+2. Identify the Central Conflict in one sentence
+3. Identify the Emotional Tone (e.g. Determination, Hope, Urgency, Reflection, Courage)
+4. Identify the Defining Moment — the single most pivotal point in the story
+5. Choose the most resonant Visual Metaphor — something SPECIFIC to this story, not generic
+
+METAPHOR GUIDANCE (pick whichever fits, or invent a better one):
+- Crisis / urgency: security operations centre before dawn, incident dashboard with red alerts, phone off the hook, rain against glass, countdown clock, empty executive chair
+- Career growth / change: leather notebook beside a packed suitcase, offer letter on a desk, morning light through a train station window, open doorway with light beyond
+- Leadership / influence: conference room at dawn, empty podium with single spotlight, microphone stand on a darkened stage, window overlooking a city at golden hour
+- Innovation / thinking: architectural blueprint on a light table, chess pieces mid-game, open sketchbook with prototype drawings, workshop with tools laid out
+- Communication / storytelling: vintage typewriter with a single page, open journal on a wooden desk, theatre lights on an empty stage, notebook and pen in morning light
+- Personal breakthrough: single candle in a dark room, open road at sunrise, morning light flooding through a window, compass on a worn map
+- Trust / relationships: two coffee cups, handwritten letter, open notebook with sketches
+
+COVER REQUIREMENTS:
+- Single cinematic image — NOT a collage
+- NO people, NO faces, NO bodies, NO silhouettes
+- NO text, words, letters or numbers in the image
+- Warm natural light (unless the story is explicitly crisis/urgency-driven)
+- Shallow depth of field, film grain
+- Generous negative space at the top
+- Style: Netflix documentary poster · Apple editorial · Kinfolk · Monocle · Penguin non-fiction
+- Minimal, sophisticated, emotionally resonant
+- Portrait orientation (taller than wide)
+
+IMPORTANT: The image must be unique to this story. Someone should look at it and understand the subject, conflict, mood and stakes without reading any text.
+
+Output ONLY the image generation prompt. No preamble. No analysis. No headers. Just the prompt that will be sent directly to the image model.`;
+
+    let coverPrompt = null;
+
+    if (anthropicKey) {
+      try {
+        console.log('[cover-image] Calling Claude art director...');
+        const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': anthropicKey,
+            'anthropic-version': '2023-06-01',
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-5',
+            max_tokens: 800,
+            system: artDirectorSystemPrompt,
+            messages: [{ role: 'user', content: artDirectorUserPrompt }],
+          }),
+        });
+        const claudeData = await claudeRes.json();
+        coverPrompt = claudeData.content?.[0]?.text?.trim() || null;
+        if (coverPrompt) console.log('[cover-image] Art director prompt ready:', coverPrompt.slice(0, 120) + '...');
+        else console.warn('[cover-image] Claude returned no content, falling back');
+      } catch (err) {
+        console.warn('[cover-image] Claude art director failed, falling back:', err.message);
+      }
+    } else {
+      console.warn('[cover-image] ANTHROPIC_KEY not set — skipping art director step');
+    }
+
+    // ── Fallback: story-aware prompt built from storyWorld data ───────────
+    if (!coverPrompt) {
+      coverPrompt = `A premium editorial book cover image for a story titled "${title}". Theme: ${subject}. Emotional tone: ${emotion}. Setting: ${visualWorld}. Choose a single strong visual metaphor that captures the essence of this story — an object, a space, or a moment of anticipation. Style: Netflix documentary poster, Apple editorial, Kinfolk magazine, Penguin non-fiction. Cinematic, warm natural light, shallow depth of field, film grain, generous negative space. NO people, NO faces, NO text inside the image. Portrait orientation. Minimal, sophisticated, emotionally resonant.`;
+    }
+
+    // ── Step 2: Generate image with OpenAI ────────────────────────────────
     try {
       console.log('[cover-image] Calling gpt-image-1 (high quality)...');
       const response = await fetch('https://api.openai.com/v1/images/generations', {

@@ -2604,17 +2604,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
       {isD12 && step==="Example" && (()=>{
         const D12_EDITORIAL = [
-          { id:"jobs", img:"/d12-jobs.png?v=2", imgPos:"center 40%", name:"Steve Jobs", superpower:"Master of Purposeful Presence",
-            superpowerText:"When every movement has purpose, every message carries more weight.",
-            summary:"On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message — not the speaker.",
-            quote:"\"Confident body language creates clarity. Calm presence made complex ideas feel simple and memorable.\"",
-            body1:"Steve Jobs understood that powerful presentations aren't just about great ideas — they're about how those ideas are delivered. On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message rather than the speaker.",
-            body2:"He proved that confidence doesn't need to be loud to be influential. His philosophy was simple: when every movement has purpose, every message carries more weight.",
-            body3:"The next time you're presenting, resist the urge to fill every silence or pace constantly. Stand still to emphasise an important point, use deliberate gestures rather than constant movement, and allow pauses to give your audience time to think.",
-            whyItWorks:"Confident body language creates clarity. By eliminating unnecessary movement and using pauses deliberately, Jobs directed the audience's attention exactly where he wanted it. His calm presence made complex ideas feel simple and memorable.",
-            technique:"The next time you're presenting, resist the urge to fill every silence or pace constantly. Stand still to emphasise an important point, use deliberate gestures rather than constant movement, and allow pauses to give your audience time to think.",
-            lesson:"Your presence is shaped as much by what you don't do as what you do. Purposeful movement, calm posture, and intentional pauses communicate confidence before you've even finished your first sentence. Sometimes the most powerful body language is knowing when to stand still.",
-          },
           { id:"kennedy", img:"/d12-kennedy.png", imgPos:"center 35%", name:"Kennedy vs Nixon", superpower:"Master of Executive Presence",
             superpowerText:"People don't just hear confidence. They see it.",
             summary:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio believed Nixon won. People who watched on television overwhelmingly believed Kennedy won. The difference wasn't their arguments — it was their presence.",
@@ -2625,6 +2614,17 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             whyItWorks:"Before people evaluate your ideas, they evaluate you. Within seconds, your posture, eye contact, facial expression and composure shape how trustworthy, capable and confident you appear. When your non-verbal communication projects calm authority, people are more likely to listen, believe and remember what you say.",
             technique:"Before your next important conversation, imagine the camera is already on you. Stand tall, relax your shoulders, make steady eye contact and pause before you begin speaking. Let people see confidence before they hear it.",
             lesson:"The Kennedy–Nixon debate reminds us that communication is never just about words. Every movement, expression and pause tells its own story. Great communicators understand that presence begins long before the first sentence — and often determines how every sentence that follows is received.",
+          },
+          { id:"jobs", img:"/d12-jobs.png?v=2", imgPos:"center 40%", name:"Steve Jobs", superpower:"Master of Purposeful Presence",
+            superpowerText:"When every movement has purpose, every message carries more weight.",
+            summary:"On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message — not the speaker.",
+            quote:"\"Confident body language creates clarity. Calm presence made complex ideas feel simple and memorable.\"",
+            body1:"Steve Jobs understood that powerful presentations aren't just about great ideas — they're about how those ideas are delivered. On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message rather than the speaker.",
+            body2:"He proved that confidence doesn't need to be loud to be influential. His philosophy was simple: when every movement has purpose, every message carries more weight.",
+            body3:"The next time you're presenting, resist the urge to fill every silence or pace constantly. Stand still to emphasise an important point, use deliberate gestures rather than constant movement, and allow pauses to give your audience time to think.",
+            whyItWorks:"Confident body language creates clarity. By eliminating unnecessary movement and using pauses deliberately, Jobs directed the audience's attention exactly where he wanted it. His calm presence made complex ideas feel simple and memorable.",
+            technique:"The next time you're presenting, resist the urge to fill every silence or pace constantly. Stand still to emphasise an important point, use deliberate gestures rather than constant movement, and allow pauses to give your audience time to think.",
+            lesson:"Your presence is shaped as much by what you don't do as what you do. Purposeful movement, calm posture, and intentional pauses communicate confidence before you've even finished your first sentence. Sometimes the most powerful body language is knowing when to stand still.",
           },
         ];
         let d12ExObs = {}; try { d12ExObs = JSON.parse(localStorage.getItem('d12ExObserved')||'{}'); } catch {}

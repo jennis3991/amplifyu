@@ -3837,6 +3837,18 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D12_EDITORIAL = [
+          { id:"kennedy", img:"/d12-kennedy.png", imgPos:"center 35%", name:"Kennedy vs Nixon", superpower:"Master of Executive Presence",
+            superpowerText:"People don't just hear confidence. They see it.",
+            summary:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio believed Nixon won. People who watched on television overwhelmingly believed Kennedy won. The difference wasn't their arguments — it was their presence.",
+            quote:"\"People don't just hear confidence. They see it.\"",
+            exploreLabel:"Explore the debate",
+            body1:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio generally believed Richard Nixon had won. People who watched on television overwhelmingly believed John F. Kennedy had won.",
+            body2:"The difference wasn't their arguments. It was their presence. Kennedy appeared calm, composed and confident. He looked directly into the camera, maintained steady eye contact, stood comfortably and projected quiet authority. Nixon, recovering from illness, appeared tense, perspired under the studio lights and avoided looking directly at viewers.",
+            body3:"The debate became one of the clearest demonstrations that how you deliver a message can influence people just as much as the message itself.",
+            whyItWorks:"Before people evaluate your ideas, they evaluate you. Within seconds, your posture, eye contact, facial expression and composure shape how trustworthy, capable and confident you appear. When your non-verbal communication projects calm authority, people are more likely to listen, believe and remember what you say.",
+            technique:"Before your next important conversation, imagine the camera is already on you. Stand tall, relax your shoulders, make steady eye contact and pause before you begin speaking. Let people see confidence before they hear it.",
+            lesson:"The Kennedy–Nixon debate reminds us that communication is never just about words. Every movement, expression and pause tells its own story. Great communicators understand that presence begins long before the first sentence — and often determines how every sentence that follows is received.",
+          },
           { id:"jobs", img:"/d12-jobs.png?v=2", imgPos:"center 40%", name:"Steve Jobs", superpower:"Master of Purposeful Presence",
             superpowerText:"When every movement has purpose, every message carries more weight.",
             summary:"On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message — not the speaker.",
@@ -3848,18 +3860,6 @@ setAmbitionSaved(true); } catch {}
             whyItWorks:"Confident body language creates clarity. By eliminating unnecessary movement and using pauses deliberately, Jobs directed the audience's attention exactly where he wanted it. His calm presence made complex ideas feel simple and memorable.",
             technique:"The next time you're presenting, resist the urge to fill every silence or pace constantly. Stand still to emphasise an important point, use deliberate gestures rather than constant movement, and allow pauses to give your audience time to think.",
             lesson:"Your presence is shaped as much by what you don't do as what you do. Purposeful movement, calm posture, and intentional pauses communicate confidence before you've even finished your first sentence. Sometimes the most powerful body language is knowing when to stand still.",
-          },
-          { id:"kennedy", img:"/d12-kennedy.png", imgPos:"center 35%", name:"Kennedy vs Nixon", superpower:"Master of Executive Presence", featured:true,
-            superpowerText:"People don't just hear confidence. They see it.",
-            summary:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio believed Nixon won. People who watched on television overwhelmingly believed Kennedy won. The difference wasn't their arguments — it was their presence.",
-            quote:"\"People don't just hear confidence. They see it.\"",
-            exploreLabel:"Explore the debate",
-            body1:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio generally believed Richard Nixon had won. People who watched on television overwhelmingly believed John F. Kennedy had won.",
-            body2:"The difference wasn't their arguments. It was their presence. Kennedy appeared calm, composed and confident. He looked directly into the camera, maintained steady eye contact, stood comfortably and projected quiet authority. Nixon, recovering from illness, appeared tense, perspired under the studio lights and avoided looking directly at viewers.",
-            body3:"The debate became one of the clearest demonstrations that how you deliver a message can influence people just as much as the message itself.",
-            whyItWorks:"Before people evaluate your ideas, they evaluate you. Within seconds, your posture, eye contact, facial expression and composure shape how trustworthy, capable and confident you appear. When your non-verbal communication projects calm authority, people are more likely to listen, believe and remember what you say.",
-            technique:"Before your next important conversation, imagine the camera is already on you. Stand tall, relax your shoulders, make steady eye contact and pause before you begin speaking. Let people see confidence before they hear it.",
-            lesson:"The Kennedy–Nixon debate reminds us that communication is never just about words. Every movement, expression and pause tells its own story. Great communicators understand that presence begins long before the first sentence — and often determines how every sentence that follows is received.",
           },
         ];
         const openReading = (id) => {

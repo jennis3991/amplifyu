@@ -1039,7 +1039,7 @@ h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;line-he
 
             {/* Title block */}
             <div style={{padding:isDesktop?"24px 28px 26px":"18px 20px 22px",background:INK}}>
-              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:10}}>Story Architect · AmplifyU</div>
+              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:10}}>Book Cover · First Edition</div>
               <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:500,color:"#F8F5EF",lineHeight:1.15,margin:"0 0 8px",letterSpacing:"-0.3px"}}>{coverTitle||sw.subject||"Your Story"}</h2>
               <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(248,245,239,0.5)",margin:0,fontWeight:300,lineHeight:1.55}}>{coverSubtitle||sw.lesson||""}</p>
             </div>
