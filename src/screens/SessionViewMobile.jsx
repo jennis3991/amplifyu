@@ -2604,17 +2604,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
       {isD12 && step==="Example" && (()=>{
         const D12_EDITORIAL = [
-          { id:"obama", img:"/d12-obama.png?v=2", imgPos:"center 50%", name:"Michelle Obama", superpower:"Master of Warm Presence",
-            superpowerText:"Making every room feel smaller.",
-            summary:"Whether speaking to thousands or having a one-to-one conversation, her body language projects warmth, confidence, and authenticity — before she says a word.",
-            quote:"\"Presence isn't about commanding attention — it's about creating connection.\"",
-            body1:"Michelle Obama has a way of making every room feel smaller. Whether speaking to thousands of people or having a one-to-one conversation, her body language projects warmth, confidence, and authenticity.",
-            body2:"Her open posture, genuine smile, and natural gestures make people feel at ease before she even says a word. She reminds us that presence isn't about commanding attention — it's about creating connection.",
-            body3:"People decide how they feel about you long before they've analysed your words. Open body language, steady eye contact, and relaxed movement signal confidence, trust, and approachability. When your non-verbal signals match your message, people are far more likely to believe and remember you.",
-            whyItWorks:"People decide how they feel about you long before they've analysed your words. Open body language, steady eye contact, and relaxed movement signal confidence, trust, and approachability. When your non-verbal signals match your message, people are far more likely to believe and remember you.",
-            technique:"Before your next conversation or presentation, check your posture before your script. Stand tall, relax your shoulders, keep your hands open, and make eye contact before you begin speaking. Let your body communicate confidence before your voice does.",
-            lesson:"Your body is always communicating — even when you're silent. Great communicators understand that influence isn't just about what you say; it's about how you make people feel the moment you walk into the room. When your words and body language are aligned, your presence becomes your greatest strength.",
-          },
           { id:"jobs", img:"/d12-jobs.png?v=2", imgPos:"center 40%", name:"Steve Jobs", superpower:"Master of Purposeful Presence",
             superpowerText:"When every movement has purpose, every message carries more weight.",
             summary:"On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message — not the speaker.",
@@ -2643,7 +2632,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Presence in Action</h2>
-            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Three communicators who prove that how you carry yourself speaks louder than words.</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Two communicators who prove that how you carry yourself speaks louder than words.</p>
             {D12_EDITORIAL.map(card=>{
               const open = d12MobCard===card.id;
               const obs = d12ExObs[card.id];
@@ -2943,16 +2932,16 @@ strokeLinecap="round"/></svg>
       )}
       {isD13 && step==="Example" && (()=>{
         const D13_EDITORIAL = [
-          { id:"dench", img:"/d13-dench.png?v=2", imgPos:"center 30%", name:"Dame Judi Dench", superpower:"Master of Reputation",
-            superpowerText:"Her reputation became her greatest introduction.",
-            summary:"Dame Judi Dench has spent more than six decades building one of the most respected reputations in theatre and film — and opportunities have followed her ever since.",
-            quote:"\"The most valuable opportunities rarely come from applying online — they come through people who know your work and trust your character.\"",
-            body1:"Dame Judi Dench has spent more than six decades building one of the most respected reputations in theatre and film. Directors, writers, and fellow actors consistently describe her as generous, prepared, and a joy to work with.",
-            body2:"Opportunities haven't followed her simply because of her talent — they've followed her because people trust her and want to work with her again. Her reputation became her greatest introduction.",
-            body3:"Exposure isn't just about being seen — it's about being remembered for the right reasons. Every interaction shapes your professional reputation. When people associate your name with excellence, kindness, and reliability, they become your advocates, recommending you long after the conversation has ended.",
-            whyItWorks:"Exposure isn't just about being seen — it's about being remembered for the right reasons. Every interaction shapes your professional reputation. When people associate your name with excellence, kindness, and reliability, they become your advocates, recommending you long after the conversation has ended.",
-            technique:"Treat every meeting, project, and conversation as an audition for your reputation. Deliver great work, be generous with your time, and leave people feeling respected. Ask yourself: \"If my name came up in a room I wasn't in, what would people say?\"",
-            lesson:"The most valuable opportunities rarely come from applying online — they come through people who know your work and trust your character. Build a reputation that people are proud to recommend, because the strongest professional brand is the one that continues speaking for you when you're not in the room.",
+          { id:"obama", img:"/d12-obama.png?v=2", imgPos:"center 50%", name:"Michelle Obama", superpower:"Master of Warm Presence",
+            superpowerText:"Making every room feel smaller.",
+            summary:"Whether speaking to thousands or having a one-to-one conversation, her body language projects warmth, confidence, and authenticity — before she says a word.",
+            quote:"\"Presence isn't about commanding attention — it's about creating connection.\"",
+            body1:"Michelle Obama has a way of making every room feel smaller. Whether speaking to thousands of people or having a one-to-one conversation, her body language projects warmth, confidence, and authenticity.",
+            body2:"Her open posture, genuine smile, and natural gestures make people feel at ease before she even says a word. She reminds us that presence isn't about commanding attention — it's about creating connection.",
+            body3:"People decide how they feel about you long before they've analysed your words. Open body language, steady eye contact, and relaxed movement signal confidence, trust, and approachability. When your non-verbal signals match your message, people are far more likely to believe and remember you.",
+            whyItWorks:"People decide how they feel about you long before they've analysed your words. Open body language, steady eye contact, and relaxed movement signal confidence, trust, and approachability. When your non-verbal signals match your message, people are far more likely to believe and remember you.",
+            technique:"Before your next conversation or presentation, check your posture before your script. Stand tall, relax your shoulders, keep your hands open, and make eye contact before you begin speaking. Let your body communicate confidence before your voice does.",
+            lesson:"Your body is always communicating — even when you're silent. Great communicators understand that influence isn't just about what you say; it's about how you make people feel the moment you walk into the room. When your words and body language are aligned, your presence becomes your greatest strength.",
           },
           { id:"diana", img:"/d13-diana.png?v=2", imgPos:"center center", name:"Princess Diana", superpower:"Master of Visibility",
             superpowerText:"Visibility has the greatest impact when it stops being about you.",
