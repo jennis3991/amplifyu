@@ -174,7 +174,7 @@ export function ReflectionScreen({ answers, onContinue }) {
                       </div>
                       <div>
                         <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 12, fontFamily: T.sans }}>The path ahead</div>
-                        <p style={{ fontFamily: T.sans, fontSize: "clamp(14px,1.3vw,16px)", color: T.text2, lineHeight: 1.85, margin: 0, fontWeight: 400 }}>
+                        <p style={{ fontFamily: T.serif, fontSize: "clamp(15px,1.4vw,17px)", color: T.ink, lineHeight: 1.78, margin: 0, letterSpacing: "-0.1px" }}>
                           {reflection.forward}
                         </p>
                       </div>
@@ -354,7 +354,7 @@ export function ReflectionScreen({ answers, onContinue }) {
                 </div>
                 <div>
                   <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 10, fontFamily: T.sans }}>The path ahead</div>
-                  <p style={{ fontFamily: T.sans, fontSize: 15, color: T.text2, lineHeight: 1.8, margin: 0 }}>{reflection.forward}</p>
+                  <p style={{ fontFamily: T.serif, fontSize: 17, color: T.ink, lineHeight: 1.75, margin: 0, letterSpacing: "-0.1px" }}>{reflection.forward}</p>
                 </div>
               </div>
             )}
