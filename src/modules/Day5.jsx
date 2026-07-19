@@ -702,6 +702,7 @@ For Q2, apply the same PRE extraction as Q1. Then compare the two. Return a JSON
       <div style={{display:'flex', alignItems:'center', gap:2, height:40, marginBottom:14}}>
         {waveVals.map((v,i)=><div key={i} style={{flex:1, height:Math.round(v*34)+'px', background:`rgba(138,158,132,${0.3+v*0.5})`, borderRadius:2, transition:'height 0.15s'}}/>)}
       </div>
+      <div style={{fontFamily:T.sans, fontSize:11, letterSpacing:'0.12em', color:'rgba(138,158,132,0.75)', textAlign:'center', marginBottom:12}}>Point &middot; Reason &middot; Example</div>
       <div style={{display:'flex', alignItems:'center', gap:8}}>
         <div style={{width:7, height:7, borderRadius:'50%', background:'#c0392b'}}/>
         <span style={{fontFamily:T.sans, fontSize:11, color:T2.text3}}>Answer when you're ready.</span>
@@ -775,6 +776,7 @@ For Q2, apply the same PRE extraction as Q1. Then compare the two. Return a JSON
       <div style={{display:'flex', alignItems:'center', gap:2, height:40, marginBottom:14}}>
         {waveVals.map((v,i)=><div key={i} style={{flex:1, height:Math.round(v*34)+'px', background:`rgba(138,158,132,${0.3+v*0.5})`, borderRadius:2, transition:'height 0.15s'}}/>)}
       </div>
+      <div style={{fontFamily:T.sans, fontSize:11, letterSpacing:'0.12em', color:'rgba(138,158,132,0.75)', textAlign:'center', marginBottom:12}}>Point &middot; Reason &middot; Example</div>
       <div style={{display:'flex', alignItems:'center', gap:8}}>
         <div style={{width:7, height:7, borderRadius:'50%', background:'#c0392b'}}/>
         <span style={{fontFamily:T.sans, fontSize:11, color:T2.text3}}>Answer when you're ready.</span>
