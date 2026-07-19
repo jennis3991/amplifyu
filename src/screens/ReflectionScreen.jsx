@@ -299,9 +299,11 @@ export function ReflectionScreen({ answers, onContinue }) {
         <button
           onClick={onContinue}
           className="au-cta"
-          style={{ position: "fixed", bottom: 36, right: 110, zIndex: 200, background: "rgba(255,255,255,0.07)", border: "1.5px solid rgba(255,255,255,0.55)", borderRadius: 40, padding: "15px 48px", color: "rgba(255,255,255,0.95)", fontSize: 12, fontWeight: 500, letterSpacing: "2.5px", textTransform: "uppercase", cursor: "pointer", fontFamily: T.sans, transition: "all 0.3s ease", whiteSpace: "nowrap", boxShadow: "0 0 28px rgba(255,255,255,0.18), inset 0 1px 0 rgba(255,255,255,0.12)" }}
-          onMouseEnter={e => { e.currentTarget.style.background = "rgba(138,158,132,0.15)"; e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.color = T.gold; e.currentTarget.style.boxShadow = "0 0 36px rgba(138,158,132,0.65), inset 0 1px 0 rgba(255,255,255,0.1)"; }}
-          onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.07)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.55)"; e.currentTarget.style.color = "rgba(255,255,255,0.95)"; e.currentTarget.style.boxShadow = "0 0 28px rgba(255,255,255,0.18), inset 0 1px 0 rgba(255,255,255,0.12)"; }}
+          style={{ position: "fixed", bottom: 36, right: 110, zIndex: 200, background: "rgba(138,158,132,0.12)", border: "1.5px solid " + T.gold, borderRadius: 40, padding: "15px 48px", color: T.gold, fontSize: 12, fontWeight: 500, letterSpacing: "2.5px", textTransform: "uppercase", cursor: "pointer", fontFamily: T.sans, transition: "all 0.2s ease", whiteSpace: "nowrap", boxShadow: "0 0 32px rgba(138,158,132,0.55), inset 0 1px 0 rgba(255,255,255,0.08)" }}
+          onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 48px rgba(138,158,132,0.8), inset 0 1px 0 rgba(255,255,255,0.1)"; }}
+          onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 0 32px rgba(138,158,132,0.55), inset 0 1px 0 rgba(255,255,255,0.08)"; }}
+          onMouseDown={e => { e.currentTarget.style.background = "rgba(255,255,255,0.95)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.9)"; e.currentTarget.style.color = "#2C2416"; e.currentTarget.style.boxShadow = "0 0 48px rgba(255,255,255,0.6)"; }}
+          onMouseUp={e => { e.currentTarget.style.background = "rgba(138,158,132,0.12)"; e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.color = T.gold; e.currentTarget.style.boxShadow = "0 0 32px rgba(138,158,132,0.55), inset 0 1px 0 rgba(255,255,255,0.08)"; }}
         >
           {"Let's Begin"}
         </button>
