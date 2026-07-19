@@ -66,24 +66,31 @@ export function ReflectionScreen({ answers, onContinue }) {
   const svgLines   = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M3 5h14M3 9h10M3 13h7" stroke={T.text3} strokeWidth="1.4" strokeLinecap="round"/></svg>;
   const svgDoc     = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M3 4h8l4 4v8H3V4z" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M10 4v5h5" stroke={T.text3} strokeWidth="1.3"/></svg>;
   const svgPeople  = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><circle cx="7" cy="7" r="3" stroke={T.text3} strokeWidth="1.4" fill="none"/><circle cx="13" cy="7" r="3" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M3 17c0-3 2-4 4-4h6c2 0 4 1 4 4" stroke={T.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>;
-  const svgPerson  = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><circle cx="10" cy="7" r="3.5" stroke={T.text3} strokeWidth="1.4" fill="none"/><path d="M4 17c0-3 2.7-5 6-5s6 2 6 5" stroke={T.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>;
+  const svgShield  = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M10 3L4 6.5v4c0 3 2.5 5.5 6 6.5 3.5-1 6-3.5 6-6.5v-4L10 3z" stroke={T.text3} strokeWidth="1.4" strokeLinejoin="round"/></svg>;
+  const svgEye     = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M2 10c2.5-4.5 4.5-6 8-6s5.5 1.5 8 6c-2.5 4.5-4.5 6-8 6s-5.5-1.5-8-6z" stroke={T.text3} strokeWidth="1.4"/><circle cx="10" cy="10" r="2.5" stroke={T.text3} strokeWidth="1.3"/></svg>;
+  const svgDiamond = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M10 3l7 5-7 9-7-9 7-5z" stroke={T.text3} strokeWidth="1.4" strokeLinejoin="round"/><path d="M3 8h14" stroke={T.text3} strokeWidth="1.2"/></svg>;
+  const svgMic     = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><rect x="7" y="3" width="6" height="8" rx="3" stroke={T.text3} strokeWidth="1.4"/><path d="M5 11c0 2.8 2.2 5 5 5s5-2.2 5-5" stroke={T.text3} strokeWidth="1.3" strokeLinecap="round"/><path d="M10 16v2M8 18h4" stroke={T.text3} strokeWidth="1.3" strokeLinecap="round"/></svg>;
+  const svgBolt    = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M12 3l-5 8h4l-3 6 8-9h-4l4-5z" stroke={T.text3} strokeWidth="1.4" strokeLinejoin="round"/></svg>;
+  const svgTarget  = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><circle cx="10" cy="10" r="7" stroke={T.text3} strokeWidth="1.3"/><circle cx="10" cy="10" r="4" stroke={T.text3} strokeWidth="1.2"/><circle cx="10" cy="10" r="1.5" stroke={T.text3} strokeWidth="1.3"/></svg>;
+  const svgStar    = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M10 3l1.8 5h5.2l-4.2 3 1.6 5L10 13l-4.4 3 1.6-5L3 8h5.2z" stroke={T.text3} strokeWidth="1.3" strokeLinejoin="round"/></svg>;
+  const svgChart   = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M3 15l4-5 3 2 4-6 3 3" stroke={T.text3} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 
   // Outcome cards — "By Day 14 you will be able to..." framing
   const outcomeMap = {
-    "Executive Presence":      { svg: svgPerson,  title: "Command the room",          sub: "Speak with authority in any environment, at any level" },
-    "Confidence":              { svg: svgPerson,  title: "Back yourself",              sub: "Communicate with conviction and inner confidence" },
+    "Executive Presence":      { svg: svgMic,     title: "Command the room",           sub: "Speak with authority in any environment, at any level" },
+    "Confidence":              { svg: svgBolt,    title: "Back yourself",              sub: "Communicate with conviction and inner confidence" },
     "Clarity & Structure":     { svg: svgLines,   title: "Make your point land",       sub: "Structured, clear thinking under any pressure" },
     "Precision Editing":       { svg: svgLines,   title: "Say more with less",         sub: "Cut to what matters and make every word count" },
-    "Visibility":              { svg: svgPerson,  title: "Be seen for your work",      sub: "Make your impact visible to the people who matter" },
-    "Personal Brand":          { svg: svgPerson,  title: "Own your presence",          sub: "Build a reputation that works for you in every room" },
-    "Assertiveness":           { svg: svgPerson,  title: "Hold your ground",           sub: "Communicate directly, confidently and without apology" },
-    "Executive Authority":     { svg: svgPerson,  title: "Lead with weight",           sub: "Carry natural authority in every conversation" },
+    "Visibility":              { svg: svgEye,     title: "Be seen for your work",      sub: "Make your impact visible to the people who matter" },
+    "Personal Brand":          { svg: svgDiamond, title: "Own your presence",          sub: "Build a reputation that works for you in every room" },
+    "Assertiveness":           { svg: svgShield,  title: "Hold your ground",           sub: "Communicate directly, confidently and without apology" },
+    "Executive Authority":     { svg: svgChart,   title: "Lead with weight",           sub: "Carry natural authority in every conversation" },
     "Influence":               { svg: svgPeople,  title: "Move people forward",        sub: "Shape decisions and earn buy-in that lasts" },
     "Strategic Communication": { svg: svgLines,   title: "Land your message",          sub: "Communicate with intention and strategic precision" },
     "Storytelling":            { svg: svgDoc,     title: "Tell stories that stick",    sub: "Make people lean in and remember what you said" },
     "Narrative Craft":         { svg: svgDoc,     title: "Shape how people see things",sub: "Craft stories that shift perspective and drive action" },
-    "High-Stakes Composure":   { svg: svgPeople,  title: "Stay sharp under pressure",  sub: "Navigate tough conversations with calm clarity" },
-    "Presence":                { svg: svgPerson,  title: "Command attention",          sub: "Become someone people remember and trust" },
+    "High-Stakes Composure":   { svg: svgTarget,  title: "Stay sharp under pressure",  sub: "Navigate tough conversations with calm clarity" },
+    "Presence":                { svg: svgStar,    title: "Command attention",          sub: "Become someone people remember and trust" },
     "Communication Clarity":   { svg: svgLines,   title: "Get your point across",      sub: "With clarity, structure and real impact every time" },
   };
   const outcomeCards = focusAreas.slice(0, 4).map(area => ({
@@ -189,7 +196,7 @@ export function ReflectionScreen({ answers, onContinue }) {
               <div style={{ flex: 1, paddingTop: 4, animation: "fadeUp 0.6s ease both" }}>
 
                 {/* Communication Style card */}
-                <div style={{ padding: "14px 16px", background: T.surface, borderRadius: 7, border: "1px solid " + T.border, marginBottom: 24 }}>
+                <div style={{ padding: "14px 16px", background: T.surface, borderRadius: 7, border: "1px solid " + T.border, marginBottom: 24, textAlign: "center" }}>
                   <div style={{ fontSize: 9, color: T.text3, textTransform: "uppercase", letterSpacing: "2.5px", marginBottom: 6, fontFamily: T.sans }}>Communication Style</div>
                   <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, marginBottom: 3 }}>{tendency.label}</div>
                   <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{tendency.sub}</div>
@@ -407,7 +414,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
         {/* Communication Style card */}
         {section >= 2 && (
-          <div style={{ padding: "16px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, animation: "sectionFade 0.9s ease both" }}>
+          <div style={{ padding: "16px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, animation: "sectionFade 0.9s ease both", textAlign: "center" }}>
             <div style={{ fontSize: 9, color: T.text3, textTransform: "uppercase", letterSpacing: "2.5px", marginBottom: 8, fontFamily: T.sans }}>Communication Style</div>
             <div style={{ fontFamily: T.serif, fontSize: 16, color: T.ink, marginBottom: 3 }}>{tendency.label}</div>
             <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{tendency.sub}</div>
