@@ -153,8 +153,8 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
       const res = await fetch('/api/claude', {
         method: 'POST', headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001', max_tokens: 300,
-          system: `You are the AmplifyU coach. The user has just completed The Setup warm-up for Day 5: Structure PRE. They were explicitly asked to answer using Point, Reason, and Example. Analyse their transcript. Determine: ledWithPosition (boolean — true if their opening sentence stated a clear position or view), reasonPresent (boolean — true if they gave a clear reason or justification), examplePresent (boolean — true if they grounded their answer in something concrete, specific, or real). Return a JSON object with these fields plus coachLine (one warm specific sentence maximum 25 words). If all three are present and ledWithPosition is true, affirm the structure and bridge to The Boardroom. If ledWithPosition is false or one element is missing, give one specific forward-looking nudge — never critical, always growth-framed. Also return bridgeLine — always: "The Boardroom asks one question. Ten seconds to think. Then it's yours." Never use deficit language. Never say perfect.`,
+          model: 'claude-haiku-4-5-20251001', max_tokens: 500,
+          system: `You are the AmplifyU coach. The user has just completed The Setup warm-up for Day 5: Structure PRE. They were explicitly asked to answer using Point, Reason, and Example. Analyse their transcript and extract the following fields. ledWithPosition (boolean — true if their opening sentence stated a clear position or view), reasonPresent (boolean — true if they gave a clear reason or justification), examplePresent (boolean — true if they grounded their answer in something concrete, specific, or real). pointQuote (the exact sentence or short phrase from their transcript where they stated their main point, or null if missing), reasonQuote (the exact sentence or short phrase where they gave their reason or logic, or null if missing), exampleQuote (the exact sentence or short phrase where they gave a concrete example, or null if missing). coachLine (one warm specific sentence maximum 25 words referencing what they actually said — if all three are present affirm the structure, if one is missing give one forward-looking nudge, never critical, never say perfect). bridgeLine — always return exactly: "The Boardroom asks one question. Ten seconds to think. Then it's yours." Return only valid JSON with all these fields.`,
           messages: [{role:'user', content:`Question: ${topic?.label || 'practice question'}\n\nTranscript: "${text || '[no transcript]'}"`}],
         }),
       });
@@ -320,9 +320,9 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
   // ── COACH ─────────────────────────────────────────────────────────────────
   if (phase === 'coach' && coachResult) {
     const rows = [
-      {label:'Point',   present:coachResult.ledWithPosition},
-      {label:'Reason',  present:coachResult.reasonPresent},
-      {label:'Example', present:coachResult.examplePresent},
+      {label:'Point',   present:coachResult.ledWithPosition, quote:coachResult.pointQuote},
+      {label:'Reason',  present:coachResult.reasonPresent,   quote:coachResult.reasonQuote},
+      {label:'Example', present:coachResult.examplePresent,  quote:coachResult.exampleQuote},
     ];
     return (
       <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
@@ -332,9 +332,12 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
         </div>
         <div style={cs.card}>
           {rows.map((row, i) => (
-            <div key={i} style={{opacity:preRow>i?1:0, transform:preRow>i?'translateY(0)':'translateY(6px)', transition:'opacity 0.45s ease, transform 0.45s ease', display:'flex', alignItems:'center', gap:14, padding:'10px 0', borderBottom:i<2?'0.5px solid '+T2.divider:'none'}}>
-              <span style={{color:row.present?'rgba(82,112,96,0.9)':'rgba(200,150,60,0.85)', fontSize:16, fontWeight:700, width:20, textAlign:'center', flexShrink:0}}>{row.present?'✓':'△'}</span>
-              <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, fontWeight:700, color:T2.text, textTransform:'uppercase', letterSpacing:'1.5px'}}>{row.label}</span>
+            <div key={i} style={{opacity:preRow>i?1:0, transform:preRow>i?'translateY(0)':'translateY(6px)', transition:'opacity 0.45s ease, transform 0.45s ease', padding:'12px 0', borderBottom:i<2?'0.5px solid '+T2.divider:'none'}}>
+              <div style={{display:'flex', alignItems:'center', gap:14, marginBottom:row.quote?8:0}}>
+                <span style={{color:row.present?'rgba(82,112,96,0.9)':'rgba(200,150,60,0.85)', fontSize:16, fontWeight:700, width:20, textAlign:'center', flexShrink:0}}>{row.present?'✓':'△'}</span>
+                <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, fontWeight:700, color:T2.text, textTransform:'uppercase', letterSpacing:'1.5px'}}>{row.label}</span>
+              </div>
+              {row.quote && <p style={{fontFamily:T.serif, fontSize:isDesktop?14:13, color:T2.text2, lineHeight:1.55, margin:'0 0 0 34px', fontStyle:'italic'}}>"{row.quote}"</p>}
             </div>
           ))}
           {preRow >= 3 && (
