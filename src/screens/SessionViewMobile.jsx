@@ -2465,7 +2465,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
       {isD11 && step==="Example" && (()=>{
         const D11_EDITORIAL = [
-          { id:"swift", img:"/d11-swift.png?v=2", imgPos:"center 40%", name:"Taylor Swift", superpower:"Master of Personal Brand",
+          { id:"swift", img:"/d11-swift.jpg", imgPos:"center 40%", name:"Taylor Swift", superpower:"Master of Personal Brand",
             superpowerText:"Making people feel part of the journey.",
             summary:"She didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel personally invested in her story.",
             quote:"\"People didn't just buy Taylor Swift's music. They bought into her journey.\"",
@@ -2476,7 +2476,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             technique:"Before your next presentation or professional interaction, ask yourself: \"What part of my journey could I share that the audience would recognise in themselves?\" Vulnerability and honesty create connection faster than credentials ever will.",
             lesson:"People didn't just buy Taylor Swift's music. They bought into her journey. The strongest personal brands make people feel like they are part of the story — not just observers of it.",
           },
-          { id:"disney", img:"/d11-disney.png?v=2", imgPos:"center 40%", name:"Disney", superpower:"Master of Brand Consistency",
+          { id:"disney", img:"/d11-disney.jpg", imgPos:"center 40%", name:"Disney", superpower:"Master of Brand Consistency",
             superpowerText:"100 years of one word: Magic.",
             summary:"Disney has spent a century staying true to one emotional promise across every format, generation, and medium — Magic, Wonder, and Imagination.",
             quote:"\"Disney didn't build a brand. They built a feeling — and then protected it for 100 years.\"",
