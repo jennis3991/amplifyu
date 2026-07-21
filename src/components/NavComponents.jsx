@@ -89,8 +89,8 @@ export function TabBar({ tab, setTab, done=[], dark }) {
         )}
         <NavIcon id={id} active={active}/>
         <span style={{
-          fontFamily:"'Inter',sans-serif", fontSize:10, fontWeight:500,
-          letterSpacing:"1.8px", textTransform:"uppercase",
+          fontFamily:"'Inter',sans-serif", fontSize:8.5, fontWeight:500,
+          letterSpacing:"1.6px", textTransform:"uppercase",
           color: active ? GOLD : IC,
           position:"relative",
         }}>{label}</span>
