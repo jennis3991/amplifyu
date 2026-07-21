@@ -1187,7 +1187,7 @@ T.goldDark : T2.text4,
       )}
       {isD3 && step==="Example" && (()=>{
         const D3_EDITORIAL = [
-          { id:"freeman", img:"/d3-freeman.png?v=2", name:"Morgan Freeman", superpower:"Master of the Pause",
+          { id:"freeman", img:"/d3-freeman.jpg", name:"Morgan Freeman", superpower:"Master of the Pause",
             superpowerText:"Turns silence into emphasis.",
             summary:"No ums. No uhs. Just measured, deliberate speech.",
             quote:"\"Hope is a good thing. Maybe the best of things. And no good thing ever dies.\"",
@@ -1198,7 +1198,7 @@ T.goldDark : T2.text4,
             technique:"When you don't know what to say next, stop talking. Pause. Breathe. Then continue. Practice letting the silence sit — it signals confidence, not uncertainty.",
             lesson:"The pause is not your enemy. It's your most underused communication tool. Use it deliberately.",
           },
-          { id:"wintour", img:"/d3-wintour.png?v=2", name:"Anna Wintour", superpower:"Filler-Free Authority",
+          { id:"wintour", img:"/d3-wintour.jpg", name:"Anna Wintour", superpower:"Filler-Free Authority",
             superpowerText:"Every word chosen. Zero wasted.",
             summary:"She pauses between thoughts — no fillers, no hedging, just control.",
             quote:"\"Decisiveness.\"",
