@@ -531,10 +531,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(tabletEntry && src) return (
           <picture>
             <source media="(min-width: 768px)" srcSet={tabletEntry.src}/>
-            <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:tabletEntry.pos||"center",display:"block",pointerEvents:"none",transition:"opacity 0.4s ease",opacity:0,}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+            <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:tabletEntry.pos||"center",display:"block",pointerEvents:"none"}}/>
           </picture>
         );
-        if(src) return <img src={src} alt="" style={{width:"100%",height:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Rehearsal"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent",transition:"opacity 0.4s ease",opacity:0,}} onLoad={e=>e.currentTarget.style.opacity="1"}/>;
+        if(src) return <img src={src} alt="" style={{width:"100%",height:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Rehearsal"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
         return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
       })()}
       {/* Exit button — top left over image */}

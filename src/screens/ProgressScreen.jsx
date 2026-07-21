@@ -71,14 +71,14 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
               <p style={{fontFamily:T.sans,fontSize:16,color:T2.text3,lineHeight:1.7,fontWeight:300,maxWidth:440}}>Clarity builds confidence. Confidence creates influence. Keep going — you're building a skill that lasts.</p>
             </div>
             <div style={{width:"38%",flexShrink:0,borderRadius:12,overflow:"hidden",height:280,position:"relative"}}>
-              <img src="/programme-hero.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 50%",transition:"opacity 0.4s ease",opacity:0,}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+              <img src="/programme-hero.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 50%"}}/>
               <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.08)"}}/>
             </div>
           </div>
         </div>
       ) : (
         <div style={{position:"relative",height:240,overflow:"hidden"}}>
-          <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%",transition:"opacity 0.4s ease",opacity:0,}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+          <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
           <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.4)"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.85) 0%,transparent 60%)"}}/>
           <div style={{position:"absolute",bottom:24,left:24,right:24}}>

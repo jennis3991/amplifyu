@@ -131,7 +131,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
           {/* Banner image */}
           <div style={{ width: "100%", height: 380, flexShrink: 0, overflow: "hidden" }}>
-            <img src="/profile-banner-desktop.jpg" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "left top", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+            <img src="/profile-banner-desktop.jpg" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "left top" }}/>
           </div>
 
           <div style={{ padding: "52px 72px 120px", display: "flex", flexDirection: "column" }}>
@@ -318,7 +318,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
       {/* Banner image */}
       <div style={{ width: "100%", height: 220, overflow: "hidden", flexShrink: 0 }}>
-        <img src="/profile-banner-3.png" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "25% center", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/profile-banner-3.png" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "25% center" }}/>
       </div>
 
       {/* Header */}

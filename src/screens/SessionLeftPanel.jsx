@@ -26,7 +26,7 @@ export function SessionLeftPanel({
     </>;
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/day4-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 72%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day4-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 72%" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, rgba(10,8,5,0.3) 50%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
           <div style={{ ...LP_LABEL, marginBottom:12 }}>DAY 4 · BREVITY</div>
@@ -39,7 +39,7 @@ export function SessionLeftPanel({
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
         {(() => { const img = THEORY_IMAGES[4]; return img ? (
           <>
-            <img src={img.image} alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 35%", filter:"brightness(1.2)", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+            <img src={img.image} alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 35%", filter:"brightness(1.2)" }}/>
             {/* Minimal top gradient for label only */}
             <div style={{ position:"absolute", top:0, left:0, right:0, height:"28%", background:"linear-gradient(to bottom, rgba(10,8,5,0.5) 0%, transparent 100%)", pointerEvents:"none" }}/>
           </>
@@ -87,7 +87,7 @@ export function SessionLeftPanel({
   if (isD7) {
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/day7-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day7-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.35)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, rgba(10,8,5,0.15) 50%, transparent 75%)" }}/>
         <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
@@ -164,7 +164,7 @@ export function SessionLeftPanel({
     const theoryImg10 = THEORY_IMAGES[lesson.theoryImageDay || lesson.day];
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/day10-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day10-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, rgba(10,8,5,0.3) 50%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
           <div style={{ ...LP_LABEL, marginBottom:12 }}>DAY 10 · VISIBILITY</div>
@@ -228,7 +228,7 @@ export function SessionLeftPanel({
     </>;
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/day3-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day3-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, rgba(10,8,5,0.3) 50%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
           <div style={{ ...LP_LABEL, marginBottom:12 }}>DAY 3 · PAUSE</div>
@@ -239,7 +239,7 @@ export function SessionLeftPanel({
     );
     if (step === "Theory") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/day3-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day3-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.35)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.2) 45%, transparent 65%)" }}/>
         <div style={{ position:"absolute", bottom:40, left:48, zIndex:2, animation:"fadeUp 0.7s ease both", maxWidth:320 }}>
@@ -286,7 +286,7 @@ export function SessionLeftPanel({
     </>;
     if (step === "Insight") return (
       <div style={d1Dark}>
-        <img src="/day1-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day1-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
         {d1Overlay}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.7s ease both" }}>
           <div style={{ ...LP_LABEL, marginBottom:16 }}>Day {lesson.day} · {lesson.tag}</div>
@@ -297,7 +297,7 @@ export function SessionLeftPanel({
     );
     if (step === "Theory") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/feynman-technique.jpg" alt="The Feynman Technique" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:T.imgObjectPosition||"center 20%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/feynman-technique.jpg" alt="The Feynman Technique" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:T.imgObjectPosition||"center 20%" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.22)" }}/>
         <div style={{ position:"absolute", top:0, left:0, right:0, height:"25%", background:"linear-gradient(to bottom, rgba(10,8,5,0.55) 0%, transparent 100%)" }}/>
       </div>
@@ -339,7 +339,7 @@ export function SessionLeftPanel({
     const darkBase = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/nt-insight.jpg" alt="Narrative Transportation" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/nt-insight.jpg" alt="Narrative Transportation" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.38)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.82) 0%, rgba(10,8,5,0.15) 55%, transparent 80%)" }}/>
         <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
@@ -352,7 +352,7 @@ export function SessionLeftPanel({
     if (step === "Theory") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", alignItems:"center", justifyContent:"center" }}>
         <img src="/d8-theory.png" alt="" style={{ position:"absolute", inset:"-20px", width:"calc(100% + 40px)", height:"calc(100% + 40px)", objectFit:"cover", filter:"blur(24px) brightness(0.4)", pointerEvents:"none" }}/>
-        <img src="/d8-theory.png" alt="Words and Images — Dual Coding" style={{ position:"relative", zIndex:1, width:"100%", height:"100%", objectFit:"contain", display:"block", transform:"scale(1.5)", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/d8-theory.png" alt="Words and Images — Dual Coding" style={{ position:"relative", zIndex:1, width:"100%", height:"100%", objectFit:"contain", display:"block", transform:"scale(1.5)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.5) 0%, transparent 40%)", zIndex:2, pointerEvents:"none" }}/>
       </div>
     );
@@ -380,7 +380,7 @@ export function SessionLeftPanel({
     if (step === "Simulation") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column" }}>
         {/* Book image fills the panel */}
-        <img src="/d8-story-book.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 60%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/d8-story-book.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 60%" }}/>
         {/* Dark gradient: heavy at top and bottom, lighter in middle to let the book shine */}
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(10,8,5,0.72) 0%, rgba(10,8,5,0.25) 40%, rgba(10,8,5,0.3) 60%, rgba(10,8,5,0.88) 100%)" }}/>
         {/* Spacer — lets the book image breathe */}
@@ -404,7 +404,7 @@ export function SessionLeftPanel({
     const d9Label = (txt) => <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>{txt}</div>;
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/day9-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day9-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.62)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 55%, transparent 80%)" }}/>
         <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
@@ -416,7 +416,7 @@ export function SessionLeftPanel({
     );
     if (step === "Theory") return (
       <div style={d9Dark}>
-        <img src="/day9-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day9-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
         {d9Overlay}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           {d9Label("The Science of Connection")}
@@ -463,36 +463,36 @@ export function SessionLeftPanel({
     <div style={{ position: "relative", height: "100%", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
       {lesson.day === 1 ? (
         <img src="/day1-insight.jpg" alt=""
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "opacity 0.4s ease", opacity: 0, }}
-        onLoad={e=>e.currentTarget.style.opacity="1"} />
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+        />
       ) : isD2 ? (
         <img src="/d2-insight.jpg" alt=""
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "opacity 0.4s ease", opacity: 0, }}
-        onLoad={e=>e.currentTarget.style.opacity="1"} />
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+        />
       ) : isD5 ? (
         <img src="/d5-insight.jpg" alt=""
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "opacity 0.4s ease", opacity: 0, }}
-        onLoad={e=>e.currentTarget.style.opacity="1"} />
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+        />
       ) : isD6 ? (
         <img src="/d6-insight.jpg" alt=""
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", transition: "opacity 0.4s ease", opacity: 0, }}
-        onLoad={e=>e.currentTarget.style.opacity="1"} />
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
+        />
       ) : isD11 ? (
         <img src="/d11-insight.jpg" alt=""
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%", transition: "opacity 0.4s ease", opacity: 0, }}
-        onLoad={e=>e.currentTarget.style.opacity="1"} />
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}
+        />
       ) : isD12 ? (
         <img src="/day12-insight.jpg" alt=""
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%", transition: "opacity 0.4s ease", opacity: 0, }}
-        onLoad={e=>e.currentTarget.style.opacity="1"} />
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}
+        />
       ) : isD13 ? (
         <img src="/day13-insight.jpg" alt=""
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", transition: "opacity 0.4s ease", opacity: 0, }}
-        onLoad={e=>e.currentTarget.style.opacity="1"} />
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
+        />
       ) : isD14 ? (
         <img src="/day14-insight.jpg" alt=""
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 35%", transition: "opacity 0.4s ease", opacity: 0, }}
-        onLoad={e=>e.currentTarget.style.opacity="1"} />
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 35%" }}
+        />
       ) : (
         <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
           <Scene name={lesson.scene} height={900} day={lesson.day}/>
@@ -514,25 +514,25 @@ export function SessionLeftPanel({
     const theoryImg = THEORY_IMAGES[lesson.theoryImageDay || lesson.day];
     if (isD14) return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/day14-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day14-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.15)" }}/>
       </div>
     );
     if (isD11) return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/d11-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/d11-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.20)" }}/>
       </div>
     );
     if (isD12) return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
-        <img src="/day12-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 50%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day12-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 50%" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.25)" }}/>
       </div>
     );
     if (isD13) return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
-        <img src="/day13-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day13-theory.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.45)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 50%, transparent 75%)" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
@@ -547,7 +547,7 @@ export function SessionLeftPanel({
       return (
         <div style={{ height:"100%", position:"relative", overflow:"hidden", background:"#1A1510", display:"flex", flexDirection:"column", justifyContent:"center" }}>
           <img src={theoryImg.image} alt="" style={{ position:"absolute", inset:"-20px", width:"calc(100% + 40px)", height:"calc(100% + 40px)", objectFit:"cover", filter:"blur(18px) brightness(0.45)", pointerEvents:"none" }}/>
-          <img src={theoryImg.image} alt={theoryImg.alt||""} style={{ position:"relative", zIndex:1, width:"140%", marginLeft:"-20%", height:"auto", display:"block", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+          <img src={theoryImg.image} alt={theoryImg.alt||""} style={{ position:"relative", zIndex:1, width:"140%", marginLeft:"-20%", height:"auto", display:"block" }}/>
           <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.55) 0%, transparent 40%)", zIndex:2 }}/>
         </div>
       );
@@ -556,7 +556,7 @@ export function SessionLeftPanel({
       const useContain = theoryImg.imgObjectFit === "contain";
       return (
         <div style={{ height: "100%", position: "relative", overflow: "hidden", background: useContain ? "#0E0B08" : "transparent" }}>
-          <img src={theoryImg.image} alt={theoryImg.alt || ""} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: useContain ? "contain" : "cover", objectPosition: theoryImg.imgObjectPosition || "center", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+          <img src={theoryImg.image} alt={theoryImg.alt || ""} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: useContain ? "contain" : "cover", objectPosition: theoryImg.imgObjectPosition || "center" }}/>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "28%", background: "linear-gradient(to bottom, rgba(10,8,5,0.55) 0%, transparent 100%)" }}/>
         </div>
       );
@@ -640,7 +640,7 @@ export function SessionLeftPanel({
     );
     if (isD13) return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
-        <img src="/day13-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/day13-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 30%" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.42)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 50%, transparent 75%)" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
@@ -680,7 +680,7 @@ export function SessionLeftPanel({
     );
     if (isD2) return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
-        <img src="/d2-practice.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+        <img src="/d2-practice.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.55)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.92) 0%, transparent 55%)" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
@@ -836,7 +836,7 @@ export function SessionLeftPanel({
       {/* Day 1: photo background */}
       {lesson.day === 1 && (
         <>
-          <img src="/day1-simulation.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%", transition: "opacity 0.4s ease", opacity: 0, }} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+          <img src="/day1-simulation.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}/>
           <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.58)" }}/>
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 55%, transparent 80%)" }}/>
         </>

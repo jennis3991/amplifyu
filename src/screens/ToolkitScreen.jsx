@@ -34,7 +34,7 @@ p];
     <div style={{background:T2.bg,minHeight:"100vh"}}>
       {!isDesktop && (
         <div style={{position:"relative",height:260,overflow:"hidden"}}>
-          <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%",transition:"opacity 0.4s ease",opacity:0,}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+          <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
           <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.35)"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.78) 0%,rgba(10,8,5,0.2) 50%,transparent 100%)"}}/>
           <div style={{position:"absolute",bottom:24,left:24}}>
@@ -45,7 +45,7 @@ p];
       )}
       {isDesktop && (
         <div style={{position:"relative",height:420,overflow:"hidden",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
-          <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%",transition:"opacity 0.4s ease",opacity:0,}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+          <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
           <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.35)"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.75) 0%,rgba(10,8,5,0.2) 45%,transparent 100%)"}}/>
           <div style={{position:"relative",zIndex:2,maxWidth:1160,margin:"0 auto",width:"100%",padding:"0 88px 0",boxSizing:"border-box"}}>
