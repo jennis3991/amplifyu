@@ -417,7 +417,7 @@ export function Onboarding({onDone}) {
     return (
       <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
         <div style={{position:"relative",height:300,flexShrink:0,overflow:"hidden"}}>
-          <img src="/ob-library.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
+          <img src="/ob-role.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>
           <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.35)"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 55%)"}}/>
           <div style={{position:"absolute",bottom:20,left:24,right:24}}>
