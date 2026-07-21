@@ -15,11 +15,11 @@ const IC   = "rgba(255,255,255,0.72)";
 
 function NavIcon({ id, active }) {
   const c = active ? GOLD : IC;
-  const s = { stroke:c, strokeWidth:"2", strokeLinecap:"round", strokeLinejoin:"round" };
+  const s = { stroke:c, strokeWidth:"1.7", strokeLinecap:"round", strokeLinejoin:"round" };
 
   /* Home — peaked roof + walled body + door notch */
   if (id === "home") return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
       <path d="M3 10.5L12 3l9 7.5" {...s}/>
       <path d="M5 9V21h4.5v-5.5h5V21H19V9" {...s}/>
     </svg>
@@ -27,7 +27,7 @@ function NavIcon({ id, active }) {
 
   /* Programme — calendar: frame + pins + header bar + 3×2 dot grid */
   if (id === "sessions") return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
       <rect x="3" y="4.5" width="18" height="16" rx="2" {...s}/>
       <path d="M3 9.5h18" {...s}/>
       <path d="M8 2.5v4M16 2.5v4" {...s}/>
@@ -42,7 +42,7 @@ function NavIcon({ id, active }) {
 
   /* Progress — upward trending line + arrowhead top-right */
   if (id === "progress") return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
       <path d="M3 18L9 12l4 3.5L20 7" {...s}/>
       <path d="M15 7h5v5" {...s}/>
     </svg>
@@ -50,7 +50,7 @@ function NavIcon({ id, active }) {
 
   /* Toolkit — briefcase: body + handle arc + centre bar */
   if (id === "toolkit") return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
       <rect x="2" y="9" width="20" height="13" rx="2" {...s}/>
       <path d="M8 9V7a4 4 0 018 0v2" {...s}/>
       <path d="M2 14.5h20" {...s}/>
