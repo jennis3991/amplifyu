@@ -124,8 +124,8 @@ export function TabBar({ tab, setTab, done=[], dark }) {
         <button
           onClick={() => setTab("identity")}
           style={{
-            position:"absolute", top:-4, left:"50%", transform:"translateX(-50%)",
-            width:58, height:58, borderRadius:"50%",
+            position:"absolute", top:8, left:"50%", transform:"translateX(-50%)",
+            width:48, height:48, borderRadius:"50%",
             padding:0, border:"none", background:"none",
             cursor:"pointer", outline:"none", zIndex:10,
             overflow:"hidden",
@@ -140,8 +140,8 @@ export function TabBar({ tab, setTab, done=[], dark }) {
             alt={piece.name}
             style={{
               position:"absolute",
-              width:"118%", height:"118%",
-              top:"-9%", left:"-9%",
+              width:"126%", height:"126%",
+              top:"-13%", left:"-13%",
               objectFit:"cover",
               borderRadius:"50%",
               opacity: identityActive ? 1 : 0.9,
