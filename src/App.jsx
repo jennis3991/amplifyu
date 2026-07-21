@@ -14,7 +14,7 @@ import { ReflectionScreen } from "./screens/ReflectionScreen.jsx";
 import { IdentityScreen } from "./screens/IdentityScreen.jsx";
 import { Onboarding } from "./screens/Onboarding.jsx";
 import { FloatingNav, TabBar } from "./components/NavComponents.jsx";
-import { Celebrate, WelcomeCard } from "./components/Confetti.jsx";
+import { Celebrate } from "./components/Confetti.jsx";
 import { AccessGate } from "./components/AccessGate.jsx";
 
 // ── UpdateBanner ─────────────────────────────────────────────────────────────
@@ -119,7 +119,6 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   const [cel, setCel] = useState(null);
   const streak = getStreak(done);
   const activeRole = ROLES.find(r => r.id === roleId) || null;
-  const [showWelcome, setShowWelcome] = useState(false);
   // Daily reminder nudge — show if today's session not done and app opened after 18h gap
   const [showNudge, setShowNudge] = useState(() => {
     try {
@@ -197,9 +196,6 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
             lsSet("au1_ob", true);
             setReflectionData(null);
             setTab("home");
-            try {
-              if (!localStorage.getItem("amplifyu_welcome_shown")) setShowWelcome(true);
-            } catch(_) {}
           }}
         />
       </div>
@@ -247,7 +243,6 @@ style={Object.assign({},wrapStyle,{display:"flex",flexDirection:"column",height:
 slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
       <UpdateBanner />
       {cel && <Celebrate day={cel} onClose={() => setCel(null)}/>}
-      {showWelcome && <WelcomeCard onDismiss={() => setShowWelcome(false)}/>}
       {confirmReset && (
         <div 
 style={{position:"fixed",inset:0,zIndex:300,background:"rgba(11,13,16,0.7)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",padding:"24px"}}>
