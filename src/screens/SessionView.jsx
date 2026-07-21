@@ -861,7 +861,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D10_EDITORIAL = [
-          { id:"dyson", img:"/d10-dyson.png?v=2", imgPos:"center 45%", name:"James Dyson", superpower:"Master of Relentless Improvement",
+          { id:"dyson", img:"/d10-dyson.jpg", imgPos:"center 45%", name:"James Dyson", superpower:"Master of Relentless Improvement",
             superpowerText:"Every iteration makes the next one better.",
             summary:"He built thousands of prototypes before success. While others saw failure, he saw feedback.",
             quote:"\"I wanted to give up almost every day. But one of the things I did when I wanted to give up was to think, why was I giving up? Fear of failure.\"",
@@ -873,7 +873,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Stop aiming for perfect on the first attempt. Ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
             lesson:"High performance isn't about talent alone. It's about showing up, testing, learning, and improving — again and again. The people who consistently excel aren't those who avoid failure; they're the ones who use every attempt to get better.",
           },
-          { id:"bezos", img:"/d10-bezos.png?v=2", imgPos:"center 50%", name:"Jeff Bezos", superpower:"Master of Repeatable Excellence",
+          { id:"bezos", img:"/d10-bezos.jpg", imgPos:"center 50%", name:"Jeff Bezos", superpower:"Master of Repeatable Excellence",
             superpowerText:"Consistency beats occasional brilliance.",
             summary:"He built one of the world's largest companies by obsessing over systems — so that great performance happened at scale, not by accident.",
             quote:"\"If you do build a great experience, customers tell each other about that. Word of mouth is very powerful.\"",
