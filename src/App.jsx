@@ -11,6 +11,7 @@ import { ProgressScreen } from "./screens/ProgressScreen.jsx";
 import { ToolkitScreen } from "./screens/ToolkitScreen.jsx";
 import { QuickPrepFlow } from "./screens/QuickPrepFlow.jsx";
 import { ReflectionScreen } from "./screens/ReflectionScreen.jsx";
+import { IdentityScreen } from "./screens/IdentityScreen.jsx";
 import { Onboarding } from "./screens/Onboarding.jsx";
 import { FloatingNav, TabBar } from "./components/NavComponents.jsx";
 import { Celebrate, WelcomeCard } from "./components/Confetti.jsx";
@@ -277,8 +278,9 @@ reset</button>
         {tab==="sessions" && <SessionsScreen done={done} cur={cur} onStart={startSession} roleId={roleId} dark={dark} DK={DK} isDesktop={isDesktop}/>}
         {tab==="progress" && <ProgressScreen done={done} cur={cur} streak={streak} roleId={roleId} activeRole={activeRole} onChangeRole={(r)=>{setRoleId(r);lsSet("au1_role",r);}} dark={dark} toggleDark={toggleDark} DK={DK} onReset={()=>setConfirmReset(true)} isDesktop={isDesktop} onStart={startSession}/>}
         {tab==="toolkit" && <ToolkitScreen onQuickPrep={() => setView("quickprep")} onStartSession={startSessionAtStep} dark={dark} DK={DK} isDesktop={isDesktop}/>}
+        {tab==="identity" && <IdentityScreen done={done} streak={streak}/>}
       </div>
-      {!isDesktop && <TabBar tab={tab} setTab={setTab} dark={dark}/>}
+      {!isDesktop && <TabBar tab={tab} setTab={setTab} done={done} dark={dark}/>}
     </div>
   );
 }

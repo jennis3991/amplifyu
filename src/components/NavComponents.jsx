@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
+import { getPieceInfo } from '../utils.js';
 
 export function PBar({pct, h=2, color=T.gold}) {
   return (
@@ -9,51 +10,78 @@ export function PBar({pct, h=2, color=T.gold}) {
   );
 }
 
-export function TabBar({tab, setTab}) {
-  const tabs = [
-    { id:"home", label:"Home",
-      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 9L10 3l7 6v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-5h4v5" stroke={a?"#8A9E84":"rgba(247,243,236,0.78)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-    },
-    { id:"sessions", label:"Programme",
-      Icon: ({a}) => { const c = a?"#8A9E84":"rgba(247,243,236,0.78)"; return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5" stroke={c} strokeWidth="2"/><path d="M2.5 7.5h15" stroke={c} strokeWidth="2" strokeLinecap="round"/><path d="M7 2v3M13 2v3" stroke={c} strokeWidth="2" strokeLinecap="round"/><circle cx="6.5" cy="11" r="1" fill={c}/><circle cx="10" cy="11" r="1" fill={c}/><circle cx="13.5" cy="11" r="1" fill={c}/><circle cx="6.5" cy="14" r="1" fill={c}/><circle cx="10" cy="14" r="1" fill={c}/><circle cx="13.5" cy="14" r="1" fill={c}/></svg>; }
-    },
-    { id:"progress", label:"Progress",
-      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15l4-5 3 3 4-6 3 3" stroke={a?"#8A9E84":"rgba(247,243,236,0.78)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-    },
-    { id:"toolkit", label:"Toolkit",
-      Icon: ({a}) => <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="8" width="14" height="9" rx="1" stroke={a?"#8A9E84":"rgba(247,243,236,0.78)"} strokeWidth="2"/><path d="M7 8V6a3 3 0 016 0v2" stroke={a?"#8A9E84":"rgba(247,243,236,0.78)"} strokeWidth="2" strokeLinecap="round"/></svg>
-    },
-  ];
+const NAV_C = "rgba(247,243,236,0.45)";
+const NAV_A = "#8A9E84";
+
+function NavIcon({ id, active }) {
+  const c = active ? NAV_A : NAV_C;
+  if (id === "home")     return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 9L10 3l7 6v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-5h4v5" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+  if (id === "sessions") { return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5" stroke={c} strokeWidth="1.8"/><path d="M2.5 7.5h15" stroke={c} strokeWidth="1.8" strokeLinecap="round"/><path d="M7 2v3M13 2v3" stroke={c} strokeWidth="1.8" strokeLinecap="round"/><circle cx="6.5" cy="11" r="1" fill={c}/><circle cx="10" cy="11" r="1" fill={c}/><circle cx="13.5" cy="11" r="1" fill={c}/><circle cx="6.5" cy="14" r="1" fill={c}/><circle cx="10" cy="14" r="1" fill={c}/><circle cx="13.5" cy="14" r="1" fill={c}/></svg>; }
+  if (id === "progress") return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15l4-5 3 3 4-6 3 3" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+  if (id === "toolkit")  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="8" width="14" height="9" rx="1" stroke={c} strokeWidth="1.8"/><path d="M7 8V6a3 3 0 016 0v2" stroke={c} strokeWidth="1.8" strokeLinecap="round"/></svg>;
+  return null;
+}
+
+export function TabBar({ tab, setTab, done=[], dark }) {
+  const piece = getPieceInfo(done.length).current;
+  const identityActive = tab === "identity";
+
+  const LEFT  = [{ id:"home", label:"Home" }, { id:"sessions", label:"Programme" }];
+  const RIGHT = [{ id:"progress", label:"Progress" }, { id:"toolkit", label:"Toolkit" }];
+
+  function NavBtn({ id, label }) {
+    const active = tab === id;
+    return (
+      <button onClick={() => setTab(id)} style={{
+        flex:1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
+        gap:4, minHeight:60, border:"none", background:"transparent", cursor:"pointer", padding:"10px 4px 8px",
+      }}>
+        <NavIcon id={id} active={active}/>
+        <span style={{ fontSize:9, fontWeight:active?600:400, color:active?NAV_A:NAV_C, fontFamily:"'Inter',sans-serif", letterSpacing:"0.5px", textTransform:"uppercase" }}>{label}</span>
+        {active && <div style={{ width:16, height:1.5, background:NAV_A, borderRadius:1 }}/>}
+      </button>
+    );
+  }
+
   return (
     <div style={{
       position:"relative",
-      background:"#2C2416",
-      borderTop:"1px solid rgba(255,255,255,0.08)",
+      background:"#1A140E",
+      borderTop:"0.5px solid rgba(255,255,255,0.07)",
       display:"flex", alignItems:"stretch",
       zIndex:200,
       paddingBottom:"env(safe-area-inset-bottom,0px)",
-      boxShadow:"0 -4px 20px rgba(0,0,0,0.25)",
+      boxShadow:"0 -8px 32px rgba(0,0,0,0.35)",
+      overflow:"visible",
     }}>
-      {tabs.map(({ id, label, Icon }) => {
-        const active = tab === id;
-        return (
-          <button key={id} onClick={() => setTab(id)} style={{
-            flex:1, display:"flex", flexDirection:"column",
-            alignItems:"center", justifyContent:"center",
-            gap:4, minHeight:56, border:"none",
-            background:"transparent", cursor:"pointer",
-            padding:"10px 4px 10px",
-          }}>
-            <Icon a={active}/>
-            <span style={{
-              fontSize:10, fontWeight: active ? 600 : 400,
-              color: active ? "#8A9E84" : "rgba(247,243,236,0.45)",
-              fontFamily:"'Inter',sans-serif", letterSpacing:"0.01em",
-            }}>{label}</span>
-            {active && <div style={{width:20,height:2,background:"#8A9E84",borderRadius:1,marginTop:1}}/>}
-          </button>
-        );
-      })}
+      {LEFT.map(item => <NavBtn key={item.id} {...item}/>)}
+
+      {/* Identity medallion — centre, rises above bar */}
+      <div style={{ flex:1, position:"relative", display:"flex", justifyContent:"center", alignItems:"stretch" }}>
+        <button
+          onClick={() => setTab("identity")}
+          style={{
+            position:"absolute",
+            bottom:8,
+            width:62, height:62,
+            borderRadius:"50%",
+            background:"linear-gradient(145deg,#2E2418,#191208)",
+            border: identityActive
+              ? "1.5px solid rgba(201,169,110,0.85)"
+              : "1.5px solid rgba(201,169,110,0.45)",
+            boxShadow: identityActive
+              ? "0 -6px 28px rgba(0,0,0,0.55), 0 0 0 3px rgba(201,169,110,0.12), inset 0 1px 0 rgba(255,255,255,0.1)"
+              : "0 -6px 28px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.07)",
+            display:"flex", alignItems:"center", justifyContent:"center",
+            cursor:"pointer", outline:"none", padding:0,
+            zIndex:10,
+          }}
+        >
+          <i className={"ti " + piece.icon} style={{ fontSize:27, color: identityActive ? "#c9a96e" : "rgba(201,169,110,0.75)" }}/>
+        </button>
+      </div>
+
+      {RIGHT.map(item => <NavBtn key={item.id} {...item}/>)}
     </div>
   );
 }
