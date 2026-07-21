@@ -15,33 +15,44 @@ const IC   = "rgba(255,255,255,0.72)";
 
 function NavIcon({ id, active }) {
   const c = active ? GOLD : IC;
-  const s = { stroke:c, strokeWidth:"2.2", strokeLinecap:"round", strokeLinejoin:"round" };
+  const s = { stroke:c, strokeWidth:"2", strokeLinecap:"round", strokeLinejoin:"round" };
+
+  /* Home — peaked roof + walled body + door notch */
   if (id === "home") return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M3 11L12 3l9 8v10a1 1 0 01-1 1H5a1 1 0 01-1-1v-6h5v6" {...s}/>
+      <path d="M3 10.5L12 3l9 7.5" {...s}/>
+      <path d="M5 9V21h4.5v-5.5h5V21H19V9" {...s}/>
     </svg>
   );
+
+  /* Programme — calendar: frame + pins + header bar + 3×2 dot grid */
   if (id === "sessions") return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <rect x="3" y="4" width="18" height="18" rx="2.5" {...s}/>
-      <path d="M3 9.5h18M8 2v4M16 2v4" {...s}/>
-      <circle cx="8.5" cy="14" r="1.4" fill={c}/>
-      <circle cx="12" cy="14" r="1.4" fill={c}/>
-      <circle cx="15.5" cy="14" r="1.4" fill={c}/>
-      <circle cx="8.5" cy="18" r="1.4" fill={c}/>
-      <circle cx="12" cy="18" r="1.4" fill={c}/>
+      <rect x="3" y="4.5" width="18" height="16" rx="2" {...s}/>
+      <path d="M3 9.5h18" {...s}/>
+      <path d="M8 2.5v4M16 2.5v4" {...s}/>
+      <circle cx="8.5"  cy="13.5" r="1.2" fill={c}/>
+      <circle cx="12"   cy="13.5" r="1.2" fill={c}/>
+      <circle cx="15.5" cy="13.5" r="1.2" fill={c}/>
+      <circle cx="8.5"  cy="17.5" r="1.2" fill={c}/>
+      <circle cx="12"   cy="17.5" r="1.2" fill={c}/>
+      <circle cx="15.5" cy="17.5" r="1.2" fill={c}/>
     </svg>
   );
+
+  /* Progress — upward trending line + arrowhead top-right */
   if (id === "progress") return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M3 17.5L8 11.5l4 3 5-7.5" {...s}/>
-      <path d="M15 7h6v5.5" {...s}/>
+      <path d="M3 18L9 12l4 3.5L20 7" {...s}/>
+      <path d="M15 7h5v5" {...s}/>
     </svg>
   );
+
+  /* Toolkit — briefcase: body + handle arc + centre bar */
   if (id === "toolkit") return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <rect x="2" y="9.5" width="20" height="12.5" rx="2" {...s}/>
-      <path d="M8 9.5V7.5a4 4 0 018 0v2" {...s}/>
+      <rect x="2" y="9" width="20" height="13" rx="2" {...s}/>
+      <path d="M8 9V7a4 4 0 018 0v2" {...s}/>
       <path d="M2 14.5h20" {...s}/>
     </svg>
   );
