@@ -10,35 +10,79 @@ export function PBar({pct, h=2, color=T.gold}) {
   );
 }
 
-const NAV_C = "rgba(247,243,236,0.38)";
-const NAV_A = "#c9a96e";
+const GOLD = "#E7C27A";
+const IC   = "rgba(255,255,255,0.72)";
 
 function NavIcon({ id, active }) {
-  const c = active ? NAV_A : NAV_C;
-  if (id === "home")     return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 9L10 3l7 6v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-5h4v5" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>;
-  if (id === "sessions") { return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5" stroke={c} strokeWidth="1.8"/><path d="M2.5 7.5h15" stroke={c} strokeWidth="1.8" strokeLinecap="round"/><path d="M7 2v3M13 2v3" stroke={c} strokeWidth="1.8" strokeLinecap="round"/><circle cx="6.5" cy="11" r="1" fill={c}/><circle cx="10" cy="11" r="1" fill={c}/><circle cx="13.5" cy="11" r="1" fill={c}/><circle cx="6.5" cy="14" r="1" fill={c}/><circle cx="10" cy="14" r="1" fill={c}/><circle cx="13.5" cy="14" r="1" fill={c}/></svg>; }
-  if (id === "progress") return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15l4-5 3 3 4-6 3 3" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>;
-  if (id === "toolkit")  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="8" width="14" height="9" rx="1" stroke={c} strokeWidth="1.8"/><path d="M7 8V6a3 3 0 016 0v2" stroke={c} strokeWidth="1.8" strokeLinecap="round"/></svg>;
+  const c = active ? GOLD : IC;
+  const s = { stroke:c, strokeWidth:"2.2", strokeLinecap:"round", strokeLinejoin:"round" };
+  if (id === "home") return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 11L12 3l9 8v10a1 1 0 01-1 1H5a1 1 0 01-1-1v-6h5v6" {...s}/>
+    </svg>
+  );
+  if (id === "sessions") return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <rect x="3" y="4" width="18" height="18" rx="2.5" {...s}/>
+      <path d="M3 9.5h18M8 2v4M16 2v4" {...s}/>
+      <circle cx="8.5" cy="14" r="1.4" fill={c}/>
+      <circle cx="12" cy="14" r="1.4" fill={c}/>
+      <circle cx="15.5" cy="14" r="1.4" fill={c}/>
+      <circle cx="8.5" cy="18" r="1.4" fill={c}/>
+      <circle cx="12" cy="18" r="1.4" fill={c}/>
+    </svg>
+  );
+  if (id === "progress") return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 17.5L8 11.5l4 3 5-7.5" {...s}/>
+      <path d="M15 7h6v5.5" {...s}/>
+    </svg>
+  );
+  if (id === "toolkit") return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <rect x="2" y="9.5" width="20" height="12.5" rx="2" {...s}/>
+      <path d="M8 9.5V7.5a4 4 0 018 0v2" {...s}/>
+      <path d="M2 14.5h20" {...s}/>
+    </svg>
+  );
   return null;
 }
 
 export function TabBar({ tab, setTab, done=[], dark }) {
   const piece = getPieceInfo(done.length).current;
   const identityActive = tab === "identity";
+  const NAV_ITEMS = [
+    { id:"home",     label:"Home"      },
+    { id:"sessions", label:"Programme" },
+    { id:"progress", label:"Progress"  },
+    { id:"toolkit",  label:"Toolkit"   },
+  ];
 
-  const LEFT  = [{ id:"home", label:"Home" }, { id:"sessions", label:"Programme" }];
-  const RIGHT = [{ id:"progress", label:"Progress" }, { id:"toolkit", label:"Toolkit" }];
-
-  function NavBtn({ id, label }) {
+  function SideBtn({ id, label }) {
     const active = tab === id;
     return (
       <button onClick={() => setTab(id)} style={{
-        flex:1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
-        gap:4, minHeight:60, border:"none", background:"transparent", cursor:"pointer", padding:"10px 4px 8px",
+        flex:1, position:"relative",
+        display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
+        gap:6, border:"none", background:"transparent", cursor:"pointer",
+        padding:"14px 4px 12px", minHeight:92,
       }}>
+        {active && (
+          <div style={{
+            position:"absolute", top:"50%", left:"50%",
+            transform:"translate(-50%,-54%)",
+            width:52, height:52, borderRadius:"50%",
+            background:"radial-gradient(circle at 50% 40%, rgba(231,194,122,0.18) 0%, rgba(231,194,122,0.06) 55%, transparent 78%)",
+            pointerEvents:"none",
+          }}/>
+        )}
         <NavIcon id={id} active={active}/>
-        <span style={{ fontSize:9, fontWeight:active?600:400, color:active?NAV_A:NAV_C, fontFamily:"'Inter',sans-serif", letterSpacing:"0.5px", textTransform:"uppercase" }}>{label}</span>
-        {active && <div style={{ width:16, height:1.5, background:NAV_A, borderRadius:1 }}/>}
+        <span style={{
+          fontFamily:"'Inter',sans-serif", fontSize:10, fontWeight:500,
+          letterSpacing:"1.8px", textTransform:"uppercase",
+          color: active ? GOLD : IC,
+          position:"relative",
+        }}>{label}</span>
       </button>
     );
   }
@@ -46,40 +90,71 @@ export function TabBar({ tab, setTab, done=[], dark }) {
   return (
     <div style={{
       position:"relative",
-      background:"#0E0B08",
-      borderRadius:"20px 20px 0 0",
+      background:"linear-gradient(to bottom, #28221D 0%, #171411 100%)",
+      borderRadius:"28px 28px 0 0",
       display:"flex", alignItems:"stretch",
       zIndex:200,
       paddingBottom:"env(safe-area-inset-bottom,0px)",
-      boxShadow:"0 -2px 0 rgba(201,169,110,0.12), 0 -16px 48px rgba(0,0,0,0.5)",
+      boxShadow:"0 -24px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.055)",
       overflow:"visible",
+      minHeight:92,
     }}>
-      {LEFT.map(item => <NavBtn key={item.id} {...item}/>)}
+      {/* inner top highlight arc */}
+      <div style={{
+        position:"absolute", top:0, left:"10%", right:"10%", height:1,
+        background:"linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)",
+        borderRadius:1, pointerEvents:"none",
+      }}/>
 
-      {/* Identity medallion — centre, rises above bar */}
-      <div style={{ flex:1, position:"relative", display:"flex", justifyContent:"center", alignItems:"stretch" }}>
+      {NAV_ITEMS.slice(0,2).map(item => <SideBtn key={item.id} {...item}/>)}
+
+      {/* Centre — Identity medallion */}
+      <div style={{ flex:1, position:"relative", minHeight:92 }}>
         <button
           onClick={() => setTab("identity")}
           style={{
-            position:"absolute",
-            bottom:10,
-            width:66, height:66,
-            borderRadius:"50%",
-            background:"linear-gradient(160deg,#3A2C1C,#1A120A)",
-            border:"2px solid rgba(201,169,110,0.7)",
-            boxShadow: identityActive
-              ? "0 -4px 24px rgba(201,169,110,0.25), 0 4px 16px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12)"
-              : "0 -4px 20px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08)",
-            display:"flex", alignItems:"center", justifyContent:"center",
-            cursor:"pointer", outline:"none", padding:0,
-            zIndex:10,
+            position:"absolute", top:-18, left:"50%", transform:"translateX(-50%)",
+            width:70, height:70, borderRadius:"50%",
+            padding:0, border:"none", background:"none",
+            cursor:"pointer", outline:"none", zIndex:10,
           }}
         >
-          <i className={"ti " + piece.icon} style={{ fontSize:30, color: identityActive ? "#c9a96e" : "#b8934a" }}/>
+          {/* Layer 1: outer dark bronze */}
+          <div style={{
+            width:"100%", height:"100%", borderRadius:"50%",
+            background:"linear-gradient(145deg, #3D2E1E, #1A1108)",
+            boxShadow: identityActive
+              ? "0 0 0 1px rgba(200,158,80,0.5), 0 6px 28px rgba(0,0,0,0.85), inset 0 1px 1px rgba(255,255,255,0.08)"
+              : "0 0 0 1px rgba(180,140,60,0.3), 0 6px 28px rgba(0,0,0,0.85), inset 0 1px 1px rgba(255,255,255,0.06)",
+            display:"flex", alignItems:"center", justifyContent:"center",
+            padding:4,
+          }}>
+            {/* Layer 2: brushed brass ring */}
+            <div style={{
+              width:"100%", height:"100%", borderRadius:"50%",
+              background:"conic-gradient(from 130deg, #6B4D12, #C9A55A, #E8C870, #D4A84A, #7A5814, #C9A55A, #6B4D12)",
+              display:"flex", alignItems:"center", justifyContent:"center",
+              padding:3,
+            }}>
+              {/* Layer 3: inner dark marble */}
+              <div style={{
+                width:"100%", height:"100%", borderRadius:"50%",
+                background:"radial-gradient(circle at 38% 32%, #2E2820, #17130E, #0B0907)",
+                display:"flex", alignItems:"center", justifyContent:"center",
+              }}>
+                <i className={"ti " + piece.icon} style={{
+                  fontSize:28,
+                  color: identityActive ? "#F0E4CC" : "#C8B890",
+                  filter:"drop-shadow(0 1px 4px rgba(0,0,0,0.95)) drop-shadow(0 -0.5px 1px rgba(255,240,200,0.08))",
+                  position:"relative", top:1,
+                }}/>
+              </div>
+            </div>
+          </div>
         </button>
       </div>
 
-      {RIGHT.map(item => <NavBtn key={item.id} {...item}/>)}
+      {NAV_ITEMS.slice(2).map(item => <SideBtn key={item.id} {...item}/>)}
     </div>
   );
 }
