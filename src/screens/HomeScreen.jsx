@@ -402,7 +402,9 @@ finishDate + ".";
 
       {/* ── Rank strip — fixed directly under header ── */}
       <div style={{position:"fixed",top:NAV_H,left:0,right:0,zIndex:199,height:STRIP_H,background:"#1A1710",borderBottom:"0.5px solid rgba(255,255,255,0.07)",display:"flex",alignItems:"center",padding:"0 20px",gap:8,overflow:"hidden"}}>
-        <i className={"ti "+pieceInfo.current.icon} style={{fontSize:14,color:"#c9a961",flexShrink:0}}/>
+        <div style={{width:22,height:22,borderRadius:"50%",overflow:"hidden",position:"relative",flexShrink:0}}>
+          <img src={pieceInfo.current.img} alt={pieceInfo.current.name} style={{position:"absolute",width:"126%",height:"126%",top:"-13%",left:"-13%",objectFit:"cover"}}/>
+        </div>
         <span style={{fontFamily:T.sans,fontSize:11,fontWeight:500,color:"rgba(255,255,255,0.75)",whiteSpace:"nowrap",flexShrink:0}}>{pieceInfo.current.name}</span>
         {pieceInfo.next&&<span style={{fontFamily:T.sans,fontSize:11,color:"rgba(255,255,255,0.35)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",minWidth:0}}>· {pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"} to {pieceInfo.next.name}</span>}
         <span style={{marginLeft:"auto",fontFamily:T.sans,fontSize:11,fontWeight:500,color:"#c9a961",cursor:"pointer",flexShrink:0,padding:"4px 0 4px 12px"}} onClick={()=>document.getElementById("journey-section")?.scrollIntoView({behavior:"smooth"})}>Journey ›</span>
