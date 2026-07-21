@@ -318,7 +318,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
       {/* Banner image */}
       <div style={{ width: "100%", height: 220, overflow: "hidden", flexShrink: 0 }}>
-        <img src="/profile-banner-3.png" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "25% center" }}/>
+        <img src="/profile-banner-mobile.jpg" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "center center" }}/>
       </div>
 
       {/* Header */}

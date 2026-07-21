@@ -416,10 +416,9 @@ export function Onboarding({onDone}) {
   if (phase === "role") {
     return (
       <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
-        <div style={{position:"relative",height:300,flexShrink:0,overflow:"hidden"}}>
-          <img src="/ob-role.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>
-          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.35)"}}/>
-          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 55%)"}}/>
+        <div style={{position:"relative",flexShrink:0}}>
+          <img src="/ob-role.jpg" alt="" style={{display:"block",width:"100%",height:"auto"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 45%)"}}/>
           <div style={{position:"absolute",bottom:20,left:24,right:24}}>
             <div style={{fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"3.5px",fontFamily:T.sans,marginBottom:10}}>Almost there.</div>
             <div style={{display:"flex",gap:6}}>
