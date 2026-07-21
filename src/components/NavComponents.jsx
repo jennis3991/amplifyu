@@ -10,8 +10,8 @@ export function PBar({pct, h=2, color=T.gold}) {
   );
 }
 
-const NAV_C = "rgba(247,243,236,0.45)";
-const NAV_A = "#8A9E84";
+const NAV_C = "rgba(247,243,236,0.38)";
+const NAV_A = "#c9a96e";
 
 function NavIcon({ id, active }) {
   const c = active ? NAV_A : NAV_C;
@@ -46,12 +46,12 @@ export function TabBar({ tab, setTab, done=[], dark }) {
   return (
     <div style={{
       position:"relative",
-      background:"#1A140E",
-      borderTop:"0.5px solid rgba(255,255,255,0.07)",
+      background:"#0E0B08",
+      borderRadius:"20px 20px 0 0",
       display:"flex", alignItems:"stretch",
       zIndex:200,
       paddingBottom:"env(safe-area-inset-bottom,0px)",
-      boxShadow:"0 -8px 32px rgba(0,0,0,0.35)",
+      boxShadow:"0 -2px 0 rgba(201,169,110,0.12), 0 -16px 48px rgba(0,0,0,0.5)",
       overflow:"visible",
     }}>
       {LEFT.map(item => <NavBtn key={item.id} {...item}/>)}
@@ -62,22 +62,20 @@ export function TabBar({ tab, setTab, done=[], dark }) {
           onClick={() => setTab("identity")}
           style={{
             position:"absolute",
-            bottom:8,
-            width:62, height:62,
+            bottom:10,
+            width:66, height:66,
             borderRadius:"50%",
-            background:"linear-gradient(145deg,#2E2418,#191208)",
-            border: identityActive
-              ? "1.5px solid rgba(201,169,110,0.85)"
-              : "1.5px solid rgba(201,169,110,0.45)",
+            background:"linear-gradient(160deg,#3A2C1C,#1A120A)",
+            border:"2px solid rgba(201,169,110,0.7)",
             boxShadow: identityActive
-              ? "0 -6px 28px rgba(0,0,0,0.55), 0 0 0 3px rgba(201,169,110,0.12), inset 0 1px 0 rgba(255,255,255,0.1)"
-              : "0 -6px 28px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.07)",
+              ? "0 -4px 24px rgba(201,169,110,0.25), 0 4px 16px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12)"
+              : "0 -4px 20px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08)",
             display:"flex", alignItems:"center", justifyContent:"center",
             cursor:"pointer", outline:"none", padding:0,
             zIndex:10,
           }}
         >
-          <i className={"ti " + piece.icon} style={{ fontSize:27, color: identityActive ? "#c9a96e" : "rgba(201,169,110,0.75)" }}/>
+          <i className={"ti " + piece.icon} style={{ fontSize:30, color: identityActive ? "#c9a96e" : "#b8934a" }}/>
         </button>
       </div>
 
