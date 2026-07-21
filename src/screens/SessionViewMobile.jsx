@@ -1528,7 +1528,7 @@ T.goldDark : T2.text4,
       })()}
       {isD1 && step==="Example" && (()=>{
         const D1_EDITORIAL = [
-          { id:"attenborough", img:"/d11-attenborough.png?v=2", name:"Sir David Attenborough", superpower:"Master of Clarity",
+          { id:"attenborough", img:"/d11-attenborough.jpg", name:"Sir David Attenborough", superpower:"Master of Clarity",
             superpowerText:"Makes the complex feel beautifully simple.",
             summary:"He explains the natural world so everyone can see it.",
             quote:"\"The rainforest is like a vast, green lung breathing life into our planet.\"",
@@ -1539,7 +1539,7 @@ T.goldDark : T2.text4,
             technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",
             lesson:"Clarity comes from choosing words that create images, not confusion. The best explainers make you see what they’re saying.",
           },
-          { id:"branson", img:"/d11-branson.png?v=2", name:"Sir Richard Branson", superpower:"Conversation over Corporation",
+          { id:"branson", img:"/d11-branson.jpg", name:"Sir Richard Branson", superpower:"Conversation over Corporation",
             superpowerText:"Makes big ideas feel personal.",
             summary:"He speaks like a friend — even when addressing millions.",
             quote:"\"We just try to make things better for people. If we do that, they’ll choose us.\"",
