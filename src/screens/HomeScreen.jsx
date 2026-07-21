@@ -395,47 +395,54 @@ finishDate + ".";
         <span style={{marginLeft:"auto",fontFamily:T.sans,fontSize:11,fontWeight:500,color:"#c9a961",cursor:"pointer",flexShrink:0,padding:"4px 0 4px 12px"}} onClick={()=>document.getElementById("journey-section")?.scrollIntoView({behavior:"smooth"})}>Journey ›</span>
       </div>
 
-      {/* ── Hero image — vh-capped ── */}
-      <div style={{marginTop:NAV_H+STRIP_H,background:"#0a0805",height:"clamp(160px,22vh,200px)",overflow:"hidden",position:"relative"}}>
-        <img src="/home-hero-mobile.jpg" alt="The Six Pillars of Communication Mastery" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",display:"block"}}/>
+      {/* ── Hero image — full natural height ── */}
+      <div style={{marginTop:NAV_H+STRIP_H,background:"#0a0805",position:"relative"}}>
+        <img src="/home-hero-mobile.jpg" alt="The Six Pillars of Communication Mastery" style={{width:"100%",height:"auto",display:"block"}}/>
       </div>
 
-      {/* ── CTA bar — tightened ── */}
+      {/* ── Static CTA bar ── */}
       <div style={{background:T2.bg,borderBottom:"1px solid rgba(138,158,132,0.15)"}}>
-        <div style={{padding:"16px 24px 20px",display:"flex",flexDirection:"column",alignItems:"stretch",gap:12}}>
+        <div style={{padding:"24px 24px",display:"flex",flexDirection:"column",alignItems:"stretch",gap:16}}>
           <div style={{textAlign:"center"}}>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:5}}>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:6}}>
               {finished?"Programme Complete":`Day ${cur} — ${lesson?.tag??""}${todayDone?"  ✓":""}`}
             </div>
-            <div style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T.ink,lineHeight:1.2}}>
+            <div style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T.ink,lineHeight:1.2}}>
               {finished?"You communicate differently now.":lesson?.title}
             </div>
           </div>
-          <button onClick={()=>onStart(finished?1:cur)} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,width:"100%",background:T.ink,color:T.bg,border:"none",borderRadius:6,padding:"14px 24px",fontSize:14,fontWeight:600,fontFamily:T.sans,cursor:"pointer",transition:"all 0.25s ease"}}>
+          <button onClick={()=>onStart(finished?1:cur)} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,width:"100%",background:T.ink,color:T.bg,border:"none",borderRadius:6,padding:"16px 24px",fontSize:14,fontWeight:600,fontFamily:T.sans,cursor:"pointer",transition:"all 0.25s ease"}}>
             {finished?"Revisit Day 1":todayDone?"Review Session":"Begin Session"} →
           </button>
-          {/* Scroll affordance */}
-          {showAffordance&&(
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:5,paddingTop:4,paddingBottom:2}}>
-              <style>{`@keyframes bounceDown{0%,100%{transform:translateY(0);opacity:0.6}50%{transform:translateY(5px);opacity:1}}`}</style>
-              <span style={{fontFamily:T.sans,fontSize:10,letterSpacing:"2.5px",color:"#8A9E84",textTransform:"uppercase",fontWeight:500}}>Your Journey</span>
-              <svg width="16" height="10" viewBox="0 0 16 10" fill="none" style={{animation:"bounceDown 1.6s ease infinite"}}>
-                <path d="M1 1.5l7 7 7-7" stroke="#8A9E84" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* ── SECTION 2: Journey (moved up) ── */}
-      <section id="journey-section" style={{padding:"32px 24px 40px",borderBottom:"1px solid "+T2.divider,background:T2.bg}}>
-        <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Journey</div>
+      {/* ── SECTION 2: Today's Focus ── */}
+      <section style={{padding:"32px 24px 40px",borderBottom:"1px solid "+T2.divider,background:T2.bg}}>
+        <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Today's Focus</div>
         <div style={{width:20,height:1,background:T.gold,marginBottom:24,opacity:0.5}}/>
+        <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:14,fontFamily:T.sans}}>{insight.label}</div>
+        <h2 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,36px)",fontWeight:500,color:T2.text,letterSpacing:"-1px",lineHeight:1.15,marginBottom:16}}>{insight.headline}</h2>
+        <p style={{fontSize:15,color:T2.text3,lineHeight:1.8,fontFamily:T.sans,fontWeight:300,marginBottom:0}}>{insight.body}</p>
+        {showAffordance&&(
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:5,marginTop:24}}>
+            <style>{`@keyframes bounceDown{0%,100%{transform:translateY(0);opacity:0.6}50%{transform:translateY(5px);opacity:1}}`}</style>
+            <svg width="16" height="10" viewBox="0 0 16 10" fill="none" style={{animation:"bounceDown 1.6s ease infinite"}}>
+              <path d="M1 1.5l7 7 7-7" stroke="#8A9E84" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        )}
+      </section>
+
+      {/* ── SECTION 3: Journey ── */}
+      <section id="journey-section" style={{padding:"48px 24px 56px",background:T2.bg}}>
+        <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Journey</div>
+        <div style={{width:20,height:1,background:T.gold,marginBottom:28,opacity:0.5}}/>
         <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} done={done} T={T} mobile={true} />
       </section>
 
-      {/* ── SECTION 3: All Sessions ── */}
-      <section style={{padding:"32px 24px 48px",borderBottom:"1px solid "+T2.divider,background:T2.bg}}>
+      {/* ── SECTION 4: All Sessions ── */}
+      <section style={{padding:"32px 24px 56px",borderTop:"1px solid "+T2.divider,background:T2.bg}}>
         <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>All Sessions</div>
         <div style={{width:20,height:1,background:T.gold,marginBottom:24,opacity:0.5}}/>
         <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:"18px 16px"}}>
@@ -474,15 +481,6 @@ finishDate + ".";
             </div>
           )}
         </div>
-      </section>
-
-      {/* ── SECTION 4: Today's Focus (moved to bottom) ── */}
-      <section style={{padding:"32px 24px 56px",background:T2.bg}}>
-        <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Today's Focus</div>
-        <div style={{width:20,height:1,background:T.gold,marginBottom:24,opacity:0.5}}/>
-        <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:14,fontFamily:T.sans}}>{insight.label}</div>
-        <h2 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,36px)",fontWeight:500,color:T2.text,letterSpacing:"-1px",lineHeight:1.15,marginBottom:16}}>{insight.headline}</h2>
-        <p style={{fontSize:15,color:T2.text3,lineHeight:1.8,fontFamily:T.sans,fontWeight:300}}>{insight.body}</p>
       </section>
 
     </div>
