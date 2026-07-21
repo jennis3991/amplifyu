@@ -3837,7 +3837,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D12_EDITORIAL = [
-          { id:"kennedy", img:"/d12-kennedy.png", imgPos:"center 35%", name:"Kennedy vs Nixon", superpower:"Master of Executive Presence",
+          { id:"kennedy", img:"/d12-kennedy.jpg", imgPos:"center 35%", name:"Kennedy vs Nixon", superpower:"Master of Executive Presence",
             superpowerText:"People don't just hear confidence. They see it.",
             summary:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio believed Nixon won. People who watched on television overwhelmingly believed Kennedy won. The difference wasn't their arguments — it was their presence.",
             quote:"\"People don't just hear confidence. They see it.\"",
@@ -3849,7 +3849,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Before your next important conversation, imagine the camera is already on you. Stand tall, relax your shoulders, make steady eye contact and pause before you begin speaking. Let people see confidence before they hear it.",
             lesson:"The Kennedy–Nixon debate reminds us that communication is never just about words. Every movement, expression and pause tells its own story. Great communicators understand that presence begins long before the first sentence — and often determines how every sentence that follows is received.",
           },
-          { id:"jobs", img:"/d12-jobs.png?v=2", imgPos:"center 40%", name:"Steve Jobs", superpower:"Master of Purposeful Presence",
+          { id:"jobs", img:"/d12-jobs.jpg", imgPos:"center 40%", name:"Steve Jobs", superpower:"Master of Purposeful Presence",
             superpowerText:"When every movement has purpose, every message carries more weight.",
             summary:"On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message — not the speaker.",
             quote:"\"Confident body language creates clarity. Calm presence made complex ideas feel simple and memorable.\"",
