@@ -2002,7 +2002,7 @@ T.goldDark : T2.text4,
       )}
       {isD5 && step==="Example" && (()=>{
         const D5_EDITORIAL = [
-          { id:"jensen", img:"/d5-jensen.png?v=2", name:"Jensen Huang", superpower:"PRE in Every Pitch",
+          { id:"jensen", img:"/d5-jensen.jpg", name:"Jensen Huang", superpower:"PRE in Every Pitch",
             superpowerText:"Point. Reason. Example. Every time.",
             summary:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof.",
             quote:"\"I don't need to build a killer product overnight, I just need to build a winning product.\"",
@@ -2013,7 +2013,7 @@ T.goldDark : T2.text4,
             technique:"Lead with your point — don't build to it. Then give your reason in one sentence. Then make it concrete with a real example or analogy. Stop there.",
             lesson:"PRE isn't a template — it's how clear thinkers communicate. Your point tells people where to look. Your reason tells them why it matters. Your example makes it stick.",
           },
-          { id:"indra", img:"/d5-indra.png?v=2", name:"Indra Nooyi", superpower:"Performance With Purpose",
+          { id:"indra", img:"/d5-indra.jpg", name:"Indra Nooyi", superpower:"Performance With Purpose",
             superpowerText:"Big belief. Clear reason. Concrete execution.",
             summary:"Two decades leading PepsiCo — structured the same way every time.",
             quote:"\"Performance must be married with purpose.\"",
