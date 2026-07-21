@@ -2694,7 +2694,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D9_EDITORIAL = [
-          { id:"william", img:"/d9-william.png?v=2", imgPos:"center 50%", name:"Prince William", superpower:"Master of Connection Through Listening",
+          { id:"william", img:"/d9-william.jpg", imgPos:"center 50%", name:"Prince William", superpower:"Master of Connection Through Listening",
             superpowerText:"Makes others feel heard, not just met.",
             summary:"Whether speaking with emergency responders, veterans, or young people, he creates space for others to share — and they remember how he made them feel.",
             quote:"\"Mental health is just as important as physical health.\"",
@@ -2706,7 +2706,7 @@ setAmbitionSaved(true); } catch {}
             technique:"In your next conversation, focus less on what you'll say next and more on understanding the other person's perspective. Ask one more question than you normally would. Let silence do some of the work.",
             lesson:"Strong communicators don't connect because they speak the most. They connect because they make others feel valued. Listening isn't the pause between speaking — it's where connection begins.",
           },
-          { id:"jacinda", img:"/d9-jacinda.png?v=2", imgPos:"center 50%", name:"Jacinda Ardern", superpower:"Master of Empathetic Leadership",
+          { id:"jacinda", img:"/d9-jacinda.jpg", imgPos:"center 50%", name:"Jacinda Ardern", superpower:"Master of Empathetic Leadership",
             superpowerText:"Warmth, humility, and authenticity — every time.",
             summary:"She communicates with warmth, empathy, and authenticity. She doesn't create distance between herself and others — she closes it.",
             quote:"\"One of the criticisms I've faced over the years is that I'm not aggressive enough or assertive enough, or maybe somehow, because I'm empathetic, it means I'm weak. I totally rebel against that.\"",
