@@ -15,11 +15,11 @@ const IC   = "rgba(255,255,255,0.72)";
 
 function NavIcon({ id, active }) {
   const c = active ? GOLD : IC;
-  const s = { stroke:c, strokeWidth:"1.7", strokeLinecap:"round", strokeLinejoin:"round" };
+  const s = { stroke:c, strokeWidth:"1.5", strokeLinecap:"round", strokeLinejoin:"round" };
 
   /* Home — peaked roof + walled body + door notch */
   if (id === "home") return (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
       <path d="M3 10.5L12 3l9 7.5" {...s}/>
       <path d="M5 9V21h4.5v-5.5h5V21H19V9" {...s}/>
     </svg>
@@ -27,7 +27,7 @@ function NavIcon({ id, active }) {
 
   /* Programme — calendar: frame + pins + header bar + 3×2 dot grid */
   if (id === "sessions") return (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
       <rect x="3" y="4.5" width="18" height="16" rx="2" {...s}/>
       <path d="M3 9.5h18" {...s}/>
       <path d="M8 2.5v4M16 2.5v4" {...s}/>
@@ -42,7 +42,7 @@ function NavIcon({ id, active }) {
 
   /* Progress — upward trending line + arrowhead top-right */
   if (id === "progress") return (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
       <path d="M3 18L9 12l4 3.5L20 7" {...s}/>
       <path d="M15 7h5v5" {...s}/>
     </svg>
@@ -50,7 +50,7 @@ function NavIcon({ id, active }) {
 
   /* Toolkit — briefcase: body + handle arc + centre bar */
   if (id === "toolkit") return (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
       <rect x="2" y="9" width="20" height="13" rx="2" {...s}/>
       <path d="M8 9V7a4 4 0 018 0v2" {...s}/>
       <path d="M2 14.5h20" {...s}/>
@@ -75,8 +75,8 @@ export function TabBar({ tab, setTab, done=[], dark }) {
       <button onClick={() => setTab(id)} style={{
         flex:1, position:"relative",
         display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
-        gap:6, border:"none", background:"transparent", cursor:"pointer",
-        padding:"14px 4px 12px", minHeight:92,
+        gap:5, border:"none", background:"transparent", cursor:"pointer",
+        padding:"10px 4px 8px", minHeight:72,
       }}>
         {active && (
           <div style={{
@@ -89,8 +89,8 @@ export function TabBar({ tab, setTab, done=[], dark }) {
         )}
         <NavIcon id={id} active={active}/>
         <span style={{
-          fontFamily:"'Inter',sans-serif", fontSize:8.5, fontWeight:500,
-          letterSpacing:"1.6px", textTransform:"uppercase",
+          fontFamily:"'Inter',sans-serif", fontSize:7.5, fontWeight:500,
+          letterSpacing:"1.4px", textTransform:"uppercase",
           color: active ? GOLD : IC,
           position:"relative",
         }}>{label}</span>
@@ -108,7 +108,7 @@ export function TabBar({ tab, setTab, done=[], dark }) {
       paddingBottom:"env(safe-area-inset-bottom,0px)",
       boxShadow:"0 -24px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.055)",
       overflow:"visible",
-      minHeight:92,
+      minHeight:72,
     }}>
       {/* inner top highlight arc */}
       <div style={{
@@ -120,12 +120,12 @@ export function TabBar({ tab, setTab, done=[], dark }) {
       {NAV_ITEMS.slice(0,2).map(item => <SideBtn key={item.id} {...item}/>)}
 
       {/* Centre — Identity medallion */}
-      <div style={{ flex:1, position:"relative", minHeight:92 }}>
+      <div style={{ flex:1, position:"relative", minHeight:72 }}>
         <button
           onClick={() => setTab("identity")}
           style={{
-            position:"absolute", top:-18, left:"50%", transform:"translateX(-50%)",
-            width:70, height:70, borderRadius:"50%",
+            position:"absolute", top:-14, left:"50%", transform:"translateX(-50%)",
+            width:58, height:58, borderRadius:"50%",
             padding:0, border:"none", background:"none",
             cursor:"pointer", outline:"none", zIndex:10,
           }}
@@ -154,7 +154,7 @@ export function TabBar({ tab, setTab, done=[], dark }) {
                 display:"flex", alignItems:"center", justifyContent:"center",
               }}>
                 <i className={"ti " + piece.icon} style={{
-                  fontSize:28,
+                  fontSize:22,
                   color: identityActive ? "#F0E4CC" : "#C8B890",
                   filter:"drop-shadow(0 1px 4px rgba(0,0,0,0.95)) drop-shadow(0 -0.5px 1px rgba(255,240,200,0.08))",
                   position:"relative", top:1,
