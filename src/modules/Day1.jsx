@@ -1336,6 +1336,13 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
             </div>
           </div>
         </div>}
+        {rawText1&&<div style={{marginTop:12,borderTop:"0.5px solid "+T2.border,paddingTop:10}}>
+          <button onClick={()=>setShowTranscript(s=>!s)} style={{background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:5,fontFamily:T.sans,fontSize:10,color:T2.text3,fontWeight:500}}>
+            <span>{showTranscript?"Hide transcript":"View transcript"}</span>
+            <span style={{fontSize:9}}>{showTranscript?"↑":"↓"}</span>
+          </button>
+          {showTranscript&&<p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,margin:"10px 0 0",background:"rgba(44,36,22,0.04)",borderRadius:4,padding:"10px 12px"}}>{rawText1}</p>}
+        </div>}
       </div>
 
       {/* 4 CLARITY PROFILE */}

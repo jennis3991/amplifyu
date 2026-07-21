@@ -112,6 +112,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [audioURL, setAudioURL] = useState(null);
   const [playing, setPlaying] = useState(false);
+  const [showTranscript, setShowTranscript] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
   const [waveAnim, setWaveAnim] = useState(0);
   const [selectedFocus, setSelectedFocus] = useState([]);
@@ -617,6 +618,13 @@ export function D2SimWidget({T, T2, isDesktop}) {
             </div>
           </div>
         </div>
+        {rawText&&<div style={{marginTop:12,borderTop:"0.5px solid "+T2.border,paddingTop:10}}>
+          <button onClick={()=>setShowTranscript(s=>!s)} style={{background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:5,fontFamily:T.sans,fontSize:10,color:T2.text3,fontWeight:500}}>
+            <span>{showTranscript?"Hide transcript":"View transcript"}</span>
+            <span style={{fontSize:9}}>{showTranscript?"↑":"↓"}</span>
+          </button>
+          {showTranscript&&<p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,margin:"10px 0 0",background:"rgba(44,36,22,0.04)",borderRadius:4,padding:"10px 12px"}}>{rawText}</p>}
+        </div>}
       </div>
       {/* 6 FOCUS NEXT ROUND */}
       <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
