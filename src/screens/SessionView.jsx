@@ -3362,7 +3362,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D6_EDITORIAL = [
-          { id:"hamilton", img:"/d6-hamilton.png?v=2", imgPos:"center 50%", name:"Lewis Hamilton", superpower:"Master of Composure Under Pressure",
+          { id:"hamilton", img:"/d6-hamilton.jpg", imgPos:"center 50%", name:"Lewis Hamilton", superpower:"Master of Composure Under Pressure",
             superpowerText:"Calm when every reason says otherwise.",
             summary:"Seven world championships — and his most powerful moment was how he handled losing one.",
             quote:"\"Firstly, a big congratulations to Max.\"",
@@ -3374,7 +3374,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Before responding in a high-pressure moment, give yourself one breath. Ask: what do I want people to remember about how I handled this? Respond to that — not to the emotion in the room.",
             lesson:"Emotional control is often most visible when you have every reason to lose it. Pressure doesn't create character. It reveals it.",
           },
-          { id:"amal", img:"/d6-amal.png?v=2", imgPos:"center 50%", name:"Amal Clooney", superpower:"Master of Composure Under Pressure",
+          { id:"amal", img:"/d6-amal.jpg", imgPos:"center 50%", name:"Amal Clooney", superpower:"Master of Composure Under Pressure",
             superpowerText:"Every word chosen. Every sentence deliberate.",
             summary:"She argues the world's most consequential legal cases — calm, precise and measured when the stakes couldn't be higher.",
             quote:"\"Pressure rarely rewards the loudest voice. It rewards the clearest mind.\"",
