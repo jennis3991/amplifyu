@@ -25,16 +25,22 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
             const isNext = i === pieceInfo.currentIndex + 1;
             const isPast = i < pieceInfo.currentIndex;
             return (
-              <div key={piece.name} style={{ position:"relative", zIndex:1 }}>
+              <div key={piece.name} style={{
+                position:"relative", zIndex:1,
+                width:32, height:32, borderRadius:"50%",
+                background:"#17140f",
+                display:"flex", alignItems:"center", justifyContent:"center",
+              }}>
                 <div style={{
                   width:28, height:28, borderRadius:"50%", overflow:"hidden",
                   border: isCurrent ? "1.5px solid #c9a961" : isNext ? "1.5px solid rgba(201,169,97,0.4)" : "1.5px solid rgba(255,255,255,0.1)",
-                  opacity: isCurrent ? 1 : isPast ? 0.9 : 0.35,
-                  position:"relative",
+                  position:"relative", background:"#0D0B08",
+                  flexShrink:0,
                 }}>
                   <img src={piece.img} alt={piece.name} style={{
                     position:"absolute", width:"126%", height:"126%",
                     top:"-13%", left:"-13%", objectFit:"cover",
+                    opacity: isCurrent ? 1 : isPast ? 0.9 : 0.3,
                   }}/>
                 </div>
               </div>

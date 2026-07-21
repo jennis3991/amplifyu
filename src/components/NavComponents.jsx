@@ -11,10 +11,13 @@ export function PBar({pct, h=2, color=T.gold}) {
 }
 
 const GOLD = "#E7C27A";
+const SAGE = "#8A9E84";
 const IC   = "rgba(255,255,255,0.72)";
 
-function NavIcon({ id, active }) {
-  const c = active ? GOLD : IC;
+function activeColor(id) { return id === "home" ? GOLD : SAGE; }
+
+function NavIcon({ id, active, color }) {
+  const c = active ? (color || GOLD) : IC;
   const s = { stroke:c, strokeWidth:"1.5", strokeLinecap:"round", strokeLinejoin:"round" };
 
   /* Home — peaked roof + walled body + door notch */
@@ -71,6 +74,8 @@ export function TabBar({ tab, setTab, done=[], dark }) {
 
   function SideBtn({ id, label }) {
     const active = tab === id;
+    const ac = activeColor(id);
+    const pillRgb = id === "home" ? "231,194,122" : "138,158,132";
     return (
       <button onClick={() => setTab(id)} style={{
         flex:1, position:"relative",
@@ -83,15 +88,15 @@ export function TabBar({ tab, setTab, done=[], dark }) {
             position:"absolute", top:"50%", left:"50%",
             transform:"translate(-50%,-54%)",
             width:52, height:52, borderRadius:"50%",
-            background:"radial-gradient(circle at 50% 40%, rgba(231,194,122,0.18) 0%, rgba(231,194,122,0.06) 55%, transparent 78%)",
+            background:`radial-gradient(circle at 50% 40%, rgba(${pillRgb},0.18) 0%, rgba(${pillRgb},0.06) 55%, transparent 78%)`,
             pointerEvents:"none",
           }}/>
         )}
-        <NavIcon id={id} active={active}/>
+        <NavIcon id={id} active={active} color={ac}/>
         <span style={{
           fontFamily:"'Inter',sans-serif", fontSize:7.5, fontWeight:500,
           letterSpacing:"1.4px", textTransform:"uppercase",
-          color: active ? GOLD : IC,
+          color: active ? ac : IC,
           position:"relative",
         }}>{label}</span>
       </button>
