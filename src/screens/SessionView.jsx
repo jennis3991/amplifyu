@@ -2483,7 +2483,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D8_EDITORIAL = [
-          { id:"obama", img:"/d8-obama.png?v=2", imgPos:"center 40%", name:"Barack Obama", superpower:"Master of Human-First Storytelling",
+          { id:"obama", img:"/d8-obama.jpg", imgPos:"center 40%", name:"Barack Obama", superpower:"Master of Human-First Storytelling",
             superpowerText:"Every policy begins with a person.",
             summary:"When discussing healthcare, jobs, or education, Obama always started with a single human story — not a statistic.",
             quote:"\"Change will not come if we wait for some other person or some other time.\"",
@@ -2495,7 +2495,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Start with a customer, colleague, or client before presenting the data. Give them a name. Give them a challenge. Then connect that story to your point.",
             lesson:"Facts tell. Stories sell. The most persuasive communicators don't lead with data — they lead with a human being.",
           },
-          { id:"pixar", img:"/d8-pixar.png?v=2", imgPos:"center 45%", name:"The Pixar Framework", superpower:"The Most Replicable Story Structure Ever Invented",
+          { id:"pixar", img:"/d8-pixar.jpg", imgPos:"center 45%", name:"The Pixar Framework", superpower:"The Most Replicable Story Structure Ever Invented",
             superpowerText:"Once upon a time... until finally.",
             summary:"Pixar used the same six-beat template for every film. It works because it mirrors how the human brain processes experience.",
             quote:"\"The story is not in the plot but in the telling.\"",
