@@ -417,7 +417,7 @@ export function Onboarding({onDone}) {
     return (
       <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
         <div style={{position:"relative",flexShrink:0}}>
-          <img src="/ob-role.jpg" alt="" style={{display:"block",width:"100%",height:"auto"}}/>
+          <img src="/ob-role-2.png" alt="" style={{display:"block",width:"100%",height:"auto"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 45%)"}}/>
           <div style={{position:"absolute",bottom:20,left:24,right:24}}>
             <div style={{fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"3.5px",fontFamily:T.sans,marginBottom:10}}>Almost there.</div>
@@ -469,7 +469,6 @@ export function Onboarding({onDone}) {
         {q.image
           ? <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
           : <OBScene name={q.scene} height={300}/>}
-        <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.3)"}}/>
         <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 55%)"}}/>
         <div style={{position:"absolute",bottom:20,left:24,right:24}}>
           <div style={{fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"3.5px",fontFamily:T.sans,marginBottom:10}}>{q.context}</div>
