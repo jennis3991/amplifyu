@@ -75,9 +75,9 @@ export function getPieceInfo(doneCount) {
 }
 
 const CAT_DAYS = [
-  { label:"Clarity & Structure",      days:[1,3,4,5,7,14] },
-  { label:"Connection & Presence",    days:[2,6,9,10,7,14] },
-  { label:"Storytelling & Influence", days:[8,11,12,13,14] },
+  { label:"Clarity",      days:[1,3,4,5,7,14] },
+  { label:"Connection",   days:[2,6,9,10,7,14] },
+  { label:"Storytelling", days:[8,11,12,13,14] },
 ];
 
 export function getCategoryProgress(done) {
