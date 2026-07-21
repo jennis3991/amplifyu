@@ -464,7 +464,7 @@ export function Onboarding({onDone}) {
 
   const q = QS[step];
   return (
-    <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
+    <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column",animation:"fadeIn 0.22s ease 0.12s both"}}>
       {/* Photo banner */}
       <div style={{position:"relative",height:345,flexShrink:0,overflow:"hidden"}}>
         {q.image
