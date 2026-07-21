@@ -1787,7 +1787,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D4_EDITORIAL = [
-          { id:"hemingway", img:"/d4-hemingway.png?v=2", imgPos:"center 40%", name:"Ernest Hemingway", superpower:"Master of Brevity",
+          { id:"hemingway", img:"/d4-hemingway.jpg", imgPos:"center 40%", name:"Ernest Hemingway", superpower:"Master of Brevity",
             superpowerText:"Every word earns its place — or it goes.",
             summary:"He won the Nobel Prize with short, precise sentences.",
             quote:"\"The old man fished alone. Eighty-four days. No fish.\"",
@@ -1799,7 +1799,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Write your first draft. Then cut every unnecessary word. Read each sentence aloud — if you run out of breath before the full stop, it's too long. Over 15 words? Split it.",
             lesson:"Every word you add dilutes your message. The best writers know what to leave out. Clarity is a discipline.",
           },
-          { id:"chanel", img:"/d4-chanel.png?v=2", imgPos:"center 55%", name:"Coco Chanel", superpower:"Elegance Through Elimination",
+          { id:"chanel", img:"/d4-chanel.jpg", imgPos:"center 55%", name:"Coco Chanel", superpower:"Elegance Through Elimination",
             superpowerText:"Short sentences. Maximum impact. Every time.",
             summary:"She built an empire on less is more — in fashion and in words.",
             quote:"\"Fashion fades. Style remains.\"",
