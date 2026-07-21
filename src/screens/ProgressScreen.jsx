@@ -136,10 +136,16 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
             {PIECES.map((piece,i) => {
               const isCurrent = i === pieceInfo.currentIndex;
               const isNext = i === pieceInfo.currentIndex + 1;
+              const isPast = i < pieceInfo.currentIndex;
               return (
                 <div key={piece.name} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,position:"relative",zIndex:1}}>
-                  <div style={{width:40,height:40,borderRadius:"50%",background:isCurrent?"#c9a961":isNext?"#1d1a10":"#1c1916",border:isCurrent?"none":isNext?"1.5px solid #c9a961":"1.5px solid rgba(255,255,255,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                    <i className={"ti "+piece.icon} style={{fontSize:18,color:isCurrent?"#17140f":isNext?"#c9a961":"rgba(255,255,255,0.2)"}}/>
+                  <div style={{
+                    width:40, height:40, borderRadius:"50%", overflow:"hidden",
+                    border: isCurrent ? "1.5px solid #c9a961" : isNext ? "1.5px solid rgba(201,169,97,0.4)" : "1.5px solid rgba(255,255,255,0.1)",
+                    opacity: isCurrent ? 1 : isPast ? 0.85 : 0.3,
+                    position:"relative", flexShrink:0,
+                  }}>
+                    <img src={piece.img} alt={piece.name} style={{position:"absolute",width:"126%",height:"126%",top:"-13%",left:"-13%",objectFit:"cover"}}/>
                   </div>
                   <span style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:isCurrent?"#c9a961":isNext?"rgba(245,239,230,0.5)":"rgba(255,255,255,0.18)",textTransform:"uppercase",letterSpacing:"1px",textAlign:"center"}}>{piece.name}</span>
                 </div>
