@@ -23,10 +23,19 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
           {PIECES.map((piece,i) => {
             const isCurrent = i === pieceInfo.currentIndex;
             const isNext = i === pieceInfo.currentIndex + 1;
+            const isPast = i < pieceInfo.currentIndex;
             return (
               <div key={piece.name} style={{ position:"relative", zIndex:1 }}>
-                <div style={{ width:22, height:22, borderRadius:"50%", background:isCurrent?"#c9a961":isNext?"#252015":"#231f18", border:isCurrent?"none":isNext?"1.5px solid #c9a961":"1.5px solid rgba(255,255,255,0.15)", display:"flex", alignItems:"center", justifyContent:"center" }}>
-                  <i className={"ti "+piece.icon} style={{ fontSize:10, color:isCurrent?"#17140f":isNext?"#c9a961":"rgba(255,255,255,0.2)" }}/>
+                <div style={{
+                  width:28, height:28, borderRadius:"50%", overflow:"hidden",
+                  border: isCurrent ? "1.5px solid #c9a961" : isNext ? "1.5px solid rgba(201,169,97,0.4)" : "1.5px solid rgba(255,255,255,0.1)",
+                  opacity: isCurrent ? 1 : isPast ? 0.9 : 0.35,
+                  position:"relative",
+                }}>
+                  <img src={piece.img} alt={piece.name} style={{
+                    position:"absolute", width:"126%", height:"126%",
+                    top:"-13%", left:"-13%", objectFit:"cover",
+                  }}/>
                 </div>
               </div>
             );
@@ -37,7 +46,9 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
         <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:14, marginBottom:14 }}>
           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:3 }}>
             <span style={{ fontFamily:T.serif, fontSize:mobile?18:26, color:"#f4f1ea" }}>{pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"}</span>
-            <i className={"ti "+pieceInfo.next.icon} style={{ fontSize:20, color:"#c9a961" }}/>
+            <div style={{ width:32, height:32, borderRadius:"50%", overflow:"hidden", position:"relative", flexShrink:0 }}>
+              <img src={pieceInfo.next.img} alt={pieceInfo.next.name} style={{ position:"absolute", width:"126%", height:"126%", top:"-13%", left:"-13%", objectFit:"cover" }}/>
+            </div>
           </div>
           <p style={{ fontSize:12, color:"#9c9384", margin:0 }}>until you reach {pieceInfo.next.name}{done.length<6?" — your next rank":""}</p>
         </div>
@@ -45,7 +56,9 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
         <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:14, marginBottom:14 }}>
           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:3 }}>
             <span style={{ fontFamily:T.serif, fontSize:mobile?18:26, color:"#c9a961" }}>{pieceInfo.current.name}</span>
-            <i className={"ti "+pieceInfo.current.icon} style={{ fontSize:20, color:"#c9a961" }}/>
+            <div style={{ width:32, height:32, borderRadius:"50%", overflow:"hidden", position:"relative", flexShrink:0 }}>
+              <img src={pieceInfo.current.img} alt={pieceInfo.current.name} style={{ position:"absolute", width:"126%", height:"126%", top:"-13%", left:"-13%", objectFit:"cover" }}/>
+            </div>
           </div>
           <p style={{ fontSize:12, color:"#9c9384", margin:0 }}>{"You've reached the highest rank"}</p>
         </div>
