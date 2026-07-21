@@ -24,7 +24,7 @@ export function Onboarding({onDone}) {
         "Setting boundaries and asserting myself.",
       ],
       scene: "presence",
-      image: "/ob-q1.jpg",
+      image: "/ob-q1.webp",
     },
     {
       k: "context",
