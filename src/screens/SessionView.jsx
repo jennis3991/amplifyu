@@ -2937,7 +2937,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D2_EDITORIAL = [
-          { id:"streep", img:"/d2-streep.png?v=2", name:"Meryl Streep", superpower:"Master of Precision and Presence",
+          { id:"streep", img:"/d2-streep.jpg", name:"Meryl Streep", superpower:"Master of Precision and Presence",
             superpowerText:"Precision over volume. Control over noise.",
             summary:"Three iconic roles. Three completely different voices.",
             quote:"\"Take your broken heart, make it into art.\"",
@@ -2949,7 +2949,7 @@ setAmbitionSaved(true); } catch {}
             technique:"Don't reach for volume — reach for control. Slow down before your most important word. Let silence carry what a raised voice never can.",
             lesson:"Precision creates presence. Control creates impact. A rushed voice can feel uncertain. An intentional voice commands attention.",
           },
-          { id:"sinek", img:"/d2-sinek.png?v=2", name:"Simon Sinek", superpower:"Master of Voice",
+          { id:"sinek", img:"/d2-sinek.jpg", name:"Simon Sinek", superpower:"Master of Voice",
             superpowerText:"Makes big ideas land through deliberate delivery.",
             summary:"His voice carries the emotion before the words do.",
             quote:"\"People don't buy what you do. They buy why you do it.\"",
