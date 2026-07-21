@@ -112,7 +112,7 @@ function PieceCircle({ img, name, size }) {
   );
 }
 
-export function IdentityScreen({ done, setTab }) {
+export function IdentityScreen({ done }) {
   const pieceInfo = getPieceInfo(done.length);
   const { current, currentIndex, next, daysUntil } = pieceInfo;
   const meta = RANK_META[currentIndex] || RANK_META[0];
@@ -213,13 +213,6 @@ export function IdentityScreen({ done, setTab }) {
                 </div>
               ))}
             </div>
-            <button
-              onClick={() => setTab && setTab("progress")}
-              style={{ marginTop:18, background:"none", border:"none", padding:0, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"space-between", width:"100%" }}
-            >
-              <span style={{ fontFamily:T.sans, fontSize:12, color:"#c9a961" }}>View full journey</span>
-              <span style={{ fontSize:15, color:"#c9a961", lineHeight:1 }}>›</span>
-            </button>
           </div>
 
           {/* COMING NEXT */}
@@ -240,10 +233,6 @@ export function IdentityScreen({ done, setTab }) {
                     {meta.nextDesc}
                   </div>
                 )}
-                <button style={{ marginTop:16, background:"none", border:"none", padding:0, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"space-between", width:"100%" }}>
-                  <span style={{ fontFamily:T.sans, fontSize:12, color:"#c9a961" }}>Preview next</span>
-                  <span style={{ fontSize:15, color:"#c9a961", lineHeight:1 }}>›</span>
-                </button>
               </>
             ) : (
               <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center" }}>

@@ -278,7 +278,7 @@ reset</button>
         {tab==="sessions" && <SessionsScreen done={done} cur={cur} onStart={startSession} roleId={roleId} dark={dark} DK={DK} isDesktop={isDesktop}/>}
         {tab==="progress" && <ProgressScreen done={done} cur={cur} streak={streak} roleId={roleId} activeRole={activeRole} onChangeRole={(r)=>{setRoleId(r);lsSet("au1_role",r);}} dark={dark} toggleDark={toggleDark} DK={DK} onReset={()=>setConfirmReset(true)} isDesktop={isDesktop} onStart={startSession}/>}
         {tab==="toolkit" && <ToolkitScreen onQuickPrep={() => setView("quickprep")} onStartSession={startSessionAtStep} dark={dark} DK={DK} isDesktop={isDesktop}/>}
-        {tab==="identity" && <IdentityScreen done={done} setTab={setTab}/>}
+        {tab==="identity" && <IdentityScreen done={done}/>}
       </div>
       {!isDesktop && <TabBar tab={tab} setTab={setTab} done={done} dark={dark}/>}
     </div>
