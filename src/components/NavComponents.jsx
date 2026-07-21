@@ -106,7 +106,7 @@ export function TabBar({ tab, setTab, done=[], dark }) {
       display:"flex", alignItems:"stretch",
       zIndex:200,
       paddingBottom:"env(safe-area-inset-bottom,0px)",
-      boxShadow:"0 -24px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.055)",
+      boxShadow:"inset 0 1px 0 rgba(255,255,255,0.055)",
       overflow:"visible",
       minHeight:72,
     }}>
@@ -124,7 +124,7 @@ export function TabBar({ tab, setTab, done=[], dark }) {
         <button
           onClick={() => setTab("identity")}
           style={{
-            position:"absolute", top:-14, left:"50%", transform:"translateX(-50%)",
+            position:"absolute", top:-4, left:"50%", transform:"translateX(-50%)",
             width:58, height:58, borderRadius:"50%",
             padding:0, border:"none", background:"none",
             cursor:"pointer", outline:"none", zIndex:10,
