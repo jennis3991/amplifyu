@@ -57,12 +57,12 @@ export function getPIEEmphasis(roleId) {
 
 // ─── Chess piece progression ──────────────────────────────────────────────────
 export const PIECES = [
-  { name:"Pawn",   icon:"ti-chess",        threshold:0  },
-  { name:"Knight", icon:"ti-chess-knight", threshold:3  },
-  { name:"Bishop", icon:"ti-chess-bishop", threshold:6  },
-  { name:"Rook",   icon:"ti-chess-rook",   threshold:9  },
-  { name:"Queen",  icon:"ti-chess-queen",  threshold:12 },
-  { name:"King",   icon:"ti-chess-king",   threshold:13 },
+  { name:"Pawn",   icon:"ti-chess",        img:"/chess-pawn.png",   threshold:0  },
+  { name:"Knight", icon:"ti-chess-knight", img:"/chess-knight.png", threshold:3  },
+  { name:"Bishop", icon:"ti-chess-bishop", img:"/chess-bishop.png", threshold:6  },
+  { name:"Rook",   icon:"ti-chess-rook",   img:"/chess-rook.png",   threshold:9  },
+  { name:"Queen",  icon:"ti-chess-queen",  img:"/chess-queen.png",  threshold:12 },
+  { name:"King",   icon:"ti-chess-king",   img:"/chess-king.png",   threshold:13 },
 ];
 
 export function getPieceInfo(doneCount) {

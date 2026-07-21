@@ -60,14 +60,17 @@ export function IdentityScreen({ done, streak }) {
       <div style={{ background:"#0F0D0A", paddingTop:52, paddingBottom:52, display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center" }}>
         {/* Chess piece medallion */}
         <div style={{
-          width:100, height:100, borderRadius:"50%",
-          background:"linear-gradient(145deg,#2A221A,#17120D)",
-          border:"1.5px solid rgba(201,169,110,0.45)",
-          boxShadow:"0 8px 48px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07)",
-          display:"flex", alignItems:"center", justifyContent:"center",
-          marginBottom:24,
+          width:120, height:120, borderRadius:"50%",
+          overflow:"hidden", marginBottom:24,
+          boxShadow:"0 8px 48px rgba(0,0,0,0.6)",
+          position:"relative", flexShrink:0,
         }}>
-          <i className={"ti " + current.icon} style={{ fontSize:46, color:"#c9a96e" }}/>
+          <img src={current.img} alt={current.name} style={{
+            position:"absolute",
+            width:"118%", height:"118%",
+            top:"-9%", left:"-9%",
+            objectFit:"cover",
+          }}/>
         </div>
 
         <div style={{ fontFamily:T.serif, fontSize:34, fontWeight:500, color:"rgba(255,255,255,0.93)", letterSpacing:"-1px", marginBottom:6 }}>

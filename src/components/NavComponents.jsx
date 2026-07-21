@@ -128,40 +128,25 @@ export function TabBar({ tab, setTab, done=[], dark }) {
             width:58, height:58, borderRadius:"50%",
             padding:0, border:"none", background:"none",
             cursor:"pointer", outline:"none", zIndex:10,
+            overflow:"hidden",
+            boxShadow: identityActive
+              ? "0 0 0 2px rgba(200,158,80,0.7), 0 6px 24px rgba(0,0,0,0.8)"
+              : "0 4px 20px rgba(0,0,0,0.7)",
           }}
         >
-          {/* Layer 1: outer dark bronze */}
-          <div style={{
-            width:"100%", height:"100%", borderRadius:"50%",
-            background:"linear-gradient(145deg, #3D2E1E, #1A1108)",
-            boxShadow: identityActive
-              ? "0 0 0 1px rgba(200,158,80,0.5), 0 6px 28px rgba(0,0,0,0.85), inset 0 1px 1px rgba(255,255,255,0.08)"
-              : "0 0 0 1px rgba(180,140,60,0.3), 0 6px 28px rgba(0,0,0,0.85), inset 0 1px 1px rgba(255,255,255,0.06)",
-            display:"flex", alignItems:"center", justifyContent:"center",
-            padding:4,
-          }}>
-            {/* Layer 2: brushed brass ring */}
-            <div style={{
-              width:"100%", height:"100%", borderRadius:"50%",
-              background:"conic-gradient(from 130deg, #6B4D12, #C9A55A, #E8C870, #D4A84A, #7A5814, #C9A55A, #6B4D12)",
-              display:"flex", alignItems:"center", justifyContent:"center",
-              padding:3,
-            }}>
-              {/* Layer 3: inner dark marble */}
-              <div style={{
-                width:"100%", height:"100%", borderRadius:"50%",
-                background:"radial-gradient(circle at 38% 32%, #2E2820, #17130E, #0B0907)",
-                display:"flex", alignItems:"center", justifyContent:"center",
-              }}>
-                <i className={"ti " + piece.icon} style={{
-                  fontSize:22,
-                  color: identityActive ? "#F0E4CC" : "#C8B890",
-                  filter:"drop-shadow(0 1px 4px rgba(0,0,0,0.95)) drop-shadow(0 -0.5px 1px rgba(255,240,200,0.08))",
-                  position:"relative", top:1,
-                }}/>
-              </div>
-            </div>
-          </div>
+          {/* Chess piece image — scaled 118% to crop cream background */}
+          <img
+            src={piece.img}
+            alt={piece.name}
+            style={{
+              position:"absolute",
+              width:"118%", height:"118%",
+              top:"-9%", left:"-9%",
+              objectFit:"cover",
+              borderRadius:"50%",
+              opacity: identityActive ? 1 : 0.9,
+            }}
+          />
         </button>
       </div>
 
