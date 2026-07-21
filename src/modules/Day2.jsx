@@ -583,12 +583,13 @@ export function D2SimWidget({T, T2, isDesktop}) {
             {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
           </button>
           <div style={{flex:1,position:"relative"}}>
-            <div style={{display:"flex",position:"relative",height:isDesktop?28:22,marginBottom:4}}>
+            <div style={{display:"flex",position:"relative",height:isDesktop?28:42,marginBottom:4}}>
               {MARKERS.map((m,i)=>{
                 const approxSec=recMetrics?.elapsedSec?Math.round(m.pos*recMetrics.elapsedSec):null;
                 const timeLabel=approxSec!=null?`${Math.floor(approxSec/60)}:${String(approxSec%60).padStart(2,'0')}`:null;
+                const row=!isDesktop&&i%2===1;
                 return(
-                <div key={i} onClick={()=>seekTo(m.pos)} style={{position:"absolute",left:(m.pos*100)+"%",transform:"translateX(-50%)",textAlign:"center",zIndex:2,cursor:"pointer"}}>
+                <div key={i} onClick={()=>seekTo(m.pos)} style={{position:"absolute",left:(m.pos*100)+"%",transform:"translateX(-50%)",textAlign:"center",zIndex:2,cursor:"pointer",top:row?21:0}}>
                   <div style={{fontFamily:T.sans,fontSize:isDesktop?9:7,color:m.color,fontWeight:600,whiteSpace:"nowrap"}}>{m.label}</div>
                   {timeLabel&&<div style={{fontFamily:T.sans,fontSize:isDesktop?8:6,color:T2.text4,whiteSpace:"nowrap"}}>{timeLabel}</div>}
                   {m.quote&&<div style={{fontFamily:T.serif,fontSize:isDesktop?8:6,color:"rgba(245,239,230,0.35)",whiteSpace:"nowrap",fontStyle:"italic",maxWidth:90,overflow:"hidden",textOverflow:"ellipsis"}}>"{m.quote}"</div>}
