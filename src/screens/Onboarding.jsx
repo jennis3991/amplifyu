@@ -12,6 +12,13 @@ export function Onboarding({onDone}) {
   const [selected, setSelected] = useState(null);  // holds chosen option before advancing
   const [entering, setEntering] = useState(false); // brief transition lock
 
+  useEffect(() => {
+    ["/ob-q1.jpg","/ob-q2.jpg","/ob-q3.jpg","/ob-q4.jpg","/ob-role-2.png"].forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
   const QS = [
     {
       k: "challenge",
