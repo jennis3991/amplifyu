@@ -2932,7 +2932,7 @@ strokeLinecap="round"/></svg>
       )}
       {isD13 && step==="Example" && (()=>{
         const D13_EDITORIAL = [
-          { id:"obama", img:"/d12-obama.png?v=2", imgPos:"center 50%", name:"Michelle Obama", superpower:"Master of Warm Presence",
+          { id:"obama", img:"/d13-obama.jpg", imgPos:"center 50%", name:"Michelle Obama", superpower:"Master of Warm Presence",
             superpowerText:"Making every room feel smaller.",
             summary:"Whether speaking to thousands or having a one-to-one conversation, her body language projects warmth, confidence, and authenticity — before she says a word.",
             quote:"\"Presence isn't about commanding attention — it's about creating connection.\"",
@@ -2943,7 +2943,7 @@ strokeLinecap="round"/></svg>
             technique:"Before your next conversation or presentation, check your posture before your script. Stand tall, relax your shoulders, keep your hands open, and make eye contact before you begin speaking. Let your body communicate confidence before your voice does.",
             lesson:"Your body is always communicating — even when you're silent. Great communicators understand that influence isn't just about what you say; it's about how you make people feel the moment you walk into the room. When your words and body language are aligned, your presence becomes your greatest strength.",
           },
-          { id:"diana", img:"/d13-diana.png?v=2", imgPos:"center center", name:"Princess Diana", superpower:"Master of Visibility",
+          { id:"diana", img:"/d13-jamie.jpg", imgPos:"center center", name:"Princess Diana", superpower:"Master of Visibility",
             superpowerText:"Visibility has the greatest impact when it stops being about you.",
             summary:"She used public attention to change public conversations — bringing compassion to causes many had ignored.",
             quote:"\"Visibility has the greatest impact when it stops being about you and starts becoming about something bigger than yourself.\"",
