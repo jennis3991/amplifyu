@@ -213,7 +213,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
       scores:Object.fromEntries(DIMS.map(d=>[d,Math.floor(Math.random()*22)+63+base])),
       habits:[],
       worked:["Natural, conversational warmth throughout","Good use of pause before key ideas"],
-      improve:["Vary your pace more deliberately — slow down on your most important points to give them weight."],
+      improve:[{title:"Vary your pace deliberately",detail:"Slow down on your most important points to give them weight and let the listener absorb what you're saying."}],
       insight:"Your voice already has warmth and authenticity. The next level is intentional contrast: slow down when the idea matters most, raise your energy when you want to inspire. The gap between where you are and truly compelling delivery is smaller than you think.",
       moments:null
     };
@@ -222,7 +222,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
       setPhase(isRetry?'comparison':'feedback');return;
     }
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1000,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery.\n\nSpeaking prompt: "${prompt}"\nTranscript: "${text}"${metrics && metrics.wpm > 0 ? `\n\nMeasured delivery data — reference these specific numbers in your feedback:\n- Speaking pace: ${metrics.wpm} WPM (${metrics.paceLabel}) — ideal executive range is 120–150 WPM\n- Filler words detected: ${metrics.fillers} total (${metrics.fillersPerMin}/min)\n- Confidence hedges ("I think", "maybe", etc.): ${metrics.hedges}\n- Average sentence length: ${metrics.avgSentLen} words` : ''}\n\nReturn ONLY valid JSON. If pace data is available, use the measured paceScore (${metrics?.paceScore||65}) for the Pace dimension:\n{"overall":<50-100>,"headline":"<max 10 words: single most important vocal insight>","subtitle":"<one warm encouraging sentence>","wpmNote":"<1 sentence naming their exact WPM and what it means for their listener — skip if no pace data>","fillerNote":"<1 sentence about their filler count: celebrate if low (0–2), coach if moderate (3–6), direct if high (7+)>","confidenceNote":"<1 sentence about their directness: praise clear statements, gently flag hedging if hedges > 3>","scores":{"Pace":<use ${metrics?.paceScore||65} if available else estimate>,"Pitch":<50-100>,"Tone":<50-100>,"Pauses":<50-100>,"Vocal Energy":<50-100>,"Range":<50-100>,"Presence":<50-100>},"habits":[],"worked":["<vocal strength 1>","<vocal strength 2>"],"improve":["<the single most impactful change, referencing a specific metric if relevant>"],"insight":"<2-3 personalised sentences: what's working in this voice, what one change would elevate it most, and why that matters>","moments":[{"label":"<moment type e.g. Pace rush / Energy peak / Strong moment / Energy dip / Pitch drop>","quote":"<copy 4-6 consecutive words from the transcript exactly where this moment occurred>","color":"<#C8A46A for pace/energy rush, #527060 for strong moment, #B05C4A for dip/drop>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"}]}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1000,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery.\n\nIMPORTANT: All feedback must reference what this person ACTUALLY SAID. Quote or paraphrase specific words and phrases from the transcript. Do not write generic vocal coaching advice.\n\nSpeaking prompt: "${prompt}"\nTranscript: "${text}"${metrics && metrics.wpm > 0 ? `\n\nMeasured delivery data:\n- Speaking pace: ${metrics.wpm} WPM (${metrics.paceLabel}) — ideal executive range is 120–150 WPM\n- Confidence hedges ("I think", "maybe", etc.): ${metrics.hedges}\n- Average sentence length: ${metrics.avgSentLen} words` : ''}\n\nReturn ONLY valid JSON. Use the measured paceScore (${metrics?.paceScore||65}) for the Pace dimension:\n{"overall":<50-100>,"headline":"<max 10 words: single most important vocal insight, referencing what they said>","subtitle":"<one warm encouraging sentence specific to this delivery>","wpmNote":"<1 sentence naming their exact WPM and what it means for their listener — skip if no pace data>","confidenceNote":"<1 sentence about their directness: praise clear statements, gently flag hedging if hedges > 3, quoting a specific moment>","scores":{"Pace":<use ${metrics?.paceScore||65}>,"Pitch":<50-100>,"Tone":<50-100>,"Pauses":<50-100>,"Vocal Energy":<50-100>,"Range":<50-100>,"Presence":<50-100>},"worked":["<vocal strength 1 — short title, specific to what they said>","<vocal strength 2 — short title, specific to what they said>","<vocal strength 3 — short title>"],"workedSubs":["<1 sentence expanding on worked[0], quoting or paraphrasing specific words they actually said>","<1 sentence expanding on worked[1], referencing a specific moment in their delivery>","<1 sentence expanding on worked[2]>"],"improve":[{"title":"<4-7 words naming the single most impactful vocal change>","detail":"<1-2 sentences referencing a specific moment in their transcript where this would have landed harder>"}],"insight":"<2-3 personalised sentences referencing specific words or phrases they used: what vocal quality is working, what one change would elevate it most>","moments":[{"label":"<moment type e.g. Pace rush / Energy peak / Strong moment / Energy dip / Pitch drop>","quote":"<copy 4-6 consecutive words from the transcript exactly where this moment occurred>","color":"<#C8A46A for pace/energy rush, #527060 for strong moment, #B05C4A for dip/drop>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"}]}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -451,18 +451,55 @@ export function D2SimWidget({T, T2, isDesktop}) {
             </div>
           </div>
         )}
-        <div style={{display:"flex",alignItems:"center",gap:14}}>
-          <button onClick={togglePlay} style={{display:"flex",alignItems:"center",gap:8,padding:"9px 18px",background:"rgba(245,239,230,0.08)",border:"0.5px solid rgba(245,239,230,0.2)",borderRadius:4,color:"#F5EFE6",fontFamily:T.serif,fontSize:13,cursor:"pointer",flexShrink:0}}>
-            {playing?<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/><rect x="8" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/></svg>:<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 1l9 5-9 5V1z" fill="#F5EFE6"/></svg>}
-            {playing?"Pause":"Play my recording"}
+      </div>
+      {/* 2 HEAR IT BACK */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        {audioURL&&<audio ref={audioRef} src={audioURL} onEnded={()=>setPlaying(false)} style={{display:"none"}}/>}
+        <div style={cs.label}>Hear it back</div>
+        {playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
+        <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:isDesktop?14:10}}>
+          <button onClick={togglePlay} style={{width:40,height:40,borderRadius:"50%",border:"none",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
+            {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
           </button>
-          <div style={{flex:1,display:"flex",alignItems:"center",gap:1,height:24,overflow:"hidden"}}>
-            {WBARS.map((h,i)=><div key={i} style={{flex:1,background:`rgba(138,158,132,${0.25+h*0.35})`,borderRadius:1,height:Math.round(h*22)+"px",minWidth:2}}/>)}
+          <div style={{flex:1,position:"relative"}}>
+            <div style={{display:"flex",position:"relative",height:isDesktop?28:42,marginBottom:4}}>
+              {MARKERS.map((m,i)=>{
+                const approxSec=recMetrics?.elapsedSec?Math.round(m.pos*recMetrics.elapsedSec):null;
+                const timeLabel=approxSec!=null?`${Math.floor(approxSec/60)}:${String(approxSec%60).padStart(2,'0')}`:null;
+                const row=!isDesktop&&i%2===1;
+                return(
+                <div key={i} onClick={()=>seekTo(m.pos)} style={{position:"absolute",left:(m.pos*100)+"%",transform:"translateX(-50%)",textAlign:"center",zIndex:2,cursor:"pointer",top:row?21:0}}>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?9:7,color:m.color,fontWeight:600,whiteSpace:"nowrap"}}>{m.label}</div>
+                  {timeLabel&&<div style={{fontFamily:T.sans,fontSize:isDesktop?8:6,color:T2.text4,whiteSpace:"nowrap"}}>{timeLabel}</div>}
+                  {m.quote&&<div style={{fontFamily:T.serif,fontSize:isDesktop?8:6,color:"rgba(245,239,230,0.35)",whiteSpace:"nowrap",fontStyle:"italic",maxWidth:90,overflow:"hidden",textOverflow:"ellipsis"}}>"{m.quote}"</div>}
+                </div>
+              );})}
+            </div>
+            <div onClick={(e)=>{const r=e.currentTarget.getBoundingClientRect();seekTo((e.clientX-r.left)/r.width);}} style={{height:36,display:"flex",alignItems:"center",gap:1,position:"relative",overflow:"hidden",borderRadius:4,cursor:"pointer"}}>
+              {WBARS.map((h,i)=>{const pos=i/WBARS.length;const nm=MARKERS.find(m=>Math.abs(m.pos-pos)<0.04);const played=pos<audioProgress;const near=playing?Math.max(0,1-Math.abs(pos-audioProgress)*18):0;const ah=playing?h*(0.82+0.28*Math.abs(Math.sin(waveAnim*0.07+i*0.45))+0.25*near):h;return<div key={i} style={{flex:1,background:nm?nm.color:played?`rgba(138,158,132,${0.55+ah*0.35})`:`rgba(138,158,132,${0.2+ah*0.25})`,borderRadius:1,height:Math.round(ah*32)+"px",minWidth:2}}/>;} )}
+              {MARKERS.map((m,i)=><div key={i} style={{position:"absolute",left:(m.pos*100)+"%",top:0,bottom:0,width:2,background:m.color,opacity:0.6}}/>)}
+              {audioProgress>0&&<div style={{position:"absolute",left:(audioProgress*100)+"%",top:0,bottom:0,width:2,background:"rgba(245,239,230,0.9)",zIndex:3,transform:"translateX(-50%)",boxShadow:"0 0 6px rgba(245,239,230,0.5)"}}/>}
+            </div>
+            <div onClick={(e)=>{const r=e.currentTarget.getBoundingClientRect();seekTo((e.clientX-r.left)/r.width);}} style={{width:"100%",height:4,background:"rgba(138,158,132,0.15)",borderRadius:2,position:"relative",cursor:"pointer",margin:"10px 0 6px",flexShrink:0}}>
+              <div style={{position:"absolute",left:0,top:0,height:"100%",width:(audioProgress*100)+"%",background:"rgba(138,158,132,0.65)",borderRadius:2}}/>
+              {MARKERS.map((m,i)=><div key={i} style={{position:"absolute",top:"50%",left:(m.pos*100)+"%",transform:"translate(-50%,-50%)",width:7,height:7,borderRadius:"50%",background:m.color,zIndex:2,boxShadow:"0 0 0 1.5px rgba(0,0,0,0.15)"}}/>)}
+              <div style={{position:"absolute",top:"50%",left:(audioProgress*100)+"%",transform:"translate(-50%,-50%)",width:12,height:12,borderRadius:"50%",background:"rgba(245,239,230,0.95)",boxShadow:"0 1px 4px rgba(0,0,0,0.3)",zIndex:3,transition:"left 0.1s"}}/>
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",marginTop:2}}>
+              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{recMetrics?.elapsedSec?`${Math.floor(audioProgress*recMetrics.elapsedSec/60)}:${String(Math.round(audioProgress*recMetrics.elapsedSec)%60).padStart(2,'0')}`:"0:00"}</span>
+              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{recMetrics?.elapsedSec?`${Math.floor(recMetrics.elapsedSec/60)}:${String(recMetrics.elapsedSec%60).padStart(2,'0')}`:"1:30"}</span>
+            </div>
           </div>
         </div>
-        {audioURL&&<audio ref={audioRef} src={audioURL} onEnded={()=>setPlaying(false)} style={{display:"none"}}/>}
+        {rawText&&<div style={{marginTop:12,borderTop:"0.5px solid "+T2.border,paddingTop:10}}>
+          <button onClick={()=>setShowTranscript(s=>!s)} style={{background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:5,fontFamily:T.sans,fontSize:10,color:T2.text3,fontWeight:500}}>
+            <span>{showTranscript?"Hide transcript":"View transcript"}</span>
+            <span style={{fontSize:9}}>{showTranscript?"↑":"↓"}</span>
+          </button>
+          {showTranscript&&<p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,margin:"10px 0 0",background:"rgba(44,36,22,0.04)",borderRadius:4,padding:"10px 12px"}}>{rawText}</p>}
+        </div>}
       </div>
-      {/* 2 VOICE PROFILE */}
+      {/* 3 VOICE PROFILE */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>Your Voice Profile</div>
         <div style={{display:isDesktop?"flex":"block",gap:24,alignItems:"center"}}>
@@ -516,20 +553,19 @@ export function D2SimWidget({T, T2, isDesktop}) {
               {feedback.wpmNote&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.55,margin:"10px 0 0",fontStyle:"italic"}}>{feedback.wpmNote}</p>}
             </div>
           )}
-          {/* Filler + Hedge counts */}
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:recMetrics.fillers>0||recMetrics.hedges>0?16:0}}>
-            <div style={{background:T2.bg,borderRadius:6,padding:"14px 16px"}}>
-              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Filler words</div>
-              <div style={{fontFamily:T.serif,fontSize:isDesktop?28:24,fontWeight:600,color:recMetrics.fillers<=2?T.gold:recMetrics.fillers<=5?T2.text:"#B05C4A",lineHeight:1}}>{recMetrics.fillers}</div>
-              <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:3}}>{recMetrics.fillersPerMin}/min · um, uh, like…</div>
+          {/* Hedge count */}
+          {recMetrics.hedges >= 0 && (
+            <div style={{display:"flex",alignItems:"center",gap:16,background:T2.bg,borderRadius:6,padding:"14px 16px",marginBottom:16}}>
+              <div>
+                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>Confidence hedges</div>
+                <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4}}>I think, maybe, perhaps…</div>
+              </div>
+              <div style={{marginLeft:"auto",textAlign:"right"}}>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?28:24,fontWeight:600,color:recMetrics.hedges===0?T.gold:recMetrics.hedges<=2?T2.text:"#B05C4A",lineHeight:1}}>{recMetrics.hedges}</div>
+                <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:2}}>{recMetrics.hedges===0?"Clean — no hedging":"detected"}</div>
+              </div>
             </div>
-            <div style={{background:T2.bg,borderRadius:6,padding:"14px 16px"}}>
-              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Confidence hedges</div>
-              <div style={{fontFamily:T.serif,fontSize:isDesktop?28:24,fontWeight:600,color:recMetrics.hedges===0?T.gold:recMetrics.hedges<=2?T2.text:"#B05C4A",lineHeight:1}}>{recMetrics.hedges}</div>
-              <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:3}}>I think, maybe, perhaps…</div>
-            </div>
-          </div>
-          {feedback.fillerNote&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 8px",fontStyle:"italic"}}>{feedback.fillerNote}</p>}
+          )}
           {feedback.confidenceNote&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0,fontStyle:"italic"}}>{feedback.confidenceNote}</p>}
         </div>
       )}
@@ -538,9 +574,9 @@ export function D2SimWidget({T, T2, isDesktop}) {
         <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
           <div style={cs.label}>What came across well</div>
           {[
-            {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke={T2.text3} strokeWidth="1.2"/><rect x="11" y="3" width="8" height="8" rx="1.5" stroke={T2.text3} strokeWidth="1.2"/><rect x="3" y="11" width="8" height="8" rx="1.5" stroke={T2.text3} strokeWidth="1.2"/><rect x="11" y="11" width="8" height="8" rx="1.5" stroke={T2.text3} strokeWidth="1.2"/></svg>,text:feedback.worked?.[0]||"Natural vocal warmth",sub:"Your voice felt genuine and easy to connect with."},
-            {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke={T2.text3} strokeWidth="1.2"/><path d="M4 19c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke={T2.text3} strokeWidth="1.2" strokeLinecap="round"/></svg>,text:feedback.worked?.[1]||"Confident delivery",sub:"You spoke with assurance and conviction."},
-            {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T2.text3} strokeWidth="1.2"/><path d="M5 11a6 6 0 0012 0M11 17v2" stroke={T2.text3} strokeWidth="1.2" strokeLinecap="round"/></svg>,text:"Engaging throughout",sub:"You held attention from start to finish."},
+            {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke={T2.text3} strokeWidth="1.2"/><rect x="11" y="3" width="8" height="8" rx="1.5" stroke={T2.text3} strokeWidth="1.2"/><rect x="3" y="11" width="8" height="8" rx="1.5" stroke={T2.text3} strokeWidth="1.2"/><rect x="11" y="11" width="8" height="8" rx="1.5" stroke={T2.text3} strokeWidth="1.2"/></svg>,text:feedback.worked?.[0]||"Natural vocal warmth",sub:feedback.workedSubs?.[0]||"Your voice felt genuine and easy to connect with."},
+            {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke={T2.text3} strokeWidth="1.2"/><path d="M4 19c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke={T2.text3} strokeWidth="1.2" strokeLinecap="round"/></svg>,text:feedback.worked?.[1]||"Confident delivery",sub:feedback.workedSubs?.[1]||"You spoke with assurance and conviction."},
+            {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T2.text3} strokeWidth="1.2"/><path d="M5 11a6 6 0 0012 0M11 17v2" stroke={T2.text3} strokeWidth="1.2" strokeLinecap="round"/></svg>,text:feedback.worked?.[2]||"Engaging throughout",sub:feedback.workedSubs?.[2]||"You held attention from start to finish."},
           ].map((item,i)=>(
             <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:i<2?12:0,paddingBottom:i<2?12:0,borderBottom:i<2?"0.5px solid "+T2.divider:"none"}}>
               <div style={{width:34,height:34,borderRadius:"50%",background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{item.icon}</div>
@@ -558,8 +594,8 @@ export function D2SimWidget({T, T2, isDesktop}) {
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a5 5 0 014 8l-1 1v2H7v-2L6 10a5 5 0 014-8z" stroke="#B07A40" strokeWidth="1.2"/><path d="M7 15h6M8 17h4" stroke="#B07A40" strokeWidth="1.2" strokeLinecap="round"/></svg>
             </div>
             <div>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 8px"}}>{feedback.improve?.[0]?.split('—')[0]?.trim()||"Vary your pace deliberately."}</p>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>{feedback.improve?.[0]||"Slow down on your most important ideas to give them weight."}</p>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 8px"}}>{feedback.improve?.[0]?.title||"Vary your pace deliberately."}</p>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>{feedback.improve?.[0]?.detail||"Slow down on your most important ideas to give them weight."}</p>
             </div>
           </div>
         </div>
@@ -574,57 +610,6 @@ export function D2SimWidget({T, T2, isDesktop}) {
             <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.5 4H15l-3.75 2.75 1.5 4.5L9 11l-3.75 2.75 1.5-4.5L3 6h4.5z" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/></svg>
           </div>
         </div>
-      </div>
-      {/* 5 HEAR IT BACK */}
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
-        <div style={cs.label}>Hear it back</div>
-        {playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
-        <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:isDesktop?14:10}}>
-          <button onClick={togglePlay} style={{width:40,height:40,borderRadius:"50%",border:"none",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
-            {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
-          </button>
-          <div style={{flex:1,position:"relative"}}>
-            <div style={{display:"flex",position:"relative",height:isDesktop?28:42,marginBottom:4}}>
-              {MARKERS.map((m,i)=>{
-                const approxSec=recMetrics?.elapsedSec?Math.round(m.pos*recMetrics.elapsedSec):null;
-                const timeLabel=approxSec!=null?`${Math.floor(approxSec/60)}:${String(approxSec%60).padStart(2,'0')}`:null;
-                const row=!isDesktop&&i%2===1;
-                return(
-                <div key={i} onClick={()=>seekTo(m.pos)} style={{position:"absolute",left:(m.pos*100)+"%",transform:"translateX(-50%)",textAlign:"center",zIndex:2,cursor:"pointer",top:row?21:0}}>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?9:7,color:m.color,fontWeight:600,whiteSpace:"nowrap"}}>{m.label}</div>
-                  {timeLabel&&<div style={{fontFamily:T.sans,fontSize:isDesktop?8:6,color:T2.text4,whiteSpace:"nowrap"}}>{timeLabel}</div>}
-                  {m.quote&&<div style={{fontFamily:T.serif,fontSize:isDesktop?8:6,color:"rgba(245,239,230,0.35)",whiteSpace:"nowrap",fontStyle:"italic",maxWidth:90,overflow:"hidden",textOverflow:"ellipsis"}}>"{m.quote}"</div>}
-                </div>
-              );})}
-            </div>
-            <div
-              onClick={(e)=>{const r=e.currentTarget.getBoundingClientRect();seekTo((e.clientX-r.left)/r.width);}}
-              style={{height:36,display:"flex",alignItems:"center",gap:1,position:"relative",overflow:"hidden",borderRadius:4,cursor:"pointer"}}>
-              {WBARS.map((h,i)=>{const pos=i/WBARS.length;const nm=MARKERS.find(m=>Math.abs(m.pos-pos)<0.04);const played=pos<audioProgress;const near=playing?Math.max(0,1-Math.abs(pos-audioProgress)*18):0;const ah=playing?h*(0.82+0.28*Math.abs(Math.sin(waveAnim*0.07+i*0.45))+0.25*near):h;return<div key={i} style={{flex:1,background:nm?nm.color:played?`rgba(138,158,132,${0.55+ah*0.35})`:`rgba(138,158,132,${0.2+ah*0.25})`,borderRadius:1,height:Math.round(ah*32)+"px",minWidth:2}}/>;} )}
-              {MARKERS.map((m,i)=><div key={i} style={{position:"absolute",left:(m.pos*100)+"%",top:0,bottom:0,width:2,background:m.color,opacity:0.6}}/>)}
-              {audioProgress>0&&<div style={{position:"absolute",left:(audioProgress*100)+"%",top:0,bottom:0,width:2,background:"rgba(245,239,230,0.9)",zIndex:3,transform:"translateX(-50%)",boxShadow:"0 0 6px rgba(245,239,230,0.5)"}}/>}
-            </div>
-            {/* Seek bar */}
-            <div
-              onClick={(e)=>{const r=e.currentTarget.getBoundingClientRect();seekTo((e.clientX-r.left)/r.width);}}
-              style={{width:"100%",height:4,background:"rgba(138,158,132,0.15)",borderRadius:2,position:"relative",cursor:"pointer",margin:"10px 0 6px",flexShrink:0}}>
-              <div style={{position:"absolute",left:0,top:0,height:"100%",width:(audioProgress*100)+"%",background:"rgba(138,158,132,0.65)",borderRadius:2}}/>
-              {MARKERS.map((m,i)=><div key={i} style={{position:"absolute",top:"50%",left:(m.pos*100)+"%",transform:"translate(-50%,-50%)",width:7,height:7,borderRadius:"50%",background:m.color,zIndex:2,boxShadow:"0 0 0 1.5px rgba(0,0,0,0.15)"}}/>)}
-              <div style={{position:"absolute",top:"50%",left:(audioProgress*100)+"%",transform:"translate(-50%,-50%)",width:12,height:12,borderRadius:"50%",background:"rgba(245,239,230,0.95)",boxShadow:"0 1px 4px rgba(0,0,0,0.3)",zIndex:3,transition:"left 0.1s"}}/>
-            </div>
-            <div style={{display:"flex",justifyContent:"space-between",marginTop:2}}>
-              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{recMetrics?.elapsedSec?`${Math.floor(audioProgress*recMetrics.elapsedSec/60)}:${String(Math.round(audioProgress*recMetrics.elapsedSec)%60).padStart(2,'0')}`:"0:00"}</span>
-              <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{recMetrics?.elapsedSec?`${Math.floor(recMetrics.elapsedSec/60)}:${String(recMetrics.elapsedSec%60).padStart(2,'0')}`:"1:30"}</span>
-            </div>
-          </div>
-        </div>
-        {rawText&&<div style={{marginTop:12,borderTop:"0.5px solid "+T2.border,paddingTop:10}}>
-          <button onClick={()=>setShowTranscript(s=>!s)} style={{background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:5,fontFamily:T.sans,fontSize:10,color:T2.text3,fontWeight:500}}>
-            <span>{showTranscript?"Hide transcript":"View transcript"}</span>
-            <span style={{fontSize:9}}>{showTranscript?"↑":"↓"}</span>
-          </button>
-          {showTranscript&&<p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,margin:"10px 0 0",background:"rgba(44,36,22,0.04)",borderRadius:4,padding:"10px 12px"}}>{rawText}</p>}
-        </div>}
       </div>
       {/* 6 FOCUS NEXT ROUND */}
       <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
