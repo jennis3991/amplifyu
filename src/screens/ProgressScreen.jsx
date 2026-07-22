@@ -40,15 +40,6 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
 
   const earnedAch = ACHIEVEMENTS.filter(a=>a.earned);
 
-  const DAYS_OF_WEEK = ["M","T","W","T","F","S","S"];
-  const weekDone = Math.min(streak, 7);
-
-  const ROLE_SKILLS = [
-    {label:"Visibility",  pct: Math.min(100, 20 + done.filter(d=>d>=11).length*14)},
-    {label:"Influence",   pct: Math.min(100, 10 + done.filter(d=>d>=5).length*7)},
-    {label:"Clarity",     pct: Math.min(100, 15 + done.filter(d=>d<=4).length*17)},
-    {label:"Confidence",  pct: Math.min(100, 10 + done.filter(d=>d>=9).length*10)},
-  ];
 
   const pieceInfo = getPieceInfo(done.length);
 
@@ -164,35 +155,40 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
         </div>
       </div>
 
-      {/* ── WEEKLY PROGRESS ──────────────────────────────────────────────── */}
+      {/* ── SESSION PROGRESS ─────────────────────────────────────────────── */}
       <div style={{...W,paddingTop:isDesktop?40:28}}>
-        {sec("Weekly Progress")}
+        {sec("Session Progress")}
         <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"24px 28px":"18px 20px"}}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:isDesktop?"space-between":"flex-start",flexWrap:"wrap",gap:12}}>
-            <div style={{display:"flex",gap:isDesktop?16:8,alignItems:"center"}}>
-              {DAYS_OF_WEEK.map((d,i)=>{
-                const done_ = i < weekDone;
-                return (
-                  <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6}}>
-                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:T2.text4,textTransform:"uppercase",letterSpacing:"1px"}}>{d}</div>
-                    <div style={{width:isDesktop?36:30,height:isDesktop?36:30,borderRadius:"50%",background:done_?"rgba(138,158,132,0.15)":T2.bg,border:`1px solid ${done_?"rgba(138,158,132,0.4)":T2.border}`,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                      {done_ ? <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/></svg>
-                             : <div style={{width:2,height:2,borderRadius:"50%",background:T2.border}}/>}
+          {[[1,2,3,4,5,6,7],[8,9,10,11,12,13,14]].map((week,wi)=>(
+            <div key={wi} style={{marginBottom:wi===0?20:0}}>
+              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Week {wi+1}</div>
+              <div style={{display:"flex",gap:isDesktop?10:6}}>
+                {week.map(day=>{
+                  const isDone = done.includes(day);
+                  const isUpcoming = day > cur;
+                  return (
+                    <div key={day} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:5,flex:1,opacity:isUpcoming?0.35:1,transition:"opacity 0.3s"}}>
+                      <div style={{
+                        width:isDesktop?36:30,height:isDesktop?36:30,borderRadius:"50%",
+                        background:isDone?"rgba(138,158,132,0.15)":T2.bg,
+                        border:`1px solid ${isDone?"rgba(138,158,132,0.4)":day===cur?"rgba(201,169,97,0.45)":T2.border}`,
+                        display:"flex",alignItems:"center",justifyContent:"center",
+                      }}>
+                        {isDone
+                          ? <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round"/></svg>
+                          : <span style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:day===cur?T.gold:T2.text4}}>{day}</span>}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div style={{flex:1,marginLeft:isDesktop?32:0,minWidth:0}}>
-              <div style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T2.text,marginBottom:4}}>
-                {weekDone>=5?"You're on a roll!":weekDone>=3?"You're building momentum!":"Keep going — every day counts."}
+                  );
+                })}
               </div>
-              <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:10}}>{weekDone} of 7 days completed this week.</div>
-              <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-                <div style={{width:((weekDone/7)*100)+"%",height:"100%",background:T.gold,borderRadius:2,transition:"width 0.8s ease"}}/>
-              </div>
-              <div style={{fontFamily:T.sans,fontSize:11,color:T2.text4,marginTop:4,textAlign:"right"}}>{Math.round((weekDone/7)*100)}%</div>
             </div>
+          ))}
+          <div style={{marginTop:20,paddingTop:16,borderTop:"0.5px solid "+T2.divider}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,marginBottom:4}}>
+              {done.length>=14?"Programme complete — you've done the work.":done.length>=7?"You're into the second half — keep going.":done.length>=3?"You're building momentum.":"Every session moves you forward."}
+            </div>
+            <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3}}>{done.length} of 14 sessions complete</div>
           </div>
         </div>
       </div>
@@ -251,51 +247,30 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
         </div>
       </div>
 
-      {/* ── YOUR IMPACT BY ROLE ───────────────────────────────────────────── */}
+      {/* ── YOUR ROLE ─────────────────────────────────────────────────────── */}
       <div style={{...W,paddingTop:isDesktop?40:28}}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:isDesktop?20:14}}>
-          {sec("Your Impact by Role")}
-          <button style={{fontFamily:T.sans,fontSize:12,color:T2.text3,background:"none",border:"none",cursor:"pointer",padding:0,marginTop:-(isDesktop?8:6)}}>Manage roles</button>
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:isDesktop?"260px 1fr":"1fr",gap:isDesktop?24:14,alignItems:"start"}}>
-          {/* Role card */}
-          <div style={{background:"#0D0B08",borderRadius:10,padding:isDesktop?"22px 24px":"18px 20px"}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.35)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Primary Role</div>
-            {activeRole ? (
-              <>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:"#F5EFE6",marginBottom:4}}>{activeRole.label}</div>
-                <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",marginBottom:14}}>{activeRole.examples}</div>
-                <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.6)",lineHeight:1.6,margin:0,fontWeight:300}}>{activeRole.pieEmphasis||"Exposure is the lever most individual contributors are underusing. Your work is excellent — the gap is making sure the right people know about it."}</p>
-              </>
-            ) : (
-              <>
-                <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"#F5EFE6",marginBottom:4}}>No role set</div>
-                <div style={{display:"flex",flexDirection:"column",gap:6,marginTop:12}}>
-                  {ROLES.slice(0,3).map(role=>(
-                    <button key={role.id} onClick={()=>onChangeRole(role.id)} style={{padding:"8px 12px",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.25)",background:"rgba(138,158,132,0.06)",color:"rgba(245,239,230,0.7)",fontSize:12,fontFamily:T.sans,cursor:"pointer",textAlign:"left"}}>{role.label}</button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Impact bars */}
-          <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"24px 28px":"18px 20px"}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:20}}>Communication Strengths</div>
-            <div style={{display:"flex",flexDirection:"column",gap:16}}>
-              {ROLE_SKILLS.map((sk,i)=>(
-                <div key={sk.label}>
-                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
-                    <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text}}>{sk.label}</span>
-                    <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:600,color:T2.text3}}>{sk.pct}%</span>
-                  </div>
-                  <div style={{height:3,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-                    <div style={{width:sk.pct+"%",height:"100%",background:T2.text,borderRadius:2,transition:"width 0.8s ease"}}/>
-                  </div>
-                </div>
-              ))}
+        {sec("Your Role")}
+        <div style={{background:"#0D0B08",borderRadius:10,padding:isDesktop?"28px 32px":"20px 20px"}}>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.35)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Primary Role</div>
+          {activeRole ? (
+            <div style={{display:isDesktop?"flex":"block",gap:isDesktop?48:0,alignItems:"flex-start"}}>
+              <div style={{flex:isDesktop?1:undefined}}>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:"#F5EFE6",marginBottom:4}}>{activeRole.label}</div>
+                <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",marginBottom:isDesktop?0:14}}>{activeRole.examples}</div>
+              </div>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.6)",lineHeight:1.7,margin:0,fontWeight:300,flex:isDesktop?"1.4":undefined,maxWidth:isDesktop?520:undefined}}>{activeRole.pieEmphasis||"Exposure is the lever most individual contributors are underusing. Your work is excellent — the gap is making sure the right people know about it."}</p>
             </div>
-          </div>
+          ) : (
+            <>
+              <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"#F5EFE6",marginBottom:4}}>No role set</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.45)",lineHeight:1.6,marginBottom:16,fontWeight:300}}>Set your role to get context tailored to your world.</p>
+              <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+                {ROLES.slice(0,3).map(role=>(
+                  <button key={role.id} onClick={()=>onChangeRole(role.id)} style={{padding:"8px 14px",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.25)",background:"rgba(138,158,132,0.06)",color:"rgba(245,239,230,0.7)",fontSize:12,fontFamily:T.sans,cursor:"pointer"}}>{role.label}</button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
