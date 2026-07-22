@@ -102,6 +102,7 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   const [roleId, setRoleId] = useState(() => ls("au1_role", null));
   const [dark, setDark] = useState(() => ls("au1_dark", false));
   const [reflectionData, setReflectionData] = useState(null);  // holds onboarding answers for reflection screen
+  const [justBoarded, setJustBoarded] = useState(false);
   const [view2, setView2] = useState("main");  // "main" | "reflection"
   const [tab, setTab] = useState("home");
   const [view, setView] = useState("main");
@@ -195,6 +196,7 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
             setBoarded(true);
             lsSet("au1_ob", true);
             setReflectionData(null);
+            setJustBoarded(true);
             setTab("home");
           }}
         />
@@ -236,8 +238,8 @@ slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
   }
 
   return (
-    <div 
-style={Object.assign({},wrapStyle,{display:"flex",flexDirection:"column",height:isDesktop?"auto":"100dvh",overflow:isDesktop?"visible":"hidden"})}>
+    <div
+style={Object.assign({},wrapStyle,{display:"flex",flexDirection:"column",height:isDesktop?"auto":"100dvh",overflow:isDesktop?"visible":"hidden"},justBoarded?{animation:"fadeIn 0.45s ease both"}:{})}>
       
 <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes 
 slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
