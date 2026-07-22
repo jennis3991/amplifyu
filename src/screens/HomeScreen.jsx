@@ -92,6 +92,26 @@ dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false}) {
     () => { try { return !sessionStorage.getItem("au1_scrolled"); } catch { return true; } }
   );
   useEffect(() => {
+    const DAY_IMGS = {
+      1:["/day1-insight.jpg","/feynman-technique.jpg"],
+      2:["/d2-insight.jpg","/d2-theory.jpg"],
+      3:["/day3-insight.jpg","/day3-theory.jpg"],
+      4:["/day4-insight.jpg","/millers-law.jpg"],
+      5:["/d5-insight.jpg","/d5-theory.jpg"],
+      6:["/d6-insight.jpg","/d6-theory.jpg"],
+      7:["/day7-insight.jpg","/d7-habit-loop.jpg"],
+      8:["/nt-insight.jpg","/dual-coding-theory.jpg"],
+      9:["/day9-insight.jpg","/day9-theory.jpg"],
+      10:["/day10-insight.jpg","/performance-iceberg.jpg"],
+      11:["/d11-insight.jpg","/d11-theory.jpg"],
+      12:["/day12-insight.jpg","/day12-theory.jpg"],
+      13:["/day13-insight.jpg","/day13-theory.jpg"],
+      14:["/day14-insight.jpg","/day14-theory.jpg"],
+    };
+    (DAY_IMGS[cur] || []).forEach(src => { const i = new Image(); i.src = src; });
+  }, [cur]);
+
+  useEffect(() => {
     if (!showAffordance) return;
     const hide = () => { setShowAffordance(false); try { sessionStorage.setItem("au1_scrolled","1"); } catch {} };
     window.addEventListener("scroll", hide, { once: true, passive: true });
