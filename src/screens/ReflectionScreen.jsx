@@ -129,11 +129,6 @@ export function ReflectionScreen({ answers, onContinue }) {
         {/* LEFT: main content */}
         <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
 
-          {/* Banner image */}
-          <div style={{ width: "100%", height: 380, flexShrink: 0, overflow: "hidden" }}>
-            <img src="/profile-banner-desktop-2.jpg" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "center" }}/>
-          </div>
-
           <div style={{ padding: "52px 72px 120px", display: "flex", flexDirection: "column" }}>
 
           {/* Brand */}
@@ -315,11 +310,6 @@ export function ReflectionScreen({ answers, onContinue }) {
   return (
     <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 90 }}>
       <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
-
-      {/* Banner image */}
-      <div style={{ width: "100%", height: 220, overflow: "hidden", flexShrink: 0 }}>
-        <img src="/profile-banner-mobile.jpg" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "center center" }}/>
-      </div>
 
       {/* Header */}
       <div style={{ padding: "32px 24px 0" }}>
