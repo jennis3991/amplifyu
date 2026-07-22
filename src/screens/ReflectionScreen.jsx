@@ -8,7 +8,14 @@ export function ReflectionScreen({ answers, onContinue }) {
   const [reflection, setReflection] = useState(null);
   const [section, setSection] = useState(0);
   const [expanded, setExpanded] = useState(false);
+  const [visible, setVisible] = useState(true);
   const role = ROLES.find(r => r.id === answers.role);
+
+  function handleContinue() {
+    if (!visible) return;
+    setVisible(false);
+    setTimeout(onContinue, 380);
+  }
 
   const challengeLabel = answers.challenge || "communicating with impact";
   const contextLabel   = answers.context   || "building influence and presence";
@@ -121,7 +128,7 @@ export function ReflectionScreen({ answers, onContinue }) {
   // ── DESKTOP ───────────────────────────────────────────────────────────────
   if (isDesktop) {
     return (
-      <div style={{ height: "100vh", display: "flex", fontFamily: T.sans, background: T.bg, overflow: "hidden" }}>
+      <div style={{ height: "100vh", display: "flex", fontFamily: T.sans, background: T.bg, overflow: "hidden", opacity:visible?1:0, transition:"opacity 0.38s ease" }}>
         <style>{`
           @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
         `}</style>
@@ -297,7 +304,7 @@ export function ReflectionScreen({ answers, onContinue }) {
         </div>
         {/* Floating CTA — fixed bottom right, ENTER pill style */}
         <button
-          onClick={onContinue}
+          onClick={handleContinue}
           className="au-cta"
           style={{ position: "fixed", bottom: 36, right: 80, zIndex: 200, background: "rgba(138,158,132,0.12)", border: "1.5px solid " + T.gold, borderRadius: 40, padding: "15px 48px", color: T.gold, fontSize: 12, fontWeight: 500, letterSpacing: "2.5px", textTransform: "uppercase", cursor: "pointer", fontFamily: T.sans, transition: "all 0.2s ease", whiteSpace: "nowrap", boxShadow: "0 0 20px rgba(138,158,132,0.3), inset 0 1px 0 rgba(255,255,255,0.08)" }}
           onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 32px rgba(138,158,132,0.5), inset 0 1px 0 rgba(255,255,255,0.1)"; }}
@@ -313,7 +320,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
   // ── MOBILE ────────────────────────────────────────────────────────────────
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 90 }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 90, opacity:visible?1:0, transition:"opacity 0.38s ease" }}>
       <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
       {/* Header */}
@@ -440,7 +447,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
       {/* Let's Begin — mobile fixed bottom, dark Begin Session style */}
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "14px 20px 24px", background: "linear-gradient(to top, " + T.bg + " 70%, transparent)", zIndex: 100 }}>
-        <button onClick={onContinue} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 24px", borderRadius: 6, border: "none", background: T.ink, color: T.bg, fontSize: 14, fontFamily: T.sans, fontWeight: 600, cursor: "pointer", transition: "all 0.25s ease" }}>
+        <button onClick={handleContinue} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 24px", borderRadius: 6, border: "none", background: T.ink, color: T.bg, fontSize: 14, fontFamily: T.sans, fontWeight: 600, cursor: "pointer", transition: "all 0.25s ease" }}>
           {"Let's Begin"} →
         </button>
       </div>
