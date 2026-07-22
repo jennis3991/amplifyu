@@ -1559,51 +1559,63 @@ T.goldDark : T2.text4,
             {D1_EDITORIAL.map(card=>{
               const open = d1MobCard===card.id;
               const obs = d1ExObs[card.id];
+              const toggle = () => {
+                const next = open ? null : card.id;
+                setD1MobCard(next);
+                if (next && !d1ExObs[card.id]) { d1ExObs[card.id]=true; localStorage.setItem('d1ExObserved',JSON.stringify(d1ExObs)); }
+              };
               return (
-                <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:`0.5px solid ${open?"rgba(200,164,106,0.4)":T2.border}`,marginBottom:16,background:T2.surface,transition:"border-color 0.25s"}}>
-                  {/* Image — gallery only, hidden when open */}
+                <div key={card.id} style={{borderRadius:10,overflow:"hidden",border:`0.5px solid ${open?"rgba(200,164,106,0.4)":T2.border}`,marginBottom:14,background:T2.surface,transition:"border-color 0.25s"}}>
+                  {/* Collapsed: horizontal image-left / text-right layout */}
                   {!open && (
-                    <div style={{height:240,overflow:"hidden",position:"relative",cursor:"pointer"}}
-                      onClick={()=>{
-                        setD1MobCard(card.id);
-                        if (!d1ExObs[card.id]) { d1ExObs[card.id]=true; localStorage.setItem('d1ExObserved',JSON.stringify(d1ExObs)); }
-                      }}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
-                    </div>
-                  )}
-                  {/* Observed badge — full-width strip below image */}
-                  {!open && (
-                    <div style={{padding:"8px 18px",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:8}}>
-                      <div style={{width:20,height:20,borderRadius:"50%",border:`1.5px solid ${obs?"#619164":"rgba(160,128,90,0.4)"}`,background:obs?"rgba(97,145,100,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.25s"}}>
-                        {obs && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2.5" stroke="#619164" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                    <div style={{display:"flex",cursor:"pointer",minHeight:160}} onClick={toggle}>
+                      {/* Left: image */}
+                      <div style={{width:130,flexShrink:0,position:"relative",overflow:"hidden"}}>
+                        <img src={card.img} alt={card.name} style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center",opacity:0,transition:"opacity 0.4s ease"}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       </div>
-                      <span style={{fontFamily:T.sans,fontSize:12,fontWeight:obs?600:400,color:obs?"#619164":"rgba(160,128,90,0.6)",letterSpacing:"0.02em"}}>{obs?"Observed":"Mark as observed"}</span>
+                      {/* Right: content */}
+                      <div style={{flex:1,padding:"14px 16px",display:"flex",flexDirection:"column",minWidth:0}}>
+                        <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
+                          <div style={{width:18,height:18,borderRadius:"50%",border:`1.5px solid ${obs?"#619164":"rgba(160,128,90,0.4)"}`,background:obs?"rgba(97,145,100,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                            {obs && <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2.5" stroke="#619164" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                          </div>
+                          <span style={{fontFamily:T.sans,fontSize:11,fontWeight:obs?600:400,color:obs?"#619164":"rgba(160,128,90,0.6)"}}>{obs?"Observed":"Observed"}</span>
+                        </div>
+                        <h3 style={{fontFamily:T.serif,fontSize:19,fontWeight:500,color:T2.text,lineHeight:1.15,marginBottom:4}}>{card.name}</h3>
+                        <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>{card.superpower}</div>
+                        <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px",flex:1}}>{card.summary}</p>
+                        <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:8}}>
+                          <div style={{display:"flex",alignItems:"center",gap:3,marginBottom:2}}>
+                            <span style={{fontSize:7,color:T.gold}}>✦</span>
+                            <span style={{fontFamily:T.sans,fontSize:7,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.8px"}}>Superpower</span>
+                          </div>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:8}}>
+                            <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0,flex:1}}>{card.superpowerText}</p>
+                            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:2,flexShrink:0}}>
+                              <span>Read</span>
+                              <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={T2.text3} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   )}
-                  {/* Text area — name, eyebrow, summary, superpower row */}
-                  <div style={{padding:"16px 18px 4px",cursor:"pointer"}}
-                    onClick={()=>{
-                      const next = open ? null : card.id;
-                      setD1MobCard(next);
-                      if (next && !d1ExObs[card.id]) { d1ExObs[card.id]=true; localStorage.setItem('d1ExObserved',JSON.stringify(d1ExObs)); }
-                    }}>
-                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:3}}>{card.name}</h3>
-                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
-                    <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>
-                    <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:10,marginBottom:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:10}}>
+                  {/* Open header: compact row */}
+                  {open && (
+                    <div style={{display:"flex",alignItems:"center",gap:12,padding:"14px 18px",borderBottom:"0.5px solid "+T2.border,cursor:"pointer"}} onClick={toggle}>
+                      <div style={{width:48,height:48,borderRadius:6,overflow:"hidden",flexShrink:0}}>
+                        <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                      </div>
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:2}}>
-                          <span style={{fontSize:8,color:T.gold}}>✦</span>
-                          <span style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.8px"}}>Superpower</span>
-                        </div>
-                        <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
+                        <h3 style={{fontFamily:T.serif,fontSize:17,fontWeight:500,color:T2.text,lineHeight:1.2,marginBottom:2}}>{card.name}</h3>
+                        <div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px"}}>{card.superpower}</div>
                       </div>
                       <div style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0}}>
-                        <span>{open?"Close":"Read"}</span>
-                        <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.25s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        <span>Close</span>
+                        <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </div>
                     </div>
-                  </div>
+                  )}
                   {open && (
                     <div style={{padding:"0 18px 20px",animation:"fadeUp 0.3s ease both"}}>
                       <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16}}>
