@@ -12,6 +12,12 @@ export function Onboarding({onDone}) {
   const [selected, setSelected] = useState(null);  // holds chosen option before advancing
   const [entering, setEntering] = useState(false); // brief transition lock
   const [roleVisible, setRoleVisible] = useState(true);
+  const [landingVisible, setLandingVisible] = useState(true);
+
+  function goToQuestions() {
+    setLandingVisible(false);
+    setTimeout(() => setPhase("questions"), 380);
+  }
 
   useEffect(() => {
     ["/ob-q1.jpg","/ob-q2.jpg","/ob-q3.jpg","/ob-q4.jpg","/ob-role-2.png"].forEach(src => {
@@ -109,6 +115,7 @@ export function Onboarding({onDone}) {
           height: "100vh", overflow: "hidden", position: "relative",
           background: "#0F0D0A", display: "flex", alignItems: "center", justifyContent: "center",
           fontFamily: T.sans,
+          opacity: landingVisible ? 1 : 0, transition: "opacity 0.38s ease",
         }} className="au-grain-wrap">
           {/* Logo mark — glows softly behind the CTA */}
           <div style={{ position: "absolute", left: 0, right: 0, top: "65%", transform: "translateY(-50%)", display: "flex", justifyContent: "center", pointerEvents: "none" }}>
@@ -158,7 +165,7 @@ export function Onboarding({onDone}) {
 
             {/* The single CTA — restrained, elegant */}
             <button
-              onClick={() => setPhase("questions")}
+              onClick={goToQuestions}
               className="au-cta"
               style={{
                 background: "transparent",
@@ -213,7 +220,7 @@ export function Onboarding({onDone}) {
           }}>
             <div key={step} className="au-step-enter" style={{ position: "absolute", inset: 0 }}>
               {q.image ? (
-                <img src={q.image} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}/>
+                <img src={q.image} alt="" onLoad={e=>{e.currentTarget.style.opacity="1"}} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0, transition: "opacity 0.5s ease" }}/>
               ) : (
                 <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
                   <OBScene name={q.scene} height={900}/>
@@ -403,7 +410,7 @@ export function Onboarding({onDone}) {
 
   if (phase === "landing") {
     return (
-      <div style={{ height:"100vh", overflow:"hidden", position:"relative", background:"#0F0D0A", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans }} className="au-grain-wrap">
+      <div style={{ height:"100vh", overflow:"hidden", position:"relative", background:"#0F0D0A", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans, opacity:landingVisible?1:0, transition:"opacity 0.38s ease" }} className="au-grain-wrap">
         {/* Logo mark — glows softly behind the CTA */}
         <div style={{ position:"absolute", left:0, right:0, top:"70%", transform:"translateY(-50%)", display:"flex", justifyContent:"center", pointerEvents:"none" }}>
           <img src="/logo-dark.jpg" alt="" style={{ width:"min(60vw, 320px)", height:"auto", opacity:0.2, mixBlendMode:"screen" }}/>
@@ -421,7 +428,7 @@ export function Onboarding({onDone}) {
           <p style={{ fontSize:14, color:"rgba(255,255,255,0.38)", lineHeight:1.75, marginBottom:48, fontFamily:T.sans, fontWeight:300 }}>
             14 sessions. A private practice for communication, presence, and executive impact.
           </p>
-          <button onClick={()=>setPhase("questions")} style={{ background:"transparent", border:"1px solid rgba(255,255,255,0.2)", borderRadius:40, padding:"13px 36px", color:"rgba(255,255,255,0.8)", fontSize:12, fontWeight:400, letterSpacing:"1.5px", textTransform:"uppercase", cursor:"pointer", fontFamily:T.sans }}>
+          <button onClick={goToQuestions} style={{ background:"transparent", border:"1px solid rgba(255,255,255,0.2)", borderRadius:40, padding:"13px 36px", color:"rgba(255,255,255,0.8)", fontSize:12, fontWeight:400, letterSpacing:"1.5px", textTransform:"uppercase", cursor:"pointer", fontFamily:T.sans }}>
             Enter
           </button>
         </div>
@@ -479,12 +486,12 @@ export function Onboarding({onDone}) {
 
   const q = QS[step];
   return (
-    <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
+    <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column",animation:"fadeIn 0.45s ease both"}}>
       <div style={{flex:1,display:"flex",flexDirection:"column",opacity:stepVisible?1:0,transition:"opacity 0.24s ease"}}>
         {/* Photo banner */}
         <div style={{position:"relative",height:345,flexShrink:0,overflow:"hidden"}}>
           {q.image
-            ? <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
+            ? <img src={q.image} alt="" onLoad={e=>{e.currentTarget.style.opacity="1"}} style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%",opacity:0,transition:"opacity 0.5s ease"}}/>
             : <OBScene name={q.scene} height={300}/>}
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 55%)"}}/>
           <div style={{position:"absolute",bottom:20,left:24,right:24}}>
