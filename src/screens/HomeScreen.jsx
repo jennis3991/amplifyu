@@ -73,9 +73,9 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
         <p style={{ fontSize:11, letterSpacing:"0.1em", color:"#9c9384", margin:"0 0 8px", fontFamily:T.sans }}>STRONGEST SO FAR</p>
         {catProgress.map((cat,i) => (
           <div key={cat.label} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:i<catProgress.length-1?6:0 }}>
-            <span style={{ fontSize:12, color:i===0?"#f4f1ea":"#9c9384", width:118, flexShrink:0, fontFamily:T.sans }}>{cat.label}</span>
+            <span style={{ fontSize:12, color:"#f4f1ea", width:118, flexShrink:0, fontFamily:T.sans }}>{cat.label}</span>
             <div style={{ flex:1, height:3, background:"#2a251c", borderRadius:2, overflow:"hidden" }}>
-              <div style={{ width:cat.pct+"%", height:"100%", background:i===0?"#c9a961":"#5f5a4c" }}/>
+              <div style={{ width:cat.pct+"%", height:"100%", background:"#c9a961" }}/>
             </div>
           </div>
         ))}
