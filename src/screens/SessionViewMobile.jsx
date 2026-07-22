@@ -28,7 +28,7 @@ function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
   return (
     <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
       {image && <img src={image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>}
-      {image && <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.35) 55%, rgba(10,8,5,0.45) 100%)"}}/>}
+      {image && <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.78) 0%, rgba(10,8,5,0.08) 50%, transparent 100%)"}}/>}
       <div style={{position:"relative",zIndex:2}}>
         <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{label}</div>
         {liveIndicator ? (
