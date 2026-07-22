@@ -184,7 +184,7 @@ lsSet("au1_dark",d); }
   // Reflection screen — check FIRST, before the !boarded onboarding check
   if (reflectionData) {
     return (
-      <div style={wrapStyle}>
+      <div style={{...wrapStyle, animation:"fadeIn 0.45s ease both"}}>
         
 <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#0B0D10;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes 
 slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}@keyframes 

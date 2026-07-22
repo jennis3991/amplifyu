@@ -11,6 +11,7 @@ export function Onboarding({onDone}) {
   const [ans, setAns]     = useState({});
   const [selected, setSelected] = useState(null);  // holds chosen option before advancing
   const [entering, setEntering] = useState(false); // brief transition lock
+  const [roleVisible, setRoleVisible] = useState(true);
 
   useEffect(() => {
     ["/ob-q1.jpg","/ob-q2.jpg","/ob-q3.jpg","/ob-q4.jpg","/ob-role-2.png"].forEach(src => {
@@ -93,7 +94,9 @@ export function Onboarding({onDone}) {
   }
 
   function pickRole(roleId) {
-    onDone(Object.assign({}, ans, {role: roleId}));
+    if (!roleVisible) return;
+    setRoleVisible(false);
+    setTimeout(() => onDone(Object.assign({}, ans, {role: roleId})), 320);
   }
 
   // ── DESKTOP EXPERIENCE ────────────────────────────────────────────────────
@@ -310,7 +313,7 @@ export function Onboarding({onDone}) {
     // ── Phase: Role ── "Your world shapes your practice"
     if (phase === "role") {
       return (
-        <div style={{ height: "100vh", display: "flex", overflow: "hidden", fontFamily: T.sans }} className="au-grain-wrap">
+        <div style={{ height: "100vh", display: "flex", overflow: "hidden", fontFamily: T.sans, opacity:roleVisible?1:0, transition:"opacity 0.32s ease" }} className="au-grain-wrap">
           {/* LEFT: Atmospheric stage */}
           <div style={{ width: "45%", flexShrink: 0, position: "relative", overflow: "hidden", background: "#0F0D0A" }}>
             <img src="/ob-role.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}/>
@@ -428,7 +431,7 @@ export function Onboarding({onDone}) {
 
   if (phase === "role") {
     return (
-      <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column",animation:"fadeIn 0.22s ease 0.12s both"}}>
+      <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column",opacity:roleVisible?1:0,transition:"opacity 0.32s ease"}}>
         <div style={{position:"relative",height:345,flexShrink:0,overflow:"hidden"}}>
           <img src="/ob-role-2.png" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 45%)"}}/>
