@@ -385,11 +385,17 @@ export function Onboarding({onDone}) {
   }
 
   // ── MOBILE EXPERIENCE (original, preserved) ────────────────────────────────
+  const [stepVisible, setStepVisible] = useState(true);
   function pick_mobile(opt) {
-    const next = Object.assign({},ans,{[QS[step].k]:opt});
-    setAns(next);
-    if (step < QS.length-1) setStep(step+1);
-    else setPhase("role");
+    if (!stepVisible) return;
+    setStepVisible(false);
+    setTimeout(() => {
+      const next = Object.assign({},ans,{[QS[step].k]:opt});
+      setAns(next);
+      if (step < QS.length-1) setStep(step+1);
+      else setPhase("role");
+      setStepVisible(true);
+    }, 240);
   }
 
   if (phase === "landing") {
@@ -471,7 +477,7 @@ export function Onboarding({onDone}) {
   const q = QS[step];
   return (
     <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
-      <div key={step} className="au-step-enter" style={{flex:1,display:"flex",flexDirection:"column"}}>
+      <div style={{flex:1,display:"flex",flexDirection:"column",opacity:stepVisible?1:0,transition:"opacity 0.24s ease"}}>
         {/* Photo banner */}
         <div style={{position:"relative",height:345,flexShrink:0,overflow:"hidden"}}>
           {q.image
