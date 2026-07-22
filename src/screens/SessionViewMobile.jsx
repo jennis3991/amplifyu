@@ -1569,9 +1569,9 @@ T.goldDark : T2.text4,
                   {/* Collapsed: horizontal image-left / text-right layout */}
                   {!open && (
                     <div style={{display:"flex",cursor:"pointer",minHeight:160}} onClick={toggle}>
-                      {/* Left: image */}
-                      <div style={{width:140,flexShrink:0,background:"#1a1511",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
-                        <img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"contain",opacity:0,transition:"opacity 0.4s ease"}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      {/* Left: image — square 140×140, cover fills it perfectly with a 280×280px source */}
+                      <div style={{width:140,height:140,flexShrink:0,alignSelf:"center",overflow:"hidden",borderRadius:"2px 0 0 2px"}}>
+                        <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center",opacity:0,transition:"opacity 0.4s ease"}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       </div>
                       {/* Right: content */}
                       <div style={{flex:1,padding:"14px 16px",display:"flex",flexDirection:"column",minWidth:0}}>
