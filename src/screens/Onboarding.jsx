@@ -470,37 +470,39 @@ export function Onboarding({onDone}) {
 
   const q = QS[step];
   return (
-    <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column",animation:"fadeIn 0.22s ease 0.12s both"}}>
-      {/* Photo banner */}
-      <div style={{position:"relative",height:345,flexShrink:0,overflow:"hidden"}}>
-        {q.image
-          ? <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
-          : <OBScene name={q.scene} height={300}/>}
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 55%)"}}/>
-        <div style={{position:"absolute",bottom:20,left:24,right:24}}>
-          <div style={{fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"3.5px",fontFamily:T.sans,marginBottom:10}}>{q.context}</div>
-          <div style={{display:"flex",gap:6}}>{QS.map((_,i)=><div key={i} style={{height:2,borderRadius:1,flex:1,background:i<=step?T.gold:"rgba(255,255,255,0.2)"}}/>)}</div>
+    <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column"}}>
+      <div key={step} className="au-step-enter" style={{flex:1,display:"flex",flexDirection:"column"}}>
+        {/* Photo banner */}
+        <div style={{position:"relative",height:345,flexShrink:0,overflow:"hidden"}}>
+          {q.image
+            ? <img src={q.image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
+            : <OBScene name={q.scene} height={300}/>}
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 55%)"}}/>
+          <div style={{position:"absolute",bottom:20,left:24,right:24}}>
+            <div style={{fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"3.5px",fontFamily:T.sans,marginBottom:10}}>{q.context}</div>
+            <div style={{display:"flex",gap:6}}>{QS.map((_,i)=><div key={i} style={{height:2,borderRadius:1,flex:1,background:i<=step?T.gold:"rgba(255,255,255,0.2)"}}/>)}</div>
+          </div>
         </div>
-      </div>
 
-      {/* Question + options on parchment */}
-      <div style={{padding:"32px 24px 48px",flex:1,background:"#F7F3EC"}}>
-        <div style={{fontSize:9,color:"#A8998A",letterSpacing:"3px",textTransform:"uppercase",marginBottom:24,fontFamily:T.sans}}>Reflection {step+1}</div>
-        <h2 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,36px)",fontWeight:500,lineHeight:1.15,color:"#2C2416",letterSpacing:"-0.5px",marginBottom:36}}>{q.q}</h2>
-        <div style={{display:"flex",flexDirection:"column",gap:0}}>
-          {q.opts.map((opt,i)=>(
-            <div key={opt} onClick={()=>pick_mobile(opt)} style={{
-              padding:"18px 0 18px 20px",
-              borderTop:i===0?"1px solid #DDD5C4":"none",
-              borderBottom:"1px solid #DDD5C4",
-              borderLeft:"2px solid transparent",
-              cursor:"pointer",transition:"all 0.2s ease",
-            }}
-              onTouchStart={e=>{e.currentTarget.style.borderLeftColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
-              onTouchEnd={e=>{e.currentTarget.style.borderLeftColor="transparent";e.currentTarget.style.background="transparent";}}>
-              <p style={{fontFamily:T.serif,fontSize:17,color:"#6B5E44",lineHeight:1.45,margin:0,letterSpacing:"-0.1px"}}>{opt}</p>
-            </div>
-          ))}
+        {/* Question + options on parchment */}
+        <div style={{padding:"32px 24px 48px",flex:1,background:"#F7F3EC"}}>
+          <div style={{fontSize:9,color:"#A8998A",letterSpacing:"3px",textTransform:"uppercase",marginBottom:24,fontFamily:T.sans}}>Reflection {step+1}</div>
+          <h2 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,36px)",fontWeight:500,lineHeight:1.15,color:"#2C2416",letterSpacing:"-0.5px",marginBottom:36}}>{q.q}</h2>
+          <div style={{display:"flex",flexDirection:"column",gap:0}}>
+            {q.opts.map((opt,i)=>(
+              <div key={opt} onClick={()=>pick_mobile(opt)} style={{
+                padding:"18px 0 18px 20px",
+                borderTop:i===0?"1px solid #DDD5C4":"none",
+                borderBottom:"1px solid #DDD5C4",
+                borderLeft:"2px solid transparent",
+                cursor:"pointer",transition:"all 0.2s ease",
+              }}
+                onTouchStart={e=>{e.currentTarget.style.borderLeftColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
+                onTouchEnd={e=>{e.currentTarget.style.borderLeftColor="transparent";e.currentTarget.style.background="transparent";}}>
+                <p style={{fontFamily:T.serif,fontSize:17,color:"#6B5E44",lineHeight:1.45,margin:0,letterSpacing:"-0.1px"}}>{opt}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
