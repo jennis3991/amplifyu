@@ -24,19 +24,23 @@ import { Timer } from '../components/Timer.jsx';
 import { PBar } from '../components/NavComponents.jsx';
 import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 
-function TabHeroPane({ label, headline, liveIndicator = false }) {
+function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
   return (
-    <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box"}}>
-      <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{label}</div>
-      {liveIndicator ? (
-        <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10}}>
-          <div style={{width:10,height:10,borderRadius:"50%",background:"#CC4444",flexShrink:0,marginTop:6,animation:"glowPulse 1s ease infinite",boxShadow:"0 0 8px rgba(204,68,68,0.55)"}}/>
-          <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,margin:0}}>{headline}</p>
-        </div>
-      ) : (
-        <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{headline}</p>
-      )}
-      <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)"}}/>
+    <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
+      {image && <img src={image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>}
+      {image && <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.35) 55%, rgba(10,8,5,0.45) 100%)"}}/>}
+      <div style={{position:"relative",zIndex:2}}>
+        <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{label}</div>
+        {liveIndicator ? (
+          <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10}}>
+            <div style={{width:10,height:10,borderRadius:"50%",background:"#CC4444",flexShrink:0,marginTop:6,animation:"glowPulse 1s ease infinite",boxShadow:"0 0 8px rgba(204,68,68,0.55)"}}/>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,margin:0}}>{headline}</p>
+          </div>
+        ) : (
+          <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>{headline}</p>
+        )}
+        <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)"}}/>
+      </div>
     </div>
   );
 }
@@ -456,18 +460,9 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           return <TabHeroPane label={sh.label} headline={sh.heading} />;
         }
         // ── Example panes ──────────────────────────────────────────────────
-        if(isNT && step==="Example") return (
-          <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
-            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 40% 30%, rgba(183,154,107,0.06) 0%, transparent 60%)",pointerEvents:"none"}}/>
-            <div style={{position:"relative",zIndex:2,animation:"fadeUp 0.6s ease both"}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Storytelling in the Wild</div>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Stories create empathy. Empathy creates trust. Trust creates influence.</p>
-              <div style={{width:40,height:1,background:"rgba(245,239,230,0.35)"}}/>
-            </div>
-          </div>
-        );
-        if(isD14 && step==="Example") return <TabHeroPane label="Great Communicators Are Made" headline="None of them started where they finished. The same process is available to you." />;
-        if(step==="Example" && !isD13){
+        if(isNT && step==="Example") return <TabHeroPane image="/example-hero.jpg" label="Storytelling in the Wild" headline="Stories create empathy. Empathy creates trust. Trust creates influence." />;
+        if(isD14 && step==="Example") return <TabHeroPane image="/example-hero.jpg" label="Great Communicators Are Made" headline="None of them started where they finished. The same process is available to you." />;
+        if(step==="Example"){
           const EX={
             1:{label:"MASTERS OF CLARITY",heading:"The simplest words carry the most weight."},
             2:{label:"VOICE IN ACTION",heading:"Range creates engagement. Contrast creates emotion."},
@@ -480,9 +475,11 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             9:{label:"CONNECTION IN ACTION",heading:"The most connected people listen more than they speak."},
             10:{label:"PERFORMANCE IN ACTION",heading:"Visible performance is communicated performance."},
             11:{label:"ICONIC BRANDS. INTENTIONAL CHOICES.",heading:"Brand isn't what you say about yourself. It's what others say when you're not there."},
+            12:{label:"PRESENCE IN ACTION",heading:"How you show up changes what people hear."},
+            13:{label:"ADVOCACY IN ACTION",heading:"The people who get ahead make their value impossible to ignore."},
           };
           const h=EX[lesson.day]||EX[1];
-          return <TabHeroPane label={h.label} headline={h.heading} />;
+          return <TabHeroPane image="/example-hero.jpg" label={h.label} headline={h.heading} />;
         }
         // ── Image lookup tables ────────────────────────────────────────────
         const STEP_IMGS={
