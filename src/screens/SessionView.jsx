@@ -1408,7 +1408,7 @@ setAmbitionSaved(true); } catch {}
           <div style={{fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The Cognitive Load Principle</h2>
           <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
-            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>Fillers happen when your brain is multitasking faster than it can think.</p>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0,fontStyle:"italic"}}>Fillers happen when your brain is multitasking faster than it can think.</p>
           </div>
           {(()=>{
             const [open3, setOpen3] = useState(null);
@@ -1760,7 +1760,7 @@ setAmbitionSaved(true); } catch {}
           <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>Miller's Law</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>In 1956, psychologist George Miller discovered something fundamental about how humans think.</p>
           <div style={{padding:"18px 22px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:20}}>
-            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>We can only hold 7 (±2) pieces of information in working memory at once.</p>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0,fontStyle:"italic"}}>We can only hold 7 (±2) pieces of information in working memory at once.</p>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:20}}>
             {["Every sentence you speak creates a memory load.","Long sentences stack information faster than your audience can process.","By the time you reach the end, they've forgotten the beginning.","The fix? One idea. One sentence. Full stop."].map((p,i)=>(
@@ -2233,7 +2233,7 @@ setAmbitionSaved(true); } catch {}
             <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>The Feynman Technique</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Richard Feynman won the Nobel Prize in Physics — and could explain quantum mechanics to a 12-year-old.</p>
             <div style={{padding:"18px 22px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:28}}>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 5px"}}>"If you can't explain it simply, you don't understand it well enough."</p>
+              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 5px",fontStyle:"italic"}}>"If you can't explain it simply, you don't understand it well enough."</p>
               <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,margin:0}}>— Richard Feynman</p>
             </div>
             {steps.map((s,i)=>(
@@ -2462,7 +2462,7 @@ setAmbitionSaved(true); } catch {}
           <h2 style={{ fontFamily:T.serif, fontSize:34, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Dual Coding Theory</h2>
           <p style={{ fontFamily:T.sans, fontSize:15, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28 }}>Stories activate more of the brain than facts. They trigger emotion, memory, and meaning simultaneously. In professional settings, a well-placed story is the most powerful persuasion tool available.</p>
           <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
-            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0 }}>The brain encodes information more deeply when processed through both verbal and visual channels simultaneously. Story activates both. Facts alone activate only one.</p>
+            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0, fontStyle:"italic" }}>The brain encodes information more deeply when processed through both verbal and visual channels simultaneously. Story activates both. Facts alone activate only one.</p>
           </div>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:24 }}>
             {[
@@ -3128,7 +3128,7 @@ setAmbitionSaved(true); } catch {}
           <h2 style={{ fontFamily:T.serif, fontSize:32, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The architecture of every great professional answer</h2>
           <p style={{ fontFamily:T.sans, fontSize:14, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28, maxWidth:640 }}>Two powerful findings from memory science explain exactly why PRE works — and why it's one of the most reliable communication frameworks available.</p>
           <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
-            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0 }}>People remember the beginning and end of information most clearly. The middle is forgotten.</p>
+            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0, fontStyle:"italic" }}>People remember the beginning and end of information most clearly. The middle is forgotten.</p>
           </div>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:14, marginBottom:28 }}>
             {[
@@ -3328,7 +3328,7 @@ setAmbitionSaved(true); } catch {}
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>What Happens Under Pressure</h2>
           <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28, maxWidth:640 }}>High-stakes conversations trigger biology before logic. Elite communicators understand the mechanics — and train to override them.</p>
           <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
-            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0 }}>The strongest communicator is often the calmest person in the room.</p>
+            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0, fontStyle:"italic" }}>The strongest communicator is often the calmest person in the room.</p>
           </div>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
             {[
