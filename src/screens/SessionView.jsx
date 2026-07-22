@@ -1759,13 +1759,13 @@ setAmbitionSaved(true); } catch {}
           <div style={{fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>Miller's Law</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>In 1956, psychologist George Miller discovered something fundamental about how humans think.</p>
-          <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:20}}>
+          <div style={{padding:"18px 22px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:20}}>
             <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0}}>We can only hold 7 (±2) pieces of information in working memory at once.</p>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:20}}>
             {["Every sentence you speak creates a memory load.","Long sentences stack information faster than your audience can process.","By the time you reach the end, they've forgotten the beginning.","The fix? One idea. One sentence. Full stop."].map((p,i)=>(
-              <div key={i} style={{padding:"14px 16px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,fontWeight:400,margin:0}}>{p}</p>
+              <div key={i} style={{padding:"14px 16px",background:"rgba(44,36,22,0.03)",borderRadius:4,border:"0.5px solid "+T2.border}}>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:400,margin:0}}>{p}</p>
               </div>
             ))}
           </div>
