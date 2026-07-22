@@ -20,7 +20,7 @@ export function Onboarding({onDone}) {
   }
 
   useEffect(() => {
-    ["/ob-q1.jpg","/ob-q2.jpg","/ob-q3.jpg","/ob-q4.jpg","/ob-role-2.png"].forEach(src => {
+    ["/ob-q1.webp","/ob-q2.jpg","/ob-q3.jpg","/ob-q4.jpg","/ob-role-2.png"].forEach(src => {
       const img = new Image();
       img.src = src;
     });
