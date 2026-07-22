@@ -499,20 +499,20 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           8:{Insight:"/nt-insight.jpg",Theory:"/dual-coding-theory.jpg",Practice:"/practice-bg.jpg",Simulation:null,Review:"/review-chair.jpg"},
         };
         // ── Rehearsal panes ────────────────────────────────────────────────
-        if(isD1 && step==="Rehearsal") return <TabHeroPane label="Voice Warm-Up" headline="Let's warm up your voice." />;
-        if(isD2 && step==="Rehearsal") return <TabHeroPane label="Voice Warm-Up · Day 2" headline="The way you sound changes everything. Let's hear your voice." />;
-        if(isD3 && step==="Rehearsal") return null;
-        if(isD4 && step==="Rehearsal") return null;
-        if(isD5 && step==="Rehearsal") return <TabHeroPane label="The PRE Card Sort" headline="Sort the cards. Train the instinct." />;
-        if(isD6 && step==="Rehearsal") return <TabHeroPane label="Find Your Words" headline="The right words under pressure don't come from thinking faster. They come from having them ready." />;
-        if(isD9 && step==="Rehearsal") return null;
-        if(isD10 && step==="Rehearsal") return <TabHeroPane label="Make Your Work Visible" headline="Turn what you do into a story people remember." />;
-        if(isD11 && step==="Rehearsal") return <TabHeroPane label="Build Your Brand" headline="Every career has a reputation. The best careers have one by design." />;
-        if(isD12 && step==="Rehearsal") return <TabHeroPane label="The Presence Challenge" headline="Seven rounds. Every physical signal that shapes how communication lands." />;
-        if(isD13 && step==="Rehearsal") return <TabHeroPane label="Make Your Value Visible" headline="Four exercises. Make your value impossible to ignore." />;
-        if(isD14 && step==="Rehearsal") return <TabHeroPane label="Day 14 · Capstone" headline="You are not the communicator you were 14 days ago." />;
-        if(isNT && step==="Rehearsal") return <TabHeroPane label="Story Lab" headline="The best communicators have a handful of go-to stories. Let's find one of yours." />;
-        if(isD7 && step==="Rehearsal") return <TabHeroPane label="Teach It Forward" headline="The best test of what you know is whether you can teach it." />;
+        if(isD1 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Voice Warm-Up" headline="Let's warm up your voice." />;
+        if(isD2 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Voice Warm-Up · Day 2" headline="The way you sound changes everything. Let's hear your voice." />;
+        if(isD3 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Rehearsal · Day 3" headline="The pause is a tool. Let's use it." />;
+        if(isD4 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Rehearsal · Day 4" headline="Say less. Mean more." />;
+        if(isD5 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="The PRE Card Sort" headline="Sort the cards. Train the instinct." />;
+        if(isD6 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Find Your Words" headline="The right words under pressure don't come from thinking faster. They come from having them ready." />;
+        if(isD9 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Rehearsal · Day 9" headline="The most connected people listen more than they speak." />;
+        if(isD10 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Your Work Visible" headline="Turn what you do into a story people remember." />;
+        if(isD11 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Build Your Brand" headline="Every career has a reputation. The best careers have one by design." />;
+        if(isD12 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="The Presence Challenge" headline="Seven rounds. Every physical signal that shapes how communication lands." />;
+        if(isD13 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Your Value Visible" headline="Four exercises. Make your value impossible to ignore." />;
+        if(isD14 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Day 14 · Capstone" headline="You are not the communicator you were 14 days ago." />;
+        if(isNT && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Story Lab" headline="The best communicators have a handful of go-to stories. Let's find one of yours." />;
+        if(isD7 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Teach It Forward" headline="The best test of what you know is whether you can teach it." />;
         const TABLET_IMGS={
           1:{Insight:{src:"/day1-insight.jpg"},Example:{src:"/day1-insight.jpg"}},
           2:{Insight:{src:"/d2-insight-tablet.jpg"},Practice:{src:"/d2-practice-tablet.jpg"}},
