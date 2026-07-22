@@ -528,13 +528,15 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         const src=STEP_IMGS[lesson.day]?.[step];
         const tabletEntry=TABLET_IMGS[lesson.day]?.[step];
         const useContainMob = lesson.day===11 && step==="Theory";
+        const fadeLoad = e => { e.currentTarget.style.opacity = "1"; };
+        const fadeStyle = { opacity:0, transition:"opacity 0.4s ease" };
         if(tabletEntry && src) return (
           <picture>
             <source media="(min-width: 768px)" srcSet={tabletEntry.src}/>
-            <img src={src} alt="" style={{width:"100%",height:320,objectFit:"cover",objectPosition:tabletEntry.pos||"center",display:"block",pointerEvents:"none"}}/>
+            <img src={src} alt="" onLoad={fadeLoad} style={{width:"100%",height:320,objectFit:"cover",objectPosition:tabletEntry.pos||"center",display:"block",pointerEvents:"none",...fadeStyle}}/>
           </picture>
         );
-        if(src) return <img src={src} alt="" style={{width:"100%",height:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Rehearsal"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent"}}/>;
+        if(src) return <img src={src} alt="" onLoad={fadeLoad} style={{width:"100%",height:320,objectFit:useContainMob?"contain":"cover",objectPosition:(isD7 && step==="Theory")?"center 72%":step==="Rehearsal"?"center 40%":step==="Example"?"center 30%":"center",display:"block",pointerEvents:"none",background:useContainMob?"#0E0B08":"transparent",...fadeStyle}}/>;
         return <Scene name={lesson.scene} height={320} day={lesson.day}/>;
       })()}
       {/* Exit button — top left over image */}
