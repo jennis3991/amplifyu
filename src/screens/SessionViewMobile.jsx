@@ -437,10 +437,10 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
     <div style={{position:"relative",height:320,overflow:"hidden",background:step==="Rehearsal"?"#141210":step==="Example"||step==="Simulation"?"#0E0B08":"transparent"}}>
       {(()=>{
         // ── Simulation panes ───────────────────────────────────────────────
-        if(isD4 && step==="Simulation") return <TabHeroPane label="Breaking News Live" headline="Report it live. Watch what your audience remembers." liveIndicator />;
-        if(isD1 && step==="Simulation") return <TabHeroPane label="Simulation · Day 1" headline="Awareness is where every great communicator begins." />;
-        if(isD13 && step==="Simulation") return <TabHeroPane label="The Networking Circuit" headline="Three people. Three conversations. One chance to make an impression." />;
-        if(isD14 && step==="Simulation") return <TabHeroPane label="Your Communication Blueprint" headline="Build the system you'll use for the rest of your career." />;
+        if(isD4 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Breaking News Live" headline="Report it live. Watch what your audience remembers." liveIndicator />;
+        if(isD1 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Simulation · Day 1" headline="Awareness is where every great communicator begins." />;
+        if(isD13 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="The Networking Circuit" headline="Three people. Three conversations. One chance to make an impression." />;
+        if(isD14 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Your Communication Blueprint" headline="Build the system you'll use for the rest of your career." />;
         if(step==="Simulation"){
           const SIM={
             1:{label:"SPEAK CLEARLY — IN ACTION",heading:"Clarity under pressure. This is the real test."},
@@ -457,7 +457,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             12:{label:"PRESENCE — IN ACTION",heading:"Every signal you send shapes what people believe."},
           };
           const sh=SIM[lesson.day]||{label:"SIMULATION",heading:"Real scenario. Real pressure. Real coaching."};
-          return <TabHeroPane label={sh.label} headline={sh.heading} />;
+          return <TabHeroPane image="/simulation-hero.jpg" label={sh.label} headline={sh.heading} />;
         }
         // ── Example panes ──────────────────────────────────────────────────
         if(isNT && step==="Example") return <TabHeroPane image="/example-hero.jpg" label="Storytelling in the Wild" headline="Stories create empathy. Empathy creates trust. Trust creates influence." />;
