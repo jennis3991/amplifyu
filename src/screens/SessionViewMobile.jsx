@@ -1570,8 +1570,8 @@ T.goldDark : T2.text4,
                   {!open && (
                     <div style={{display:"flex",cursor:"pointer",minHeight:160}} onClick={toggle}>
                       {/* Left: image */}
-                      <div style={{width:130,flexShrink:0,position:"relative",overflow:"hidden"}}>
-                        <img src={card.img} alt={card.name} style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center",opacity:0,transition:"opacity 0.4s ease"}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <div style={{width:140,flexShrink:0,background:"#1a1511",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+                        <img src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"contain",opacity:0,transition:"opacity 0.4s ease"}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       </div>
                       {/* Right: content */}
                       <div style={{flex:1,padding:"14px 16px",display:"flex",flexDirection:"column",minWidth:0}}>
