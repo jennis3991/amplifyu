@@ -746,7 +746,7 @@ T.goldDark : T2.text4,
       )}
       {isD10 && step==="Example" && (()=>{
         const D10_EDITORIAL = [
-          { id:"dyson", img:"/d10-dyson.jpg", imgPos:"center 45%", name:"James Dyson", superpower:"Master of Relentless Improvement",
+          { id:"dyson", img:"/d10-dyson.jpg", imgPos:"center 45%", name:"James Dyson", role:"Inventor & founder of Dyson", superpower:"Master of Relentless Improvement",
             superpowerText:"Every iteration makes the next one better.",
             summary:"He built thousands of prototypes before success. While others saw failure, he saw feedback.",
             quote:"\"I wanted to give up almost every day. But one of the things I did when I wanted to give up was to think, why was I giving up? Fear of failure.\"",
@@ -757,7 +757,7 @@ T.goldDark : T2.text4,
             technique:"Stop aiming for perfect on the first attempt. Whether you're preparing a presentation, writing a proposal, or practising a difficult conversation, ask: \"What's one thing I can improve before the next version?\"",
             lesson:"High performance isn't about talent alone. It's about showing up, testing, learning, and improving — again and again. The people who consistently excel aren't those who avoid failure; they're the ones who use every attempt to get better.",
           },
-          { id:"bezos", img:"/d10-bezos.jpg", imgPos:"center 50%", name:"Jeff Bezos", superpower:"Master of Repeatable Excellence",
+          { id:"bezos", img:"/d10-bezos.jpg", imgPos:"center 50%", name:"Jeff Bezos", role:"Founder of Amazon", superpower:"Master of Repeatable Excellence",
             superpowerText:"Consistency beats occasional brilliance.",
             summary:"He built one of the world's largest companies by obsessing over systems — so that great performance happened at scale, not by accident.",
             quote:"\"If you do build a great experience, customers tell each other about that. Word of mouth is very powerful.\"",
@@ -786,7 +786,8 @@ T.goldDark : T2.text4,
                   </div>}
                   <div style={{padding:"16px 16px 14px"}} onClick={()=>setD10MobCard(open?null:card.id)}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
-                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                       <div>
@@ -1010,7 +1011,7 @@ T.goldDark : T2.text4,
       )}
        {isD2 && step==="Example" && (()=>{
         const D2_EDITORIAL = [
-          { id:"streep", img:"/d2-streep.jpg", name:"Meryl Streep", superpower:"Master of Precision and Presence",
+          { id:"streep", img:"/d2-streep.jpg", name:"Meryl Streep", role:"Three-time Oscar-winning actress", superpower:"Master of Precision and Presence",
             superpowerText:"Precision over volume. Control over noise.",
             summary:"Three iconic roles. Three completely different voices.",
             quote:"\"Take your broken heart, make it into art.\"",
@@ -1021,7 +1022,7 @@ T.goldDark : T2.text4,
             technique:"Don't reach for volume — reach for control. Slow down before your most important word. Let silence carry what a raised voice never can.",
             lesson:"Precision creates presence. Control creates impact. A rushed voice can feel uncertain. An intentional voice commands attention.",
           },
-          { id:"sinek", img:"/d2-sinek.jpg", name:"Simon Sinek", superpower:"Master of Voice",
+          { id:"sinek", img:"/d2-sinek.jpg", name:"Simon Sinek", role:"Author & leadership speaker", superpower:"Master of Voice",
             superpowerText:"Makes big ideas land through deliberate delivery.",
             summary:"His voice carries the emotion before the words do.",
             quote:"\"People don't buy what you do. They buy why you do it.\"",
@@ -1067,7 +1068,8 @@ T.goldDark : T2.text4,
                       setD2MobCard(next);
                       if (next && !d2ExObs[card.id]) { d2ExObs[card.id]=true; localStorage.setItem('d2ExObserved',JSON.stringify(d2ExObs)); }
                     }}>
-                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:3}}>{card.name}</h3>
+                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>
                     <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:10,marginBottom:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:10}}>
@@ -1185,7 +1187,7 @@ T.goldDark : T2.text4,
       )}
       {isD3 && step==="Example" && (()=>{
         const D3_EDITORIAL = [
-          { id:"freeman", img:"/d3-freeman.jpg", name:"Morgan Freeman", superpower:"Master of the Pause",
+          { id:"freeman", img:"/d3-freeman.jpg", name:"Morgan Freeman", role:"Actor & narrator", superpower:"Master of the Pause",
             superpowerText:"Turns silence into emphasis.",
             summary:"No ums. No uhs. Just measured, deliberate speech.",
             quote:"\"Hope is a good thing. Maybe the best of things. And no good thing ever dies.\"",
@@ -1196,7 +1198,7 @@ T.goldDark : T2.text4,
             technique:"When you don't know what to say next, stop talking. Pause. Breathe. Then continue. Practice letting the silence sit — it signals confidence, not uncertainty.",
             lesson:"The pause is not your enemy. It's your most underused communication tool. Use it deliberately.",
           },
-          { id:"wintour", img:"/d3-wintour.jpg", name:"Anna Wintour", superpower:"Filler-Free Authority",
+          { id:"wintour", img:"/d3-wintour.jpg", name:"Anna Wintour", role:"Editor-in-Chief, Vogue", superpower:"Filler-Free Authority",
             superpowerText:"Every word chosen. Zero wasted.",
             summary:"She pauses between thoughts — no fillers, no hedging, just control.",
             quote:"\"Decisiveness.\"",
@@ -1242,7 +1244,8 @@ T.goldDark : T2.text4,
                       setD3MobCard(next);
                       if (next && !d3ExObs[card.id]) { d3ExObs[card.id]=true; localStorage.setItem('d3ExObserved',JSON.stringify(d3ExObs)); }
                     }}>
-                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:3}}>{card.name}</h3>
+                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>
                     <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:10,marginBottom:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:10}}>
@@ -1343,7 +1346,7 @@ T.goldDark : T2.text4,
       )}
       {isD4 && step==="Example" && (()=>{
         const D4_EDITORIAL = [
-          { id:"hemingway", img:"/d4-hemingway.jpg", imgPos:"center center", name:"Ernest Hemingway", superpower:"Master of Brevity",
+          { id:"hemingway", img:"/d4-hemingway.jpg", imgPos:"center center", name:"Ernest Hemingway", role:"Nobel Prize-winning novelist", superpower:"Master of Brevity",
             superpowerText:"Every word earns its place — or it goes.",
             summary:"He won the Nobel Prize with short, precise sentences.",
             quote:"\"The old man fished alone. Eighty-four days. No fish.\"",
@@ -1354,7 +1357,7 @@ T.goldDark : T2.text4,
             technique:"Write your first draft. Then cut every unnecessary word. Read each sentence aloud — if you run out of breath before the full stop, it's too long. Over 15 words? Split it.",
             lesson:"Every word you add dilutes your message. The best writers know what to leave out. Clarity is a discipline.",
           },
-          { id:"chanel", img:"/d4-chanel.jpg", imgPos:"center 65%", name:"Coco Chanel", superpower:"Elegance Through Elimination",
+          { id:"chanel", img:"/d4-chanel.jpg", imgPos:"center 65%", name:"Coco Chanel", role:"Fashion designer & founder of Chanel", superpower:"Elegance Through Elimination",
             superpowerText:"Short sentences. Maximum impact. Every time.",
             summary:"She built an empire on less is more — in fashion and in words.",
             quote:"\"Fashion fades. Style remains.\"",
@@ -1400,7 +1403,8 @@ T.goldDark : T2.text4,
                       setD4MobCard(next);
                       if (next && !d4ExObs[card.id]) { d4ExObs[card.id]=true; localStorage.setItem('d4ExObserved',JSON.stringify(d4ExObs)); }
                     }}>
-                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:3}}>{card.name}</h3>
+                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>
                     <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:10,marginBottom:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:10}}>
@@ -1525,7 +1529,7 @@ T.goldDark : T2.text4,
       })()}
       {isD1 && step==="Example" && (()=>{
         const D1_EDITORIAL = [
-          { id:"attenborough", img:"/d11-attenborough.jpg", name:"Sir David Attenborough", superpower:"Master of Clarity",
+          { id:"attenborough", img:"/d11-attenborough.jpg", name:"Sir David Attenborough", role:"Broadcaster & natural historian", superpower:"Master of Clarity",
             superpowerText:"Makes the complex feel beautifully simple.",
             summary:"He explains the natural world so everyone can see it.",
             quote:"\"The rainforest is like a vast, green lung breathing life into our planet.\"",
@@ -1536,7 +1540,7 @@ T.goldDark : T2.text4,
             technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",
             lesson:"Clarity comes from choosing words that create images, not confusion. The best explainers make you see what they’re saying.",
           },
-          { id:"branson", img:"/d11-branson.jpg", name:"Sir Richard Branson", superpower:"Conversation over Corporation",
+          { id:"branson", img:"/d11-branson.jpg", name:"Sir Richard Branson", role:"Founder of Virgin Group", superpower:"Conversation over Corporation",
             superpowerText:"Makes big ideas feel personal.",
             summary:"He speaks like a friend — even when addressing millions.",
             quote:"\"We just try to make things better for people. If we do that, they’ll choose us.\"",
@@ -1585,7 +1589,8 @@ T.goldDark : T2.text4,
                       setD1MobCard(next);
                       if (next && !d1ExObs[card.id]) { d1ExObs[card.id]=true; localStorage.setItem('d1ExObserved',JSON.stringify(d1ExObs)); }
                     }}>
-                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:3}}>{card.name}</h3>
+                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>
                     <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:10,marginBottom:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:10}}>
@@ -1703,7 +1708,7 @@ T.goldDark : T2.text4,
       )}
       {isNT && step==="Example" && (()=>{
         const D8_EDITORIAL = [
-          { id:"obama", img:"/d8-obama.jpg", imgPos:"center 40%", name:"Barack Obama", superpower:"Master of Human-First Storytelling",
+          { id:"obama", img:"/d8-obama.jpg", imgPos:"center 40%", name:"Barack Obama", role:"44th President of the United States", superpower:"Master of Human-First Storytelling",
             superpowerText:"Every policy begins with a person.",
             summary:"When discussing healthcare, jobs, or education, Obama always started with a single human story — not a statistic.",
             quote:"\"Change will not come if we wait for some other person or some other time.\"",
@@ -1714,7 +1719,7 @@ T.goldDark : T2.text4,
             technique:"Start with a customer, colleague, or client before presenting the data. Give them a name. Give them a challenge. Then connect that story to your point.",
             lesson:"Facts tell. Stories sell. The most persuasive communicators don't lead with data — they lead with a human being.",
           },
-          { id:"pixar", img:"/d8-pixar.jpg", imgPos:"center 45%", name:"The Pixar Framework", superpower:"The Most Replicable Story Structure Ever Invented",
+          { id:"pixar", img:"/d8-pixar.jpg", imgPos:"center 45%", name:"The Pixar Framework", role:"Pixar Animation Studios", superpower:"The Most Replicable Story Structure Ever Invented",
             superpowerText:"Once upon a time... until finally.",
             summary:"Pixar used the same six-beat template for every film. It works because it mirrors how the human brain processes experience.",
             quote:"\"The story is not in the plot but in the telling.\"",
@@ -1743,7 +1748,8 @@ T.goldDark : T2.text4,
                   </div>}
                   <div style={{padding:"16px 16px 14px"}} onClick={()=>setNtMobCard(open?null:card.id)}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
-                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                       <div>
@@ -1853,7 +1859,7 @@ T.goldDark : T2.text4,
       )}
       {isD9 && step==="Example" && (()=>{
         const D9_EDITORIAL = [
-          { id:"william", img:"/d9-william.jpg", imgPos:"center 50%", name:"Prince William", superpower:"Master of Connection Through Listening",
+          { id:"william", img:"/d9-william.jpg", imgPos:"center 50%", name:"Prince William", role:"Prince of Wales", superpower:"Master of Connection Through Listening",
             superpowerText:"Makes others feel heard, not just met.",
             summary:"Whether speaking with emergency responders, veterans, or young people, he creates space for others to share — and they remember how he made them feel.",
             quote:"\"Mental health is just as important as physical health.\"",
@@ -1864,7 +1870,7 @@ T.goldDark : T2.text4,
             technique:"In your next conversation, focus less on what you'll say next and more on understanding the other person's perspective. Ask one more question than you normally would. Let silence do some of the work.",
             lesson:"Strong communicators don't connect because they speak the most. They connect because they make others feel valued. Listening isn't the pause between speaking — it's where connection begins.",
           },
-          { id:"jacinda", img:"/d9-jacinda.jpg", imgPos:"center 50%", name:"Jacinda Ardern", superpower:"Master of Empathetic Leadership",
+          { id:"jacinda", img:"/d9-jacinda.jpg", imgPos:"center 50%", name:"Jacinda Ardern", role:"Former Prime Minister of New Zealand", superpower:"Master of Empathetic Leadership",
             superpowerText:"Warmth, humility, and authenticity — every time.",
             summary:"She communicates with warmth, empathy, and authenticity. She doesn't create distance between herself and others — she closes it.",
             quote:"\"One of the criticisms I've faced over the years is that I'm not aggressive enough... I totally rebel against that.\"",
@@ -1893,7 +1899,8 @@ T.goldDark : T2.text4,
                   </div>}
                   <div style={{padding:"16px 16px 14px"}} onClick={()=>setD9OpenCard(open?null:("d9ex"+card.id))}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
-                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                       <div>
@@ -2007,7 +2014,7 @@ T.goldDark : T2.text4,
       )}
       {isD5 && step==="Example" && (()=>{
         const D5_EDITORIAL = [
-          { id:"jensen", img:"/d5-jensen.jpg", name:"Jensen Huang", superpower:"PRE in Every Pitch",
+          { id:"jensen", img:"/d5-jensen.jpg", name:"Jensen Huang", role:"CEO & co-founder of NVIDIA", superpower:"PRE in Every Pitch",
             superpowerText:"Point. Reason. Example. Every time.",
             summary:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof.",
             quote:"\"I don't need to build a killer product overnight, I just need to build a winning product.\"",
@@ -2018,7 +2025,7 @@ T.goldDark : T2.text4,
             technique:"Lead with your point — don't build to it. Then give your reason in one sentence. Then make it concrete with a real example or analogy. Stop there.",
             lesson:"PRE isn't a template — it's how clear thinkers communicate. Your point tells people where to look. Your reason tells them why it matters. Your example makes it stick.",
           },
-          { id:"indra", img:"/d5-indra.jpg", name:"Indra Nooyi", superpower:"Performance With Purpose",
+          { id:"indra", img:"/d5-indra.jpg", name:"Indra Nooyi", role:"Former CEO of PepsiCo", superpower:"Performance With Purpose",
             superpowerText:"Big belief. Clear reason. Concrete execution.",
             summary:"Two decades leading PepsiCo — structured the same way every time.",
             quote:"\"Performance must be married with purpose.\"",
@@ -2064,7 +2071,8 @@ T.goldDark : T2.text4,
                       setD5MobCard(next);
                       if (next && !d5ExObs[card.id]) { d5ExObs[card.id]=true; localStorage.setItem('d5ExObserved',JSON.stringify(d5ExObs)); }
                     }}>
-                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:3}}>{card.name}</h3>
+                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>
                     <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:10,marginBottom:12,display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:10}}>
@@ -2304,7 +2312,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
       {isD6 && step==="Example" && (()=>{
         const D6_EDITORIAL = [
-          { id:"hamilton", img:"/d6-hamilton.jpg", imgPos:"center 50%", name:"Lewis Hamilton", superpower:"Master of Composure Under Pressure",
+          { id:"hamilton", img:"/d6-hamilton.jpg", imgPos:"center 50%", name:"Lewis Hamilton", role:"Seven-time Formula 1 World Champion", superpower:"Master of Composure Under Pressure",
             superpowerText:"Calm when every reason says otherwise.",
             summary:"Seven world championships — and his most powerful moment was how he handled losing one.",
             quote:"\"Firstly, a big congratulations to Max.\"",
@@ -2315,7 +2323,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             technique:"Before responding in a high-pressure moment, give yourself one breath. Ask: what do I want people to remember about how I handled this? Respond to that — not to the emotion in the room.",
             lesson:"Emotional control is often most visible when you have every reason to lose it. Pressure doesn't create character. It reveals it.",
           },
-          { id:"amal", img:"/d6-amal.jpg", imgPos:"center 50%", name:"Amal Clooney", superpower:"Master of Composure Under Pressure",
+          { id:"amal", img:"/d6-amal.jpg", imgPos:"center 50%", name:"Amal Clooney", role:"Human rights barrister", superpower:"Master of Composure Under Pressure",
             superpowerText:"Every word chosen. Every sentence deliberate.",
             summary:"She argues the world's most consequential legal cases — calm, precise and measured when the stakes couldn't be higher.",
             quote:"\"Pressure rarely rewards the loudest voice. It rewards the clearest mind.\"",
@@ -2344,7 +2352,8 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                   </div>}
                   <div style={{padding:"16px 16px 14px"}} onClick={()=>setD6MobCard(open?null:card.id)}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
-                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                       <div>
@@ -2470,7 +2479,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
       {isD11 && step==="Example" && (()=>{
         const D11_EDITORIAL = [
-          { id:"swift", img:"/d11-swift.jpg", imgPos:"center 40%", name:"Taylor Swift", superpower:"Master of Personal Brand",
+          { id:"swift", img:"/d11-swift.jpg", imgPos:"center 40%", name:"Taylor Swift", role:"Singer-songwriter & cultural icon", superpower:"Master of Personal Brand",
             superpowerText:"Making people feel part of the journey.",
             summary:"She didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel personally invested in her story.",
             quote:"\"People didn't just buy Taylor Swift's music. They bought into her journey.\"",
@@ -2481,7 +2490,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             technique:"Before your next presentation or professional interaction, ask yourself: \"What part of my journey could I share that the audience would recognise in themselves?\" Vulnerability and honesty create connection faster than credentials ever will.",
             lesson:"People didn't just buy Taylor Swift's music. They bought into her journey. The strongest personal brands make people feel like they are part of the story — not just observers of it.",
           },
-          { id:"disney", img:"/d11-disney.jpg", imgPos:"center 40%", name:"Disney", superpower:"Master of Brand Consistency",
+          { id:"disney", img:"/d11-disney.jpg", imgPos:"center 40%", name:"Disney", role:"Global entertainment company, est. 1923", superpower:"Master of Brand Consistency",
             superpowerText:"100 years of one word: Magic.",
             summary:"Disney has spent a century staying true to one emotional promise across every format, generation, and medium — Magic, Wonder, and Imagination.",
             quote:"\"Disney didn't build a brand. They built a feeling — and then protected it for 100 years.\"",
@@ -2510,7 +2519,8 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                   </div>}
                   <div style={{padding:"16px 16px 14px"}} onClick={()=>setD11MobCard(open?null:card.id)}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
-                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                       <div>
@@ -2609,7 +2619,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
       {isD12 && step==="Example" && (()=>{
         const D12_EDITORIAL = [
-          { id:"kennedy", img:"/d12-kennedy.jpg", imgPos:"center 35%", name:"Kennedy vs Nixon", superpower:"Master of Executive Presence",
+          { id:"kennedy", img:"/d12-kennedy.jpg", imgPos:"center 35%", name:"Kennedy vs Nixon", role:"1960 US Presidential Debate", superpower:"Master of Executive Presence",
             superpowerText:"People don't just hear confidence. They see it.",
             summary:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio believed Nixon won. People who watched on television overwhelmingly believed Kennedy won. The difference wasn't their arguments — it was their presence.",
             quote:"\"People don't just hear confidence. They see it.\"",
@@ -2620,7 +2630,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             technique:"Before your next important conversation, imagine the camera is already on you. Stand tall, relax your shoulders, make steady eye contact and pause before you begin speaking. Let people see confidence before they hear it.",
             lesson:"The Kennedy–Nixon debate reminds us that communication is never just about words. Every movement, expression and pause tells its own story. Great communicators understand that presence begins long before the first sentence — and often determines how every sentence that follows is received.",
           },
-          { id:"jobs", img:"/d12-jobs.jpg", imgPos:"center 40%", name:"Steve Jobs", superpower:"Master of Purposeful Presence",
+          { id:"jobs", img:"/d12-jobs.jpg", imgPos:"center 40%", name:"Steve Jobs", role:"Co-founder & former CEO of Apple", superpower:"Master of Purposeful Presence",
             superpowerText:"When every movement has purpose, every message carries more weight.",
             summary:"On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message — not the speaker.",
             quote:"\"Confident body language creates clarity. Calm presence made complex ideas feel simple and memorable.\"",
@@ -2649,7 +2659,8 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                   </div>}
                   <div style={{padding:"16px 16px 14px"}} onClick={()=>setD12MobCard(open?null:card.id)}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
-                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                       <div>
@@ -2856,7 +2867,8 @@ strokeLinecap="round"/></svg>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
                     <div style={{flex:1}}>
                       <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>{card.headline}</div>
-                      <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,lineHeight:1.2}}>{card.name}</div>
+                      <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:card.role?2:0}}>{card.name}</div>
+                      {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0"}}>{card.role}</p>}
                     </div>
                     <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
@@ -2937,7 +2949,7 @@ strokeLinecap="round"/></svg>
       )}
       {isD13 && step==="Example" && (()=>{
         const D13_EDITORIAL = [
-          { id:"obama", img:"/d13-obama.jpg", imgPos:"center 50%", name:"Michelle Obama", superpower:"Master of Warm Presence",
+          { id:"obama", img:"/d13-obama.jpg", imgPos:"center 50%", name:"Michelle Obama", role:"Former First Lady of the United States", superpower:"Master of Warm Presence",
             superpowerText:"Making every room feel smaller.",
             summary:"Whether speaking to thousands or having a one-to-one conversation, her body language projects warmth, confidence, and authenticity — before she says a word.",
             quote:"\"Presence isn't about commanding attention — it's about creating connection.\"",
@@ -2948,7 +2960,7 @@ strokeLinecap="round"/></svg>
             technique:"Before your next conversation or presentation, check your posture before your script. Stand tall, relax your shoulders, keep your hands open, and make eye contact before you begin speaking. Let your body communicate confidence before your voice does.",
             lesson:"Your body is always communicating — even when you're silent. Great communicators understand that influence isn't just about what you say; it's about how you make people feel the moment you walk into the room. When your words and body language are aligned, your presence becomes your greatest strength.",
           },
-          { id:"diana", img:"/d13-jamie.jpg", imgPos:"center center", name:"Princess Diana", superpower:"Master of Visibility",
+          { id:"diana", img:"/d13-jamie.jpg", imgPos:"center center", name:"Princess Diana", role:"Princess of Wales", superpower:"Master of Visibility",
             superpowerText:"Visibility has the greatest impact when it stops being about you.",
             summary:"She used public attention to change public conversations — bringing compassion to causes many had ignored.",
             quote:"\"Visibility has the greatest impact when it stops being about you and starts becoming about something bigger than yourself.\"",
@@ -2977,7 +2989,8 @@ strokeLinecap="round"/></svg>
                   </div>}
                   <div style={{padding:"16px 16px 14px"}} onClick={()=>setD12MobCard(open?null:("d13ex"+card.id))}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
-                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:4}}>{card.name}</div>
+                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
+                    {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                       <div>
