@@ -771,7 +771,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
 
   // ── Phase: select topic ───────────────────────────────────────────────────
   if (phase === 'select') return (
-    <div style={{ padding: isDesktop ? "44px 52px" : "24px 20px", overflowY: "auto" }}>
+    <div style={{ padding: isDesktop ? "44px 52px" : "0 0", overflowY: "auto" }}>
       <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Rehearsal · Day 1</div>
       <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Voice Warm-Up</h2>
       <p style={{ fontFamily: T.sans, fontSize: isDesktop ? 16 : 15, color: "#A8998A", lineHeight: 1.6, fontWeight: 400, marginBottom: 24 }}>Choose one topic below and speak for around 30 seconds. This is simply a chance to find your voice. Just speak naturally, and we'll take care of the rest.</p>
@@ -797,7 +797,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
 
   // ── Phase: record ─────────────────────────────────────────────────────────
   return (
-    <div style={{ padding: isDesktop ? "44px 52px" : "24px 20px", overflowY: "auto" }}>
+    <div style={{ padding: isDesktop ? "44px 52px" : "0 0", overflowY: "auto" }}>
       <button onClick={() => { setPhase('select'); setIsRec(false); setRecDone(false); clearInterval(timerRef.current); }} style={{ background: "none", border: "none", fontFamily: T.sans, fontSize: 13, color: "#A8998A", cursor: "pointer", padding: "0 0 24px", display: "flex", alignItems: "center", gap: 6 }}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
         Choose a different topic

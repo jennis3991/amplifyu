@@ -660,7 +660,7 @@ T.goldDark : T2.text4,
         </div>
       );
     })()}
-     <div style={{padding:"4px 20px 0",display:"flex",flexDirection:"column",gap:14}}>
+     <div style={{padding:"20px 20px 0",display:"flex",flexDirection:"column",gap:14}}>
        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
       {isD10 && step==="Insight" && (
         <>

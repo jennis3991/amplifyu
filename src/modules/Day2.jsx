@@ -766,7 +766,7 @@ function _unused_D2SimScenarios() {
   if(phase==='mode-select') return (
     <div style={{background:dark,borderRadius:8,overflow:"hidden",animation:"fadeIn 0.3s ease"}}>
       <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
-      <div style={{padding:isDesktop?"36px 40px":"24px 20px"}}>
+      <div style={{padding:isDesktop?"36px 40px":"0 0"}}>
         <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"0.2em",marginBottom:6,fontFamily:T.sans}}>{sc.label}</div>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?20:16,fontWeight:600,color:cream,marginBottom:6,lineHeight:1.3}}>{sc.sub}</p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:creamDim,marginBottom:isDesktop?32:24}}>How would you like to practise?</p>
@@ -793,7 +793,7 @@ function _unused_D2SimScenarios() {
     return (
       <div style={{background:dark,borderRadius:8,overflow:"hidden",animation:"fadeIn 0.3s ease"}}>
         <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
-        <div style={{padding:isDesktop?"36px 40px":"24px 20px"}}>
+        <div style={{padding:isDesktop?"36px 40px":"0 0"}}>
           <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"0.2em",marginBottom:6,fontFamily:T.sans}}>Practice Scenario</div>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?22:17,fontWeight:600,color:cream,marginBottom:8}}>{script.topic}</div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?14:12,color:creamDim,lineHeight:1.65,marginBottom:isDesktop?24:18}}>{script.context}</p>
@@ -831,7 +831,7 @@ function _unused_D2SimScenarios() {
   if(phase==='setup') return (
     <div style={{background:dark,borderRadius:8,overflow:"hidden",animation:"fadeIn 0.4s ease"}}>
       <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
-      <div style={{padding:isDesktop?"36px 40px":"24px 20px"}}>
+      <div style={{padding:isDesktop?"36px 40px":"0 0"}}>
         <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"0.2em",marginBottom:6,fontFamily:T.sans}}>{sc.label}</div>
         <div style={{background:T2.surface,borderRadius:6,padding:isDesktop?"16px 20px":"12px 14px",marginBottom:isDesktop?24:18,borderLeft:"2px solid "+T.gold}}>
           <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>AmplifyU Coach</div>
@@ -852,7 +852,7 @@ function _unused_D2SimScenarios() {
   if(phase==='active') return (
     <div style={{background:dark,borderRadius:8,overflow:"hidden",animation:"fadeIn 0.3s ease"}}>
       <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
-      <div style={{padding:isDesktop?"36px 40px":"24px 20px"}}>
+      <div style={{padding:isDesktop?"36px 40px":"0 0"}}>
         <div style={{background:T2.surface,borderRadius:6,padding:isDesktop?"16px 20px":"12px 14px",marginBottom:isDesktop?24:18,borderLeft:"2px solid "+T.gold}}>
           <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>AmplifyU Coach</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?17:14,fontStyle:"italic",color:cream,margin:0,lineHeight:1.5}}>{aiMsg}</p>
@@ -874,7 +874,7 @@ function _unused_D2SimScenarios() {
     return (
       <div style={{background:dark,borderRadius:8,overflow:"hidden",animation:"fadeIn 0.4s ease"}}>
         <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
-        <div style={{padding:isDesktop?"36px 40px":"24px 20px"}}>
+        <div style={{padding:isDesktop?"36px 40px":"0 0"}}>
           <div style={{display:"flex",alignItems:"center",gap:isDesktop?20:16,marginBottom:isDesktop?28:22}}>
             <div style={{flexShrink:0,textAlign:"center"}}>
               <div style={{fontFamily:T.serif,fontSize:isDesktop?56:44,fontWeight:600,color:avg>=7?T.gold:avg>=5?"rgba(245,239,230,0.7)":"#B05C4A",lineHeight:1}}>{avg}</div>
