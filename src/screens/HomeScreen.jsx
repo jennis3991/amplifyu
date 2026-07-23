@@ -439,6 +439,12 @@ finishDate + ".";
       {/* ── Hero image — full natural height ── */}
       <div style={{marginTop:NAV_H+STRIP_H,background:"#0a0805",position:"relative"}}>
         <img src="/home-hero-mobile.jpg" alt="The Six Pillars of Communication Mastery" style={{width:"100%",height:"auto",display:"block"}}/>
+        <div style={{position:"absolute",bottom:16,left:0,right:0,display:"flex",justifyContent:"center",pointerEvents:"none"}}>
+          <style>{`@keyframes bounceDown{0%,100%{transform:translateY(0);opacity:0.6}50%{transform:translateY(5px);opacity:1}}`}</style>
+          <svg width="16" height="10" viewBox="0 0 16 10" fill="none" style={{animation:"bounceDown 1.6s ease infinite"}}>
+            <path d="M1 1.5l7 7 7-7" stroke="#8A9E84" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
       </div>
 
       {/* ── Static CTA bar ── */}
@@ -465,12 +471,6 @@ finishDate + ".";
         <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:14,fontFamily:T.sans}}>{insight.label}</div>
         <h2 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,36px)",fontWeight:500,color:T2.text,letterSpacing:"-1px",lineHeight:1.15,marginBottom:16}}>{insight.headline}</h2>
         <p style={{fontSize:15,color:T2.text3,lineHeight:1.8,fontFamily:T.sans,fontWeight:300,marginBottom:0}}>{insight.body}</p>
-        <div style={{display:"flex",justifyContent:"center",marginTop:24}}>
-          <style>{`@keyframes bounceDown{0%,100%{transform:translateY(0);opacity:0.6}50%{transform:translateY(5px);opacity:1}}`}</style>
-          <svg width="16" height="10" viewBox="0 0 16 10" fill="none" style={{animation:"bounceDown 1.6s ease infinite"}}>
-            <path d="M1 1.5l7 7 7-7" stroke="#8A9E84" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
       </section>
 
       {/* ── SECTION 3: Journey ── */}
