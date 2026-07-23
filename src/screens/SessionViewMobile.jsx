@@ -561,10 +561,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           <div style={{position:"absolute",bottom:20,left:20,right:20,zIndex:2}}>
             <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.55)",textTransform:"uppercase",letterSpacing:"2px",fontFamily:T.sans,marginBottom:8}}>Day {lesson.day} · {lesson.tag}</div>
             {step==="Insight" ? (
-              <>
-                <h1 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"white",lineHeight:1.2,marginBottom:8}}>{lesson.title}</h1>
-                <p style={{fontFamily:T.sans,fontSize:12,fontWeight:400,color:"rgba(255,255,255,0.55)",lineHeight:1.5,margin:0,fontStyle:"italic"}}>{isD1?"Transform complexity into clarity.":lesson.quote}</p>
-              </>
+              <h1 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"white",lineHeight:1.2,margin:0}}>{lesson.title}</h1>
             ) : (
               <h1 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"white",lineHeight:1.2}}>{lesson.title}</h1>
             )}
