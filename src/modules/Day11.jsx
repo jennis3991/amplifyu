@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-// ─── D11 Rehearsal Widget — AI Coaching Conversation ─────────────────────────
+// ─── D11 Rehearsal Widget — AmplifyU Coaching Conversation ───────────────────
 
 const QUESTIONS = [
   {

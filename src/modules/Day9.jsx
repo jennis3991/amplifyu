@@ -407,7 +407,7 @@ Return ONLY valid JSON:
           Choose one connection habit to focus on, then navigate a realistic workplace conversation.
         </p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:0}}>
-          Your AI Communication Coach will assess how well you adapt your style and provide personalised feedback on your listening, curiosity, empathy and ability to build genuine rapport.
+          Your AmplifyU Coach will assess how well you adapt your style and provide personalised feedback on your listening, curiosity, empathy and ability to build genuine rapport.
         </p>
       </div>
       <div style={{...cs.card,borderLeft:'2px solid '+T.gold}}>

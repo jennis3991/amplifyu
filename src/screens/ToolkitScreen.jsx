@@ -441,9 +441,9 @@ else. And it can be built — deliberately, in fifteen minutes a day."
             </p>
             {/* AI tools highlight */}
             <div style={{background:dark?T2.surface:T2.card,borderRadius:2,padding:"18px 20px"}}>
-              <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:2,marginBottom:10}}>Built with AI Coaching</div>
+              <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:2,marginBottom:10}}>Built with AmplifyU Coaching</div>
               <p style={{fontSize:14,color:T2.text,lineHeight:1.7,margin:0}}>
-                Every session includes an AI coach that responds to your specific words — not generic feedback, but personalised evaluation of your structure, reasoning, and delivery. Tools to help you rewrite, rehearse, and reflect. The kind of support that used to require an expensive coach is now available every day, inside sessions you can complete in under twenty minutes.
+                Every session includes your AmplifyU Coach that responds to your specific words — not generic feedback, but personalised evaluation of your structure, reasoning, and delivery. Tools to help you rewrite, rehearse, and reflect. The kind of support that used to require an expensive coach is now available every day, inside sessions you can complete in under twenty minutes.
               </p>
             </div>
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>

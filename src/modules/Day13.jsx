@@ -384,7 +384,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
       <div style={cs.card}>
         <div style={cs.label}>The Networking Circuit · Simulation</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Three people. Three conversations. One chance to make an impression.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AI Communication Coach sets the scene and asks you two questions per person. Speak out loud what you would actually say — then get scored on your opening, adaptability, and the impression you leave.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AmplifyU Coach sets the scene and asks you two questions per person. Speak out loud what you would actually say — then get scored on your opening, adaptability, and the impression you leave.</p>
       </div>
       {CIRCUIT_CHARS.map((sc, i) => (
         <div key={sc.id} style={{...cs.card, display:"flex", alignItems:"flex-start", gap:14}}>

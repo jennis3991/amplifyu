@@ -1105,7 +1105,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
         <p style={{fontFamily:T.sans,fontSize:isDesktop?11:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:isDesktop?14:12,margin:"0 0 "+(isDesktop?"14px":"12px")}}>Every great communicator starts by listening.</p>
         <h3 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.15,margin:"0 0 "+(isDesktop?"18px":"14px")}}>The First Step to Great Communication.</h3>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:"0 0 "+(isDesktop?"14px":"12px")}}>
-          Record yourself speaking and receive personalised feedback from your AI Communication Coach on your clarity, structure, brevity, focus and simplicity.
+          Record yourself speaking and receive personalised feedback from your AmplifyU Coach on your clarity, structure, brevity, focus and simplicity.
         </p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:"0 0 "+(isDesktop?"14px":"12px")}}>
           Self-review is one of the fastest ways to improve communication — trusted by elite speakers, performers and Fortune 500 leaders because <strong>awareness comes before change.</strong>

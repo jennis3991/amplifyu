@@ -252,7 +252,7 @@ export function D14SimWidget({T, T2, isDesktop}) {
       <div style={cs.card}>
         <div style={cs.label}>Communication Blueprint</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Your personalised plan. Built from 14 days of work.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AI coach will analyse your role, your journey, your strengths and gaps — and generate a blueprint that is specific to you.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AmplifyU Coach will analyse your role, your journey, your strengths and gaps — and generate a blueprint that is specific to you.</p>
       </div>
       {!hasReflection && (
         <div style={{...cs.card, background:"rgba(201,120,70,0.06)", border:"0.5px solid rgba(201,120,70,0.25)"}}>
