@@ -323,9 +323,14 @@ export function ReflectionScreen({ answers, onContinue }) {
     <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 90, opacity:visible?1:0, transition:"opacity 0.38s ease" }}>
       <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
+      {/* Slim black banner */}
+      <div style={{ background: "#0D0B08", height: 52, display: "flex", alignItems: "center", paddingLeft: 20, flexShrink: 0 }}>
+        <img src="/logo-mark.png" alt="AmplifyU" style={{ width: 28, height: 28, objectFit: "cover", mixBlendMode: "screen", filter: "brightness(3) contrast(1.2)", marginRight: 10 }}/>
+        <span style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: "rgba(255,255,255,0.85)" }}>AmplifyU</span>
+      </div>
+
       {/* Header */}
-      <div style={{ padding: "32px 24px 0" }}>
-        <div style={{ fontSize: 12, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 16, fontFamily: T.sans }}>AmplifyU</div>
+      <div style={{ padding: "28px 24px 0" }}>
         <div style={{ fontSize: 11, color: T.text3, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 14, fontFamily: T.sans }}>Your communication profile</div>
         <h1 style={{ fontFamily: T.serif, fontSize: 34, fontWeight: 500, color: T.ink, lineHeight: 1.08, letterSpacing: "-1px", margin: 0 }}>
           {"Here's what"}
