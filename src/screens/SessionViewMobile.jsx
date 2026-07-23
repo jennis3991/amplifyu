@@ -667,7 +667,7 @@ T.goldDark : T2.text4,
           <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The uncomfortable truth</div>
           <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:16}}>{lesson.quote}</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Harvey Coleman found Performance accounts for just 10% of career advancement. This module unlocks the other 90%.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
             {D10_FACTS.map((n,i)=>{
               const open = d10MobCard===("d10i"+i);
               return (
@@ -868,7 +868,7 @@ T.goldDark : T2.text4,
           <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The wake-up call</div>
           <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Most people know how to communicate better. Very few practise until it's automatic.</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>This week, you did something different.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
             {D7_INSIGHT_CARDS.map((n,i)=>{
               const open = d7MobCard===("d7i"+i);
               return (
@@ -1122,7 +1122,7 @@ T.goldDark : T2.text4,
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Master Filler-Free Speech</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most people are far stronger speakers than they realise. Filler words are often just an unconscious habit — and removing them is one of the fastest ways to elevate your credibility, authority, and influence.</p>
           <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Explore each card to learn more →</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
             {D3_FACTS.map((n,i)=>{
               const open = d3MobCard===("d3i"+i);
               return (
@@ -1307,7 +1307,7 @@ T.goldDark : T2.text4,
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Short Sentences Win</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>The brain processes short sentences faster, retains them longer, and finds them more persuasive.</p>
           <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Explore each card to learn more →</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
             {D4_FACTS.map((n,i)=>{
               const open=d4MobCard===("d4i"+i);
               return (
@@ -2389,7 +2389,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Perception Is Built From Signals</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most people let others form assumptions about them by default. The most effective communicators choose their signals intentionally.</p>
           <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Explore each card to learn more →</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
             {D11_FACTS.map((n,i)=>{
               const open=d11MobCard===("d11i"+i);
               return (
@@ -2556,7 +2556,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>People don't just hear confidence. They see it.</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Body language shapes how communication feels — helping people feel more connected, engaged, and at ease.</p>
           <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Explore each card to learn more →</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
             {D12_FACTS.map((n,i)=>{
               const open=d12MobCard===("d12i"+i);
               return (
@@ -2794,7 +2794,7 @@ strokeLinecap="round"/></svg>
           <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Amplified.</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.7,fontWeight:400,marginBottom:14}}>Over the last 14 days, you've developed skills that many people spend years trying to master. Clarity. Voice. Storytelling. Presence. Brand. Exposure. These are not isolated techniques — they work together.</p>
           <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14}}>Tap each card to explore →</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
             {D14_INSIGHT_CARDS.map((n,i)=>{
               const open=d12MobCard===("d14i"+i);
               return (
@@ -2885,7 +2885,7 @@ strokeLinecap="round"/></svg>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Communication creates capability. Exposure creates opportunity.</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>The most talented professionals are not always the most successful. The ones who advance are the ones whose value is seen.</p>
           <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Tap each card to explore →</p>
-          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
             {D13_INSIGHT_CARDS.map((n,i)=>{
               const open=d12MobCard===("d13i"+i);
               return (
