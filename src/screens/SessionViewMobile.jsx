@@ -1911,7 +1911,7 @@ T.goldDark : T2.text4,
         <>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why some people make everyone feel understood</h2>
-          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
             {[
               {word:"The Likeability Principle", body:"People trust, support and collaborate more with people they like. Likeability is about making others feel respected and understood."},
               {word:"Active Listening", body:"Give someone your full attention. Not preparing your reply. Not waiting your turn. Simply listening with the goal of understanding."},
@@ -1920,11 +1920,12 @@ T.goldDark : T2.text4,
             ].map((n,i)=>{
               const open=d9OpenCard===("d9t"+i);
               return (
-                <div key={i} onClick={()=>setD9OpenCard(open?null:("d9t"+i))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:0}}>
+                <div key={i} onClick={()=>setD9OpenCard(open?null:("d9t"+i))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
+                  {!open && <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.4,fontWeight:400,margin:0,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical"}}>{n.body}</p>}
                   {open && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>}
                 </div>
               );
