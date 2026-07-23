@@ -45,6 +45,81 @@ function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
   );
 }
 
+function VoiceWarmUp({ T, T2, onDone }) {
+  const [phase, setPhase] = useState('intro');
+  const [timeLeft, setTimeLeft] = useState(60);
+  const EX = [
+    { label:"Breathe",    desc:"In for 4 · Hold for 4 · Out for 4. Do this twice." },
+    { label:"Hum",        desc:"Hum with lips closed. Let the vibration warm your chest." },
+    { label:"Articulate", desc:"\"Red leather, yellow leather\" — 5 times, clear and slow." },
+    { label:"Project",    desc:"Deep breath in. Open wide. A long, steady \"Ahhh\"." },
+  ];
+  const elapsed = 60 - timeLeft;
+  const exIdx = Math.min(Math.floor(elapsed / 15), 3);
+  const ex = EX[exIdx];
+  const r = 30, circ = 2 * Math.PI * r;
+  const dashOffset = circ * (1 - timeLeft / 60);
+  useEffect(() => {
+    if (phase !== 'active') return;
+    const t = setInterval(() => {
+      setTimeLeft(s => { if (s <= 1) { setPhase('done'); return 0; } return s - 1; });
+    }, 1000);
+    return () => clearInterval(t);
+  }, [phase]);
+  if (phase === 'intro') return (
+    <div>
+      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Voice Warm-Up · 60 Seconds</div>
+      <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:4}}>Open your voice before you record.</h2>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,marginBottom:18}}>Four quick exercises. Your voice will thank you.</p>
+      {EX.map((e,i) => (
+        <div key={i} style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:10,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
+          <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+            <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
+          </div>
+          <div>
+            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text,marginBottom:2}}>{e.label}</div>
+            <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:300,lineHeight:1.5}}>{e.desc}</div>
+          </div>
+        </div>
+      ))}
+      <button onClick={()=>setPhase('active')} style={{width:"100%",padding:"14px",borderRadius:4,border:"none",background:T.ink,color:"#F5EFE6",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,marginTop:10,minHeight:48}}>Start Warm-Up →</button>
+      <button onClick={onDone} style={{width:"100%",padding:"10px",borderRadius:4,border:"none",background:"transparent",color:T2.text3,fontSize:12,fontWeight:400,cursor:"pointer",fontFamily:T.sans,marginTop:6}}>Skip warm-up</button>
+    </div>
+  );
+  if (phase === 'done') return (
+    <div style={{textAlign:"center",padding:"28px 0"}}>
+      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Warm-Up Complete</div>
+      <div style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,marginBottom:6}}>Voice ready.</div>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300,lineHeight:1.6,marginBottom:28}}>You're warmed up and ready to record.</p>
+      <button onClick={onDone} style={{width:"100%",padding:"14px",borderRadius:4,border:"none",background:T.ink,color:"#F5EFE6",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48}}>Begin Rehearsal →</button>
+    </div>
+  );
+  return (
+    <div>
+      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Voice Warm-Up</div>
+      <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginBottom:20}}>
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r={r} fill="none" stroke={T2.border} strokeWidth="3"/>
+          <circle cx="40" cy="40" r={r} fill="none" stroke={T.gold} strokeWidth="3"
+            strokeDasharray={circ} strokeDashoffset={dashOffset} strokeLinecap="round"
+            style={{transform:"rotate(-90deg)",transformOrigin:"center",transition:"stroke-dashoffset 1s linear"}}/>
+          <text x="40" y="40" textAnchor="middle" dominantBaseline="central" fontFamily={T.sans} fontSize="18" fontWeight="600" fill={T2.text}>{timeLeft}</text>
+        </svg>
+      </div>
+      <div style={{padding:"18px 20px",background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,marginBottom:14,textAlign:"center"}}>
+        <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{ex.label}</div>
+        <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:300,margin:0}}>{ex.desc}</p>
+      </div>
+      <div style={{display:"flex",gap:6,marginBottom:20}}>
+        {EX.map((_,i) => (
+          <div key={i} style={{flex:1,height:3,borderRadius:2,background:i<=exIdx?T.gold:T2.border,transition:"background 0.3s"}}/>
+        ))}
+      </div>
+      <button onClick={onDone} style={{width:"100%",padding:"10px",borderRadius:4,border:"none",background:"transparent",color:T2.text3,fontSize:12,fontWeight:400,cursor:"pointer",fontFamily:T.sans}}>Skip warm-up</button>
+    </div>
+  );
+}
+
 export function MobileSessionView({
   T2, step, STEPS, idx, setIdx, lesson, isDone, onComplete, onBack,
   isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isD14, isNT,
@@ -73,6 +148,12 @@ export function MobileSessionView({
   const [d10SarDone, setD10SarDone] = useState(false);
   const [swipeHint, setSwipeHint] = useState(() => { try { return !localStorage.getItem('au_swipe_hint_seen'); } catch { return true; } });
   const [swipeHintVisible, setSwipeHintVisible] = useState(true);
+  const [d2WarmDone, setD2WarmDone] = useState(false);
+  const [d3WarmDone, setD3WarmDone] = useState(false);
+  const [d4WarmDone, setD4WarmDone] = useState(false);
+  const [d6WarmDone, setD6WarmDone] = useState(false);
+  const [d7WarmDone, setD7WarmDone] = useState(false);
+  const [d8WarmDone, setD8WarmDone] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
@@ -970,7 +1051,9 @@ T.goldDark : T2.text4,
         </>
       )}
       {isD7 && step==="Rehearsal" && (
-        <D7PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
+        d7WarmDone
+          ? <D7PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
+          : <VoiceWarmUp T={T} T2={T2} onDone={()=>setD7WarmDone(true)}/>
       )}
       {isD7 && step==="Simulation" && (
         <>
@@ -1293,9 +1376,9 @@ T.goldDark : T2.text4,
         );
       })()}
       {isD3 && step==="Rehearsal" && (
-        <>
-          <D3PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD3NavLabel} onNavFn={d3NavFnRef} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
-        </>
+        d3WarmDone
+          ? <D3PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD3NavLabel} onNavFn={d3NavFnRef} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
+          : <VoiceWarmUp T={T} T2={T2} onDone={()=>setD3WarmDone(true)}/>
       )}
       {isD3 && step==="Simulation" && (
         <>
@@ -1452,9 +1535,9 @@ T.goldDark : T2.text4,
         );
       })()}
       {isD4 && step==="Rehearsal" && (
-        <>
-          <D4PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD4NavLabel} onNavFn={d4NavFnRef} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
-        </>
+        d4WarmDone
+          ? <D4PracticeWidget T={T} T2={T2} isDesktop={false} onNavLabel={setD4NavLabel} onNavFn={d4NavFnRef} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
+          : <VoiceWarmUp T={T} T2={T2} onDone={()=>setD4WarmDone(true)}/>
       )}
       {isD4 && step==="Simulation" && (
         <>
@@ -1791,7 +1874,9 @@ T.goldDark : T2.text4,
         </div>
       )}
       {isNT && step==="Rehearsal" && (
-        <D8PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
+        d8WarmDone
+          ? <D8PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
+          : <VoiceWarmUp T={T} T2={T2} onDone={()=>setD8WarmDone(true)}/>
       )}
        {/* ── D9 (Day 9) Mobile Steps ─────────────────────────────────────── */}
       {/* ── D9 Connection Mobile Steps ─────────────────────────────────── */}
@@ -2120,11 +2205,13 @@ T.goldDark : T2.text4,
         );
       })()}
        {isD2 && step==="Rehearsal" && (
-        <>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Train Your Instrument</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Voice requires repetition. Work through each exercise then take the speed challenge.</p>
-          <D2PracticeWidget T={T} T2={T2} isDesktop={false}/>
-        </>
+        d2WarmDone ? (
+          <>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Train Your Instrument</h2>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Voice requires repetition. Work through each exercise then take the speed challenge.</p>
+            <D2PracticeWidget T={T} T2={T2} isDesktop={false}/>
+          </>
+        ) : <VoiceWarmUp T={T} T2={T2} onDone={()=>setD2WarmDone(true)}/>
       )}
       {isD2 && step==="Simulation" && (
         <>
@@ -2390,7 +2477,9 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
         );
       })()}
       {isD6 && step==="Rehearsal" && (
-        <D6PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
+        d6WarmDone
+          ? <D6PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
+          : <VoiceWarmUp T={T} T2={T2} onDone={()=>setD6WarmDone(true)}/>
       )}
       {isD6 && step==="Simulation" && (
         <>
