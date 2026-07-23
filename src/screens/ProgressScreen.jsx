@@ -59,7 +59,6 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
             <div style={{flex:1}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",marginBottom:16}}>Your Journey</div>
               <h1 style={{fontFamily:T.serif,fontSize:"clamp(36px,3.5vw,56px)",fontWeight:600,color:T2.text,letterSpacing:"-1.5px",lineHeight:1.1,marginBottom:16,maxWidth:520}}>Every conversation moves you forward.</h1>
-              <p style={{fontFamily:T.sans,fontSize:16,color:T2.text3,lineHeight:1.7,fontWeight:300,maxWidth:440}}>Clarity builds confidence. Confidence creates influence. Keep going — you're building a skill that lasts.</p>
             </div>
             <div style={{width:"38%",flexShrink:0,borderRadius:12,overflow:"hidden",height:280,position:"relative"}}>
               <img src="/programme-hero.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 50%"}}/>
@@ -75,7 +74,6 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
           <div style={{position:"absolute",bottom:24,left:24,right:24}}>
             <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.6)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:8}}>Your Journey</div>
             <h1 style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:"#F5EFE6",lineHeight:1.15,marginBottom:4}}>Every conversation moves you forward.</h1>
-            <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.6)",fontWeight:300,lineHeight:1.5}}>Clarity builds confidence. Confidence creates influence.</p>
           </div>
         </div>
       )}
