@@ -29,12 +29,12 @@ export function D9PracticeWidget({T, T2, isDesktop}) {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
-      <div>
+      {isDesktop && <div>
         <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Connection Skills · Rehearsal</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?40:28,fontWeight:600,color:T2.text,lineHeight:1.1,margin:"0 0 14px"}}>
+        <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,margin:"0 0 14px"}}>
           Build the habits that make you memorable.
         </h2>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:"0 0 10px"}}>
+        <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.7,margin:"0 0 10px"}}>
           The most connected communicators share four habits. Read through each one — then try them in your next real conversation.
         </p>
         <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(138,158,132,0.08)",borderRadius:20,padding:"7px 14px",border:"0.5px solid rgba(138,158,132,0.22)",marginTop:6}}>
@@ -44,7 +44,7 @@ export function D9PracticeWidget({T, T2, isDesktop}) {
           </svg>
           <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:"rgba(138,158,132,0.8)",letterSpacing:"0.05em"}}>1 min warm-up</span>
         </div>
-      </div>
+      </div>}
       <div style={{display:"flex",flexDirection:"column",gap:8}}>
         {TIPS.map((tip,i)=>{
           const isOpen = open===i;
