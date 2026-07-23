@@ -818,7 +818,7 @@ export const D7_INSIGHT_CARDS = [
 export const D10_FACTS = [
   { word:"Hard work is often invisible.",
     sub:"Your most valuable work is rarely seen by the people who decide your future.",
-    bullets:["Conversations, problem-solving, and crisis handling create real value — none of it automatic visible to decision-makers.","If no one knows about it, it doesn't count toward your recognition or advancement."] },
+    bullets:["That work — conversations, problem-solving, and crisis handling — creates real value that is never automatically visible to decision-makers.","If no one knows about it, it doesn't count toward your recognition or advancement."] },
   { word:"People can only evaluate what they can see.",
     sub:"Perceived contribution drives decisions, not actual contribution.",
     bullets:["When your work is unclear, others fill in the gaps — and rarely in your favour.","Visibility replaces assumption with evidence."] },
