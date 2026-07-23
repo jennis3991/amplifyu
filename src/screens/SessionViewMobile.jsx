@@ -337,8 +337,10 @@ return (
   <>
   <div
     style={{background:T2.bg,minHeight:"100vh",paddingBottom:40}}
-    onTouchStart={e=>{swipeRef.current={x:e.touches[0].clientX,y:e.touches[0].clientY};}}
+    onTouchStart={e=>{swipeRef.current={x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now()};}}
     onTouchEnd={e=>{
+      if(window.getSelection&&window.getSelection().toString())return;
+      if(Date.now()-swipeRef.current.t>500)return;
       const dx=e.changedTouches[0].clientX-swipeRef.current.x;
       const dy=e.changedTouches[0].clientY-swipeRef.current.y;
       if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>52){
@@ -588,9 +590,9 @@ style={{display:"flex",alignItems:"center",position:"relative",minWidth:"max-con
 (isTheory?"rgba(138,158,132,0.12)":T.navyLight) : "transparent";
               const lineCol = i < idx ? T.gold : T2.border;
               return (
-                <div key={s} 
-style={{display:"flex",alignItems:"center",flex: 
-i<STEPS.length-1?1:"none"}}>
+                <div key={s}
+style={{display:"flex",alignItems:"center",flex:i<STEPS.length-1?1:"none",cursor:"pointer"}}
+onClick={()=>setIdx(i)}>
                   {/* Node */}
                   <div style={{
                     
@@ -657,7 +659,7 @@ T.goldDark : T2.text4,
         </div>
       );
     })()}
-     <div style={{padding:"20px 20px 0",display:"flex",flexDirection:"column",gap:14}}>
+     <div key={idx} style={{padding:"20px 20px 0",display:"flex",flexDirection:"column",gap:14,animation:"tabFadeIn 0.28s ease-out"}}>
        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
       {isD10 && step==="Insight" && (
         <>
@@ -3205,10 +3207,10 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
         gap:5,paddingBottom:24,
       }}>
         {STEPS.map((s,i) => (
-          <div key={s} style={{
+          <div key={s} onClick={()=>setIdx(i)} style={{
             width:i===idx?24:6,height:6,borderRadius:3,
             background:i===idx?T.navy:i<idx?T.gold:T.border,
-            transition:"all 0.3s",
+            transition:"all 0.3s",cursor:"pointer",
           }}/>
         ))}
         <span 
@@ -3217,6 +3219,7 @@ style={{fontSize:10,color:T2.text4,marginLeft:6,fontWeight:500}}>{idx+1} /
       </div>
     </div>
   </div>
+  <style>{`@keyframes tabFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}`}</style>
   {swipeHint && (
     <>
       <style>{`@keyframes au-swipe-hand{0%{transform:translateX(6px)}50%{transform:translateX(-10px)}100%{transform:translateX(6px)}}@keyframes au-hint-in{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}@keyframes au-hint-out{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(8px)}}`}</style>
