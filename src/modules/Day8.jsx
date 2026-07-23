@@ -852,7 +852,7 @@ Return ONLY valid JSON:
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
       <div>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Story Architect</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?34:26,fontWeight:500,color:T2.text,lineHeight:1.1,letterSpacing:"-0.5px",marginBottom:8}}>Your AI speechwriter.</h2>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?34:26,fontWeight:500,color:T2.text,lineHeight:1.1,letterSpacing:"-0.5px",marginBottom:8}}>Your AmplifyU Speechwriter.</h2>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Whether you're pitching to a board, leading your team, delivering a keynote, or telling a personal story, Story Architect transforms rough ideas into unforgettable narratives.</p>
       </div>
       <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"}}>
