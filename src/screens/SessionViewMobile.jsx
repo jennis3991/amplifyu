@@ -3044,9 +3044,7 @@ strokeLinecap="round"/></svg>
        {step==="Review" && (
         <>
           {/* Header */}
-          <div style={{padding:"28px 24px 4px"}}>
-            <div style={{fontSize:11,fontWeight:500,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:16,fontFamily:T.sans}}>Day {lesson.day} Complete ✓</div>
-          </div>
+          <div style={{fontSize:11,fontWeight:500,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:16,fontFamily:T.sans}}>Day {lesson.day} Complete ✓</div>
           {/* What You Learned / Workplace Application tabs */}
           <div style={{margin:"0 4px",paddingTop:4}}>
             <div style={{display:"flex",gap:0,borderBottom:"0.5px solid "+T2.border,marginBottom:16}}>
