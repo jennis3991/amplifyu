@@ -15,7 +15,7 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
         <div style={{ width:36, height:36, borderRadius:"50%", background:"#0d0b08", display:"flex", alignItems:"center", justifyContent:"center" }}>
           <i className="ti ti-calendar-month" style={{ fontSize:18, color:"#ffffff" }}/>
         </div>
-        <span style={{ fontSize:11, letterSpacing:"0.15em", color:"#c9a961", fontWeight:500, fontFamily:T.sans }}>YOUR JOURNEY</span>
+        <span style={{ fontSize:13, letterSpacing:"0.15em", color:"#c9a961", fontWeight:500, fontFamily:T.sans }}>YOUR JOURNEY</span>
       </div>
       {mobile && (
         <div style={{ position:"relative", display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
@@ -51,17 +51,17 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
       {pieceInfo.next ? (
         <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:14, marginBottom:14 }}>
           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:3 }}>
-            <span style={{ fontFamily:T.serif, fontSize:mobile?18:26, color:"#f4f1ea" }}>{pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"}</span>
+            <span style={{ fontFamily:T.serif, fontSize:mobile?20:26, color:"#f4f1ea" }}>{pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"}</span>
             <div style={{ width:32, height:32, borderRadius:"50%", overflow:"hidden", position:"relative", flexShrink:0 }}>
               <img src={pieceInfo.next.img} alt={pieceInfo.next.name} style={{ position:"absolute", width:"126%", height:"126%", top:"-13%", left:"-13%", objectFit:"cover" }}/>
             </div>
           </div>
-          <p style={{ fontSize:12, color:"#9c9384", margin:0 }}>until you reach {pieceInfo.next.name}{done.length<6?" — your next rank":""}</p>
+          <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>until you reach {pieceInfo.next.name}{done.length<6?" — your next rank":""}</p>
         </div>
       ) : (
         <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:14, marginBottom:14 }}>
           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:3 }}>
-            <span style={{ fontFamily:T.serif, fontSize:mobile?18:26, color:"#c9a961" }}>{pieceInfo.current.name}</span>
+            <span style={{ fontFamily:T.serif, fontSize:mobile?20:26, color:"#c9a961" }}>{pieceInfo.current.name}</span>
             <div style={{ width:32, height:32, borderRadius:"50%", overflow:"hidden", position:"relative", flexShrink:0 }}>
               <img src={pieceInfo.current.img} alt={pieceInfo.current.name} style={{ position:"absolute", width:"126%", height:"126%", top:"-13%", left:"-13%", objectFit:"cover" }}/>
             </div>
@@ -70,10 +70,10 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
         </div>
       )}
       <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:14 }}>
-        <p style={{ fontSize:11, letterSpacing:"0.1em", color:"#9c9384", margin:"0 0 8px", fontFamily:T.sans }}>STRONGEST SO FAR</p>
+        <p style={{ fontSize:12, letterSpacing:"0.1em", color:"#9c9384", margin:"0 0 8px", fontFamily:T.sans }}>STRONGEST SO FAR</p>
         {catProgress.map((cat,i) => (
           <div key={cat.label} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:i<catProgress.length-1?6:0 }}>
-            <span style={{ fontSize:12, color:"#f4f1ea", width:118, flexShrink:0, fontFamily:T.sans }}>{cat.label}</span>
+            <span style={{ fontSize:13, color:"#f4f1ea", width:118, flexShrink:0, fontFamily:T.sans }}>{cat.label}</span>
             <div style={{ flex:1, height:3, background:"#2a251c", borderRadius:2, overflow:"hidden" }}>
               <div style={{ width:cat.pct+"%", height:"100%", background:"#c9a961" }}/>
             </div>
@@ -460,11 +460,11 @@ finishDate + ".";
 
       {/* ── SECTION 2: Today's Focus ── */}
       <section style={{padding:"32px 24px 28px",borderBottom:"1px solid "+T2.divider,background:T2.bg}}>
-        <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Today's Focus</div>
+        <div style={{fontSize:11,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Today's Focus</div>
         <div style={{width:20,height:1,background:T.gold,marginBottom:24,opacity:0.5}}/>
-        <div style={{fontSize:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:14,fontFamily:T.sans}}>{insight.label}</div>
-        <h2 style={{fontFamily:T.serif,fontSize:"clamp(26px,7vw,36px)",fontWeight:500,color:T2.text,letterSpacing:"-1px",lineHeight:1.15,marginBottom:16}}>{insight.headline}</h2>
-        <p style={{fontSize:15,color:T2.text3,lineHeight:1.8,fontFamily:T.sans,fontWeight:300,marginBottom:20}}>{insight.body}</p>
+        <div style={{fontSize:11,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"3px",marginBottom:14,fontFamily:T.sans}}>{insight.label}</div>
+        <h2 style={{fontFamily:T.serif,fontSize:"clamp(28px,7vw,38px)",fontWeight:500,color:T2.text,letterSpacing:"-1px",lineHeight:1.15,marginBottom:16}}>{insight.headline}</h2>
+        <p style={{fontSize:16,color:T2.text3,lineHeight:1.8,fontFamily:T.sans,fontWeight:300,marginBottom:20}}>{insight.body}</p>
         <div style={{display:"flex",justifyContent:"center",pointerEvents:"none"}}>
           <style>{`@keyframes bounceDown{0%,100%{transform:translateY(0);opacity:0.6}50%{transform:translateY(5px);opacity:1}}`}</style>
           <svg width="16" height="10" viewBox="0 0 16 10" fill="none" style={{animation:"bounceDown 1.6s ease infinite"}}>
@@ -475,14 +475,14 @@ finishDate + ".";
 
       {/* ── SECTION 3: Journey ── */}
       <section id="journey-section" style={{padding:"48px 24px 56px",background:T2.bg}}>
-        <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Journey</div>
+        <div style={{fontSize:11,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Journey</div>
         <div style={{width:20,height:1,background:T.gold,marginBottom:28,opacity:0.5}}/>
         <JourneyCard pieceInfo={pieceInfo} catProgress={catProgress} done={done} T={T} mobile={true} />
       </section>
 
       {/* ── SECTION 4: All Sessions ── */}
       <section style={{padding:"32px 24px 56px",borderTop:"1px solid "+T2.divider,background:T2.bg}}>
-        <div style={{fontSize:9,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>All Sessions</div>
+        <div style={{fontSize:11,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>All Sessions</div>
         <div style={{width:20,height:1,background:T.gold,marginBottom:24,opacity:0.5}}/>
         <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:"18px 16px"}}>
           <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:selectedLesson?16:0}}>
@@ -505,16 +505,16 @@ finishDate + ".";
             <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16,animation:"fadeUp 0.2s ease both"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
                 <div>
-                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>
                     Day {selectedLesson.day} · {selectedLesson.tag}
                   </div>
-                  <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.2}}>{selectedLesson.title}</div>
+                  <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.2}}>{selectedLesson.title}</div>
                 </div>
                 <button onClick={()=>setSelectedDay(null)} style={{background:"none",border:"none",color:T2.text3,fontSize:20,cursor:"pointer",padding:"0 0 0 12px",lineHeight:1}}>×</button>
               </div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,margin:"0 0 8px",fontWeight:300}}>{selectedLesson.insight}</p>
-              {selectedLesson.promise&&<p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.gold,lineHeight:1.55,margin:"0 0 14px"}}>{selectedLesson.promise}</p>}
-              <button onClick={()=>{setSelectedDay(null);onStart(selectedLesson.day);}} style={{width:"100%",background:T.ink,color:T.bg,border:"none",borderRadius:4,padding:"10px 16px",fontSize:13,fontWeight:500,fontFamily:T.sans,cursor:"pointer",textAlign:"left"}}>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:"0 0 8px",fontWeight:300}}>{selectedLesson.insight}</p>
+              {selectedLesson.promise&&<p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T.gold,lineHeight:1.55,margin:"0 0 14px"}}>{selectedLesson.promise}</p>}
+              <button onClick={()=>{setSelectedDay(null);onStart(selectedLesson.day);}} style={{width:"100%",background:T.ink,color:T.bg,border:"none",borderRadius:4,padding:"10px 16px",fontSize:14,fontWeight:500,fontFamily:T.sans,cursor:"pointer",textAlign:"left"}}>
                 {done.includes(selectedLesson.day)?"Review →":"Begin →"}
               </button>
             </div>
