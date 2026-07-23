@@ -3137,7 +3137,7 @@ strokeLinecap="round"/></svg>
           {(()=>{
             const nextDay = lesson.day < 14 ? lesson.day + 1 : null;
             return (
-              <button onClick={onComplete} style={{width:"100%",background:T.gold,color:"#F5EFE6",padding:"18px",borderRadius:4,border:"none",fontFamily:T.sans,fontSize:15,fontWeight:600,cursor:"pointer",textAlign:"center"}}>
+              <button onClick={onComplete} style={{width:"100%",background:T.ink,color:T.bg,padding:"18px",borderRadius:4,border:"none",fontFamily:T.sans,fontSize:15,fontWeight:600,cursor:"pointer",textAlign:"center"}}>
                 {nextDay ? "Next: Day " + nextDay + " — " + (LESSONS[nextDay-1]?.title||"") + " →" : "Complete Programme →"}
               </button>
             );
