@@ -45,7 +45,7 @@ export function D9PracticeWidget({T, T2, isDesktop}) {
           <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:"rgba(138,158,132,0.8)",letterSpacing:"0.05em"}}>1 min warm-up</span>
         </div>
       </div>}
-      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+      <div style={isDesktop?{display:"flex",flexDirection:"column",gap:8}:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
         {TIPS.map((tip,i)=>{
           const isOpen = open===i;
           return (
