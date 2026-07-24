@@ -337,13 +337,15 @@ return (
   <>
   <div
     style={{background:T2.bg,minHeight:"100vh",paddingBottom:40}}
-    onTouchStart={e=>{swipeRef.current={x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now()};}}
+    onTouchStart={e=>{swipeRef.current={x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now(),el:e.target};}}
     onTouchEnd={e=>{
       if(window.getSelection&&window.getSelection().toString())return;
       if(Date.now()-swipeRef.current.t>500)return;
+      const el=swipeRef.current.el;
+      if(el&&el.closest('input,select,textarea,button,[role="slider"]'))return;
       const dx=e.changedTouches[0].clientX-swipeRef.current.x;
       const dy=e.changedTouches[0].clientY-swipeRef.current.y;
-      if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>52){
+      if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>60){
         if(dx<0&&idx<STEPS.length-1){setIdx(i=>i+1);}
         else if(dx>0&&idx>0){setIdx(i=>i-1);}
       }
