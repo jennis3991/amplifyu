@@ -3176,7 +3176,7 @@ setAmbitionSaved(true); } catch {}
             exploreLabel:"Explore his techniques",
             body1:"Huang's most famous idea sounds simple. But it's structured.",
             body2:"Point: \"I just need to build a winning product.\" Reason: \"The goal of winning is so you can play again.\" Example: \"It's just like pinball — play well enough to get another game, and you could be there for a long time.\"",
-            body3:"Said in 1993 — decades before the AI breakthrough that proved it true.",
+            body3:"Said in 2003 at Stanford's eCorner — decades before the AI breakthrough that proved it true.",
             whyItWorks:"NVIDIA kept making bets and staying in the game until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth. Sharp thesis. Strategic rationale. Lived proof.",
             technique:"Lead with your point — don't build to it. Then give your reason in one sentence. Then make it concrete with a real example or analogy. Stop there.",
             lesson:"PRE isn't a template — it's how clear thinkers communicate. Your point tells people where to look. Your reason tells them why it matters. Your example makes it stick.",
