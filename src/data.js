@@ -232,7 +232,7 @@ export const REVIEW_BULLETS = [
 // ─── LESSON DATA
 export const LESSONS = [
   // ── WEEK 1 
-  {day:1,week:1,title:"Speak Clearly",tag:"Clarity",scene:"clarity",
+  {day:1,week:1,mins:18,title:"Speak Clearly",tag:"Clarity",scene:"clarity",
    quote:"Clarity is the ultimate form of intelligence.",
    insight:"The clearest communicators don't use more words — they use better ones. Simplicity signals mastery. Complexity signals uncertainty.",
    pieLink:"Performance and Exposure: Your ideas create impact when others understand them — including the idea of where you're going next. Clarity about your work and your ambition are the same skill.",
@@ -246,7 +246,7 @@ export const LESSONS = [
    teaser:"You'll learn to strip out the noise and say exactly what you mean — in a way that commands instant respect.",
    recap:"Yesterday you learned that clarity is the most powerful form of intelligence — say exactly what you mean, strip out the rest. The clearest communicators use fewer words, not more."},
 
-  {day:2,week:1,title:"The Voice Advantage",tag:"Voice",scene:"voice",
+  {day:2,week:1,mins:18,title:"The Voice Advantage",tag:"Voice",scene:"voice",
    quote:"Master the instrument behind your message.",
    insight:"The fastest speakers are rarely the most credible ones. Slowing down signals confidence — you're not rushing to fill silence, you're choosing your words.",
    pieLink:"Image: How you sound is how you're perceived. A calm, measured voice signals executive presence.",
@@ -260,7 +260,7 @@ export const LESSONS = [
    teaser:"Discover why your voice is your most underused asset — and how mastering four simple levers changes how every room responds to you.",
    recap:"Yesterday you worked on your voice — the pace, tone, and control that signals confidence before a word lands. Slowing down is not hesitation; it is authority."},
 
-  {day:3,week:1,title:"Eliminate Fillers",tag:"Credibility",scene:"clarity",
+  {day:3,week:1,mins:17,title:"Eliminate Fillers",tag:"Credibility",scene:"clarity",
    quote:"What you don't say is as powerful as what you do.",
    insight:"Um, uh, like, you know — these words exist because we fear silence. But silence is more powerful than filler. It signals you're thinking, not floundering.",
    pieLink:"Image: Filler words undermine authority instantly. Removing them is one of the fastest credibility upgrades available.",
@@ -274,7 +274,7 @@ export const LESSONS = [
    teaser:"Discover why filler words quietly erode your authority — and how one simple shift makes you sound more credible, confident, and in control.",
    recap:"Yesterday you tackled fillers — the ums, ahs, and you-knows that signal uncertainty. Silence is more powerful than filler; it tells the room you are thinking, not floundering."},
 
-  {day:4,week:1,title:"Short Sentences",tag:"Editing",scene:"clarity",
+  {day:4,week:1,mins:20,title:"Short Sentences",tag:"Editing",scene:"clarity",
    quote:"Short sentences are easier to follow. Easier to remember. And far more persuasive.",
    insight:"Long sentences bury your point. Short sentences land hard. The most powerful communicators say more with less — because they've edited ruthlessly. This is the foundation of everything that follows, including the stories you'll learn to tell.",
    pieLink:"Performance: Decision-makers remember concise inputs. Long-winded answers signal uncertain thinking. Short sentences are not simple — they are strategic. They are also the first rule of great storytelling.",
@@ -288,7 +288,7 @@ export const LESSONS = [
    teaser:"Find out why short sentences are strategic, not simple — and why mastering this is the hidden foundation of every great professional story.",
    recap:"Yesterday you practised editing ruthlessly — short sentences land hard, long ones bury the point. Every word you cut increases impact."},
 
-  {day:5,week:1,title:"Structure: PRE",tag:"Framework",scene:"structure",
+  {day:5,week:1,mins:18,title:"Structure: PRE",tag:"Framework",scene:"structure",
    quote:"Structure is the backbone of every powerful communication.",
    insight:"PRE: Point — Reason — Example. Three components. Every answer, every presentation, every opinion can follow this structure and land with precision. And every great story, at its core, is a PRE: the point it makes, the reason it matters, the moment that proves it.",
    pieLink:"Performance: Structured communicators are seen as clearer thinkers. PRE is your default response architecture — and the skeleton beneath every story worth telling.",
@@ -302,7 +302,7 @@ export const LESSONS = [
    teaser:"The PRE framework gives you a three-part structure that makes every answer land with precision — and turns out to be the skeleton inside every great professional story.",
    recap:"Yesterday you learned the PRE framework — Point, Reason, Example. Three components that give every answer, opinion, and presentation a structure that commands instant respect."},
 
-  {day:6,week:1,title:"High-Stakes Conversations",tag:"Composure",scene:"structure",
+  {day:6,week:1,mins:20,title:"High-Stakes Conversations",tag:"Composure",scene:"structure",
    quote:"The strongest communicator is often the calmest person in the room.",
    insight:"Most people communicate well when conversations are easy. But promotions, relationships, leadership, and trust are often shaped in moments of tension. Pressure changes your voice. Shortens your thinking. Triggers defensiveness. The communicators who stay calm gain the advantage.",
    pieLink:"Performance: Composure under pressure is one of the most visible signals of leadership. How you communicate when it's hard is what separates good communicators from great ones.",
@@ -316,7 +316,7 @@ export const LESSONS = [
    teaser:"Understand the biology of pressure responses and the techniques elite communicators use to stay composed when stakes are highest.",
    recap:"Yesterday you prepared for high-stakes conversations — the moments that define careers, relationships, and trust. The communicators who stay calm under pressure gain the advantage."},
 
-  {day:7,week:1,title:"Week 1 Review",tag:"Integration",scene:"structure",
+  {day:7,week:1,mins:15,title:"Week 1 Review",tag:"Integration",scene:"structure",
    quote:"Excellence is not an act — it's a habit. And habits are built one rep at a time.",
    insight:"This week you built six core habits: clarity, pace, no fillers, short sentences, structure, and the science behind story. These are not techniques — they're the foundations of a commanding communication style. They also happen to be the exact skills that make a story land.",
    pieLink:"All three: This week was foundational. Clarity serves Performance. Pace and presence serve Image. Story serves Exposure. Everything from here builds on what you've established.",
@@ -331,7 +331,7 @@ export const LESSONS = [
    recap:"This week you built six core habits: clarity, voice control, no fillers, short sentences, PRE structure, and composure under pressure. These are the foundations everything else is built on."},
 
   // ── WEEK 2 
-  {day:8,week:2,title:"Narrative Transportation",tag:"Storytelling",scene:"story",
+  {day:8,week:2,mins:22,title:"Narrative Transportation",tag:"Storytelling",scene:"story",
    quote:"A story well told can change how someone thinks, feels, and acts — all at once.",
    insight:"A story well told doesn't just inform — it transports. Neuroscience shows that a compelling narrative activates the same brain regions as lived experience. This is your most powerful professional tool.",
    pieLink:"Performance alone gets you noticed. Story makes you remembered. The same achievement, told as a narrative, creates 22× more retention and deeper trust in any audience.",
@@ -345,7 +345,7 @@ export const LESSONS = [
    teaser:"Learn the exact 6-beat storytelling framework used by the world's most compelling communicators — and build your own story with your AmplifyU Coach.",
    recap:"Yesterday you discovered the power of story — how a well-told narrative transports rather than informs. A great story activates the brain like lived experience; it is your most powerful professional tool."},
 
-  {day:9,week:2,title:"Connection",tag:"Rapport",scene:"voice",
+  {day:9,week:2,mins:20,title:"Connection",tag:"Rapport",scene:"voice",
    quote:"People may forget what you said. They rarely forget how you made them feel.",
    insight:"The strongest relationships are not built through charisma. They're built through understanding. People are drawn to those who make them feel heard, who ask thoughtful questions, who listen with genuine curiosity.",
    pieLink:"Image: How you make people feel shapes how they perceive you. Connection creates the emotional memory that builds lasting professional relationships.",
@@ -359,7 +359,7 @@ export const LESSONS = [
    teaser:"Discover how the world's most connected professionals build trust, rapport, and influence — through curiosity, empathy, and the art of making people feel heard.",
    recap:"Yesterday you built connection — the ability to make people feel genuinely heard and understood. Strong relationships are not built through charisma; they are built through curiosity."},
 
-  {day:10,week:2,title:"Performance",tag:"Impact",scene:"pie",theoryImageDay:11,
+  {day:10,week:2,mins:25,title:"Performance",tag:"Impact",scene:"pie",theoryImageDay:11,
    quote:"Great work does not automatically create visibility.",
    insight:"Harvey Coleman's research revealed that Performance accounts for just 10% of career success. It earns you the right to be in the room. It doesn't earn you the promotion, the recognition, or the next opportunity. This module shows you how to close the gap between the work you do and the credit you deserve.",
    pieLink:"Performance: This is the foundation — and it is not the ceiling. Visibility without substance is noise. But substance without visibility is invisibility. Both matter.",
@@ -373,7 +373,7 @@ export const LESSONS = [
    teaser:"Discover why 90% of career advancement depends on how visible your work is — not just how good it is.",
    recap:"Yesterday you confronted a surprising truth: performance accounts for just 10% of career success. Making your work visible and getting credit for it is not optional — it is essential."},
 
-  {day:11,week:2,title:"Brand Identity",tag:"Presence",scene:"presence",
+  {day:11,week:2,mins:18,title:"Brand Identity",tag:"Presence",scene:"presence",
    quote:"Your personal brand is what people say about you when you're not in the room.",
    insight:"Image is how others perceive you. But perception isn't random — it's built from signals. Your appearance, your stories, your consistency, your voice. You have far more control over this than you think. The most powerful people in any room learned to shape it intentionally.",
    pieLink:"Image: This module is the bridge. Everything you've built — clarity, voice, credibility, structure, composure — now becomes the architecture of how you're perceived.",
@@ -387,7 +387,7 @@ export const LESSONS = [
    teaser:"Discover how to shape the way others perceive you — with intentional signals, consistent behaviour, and stories that make your brand unforgettable.",
    recap:"Yesterday you explored your personal brand — the signals that shape how others perceive you before you speak. Perception is not random; it is built from your appearance, your stories, and your consistency."},
 
-  {day:12,week:2,title:"Influence",tag:"Nonverbal",scene:"presence",
+  {day:12,week:2,mins:20,title:"Influence",tag:"Nonverbal",scene:"presence",
    quote:"People don't just hear confidence. They see it.",
    insight:"Presence is how communication feels. Posture, gestures, eye contact, movement, and facial expression all shape how confidence, warmth, and connection are experienced — before a single word lands.",
    pieLink:"Image: Presence is the ultimate image signal — the physical expression of everything you've been building. When your body communicates what your words say, people feel it.",
@@ -399,7 +399,7 @@ export const LESSONS = [
    teaser:"Learn how gestures, posture, eye contact, and calm energy shape how every conversation you have is experienced.",
    recap:"Yesterday you worked on presence — the nonverbal signals that communicate confidence and warmth before a word is said. How you move, stand, and hold space is communication."},
 
-  {day:13,week:2,title:"Exposure",tag:"Visibility",scene:"pie",theoryImageDay:12,
+  {day:13,week:2,mins:18,title:"Exposure",tag:"Visibility",scene:"pie",theoryImageDay:12,
    quote:"Performance gets you in the door. Exposure opens the next one.",
    insight:"Exposure is not just about being seen — it's about being understood. The most powerful form of visibility is when the people who influence your career know not just that you exist, but what you're building toward. Presence without stated ambition is just attendance.",
    pieLink:"Exposure: The career multiplier — but only when it carries your direction. Being in the right rooms and being known for going somewhere specific are two different things. You need both.",
@@ -413,7 +413,7 @@ export const LESSONS = [
    teaser:"Discover why being visible isn't enough — and how to become visible with direction so the right people know exactly where you're going and how to help you get there.",
    recap:"Yesterday you focused on exposure — being understood by the people who influence your career, not just being seen. Presence without stated ambition is just attendance."},
 
-  {day:14,week:2,title:"Amplified",tag:"Capstone",scene:"clarity",
+  {day:14,week:2,mins:25,title:"Amplified",tag:"Capstone",scene:"clarity",
    quote:"Your future will be shaped by the conversations you choose to have, the stories you choose to tell, and the clarity with which you communicate who you are.",
    insight:"You've spent 14 days building the foundations of confident, clear, commanding communication. Clarity. Structure. Story. PIE. Ambition. Brand. These are not techniques — they are who you are becoming. And they all connect: every story you tell serves your performance, your image, your exposure, and your stated ambition.",
    pieLink:"Everything: Performance + Image + Exposure + Stated Ambition, delivered with clarity, structure, and story. This is the full picture.",

@@ -8,7 +8,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
   const T2 = Object.assign({}, T, DK);
   const pct = Math.round((done.length/14)*100);
   const nextLesson = LESSONS.find(l=>l.day===cur);
-  const timeInvested = Math.round(done.length * 22); // ~22 min per session
+  const timeInvested = LESSONS.filter(l=>done.includes(l.day)).reduce((sum,l)=>sum+(l.mins||20),0);
   const timeH = Math.floor(timeInvested/60);
   const timeM = timeInvested % 60;
   const [showAllAch, setShowAllAch] = useState(false);
