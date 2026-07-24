@@ -2025,7 +2025,11 @@ T.goldDark : T2.text4,
             summary:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof.",
             quote:"\"I don't need to build a killer product overnight, I just need to build a winning product.\"",
             body1:"Huang's most famous idea sounds simple. But it's structured.",
-            body2:"Point: \"I just need to build a winning product.\" Reason: \"The goal of winning is so you can play again.\" Example: \"It's just like pinball — play well enough to get another game, and you could be there for a long time.\"",
+            body2Lines:[
+              {label:"Point",   text:"\"I just need to build a winning product.\""},
+              {label:"Reason",  text:"\"The goal of winning is so you can play again.\""},
+              {label:"Example", text:"\"It's just like pinball — play well enough to get another game, and you could be there for a long time.\""},
+            ],
             body3:"Said in 1993 — decades before the AI breakthrough that proved it true.",
             whyItWorks:"NVIDIA kept making bets and staying in the game until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth. Sharp thesis. Strategic rationale. Lived proof.",
             technique:"Lead with your point — don't build to it. Then give your reason in one sentence. Then make it concrete with a real example or analogy. Stop there.",
@@ -2099,7 +2103,17 @@ T.goldDark : T2.text4,
                     <div style={{padding:"0 18px 20px",animation:"fadeUp 0.3s ease both"}}>
                       <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16}}>
                         <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body1}</p>
-                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body2}</p>
+                        {card.body2Lines
+                          ? <div style={{display:"flex",flexDirection:"column",gap:10,margin:"0 0 10px"}}>
+                              {card.body2Lines.map((ln,li)=>(
+                                <div key={li} style={{paddingLeft:10,borderLeft:"2px solid rgba(138,158,132,0.35)"}}>
+                                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>{ln.label}</div>
+                                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300,margin:0}}>{ln.text}</p>
+                                </div>
+                              ))}
+                            </div>
+                          : <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body2}</p>
+                        }
                         <div style={{padding:"14px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 10px"}}>
                           <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
                         </div>
