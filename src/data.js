@@ -332,7 +332,7 @@ export const LESSONS = [
 
   // ── WEEK 2 
   {day:8,week:2,title:"Narrative Transportation",tag:"Storytelling",scene:"story",
-   quote:"The most powerful person in the world is the storyteller.",
+   quote:"A story well told can change how someone thinks, feels, and acts — all at once.",
    insight:"A story well told doesn't just inform — it transports. Neuroscience shows that a compelling narrative activates the same brain regions as lived experience. This is your most powerful professional tool.",
    pieLink:"Performance alone gets you noticed. Story makes you remembered. The same achievement, told as a narrative, creates 22× more retention and deeper trust in any audience.",
    phrases:["Once upon a time, I was working on…","Until one day, something shifted…","Because of that, I made a decision…","Until finally, we arrived at…"],
