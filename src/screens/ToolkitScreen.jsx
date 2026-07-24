@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { T } from '../theme.js';
 import { FURTHER_READING, PHRASES, SAY_THIS, QUICK_PREP, DAILY_INSIGHTS, POWER_PHRASES } from '../data.js';
 import { Scene } from '../scenes.jsx';
+import { PracticeSpace } from '../modules/PracticeSpace.jsx';
 
 export function ToolkitScreen({onQuickPrep, onStartSession, dark=false, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
@@ -29,7 +30,7 @@ p];
     try { localStorage.setItem("au1_saved_phrases", JSON.stringify(next)); 
 } catch {}
   }
-  const toolkitTabs = [["aitools","AI Tools"],["story","My Story"],["sayThis","Say This Instead"],["phrases","Phrases"],["saved","♥ Saved"+(saved.length>0?" ("+saved.length+")":"")],["reading","Reading List"],["prep","Quick Prep"]];
+  const toolkitTabs = [["aitools","AI Tools"],["practice","Practice Space"],["story","My Story"],["sayThis","Say This Instead"],["phrases","Phrases"],["saved","♥ Saved"+(saved.length>0?" ("+saved.length+")":"")],["reading","Reading List"],["prep","Quick Prep"]];
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}}>
       {!isDesktop && (
@@ -344,8 +345,8 @@ p];
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(138,158,132,0.85)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
                   </div>
                   <div style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:8}}>Practice Space</div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,marginBottom:24,maxWidth:420,fontWeight:300}}>Your own coaching space. Practise before any presentation, meeting, or conversation — with instant AmplifyU feedback.</div>
-                  <button style={{padding:"10px 22px",border:"1px solid rgba(138,158,132,0.4)",borderRadius:6,background:"transparent",color:T2.text3,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"default",letterSpacing:"0.02em"}}>Coming Soon</button>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,marginBottom:24,maxWidth:420,fontWeight:300}}>30 fresh scenarios. Daily challenges. Track your progress and keep your skills sharp between sessions.</div>
+                  <button onClick={()=>setTab("practice")} style={{padding:"10px 22px",border:"1px solid rgba(138,158,132,0.4)",borderRadius:6,background:"transparent",color:T.gold,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",letterSpacing:"0.02em"}}>Open Practice Space →</button>
                 </div>
               </div>
             </div>
@@ -390,6 +391,11 @@ p];
           </div>
         );
       })()}
+      {tab==="practice" && (
+        <div style={isDesktop?{maxWidth:720,margin:"0 auto",padding:"24px 88px 80px"}:{padding:"0 20px 60px"}}>
+          <PracticeSpace T2={Object.assign({},T,DK)} isDesktop={isDesktop}/>
+        </div>
+      )}
       {tab==="story" && (
         <div style={{padding:"16px 20px 0",display:"flex",flexDirection:"column",gap:0}}>
           {/* Header card */}
