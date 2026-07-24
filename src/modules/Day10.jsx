@@ -177,12 +177,18 @@ export function D10MobileSim() {
   const [l, setL] = useState(false);
 
   const SCENARIOS = [
-    {id:1, title:"The Surprise Skip-Level",   prompt:'"So — what have you been focused on lately?"',     tag:"Strategic framing · Brevity"},
-    {id:2, title:"Promotion Calibration",      prompt:'"Why are you ready for the next level?"',          tag:"Ownership · Evidence · Confidence"},
-    {id:3, title:"The Executive Fly-By",       prompt:'"How\'s the project going?"',                      tag:"Brevity · Prioritisation"},
-    {id:4, title:"Credit Theft",               prompt:"A colleague presents your work as their own.",      tag:"Composure · Ownership"},
-    {id:5, title:"Difficult Stakeholder",      prompt:'"I\'m still not convinced this made a difference."', tag:"Persuasion · Credibility"},
-    {id:6, title:"The Quiet Achiever Trap",    prompt:'"You do great work — but I need more visibility into your impact."', tag:"Self-advocacy · Reframing"},
+    {id:1, title:"The Surprise Skip-Level",   prompt:'"So — what have you been focused on lately?"',     tag:"Strategic framing · Brevity",
+     icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>},
+    {id:2, title:"Promotion Calibration",      prompt:'"Why are you ready for the next level?"',          tag:"Ownership · Evidence · Confidence",
+     icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>},
+    {id:3, title:"The Executive Fly-By",       prompt:'"How\'s the project going?"',                      tag:"Brevity · Prioritisation",
+     icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>},
+    {id:4, title:"Credit Theft",               prompt:"A colleague presents your work as their own.",      tag:"Composure · Ownership",
+     icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>},
+    {id:5, title:"Difficult Stakeholder",      prompt:'"I\'m still not convinced this made a difference."', tag:"Persuasion · Credibility",
+     icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>},
+    {id:6, title:"The Quiet Achiever Trap",    prompt:'"You do great work — but I need more visibility into your impact."', tag:"Self-advocacy · Reframing",
+     icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>},
   ];
 
   const wc = v.trim().split(/\s+/).filter(Boolean).length;
@@ -201,12 +207,13 @@ export function D10MobileSim() {
   if (!scenario) return (
     <div>
       <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#A8998A",marginBottom:12,fontWeight:300}}>Choose your scenario:</p>
-      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
         {SCENARIOS.map(sc=>(
           <div key={sc.id} onClick={()=>{setScenario(sc);setV("");setR(null);}}
-            style={{padding:"14px 16px",background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,cursor:"pointer"}}>
-            <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontWeight:600,color:"#2C2416",marginBottom:3}}>{sc.id}. {sc.title}</div>
-            <div style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#8A7B66"}}>{sc.tag}</div>
+            style={{padding:"12px",background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,cursor:"pointer",display:"flex",flexDirection:"column",gap:8,minHeight:110}}>
+            <div>{sc.icon}</div>
+            <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontWeight:600,color:"#2C2416",lineHeight:1.25,flex:1}}>{sc.title}</div>
+            <div style={{fontFamily:"'Inter',sans-serif",fontSize:10,color:"#8A7B66",lineHeight:1.4}}>{sc.tag}</div>
           </div>
         ))}
       </div>

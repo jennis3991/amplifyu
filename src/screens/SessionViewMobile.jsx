@@ -2605,7 +2605,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <div style={{padding:"14px 16px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:16}}>
             <p style={{fontFamily:T.serif,fontSize:22,fontStyle:"italic",color:T2.text,lineHeight:1.4,margin:0}}>"When communication feels safe, the brain becomes more open to the message."</p>
           </div>
-          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
             {[
               {title:"Thin Slicing",      body:"The brain forms rapid impressions from nonverbal cues before language is fully processed."},
               {title:"Visual Processing", body:"The brain processes visual signals faster than spoken words."},
@@ -2614,7 +2614,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             ].map((c,i)=>(
               <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
                 <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{c.title}</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:400,margin:0}}>{c.body}</p>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,fontWeight:400,margin:0}}>{c.body}</p>
               </div>
             ))}
           </div>
@@ -2964,16 +2964,16 @@ strokeLinecap="round"/></svg>
             technique:"Before your next conversation or presentation, check your posture before your script. Stand tall, relax your shoulders, keep your hands open, and make eye contact before you begin speaking. Let your body communicate confidence before your voice does.",
             lesson:"Your body is always communicating — even when you're silent. Great communicators understand that influence isn't just about what you say; it's about how you make people feel the moment you walk into the room. When your words and body language are aligned, your presence becomes your greatest strength.",
           },
-          { id:"diana", img:"/d13-jamie.jpg", imgPos:"center center", name:"Princess Diana", role:"Princess of Wales", superpower:"Master of Visibility",
-            superpowerText:"Visibility has the greatest impact when it stops being about you.",
-            summary:"She used public attention to change public conversations — bringing compassion to causes many had ignored.",
-            quote:"\"Visibility has the greatest impact when it stops being about you and starts becoming about something bigger than yourself.\"",
-            body1:"Princess Diana understood something few people ever master: visibility is a powerful tool when it's used to serve others. Long before social media, she recognised that every appearance, photograph, and conversation was an opportunity to shine a light on causes that might otherwise go unnoticed.",
-            body2:"She didn't seek attention simply to be seen. She used public attention to change public conversations — bringing compassion, empathy, and humanity to issues that many people had ignored.",
-            body3:"Being visible isn't about collecting followers or standing in the spotlight. It's about deciding what people will remember after they've looked your way. The most influential people use their platform to educate, inspire, and create opportunities for others — not simply to promote themselves.",
-            whyItWorks:"Visibility creates opportunity, but purpose creates influence. People are naturally drawn to those who stand for something beyond personal success. When your expertise is paired with generosity, authenticity, and a genuine desire to help others, your visibility becomes meaningful rather than performative. The result isn't just recognition — it's trust, credibility, and lasting influence.",
-            technique:"Think about what you want to become known for beyond your job title. Share ideas that help others. Celebrate your colleagues' successes. Speak about work that matters. Use your LinkedIn posts, presentations, conversations, and meetings to create value rather than simply seeking attention. Ask yourself: \"If more people noticed my work tomorrow, what message would I want them to remember?\"",
-            lesson:"Exposure isn't the goal — impact is. The most respected professionals don't chase visibility for its own sake. They earn attention by consistently adding value and using their platform to elevate ideas, people, and causes that matter. Build a reputation for making others better, and your influence will continue growing long after the spotlight has moved on.",
+          { id:"diana", img:"/d13-jamie.jpg", imgPos:"center center", name:"Jamie Oliver", role:"Celebrity chef & author", superpower:"Master of Approachable Authority",
+            superpowerText:"People don't trust you because you sound clever. They trust you because they understand you.",
+            summary:"He built one of the world's most recognisable personal brands without trying to sound like the smartest person in the room.",
+            quote:"\"People don't trust you because you sound clever. They trust you because they understand you.\"",
+            body1:"Jamie Oliver built one of the world's most recognisable personal brands without trying to sound like the smartest person in the room. He talked about food the way you'd talk to a friend — no jargon, no complicated language, just genuine enthusiasm and practical advice.",
+            body2:"Open about living with dyslexia and struggling at school, Jamie never hid behind technical language to sound credible. Instead, he built trust by making complex ideas simple. That same clear communication helped turn his campaign for healthier school meals into real government policy.",
+            body3:"Visibility isn't about sounding impressive. It's about communicating in a way that people remember, trust, and want to share. People connect with communicators who make them feel capable, not intimidated.",
+            whyItWorks:"Simple language builds trust, and trust creates opportunities. When people understand your message, they're far more likely to remember it — and recommend you. Don't borrow complicated words to sound more credible. Explain ideas the way you'd naturally explain them to a colleague over coffee.",
+            technique:"Before your next meeting or presentation, ask yourself: \"Am I trying to impress people, or help them understand?\" Strip out jargon. Use the words you'd use with a friend. The clearer your language, the stronger your authority.",
+            lesson:"Authority doesn't come from using bigger words — it comes from making ideas easier to understand. The communicators people remember are the ones who make complex things feel simple. When people understand you, they trust you. When they trust you, they recommend you.",
           },
         ];
         let d13ExObs = {}; try { d13ExObs = JSON.parse(localStorage.getItem('d13ExObserved')||'{}'); } catch {}
