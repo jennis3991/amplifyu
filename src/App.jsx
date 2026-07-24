@@ -118,6 +118,7 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   }, [tab, view]);
   const [selDay, setSelDay] = useState(1);
   const [cel, setCel] = useState(null);
+  const sessionStartRef = useRef(null);
   const streak = getStreak(done);
   const activeRole = ROLES.find(r => r.id === roleId) || null;
   // Daily reminder nudge — show if today's session not done and app opened after 18h gap
@@ -151,8 +152,8 @@ lsSet("au1_dark",d); }
     setConfirmReset(false); setTab("home"); setView("main");
   }
 
-  function startSession(d) { setSelDay(d); setView("session"); }
-  function startSessionAtStep(d, stepName) { try{localStorage.setItem("au1_initial_step",stepName);}catch{} setSelDay(d); setView("session"); }
+  function startSession(d) { sessionStartRef.current = Date.now(); setSelDay(d); setView("session"); }
+  function startSessionAtStep(d, stepName) { try{localStorage.setItem("au1_initial_step",stepName);}catch{} sessionStartRef.current = Date.now(); setSelDay(d); setView("session"); }
   function completeDay(d) {
     if (!done.includes(d)) {
       const upd = [...done, d];
@@ -161,6 +162,16 @@ lsSet("au1_dark",d); }
       const nx = Math.min(d+1, 14);
       setCur(nx);
       lsSet("au1_day", nx);
+      if (sessionStartRef.current) {
+        const mins = Math.min(Math.round((Date.now() - sessionStartRef.current) / 60000), 60);
+        if (mins > 0) {
+          try {
+            const log = JSON.parse(localStorage.getItem("au1_time_log") || "{}");
+            log[d] = mins;
+            localStorage.setItem("au1_time_log", JSON.stringify(log));
+          } catch {}
+        }
+      }
     }
     setCel(d);
   }

@@ -8,7 +8,8 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
   const T2 = Object.assign({}, T, DK);
   const pct = Math.round((done.length/14)*100);
   const nextLesson = LESSONS.find(l=>l.day===cur);
-  const timeInvested = LESSONS.filter(l=>done.includes(l.day)).reduce((sum,l)=>sum+(l.mins||20),0);
+  const timeLog = (() => { try { return JSON.parse(localStorage.getItem("au1_time_log") || "{}"); } catch { return {}; } })();
+  const timeInvested = LESSONS.filter(l=>done.includes(l.day)).reduce((sum,l)=>sum+(timeLog[l.day] ?? l.mins ?? 15), 0);
   const timeH = Math.floor(timeInvested/60);
   const timeM = timeInvested % 60;
   const [showAllAch, setShowAllAch] = useState(false);
