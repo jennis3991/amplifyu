@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { T } from '../theme.js';
 
 // ─── THE LEADERSHIP HOT SEAT — D10 Simulation feedback ───────────────────────
@@ -87,9 +87,86 @@ export function D10SimFeedback({input, scenario}) {
 
 // ─── SAR Builder — D10 Practice (mobile) ─────────────────────────────────────
 export function D10MobileSAR({onComplete}) {
-  const [s,setS]=useState(""); const [a,setA]=useState(""); const [r,setR]=useState(""); const [res,setRes]=useState(""); const [l,setL]=useState(false);
-  async function go(){if(!s.trim()||!a.trim()||!r.trim())return;setL(true);try{const resp=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:250,messages:[{role:"user",content:`You are an executive communication coach. Sharpen this SAR story into 2-3 crisp, confident sentences. Lead with the result. Return ONLY the sharpened story:\n\nSituation: ${s}\nAction: ${a}\nResult: ${r}`}]})});const d=await resp.json();const txt=(d.content||[]).map(b=>b.text||"").join("").trim();setRes(txt);if(onComplete)onComplete();}catch{setRes("Lead with the result, then explain how you got there.");if(onComplete)onComplete();}setL(false);}
-  return(<div><div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>{[["Situation",s,setS,"What was the challenge or context?","#8A9E84"],[" Action",a,setA,"What did YOU specifically do? Use 'I.'","#8A9E84"],["Result",r,setR,"What was the measurable outcome?","#8A9E84"]].map(([lbl,v,sv,ph,col],i)=><div key={i}><div style={{fontSize:10,fontWeight:700,color:col,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5,fontFamily:"'Inter',sans-serif"}}>{lbl}</div><textarea value={v} onChange={e=>sv(e.target.value)} placeholder={ph} style={{width:"100%",borderRadius:4,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:60,boxSizing:"border-box",background:"rgba(247,243,236,0.8)"}}/></div>)}</div><button onClick={go} disabled={l||!s.trim()||!a.trim()||!r.trim()} style={{width:"100%",padding:"12px",borderRadius:3,border:"none",background:l||!s.trim()||!a.trim()||!r.trim()?"#DDD5C4":"#2C2416",color:l||!s.trim()||!a.trim()||!r.trim()?"#6B5E44":"#F7F3EC",fontSize:13,fontWeight:600,cursor:l||!s.trim()||!a.trim()||!r.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:res?12:0}}>{l?"Building your SAR…":"Build My SAR Story →"}</button>{res&&<div style={{padding:"14px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}><div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>Your performance statement</div><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:"#2C2416",margin:0,lineHeight:1.65}}>{res}</p></div>}</div>);
+  const [s,setS]=useState(""); const [a,setA]=useState(""); const [r,setR]=useState("");
+  const [res,setRes]=useState(""); const [l,setL]=useState(false);
+  const [listening,setListening]=useState(null);
+  const recRef=useRef(null);
+  const SpeechRec=typeof window!=="undefined"&&(window.SpeechRecognition||window.webkitSpeechRecognition);
+
+  function startListening(field){
+    if(!SpeechRec)return;
+    if(listening===field){
+      if(recRef.current){recRef.current.stop();recRef.current=null;}
+      setListening(null);return;
+    }
+    if(recRef.current){recRef.current.stop();recRef.current=null;}
+    const rec=new SpeechRec();
+    rec.continuous=true;rec.interimResults=false;rec.lang="en-US";
+    const setter=field==="s"?setS:field==="a"?setA:setR;
+    rec.onresult=e=>{
+      const t=Array.from(e.results).slice(-1)[0][0].transcript.trim();
+      setter(prev=>prev?(prev+" "+t):t);
+    };
+    rec.onend=()=>{setListening(null);recRef.current=null;};
+    rec.onerror=()=>{setListening(null);recRef.current=null;};
+    recRef.current=rec;rec.start();setListening(field);
+  }
+
+  async function go(){
+    if(!s.trim()||!a.trim()||!r.trim())return;
+    setL(true);
+    try{
+      const resp=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:250,messages:[{role:"user",content:`You are an executive communication coach. Sharpen this SAR story into 2-3 crisp, confident sentences. Lead with the result. Return ONLY the sharpened story:\n\nSituation: ${s}\nAction: ${a}\nResult: ${r}`}]})});
+      const d=await resp.json();
+      const txt=(d.content||[]).map(b=>b.text||"").join("").trim();
+      setRes(txt);if(onComplete)onComplete();
+    }catch{setRes("Lead with the result, then explain how you got there.");if(onComplete)onComplete();}
+    setL(false);
+  }
+
+  const FIELDS=[
+    {key:"s",label:"Situation",val:s,set:setS,ph:"What was the challenge or context?"},
+    {key:"a",label:"Action",val:a,set:setA,ph:"What did YOU specifically do? Use 'I.'"},
+    {key:"r",label:"Result",val:r,set:setR,ph:"What was the measurable outcome?"},
+  ];
+
+  return(
+    <div>
+      <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>
+        {FIELDS.map(({key,label,val,set,ph})=>(
+          <div key={key}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
+              <div style={{fontSize:10,fontWeight:700,color:"#8A9E84",textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:"'Inter',sans-serif"}}>{label}</div>
+              {SpeechRec&&(
+                <button onClick={()=>startListening(key)}
+                  style={{display:"flex",alignItems:"center",gap:4,padding:"4px 8px",borderRadius:12,border:listening===key?"1.5px solid #8A9E84":"1px solid #DDD5C4",background:listening===key?"rgba(138,158,132,0.12)":"transparent",cursor:"pointer",fontFamily:"'Inter',sans-serif",fontSize:11,color:listening===key?"#527060":"#8A7B66",fontWeight:500}}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={listening===key?"#527060":"#A8998A"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="9" y="2" width="6" height="11" rx="3"/>
+                    <path d="M5 10a7 7 0 0 0 14 0"/>
+                    <line x1="12" y1="19" x2="12" y2="22"/>
+                    <line x1="9" y1="22" x2="15" y2="22"/>
+                  </svg>
+                  {listening===key?"Stop":"Speak"}
+                </button>
+              )}
+            </div>
+            <textarea value={val} onChange={e=>set(e.target.value)} placeholder={ph}
+              style={{width:"100%",borderRadius:4,border:listening===key?"0.5px solid #8A9E84":"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:60,boxSizing:"border-box",background:"rgba(247,243,236,0.8)",outline:"none"}}/>
+          </div>
+        ))}
+      </div>
+      <button onClick={go} disabled={l||!s.trim()||!a.trim()||!r.trim()}
+        style={{width:"100%",padding:"12px",borderRadius:3,border:"none",background:l||!s.trim()||!a.trim()||!r.trim()?"#DDD5C4":"#2C2416",color:l||!s.trim()||!a.trim()||!r.trim()?"#6B5E44":"#F7F3EC",fontSize:13,fontWeight:600,cursor:l||!s.trim()||!a.trim()||!r.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:res?12:0}}>
+        {l?"Building your SAR…":"Build My SAR Story →"}
+      </button>
+      {res&&(
+        <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}>
+          <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>Your performance statement</div>
+          <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:"#2C2416",margin:0,lineHeight:1.65}}>{res}</p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ─── Leadership Hot Seat — D10 Simulation (mobile) ───────────────────────────
