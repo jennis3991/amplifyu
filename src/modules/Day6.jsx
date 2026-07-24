@@ -398,6 +398,7 @@ export function D6SimWidget({T, T2, isDesktop}) {
   const [phase,          setPhase]         = useState('setup');
   const [form,           setForm]          = useState({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging',details:''});
   const [purposeOther,   setPurposeOther]  = useState('');
+  const [stakeholderIsOther, setStakeholderIsOther] = useState(false);
   const [profile,        setProfile]       = useState(null);
   const [questions,      setQuestions]     = useState([]);
   const [qIdx,           setQIdx]          = useState(0);
@@ -544,9 +545,13 @@ export function D6SimWidget({T, T2, isDesktop}) {
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Who Are You Meeting?</div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
             {MEETING_OPTIONS.map(opt=>{
-              const sel=form.stakeholder===opt.label;
+              const isOther=opt.id==='other';
+              const sel=isOther?stakeholderIsOther:(!stakeholderIsOther&&form.stakeholder===opt.label);
               return (
-                <button key={opt.id} onClick={()=>setForm(f=>({...f,stakeholder:opt.label}))}
+                <button key={opt.id} onClick={()=>{
+                  if(isOther){setStakeholderIsOther(true);setForm(f=>({...f,stakeholder:''}));}
+                  else{setStakeholderIsOther(false);setForm(f=>({...f,stakeholder:opt.label}));}
+                }}
                   style={{padding:"14px 8px",borderRadius:6,border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`,background:sel?'rgba(82,112,96,0.1)':T2.surface,cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:8,outline:'none',transition:'all 0.15s'}}>
                   <div style={{color:sel?'rgba(82,112,96,0.9)':'#8A9E84'}}>{opt.icon}</div>
                   <span style={{fontFamily:T.sans,fontSize:11,color:sel?'#527060':T2.text,lineHeight:1.3,fontWeight:sel?600:400,textAlign:'center'}}>{opt.label}</span>
@@ -554,6 +559,9 @@ export function D6SimWidget({T, T2, isDesktop}) {
               );
             })}
           </div>
+          {stakeholderIsOther && (
+            <input autoFocus value={form.stakeholder} onChange={e=>setForm(f=>({...f,stakeholder:e.target.value}))} placeholder="e.g. Board of Directors, Recruiter..." style={{...cs.inp,marginTop:8}}/>
+          )}
         </div>
         <div>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>{"What's the Conversation About?"}</div>
@@ -824,7 +832,7 @@ export function D6SimWidget({T, T2, isDesktop}) {
           style={{width:"100%",padding:isDesktop?"13px":"12px",borderRadius:4,border:`0.5px solid ${T.gold}`,background:"transparent",color:T.gold,fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans}}>
           Ask Me 5 New Questions →
         </button>
-        <button onClick={()=>{setPhase('intro');setForm({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging'});setProfile(null);setQuestions([]);setAnswers([]);setResult(null);setQIdx(0);setCurrentAnswer('');}}
+        <button onClick={()=>{setPhase('intro');setForm({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging'});setStakeholderIsOther(false);setPurposeOther('');setProfile(null);setQuestions([]);setAnswers([]);setResult(null);setQIdx(0);setCurrentAnswer('');}}
           style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:"6px 0",textAlign:"center",width:"100%"}}>
           Prepare a Different Conversation
         </button>
