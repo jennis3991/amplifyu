@@ -1128,6 +1128,18 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.3"/><path d="M12 7v5l3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2a7 7 0 014.9 11.9L16 15v2H8v-2l-.9-1.1A7 7 0 0112 2z" stroke="currentColor" strokeWidth="1.3"/><path d="M9 19h6M10 21h4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
     ];
+    const D1REFLECT_ICONS=[
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.3"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" strokeWidth="1.3"/><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.3"/></svg>,
+    ];
+    const D1PERSPECT_ICONS=[
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.3"/><polyline points="12 7 12 12 15 14" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2a7 7 0 0 1 4.9 11.9L16 15v2H8v-2l-.9-1.1A7 7 0 0 1 12 2z" stroke="currentColor" strokeWidth="1.3"/><path d="M9 19h6M10 21h4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 2h14M5 22h14M6 2v4l5.5 6L6 18v4M18 2v4l-5.5 6L18 18v4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/></svg>,
+    ];
     const go=(p)=>{setPrompt(p);setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');};
     return (
       <div style={{display:"flex",flexDirection:"column",gap:16}}>
@@ -1143,7 +1155,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:isDesktop?12:10}}>
           {PROMPTS[cat].map((p,i)=>(
             <div key={i} onClick={()=>go(p)} className="au-lift" style={{...cs.card,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",padding:isDesktop?"28px 18px 24px":"22px 14px 20px",gap:14,transition:"border-color 0.2s,box-shadow 0.2s"}}>
-              {cat==='Work' && <div style={{color:"rgba(44,36,22,0.3)",lineHeight:0}}>{D1ICONS[i%D1ICONS.length]}</div>}
+              <div style={{color:"rgba(44,36,22,0.3)",lineHeight:0}}>{(cat==='Work'?D1ICONS:cat==='Reflection'?D1REFLECT_ICONS:D1PERSPECT_ICONS)[i]}</div>
               <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.45,margin:0,fontWeight:400}}>{p}</p>
             </div>
           ))}
