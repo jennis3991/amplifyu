@@ -120,28 +120,23 @@ p];
             {/* ── FEATURED TOOLS ────────────────────────────────────────── */}
             <div style={{marginBottom:isDesktop?48:32}}>
               {sec("Featured Tools")}
-              <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:16}}>
-                {[
-                  {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 4h8l5 5v9H4V4z" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3" fill="none"/><path d="M11 4v6h5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3"/><path d="M7 12h5M7 15h3" stroke="rgba(138,158,132,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>,
-                   label:"Story Architect", desc:"Build powerful stories and presentations in minutes.", tags:["Presentation","Pitch","Leadership Talks"], time:8, day:8, step:"Simulation"},
-                  {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3" fill="none"/><circle cx="11" cy="11" r="4" stroke="rgba(138,158,132,0.6)" strokeWidth="1.2" fill="none"/><circle cx="11" cy="11" r="1.5" fill="rgba(138,158,132,0.8)"/></svg>,
-                   label:"Leadership Hot Seat", desc:"Practice high-stakes conversations with AI feedback.", tags:["Promotion","Executive Meetings","Difficult Conversations"], time:5, day:6, step:"Simulation"},
-                ].map((t,i)=>(
-                  <div key={i} style={{background:"#0D0B08",borderRadius:10,border:"0.5px solid rgba(138,158,132,0.15)",padding:isDesktop?"28px":"22px",display:"flex",flexDirection:"column",justifyContent:"space-between",minHeight:200}}>
-                    <div>
-                      <div style={{width:44,height:44,borderRadius:10,background:"rgba(138,158,132,0.1)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>{t.icon}</div>
-                      <div style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:8}}>{t.label}</div>
-                      <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.55)",lineHeight:1.6,marginBottom:14,fontWeight:300}}>{t.desc}</div>
-                      <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:20}}>
-                        {t.tags.map((tag,j)=><span key={j} style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.45)",padding:"3px 10px",border:"0.5px solid rgba(138,158,132,0.2)",borderRadius:20}}>{tag}</span>)}
-                      </div>
+              <div style={{marginTop:16}}>
+                <div style={{background:"#0D0B08",borderRadius:10,border:"0.5px solid rgba(138,158,132,0.15)",padding:isDesktop?"28px":"22px",display:"flex",flexDirection:isDesktop?"row":"column",justifyContent:"space-between",gap:isDesktop?24:16,alignItems:isDesktop?"center":"flex-start"}}>
+                  <div style={{flex:1}}>
+                    <div style={{width:44,height:44,borderRadius:10,background:"rgba(138,158,132,0.1)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
+                      <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 4h8l5 5v9H4V4z" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3" fill="none"/><path d="M11 4v6h5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3"/><path d="M7 12h5M7 15h3" stroke="rgba(138,158,132,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                     </div>
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                      <Time n={t.time}/>
-                      <button onClick={()=>launch(t.day,t.step)} style={{padding:"10px 22px",borderRadius:5,border:"1px solid rgba(245,239,230,0.25)",background:"transparent",color:"#F5EFE6",fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer"}}>Launch →</button>
+                    <div style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:8}}>Story Architect</div>
+                    <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.55)",lineHeight:1.6,marginBottom:14,fontWeight:300}}>Build powerful stories and presentations in minutes.</div>
+                    <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                      {["Presentation","Pitch","Leadership Talks"].map((tag,j)=><span key={j} style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.45)",padding:"3px 10px",border:"0.5px solid rgba(138,158,132,0.2)",borderRadius:20}}>{tag}</span>)}
                     </div>
                   </div>
-                ))}
+                  <div style={{display:"flex",alignItems:"center",gap:16,flexShrink:0}}>
+                    <Time n={8}/>
+                    <button onClick={()=>launch(8,"Simulation")} style={{padding:"10px 22px",borderRadius:5,border:"1px solid rgba(245,239,230,0.25)",background:"transparent",color:"#F5EFE6",fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer"}}>Launch →</button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -175,30 +170,73 @@ p];
               </div>
             </div>
 
-            {/* ── PRACTICE ──────────────────────────────────────────────── */}
+            {/* ── SKILLS GYM ────────────────────────────────────────────── */}
             <div style={{marginBottom:isDesktop?48:32}}>
-              {sec("Practice","Build communication capability.")}
-              <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr 1fr":"1fr 1fr",gap:12}}>
+              {/* Header */}
+              <div style={{background:"#0D0B08",borderRadius:"10px 10px 0 0",padding:isDesktop?"22px 28px":"18px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16}}>
+                <div>
+                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.65)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:5}}>Skills Gym</div>
+                  <div style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:"rgba(245,239,230,0.92)",lineHeight:1.2}}>Build real communication muscle</div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.38)",fontWeight:300,marginTop:4}}>Daily practice, live scenarios, AI coaching</div>
+                </div>
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style={{flexShrink:0,opacity:0.35}}>
+                  <rect x="3" y="12" width="22" height="4" rx="2" stroke="rgba(138,158,132,0.9)" strokeWidth="1.4" fill="none"/>
+                  <rect x="1" y="10" width="4" height="8" rx="1.5" stroke="rgba(138,158,132,0.9)" strokeWidth="1.4" fill="none"/>
+                  <rect x="23" y="10" width="4" height="8" rx="1.5" stroke="rgba(138,158,132,0.9)" strokeWidth="1.4" fill="none"/>
+                  <rect x="8" y="8" width="4" height="12" rx="1.5" stroke="rgba(138,158,132,0.9)" strokeWidth="1.4" fill="none"/>
+                  <rect x="16" y="8" width="4" height="12" rx="1.5" stroke="rgba(138,158,132,0.9)" strokeWidth="1.4" fill="none"/>
+                </svg>
+              </div>
+
+              {/* Practice Space featured row */}
+              <div style={{border:"0.5px solid rgba(138,158,132,0.2)",borderTop:"none",background:"rgba(138,158,132,0.06)",padding:isDesktop?"20px 28px":"16px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16}}>
+                <div style={{flex:1}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
+                    <div style={{width:7,height:7,borderRadius:"50%",background:T.gold}}/>
+                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>Practice Space</span>
+                  </div>
+                  <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:3}}>Daily Challenge · Score History · Streak</div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,fontWeight:300}}>30 scenarios. Rotates daily. Track your improvement over time.</div>
+                </div>
+                <button onClick={()=>setTab("practice")} style={{padding:isDesktop?"10px 22px":"9px 16px",borderRadius:5,border:"1px solid rgba(138,158,132,0.4)",background:"transparent",color:T.gold,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Open →</button>
+              </div>
+
+              {/* Leadership Hot Seat */}
+              <div style={{border:"0.5px solid rgba(138,158,132,0.2)",borderTop:"none",background:T2.surface,padding:isDesktop?"18px 28px":"15px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,cursor:"pointer"}} onClick={()=>launch(6,"Simulation")}>
+                <div style={{flex:1}}>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:700,color:T2.text,marginBottom:3}}>Leadership Hot Seat</div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,fontWeight:300,lineHeight:1.5}}>Practise high-stakes conversations with live AI feedback.</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:8}}>
+                    {["Promotion","Executive Meetings","Difficult Conversations"].map((tag,j)=><Tag key={j} label={tag}/>)}
+                  </div>
+                </div>
+                <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6,flexShrink:0}}>
+                  <Time n={5}/>
+                  <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text}}>Open →</span>
+                </div>
+              </div>
+
+              {/* 4 drill cards in a grid */}
+              <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr 1fr":"1fr 1fr",borderLeft:"0.5px solid "+T2.border,borderBottom:"0.5px solid "+T2.border}}>
                 {[
-                  {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M12 3l-8 11h8l-2 5 8-11h-8l2-5z" stroke={T2.text3} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>,
-                   label:"Pressure Response Drill", desc:"Build sharp, structured answers when it counts most. PRE Challenge", tag:"Meetings", time:3, day:5, step:"Simulation"},
-                  {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="8" cy="8" r="3" stroke={T2.text3} strokeWidth="1.3" fill="none"/><circle cx="14" cy="8" r="3" stroke={T2.text3} strokeWidth="1.3" fill="none"/><path d="M4 18c0-3 2-4 4-4h6c2 0 4 1 4 4" stroke={T2.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>,
+                  {icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M12 3l-8 11h8l-2 5 8-11h-8l2-5z" stroke={T2.text3} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>,
+                   label:"Pressure Response Drill", desc:"Sharp structured answers under pressure.", tag:"Meetings", time:3, day:5, step:"Simulation"},
+                  {icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><circle cx="8" cy="8" r="3" stroke={T2.text3} strokeWidth="1.3" fill="none"/><circle cx="14" cy="8" r="3" stroke={T2.text3} strokeWidth="1.3" fill="none"/><path d="M4 18c0-3 2-4 4-4h6c2 0 4 1 4 4" stroke={T2.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>,
                    label:"Rapport Builder", desc:"Connect with anyone, anywhere.", tag:"Networking", time:5, day:9, step:"Simulation"},
-                  {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 6h14a1 1 0 011 1v7a1 1 0 01-1 1h-5l-4 3v-3H5a1 1 0 01-1-1V7a1 1 0 011-1z" stroke={T2.text3} strokeWidth="1.3" fill="none"/></svg>,
-                   label:"Story Sprint", desc:"Tell your story in 60 seconds.", tag:"Elevator Pitches", time:3, day:8, step:"Simulation"},
-                  {icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 16V8l4 4 3-6 3 5 4-3v8H4z" stroke={T2.text3} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>,
-                   label:"Executive Briefing", desc:"Explain complex ideas with clarity.", tag:"Executive Communication", time:4, day:4, step:"Simulation"},
+                  {icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M4 6h14a1 1 0 011 1v7a1 1 0 01-1 1h-5l-4 3v-3H5a1 1 0 01-1-1V7a1 1 0 011-1z" stroke={T2.text3} strokeWidth="1.3" fill="none"/></svg>,
+                   label:"Story Sprint", desc:"Tell your story in 60 seconds. Scored.", tag:"Pitches", time:3, day:8, step:"Simulation"},
+                  {icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M4 16V8l4 4 3-6 3 5 4-3v8H4z" stroke={T2.text3} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>,
+                   label:"Executive Briefing", desc:"Complex ideas, clear delivery.", tag:"Executive Comms", time:4, day:4, step:"Simulation"},
                 ].map((t,i)=>(
-                  <div key={i} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"20px":"16px",cursor:"pointer",display:"flex",flexDirection:"column",justifyContent:"space-between",minHeight:isDesktop?160:140}} onClick={()=>launch(t.day,t.step)}>
+                  <div key={i} onClick={()=>launch(t.day,t.step)} style={{background:T2.surface,borderTop:"0.5px solid "+T2.border,borderRight:"0.5px solid "+T2.border,padding:isDesktop?"18px 20px":"13px 14px",cursor:"pointer",display:"flex",flexDirection:"column",justifyContent:"space-between",minHeight:isDesktop?148:126}}>
                     <div>
-                      <div style={{width:36,height:36,borderRadius:7,background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:12}}>{t.icon}</div>
-                      <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:700,color:T2.text,marginBottom:4}}>{t.label}</div>
-                      <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.5,fontWeight:300,marginBottom:10}}>{t.desc}</div>
-                      <Tag label={t.tag}/>
+                      <div style={{width:32,height:32,borderRadius:7,background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:10}}>{t.icon}</div>
+                      <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:700,color:T2.text,marginBottom:3,lineHeight:1.3}}>{t.label}</div>
+                      <div style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:T2.text3,lineHeight:1.5,fontWeight:300}}>{t.desc}</div>
                     </div>
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:12}}>
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:10}}>
                       <Time n={t.time}/>
-                      <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text}}>Open →</span>
+                      <span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text}}>→</span>
                     </div>
                   </div>
                 ))}
@@ -335,21 +373,6 @@ p];
                 </div>
               </div>
             )}
-
-            {/* ── PRACTICE SPACE — COMING SOON ─────────────────────────── */}
-            <div style={{marginBottom:isDesktop?56:40}}>
-              <div style={{background:T2.surface,borderRadius:12,border:"1px solid rgba(138,158,132,0.3)",padding:isDesktop?"32px 36px":"24px 22px",position:"relative",overflow:"hidden"}}>
-                <div style={{position:"absolute",top:-50,right:-50,width:160,height:160,background:"radial-gradient(circle, rgba(138,158,132,0.07) 0%, transparent 70%)",borderRadius:"50%",pointerEvents:"none"}}/>
-                <div style={{position:"relative",zIndex:1}}>
-                  <div style={{width:isDesktop?48:44,height:isDesktop?48:44,borderRadius:10,background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(138,158,132,0.85)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-                  </div>
-                  <div style={{fontFamily:T.serif,fontSize:isDesktop?24:20,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:8}}>Practice Space</div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,marginBottom:24,maxWidth:420,fontWeight:300}}>30 fresh scenarios. Daily challenges. Track your progress and keep your skills sharp between sessions.</div>
-                  <button onClick={()=>setTab("practice")} style={{padding:"10px 22px",border:"1px solid rgba(138,158,132,0.4)",borderRadius:6,background:"transparent",color:T.gold,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",letterSpacing:"0.02em"}}>Open Practice Space →</button>
-                </div>
-              </div>
-            </div>
 
             {/* ── TOOL PATHS ────────────────────────────────────────────── */}
             <div>
