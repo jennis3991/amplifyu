@@ -209,6 +209,7 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
   ];
 
   const [phase, setPhase] = useState('intro');
+  const [exOpen, setExOpen] = useState(false);
   const [char, setChar] = useState(null);
   const [isRec, setIsRec] = useState(false);
   const [waveVals, setWaveVals] = useState(Array.from({length:9},()=>0.3+Math.random()*0.3));
@@ -410,27 +411,39 @@ Return ONLY valid JSON:
           Your AmplifyU Coach will assess how well you adapt your style and provide personalised feedback on your listening, curiosity, empathy and ability to build genuine rapport.
         </p>
       </div>
-      <div style={{...cs.card,borderLeft:'2px solid '+T.gold}}>
-        <div style={cs.label}>Example · The Driver</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:'0 0 14px'}}>
-          You've been trying to get budget sign-off. You catch your senior stakeholder between meetings — they're already walking.
-        </p>
-        <div style={{padding:'12px 14px',background:T2.bg,borderRadius:4,marginBottom:12}}>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>They say</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:'italic',color:T2.text,lineHeight:1.4,margin:0}}>"Two minutes. What do you need?"</p>
-        </div>
-        <div style={{display:'flex',flexDirection:'column',gap:8}}>
-          <div style={{padding:'12px 14px',background:'rgba(180,80,60,0.06)',borderRadius:4,border:'0.5px solid rgba(180,80,60,0.2)'}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:'rgba(180,80,60,0.75)',textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>What most people do</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:'italic',color:T2.text2,lineHeight:1.5,margin:'0 0 6px'}}>"So as you know, we've been working on this since Q1, and the team has spent a lot of time on the customer experience research..."</p>
-            <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>Context before the point. A Driver switches off within seconds.</p>
+      <div style={{...cs.card,borderLeft:'2px solid '+T.gold,padding:0,overflow:'hidden'}}>
+        <button onClick={()=>setExOpen(o=>!o)} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',padding:isDesktop?'18px 22px':'14px 18px',background:'transparent',border:'none',cursor:'pointer',textAlign:'left',gap:12}}>
+          <div>
+            <div style={cs.label}>Example · The Driver</div>
+            {!exOpen && <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,margin:0}}>See what works — and what doesn't — when a time-pressured Driver gives you two minutes.</p>}
           </div>
-          <div style={{padding:'12px 14px',background:'rgba(82,112,96,0.06)',borderRadius:4,border:'0.5px solid rgba(82,112,96,0.2)'}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:'rgba(82,112,96,0.75)',textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>What works</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:'italic',color:T2.text2,lineHeight:1.5,margin:'0 0 6px'}}>"Sign-off on the CX pilot. Forty thousand. Data shows fifteen percent churn reduction. Yes or no today means we start Monday."</p>
-            <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>Bottom line first. Specific. Time-bound. No apology.</p>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,transform:exOpen?'rotate(180deg)':'rotate(0deg)',transition:'transform 0.25s',color:'rgba(138,158,132,0.7)'}}>
+            <path d="M3 6l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+        {exOpen && (
+          <div style={{padding:isDesktop?'0 22px 20px':'0 18px 16px',borderTop:'0.5px solid rgba(138,158,132,0.15)'}}>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:'14px 0 14px'}}>
+              You've been trying to get budget sign-off. You catch your senior stakeholder between meetings — they're already walking.
+            </p>
+            <div style={{padding:'12px 14px',background:T2.bg,borderRadius:4,marginBottom:12}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>They say</div>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:'italic',color:T2.text,lineHeight:1.4,margin:0}}>"Two minutes. What do you need?"</p>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',gap:8}}>
+              <div style={{padding:'12px 14px',background:'rgba(180,80,60,0.06)',borderRadius:4,border:'0.5px solid rgba(180,80,60,0.2)'}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:'rgba(180,80,60,0.75)',textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>What most people do</div>
+                <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:'italic',color:T2.text2,lineHeight:1.5,margin:'0 0 6px'}}>"So as you know, we've been working on this since Q1, and the team has spent a lot of time on the customer experience research..."</p>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>Context before the point. A Driver switches off within seconds.</p>
+              </div>
+              <div style={{padding:'12px 14px',background:'rgba(82,112,96,0.06)',borderRadius:4,border:'0.5px solid rgba(82,112,96,0.2)'}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:'rgba(82,112,96,0.75)',textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>What works</div>
+                <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:'italic',color:T2.text2,lineHeight:1.5,margin:'0 0 6px'}}>"Sign-off on the CX pilot. Forty thousand. Data shows fifteen percent churn reduction. Yes or no today means we start Monday."</p>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>Bottom line first. Specific. Time-bound. No apology.</p>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <button onClick={()=>setPhase('select')} style={cs.cta}>Choose Your Character →</button>
     </div>
