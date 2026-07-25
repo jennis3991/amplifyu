@@ -1,0 +1,13 @@
+{
+  "appId": "com.amplifyu.app",
+  "appName": "AmplifyU",
+  "webDir": "dist",
+  "server": {
+    "url": "https://amplifyu.vercel.app",
+    "cleartext": false
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "backgroundColor": "#F7F3EC"
+  }
+}
