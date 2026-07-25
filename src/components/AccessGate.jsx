@@ -16,7 +16,6 @@ export function AccessGate({ onSuccess }) {
     if (!entered) return;
     const expected = import.meta.env.VITE_ACCESS_CODE || "";
     if (entered === expected) {
-      console.log("[AccessGate] correct code — starting logo-rise animation");
       setLogoRise(true);
       // Rise plays 0→600ms. At 700ms start fade. onSuccess fires after fade completes.
       setTimeout(() => {

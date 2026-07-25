@@ -218,8 +218,8 @@ export const REVIEW_BULLETS = [
   ["Filler words reduce perceived competence by up to 22%", "A pause is not weakness — it is thought made visible", "Replace 'um' and 'er' with breath, intention, and the next word"],
   ["One idea per sentence — always, without exception", "Short sentences land harder and are remembered longer", "Miller's Law: your listener's brain holds seven items at once — respect that"],
   ["Lead with your conclusion, then earn it with evidence", "Point → Reason → Example: the fastest path from idea to understanding", "Structure is a gift to your listener, not a constraint on your thinking"],
-  ["Stories move people to places that facts cannot reach", "Every great professional story has a before, a shift, and an after", "Narrative transportation changes minds without triggering resistance"],
-  ["Performance alone does not build careers — visibility multiplies it", "Image and exposure are not vanity — they are strategy", "Being known for the right things in the right rooms is a learnable skill"],
+  ["The communicators who stay calm under pressure gain the room — every time", "Composure is the foundation that holds clarity, structure, and story together when it counts most", "Prepare your first sentence before every difficult conversation — it anchors you when pressure rises"],
+  ["Six habits in six days: clarity, voice, no fillers, short sentences, PRE structure, and composure under pressure", "Communication mastery is not one big insight — it is six small habits repeated until they become automatic", "The skills you built this week are the foundation every great communicator stands on"],
   ["You learned why storytelling creates influence faster than information alone", "You mastered the 6-beat story arc: Hook, Character, Problem, Turning Point, Resolution, Meaning", "You built and rehearsed your own professional story with your AmplifyU Coach"],
   ["Genuine connection starts with curiosity — asking better questions, not delivering better answers", "The 70/30 rule: listen 70% of the time. People feel most understood when they do most of the talking", "Different people need different conversations — adapting your style to theirs is the mark of a master communicator", "Empathy is not agreement. It is the practice of making people feel genuinely heard before you respond"],
   ["Invisible excellence does not scale — visibility is a communication skill, not a personality trait", "Performance without visibility is philanthropy — your work needs a voice", "The gap between actual and perceived contribution is where careers stall. Communication closes it."],
@@ -748,26 +748,26 @@ export const WORKPLACE_APPLICATION = [
     "Update your professional summary or LinkedIn using the clarity principles from Day 1.",
     "Find one opportunity this week to make your work visible — a concise update, a shared result.",
   ],
-  // Day 11 — Influence & Persuasion
+  // Day 11 — Brand Identity
   [
-    "Before pitching an idea, identify your audience's single biggest concern and address it first.",
-    "Lead with the benefit before the ask in your next proposal or recommendation.",
-    "Use a concrete story or customer example to support your next argument.",
-    "Name the risk of inaction — not just the opportunity — when making a case for change.",
+    "Choose three words you want to be known for — then check whether your current presence signals them.",
+    "Audit your LinkedIn headline: does it reflect your brand, or just your job title?",
+    "In your next meeting, make one deliberate choice that aligns with the professional reputation you are building.",
+    "Ask a trusted colleague: 'What three words would you use to describe how I communicate?'",
   ],
-  // Day 12 — Executive Presence
+  // Day 12 — Influence / Nonverbal
   [
-    "Slow down your next presentation by 20% — deliberate pace signals authority.",
-    "Take up more physical space: sit forward, use gestures, don't shrink.",
-    "Reduce hedging: replace 'I think' with 'I believe', 'I'm not sure but' with a pause.",
-    "Prepare three confident answers to likely questions before any senior meeting.",
+    "In your next presentation, plant your feet before you speak — a grounded posture signals authority instantly.",
+    "Make deliberate eye contact for three to five seconds when making your most important point.",
+    "Use open hand gestures when sharing ideas — closed body language signals defensiveness.",
+    "Before a high-stakes conversation, take two minutes to stand tall and breathe — presence is a physical state.",
   ],
-  // Day 13 — Difficult Conversations
+  // Day 13 — Exposure
   [
-    "Before responding to a difficult message, wait 90 seconds — let the emotion settle first.",
-    "Listen to understand, not to reply, in your next disagreement.",
-    "Use 'I notice' and 'I feel' instead of 'You always' and 'You never'.",
-    "Find one piece of common ground before stating your position in any conflict.",
+    "Name one senior person who influences your career but does not know your ambition — plan one sentence to tell them.",
+    "In your next skip-level or senior conversation, state one specific thing you are working toward.",
+    "Share a project win publicly this week — a team update, a message to a stakeholder, or a LinkedIn post.",
+    "Find one room this week where you are not currently visible — and get in it.",
   ],
   // Day 14 — Communication System
   [

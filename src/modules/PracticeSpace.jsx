@@ -91,6 +91,7 @@ export function PracticeSpace({T2, isDesktop}) {
   const [fallback, setFallback] = useState('');
   const [isRec, setIsRec] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const [result, setResult] = useState(null);
   const [sessions, setSessions] = useState(loadSessions);
   const [streak, setStreak] = useState(loadStreak);
@@ -127,14 +128,15 @@ export function PracticeSpace({T2, isDesktop}) {
   async function submit() {
     const text = liveRef.current || transcript || fallback;
     if (!text.trim()) return;
-    setLoading(true);
+    setLoading(true); setSubmitError(false);
     try {
       const res = await fetch('/api/claude', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,messages:[{role:'user',content:`Elite executive communication coach. Score this Practice Space response.\n\nScenario: "${scenario.prompt}"\nResponse: "${text}"\n\nReturn ONLY JSON: {"overall":<50-100>,"Clarity":<50-100>,"Confidence":<50-100>,"Brevity":<50-100>,"Ownership":<50-100>,"coaching":"<one specific coaching sentence referencing their actual words — not generic>"}`}]})});
+      if (!res.ok) throw new Error('api');
       const d = await res.json();
       const raw = (d.content||[]).map(b=>b.text||'').join('').trim();
       let parsed;
       try { const m = raw.match(/\{[\s\S]*\}/); parsed = JSON.parse(m[0]); }
-      catch { parsed = {overall:72,Clarity:74,Confidence:70,Brevity:68,Ownership:75,coaching:"Clear response — now lead with your conclusion before the context."}; }
+      catch { throw new Error('parse'); }
       const session = {date:today, scenario:scenario.title, category:scenario.category, overall:parsed.overall, scores:{Clarity:parsed.Clarity,Confidence:parsed.Confidence,Brevity:parsed.Brevity,Ownership:parsed.Ownership}};
       const next = [session, ...sessions].slice(0, 100);
       setSessions(next);
@@ -143,7 +145,7 @@ export function PracticeSpace({T2, isDesktop}) {
       setStreak(newStreak);
       setResult(parsed);
       setPhase('result');
-    } catch {}
+    } catch { setSubmitError(true); }
     setLoading(false);
   }
 
@@ -281,6 +283,11 @@ export function PracticeSpace({T2, isDesktop}) {
         style={{width:'100%',padding:'14px',borderRadius:4,border:'none',background:loading||(!transcript.trim()&&!fallback.trim())?'#DDD5C4':'#2C2416',color:loading||(!transcript.trim()&&!fallback.trim())?'#6B5E44':'#F7F3EC',fontSize:14,fontWeight:600,cursor:loading||(!transcript.trim()&&!fallback.trim())?'not-allowed':'pointer',fontFamily:T.sans,minHeight:48}}>
         {loading?'Coaching in progress…':'Get Coached →'}
       </button>
+      {submitError && (
+        <div style={{marginTop:12,padding:'12px 14px',background:'rgba(180,60,60,0.07)',border:'0.5px solid rgba(180,60,60,0.2)',borderRadius:4,fontFamily:T.sans,fontSize:12,color:'#8B3A3A',textAlign:'center'}}>
+          Something went wrong — please check your connection and try again.
+        </div>
+      )}
     </div>
   );
 

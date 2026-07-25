@@ -646,7 +646,7 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
               <div style={{ fontFamily: T.serif, fontSize: 17, fontWeight: 600, color: BONE, lineHeight: 1.3, maxWidth: 230 }}>{results.scoreHeadline}</div>
               <div style={{ fontSize: 11, color: SLATE, marginTop: 5, lineHeight: 1.4 }}>{results.scoreSubline}</div>
             </div>
-            <button onClick={() => { setStarred(s => !s); console.log('Saved result', results.overallScore); }}
+            <button onClick={() => setStarred(s => !s)}
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 22, padding: 4, color: starred ? GOLD : '#555' }}>
               {starred ? '★' : '☆'}
             </button>
@@ -747,12 +747,6 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
           <p style={{ fontFamily: T.serif, fontSize: 17, fontStyle: 'italic', color: INK, lineHeight: 1.7, margin: '0 0 16px' }}>
             {results.coachSays}
           </p>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button onClick={() => console.log('Coach quote saved')}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: SLATE, fontSize: 20, padding: 0 }}>
-              ☆
-            </button>
-          </div>
         </Card>
 
         {/* ── E: HEAR IT BACK ────────────────────────────────────────── */}
