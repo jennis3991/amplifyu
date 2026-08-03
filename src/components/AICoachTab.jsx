@@ -211,9 +211,19 @@ const Card = ({ dark, children, style = {} }) => (
   </div>
 );
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = false }) {
-  const SR = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
+  const canRecord = typeof window !== 'undefined' && !!navigator.mediaDevices?.getUserMedia && typeof MediaRecorder !== 'undefined';
 
   const [step,        setStep]        = useState('intro');   // intro|topic|recording|analysing|results
   const [category,   setCategory]    = useState('work');
@@ -225,22 +235,18 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
   const [textInput,  setTextInput]   = useState('');
   const [audioBlob,  setAudioBlob]   = useState(null);
   const [results,    setResults]     = useState(null);
-  const [err,        setErr]         = useState(null);   // null|'mic'|'speech'|'api'
+  const [err,        setErr]         = useState(null);   // null|'mic'|'speech'|'transcribe'|'api'
   const [playing,    setPlaying]     = useState(false);
   const [starred,    setStarred]     = useState(false);
   const [barsReady,  setBarsReady]   = useState(false);
 
-  const recRef   = useRef(null);   // SpeechRecognition
   const mrRef    = useRef(null);   // MediaRecorder
   const chunksRef= useRef([]);
   const timerRef = useRef(null);
   const audioRef = useRef(null);
   const waveRef  = useRef(null);
   const phaseRef = useRef(0);
-  const txRef    = useRef('');     // live transcript ref for closure
-
-  // Sync transcript to ref so timer closure can read it
-  useEffect(() => { txRef.current = transcript; }, [transcript]);
+  const durRef   = useRef(0);      // live recording duration for the async stop→transcribe closure
 
   // Trigger bar animation on results mount
   useEffect(() => {
@@ -265,8 +271,8 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
 
   // ── Recording controls ────────────────────────────────────────────────────
   async function startRecording() {
-    setTranscript(''); txRef.current = '';
-    setTimeLeft(120); setRecDur(0);
+    setTranscript('');
+    setTimeLeft(120); setRecDur(0); durRef.current = 0;
     setAudioBlob(null); setErr(null);
 
     // MediaRecorder
@@ -279,32 +285,14 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
       chunksRef.current = [];
       mr.addEventListener('dataavailable', e => chunksRef.current.push(e.data));
       mr.addEventListener('stop', () => {
-        setAudioBlob(new Blob(chunksRef.current, { type: 'audio/webm' }));
         stream.getTracks().forEach(t => t.stop());
+        const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+        setAudioBlob(blob);
+        transcribeAndAnalyze(blob, durRef.current);
       });
       mr.start();
     } catch {
       setErr('mic'); return;
-    }
-
-    // Speech recognition
-    if (SR) {
-      const recognition = new SR();
-      recRef.current = recognition;
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
-      let final = '';
-      recognition.addEventListener('result', e => {
-        let interim = '';
-        for (let i = e.resultIndex; i < e.results.length; i++) {
-          e.results[i].isFinal ? (final += e.results[i][0].transcript + ' ') : (interim += e.results[i][0].transcript);
-        }
-        const full = final + interim;
-        setTranscript(full);
-        txRef.current = full;
-      });
-      recognition.start();
     }
 
     // Countdown timer
@@ -314,25 +302,43 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
       const elapsed = Math.floor((Date.now() - t0) / 1000);
       const left    = 120 - elapsed;
       setTimeLeft(Math.max(0, left));
-      setRecDur(elapsed);
-      if (left <= 0) doStop(elapsed);
+      setRecDur(elapsed); durRef.current = elapsed;
+      if (left <= 0) doStop();
     }, 500);
   }
 
-  function doStop(dur) {
+  function doStop() {
     if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
     setRecording(false);
-    try { recRef.current?.stop(); }    catch {}
-    if (mrRef.current?.state !== 'inactive') try { mrRef.current.stop(); } catch {}
-
-    const finalTx = txRef.current.trim();
-    if (!finalTx) { setErr('speech'); return; }
-
-    setStep('analysing');
-    setTimeout(() => callCoach(finalTx, dur || recDur), 600);
+    if (mrRef.current && mrRef.current.state !== 'inactive') {
+      try { mrRef.current.stop(); } catch { setErr('mic'); }
+    } else {
+      setErr('mic');
+    }
   }
 
-  function stopRecording() { doStop(recDur); }
+  function stopRecording() { doStop(); }
+
+  // ── Transcription (server-side Whisper) ───────────────────────────────────
+  async function transcribeAndAnalyze(blob, dur) {
+    setStep('analysing');
+    try {
+      const b64 = await blobToB64(blob);
+      const res = await fetch('/api/transcribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ b64, mimeType: 'audio/webm' }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error('transcribe');
+      const text = (data.text || '').trim();
+      if (!text) { setErr('speech'); setStep('recording'); return; }
+      setTranscript(text);
+      callCoach(text, dur);
+    } catch {
+      setErr('transcribe'); setStep('recording');
+    }
+  }
 
   // ── Anthropic call ────────────────────────────────────────────────────────
   async function callCoach(tx, dur) {
@@ -512,6 +518,11 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
             We didn't catch that. Make sure your microphone is enabled and try again.
           </div>
         )}
+        {err === 'transcribe' && (
+          <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 8, padding: '11px 14px', marginBottom: 16, fontSize: 12, color: '#b91c1c', lineHeight: 1.5 }}>
+            We couldn't process that recording — please try again.
+          </div>
+        )}
         {err === 'api' && (
           <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 8, padding: '11px 14px', marginBottom: 16, fontSize: 12, color: '#b91c1c', lineHeight: 1.5, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
             <span>Your coach is taking a moment — please try again.</span>
@@ -525,11 +536,11 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
           <div style={{ fontFamily: T.serif, fontSize: 16, color: INK, lineHeight: 1.5 }}>{prompt}</div>
         </div>
 
-        {/* No SR fallback */}
-        {!SR && (
+        {/* No recording capability fallback */}
+        {!canRecord && (
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontSize: 12, color: SLATE, marginBottom: 8, lineHeight: 1.5 }}>
-              Voice recording requires Chrome or Edge. You can also type your response below.
+              Voice recording isn't available on this device. You can also type your response below.
             </div>
             <textarea value={textInput} onChange={e => setTextInput(e.target.value)} placeholder="Type your response here…"
               style={{ width: '100%', minHeight: 130, padding: '12px', borderRadius: 8, border: `1px solid ${BORDER}`, fontFamily: T.sans, fontSize: 13, color: INK, resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.6 }} />
@@ -537,7 +548,7 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
         )}
 
         {/* Timer circle */}
-        {SR && (
+        {canRecord && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: recording ? 20 : 28 }}>
             <svg width="130" height="130">
               {/* Track */}
@@ -570,14 +581,6 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
           </div>
         )}
 
-        {/* Live transcript preview */}
-        {transcript && (
-          <div style={{ background: '#f7f5f0', borderRadius: 8, padding: '10px 13px', marginBottom: 18, maxHeight: 72, overflow: 'hidden', position: 'relative' }}>
-            <div style={{ fontSize: 11, color: SLATE, lineHeight: 1.6 }}>{transcript}</div>
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 20, background: 'linear-gradient(transparent, #f7f5f0)' }} />
-          </div>
-        )}
-
         {/* CTA buttons */}
         {!recording
           ? <button onClick={startRecording} style={btnPrimary}>Start Recording</button>
@@ -588,7 +591,7 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
         }
 
         {/* Text fallback submit */}
-        {!SR && textInput.trim() && !recording && (
+        {!canRecord && textInput.trim() && !recording && (
           <button onClick={() => { setStep('analysing'); callCoach(textInput, 60); }}
             style={{ ...btnPrimary, marginTop: 10, background: SAGE, borderRadius: 8 }}>
             Analyse My Response →
@@ -814,7 +817,7 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
           <p style={{ fontSize: 12, color: SLATE, lineHeight: 1.65, marginBottom: 20 }}>
             Now that you know what to improve, try again. Small shifts, consistently repeated, change everything.
           </p>
-          <button onClick={() => { setStep('recording'); setRecording(false); setTranscript(''); txRef.current = ''; setTimeLeft(120); setRecDur(0); setErr(null); setResults(null); setBarsReady(false); }}
+          <button onClick={() => { setStep('recording'); setRecording(false); setTranscript(''); setTimeLeft(120); setRecDur(0); setErr(null); setResults(null); setBarsReady(false); }}
             style={{ padding: '13px 24px', borderRadius: 8, border: 'none', background: SAGE, color: '#fff', fontSize: 13, fontWeight: 600, fontFamily: T.sans, cursor: 'pointer', marginBottom: 8, display: 'block' }}>
             Improve My Score →
           </button>

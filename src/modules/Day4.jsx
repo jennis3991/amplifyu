@@ -1,6 +1,15 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { T } from '../theme.js';
 
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
 export function D4SimFeedback({input}) {
   const [result, setResult] = useState(null); const [loading, setLoading] = useState(false);
   const avgLen = (s) => { const sents = s.match(/[^.!?]+[.!?]+/g)||[]; if (!sents.length) return 0; return Math.round(sents.reduce((a,s)=>a+s.trim().split(/\s+/).length,0)/sents.length); };
@@ -132,12 +141,9 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const recRef = useRef(null);
   const waveRef = useRef(null);
   const interruptTimerRef = useRef(null);
-  const liveRef = useRef('');
 
-  const SpeechRec = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
   const dotCount = useSequentialDots(phase === 'pause');
 
   useEffect(() => {
@@ -164,47 +170,40 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   }, [phase]);
 
   function startRecording() {
-    liveRef.current = '';
-    if (SpeechRec) {
-      const rec = new SpeechRec();
-      rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
-      rec.onresult = (e) => {
-        let final = ''; let interim = '';
-        for (let i = 0; i < e.results.length; i++) {
-          if (e.results[i].isFinal) final += e.results[i][0].transcript + ' ';
-          else interim += e.results[i][0].transcript + ' ';
-        }
-        liveRef.current = final || interim;
-      };
-      try { rec.start(); } catch(e) {}
-      recRef.current = rec;
-    }
+    audioChunksRef.current = [];
     if (navigator.mediaDevices?.getUserMedia) {
       navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
-        audioChunksRef.current = [];
-        const mr = new MediaRecorder(stream);
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
         mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-        mr.onstop = () => stream.getTracks().forEach(t => t.stop());
         mr.start();
         mediaRecRef.current = mr;
       }).catch(() => {});
     }
   }
 
+  // Stops the recorder, transcribes it server-side, and calls cb with the text (or '' on failure)
   function stopRecording(cb) {
-    if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
-      mediaRecRef.current.onstop = () => {};
-      mediaRecRef.current.stop();
-    }
-    if (recRef.current) {
-      const rec = recRef.current;
-      recRef.current = null;
-      const fallback = setTimeout(() => cb(liveRef.current), 1800);
-      rec.onend = () => { clearTimeout(fallback); cb(liveRef.current); };
-      try { rec.stop(); } catch(e) { clearTimeout(fallback); cb(liveRef.current); }
-    } else {
-      cb(liveRef.current);
-    }
+    const mr = mediaRecRef.current;
+    if (!mr || mr.state === 'inactive') { cb(''); return; }
+    mr.onstop = async () => {
+      mr.stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+        });
+        const data = await res.json();
+        cb((data.text || '').trim());
+      } catch {
+        cb('');
+      }
+    };
+    try { mr.stop(); } catch(e) { cb(''); }
   }
 
   // Start rec1 — fires interrupt at 10s
@@ -212,28 +211,24 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
     setIsRec(true);
     startRecording();
     interruptTimerRef.current = setTimeout(() => {
-      setIsRec(false);
-      // Capture whatever we have synchronously — interrupt is intentional
-      if (recRef.current) { try { recRef.current.stop(); } catch(e) {} recRef.current = null; }
-      if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
-        try { mediaRecRef.current.stop(); } catch(e) {}
-      }
-      setTranscript1(liveRef.current.trim() || '[first attempt]');
-      setPhase('interrupt');
+      stopRecording((text) => {
+        setIsRec(false);
+        setTranscript1(text || '[first attempt]');
+        setPhase('interrupt');
+      });
     }, 10000);
   }
 
   // Start rec2 — runs to manual completion
   function doStart2() {
     setIsRec(true);
-    liveRef.current = '';
     startRecording();
   }
 
   function doStop2() {
-    setIsRec(false);
     stopRecording((text) => {
-      const t2 = text.trim() || '[second attempt]';
+      setIsRec(false);
+      const t2 = text || '[second attempt]';
       setTranscript2(t2);
       setPhase('coach');
       analyzeEdit(transcript1, t2);
