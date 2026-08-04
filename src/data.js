@@ -234,7 +234,7 @@ export const LESSONS = [
   // ── WEEK 1 
   {day:1,week:1,mins:14,title:"Speak Clearly",tag:"Clarity",scene:"clarity",
    quote:"Clear communication creates opportunity.",
-   insight:"The clearest communicators don't use more words—they choose better ones. Today you'll learn to turn complex ideas into messages people understand, remember and trust.",
+   insight:"By the end of today's session, you'll know how to communicate complex ideas with greater clarity, confidence and influence.",
    pieLink:"Performance and Exposure: Your ideas create impact when others understand them — including the idea of where you're going next. Clarity about your work and your ambition are the same skill.",
    phrases:["My view is…","The key point is…","What this means is…"],
    bad:"This is a multi-faceted situation with several interdependencies…",
