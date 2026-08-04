@@ -753,8 +753,10 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
           body: JSON.stringify({b64, mimeType: 'audio/webm'}),
         });
         const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Transcription failed');
         cb((data.text || '').trim(), false);
-      } catch {
+      } catch (err) {
+        console.error('[D1Rehearsal] transcribe error:', err);
         cb('', true);
       }
     };
@@ -1048,8 +1050,10 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
           body:JSON.stringify({b64, mimeType:blobType}),
         });
         const data=await res.json();
+        if(!res.ok) throw new Error(data.error||'Transcription failed');
         spoken=(data.text||'').trim();
-      }catch{
+      }catch(err){
+        console.error('[D1Sim] transcribe error:', err);
         setTranscribeFailed(true); setPhase('recording'); return;
       }
       setTranscript(spoken);
@@ -1427,8 +1431,8 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
                 <div style={{width:isDesktop?88:76,flexShrink:0,display:"flex",alignItems:"center",gap:4}}>
                   <span
                     style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,cursor:"pointer",borderBottom:"1px dashed rgba(44,36,22,0.2)"}}
-                    onMouseEnter={()=>setHoveredDim(d)}
-                    onMouseLeave={()=>setHoveredDim(null)}
+                    onMouseEnter={isDesktop ? ()=>setHoveredDim(d) : undefined}
+                    onMouseLeave={isDesktop ? ()=>setHoveredDim(null) : undefined}
                     onClick={()=>setHoveredDim(hoveredDim===d?null:d)}
                   >{d}</span>
                 </div>
