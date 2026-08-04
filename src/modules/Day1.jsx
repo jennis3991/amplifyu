@@ -1,6 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
 function findFillerClusters(text) {
   if (!text) return [];
   const re = /\b(um+|uh+|er+|ah+|like|you know|sort of|kind of|basically|literally)\b/gi;
@@ -660,10 +669,12 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   const [elapsed, setElapsed] = useState(0);
   const [aiObs, setAiObs] = useState(null);
   const [analysing, setAnalysing] = useState(false);
+  const [micError, setMicError] = useState(false);
+  const [transcribeFailed, setTranscribeFailed] = useState(false);
+  const [fallbackText, setFallbackText] = useState('');
   const timerRef = useRef(null);
   const mediaRecRef = useRef(null);
-  const srRef = useRef(null);
-  const liveRef = useRef('');
+  const audioChunksRef = useRef([]);
 
   // Wire bottom nav
   useEffect(() => {
@@ -702,52 +713,56 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     setElapsed(0);
     setAiObs(null);
     setAnalysing(false);
+    setMicError(false);
+    setTranscribeFailed(false);
+    setFallbackText('');
   }
 
   function startRec() {
     setIsRec(true);
     setElapsed(0);
-    liveRef.current = '';
-    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SpeechRec) {
-      const sr = new SpeechRec();
-      sr.continuous = true;
-      sr.interimResults = true;
-      sr.lang = 'en-US';
-      sr.onresult = (e) => {
-        let t = '';
-        for (let i = 0; i < e.results.length; i++) {
-          // capture both final and interim so short recordings aren't lost
-          t += e.results[i][0].transcript + ' ';
-        }
-        liveRef.current = t;
-      };
-      try { sr.start(); } catch(ex) {}
-      srRef.current = sr;
-    }
+    setMicError(false);
+    setTranscribeFailed(false);
+    audioChunksRef.current = [];
     if (navigator.mediaDevices?.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        const mr = new MediaRecorder(stream);
-        mr.ondataavailable = () => {};
-        mr.onstop = () => stream.getTracks().forEach(t => t.stop());
-        mr.start();
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
+        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+        mr.start(1000);
         mediaRecRef.current = mr;
-      }).catch(() => {});
+      }).catch(() => { setIsRec(false); setMicError(true); });
+    } else {
+      setIsRec(false);
+      setMicError(true);
     }
   }
 
-  async function stopRec() {
-    setIsRec(false);
-    clearInterval(timerRef.current);
-    if (srRef.current) { try { srRef.current.stop(); } catch(e) {} }
-    if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
-      try { mediaRecRef.current.stop(); } catch(e) {}
-    }
-    // brief wait for SpeechRecognition to fire its final onresult
-    await new Promise(r => setTimeout(r, 350));
+  function stopRecording(cb) {
+    const mr = mediaRecRef.current;
+    if (!mr || mr.state === 'inactive') { cb('', true); return; }
+    mr.onstop = async () => {
+      mr.stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+        });
+        const data = await res.json();
+        cb((data.text || '').trim(), false);
+      } catch {
+        cb('', true);
+      }
+    };
+    try { mr.stop(); } catch(e) { cb('', true); }
+  }
+
+  async function runCoach(spoken) {
     const topicText = TOPICS[sel].label;
-    const spoken = liveRef.current.trim();
-    setAnalysing(true);
     try {
       const content = spoken.length > 10
         ? `You are a warm communication coach listening back to a 20-second voice warm-up.\n\nTopic the user spoke about: "${topicText}"\nWhat they said: "${spoken}"\n\nWrite exactly 2 sentences of feedback. Rules:\n- Sentence 1: pick out ONE specific thing from their actual words — a phrase, an idea, or the way they put something — and name it directly. Start with what worked.\n- Sentence 2: one forward-looking note tied to today's communication practice — keep it brief and encouraging.\nDo NOT give topic advice. Do NOT say "good start" or "great job". Respond only to what they specifically said. No scores, no lists.`
@@ -765,6 +780,20 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     }
     setAnalysing(false);
     setRecDone(true);
+  }
+
+  function stopRec() {
+    setIsRec(false);
+    setAnalysing(true);
+    clearInterval(timerRef.current);
+    stopRecording((spoken, failed) => {
+      if (failed) {
+        setAnalysing(false);
+        setTranscribeFailed(true);
+        return;
+      }
+      runCoach(spoken);
+    });
   }
 
   const fmtTime = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
@@ -851,8 +880,21 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
               Recording — {fmtTime(elapsed)} &nbsp;·&nbsp; tap to stop
             </div>
           )}
-          {!isRec && (
+          {!isRec && !micError && !transcribeFailed && (
             <div style={{ fontFamily: T.sans, fontSize: 13, color: "#A8998A" }}>Tap to start recording</div>
+          )}
+          {!isRec && (micError || transcribeFailed) && (
+            <div style={{ width: "100%", marginTop: 4, padding: "16px 18px", background: "#F0EBE2", borderRadius: 8, border: "0.5px solid #DDD5C4" }}>
+              <p style={{ fontFamily: T.sans, fontSize: 13, color: "#6B5E44", lineHeight: 1.6, margin: "0 0 10px" }}>
+                {micError ? "We couldn't access your microphone. Check your permissions, or type your response instead." : "We couldn't quite hear that. Try again, or type your response instead."}
+              </p>
+              <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{ width: "100%", minHeight: 80, background: "transparent", border: "none", borderBottom: "0.5px solid #DDD5C4", padding: "8px 0", fontFamily: T.sans, fontSize: 13, color: "#2C2416", resize: "none", outline: "none", lineHeight: 1.6, boxSizing: "border-box" }}/>
+              {fallbackText.trim().length > 10 && (
+                <button onClick={() => { setMicError(false); setTranscribeFailed(false); setAnalysing(true); runCoach(fallbackText.trim()); }} style={{ width: "100%", marginTop: 12, padding: "12px", borderRadius: 4, border: "none", background: "#2C2416", color: "#F7F3EC", fontFamily: T.sans, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                  Submit →
+                </button>
+              )}
+            </div>
           )}
         </div>
       )}
@@ -935,15 +977,13 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   const [audioDuration, setAudioDuration] = useState(120);
   const [showTranscript, setShowTranscript] = useState(false);
   const [hoveredDim, setHoveredDim] = useState(null);
+  const [micError, setMicError] = useState(false);
+  const [transcribeFailed, setTranscribeFailed] = useState(false);
   const audioRef = useRef(null);
-  const recRef = useRef(null);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
   const timerRef = useRef(null);
-  const liveRef = useRef('');
   const waveRef = useRef(null);
-
-  const SpeechRec = typeof window!=='undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
 
   useEffect(()=>{
     window.scrollTo(0,0);
@@ -955,8 +995,6 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   useEffect(()=>{
     if(isRec && timeLeft>0){
       timerRef.current=setTimeout(()=>setTimeLeft(t=>t-1),1000);
-    } else if(isRec && timeLeft===0){
-      doStop();
     }
     return ()=>clearTimeout(timerRef.current);
   },[isRec,timeLeft]);
@@ -978,36 +1016,46 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   },[playing]);
 
   function doStart(){
-    setIsRec(true); liveRef.current=''; setTranscript(''); setAudioURL(null);
-    if(SpeechRec){
-      const rec=new SpeechRec();
-      rec.continuous=true; rec.interimResults=true; rec.lang='en-US';
-      rec.onresult=(e)=>{
-        let t='';
-        for(let i=0;i<e.results.length;i++) if(e.results[i].isFinal) t+=e.results[i][0].transcript+' ';
-        liveRef.current=t; setTranscript(t);
-      };
-      try{rec.start();}catch(e){}
-      recRef.current=rec;
-    }
+    setIsRec(true); setTranscript(''); setAudioURL(null); setMicError(false); setTranscribeFailed(false);
     if(navigator.mediaDevices?.getUserMedia && window.MediaRecorder){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
         const mimeType=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg'].find(t=>MediaRecorder.isTypeSupported(t))||'';
         const mr=mimeType?new MediaRecorder(stream,{mimeType}):new MediaRecorder(stream);
         audioChunksRef.current=[];
-        mr.ondataavailable=e=>audioChunksRef.current.push(e.data);
-        mr.onstop=()=>{const blobType=mr.mimeType||mimeType||'audio/webm';const blob=new Blob(audioChunksRef.current,{type:blobType});setAudioURL(URL.createObjectURL(blob));stream.getTracks().forEach(t=>t.stop());};
-        mr.start(); mediaRecRef.current=mr;
-      }).catch(()=>{});
+        mr.ondataavailable=e=>{if(e.data.size>0)audioChunksRef.current.push(e.data);};
+        mr.start(1000); mediaRecRef.current=mr;
+      }).catch(()=>{ setIsRec(false); setMicError(true); });
+    } else {
+      setIsRec(false); setMicError(true);
     }
   }
 
   function doStop(){
     setIsRec(false); clearTimeout(timerRef.current);
-    if(recRef.current){try{recRef.current.stop();}catch(e){}}
-    if(mediaRecRef.current&&mediaRecRef.current.state!=='inactive'){try{mediaRecRef.current.stop();}catch(e){}}
-    const text = SpeechRec ? liveRef.current : fallback;
-    analyzeText(text||fallback);
+    setPhase('analyzing');
+    const mr=mediaRecRef.current;
+    if(!mr||mr.state==='inactive'){ analyzeText(fallback); return; }
+    mr.onstop=async()=>{
+      const blobType=mr.mimeType||'audio/webm';
+      const blob=new Blob(audioChunksRef.current,{type:blobType});
+      setAudioURL(URL.createObjectURL(blob));
+      mr.stream.getTracks().forEach(t=>t.stop());
+      let spoken='';
+      try{
+        const b64=await blobToB64(blob);
+        const res=await fetch('/api/transcribe',{
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({b64, mimeType:blobType}),
+        });
+        const data=await res.json();
+        spoken=(data.text||'').trim();
+      }catch{
+        setTranscribeFailed(true); setPhase('recording'); return;
+      }
+      setTranscript(spoken);
+      analyzeText(spoken||fallback);
+    };
+    try{ mr.stop(); }catch(e){ analyzeText(fallback); }
   }
 
   async function analyzeText(text){
@@ -1183,8 +1231,8 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
               style={{transition:"stroke-dashoffset 1s linear"}}/>
           </svg>
           <div style={{textAlign:"center"}}>
-            <div style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:timeLeft<=10?"#B05C4A":T2.text,lineHeight:1}}>{timeLeft}</div>
-            <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:2}}>seconds</div>
+            <div style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:timeLeft<=10&&timeLeft>0?"#B05C4A":T2.text,lineHeight:1}}>{timeLeft>0?timeLeft:"✓"}</div>
+            <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:2}}>{timeLeft>0?"seconds":"take your time"}</div>
           </div>
         </div>
         {/* Waveform */}
@@ -1197,9 +1245,10 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
         {isRec && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20,fontStyle:"italic"}}>
           {timeLeft>80?"Keep going. Stay natural."
             :timeLeft>40?"We're looking for patterns, not perfection."
-            :"Almost there. Finish your thought."}
+            :timeLeft>0?"Almost there. Finish your thought."
+            :"Take your time. Tap Stop when you're done."}
         </p>}
-        {!isRec && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20}}>Speak naturally for up to 2 minutes.</p>}
+        {!isRec && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20}}>Speak naturally — around 2 minutes is a good guide.</p>}
         {/* Record button */}
         {!isRec ? (
           <>
@@ -1214,12 +1263,13 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
           </button>
         )}
       </div>
-      {/* Text fallback */}
-      {!isRec && !SpeechRec && (
+      {/* Text fallback — only surfaces on genuine mic/transcription failure */}
+      {!isRec && (micError || transcribeFailed) && (
         <div style={cs.card}>
-          <div style={cs.label}>Type your response instead</div>
+          <div style={cs.label}>{micError ? "Microphone unavailable" : "We couldn't quite hear that"}</div>
+          <p style={{...cs.body,marginBottom:10}}>{micError ? "Check your microphone permission, or type your response instead." : "Type your response instead, or tap Start Recording to try again."}</p>
           <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Write what you'd say for 90–120 seconds…" style={{width:"100%",minHeight:120,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
-          {fallback.trim().length>15 && <button onClick={()=>analyzeText(fallback)} style={{...cs.cta,marginTop:14}}>Analyse My Response →</button>}
+          {fallback.trim().length>15 && <button onClick={()=>{setMicError(false);setTranscribeFailed(false);analyzeText(fallback);}} style={{...cs.cta,marginTop:14}}>Analyse My Response →</button>}
         </div>
       )}
       <button onClick={()=>setPhase('prompt')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",padding:0,textAlign:"left"}}>← Choose different prompt</button>
