@@ -41,7 +41,7 @@ export default async function handler(req, res) {
 
     // ── Step 1: Claude acts as editorial art director ──────────────────────
     // Analyse the full narrative and write a story-specific image prompt.
-    const anthropicKey = process.env.ANTHROPIC_KEY || process.env.VITE_ANTHROPIC_KEY;
+    const anthropicKey = process.env.ANTHROPIC_KEY;
 
     const sceneList = scenes.map((sc, i) =>
       `Scene ${i + 1} — ${sc.title || ''}${sc.description ? ': ' + sc.description : ''}${sc.visual ? ' | Visual: ' + sc.visual : ''}${sc.emotion ? ' | Emotion: ' + sc.emotion : ''}`

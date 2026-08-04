@@ -15,7 +15,7 @@ export function AccessGate({ onSuccess }) {
     const entered = code.trim();
     if (!entered) return;
     const expected = import.meta.env.VITE_ACCESS_CODE || "";
-    if (entered === expected) {
+    if (entered.toUpperCase() === expected.toUpperCase()) {
       setLogoRise(true);
       // Rise plays 0→600ms. At 700ms start fade. onSuccess fires after fade completes.
       setTimeout(() => {

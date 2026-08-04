@@ -171,15 +171,23 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
   function startRecording() {
     audioChunksRef.current = [];
+    console.log('[Day4 DEBUG] startRecording called, mediaDevices?.getUserMedia present:', !!navigator.mediaDevices?.getUserMedia);
     if (navigator.mediaDevices?.getUserMedia) {
+      console.log('[Day4 DEBUG] calling getUserMedia({audio: true})');
       navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
+        console.log('[Day4 DEBUG] getUserMedia resolved, stream:', stream);
         let mr;
         try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
         catch { mr = new MediaRecorder(stream); }
-        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-        mr.start();
+        mr.ondataavailable = e => {
+          console.log('[Day4 DEBUG] ondataavailable, chunk size:', e.data.size);
+          if (e.data.size > 0) audioChunksRef.current.push(e.data);
+        };
+        mr.start(1000);
         mediaRecRef.current = mr;
-      }).catch(() => {});
+      }).catch((err) => { console.log('[Day4 DEBUG] getUserMedia REJECTED:', err && err.name, err && err.message); });
+    } else {
+      console.log('[Day4 DEBUG] navigator.mediaDevices.getUserMedia is NOT available in this webview context');
     }
   }
 

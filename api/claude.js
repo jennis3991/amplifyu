@@ -68,7 +68,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   if (!validateAccessCode(req)) return res.status(401).json({ error: 'Unauthorized' });
-  const apiKey = process.env.ANTHROPIC_KEY || process.env.VITE_ANTHROPIC_KEY;
+  const apiKey = process.env.ANTHROPIC_KEY;
   if (!apiKey) return res.status(500).json({ error: 'Missing API key' });
   const { messages, max_tokens, model, system } = req.body;
   try {
