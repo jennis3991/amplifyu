@@ -142,7 +142,6 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
   const waveRef = useRef(null);
-  const interruptTimerRef = useRef(null);
 
   const dotCount = useSequentialDots(phase === 'pause');
 
@@ -214,17 +213,18 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
     try { mr.stop(); } catch(e) { cb(''); }
   }
 
-  // Start rec1 — fires interrupt at 10s
+  // Start rec1 — runs to manual completion
   function doStart1() {
     setIsRec(true);
     startRecording();
-    interruptTimerRef.current = setTimeout(() => {
-      stopRecording((text) => {
-        setIsRec(false);
-        setTranscript1(text || '[first attempt]');
-        setPhase('interrupt');
-      });
-    }, 10000);
+  }
+
+  function doStop1() {
+    stopRecording((text) => {
+      setIsRec(false);
+      setTranscript1(text || '[first attempt]');
+      setPhase('interrupt');
+    });
   }
 
   // Start rec2 — runs to manual completion
@@ -290,8 +290,6 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
       });
     }
   }
-
-  useEffect(() => () => clearTimeout(interruptTimerRef.current), []);
 
   const cs = {
     card: {background: T2.surface, borderRadius: 4, border: '0.5px solid ' + T2.border, padding: isDesktop ? '22px 24px' : '16px 18px'},
@@ -388,8 +386,12 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
         <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording — speak naturally</span>
       </div>
     </div>
+    <button onClick={doStop1}
+      style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
+      Stop Recording →
+    </button>
     <p style={{fontFamily: T.sans, fontSize: 11, color: T2.text4, textAlign: 'center', margin: 0}}>
-      The coach will interrupt when it's time.
+      Speak for as long as you like, then tap Stop.
     </p>
   </>);
 
@@ -409,7 +411,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
         <button
           onClick={() => { doStart2(); setPhase('rec2'); }}
           style={{...cs.cta, opacity: interruptTextVisible ? 1 : 0}}>
-          Try Again →
+          Now Edit It →
         </button>
       </div>
     </div>
@@ -432,7 +434,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
     </div>
     <button onClick={doStop2}
       style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
-      Submit →
+      Stop Recording →
     </button>
   </>);
 
