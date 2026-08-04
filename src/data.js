@@ -243,7 +243,7 @@ export const LESSONS = [
    scenarios:["Your manager asks for an update","A senior leader asks what you do","Someone asks a question you find difficult to answer clearly"],
    review:["Did I make my point without jargon?","Was I clear in under 30 seconds?","Could someone repeat back what I said?"],
    promise:"Clarity is a habit. The more you practice it, the more authority you project.",
-   teaser:"Today you'll learn how to transform complex ideas into messages people understand, remember and act on—the foundation of influence, leadership and career growth.",
+   teaser:"Clarity - the foundation of influence, leadership and career growth. Discover why the clearest communicators are often the most influential.",
    recap:"Yesterday you learned that clear communication creates opportunity — transform complex ideas into messages people understand, remember and act on. The clearest communicators use fewer words, not more."},
 
   {day:2,week:1,mins:13,title:"The Voice Advantage",tag:"Voice",scene:"voice",
