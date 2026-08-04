@@ -68,7 +68,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
           </div>
         </div>
       ) : (
-        <div style={{position:"relative",height:240,overflow:"hidden"}}>
+        <div style={{position:"relative",height:260,overflow:"hidden"}}>
           <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
           <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.4)"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.85) 0%,transparent 60%)"}}/>
