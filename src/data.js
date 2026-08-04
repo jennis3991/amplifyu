@@ -233,7 +233,7 @@ export const REVIEW_BULLETS = [
 export const LESSONS = [
   // ── WEEK 1 
   {day:1,week:1,mins:14,title:"Speak Clearly",tag:"Clarity",scene:"clarity",
-   quote:"Clarity is the ultimate form of intelligence.",
+   quote:"Clear communication creates opportunity.",
    insight:"The clearest communicators don't use more words — they use better ones. Simplicity signals mastery. Complexity signals uncertainty.",
    pieLink:"Performance and Exposure: Your ideas create impact when others understand them — including the idea of where you're going next. Clarity about your work and your ambition are the same skill.",
    phrases:["My view is…","The key point is…","What this means is…"],
@@ -243,8 +243,8 @@ export const LESSONS = [
    scenarios:["Your manager asks for an update","A senior leader asks what you do","Someone asks a question you find difficult to answer clearly"],
    review:["Did I make my point without jargon?","Was I clear in under 30 seconds?","Could someone repeat back what I said?"],
    promise:"Clarity is a habit. The more you practice it, the more authority you project.",
-   teaser:"You'll learn to strip out the noise and say exactly what you mean — in a way that commands instant respect.",
-   recap:"Yesterday you learned that clarity is the most powerful form of intelligence — say exactly what you mean, strip out the rest. The clearest communicators use fewer words, not more."},
+   teaser:"Today you'll learn how to transform complex ideas into messages people understand, remember and act on—the foundation of influence, leadership and career growth.",
+   recap:"Yesterday you learned that clear communication creates opportunity — transform complex ideas into messages people understand, remember and act on. The clearest communicators use fewer words, not more."},
 
   {day:2,week:1,mins:13,title:"The Voice Advantage",tag:"Voice",scene:"voice",
    quote:"Master the instrument behind your message.",
