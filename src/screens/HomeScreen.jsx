@@ -413,7 +413,7 @@ finishDate + ".";
     <div style={{background:T2.bg,minHeight:"100vh"}} className="au-page">
 
       {/* ── Fixed header ── */}
-      <div style={{position:"fixed",top:0,left:0,right:0,zIndex:200,height:NAV_H,background:"#0F0D0A",borderBottom:"0.5px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 20px"}}>
+      <div style={{position:"fixed",top:0,left:0,right:0,zIndex:200,height:`calc(${NAV_H}px + env(safe-area-inset-top, 0px))`,paddingTop:"env(safe-area-inset-top, 0px)",paddingLeft:20,paddingRight:20,background:"#0F0D0A",borderBottom:"0.5px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
           <img src="/logo-mark.png" alt="AmplifyU" style={{width:30,height:30,objectFit:"cover",mixBlendMode:"screen",filter:"brightness(3) contrast(1.2)"}}/>
           <span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,letterSpacing:"3px",textTransform:"uppercase",color:"rgba(255,255,255,0.88)"}}>AmplifyU</span>
@@ -427,7 +427,7 @@ finishDate + ".";
       </div>
 
       {/* ── Rank strip — fixed directly under header ── */}
-      <div style={{position:"fixed",top:NAV_H,left:0,right:0,zIndex:199,height:STRIP_H,background:"#1A1710",borderBottom:"0.5px solid rgba(255,255,255,0.07)",display:"flex",alignItems:"center",padding:"0 20px",gap:8,overflow:"hidden"}}>
+      <div style={{position:"fixed",top:`calc(${NAV_H}px + env(safe-area-inset-top, 0px))`,left:0,right:0,zIndex:199,height:STRIP_H,background:"#1A1710",borderBottom:"0.5px solid rgba(255,255,255,0.07)",display:"flex",alignItems:"center",padding:"0 20px",gap:8,overflow:"hidden"}}>
         <div style={{width:22,height:22,borderRadius:"50%",overflow:"hidden",position:"relative",flexShrink:0}}>
           <img src={pieceInfo.current.img} alt={pieceInfo.current.name} style={{position:"absolute",width:"126%",height:"126%",top:"-13%",left:"-13%",objectFit:"cover"}}/>
         </div>
@@ -437,7 +437,7 @@ finishDate + ".";
       </div>
 
       {/* ── Hero image — full natural height ── */}
-      <div style={{marginTop:NAV_H+STRIP_H,background:"#0a0805"}}>
+      <div style={{marginTop:`calc(${NAV_H+STRIP_H}px + env(safe-area-inset-top, 0px))`,background:"#0a0805"}}>
         <img src="/home-hero-mobile.jpg" alt="The Six Pillars of Communication Mastery" style={{width:"100%",height:"auto",display:"block"}}/>
       </div>
 

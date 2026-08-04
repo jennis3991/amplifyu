@@ -417,7 +417,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       </div>
     )}
      {/* Top nav bar — matches home screen header */}
-    <div style={{background:"#0F0D0A",height:64,borderBottom:"0.5px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 20px",flexShrink:0}}>
+    <div style={{background:"#0F0D0A",height:`calc(64px + env(safe-area-inset-top, 0px))`,paddingTop:"env(safe-area-inset-top, 0px)",borderBottom:"0.5px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"space-between",paddingLeft:20,paddingRight:20,flexShrink:0}}>
       <div style={{display:"flex",alignItems:"center",gap:10}}>
         <img src="/logo-mark.png" alt="AmplifyU" style={{width:30,height:30,objectFit:"cover",mixBlendMode:"screen",filter:"brightness(3) contrast(1.2)"}}/>
         <span style={{fontFamily:"'Inter',sans-serif",fontSize:11,fontWeight:600,letterSpacing:"3px",textTransform:"uppercase",color:"rgba(255,255,255,0.88)"}}>AmplifyU</span>
@@ -3239,7 +3239,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
       </div>
       <div style={{
         display:"flex",alignItems:"center",justifyContent:"center",
-        gap:5,paddingBottom:24,
+        gap:5,paddingBottom:"calc(24px + env(safe-area-inset-bottom, 0px))",
       }}>
         {STEPS.map((s,i) => (
           <div key={s} onClick={()=>setIdx(i)} style={{
