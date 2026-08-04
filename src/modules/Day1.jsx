@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 
+const D1SIM_KEY = 'au_d1sim_state';
+function loadD1SimState() {
+  try { return JSON.parse(sessionStorage.getItem(D1SIM_KEY)) || {}; } catch { return {}; }
+}
+
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
     const r = new FileReader();
@@ -696,6 +701,20 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     }
   }, [phase, sel, aiObs, analysing, isRec]);
 
+  // Stop any in-flight recording if the widget unmounts (e.g. user swipes away mid-recording)
+  useEffect(() => {
+    return () => {
+      try {
+        const mr = mediaRecRef.current;
+        if (mr && mr.state !== 'inactive') {
+          mr.onstop = null;
+          mr.stop();
+          mr.stream?.getTracks().forEach(t => t.stop());
+        }
+      } catch {}
+    };
+  }, []);
+
   useEffect(() => {
     if (isRec) {
       timerRef.current = setInterval(() => setElapsed(e => e + 1), 1000);
@@ -959,25 +978,28 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   const DIMS = ["Clarity","Structure","Brevity","Focus","Simplicity"];
   const FOCUS = ["Shorter opening","Lead with main point","Fewer filler words","Sharper ending","Stronger structure"];
 
-  const [phase, setPhase] = useState('intro');
-  const [cat, setCat] = useState('Work');
-  const [prompt, setPrompt] = useState(null);
+  const saved = loadD1SimState();
+  const [phase, setPhase] = useState(saved.phase || 'intro');
+  const [cat, setCat] = useState(saved.cat || 'Work');
+  const [prompt, setPrompt] = useState(saved.prompt || null);
   const [timeLeft, setTimeLeft] = useState(120);
   const [isRec, setIsRec] = useState(false);
-  const [transcript, setTranscript] = useState('');
+  const [transcript, setTranscript] = useState(saved.transcript || '');
   const [fallback, setFallback] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
-  const [feedback, setFeedback] = useState(null);
-  const [round1, setRound1] = useState(null);
-  const [selectedFocus, setSelectedFocus] = useState([]);
+  const [feedback, setFeedback] = useState(saved.feedback || null);
+  const [round1, setRound1] = useState(saved.round1 || null);
+  const [selectedFocus, setSelectedFocus] = useState(saved.selectedFocus || []);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
 
-  const [audioURL, setAudioURL] = useState(null);
+  const [audioURL, setAudioURL] = useState(saved.audioURL || null);
   const [playing, setPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
   const [waveAnim, setWaveAnim] = useState(0);
   const [audioDuration, setAudioDuration] = useState(120);
   const [showTranscript, setShowTranscript] = useState(false);
+  const [showCompareT1, setShowCompareT1] = useState(false);
+  const [showCompareT2, setShowCompareT2] = useState(false);
   const [hoveredDim, setHoveredDim] = useState(null);
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
@@ -993,6 +1015,32 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     document.body.scrollTop=0;
     try{const p=document.getElementById('au-right-panel');if(p)p.scrollTop=0;}catch(_){}
   },[phase]);
+
+  // Persist results across accidental navigation away (e.g. swiping to another step) —
+  // mid-recording/analysing states aren't resumable, so those collapse back to 'prompt' on save.
+  useEffect(()=>{
+    try{
+      const persistedPhase=(phase==='recording'||phase==='analyzing')?(prompt?'prompt':'intro'):phase;
+      sessionStorage.setItem(D1SIM_KEY, JSON.stringify({
+        phase:persistedPhase, cat, prompt, transcript, feedback, round1, selectedFocus, audioURL,
+      }));
+    }catch{}
+  },[phase, cat, prompt, transcript, feedback, round1, selectedFocus, audioURL]);
+
+  // Stop any in-flight recording/playback if the widget unmounts (e.g. user swipes away)
+  useEffect(()=>{
+    return ()=>{
+      try{ audioRef.current?.pause(); }catch{}
+      try{
+        const mr=mediaRecRef.current;
+        if(mr && mr.state!=='inactive'){
+          mr.onstop=null;
+          mr.stop();
+          mr.stream?.getTracks().forEach(t=>t.stop());
+        }
+      }catch{}
+    };
+  },[]);
 
   useEffect(()=>{
     if(isRec && timeLeft>0){
@@ -1089,8 +1137,8 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       markers:[{pos:0.20,label:"Filler cluster",type:"filler"},{pos:0.44,label:"Ramble moment",type:"ramble"},{pos:0.66,label:"Strongest point",type:"strong"}]
     };
     if(!text||text.trim().length<15){
-      if(!isRetry){setRound1(mock);setFeedback(mock);}
-      else setFeedback({...mock,prev:round1});
+      if(!isRetry){setRound1({...mock,_transcript:text});setFeedback({...mock,_transcript:text});}
+      else setFeedback({...mock,_transcript:text,prev:round1});
       setPhase(isRetry?'comparison':'feedback');
       return;
     }
@@ -1100,11 +1148,11 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
       const parsed=JSON.parse(m[0]);
-      if(!isRetry){setRound1(parsed);setFeedback(parsed);}
-      else setFeedback({...parsed,prev:round1});
+      if(!isRetry){setRound1({...parsed,_transcript:text});setFeedback({...parsed,_transcript:text});}
+      else setFeedback({...parsed,_transcript:text,prev:round1});
     }catch{
-      if(!isRetry){setRound1(mock);setFeedback(mock);}
-      else setFeedback({...mock,prev:round1});
+      if(!isRetry){setRound1({...mock,_transcript:text});setFeedback({...mock,_transcript:text});}
+      else setFeedback({...mock,_transcript:text,prev:round1});
     }
     setPhase(isRetry?'comparison':'feedback');
   }
@@ -1114,7 +1162,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     setPrompt(p); setPhase('recording'); setTimeLeft(120); setIsRec(false); setTranscript(''); setFallback('');
   }
 
-  function reset(){setPhase('intro');setPrompt(null);setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setSelectedFocus([]);setAudioURL(null);}
+  function reset(){setPhase('intro');setPrompt(null);setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setSelectedFocus([]);setAudioURL(null);try{sessionStorage.removeItem(D1SIM_KEY);}catch{}}
 
   const cs={
     card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"},
@@ -1585,8 +1633,31 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
         <div style={cs.label}>Coach insight</div>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:0}}>{feedback.insight}</p>
       </div>
+      {(feedback.prev._transcript || feedback._transcript) && (
+      <div style={cs.card}>
+        <div style={cs.label}>Transcripts</div>
+        {feedback.prev._transcript && (
+          <div style={{marginBottom:showCompareT1?10:0}}>
+            <button onClick={()=>setShowCompareT1(s=>!s)} style={{background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:5,fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:500}}>
+              <span>{showCompareT1?"Hide":"View"} Round 1 transcript</span>
+              <span style={{fontSize:9}}>{showCompareT1?"↑":"↓"}</span>
+            </button>
+            {showCompareT1&&<p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,margin:"10px 0 0",background:"rgba(44,36,22,0.04)",borderRadius:4,padding:"10px 12px"}}>{feedback.prev._transcript}</p>}
+          </div>
+        )}
+        {feedback._transcript && (
+          <div style={{marginTop:feedback.prev._transcript?12:0,borderTop:feedback.prev._transcript?"0.5px solid "+T2.divider:"none",paddingTop:feedback.prev._transcript?12:0}}>
+            <button onClick={()=>setShowCompareT2(s=>!s)} style={{background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:5,fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:500}}>
+              <span>{showCompareT2?"Hide":"View"} Round 2 transcript</span>
+              <span style={{fontSize:9}}>{showCompareT2?"↑":"↓"}</span>
+            </button>
+            {showCompareT2&&<p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,margin:"10px 0 0",background:"rgba(44,36,22,0.04)",borderRadius:4,padding:"10px 12px"}}>{feedback._transcript}</p>}
+          </div>
+        )}
+      </div>
+      )}
       <div style={{display:"flex",gap:10}}>
-        <button onClick={()=>{setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');}} style={{...cs.ghost,flex:1}}>Go Again</button>
+        <button onClick={()=>{setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');setShowCompareT1(false);setShowCompareT2(false);}} style={{...cs.ghost,flex:1}}>Go Again</button>
         <button onClick={reset} style={{...cs.cta,flex:1}}>New Challenge →</button>
       </div>
     </div>
