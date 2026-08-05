@@ -324,7 +324,7 @@ export function ReflectionScreen({ answers, onContinue }) {
       <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
       {/* Slim black banner */}
-      <div style={{ background: "#0D0B08", height: 52, display: "flex", alignItems: "center", paddingLeft: 20, flexShrink: 0 }}>
+      <div style={{ background: "#0D0B08", height: `calc(52px + env(safe-area-inset-top, 0px))`, paddingTop: "env(safe-area-inset-top, 0px)", display: "flex", alignItems: "center", paddingLeft: 20, flexShrink: 0, boxSizing: "border-box" }}>
         <img src="/logo-mark.png" alt="AmplifyU" style={{ width: 28, height: 28, objectFit: "cover", mixBlendMode: "screen", filter: "brightness(3) contrast(1.2)", marginRight: 10 }}/>
         <span style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: "rgba(255,255,255,0.85)" }}>AmplifyU</span>
       </div>
@@ -451,7 +451,7 @@ export function ReflectionScreen({ answers, onContinue }) {
       </div>
 
       {/* Let's Begin — mobile fixed bottom, dark Begin Session style */}
-      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "14px 20px 24px", background: "linear-gradient(to top, " + T.bg + " 70%, transparent)", zIndex: 100 }}>
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "14px 20px calc(24px + env(safe-area-inset-bottom, 0px))", background: "linear-gradient(to top, " + T.bg + " 70%, transparent)", zIndex: 100 }}>
         <button onClick={handleContinue} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 24px", borderRadius: 6, border: "none", background: T.ink, color: T.bg, fontSize: 14, fontFamily: T.sans, fontWeight: 600, cursor: "pointer", transition: "all 0.25s ease" }}>
           {"Let's Begin"} →
         </button>
