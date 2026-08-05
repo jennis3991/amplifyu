@@ -685,14 +685,14 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   useEffect(() => {
     if (phase === 'record') {
       if (aiObs) {
-        onNavLabel("Start Simulation →");
+        onNavLabel("Start Simulation");
         onNavFn.current = () => onComplete(TOPICS[sel].label);
       } else if (analysing || isRec) {
         // disable while recording or while AI is processing
         onNavLabel(null);
         onNavFn.current = null;
       } else {
-        onNavLabel("Skip →");
+        onNavLabel("Skip");
         onNavFn.current = () => onComplete(TOPICS[sel].label);
       }
     } else {
@@ -724,8 +724,12 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     return () => clearInterval(timerRef.current);
   }, [isRec]);
 
-  function pickTopic(i) {
-    setSel(i);
+  function selectTopic(i) {
+    setSel(sel === i ? null : i);
+  }
+
+  function beginRehearsal() {
+    if (sel === null) return;
     setPhase('record');
     setIsRec(false);
     setRecDone(false);
@@ -826,22 +830,34 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Voice Warm-Up</h2>
       <p style={{ fontFamily: T.sans, fontSize: isDesktop ? 16 : 15, color: "#A8998A", lineHeight: 1.6, fontWeight: 400, marginBottom: 24 }}>Choose one topic below and speak for around 30 seconds. This is simply a chance to find your voice. Just speak naturally, and we'll take care of the rest.</p>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isDesktop ? 12 : 10 }}>
-        {TOPICS.map((topic, i) => (
-          <button key={i} onClick={() => pickTopic(i)} style={{
-            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-            gap: 10, padding: isDesktop ? "22px 16px" : "18px 14px",
-            borderRadius: 6, cursor: "pointer", textAlign: "center",
-            border: "0.5px solid " + T2.border,
-            background: T2.surface,
-            transition: "all 0.15s ease",
-          }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = T.gold; e.currentTarget.style.boxShadow = "0 4px 20px rgba(138,158,132,0.15)"; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = T2.border; e.currentTarget.style.boxShadow = "none"; }}>
-            <div style={{ color: "#A8998A" }}>{topic.icon}</div>
-            <span style={{ fontFamily: T.sans, fontSize: isDesktop ? 14 : 13, color: T2.text, lineHeight: 1.45, fontWeight: 400 }}>{topic.label}</span>
-          </button>
-        ))}
+        {TOPICS.map((topic, i) => {
+          const isSel = sel === i;
+          return (
+            <button key={i} onClick={() => selectTopic(i)} style={{
+              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+              gap: 10, padding: isDesktop ? "22px 16px" : "18px 14px",
+              borderRadius: 6, cursor: "pointer", textAlign: "center",
+              border: `${isSel ? "2px" : "0.5px"} solid ${isSel ? "#8A9E84" : T2.border}`,
+              background: isSel ? "rgba(138,158,132,0.1)" : T2.surface,
+              boxShadow: isSel ? "0 4px 20px rgba(138,158,132,0.15)" : "none",
+              transition: "all 0.15s ease",
+            }}>
+              <div style={{ color: isSel ? "#527060" : "#A8998A" }}>{topic.icon}</div>
+              <span style={{ fontFamily: T.sans, fontSize: isDesktop ? 14 : 13, color: T2.text, lineHeight: 1.45, fontWeight: isSel ? 600 : 400 }}>{topic.label}</span>
+            </button>
+          );
+        })}
       </div>
+      <button onClick={beginRehearsal} disabled={sel === null} style={{
+        width: "100%", marginTop: isDesktop ? 24 : 20, padding: isDesktop ? "14px" : "13px",
+        borderRadius: 4, border: "none",
+        background: sel === null ? "rgba(44,36,22,0.12)" : "#2C2416",
+        color: sel === null ? "#A8998A" : "#F7F3EC",
+        fontSize: isDesktop ? 15 : 14, fontWeight: 600, fontFamily: T.sans,
+        cursor: sel === null ? "not-allowed" : "pointer", minHeight: 48, transition: "all 0.2s",
+      }}>
+        Begin Rehearsal →
+      </button>
     </div>
   );
 
@@ -982,7 +998,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   const [phase, setPhase] = useState(saved.phase || 'intro');
   const [cat, setCat] = useState(saved.cat || 'Work');
   const [prompt, setPrompt] = useState(saved.prompt || null);
-  const [timeLeft, setTimeLeft] = useState(120);
+  const [elapsed, setElapsed] = useState(0);
   const [isRec, setIsRec] = useState(false);
   const [transcript, setTranscript] = useState(saved.transcript || '');
   const [fallback, setFallback] = useState('');
@@ -1043,11 +1059,13 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   },[]);
 
   useEffect(()=>{
-    if(isRec && timeLeft>0){
-      timerRef.current=setTimeout(()=>setTimeLeft(t=>t-1),1000);
+    if(isRec){
+      timerRef.current=setInterval(()=>setElapsed(e=>e+1),1000);
+    } else {
+      clearInterval(timerRef.current);
     }
-    return ()=>clearTimeout(timerRef.current);
-  },[isRec,timeLeft]);
+    return ()=>clearInterval(timerRef.current);
+  },[isRec]);
 
   useEffect(()=>{
     if(!isRec){clearInterval(waveRef.current);return;}
@@ -1066,7 +1084,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
   },[playing]);
 
   function doStart(){
-    setIsRec(true); setTranscript(''); setAudioURL(null); setMicError(false); setTranscribeFailed(false);
+    setIsRec(true); setElapsed(0); setTranscript(''); setAudioURL(null); setMicError(false); setTranscribeFailed(false);
     if(navigator.mediaDevices?.getUserMedia && window.MediaRecorder){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
         const mimeType=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg'].find(t=>MediaRecorder.isTypeSupported(t))||'';
@@ -1159,10 +1177,10 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
 
   function surprise(){
     const p=ALL_PROMPTS[Math.floor(Math.random()*ALL_PROMPTS.length)];
-    setPrompt(p); setPhase('recording'); setTimeLeft(120); setIsRec(false); setTranscript(''); setFallback('');
+    setPrompt(p); setPhase('recording'); setElapsed(0); setIsRec(false); setTranscript(''); setFallback('');
   }
 
-  function reset(){setPhase('intro');setPrompt(null);setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setSelectedFocus([]);setAudioURL(null);try{sessionStorage.removeItem(D1SIM_KEY);}catch{}}
+  function reset(){setPhase('intro');setPrompt(null);setElapsed(0);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setSelectedFocus([]);setAudioURL(null);try{sessionStorage.removeItem(D1SIM_KEY);}catch{}}
 
   const cs={
     card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"},
@@ -1172,6 +1190,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     cta:{width:"100%",padding:isDesktop?"14px":"13px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,transition:"all 0.2s"},
     ghost:{width:"100%",padding:"11px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44},
   };
+  const fmtElapsed = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
 
   // ── INTRO ─────────────────────────────────────────────────────────────────
   if(phase==='intro') return (
@@ -1240,7 +1259,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 2h14M5 22h14M6 2v4l5.5 6L6 18v4M18 2v4l-5.5 6L18 18v4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/></svg>,
     ];
-    const go=(p)=>{setPrompt(p);setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');};
+    const go=(p)=>{setPrompt(p);setPhase('recording');setElapsed(0);setIsRec(false);setTranscript('');setFallback('');};
     return (
       <div style={{display:"flex",flexDirection:"column",gap:16}}>
         <div>
@@ -1273,47 +1292,31 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.4,margin:0,fontWeight:500}}>{prompt}</p>
       </div>
       <div style={{...cs.card,textAlign:"center",padding:isDesktop?"36px 32px":"28px 20px"}}>
-        {/* Timer ring */}
-        <div style={{position:"relative",width:120,height:120,margin:"0 auto 20px",display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <svg style={{position:"absolute",inset:0,transform:"rotate(-90deg)"}} viewBox="0 0 120 120">
-            <circle cx="60" cy="60" r="54" fill="none" stroke={T2.border} strokeWidth="4"/>
-            <circle cx="60" cy="60" r="54" fill="none" stroke={T.gold} strokeWidth="4" strokeLinecap="round"
-              strokeDasharray={`${2*Math.PI*54}`}
-              strokeDashoffset={`${2*Math.PI*54*(1-timeLeft/120)}`}
-              style={{transition:"stroke-dashoffset 1s linear"}}/>
-          </svg>
-          <div style={{textAlign:"center"}}>
-            <div style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:timeLeft<=10&&timeLeft>0?"#B05C4A":T2.text,lineHeight:1}}>{timeLeft>0?timeLeft:"✓"}</div>
-            <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:2}}>{timeLeft>0?"seconds":"take your time"}</div>
-          </div>
-        </div>
         {/* Waveform */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:3,height:36,marginBottom:20}}>
           {waveVals.map((h,i)=>(
             <div key={i} style={{width:isDesktop?4:3,background:isRec?T.gold:T2.border,borderRadius:2,height:isRec?Math.round(h*32)+"px":"4px",transition:"height 0.12s ease,background 0.3s ease"}}/>
           ))}
         </div>
-        {/* Encouraging copy */}
-        {isRec && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20,fontStyle:"italic"}}>
-          {timeLeft>80?"Keep going. Stay natural."
-            :timeLeft>40?"We're looking for patterns, not perfection."
-            :timeLeft>0?"Almost there. Finish your thought."
-            :"Take your time. Tap Stop when you're done."}
-        </p>}
         {!isRec && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20}}>Speak naturally — around 2 minutes is a good guide.</p>}
-        {/* Record button */}
-        {!isRec ? (
-          <>
-            <button onClick={doStart} style={{...cs.cta,maxWidth:240,margin:"0 auto",display:"block",borderRadius:40,background:T.ink,color:T.bg}}>
-              🎤 Start Recording
-            </button>
-            {prompt&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,fontStyle:"italic",marginTop:14,lineHeight:1.5,textAlign:"center"}}>{prompt}</p>}
-          </>
-        ) : (
-          <button onClick={doStop} style={{...cs.cta,maxWidth:240,margin:"0 auto",display:"block",borderRadius:40,background:"rgba(176,92,74,0.15)",color:"#B05C4A",border:"0.5px solid rgba(176,92,74,0.4)"}}>
-            ◼ Stop &amp; Analyse
+        {/* Record button — same mic-circle pattern as Rehearsal */}
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16}}>
+          <button onClick={isRec ? doStop : doStart} style={{
+            width:80,height:80,borderRadius:"50%",border:"none",cursor:"pointer",
+            background:isRec?"#B05C4A":"#8A9E84",
+            display:"flex",alignItems:"center",justifyContent:"center",
+            boxShadow:isRec?"0 0 0 8px rgba(176,92,74,0.15)":"0 0 0 6px rgba(138,158,132,0.12)",
+            transition:"all 0.2s ease",
+          }}>
+            {isRec
+              ? <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="6" y="6" width="12" height="12" rx="2" fill="white"/></svg>
+              : <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" fill="white"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="white" strokeWidth="1.8" strokeLinecap="round"/><line x1="12" y1="19" x2="12" y2="23" stroke="white" strokeWidth="1.8" strokeLinecap="round"/></svg>
+            }
           </button>
-        )}
+          {isRec
+            ? <div style={{fontFamily:T.sans,fontSize:13,color:"#B05C4A",fontWeight:600}}>Recording — {fmtElapsed(elapsed)} &nbsp;·&nbsp; tap to stop</div>
+            : <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>Tap to start recording</div>}
+        </div>
       </div>
       {/* Text fallback — only surfaces on genuine mic/transcription failure */}
       {!isRec && (micError || transcribeFailed) && (
@@ -1657,7 +1660,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
       </div>
       )}
       <div style={{display:"flex",gap:10}}>
-        <button onClick={()=>{setPhase('recording');setTimeLeft(120);setIsRec(false);setTranscript('');setFallback('');setShowCompareT1(false);setShowCompareT2(false);}} style={{...cs.ghost,flex:1}}>Go Again</button>
+        <button onClick={()=>{setPhase('recording');setElapsed(0);setIsRec(false);setTranscript('');setFallback('');setShowCompareT1(false);setShowCompareT2(false);}} style={{...cs.ghost,flex:1}}>Go Again</button>
         <button onClick={reset} style={{...cs.cta,flex:1}}>New Challenge →</button>
       </div>
     </div>

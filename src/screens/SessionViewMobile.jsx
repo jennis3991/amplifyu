@@ -3197,7 +3197,21 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
             Previous
           </button>
         )}
-        {idx < STEPS.length-1 && (
+        {idx < STEPS.length-1 && (() => {
+          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone);
+          const navLabel = isD1 && step==="Rehearsal" && d1NavLabel
+            ? d1NavLabel
+            : isD3 && step==="Rehearsal" && d3NavLabel
+              ? d3NavLabel
+              : isD4 && step==="Rehearsal" && d4NavLabel
+                ? d4NavLabel
+                : isNT
+                ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Rehearsal":NAV_LABELS[idx])
+                : isD7 && idx===1
+                  ? "See your foundations"
+                  : NAV_LABELS[idx];
+          const isSkip = navLabel === "Skip";
+          return (
           <button
             onClick={()=>{
               if (isD1 && step==="Rehearsal" && d1NavFnRef.current) { d1NavFnRef.current(); }
@@ -3205,37 +3219,30 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
               else if (isD4 && step==="Rehearsal" && d4NavFnRef.current) { d4NavFnRef.current(); }
               else { setIdx(i=>i+1); }
             }}
-            disabled={(isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)}
+            disabled={navDisabled}
             style={{
               flex:1,
               padding:"18px 20px",
               borderRadius:14,
-              border:"none",
-              background: ((isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone))
-                ? "rgba(44,36,22,0.18)"
-                : "linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
-              color:"white",
-              fontSize:15,fontWeight:700,
-              cursor: ((isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)) ? "not-allowed" : "pointer",
-              opacity: ((isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)) ? 0.45 : 1,
+              border: isSkip ? "1px solid "+T2.border : "none",
+              background: isSkip
+                ? T2.surface
+                : navDisabled
+                  ? "rgba(44,36,22,0.18)"
+                  : "linear-gradient(135deg,"+T.navy+" 0%,#1E2D45 100%)",
+              color: isSkip ? T2.text3 : "white",
+              fontSize:15,fontWeight: isSkip ? 500 : 700,
+              cursor: navDisabled ? "not-allowed" : "pointer",
+              opacity: navDisabled ? 0.45 : 1,
               display:"flex",alignItems:"center",justifyContent:"center",gap:10,
-              boxShadow:"0 4px 16px rgba(17,28,46,0.3)",
+              boxShadow: isSkip ? "none" : "0 4px 16px rgba(17,28,46,0.3)",
               letterSpacing:"0.2px",
             }}>
-            <span>{isD1 && step==="Rehearsal" && d1NavLabel
-              ? d1NavLabel
-              : isD3 && step==="Rehearsal" && d3NavLabel
-                ? d3NavLabel
-                : isD4 && step==="Rehearsal" && d4NavLabel
-                  ? d4NavLabel
-                  : isNT
-                  ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Rehearsal":NAV_LABELS[idx])
-                  : isD7 && idx===1
-                    ? "See your foundations"
-                    : NAV_LABELS[idx]}</span>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <span>{navLabel}</span>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke={isSkip ? T2.text3 : "white"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
-        )}
+          );
+        })()}
       </div>
       <div style={{
         display:"flex",alignItems:"center",justifyContent:"center",
