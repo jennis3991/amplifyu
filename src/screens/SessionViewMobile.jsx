@@ -737,7 +737,7 @@ T.goldDark : T2.text4,
                 style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",marginBottom:i<2?8:0,transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:0}}>
                   <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.3,flex:1}}>{p.head}</div>
-                  <span style={{fontFamily:T.sans,fontSize:15,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:8,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:8,flexShrink:0}}>{open?"▴":"▸"}</span>
                 </div>
                 {open && (
                   <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>{p.body}</p>
@@ -1178,7 +1178,7 @@ T.goldDark : T2.text4,
                 style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"12px 14px",cursor:"pointer",transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:6}}>
                   <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flex:1}}>{p.label}</div>
-                  <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                 </div>
                 <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.65,fontWeight:400,margin:open?"0 0 10px":0}}>{p.sub}</p>
                 {open && (<div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
@@ -2482,7 +2482,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                     <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text}}>{ing.n}</span>
                     <span style={{fontFamily:T.sans,fontSize:12,color:T2.text4,marginLeft:8}}>{ing.tagline}</span>
                   </div>
-                  <span style={{fontFamily:T.sans,fontSize:11,color:open?T.gold:T2.text4}}>{open?"▴":"▸"}</span>
+                  <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:T2.text4}}>{open?"▴":"▸"}</span>
                 </div>
                 {open && (
                   <div style={{marginTop:12,paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
@@ -2895,7 +2895,7 @@ strokeLinecap="round"/></svg>
                       <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:card.role?2:0}}>{card.name}</div>
                       {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0"}}>{card.role}</p>}
                     </div>
-                    <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0}}>{open?"▴":"▸"}</span>
+                    <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:10,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
                   {open && <div style={{marginTop:12,paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.7,marginBottom:12,fontWeight:300}}>{card.body}</p>

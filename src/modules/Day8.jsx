@@ -995,7 +995,7 @@ h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;line-he
             <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"3px",marginTop:4}}>Narrative Frames</div>
             <button onClick={()=>setBriefOpen(v=>!v)} style={{background:"none",border:"0.5px solid "+T2.border,borderRadius:4,padding:"5px 12px",cursor:"pointer",fontFamily:T.sans,fontSize:11,color:T2.text3,display:"flex",alignItems:"center",gap:6,flexShrink:0,whiteSpace:"nowrap"}}>
               Story Brief
-              <span style={{fontSize:9,opacity:0.6,transform:briefOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
+              <span style={{fontSize:14,opacity:0.6,transform:briefOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
             </button>
           </div>
           <h2 style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:500,color:T2.text,lineHeight:1.1,letterSpacing:"-0.3px",margin:"0 0 4px"}}>{sw.subject||"Your Story"}</h2>
@@ -1092,7 +1092,7 @@ h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;line-he
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5Q10.5 1.5 10.5 5.2 10.5 7.5 8.5 8.5L8.5 10.5 5.5 10.5 5.5 8.5Q3.5 7.5 3.5 5.2 3.5 1.5 7 1.5Z" fill="none" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/><line x1="5.5" y1="11.5" x2="8.5" y2="11.5" stroke={T.gold} strokeWidth="1.1" strokeLinecap="round"/><line x1="6" y1="12.8" x2="8" y2="12.8" stroke={T.gold} strokeWidth="1.1" strokeLinecap="round"/></svg>
                     <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px"}}>Coach Insight</span>
                   </div>
-                  <span style={{fontSize:10,color:T.gold,opacity:0.7,transform:coachOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
+                  <span style={{fontSize:13,color:T.gold,opacity:0.7,transform:coachOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
                 </button>
                 {coachOpen&&(
                   <div style={{padding:isDesktop?"0 20px 16px":"0 16px 14px"}}>

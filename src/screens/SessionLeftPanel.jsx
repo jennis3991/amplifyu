@@ -897,7 +897,7 @@ export const ExCard = ({name, preview, full, T2: _T2, compact}) => {
       onMouseLeave={e=>{if(!open){e.currentTarget.style.background="rgba(237,232,223,0.6)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
         <div style={{fontFamily:T.serif,fontSize:Math.round(22*s),fontWeight:600,color:T.gold,lineHeight:1.3}}>{name}</div>
-        <span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginLeft:12,flexShrink:0,marginTop:4}}>{open?"▴":"▸"}</span>
+        <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:T2.text3,marginLeft:12,flexShrink:0,marginTop:4}}>{open?"▴":"▸"}</span>
       </div>
       <p style={{fontFamily:T.sans,fontSize:Math.round(16*s),color:T2.text,lineHeight:1.7,margin:0,fontWeight:400}}>{preview}</p>
       {open && <p style={{fontFamily:T.sans,fontSize:Math.round(15*s),color:T2.text,lineHeight:1.75,margin:"14px 0 0",fontWeight:300,whiteSpace:"pre-wrap",borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:14}}>{full}</p>}

@@ -334,7 +334,7 @@ p];
                                   <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{c.role}</div>
                                   <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.2}}>{c.name}</div>
                                 </div>
-                                <span style={{fontFamily:T.sans,fontSize:14,color:open?T.gold:"rgba(138,158,132,0.5)",flexShrink:0,marginTop:3,display:"inline-block",transform:open?"rotate(90deg)":"none",transition:"transform 0.2s"}}>▸</span>
+                                <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.5)",flexShrink:0,marginTop:3,display:"inline-block",transform:open?"rotate(90deg)":"none",transition:"transform 0.2s"}}>▸</span>
                               </div>
                             </div>
                             {open&&(

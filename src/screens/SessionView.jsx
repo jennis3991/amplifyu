@@ -850,7 +850,7 @@ setAmbitionSaved(true); } catch {}
                 style={{padding:"16px 20px",background:T2.surface,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,borderLeft:`2px solid ${T.gold}`,borderRadius:4,marginBottom:i<2?8:0,cursor:"pointer",transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:open?10:0}}>
                   <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.3}}>{p.n}. {p.head}</div>
-                  <span style={{color:open?T.gold:T2.text3,fontSize:14,marginLeft:12,flexShrink:0}}>{open?"▴":"▸"}</span>
+                  <span style={{color:open?T.gold:T2.text3,fontSize:17,fontWeight:600,marginLeft:12,flexShrink:0}}>{open?"▴":"▸"}</span>
                 </div>
                 {open && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>{p.body}</p>}
               </div>
@@ -2203,7 +2203,7 @@ setAmbitionSaved(true); } catch {}
                   onMouseLeave={e=>{if(!open){e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.boxShadow="none";}}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?10:6}}>
                     <div style={{fontFamily:T.serif,fontSize:19,fontWeight:600,color:T.gold,lineHeight:1.3}}>{n.word}</div>
-                    <span style={{fontFamily:T.sans,fontSize:12,color:open?T.gold:T2.text4,marginLeft:10,flexShrink:0,marginTop:2}}>{open?"▴":"▸"}</span>
+                    <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:T2.text4,marginLeft:10,flexShrink:0,marginTop:2}}>{open?"▴":"▸"}</span>
                   </div>
                   <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 14px":0}}>{n.sub}</p>
                   {open && (
@@ -3622,7 +3622,7 @@ setAmbitionSaved(true); } catch {}
                     <div style={{ width:22, height:22, borderRadius:"50%", background:d11CardOpen===i?T.gold:"rgba(138,158,132,0.2)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, transition:"background 0.2s" }}>
                       <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:"white" }}>{i+1}</span>
                     </div>
-                    <span style={{ fontFamily:T.sans, fontSize:11, color:d11CardOpen===i?T.gold:T2.text4 }}>{d11CardOpen===i?"▴":"▸"}</span>
+                    <span style={{ fontFamily:T.sans, fontSize:17, fontWeight:600, color:d11CardOpen===i?T.gold:T2.text4 }}>{d11CardOpen===i?"▴":"▸"}</span>
                   </div>
                   <div style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T2.text, marginBottom:4 }}>{ing.n}</div>
                   <div style={{ fontFamily:T.sans, fontSize:12, color:T2.text3 }}>{ing.tagline}</div>
