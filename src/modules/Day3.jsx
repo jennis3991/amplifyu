@@ -342,15 +342,21 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
         <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording — speak for around 30 seconds</span>
       </div>
     </div>
-    <button onClick={doStop}
-      style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
-      Submit Answer →
-    </button>
+    {isRec ? (
+      <button onClick={doStop}
+        style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
+        Submit Answer →
+      </button>
+    ) : (micError || transcribeFailed) ? (
+      <button onClick={doStart} style={cs.cta}>
+        Try Recording Again →
+      </button>
+    ) : null}
     {!isRec && (micError || transcribeFailed) && (
       <div style={cs.card}>
         <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
         <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: '0 0 10px'}}>
-          {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Submit Answer to try again.'}
+          {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
         </p>
         <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width: '100%', minHeight: 80, background: 'transparent', border: 'none', borderBottom: '0.5px solid ' + T2.border, padding: '8px 0', fontFamily: T.sans, fontSize: 13, color: T2.text, resize: 'none', outline: 'none', lineHeight: 1.6, boxSizing: 'border-box'}}/>
         {fallbackText.trim().length > 10 && (
@@ -405,16 +411,16 @@ const HOT_SEAT_SCENARIOS = {
       id:'weekend-ask',
       icon: IC_ICON(<><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></>),
       label:'The Weekend Ask',
-      brief:`It's Friday afternoon. Your manager stops by your desk: "I need this finished by Monday morning — can you work over the weekend to get it done?"`,
-      q1:'How do you respond?',
+      brief:`It's Friday afternoon. Your manager stops by your desk: "I need this finished by Monday morning."`,
+      q1:'So — can you make the weekend work?',
       q2:"Your manager pushes: \"I really need this. Is there any way to make it work?\"",
     },
     {
       id:'salary-cut',
       icon: IC_ICON(<><line x1="7" y1="7" x2="17" y2="17"/><polyline points="17 7 17 17 7 17"/></>),
       label:'The Salary Cut',
-      brief:`Your manager calls you into a meeting: "Due to some company-wide changes, we need to reduce your salary starting next month." They pause, then add: "I'd like to hear your thoughts."`,
-      q1:"What's your immediate response?",
+      brief:`Your manager calls you into a meeting: "Due to some company-wide changes, we need to reduce your salary starting next month."`,
+      q1:"I know this isn't the news you were expecting, and I'd like to hear your thoughts.",
       q2:"Your manager says: \"I know it's not easy news, but the decision has already been made — is there anything else you'd like me to know?\"",
     },
     {
@@ -744,14 +750,20 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
           <span style={{fontFamily: T.sans, fontSize: 12, color: T2.text3, fontVariantNumeric: 'tabular-nums'}}>{mins}:{secs}</span>
         </div>
       </div>
-      <button onClick={doStop} style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
-        Submit Answer →
-      </button>
+      {isRec ? (
+        <button onClick={doStop} style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
+          Submit Answer →
+        </button>
+      ) : (micError || transcribeFailed) ? (
+        <button onClick={doStart} style={cs.cta}>
+          Try Recording Again →
+        </button>
+      ) : null}
       {!isRec && (micError || transcribeFailed) && (
         <div style={cs.card}>
           <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
           <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: '0 0 10px'}}>
-            {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Submit Answer to try again.'}
+            {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
           </p>
           <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width: '100%', minHeight: 80, background: 'transparent', border: 'none', borderBottom: '0.5px solid ' + T2.border, padding: '8px 0', fontFamily: T.sans, fontSize: 13, color: T2.text, resize: 'none', outline: 'none', lineHeight: 1.6, boxSizing: 'border-box'}}/>
           {fallbackText.trim().length > 10 && (
