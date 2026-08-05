@@ -48,7 +48,7 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
         :{background:"rgba(237,232,223,0.6)",border:`1px solid ${openEx===i?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px",cursor:"pointer",transition:"border-color 0.2s"}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:openEx===i?12:0}}>
         <div style={{fontFamily:T.serif,fontSize:isDesktop?18:15,fontWeight:600,color:T2.text}}>{ex.title}</div>
-        <span style={{fontFamily:T.sans,fontSize:12,color:openEx===i?T.gold:T2.text3,marginLeft:10,flexShrink:0}}>{openEx===i?"▴":"▸"}</span>
+        <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:openEx===i?T.gold:T2.text3,marginLeft:10,flexShrink:0}}>{openEx===i?"▴":"▸"}</span>
       </div>
       {openEx===i&&(
         <div style={{paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>

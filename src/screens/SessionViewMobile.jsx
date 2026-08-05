@@ -64,6 +64,7 @@ export function MobileSessionView({
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
+  const [d1SimRecording, setD1SimRecording] = useState(false);
   const [d3NavLabel, setD3NavLabel] = useState(null);
   const d3NavFnRef = useRef(null);
   const [d4NavLabel, setD4NavLabel] = useState(null);
@@ -1648,7 +1649,7 @@ T.goldDark : T2.text4,
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Simulation · Day 1</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Clarity Check-In</h2>
-          <D1SimWidget T={T} T2={T2} isDesktop={false} warmUpTopic={d1WarmUpTopic}/>
+          <D1SimWidget T={T} T2={T2} isDesktop={false} warmUpTopic={d1WarmUpTopic} onRecordingChange={setD1SimRecording}/>
         </>
       )}
        {/* ── NT (Day 8) Mobile Steps ─────────────────────────────────────── */}
@@ -3198,7 +3199,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         )}
         {idx < STEPS.length-1 && (() => {
-          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone);
+          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone);
           const navLabel = isD1 && step==="Rehearsal" && d1NavLabel
             ? d1NavLabel
             : isD3 && step==="Rehearsal" && d3NavLabel

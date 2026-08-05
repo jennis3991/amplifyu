@@ -50,6 +50,7 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const [reviewTab, setReviewTab] = useState('learned');
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
+  const [d1SimRecording, setD1SimRecording] = useState(false);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
   function saveBook(title) {
@@ -2383,7 +2384,7 @@ setAmbitionSaved(true); } catch {}
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Simulation · Day 1</div>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:28}}>Clarity Check-In</h2>
-          <D1SimWidget T={T} T2={T2} isDesktop={true} warmUpTopic={d1WarmUpTopic}/>
+          <D1SimWidget T={T} T2={T2} isDesktop={true} warmUpTopic={d1WarmUpTopic} onRecordingChange={setD1SimRecording}/>
         </div>
       );
 
@@ -4745,18 +4746,18 @@ setAmbitionSaved(true); } catch {}
                     setIdx(i => i + 1);
                   }
                 }}
-                disabled={isD1 && step === "Rehearsal" && d1NavLabel === null}
+                disabled={(isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording)}
                 className="au-cta"
                 style={{
                   display: "flex", alignItems: "center", gap: 10,
                   padding: "9px 24px", borderRadius: 5,
-                  background: isD1 && step === "Rehearsal" && d1NavLabel === null ? "rgba(138,158,132,0.3)" : T.gold,
+                  background: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording)) ? "rgba(138,158,132,0.3)" : T.gold,
                   border: "none",
                   color: "white", fontSize: 13, fontWeight: 600,
-                  cursor: isD1 && step === "Rehearsal" && d1NavLabel === null ? "not-allowed" : "pointer",
+                  cursor: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording)) ? "not-allowed" : "pointer",
                   fontFamily: T.sans, letterSpacing: "0.1px",
                   boxShadow: "0 2px 16px rgba(138,158,132,0.3)",
-                  opacity: isD1 && step === "Rehearsal" && d1NavLabel === null ? 0.5 : 1,
+                  opacity: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording)) ? 0.5 : 1,
                 }}>
                 {isD1 && step === "Rehearsal" && d1NavLabel
                   ? d1NavLabel

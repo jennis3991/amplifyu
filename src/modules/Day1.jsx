@@ -940,7 +940,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
 }
 
 // ─── RECORD & REVIEW™ — D1 Simulation ────────────────────────────────────────
-export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
+export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) {
   const _roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
 
   const _WORK_BY_ROLE = {
@@ -1031,6 +1031,12 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic}) {
     document.body.scrollTop=0;
     try{const p=document.getElementById('au-right-panel');if(p)p.scrollTop=0;}catch(_){}
   },[phase]);
+
+  // Block the app's "Next"/"Review" nav while actively recording or transcribing,
+  // so an accidental tap can't discard an in-progress or just-finished recording.
+  useEffect(()=>{
+    onRecordingChange?.(isRec || analyzing);
+  },[isRec, analyzing]);
 
   // Persist results across accidental navigation away (e.g. swiping to another step) —
   // mid-recording/analysing states aren't resumable, so those collapse back to 'prompt' on save.
