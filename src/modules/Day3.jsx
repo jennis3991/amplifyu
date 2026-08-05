@@ -402,20 +402,20 @@ const IC_ICON = (path) => (
 const HOT_SEAT_SCENARIOS = {
   ic: [
     {
-      id:'standup',
-      icon: IC_ICON(<><path d="M5 8h-2a1 1 0 00-1 1v4a1 1 0 001 1h2l5 4V4L5 8z"/><path d="M15.5 8.5a4 4 0 010 7"/><path d="M18.5 5.5a8 8 0 010 13"/></>),
-      label:'Unexpected standup update',
-      brief:`You've just joined your weekly team standup. Halfway through, your manager turns to you: "Before we move on — can you give everyone a quick update on where things stand?" Your project is on track overall but one dependency has slipped two weeks. Your team has a mitigation plan and you're still confident on the final deadline.`,
-      q1:'Give us your update.',
-      q2:"Why wasn't this risk flagged sooner?",
+      id:'weekend-ask',
+      icon: IC_ICON(<><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></>),
+      label:'The Weekend Ask',
+      brief:`It's Friday afternoon. Your manager stops by your desk: "I need this finished by Monday morning — can you work over the weekend to get it done?"`,
+      q1:'How do you respond?',
+      q2:"Your manager pushes: \"I really need this. Is there any way to make it work?\"",
     },
     {
-      id:'recommendation',
-      icon: IC_ICON(<><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></>),
-      label:'Explaining your recommendation',
-      brief:`Your team has been evaluating two approaches to a problem. Your manager has asked you to come to today's meeting ready to recommend one. You've done the analysis. You have a view. Halfway through the meeting, your manager turns to you: "Let's hear your recommendation before we go any further."`,
-      q1:'Walk us through your recommendation.',
-      q2:'A colleague thinks the alternative approach is lower risk. How do you respond?',
+      id:'salary-cut',
+      icon: IC_ICON(<><line x1="7" y1="7" x2="17" y2="17"/><polyline points="17 7 17 17 7 17"/></>),
+      label:'The Salary Cut',
+      brief:`Your manager calls you into a meeting: "Due to some company-wide changes, we need to reduce your salary starting next month." They pause, then add: "I'd like to hear your thoughts."`,
+      q1:"What's your immediate response?",
+      q2:"Your manager says: \"I know it's not easy news, but the decision has already been made — is there anything else you'd like me to know?\"",
     },
     {
       id:'feedback',
