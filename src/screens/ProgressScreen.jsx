@@ -132,10 +132,10 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
                   <div style={{
                     width:40, height:40, borderRadius:"50%", overflow:"hidden",
                     border: isCurrent ? "1.5px solid #c9a961" : isNext ? "1.5px solid rgba(201,169,97,0.4)" : "1.5px solid rgba(255,255,255,0.1)",
-                    opacity: isCurrent ? 1 : isPast ? 0.85 : 0.3,
+                    background:"#0D0B08",
                     position:"relative", flexShrink:0,
                   }}>
-                    <img src={piece.img} alt={piece.name} style={{position:"absolute",width:"126%",height:"126%",top:"-13%",left:"-13%",objectFit:"cover"}}/>
+                    <img src={piece.img} alt={piece.name} style={{position:"absolute",width:"126%",height:"126%",top:"-13%",left:"-13%",objectFit:"cover",opacity: isCurrent ? 1 : isPast ? 0.85 : 0.3}}/>
                   </div>
                   <span style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:isCurrent?"#c9a961":isNext?"rgba(245,239,230,0.5)":"rgba(255,255,255,0.18)",textTransform:"uppercase",letterSpacing:"1px",textAlign:"center"}}>{piece.name}</span>
                 </div>
