@@ -693,8 +693,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <div style={{height: '100%', width: ((45 - briefSecs) / 45 * 100) + '%', background: 'rgba(138,158,132,0.55)', borderRadius: 2, transition: 'width 1s linear'}} />
       </div>
     </div>
-    <button onClick={() => setPhase('pause1')} disabled={!briefDone}
-      style={{...cs.cta, opacity: briefDone ? 1 : 0.35, cursor: briefDone ? 'pointer' : 'default'}}>
+    <button onClick={() => setPhase('pause1')} style={cs.cta}>
       I'm Ready →
     </button>
     <div style={cs.cue}>Pause · Breathe · Respond</div>
