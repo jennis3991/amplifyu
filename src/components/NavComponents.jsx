@@ -81,7 +81,7 @@ export function TabBar({ tab, setTab, done=[], dark }) {
         flex:1, position:"relative",
         display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
         gap:4, border:"none", background:"transparent", cursor:"pointer",
-        padding:"7px 4px 6px", minHeight:64,
+        padding:"7px 4px 3px", minHeight:60,
       }}>
         {active && (
           <div style={{
@@ -113,7 +113,7 @@ export function TabBar({ tab, setTab, done=[], dark }) {
       paddingBottom:"env(safe-area-inset-bottom,0px)",
       boxShadow:"inset 0 1px 0 rgba(255,255,255,0.055)",
       overflow:"visible",
-      minHeight:64,
+      minHeight:60,
     }}>
       {/* inner top highlight arc */}
       <div style={{
@@ -125,7 +125,7 @@ export function TabBar({ tab, setTab, done=[], dark }) {
       {NAV_ITEMS.slice(0,2).map(item => <SideBtn key={item.id} {...item}/>)}
 
       {/* Centre — Identity medallion */}
-      <div style={{ flex:1, position:"relative", minHeight:64 }}>
+      <div style={{ flex:1, position:"relative", minHeight:60 }}>
         <button
           onClick={() => setTab("identity")}
           style={{
