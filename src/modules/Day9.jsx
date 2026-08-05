@@ -1,5 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
 // ─── D9 Practice Widget — Connection Best Practices ──────────────────────
 export function D9PracticeWidget({T, T2, isDesktop}) {
   const [open, setOpen] = useState(null);
@@ -76,7 +85,7 @@ export function D9PracticeWidget({T, T2, isDesktop}) {
 }
 
 // ─── D9 Simulation Widget — The Rapport Builder ──────────────────────────
-export function D9SimWidget({T, T2, isDesktop}) {
+export function D9SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const CHARS = [
     {
       id:'driver', label:'The Driver',
@@ -215,17 +224,17 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
   const [waveVals, setWaveVals] = useState(Array.from({length:9},()=>0.3+Math.random()*0.3));
   const [debrief, setDebrief] = useState(null);
 
+  const [micError, setMicError] = useState(false);
+  const [transcribeFailed, setTranscribeFailed] = useState(false);
+  const [fallbackText, setFallbackText] = useState('');
+
   const turnRef = useRef(1);
   const transcriptsRef = useRef(['','','']);
   const charResponsesRef = useRef(['','']);
   const qualitiesRef = useRef(['','']);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const recRef = useRef(null);
   const waveRef = useRef(null);
-  const liveRef = useRef('');
-
-  const SpeechRec = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
 
   useEffect(()=>{
     if(!isRec){clearInterval(waveRef.current);return;}
@@ -233,47 +242,57 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
     return()=>clearInterval(waveRef.current);
   },[isRec]);
 
+  // Block the app's "Next"/"Review" nav while actively recording or the conversation is processing
+  useEffect(()=>{
+    onRecordingChange?.(isRec || phase==='thinking' || phase==='analyzing');
+  },[isRec, phase]);
+
   function doStart(){
-    setIsRec(true); liveRef.current='';
-    if(SpeechRec){
-      const rec=new SpeechRec();
-      rec.continuous=true; rec.interimResults=true; rec.lang='en-US';
-      rec.onresult=(e)=>{
-        let final='',interim='';
-        for(let i=0;i<e.results.length;i++){
-          if(e.results[i].isFinal) final+=e.results[i][0].transcript+' ';
-          else interim+=e.results[i][0].transcript;
-        }
-        liveRef.current=final||interim;
-      };
-      try{rec.start();}catch(e){}
-      recRef.current=rec;
-    }
+    setIsRec(true);
+    setMicError(false); setTranscribeFailed(false); setFallbackText('');
+    audioChunksRef.current=[];
     if(navigator.mediaDevices?.getUserMedia){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-        audioChunksRef.current=[];
-        const mr=new MediaRecorder(stream);
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType:'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
         mr.ondataavailable=e=>{if(e.data.size>0)audioChunksRef.current.push(e.data);};
-        mr.onstop=()=>stream.getTracks().forEach(t=>t.stop());
-        mr.start(); mediaRecRef.current=mr;
-      }).catch(()=>{});
+        mr.start(1000); mediaRecRef.current=mr;
+      }).catch(()=>{ setIsRec(false); setMicError(true); });
+    } else {
+      setIsRec(false); setMicError(true);
     }
+  }
+
+  function stopRecording(cb){
+    const mr=mediaRecRef.current;
+    if(!mr||mr.state==='inactive'){ cb('', true); return; }
+    mr.onstop=async()=>{
+      mr.stream.getTracks().forEach(t=>t.stop());
+      const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});
+      try{
+        const b64=await blobToB64(blob);
+        const res=await fetch('/api/transcribe',{
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({b64, mimeType:'audio/webm'}),
+        });
+        const data=await res.json();
+        if(!res.ok) throw new Error(data.error||'Transcription failed');
+        cb((data.text||'').trim(), false);
+      }catch(err){
+        console.error('[D9RapportBuilder] transcribe error:', err);
+        cb('', true);
+      }
+    };
+    try{ mr.stop(); }catch(e){ cb('', true); }
   }
 
   function doStop(onText){
     setIsRec(false);
-    if(mediaRecRef.current&&mediaRecRef.current.state!=='inactive'){
-      mediaRecRef.current.onstop=()=>{};
-      mediaRecRef.current.stop();
-    }
-    if(recRef.current){
-      const rec=recRef.current; recRef.current=null;
-      const fallback=setTimeout(()=>onText(liveRef.current),1800);
-      rec.onend=()=>{clearTimeout(fallback);onText(liveRef.current);};
-      try{rec.stop();}catch(e){clearTimeout(fallback);onText(liveRef.current);}
-    } else {
-      onText(liveRef.current);
-    }
+    stopRecording((text, failed) => {
+      if (failed) { setTranscribeFailed(true); return; }
+      onText(text);
+    });
   }
 
   function buildHistory(turn){
@@ -518,6 +537,20 @@ Return ONLY valid JSON:
           <button onClick={()=>doStop(handleTurnDone)} style={{...cs.cta,background:'rgba(138,158,132,0.12)',color:T2.text,border:'0.5px solid rgba(138,158,132,0.3)'}}>
             Done →
           </button>
+        )}
+        {!isRec && (micError || transcribeFailed) && (
+          <div style={cs.card}>
+            <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:'0 0 10px'}}>
+              {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Start Recording to try again.'}
+            </p>
+            <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width:'100%',minHeight:80,background:'transparent',border:'none',borderBottom:'0.5px solid '+T2.border,padding:'8px 0',fontFamily:T.sans,fontSize:13,color:T2.text,resize:'none',outline:'none',lineHeight:1.6,boxSizing:'border-box'}}/>
+            {fallbackText.trim().length>10 && (
+              <button onClick={()=>{ setMicError(false); setTranscribeFailed(false); const t=fallbackText.trim(); setFallbackText(''); handleTurnDone(t); }} style={{...cs.cta,marginTop:14}}>
+                Submit →
+              </button>
+            )}
+          </div>
         )}
       </div>
     );

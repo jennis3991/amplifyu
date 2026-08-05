@@ -51,6 +51,8 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
   const [d1SimRecording, setD1SimRecording] = useState(false);
+  const [d3SimRecording, setD3SimRecording] = useState(false);
+  const [d9SimRecording, setD9SimRecording] = useState(false);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
   function saveBook(title) {
@@ -1682,7 +1684,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <D3SimWidget T={T} T2={T2} isDesktop={true}/>
+          <D3SimWidget T={T} T2={T2} isDesktop={true} onRecordingChange={setD3SimRecording}/>
         </div>
       );
 
@@ -2823,7 +2825,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <D9SimWidget T={T} T2={T2} isDesktop={true}/>
+          <D9SimWidget T={T} T2={T2} isDesktop={true} onRecordingChange={setD9SimRecording}/>
         </div>
       );
 
@@ -4746,18 +4748,18 @@ setAmbitionSaved(true); } catch {}
                     setIdx(i => i + 1);
                   }
                 }}
-                disabled={(isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording)}
+                disabled={(isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)}
                 className="au-cta"
                 style={{
                   display: "flex", alignItems: "center", gap: 10,
                   padding: "9px 24px", borderRadius: 5,
-                  background: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording)) ? "rgba(138,158,132,0.3)" : T.gold,
+                  background: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? "rgba(138,158,132,0.3)" : T.gold,
                   border: "none",
                   color: "white", fontSize: 13, fontWeight: 600,
-                  cursor: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording)) ? "not-allowed" : "pointer",
+                  cursor: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? "not-allowed" : "pointer",
                   fontFamily: T.sans, letterSpacing: "0.1px",
                   boxShadow: "0 2px 16px rgba(138,158,132,0.3)",
-                  opacity: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording)) ? 0.5 : 1,
+                  opacity: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? 0.5 : 1,
                 }}>
                 {isD1 && step === "Rehearsal" && d1NavLabel
                   ? d1NavLabel

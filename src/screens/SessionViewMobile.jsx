@@ -65,6 +65,8 @@ export function MobileSessionView({
   const d1NavFnRef = useRef(null);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [d1SimRecording, setD1SimRecording] = useState(false);
+  const [d3SimRecording, setD3SimRecording] = useState(false);
+  const [d9SimRecording, setD9SimRecording] = useState(false);
   const [d3NavLabel, setD3NavLabel] = useState(null);
   const d3NavFnRef = useRef(null);
   const [d4NavLabel, setD4NavLabel] = useState(null);
@@ -1304,7 +1306,7 @@ T.goldDark : T2.text4,
       )}
       {isD3 && step==="Simulation" && (
         <>
-          <D3SimWidget T={T} T2={T2} isDesktop={false}/>
+          <D3SimWidget T={T} T2={T2} isDesktop={false} onRecordingChange={setD3SimRecording}/>
         </>
       )}
        {/* ── D4 Mobile Steps ─────────────────────────────────────────────── */}
@@ -1952,7 +1954,7 @@ T.goldDark : T2.text4,
       )}
       {isD9 && step==="Simulation" && (
         <>
-          <D9SimWidget T={T} T2={T2} isDesktop={false}/>
+          <D9SimWidget T={T} T2={T2} isDesktop={false} onRecordingChange={setD9SimRecording}/>
         </>
       )}
        {/* ── Generic steps (all other days) ─────────────────────────────── */}
@@ -3199,7 +3201,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         )}
         {idx < STEPS.length-1 && (() => {
-          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone);
+          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone);
           const navLabel = isD1 && step==="Rehearsal" && d1NavLabel
             ? d1NavLabel
             : isD3 && step==="Rehearsal" && d3NavLabel

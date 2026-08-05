@@ -1,6 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
 function findFillerClusters(text) {
   if (!text) return [];
   const re = /\b(um+|uh+|er+|ah+|like|you know|sort of|kind of|basically|literally)\b/gi;
@@ -118,14 +127,14 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   const [isRec, setIsRec] = useState(false);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [coachResult, setCoachResult] = useState(null);
+  const [micError, setMicError] = useState(false);
+  const [transcribeFailed, setTranscribeFailed] = useState(false);
+  const [fallbackText, setFallbackText] = useState('');
 
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const recRef = useRef(null);
   const waveRef = useRef(null);
-  const liveRef = useRef('');
 
-  const SpeechRec = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
   const dotCount = useSequentialDots(phase === 'pause');
 
   useEffect(() => {
@@ -141,55 +150,54 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   }, [isRec]);
 
   function doStart() {
-    setIsRec(true); liveRef.current = '';
-    if (SpeechRec) {
-      const rec = new SpeechRec();
-      rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
-      rec.onresult = (e) => {
-        let final = ''; let interim = '';
-        for (let i = 0; i < e.results.length; i++) {
-          if (e.results[i].isFinal) final += e.results[i][0].transcript + ' ';
-          else interim += e.results[i][0].transcript + ' ';
-        }
-        liveRef.current = final || interim;
-      };
-      try { rec.start(); } catch(e) {}
-      recRef.current = rec;
-    }
+    setIsRec(true);
+    setMicError(false); setTranscribeFailed(false);
+    audioChunksRef.current = [];
     if (navigator.mediaDevices?.getUserMedia) {
       navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
-        audioChunksRef.current = [];
-        const mr = new MediaRecorder(stream);
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
         mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-        mr.onstop = () => stream.getTracks().forEach(t => t.stop());
-        mr.start();
+        mr.start(1000);
         mediaRecRef.current = mr;
-      }).catch(() => {});
+      }).catch(() => { setIsRec(false); setMicError(true); });
+    } else {
+      setIsRec(false); setMicError(true);
     }
+  }
+
+  function stopRecording(cb) {
+    const mr = mediaRecRef.current;
+    if (!mr || mr.state === 'inactive') { cb('', true); return; }
+    mr.onstop = async () => {
+      mr.stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Transcription failed');
+        cb((data.text || '').trim(), false);
+      } catch (err) {
+        console.error('[D3Rehearsal] transcribe error:', err);
+        cb('', true);
+      }
+    };
+    try { mr.stop(); } catch(e) { cb('', true); }
   }
 
   function doStop() {
     setIsRec(false);
-    if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
-      mediaRecRef.current.onstop = () => {};
-      mediaRecRef.current.stop();
-    }
-
-    function proceed(text) {
+    stopRecording((text, failed) => {
+      if (failed) { setTranscribeFailed(true); return; }
       setPhase('coach');
-      analyzeTranscript(text.trim() || '');
-    }
-
-    if (recRef.current) {
-      const rec = recRef.current;
-      recRef.current = null;
-      // Wait for onend so any final results have been delivered
-      const fallback = setTimeout(() => proceed(liveRef.current), 1800);
-      rec.onend = () => { clearTimeout(fallback); proceed(liveRef.current); };
-      try { rec.stop(); } catch(e) { clearTimeout(fallback); proceed(liveRef.current); }
-    } else {
-      proceed(liveRef.current);
-    }
+      analyzeTranscript(text);
+    });
   }
 
   async function analyzeTranscript(text) {
@@ -335,6 +343,20 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
       style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
       Submit Answer →
     </button>
+    {!isRec && (micError || transcribeFailed) && (
+      <div style={cs.card}>
+        <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+        <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: '0 0 10px'}}>
+          {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Submit Answer to try again.'}
+        </p>
+        <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width: '100%', minHeight: 80, background: 'transparent', border: 'none', borderBottom: '0.5px solid ' + T2.border, padding: '8px 0', fontFamily: T.sans, fontSize: 13, color: T2.text, resize: 'none', outline: 'none', lineHeight: 1.6, boxSizing: 'border-box'}}/>
+        {fallbackText.trim().length > 10 && (
+          <button onClick={() => { setMicError(false); setTranscribeFailed(false); setPhase('coach'); analyzeTranscript(fallbackText.trim()); }} style={{...cs.cta, marginTop: 14}}>
+            Submit →
+          </button>
+        )}
+      </div>
+    )}
   </>);
 
   // ── COACH OBSERVATION ───────────────────────────────────────────────────────
@@ -436,7 +458,7 @@ const HOT_SEAT_SCENARIOS = {
 };
 
 // ─── D3 Simulation Widget — The Hot Seat ─────────────────────────────────────
-export function D3SimWidget({T, T2, isDesktop}) {
+export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const [phase, setPhase] = useState('select');
   const [track] = useState(() => {
     try { return localStorage.getItem('amplifyu_track') || 'ic'; } catch { return 'ic'; }
@@ -459,17 +481,16 @@ export function D3SimWidget({T, T2, isDesktop}) {
 
   // Feedback
   const [feedback, setFeedback] = useState(null);
+  const [micError, setMicError] = useState(false);
+  const [transcribeFailed, setTranscribeFailed] = useState(false);
+  const [fallbackText, setFallbackText] = useState('');
 
   // Refs
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const recRef = useRef(null);
   const timerRef = useRef(null);
   const briefTimerRef = useRef(null);
   const waveRef = useRef(null);
-  const liveRef = useRef('');
-
-  const SpeechRec = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
 
   // Brief countdown
   useEffect(() => {
@@ -482,14 +503,10 @@ export function D3SimWidget({T, T2, isDesktop}) {
     return () => clearTimeout(briefTimerRef.current);
   }, [phase, briefSecs]);
 
-  // Recording timer
+  // Recording timer — soft guide only, no forced cutoff
   useEffect(() => {
-    if (!isRec) return;
-    if (timeLeft > 0) {
-      timerRef.current = setTimeout(() => setTimeLeft(t => t - 1), 1000);
-    } else {
-      doStop();
-    }
+    if (!isRec || timeLeft <= 0) return;
+    timerRef.current = setTimeout(() => setTimeLeft(t => t - 1), 1000);
     return () => clearTimeout(timerRef.current);
   }, [isRec, timeLeft]);
 
@@ -500,56 +517,68 @@ export function D3SimWidget({T, T2, isDesktop}) {
     return () => clearInterval(waveRef.current);
   }, [isRec]);
 
+  // Block the app's "Next"/"Review" nav while actively recording or analysing
+  useEffect(() => {
+    onRecordingChange?.(isRec || phase === 'analyzing');
+  }, [isRec, phase]);
+
   function doStart() {
-    setIsRec(true); setTimeLeft(90); liveRef.current = '';
-    if (SpeechRec) {
-      const rec = new SpeechRec();
-      rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
-      rec.onresult = (e) => {
-        let final = ''; let interim = '';
-        for (let i = 0; i < e.results.length; i++) {
-          if (e.results[i].isFinal) final += e.results[i][0].transcript + ' ';
-          else interim += e.results[i][0].transcript + ' ';
-        }
-        liveRef.current = final || interim;
-      };
-      try { rec.start(); } catch(e) {}
-      recRef.current = rec;
-    }
+    setIsRec(true); setTimeLeft(90);
+    setMicError(false); setTranscribeFailed(false);
+    audioChunksRef.current = [];
     if (navigator.mediaDevices?.getUserMedia) {
       navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
-        audioChunksRef.current = [];
-        const mr = new MediaRecorder(stream);
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
         mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-        mr.onstop = () => stream.getTracks().forEach(t => t.stop());
-        mr.start();
+        mr.start(1000);
         mediaRecRef.current = mr;
-      }).catch(() => {});
+      }).catch(() => { setIsRec(false); setMicError(true); });
+    } else {
+      setIsRec(false); setMicError(true);
     }
+  }
+
+  function stopRecording(cb) {
+    const mr = mediaRecRef.current;
+    if (!mr || mr.state === 'inactive') { cb('', true); return; }
+    mr.onstop = async () => {
+      mr.stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Transcription failed');
+        cb((data.text || '').trim(), false);
+      } catch (err) {
+        console.error('[D3HotSeat] transcribe error:', err);
+        cb('', true);
+      }
+    };
+    try { mr.stop(); } catch(e) { cb('', true); }
   }
 
   function doStop() {
     setIsRec(false);
-    if (recRef.current) { try { recRef.current.stop(); } catch(e) {} recRef.current = null; }
-    const captured = liveRef.current.trim() || '[No speech detected]';
-
-    const finish = () => {
-      if (phase === 'rec1') {
+    const currentPhase = phase;
+    stopRecording((text, failed) => {
+      if (failed) { setTranscribeFailed(true); return; }
+      const captured = text || '[No speech detected]';
+      if (currentPhase === 'rec1') {
         setTranscript1(captured);
         setPhase('transition');
-      } else if (phase === 'rec2') {
+      } else if (currentPhase === 'rec2') {
         setTranscript2(captured);
         setPhase('analyzing');
         analyzeResponses(transcript1, captured);
       }
-    };
-
-    if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
-      mediaRecRef.current.onstop = finish;
-      mediaRecRef.current.stop();
-    } else {
-      finish();
-    }
+    });
   }
 
   async function analyzeResponses(t1, t2) {
@@ -716,6 +745,26 @@ export function D3SimWidget({T, T2, isDesktop}) {
       <button onClick={doStop} style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
         Submit Answer →
       </button>
+      {!isRec && (micError || transcribeFailed) && (
+        <div style={cs.card}>
+          <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+          <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: '0 0 10px'}}>
+            {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Submit Answer to try again.'}
+          </p>
+          <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width: '100%', minHeight: 80, background: 'transparent', border: 'none', borderBottom: '0.5px solid ' + T2.border, padding: '8px 0', fontFamily: T.sans, fontSize: 13, color: T2.text, resize: 'none', outline: 'none', lineHeight: 1.6, boxSizing: 'border-box'}}/>
+          {fallbackText.trim().length > 10 && (
+            <button onClick={() => {
+              setMicError(false); setTranscribeFailed(false);
+              const captured = fallbackText.trim();
+              setFallbackText('');
+              if (phase === 'rec1') { setTranscript1(captured); setPhase('transition'); }
+              else { setTranscript2(captured); setPhase('analyzing'); analyzeResponses(transcript1, captured); }
+            }} style={{...cs.cta, marginTop: 14}}>
+              Submit →
+            </button>
+          )}
+        </div>
+      )}
       <div style={cs.cue}>Pause · Breathe · Respond</div>
     </>);
   }
