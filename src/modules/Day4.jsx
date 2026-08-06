@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { T } from '../theme.js';
+import { useWakeLock } from '../utils.js';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -128,6 +129,7 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
   // Recording
   const [isRec, setIsRec] = useState(false);
+  useWakeLock(isRec);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [transcript1, setTranscript1] = useState('');
   const [transcript2, setTranscript2] = useState('');

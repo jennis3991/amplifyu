@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useWakeLock } from '../utils.js';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -221,6 +222,7 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
   const [exOpen, setExOpen] = useState(false);
   const [char, setChar] = useState(null);
   const [isRec, setIsRec] = useState(false);
+  useWakeLock(isRec);
   const [waveVals, setWaveVals] = useState(Array.from({length:9},()=>0.3+Math.random()*0.3));
   const [debrief, setDebrief] = useState(null);
 

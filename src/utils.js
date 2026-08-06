@@ -16,6 +16,35 @@ s[i]; } else break; }
   return st;
 }
 
+// Keeps the screen awake (via the Screen Wake Lock API, Safari 16.4+) for as
+// long as `active` is true — used to stop iOS auto-locking mid-recording.
+// Only guards against the inactivity timer; a manual lock-button press or
+// backgrounding the app will still interrupt the recording.
+export function useWakeLock(active) {
+  useEffect(() => {
+    if (!active || typeof navigator === 'undefined' || !('wakeLock' in navigator)) return;
+    let lock = null;
+    let cancelled = false;
+    async function request() {
+      try {
+        const l = await navigator.wakeLock.request('screen');
+        if (cancelled) { l.release().catch(() => {}); return; }
+        lock = l;
+      } catch (_) {}
+    }
+    request();
+    function onVisible() {
+      if (document.visibilityState === 'visible' && !lock) request();
+    }
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      cancelled = true;
+      document.removeEventListener('visibilitychange', onVisible);
+      if (lock) { lock.release().catch(() => {}); lock = null; }
+    };
+  }, [active]);
+}
+
 export function useIsDesktop() {
   const [v, setV] = useState(() => typeof window !== "undefined" && window.innerWidth >= 1024);
   useEffect(() => {

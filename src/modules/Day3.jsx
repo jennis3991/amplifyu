@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
+import { useWakeLock } from '../utils.js';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -125,6 +126,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   const [phase, setPhase] = useState('select');
   const [topic, setTopic] = useState(null);
   const [isRec, setIsRec] = useState(false);
+  useWakeLock(isRec);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [coachResult, setCoachResult] = useState(null);
   const [micError, setMicError] = useState(false);
@@ -483,6 +485,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
   // Recording
   const [isRec, setIsRec] = useState(false);
+  useWakeLock(isRec);
   const [timeLeft, setTimeLeft] = useState(90);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [transcript1, setTranscript1] = useState('');

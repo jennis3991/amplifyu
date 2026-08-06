@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
+import { useWakeLock } from '../utils.js';
 
 const D1SIM_KEY = 'au_d1sim_state';
 function loadD1SimState() {
@@ -670,6 +671,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   const [phase, setPhase] = useState('select'); // 'select' | 'record'
   const [sel, setSel] = useState(null);
   const [isRec, setIsRec] = useState(false);
+  useWakeLock(isRec);
   const [recDone, setRecDone] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [aiObs, setAiObs] = useState(null);
@@ -1000,6 +1002,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   const [prompt, setPrompt] = useState(saved.prompt || null);
   const [elapsed, setElapsed] = useState(0);
   const [isRec, setIsRec] = useState(false);
+  useWakeLock(isRec);
   const [transcript, setTranscript] = useState(saved.transcript || '');
   const [fallback, setFallback] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
