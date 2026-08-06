@@ -65,7 +65,12 @@ export function MobileSessionView({
   const d1NavFnRef = useRef(null);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [d1SimRecording, setD1SimRecording] = useState(false);
+  const [d2SimRecording, setD2SimRecording] = useState(false);
   const [d3SimRecording, setD3SimRecording] = useState(false);
+  const [d5RehearsalRecording, setD5RehearsalRecording] = useState(false);
+  const [d5SimRecording, setD5SimRecording] = useState(false);
+  const [d6RehearsalRecording, setD6RehearsalRecording] = useState(false);
+  const [d6SimRecording, setD6SimRecording] = useState(false);
   const [d9SimRecording, setD9SimRecording] = useState(false);
   const [d3NavLabel, setD3NavLabel] = useState(null);
   const d3NavFnRef = useRef(null);
@@ -2155,7 +2160,7 @@ T.goldDark : T2.text4,
       )}
       {isD2 && step==="Simulation" && (
         <>
-          <D2SimWidget T={T} T2={T2} isDesktop={false}/>
+          <D2SimWidget T={T} T2={T2} isDesktop={false} onRecordingChange={setD2SimRecording}/>
         </>
       )}
       {isD2 && step==="Theory" && (
@@ -2272,12 +2277,12 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       )}
        {isD5 && step==="Rehearsal" && (
         <>
-          <D5PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
+          <D5PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))} onRecordingChange={setD5RehearsalRecording}/>
         </>
       )}
       {isD5 && step==="Simulation" && (
         <>
-          <D5SimWidget T={T} T2={T2} isDesktop={false}/>
+          <D5SimWidget T={T} T2={T2} isDesktop={false} onRecordingChange={setD5SimRecording}/>
         </>
       )}
       {isD6 && step==="Insight" && (
@@ -2417,12 +2422,12 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
         );
       })()}
       {isD6 && step==="Rehearsal" && (
-        <D6PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
+        <D6PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))} onRecordingChange={setD6RehearsalRecording}/>
       )}
       {isD6 && step==="Simulation" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Real-World Conversation Coaching</h2>
-          <D6SimWidget T={T} T2={T2} isDesktop={false}/>
+          <D6SimWidget T={T} T2={T2} isDesktop={false} onRecordingChange={setD6SimRecording}/>
         </>
       )}
       {isD11 && step==="Insight" && (
@@ -3201,7 +3206,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         )}
         {idx < STEPS.length-1 && (() => {
-          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone);
+          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD2 && step==="Simulation" && d2SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD5 && step==="Rehearsal" && d5RehearsalRecording)||(isD5 && step==="Simulation" && d5SimRecording)||(isD6 && step==="Rehearsal" && d6RehearsalRecording)||(isD6 && step==="Simulation" && d6SimRecording)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone);
           const navLabel = isD1 && step==="Rehearsal" && d1NavLabel
             ? d1NavLabel
             : isD3 && step==="Rehearsal" && d3NavLabel

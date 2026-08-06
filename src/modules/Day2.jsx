@@ -1,5 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
+import { useWakeLock } from '../utils.js';
+
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
 
 function findFillerClusters(text) {
   if (!text) return [];
@@ -74,7 +84,7 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
 }
 
 // ─── D2 SIM WIDGET — voice recording + AI vocal coach ────────────────────────
-export function D2SimWidget({T, T2, isDesktop}) {
+export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const PROMPTS = {
     Presence:[
       "Introduce yourself as if you're speaking to a room of 500 people.",
@@ -103,6 +113,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
   const [prompt, setPrompt] = useState(null);
   const [timeLeft, setTimeLeft] = useState(90);
   const [isRec, setIsRec] = useState(false);
+  useWakeLock(isRec);
   const [transcript, setTranscript] = useState('');
   const [fallback, setFallback] = useState('');
   const [feedback, setFeedback] = useState(null);
@@ -115,21 +126,22 @@ export function D2SimWidget({T, T2, isDesktop}) {
   const [waveAnim, setWaveAnim] = useState(0);
   const [selectedFocus, setSelectedFocus] = useState([]);
   const [recMetrics, setRecMetrics] = useState(null);
+  const [micError, setMicError] = useState(false);
+  const [transcribeFailed, setTranscribeFailed] = useState(false);
 
   const audioRef = useRef(null);
-  const recRef = useRef(null);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
   const timerRef = useRef(null);
-  const liveRef = useRef('');
   const waveRef = useRef(null);
   const startTimeRef = useRef(null);
 
-  const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
+  useEffect(()=>{
+    onRecordingChange?.(isRec || phase==='analyzing');
+  },[isRec, phase]);
 
   useEffect(()=>{
     if(isRec&&timeLeft>0){timerRef.current=setTimeout(()=>setTimeLeft(t=>t-1),1000);}
-    else if(isRec&&timeLeft===0){doStop();}
     return ()=>clearTimeout(timerRef.current);
   },[isRec,timeLeft]);
 
@@ -169,35 +181,58 @@ export function D2SimWidget({T, T2, isDesktop}) {
   }
 
   function doStart(){
-    setIsRec(true);liveRef.current='';setTranscript('');setAudioURL(null);
+    setIsRec(true);setTranscript('');setAudioURL(null);
+    setMicError(false);setTranscribeFailed(false);
     startTimeRef.current = Date.now();
-    if(SpeechRec){
-      const rec=new SpeechRec();
-      rec.continuous=true;rec.interimResults=true;rec.lang='en-US';
-      rec.onresult=(e)=>{let t='';for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript+' ';liveRef.current=t;setTranscript(t);};
-      try{rec.start();}catch(e){}
-      recRef.current=rec;
-    }
+    audioChunksRef.current=[];
     if(navigator.mediaDevices?.getUserMedia){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-        const mr=new MediaRecorder(stream);
-        audioChunksRef.current=[];
-        mr.ondataavailable=e=>audioChunksRef.current.push(e.data);
-        mr.onstop=()=>{const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});setAudioURL(URL.createObjectURL(blob));stream.getTracks().forEach(t=>t.stop());};
-        mr.start();mediaRecRef.current=mr;
-      }).catch(()=>{});
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
+        mr.ondataavailable=e=>{if(e.data.size>0)audioChunksRef.current.push(e.data);};
+        mr.start(1000);mediaRecRef.current=mr;
+      }).catch(()=>{ setIsRec(false); setMicError(true); });
+    } else {
+      setIsRec(false); setMicError(true);
     }
+  }
+
+  function stopRecording(cb){
+    const mr=mediaRecRef.current;
+    if(!mr||mr.state==='inactive'){ cb('', true); return; }
+    mr.onstop=async()=>{
+      const blobType=mr.mimeType||'audio/webm';
+      const blob=new Blob(audioChunksRef.current,{type:blobType});
+      setAudioURL(URL.createObjectURL(blob));
+      mr.stream.getTracks().forEach(t=>t.stop());
+      try{
+        const b64=await blobToB64(blob);
+        const res=await fetch('/api/transcribe',{
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({b64, mimeType:blobType}),
+        });
+        const data=await res.json();
+        if(!res.ok) throw new Error(data.error||'Transcription failed');
+        cb((data.text||'').trim(), false);
+      }catch(err){
+        console.error('[D2Voice] transcribe error:', err);
+        cb('', true);
+      }
+    };
+    try{ mr.stop(); }catch(e){ cb('', true); }
   }
 
   function doStop(){
     const elapsedSec = startTimeRef.current ? Math.round((Date.now() - startTimeRef.current) / 1000) : 0;
     setIsRec(false);clearTimeout(timerRef.current);
-    if(recRef.current){try{recRef.current.stop();}catch(e){}}
-    if(mediaRecRef.current&&mediaRecRef.current.state!=='inactive'){try{mediaRecRef.current.stop();}catch(e){}}
-    const rawText = SpeechRec ? liveRef.current : fallback;
-    const m = computeMetrics(rawText, elapsedSec);
-    setRecMetrics(m);
-    analyzeText(rawText, m);
+    stopRecording((text, failed) => {
+      if (failed) { setTranscribeFailed(true); return; }
+      setTranscript(text);
+      const m = computeMetrics(text, elapsedSec);
+      setRecMetrics(m);
+      analyzeText(text, m);
+    });
   }
 
   async function analyzeText(text, metrics){
@@ -245,7 +280,7 @@ export function D2SimWidget({T, T2, isDesktop}) {
     return Math.max(0.05, Math.min(0.92, idx / fullText.length));
   }
 
-  const rawText = SpeechRec ? transcript : fallback;
+  const rawText = transcript || fallback;
   const STATIC_MARKERS=[{pos:0.18,label:"Pace rush",color:"#C8A46A"},{pos:0.44,label:"Energy dip",color:"#B05C4A"},{pos:0.66,label:"Strong moment",color:"#527060"},{pos:0.85,label:"Pitch drop",color:"#B05C4A"}];
   const aiMarkers=(feedback?.moments && rawText)
     ? feedback.moments.map((m,i)=>{const pos=quoteToPos(rawText,m.quote);return {pos:pos!=null?pos:STATIC_MARKERS[i]?.pos??0.2+i*0.2,label:m.label,color:m.color||"#C8A46A",quote:m.quote};}).sort((a,b)=>a.pos-b.pos)
@@ -378,17 +413,36 @@ export function D2SimWidget({T, T2, isDesktop}) {
             ))}
           </div>
         )}
-        {!SpeechRec&&isRec&&(
-          <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Type as you speak…" style={{width:"100%",minHeight:80,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,marginBottom:12}}/>
-        )}
         <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
           {!isRec?(
-            <button onClick={doStart} style={{...cs.cta,width:"auto",padding:"12px 32px"}}>Start Recording →</button>
+            <button onClick={doStart} style={{...cs.cta,width:"auto",padding:"12px 32px"}}>{(micError||transcribeFailed)?"Try Recording Again →":"Start Recording →"}</button>
           ):(
             <button onClick={doStop} style={{...cs.cta,width:"auto",padding:"12px 32px",background:"#8A4A3A"}}>Stop & Analyse →</button>
           )}
           {isRec&&<button onClick={()=>{setTimeLeft(t=>Math.min(t+30,120));}} style={{padding:"12px 20px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:12,cursor:"pointer",fontFamily:T.sans}}>+30s</button>}
         </div>
+        {!isRec && (micError || transcribeFailed) && (
+          <div style={{...cs.card, textAlign:"left", marginTop:12}}>
+            <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:'0 0 10px'}}>
+              {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
+            </p>
+            <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Type what you'd say…" style={{width:"100%",minHeight:80,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
+            {fallback.trim().length>10 && (
+              <button onClick={()=>{
+                setMicError(false); setTranscribeFailed(false);
+                const elapsedSec = startTimeRef.current ? Math.round((Date.now() - startTimeRef.current) / 1000) : 0;
+                const text = fallback.trim();
+                setTranscript(text);
+                const m = computeMetrics(text, elapsedSec);
+                setRecMetrics(m);
+                analyzeText(text, m);
+              }} style={{...cs.cta,marginTop:14}}>
+                Submit →
+              </button>
+            )}
+          </div>
+        )}
       </div>
       <button onClick={()=>setPhase('choose')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Choose a different prompt</button>
     </div>

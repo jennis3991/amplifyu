@@ -1,4 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
+import { useWakeLock } from '../utils.js';
+
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
 
 // ─── Shared: sequential dot animation (mirrors Day 3) ────────────────────────
 function useSequentialDots(active) {
@@ -36,25 +46,31 @@ const SETUP_TOPICS = [
     label:"What's one thing companies spend too much time on?" },
 ];
 
-export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
+export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingChange}) {
   const [phase,       setPhase]       = useState('bridge');
   const [revealCount, setRevealCount] = useState(0);
   const [summaryVis,  setSummaryVis]  = useState(false);
   const [topic,       setTopic]       = useState(null);
   const [countdown,   setCountdown]   = useState(10);
   const [isRec,       setIsRec]       = useState(false);
+  useWakeLock(isRec);
   const [waveVals,    setWaveVals]    = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [coachResult, setCoachResult] = useState(null);
   const [preRow,      setPreRow]      = useState(0);
+  const [micError,    setMicError]    = useState(false);
+  const [transcribeFailed, setTranscribeFailed] = useState(false);
+  const [fallbackText, setFallbackText] = useState('');
 
   const mediaRecRef  = useRef(null);
-  const recRef       = useRef(null);
+  const audioChunksRef = useRef([]);
   const waveRef      = useRef(null);
-  const liveRef      = useRef('');
   const cdRef        = useRef(null);
 
-  const SpeechRec = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
   const dotCount  = useSequentialDots(phase === 'countdown');
+
+  useEffect(() => {
+    onRecordingChange?.(isRec || phase === 'analyzing');
+  }, [isRec, phase]);
 
   // Demo sequential reveal
   useEffect(() => {
@@ -101,47 +117,53 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
   }, [phase]);
 
   function doStart() {
-    setIsRec(true); liveRef.current = '';
-    if (SpeechRec) {
-      const rec = new SpeechRec();
-      rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
-      rec.onresult = (e) => {
-        let f = '', interim = '';
-        for (let i = 0; i < e.results.length; i++) {
-          if (e.results[i].isFinal) f += e.results[i][0].transcript + ' ';
-          else interim += e.results[i][0].transcript + ' ';
-        }
-        liveRef.current = f.trim() || interim.trim();
-      };
-      try { rec.start(); } catch(e) {}
-      recRef.current = rec;
-    }
+    setIsRec(true);
+    setMicError(false); setTranscribeFailed(false);
+    audioChunksRef.current = [];
     if (navigator.mediaDevices?.getUserMedia) {
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
-        const mr = new MediaRecorder(stream);
-        mr.ondataavailable = e => { if (e.data.size > 0) {} };
-        mr.onstop = () => stream.getTracks().forEach(t => t.stop());
-        mr.start();
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
+        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+        mr.start(1000);
         mediaRecRef.current = mr;
-      }).catch(() => {});
+      }).catch(() => { setIsRec(false); setMicError(true); });
+    } else {
+      setIsRec(false); setMicError(true);
     }
+  }
+
+  function stopRecording(cb) {
+    const mr = mediaRecRef.current;
+    if (!mr || mr.state === 'inactive') { cb('', true); return; }
+    mr.onstop = async () => {
+      mr.stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Transcription failed');
+        cb((data.text || '').trim(), false);
+      } catch (err) {
+        console.error('[D5Setup] transcribe error:', err);
+        cb('', true);
+      }
+    };
+    try { mr.stop(); } catch(e) { cb('', true); }
   }
 
   function doStop() {
     setIsRec(false);
-    if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
-      mediaRecRef.current.onstop = () => {};
-      mediaRecRef.current.stop();
-    }
-    function proceed(text) { setPhase('analyzing'); analyzeTranscript(text.trim() || ''); }
-    if (recRef.current) {
-      const rec = recRef.current; recRef.current = null;
-      const fallback = setTimeout(() => proceed(liveRef.current), 1800);
-      rec.onend = () => { clearTimeout(fallback); proceed(liveRef.current); };
-      try { rec.stop(); } catch(e) { clearTimeout(fallback); proceed(liveRef.current); }
-    } else {
-      proceed(liveRef.current);
-    }
+    stopRecording((text, failed) => {
+      if (failed) { setTranscribeFailed(true); return; }
+      setPhase('analyzing');
+      analyzeTranscript(text);
+    });
   }
 
   async function analyzeTranscript(text) {
@@ -298,9 +320,29 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation}) {
           <span style={{fontFamily:T.sans, fontSize:11, color:T2.text3}}>Recording — tap Done when finished.</span>
         </div>
       </div>
-      <button onClick={doStop} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
-        Done →
-      </button>
+      {isRec ? (
+        <button onClick={doStop} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
+          Done →
+        </button>
+      ) : (micError || transcribeFailed) ? (
+        <button onClick={doStart} style={cs.cta}>
+          Try Recording Again →
+        </button>
+      ) : null}
+      {!isRec && (micError || transcribeFailed) && (
+        <div style={cs.card}>
+          <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+          <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px'}}>
+            {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
+          </p>
+          <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width:'100%', minHeight:80, background:'transparent', border:'none', borderBottom:'0.5px solid '+T2.border, padding:'8px 0', fontFamily:T.sans, fontSize:13, color:T2.text, resize:'none', outline:'none', lineHeight:1.6, boxSizing:'border-box'}}/>
+          {fallbackText.trim().length > 10 && (
+            <button onClick={() => { setMicError(false); setTranscribeFailed(false); const t = fallbackText.trim(); setFallbackText(''); setPhase('analyzing'); analyzeTranscript(t); }} style={{...cs.cta, marginTop:14}}>
+              Submit →
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 
@@ -365,7 +407,7 @@ const BOARDROOM_ICONS = {
   trust:  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>,
 };
 
-export function D5SimWidget({T, T2, isDesktop}) {
+export function D5SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const [phase,        setPhase]        = useState('select');
   const [topic,        setTopic]        = useState(null);
   const [cardVisible,  setCardVisible]  = useState(false);
@@ -373,23 +415,27 @@ export function D5SimWidget({T, T2, isDesktop}) {
   const [recVisible,   setRecVisible]   = useState(false);
   const [countdown,    setCountdown]    = useState(10);
   const [isRec,        setIsRec]        = useState(false);
+  useWakeLock(isRec);
   const [waveVals,     setWaveVals]     = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [preResult,    setPreResult]    = useState(null);
   const [revealRow,    setRevealRow]    = useState(0);
   const [revealCoach,  setRevealCoach]  = useState(false);
   const [debriefResult,setDebriefResult]= useState(null);
+  const [micError,     setMicError]     = useState(false);
+  const [transcribeFailed, setTranscribeFailed] = useState(false);
+  const [fallbackText, setFallbackText] = useState('');
 
   const mediaRecRef      = useRef(null);
   const audioChunksRef   = useRef([]);
-  const recRef           = useRef(null);
   const waveRef          = useRef(null);
-  const liveRef          = useRef('');
   const transcript1Ref   = useRef('');
   const topicRef         = useRef(null);
   const thinkingTargetRef= useRef('rec1');
   const countdownIdRef   = useRef(null);
 
-  const SpeechRec = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
+  useEffect(() => {
+    onRecordingChange?.(isRec || phase === 'analyzing1' || phase === 'analyzing2');
+  }, [isRec, phase]);
 
   // Waveform animation
   useEffect(() => {
@@ -420,7 +466,7 @@ export function D5SimWidget({T, T2, isDesktop}) {
           setTimeout(() => {
             setCardVisible(false); setCardOut(false); setRecVisible(true);
             setIsRec(true);
-            startSpeechRec();
+            startRecording();
           }, 400);
           setTimeout(() => { setPhase(thinkingTargetRef.current); }, 900);
         }
@@ -440,53 +486,51 @@ export function D5SimWidget({T, T2, isDesktop}) {
     return () => [t1,t2,t3,t4].forEach(clearTimeout);
   }, [phase]);
 
-  function startSpeechRec() {
-    liveRef.current = '';
-    if (SpeechRec) {
-      const rec = new SpeechRec();
-      rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
-      rec.onresult = (e) => {
-        let final = ''; let interim = '';
-        for (let i = 0; i < e.results.length; i++) {
-          if (e.results[i].isFinal) final += e.results[i][0].transcript + ' ';
-          else interim += e.results[i][0].transcript + ' ';
-        }
-        liveRef.current = final || interim;
-      };
-      try { rec.start(); } catch(err) {}
-      recRef.current = rec;
-    }
+  function startRecording() {
+    setMicError(false); setTranscribeFailed(false);
+    audioChunksRef.current = [];
     if (navigator.mediaDevices?.getUserMedia) {
       navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
-        audioChunksRef.current = [];
-        const mr = new MediaRecorder(stream);
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
         mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-        mr.onstop = () => stream.getTracks().forEach(t => t.stop());
-        mr.start();
+        mr.start(1000);
         mediaRecRef.current = mr;
-      }).catch(() => {});
+      }).catch(() => { setIsRec(false); setMicError(true); });
+    } else {
+      setIsRec(false); setMicError(true);
     }
   }
 
-  function stopRec(onText) {
-    setIsRec(false);
-    if (mediaRecRef.current && mediaRecRef.current.state !== 'inactive') {
-      mediaRecRef.current.onstop = () => {};
-      mediaRecRef.current.stop();
-    }
-    if (recRef.current) {
-      const rec = recRef.current; recRef.current = null;
-      const fallback = setTimeout(() => onText(liveRef.current), 1800);
-      rec.onend = () => { clearTimeout(fallback); onText(liveRef.current); };
-      try { rec.stop(); } catch(e) { clearTimeout(fallback); onText(liveRef.current); }
-    } else {
-      onText(liveRef.current);
-    }
+  function stopRecording(cb) {
+    const mr = mediaRecRef.current;
+    if (!mr || mr.state === 'inactive') { cb('', true); return; }
+    mr.onstop = async () => {
+      mr.stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Transcription failed');
+        cb((data.text || '').trim(), false);
+      } catch (err) {
+        console.error('[D5Boardroom] transcribe error:', err);
+        cb('', true);
+      }
+    };
+    try { mr.stop(); } catch(e) { cb('', true); }
   }
 
   function doStop1() {
-    stopRec(text => {
-      const t1 = text.trim() || '[first answer]';
+    setIsRec(false);
+    stopRecording((text, failed) => {
+      if (failed) { setTranscribeFailed(true); return; }
+      const t1 = text || '[first answer]';
       transcript1Ref.current = t1;
       setPhase('analyzing1');
       analyzePRE(t1);
@@ -494,8 +538,10 @@ export function D5SimWidget({T, T2, isDesktop}) {
   }
 
   function doStop2() {
-    stopRec(text => {
-      const t2 = text.trim() || '[second answer]';
+    setIsRec(false);
+    stopRecording((text, failed) => {
+      if (failed) { setTranscribeFailed(true); return; }
+      const t2 = text || '[second answer]';
       setPhase('analyzing2');
       analyzeDebrief(transcript1Ref.current, t2);
     });
@@ -597,7 +643,8 @@ Return only valid JSON with all fields present.`,
     setPhase('select'); setTopic(null); topicRef.current = null;
     setPreResult(null); setDebriefResult(null); setIsRec(false);
     setRevealRow(0); setRevealCoach(false);
-    liveRef.current = ''; transcript1Ref.current = '';
+    setMicError(false); setTranscribeFailed(false); setFallbackText('');
+    transcript1Ref.current = '';
   }
 
   const cs = {
@@ -711,9 +758,34 @@ Return only valid JSON with all fields present.`,
         </div>
       ))}
     </div>
-    <button onClick={doStop1} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
-      Done →
-    </button>
+    {isRec ? (
+      <button onClick={doStop1} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
+        Done →
+      </button>
+    ) : (micError || transcribeFailed) ? (
+      <button onClick={() => { setIsRec(true); startRecording(); }} style={cs.cta}>
+        Try Recording Again →
+      </button>
+    ) : null}
+    {!isRec && (micError || transcribeFailed) && (
+      <div style={cs.card}>
+        <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+        <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px'}}>
+          {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
+        </p>
+        <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width:'100%', minHeight:80, background:'transparent', border:'none', borderBottom:'0.5px solid '+T2.border, padding:'8px 0', fontFamily:T.sans, fontSize:13, color:T2.text, resize:'none', outline:'none', lineHeight:1.6, boxSizing:'border-box'}}/>
+        {fallbackText.trim().length > 10 && (
+          <button onClick={() => {
+            setMicError(false); setTranscribeFailed(false);
+            const t1 = fallbackText.trim(); setFallbackText('');
+            transcript1Ref.current = t1;
+            setPhase('analyzing1'); analyzePRE(t1);
+          }} style={{...cs.cta, marginTop:14}}>
+            Submit →
+          </button>
+        )}
+      </div>
+    )}
   </>);
 
   // ── ANALYZING 1 ────────────────────────────────────────────────────────────
@@ -795,9 +867,33 @@ Return only valid JSON with all fields present.`,
         </div>
       ))}
     </div>
-    <button onClick={doStop2} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
-      Done →
-    </button>
+    {isRec ? (
+      <button onClick={doStop2} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
+        Done →
+      </button>
+    ) : (micError || transcribeFailed) ? (
+      <button onClick={() => { setIsRec(true); startRecording(); }} style={cs.cta}>
+        Try Recording Again →
+      </button>
+    ) : null}
+    {!isRec && (micError || transcribeFailed) && (
+      <div style={cs.card}>
+        <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+        <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px'}}>
+          {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
+        </p>
+        <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width:'100%', minHeight:80, background:'transparent', border:'none', borderBottom:'0.5px solid '+T2.border, padding:'8px 0', fontFamily:T.sans, fontSize:13, color:T2.text, resize:'none', outline:'none', lineHeight:1.6, boxSizing:'border-box'}}/>
+        {fallbackText.trim().length > 10 && (
+          <button onClick={() => {
+            setMicError(false); setTranscribeFailed(false);
+            const t2 = fallbackText.trim(); setFallbackText('');
+            setPhase('analyzing2'); analyzeDebrief(transcript1Ref.current, t2);
+          }} style={{...cs.cta, marginTop:14}}>
+            Submit →
+          </button>
+        )}
+      </div>
+    )}
   </>);
 
   // ── ANALYZING 2 ────────────────────────────────────────────────────────────

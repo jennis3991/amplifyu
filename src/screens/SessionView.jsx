@@ -51,7 +51,12 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
   const [d1SimRecording, setD1SimRecording] = useState(false);
+  const [d2SimRecording, setD2SimRecording] = useState(false);
   const [d3SimRecording, setD3SimRecording] = useState(false);
+  const [d5RehearsalRecording, setD5RehearsalRecording] = useState(false);
+  const [d5SimRecording, setD5SimRecording] = useState(false);
+  const [d6RehearsalRecording, setD6RehearsalRecording] = useState(false);
+  const [d6SimRecording, setD6SimRecording] = useState(false);
   const [d9SimRecording, setD9SimRecording] = useState(false);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
@@ -2941,7 +2946,7 @@ setAmbitionSaved(true); } catch {}
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Simulation · Day 2</div>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:32 }}>Hear how your voice actually sounds.</h2>
-          <D2SimWidget T={T} T2={T2} isDesktop={true}/>
+          <D2SimWidget T={T} T2={T2} isDesktop={true} onRecordingChange={setD2SimRecording}/>
         </div>
       );
 
@@ -3160,13 +3165,13 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <D5PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
+          <D5PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))} onRecordingChange={setD5RehearsalRecording}/>
         </div>
       );
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <D5SimWidget T={T} T2={T2} isDesktop={true}/>
+          <D5SimWidget T={T} T2={T2} isDesktop={true} onRecordingChange={setD5SimRecording}/>
         </div>
       );
 
@@ -3362,13 +3367,13 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <D6PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
+          <D6PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))} onRecordingChange={setD6RehearsalRecording}/>
         </div>
       );
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <D6SimWidget T={T} T2={T2} isDesktop={true}/>
+          <D6SimWidget T={T} T2={T2} isDesktop={true} onRecordingChange={setD6SimRecording}/>
         </div>
       );
 
@@ -4748,18 +4753,18 @@ setAmbitionSaved(true); } catch {}
                     setIdx(i => i + 1);
                   }
                 }}
-                disabled={(isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)}
+                disabled={(isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)}
                 className="au-cta"
                 style={{
                   display: "flex", alignItems: "center", gap: 10,
                   padding: "9px 24px", borderRadius: 5,
-                  background: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? "rgba(138,158,132,0.3)" : T.gold,
+                  background: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? "rgba(138,158,132,0.3)" : T.gold,
                   border: "none",
                   color: "white", fontSize: 13, fontWeight: 600,
-                  cursor: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? "not-allowed" : "pointer",
+                  cursor: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? "not-allowed" : "pointer",
                   fontFamily: T.sans, letterSpacing: "0.1px",
                   boxShadow: "0 2px 16px rgba(138,158,132,0.3)",
-                  opacity: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? 0.5 : 1,
+                  opacity: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? 0.5 : 1,
                 }}>
                 {isD1 && step === "Rehearsal" && d1NavLabel
                   ? d1NavLabel
