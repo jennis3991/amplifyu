@@ -426,8 +426,11 @@ Return ONLY valid JSON:
         <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:'0 0 10px'}}>
           Choose one connection habit to focus on, then navigate a realistic workplace conversation.
         </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:0}}>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:'0 0 10px'}}>
           Your AmplifyU Coach will assess how well you adapt your style and provide personalised feedback on your listening, curiosity, empathy and ability to build genuine rapport.
+        </p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:0}}>
+          Each conversation runs for <strong>3 back-and-forth exchanges</strong> — record your answer, wait a moment while they respond in character, then record your next answer. You'll see "Start Recording" appear three times in total.
         </p>
       </div>
       <div style={{...cs.card,borderLeft:'2px solid '+T.gold,padding:0,overflow:'hidden'}}>
@@ -488,6 +491,7 @@ Return ONLY valid JSON:
           );
         })}
       </div>
+      <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,textAlign:'center',margin:0}}>You'll be asked 3 questions in a row — record your answer, then wait a moment while they respond in character.</p>
       <button onClick={()=>{if(char){resetSession();setPhase('turn1');}}} disabled={!char}
         style={{...cs.cta,opacity:char?1:0.4,cursor:char?'pointer':'default'}}>
         Start the Conversation →
@@ -505,10 +509,13 @@ Return ONLY valid JSON:
         <div style={cs.card}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14}}>
             <div style={cs.label}>{char.label}</div>
-            <div style={{display:'flex',gap:5}}>
-              {[1,2,3].map(n=>(
-                <div key={n} style={{width:n<turnNum?24:8,height:6,borderRadius:3,background:n<turnNum?T.gold:n===turnNum?'rgba(138,158,132,0.6)':'rgba(138,158,132,0.2)',transition:'all 0.3s'}}/>
-              ))}
+            <div style={{display:'flex',alignItems:'center',gap:8}}>
+              <span style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T2.text3,letterSpacing:'0.5px'}}>Question {turnNum} of 3</span>
+              <div style={{display:'flex',gap:5}}>
+                {[1,2,3].map(n=>(
+                  <div key={n} style={{width:n<turnNum?24:8,height:6,borderRadius:3,background:n<turnNum?T.gold:n===turnNum?'rgba(138,158,132,0.6)':'rgba(138,158,132,0.2)',transition:'all 0.3s'}}/>
+                ))}
+              </div>
             </div>
           </div>
           <div style={{padding:'12px 14px',background:T2.bg,borderRadius:4,marginBottom:16}}>
