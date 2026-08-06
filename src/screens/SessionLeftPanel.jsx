@@ -50,7 +50,9 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Example") return (
-      <div style={{...d4Dark, background:"#000"}}>
+      <div style={d4Dark}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+        {d4Ol}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Masters of Brevity</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:380, lineHeight:1.2 }}>The best communicators say more with less.</p>
@@ -98,7 +100,9 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Example") return (
-      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+      <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Communication in Action</div>
@@ -188,7 +192,7 @@ export function SessionLeftPanel({
     );
     if (step === "Example") return (
       <div style={d10Dark}>
-        <div className="au-hero-scene" style={{ position:"absolute", inset:0 }}><Scene name="pie" height={900} day={10}/></div>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
         {d10Ol}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Performance in the Wild</div>
@@ -247,8 +251,9 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Example") return (
-      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 35% 25%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
+      <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+        {d3Ol}
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Masters of the Pause</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:380, lineHeight:1.2 }}>The best speakers use silence the way musicians use rests.</p>
@@ -303,7 +308,8 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Example") return (
-      <div style={{ height:"100%", background:"#0A0804", display:"flex", flexDirection:"column", justifyContent:"flex-end", position:"relative", overflow:"hidden" }}>
+      <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", position:"relative", overflow:"hidden" }}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.09) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
@@ -357,7 +363,9 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Example") return (
-      <div style={{ background:"#0E0B08", height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+      <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(183,154,107,0.06) 0%, transparent 60%)" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Storytelling in the Wild</div>
@@ -426,8 +434,9 @@ export function SessionLeftPanel({
       </div>
     );
     if (step === "Example") return (
-      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
+      <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+        {d9Overlay}
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           {d9Label("Connection in Action")}
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>The most connected people listen more than they speak.</p>
@@ -573,7 +582,9 @@ export function SessionLeftPanel({
    // ── Example — D2/D5 get cinematic text panels; others get before/after ──────
   if (step === "Example") {
     if (isD2) return (
-      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
+      <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Voice in Action</div>
@@ -584,7 +595,9 @@ export function SessionLeftPanel({
       </div>
     );
     if (isD5) return (
-      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
+      <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>PRE in Action</div>
@@ -595,7 +608,9 @@ export function SessionLeftPanel({
       </div>
     );
     if (isD6) return (
-      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
+      <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Masters Under Pressure</div>
@@ -606,7 +621,9 @@ export function SessionLeftPanel({
       </div>
     );
     if (isD11) return (
-      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
+      <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Iconic Brands</div>
@@ -617,7 +634,9 @@ export function SessionLeftPanel({
       </div>
     );
     if (isD12) return (
-      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
+      <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Presence in the Wild</div>
@@ -628,7 +647,9 @@ export function SessionLeftPanel({
       </div>
     );
     if (isD14) return (
-      <div style={{ height:"100%", background:"#0E0B08", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative" }}>
+      <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
+        <img src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Great Communicators Are Made</div>
