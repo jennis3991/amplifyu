@@ -58,6 +58,7 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const [d6RehearsalRecording, setD6RehearsalRecording] = useState(false);
   const [d6SimRecording, setD6SimRecording] = useState(false);
   const [d9SimRecording, setD9SimRecording] = useState(false);
+  const [d10SimRecording, setD10SimRecording] = useState(false);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
   function saveBook(title) {
@@ -658,7 +659,7 @@ setAmbitionSaved(true); } catch {}
     };
 
     // ── D10 RightContent — Day 10: Performance ────────────────────────────────
-    const D10RightContent = () => {
+    const D10RightContent = ({onRecordingChange}) => {
       const [simInput, setSimInput] = useState("");
       const [sarS, setSarS] = useState(""); const [sarA, setSarA] = useState(""); const [sarR, setSarR] = useState("");
       const [sarResult, setSarResult] = useState(""); const [sarLoading, setSarLoading] = useState(false);
@@ -670,14 +671,16 @@ setAmbitionSaved(true); } catch {}
       const [d10PracticePhase, setD10PracticePhase] = useState('intro');
       const [simPhase, setSimPhase] = useState('intro');
       const [activeScenario, setActiveScenario] = useState(null);
-      const [simTranscript, setSimTranscript] = useState('');
       const [simFallback, setSimFallback] = useState('');
       const [simResult, setSimResult] = useState(null);
       const [simIsRec, setSimIsRec] = useState(false);
       const [simTimeLeft, setSimTimeLeft] = useState(30);
       const [simWave, setSimWave] = useState(Array(10).fill(0.3));
-      const simRecRef = useRef(null); const simTimerRef = useRef(null); const simWaveRef = useRef(null); const simLiveRef = useRef('');
-      const SpeechRec10 = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
+      const [simMicError, setSimMicError] = useState(false);
+      const [simTranscribeFailed, setSimTranscribeFailed] = useState(false);
+      const simTimerRef = useRef(null);
+      const simMediaRecRef = useRef(null); const simChunksRef = useRef([]); const simMimeRef = useRef("audio/webm");
+      const simStreamRef = useRef(null); const simWaveIntRef = useRef(null); const simCtxRef = useRef(null);
       // SAR voice builder state
       const [sarStep, setSarStep] = useState(0);
       const [sarTranscribing, setSarTranscribing] = useState(false);
@@ -687,19 +690,55 @@ setAmbitionSaved(true); } catch {}
       const sarMRRef = useRef(null); const sarChunksRef = useRef([]); const sarMimeRef = useRef("audio/webm");
       const sarStreamRef = useRef(null); const sarWaveIntRef = useRef(null); const sarCtxRef = useRef(null);
 
-      useEffect(()=>{ if(!simIsRec){clearInterval(simWaveRef.current);return;} simWaveRef.current=setInterval(()=>setSimWave(Array.from({length:10},()=>0.15+Math.random()*0.85)),130); return()=>clearInterval(simWaveRef.current); },[simIsRec]);
-      useEffect(()=>{ if(simIsRec&&simTimeLeft>0){simTimerRef.current=setTimeout(()=>setSimTimeLeft(t=>t-1),1000);} else if(simIsRec&&simTimeLeft===0){doSimStop();} return()=>clearTimeout(simTimerRef.current); },[simIsRec,simTimeLeft]);
+      useEffect(()=>{ if(simIsRec&&simTimeLeft>0){simTimerRef.current=setTimeout(()=>setSimTimeLeft(t=>t-1),1000);} return()=>clearTimeout(simTimerRef.current); },[simIsRec,simTimeLeft]);
       useEffect(()=>{ if(!sarIsRec||sarGuideTime<=0)return; const t=setTimeout(()=>setSarGuideTime(g=>Math.max(0,g-1)),1000); return()=>clearTimeout(t); },[sarIsRec,sarGuideTime]);
       useEffect(()=>()=>{ clearInterval(sarWaveIntRef.current); if(sarStreamRef.current)sarStreamRef.current.getTracks().forEach(t=>t.stop()); try{if(sarCtxRef.current)sarCtxRef.current.close();}catch{} },[]);
+      useEffect(()=>()=>{ clearInterval(simWaveIntRef.current); if(simStreamRef.current)simStreamRef.current.getTracks().forEach(t=>t.stop()); try{if(simCtxRef.current)simCtxRef.current.close();}catch{} },[]);
+      useEffect(()=>{ onRecordingChange?.(simIsRec); },[simIsRec]);
 
-      function doSimStart(){
-        simLiveRef.current=''; setSimTranscript(''); setSimIsRec(true); setSimTimeLeft(30); setSimPhase('recording');
-        if(SpeechRec10){ const r=new SpeechRec10(); r.continuous=true; r.interimResults=true; r.onresult=e=>{let t='';for(let i=0;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+' ';simLiveRef.current=t;setSimTranscript(t);}; try{r.start();}catch(e){} simRecRef.current=r; }
+      function simBlobToB64(blob){return new Promise((ok,fail)=>{const r=new FileReader();r.onload=()=>ok(r.result.split(",")[1]);r.onerror=fail;r.readAsDataURL(blob);});}
+      async function doSimStart(){
+        setSimMicError(false); setSimTranscribeFailed(false);
+        try{
+          const stream=await navigator.mediaDevices.getUserMedia({audio:true,video:false});
+          simStreamRef.current=stream;
+          const ctx=new (window.AudioContext||window.webkitAudioContext)();
+          simCtxRef.current=ctx;
+          const src=ctx.createMediaStreamSource(stream);
+          const analyser=ctx.createAnalyser(); analyser.fftSize=64; src.connect(analyser);
+          const fd=new Uint8Array(analyser.frequencyBinCount);
+          simWaveIntRef.current=setInterval(()=>{analyser.getByteFrequencyData(fd);setSimWave(Array.from({length:10},(_,i)=>Math.max(0.1,fd[Math.floor(i*fd.length/10)]/255)));},100);
+          const mt=MediaRecorder.isTypeSupported("audio/webm;codecs=opus")?"audio/webm;codecs=opus":MediaRecorder.isTypeSupported("audio/mp4")?"audio/mp4":"audio/webm";
+          simMimeRef.current=mt;
+          const mr=new MediaRecorder(stream,{mimeType:mt});
+          simChunksRef.current=[];
+          mr.ondataavailable=e=>{if(e.data.size>0)simChunksRef.current.push(e.data);};
+          mr.start(250);
+          simMediaRecRef.current=mr;
+          setSimIsRec(true); setSimTimeLeft(30); setSimPhase('recording');
+        }catch(err){ console.error("[D10 Sim] mic error",err); setSimMicError(true); }
       }
       function doSimStop(){
-        setSimIsRec(false); clearTimeout(simTimerRef.current);
-        if(simRecRef.current){try{simRecRef.current.stop();}catch(e){}}
-        analyzeSimResponse(SpeechRec10?simLiveRef.current:simFallback);
+        setSimIsRec(false); clearTimeout(simTimerRef.current); clearInterval(simWaveIntRef.current);
+        const mr=simMediaRecRef.current;
+        if(mr&&mr.state!=="inactive"){
+          mr.onstop=async()=>{
+            setSimPhase('analyzing');
+            try{
+              const blob=new Blob(simChunksRef.current,{type:simMimeRef.current});
+              const b64=await simBlobToB64(blob);
+              const res=await fetch("/api/transcribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({b64,mimeType:simMimeRef.current})});
+              const data=await res.json();
+              if(!res.ok) throw new Error(data.error||"Transcription failed");
+              const text=(data.text||"").trim();
+              if(!text){ setSimTranscribeFailed(true); setSimPhase('ready'); return; }
+              analyzeSimResponse(text);
+            }catch(err){ console.error("[D10 Sim] transcribe error",err); setSimTranscribeFailed(true); setSimPhase('ready'); }
+          };
+          try{mr.stop();}catch(e){}
+        }
+        if(simStreamRef.current){simStreamRef.current.getTracks().forEach(t=>t.stop());simStreamRef.current=null;}
+        try{if(simCtxRef.current){simCtxRef.current.close();simCtxRef.current=null;}}catch{}
       }
       async function analyzeSimResponse(text){
         setSimPhase('analyzing');
@@ -712,7 +751,12 @@ setAmbitionSaved(true); } catch {}
         }catch{setSimResult(mock);}
         setSimPhase('feedback');
       }
-      function resetSim(){setSimPhase('intro');setActiveScenario(null);setSimTranscript('');setSimFallback('');setSimResult(null);setSimIsRec(false);setSimTimeLeft(30);}
+      function resetSim(){
+        setSimPhase('intro');setActiveScenario(null);setSimFallback('');setSimResult(null);setSimIsRec(false);setSimTimeLeft(30);setSimMicError(false);setSimTranscribeFailed(false);
+        clearInterval(simWaveIntRef.current);
+        if(simStreamRef.current){simStreamRef.current.getTracks().forEach(t=>t.stop());simStreamRef.current=null;}
+        try{if(simCtxRef.current){simCtxRef.current.close();simCtxRef.current=null;}}catch{}
+      }
       const scoreColor=s=>s>=80?"#527060":s>=65?T.gold:"#B05C4A";
 
       function sarBlobToB64(blob){return new Promise((ok,fail)=>{const r=new FileReader();r.onload=()=>ok(r.result.split(",")[1]);r.onerror=fail;r.readAsDataURL(blob);});}
@@ -1240,17 +1284,19 @@ setAmbitionSaved(true); } catch {}
                 <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Frame the Situation. Explain your Action. Land the Result. Speak for up to 30 seconds. Click start when you are ready.</p>
               </div>
               <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                {["Lead with the result","Use 'I' not 'we'","Be specific","30 seconds max"].map((h,i)=>(
+                {["Lead with the result","Use 'I' not 'we'","Be specific","~30 seconds"].map((h,i)=>(
                   <span key={i} style={{padding:"5px 12px",borderRadius:20,background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",fontFamily:T.sans,fontSize:12,color:T.gold}}>{h}</span>
                 ))}
               </div>
-              {!SpeechRec10&&(
-                <div style={{...cs10.card}}>
-                  <div style={cs10.label}>Type Your Response</div>
-                  <textarea value={simFallback} onChange={e=>setSimFallback(e.target.value)} placeholder="Type your response here…" style={{width:"100%",borderRadius:3,border:"0.5px solid "+T2.border,padding:"12px 14px",fontSize:14,fontFamily:T.sans,resize:"none",height:100,boxSizing:"border-box",background:T2.bg,color:T2.text,outline:"none",lineHeight:1.6}}/>
+              {(simMicError||simTranscribeFailed)&&(
+                <div style={{...cs10.card,border:"0.5px solid rgba(180,80,60,0.35)"}}>
+                  <div style={{...cs10.label,color:"#B05C4A"}}>{simMicError?"We couldn't access your microphone":"We couldn't hear that clearly"}</div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:"0 0 14px",fontWeight:300}}>{simMicError?"Check your browser's microphone permission, or type your response instead.":"Try recording again, or type your response instead."}</p>
+                  <textarea value={simFallback} onChange={e=>setSimFallback(e.target.value)} placeholder="Type your response here…" style={{width:"100%",borderRadius:3,border:"0.5px solid "+T2.border,padding:"12px 14px",fontSize:14,fontFamily:T.sans,resize:"none",height:100,boxSizing:"border-box",background:T2.bg,color:T2.text,outline:"none",lineHeight:1.6,marginBottom:10}}/>
+                  <button onClick={()=>analyzeSimResponse(simFallback)} disabled={!simFallback.trim()} style={{width:"100%",padding:"12px",borderRadius:3,border:"none",background:!simFallback.trim()?"#DDD5C4":T.ink,color:!simFallback.trim()?"#6B5E44":T.bg,fontSize:13,fontWeight:600,cursor:!simFallback.trim()?"not-allowed":"pointer",fontFamily:T.sans}}>Submit Typed Response →</button>
                 </div>
               )}
-              <button onClick={SpeechRec10?doSimStart:()=>analyzeSimResponse(simFallback)} style={cs10.cta}>Start Recording →</button>
+              <button onClick={doSimStart} style={cs10.cta}>{(simMicError||simTranscribeFailed)?"Try Recording Again →":"Start Recording →"}</button>
               <button onClick={()=>setSimPhase('picking')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"4px 0",textAlign:"center"}}>← Choose different scenario</button>
             </div>
           </div>
@@ -1276,7 +1322,6 @@ setAmbitionSaved(true); } catch {}
                 </div>
                 <p style={{fontFamily:T.serif,fontSize:15,color:"rgba(245,239,230,0.65)",lineHeight:1.5,margin:0}}>{activeScenario?.prompt}</p>
               </div>
-              {simTranscript&&<div style={{...cs10.card,padding:"14px 16px"}}><div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Live transcript</div><p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,margin:0}}>{simTranscript.slice(-200)}</p></div>}
               <button onClick={doSimStop} style={{...cs10.cta,background:"#8A4A3A"}}>Stop & Get Feedback →</button>
             </div>
           </div>
@@ -4713,7 +4758,7 @@ setAmbitionSaved(true); } catch {}
                       onNavFn={d1NavFnRef}
                       onComplete={(topic) => { setD1WarmUpTopic(topic); setIdx(i => i + 1); }}
                     />
-                  : isD1 ? <D1RightContent/> : isD2 ? <D2RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD6 ? <D6RightContent/> : isD7 ? <D7RightContent/> : isD11 ? <D11RightContent/> : isD12 ? <D12RightContent/> : isD13 ? <D13RightContent/> : isD14 ? <D14RightContent/> : isD10 ? <D10RightContent/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
+                  : isD1 ? <D1RightContent/> : isD2 ? <D2RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD6 ? <D6RightContent/> : isD7 ? <D7RightContent/> : isD11 ? <D11RightContent/> : isD12 ? <D12RightContent/> : isD13 ? <D13RightContent/> : isD14 ? <D14RightContent/> : isD10 ? <D10RightContent onRecordingChange={setD10SimRecording}/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
               </div>
             </div>
           </div>
@@ -4753,18 +4798,18 @@ setAmbitionSaved(true); } catch {}
                     setIdx(i => i + 1);
                   }
                 }}
-                disabled={(isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)}
+                disabled={(isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording)}
                 className="au-cta"
                 style={{
                   display: "flex", alignItems: "center", gap: 10,
                   padding: "9px 24px", borderRadius: 5,
-                  background: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? "rgba(138,158,132,0.3)" : T.gold,
+                  background: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording)) ? "rgba(138,158,132,0.3)" : T.gold,
                   border: "none",
                   color: "white", fontSize: 13, fontWeight: 600,
-                  cursor: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? "not-allowed" : "pointer",
+                  cursor: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording)) ? "not-allowed" : "pointer",
                   fontFamily: T.sans, letterSpacing: "0.1px",
                   boxShadow: "0 2px 16px rgba(138,158,132,0.3)",
-                  opacity: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording)) ? 0.5 : 1,
+                  opacity: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording)) ? 0.5 : 1,
                 }}>
                 {isD1 && step === "Rehearsal" && d1NavLabel
                   ? d1NavLabel

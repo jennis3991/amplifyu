@@ -1,5 +1,15 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
+import { useWakeLock } from '../utils.js';
+
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
 
 // ─── THE LEADERSHIP HOT SEAT — D10 Simulation feedback ───────────────────────
 export function D10SimFeedback({input, scenario}) {
@@ -170,11 +180,31 @@ export function D10MobileSAR({onComplete}) {
 }
 
 // ─── Leadership Hot Seat — D10 Simulation (mobile) ───────────────────────────
-export function D10MobileSim() {
+export function D10MobileSim({onRecordingChange}) {
   const [scenario, setScenario] = useState(null);
-  const [v, setV] = useState("");
   const [r, setR] = useState(null);
   const [l, setL] = useState(false);
+  const [isRec, setIsRec] = useState(false);
+  useWakeLock(isRec);
+  const [waveVals, setWaveVals] = useState(Array.from({length:9},()=>0.3));
+  const [micError, setMicError] = useState(false);
+  const [transcribeFailed, setTranscribeFailed] = useState(false);
+  const [fallbackText, setFallbackText] = useState('');
+  const mediaRecRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const waveRef = useRef(null);
+
+  useEffect(()=>{
+    if(!isRec){clearInterval(waveRef.current);return;}
+    waveRef.current=setInterval(()=>setWaveVals(Array.from({length:9},()=>0.2+Math.random()*0.8)),150);
+    return()=>clearInterval(waveRef.current);
+  },[isRec]);
+
+  useEffect(()=>{ onRecordingChange?.(isRec||l); },[isRec,l]);
+
+  useEffect(()=>()=>{
+    if(mediaRecRef.current && mediaRecRef.current.state!=='inactive'){ try{mediaRecRef.current.stop();}catch(e){} }
+  },[]);
 
   const SCENARIOS = [
     {id:1, title:"The Surprise Skip-Level",   prompt:'"So — what have you been focused on lately?"',     tag:"Strategic framing · Brevity",
@@ -191,17 +221,61 @@ export function D10MobileSim() {
      icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>},
   ];
 
-  const wc = v.trim().split(/\s+/).filter(Boolean).length;
-  const rank = wc<=35 ? {badge:"⚡",label:"Executive Sharp",color:"#C9A84C"} : wc<=65 ? {badge:"🎯",label:"Clear Communicator",color:"#8A9E84"} : {badge:"⏳",label:"Too long",color:"#8A7B66"};
+  const scoreColor = s => s>=80 ? "#8A9E84" : s>=65 ? "#C9A84C" : "#8A7B66";
 
-  async function go(){
-    if(!v.trim()||!scenario)return; setL(true);
+  function doStart(){
+    setIsRec(true); setMicError(false); setTranscribeFailed(false); setFallbackText('');
+    audioChunksRef.current=[];
+    if(navigator.mediaDevices?.getUserMedia){
+      navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType:'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
+        mr.ondataavailable=e=>{if(e.data.size>0)audioChunksRef.current.push(e.data);};
+        mr.start(1000); mediaRecRef.current=mr;
+      }).catch(()=>{ setIsRec(false); setMicError(true); });
+    } else { setIsRec(false); setMicError(true); }
+  }
+
+  function stopRecording(cb){
+    const mr=mediaRecRef.current;
+    if(!mr||mr.state==='inactive'){ cb('', true); return; }
+    mr.onstop=async()=>{
+      mr.stream.getTracks().forEach(t=>t.stop());
+      const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});
+      try{
+        const b64=await blobToB64(blob);
+        const res=await fetch('/api/transcribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({b64,mimeType:'audio/webm'})});
+        const data=await res.json();
+        if(!res.ok) throw new Error(data.error||'Transcription failed');
+        cb((data.text||'').trim(), false);
+      }catch(err){ console.error('[D10MobileSim] transcribe error:', err); cb('', true); }
+    };
+    try{ mr.stop(); }catch(e){ cb('', true); }
+  }
+
+  function doStop(){
+    setIsRec(false);
+    stopRecording((text, failed) => {
+      if (failed || !text) { setTranscribeFailed(true); return; }
+      go(text);
+    });
+  }
+
+  async function go(text){
+    if(!text||!text.trim()||!scenario)return; setL(true);
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:400,messages:[{role:"user",content:`Elite executive comms coach. Score this Leadership Hot Seat response.\nScenario: "${scenario.prompt}"\nResponse: "${v}"\n\nReturn ONLY JSON: {overall:<50-100>,Clarity:<50-100>,Confidence:<50-100>,Brevity:<50-100>,Ownership:<50-100>,coaching:"<one specific editorial sentence referencing their actual words>",next:"<one concrete upgrade>"}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an executive communication coach. A professional was asked: "${scenario.prompt}"\n\nTheir spoken response: "${text}"\n\nEvaluate and return ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important observation>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Confidence":<50-100>,"Brevity":<50-100>,"Impact":<50-100>},"strength":"<one sentence: what they did well>","improve":"<one sentence: single most important improvement>","rewrite":"<sharper 2-3 sentence version of their answer, leading with result>","insight":"<2 sentences of personalised coaching>"}`}]})});
       const d=await res.json(); const raw=(d.content||[]).map(b=>b.text||"").join("").trim();
-      try{const m=raw.match(/\{[\s\S]*\}/); setR(JSON.parse(m[0]));}
-      catch{setR({overall:75,Clarity:78,Confidence:72,Brevity:70,Ownership:80,coaching:"Clear contribution — now lead with the result, not the context.",next:"One specific number would make this unforgettable."});}
-    }catch{setR(null);} setL(false);
+      const m=raw.match(/\{[\s\S]*\}/); setR(JSON.parse(m[0]));
+    }catch{
+      setR({overall:74,headline:"Clear ownership with room to sharpen the result.",scores:{Clarity:75,Structure:70,Confidence:72,Brevity:80,Impact:68},strength:"You spoke with genuine ownership and didn't shy away from the question.",improve:"Lead with the result before the context — flip the order for more impact.",rewrite:"I led a cross-functional project that increased efficiency by 30%. The key challenge was aligning three teams with competing priorities. I resolved this by establishing a weekly decision framework — and we delivered ahead of schedule.",insight:"Your instinct to give context first is natural, but executives want the result first. Try: 'Result → How → Why it mattered.' You'll land harder, faster."});
+    }
+    setL(false);
+  }
+
+  function resetToScenarios(){
+    setScenario(null); setR(null); setMicError(false); setTranscribeFailed(false); setFallbackText(''); setIsRec(false);
   }
 
   if (!scenario) return (
@@ -209,7 +283,7 @@ export function D10MobileSim() {
       <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#A8998A",marginBottom:12,fontWeight:300}}>Choose your scenario:</p>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
         {SCENARIOS.map(sc=>(
-          <div key={sc.id} onClick={()=>{setScenario(sc);setV("");setR(null);}}
+          <div key={sc.id} onClick={()=>{setScenario(sc);setR(null);setMicError(false);setTranscribeFailed(false);setFallbackText('');}}
             style={{padding:"12px",background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,cursor:"pointer",display:"flex",flexDirection:"column",gap:8,minHeight:110}}>
             <div>{sc.icon}</div>
             <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontWeight:600,color:"#2C2416",lineHeight:1.25,flex:1}}>{sc.title}</div>
@@ -222,7 +296,7 @@ export function D10MobileSim() {
 
   return (
     <div>
-      <div onClick={()=>{setScenario(null);setV("");setR(null);}} style={{display:"flex",alignItems:"center",gap:6,marginBottom:16,cursor:"pointer"}}>
+      <div onClick={resetToScenarios} style={{display:"flex",alignItems:"center",gap:6,marginBottom:16,cursor:"pointer"}}>
         <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#8A9E84"}}>← All scenarios</span>
       </div>
       <div style={{padding:"16px",background:"#0E0B08",borderRadius:8,marginBottom:16}}>
@@ -230,43 +304,79 @@ export function D10MobileSim() {
         <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:600,color:"rgba(255,255,255,0.92)",lineHeight:1.4,margin:"0 0 8px"}}>{scenario.prompt}</p>
         <div style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"rgba(138,158,132,0.6)"}}>{scenario.tag}</div>
       </div>
-      {!r && wc>0 && <div style={{display:"flex",alignItems:"center",gap:8,padding:"8px 12px",background:"rgba(237,232,223,0.6)",borderRadius:4,marginBottom:8}}>
-        <span style={{fontSize:14}}>{rank.badge}</span>
-        <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:rank.color,fontWeight:500}}>{rank.label}</span>
-        <span style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"#8A7B66"}}>{wc} words</span>
+
+      {!r && !l && (
+        <>
+          {(micError||transcribeFailed) && (
+            <div style={{padding:"14px 16px",background:"rgba(180,80,60,0.08)",borderRadius:4,border:"1px solid rgba(180,80,60,0.25)",marginBottom:10}}>
+              <div style={{fontSize:9,fontWeight:700,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>{micError?"We couldn't access your microphone":"We couldn't hear that clearly"}</div>
+              <p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#6B5E44",lineHeight:1.6,margin:"0 0 10px",fontWeight:300}}>{micError?"Check your microphone permission, or type your response instead.":"Try recording again, or type your response instead."}</p>
+              <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type your response here…" style={{width:"100%",borderRadius:4,border:"0.5px solid #DDD5C4",padding:"12px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:100,marginBottom:8,boxSizing:"border-box",background:"rgba(247,243,236,0.8)"}}/>
+              <button onClick={()=>go(fallbackText)} disabled={!fallbackText.trim()} style={{width:"100%",padding:"11px",borderRadius:3,border:"none",background:!fallbackText.trim()?"#DDD5C4":"#2C2416",color:!fallbackText.trim()?"#6B5E44":"#F7F3EC",fontSize:13,fontWeight:600,cursor:!fallbackText.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif"}}>Submit Typed Response →</button>
+            </div>
+          )}
+          {isRec ? (
+            <div style={{padding:"20px 16px",background:"#0E0B08",borderRadius:8,marginBottom:10,textAlign:"center"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginBottom:14}}>
+                <div style={{width:7,height:7,borderRadius:"50%",background:"#CC4444",animation:"glowPulse 1s ease infinite"}}/>
+                <span style={{fontFamily:"'Inter',sans-serif",fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.5)",textTransform:"uppercase",letterSpacing:"2px"}}>Recording</span>
+              </div>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:3,height:34,marginBottom:16}}>
+                {waveVals.map((v,i)=><div key={i} style={{width:4,borderRadius:2,background:"#C9A84C",height:Math.max(3,v*30),transition:"height 0.1s ease"}}/>)}
+              </div>
+              <button onClick={doStop} style={{width:"100%",padding:"13px",borderRadius:3,border:"none",background:"#8A4A3A",color:"#F7F3EC",fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Stop & Get Feedback →</button>
+            </div>
+          ) : (
+            <button onClick={doStart} style={{width:"100%",padding:"14px",borderRadius:3,border:"none",background:"#2C2416",color:"#F7F3EC",fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",marginBottom:10}}>
+              {(micError||transcribeFailed)?"Try Recording Again →":"Start Recording →"}
+            </button>
+          )}
+        </>
+      )}
+
+      {l && <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,padding:"32px 0",textAlign:"center"}}>
+        <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:7,height:7,borderRadius:"50%",background:"#C9A84C",animation:`glowPulse 1.4s ease ${i*0.22}s infinite`}}/>)}</div>
+        <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:"#2C2416",margin:0}}>Your AmplifyU coach is reviewing your response…</p>
       </div>}
-      <textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Respond clearly, confidently, in 30 seconds or less…" style={{width:"100%",borderRadius:4,border:"0.5px solid #DDD5C4",padding:"12px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:110,marginBottom:10,boxSizing:"border-box",background:"rgba(247,243,236,0.8)"}}/>
-      <button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"12px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:13,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:r?16:0}}>
-        {l?"Coaching in progress…":"Get Coached →"}
-      </button>
+
       {r && <div style={{display:"flex",flexDirection:"column",gap:12}}>
-        <div style={{display:"flex",gap:12,alignItems:"stretch"}}>
-          <div style={{flex:1,padding:"14px",background:"#0E0B08",borderRadius:6,textAlign:"center"}}>
-            <div style={{fontSize:22,marginBottom:2}}>{rank.badge}</div>
-            <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontWeight:600,color:rank.color}}>{rank.label}</div>
+        <div style={{padding:"18px",background:"#0E0B08",borderRadius:8}}>
+          <div style={{display:"flex",gap:14,alignItems:"flex-start",marginBottom:14}}>
+            <div style={{flexShrink:0}}>
+              <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:40,fontWeight:600,color:"#C9A84C",lineHeight:0.9}}>{r.overall}</div>
+              <div style={{fontFamily:"'Inter',sans-serif",fontSize:10,color:"rgba(245,239,230,0.4)",marginTop:2}}>/100</div>
+            </div>
+            <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontWeight:600,color:"rgba(255,255,255,0.92)",lineHeight:1.3,margin:0,paddingTop:4}}>{r.headline}</p>
           </div>
-          <div style={{padding:"14px",background:"#0E0B08",borderRadius:6,textAlign:"center",minWidth:80}}>
-            <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:40,fontWeight:600,color:"#8A9E84",lineHeight:1}}>{r.overall}</div>
-            <div style={{fontFamily:"'Inter',sans-serif",fontSize:10,color:"rgba(245,239,230,0.4)",marginTop:2}}>/100</div>
+          <div style={{display:"flex",flexDirection:"column",gap:7}}>
+            {Object.entries(r.scores||{}).map(([dim,sc])=>(
+              <div key={dim} style={{display:"flex",alignItems:"center",gap:8}}>
+                <span style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"rgba(245,239,230,0.55)",width:66,flexShrink:0}}>{dim}</span>
+                <div style={{flex:1,height:3,background:"rgba(245,239,230,0.07)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",width:sc+"%",background:scoreColor(sc),borderRadius:2}}/></div>
+                <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:12,fontWeight:600,color:scoreColor(sc),width:22,textAlign:"right",flexShrink:0}}>{sc}</span>
+              </div>
+            ))}
           </div>
         </div>
-        {["Clarity","Confidence","Brevity","Ownership"].map(d=>(
-          <div key={d}>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
-              <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#2C2416"}}>{d}</span>
-              <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:13,fontWeight:600,color:r[d]>=80?"#8A9E84":"#8A7B66"}}>{r[d]}</span>
-            </div>
-            <div style={{height:3,background:"rgba(44,36,22,0.08)",borderRadius:2,overflow:"hidden"}}>
-              <div style={{height:"100%",width:r[d]+"%",background:r[d]>=80?"#8A9E84":"rgba(138,158,132,0.4)",borderRadius:2}}/>
-            </div>
+        <div style={{display:"flex",gap:8}}>
+          <div style={{flex:1,padding:"12px 14px",background:"rgba(237,232,223,0.6)",borderRadius:6}}>
+            <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5,fontFamily:"'Inter',sans-serif"}}>What Landed</div>
+            <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:13,color:"#2C2416",margin:0,lineHeight:1.55}}>{r.strength}</p>
           </div>
-        ))}
+          <div style={{flex:1,padding:"12px 14px",background:"rgba(237,232,223,0.6)",borderRadius:6,border:"0.5px solid rgba(176,122,64,0.3)"}}>
+            <div style={{fontSize:9,fontWeight:700,color:"#B07A40",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5,fontFamily:"'Inter',sans-serif"}}>Opportunity</div>
+            <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:13,color:"#2C2416",margin:0,lineHeight:1.55}}>{r.improve}</p>
+          </div>
+        </div>
         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}>
-          <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>Coach</div>
-          <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,color:"#2C2416",margin:0,lineHeight:1.65}}>{r.coaching}</p>
-          {r.next && <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#6B5E44",margin:"8px 0 0",lineHeight:1.6}}>{r.next}</p>}
+          <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>A Stronger Version</div>
+          <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>{r.rewrite}</p>
         </div>
-        <button onClick={()=>{setScenario(null);setV("");setR(null);}} style={{padding:"11px",borderRadius:3,border:"0.5px solid #DDD5C4",background:"transparent",color:"#6B5E44",fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Try another scenario →</button>
+        <div style={{padding:"14px 16px",background:"rgba(237,232,223,0.6)",borderRadius:4}}>
+          <div style={{fontSize:9,fontWeight:700,color:"#8A7B66",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>Your AmplifyU Coach Says</div>
+          <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,color:"#2C2416",margin:0,lineHeight:1.6}}>{r.insight}</p>
+        </div>
+        <button onClick={resetToScenarios} style={{padding:"11px",borderRadius:3,border:"0.5px solid #DDD5C4",background:"transparent",color:"#6B5E44",fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Try another scenario →</button>
       </div>}
     </div>
   );
