@@ -181,18 +181,32 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   }
 
   function doStart(){
+    // Clean up any stale recorder/stream left over from a previous attempt
+    // so a leftover active MediaRecorder can't make the new one throw.
+    const prevMr = mediaRecRef.current;
+    if (prevMr) {
+      try { if (prevMr.state !== 'inactive') prevMr.stop(); } catch(e) {}
+      try { prevMr.stream?.getTracks().forEach(t => t.stop()); } catch(e) {}
+      mediaRecRef.current = null;
+    }
     setIsRec(true);setTranscript('');setAudioURL(null);
     setMicError(false);setTranscribeFailed(false);
     startTimeRef.current = Date.now();
     audioChunksRef.current=[];
     if(navigator.mediaDevices?.getUserMedia){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-        let mr;
-        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
-        catch { mr = new MediaRecorder(stream); }
-        mr.ondataavailable=e=>{if(e.data.size>0)audioChunksRef.current.push(e.data);};
-        mr.start(1000);mediaRecRef.current=mr;
-      }).catch(()=>{ setIsRec(false); setMicError(true); });
+        try {
+          let mr;
+          try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+          catch { mr = new MediaRecorder(stream); }
+          mr.ondataavailable=e=>{if(e.data.size>0)audioChunksRef.current.push(e.data);};
+          mr.start(1000);mediaRecRef.current=mr;
+        } catch(err) {
+          console.error('[D2Voice] recorder start error:', err);
+          stream.getTracks().forEach(t => t.stop());
+          setIsRec(false); setMicError(true);
+        }
+      }).catch(err=>{ console.error('[D2Voice] getUserMedia error:', err); setIsRec(false); setMicError(true); });
     } else {
       setIsRec(false); setMicError(true);
     }
@@ -257,11 +271,14 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     try{
       const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1000,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery.\n\nIMPORTANT: All feedback must reference what this person ACTUALLY SAID. Quote or paraphrase specific words and phrases from the transcript. Do not write generic vocal coaching advice.\n\nSpeaking prompt: "${prompt}"\nTranscript: "${text}"${metrics && metrics.wpm > 0 ? `\n\nMeasured delivery data:\n- Speaking pace: ${metrics.wpm} WPM (${metrics.paceLabel}) — ideal executive range is 120–150 WPM\n- Confidence hedges ("I think", "maybe", etc.): ${metrics.hedges}\n- Average sentence length: ${metrics.avgSentLen} words` : ''}\n\nReturn ONLY valid JSON. Use the measured paceScore (${metrics?.paceScore||65}) for the Pace dimension:\n{"overall":<50-100>,"headline":"<max 10 words: single most important vocal insight, referencing what they said>","subtitle":"<one warm encouraging sentence specific to this delivery>","wpmNote":"<1 sentence naming their exact WPM and what it means for their listener — skip if no pace data>","confidenceNote":"<1 sentence about their directness: praise clear statements, gently flag hedging if hedges > 3, quoting a specific moment>","scores":{"Pace":<use ${metrics?.paceScore||65}>,"Pitch":<50-100>,"Tone":<50-100>,"Pauses":<50-100>,"Vocal Energy":<50-100>,"Range":<50-100>,"Presence":<50-100>},"worked":["<vocal strength 1 — short title, specific to what they said>","<vocal strength 2 — short title, specific to what they said>","<vocal strength 3 — short title>"],"workedSubs":["<1 sentence expanding on worked[0], quoting or paraphrasing specific words they actually said>","<1 sentence expanding on worked[1], referencing a specific moment in their delivery>","<1 sentence expanding on worked[2]>"],"improve":[{"title":"<4-7 words naming the single most impactful vocal change>","detail":"<1-2 sentences referencing a specific moment in their transcript where this would have landed harder>"}],"insight":"<2-3 personalised sentences referencing specific words or phrases they used: what vocal quality is working, what one change would elevate it most>","moments":[{"label":"<moment type e.g. Pace rush / Energy peak / Strong moment / Energy dip / Pitch drop>","quote":"<copy 4-6 consecutive words from the transcript exactly where this moment occurred>","color":"<#C8A46A for pace/energy rush, #527060 for strong moment, #B05C4A for dip/drop>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"}]}`}]})});
       const d=await res.json();
+      if(!res.ok) throw new Error(d.error||'Request failed');
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
       const parsed=JSON.parse(m[0]);
+      if(!parsed||typeof parsed.overall!=='number'||!parsed.scores) throw new Error('Malformed response');
       if(!isRetry){setRound1(parsed);setFeedback(parsed);}else setFeedback({...parsed,prev:round1});
-    }catch{
+    }catch(err){
+      console.error('[D2SimWidget] analyzeText error:', err);
       if(!isRetry){setRound1(mock);setFeedback(mock);}else setFeedback({...mock,prev:round1});
     }
     setPhase(isRetry?'comparison':'feedback');
@@ -422,8 +439,8 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           {isRec&&<button onClick={()=>{setTimeLeft(t=>Math.min(t+30,120));}} style={{padding:"12px 20px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:12,cursor:"pointer",fontFamily:T.sans}}>+30s</button>}
         </div>
         {!isRec && (micError || transcribeFailed) && (
-          <div style={{...cs.card, textAlign:"left", marginTop:12}}>
-            <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+          <div style={{...cs.card, textAlign:"left", marginTop:12, border:"1px solid rgba(180,80,60,0.35)", background:"rgba(180,80,60,0.06)"}}>
+            <div style={{...cs.label, color:"#B05C4A"}}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
             <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:'0 0 10px'}}>
               {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
             </p>
