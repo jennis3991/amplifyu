@@ -9,7 +9,7 @@
     <!-- Preload critical first-render images -->
     <link rel="preload" href="/home-hero-mobile.jpg" as="image" media="(max-width: 1023px)"/>
     <link rel="preload" href="/home-hero-8.jpg" as="image" media="(min-width: 1024px)"/>
-    <link rel="preload" href="/logo-mark.png" as="image"/>
+    <link rel="preload" href="/logo-mark.webp" as="image"/>
     <!-- Prefetch first-session images so they're cached before user taps Day 1 -->
     <link rel="prefetch" href="/day1-insight.jpg"/>
     <link rel="prefetch" href="/feynman-technique.jpg"/>
@@ -34,8 +34,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <!-- Cormorant Garamond: editorial display — elegant, warm, authoritative -->
     <!-- Inter: clean UI body — precise, readable, modern -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
     <style>
       /* ── Reset ─────────────────────────────────────────────────────────── */
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

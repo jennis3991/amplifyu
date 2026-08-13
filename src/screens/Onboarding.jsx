@@ -119,7 +119,7 @@ export function Onboarding({onDone}) {
         }} className="au-grain-wrap">
           {/* Logo mark — glows softly behind the CTA */}
           <div style={{ position: "absolute", left: 0, right: 0, top: "65%", transform: "translateY(-50%)", display: "flex", justifyContent: "center", pointerEvents: "none" }}>
-            <img src="/logo-dark.jpg" alt="" style={{ width: "min(44vh, 500px)", height: "auto", opacity: 0.2, mixBlendMode: "screen" }}/>
+            <img loading="lazy" src="/logo-dark.jpg" alt="" style={{ width: "min(44vh, 500px)", height: "auto", opacity: 0.2, mixBlendMode: "screen" }}/>
           </div>
           {/* Depth layers */}
           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 40%, rgba(138,158,132,0.06) 0%, transparent 60%)" }}/>
@@ -220,7 +220,7 @@ export function Onboarding({onDone}) {
           }}>
             <div key={step} className="au-step-enter" style={{ position: "absolute", inset: 0 }}>
               {q.image ? (
-                <img src={q.image} alt="" onLoad={e=>{e.currentTarget.style.opacity="1"}} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0, transition: "opacity 0.5s ease" }}/>
+                <img loading="lazy" src={q.image} alt="" onLoad={e=>{e.currentTarget.style.opacity="1"}} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0, transition: "opacity 0.5s ease" }}/>
               ) : (
                 <div className="au-hero-scene" style={{ position: "absolute", inset: 0 }}>
                   <OBScene name={q.scene} height={900}/>
@@ -323,7 +323,7 @@ export function Onboarding({onDone}) {
         <div style={{ height: "100vh", display: "flex", overflow: "hidden", fontFamily: T.sans, opacity:roleVisible?1:0, transition:"opacity 0.32s ease" }} className="au-grain-wrap">
           {/* LEFT: Atmospheric stage */}
           <div style={{ width: "45%", flexShrink: 0, position: "relative", overflow: "hidden", background: "#0F0D0A" }}>
-            <img src="/ob-role.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}/>
+            <img loading="lazy" src="/ob-role.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}/>
             <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.45)" }}/>
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, transparent 20%, rgba(10,8,5,0.75) 100%)" }}/>
             <div style={{ position: "absolute", bottom: 52, left: 52, zIndex: 2 }}>
@@ -413,7 +413,7 @@ export function Onboarding({onDone}) {
       <div style={{ height:"100vh", overflow:"hidden", position:"relative", background:"#0F0D0A", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:T.sans, opacity:landingVisible?1:0, transition:"opacity 0.38s ease" }} className="au-grain-wrap">
         {/* Logo mark — glows softly behind the CTA */}
         <div style={{ position:"absolute", left:0, right:0, top:"70%", transform:"translateY(-50%)", display:"flex", justifyContent:"center", pointerEvents:"none" }}>
-          <img src="/logo-dark.jpg" alt="" style={{ width:"min(60vw, 320px)", height:"auto", opacity:0.2, mixBlendMode:"screen" }}/>
+          <img loading="lazy" src="/logo-dark.jpg" alt="" style={{ width:"min(60vw, 320px)", height:"auto", opacity:0.2, mixBlendMode:"screen" }}/>
         </div>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 50% 40%, rgba(138,158,132,0.06) 0%, transparent 60%)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(10,8,5,0.6) 0%, rgba(10,8,5,0.3) 50%, rgba(10,8,5,0.8) 100%)" }}/>
@@ -440,7 +440,7 @@ export function Onboarding({onDone}) {
     return (
       <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column",opacity:roleVisible?1:0,transition:"opacity 0.32s ease"}}>
         <div style={{position:"relative",height:345,flexShrink:0,overflow:"hidden"}}>
-          <img src="/ob-role-2.png" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>
+          <img loading="lazy" src="/ob-role-2.png" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 45%)"}}/>
           <div style={{position:"absolute",bottom:20,left:24,right:24}}>
             <div style={{fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"3.5px",fontFamily:T.sans,marginBottom:10}}>Almost there.</div>
@@ -491,7 +491,7 @@ export function Onboarding({onDone}) {
         {/* Photo banner */}
         <div style={{position:"relative",height:345,flexShrink:0,overflow:"hidden"}}>
           {q.image
-            ? <img src={q.image} alt="" onLoad={e=>{e.currentTarget.style.opacity="1"}} style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%",opacity:0,transition:"opacity 0.5s ease"}}/>
+            ? <img loading="lazy" src={q.image} alt="" onLoad={e=>{e.currentTarget.style.opacity="1"}} style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%",opacity:0,transition:"opacity 0.5s ease"}}/>
             : <OBScene name={q.scene} height={300}/>}
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, transparent 55%)"}}/>
           <div style={{position:"absolute",bottom:20,left:24,right:24}}>

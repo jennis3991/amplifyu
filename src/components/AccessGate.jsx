@@ -50,7 +50,7 @@ export function AccessGate({ onSuccess }) {
         transition: "transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)",
         filter: logoRise ? "drop-shadow(0 0 18px rgba(255,255,255,0.55))" : "drop-shadow(0 0 0px rgba(255,255,255,0))",
       }}>
-        <img
+        <img loading="lazy"
           src="/logo-mark.png"
           alt="AmplifyU"
           style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}

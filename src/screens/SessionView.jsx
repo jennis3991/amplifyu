@@ -1001,7 +1001,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:12,right:12,padding:"4px 10px",borderRadius:20,background:obs?"rgba(97,145,100,0.9)":"rgba(30,26,20,0.7)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",gap:5}}>
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
@@ -1590,7 +1590,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
@@ -1930,7 +1930,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
@@ -2398,7 +2398,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
@@ -2628,7 +2628,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:12,right:12,padding:"4px 10px",borderRadius:20,background:obs?"rgba(97,145,100,0.9)":"rgba(30,26,20,0.7)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",gap:5}}>
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
@@ -2841,7 +2841,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:12,right:12,padding:"4px 10px",borderRadius:20,background:obs?"rgba(97,145,100,0.9)":"rgba(30,26,20,0.7)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",gap:5}}>
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
@@ -3085,7 +3085,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
@@ -3310,7 +3310,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:10,right:10,fontFamily:T.sans,fontSize:10,fontWeight:600,color:obs?"rgba(97,145,100,0.95)":"rgba(245,239,230,0.75)",display:"flex",alignItems:"center",gap:3,background:"rgba(20,18,14,0.35)",padding:"4px 9px",borderRadius:20,backdropFilter:"blur(4px)"}}>
                         <span>{obs?"✓":"◉"}</span><span>Observed</span>
                       </div>
@@ -3512,7 +3512,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:12,right:12,padding:"4px 10px",borderRadius:20,background:obs?"rgba(97,145,100,0.9)":"rgba(30,26,20,0.7)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",gap:5}}>
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
@@ -3802,7 +3802,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:12,right:12,padding:"4px 10px",borderRadius:20,background:obs?"rgba(97,145,100,0.9)":"rgba(30,26,20,0.7)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",gap:5}}>
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
@@ -3989,7 +3989,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:12,right:12,padding:"4px 10px",borderRadius:20,background:obs?"rgba(97,145,100,0.9)":"rgba(30,26,20,0.7)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",gap:5}}>
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
@@ -4213,7 +4213,7 @@ setAmbitionSaved(true); } catch {}
                       const arr=e.currentTarget.querySelector("[data-arrow]");if(arr)arr.style.transform="";
                     }}>
                     <div style={{height:240,overflow:"hidden",position:"relative"}}>
-                      <img src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center center",display:"block",transition:"transform 0.35s ease, opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
                       <div style={{position:"absolute",top:12,right:12,padding:"4px 10px",borderRadius:20,background:obs?"rgba(97,145,100,0.9)":"rgba(30,26,20,0.7)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",gap:5}}>
                         <span style={{fontSize:9,color:obs?"#fff":"rgba(245,239,230,0.75)",fontFamily:T.sans,fontWeight:500,letterSpacing:"0.5px"}}>{obs?"✓ Observed":"◉ Observed"}</span>
                       </div>
@@ -4570,7 +4570,7 @@ setAmbitionSaved(true); } catch {}
             {/* LEFT — Dark cinematic closing (unchanged) */}
             <div style={{ width: "36%", flexShrink: 0, position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
               <div style={{ position: "absolute", inset: 0 }}>
-                <img src="/review-chair.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center" }}/>
+                <img loading="lazy" src="/review-chair.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center" }}/>
               </div>
               <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.35)" }}/>
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.3) 50%, transparent 75%)" }}/>

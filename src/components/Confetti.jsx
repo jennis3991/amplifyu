@@ -203,7 +203,7 @@ style={{width:36,height:3,borderRadius:2,background:isComplete?"rgba(255,255,255
 
         {/* Brand mark */}
         <div style={{display:"flex",justifyContent:"center",padding:"18px 0 0"}}>
-          <img src="/logo-light.jpg" alt="AmplifyU"
+          <img loading="lazy" src="/logo-light.jpg" alt="AmplifyU"
             style={{ width:56, height:56, borderRadius:12, objectFit:"cover",
               opacity: isComplete ? 0.9 : 0.75,
               boxShadow: isComplete ? "0 4px 16px rgba(0,0,0,0.4)" : "0 2px 8px rgba(44,36,22,0.12)",

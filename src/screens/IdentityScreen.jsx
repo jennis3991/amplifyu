@@ -104,7 +104,7 @@ const RANK_META = [
 function PieceCircle({ img, name, size }) {
   return (
     <div style={{ width:size, height:size, borderRadius:"50%", overflow:"hidden", position:"relative", flexShrink:0 }}>
-      <img src={img} alt={name} style={{
+      <img loading="lazy" src={img} alt={name} style={{
         position:"absolute", width:"126%", height:"126%",
         top:"-13%", left:"-13%", objectFit:"cover",
       }}/>

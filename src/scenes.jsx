@@ -208,7 +208,7 @@ export function Scene({name, height=280, day=null}) {
     <div 
 style={{width:"100%",height,position:"relative",overflow:"hidden",flexShrink:0}}>
       {overrideImg
-        ? <img src={overrideImg} alt="" 
+        ? <img loading="lazy" src={overrideImg} alt="" 
 style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
         : <div style={{position:"absolute",inset:0}}><Comp/></div>
       }

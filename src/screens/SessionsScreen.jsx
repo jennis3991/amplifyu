@@ -110,7 +110,7 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
           paddingTop: NAV_H,
         }}>
           {/* Full-bleed photo */}
-          <img
+          <img loading="lazy"
             src="/programme-hero.jpg"
             alt="Warm coaching lounge interior"
             style={{
@@ -276,7 +276,7 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
   return (
     <div style={{background:T2.bg,minHeight:"100vh",paddingBottom:100}}>
       <div style={{position:"relative",height:260,overflow:"hidden"}}>
-        <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
+        <img loading="lazy" src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
         <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.45)"}}/>
         <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.85) 0%,transparent 60%)"}}/>
         <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 24px"}}>

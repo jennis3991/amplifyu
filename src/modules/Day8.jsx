@@ -1026,7 +1026,7 @@ h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;line-he
                   <span style={{fontFamily:T.sans,fontSize:11,color:"rgba(248,245,239,0.4)",fontWeight:300,letterSpacing:"0.04em"}}>Generating cover image…</span>
                 </div>
               : storyImage && storyImage!=='error'
-                ? <img src={storyImage} alt="Story Cover" style={{width:"100%",height:isDesktop?340:240,objectFit:"cover",display:"block"}}/>
+                ? <img loading="lazy" src={storyImage} alt="Story Cover" style={{width:"100%",height:isDesktop?340:240,objectFit:"cover",display:"block"}}/>
                 : <div style={{height:isDesktop?280:200,background:"linear-gradient(160deg,#1A1410 0%,#2C2416 100%)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                     <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
                       <circle cx="28" cy="28" r="26" stroke="rgba(138,158,132,0.25)" strokeWidth="0.5"/>

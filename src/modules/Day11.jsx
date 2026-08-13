@@ -288,14 +288,14 @@ Return ONLY valid JSON:
 
   if (phase === 'ack') return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20, padding: isDesktop ? "52px 12px" : "44px 0", animation: "fadeUp 0.45s ease both" }}>
-      <img src="/logo-mark.png" alt="" style={{ width: 30, height: 30, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
+      <img loading="lazy" src="/logo-mark.png" alt="" style={{ width: 30, height: 30, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
       <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, fontStyle: "italic", color: T2.text, lineHeight: 1.5, textAlign: "center", margin: 0 }}>"{QUESTIONS[qIdx].ack}"</p>
     </div>
   );
 
   if (phase === 'analyzing') return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: isDesktop ? 28 : 22, padding: isDesktop ? "44px 0" : "32px 0", animation: "fadeUp 0.5s ease both" }}>
-      <img src="/logo-mark.png" alt="" style={{ width: 38, height: 38, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
+      <img loading="lazy" src="/logo-mark.png" alt="" style={{ width: 38, height: 38, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
       <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, fontStyle: "italic", color: T2.text, textAlign: "center", margin: 0, lineHeight: 1.45, minHeight: isDesktop ? 64 : 52 }}>
         {ANALYSIS_MSGS[analysisMsgIdx]}
       </p>
@@ -644,7 +644,7 @@ Keep it under 280 words. Make every word earn its place.`;
                 <>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", marginBottom: 10 }}>
                     {screenshots.map((s, i) => (
-                      <img key={i} src={s.dataUrl} alt="" style={{ height: 60, width: 90, objectFit: "cover", borderRadius: 4, border: "0.5px solid " + T2.border }} />
+                      <img loading="lazy" key={i} src={s.dataUrl} alt="" style={{ height: 60, width: 90, objectFit: "cover", borderRadius: 4, border: "0.5px solid " + T2.border }} />
                     ))}
                   </div>
                   <div style={{ ...sn, fontSize: 11, color: T.gold }}>{screenshots.length} screenshot{screenshots.length > 1 ? "s" : ""} ready · tap to change</div>
@@ -689,7 +689,7 @@ Keep it under 280 words. Make every word earn its place.`;
   if (phase === 'analyzing') return (
     <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 28 : 22, padding: isDesktop ? "40px 0" : "32px 0", animation: "fadeUp 0.5s ease both" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
-        <img src="/logo-mark.png" alt="" style={{ width: 36, height: 36, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
+        <img loading="lazy" src="/logo-mark.png" alt="" style={{ width: 36, height: 36, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
         <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 20 : 17, fontStyle: "italic", color: T2.text, textAlign: "center", margin: 0, lineHeight: 1.45 }}>
           I'm comparing your profile with your Professional Signature...
         </p>
@@ -757,7 +757,7 @@ Keep it under 280 words. Make every word earn its place.`;
   if (phase === 'rewriting') return (
     <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 28 : 22, padding: isDesktop ? "40px 0" : "32px 0", animation: "fadeUp 0.5s ease both" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
-        <img src="/logo-mark.png" alt="" style={{ width: 36, height: 36, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
+        <img loading="lazy" src="/logo-mark.png" alt="" style={{ width: 36, height: 36, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
         <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 20 : 17, fontStyle: "italic", color: T2.text, textAlign: "center", margin: 0, lineHeight: 1.45 }}>
           Rewriting your LinkedIn...
         </p>
@@ -845,7 +845,7 @@ Keep it under 280 words. Make every word earn its place.`;
 
         {cvPhase === 'rewriting' && (
           <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 0", animation: "fadeUp 0.3s ease both" }}>
-            <img src="/logo-mark.png" alt="" style={{ width: 20, height: 20, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
+            <img loading="lazy" src="/logo-mark.png" alt="" style={{ width: 20, height: 20, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
             <span style={{ fontFamily: T.serif, fontSize: isDesktop ? 14 : 13, color: T2.text3, fontStyle: "italic" }}>Updating your CV...</span>
           </div>
         )}

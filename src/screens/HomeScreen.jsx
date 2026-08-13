@@ -8,12 +8,28 @@ import { HourglassIcon } from '../components/HourglassIcon.jsx';
 import { PhraseStrip } from '../components/PhraseStrip.jsx';
 import { PIECES, getPieceInfo, getCategoryProgress } from '../utils.js';
 
+const ICON_PATHS = {
+  "calendar-month": ["M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12", "M16 3v4", "M8 3v4", "M4 11h16", "M8 14v4", "M12 14v4", "M16 14v4"],
+  "notes": ["M5 5a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -14", "M9 7l6 0", "M9 11l6 0", "M9 15l4 0"],
+  "user-circle": ["M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0", "M9 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0", "M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"],
+  "brain": ["M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8", "M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8", "M17.5 16a3.5 3.5 0 0 0 0 -7h-.5", "M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0", "M6.5 16a3.5 3.5 0 0 1 0 -7h.5", "M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10"],
+  "trending-up": ["M3 17l6 -6l4 4l8 -8", "M14 7l7 0l0 7"],
+};
+
+function Icon({ name, size=18, color }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ color, flexShrink:0 }}>
+      {ICON_PATHS[name].map((d,i) => <path key={i} d={d}/>)}
+    </svg>
+  );
+}
+
 function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
   return (
     <div style={{ background:"#17140f", borderRadius:12, padding:"18px 20px" }}>
       <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:mobile?10:16 }}>
         <div style={{ width:36, height:36, borderRadius:"50%", background:"#0d0b08", display:"flex", alignItems:"center", justifyContent:"center" }}>
-          <i className="ti ti-calendar-month" style={{ fontSize:18, color:"#ffffff" }}/>
+          <Icon name="calendar-month" size={18} color="#ffffff"/>
         </div>
         <span style={{ fontSize:13, letterSpacing:"0.15em", color:"#c9a961", fontWeight:500, fontFamily:T.sans }}>YOUR JOURNEY</span>
       </div>
@@ -37,7 +53,7 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
                   position:"relative", background:"#0D0B08",
                   flexShrink:0,
                 }}>
-                  <img src={piece.img} alt={piece.name} style={{
+                  <img loading="lazy" src={piece.img} alt={piece.name} style={{
                     position:"absolute", width:"126%", height:"126%",
                     top:"-13%", left:"-13%", objectFit:"cover",
                     opacity: isCurrent ? 1 : isPast ? 0.9 : 0.3,
@@ -53,7 +69,7 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:3 }}>
             <span style={{ fontFamily:T.serif, fontSize:mobile?20:26, color:"#f4f1ea" }}>{pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"}</span>
             <div style={{ width:32, height:32, borderRadius:"50%", overflow:"hidden", position:"relative", flexShrink:0 }}>
-              <img src={pieceInfo.next.img} alt={pieceInfo.next.name} style={{ position:"absolute", width:"126%", height:"126%", top:"-13%", left:"-13%", objectFit:"cover" }}/>
+              <img loading="lazy" src={pieceInfo.next.img} alt={pieceInfo.next.name} style={{ position:"absolute", width:"126%", height:"126%", top:"-13%", left:"-13%", objectFit:"cover" }}/>
             </div>
           </div>
           <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>until you reach {pieceInfo.next.name}{done.length<6?" — your next rank":""}</p>
@@ -63,7 +79,7 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:3 }}>
             <span style={{ fontFamily:T.serif, fontSize:mobile?20:26, color:"#c9a961" }}>{pieceInfo.current.name}</span>
             <div style={{ width:32, height:32, borderRadius:"50%", overflow:"hidden", position:"relative", flexShrink:0 }}>
-              <img src={pieceInfo.current.img} alt={pieceInfo.current.name} style={{ position:"absolute", width:"126%", height:"126%", top:"-13%", left:"-13%", objectFit:"cover" }}/>
+              <img loading="lazy" src={pieceInfo.current.img} alt={pieceInfo.current.name} style={{ position:"absolute", width:"126%", height:"126%", top:"-13%", left:"-13%", objectFit:"cover" }}/>
             </div>
           </div>
           <p style={{ fontSize:12, color:"#9c9384", margin:0 }}>{"You've reached the highest rank"}</p>
@@ -304,15 +320,15 @@ finishDate + ".";
                 <div>
                   <div style={{ display:"flex", alignItems:"flex-start", gap:0, marginBottom:20 }}>
                     {[
-                      {icon:"ti-notes", label:"Learn"},
-                      {icon:"ti-user-circle", label:"Practice"},
-                      {icon:"ti-brain", label:"AI Feedback"},
-                      {icon:"ti-trending-up", label:"Improve"},
+                      {icon:"notes", label:"Learn"},
+                      {icon:"user-circle", label:"Practice"},
+                      {icon:"brain", label:"AI Feedback"},
+                      {icon:"trending-up", label:"Improve"},
                     ].map((step, i) => (
                       <div key={i} style={{ display:"flex", alignItems:"center" }}>
                         <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:7 }}>
                           <div style={{ width:44, height:44, borderRadius:"50%", background:"rgba(44,36,22,0.06)", border:"0.5px solid rgba(44,36,22,0.14)", display:"flex", alignItems:"center", justifyContent:"center" }}>
-                            <i className={"ti "+step.icon} style={{ fontSize:18, color:T2.text3 }}/>
+                            <Icon name={step.icon} size={18} color={T2.text3}/>
                           </div>
                           <span style={{ fontFamily:T.sans, fontSize:11, color:T2.text3, whiteSpace:"nowrap" }}>{step.label}</span>
                         </div>
@@ -414,7 +430,7 @@ finishDate + ".";
       {/* ── Fixed header ── */}
       <div style={{position:"fixed",top:0,left:0,right:0,zIndex:200,height:`calc(${NAV_H}px + env(safe-area-inset-top, 0px))`,paddingTop:"env(safe-area-inset-top, 0px)",paddingLeft:20,paddingRight:20,background:"#0F0D0A",borderBottom:"0.5px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <img src="/logo-mark.png" alt="AmplifyU" style={{width:30,height:30,objectFit:"cover",mixBlendMode:"screen",filter:"brightness(3) contrast(1.2)"}}/>
+          <img loading="lazy" src="/logo-mark.webp" alt="AmplifyU" style={{width:30,height:30,objectFit:"cover",mixBlendMode:"screen",filter:"brightness(3) contrast(1.2)"}}/>
           <span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,letterSpacing:"3px",textTransform:"uppercase",color:"rgba(255,255,255,0.88)"}}>AmplifyU</span>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -428,7 +444,7 @@ finishDate + ".";
       {/* ── Rank strip — fixed directly under header ── */}
       <div style={{position:"fixed",top:`calc(${NAV_H}px + env(safe-area-inset-top, 0px))`,left:0,right:0,zIndex:199,height:STRIP_H,background:"#1A1710",borderBottom:"0.5px solid rgba(255,255,255,0.07)",display:"flex",alignItems:"center",padding:"0 20px",gap:8,overflow:"hidden"}}>
         <div style={{width:22,height:22,borderRadius:"50%",overflow:"hidden",position:"relative",flexShrink:0}}>
-          <img src={pieceInfo.current.img} alt={pieceInfo.current.name} style={{position:"absolute",width:"126%",height:"126%",top:"-13%",left:"-13%",objectFit:"cover"}}/>
+          <img loading="lazy" src={pieceInfo.current.img} alt={pieceInfo.current.name} style={{position:"absolute",width:"126%",height:"126%",top:"-13%",left:"-13%",objectFit:"cover"}}/>
         </div>
         <span style={{fontFamily:T.sans,fontSize:11,fontWeight:500,color:"rgba(255,255,255,0.75)",whiteSpace:"nowrap",flexShrink:0}}>{pieceInfo.current.name}</span>
         {pieceInfo.next&&<span style={{fontFamily:T.sans,fontSize:11,color:"rgba(255,255,255,0.35)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",minWidth:0}}>· {pieceInfo.daysUntil} {pieceInfo.daysUntil===1?"day":"days"} to {pieceInfo.next.name}</span>}

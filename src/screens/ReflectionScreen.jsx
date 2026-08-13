@@ -138,7 +138,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
           {/* Banner image — desktop only */}
           <div style={{ width: "100%", height: 380, flexShrink: 0, overflow: "hidden" }}>
-            <img src="/profile-banner-desktop-2.jpg" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "center" }}/>
+            <img loading="lazy" src="/profile-banner-desktop-2.jpg" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "center" }}/>
           </div>
 
           <div style={{ padding: "52px 72px 120px", display: "flex", flexDirection: "column" }}>
@@ -325,7 +325,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
       {/* Slim black banner */}
       <div style={{ background: "#0D0B08", height: `calc(52px + env(safe-area-inset-top, 0px))`, paddingTop: "env(safe-area-inset-top, 0px)", display: "flex", alignItems: "center", paddingLeft: 20, flexShrink: 0, boxSizing: "border-box" }}>
-        <img src="/logo-mark.png" alt="AmplifyU" style={{ width: 28, height: 28, objectFit: "cover", mixBlendMode: "screen", filter: "brightness(3) contrast(1.2)", marginRight: 10 }}/>
+        <img loading="lazy" src="/logo-mark.png" alt="AmplifyU" style={{ width: 28, height: 28, objectFit: "cover", mixBlendMode: "screen", filter: "brightness(3) contrast(1.2)", marginRight: 10 }}/>
         <span style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: "rgba(255,255,255,0.85)" }}>AmplifyU</span>
       </div>
 

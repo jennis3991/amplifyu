@@ -62,14 +62,14 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
               <h1 style={{fontFamily:T.serif,fontSize:"clamp(36px,3.5vw,56px)",fontWeight:600,color:T2.text,letterSpacing:"-1.5px",lineHeight:1.1,marginBottom:16,maxWidth:520}}>Every conversation moves you forward.</h1>
             </div>
             <div style={{width:"38%",flexShrink:0,borderRadius:12,overflow:"hidden",height:280,position:"relative"}}>
-              <img src="/programme-hero.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 50%"}}/>
+              <img loading="lazy" src="/programme-hero.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 50%"}}/>
               <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.08)"}}/>
             </div>
           </div>
         </div>
       ) : (
         <div style={{position:"relative",height:260,overflow:"hidden"}}>
-          <img src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
+          <img loading="lazy" src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
           <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.4)"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.85) 0%,transparent 60%)"}}/>
           <div style={{position:"absolute",bottom:24,left:24,right:24}}>
@@ -135,7 +135,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
                     background:"#0D0B08",
                     position:"relative", flexShrink:0,
                   }}>
-                    <img src={piece.img} alt={piece.name} style={{position:"absolute",width:"126%",height:"126%",top:"-13%",left:"-13%",objectFit:"cover",opacity: isCurrent ? 1 : isPast ? 0.85 : 0.3}}/>
+                    <img loading="lazy" src={piece.img} alt={piece.name} style={{position:"absolute",width:"126%",height:"126%",top:"-13%",left:"-13%",objectFit:"cover",opacity: isCurrent ? 1 : isPast ? 0.85 : 0.3}}/>
                   </div>
                   <span style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:isCurrent?"#c9a961":isNext?"rgba(245,239,230,0.5)":"rgba(255,255,255,0.18)",textTransform:"uppercase",letterSpacing:"1px",textAlign:"center"}}>{piece.name}</span>
                 </div>
