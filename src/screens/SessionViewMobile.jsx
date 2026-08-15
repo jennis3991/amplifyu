@@ -2993,7 +2993,7 @@ strokeLinecap="round"/></svg>
             technique:"Before your next conversation or presentation, check your posture before your script. Stand tall, relax your shoulders, keep your hands open, and make eye contact before you begin speaking. Let your body communicate confidence before your voice does.",
             lesson:"Your body is always communicating — even when you're silent. Great communicators understand that influence isn't just about what you say; it's about how you make people feel the moment you walk into the room. When your words and body language are aligned, your presence becomes your greatest strength.",
           },
-          { id:"diana", img:"/d13-jamie.jpg", imgPos:"center center", name:"Jamie Oliver", role:"Celebrity chef & author", superpower:"Master of Approachable Authority",
+          { id:"jamie", img:"/d13-jamie.jpg", imgPos:"center center", name:"Jamie Oliver", role:"Celebrity chef & author", superpower:"Master of Approachable Authority",
             superpowerText:"People don't trust you because you sound clever. They trust you because they understand you.",
             summary:"He built one of the world's most recognisable personal brands without trying to sound like the smartest person in the room.",
             quote:"\"People don't trust you because you sound clever. They trust you because they understand you.\"",
