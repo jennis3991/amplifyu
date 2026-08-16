@@ -2365,7 +2365,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           { id:"amal", img:"/d6-amal.jpg", imgPos:"center 50%", name:"Amal Clooney", role:"Human rights barrister", superpower:"Master of Composure Under Pressure",
             superpowerText:"Every word chosen. Every sentence deliberate.",
             summary:"She argues the world's most consequential legal cases — calm, precise and measured when the stakes couldn't be higher.",
-            quote:"\"Pressure rarely rewards the loudest voice. It rewards the clearest mind.\"",
             body1:"Amal Clooney argues some of the world's most consequential legal cases, where every sentence can influence justice, diplomacy and human lives.",
             body2:"Whether addressing international courts, questioning witnesses or speaking before world leaders, she remains calm, precise and measured — even when the stakes couldn't be higher.",
             body3:"Amal doesn't rush, interrupt or react emotionally. She relies on preparation, evidence and deliberate communication, allowing facts — not emotion — to carry the greatest weight.",
@@ -2406,9 +2405,11 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
-                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
-                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
-                    </div>
+                    {card.quote && (
+                      <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                        <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                      </div>
+                    )}
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
                     <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
                       <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
@@ -2522,7 +2523,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           { id:"swift", img:"/d11-swift.jpg", imgPos:"center 40%", name:"Taylor Swift", role:"Singer-songwriter & cultural icon", superpower:"Master of Personal Brand",
             superpowerText:"Making people feel part of the journey.",
             summary:"She didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel personally invested in her story.",
-            quote:"\"People didn't just buy Taylor Swift's music. They bought into her journey.\"",
             body1:"Taylor Swift didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel like they were part of her journey. From teenage country songwriter to global cultural icon, her brand evolved without losing its emotional core: authenticity, storytelling, reinvention, and direct connection with her audience.",
             body2:"Fans don't just consume her work. They feel personally invested in her story. Behind-the-scenes access, fan easter eggs, emotional honesty, long-form storytelling, meaningful audience interaction — every touchpoint was designed to reward attention and deepen connection.",
             body3:"Taylor made global fame feel personal. She openly shares heartbreak, ambition, growth, mistakes, reinvention, and vulnerability. People feel like they've grown alongside her. That's the most powerful form of personal branding: making your story feel like their story.",
@@ -2533,7 +2533,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           { id:"disney", img:"/d11-disney.jpg", imgPos:"center 40%", name:"Disney", role:"Global entertainment company, est. 1923", superpower:"Master of Brand Consistency",
             superpowerText:"100 years of one word: Magic.",
             summary:"Disney has spent a century staying true to one emotional promise across every format, generation, and medium — Magic, Wonder, and Imagination.",
-            quote:"\"Disney didn't build a brand. They built a feeling — and then protected it for 100 years.\"",
             body1:"Disney has spent a century doing something most organisations never achieve: staying completely true to a brand identity across every format, generation, and medium. From Steamboat Willie in 1928 to Marvel, Pixar, and Star Wars today, every Disney product carries the same emotional promise — Magic, Wonder, and Imagination.",
             body2:"The brand has survived leadership changes, financial crises, the death of its founder, and a complete technological revolution. It did this by protecting its emotional core with ruthless consistency. The logo, the music, the storytelling structure, the feeling of walking through the gates — all of it reinforces one message: you are entering somewhere extraordinary.",
             body3:"Disney spent 100 years becoming associated with one word: Magic. Not entertainment. Not movies. Magic. The most powerful brands are known for one thing. The strongest personal brands work the same way.",
@@ -2574,9 +2573,11 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
-                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
-                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
-                    </div>
+                    {card.quote && (
+                      <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                        <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                      </div>
+                    )}
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
                     <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
                       <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
@@ -2663,7 +2664,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           { id:"kennedy", img:"/d12-kennedy.jpg", imgPos:"center 35%", name:"Kennedy vs Nixon", role:"1960 US Presidential Debate", superpower:"Master of Executive Presence",
             superpowerText:"People don't just hear confidence. They see it.",
             summary:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio believed Nixon won. People who watched on television overwhelmingly believed Kennedy won. The difference wasn't their arguments — it was their presence.",
-            quote:"\"People don't just hear confidence. They see it.\"",
             body1:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio generally believed Richard Nixon had won. People who watched on television overwhelmingly believed John F. Kennedy had won.",
             body2:"The difference wasn't their arguments. It was their presence. Kennedy appeared calm, composed and confident. He looked directly into the camera, maintained steady eye contact, stood comfortably and projected quiet authority. Nixon, recovering from illness, appeared tense, perspired under the studio lights and avoided looking directly at viewers.",
             body3:"The debate became one of the clearest demonstrations that how you deliver a message can influence people just as much as the message itself.",
@@ -2674,7 +2674,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           { id:"jobs", img:"/d12-jobs.jpg", imgPos:"center 40%", name:"Steve Jobs", role:"Co-founder & former CEO of Apple", superpower:"Master of Purposeful Presence",
             superpowerText:"When every movement has purpose, every message carries more weight.",
             summary:"On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message — not the speaker.",
-            quote:"\"Confident body language creates clarity. Calm presence made complex ideas feel simple and memorable.\"",
             body1:"Steve Jobs understood that powerful presentations aren't just about great ideas — they're about how those ideas are delivered. On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message rather than the speaker.",
             body2:"He proved that confidence doesn't need to be loud to be influential. His philosophy was simple: when every movement has purpose, every message carries more weight.",
             body3:"The next time you're presenting, resist the urge to fill every silence or pace constantly. Stand still to emphasise an important point, use deliberate gestures rather than constant movement, and allow pauses to give your audience time to think.",
@@ -2715,9 +2714,11 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
-                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
-                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
-                    </div>
+                    {card.quote && (
+                      <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                        <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                      </div>
+                    )}
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
                     <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
                       <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
@@ -3005,7 +3006,6 @@ strokeLinecap="round"/></svg>
           { id:"jamie", img:"/d13-jamie.jpg", imgPos:"center center", name:"Jamie Oliver", role:"Celebrity chef & author", superpower:"Master of Approachable Authority",
             superpowerText:"People don't trust you because you sound clever. They trust you because they understand you.",
             summary:"He built one of the world's most recognisable personal brands without trying to sound like the smartest person in the room.",
-            quote:"\"People don't trust you because you sound clever. They trust you because they understand you.\"",
             body1:"Jamie Oliver built one of the world's most recognisable personal brands without trying to sound like the smartest person in the room. He talked about food the way you'd talk to a friend — no jargon, no complicated language, just genuine enthusiasm and practical advice.",
             body2:"Open about living with dyslexia and struggling at school, Jamie never hid behind technical language to sound credible. Instead, he built trust by making complex ideas simple. That same clear communication helped turn his campaign for healthier school meals into real government policy.",
             body3:"Visibility isn't about sounding impressive. It's about communicating in a way that people remember, trust, and want to share. People connect with communicators who make them feel capable, not intimidated.",
@@ -3046,9 +3046,11 @@ strokeLinecap="round"/></svg>
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
-                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
-                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
-                    </div>
+                    {card.quote && (
+                      <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                        <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                      </div>
+                    )}
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
                     <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
                       <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
