@@ -3577,7 +3577,6 @@ setAmbitionSaved(true); } catch {}
             exploreLabel:"Explore his techniques",
             body1:"Steve Jobs understood that powerful presentations aren't just about great ideas — they're about how those ideas are delivered. On stage, he used purposeful movement, comfortable pauses, and simple gestures to keep the audience focused on the message rather than the speaker.",
             body2:"He proved that confidence doesn't need to be loud to be influential. His philosophy was simple: when every movement has purpose, every message carries more weight.",
-            body3:"The next time you're presenting, resist the urge to fill every silence or pace constantly. Stand still to emphasise an important point, use deliberate gestures rather than constant movement, and allow pauses to give your audience time to think.",
             whyItWorks:"Confident body language creates clarity. By eliminating unnecessary movement and using pauses deliberately, Jobs directed the audience's attention exactly where he wanted it. His calm presence made complex ideas feel simple and memorable.",
             technique:"The next time you're presenting, resist the urge to fill every silence or pace constantly. Stand still to emphasise an important point, use deliberate gestures rather than constant movement, and allow pauses to give your audience time to think.",
             lesson:"Your presence is shaped as much by what you don't do as what you do. Purposeful movement, calm posture, and intentional pauses communicate confidence before you've even finished your first sentence. Sometimes the most powerful body language is knowing when to stand still.",
@@ -3607,7 +3606,9 @@ setAmbitionSaved(true); } catch {}
                 <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
               </div>
             )}
-            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            {reading.body3 && (
+              <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            )}
             <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
               <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>
