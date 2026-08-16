@@ -525,7 +525,6 @@ T.goldDark : T2.text4,
           { id:"bezos", img:"/d10-bezos.jpg", imgPos:"center 50%", name:"Jeff Bezos", role:"Founder of Amazon", superpower:"Master of Repeatable Excellence",
             superpowerText:"Consistency beats occasional brilliance.",
             summary:"He built one of the world's largest companies by obsessing over systems — so that great performance happened at scale, not by accident.",
-            quote:"\"If you do build a great experience, customers tell each other about that. Word of mouth is very powerful.\"",
             body1:"Jeff Bezos built one of the world's largest companies by obsessing over systems rather than individual moments of brilliance. From warehouses to customer service, every process was designed to deliver the same high standard, every single time.",
             body2:"His focus wasn't just on working harder — it was on building systems that made excellence repeatable. His philosophy is simple: consistency beats occasional brilliance.",
             body3:"Exceptional performance doesn't come from heroic effort every day. It comes from creating reliable processes that produce great results at scale. When your systems are strong, quality becomes predictable rather than accidental.",
@@ -1809,13 +1808,8 @@ T.goldDark : T2.text4,
           { id:"indra", img:"/d5-indra.jpg", name:"Indra Nooyi", role:"Former CEO of PepsiCo", superpower:"Performance With Purpose",
             superpowerText:"Big belief. Clear reason. Concrete execution.",
             summary:"Two decades leading PepsiCo — structured the same way every time.",
-            quote:"\"Performance must be married with purpose.\"",
             body1:"Nooyi ran one of the world's largest companies for 12 years. She led with structure.",
-            body2Lines:[
-              {label:"Point",   text:"\"Performance must be married with purpose.\""},
-              {label:"Reason",  text:"\"The world is changing — consumers, governments, society.\""},
-              {label:"Example", text:"\"At PepsiCo we've transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people.\""},
-            ],
+            body2:"Her mandate — Performance with Purpose — followed the same shape every time: state the belief, explain why the world demands it, then show the concrete action taken. Under that banner, PepsiCo reduced sugar, sodium and saturated fat across its portfolio while investing in sustainability and its people.",
             body3:"She didn't leave it as philosophy — she operationalised it.",
             whyItWorks:"Point then reason then example. That's why she feels persuasive, intelligent, and trustworthy. Every statement is accountable to the next. Nothing floats without support.",
             technique:"Start with your belief — not the context, not the background. One sentence. Then say why the world demands it. Then show what you did about it.",
@@ -1890,9 +1884,11 @@ T.goldDark : T2.text4,
                             </div>
                           : <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body2}</p>
                         }
-                        <div style={{padding:"14px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 10px"}}>
-                          <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
-                        </div>
+                        {card.quote && (
+                          <div style={{padding:"14px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 10px"}}>
+                            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                          </div>
+                        )}
                         <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
                         <div style={{marginBottom:12}}>
                           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why It Works</div>

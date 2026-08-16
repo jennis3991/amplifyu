@@ -663,7 +663,6 @@ setAmbitionSaved(true); } catch {}
           { id:"bezos", img:"/d10-bezos.jpg", imgPos:"center 50%", name:"Jeff Bezos", role:"Founder of Amazon", superpower:"Master of Repeatable Excellence",
             superpowerText:"Consistency beats occasional brilliance.",
             summary:"He built one of the world's largest companies by obsessing over systems — so that great performance happened at scale, not by accident.",
-            quote:"\"If you do build a great experience, customers tell each other about that. Word of mouth is very powerful.\"",
             exploreLabel:"Explore his techniques",
             body1:"Jeff Bezos built one of the world's largest companies by obsessing over systems rather than individual moments of brilliance. From warehouses to customer service, every process was designed to deliver the same high standard, every single time.",
             body2:"His focus wasn't just on working harder — it was on building systems that made excellence repeatable. His philosophy is simple: consistency beats occasional brilliance.",
@@ -2879,10 +2878,9 @@ setAmbitionSaved(true); } catch {}
           { id:"indra", img:"/d5-indra.jpg", imgPos:"center 35%", name:"Indra Nooyi", role:"Former CEO of PepsiCo", superpower:"Performance With Purpose",
             superpowerText:"Big belief. Clear reason. Concrete execution.",
             summary:"Two decades leading PepsiCo — structured the same way every time.",
-            quote:"\"Performance must be married with purpose.\"",
             exploreLabel:"Explore her techniques",
             body1:"Nooyi ran one of the world's largest companies for 12 years. She led with structure.",
-            body2:"Point: \"Performance must be married with purpose.\" Reason: \"The world is changing — consumers, governments, society.\" Example: \"At PepsiCo we've transformed our portfolio, reducing sugar, sodium and saturated fat, while investing in sustainability and our people.\"",
+            body2:"Her mandate — Performance with Purpose — followed the same shape every time: state the belief, explain why the world demands it, then show the concrete action taken. Under that banner, PepsiCo reduced sugar, sodium and saturated fat across its portfolio while investing in sustainability and its people.",
             body3:"She didn't leave it as philosophy — she operationalised it.",
             whyItWorks:"Point then reason then example. That's why she feels persuasive, intelligent, and trustworthy. Every statement is accountable to the next. Nothing floats without support.",
             technique:"Start with your belief — not the context, not the background. One sentence. Then say why the world demands it. Then show what you did about it.",
@@ -2908,9 +2906,11 @@ setAmbitionSaved(true); } catch {}
             <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
-            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
-              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
-            </div>
+            {reading.quote && (
+              <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+                <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+              </div>
+            )}
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
             <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
