@@ -2115,95 +2115,6 @@ setAmbitionSaved(true); } catch {}
     // ── D1 RightContent — Day 1: Speak Clearly ────────────────────────────────
     const D1_CLARITY_FACTS = D1_CLARITY_FACTS_DATA;
     const D1_FEYNMAN_STEPS = D1_FEYNMAN_DATA;
-    const D1_EXAMPLES = [
-      { id:"tyson", title:"Neil deGrasse Tyson", sub:"Making the Universe Understandable",
-        tag:"He explains black holes and quantum physics so anyone can picture it.",
-        content:(
-          <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
-            <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Making Nature Understandable</div>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>The world's clearest<br/>science communicator.</h2>
-            <div style={{display:"flex",flexDirection:"column",gap:16,marginBottom:28}}>
-              {["Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon.",
-                "Instead, he uses language anyone can picture:",
-               ].map((p,i)=><p key={i} style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>{p}</p>)}
-              <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"The rainforest is like a vast, green lung breathing life into our planet."</p>
-              </div>
-              <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>No technical terms. Just an image you can see.</p>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
-              <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>He translates scientific complexity into vivid, everyday language. You don't need a biology degree to understand the Amazon.</p>
-              </div>
-              <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Replace technical terms with pictures people already have in their heads. Make the abstract concrete.</p>
-              </div>
-            </div>
-            <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
-              <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Clarity comes from choosing words that create images, not confusion. The best explainers make you see what they're saying.</p>
-            </div>
-          </div>
-        )},
-      { id:"branson", title:"Sir Richard Branson", sub:"Business Without Buzzwords",
-        tag:"He uses plain English — words anyone would use.",
-        content:(
-          <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
-            <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Business Without Buzzwords</div>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>A global empire.<br/>Chatting with a friend.</h2>
-            <div style={{display:"flex",flexDirection:"column",gap:16,marginBottom:28}}>
-              <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Branson built a global empire. But he speaks like he's chatting with a friend.</p>
-              <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>When asked about Virgin's strategy:</p>
-              <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"We just try to make things better for people. If we do that, they'll choose us."</p>
-              </div>
-              <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>No "synergies." No "value propositions." No corporate fluff.</p>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
-              <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>He uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.</p>
-              </div>
-              <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Remove every word a 10-year-old wouldn't understand. If what's left still makes sense, you've found clarity.</p>
-              </div>
-            </div>
-            <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
-              <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>The clearest speakers use the simplest words. Plain language isn't a limitation — it's a sign of mastery.</p>
-            </div>
-          </div>
-        )},
-      { id:"gladwell", title:"Malcolm Gladwell", sub:"Research to Rememberable",
-        tag:"Dense research distilled into ideas that stick forever. '10,000 hours.'",
-        content:(
-          <div style={{maxWidth:540,margin:"0 auto",padding:"0 20px"}}>
-            <div style={{fontFamily:T.sans,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:T2.text3,marginBottom:20}}>Ideas That Land</div>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:28}}>Six words.<br/>Shifted the conversation.</h2>
-            <div style={{display:"flex",flexDirection:"column",gap:16,marginBottom:28}}>
-              <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>Michelle Obama addresses millions on education, equality, leadership. Complex topics. High stakes.</p>
-              <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.75,margin:0}}>But her messages are always clear:</p>
-              <div style={{padding:"18px 22px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                <p style={{fontFamily:T.serif,fontSize:22,fontStyle:"italic",color:T2.text,lineHeight:1.5,margin:0}}>"When they go low, we go high."</p>
-              </div>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
-              <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>Why It Works</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>She takes big ideas and distills them into phrases you can remember and repeat. No wasted words. Just clarity.</p>
-              </div>
-              <div style={{padding:"14px 18px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6}}>The Technique</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0}}>Find the core of your message — the part that could fit on a bumper sticker. Build everything else around that.</p>
-              </div>
-            </div>
-            <div style={{padding:"16px 20px",borderLeft:"2px solid "+T.gold}}>
-              <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.65,margin:0}}>Clear communicators decide what people should remember, then say that first. Everything else is just the explanation.</p>
-            </div>
-          </div>
-        )},
-    ];
 
     const D1RightContent = () => {
       const [d1OpenCard, setD1OpenCard] = useState(null);
@@ -2219,7 +2130,6 @@ setAmbitionSaved(true); } catch {}
       const [simInput, setSimInput] = useState("");
       const [d1ExObserved, setD1ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d1ExObserved')||'{}'); } catch { return {}; } });
       const [d1ExOpenCard, setD1ExOpenCard] = useState(null);
-      const openCard = D1_EXAMPLES.find(c=>c.id===d1OpenCard);
 
       async function simplifyJargon() {
         if (!jargonInput.trim()) return;
@@ -2327,11 +2237,9 @@ setAmbitionSaved(true); } catch {}
           { id:"attenborough", img:"/d11-attenborough.jpg", name:"Sir David Attenborough", role:"Broadcaster & natural historian", superpower:"Master of Clarity",
             superpowerText:"Makes the complex feel beautifully simple.",
             summary:"He explains the natural world so everyone can see it.",
-            quote:"\"The rainforest is like a vast, green lung breathing life into our planet.\"",
             body1:"Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon.",
-            body2:"Instead, he uses language anyone can picture:",
-            body3:"No technical terms. Just an image you can see.",
-            whyItWorks:"He translates scientific complexity into vivid, everyday language. You don’t need a biology degree to understand the Amazon.",
+            body2:"Instead, he uses language anyone can picture. No technical terms. Just images people already understand.",
+            whyItWorks:"He translates scientific complexity into vivid, everyday language. You don’t need a science degree to understand the Earth.",
             technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",
             lesson:"Clarity comes from choosing words that create images, not confusion. The best explainers make you see what they’re saying.",
           },
@@ -2366,10 +2274,12 @@ setAmbitionSaved(true); } catch {}
             <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
-            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
-              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
-            </div>
-            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            {reading.quote && (
+              <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+                <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+              </div>
+            )}
+            {reading.body3 && <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>}
             <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
               <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>

@@ -1545,11 +1545,9 @@ T.goldDark : T2.text4,
           { id:"attenborough", img:"/d11-attenborough.jpg", name:"Sir David Attenborough", role:"Broadcaster & natural historian", superpower:"Master of Clarity",
             superpowerText:"Makes the complex feel beautifully simple.",
             summary:"He explains the natural world so everyone can see it.",
-            quote:"\"The rainforest is like a vast, green lung breathing life into our planet.\"",
             body1:"Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon.",
-            body2:"Instead, he uses language anyone can picture:",
-            body3:"No technical terms. Just an image you can see.",
-            whyItWorks:"He translates scientific complexity into vivid, everyday language. You don’t need a biology degree to understand the Amazon.",
+            body2:"Instead, he uses language anyone can picture. No technical terms. Just images people already understand.",
+            whyItWorks:"He translates scientific complexity into vivid, everyday language. You don’t need a science degree to understand the Earth.",
             technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",
             lesson:"Clarity comes from choosing words that create images, not confusion. The best explainers make you see what they’re saying.",
           },
@@ -1625,10 +1623,12 @@ T.goldDark : T2.text4,
                       <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16}}>
                         <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body1}</p>
                         <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 10px"}}>{card.body2}</p>
-                        <div style={{padding:"14px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 10px"}}>
-                          <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
-                        </div>
-                        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
+                        {card.quote && (
+                          <div style={{padding:"14px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 10px"}}>
+                            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                          </div>
+                        )}
+                        {card.body3 && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>}
                         <div style={{marginBottom:12}}>
                           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>Why It Works</div>
                           <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
