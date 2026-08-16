@@ -276,7 +276,7 @@ finishDate + ".";
         {/* Hero — full-width, natural height so chess pieces show complete */}
         <div style={{ marginTop: NAV_H, background: "#0a0805", position: "relative", overflow: "hidden" }}>
           <style>{`@keyframes heroFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }`}</style>
-          <img src="/home-hero-8.jpg" alt="The Six Pillars of Communication Mastery" style={{ width: "100%", height: "auto", display: "block" }}/>
+          <img src={`/home-hero-8.jpg?v=${encodeURIComponent(typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : '')}`} alt="The Six Pillars of Communication Mastery" style={{ width: "100%", height: "auto", display: "block" }}/>
           {/* Begin Session button — overlaid on hero */}
           <button
             onClick={() => onStart(finished ? 1 : cur)}
@@ -453,7 +453,7 @@ finishDate + ".";
 
       {/* ── Hero image — full natural height ── */}
       <div style={{marginTop:`calc(${NAV_H+STRIP_H}px + env(safe-area-inset-top, 0px))`,background:"#0a0805"}}>
-        <img src="/home-hero-mobile.jpg" alt="The Six Pillars of Communication Mastery" style={{width:"100%",height:"auto",display:"block"}}/>
+        <img src={`/home-hero-mobile.jpg?v=${encodeURIComponent(typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : '')}`} alt="The Six Pillars of Communication Mastery" style={{width:"100%",height:"auto",display:"block"}}/>
       </div>
 
       {/* ── Static CTA bar ── */}
