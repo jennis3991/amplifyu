@@ -508,7 +508,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           11:{Insight:"/d11-insight.jpg",Theory:"/d11-theory.jpg",Practice:null,Review:"/review-chair.jpg"},
           13:{Insight:"/day13-insight.jpg",Theory:"/day13-theory.jpg",Example:"/day13-insight.jpg",Review:"/review-chair.jpg"},
           14:{Insight:"/day14-insight.jpg",Theory:"/day14-theory.jpg",Review:"/review-chair.jpg"},
-          12:{Insight:"/day12-insight.jpg",Theory:"/day12-theory.jpg",Practice:null,Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
+          12:{Insight:"/day12-insight.jpg",Theory:"/day12-theory-v2.jpg",Practice:null,Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           8:{Insight:"/nt-insight.jpg",Theory:"/dual-coding-theory.jpg",Practice:"/practice-bg.jpg",Simulation:null,Review:"/review-chair.jpg"},
         };
         // ── Rehearsal panes ────────────────────────────────────────────────

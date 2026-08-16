@@ -120,7 +120,7 @@ dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false}) {
       9:["/day9-insight.jpg","/day9-theory.jpg"],
       10:["/day10-insight.jpg","/performance-iceberg.jpg"],
       11:["/d11-insight.jpg","/d11-theory.jpg"],
-      12:["/day12-insight.jpg","/day12-theory.jpg"],
+      12:["/day12-insight.jpg","/day12-theory-v2.jpg"],
       13:["/day13-insight.jpg","/day13-theory.jpg"],
       14:["/day14-insight.jpg","/day14-theory.jpg"],
     };
