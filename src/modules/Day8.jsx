@@ -1353,7 +1353,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
           const sel = selected === i;
           const sc  = sel ? T.gold : T2.text3;
           return (
-            <div key={i} onClick={() => setSelected(i)} style={{ background:sel?"rgba(138,158,132,0.08)":T2.surface, borderRadius:8, border:`1px solid ${sel?T.gold:T2.border}`, padding:"18px 16px 16px", cursor:"pointer", transition:"all 0.18s" }}>
+            <div key={i} onClick={() => setSelected(i)} style={{ background:sel?"rgba(138,158,132,0.08)":T2.surface, borderRadius:8, border:`1px solid ${sel?T.gold:T2.border}`, padding:"18px 16px 16px", cursor:"pointer", transition:"all 0.18s", textAlign:"center" }}>
               <div style={{ marginBottom:10, display:"flex", justifyContent:"center" }}>{c.icon(sc)}</div>
               <div style={{ fontFamily:T.serif, fontSize:isDesktop?17:16, fontWeight:600, color:T2.text, lineHeight:1.25, marginBottom:6 }}>{c.title}</div>
               <div style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, lineHeight:1.5, fontWeight:300 }}>{c.sub}</div>
