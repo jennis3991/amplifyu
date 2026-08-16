@@ -2427,7 +2427,6 @@ setAmbitionSaved(true); } catch {}
             exploreLabel:"Explore her techniques",
             body1:"Jacinda Ardern has a remarkable ability to make leadership feel personal. Whether speaking to a nation after tragedy or chatting informally online from home, she communicates with warmth, empathy, and authenticity.",
             body2:"She doesn't create distance between herself and others — she closes it. Her message is simple: people come first.",
-            body3:"People connect with leaders who feel genuine. By showing empathy, acknowledging emotions, and speaking with humility, she builds trust before asking for action. When people feel understood, they're far more willing to listen.",
             whyItWorks:"People connect with leaders who feel genuine. By showing empathy, acknowledging emotions, and speaking with humility, she builds trust before asking for action. When people feel understood, they're far more willing to listen.",
             technique:"Before trying to persuade someone, show that you understand their perspective. Acknowledge how they might be feeling, ask questions with genuine curiosity, and respond with empathy before offering your own view.",
             lesson:"Connection isn't about being the most charismatic person in the room. It's about making other people feel seen, heard, and understood. Empathy turns conversations into relationships, and relationships build lasting influence.",
