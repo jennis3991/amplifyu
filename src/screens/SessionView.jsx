@@ -2417,7 +2417,6 @@ setAmbitionSaved(true); } catch {}
             exploreLabel:"Explore his techniques",
             body1:"Prince William is known for making people feel comfortable. Whether he's speaking with emergency responders, young people, veterans, or families, he rarely dominates the conversation. Instead, he creates space for others to speak.",
             body2:"His communication isn't built on having the perfect answer. It's built on making the other person feel heard.",
-            body3:"In your next conversation, focus less on what you'll say next and more on understanding the other person's perspective. Ask one more question than you normally would. Let silence do some of the work.",
             whyItWorks:"Connection begins with listening. By asking thoughtful questions, maintaining genuine curiosity, and giving people time to share their experiences, he builds trust quickly. People remember how he made them feel, not just what he said.",
             technique:"In your next conversation, focus less on what you'll say next and more on understanding the other person's perspective. Ask one more question than you normally would. Let silence do some of the work.",
             lesson:"Strong communicators don't connect because they speak the most. They connect because they make others feel valued. Listening isn't the pause between speaking — it's where connection begins.",
@@ -2458,7 +2457,9 @@ setAmbitionSaved(true); } catch {}
                 <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
               </div>
             )}
-            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            {reading.body3 && (
+              <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            )}
             <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
               <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>
