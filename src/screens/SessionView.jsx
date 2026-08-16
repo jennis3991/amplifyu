@@ -1985,7 +1985,7 @@ setAmbitionSaved(true); } catch {}
             superpowerText:"Makes big ideas feel personal.",
             summary:"He speaks like a friend — even when addressing millions.",
             body1:"Branson built a global empire. But he speaks like he’s chatting with a friend.",
-            body2:"When asked about business strategy, he skips the corporate vocabulary entirely — no \"synergies,\" no \"value propositions,\" no jargon built to sound impressive. Just plain words anyone would use.",
+            body2:"He makes big business ideas sound like everyday conversation. No corporate language. No complicated phrases. Just simple words that get straight to the point.",
             whyItWorks:"He uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.",
             technique:"Remove every word a 10-year-old wouldn’t understand. If what’s left still makes sense, you’ve found clarity.",
             lesson:"Jargon doesn’t make you sound smart. It makes you hard to understand. The clearest speakers use the simplest words.",
