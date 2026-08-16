@@ -900,40 +900,6 @@ export const D11_FACTS = [
     bullets:["Every interaction where you show up the same way adds to a pattern people trust and associate with you.","Consistency compounds. Each time you show up the same way, the impression deepens."] },
 ];
 
-export const D11_EXAMPLES = [
-  {id:"swift", name:"Taylor Swift", role:"Recording Artist · Cultural Icon",
-   headline:"The Master of Connection, Storytelling & Familiarity",
-   body:"Taylor Swift didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel like they were part of her journey. From teenage country songwriter to global cultural icon, her brand evolved without losing its emotional core: authenticity, storytelling, reinvention, and direct connection with her audience. Fans don't just consume her work. They feel personally invested in her story. That's personal branding at its most powerful.",
-   lesson:"People didn't just buy Taylor Swift's music. They bought into her journey.",
-   ingredients:[
-     {n:"Authority",    detail:"Taylor owns a category: storytelling through songwriting. Emotional intelligence, reinvention, creative control, world-class performance. The strongest brands are associated with one unmistakable strength."},
-     {n:"Generosity",   detail:"Behind-the-scenes access, fan easter eggs, emotional honesty, long-form storytelling, meaningful audience interaction. Her fans feel rewarded for paying attention. Generosity creates loyalty."},
-     {n:"Relatability", detail:"Taylor made global fame feel personal. She openly shares heartbreak, ambition, growth, mistakes, reinvention, vulnerability. People feel like they've grown alongside her. People follow stories they emotionally recognise."},
-     {n:"Energy",       detail:"Whether performing, speaking, or accepting awards, people feel belief and emotional investment. Her energy says: this matters. Emotion communicates commitment."},
-     {n:"Familiarity",  detail:"Albums. Tours. Documentaries. Social media. Interviews. Cultural moments. Her audience sees her repeatedly over years. Visibility compounds trust and connection."},
-     {n:"Polarity",     detail:"Taylor is not neutral. She reinvents publicly, owns her narrative, makes bold creative decisions, creates passionate fandom. Memorable brands stand for something."},
-   ]},
-  {id:"disney", name:"Disney", role:"Entertainment Empire · Cultural Institution",
-   headline:"100 Years of Magic, Wonder & Imagination",
-   body:"Disney has spent a century doing something most organisations never achieve: staying completely true to a brand identity across every format, generation, and medium. From Steamboat Willie in 1928 to Marvel, Pixar, and Star Wars today, every Disney product carries the same emotional promise — Magic, Wonder, and Imagination. The brand has survived leadership changes, financial crises, the death of its founder, and a complete technological revolution. It did this by protecting its emotional core with ruthless consistency. The logo, the music, the storytelling structure, the feeling of walking through the gates — all of it reinforces one message: you are entering somewhere extraordinary.",
-   lesson:"Disney didn't build a brand. They built a feeling — and then protected it for 100 years.",
-   closing:"Disney spent 100 years becoming associated with one word: Magic.",
-   ingredients:[
-     {n:"Authority",    detail:"Disney owns a word: Magic. Not entertainment. Not movies — Magic. When people think of magical experiences, Disney comes to mind.",
-                        lesson:"The strongest brands are known for one thing. What do you want to be known for?"},
-     {n:"Generosity",   detail:"Disney has spent decades giving audiences joy, inspiration, stories, characters and memories. People feel they receive value before they even buy anything.",
-                        lesson:"The more value you create, the more trust you earn. People follow people who help them."},
-     {n:"Relatability", detail:"At the heart of every Disney story is a human struggle — Belonging, Courage, Family, Identity, Love. That's why audiences connect emotionally.",
-                        lesson:"People connect through stories, not credentials."},
-     {n:"Energy",       detail:"Disney feels optimistic. Everything about the brand communicates Possibility, Wonder, Excitement. The energy is consistent.",
-                        lesson:"People remember how you make them feel."},
-     {n:"Familiarity",  detail:"A child watches Disney. Then visits Disney. Then introduces Disney to their children — for generations. The repeated exposure builds trust.",
-                        lesson:"People trust what they see consistently. Your reputation is built through repeated interactions."},
-     {n:"Polarity",     detail:"Disney has always had a clear position: we create magical family experiences. Everything aligns around that belief. Strong brands choose a lane.",
-                        lesson:"If you try to be everything to everyone, you'll be memorable to no one."},
-   ]},
-];
-
 export const D11_INGREDIENTS = [
   {n:"Authority",    tagline:"Be known for something",         psych:"Authority Bias",          psychBody:"People naturally trust perceived expertise. If you're clearly exceptional in one area, credibility rises fast.",                                                                                              body:"The strongest brands stand for something specific. Not 'good at many things' — but known for one thing first.",    takeaway:"Own a category."},
   {n:"Generosity",   tagline:"Give value freely",               psych:"Reciprocity (Cialdini)",  psychBody:"When people receive value, they naturally feel more positively toward the source.",                                                                                                                       body:"The fastest way to build goodwill is to help before asking. Teach. Share. Educate. Simplify. Practical tips, frameworks, behind-the-scenes lessons.",  takeaway:"Give before you ask."},
