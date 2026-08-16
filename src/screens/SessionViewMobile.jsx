@@ -2107,7 +2107,6 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           { id:"hamilton", img:"/d6-hamilton.jpg", imgPos:"center 50%", name:"Lewis Hamilton", role:"Seven-time Formula 1 World Champion", superpower:"Master of Composure Under Pressure",
             superpowerText:"Calm when every reason says otherwise.",
             summary:"Seven world championships — and his most powerful moment was how he handled losing one.",
-            quote:"\"Firstly, a big congratulations to Max.\"",
             body1:"Throughout his career, Hamilton has faced criticism, controversy, public scrutiny, and championship-defining setbacks while performing on one of the world's biggest stages.",
             body2:"Abu Dhabi 2021 — one lap from a record-breaking eighth world title. One of the most controversial endings in sporting history. With millions watching, his first public words were: \"Firstly, a big congratulations to Max.\" Extreme disappointment. Global audience. Massive controversy. Yet his first response was composure.",
             body3:"Elite communicators aren't naturally calm. They learn how to manage their reactions. Years later, Hamilton admitted he felt wronged — but also said he had found peace with it.",
