@@ -467,9 +467,9 @@ T.goldDark : T2.text4,
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most professionals assume their effort speaks for itself. It doesn't.</p>
 
           {/* Attribution Theory */}
-          <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.2,marginBottom:12}}>Attribution Theory — Fritz Heider, 1958</h3>
-          <div style={{padding:"18px 20px",background:"rgba(138,158,132,0.08)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.2)",marginBottom:16}}>
-            <p style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,lineHeight:1.6,margin:0}}>When people cannot directly observe your work, they attribute results to luck, team effort, or circumstance — not to you. Visibility closes this gap. It replaces assumption with evidence.</p>
+          <div style={{padding:"16px 18px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:16}}>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 5px",fontStyle:"italic"}}>"When people cannot directly observe your work, they attribute results to luck, team effort, or circumstance — not to you. Visibility closes this gap. It replaces assumption with evidence."</p>
+            <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,margin:0}}>— Fritz Heider, Attribution Theory, 1958</p>
           </div>
 
           {/* Above the waterline */}
