@@ -1252,10 +1252,9 @@ setAmbitionSaved(true); } catch {}
           { id:"wintour", img:"/d3-wintour.jpg", imgPos:"center 45%", name:"Anna Wintour", role:"Editor-in-Chief, Vogue", superpower:"Filler-Free Authority",
             superpowerText:"Every word chosen. Zero wasted.",
             summary:"She pauses between thoughts — no fillers, no hedging, just control.",
-            quote:"\"Decisiveness.\"",
             exploreLabel:"Explore her techniques",
             body1:"Anna Wintour runs Vogue. When she speaks, there's no fluff.",
-            body2:"A journalist asked: \"What makes a good editor?\" She paused for three seconds. Then: one word. Perfect answer.",
+            body2:"Colleagues describe her meetings as famously brief — decisions made quickly and clearly, with no hedging. She treats decisiveness itself as a communication tool: state the position, don't soften it, move on.",
             body3:"Fillers signal uncertainty. Pauses signal control. She always knows what she wants to say.",
             whyItWorks:"She prepares before she speaks. That means she never needs to fill space with ums or uhs. The pause is deliberate — it communicates that the answer was worth waiting for.",
             technique:"Prepare your answer before you speak. If you haven't decided what to say, don't start talking yet. Wait. Think. Then deliver.",
@@ -2661,7 +2660,6 @@ setAmbitionSaved(true); } catch {}
           { id:"streep", img:"/d2-streep.jpg", name:"Meryl Streep", role:"Three-time Oscar-winning actress", superpower:"Master of Precision and Presence",
             superpowerText:"Precision over volume. Control over noise.",
             summary:"Three iconic roles. Three completely different voices.",
-            quote:"\"Take your broken heart, make it into art.\"",
             exploreLabel:"Explore her techniques",
             body1:"Streep proves that the most powerful communicators don't get louder — they get more precise.",
             body2:"Three iconic roles. Three completely different voices, each built from the same instrument: Miranda Priestly (The Devil Wears Prada) barely above a whisper, Sophie (Sophie's Choice) in raw fractured grief, Thatcher (The Iron Lady) in deliberate political authority.",
@@ -2702,9 +2700,11 @@ setAmbitionSaved(true); } catch {}
             <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
-            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
-              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
-            </div>
+            {reading.quote && (
+              <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+                <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+              </div>
+            )}
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
             <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
