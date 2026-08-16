@@ -20,10 +20,6 @@ export function SessionLeftPanel({
   // ── D4 — Short Sentences left panel overrides ────────────────────────────
   if (isD4) {
     const d4Dark = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
-    const d4Ol = <>
-      <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.45)" }}/>
-      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 55%, transparent 80%)" }}/>
-    </>;
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
         <img loading="lazy" src="/day4-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 72%" }}/>
@@ -52,7 +48,8 @@ export function SessionLeftPanel({
     if (step === "Example") return (
       <div style={d4Dark}>
         <img loading="lazy" src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"70% center" }}/>
-        {d4Ol}
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Masters of Brevity</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:380, lineHeight:1.2 }}>The best communicators say more with less.</p>
@@ -201,7 +198,8 @@ export function SessionLeftPanel({
     if (step === "Example") return (
       <div style={d10Dark}>
         <img loading="lazy" src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"70% center" }}/>
-        {d10Ol}
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Performance in the Wild</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:380, lineHeight:1.2 }}>The best performers make their contribution impossible to ignore.</p>
@@ -235,10 +233,6 @@ export function SessionLeftPanel({
    // ── D3 — Eliminate Fillers left panel overrides ──────────────────────────
   if (isD3) {
     const d3Dark = { height:"100%", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", justifyContent:"flex-end" };
-    const d3Ol = <>
-      <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.45)" }}/>
-      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.2) 55%, transparent 80%)" }}/>
-    </>;
     if (step === "Insight") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden" }}>
         <img loading="lazy" src="/day3-insight.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }}/>
@@ -262,7 +256,8 @@ export function SessionLeftPanel({
     if (step === "Example") return (
       <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <img loading="lazy" src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"70% center" }}/>
-        {d3Ol}
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Masters of the Pause</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:380, lineHeight:1.2 }}>The best speakers use silence the way musicians use rests.</p>
@@ -454,7 +449,8 @@ export function SessionLeftPanel({
     if (step === "Example") return (
       <div style={{ height:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"40px 48px", position:"relative", overflow:"hidden" }}>
         <img loading="lazy" src="/example-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"70% center" }}/>
-        {d9Overlay}
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           {d9Label("Connection in Action")}
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>The most connected people listen more than they speak.</p>
