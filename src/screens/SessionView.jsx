@@ -1809,22 +1809,33 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Theory") return (
+      if (step === "Theory") {
+        const millerSteps = [
+          {n:"01",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><rect x="2" y="11" width="13" height="3" rx="1" stroke={T2.text4} strokeWidth="1.1"/><rect x="4" y="7" width="9" height="3" rx="1" stroke={T2.text4} strokeWidth="1.1"/><rect x="6" y="3" width="5" height="3" rx="1" stroke={T2.text4} strokeWidth="1.1"/></svg>,label:"Memory Load",desc:"Every sentence you speak creates a memory load.",focus:"Each word asks something of your listener's attention."},
+          {n:"02",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><line x1="2" y1="9.5" x2="15" y2="9.5" stroke={T2.text4} strokeWidth="0.9" strokeDasharray="1.5 1.5"/><rect x="3" y="6" width="2.3" height="7" stroke={T2.text4} strokeWidth="1.1"/><rect x="7.3" y="3" width="2.3" height="10" stroke={T2.text4} strokeWidth="1.1"/><rect x="11.6" y="7.5" width="2.3" height="5.5" stroke={T2.text4} strokeWidth="1.1"/></svg>,label:"Diminishing Capacity",desc:"Long sentences stack information faster than your audience can process.",focus:"Once capacity is exceeded, comprehension drops fast."},
+          {n:"03",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M2 4c2.5 0 3.5 1.5 5 3.5s3.5 4.5 7 4.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" fill="none"/><polyline points="11 12 14 12 14 9" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>,label:"The Forgetting Curve",desc:"By the time you reach the end, they've forgotten the beginning.",focus:"Length doesn't just confuse — it erases."},
+          {n:"04",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="4.5" cy="4" r="1.8" stroke={T2.text4} strokeWidth="1.1"/><circle cx="4.5" cy="13" r="1.8" stroke={T2.text4} strokeWidth="1.1"/><line x1="6" y1="5.2" x2="14.5" y2="12" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><line x1="6" y1="11.8" x2="14.5" y2="5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/></svg>,label:"The Fix",desc:"One idea. One sentence. Full stop.",focus:"Simplicity isn't a compromise. It's a strategic choice."},
+        ];
+        return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>Miller's Law</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:20}}>In 1956, psychologist George Miller discovered something fundamental about how humans think.</p>
-          <div style={{padding:"18px 22px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:20}}>
-            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0,fontStyle:"italic"}}>We can only hold 7 (±2) pieces of information in working memory at once.</p>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>In 1956, psychologist George Miller discovered something fundamental about how humans think.</p>
+          <div style={{padding:"18px 22px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:28}}>
+            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 5px",fontStyle:"italic"}}>"We can only hold 7 (±2) pieces of information in working memory at once."</p>
+            <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,margin:0}}>— George Miller, 1956</p>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:20}}>
-            {["Every sentence you speak creates a memory load.","Long sentences stack information faster than your audience can process.","By the time you reach the end, they've forgotten the beginning.","The fix? One idea. One sentence. Full stop."].map((p,i)=>(
-              <div key={i} style={{padding:"14px 16px",background:"rgba(44,36,22,0.03)",borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:400,margin:0}}>{p}</p>
+          {millerSteps.map((s,i)=>(
+            <div key={i} style={{display:"flex",gap:18,padding:"16px 18px",marginBottom:6,borderRadius:6,background:`rgba(44,36,22,${0.03+i*0.03})`}}>
+              <div style={{fontFamily:T.serif,fontSize:24,fontWeight:500,color:T.gold,opacity:0.85,lineHeight:1,minWidth:28,paddingTop:3}}>{s.n}</div>
+              <div style={{flex:1}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"#8A9E84"}}>{s.label}</div></div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,fontWeight:400,margin:"0 0 5px"}}>{s.desc}</p>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.55,fontWeight:300,fontStyle:"italic",margin:0}}>{s.focus}</p>
               </div>
-            ))}
-          </div>
-          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:20}}>
+            </div>
+          ))}
+          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:20,marginTop:22}}>
             <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>See It In Action</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
               <div style={{padding:"14px 16px",background:"rgba(139,74,56,0.05)",borderRadius:4,borderLeft:"2px solid rgba(139,74,56,0.3)"}}>
@@ -1838,7 +1849,8 @@ setAmbitionSaved(true); } catch {}
             </div>
           </div>
         </div>
-      );
+        );
+      }
 
       if (step === "Example") {
         const D4_EDITORIAL = [
@@ -3117,26 +3129,6 @@ setAmbitionSaved(true); } catch {}
         );
       }
 
-      if (step === "Insight") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The Way You Speak Changes the Way People Listen</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:640 }}>Your voice is more than sound — it's one of your most powerful communication tools. The way you speak shapes how your ideas land, how your energy is felt, and how memorable your message becomes.</p>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
-            {[
-              {word:"Attention",       body:"A flat voice fades into the background fast. Variation in pace, tone, and emphasis keeps the brain alert and signals that what you're saying matters."},
-              {word:"First Impression",body:"Listeners form an impression of confidence, energy, and credibility within moments of hearing you speak. Your delivery shapes the room before your message even begins."},
-              {word:"Memory",          body:"When delivery has contrast — pauses, pace shifts, vocal emphasis — the brain finds the message easier to process, store, and remember."},
-              {word:"Influence",       body:"The exact same sentence can sound inspiring, uncertain, authoritative, or disengaged depending entirely on delivery. Voice doesn't decorate meaning — it creates it."},
-            ].map((n,i)=>(
-              <div key={i} style={{ padding:"22px 24px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
-                <div style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T.gold, lineHeight:1.3, marginBottom:10 }}>{n.word}</div>
-                <p style={{ fontFamily:T.sans, fontSize:16, color:T2.text, lineHeight:1.7, fontWeight:400, margin:0 }}>{n.body}</p>
-              </div>
-            ))}
-          </div>
-          <p style={{ fontFamily:T.sans, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.7 }}>Your voice is your most underused communication tool. Start using it deliberately.</p>
-        </div>
-      );
       return <RightContent/>;
     };
 
