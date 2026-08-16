@@ -959,18 +959,6 @@ export const D14_INSIGHT_CARDS = [
     bullets:["Great communicators are built through repetition, not revelation.","Every future conversation becomes an opportunity to practise, improve, and amplify your impact."] },
 ];
 
-export const D14_EXAMPLES = [
-  { id:"buffett", name:"Warren Buffett", role:"Investor & philanthropist", headline:"Confidence Followed Competence",
-    body:"One of the world's most successful investors was once terrified of public speaking. He realised his career would be limited if he couldn't communicate effectively. So he invested in learning. He enrolled in a Dale Carnegie course — and years later described that training as one of the most valuable investments he ever made. Not in financial terms. In career terms. In impact terms.",
-    lesson:"Confidence followed competence. It always does." },
-  { id:"nadella", name:"Satya Nadella", role:"CEO of Microsoft", headline:"Small Habits Create Lasting Reputations",
-    body:"When Satya Nadella became CEO of Microsoft, he wasn't known for being the loudest leader in the room. He became known for empathy. For listening. For clarity. For curiosity. Over time, these consistent communication behaviours became part of his leadership identity — and transformed one of the world's largest companies. His communication style wasn't a strategy. It was a practice.",
-    lesson:"Small communication habits, repeated consistently, create lasting reputations." },
-  { id:"oprah", name:"Oprah Winfrey", role:"Media executive & philanthropist", headline:"Your Authenticity Is Your Advantage",
-    body:"Early in her career, Oprah was told she wasn't suited to television news. Instead of trying to become someone else, she leaned into who she already was — her curiosity, her empathy, her ability to make people feel genuinely heard. Those qualities became one of the strongest personal brands in the world. She didn't win by copying someone else's communication style. She won by owning hers.",
-    lesson:"Your greatest communication advantage is authenticity. You cannot be out-competed at being you." },
-];
-
 // ── D13 shared constants ──────────────────────────────────────────────────
 export const D13_INSIGHT_CARDS = [
   { word:"Great Work Is Not Enough", sub:"People can only reward work they can see.",

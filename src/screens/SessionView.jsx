@@ -4,7 +4,7 @@ import { D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_NEURO, THEORY_DATA, F
   D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS,
   D1_CLARITY_FACTS_DATA, D1_FEYNMAN_DATA,
   D11_FACTS, D11_INGREDIENTS, D2_INSIGHT_CARDS, D7_INSIGHT_CARDS,
-  D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS, D14_EXAMPLES,
+  D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS,
 } from '../data.js';
 import { SessionLeftPanel, ExCard } from './SessionLeftPanel.jsx';
 import { MobileSessionView } from './SessionViewMobile.jsx';
@@ -3921,7 +3921,6 @@ setAmbitionSaved(true); } catch {}
 
     const D14RightContent = () => {
       const [d14CardOpen, setD14CardOpen] = useState(null);
-      const [d14ExOpen, setD14ExOpen] = useState(null);
 
       if (step==="Insight") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
@@ -3998,42 +3997,56 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step==="Example") return (
+      if (step==="Example") {
+        const D14_SUPERPOWERS = [
+          { label:"Clarity", text:"Makes the complex feel beautifully simple.",
+            icon:<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2a4.5 4.5 0 00-2.5 8.2c.5.4.9 1 .9 1.7v.6h3.2v-.6c0-.7.4-1.3.9-1.7A4.5 4.5 0 009 2z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/><path d="M7.4 15.2h3.2M7.8 13.8h2.4" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round"/></svg> },
+          { label:"Conversation", text:"Makes big ideas feel personal.",
+            icon:<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2.5 5.8A2 2 0 014.5 3.8h6a2 2 0 012 2v3a2 2 0 01-2 2H7l-2.7 2.1v-2.1h-1.8a2 2 0 01-2-2v-3z" stroke={T.gold} strokeWidth="1.15" strokeLinejoin="round"/></svg> },
+          { label:"Voice", text:"Makes big ideas land through deliberate delivery.",
+            icon:<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2.5 9v0M5 6v6M8 3v12M11 6v6M14 8v2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg> },
+          { label:"Brevity", text:"Every word earns its place — or it goes.",
+            icon:<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M3 9l3-3M3 9l3 3M15 9l-3-3M15 9l-3 3" stroke={T.gold} strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+          { label:"The Pause", text:"Turns silence into emphasis.",
+            icon:<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="5" y="3.5" width="2.6" height="11" rx="1" stroke={T.gold} strokeWidth="1.15"/><rect x="10.4" y="3.5" width="2.6" height="11" rx="1" stroke={T.gold} strokeWidth="1.15"/></svg> },
+          { label:"Precision", text:"Every word chosen. Zero wasted.",
+            icon:<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6.3" stroke={T.gold} strokeWidth="1.1"/><circle cx="9" cy="9" r="3.4" stroke={T.gold} strokeWidth="1.1"/><circle cx="9" cy="9" r="0.9" fill={T.gold}/></svg> },
+          { label:"Structure", text:"Point. Reason. Example. Every time.",
+            icon:<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2.5 4.5h13M4.5 9h9M6.5 13.5h5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg> },
+          { label:"Connection", text:"Makes others feel heard, not just met.",
+            icon:<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="6.5" cy="9" r="3.3" stroke={T.gold} strokeWidth="1.15"/><circle cx="11.5" cy="9" r="3.3" stroke={T.gold} strokeWidth="1.15"/></svg> },
+        ];
+        return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Great Communicators Are Made, Not Born</h2>
-          <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:28,maxWidth:600}}>None of them started where they finished. The same process is available to you.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:16,marginBottom:24}}>
-            {D14_EXAMPLES.map((card)=>{
-              const open=d14ExOpen===card.id;
-              return (
-                <div key={card.id} style={{background:T2.surface,borderRadius:8,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,overflow:"hidden",transition:"all 0.2s"}}>
-                  <button onClick={()=>setD14ExOpen(open?null:card.id)} style={{width:"100%",padding:"24px 28px",display:"flex",alignItems:"center",justifyContent:"space-between",border:"none",background:"transparent",cursor:"pointer",textAlign:"left"}}>
-                    <div>
-                      <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,marginBottom:2,lineHeight:1.1}}>{card.name}</h3>
-                      {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 4px"}}>{card.role}</p>}
-                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>{card.headline}</div>
-                    </div>
-                    <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0,marginLeft:20}}>
-                      <span style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300}}>{open?"Close":"Read more"}</span>
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.2s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </div>
-                  </button>
-                  {open && <div style={{padding:"0 28px 24px",borderTop:"0.5px solid "+T2.border}}>
-                    <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"20px 0 16px"}}>{card.body}</p>
-                    <div style={{padding:"14px 18px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                      <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>{card.lesson}</p>
-                    </div>
-                  </div>}
+          <p style={{fontFamily:T.sans,fontSize:17,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 6px",maxWidth:600}}>You've spent 13 days learning the superpowers of some leading communicators.</p>
+          <p style={{fontFamily:T.sans,fontSize:17,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 24px",maxWidth:600}}>Now take what works — and build it into your own style.</p>
+          <div style={{height:1,background:T2.divider,marginBottom:28}}/>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:20}}>The Superpowers You've Studied</div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:14,marginBottom:28}}>
+            {D14_SUPERPOWERS.map((sp,i)=>(
+              <div key={i} style={{padding:"22px 18px",background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,boxShadow:"0 1px 3px rgba(20,16,10,0.04)"}}>
+                <div style={{width:38,height:38,borderRadius:"50%",background:"rgba(138,158,132,0.10)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:14}}>
+                  {sp.icon}
                 </div>
-              );
-            })}
+                <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{sp.label}</div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:0}}>{sp.text}</p>
+              </div>
+            ))}
           </div>
-          <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,margin:"0 0 8px",fontWeight:300}}>They developed their communication over time. Through practice. Through repetition. Through experience.</p>
-            <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T.gold,margin:0}}>The same process is available to you.</p>
+          <div style={{padding:"26px 28px",background:"rgba(138,158,132,0.06)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",gap:20}}>
+            <div style={{width:48,height:48,borderRadius:"50%",background:"#4A5A44",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 8l2.5 2 3.5-4 3.5 4L16 8l-1 6H5L4 8z" stroke="#F5F1E8" strokeWidth="1.25" strokeLinejoin="round"/><path d="M5.5 16.5h9" stroke="#F5F1E8" strokeWidth="1.25" strokeLinecap="round"/></svg>
+            </div>
+            <div style={{flex:1}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:6}}>Now It's Your Turn</div>
+              <h3 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,margin:"0 0 6px",lineHeight:1.15}}>What is your superpower?</h3>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>Focus on the strengths that feel most natural — and most powerful — for you.</p>
+            </div>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{flexShrink:0}}><path d="M4 10h11M11 5l5 5-5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
         </div>
-      );
+        );
+      }
 
       if (step==="Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
