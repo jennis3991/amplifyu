@@ -655,9 +655,8 @@ setAmbitionSaved(true); } catch {}
             exploreLabel:"Explore his techniques",
             body1:"James Dyson didn't invent a breakthrough product on his first attempt. He famously built thousands of prototypes, refining, testing, and improving his designs over many years before achieving success. While others saw failure, he saw feedback.",
             body2:"His philosophy is simple: every iteration makes the next one better.",
-            body3:"Stop aiming for perfect on the first attempt. Whether you're preparing a presentation, writing a proposal, or practising a difficult conversation, ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
             whyItWorks:"Exceptional performance isn't the result of one brilliant idea — it's the result of relentless improvement. By treating mistakes as data rather than defeat, Dyson built a culture of experimentation where progress comes from refining the process, not chasing perfection.",
-            technique:"Stop aiming for perfect on the first attempt. Ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
+            technique:"Stop aiming for perfect on the first attempt. Whether you're preparing a presentation, writing a proposal, or practising a difficult conversation, ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
             lesson:"High performance isn't about talent alone. It's about showing up, testing, learning, and improving — again and again. The people who consistently excel aren't those who avoid failure; they're the ones who use every attempt to get better.",
           },
           { id:"bezos", img:"/d10-bezos.jpg", imgPos:"center 50%", name:"Jeff Bezos", role:"Founder of Amazon", superpower:"Master of Repeatable Excellence",
@@ -696,7 +695,9 @@ setAmbitionSaved(true); } catch {}
                 <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
               </div>
             )}
-            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            {reading.body3 && (
+              <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
+            )}
             <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
               <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.75,fontWeight:300,margin:0}}>{reading.whyItWorks}</p>

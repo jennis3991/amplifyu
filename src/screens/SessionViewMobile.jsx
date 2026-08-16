@@ -517,9 +517,8 @@ T.goldDark : T2.text4,
             summary:"He built thousands of prototypes before success. While others saw failure, he saw feedback.",
             body1:"James Dyson didn't invent a breakthrough product on his first attempt. He famously built thousands of prototypes, refining, testing, and improving his designs over many years before achieving success. While others saw failure, he saw feedback.",
             body2:"His philosophy is simple: every iteration makes the next one better.",
-            body3:"Stop aiming for perfect on the first attempt. Ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
             whyItWorks:"Exceptional performance isn't the result of one brilliant idea — it's the result of relentless improvement. By treating mistakes as data rather than defeat, Dyson built a culture of experimentation where progress comes from refining the process, not chasing perfection.",
-            technique:"Stop aiming for perfect on the first attempt. Whether you're preparing a presentation, writing a proposal, or practising a difficult conversation, ask: \"What's one thing I can improve before the next version?\"",
+            technique:"Stop aiming for perfect on the first attempt. Whether you're preparing a presentation, writing a proposal, or practising a difficult conversation, ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
             lesson:"High performance isn't about talent alone. It's about showing up, testing, learning, and improving — again and again. The people who consistently excel aren't those who avoid failure; they're the ones who use every attempt to get better.",
           },
           { id:"bezos", img:"/d10-bezos.jpg", imgPos:"center 50%", name:"Jeff Bezos", role:"Founder of Amazon", superpower:"Master of Repeatable Excellence",
@@ -570,7 +569,9 @@ T.goldDark : T2.text4,
                         <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
                       </div>
                     )}
-                    <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
+                    {card.body3 && (
+                      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
+                    )}
                     <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
                       <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
                       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.7,fontWeight:300,margin:0}}>{card.whyItWorks}</p>
