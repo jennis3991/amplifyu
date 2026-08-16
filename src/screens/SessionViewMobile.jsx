@@ -61,6 +61,9 @@ export function MobileSessionView({
 }) {
   const [d9OpenCard, setD9OpenCard] = useState(null);
   const [pixarOpen, setPixarOpen] = useState(false);
+  const [d14Selected, setD14Selected] = useState([]);
+  const [d14Revealed, setD14Revealed] = useState(false);
+  const d14Toggle = (id) => setD14Selected(prev => prev.includes(id) ? prev.filter(x=>x!==id) : [...prev, id]);
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
@@ -2652,23 +2655,32 @@ strokeLinecap="round"/></svg>
       )}
       {isD14 && step==="Example" && (()=>{
         const D14_SUPERPOWERS = [
-          { label:"Clarity", text:"Makes the complex feel beautifully simple.",
+          { id:"clarity", label:"Clarity", text:"Makes the complex feel beautifully simple.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 2a4.5 4.5 0 00-2.5 8.2c.5.4.9 1 .9 1.7v.6h3.2v-.6c0-.7.4-1.3.9-1.7A4.5 4.5 0 009 2z" stroke={T.gold} strokeWidth="1.2" strokeLinejoin="round"/><path d="M7.4 15.2h3.2M7.8 13.8h2.4" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round"/></svg> },
-          { label:"Conversation", text:"Makes big ideas feel personal.",
-            icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M2.5 5.8A2 2 0 014.5 3.8h6a2 2 0 012 2v3a2 2 0 01-2 2H7l-2.7 2.1v-2.1h-1.8a2 2 0 01-2-2v-3z" stroke={T.gold} strokeWidth="1.15" strokeLinejoin="round"/></svg> },
-          { label:"Voice", text:"Makes big ideas land through deliberate delivery.",
+          { id:"voice", label:"Voice", text:"Makes big ideas land through deliberate delivery.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M2.5 9v0M5 6v6M8 3v12M11 6v6M14 8v2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg> },
-          { label:"Brevity", text:"Every word earns its place — or it goes.",
-            icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M3 9l3-3M3 9l3 3M15 9l-3-3M15 9l-3 3" stroke={T.gold} strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-          { label:"The Pause", text:"Turns silence into emphasis.",
+          { id:"pause", label:"The Pause", text:"Turns silence into emphasis.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><rect x="5" y="3.5" width="2.6" height="11" rx="1" stroke={T.gold} strokeWidth="1.15"/><rect x="10.4" y="3.5" width="2.6" height="11" rx="1" stroke={T.gold} strokeWidth="1.15"/></svg> },
-          { label:"Precision", text:"Every word chosen. Zero wasted.",
-            icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6.3" stroke={T.gold} strokeWidth="1.1"/><circle cx="9" cy="9" r="3.4" stroke={T.gold} strokeWidth="1.1"/><circle cx="9" cy="9" r="0.9" fill={T.gold}/></svg> },
-          { label:"Structure", text:"Point. Reason. Example. Every time.",
+          { id:"brevity", label:"Brevity", text:"Every word earns its place — or it goes.",
+            icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M3 9l3-3M3 9l3 3M15 9l-3-3M15 9l-3 3" stroke={T.gold} strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+          { id:"structure", label:"Structure", text:"Point. Reason. Example. Every time.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M2.5 4.5h13M4.5 9h9M6.5 13.5h5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg> },
-          { label:"Connection", text:"Makes others feel heard, not just met.",
+          { id:"composure", label:"Composure", text:"Stay calm and focused when it matters most.",
+            icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M2.5 14.5L7 6l2.7 3.6L12.5 5l3 9.5H2.5z" stroke={T.gold} strokeWidth="1.15" strokeLinejoin="round"/></svg> },
+          { id:"storytelling", label:"Storytelling", text:"Inspire people through meaningful stories.",
+            icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 4.5c-1.2-1-3-1.3-5.5-1v9c2.5-.3 4.3 0 5.5 1 1.2-1 3-1.3 5.5-1v-9c-2.5-.3-4.3 0-5.5 1z" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/><path d="M9 4.5v9" stroke={T.gold} strokeWidth="1.1"/></svg> },
+          { id:"connection", label:"Connection", text:"Makes others feel heard, not just met.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="6.5" cy="9" r="3.3" stroke={T.gold} strokeWidth="1.15"/><circle cx="11.5" cy="9" r="3.3" stroke={T.gold} strokeWidth="1.15"/></svg> },
+          { id:"improvement", label:"Improvement", text:"Every iteration makes the next one better.",
+            icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M2.5 13l4-4 3 3 6-6" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/><path d="M11.5 6h4v4" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+          { id:"brand", label:"Brand", text:"Makes people feel part of the journey.",
+            icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 2.5l1.6 3.4 3.7.4-2.7 2.6.7 3.7L9 11l-3.3 1.6.7-3.7-2.7-2.6 3.7-.4L9 2.5z" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/></svg> },
+          { id:"presence", label:"Presence", text:"Show up with confidence and authenticity.",
+            icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="5" r="2.2" stroke={T.gold} strokeWidth="1.15"/><path d="M4.5 15c0-2.8 2-4.5 4.5-4.5s4.5 1.7 4.5 4.5" stroke={T.gold} strokeWidth="1.15" strokeLinecap="round"/></svg> },
+          { id:"warmth", label:"Warmth", text:"Makes people feel safe enough to be human.",
+            icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.8" stroke={T.gold} strokeWidth="1.15"/><path d="M9 2v1.6M9 14.4V16M2 9h1.6M14.4 9H16M4 4l1.2 1.2M12.8 12.8L14 14M14 4l-1.2 1.2M5.2 12.8L4 14" stroke={T.gold} strokeWidth="1.1" strokeLinecap="round"/></svg> },
         ];
+        const selectedTiles = D14_SUPERPOWERS.filter(sp=>d14Selected.includes(sp.id));
         return (
         <>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Day 14 · Example</div>
@@ -2676,29 +2688,75 @@ strokeLinecap="round"/></svg>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.7,fontWeight:400,margin:"0 0 4px"}}>You've spent 13 days learning the superpowers of some leading communicators.</p>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.7,fontWeight:400,margin:"0 0 16px"}}>Now take what works — and build it into your own style.</p>
           <div style={{height:1,background:"rgba(138,158,132,0.2)",marginBottom:18}}/>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>The Superpowers You've Studied</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:18}}>
-            {D14_SUPERPOWERS.map((sp,i)=>(
-              <div key={i} style={{padding:"14px 12px",background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.18)",borderRadius:8,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}>
-                <div style={{width:30,height:30,borderRadius:"50%",background:"rgba(138,158,132,0.12)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:10}}>
-                  {sp.icon}
-                </div>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"1.2px",marginBottom:5}}>{sp.label}</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.45,fontWeight:300,margin:0}}>{sp.text}</p>
+
+          {!d14Revealed ? (
+            <>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>The Superpowers You've Studied</div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:18}}>
+                {D14_SUPERPOWERS.map((sp)=>{
+                  const isSel = d14Selected.includes(sp.id);
+                  return (
+                    <div key={sp.id} onClick={()=>d14Toggle(sp.id)}
+                      style={{position:"relative",padding:"14px 12px",background:isSel?"rgba(200,164,106,0.1)":"rgba(237,232,223,0.6)",border:`1px solid ${isSel?T.gold:"rgba(138,158,132,0.18)"}`,borderRadius:8,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",cursor:"pointer"}}>
+                      {isSel && (
+                        <div style={{position:"absolute",top:-6,right:-6,width:18,height:18,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 4px rgba(0,0,0,0.2)"}}>
+                          <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2l2.3 2.3 4.7-5" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </div>
+                      )}
+                      <div style={{width:30,height:30,borderRadius:"50%",background:isSel?"rgba(200,164,106,0.18)":"rgba(138,158,132,0.12)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:10}}>
+                        {sp.icon}
+                      </div>
+                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"1.2px",marginBottom:5}}>{sp.label}</div>
+                      <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.45,fontWeight:300,margin:0}}>{sp.text}</p>
+                    </div>
+                  );
+                })}
               </div>
-            ))}
-          </div>
-          <div style={{padding:"18px 16px",background:"rgba(138,158,132,0.06)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",gap:14}}>
-            <div style={{width:40,height:40,borderRadius:"50%",background:"#4A5A44",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M4 8l2.5 2 3.5-4 3.5 4L16 8l-1 6H5L4 8z" stroke="#F5F1E8" strokeWidth="1.25" strokeLinejoin="round"/><path d="M5.5 16.5h9" stroke="#F5F1E8" strokeWidth="1.25" strokeLinecap="round"/></svg>
+              <div style={{padding:"18px 16px",background:"rgba(138,158,132,0.06)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)"}}>
+                <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:d14Selected.length>0?14:0}}>
+                  <div style={{width:40,height:40,borderRadius:"50%",background:"#4A5A44",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M4 8l2.5 2 3.5-4 3.5 4L16 8l-1 6H5L4 8z" stroke="#F5F1E8" strokeWidth="1.25" strokeLinejoin="round"/><path d="M5.5 16.5h9" stroke="#F5F1E8" strokeWidth="1.25" strokeLinecap="round"/></svg>
+                  </div>
+                  <div style={{flex:1}}>
+                    <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{d14Selected.length>0?`You've selected ${d14Selected.length} superpower${d14Selected.length>1?"s":""}`:"Now It's Your Turn"}</div>
+                    <h3 style={{fontFamily:T.serif,fontSize:19,fontWeight:600,color:T2.text,margin:"0 0 4px",lineHeight:1.15}}>What is your superpower?</h3>
+                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.45,fontWeight:300,margin:0}}>Focus on the strengths that feel most natural — and most powerful — for you.</p>
+                  </div>
+                  {d14Selected.length===0 && (
+                    <svg width="17" height="17" viewBox="0 0 20 20" fill="none" style={{flexShrink:0,opacity:0.3}}><path d="M4 10h11M11 5l5 5-5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  )}
+                </div>
+                {d14Selected.length>0 && (
+                  <button onClick={()=>setD14Revealed(true)} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,width:"100%",padding:"12px 0",background:"rgba(200,164,106,0.1)",border:"1px solid "+T.gold,borderRadius:6,cursor:"pointer"}}>
+                    <span style={{fontFamily:T.sans,fontSize:13,fontWeight:700,color:T.gold}}>Reveal my superpower</span>
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 10h11M11 5l5 5-5 5" stroke={T.gold} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </button>
+                )}
+              </div>
+            </>
+          ) : (
+            <div style={{animation:"fadeUp 0.5s ease both"}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Your Superpower</div>
+              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,marginBottom:18}}>{selectedTiles.map(t=>t.label).join(" · ")}</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:20}}>
+                {selectedTiles.map(sp=>(
+                  <div key={sp.id} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 12px",background:"rgba(200,164,106,0.08)",border:"1px solid "+T.gold,borderRadius:20}}>
+                    <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(200,164,106,0.16)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                      {sp.icon}
+                    </div>
+                    <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"0.8px"}}>{sp.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{padding:"18px 16px",background:"rgba(237,232,223,0.6)",borderRadius:8,borderLeft:"2px solid "+T.gold,marginBottom:16}}>
+                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>That's not three separate skills. That's who you are, communicating. You didn't pick these because they sounded good. You picked them because you saw yourself in them — thirteen days of proof, not thirteen days of theory.</p>
+              </div>
+              <button onClick={()=>setD14Revealed(false)} style={{display:"flex",alignItems:"center",gap:6,background:"transparent",border:"none",cursor:"pointer",padding:0}}>
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>Choose different superpowers</span>
+              </button>
             </div>
-            <div style={{flex:1}}>
-              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>Now It's Your Turn</div>
-              <h3 style={{fontFamily:T.serif,fontSize:19,fontWeight:600,color:T2.text,margin:"0 0 4px",lineHeight:1.15}}>What is your superpower?</h3>
-              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.45,fontWeight:300,margin:0}}>Focus on the strengths that feel most natural — and most powerful — for you.</p>
-            </div>
-            <svg width="17" height="17" viewBox="0 0 20 20" fill="none" style={{flexShrink:0}}><path d="M4 10h11M11 5l5 5-5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </div>
+          )}
         </>
         );
       })()}
