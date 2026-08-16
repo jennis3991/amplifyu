@@ -1484,7 +1484,6 @@ T.goldDark : T2.text4,
           { id:"obama", img:"/d8-obama.jpg", imgPos:"center 40%", name:"Barack Obama", role:"44th President of the United States", superpower:"Master of Human-First Storytelling",
             superpowerText:"Every policy begins with a person.",
             summary:"When discussing healthcare, jobs, or education, Obama always started with a single human story — not a statistic.",
-            quote:"\"Change will not come if we wait for some other person or some other time.\"",
             body1:"When discussing healthcare, jobs, or education, Barack Obama often began with a single person. Not a policy. Not a statistic. A person.",
             body2:"A mother struggling to pay bills. A worker trying to support a family. A student chasing a dream. The audience connected with the human story before hearing the argument.",
             body3:"People care about people before they care about issues. By leading with one specific individual, Obama made abstract policy feel personal — and personal means memorable.",
@@ -1536,9 +1535,11 @@ T.goldDark : T2.text4,
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
-                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
-                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
-                    </div>
+                    {card.quote && (
+                      <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                        <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                      </div>
+                    )}
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
                     <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
                       <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>

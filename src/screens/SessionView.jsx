@@ -2200,7 +2200,6 @@ setAmbitionSaved(true); } catch {}
           { id:"obama", img:"/d8-obama.jpg", imgPos:"center 40%", name:"Barack Obama", role:"44th President of the United States", superpower:"Master of Human-First Storytelling",
             superpowerText:"Every policy begins with a person.",
             summary:"When discussing healthcare, jobs, or education, Obama always started with a single human story — not a statistic.",
-            quote:"\"Change will not come if we wait for some other person or some other time.\"",
             exploreLabel:"Explore his techniques",
             body1:"When discussing healthcare, jobs, or education, Barack Obama often began with a single person. Not a policy. Not a statistic. A person.",
             body2:"A mother struggling to pay bills. A worker trying to support a family. A student chasing a dream. The audience connected with the human story before hearing the argument.",
@@ -2241,9 +2240,11 @@ setAmbitionSaved(true); } catch {}
             <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
-            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
-              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
-            </div>
+            {reading.quote && (
+              <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+                <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+              </div>
+            )}
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
             <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
