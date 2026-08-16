@@ -2679,7 +2679,7 @@ strokeLinecap="round"/></svg>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>The Superpowers You've Studied</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:18}}>
             {D14_SUPERPOWERS.map((sp,i)=>(
-              <div key={i} style={{padding:"14px 12px",background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.18)",borderRadius:8}}>
+              <div key={i} style={{padding:"14px 12px",background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.18)",borderRadius:8,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}>
                 <div style={{width:30,height:30,borderRadius:"50%",background:"rgba(138,158,132,0.12)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:10}}>
                   {sp.icon}
                 </div>

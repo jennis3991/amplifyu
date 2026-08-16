@@ -4026,7 +4026,7 @@ setAmbitionSaved(true); } catch {}
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:20}}>The Superpowers You've Studied</div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:14,marginBottom:28}}>
             {D14_SUPERPOWERS.map((sp,i)=>(
-              <div key={i} style={{padding:"22px 18px",background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,boxShadow:"0 1px 3px rgba(20,16,10,0.04)"}}>
+              <div key={i} style={{padding:"22px 18px",background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,boxShadow:"0 1px 3px rgba(20,16,10,0.04)",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}>
                 <div style={{width:38,height:38,borderRadius:"50%",background:"rgba(138,158,132,0.10)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:14}}>
                   {sp.icon}
                 </div>
