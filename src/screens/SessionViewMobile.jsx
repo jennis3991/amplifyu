@@ -2671,8 +2671,10 @@ strokeLinecap="round"/></svg>
         ];
         return (
         <>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.55,fontWeight:400,margin:"0 0 4px"}}>You've spent 13 days learning the superpowers of some leading communicators.</p>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.55,fontWeight:400,margin:"0 0 16px"}}>Now take what works — and build it into your own style.</p>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Day 14 · Example</div>
+          <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Make It Yours.</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.7,fontWeight:400,margin:"0 0 4px"}}>You've spent 13 days learning the superpowers of some leading communicators.</p>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.7,fontWeight:400,margin:"0 0 16px"}}>Now take what works — and build it into your own style.</p>
           <div style={{height:1,background:"rgba(138,158,132,0.2)",marginBottom:18}}/>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>The Superpowers You've Studied</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:18}}>

@@ -4018,8 +4018,10 @@ setAmbitionSaved(true); } catch {}
         ];
         return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <p style={{fontFamily:T.sans,fontSize:17,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 6px",maxWidth:600}}>You've spent 13 days learning the superpowers of some leading communicators.</p>
-          <p style={{fontFamily:T.sans,fontSize:17,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 24px",maxWidth:600}}>Now take what works — and build it into your own style.</p>
+          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:16}}>Day 14 · Example</div>
+          <h2 style={{fontFamily:T.serif,fontSize:isDesktop?"clamp(32px,3vw,52px)":40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>Make It Yours.</h2>
+          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.7,fontWeight:400,marginBottom:8,maxWidth:640}}>You've spent 13 days learning the superpowers of some leading communicators.</p>
+          <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.7,fontWeight:400,marginBottom:32,maxWidth:640}}>Now take what works — and build it into your own style.</p>
           <div style={{height:1,background:T2.divider,marginBottom:28}}/>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:20}}>The Superpowers You've Studied</div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:14,marginBottom:28}}>
