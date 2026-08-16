@@ -652,7 +652,6 @@ setAmbitionSaved(true); } catch {}
           { id:"dyson", img:"/d10-dyson.jpg", imgPos:"center 45%", name:"James Dyson", role:"Inventor & founder of Dyson", superpower:"Master of Relentless Improvement",
             superpowerText:"Every iteration makes the next one better.",
             summary:"He built thousands of prototypes before success. While others saw failure, he saw feedback.",
-            quote:"\"I wanted to give up almost every day. But one of the things I did when I wanted to give up was to think, why was I giving up? Fear of failure.\"",
             exploreLabel:"Explore his techniques",
             body1:"James Dyson didn't invent a breakthrough product on his first attempt. He famously built thousands of prototypes, refining, testing, and improving his designs over many years before achieving success. While others saw failure, he saw feedback.",
             body2:"His philosophy is simple: every iteration makes the next one better.",
@@ -693,9 +692,11 @@ setAmbitionSaved(true); } catch {}
             <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
-            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
-              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
-            </div>
+            {reading.quote && (
+              <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+                <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+              </div>
+            )}
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
             <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
@@ -2415,7 +2416,6 @@ setAmbitionSaved(true); } catch {}
           { id:"william", img:"/d9-william.jpg", imgPos:"center 50%", name:"Prince William", role:"Prince of Wales", superpower:"Master of Connection Through Listening",
             superpowerText:"Makes others feel heard, not just met.",
             summary:"Whether speaking with emergency responders, veterans, or young people, he creates space for others to share — and they remember how he made them feel.",
-            quote:"\"Mental health is just as important as physical health.\"",
             exploreLabel:"Explore his techniques",
             body1:"Prince William is known for making people feel comfortable. Whether he's speaking with emergency responders, young people, veterans, or families, he rarely dominates the conversation. Instead, he creates space for others to speak.",
             body2:"His communication isn't built on having the perfect answer. It's built on making the other person feel heard.",
@@ -2427,7 +2427,6 @@ setAmbitionSaved(true); } catch {}
           { id:"jacinda", img:"/d9-jacinda.jpg", imgPos:"center 50%", name:"Jacinda Ardern", role:"Former Prime Minister of New Zealand", superpower:"Master of Empathetic Leadership",
             superpowerText:"Warmth, humility, and authenticity — every time.",
             summary:"She communicates with warmth, empathy, and authenticity. She doesn't create distance between herself and others — she closes it.",
-            quote:"\"One of the criticisms I've faced over the years is that I'm not aggressive enough or assertive enough, or maybe somehow, because I'm empathetic, it means I'm weak. I totally rebel against that.\"",
             exploreLabel:"Explore her techniques",
             body1:"Jacinda Ardern has a remarkable ability to make leadership feel personal. Whether speaking to a nation after tragedy or chatting informally online from home, she communicates with warmth, empathy, and authenticity.",
             body2:"She doesn't create distance between herself and others — she closes it. Her message is simple: people come first.",
@@ -2456,9 +2455,11 @@ setAmbitionSaved(true); } catch {}
             <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
-            <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
-              <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
-            </div>
+            {reading.quote && (
+              <div style={{padding:"22px 28px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 14px"}}>
+                <p style={{fontFamily:T.serif,fontSize:19,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{reading.quote}</p>
+              </div>
+            )}
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 32px"}}>{reading.body3}</p>
             <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:28,marginBottom:20}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Why It Works</div>
@@ -3775,7 +3776,6 @@ setAmbitionSaved(true); } catch {}
           { id:"obama", img:"/d13-obama.jpg", imgPos:"center 50%", name:"Michelle Obama", role:"Former First Lady of the United States", superpower:"Master of Warm Presence",
             superpowerText:"Making people feel safe enough to be human.",
             summary:"Michelle Obama can speak to thousands or one person and make both feel like the only conversation in the room. She never performs confidence — she shares her own uncertainty instead, which is exactly why people trust her.",
-            quote:"\"Your story is what you have, what you will always have. It is something to own.\"",
             exploreLabel:"Explore her techniques",
             body1:"Michelle Obama can speak to a stadium of thousands and somehow make it feel like a conversation between two people. She's built a reputation not on polish, but on presence — the sense that she's genuinely there with whoever she's talking to, whether it's a world leader or a teenager in a school gym.",
             body2:"She does this by refusing to perform. In her memoir Becoming and countless public appearances, she's been open about self-doubt, about not always feeling like she belonged in the rooms she walked into — and that honesty is exactly what makes people trust her. She doesn't perform confidence. She shares it.",

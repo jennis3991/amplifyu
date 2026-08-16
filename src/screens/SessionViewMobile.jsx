@@ -515,7 +515,6 @@ T.goldDark : T2.text4,
           { id:"dyson", img:"/d10-dyson.jpg", imgPos:"center 45%", name:"James Dyson", role:"Inventor & founder of Dyson", superpower:"Master of Relentless Improvement",
             superpowerText:"Every iteration makes the next one better.",
             summary:"He built thousands of prototypes before success. While others saw failure, he saw feedback.",
-            quote:"\"I wanted to give up almost every day. But one of the things I did when I wanted to give up was to think, why was I giving up? Fear of failure.\"",
             body1:"James Dyson didn't invent a breakthrough product on his first attempt. He famously built thousands of prototypes, refining, testing, and improving his designs over many years before achieving success. While others saw failure, he saw feedback.",
             body2:"His philosophy is simple: every iteration makes the next one better.",
             body3:"Stop aiming for perfect on the first attempt. Ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
@@ -567,9 +566,11 @@ T.goldDark : T2.text4,
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
-                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
-                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
-                    </div>
+                    {card.quote && (
+                      <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                        <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                      </div>
+                    )}
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
                     <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
                       <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
@@ -1638,7 +1639,6 @@ T.goldDark : T2.text4,
           { id:"william", img:"/d9-william.jpg", imgPos:"center 50%", name:"Prince William", role:"Prince of Wales", superpower:"Master of Connection Through Listening",
             superpowerText:"Makes others feel heard, not just met.",
             summary:"Whether speaking with emergency responders, veterans, or young people, he creates space for others to share — and they remember how he made them feel.",
-            quote:"\"Mental health is just as important as physical health.\"",
             body1:"Prince William is known for making people feel comfortable. Whether he's speaking with emergency responders, young people, veterans, or families, he rarely dominates the conversation. Instead, he creates space for others to speak.",
             body2:"His communication isn't built on having the perfect answer. It's built on making the other person feel heard.",
             body3:"In your next conversation, focus less on what you'll say next and more on understanding the other person's perspective. Ask one more question than you normally would. Let silence do some of the work.",
@@ -1649,7 +1649,6 @@ T.goldDark : T2.text4,
           { id:"jacinda", img:"/d9-jacinda.jpg", imgPos:"center 50%", name:"Jacinda Ardern", role:"Former Prime Minister of New Zealand", superpower:"Master of Empathetic Leadership",
             superpowerText:"Warmth, humility, and authenticity — every time.",
             summary:"She communicates with warmth, empathy, and authenticity. She doesn't create distance between herself and others — she closes it.",
-            quote:"\"One of the criticisms I've faced over the years is that I'm not aggressive enough... I totally rebel against that.\"",
             body1:"Jacinda Ardern has a remarkable ability to make leadership feel personal. Whether speaking to a nation after tragedy or chatting informally online from home, she communicates with warmth, empathy, and authenticity.",
             body2:"She doesn't create distance between herself and others — she closes it. Her message is simple: people come first.",
             body3:"People connect with leaders who feel genuine. By showing empathy, acknowledging emotions, and speaking with humility, she builds trust before asking for action. When people feel understood, they're far more willing to listen.",
@@ -1690,9 +1689,11 @@ T.goldDark : T2.text4,
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"14px 0 10px"}}>{card.body1}</p>
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 12px"}}>{card.body2}</p>
-                    <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
-                      <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
-                    </div>
+                    {card.quote && (
+                      <div style={{padding:"14px 16px",background:T2.bg,borderRadius:4,borderLeft:"2px solid "+T.gold,margin:"0 0 12px"}}>
+                        <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.55,margin:0}}>{card.quote}</p>
+                      </div>
+                    )}
                     <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>{card.body3}</p>
                     <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,marginBottom:12}}>
                       <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>Why It Works</div>
@@ -2752,7 +2753,6 @@ strokeLinecap="round"/></svg>
           { id:"obama", img:"/d13-obama.jpg", imgPos:"center 50%", name:"Michelle Obama", role:"Former First Lady of the United States", superpower:"Master of Warm Presence",
             superpowerText:"Making people feel safe enough to be human.",
             summary:"Michelle Obama can speak to thousands or one person and make both feel like the only conversation in the room. She never performs confidence — she shares her own uncertainty instead, which is exactly why people trust her.",
-            quote:"\"Your story is what you have, what you will always have. It is something to own.\"",
             body1:"Michelle Obama can speak to a stadium of thousands and somehow make it feel like a conversation between two people. She's built a reputation not on polish, but on presence — the sense that she's genuinely there with whoever she's talking to, whether it's a world leader or a teenager in a school gym.",
             body2:"She does this by refusing to perform. In her memoir Becoming and countless public appearances, she's been open about self-doubt, about not always feeling like she belonged in the rooms she walked into — and that honesty is exactly what makes people trust her. She doesn't perform confidence. She shares it.",
             body3:"People don't remember Michelle Obama for a perfect turn of phrase. They remember how she made them feel — seen, included, capable. That's presence: not commanding a room, but making everyone in it feel like they belong there too.",
