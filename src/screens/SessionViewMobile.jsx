@@ -786,7 +786,7 @@ T.goldDark : T2.text4,
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Performance in Action</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>Two leaders who built exceptional performance through process, not just talent.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D10_EDITORIAL.map(card=>{
               const open = d10MobCard===card.id;
               const obs = d10ExObs[card.id];
@@ -1052,7 +1052,7 @@ T.goldDark : T2.text4,
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Voice & Delivery</h2>
             <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Tap each card to explore how they do it.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D2_EDITORIAL.map(card=>{
               const open = d2MobCard===card.id;
               const obs = d2ExObs[card.id];
@@ -1231,7 +1231,7 @@ T.goldDark : T2.text4,
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of the Pause</h2>
             <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Two speakers who turned silence into a superpower.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D3_EDITORIAL.map(card=>{
               const open = d3MobCard===card.id;
               const obs = d3ExObs[card.id];
@@ -1391,7 +1391,7 @@ T.goldDark : T2.text4,
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Brevity</h2>
             <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Two voices that prove less is always more.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D4_EDITORIAL.map(card=>{
               const open = d4MobCard===card.id;
               const obs = d4ExObs[card.id];
@@ -1571,7 +1571,7 @@ T.goldDark : T2.text4,
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Clear Communication</h2>
             <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Tap each card to explore how they do it.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D1_EDITORIAL.map(card=>{
               const open = d1MobCard===card.id;
               const obs = d1ExObs[card.id];
@@ -1754,7 +1754,7 @@ T.goldDark : T2.text4,
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Storytelling in the Wild</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>Two examples of narrative transportation at its most powerful.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D8_EDITORIAL.map(card=>{
               const open = ntMobCard===card.id;
               const obs = d8ExObs[card.id];
@@ -1907,7 +1907,7 @@ T.goldDark : T2.text4,
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Connection in Action</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>Two communicators who connect by making others feel heard.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D9_EDITORIAL.map(card=>{
               const open = d9OpenCard===("d9ex"+card.id);
               const obs = d9ExObs[card.id];
@@ -2071,7 +2071,7 @@ T.goldDark : T2.text4,
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Structure in Action</h2>
             <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Two world-class communicators who organise their ideas so every message is clear, memorable, and easy to follow.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D5_EDITORIAL.map(card=>{
               const open = d5MobCard===card.id;
               const obs = d5ExObs[card.id];
@@ -2380,7 +2380,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters Under Pressure</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>Two voices that stayed composed when everything was on the line.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D6_EDITORIAL.map(card=>{
               const open = d6MobCard===card.id;
               const obs = d6ExObs[card.id];
@@ -2548,7 +2548,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Iconic Brands. Intentional Choices.</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>A personal brand built by design — not by accident.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D11_EDITORIAL.map(card=>{
               const open = d11MobCard===card.id;
               const obs = d11ExObs[card.id];
@@ -2689,7 +2689,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Presence in Action</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>Two communicators who prove that how you carry yourself speaks louder than words.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D12_EDITORIAL.map(card=>{
               const open = d12MobCard===card.id;
               const obs = d12ExObs[card.id];
@@ -3020,7 +3020,7 @@ strokeLinecap="round"/></svg>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Exposure in Action</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>Reputations that open doors — built through trust, not just talent.</p>
-            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>These profiles are AmplifyU's independent analysis of public figures' communication styles, for educational purposes only. Individuals featured are not affiliated with or endorsing AmplifyU.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D13_EDITORIAL.map(card=>{
               const open = d12MobCard===("d13ex"+card.id);
               const obs = d13ExObs[card.id];
