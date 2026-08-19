@@ -4307,7 +4307,7 @@ setAmbitionSaved(true); } catch {}
             {/* LEFT — Dark cinematic closing (unchanged) */}
             <div style={{ width: "36%", flexShrink: 0, position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
               <div style={{ position: "absolute", inset: 0 }}>
-                <img loading="lazy" src="/review-chair-portrait.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center" }}/>
+                <img loading="lazy" src={`/review-chair-portrait.jpg?v=${encodeURIComponent(typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : '')}`} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center" }}/>
               </div>
               <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.35)" }}/>
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.3) 50%, transparent 75%)" }}/>
