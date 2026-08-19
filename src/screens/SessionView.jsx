@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
-import { D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, LESSONS, SESSION_STEPS, NAV_LABELS,
+import { D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_BULLETS, WORKPLACE_APPLICATION, LESSONS, SESSION_STEPS, NAV_LABELS,
   D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS,
   D1_CLARITY_FACTS_DATA, D1_FEYNMAN_DATA,
   D11_FACTS, D11_INGREDIENTS, D2_INSIGHT_CARDS, D7_INSIGHT_CARDS,
@@ -4316,10 +4316,8 @@ setAmbitionSaved(true); } catch {}
                 <span style={{ fontSize: 14, color: "#2C2416", fontFamily: T.sans, fontWeight: 500 }}>← Exit</span>
               </button>
               <div style={{ position: "relative", zIndex: 2, padding: "40px 40px 44px", animation: "fadeUp 0.6s ease both" }}>
-                <div style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, fontWeight: 500, marginBottom: 20 }}>Day {lesson.day} · {lesson.title}</div>
-                <p style={{ fontFamily: T.serif, fontWeight: 600, color: "#F5EFE6", fontSize: "clamp(24px,2vw,32px)", lineHeight: 1.2, letterSpacing: "-0.3px", marginBottom: 24, maxWidth: 320 }}>{REVIEW_CLOSING[lesson.day - 1]}</p>
-                <div style={{ width: 48, height: 1.5, background: T.gold, opacity: 0.6, marginBottom: 20 }}/>
-                <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,239,230,0.5)", fontFamily: T.sans }}>Day {lesson.day} Complete</div>
+                <div style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: T.gold, fontFamily: T.sans, fontWeight: 500, marginBottom: 20 }}>Day {lesson.day} · {lesson.tag}</div>
+                <p style={{ fontFamily: T.serif, fontWeight: 600, color: "white", fontSize: "clamp(24px,2vw,32px)", lineHeight: 1.2, letterSpacing: "-0.3px", maxWidth: 320 }}>{lesson.title}</p>
               </div>
             </div>
 
