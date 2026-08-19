@@ -2656,7 +2656,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D2_EDITORIAL = [
-          { id:"brene", img:"/d2-brene.jpg", name:"Brené Brown", role:"Researcher, author & speaker", superpower:"Master of Authenticity",
+          { id:"brene", img:`/d2-brene.jpg?v=${encodeURIComponent(typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : '')}`, name:"Brené Brown", role:"Researcher, author & speaker", superpower:"Master of Authenticity",
             superpowerText:"Makes vulnerability sound like confidence.",
             summary:"She doesn't perform confidence. She speaks with honesty, warmth and intention — and people lean in.",
             exploreLabel:"Explore her techniques",
