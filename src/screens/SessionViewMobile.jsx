@@ -265,7 +265,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
           10:{Insight:"/day10-insight.jpg",Theory:"/performance-iceberg.jpg",Practice:null,Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           11:{Insight:"/d11-insight.jpg",Theory:"/d11-theory.jpg",Practice:null,Review:"/review-chair.jpg"},
           13:{Insight:"/day13-insight.jpg",Theory:"/day13-theory.jpg",Example:"/day13-insight.jpg",Review:"/review-chair.jpg"},
-          14:{Insight:"/day14-insight.jpg",Theory:"/day14-theory.jpg",Review:"/review-chair.jpg"},
+          14:{Insight:"/day14-insight.jpg",Theory:"/day14-theory-v2.jpg",Review:"/review-chair.jpg"},
           12:{Insight:"/day12-insight.jpg",Theory:"/day12-theory-v2.jpg",Practice:null,Simulation:"/day1-simulation.jpg",Review:"/review-chair.jpg"},
           8:{Insight:"/nt-insight.jpg",Theory:"/dual-coding-theory.jpg",Practice:"/practice-bg.jpg",Simulation:null,Review:"/review-chair.jpg"},
         };
@@ -1104,20 +1104,48 @@ T.goldDark : T2.text4,
           <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>Long sentences lose people. Short sentences move them.</p>
         </>
       )}
-      {isD4 && step==="Theory" && (
+      {isD4 && step==="Theory" && (()=>{
+        const millerSteps = [
+          {n:"01",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><rect x="2" y="11" width="13" height="3" rx="1" stroke={T2.text4} strokeWidth="1.1"/><rect x="4" y="7" width="9" height="3" rx="1" stroke={T2.text4} strokeWidth="1.1"/><rect x="6" y="3" width="5" height="3" rx="1" stroke={T2.text4} strokeWidth="1.1"/></svg>,label:"Memory Load",desc:"Every sentence you speak creates a memory load.",focus:"Each word asks something of your listener's attention."},
+          {n:"02",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><line x1="2" y1="9.5" x2="15" y2="9.5" stroke={T2.text4} strokeWidth="0.9" strokeDasharray="1.5 1.5"/><rect x="3" y="6" width="2.3" height="7" stroke={T2.text4} strokeWidth="1.1"/><rect x="7.3" y="3" width="2.3" height="10" stroke={T2.text4} strokeWidth="1.1"/><rect x="11.6" y="7.5" width="2.3" height="5.5" stroke={T2.text4} strokeWidth="1.1"/></svg>,label:"Diminishing Capacity",desc:"Long sentences stack information faster than your audience can process.",focus:"Once capacity is exceeded, comprehension drops fast."},
+          {n:"03",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><path d="M2 4c2.5 0 3.5 1.5 5 3.5s3.5 4.5 7 4.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" fill="none"/><polyline points="11 12 14 12 14 9" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>,label:"The Forgetting Curve",desc:"By the time you reach the end, they've forgotten the beginning.",focus:"Length doesn't just confuse — it erases."},
+          {n:"04",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><circle cx="4.5" cy="4" r="1.8" stroke={T2.text4} strokeWidth="1.1"/><circle cx="4.5" cy="13" r="1.8" stroke={T2.text4} strokeWidth="1.1"/><line x1="6" y1="5.2" x2="14.5" y2="12" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><line x1="6" y1="11.8" x2="14.5" y2="5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/></svg>,label:"The Fix",desc:"One idea. One sentence. Full stop.",focus:"Simplicity isn't a compromise. It's a strategic choice."},
+        ];
+        return (
         <>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Miller's Law</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>In 1956, psychologist George Miller discovered something fundamental about how humans think.</p>
-          <div style={{padding:"16px 18px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:22}}>
-            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0,fontStyle:"italic"}}>We can only hold 7 (±2) pieces of information in working memory at once.</p>
+          <div style={{padding:"14px 16px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:20}}>
+            <p style={{fontFamily:T.serif,fontSize:19,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 5px",fontStyle:"italic"}}>"We can only hold 7 (±2) pieces of information in working memory at once."</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,margin:0}}>— George Miller, 1956</p>
           </div>
-          {["Every sentence creates a memory load.","Long sentences stack information faster than your audience can process.","By the time you reach the end, they've forgotten the beginning.","The fix? Short sentences."].map((p,i)=>(
-            <p key={i} style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,marginBottom:10}}>{p}</p>
+          {millerSteps.map((s,i)=>(
+            <div key={i} style={{display:"flex",gap:14,padding:"13px 14px",marginBottom:6,borderRadius:6,background:`rgba(44,36,22,${0.03+i*0.03})`}}>
+              <div style={{fontFamily:T.serif,fontSize:20,fontWeight:500,color:T.gold,opacity:0.85,lineHeight:1,minWidth:24,paddingTop:2}}>{s.n}</div>
+              <div style={{flex:1}}>
+                <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:6}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"#8A9E84"}}>{s.label}</div></div>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 4px"}}>{s.desc}</p>
+                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,fontStyle:"italic",margin:0}}>{s.focus}</p>
+              </div>
+            </div>
           ))}
-          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>One idea. One sentence. Full stop.</p>
+          <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:18,marginTop:20}}>
+            <div style={{fontSize:10,fontWeight:600,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10,fontFamily:T.sans}}>See It In Action</div>
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              <div style={{padding:"12px 14px",background:"rgba(139,74,56,0.05)",borderRadius:4,borderLeft:"2px solid rgba(139,74,56,0.3)"}}>
+                <div style={{fontFamily:T.sans,fontSize:10,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:7}}>Too long — 34 words</div>
+                <p style={{fontFamily:T.sans,fontSize:13,fontStyle:"italic",color:T.gold,lineHeight:1.65,fontWeight:400,margin:0}}>"Our platform enables cross-functional teams to coordinate asynchronous workflows while maintaining data integrity across distributed systems, which allows for more efficient resource allocation."</p>
+              </div>
+              <div style={{padding:"12px 14px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                <div style={{fontFamily:T.sans,fontSize:10,color:T.goldDark,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:7}}>Better — 4 short sentences</div>
+                <p style={{fontFamily:T.sans,fontSize:13,fontStyle:"italic",color:T.gold,lineHeight:1.65,fontWeight:400,margin:0}}>"Our platform helps teams work together. They coordinate without meetings. Data stays secure. Resource allocation improves."</p>
+              </div>
+            </div>
+          </div>
         </>
-      )}
+        );
+      })()}
       {isD4 && step==="Example" && (()=>{
         const D4_EDITORIAL = [
           { id:"hemingway", img:"/d4-hemingway.jpg", imgPos:"center center", name:"Ernest Hemingway", role:"Nobel Prize-winning novelist", superpower:"Master of Brevity",

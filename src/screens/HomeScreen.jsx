@@ -122,7 +122,7 @@ dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false}) {
       11:["/d11-insight.jpg","/d11-theory.jpg"],
       12:["/day12-insight.jpg","/day12-theory-v2.jpg"],
       13:["/day13-insight.jpg","/day13-theory.jpg"],
-      14:["/day14-insight.jpg","/day14-theory.jpg"],
+      14:["/day14-insight.jpg","/day14-theory-v2.jpg"],
     };
     (DAY_IMGS[cur] || []).forEach(src => { const i = new Image(); i.src = src; });
   }, [cur]);
