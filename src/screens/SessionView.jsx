@@ -4309,7 +4309,6 @@ setAmbitionSaved(true); } catch {}
               <div style={{ position: "absolute", inset: 0 }}>
                 <img loading="lazy" src={`/review-chair-portrait.jpg?v=${encodeURIComponent(typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : '')}`} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center" }}/>
               </div>
-              <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.35)" }}/>
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.3) 50%, transparent 75%)" }}/>
               <button onClick={() => setExitConfirm(true)} style={{ position: "absolute", top: 24, left: 24, zIndex: 10, display: "flex", alignItems: "center", gap: 6, background: "#F5EFE6", border: "1px solid rgba(44,36,22,0.18)", borderRadius: 4, padding: "8px 16px 8px 12px", cursor: "pointer" }}>
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
