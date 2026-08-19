@@ -2656,16 +2656,16 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D2_EDITORIAL = [
-          { id:"streep", img:"/d2-streep.jpg", name:"Meryl Streep", role:"Three-time Oscar-winning actress", superpower:"Master of Precision and Presence",
-            superpowerText:"Precision over volume. Control over noise.",
-            summary:"Three iconic roles. Three completely different voices.",
+          { id:"brene", img:"/d2-brene.jpg", name:"Brené Brown", role:"Researcher, author & speaker", superpower:"Master of Authenticity",
+            superpowerText:"Makes vulnerability sound like confidence.",
+            summary:"She doesn't perform confidence. She speaks with honesty, warmth and intention — and people lean in.",
             exploreLabel:"Explore her techniques",
-            body1:"Streep proves that the most powerful communicators don't get louder — they get more precise.",
-            body2:"Three iconic roles. Three completely different voices, each built from the same instrument: Miranda Priestly (The Devil Wears Prada) barely above a whisper, Sophie (Sophie's Choice) in raw fractured grief, Thatcher (The Iron Lady) in deliberate political authority.",
-            body3:"She never reaches for volume. She reaches for control.",
-            whyItWorks:"Precision creates presence. A whisper can command a room. A pause can carry more weight than a raised voice. The voice in complete control is the voice people follow.",
-            technique:"Don't reach for volume — reach for control. Slow down before your most important word. Let silence carry what a raised voice never can.",
-            lesson:"Precision creates presence. Control creates impact. A rushed voice can feel uncertain. An intentional voice commands attention.",
+            body1:"Brené Brown proves that powerful communication doesn't require a perfect voice. It requires an authentic one.",
+            body2:"Her delivery is conversational rather than theatrical — deliberate pauses, varied pace, warmth and moments of vulnerability make complex ideas feel personal and human.",
+            body3:"She doesn't try to sound impressive. She sounds like herself.",
+            whyItWorks:"Authenticity creates connection. A warm tone lowers distance. A well-placed pause gives an idea room to land. And vulnerability signals that there's a real person behind the words. People don't just listen to what you say. They listen to how safe, genuine and believable you sound saying it.",
+            technique:"Don't try to sound more confident — sound more like yourself. Slow down. Let your voice breathe. Allow a little warmth into your delivery. And when something matters, don't hide behind polished language. Say it like you mean it.",
+            lesson:"Your voice doesn't need to sound impressive to be powerful. Authenticity creates connection. Slow down, let your personality through, and give people something real to listen to.",
           },
           { id:"sinek", img:"/d2-sinek.jpg", name:"Simon Sinek", role:"Author & leadership speaker", superpower:"Master of Voice",
             superpowerText:"Makes big ideas land through deliberate delivery.",
@@ -4307,7 +4307,7 @@ setAmbitionSaved(true); } catch {}
             {/* LEFT — Dark cinematic closing (unchanged) */}
             <div style={{ width: "36%", flexShrink: 0, position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
               <div style={{ position: "absolute", inset: 0 }}>
-                <img loading="lazy" src="/review-chair.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center" }}/>
+                <img loading="lazy" src="/review-chair-portrait.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center" }}/>
               </div>
               <div style={{ position: "absolute", inset: 0, background: "rgba(10,8,5,0.35)" }}/>
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.3) 50%, transparent 75%)" }}/>
