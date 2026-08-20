@@ -192,6 +192,7 @@ export function D14SimWidget({T, T2, isDesktop}) {
     if (l2.fillerRateDay3) l2Lines.push('Day 3 filler word rate: ' + l2.fillerRateDay3);
     if (l2.d8Story) l2Lines.push('Day 8 personal story: ' + l2.d8Story);
     if (l2.d9Scores) l2Lines.push('Day 9 delivery scores: ' + JSON.stringify(l2.d9Scores));
+    if (l2.d10Sar) l2Lines.push('Day 10 SAR story: ' + JSON.stringify(l2.d10Sar));
     if (l2.d13Scores) l2Lines.push('Day 13 networking circuit scores: ' + JSON.stringify(l2.d13Scores));
 
     const roleLine = roleObj ? (roleObj.label + (roleObj.challenge ? ' — ' + roleObj.challenge : '')) : 'Professional';
