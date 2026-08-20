@@ -49,7 +49,7 @@ export default async function handler(req, res) {
 
     const data = await resp.json();
     const text = data.text || "";
-    console.log("[transcribe] success, input bytes:", buf.length, "output text length:", text.length, "preview:", JSON.stringify(text.slice(0, 80)));
+    console.log("[transcribe] success, input bytes:", buf.length, "output text length:", text.length);
     return res.status(200).json({ text });
   } catch (err) {
     console.error("[transcribe] Error:", err.message);
