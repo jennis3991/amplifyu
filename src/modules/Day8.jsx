@@ -742,14 +742,18 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   const [coverSubtitle,  setCoverSubtitle] = useState('');
 
   // ── My Stories — local-only persistence for generated stories ────────────
-  const STORY_CAP = 5;
+  // Shares the au1_stories array/key with D8PracticeWidget's Story Lab, but
+  // each source (speechwriter vs rehearsal) is capped and listed independently.
+  const STORY_CAP = 4;
+  const isMine = s => s.source !== 'rehearsal';
   const [savedStories, setSavedStories] = useState(() => {
     try { return JSON.parse(localStorage.getItem("au1_stories") || "[]"); } catch { return []; }
   });
+  const myStories = savedStories.filter(isMine);
   const [storiesOpen, setStoriesOpen] = useState(false);
-  // Holds a just-generated story that couldn't be saved because the cap was
-  // already reached — stays visible/usable in this session, and gets saved
-  // automatically the moment a slot frees up (via deleteStory below).
+  // Holds a just-generated story that couldn't be saved because this source's
+  // cap was already reached — stays visible/usable in this session, and gets
+  // saved automatically the moment a slot frees up (via deleteStory below).
   const [pendingStory, setPendingStory] = useState(null);
 
   function persistStories(next) {
@@ -760,6 +764,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   function saveStory(parsed, briefText) {
     const entry = {
       id: Date.now(),
+      source: 'speechwriter',
       brief: briefText,
       storyWorld: parsed.storyWorld || {},
       scenes: parsed.scenes || [],
@@ -768,7 +773,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
       coverSubtitle: parsed.coverSubtitle || '',
       timestamp: Date.now(),
     };
-    if (savedStories.length >= STORY_CAP) {
+    if (myStories.length >= STORY_CAP) {
       setPendingStory(entry);
       return;
     }
@@ -779,7 +784,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
     setSavedStories(prev => {
       let next = prev.filter(s => s.id !== id);
       let freedForPending = false;
-      if (pendingStory && next.length < STORY_CAP) {
+      if (pendingStory && next.filter(isMine).length < STORY_CAP) {
         next = [pendingStory, ...next];
         freedForPending = true;
       }
@@ -925,15 +930,15 @@ Return ONLY valid JSON:
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Whether you're pitching to a board, leading your team, delivering a keynote, or telling a personal story, Story Architect transforms rough ideas into unforgettable narratives.</p>
       </div>
 
-      {savedStories.length>0 && (
+      {myStories.length>0 && (
         <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
           <button onClick={()=>setStoriesOpen(v=>!v)} style={{width:"100%",background:"none",border:"none",padding:isDesktop?"14px 18px":"12px 16px",cursor:"pointer",fontFamily:T.sans,fontSize:12,color:T2.text3,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-            <span>My Stories ({savedStories.length})</span>
+            <span>My Stories ({myStories.length})</span>
             <span style={{fontSize:14,opacity:0.6,transform:storiesOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
           </button>
           {storiesOpen && (
             <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
-              {savedStories.map(s=>(
+              {myStories.map(s=>(
                 <div key={s.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
                   <button onClick={()=>loadStory(s)} style={{flex:1,minWidth:0,textAlign:"left",background:"none",border:"none",padding:isDesktop?"12px 18px":"11px 16px",cursor:"pointer",display:"flex",flexDirection:"column",gap:2}}>
                     <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{s.coverTitle || s.storyWorld?.subject || "Untitled story"}</span>
@@ -1275,6 +1280,55 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
   const [visCount,    setVisCount]    = useState(0);
   const [micError,    setMicError]    = useState(false);
 
+  // ── My Stories — shares the au1_stories key with StoryArchitectWidget, but
+  // this source (rehearsal) is capped and listed independently from theirs.
+  const STORY_CAP = 4;
+  const isMine = s => s.source === 'rehearsal';
+  const [savedStories, setSavedStories] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("au1_stories") || "[]"); } catch { return []; }
+  });
+  const myStories = savedStories.filter(isMine);
+  const [storiesOpen, setStoriesOpen] = useState(false);
+  // Holds a just-generated rehearsal story that couldn't be saved because the
+  // cap was already reached — freed automatically once a slot opens via
+  // deleteStory below.
+  const [pendingStory, setPendingStory] = useState(null);
+
+  function saveRehearsalStory(sr) {
+    const entry = {
+      id: Date.now(),
+      source: 'rehearsal',
+      coverTitle: sr.storyTitle || '',
+      storyWorld: {},
+      scenes: [],
+      story: '',
+      beats: [sr.beat1, sr.beat2, sr.beat3, sr.beat4, sr.beat5, sr.beat6],
+      coachObservation: sr.coachObservation || '',
+      timestamp: Date.now(),
+    };
+    if (myStories.length >= STORY_CAP) {
+      setPendingStory(entry);
+      return;
+    }
+    const next = [entry, ...savedStories];
+    setSavedStories(next);
+    try { localStorage.setItem("au1_stories", JSON.stringify(next)); } catch {}
+  }
+
+  function deleteStory(id) {
+    setSavedStories(prev => {
+      let next = prev.filter(s => s.id !== id);
+      let freedForPending = false;
+      if (pendingStory && next.filter(isMine).length < STORY_CAP) {
+        next = [pendingStory, ...next];
+        freedForPending = true;
+      }
+      try { localStorage.setItem("au1_stories", JSON.stringify(next)); } catch {}
+      if (freedForPending) setPendingStory(null);
+      return next;
+    });
+  }
+
   const recRef    = useRef(null);
   const audioChunksRef = useRef([]);
   const timerRef  = useRef(null);
@@ -1362,7 +1416,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       const data = await res.json();
       const raw  = data.content?.[0]?.text || '{}';
       const json = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0] || '{}');
-      setStoryResult({
+      const built = {
         storyTitle:       json.storyTitle       || 'Your Career Story',
         beat1:            json.beat1            || 'Something brought me to this moment.',
         beat2:            json.beat2            || 'Life was moving forward in its usual way.',
@@ -1372,7 +1426,9 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         beat6:            json.beat6            || 'I came out the other side changed.',
         coachObservation: json.coachObservation || 'There is real power in what you just shared.',
         readyLine:        json.readyLine        || 'Now let Story Architect turn this into something you can use in any room.',
-      });
+      };
+      setStoryResult(built);
+      saveRehearsalStory(built);
     } catch (_) {
       setStoryResult({
         storyTitle:       'Your Career Story',
@@ -1396,6 +1452,35 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>STORY LAB · DAY 8</div>
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>Story Lab</h2>
       </div>
+
+      {myStories.length>0 && (
+        <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+          <button onClick={()=>setStoriesOpen(v=>!v)} style={{width:"100%",background:"none",border:"none",padding:isDesktop?"14px 18px":"12px 16px",cursor:"pointer",fontFamily:T.sans,fontSize:12,color:T2.text3,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <span>My Stories ({myStories.length})</span>
+            <span style={{fontSize:14,opacity:0.6,transform:storiesOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
+          </button>
+          {storiesOpen && (
+            <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
+              {myStories.map(s=>(
+                <div key={s.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
+                  <div style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2}}>
+                    <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{s.coverTitle || s.storyWorld?.subject || "Untitled story"}</span>
+                    <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(s.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</span>
+                  </div>
+                  <button onClick={()=>deleteStory(s.id)} title="Delete story" style={{background:"none",border:"none",cursor:"pointer",color:T2.text4,fontSize:18,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1}}>×</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {pendingStory && (
+        <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
+          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You've reached your limit of {STORY_CAP} saved stories. Your last story is still viewable this session, but won't be saved until you delete one above.</span>
+        </div>
+      )}
+
       <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, margin:0 }}>Choose the story that feels most meaningful to you. Speak for around 60 seconds. Don't worry about telling it perfectly — just tell it naturally. Your AmplifyU coach will identify the strongest parts of your story and help shape it into one you can use again and again.</p>
       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
         {STORY_CARDS.map((c, i) => {
@@ -1521,7 +1606,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
           <>
             <p style={{ fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:"italic", color:T2.text3, lineHeight:1.6, margin:"0 0 18px", textAlign:"center", animation:"fadeUp 0.5s ease both" }}>{readyLine}</p>
             <button onClick={() => onSimulation?.()} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.gold, color:"white", fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50, animation:"fadeUp 0.5s ease both" }}>
-              ✦ Transform It With Story Architect →
+              Continue to Story Architect →
             </button>
           </>
         )}
