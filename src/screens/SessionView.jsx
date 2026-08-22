@@ -4545,7 +4545,9 @@ setAmbitionSaved(true); } catch {}
                 Back
               </button>
             )}
-            {idx < STEPS.length - 1 && (
+            {idx < STEPS.length - 1 && (() => {
+              const navDisabled = (isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording);
+              return (
               <button
                 onClick={() => {
                   if (isD1 && step === "Rehearsal" && d1NavFnRef.current) {
@@ -4558,18 +4560,18 @@ setAmbitionSaved(true); } catch {}
                     setIdx(i => i + 1);
                   }
                 }}
-                disabled={(isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording)}
+                disabled={navDisabled}
                 className="au-cta"
                 style={{
                   display: "flex", alignItems: "center", gap: 10,
                   padding: "9px 24px", borderRadius: 5,
-                  background: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording)) ? "rgba(138,158,132,0.3)" : T.gold,
+                  background: navDisabled ? "rgba(138,158,132,0.3)" : T.gold,
                   border: "none",
                   color: "white", fontSize: 13, fontWeight: 600,
-                  cursor: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording)) ? "not-allowed" : "pointer",
+                  cursor: navDisabled ? "not-allowed" : "pointer",
                   fontFamily: T.sans, letterSpacing: "0.1px",
                   boxShadow: "0 2px 16px rgba(138,158,132,0.3)",
-                  opacity: ((isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording)) ? 0.5 : 1,
+                  opacity: navDisabled ? 0.5 : 1,
                 }}>
                 {isD1 && step === "Rehearsal" && d1NavLabel
                   ? d1NavLabel
@@ -4580,7 +4582,8 @@ setAmbitionSaved(true); } catch {}
                       : idx === 0 ? "Begin" : idx === STEPS.length - 2 ? "Final Chapter" : "Continue"}
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
-            )}
+              );
+            })()}
             {/* Mark Complete in nav bar for Review step */}
             {step === "Review" && !isDone && (
               <button onClick={onComplete} className="au-cta" style={{
