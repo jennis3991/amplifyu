@@ -402,7 +402,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
   const [audioProgress, setAudioProgress] = useState(0);
   const [userPoints, setUserPoints] = useState(['','','']);
   const [result, setResult] = useState(null);
-  const [analyzing, setAnalyzing] = useState(false);
   const [pointsSubmitted, setPointsSubmitted] = useState(false);
   const [round1, setRound1] = useState(null);
   const [micError, setMicError] = useState(false);
@@ -413,7 +412,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
   const timerRef = useRef(null);
   const waveRef = useRef(null);
 
-  const dotCount = useSequentialDots(analyzing);
+  const dotCount = useSequentialDots(phase === 'analyzing');
 
   const PRODUCER_MSGS = [
     {at:30, msg:"Thirty seconds left. Cut the detail. Give us the key points."},
@@ -463,19 +462,20 @@ export function D4SimWidget({T, T2, isDesktop}) {
 
   async function doStop(){
     setIsRec(false);
-    setAnalyzing(true);
+    setPhase('analyzing');
     const mr = mediaRecRef.current;
     if (!mr || mr.state === 'inactive') { analyzeReport(fallback); return; }
+    const recordedType = mr.mimeType || 'audio/webm';
     mr.onstop = async () => {
       mr.stream.getTracks().forEach(t=>t.stop());
-      const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});
+      const blob=new Blob(audioChunksRef.current,{type:recordedType});
       setAudioURL(URL.createObjectURL(blob));
       let text = '';
       try {
         const b64 = await blobToB64(blob);
         const res = await fetch('/api/transcribe', {
           method: 'POST', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+          body: JSON.stringify({b64, mimeType: recordedType}),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Transcription failed');
@@ -490,7 +490,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
   }
 
   async function analyzeReport(text){
-    setAnalyzing(true);
     const isRetry=!!round1;
     const base=isRetry?8:0;
     const mock={
@@ -505,7 +504,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
       coachNote:"Your report covered a lot of ground. The strongest communicators lead with the most important fact and build from there. Try opening with your headline sentence next time — then support it."
     };
     if(!text||text.trim().length<20){
-      if(!isRetry)setRound1(mock); setResult(mock); setAnalyzing(false); setPhase('recall'); return;
+      if(!isRetry)setRound1(mock); setResult(mock); setPhase('recall'); return;
     }
     try{
       const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an AI audience member watching a breaking news report about: "${story}". The reporter's transcript: "${text}". Simulate what a typical viewer would remember vs forget, and score the communication quality. Return ONLY valid JSON:\n{"factsReported":["list every distinct fact or point they mentioned, up to 8 items"],"remembered":["list 3-5 things an average viewer would remember — favour vivid, concrete, emotional facts"],"forgotten":["list 2-4 facts that would likely be forgotten due to cognitive overload or poor prioritisation"],"headline":"<the single most memorable sentence that captures the story — max 12 words>","retentionScore":<0-100: percentage of facts audience retained>,"compressionScore":<0-100: how effectively they simplified as time reduced — 100 = perfect compression>,"cognitiveLoadScore":<0-100: 100 = very easy to follow, 0 = overwhelming>,"headlineScore":<0-100: could story be reduced to one memorable sentence?>,"coachNote":"<2-3 sentences of warm, encouraging, professional coaching — open with something specific they did well, then offer one clear forward-looking observation about short sentences or adapting under pressure. Never criticise, never use 'but' to negate the positive, never use deficit language. Growth-framed, motivational, executive coach tone.>"}`}]})});
@@ -515,7 +514,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
       const parsed=JSON.parse(m[0]);
       if(!isRetry)setRound1(parsed); setResult(parsed);
     }catch{if(!isRetry)setRound1(mock); setResult(mock);}
-    setAnalyzing(false); setPhase('recall');
+    setPhase('recall');
   }
 
   function reset(){setPhase('intro');setStory(null);setTimeLeft(60);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setRound1(null);setUserPoints(['','','']);setPointsSubmitted(false);setAudioURL(null);}
@@ -641,7 +640,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
   );
 
   // ── ANALYZING ────────────────────────────────────────────────────────────────
-  if(analyzing) return (
+  if(phase==='analyzing') return (
     <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
       <SequentialDots dotCount={dotCount}/>
       <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>The audience is processing your report…</p>
