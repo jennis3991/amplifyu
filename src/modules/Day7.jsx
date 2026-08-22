@@ -427,9 +427,22 @@ export function D7SimWidget({ T, T2, isDesktop }) {
             <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Type your explanation here…" style={{width:"100%",borderRadius:3,border:"0.5px solid "+T2.border,padding:"12px 14px",fontSize:14,fontFamily:T.sans,resize:"none",height:120,boxSizing:"border-box",background:T2.bg,color:T2.text,outline:"none",lineHeight:1.6}}/>
           </div>
         )}
-        <button onClick={micError?doSubmit:startRec} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
-          {micError?"Submit →":"Start Recording →"}
-        </button>
+        {micError ? (
+          <button onClick={doSubmit} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Submit →</button>
+        ) : (
+          <div style={{display:"flex",justifyContent:"center"}}>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+              <button onClick={startRec} style={{
+                width:80,height:80,borderRadius:"50%",border:"none",cursor:"pointer",
+                background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",
+                boxShadow:"0 0 0 6px rgba(138,158,132,0.12)",transition:"all 0.2s ease",
+              }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" fill="white"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="white" strokeWidth="1.8" strokeLinecap="round"/><line x1="12" y1="19" x2="12" y2="23" stroke="white" strokeWidth="1.8" strokeLinecap="round"/></svg>
+              </button>
+              <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>Start Recording</div>
+            </div>
+          </div>
+        )}
         <button onClick={()=>setPhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"6px 0",textAlign:"center",width:"100%"}}>← Back</button>
       </div>
     );

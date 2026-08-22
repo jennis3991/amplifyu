@@ -1035,7 +1035,18 @@ setAmbitionSaved(true); } catch {}
                   <button onClick={()=>analyzeSimResponse(simFallback)} disabled={!simFallback.trim()} style={{width:"100%",padding:"12px",borderRadius:3,border:"none",background:!simFallback.trim()?"#DDD5C4":T.ink,color:!simFallback.trim()?"#6B5E44":T.bg,fontSize:13,fontWeight:600,cursor:!simFallback.trim()?"not-allowed":"pointer",fontFamily:T.sans}}>Submit Typed Response →</button>
                 </div>
               )}
-              <button onClick={doSimStart} style={cs10.cta}>{(simMicError||simTranscribeFailed)?"Try Recording Again →":"Start Recording →"}</button>
+              <div style={{display:"flex",justifyContent:"center"}}>
+                <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+                  <button onClick={doSimStart} style={{
+                    width:80,height:80,borderRadius:"50%",border:"none",cursor:"pointer",
+                    background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",
+                    boxShadow:"0 0 0 6px rgba(138,158,132,0.12)",transition:"all 0.2s ease",
+                  }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" fill="white"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="white" strokeWidth="1.8" strokeLinecap="round"/><line x1="12" y1="19" x2="12" y2="23" stroke="white" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                  </button>
+                  <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>{(simMicError||simTranscribeFailed)?"Try Recording Again":"Start Recording"}</div>
+                </div>
+              </div>
               <button onClick={()=>setSimPhase('picking')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"4px 0",textAlign:"center"}}>← Choose different scenario</button>
             </div>
           </div>
