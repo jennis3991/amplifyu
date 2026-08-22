@@ -2958,6 +2958,14 @@ strokeLinecap="round"/></svg>
         <>
           {/* Header */}
           <div style={{fontSize:11,fontWeight:500,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:16,fontFamily:T.sans}}>Day {lesson.day} Complete ✓</div>
+          {isNT && (()=>{ try { return JSON.parse(localStorage.getItem("au1_stories")||"[]").length>0; } catch { return false; } })() && (
+            <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:16,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
+              <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                <svg width="8" height="8" viewBox="0 0 22 22" fill="none"><path d="M11 3v3M11 16v3M3 11h3M16 11h3M5.6 5.6l2.1 2.1M14.3 14.3l2.1 2.1M5.6 16.4l2.1-2.1M14.3 7.7l2.1-2.1" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>
+              </div>
+              <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>Your generated stories are saved — find them anytime on the Story Lab brief screen, under "My Stories."</span>
+            </div>
+          )}
           {/* What You Learned / Workplace Application tabs */}
           <div style={{margin:"0 4px",paddingTop:4}}>
             <div style={{display:"flex",gap:0,borderBottom:"0.5px solid "+T2.border,marginBottom:16}}>
