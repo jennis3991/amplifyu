@@ -1,5 +1,13 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "rewrites": [
+    { "source": "/home.html", "destination": "/__gone" },
+    { "source": "/story.html", "destination": "/__gone" },
+    { "source": "/programme.html", "destination": "/__gone" },
+    { "source": "/coach.html", "destination": "/__gone" },
+    { "source": "/features.html", "destination": "/__gone" },
+    { "source": "/coming-soon.html", "destination": "/__gone" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/sw.js",
