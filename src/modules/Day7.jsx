@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { VoiceRecorder } from './VoiceRecorder.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -81,71 +82,32 @@ function SequentialDots({ dotCount }) {
 const SIX_SKILLS = ['Clarity','Pace','Fillers','Short Sentences','Structure','Composure'];
 
 // ─── D7 Practice Widget — The Six ─────────────────────────────────────────────
-export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
-  const [phase, setPhase] = useState('prompt');
-  const [elapsed, setElapsed] = useState(0);
+export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, onNavFn }) {
+  const [phase, setPhase] = useState('intro'); // 'intro' | 'ready' | 'analyzing' | 'coach'
   const [transcript, setTranscript] = useState('');
   const [coachResult, setCoachResult] = useState(null);
-  const [micError, setMicError] = useState(false);
-  const recRef = useRef(null);
-  const audioChunksRef = useRef([]);
-  const timerRef = useRef(null);
   const dotCount = useSequentialDots(phase === 'analyzing');
 
+  // Wire bottom nav: disabled until the rehearsal recording is complete
   useEffect(() => {
-    if (phase === 'rec') {
-      timerRef.current = setInterval(() => setElapsed(e => e + 1), 1000);
+    if (!onNavLabel) return;
+    if (phase === 'coach') {
+      onNavLabel("Continue");
+      if (onNavFn) onNavFn.current = () => onSimulation?.();
     } else {
-      clearInterval(timerRef.current);
-      if (phase !== 'coach') setElapsed(0);
+      onNavLabel(null);
+      if (onNavFn) onNavFn.current = null;
     }
-    return () => clearInterval(timerRef.current);
   }, [phase]);
 
-  function startRec() {
-    setTranscript('');
-    setElapsed(0);
-    setMicError(false);
-    audioChunksRef.current = [];
-    if (navigator.mediaDevices?.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        let mr;
-        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
-        catch { mr = new MediaRecorder(stream); }
-        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-        mr.start(1000);
-        recRef.current = mr;
-        setPhase('rec');
-      }).catch(() => { setMicError(true); });
-    } else {
-      setMicError(true);
-    }
+  function enterRehearsal() {
+    setPhase('ready');
   }
 
-  async function doStop() {
-    const mr = recRef.current;
+  async function onRecordingDone(text) {
+    setTranscript(text);
     setPhase('analyzing');
-    if (!mr || mr.state === 'inactive') { await callCoach(''); return; }
-    mr.onstop = async () => {
-      mr.stream.getTracks().forEach(t => t.stop());
-      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
-      let text = '';
-      try {
-        const b64 = await blobToB64(blob);
-        const res = await fetch('/api/transcribe', {
-          method: 'POST', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Transcription failed');
-        text = (data.text || '').trim();
-      } catch (err) {
-        console.error('[D7PracticeWidget] transcribe error:', err);
-      }
-      setTranscript(text);
-      await callCoach(text);
-    };
-    try { mr.stop(); } catch(e) { await callCoach(''); }
+    await callCoach(text);
   }
 
   async function callCoach(text) {
@@ -189,7 +151,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
     </div>
   );
 
-  if (phase === 'prompt') return (
+  if (phase === 'intro') return (
     <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
       <div>
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>REHEARSAL · DAY 7</div>
@@ -200,29 +162,24 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Challenge</div>
         <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:0, fontWeight:400 }}>Think of one real conversation coming up this week — a meeting, a presentation, a difficult discussion. Speak for 30 seconds about which of this week's skills you'll use in it — and why.</p>
       </div>
-      {micError && <p style={{fontFamily:T.sans,fontSize:12,color:"#B05C4A",margin:0}}>Check your microphone permission and try again.</p>}
-      <button onClick={startRec} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
-        Start Speaking →
+      <button onClick={enterRehearsal} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
+        Enter rehearsal →
       </button>
     </div>
   );
 
-  if (phase === 'rec') return (
+  if (phase === 'ready') return (
     <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
       <div>
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>REHEARSAL · DAY 7</div>
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>The Six</h2>
       </div>
       {progressBar(1)}
-      <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:12, padding:"24px", background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border }}>
-        <div style={{ width:10, height:10, borderRadius:"50%", background:"#C8524A", animation:"pulse 1.2s ease infinite" }}/>
-        <span style={{ fontFamily:T.sans, fontSize:36, fontWeight:300, color:T2.text, letterSpacing:"0.05em" }}>
-          {String(Math.floor(elapsed/60)).padStart(2,'0')}:{String(elapsed%60).padStart(2,'0')}
-        </span>
+      <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"22px 24px" }}>
+        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Challenge</div>
+        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:0, fontWeight:400 }}>Think of one real conversation coming up this week — a meeting, a presentation, a difficult discussion. Speak for 30 seconds about which of this week's skills you'll use in it — and why.</p>
       </div>
-      <button onClick={doStop} style={{ width:"100%", padding:"15px", borderRadius:4, border:"1px solid "+T2.border, background:"transparent", color:T2.text, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
-        Done — Stop Recording
-      </button>
+      <VoiceRecorder T={T} T2={T2} onDone={onRecordingDone}/>
     </div>
   );
 
@@ -252,7 +209,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
           </div>
         )}
         <p style={{ fontFamily:T.serif, fontSize:isDesktop?16:15, fontStyle:"italic", color:T2.text3, lineHeight:1.6, margin:0, textAlign:"center" }}>{bridgeLine}</p>
-        <button onClick={() => onSimulation?.()} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.gold, color:"white", fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
+        <button onClick={() => onSimulation?.()} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
           Teach It Forward →
         </button>
       </div>

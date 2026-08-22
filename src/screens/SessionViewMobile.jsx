@@ -66,6 +66,8 @@ export function MobileSessionView({
   const d14Toggle = (id) => setD14Selected(prev => prev.includes(id) ? prev.filter(x=>x!==id) : [...prev, id]);
   const [d1NavLabel, setD1NavLabel] = useState(null);
   const d1NavFnRef = useRef(null);
+  const [d7NavLabel, setD7NavLabel] = useState(null);
+  const d7NavFnRef = useRef(null);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [d1SimRecording, setD1SimRecording] = useState(false);
   const [d2SimRecording, setD2SimRecording] = useState(false);
@@ -740,7 +742,7 @@ T.goldDark : T2.text4,
         </>
       )}
       {isD7 && step==="Rehearsal" && (
-        <D7PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
+        <D7PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD7NavLabel} onNavFn={d7NavFnRef}/>
       )}
       {isD7 && step==="Simulation" && (
         <>
@@ -3084,18 +3086,20 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         )}
         {idx < STEPS.length-1 && (() => {
-          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD2 && step==="Simulation" && d2SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD5 && step==="Rehearsal" && d5RehearsalRecording)||(isD5 && step==="Simulation" && d5SimRecording)||(isD6 && step==="Rehearsal" && d6RehearsalRecording)||(isD6 && step==="Simulation" && d6SimRecording)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)||(isD10 && step==="Simulation" && d10SimRecording);
+          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD2 && step==="Simulation" && d2SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD5 && step==="Rehearsal" && d5RehearsalRecording)||(isD5 && step==="Simulation" && d5SimRecording)||(isD6 && step==="Rehearsal" && d6RehearsalRecording)||(isD6 && step==="Simulation" && d6SimRecording)||(isD7 && step==="Rehearsal" && d7NavLabel===null)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)||(isD10 && step==="Simulation" && d10SimRecording);
           const navLabel = isD1 && step==="Rehearsal" && d1NavLabel
             ? d1NavLabel
             : isD3 && step==="Rehearsal" && d3NavLabel
               ? d3NavLabel
               : isD4 && step==="Rehearsal" && d4NavLabel
                 ? d4NavLabel
-                : isNT
-                ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Rehearsal":NAV_LABELS[idx])
-                : isD7 && idx===1
-                  ? "See your foundations"
-                  : NAV_LABELS[idx];
+                : isD7 && step==="Rehearsal" && d7NavLabel
+                  ? d7NavLabel
+                  : isNT
+                  ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Rehearsal":NAV_LABELS[idx])
+                  : isD7 && idx===1
+                    ? "See your foundations"
+                    : NAV_LABELS[idx];
           const isSkip = navLabel === "Skip";
           return (
           <button
@@ -3103,6 +3107,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
               if (isD1 && step==="Rehearsal" && d1NavFnRef.current) { d1NavFnRef.current(); }
               else if (isD3 && step==="Rehearsal" && d3NavFnRef.current) { d3NavFnRef.current(); }
               else if (isD4 && step==="Rehearsal" && d4NavFnRef.current) { d4NavFnRef.current(); }
+              else if (isD7 && step==="Rehearsal" && d7NavFnRef.current) { d7NavFnRef.current(); }
               else { setIdx(i=>i+1); }
             }}
             disabled={navDisabled}
