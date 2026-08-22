@@ -1,5 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
 // ─── D11 Rehearsal Widget — AmplifyU Coaching Conversation ───────────────────
 
 const QUESTIONS = [
@@ -45,11 +54,12 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
   const [copied,         setCopied]        = useState(false);
 
   const recognitionRef  = useRef(null);
+  const audioChunksRef  = useRef([]);
   const timerRef        = useRef(null);
   const analysisMsgRef  = useRef(null);
   const liveTextRef     = useRef('');
 
-  const speechAvailable = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  const recordingAvailable = !!(navigator.mediaDevices?.getUserMedia);
 
   useEffect(() => {
     if (result?.strengths?.length > 0 && onWordsChange) {
@@ -85,46 +95,51 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
   }
 
   function startRecording() {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) { setUseText(true); return; }
-    const recognition = new SR();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = 'en-US';
-    recognition.onresult = (e) => {
-      let t = '';
-      for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript + ' ';
-      const trimmed = t.trim();
-      liveTextRef.current = trimmed;
-      setLiveText(trimmed);
-    };
-    recognition.onerror = (e) => {
-      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
-        clearInterval(timerRef.current);
-        if (recognitionRef.current) { try { recognitionRef.current.stop(); } catch (_) {} recognitionRef.current = null; }
-        setUseText(true);
-        setPhase('question');
-      }
-    };
-    try {
-      recognition.start();
-      recognitionRef.current = recognition;
-    } catch (_) { setUseText(true); return; }
-    setPhase('recording');
-    const duration = QUESTIONS[qIdx].duration;
-    setTimer(duration);
-    let t = duration;
-    timerRef.current = setInterval(() => {
-      t--;
-      setTimer(t);
-      if (t <= 0) { clearInterval(timerRef.current); stopRecording(); }
-    }, 1000);
+    if (!recordingAvailable) { setUseText(true); return; }
+    audioChunksRef.current = [];
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+      let mr;
+      try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+      catch { mr = new MediaRecorder(stream); }
+      mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+      mr.start(1000);
+      recognitionRef.current = mr;
+      setPhase('recording');
+      const duration = QUESTIONS[qIdx].duration;
+      setTimer(duration);
+      let t = duration;
+      timerRef.current = setInterval(() => {
+        t--;
+        setTimer(t);
+        if (t <= 0) { clearInterval(timerRef.current); stopRecording(); }
+      }, 1000);
+    }).catch(() => { setUseText(true); setPhase('question'); });
   }
 
   function stopRecording() {
     clearInterval(timerRef.current);
-    if (recognitionRef.current) { try { recognitionRef.current.stop(); } catch (_) {} recognitionRef.current = null; }
-    submitAnswer(liveTextRef.current);
+    const mr = recognitionRef.current;
+    if (!mr || mr.state === 'inactive') { submitAnswer(''); return; }
+    mr.onstop = async () => {
+      mr.stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      recognitionRef.current = null;
+      let text = '';
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Transcription failed');
+        text = (data.text || '').trim();
+      } catch (err) {
+        console.error('[D11PracticeWidget] transcribe error:', err);
+      }
+      submitAnswer(text);
+    };
+    try { mr.stop(); } catch(e) { recognitionRef.current = null; submitAnswer(''); }
   }
 
   async function runAnalysis(answers) {
@@ -216,14 +231,14 @@ Return ONLY valid JSON:
         <div style={{ width: isDesktop ? 80 : 68, height: isDesktop ? 80 : 68, borderRadius: "50%", background: SAGE_CARD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 0 14px rgba(61,89,64,0.1), 0 0 0 28px rgba(61,89,64,0.04)` }}>
           <span style={{ fontSize: isDesktop ? 30 : 24 }}>🎙</span>
         </div>
-        {!speechAvailable && <p style={{ ...sn, fontSize: 11, color: T2.text4, textAlign: "center", margin: 0 }}>Voice not supported in this browser — you'll type your answers instead.</p>}
+        {!recordingAvailable && <p style={{ ...sn, fontSize: 11, color: T2.text4, textAlign: "center", margin: 0 }}>Microphone access not available — you'll type your answers instead.</p>}
       </div>
       <button onClick={() => { setQIdx(0); setPhase('question'); }} style={cta(false)}>Start Conversation →</button>
     </div>
   );
 
   if (phase === 'question') {
-    const showText = useText || !speechAvailable;
+    const showText = useText || !recordingAvailable;
     const q = QUESTIONS[qIdx];
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 20 : 15, animation: "fadeUp 0.4s ease both" }}>

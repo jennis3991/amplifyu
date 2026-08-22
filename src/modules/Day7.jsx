@@ -1,5 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
 // ─── Radar Chart ──────────────────────────────────────────────────────────────
 function RadarChart({ scores, gold, size = 200 }) {
   const keys   = ['clarity','voiceControl','pauses','precision','structure','composure'];
@@ -77,9 +86,9 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
   const [elapsed, setElapsed] = useState(0);
   const [transcript, setTranscript] = useState('');
   const [coachResult, setCoachResult] = useState(null);
+  const [micError, setMicError] = useState(false);
   const recRef = useRef(null);
-  const srRef = useRef(null);
-  const liveRef = useRef('');
+  const audioChunksRef = useRef([]);
   const timerRef = useRef(null);
   const dotCount = useSequentialDots(phase === 'analyzing');
 
@@ -93,41 +102,50 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
     return () => clearInterval(timerRef.current);
   }, [phase]);
 
-  async function startRec() {
-    liveRef.current = '';
+  function startRec() {
     setTranscript('');
     setElapsed(0);
-    setPhase('rec');
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SR) {
-      const sr = new SR();
-      sr.continuous = true;
-      sr.interimResults = true;
-      sr.onresult = (e) => {
-        let t = '';
-        for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript + ' ';
-        liveRef.current = t.trim();
-        setTranscript(liveRef.current);
-      };
-      sr.start();
-      srRef.current = sr;
+    setMicError(false);
+    audioChunksRef.current = [];
+    if (navigator.mediaDevices?.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
+        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+        mr.start(1000);
+        recRef.current = mr;
+        setPhase('rec');
+      }).catch(() => { setMicError(true); });
+    } else {
+      setMicError(true);
     }
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mr = new MediaRecorder(stream);
-      mr.start();
-      recRef.current = mr;
-    } catch(_) {}
   }
 
   async function doStop() {
-    srRef.current?.stop();
-    if (recRef.current && recRef.current.state !== 'inactive') recRef.current.stop();
-    await new Promise(r => setTimeout(r, 1800));
-    const final = liveRef.current || transcript || '';
-    setTranscript(final);
+    const mr = recRef.current;
     setPhase('analyzing');
-    await callCoach(final);
+    if (!mr || mr.state === 'inactive') { await callCoach(''); return; }
+    mr.onstop = async () => {
+      mr.stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      let text = '';
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Transcription failed');
+        text = (data.text || '').trim();
+      } catch (err) {
+        console.error('[D7PracticeWidget] transcribe error:', err);
+      }
+      setTranscript(text);
+      await callCoach(text);
+    };
+    try { mr.stop(); } catch(e) { await callCoach(''); }
   }
 
   async function callCoach(text) {
@@ -182,6 +200,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation }) {
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Challenge</div>
         <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:0, fontWeight:400 }}>Think of one real conversation coming up this week — a meeting, a presentation, a difficult discussion. Speak for 30 seconds about which of this week's skills you'll use in it — and why.</p>
       </div>
+      {micError && <p style={{fontFamily:T.sans,fontSize:12,color:"#B05C4A",margin:0}}>Check your microphone permission and try again.</p>}
       <button onClick={startRec} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
         Start Speaking →
       </button>
@@ -253,12 +272,11 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   const [result,     setResult]    = useState(null);
   const [waveVals,   setWaveVals]  = useState(Array(14).fill(0.3));
 
-  const recRef    = useRef(null);
   const mediaRef  = useRef(null);
+  const audioChunksRef = useRef([]);
   const timerRef  = useRef(null);
   const waveRef   = useRef(null);
-  const liveRef   = useRef('');
-  const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
+  const [micError, setMicError] = useState(false);
 
   // Timer
   useEffect(()=>{
@@ -283,45 +301,56 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   },[isRec]);
 
   function startRec(){
-    liveRef.current='';
     setTranscript('');
-    if(SpeechRec){
-      const rec=new SpeechRec();
-      rec.continuous=true;rec.interimResults=true;
-      rec.onresult=e=>{
-        let fin='',inter='';
-        for(let i=e.resultIndex;i<e.results.length;i++){
-          if(e.results[i].isFinal)fin+=e.results[i][0].transcript+' ';
-          else inter=e.results[i][0].transcript;
-        }
-        liveRef.current+=fin;
-        setTranscript(liveRef.current+inter);
-      };
-      rec.onend=()=>{};
-      rec.start();
-      recRef.current=rec;
-    }
+    setMicError(false);
+    audioChunksRef.current = [];
     if(navigator.mediaDevices?.getUserMedia){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-        const mr=new MediaRecorder(stream);
-        mr.start(200);
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType:'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
+        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+        mr.start(1000);
         mediaRef.current=mr;
-      }).catch(()=>{});
+        setIsRec(true);setTimeLeft(90);setPhase('recording');
+      }).catch(()=>{ setMicError(true); });
+    } else {
+      setMicError(true);
     }
-    setIsRec(true);setTimeLeft(90);setPhase('recording');
   }
 
-  function stopRec(){
-    if(recRef.current){try{recRef.current.stop();}catch(e){}recRef.current=null;}
-    if(mediaRef.current){try{mediaRef.current.stop();}catch(e){}}
-    clearInterval(timerRef.current);
-    setIsRec(false);
+  function stopRecAndTranscribe(){
+    return new Promise(resolve => {
+      const mr = mediaRef.current;
+      clearInterval(timerRef.current);
+      setIsRec(false);
+      if (!mr || mr.state === 'inactive') { resolve(''); return; }
+      mr.onstop = async () => {
+        mr.stream.getTracks().forEach(t => t.stop());
+        const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+        try {
+          const b64 = await blobToB64(blob);
+          const res = await fetch('/api/transcribe', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Transcription failed');
+          resolve((data.text || '').trim());
+        } catch (err) {
+          console.error('[D7SimWidget] transcribe error:', err);
+          resolve('');
+        }
+      };
+      try { mr.stop(); } catch(e) { resolve(''); }
+    });
   }
 
   async function doSubmit(){
-    stopRec();
-    const text=(liveRef.current||'').trim()||(fallback||'').trim();
+    const spokenText = await stopRecAndTranscribe();
+    const text=(spokenText||'').trim()||(fallback||'').trim();
     if(!text){setPhase('brief');return;}
+    setTranscript(text);
     setPhase('analyzing');
     try{
       const res=await fetch("/api/claude",{
@@ -433,15 +462,15 @@ export function D7SimWidget({ T, T2, isDesktop }) {
             You have 90 seconds. Click start when you are ready.
           </p>
         </div>
-        {/* Text fallback */}
-        {!SpeechRec&&(
+        {/* Text fallback — shown after a microphone failure */}
+        {micError&&(
           <div style={cs.card}>
             <div style={cs.label}>Type Your Response</div>
             <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Type your explanation here…" style={{width:"100%",borderRadius:3,border:"0.5px solid "+T2.border,padding:"12px 14px",fontSize:14,fontFamily:T.sans,resize:"none",height:120,boxSizing:"border-box",background:T2.bg,color:T2.text,outline:"none",lineHeight:1.6}}/>
           </div>
         )}
-        <button onClick={SpeechRec?startRec:doSubmit} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
-          Start Recording →
+        <button onClick={micError?doSubmit:startRec} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
+          {micError?"Submit →":"Start Recording →"}
         </button>
         <button onClick={()=>setPhase('intro')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"6px 0",textAlign:"center",width:"100%"}}>← Back</button>
       </div>

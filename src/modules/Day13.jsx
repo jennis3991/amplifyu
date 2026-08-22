@@ -1,5 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
 const SCENARIOS = [
   {
     id: 'hallway',
@@ -225,50 +234,61 @@ export function D13SimWidget({T, T2, isDesktop}) {
   const scoresRef = useRef([null, null, null]);
   const charIdxRef = useRef(0);
   const recognitionRef = useRef(null);
+  const audioChunksRef = useRef([]);
   const transcriptRef = useRef('');
 
   useEffect(() => {
-    return () => { recognitionRef.current?.abort(); };
+    return () => { if (recognitionRef.current && recognitionRef.current.state !== 'inactive') { try { recognitionRef.current.onstop = null; recognitionRef.current.stop(); } catch(e) {} } };
   }, []);
 
   const startRecording = () => {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) { setSpeechSupported(false); return; }
     transcriptRef.current = '';
     setTranscript('');
     setInterimText('');
-    const r = new SR();
-    r.continuous = true;
-    r.interimResults = true;
-    r.lang = 'en-US';
-    r.onresult = (e) => {
-      let finalChunk = '';
-      let interimChunk = '';
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        if (e.results[i].isFinal) finalChunk += e.results[i][0].transcript;
-        else interimChunk += e.results[i][0].transcript;
-      }
-      if (finalChunk) {
-        transcriptRef.current += (transcriptRef.current ? ' ' : '') + finalChunk.trim();
-        setTranscript(transcriptRef.current);
-      }
-      setInterimText(interimChunk);
-    };
-    r.onend = () => { setInterimText(''); setRecordState('done'); };
-    r.onerror = (err) => {
-      console.warn('[speech]', err.error);
-      setInterimText('');
-      setRecordState(transcriptRef.current ? 'done' : 'idle');
-    };
-    recognitionRef.current = r;
-    r.start();
-    setRecordState('recording');
+    if (!navigator.mediaDevices?.getUserMedia) { setSpeechSupported(false); return; }
+    audioChunksRef.current = [];
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+      let mr;
+      try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+      catch { mr = new MediaRecorder(stream); }
+      mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+      mr.start(1000);
+      recognitionRef.current = mr;
+      setRecordState('recording');
+    }).catch(err => {
+      console.warn('[speech]', err);
+      setSpeechSupported(false);
+    });
   };
 
-  const stopRecording = () => { recognitionRef.current?.stop(); };
+  const stopRecording = () => {
+    const mr = recognitionRef.current;
+    if (!mr || mr.state === 'inactive') { setRecordState(transcriptRef.current ? 'done' : 'idle'); return; }
+    setRecordState('processing');
+    mr.onstop = async () => {
+      mr.stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Transcription failed');
+        transcriptRef.current = (data.text || '').trim();
+        setTranscript(transcriptRef.current);
+      } catch (err) {
+        console.error('[D13SimWidget] transcribe error:', err);
+      }
+      setRecordState(transcriptRef.current ? 'done' : 'idle');
+    };
+    try { mr.stop(); } catch(e) { setRecordState(transcriptRef.current ? 'done' : 'idle'); }
+  };
 
   const reRecord = () => {
-    recognitionRef.current?.abort();
+    if (recognitionRef.current && recognitionRef.current.state !== 'inactive') { try { recognitionRef.current.onstop = null; recognitionRef.current.stop(); } catch(e) {} }
+    recognitionRef.current = null;
     transcriptRef.current = '';
     setTranscript('');
     setInterimText('');
@@ -276,7 +296,8 @@ export function D13SimWidget({T, T2, isDesktop}) {
   };
 
   const resetRecording = () => {
-    recognitionRef.current?.abort();
+    if (recognitionRef.current && recognitionRef.current.state !== 'inactive') { try { recognitionRef.current.onstop = null; recognitionRef.current.stop(); } catch(e) {} }
+    recognitionRef.current = null;
     transcriptRef.current = '';
     setTranscript('');
     setInterimText('');
@@ -445,12 +466,15 @@ export function D13SimWidget({T, T2, isDesktop}) {
                   <span style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:"#C97B5A", textTransform:"uppercase", letterSpacing:"1.5px"}}>Recording</span>
                 </div>
                 <div style={{minHeight:60, fontFamily:T.serif, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, marginBottom:16}}>
-                  {transcript || interimText
-                    ? <span>{transcript}{interimText && <span style={{color:T2.text4, fontStyle:"italic"}}>{(transcript ? " " : "") + interimText}</span>}</span>
-                    : <span style={{color:T2.text4, fontStyle:"italic"}}>Listening...</span>
-                  }
+                  <span style={{color:T2.text4, fontStyle:"italic"}}>Listening...</span>
                 </div>
                 <button onClick={stopRecording} style={cs.cta}>Done Speaking →</button>
+              </div>
+            )}
+
+            {recordState === 'processing' && (
+              <div style={{...cs.card, padding:isDesktop?"24px":"18px", textAlign:"center"}}>
+                <span style={{fontFamily:T.sans, fontSize:13, color:T2.text3, fontStyle:"italic"}}>Transcribing your answer…</span>
               </div>
             )}
 

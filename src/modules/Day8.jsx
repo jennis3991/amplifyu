@@ -1,6 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
 import { T as Timport } from '../theme.js';
 
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
 const T2D = {
   text:'#2C2416',text2:'#2C2416',text3:'#6B5E44',text4:'#A8998A',
   surface:'#EDE8DF',bg:'#F7F3EC',border:'#DDD5C4',divider:'#DDD5C4',cardDark:'#231E18',
@@ -1233,10 +1242,10 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
   const [transcript,  setTranscript]  = useState('');
   const [storyResult, setStoryResult] = useState(null);
   const [visCount,    setVisCount]    = useState(0);
+  const [micError,    setMicError]    = useState(false);
 
   const recRef    = useRef(null);
-  const srRef     = useRef(null);
-  const liveRef   = useRef('');
+  const audioChunksRef = useRef([]);
   const timerRef  = useRef(null);
   const maxTimRef = useRef(null);
 
@@ -1258,43 +1267,52 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
     return () => timers.forEach(clearTimeout);
   }, [phase, storyResult]);
 
-  async function startRec() {
-    liveRef.current = '';
+  function startRec() {
     setTranscript('');
     setElapsed(0);
-    setPhase('recording');
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SR) {
-      const sr = new SR();
-      sr.continuous = true;
-      sr.interimResults = true;
-      sr.onresult = e => {
-        let t = '';
-        for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript + ' ';
-        liveRef.current = t.trim();
-        setTranscript(liveRef.current);
-      };
-      sr.start();
-      srRef.current = sr;
+    setMicError(false);
+    audioChunksRef.current = [];
+    if (navigator.mediaDevices?.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
+        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+        mr.start(1000);
+        recRef.current = mr;
+        setPhase('recording');
+        maxTimRef.current = setTimeout(doStop, 180000);
+      }).catch(() => { setMicError(true); });
+    } else {
+      setMicError(true);
     }
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mr = new MediaRecorder(stream);
-      mr.start();
-      recRef.current = mr;
-    } catch (_) {}
-    maxTimRef.current = setTimeout(doStop, 180000);
   }
 
   async function doStop() {
     clearTimeout(maxTimRef.current);
-    try { srRef.current?.stop(); } catch (_) {}
-    try { if (recRef.current?.state !== 'inactive') recRef.current.stop(); } catch (_) {}
-    await new Promise(r => setTimeout(r, 1800));
-    const final = liveRef.current || transcript || '';
-    setTranscript(final);
+    const mr = recRef.current;
     setPhase('processing');
-    await callCoach(final);
+    if (!mr || mr.state === 'inactive') { await callCoach(''); return; }
+    mr.onstop = async () => {
+      mr.stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      let text = '';
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Transcription failed');
+        text = (data.text || '').trim();
+      } catch (err) {
+        console.error('[D8PracticeWidget] transcribe error:', err);
+      }
+      setTranscript(text);
+      await callCoach(text);
+    };
+    try { mr.stop(); } catch(e) { await callCoach(''); }
   }
 
   async function callCoach(text) {
@@ -1393,6 +1411,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         <D8SequentialDots dotCount={dotCount}/>
         <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, margin:0 }}>Just speak. We'll find the shape of your story.</p>
       </div>
+      {micError && <p style={{fontFamily:T.sans,fontSize:12,color:"#B05C4A",margin:0,textAlign:"center"}}>Check your microphone permission and try again.</p>}
       <button onClick={startRec} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.ink, color:T2.bg||"#F7F3EC", fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
         Start Speaking →
       </button>

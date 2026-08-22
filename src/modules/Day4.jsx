@@ -503,15 +503,13 @@ export function D4SimWidget({T, T2, isDesktop}) {
   const [analyzing, setAnalyzing] = useState(false);
   const [pointsSubmitted, setPointsSubmitted] = useState(false);
   const [round1, setRound1] = useState(null);
+  const [micError, setMicError] = useState(false);
 
   const audioRef = useRef(null);
-  const recRef = useRef(null);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
   const timerRef = useRef(null);
-  const liveRef = useRef('');
   const waveRef = useRef(null);
-  const SpeechRec = typeof window!=='undefined'&&(window.SpeechRecognition||window.webkitSpeechRecognition);
 
   const PRODUCER_MSGS = [
     {at:30, msg:"Thirty seconds left. Cut the detail. Give us the key points."},
@@ -543,30 +541,47 @@ export function D4SimWidget({T, T2, isDesktop}) {
   },[playing]);
 
   function doStart(){
-    setIsRec(true);setProducerMsg(null);liveRef.current='';setTranscript('');setAudioURL(null);setTimeElapsed(0);setTimeLeft(60);
-    if(SpeechRec){
-      const rec=new SpeechRec();rec.continuous=true;rec.interimResults=true;rec.lang='en-US';
-      rec.onresult=(e)=>{let t='';for(let i=0;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+' ';liveRef.current=t;setTranscript(t);};
-      try{rec.start();}catch(err){}
-      recRef.current=rec;
-    }
+    setIsRec(true);setProducerMsg(null);setTranscript('');setAudioURL(null);setTimeElapsed(0);setTimeLeft(60);setMicError(false);
+    audioChunksRef.current=[];
     if(navigator.mediaDevices?.getUserMedia){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-        const mr=new MediaRecorder(stream);
-        audioChunksRef.current=[];
-        mr.ondataavailable=e=>audioChunksRef.current.push(e.data);
-        mr.onstop=()=>{const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});setAudioURL(URL.createObjectURL(blob));stream.getTracks().forEach(t=>t.stop());};
-        mr.start();mediaRecRef.current=mr;
-      }).catch(()=>{});
+        let mr;
+        try { mr = new MediaRecorder(stream, {mimeType:'audio/webm'}); }
+        catch { mr = new MediaRecorder(stream); }
+        mr.ondataavailable=e=>{ if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+        mr.start(1000);
+        mediaRecRef.current=mr;
+      }).catch(()=>{ setIsRec(false); setMicError(true); });
+    } else {
+      setIsRec(false); setMicError(true);
     }
   }
 
-  function doStop(){
+  async function doStop(){
     setIsRec(false);
-    if(recRef.current){try{recRef.current.stop();}catch(e){}}
-    if(mediaRecRef.current&&mediaRecRef.current.state!=='inactive'){try{mediaRecRef.current.stop();}catch(e){}}
-    const text=SpeechRec?liveRef.current:fallback;
-    analyzeReport(text||fallback);
+    const mr = mediaRecRef.current;
+    if (!mr || mr.state === 'inactive') { analyzeReport(fallback); return; }
+    mr.onstop = async () => {
+      mr.stream.getTracks().forEach(t=>t.stop());
+      const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});
+      setAudioURL(URL.createObjectURL(blob));
+      let text = '';
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Transcription failed');
+        text = (data.text || '').trim();
+      } catch (err) {
+        console.error('[D4SimWidget] transcribe error:', err);
+      }
+      setTranscript(text);
+      analyzeReport(text||fallback);
+    };
+    try { mr.stop(); } catch(e) { analyzeReport(fallback); }
   }
 
   async function analyzeReport(text){
@@ -711,7 +726,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
           </div>
         )}
       </div>
-      {!isRec&&!SpeechRec&&(
+      {!isRec&&micError&&(
         <div style={cs.card}>
           <div style={cs.label}>Type your report</div>
           <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Write your live report here…" style={{width:"100%",minHeight:100,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.border,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
