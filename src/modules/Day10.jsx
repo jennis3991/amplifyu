@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
 import { useWakeLock } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
+import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -134,27 +135,6 @@ export function D10MobileSAR({onComplete}) {
   );
 }
 
-function useSequentialDots(active) {
-  const [dotCount, setDotCount] = useState(0);
-  useEffect(() => {
-    if (!active) { setDotCount(0); return; }
-    setDotCount(1);
-    const id = setInterval(() => {
-      setDotCount(d => { if (d >= 3) { clearInterval(id); return d; } return d + 1; });
-    }, 600);
-    return () => clearInterval(id);
-  }, [active]);
-  return dotCount;
-}
-function SequentialDots({ dotCount }) {
-  return (
-    <div style={{ display:'flex', gap:6 }}>
-      {[0,1,2].map(i => (
-        <div key={i} style={{ width:7, height:7, borderRadius:'50%', background: i < dotCount ? '#C9A84C' : 'rgba(201,168,76,0.2)', transition:'background 0.35s' }}/>
-      ))}
-    </div>
-  );
-}
 
 // ─── Leadership Hot Seat — D10 Simulation (mobile) ───────────────────────────
 export function D10MobileSim({onRecordingChange}) {
@@ -317,7 +297,7 @@ export function D10MobileSim({onRecordingChange}) {
       )}
 
       {l && <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,padding:"32px 0",textAlign:"center"}}>
-        <SequentialDots dotCount={dotCount}/>
+        <SequentialDots dotCount={dotCount} size={7} gap={6} center={false} activeColor="#C9A84C" inactiveColor="rgba(201,168,76,0.2)"/>
         <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:"#2C2416",margin:0}}>Your AmplifyU coach is reviewing your response…</p>
       </div>}
 

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 import { useWakeLock } from '../utils.js';
+import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -11,28 +12,6 @@ function blobToB64(blob) {
   });
 }
 
-// ── Shared: sequential dot animation ─────────────────────────────────────────
-function useSequentialDots(active) {
-  const [dotCount, setDotCount] = useState(0);
-  useEffect(() => {
-    if (!active) { setDotCount(0); return; }
-    setDotCount(1);
-    const id = setInterval(() => {
-      setDotCount(d => { if (d >= 3) { clearInterval(id); return d; } return d + 1; });
-    }, 600);
-    return () => clearInterval(id);
-  }, [active]);
-  return dotCount;
-}
-function SequentialDots({dotCount}) {
-  return (
-    <div style={{display:'flex', gap:10, justifyContent:'center'}}>
-      {[0,1,2].map(i => (
-        <div key={i} style={{width:9, height:9, borderRadius:'50%', background: i < dotCount ? 'rgba(138,158,132,0.75)' : 'rgba(138,158,132,0.12)', transition:'background 0.35s'}}/>
-      ))}
-    </div>
-  );
-}
 
 // ── Scenario cards ─────────────────────────────────────────────────────────────
 const S6_WARN    = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;

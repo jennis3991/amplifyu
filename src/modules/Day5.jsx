@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useWakeLock } from '../utils.js';
+import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -8,30 +9,6 @@ function blobToB64(blob) {
     r.onerror = reject;
     r.readAsDataURL(blob);
   });
-}
-
-// ─── Shared: sequential dot animation (mirrors Day 3) ────────────────────────
-function useSequentialDots(active) {
-  const [dotCount, setDotCount] = useState(0);
-  useEffect(() => {
-    if (!active) { setDotCount(0); return; }
-    setDotCount(1);
-    const id = setInterval(() => {
-      setDotCount(d => { if (d >= 3) { clearInterval(id); return d; } return d + 1; });
-    }, 600);
-    return () => clearInterval(id);
-  }, [active]);
-  return dotCount;
-}
-
-function SequentialDots({dotCount}) {
-  return (
-    <div style={{display:'flex', gap:10, justifyContent:'center'}}>
-      {[0,1,2].map(i => (
-        <div key={i} style={{width:9, height:9, borderRadius:'50%', background: i < dotCount ? 'rgba(138,158,132,0.75)' : 'rgba(138,158,132,0.12)', transition:'background 0.35s'}}/>
-      ))}
-    </div>
-  );
 }
 
 // ─── D5 Practice Widget — The Setup ──────────────────────────────────────────
