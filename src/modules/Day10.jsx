@@ -134,11 +134,34 @@ export function D10MobileSAR({onComplete}) {
   );
 }
 
+function useSequentialDots(active) {
+  const [dotCount, setDotCount] = useState(0);
+  useEffect(() => {
+    if (!active) { setDotCount(0); return; }
+    setDotCount(1);
+    const id = setInterval(() => {
+      setDotCount(d => { if (d >= 3) { clearInterval(id); return d; } return d + 1; });
+    }, 600);
+    return () => clearInterval(id);
+  }, [active]);
+  return dotCount;
+}
+function SequentialDots({ dotCount }) {
+  return (
+    <div style={{ display:'flex', gap:6 }}>
+      {[0,1,2].map(i => (
+        <div key={i} style={{ width:7, height:7, borderRadius:'50%', background: i < dotCount ? '#C9A84C' : 'rgba(201,168,76,0.2)', transition:'background 0.35s' }}/>
+      ))}
+    </div>
+  );
+}
+
 // ─── Leadership Hot Seat — D10 Simulation (mobile) ───────────────────────────
 export function D10MobileSim({onRecordingChange}) {
   const [scenario, setScenario] = useState(null);
   const [r, setR] = useState(null);
   const [l, setL] = useState(false);
+  const dotCount = useSequentialDots(l);
   const [isRec, setIsRec] = useState(false);
   useWakeLock(isRec);
   const [waveVals, setWaveVals] = useState(Array.from({length:9},()=>0.3));
@@ -207,8 +230,9 @@ export function D10MobileSim({onRecordingChange}) {
 
   function doStop(){
     setIsRec(false);
+    setL(true);
     stopRecording((text, failed) => {
-      if (failed || !text) { setTranscribeFailed(true); return; }
+      if (failed || !text) { setL(false); setTranscribeFailed(true); return; }
       go(text);
     });
   }
@@ -286,7 +310,7 @@ export function D10MobileSim({onRecordingChange}) {
       )}
 
       {l && <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,padding:"32px 0",textAlign:"center"}}>
-        <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:7,height:7,borderRadius:"50%",background:"#C9A84C",animation:`glowPulse 1.4s ease ${i*0.22}s infinite`}}/>)}</div>
+        <SequentialDots dotCount={dotCount}/>
         <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:"#2C2416",margin:0}}>Your AmplifyU coach is reviewing your response…</p>
       </div>}
 
