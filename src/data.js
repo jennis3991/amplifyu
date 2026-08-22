@@ -865,12 +865,12 @@ export const D3_PAUSE_REASONS = [
 
 export const D4_FACTS = [
   { word:"Processing Speed", sub:"Short sentences let your audience follow effortlessly.",
-    bullets:["When ideas are easy to absorb, people can focus on meaning rather than structure.","The harder a sentence is to parse, the more cognitive energy is spent decoding rather than understanding."] },
+    bullets:["When ideas are easy to absorb, people can focus on meaning rather than structure.","The harder a sentence is to read, the more mental energy goes into decoding it instead of understanding it."] },
   { word:"Retention",        sub:"Sentences under 15 words are more memorable.",
     bullets:["The discipline of cutting forces you to find the essential idea — which makes it stick.","Every word you remove is one less thing your audience has to hold in working memory."] },
   { word:"Impact",           sub:"When you say less, each word carries more.",
     bullets:["Short sentences give each idea room to breathe and land fully before the next one arrives.","Brevity is a form of respect — it signals that you've done the thinking so your audience doesn't have to."] },
-  { word:"Persuasion",       sub:"The most persuasive lines ever spoken are all under 10 words.",
+  { word:"Persuasion",       sub:"Some of the most memorable lines in history are under 10 words:",
     bullets:["\"I have a dream.\" \"Yes we can.\" \"Just do it.\" Brevity is not simplicity — it is precision.","Short sentences move people because they leave no room for doubt or distraction."] },
 ];
 
