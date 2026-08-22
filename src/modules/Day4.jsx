@@ -639,7 +639,16 @@ export function D4SimWidget({T, T2, isDesktop}) {
       )}
       <div style={{display:"flex",gap:10,justifyContent:"center"}}>
         {!isRec?(
-          <button onClick={doStart} style={{...cs.cta,maxWidth:280}}>🎙 Go Live →</button>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+            <button onClick={doStart} style={{
+              width:80,height:80,borderRadius:"50%",border:"none",cursor:"pointer",
+              background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",
+              boxShadow:"0 0 0 6px rgba(138,158,132,0.12)",transition:"all 0.2s ease",
+            }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" fill="white"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="white" strokeWidth="1.8" strokeLinecap="round"/><line x1="12" y1="19" x2="12" y2="23" stroke="white" strokeWidth="1.8" strokeLinecap="round"/></svg>
+            </button>
+            <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>Go Live</div>
+          </div>
         ):(
           <button onClick={doStop} style={{...cs.cta,maxWidth:280,background:"#8A4A3A"}}>◼ End Broadcast & Analyse →</button>
         )}
