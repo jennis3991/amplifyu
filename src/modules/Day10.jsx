@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
 import { useWakeLock } from '../utils.js';
+import { VoiceRecorder } from './VoiceRecorder.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -97,72 +98,13 @@ export function D10SimFeedback({input, scenario}) {
 
 // ─── SAR Builder — D10 Practice (mobile) ─────────────────────────────────────
 export function D10MobileSAR({onComplete}) {
-  const [s,setS]=useState(""); const [a,setA]=useState(""); const [r,setR]=useState("");
   const [res,setRes]=useState(""); const [l,setL]=useState(false);
-  const [listening,setListening]=useState(null);
-  const [micError,setMicError]=useState(false);
-  const recRef=useRef(null);
-  const audioChunksRef=useRef([]);
 
-  function stopAndTranscribe(field){
-    const mr = recRef.current;
-    setListening(null);
-    if (!mr || mr.state === 'inactive') { recRef.current=null; return; }
-    mr.onstop = async () => {
-      mr.stream.getTracks().forEach(t=>t.stop());
-      const blob = new Blob(audioChunksRef.current, {type:'audio/webm'});
-      recRef.current = null;
-      try {
-        const b64 = await blobToB64(blob);
-        const res = await fetch('/api/transcribe', {
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({b64, mimeType:'audio/webm'}),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Transcription failed');
-        const t = (data.text||'').trim();
-        if (t) {
-          const setter=field==="s"?setS:field==="a"?setA:setR;
-          setter(prev=>prev?(prev+" "+t):t);
-        }
-      } catch(err) {
-        console.error('[D10MobileSAR] transcribe error:', err);
-      }
-    };
-    try { mr.stop(); } catch(e) { recRef.current=null; }
-  }
-
-  function startListening(field){
-    if(listening===field){
-      stopAndTranscribe(field);
-      return;
-    }
-    if(recRef.current && recRef.current.state !== 'inactive'){
-      try{ recRef.current.onstop=null; recRef.current.stop(); }catch(e){}
-      recRef.current=null;
-    }
-    setMicError(false);
-    audioChunksRef.current = [];
-    if (navigator.mediaDevices?.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-        let mr;
-        try { mr = new MediaRecorder(stream, {mimeType:'audio/webm'}); }
-        catch { mr = new MediaRecorder(stream); }
-        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-        mr.start(1000);
-        recRef.current = mr;
-        setListening(field);
-      }).catch(()=>{ setMicError(true); });
-    } else {
-      setMicError(true);
-    }
-  }
-
-  async function go(){
-    if(!s.trim()||!a.trim()||!r.trim())return;
+  async function go(text){
+    if(!text||!text.trim())return;
     setL(true);
     try{
-      const resp=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:250,messages:[{role:"user",content:`You are an executive communication coach. Sharpen this SAR story into 2-3 crisp, confident sentences. Lead with the result. Return ONLY the sharpened story:\n\nSituation: ${s}\nAction: ${a}\nResult: ${r}`}]})});
+      const resp=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:250,messages:[{role:"user",content:`You are an executive communication coach. Sharpen this spoken SAR (Situation, Action, Result) story into 2-3 crisp, confident sentences. Lead with the result. Return ONLY the sharpened story:\n\n${text}`}]})});
       const d=await resp.json();
       const txt=(d.content||[]).map(b=>b.text||"").join("").trim();
       setRes(txt);if(onComplete)onComplete();
@@ -170,40 +112,18 @@ export function D10MobileSAR({onComplete}) {
     setL(false);
   }
 
-  const FIELDS=[
-    {key:"s",label:"Situation",val:s,set:setS,ph:"What was the challenge or context?"},
-    {key:"a",label:"Action",val:a,set:setA,ph:"What did YOU specifically do? Use 'I.'"},
-    {key:"r",label:"Result",val:r,set:setR,ph:"What was the measurable outcome?"},
-  ];
-
   return(
     <div>
-      <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>
-        {FIELDS.map(({key,label,val,set,ph})=>(
-          <div key={key}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
-              <div style={{fontSize:10,fontWeight:700,color:"#8A9E84",textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:"'Inter',sans-serif"}}>{label}</div>
-              <button onClick={()=>startListening(key)}
-                style={{display:"flex",alignItems:"center",gap:4,padding:"4px 8px",borderRadius:12,border:listening===key?"1.5px solid #8A9E84":"1px solid #DDD5C4",background:listening===key?"rgba(138,158,132,0.12)":"transparent",cursor:"pointer",fontFamily:"'Inter',sans-serif",fontSize:11,color:listening===key?"#527060":"#8A7B66",fontWeight:500}}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={listening===key?"#527060":"#A8998A"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="9" y="2" width="6" height="11" rx="3"/>
-                  <path d="M5 10a7 7 0 0 0 14 0"/>
-                  <line x1="12" y1="19" x2="12" y2="22"/>
-                  <line x1="9" y1="22" x2="15" y2="22"/>
-                </svg>
-                {listening===key?"Stop":"Speak"}
-              </button>
-            </div>
-            <textarea value={val} onChange={e=>set(e.target.value)} placeholder={ph}
-              style={{width:"100%",borderRadius:4,border:listening===key?"0.5px solid #8A9E84":"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:60,boxSizing:"border-box",background:"rgba(247,243,236,0.8)",outline:"none"}}/>
-          </div>
-        ))}
-      </div>
-      {micError && <p style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"#B05C4A",margin:"0 0 10px"}}>Check your microphone permission and try again.</p>}
-      <button onClick={go} disabled={l||!s.trim()||!a.trim()||!r.trim()}
-        style={{width:"100%",padding:"12px",borderRadius:3,border:"none",background:l||!s.trim()||!a.trim()||!r.trim()?"#DDD5C4":"#2C2416",color:l||!s.trim()||!a.trim()||!r.trim()?"#6B5E44":"#F7F3EC",fontSize:13,fontWeight:600,cursor:l||!s.trim()||!a.trim()||!r.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:res?12:0}}>
-        {l?"Building your SAR…":"Build My SAR Story →"}
-      </button>
+      {!res && !l && (
+        <div style={{marginBottom:4}}>
+          <div style={{fontSize:10,fontWeight:700,color:"#8A9E84",textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:"'Inter',sans-serif",marginBottom:8}}>Situation &middot; Action &middot; Result</div>
+          <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#6B5E44",lineHeight:1.6,margin:"0 0 18px"}}>Speak your whole story in one go: what was the challenge, what did YOU specifically do, and what was the measurable result?</p>
+          <VoiceRecorder T={T} onDone={go}/>
+        </div>
+      )}
+      {l && (
+        <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#8A7B66",textAlign:"center",padding:"20px 0",margin:0}}>Building your SAR…</p>
+      )}
       {res&&(
         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}>
           <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>Your performance statement</div>
