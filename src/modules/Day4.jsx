@@ -144,8 +144,10 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
   const waveRef = useRef(null);
+  const transcript1Ref = useRef('');
 
   const dotCount = useSequentialDots(phase === 'pause');
+  const analyzingDotCount = useSequentialDots(phase === 'coach' && !coachResult);
 
   useEffect(() => {
     if (!onNavLabel) return;
@@ -218,14 +220,21 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   // Start rec1 — runs to manual completion
   function doStart1() {
     setIsRec(true);
+    setTranscript1('');
+    transcript1Ref.current = '';
     startRecording();
   }
 
+  // Stop transitions phase immediately (before transcription resolves) so the
+  // button unmounts on the very first tap instead of leaving the recording
+  // screen visibly frozen for the length of the transcribe round-trip.
   function doStop1() {
+    setIsRec(false);
+    setPhase('interrupt');
     stopRecording((text) => {
-      setIsRec(false);
-      setTranscript1(text || '[first attempt]');
-      setPhase('interrupt');
+      const t1 = text || '[first attempt]';
+      transcript1Ref.current = t1;
+      setTranscript1(t1);
     });
   }
 
@@ -236,12 +245,12 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   }
 
   function doStop2() {
+    setIsRec(false);
+    setPhase('coach');
     stopRecording((text) => {
-      setIsRec(false);
       const t2 = text || '[second attempt]';
       setTranscript2(t2);
-      setPhase('coach');
-      analyzeEdit(transcript1, t2);
+      analyzeEdit(transcript1Ref.current, t2);
     });
   }
 
@@ -444,7 +453,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
   if (phase === 'coach') {
     if (!coachResult) return grid(
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, gap: 16}}>
-        <div style={{width: 32, height: 32, border: '2px solid rgba(138,158,132,0.15)', borderTop: '2px solid rgba(138,158,132,0.65)', borderRadius: '50%'}} />
+        <SequentialDots dotCount={analyzingDotCount}/>
         <p style={{fontFamily: T.sans, fontSize: 12, color: T2.text4, margin: 0}}>Reading the edit…</p>
       </div>
     );
@@ -511,6 +520,8 @@ export function D4SimWidget({T, T2, isDesktop}) {
   const timerRef = useRef(null);
   const waveRef = useRef(null);
 
+  const dotCount = useSequentialDots(analyzing);
+
   const PRODUCER_MSGS = [
     {at:30, msg:"Thirty seconds left. Cut the detail. Give us the key points."},
     {at:45, msg:"Fifteen seconds left. Wrap up the story. What do people need to remember?"},
@@ -559,6 +570,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
 
   async function doStop(){
     setIsRec(false);
+    setAnalyzing(true);
     const mr = mediaRecRef.current;
     if (!mr || mr.state === 'inactive') { analyzeReport(fallback); return; }
     mr.onstop = async () => {
@@ -615,21 +627,13 @@ export function D4SimWidget({T, T2, isDesktop}) {
 
   function reset(){setPhase('intro');setStory(null);setTimeLeft(60);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setRound1(null);setUserPoints(['','','']);setPointsSubmitted(false);setAudioURL(null);}
 
-  function getAudio(){
-    if(!audioRef.current&&audioURL){
-      audioRef.current=new Audio(audioURL);
-      audioRef.current.addEventListener('ended',()=>{setPlaying(false);setAudioProgress(0);});
-    }
-    return audioRef.current;
-  }
   function togglePlay(){
-    if(!audioURL){setPlaying(p=>!p);return;}
-    const a=getAudio();if(!a)return;
+    const a=audioRef.current;if(!a)return;
     if(playing){a.pause();setPlaying(false);}
     else{a.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
   }
   function seekTo(pos){
-    const a=getAudio();if(!a)return;
+    const a=audioRef.current;if(!a)return;
     a.currentTime=pos*(a.duration||0);
     if(!playing)a.play().then(()=>setPlaying(true)).catch(()=>{});
   }
@@ -746,9 +750,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
   // ── ANALYZING ────────────────────────────────────────────────────────────────
   if(analyzing) return (
     <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
-      <div style={{display:"flex",gap:6}}>
-        {[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.22}s infinite`}}/>)}
-      </div>
+      <SequentialDots dotCount={dotCount}/>
       <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>The audience is processing your report…</p>
       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Measuring retention, compression, cognitive load.</p>
     </div>
@@ -797,11 +799,14 @@ export function D4SimWidget({T, T2, isDesktop}) {
               <div style={{fontFamily:"var(--sans,'Inter',sans-serif)",fontSize:9,color:"rgba(245,239,230,0.3)",textAlign:"right"}}>{Math.floor(audioProgress*60/60)}:{String(Math.round(audioProgress*60)%60).padStart(2,'0')} / 1:00</div>
             </div>
           )}
-          {audioURL&&<audio ref={audioRef} src={audioURL} onEnded={()=>setPlaying(false)} style={{display:"none"}}/>}
+          {audioURL&&<audio ref={audioRef} src={audioURL} onEnded={()=>{setPlaying(false);setAudioProgress(0);}} style={{display:"none"}}/>}
         </div>
 
         <div style={cs.card}>
-          <div style={cs.label}>🧠 Viewer Memory Test</div>
+          <div style={{...cs.label,display:"flex",alignItems:"center",gap:6}}>
+            <svg width="13" height="13" viewBox="0 0 22 22" fill="none"><path d="M11 3v3M11 16v3M3 11h3M16 11h3M5.6 5.6l2.1 2.1M14.3 14.3l2.1 2.1M5.6 16.4l2.1-2.1M14.3 7.7l2.1-2.1" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>
+            Viewer Memory Test
+          </div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:14,lineHeight:1.5}}>Here's what the AI audience remembered from your report:</p>
           <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
             {(result.remembered||[]).map((pt,i)=>(
