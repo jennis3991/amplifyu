@@ -162,12 +162,8 @@ export function D10MobileSim({onRecordingChange}) {
   },[]);
 
   const SCENARIOS = [
-    {id:1, title:"The Surprise Skip-Level",   prompt:'"So — what have you been focused on lately?"',     tag:"Strategic framing · Brevity",
-     icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>},
     {id:2, title:"Promotion Calibration",      prompt:'"Why are you ready for the next level?"',          tag:"Ownership · Evidence · Confidence",
      icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>},
-    {id:3, title:"The Executive Fly-By",       prompt:'"How\'s the project going?"',                      tag:"Brevity · Prioritisation",
-     icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>},
     {id:4, title:"Credit Theft",               prompt:"A colleague presents your work as their own.",      tag:"Composure · Ownership",
      icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>},
     {id:5, title:"Difficult Stakeholder",      prompt:'"I\'m still not convinced this made a difference."', tag:"Persuasion · Credibility",

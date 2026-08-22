@@ -938,9 +938,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Simulation") {
         const HOT_SEAT_SCENARIOS = [
-          {id:1, title:"The Surprise Skip-Level",  prompt:'"So — what have you been focused on lately?"',                          tag:"Strategic framing · Brevity · Confidence"},
           {id:2, title:"Promotion Calibration",     prompt:'"Why are you ready for the next level?"',                               tag:"Ownership · Evidence · Leadership language"},
-          {id:3, title:"The Executive Fly-By",      prompt:'"How\'s the project going?"',                                           tag:"Brevity · Prioritisation · Executive comms"},
           {id:4, title:"Credit Theft",              prompt:"A colleague presents work you led as their own. Respond professionally.", tag:"Composure · Diplomacy · Ownership"},
           {id:5, title:"The Difficult Stakeholder", prompt:'"I\'m still not convinced this made a difference."',                    tag:"Persuasion · Calm under pressure · Credibility"},
           {id:6, title:"The Quiet Achiever Trap",   prompt:'"You do great work — but I need more visibility into your impact."',    tag:"Self-advocacy · Reframing · Strategic comms"},
@@ -957,7 +955,7 @@ setAmbitionSaved(true); } catch {}
             <div style={{display:"flex",flexDirection:"column",gap:14}}>
               <div style={{...cs10.card}}>
                 <div style={cs10.label}>How It Works</div>
-                <h3 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 20px"}}>Six real scenarios. 30 seconds each. Speak — get coached.</h3>
+                <h3 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 20px"}}>Four real scenarios. 30 seconds each. Speak — get coached.</h3>
                 <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
                   {[
                     {n:1,label:"Pick a\nscenario",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="14" height="16" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M7 7h8M7 11h8M7 15h5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
