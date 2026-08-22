@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { T } from '../theme.js';
 import { useWakeLock } from '../utils.js';
+import { VoiceRecorder } from './VoiceRecorder.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -128,9 +129,8 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   const [topic, setTopic] = useState(null);
 
   // Recording
-  const [isRec, setIsRec] = useState(false);
-  useWakeLock(isRec);
-  const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
+  const [d4Recording, setD4Recording] = useState(false);
+  useWakeLock(d4Recording);
   const [transcript1, setTranscript1] = useState('');
   const [transcript2, setTranscript2] = useState('');
 
@@ -141,26 +141,20 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   // Coach
   const [coachResult, setCoachResult] = useState(null);
 
-  const mediaRecRef = useRef(null);
-  const audioChunksRef = useRef([]);
-  const waveRef = useRef(null);
-  const transcript1Ref = useRef('');
-
   const dotCount = useSequentialDots(phase === 'pause');
   const analyzingDotCount = useSequentialDots(phase === 'coach' && !coachResult);
 
+  // Wire bottom nav: disabled until the rehearsal recording is complete
   useEffect(() => {
     if (!onNavLabel) return;
-    onNavLabel(null);
-    if (onNavFn) onNavFn.current = null;
-  }, [phase]);
-
-  // Waveform animation during recording
-  useEffect(() => {
-    if (!isRec) { clearInterval(waveRef.current); return; }
-    waveRef.current = setInterval(() => setWaveVals(() => Array.from({length:9}, () => 0.2 + Math.random() * 0.8)), 150);
-    return () => clearInterval(waveRef.current);
-  }, [isRec]);
+    if (phase === 'coach' && coachResult) {
+      onNavLabel("Continue");
+      if (onNavFn) onNavFn.current = () => onSimulation?.();
+    } else {
+      onNavLabel(null);
+      if (onNavFn) onNavFn.current = null;
+    }
+  }, [phase, coachResult]);
 
   // Interrupt screen animation
   useEffect(() => {
@@ -171,88 +165,6 @@ export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
     const t2 = setTimeout(() => setInterruptTextVisible(true), 680);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [phase]);
-
-  function startRecording() {
-    audioChunksRef.current = [];
-    console.log('[Day4 DEBUG] startRecording called, mediaDevices?.getUserMedia present:', !!navigator.mediaDevices?.getUserMedia);
-    if (navigator.mediaDevices?.getUserMedia) {
-      console.log('[Day4 DEBUG] calling getUserMedia({audio: true})');
-      navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
-        console.log('[Day4 DEBUG] getUserMedia resolved, stream:', stream);
-        let mr;
-        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
-        catch { mr = new MediaRecorder(stream); }
-        mr.ondataavailable = e => {
-          console.log('[Day4 DEBUG] ondataavailable, chunk size:', e.data.size);
-          if (e.data.size > 0) audioChunksRef.current.push(e.data);
-        };
-        mr.start(1000);
-        mediaRecRef.current = mr;
-      }).catch((err) => { console.log('[Day4 DEBUG] getUserMedia REJECTED:', err && err.name, err && err.message); });
-    } else {
-      console.log('[Day4 DEBUG] navigator.mediaDevices.getUserMedia is NOT available in this webview context');
-    }
-  }
-
-  // Stops the recorder, transcribes it server-side, and calls cb with the text (or '' on failure)
-  function stopRecording(cb) {
-    const mr = mediaRecRef.current;
-    if (!mr || mr.state === 'inactive') { cb(''); return; }
-    mr.onstop = async () => {
-      mr.stream.getTracks().forEach(t => t.stop());
-      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
-      try {
-        const b64 = await blobToB64(blob);
-        const res = await fetch('/api/transcribe', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
-        });
-        const data = await res.json();
-        cb((data.text || '').trim());
-      } catch {
-        cb('');
-      }
-    };
-    try { mr.stop(); } catch(e) { cb(''); }
-  }
-
-  // Start rec1 — runs to manual completion
-  function doStart1() {
-    setIsRec(true);
-    setTranscript1('');
-    transcript1Ref.current = '';
-    startRecording();
-  }
-
-  // Stop transitions phase immediately (before transcription resolves) so the
-  // button unmounts on the very first tap instead of leaving the recording
-  // screen visibly frozen for the length of the transcribe round-trip.
-  function doStop1() {
-    setIsRec(false);
-    setPhase('interrupt');
-    stopRecording((text) => {
-      const t1 = text || '[first attempt]';
-      transcript1Ref.current = t1;
-      setTranscript1(t1);
-    });
-  }
-
-  // Start rec2 — runs to manual completion
-  function doStart2() {
-    setIsRec(true);
-    startRecording();
-  }
-
-  function doStop2() {
-    setIsRec(false);
-    setPhase('coach');
-    stopRecording((text) => {
-      const t2 = text || '[second attempt]';
-      setTranscript2(t2);
-      analyzeEdit(transcript1Ref.current, t2);
-    });
-  }
 
   async function analyzeEdit(t1, t2) {
     try {
@@ -372,7 +284,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
       </p>
     </div>
     <button
-      onClick={() => { doStart1(); setPhase('rec1'); }}
+      onClick={() => setPhase('rec1')}
       disabled={dotCount < 3}
       style={{...cs.cta, opacity: dotCount < 3 ? 0.3 : 1, cursor: dotCount < 3 ? 'default' : 'pointer'}}>
       Start Speaking →
@@ -386,24 +298,12 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
   if (phase === 'rec1') return grid(<>
     <div style={cs.card}>
       <div style={cs.label}>Message</div>
-      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: T2.text, lineHeight: 1.4, margin: '0 0 22px'}}>{topic.label}</p>
-      <div style={{display: 'flex', alignItems: 'center', gap: 2, height: 44, marginBottom: 14}}>
-        {waveVals.map((v, i) => (
-          <div key={i} style={{flex: 1, height: Math.round(v * 38) + 'px', background: `rgba(138,158,132,${0.3 + v * 0.5})`, borderRadius: 2, transition: 'height 0.15s'}} />
-        ))}
-      </div>
-      <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
-        <div style={{width: 7, height: 7, borderRadius: '50%', background: '#c0392b'}} />
-        <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording — speak naturally</span>
-      </div>
+      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: T2.text, lineHeight: 1.4, margin: 0}}>{topic.label}</p>
     </div>
-    <button onClick={doStop1}
-      style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
-      Stop Recording →
-    </button>
-    <p style={{fontFamily: T.sans, fontSize: 11, color: T2.text4, textAlign: 'center', margin: 0}}>
-      Speak for as long as you like, then tap Stop.
-    </p>
+    <VoiceRecorder T={T} T2={T2} onRecordingChange={setD4Recording} onDone={(text) => {
+      setTranscript1(text || '[first attempt]');
+      setPhase('interrupt');
+    }}/>
   </>);
 
   // ── INTERRUPT ───────────────────────────────────────────────────────────────
@@ -420,7 +320,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
           Same message. Fewer words. Go.
         </p>
         <button
-          onClick={() => { doStart2(); setPhase('rec2'); }}
+          onClick={() => setPhase('rec2')}
           style={{...cs.cta, opacity: interruptTextVisible ? 1 : 0}}>
           Now Edit It →
         </button>
@@ -432,21 +332,14 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
   if (phase === 'rec2') return grid(<>
     <div style={cs.card}>
       <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 12}}>Take 2 — Half the words</div>
-      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: T2.text, lineHeight: 1.4, margin: '0 0 22px'}}>{topic.label}</p>
-      <div style={{display: 'flex', alignItems: 'center', gap: 2, height: 44, marginBottom: 14}}>
-        {waveVals.map((v, i) => (
-          <div key={i} style={{flex: 1, height: Math.round(v * 38) + 'px', background: `rgba(138,158,132,${0.3 + v * 0.5})`, borderRadius: 2, transition: 'height 0.15s'}} />
-        ))}
-      </div>
-      <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
-        <div style={{width: 7, height: 7, borderRadius: '50%', background: '#c0392b'}} />
-        <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording — same message, fewer words</span>
-      </div>
+      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: T2.text, lineHeight: 1.4, margin: 0}}>{topic.label}</p>
     </div>
-    <button onClick={doStop2}
-      style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
-      Stop Recording →
-    </button>
+    <VoiceRecorder T={T} T2={T2} onRecordingChange={setD4Recording} onDone={(text) => {
+      const t2 = text || '[second attempt]';
+      setTranscript2(t2);
+      setPhase('coach');
+      analyzeEdit(transcript1, t2);
+    }}/>
   </>);
 
   // ── COACH ───────────────────────────────────────────────────────────────────
@@ -473,7 +366,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
         <p style={{fontFamily: T.sans, fontSize: 12, color: 'rgba(138,158,132,0.45)', textAlign: 'center', margin: 0, letterSpacing: '0.05em'}}>
           Ready for Breaking News?
         </p>
-        <button onClick={() => { if (onSimulation) onSimulation(); }} style={cs.sageCta}>
+        <button onClick={() => { if (onSimulation) onSimulation(); }} style={cs.cta}>
           Enter Breaking News →
         </button>
         <button onClick={() => { setPhase('select'); setTopic(null); setCoachResult(null); setTranscript1(''); setTranscript2(''); }}
