@@ -741,12 +741,71 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   const [coverTitle,     setCoverTitle]    = useState('');
   const [coverSubtitle,  setCoverSubtitle] = useState('');
 
+  // ── My Stories — local-only persistence for generated stories ────────────
+  const STORY_CAP = 5;
+  const [savedStories, setSavedStories] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("au1_stories") || "[]"); } catch { return []; }
+  });
+  const [storiesOpen, setStoriesOpen] = useState(false);
+  // Holds a just-generated story that couldn't be saved because the cap was
+  // already reached — stays visible/usable in this session, and gets saved
+  // automatically the moment a slot frees up (via deleteStory below).
+  const [pendingStory, setPendingStory] = useState(null);
+
+  function persistStories(next) {
+    setSavedStories(next);
+    try { localStorage.setItem("au1_stories", JSON.stringify(next)); } catch {}
+  }
+
+  function saveStory(parsed, briefText) {
+    const entry = {
+      id: Date.now(),
+      brief: briefText,
+      storyWorld: parsed.storyWorld || {},
+      scenes: parsed.scenes || [],
+      story: parsed.story || '',
+      coverTitle: parsed.coverTitle || '',
+      coverSubtitle: parsed.coverSubtitle || '',
+      timestamp: Date.now(),
+    };
+    if (savedStories.length >= STORY_CAP) {
+      setPendingStory(entry);
+      return;
+    }
+    persistStories([entry, ...savedStories]);
+  }
+
+  function deleteStory(id) {
+    setSavedStories(prev => {
+      let next = prev.filter(s => s.id !== id);
+      let freedForPending = false;
+      if (pendingStory && next.length < STORY_CAP) {
+        next = [pendingStory, ...next];
+        freedForPending = true;
+      }
+      try { localStorage.setItem("au1_stories", JSON.stringify(next)); } catch {}
+      if (freedForPending) setPendingStory(null);
+      return next;
+    });
+  }
+
+  function loadStory(entry) {
+    setPendingStory(null);
+    setResult({ storyWorld: entry.storyWorld, scenes: entry.scenes, story: entry.story, coverTitle: entry.coverTitle, coverSubtitle: entry.coverSubtitle });
+    setCoverTitle(entry.coverTitle || '');
+    setCoverSubtitle(entry.coverSubtitle || '');
+    setBrief(entry.brief || '');
+    setStoryImage(null);
+    setApiError(false);
+    setActiveScene(0);
+    setPhase('results');
+  }
+
   const EXAMPLE_BRIEFS = [
     "A TED-style pitch for a new product — emotional, direct, show real human impact",
     "A cybersecurity risk presentation for our board — make it feel like breaking news, urgent and specific",
   ];
 
-  function reset() { setPhase('brief'); setBrief(''); setResult(null); setApiError(false); setStoryImage(null); setStoryImageErr(''); setActiveScene(0); setBriefOpen(false); setCoachOpen(false); setCoverTitle(''); setCoverSubtitle(''); }
 
   async function generateStoryImage(scenes, storyWorld, ctitle, csub) {
     try {
@@ -849,6 +908,7 @@ Return ONLY valid JSON:
       const cs = parsed.coverSubtitle || parsed.storyWorld?.lesson || '';
       setCoverTitle(ct); setCoverSubtitle(cs);
       setResult(parsed); setPhase('results');
+      saveStory(parsed, brief);
       setStoryImage('loading');
       generateStoryImage(parsed.scenes, parsed.storyWorld, ct, cs);
     } catch(_) {
@@ -864,6 +924,29 @@ Return ONLY valid JSON:
         <h2 style={{fontFamily:T.serif,fontSize:isDesktop?34:26,fontWeight:500,color:T2.text,lineHeight:1.1,letterSpacing:"-0.5px",marginBottom:8}}>Your AmplifyU Speechwriter.</h2>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Whether you're pitching to a board, leading your team, delivering a keynote, or telling a personal story, Story Architect transforms rough ideas into unforgettable narratives.</p>
       </div>
+
+      {savedStories.length>0 && (
+        <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+          <button onClick={()=>setStoriesOpen(v=>!v)} style={{width:"100%",background:"none",border:"none",padding:isDesktop?"14px 18px":"12px 16px",cursor:"pointer",fontFamily:T.sans,fontSize:12,color:T2.text3,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <span>My Stories ({savedStories.length})</span>
+            <span style={{fontSize:14,opacity:0.6,transform:storiesOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
+          </button>
+          {storiesOpen && (
+            <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
+              {savedStories.map(s=>(
+                <div key={s.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
+                  <button onClick={()=>loadStory(s)} style={{flex:1,minWidth:0,textAlign:"left",background:"none",border:"none",padding:isDesktop?"12px 18px":"11px 16px",cursor:"pointer",display:"flex",flexDirection:"column",gap:2}}>
+                    <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{s.coverTitle || s.storyWorld?.subject || "Untitled story"}</span>
+                    <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(s.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</span>
+                  </button>
+                  <button onClick={()=>deleteStory(s.id)} title="Delete story" style={{background:"none",border:"none",cursor:"pointer",color:T2.text4,fontSize:18,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1}}>×</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"}}>
         <textarea value={brief} onChange={e=>setBrief(e.target.value)} placeholder={"Describe the presentation, speech, meeting or story you need to tell. Include your audience, your goal, and anything you want people to remember."} rows={isDesktop?5:4} style={{width:"100%",background:"transparent",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,resize:"none",boxSizing:"border-box",fontWeight:300}}/>
         {brief.trim()&&<div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:6,textAlign:"right"}}>{brief.trim().split(/\s+/).length} words</div>}
@@ -915,60 +998,6 @@ Return ONLY valid JSON:
       { heading:"The Call to Action", body:"The most powerful endings don't tell the audience what to do — they make the audience want to act. This scene uses emotional resolution to transfer ownership of the story to the listener." },
     ];
 
-    function handleExport() {
-      const sceneRows = scenes.map((s,i) => `
-        <div class="scene">
-          <div class="scene-num">Scene ${i+1}</div>
-          <div class="scene-title">${s.title}</div>
-          <p class="scene-caption">${s.caption}</p>
-          <p class="scene-narrative">${s.narrative||''}</p>
-          <div class="scene-emotion">${s.emotion}</div>
-        </div>`).join('');
-
-      const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
-<title>${sw.subject||'Story'}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#fff;color:#2C2416;padding:60px 72px;max-width:900px;margin:0 auto}
-.label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#8A9E84;margin-bottom:10px}
-h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;line-height:1.1;letter-spacing:-0.5px;margin-bottom:8px}
-.subtitle{font-size:13px;color:#8A7B66;font-weight:300;margin-bottom:48px}
-.divider{border:none;border-top:0.5px solid #E8E0D5;margin:40px 0}
-.scenes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:48px}
-.scene{border-top:1px solid #2C2416;padding-top:12px}
-.scene-num{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8A7B66;margin-bottom:4px}
-.scene-title{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;color:#2C2416;margin-bottom:6px;line-height:1.2}
-.scene-caption{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:#5A4E42;line-height:1.5;margin-bottom:8px}
-.scene-narrative{font-size:11px;color:#8A7B66;line-height:1.6;font-weight:300;margin-bottom:8px}
-.scene-emotion{font-size:8px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B8964A}
-.narrative-section h2{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:#8A9E84;margin-bottom:24px}
-.narrative-body{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;line-height:1.85;color:#2C2416}
-.narrative-body p{margin-bottom:18px}
-.footer{margin-top:64px;font-size:9px;color:#C4B9AC;letter-spacing:1px;text-transform:uppercase}
-@media print{body{padding:40px 56px}@page{margin:0;size:A4}.back-btn{display:none!important}}
-</style></head><body>
-<button class="back-btn" onclick="if(window.opener){window.opener.focus();} window.close();" style="position:fixed;top:18px;right:24px;background:#2C2416;color:#F7F3EC;border:none;border-radius:4px;padding:9px 18px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.3px;z-index:999">&#8592; Back to App</button>
-<div class="label">Narrative Frames &mdash; AmplifyU</div>
-<h1>${sw.subject||'Your Story'}</h1>
-<div class="subtitle">${sw.lesson||sw.audience||''}</div>
-<hr class="divider">
-<div class="label" style="margin-bottom:20px">Six Key Scenes</div>
-<div class="scenes">${sceneRows}</div>
-<hr class="divider">
-<div class="narrative-section">
-<h2>Full Narrative</h2>
-<div class="narrative-body">${(result.story||scenes.map(s=>s.narrative).join('\n\n')).split('\n\n').map(p=>`<p>${p.replace(/^[A-Z\s]+:$/,'')}</p>`).join('')}</div>
-</div>
-<div class="footer">Generated by AmplifyU &bull; narrativeframes.co</div>
-<script>window.onload=function(){window.print();}<\/script>
-</body></html>`;
-
-      const win = window.open('','_blank');
-      if (win) { win.document.write(html); win.document.close(); }
-    }
-
     const SCORES = [
       { label:"Story Flow",          stars:5 },
       { label:"Emotional Journey",   stars:5 },
@@ -995,6 +1024,12 @@ h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;line-he
           <div style={{background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.18)",padding:"10px 16px",marginBottom:20,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
             <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>AmplifyU Coach unavailable — showing a template story based on your brief.</span>
             <button onClick={()=>{setApiError(false);generate();}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:11,fontWeight:600,padding:0,flexShrink:0}}>Try AI again →</button>
+          </div>
+        )}
+
+        {pendingStory&&(
+          <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px",marginBottom:20}}>
+            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You've reached your limit of {STORY_CAP} saved stories. This one is here to view now, but won't be saved — delete a story from My Stories (on the brief screen) to free up a slot.</span>
           </div>
         )}
 
@@ -1139,12 +1174,9 @@ h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;line-he
         {/* ── PREMIUM ACTIONS ─────────────────────────────────────────────── */}
         <div style={{marginBottom:isDesktop?24:18}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12}}>Take it Further</div>
-          <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:8}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr",gap:8}}>
             {[
-              {label:"Reimagine Story",         sub:"Generate a completely new narrative arc",       action:null},
-              {label:"Make it More Emotional",  sub:"Amplify the feeling throughout each scene",     action:null},
               {label:"Turn into TED Talk",       sub:"Restructure for a 15-minute keynote format",   action:null},
-              {label:"Export Story",             sub:"Download as PDF",                              action:handleExport},
             ].map((a,i)=>(
               <button key={i} onClick={a.action||undefined} style={{padding:isDesktop?"13px 18px":"12px 16px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.surface,cursor:a.action?"pointer":"default",textAlign:"left",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,transition:"background 0.15s",opacity:a.action?1:0.45}}>
                 <div>
@@ -1159,7 +1191,6 @@ h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:500;line-he
 
         {/* Footer */}
         <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-          <button onClick={reset} style={{flex:1,padding:isDesktop?"13px":"12px",borderRadius:4,border:"none",background:T.ink||"#2C2416",color:T2.bg||"#F7F3EC",fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>Build Another Story →</button>
           <button onClick={()=>{setResult(null);setPhase('brief');}} style={{padding:isDesktop?"13px 18px":"12px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:isDesktop?13:12,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>← Edit Brief</button>
         </div>
       </div>
