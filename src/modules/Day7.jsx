@@ -234,6 +234,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   const timerRef  = useRef(null);
   const waveRef   = useRef(null);
   const [micError, setMicError] = useState(false);
+  const dotCount = useSequentialDots(phase === 'analyzing');
 
   // Timer
   useEffect(()=>{
@@ -304,11 +305,11 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   }
 
   async function doSubmit(){
+    setPhase('analyzing');
     const spokenText = await stopRecAndTranscribe();
     const text=(spokenText||'').trim()||(fallback||'').trim();
     if(!text){setPhase('brief');return;}
     setTranscript(text);
-    setPhase('analyzing');
     try{
       const res=await fetch("/api/claude",{
         method:"POST",headers:{"Content-Type":"application/json"},
@@ -472,7 +473,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   // ── ANALYSING ─────────────────────────────────────────────────────────────
   if(phase==='analyzing') return (
     <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"60px 0":"44px 0"}}>
-      <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.3s ease ${i*0.3}s infinite`}}/>)}</div>
+      <SequentialDots dotCount={dotCount}/>
       <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:"14px 0 4px",textAlign:"center"}}>Your AmplifyU coach is reviewing your response…</p>
       <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text3,margin:0,textAlign:"center",maxWidth:320}}>Evaluating all six Week 1 communication skills.</p>
     </div>
