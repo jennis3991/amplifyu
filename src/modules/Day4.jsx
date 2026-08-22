@@ -519,15 +519,24 @@ export function D4SimWidget({T, T2, isDesktop}) {
 
   function reset(){setPhase('intro');setStory(null);setTimeLeft(60);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setRound1(null);setUserPoints(['','','']);setPointsSubmitted(false);setAudioURL(null);}
 
+  // Plays `a` once it's actually ready to play, instead of calling play()
+  // unconditionally — a blob: src can still be at readyState 0 (HAVE_NOTHING)
+  // immediately after the <audio> element mounts, and WebKit/Safari can drop
+  // a play() call made that early rather than queuing it.
+  function playWhenReady(a){
+    const start=()=>a.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));
+    if(a.readyState>=2){ start(); }
+    else{ a.addEventListener('canplay', start, {once:true}); }
+  }
   function togglePlay(){
     const a=audioRef.current;if(!a)return;
     if(playing){a.pause();setPlaying(false);}
-    else{a.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
+    else{playWhenReady(a);}
   }
   function seekTo(pos){
     const a=audioRef.current;if(!a)return;
     a.currentTime=pos*(a.duration||0);
-    if(!playing)a.play().then(()=>setPlaying(true)).catch(()=>{});
+    if(!playing)playWhenReady(a);
   }
 
   const cs={
@@ -639,17 +648,27 @@ export function D4SimWidget({T, T2, isDesktop}) {
     </div>
   );
 
-  // ── ANALYZING ────────────────────────────────────────────────────────────────
-  if(phase==='analyzing') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
-      <SequentialDots dotCount={dotCount}/>
-      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>The audience is processing your report…</p>
-      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Measuring retention, compression, cognitive load.</p>
-    </div>
-  );
+  // ── ANALYZING / RECALL ──────────────────────────────────────────────────────
+  // Share one persistent <audio> element across both phases (same position in
+  // the returned tree each render, so React updates rather than remounts it)
+  // so the browser starts decoding the recording in the background during
+  // analysis, instead of only starting once the results screen mounts.
+  if (phase === 'analyzing' || (phase === 'recall' && result)) {
+    const audioEl = audioURL && (
+      <audio ref={audioRef} src={audioURL} onEnded={()=>{setPlaying(false);setAudioProgress(0);}} style={{display:"none"}}/>
+    );
 
-  // ── RECALL ───────────────────────────────────────────────────────────────────
-  if(phase==='recall'&&result) {
+    if (phase === 'analyzing') return (
+      <>
+        <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
+          <SequentialDots dotCount={dotCount}/>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>The audience is processing your report…</p>
+          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Measuring retention, compression, cognitive load.</p>
+        </div>
+        {audioEl}
+      </>
+    );
+
     const totalFacts=(result.factsReported||[]).length;
     const remembered=(result.remembered||[]).length;
     const forgotten=(result.forgotten||[]);
@@ -657,6 +676,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
     const scoreColor=s=>s>=75?T.gold:s>=55?"#7A9E84":"rgba(180,80,60,0.8)";
 
     return (
+      <>
       <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
         <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Broadcast Results</div>
@@ -691,7 +711,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
               <div style={{fontFamily:"var(--sans,'Inter',sans-serif)",fontSize:9,color:"rgba(245,239,230,0.3)",textAlign:"right"}}>{Math.floor(audioProgress*60/60)}:{String(Math.round(audioProgress*60)%60).padStart(2,'0')} / 1:00</div>
             </div>
           )}
-          {audioURL&&<audio ref={audioRef} src={audioURL} onEnded={()=>{setPlaying(false);setAudioProgress(0);}} style={{display:"none"}}/>}
         </div>
 
         <div style={cs.card}>
@@ -778,6 +797,8 @@ export function D4SimWidget({T, T2, isDesktop}) {
         </div>
 
       </div>
+      {audioEl}
+      </>
     );
   }
 
