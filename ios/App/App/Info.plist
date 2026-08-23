@@ -24,6 +24,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Turn on your camera so AmplifyU can record your practice session and coach you on how your body language and presence communicate confidence and impact.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Turn on your microphone so AmplifyU can listen to your practice session and coach you on how to communicate with greater clarity, confidence and impact.</string>
 	<key>UILaunchStoryboardName</key>

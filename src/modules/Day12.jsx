@@ -207,6 +207,21 @@ export function D12PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
   return null;
 }
 
+// WebM has never been supported as a MediaRecorder output container on
+// Safari/WebKit (desktop or iOS) — only MP4. Try webm variants first (for
+// Chrome/Firefox), then fall back to mp4 variants (for Safari/WKWebView).
+function getSupportedVideoMime() {
+  if (typeof MediaRecorder === 'undefined' || !MediaRecorder.isTypeSupported) return null;
+  const candidates = [
+    'video/webm;codecs=vp9,opus',
+    'video/webm;codecs=vp8,opus',
+    'video/webm',
+    'video/mp4;codecs=avc1,mp4a',
+    'video/mp4',
+  ];
+  return candidates.find(c => MediaRecorder.isTypeSupported(c)) || null;
+}
+
 // ─── D12 Simulation Widget — Video Presence Recorder ─────────────────────────
 export function D12SimWidget({T, T2, isDesktop}) {
   const PROMPTS = [
@@ -225,6 +240,7 @@ export function D12SimWidget({T, T2, isDesktop}) {
   const [recTime, setRecTime] = useState(0);
   const [blobUrl, setBlobUrl] = useState(null);
   const [permErr, setPermErr] = useState(false);
+  const [mediaErr, setMediaErr] = useState(false);
   const [observations, setObservations] = useState({});
   const [checked, setChecked] = useState([]);
 
@@ -251,6 +267,7 @@ export function D12SimWidget({T, T2, isDesktop}) {
 
   const startCamera = async () => {
     setPermErr(false);
+    setMediaErr(false);
     try {
       const stream = await navigator.mediaDevices.getUserMedia({video:true,audio:true});
       streamRef.current = stream;
@@ -265,22 +282,36 @@ export function D12SimWidget({T, T2, isDesktop}) {
           clearInterval(cd);
           setCountdown(null);
           chunksRef.current = [];
-          const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm';
-          const rec = new MediaRecorder(stream, {mimeType:mime});
-          recorderRef.current = rec;
-          rec.ondataavailable = e=>{ if(e.data.size>0) chunksRef.current.push(e.data); };
-          rec.onstop = ()=>{
-            const blob = new Blob(chunksRef.current, {type:'video/webm'});
-            setBlobUrl(URL.createObjectURL(blob));
+          const mime = getSupportedVideoMime();
+          if (!mime) {
             stream.getTracks().forEach(t=>t.stop());
             streamRef.current = null;
-            setIsRecording(false);
-            setPhase('playback');
-          };
-          rec.start(250);
-          setIsRecording(true);
-          setRecTime(0);
-          timerRef.current = setInterval(()=>setRecTime(t=>t+1), 1000);
+            setPhase('choose');
+            setMediaErr(true);
+            return;
+          }
+          try {
+            const rec = new MediaRecorder(stream, {mimeType:mime});
+            recorderRef.current = rec;
+            rec.ondataavailable = e=>{ if(e.data.size>0) chunksRef.current.push(e.data); };
+            rec.onstop = ()=>{
+              const blob = new Blob(chunksRef.current, {type:mime});
+              setBlobUrl(URL.createObjectURL(blob));
+              stream.getTracks().forEach(t=>t.stop());
+              streamRef.current = null;
+              setIsRecording(false);
+              setPhase('playback');
+            };
+            rec.start(250);
+            setIsRecording(true);
+            setRecTime(0);
+            timerRef.current = setInterval(()=>setRecTime(t=>t+1), 1000);
+          } catch (err) {
+            stream.getTracks().forEach(t=>t.stop());
+            streamRef.current = null;
+            setPhase('choose');
+            setMediaErr(true);
+          }
         }
       }, 1000);
     } catch(e) { setPermErr(true); }
@@ -296,7 +327,7 @@ export function D12SimWidget({T, T2, isDesktop}) {
     if (timerRef.current) clearInterval(timerRef.current);
     if (blobUrl) URL.revokeObjectURL(blobUrl);
     setBlobUrl(null); setIsRecording(false); setCountdown(null); setRecTime(0);
-    setObservations({}); setChecked([]); setChosenPrompt(null); setPermErr(false);
+    setObservations({}); setChecked([]); setChosenPrompt(null); setPermErr(false); setMediaErr(false);
     chunksRef.current = []; streamRef.current = null; recorderRef.current = null; timerRef.current = null;
     setPhase('intro');
   };
@@ -352,6 +383,11 @@ export function D12SimWidget({T, T2, isDesktop}) {
       {permErr && (
         <div style={{padding:"12px 14px",background:"rgba(180,60,60,0.06)",borderRadius:4,border:"0.5px solid rgba(180,60,60,0.2)"}}>
           <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(160,60,60,0.9)",margin:0,lineHeight:1.5}}>Camera access was denied. Please allow camera and microphone permissions in your browser settings and try again.</p>
+        </div>
+      )}
+      {mediaErr && (
+        <div style={{padding:"12px 14px",background:"rgba(180,60,60,0.06)",borderRadius:4,border:"0.5px solid rgba(180,60,60,0.2)"}}>
+          <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(160,60,60,0.9)",margin:0,lineHeight:1.5}}>Video recording isn't supported on this browser. Please try again on a different device or browser.</p>
         </div>
       )}
       <button onClick={startCamera} disabled={chosenPrompt===null} style={{...cs.cta,background:chosenPrompt===null?"rgba(44,36,22,0.25)":T.ink,cursor:chosenPrompt===null?"not-allowed":"pointer"}}>
