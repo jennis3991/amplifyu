@@ -454,7 +454,12 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
   const REWRITE_ITEMS = ["Headline", "About Section", "Experience Bullets"];
 
   const [phase,          setPhase]         = useState('import');
-  const [inputMode,      setInputMode]     = useState('paste');
+  const [inputMode,      setInputMode]     = useState(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("au1_toolkits") || "[]");
+      return stored.some(t => t.source === 'brand-rehearsal') ? 'summary' : 'paste';
+    } catch { return 'paste'; }
+  });
   const [profileText,    setProfileText]   = useState('');
   const [cvText,         setCvText]        = useState('');
   const [screenshots,    setScreenshots]   = useState([]);
@@ -475,6 +480,7 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
     try { return JSON.parse(localStorage.getItem("au1_toolkits") || "[]"); } catch { return []; }
   });
   const myToolkitsSim = savedToolkits.filter(isMineSim);
+  const latestRehearsalToolkit = savedToolkits.filter(t => t.source === 'brand-rehearsal')[0] || null;
   const [toolkitsOpen, setToolkitsOpen] = useState(false);
   const [pendingToolkit, setPendingToolkit] = useState(null);
   const [savedToolkitId, setSavedToolkitId] = useState(null);
@@ -533,14 +539,12 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
   const savedSig  = (() => { try { return localStorage.getItem('d11Sig')  || ''; } catch(_) { return ''; } })();
   const futureWords = (brandWords || []).filter(w => w && w.trim().length > 0);
 
-  const savedStmt = (() => { try { return localStorage.getItem('d11Stmt') || ''; } catch(_) { return ''; } })();
-
   const hasProfile = inputMode === 'paste'
     ? profileText.trim().length > 20
     : inputMode === 'screenshot'
       ? screenshots.length > 0
       : inputMode === 'summary'
-        ? savedSig.trim().length > 0
+        ? !!latestRehearsalToolkit
         : cvText.trim().length > 20;
 
   const sn  = { fontFamily: T.sans };
@@ -590,7 +594,7 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
   async function getProfileContent() {
     if (inputMode === 'paste')   return profileText;
     if (inputMode === 'cv')      return cvText;
-    if (inputMode === 'summary') return [savedSig, savedStmt].filter(Boolean).join('\n\n');
+    if (inputMode === 'summary') return latestRehearsalToolkit ? [latestRehearsalToolkit.signature, latestRehearsalToolkit.statement].filter(Boolean).join('\n\n') : '';
     if (inputMode === 'screenshot' && screenshots.length > 0) {
       try {
         const imageBlocks = screenshots.slice(0, 4).map(s => ({
@@ -753,6 +757,30 @@ Keep it under 280 words. Make every word earn its place.`;
     ];
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 18 : 16, animation: "fadeUp 0.5s ease both" }}>
+
+        {/* HOW IT WORKS — modeled on Day 1 Simulation's icon-row explainer */}
+        <div style={{ background: T2.surface || "rgba(255,255,255,0.025)", borderRadius: 4, border: "0.5px solid " + T2.border, padding: isDesktop ? "22px 24px" : "18px 20px" }}>
+          <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 6 }}>How it works</div>
+          <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 28 : 22, fontWeight: 600, color: T2.text, lineHeight: 1.2, marginBottom: isDesktop ? 20 : 16 }}>Four steps to a brand-aligned LinkedIn.</h2>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 0 }}>
+            {[
+              { n: 1, label: "Rehearsal feeds your brand insight", icon: <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg> },
+              { n: 2, label: "Add your LinkedIn or CV",            icon: <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="14" rx="2" stroke={T.gold} strokeWidth="1.3"/><circle cx="8" cy="10" r="2" stroke={T.gold} strokeWidth="1.3"/><path d="M5 15c0-1.5 1.3-2.5 3-2.5s3 1 3 2.5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><path d="M13 8h3M13 11h3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg> },
+              { n: 3, label: "AI audits it against your brand",    icon: <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="10" cy="10" r="6" stroke={T.gold} strokeWidth="1.3"/><path d="M14.5 14.5L19 19" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><path d="M7.5 10l1.5 1.5 3-3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+              { n: 4, label: "Get your improved brand toolkit",    icon: <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 2l1.8 3.7 4.1.6-3 2.9.7 4.1L11 11.3 7.4 13.3l.7-4.1-3-2.9 4.1-.6L11 2z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg> },
+            ].map((s, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", flex: 1 }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
+                  <div style={{ width: isDesktop?48:36, height: isDesktop?48:36, borderRadius: "50%", background: "rgba(138,158,132,0.08)", border: "0.5px solid rgba(138,158,132,0.25)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: isDesktop?8:6 }}>{s.icon}</div>
+                  <div style={{ fontFamily: T.sans, fontSize: isDesktop?9:8, fontWeight: 700, color: T.gold, marginBottom: 3 }}>{s.n}</div>
+                  <div style={{ fontFamily: T.sans, fontSize: isDesktop?12:9, color: T2.text2, textAlign: "center", lineHeight: 1.3, maxWidth: isDesktop?76:52 }}>{s.label}</div>
+                </div>
+                {i < 3 && <div style={{ height: 1, width: isDesktop?12:5, background: "rgba(138,158,132,0.2)", flexShrink: 0, marginBottom: isDesktop?30:24 }}/>}
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div>
           <div style={{ ...lbl, color: T.gold, marginBottom: 10, letterSpacing: "2px", fontSize: 10 }}>LINKEDIN AUDIT</div>
           <h2 style={{ ...sf, fontSize: isDesktop ? 28 : 22, fontWeight: 600, margin: "0 0 8px", lineHeight: 1.15 }}>Bring your brand to life</h2>
@@ -811,11 +839,11 @@ Keep it under 280 words. Make every word earn its place.`;
 
         {inputMode === 'summary' && (
           <div style={{ animation: "fadeUp 0.25s ease both" }}>
-            {savedSig ? (
+            {latestRehearsalToolkit ? (
               <div style={{ background: "rgba(200,164,106,0.06)", border: "1px solid rgba(200,164,106,0.25)", borderRadius: 6, padding: "16px 18px" }}>
                 <div style={{ ...lbl, color: "rgba(200,164,106,0.6)", marginBottom: 10 }}>Your Professional Signature</div>
-                <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text, lineHeight: 1.65, margin: 0 }}>{savedSig}</p>
-                {savedStmt && <p style={{ ...sn, fontSize: isDesktop ? 13 : 12, color: T2.text3, lineHeight: 1.6, marginTop: 10, fontStyle: "italic" }}>{savedStmt}</p>}
+                <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text, lineHeight: 1.65, margin: 0 }}>{latestRehearsalToolkit.signature}</p>
+                {latestRehearsalToolkit.statement && <p style={{ ...sn, fontSize: isDesktop ? 13 : 12, color: T2.text3, lineHeight: 1.6, marginTop: 10, fontStyle: "italic" }}>{latestRehearsalToolkit.statement}</p>}
               </div>
             ) : (
               <div style={{ background: "rgba(44,36,22,0.03)", border: "1px dashed rgba(44,36,22,0.15)", borderRadius: 6, padding: "24px 20px", textAlign: "center" }}>
