@@ -52,6 +52,10 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const d1NavFnRef = useRef(null);
   const [d7NavLabel, setD7NavLabel] = useState(null);
   const d7NavFnRef = useRef(null);
+  const [d12NavLabel, setD12NavLabel] = useState(null);
+  const d12NavFnRef = useRef(null);
+  const [d11NavLabel, setD11NavLabel] = useState(null);
+  const d11NavFnRef = useRef(null);
   const [d4NavLabel, setD4NavLabel] = useState(null);
   const d4NavFnRef = useRef(null);
   const [d1SimRecording, setD1SimRecording] = useState(false);
@@ -3372,13 +3376,13 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <D11PracticeWidget T={T} T2={T2} isDesktop={true} onWordsChange={setD11BrandWords} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
+          <D11PracticeWidget T={T} T2={T2} isDesktop={true} onWordsChange={setD11BrandWords} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD11NavLabel} onNavFn={d11NavFnRef}/>
         </div>
       );
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <D11SimWidget T={T} T2={T2} isDesktop={true} brandWords={d11BrandWords}/>
+          <D11SimWidget T={T} T2={T2} isDesktop={true} brandWords={d11BrandWords} onFinish={() => setIdx(STEPS.indexOf('Review'))}/>
         </div>
       );
 
@@ -3691,10 +3695,10 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Presence Challenge</div>
+          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Practice Presence</div>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Build Grounded Physical Confidence</h2>
           <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:600 }}>Seven rounds. Gestures, posture, eye contact, movement, expression, and grounded presence.</p>
-          <D12PracticeWidget T={T} T2={T2} isDesktop={true}/>
+          <D12PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD12NavLabel} onNavFn={d12NavFnRef}/>
         </div>
       );
 
@@ -4546,7 +4550,7 @@ setAmbitionSaved(true); } catch {}
               </button>
             )}
             {idx < STEPS.length - 1 && (() => {
-              const navDisabled = (isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording);
+              const navDisabled = (isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording) || (isD12 && step === "Rehearsal" && d12NavLabel === null) || (isD11 && step === "Rehearsal" && d11NavLabel === null);
               return (
               <button
                 onClick={() => {
@@ -4556,6 +4560,10 @@ setAmbitionSaved(true); } catch {}
                     d4NavFnRef.current();
                   } else if (isD7 && step === "Rehearsal" && d7NavFnRef.current) {
                     d7NavFnRef.current();
+                  } else if (isD12 && step === "Rehearsal" && d12NavFnRef.current) {
+                    d12NavFnRef.current();
+                  } else if (isD11 && step === "Rehearsal" && d11NavFnRef.current) {
+                    d11NavFnRef.current();
                   } else {
                     setIdx(i => i + 1);
                   }
@@ -4579,7 +4587,11 @@ setAmbitionSaved(true); } catch {}
                     ? d4NavLabel
                     : isD7 && step === "Rehearsal" && d7NavLabel
                       ? d7NavLabel
-                      : idx === 0 ? "Begin" : idx === STEPS.length - 2 ? "Final Chapter" : "Continue"}
+                      : isD12 && step === "Rehearsal" && d12NavLabel
+                        ? d12NavLabel
+                        : isD11 && step === "Rehearsal" && d11NavLabel
+                          ? d11NavLabel
+                          : idx === 0 ? "Begin" : idx === STEPS.length - 2 ? "Final Chapter" : "Continue"}
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
               );

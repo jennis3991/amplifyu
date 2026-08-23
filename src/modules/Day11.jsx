@@ -39,7 +39,7 @@ const ANALYSIS_MSGS = [
   "Building your Professional Signature...",
 ];
 
-export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulation }) {
+export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulation, onNavLabel, onNavFn }) {
   const SAGE = '#3D5940';
   const SAGE_CARD = '#0e0e0e';
   const [phase,          setPhase]         = useState('intro');
@@ -52,6 +52,50 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
   const [analysisMsgIdx, setAnalysisMsgIdx]= useState(0);
   const [result,         setResult]        = useState(null);
   const [copied,         setCopied]        = useState(false);
+
+  // ── My Saved Toolkits — shares the au1_toolkits key with D11SimWidget, but
+  // this source (brand-rehearsal) is capped and listed independently.
+  const TOOLKIT_CAP = 5;
+  const isMineRehearsal = t => t.source === 'brand-rehearsal';
+  const [savedToolkits, setSavedToolkits] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("au1_toolkits") || "[]"); } catch { return []; }
+  });
+  const myToolkitsRehearsal = savedToolkits.filter(isMineRehearsal);
+  const [toolkitsOpen, setToolkitsOpen] = useState(false);
+  const [pendingToolkit, setPendingToolkit] = useState(null);
+
+  function saveBrandRehearsal(r) {
+    const entry = {
+      id: Date.now(),
+      source: 'brand-rehearsal',
+      signature: r.signature || '',
+      strengths: r.strengths || [],
+      statement: r.statement || '',
+      coachNote: r.coachNote || '',
+      timestamp: Date.now(),
+    };
+    if (myToolkitsRehearsal.length >= TOOLKIT_CAP) {
+      setPendingToolkit(entry);
+      return;
+    }
+    const next = [entry, ...savedToolkits];
+    setSavedToolkits(next);
+    try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+  }
+
+  function deleteToolkit(id) {
+    setSavedToolkits(prev => {
+      let next = prev.filter(t => t.id !== id);
+      let freedForPending = false;
+      if (pendingToolkit && next.filter(isMineRehearsal).length < TOOLKIT_CAP) {
+        next = [pendingToolkit, ...next];
+        freedForPending = true;
+      }
+      try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+      if (freedForPending) setPendingToolkit(null);
+      return next;
+    });
+  }
 
   const recognitionRef  = useRef(null);
   const audioChunksRef  = useRef([]);
@@ -66,6 +110,17 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
       onWordsChange(result.strengths.slice(0, 3).map(s => s.toLowerCase()));
     }
   }, [result]);
+
+  useEffect(() => {
+    if (!onNavLabel) return;
+    if (phase === 'results' && result) {
+      onNavLabel("Continue");
+      if (onNavFn) onNavFn.current = () => onSimulation?.();
+    } else {
+      onNavLabel(null);
+      if (onNavFn) onNavFn.current = null;
+    }
+  }, [phase, result]);
 
   useEffect(() => {
     if (phase === 'analyzing') {
@@ -176,6 +231,7 @@ Return ONLY valid JSON:
       if (!m) throw new Error();
       const parsed = JSON.parse(m[0]);
       try { localStorage.setItem('d11Sig', parsed.signature || ''); localStorage.setItem('d11Stmt', parsed.statement || ''); } catch (_) {}
+      saveBrandRehearsal(parsed);
       clearInterval(analysisMsgRef.current);
       setTimeout(() => { setResult(parsed); setPhase('results'); }, 700);
     } catch (_) {
@@ -223,6 +279,35 @@ Return ONLY valid JSON:
         <div style={{ ...lbl, marginBottom: 11, letterSpacing: "2.5px" }}>ALL STRONG BRANDS ARE KNOWN FOR SOMETHING</div>
         <h2 style={{ ...sf, fontSize: isDesktop ? 30 : 24, fontWeight: 600, margin: 0, lineHeight: 1.2 }}>Let's find yours.</h2>
       </div>
+
+      {myToolkitsRehearsal.length>0 && (
+        <div style={{background:T2.surface||"rgba(255,255,255,0.025)",borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+          <button onClick={()=>setToolkitsOpen(v=>!v)} style={{width:"100%",background:"none",border:"none",padding:isDesktop?"14px 18px":"12px 16px",cursor:"pointer",fontFamily:T.sans,fontSize:12,color:T2.text3,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <span>My Saved Toolkits ({myToolkitsRehearsal.length})</span>
+            <span style={{fontSize:14,opacity:0.6,transform:toolkitsOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
+          </button>
+          {toolkitsOpen && (
+            <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
+              {myToolkitsRehearsal.map(t=>(
+                <div key={t.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
+                  <div style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2}}>
+                    <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{(t.strengths||[]).slice(0,2).join(', ') || "Professional Signature"}</span>
+                    <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(t.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</span>
+                  </div>
+                  <button onClick={()=>deleteToolkit(t.id)} title="Delete" style={{background:"none",border:"none",cursor:"pointer",color:T2.text4,fontSize:18,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1}}>×</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {pendingToolkit && (
+        <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
+          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You've reached your limit of {TOOLKIT_CAP} saved toolkits. This one won't be saved until you delete one above.</span>
+        </div>
+      )}
+
       <div style={{ borderLeft: "2px solid " + T.gold, paddingLeft: 15, display: "flex", flexDirection: "column", gap: 10 }}>
         <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.65, margin: 0 }}>Your personal brand isn't your job title. It's what people remember you for after you've left the room.</p>
         <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.65, margin: 0 }}>I'll ask you three simple questions. Just speak naturally — I'll identify the patterns and uncover your unique professional signature.</p>
@@ -363,7 +448,7 @@ Return ONLY valid JSON:
 
 
 // ─── D11 Simulation Widget ────────────────────────────────────────────────────
-export function D11SimWidget({ T, T2, isDesktop, brandWords = [] }) {
+export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
 
   const CHECK_ITEMS   = ["Positioning", "Leadership Signals", "Clarity", "Personal Brand", "Consistency"];
   const REWRITE_ITEMS = ["Headline", "About Section", "Experience Bullets"];
@@ -376,10 +461,71 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [] }) {
   const [extracting,     setExtracting]    = useState(false);
   const [checkIdx,       setCheckIdx]      = useState(-1);
   const [analysisResult, setAnalysisResult]= useState(null);
+  const [analysisFallback, setAnalysisFallback] = useState(false);
   const [rewriteCheckIdx,setRewriteCheckIdx]=useState(-1);
   const [copied,         setCopied]        = useState({});
   const [cvPhase,        setCvPhase]       = useState('idle');
   const [cvResult,       setCvResult]      = useState('');
+
+  // ── My Saved Toolkits — shares the au1_toolkits key with D11PracticeWidget,
+  // but this source (linkedin-audit) is capped and listed independently.
+  const TOOLKIT_CAP = 5;
+  const isMineSim = t => t.source === 'linkedin-audit';
+  const [savedToolkits, setSavedToolkits] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("au1_toolkits") || "[]"); } catch { return []; }
+  });
+  const myToolkitsSim = savedToolkits.filter(isMineSim);
+  const [toolkitsOpen, setToolkitsOpen] = useState(false);
+  const [pendingToolkit, setPendingToolkit] = useState(null);
+  const [savedToolkitId, setSavedToolkitId] = useState(null);
+
+  function saveToolkit(ar) {
+    const entry = {
+      id: Date.now(),
+      source: 'linkedin-audit',
+      headline: ar.rewrittenHeadline || '',
+      about: ar.rewrittenAbout || '',
+      experience: ar.rewrittenExperience || [],
+      cv: '',
+      timestamp: Date.now(),
+    };
+    if (myToolkitsSim.length >= TOOLKIT_CAP) {
+      setPendingToolkit(entry);
+      setSavedToolkitId(null);
+      return;
+    }
+    const next = [entry, ...savedToolkits];
+    setSavedToolkits(next);
+    setSavedToolkitId(entry.id);
+    try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+  }
+
+  function attachCvToToolkit(cvTextResult) {
+    if (pendingToolkit) {
+      setPendingToolkit(p => p ? { ...p, cv: cvTextResult } : p);
+      return;
+    }
+    if (!savedToolkitId) return;
+    setSavedToolkits(prev => {
+      const next = prev.map(t => t.id === savedToolkitId ? { ...t, cv: cvTextResult } : t);
+      try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }
+
+  function deleteToolkit(id) {
+    setSavedToolkits(prev => {
+      let next = prev.filter(t => t.id !== id);
+      let freedForPending = false;
+      if (pendingToolkit && next.filter(isMineSim).length < TOOLKIT_CAP) {
+        next = [pendingToolkit, ...next];
+        freedForPending = true;
+      }
+      try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+      if (freedForPending) { setSavedToolkitId(pendingToolkit.id); setPendingToolkit(null); }
+      return next;
+    });
+  }
 
   const checkRef   = useRef(null);
   const rewriteRef = useRef(null);
@@ -465,6 +611,7 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [] }) {
   async function runAnalysis() {
     setPhase('analyzing');
     setCheckIdx(-1);
+    setAnalysisFallback(false);
     checkRef.current = setInterval(() => {
       setCheckIdx(i => Math.min(i + 1, CHECK_ITEMS.length - 1));
     }, 800);
@@ -508,6 +655,7 @@ Return ONLY valid JSON:
     } catch (_) {
       clearInterval(checkRef.current);
       setCheckIdx(CHECK_ITEMS.length - 1);
+      setAnalysisFallback(true);
       setTimeout(() => {
         setAnalysisResult({
           alignmentScore: 54,
@@ -536,7 +684,10 @@ Return ONLY valid JSON:
       setRewriteCheckIdx(i);
       if (i >= REWRITE_ITEMS.length - 1) {
         clearInterval(rewriteRef.current);
-        setTimeout(() => setPhase('toolkit'), 500);
+        setTimeout(() => {
+          if (analysisResult && !analysisFallback) saveToolkit(analysisResult);
+          setPhase('toolkit');
+        }, 500);
       }
     }, 850);
   }
@@ -585,6 +736,7 @@ Keep it under 280 words. Make every word earn its place.`;
       const data = await res.json();
       const text = (data.content || []).map(b => b.text || '').join('').trim();
       setCvResult(text);
+      attachCvToToolkit(text);
       setCvPhase('done');
     } catch (_) {
       setCvResult(`PROFESSIONAL SUMMARY\n${sig}\n\nKEY ACHIEVEMENTS\n• Led high-impact initiatives with measurable outcomes\n• Built trusted relationships across leadership and operational teams\n• Translated complex challenges into clear, actionable strategies\n• Delivered results balancing short-term execution with long-term vision\n• Brought clarity and direction to ambiguous situations\n\nSKILLS & EXPERTISE\nStrategic Planning · Stakeholder Engagement · Project Leadership · Clear Communication · Problem Solving · Cross-functional Collaboration`);
@@ -608,6 +760,34 @@ Keep it under 280 words. Make every word earn its place.`;
             {"We've discovered what makes you memorable. Now let's make sure your LinkedIn tells the same story."}
           </p>
         </div>
+
+        {myToolkitsSim.length>0 && (
+          <div style={{background:T2.surface||"rgba(255,255,255,0.025)",borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+            <button onClick={()=>setToolkitsOpen(v=>!v)} style={{width:"100%",background:"none",border:"none",padding:isDesktop?"14px 18px":"12px 16px",cursor:"pointer",fontFamily:T.sans,fontSize:12,color:T2.text3,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <span>My Saved Toolkits ({myToolkitsSim.length})</span>
+              <span style={{fontSize:14,opacity:0.6,transform:toolkitsOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
+            </button>
+            {toolkitsOpen && (
+              <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
+                {myToolkitsSim.map(t=>(
+                  <div key={t.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
+                    <div style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2}}>
+                      <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{t.headline || "Untitled toolkit"}</span>
+                      <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(t.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}{t.cv ? " · CV included" : ""}</span>
+                    </div>
+                    <button onClick={()=>deleteToolkit(t.id)} title="Delete" style={{background:"none",border:"none",cursor:"pointer",color:T2.text4,fontSize:18,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1}}>×</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {pendingToolkit && (
+          <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
+            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You've reached your limit of {TOOLKIT_CAP} saved toolkits. This one won't be saved until you delete one above.</span>
+          </div>
+        )}
 
         <div style={{ display: "flex", gap: 6 }}>
           {tabs.map(tab => (
@@ -884,7 +1064,7 @@ Keep it under 280 words. Make every word earn its place.`;
           </p>
         </div>
 
-        <button style={cta(false)}>Finish Module →</button>
+        <button onClick={() => onFinish?.()} style={cta(false)}>Finish Module →</button>
       </div>
     );
   }

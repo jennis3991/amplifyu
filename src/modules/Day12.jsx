@@ -1,11 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
 
 // ─── D12 Practice Widget ───────────────────────────────────────────────────
-export function D12PracticeWidget({T, T2, isDesktop}) {
+export function D12PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, onNavFn}) {
   const [phase, setPhase] = useState('intro');
   const [round, setRound] = useState(0);
   const [selected, setSelected] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
+
+  useEffect(() => {
+    if (!onNavLabel) return;
+    if (phase === 'done') {
+      onNavLabel("Continue");
+      if (onNavFn) onNavFn.current = () => onSimulation?.();
+    } else {
+      onNavLabel(null);
+      if (onNavFn) onNavFn.current = null;
+    }
+  }, [phase]);
 
   const ROUNDS = [
     {
@@ -88,7 +99,7 @@ export function D12PracticeWidget({T, T2, isDesktop}) {
   if (phase === 'intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       <div style={cs.card}>
-        <div style={cs.label}>Your Mission</div>
+        <div style={cs.label}>Your Focus</div>
         <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,margin:"0 0 8px"}}>
           Build grounded physical confidence and expressive communication.
         </p>
@@ -103,7 +114,7 @@ export function D12PracticeWidget({T, T2, isDesktop}) {
       </div>
 
       <div style={cs.card}>
-        <div style={cs.label}>The Challenge Journey</div>
+        <div style={cs.label}>The Practice Journey</div>
         <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
           {[
             {n:1,label:"Hands"},
@@ -127,19 +138,7 @@ export function D12PracticeWidget({T, T2, isDesktop}) {
         </div>
       </div>
 
-      <div style={cs.card}>
-        <div style={cs.label}>How You Win</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:14}}>Earn points for:</p>
-        <div style={{display:"flex",gap:isDesktop?8:6,flexWrap:"wrap"}}>
-          {["Gestures","Posture","Eye contact","Expression"].map((s,i)=>(
-            <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:isDesktop?"10px 12px":"8px 10px",background:T2.bg,borderRadius:6,border:"0.5px solid "+T2.border,flex:1,minWidth:isDesktop?70:56}}>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:11,color:"#A8998A",fontWeight:400,textAlign:"center",lineHeight:1.3}}>{s}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <button onClick={()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Presence Challenge →</button>
+      <button onClick={()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start Practice Presence →</button>
     </div>
   );
 
@@ -186,7 +185,7 @@ export function D12PracticeWidget({T, T2, isDesktop}) {
               if (round < ROUNDS.length-1){setRound(v=>v+1);setSelected(null);setShowFeedback(false);}
               else {setPhase('done');}
             }} style={cs.cta}>
-              {round < ROUNDS.length-1 ? `Round ${round+2}: ${ROUNDS[round+1].title} →` : "Complete the Challenge →"}
+              {round < ROUNDS.length-1 ? `Round ${round+2}: ${ROUNDS[round+1].title} →` : "Complete the Practice →"}
             </button>
           </>
         )}
@@ -197,12 +196,11 @@ export function D12PracticeWidget({T, T2, isDesktop}) {
   if (phase === 'done') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Challenge Complete</div>
-        <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>Presence Practitioner</div>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Practice Complete</div>
+        <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>You're Building Presence</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 24px"}}>You've explored gestures, posture, eye contact, expression, and grounded energy. These physical signals shape how every conversation you have is experienced.</p>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Your body helps people experience the message."</p>
       </div>
-      <button onClick={()=>{setPhase('intro');setRound(0);setSelected(null);setShowFeedback(false);}} style={cs.cta}>Practise Again →</button>
     </div>
   );
 

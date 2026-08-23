@@ -68,6 +68,10 @@ export function MobileSessionView({
   const d1NavFnRef = useRef(null);
   const [d7NavLabel, setD7NavLabel] = useState(null);
   const d7NavFnRef = useRef(null);
+  const [d12NavLabel, setD12NavLabel] = useState(null);
+  const d12NavFnRef = useRef(null);
+  const [d11NavLabel, setD11NavLabel] = useState(null);
+  const d11NavFnRef = useRef(null);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [d1SimRecording, setD1SimRecording] = useState(false);
   const [d2SimRecording, setD2SimRecording] = useState(false);
@@ -282,7 +286,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD9 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Rehearsal · Day 9" headline="The most connected people listen more than they speak." />;
         if(isD10 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Your Work Visible" headline="Turn what you do into a story people remember." />;
         if(isD11 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Build Your Brand" headline="Every career has a reputation. The best careers have one by design." />;
-        if(isD12 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="The Presence Challenge" headline="Seven rounds. Every physical signal that shapes how communication lands." />;
+        if(isD12 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Practice Presence" headline="Seven rounds. Every physical signal that shapes how communication lands." />;
         if(isD13 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Your Value Visible" headline="Four exercises. Make your value impossible to ignore." />;
         if(isD14 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Day 14 · Capstone" headline="You are not the communicator you were 14 days ago." />;
         if(isNT && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Story Lab" headline="The best communicators have a handful of go-to stories. Let's find one of yours." />;
@@ -2386,12 +2390,12 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       })()}
       {isD11 && step==="Rehearsal" && (
         <>
-          <D11PracticeWidget T={T} T2={T2} isDesktop={false} onWordsChange={setD11BrandWords} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))}/>
+          <D11PracticeWidget T={T} T2={T2} isDesktop={false} onWordsChange={setD11BrandWords} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD11NavLabel} onNavFn={d11NavFnRef}/>
         </>
       )}
       {isD11 && step==="Simulation" && (
         <>
-          <D11SimWidget T={T} T2={T2} isDesktop={false} brandWords={d11BrandWords}/>
+          <D11SimWidget T={T} T2={T2} isDesktop={false} brandWords={d11BrandWords} onFinish={() => setIdx(STEPS.indexOf('Review'))}/>
         </>
       )}
       {isD12 && step==="Insight" && (
@@ -2528,9 +2532,9 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       })()}
       {isD12 && step==="Rehearsal" && (
         <>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Presence Challenge</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Practice Presence</h2>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Seven rounds building gestures, posture, eye contact, expression, and grounded energy.</p>
-          <D12PracticeWidget T={T} T2={T2} isDesktop={false}/>
+          <D12PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD12NavLabel} onNavFn={d12NavFnRef}/>
         </>
       )}
       {isD12 && step==="Simulation" && (
@@ -3095,7 +3099,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         )}
         {idx < STEPS.length-1 && (() => {
-          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD2 && step==="Simulation" && d2SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD5 && step==="Rehearsal" && d5RehearsalRecording)||(isD5 && step==="Simulation" && d5SimRecording)||(isD6 && step==="Rehearsal" && d6RehearsalRecording)||(isD6 && step==="Simulation" && d6SimRecording)||(isD7 && step==="Rehearsal" && d7NavLabel===null)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)||(isD10 && step==="Simulation" && d10SimRecording);
+          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD2 && step==="Simulation" && d2SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD5 && step==="Rehearsal" && d5RehearsalRecording)||(isD5 && step==="Simulation" && d5SimRecording)||(isD6 && step==="Rehearsal" && d6RehearsalRecording)||(isD6 && step==="Simulation" && d6SimRecording)||(isD7 && step==="Rehearsal" && d7NavLabel===null)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)||(isD10 && step==="Simulation" && d10SimRecording)||(isD12 && step==="Rehearsal" && d12NavLabel===null)||(isD11 && step==="Rehearsal" && d11NavLabel===null);
           const navLabel = isD1 && step==="Rehearsal" && d1NavLabel
             ? d1NavLabel
             : isD3 && step==="Rehearsal" && d3NavLabel
@@ -3104,11 +3108,15 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
                 ? d4NavLabel
                 : isD7 && step==="Rehearsal" && d7NavLabel
                   ? d7NavLabel
-                  : isNT
-                  ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Rehearsal":NAV_LABELS[idx])
-                  : isD7 && idx===1
-                    ? "See your foundations"
-                    : NAV_LABELS[idx];
+                  : isD12 && step==="Rehearsal" && d12NavLabel
+                    ? d12NavLabel
+                    : isD11 && step==="Rehearsal" && d11NavLabel
+                      ? d11NavLabel
+                      : isNT
+                      ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Rehearsal":NAV_LABELS[idx])
+                      : isD7 && idx===1
+                        ? "See your foundations"
+                        : NAV_LABELS[idx];
           const isSkip = navLabel === "Skip";
           return (
           <button
@@ -3117,6 +3125,8 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
               else if (isD3 && step==="Rehearsal" && d3NavFnRef.current) { d3NavFnRef.current(); }
               else if (isD4 && step==="Rehearsal" && d4NavFnRef.current) { d4NavFnRef.current(); }
               else if (isD7 && step==="Rehearsal" && d7NavFnRef.current) { d7NavFnRef.current(); }
+              else if (isD12 && step==="Rehearsal" && d12NavFnRef.current) { d12NavFnRef.current(); }
+              else if (isD11 && step==="Rehearsal" && d11NavFnRef.current) { d11NavFnRef.current(); }
               else { setIdx(i=>i+1); }
             }}
             disabled={navDisabled}
