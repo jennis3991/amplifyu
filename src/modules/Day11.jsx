@@ -102,6 +102,11 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
   const timerRef        = useRef(null);
   const analysisMsgRef  = useRef(null);
   const liveTextRef     = useRef('');
+  // Guards against submitAnswer being invoked twice for the same question
+  // (e.g. the recording auto-stop timer racing a manual stop click, or a
+  // double-click on "Next"), which would otherwise schedule two qIdx
+  // increments and push qIdx past the last valid QUESTIONS index.
+  const submittingRef   = useRef(false);
 
   const recordingAvailable = !!(navigator.mediaDevices?.getUserMedia);
 
@@ -134,6 +139,8 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
   }, [phase]);
 
   function submitAnswer(text) {
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     const updated = [...transcripts];
     updated[qIdx] = text || '';
     setTranscripts(updated);
@@ -142,7 +149,7 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
     setTextAnswer('');
     if (qIdx < 2) {
       setPhase('ack');
-      setTimeout(() => { setQIdx(i => i + 1); setPhase('question'); }, 2600);
+      setTimeout(() => { submittingRef.current = false; setQIdx(i => i + 1); setPhase('question'); }, 2600);
     } else {
       setPhase('analyzing');
       runAnalysis(updated);
