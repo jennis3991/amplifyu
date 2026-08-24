@@ -1292,7 +1292,7 @@ T.goldDark : T2.text4,
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.4,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.4,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (
                     <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:8}}>
                       {n.bullets.map((b,j)=>(
@@ -1332,7 +1332,7 @@ T.goldDark : T2.text4,
                 <div style={{flex:1}}>
                   <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:6}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"#8A9E84"}}>{s.label}</div></div>
                   <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 4px"}}>{s.desc}</p>
-                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.5,fontWeight:300,fontStyle:"italic",margin:0}}>{s.focus}</p>
+                  <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.5,fontWeight:300,fontStyle:"italic",margin:0}}>{s.focus}</p>
                 </div>
               </div>
             ))}
@@ -1370,7 +1370,7 @@ T.goldDark : T2.text4,
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Clear Communication</h2>
             <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Tap each card to explore how they do it.</p>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D1_EDITORIAL.map(card=>{
               const open = d1MobCard===card.id;
               const obs = d1ExObs[card.id];
@@ -1441,7 +1441,7 @@ T.goldDark : T2.text4,
                         </div>
                         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.06)",borderRadius:4,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
                           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>AmplifyU Lesson</div>
-                          <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{card.lesson}</p>
+                          <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{card.lesson}</p>
                         </div>
                       </div>
                     </div>

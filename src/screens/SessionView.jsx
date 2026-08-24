@@ -1940,7 +1940,7 @@ setAmbitionSaved(true); } catch {}
                     <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,fontWeight:600,color:open?T.gold:T2.text4,marginLeft:10,flexShrink:0,marginTop:2}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 14px":0}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:16,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 14px":0}}>{n.sub}</p>
                   {open && (
                     <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,display:"flex",flexDirection:"column",gap:8}}>
                       {n.bullets.map((b,j)=>(
@@ -1981,7 +1981,7 @@ setAmbitionSaved(true); } catch {}
                 <div style={{flex:1}}>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"#8A9E84"}}>{s.label}</div></div>
                   <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:400,margin:"0 0 5px"}}>{s.desc}</p>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.55,fontWeight:300,fontStyle:"italic",margin:0}}>{s.focus}</p>
+                  <p style={{fontFamily:T.sans,fontSize:16,color:T2.text3,lineHeight:1.55,fontWeight:300,fontStyle:"italic",margin:0}}>{s.focus}</p>
                 </div>
               </div>
             ))}
@@ -2049,7 +2049,7 @@ setAmbitionSaved(true); } catch {}
             </div>
             <div style={{padding:"22px 28px",background:"rgba(138,158,132,0.06)",borderRadius:6,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>AmplifyU Lesson</div>
-              <p style={{fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{reading.lesson}</p>
+              <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{reading.lesson}</p>
             </div>
           </div>
         );
@@ -2058,7 +2058,7 @@ setAmbitionSaved(true); } catch {}
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Clear Communication</h2>
             <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Two speakers who make complex ideas accessible.</p>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:24,maxWidth:640}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
+            <p style={{fontFamily:T.sans,fontSize:16,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:24,maxWidth:640}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
               {D1_EDITORIAL.map(card=>{
                 const obs = d1ExObserved[card.id];
