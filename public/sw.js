@@ -5,10 +5,14 @@ const STATIC_CACHE = 'au-static-v2';
 const BUILD_INFO_URL = '/build-info.json';
 
 // ── Install ──────────────────────────────────────────────────────────────────
-// Do NOT skipWaiting here — we let the app show an update banner and
-// call skipWaiting on user confirmation (or immediately on next navigate).
+// skipWaiting immediately — a new SW activates (and wipes stale caches, see
+// below) in the background as soon as it's installed, without waiting for a
+// banner tap. We deliberately do NOT call clients.claim() in activate, so
+// this never takes over an already-open tab/webview mid-session (e.g. mid
+// recording) — it only controls the NEXT navigation (foreground/relaunch),
+// which is when the update actually becomes visible.
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(STATIC_CACHE).then(() => {}));
+  event.waitUntil(caches.open(STATIC_CACHE).then(() => self.skipWaiting()));
 });
 
 // ── Activate ─────────────────────────────────────────────────────────────────
@@ -47,7 +51,10 @@ self.addEventListener('activate', event => {
         allKeys.filter(k => k !== STATIC_CACHE).map(k => caches.delete(k))
       );
 
-      await self.clients.claim();
+      // Intentionally no clients.claim() here — see install handler comment.
+      // Already-open tabs keep running under their original controller until
+      // they naturally reload/relaunch; only then do they pick up this
+      // (already-active, already-cache-fresh) worker.
     })()
   );
 });

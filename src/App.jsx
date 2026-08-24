@@ -19,6 +19,10 @@ import { AccessGate } from "./components/AccessGate.jsx";
 
 // ── UpdateBanner ─────────────────────────────────────────────────────────────
 // Listens for 'sw-update-available' and renders a slim fixed bottom banner.
+// The service worker now activates itself automatically in the background
+// (see public/sw.js) — this banner is just a visible confirmation, and its
+// button is an optional "see it now" refresh, not something required for
+// the update to take effect (it applies on the next natural foreground too).
 function UpdateBanner() {
   const [reg, setReg] = useState(null);
 
@@ -53,9 +57,9 @@ function UpdateBanner() {
       whiteSpace: "nowrap",
       maxWidth: "calc(100vw - 32px)",
     }}>
-      <span style={{ flex: 1 }}>New version available</span>
+      <span style={{ flex: 1 }}>Updated in the background — refresh to see it now</span>
       <button
-        onClick={() => applyUpdate(reg)}
+        onClick={() => { applyUpdate(reg); window.location.reload(); }}
         style={{
           background: "#8A9E84",
           color: "#2C2416",
