@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ROLES, LESSONS } from '../data.js';
 
 // ─── D14 Practice Widget — Your Journey ─────────────────────────────────────
-export function D14PracticeWidget({T, T2, isDesktop}) {
+export function D14PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, onNavFn}) {
   const stored = (() => { try { return JSON.parse(localStorage.getItem('au1_d14_reflection') || '{}'); } catch { return {}; } })();
   const storedAmbition = (() => { try { return localStorage.getItem('au1_ambition') || ''; } catch { return ''; } })();
 
@@ -44,6 +44,17 @@ export function D14PracticeWidget({T, T2, isDesktop}) {
   );
 
   const canSubmit = jobTitle.trim() && knownFor.trim() && shift && proud && hard;
+
+  useEffect(() => {
+    if (!onNavLabel) return;
+    if (phase === 'done') {
+      onNavLabel("Continue");
+      if (onNavFn) onNavFn.current = () => onSimulation?.();
+    } else {
+      onNavLabel(null);
+      if (onNavFn) onNavFn.current = null;
+    }
+  }, [phase]);
 
   if (phase === 'intro') return (
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>

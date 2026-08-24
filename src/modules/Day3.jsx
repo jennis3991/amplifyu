@@ -115,9 +115,14 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
   useEffect(() => {
     if (!onNavLabel) return;
-    onNavLabel(null);
-    if (onNavFn) onNavFn.current = null;
-  }, [phase]);
+    if (phase === 'coach' && coachResult) {
+      onNavLabel("Continue");
+      if (onNavFn) onNavFn.current = () => onSimulation?.();
+    } else {
+      onNavLabel(null);
+      if (onNavFn) onNavFn.current = null;
+    }
+  }, [phase, coachResult]);
 
   useEffect(() => {
     if (!isRec) { clearInterval(waveRef.current); return; }

@@ -1240,7 +1240,7 @@ const SC_MENTOR   = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="n
 
 const BEAT_LABELS = ["Once upon a time…","Every day…","Until one day…","Because of that…","Because of that…","Until finally…"];
 
-export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulation }) {
+export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulation, onNavLabel, onNavFn }) {
   const T  = Tp  || Timport;
   const T2 = T2p || T2D;
 
@@ -1277,6 +1277,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
   const [elapsed,     setElapsed]     = useState(0);
   const [transcript,  setTranscript]  = useState('');
   const [storyResult, setStoryResult] = useState(null);
+  const [storyFallback, setStoryFallback] = useState(false);
   const [visCount,    setVisCount]    = useState(0);
   const [micError,    setMicError]    = useState(false);
 
@@ -1352,6 +1353,17 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
     return () => timers.forEach(clearTimeout);
   }, [phase, storyResult]);
 
+  useEffect(() => {
+    if (!onNavLabel) return;
+    if (phase === 'reveal' && storyResult && !storyFallback) {
+      onNavLabel("Continue");
+      if (onNavFn) onNavFn.current = () => onSimulation?.();
+    } else {
+      onNavLabel(null);
+      if (onNavFn) onNavFn.current = null;
+    }
+  }, [phase, storyResult, storyFallback]);
+
   function startRec() {
     setTranscript('');
     setElapsed(0);
@@ -1402,6 +1414,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
 
   async function callCoach(text) {
     const cardTitle = STORY_CARDS[selected]?.title || 'a career story';
+    setStoryFallback(false);
     try {
       const res = await fetch('/api/claude', {
         method: 'POST',
@@ -1430,6 +1443,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       setStoryResult(built);
       saveRehearsalStory(built);
     } catch (_) {
+      setStoryFallback(true);
       setStoryResult({
         storyTitle:       'Your Career Story',
         beat1:            'Something brought me to this moment.',

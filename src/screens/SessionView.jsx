@@ -56,6 +56,14 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const d12NavFnRef = useRef(null);
   const [d11NavLabel, setD11NavLabel] = useState(null);
   const d11NavFnRef = useRef(null);
+  const [d3NavLabel, setD3NavLabel] = useState(null);
+  const d3NavFnRef = useRef(null);
+  const [d8NavLabel, setD8NavLabel] = useState(null);
+  const d8NavFnRef = useRef(null);
+  const [d13NavLabel, setD13NavLabel] = useState(null);
+  const d13NavFnRef = useRef(null);
+  const [d14NavLabel, setD14NavLabel] = useState(null);
+  const d14NavFnRef = useRef(null);
   const [d4NavLabel, setD4NavLabel] = useState(null);
   const d4NavFnRef = useRef(null);
   const [d1SimRecording, setD1SimRecording] = useState(false);
@@ -1378,7 +1386,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <D3PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
+          <D3PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD3NavLabel} onNavFn={d3NavFnRef}/>
         </div>
       );
       if (step === "Practice_OLD_UNUSED") return (
@@ -2331,7 +2339,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <D8PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
+          <D8PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD8NavLabel} onNavFn={d8NavFnRef}/>
         </div>
       );
 
@@ -3921,7 +3929,7 @@ setAmbitionSaved(true); } catch {}
       if (step==="Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:28}}>Make Your Value Visible</h2>
-          <D13PracticeWidget T={T} T2={T2} isDesktop={true}/>
+          <D13PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD13NavLabel} onNavFn={d13NavFnRef}/>
         </div>
       );
 
@@ -4129,7 +4137,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step==="Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <D14PracticeWidget T={T} T2={T2} isDesktop={true}/>
+          <D14PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD14NavLabel} onNavFn={d14NavFnRef}/>
         </div>
       );
 
@@ -4550,7 +4558,7 @@ setAmbitionSaved(true); } catch {}
               </button>
             )}
             {idx < STEPS.length - 1 && (() => {
-              const navDisabled = (isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording) || (isD12 && step === "Rehearsal" && d12NavLabel === null) || (isD11 && step === "Rehearsal" && d11NavLabel === null);
+              const navDisabled = (isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording) || (isD12 && step === "Rehearsal" && d12NavLabel === null) || (isD11 && step === "Rehearsal" && d11NavLabel === null) || (isD3 && step === "Rehearsal" && d3NavLabel === null) || (isNT && step === "Rehearsal" && d8NavLabel === null) || (isD13 && step === "Rehearsal" && d13NavLabel === null) || (isD14 && step === "Rehearsal" && d14NavLabel === null);
               return (
               <button
                 onClick={() => {
@@ -4564,6 +4572,14 @@ setAmbitionSaved(true); } catch {}
                     d12NavFnRef.current();
                   } else if (isD11 && step === "Rehearsal" && d11NavFnRef.current) {
                     d11NavFnRef.current();
+                  } else if (isD3 && step === "Rehearsal" && d3NavFnRef.current) {
+                    d3NavFnRef.current();
+                  } else if (isNT && step === "Rehearsal" && d8NavFnRef.current) {
+                    d8NavFnRef.current();
+                  } else if (isD13 && step === "Rehearsal" && d13NavFnRef.current) {
+                    d13NavFnRef.current();
+                  } else if (isD14 && step === "Rehearsal" && d14NavFnRef.current) {
+                    d14NavFnRef.current();
                   } else {
                     setIdx(i => i + 1);
                   }
@@ -4591,7 +4607,15 @@ setAmbitionSaved(true); } catch {}
                         ? d12NavLabel
                         : isD11 && step === "Rehearsal" && d11NavLabel
                           ? d11NavLabel
-                          : idx === 0 ? "Begin" : idx === STEPS.length - 2 ? "Final Chapter" : "Continue"}
+                          : isD3 && step === "Rehearsal" && d3NavLabel
+                            ? d3NavLabel
+                            : isNT && step === "Rehearsal" && d8NavLabel
+                              ? d8NavLabel
+                              : isD13 && step === "Rehearsal" && d13NavLabel
+                                ? d13NavLabel
+                                : isD14 && step === "Rehearsal" && d14NavLabel
+                                  ? d14NavLabel
+                                  : idx === 0 ? "Begin" : idx === STEPS.length - 2 ? "Final Chapter" : "Continue"}
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
               );

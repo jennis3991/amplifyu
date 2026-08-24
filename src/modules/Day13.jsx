@@ -52,9 +52,11 @@ const SCENARIOS = [
 ];
 
 // ─── D13 Practice Widget ───────────────────────────────────────────────────
-export function D13PracticeWidget({T, T2, isDesktop}) {
+function pickScenarioIdx() { return Math.floor(Math.random() * SCENARIOS.length); }
+
+export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, onNavFn}) {
   const [phase, setPhase] = useState('intro');
-  const [scIdx, setScIdx] = useState(0);
+  const [scIdx, setScIdx] = useState(pickScenarioIdx);
   const [timerState, setTimerState] = useState('idle');
   const [timeLeft, setTimeLeft] = useState(20);
 
@@ -65,16 +67,21 @@ export function D13PracticeWidget({T, T2, isDesktop}) {
     return () => clearTimeout(t);
   }, [timerState, timeLeft]);
 
+  useEffect(() => {
+    if (!onNavLabel) return;
+    if (phase === 'complete') {
+      onNavLabel("Continue");
+      if (onNavFn) onNavFn.current = () => onSimulation?.();
+    } else {
+      onNavLabel(null);
+      if (onNavFn) onNavFn.current = null;
+    }
+  }, [phase]);
+
   const startTimer = () => { setTimeLeft(20); setTimerState('running'); };
   const tryAgain  = () => { setTimerState('idle'); setTimeLeft(20); };
 
-  const nextScenario = () => {
-    setScIdx(i => i + 1);
-    setTimerState('idle');
-    setTimeLeft(20);
-  };
-
-  const restart = () => { setPhase('intro'); setScIdx(0); setTimerState('idle'); setTimeLeft(20); };
+  const restart = () => { setPhase('intro'); setScIdx(pickScenarioIdx()); setTimerState('idle'); setTimeLeft(20); };
 
   const cs = {
     card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px"},
@@ -87,50 +94,21 @@ export function D13PracticeWidget({T, T2, isDesktop}) {
       <div style={cs.card}>
         <div style={cs.label}>Opportunities Travel Through People</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>Most career-defining moments come from conversations, not job boards.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>The problem is not knowing this — it's that most people freeze when the moment arrives. You'll practise three real moments, one at a time. Each one is 20 seconds. All of them will happen to you.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>The problem is not knowing this — it's that most people freeze when the moment arrives. Quick warm-up: one real moment, 20 seconds. It will happen to you.</p>
       </div>
-      <button onClick={() => { setScIdx(0); setTimerState('idle'); setTimeLeft(20); setPhase('practice'); }} style={cs.cta}>Let's Begin →</button>
+      <button onClick={() => { setTimerState('idle'); setTimeLeft(20); setPhase('practice'); }} style={cs.cta}>Let's Begin →</button>
     </div>
   );
 
   if (phase === 'practice') {
     const sc = SCENARIOS[scIdx];
-    const isLast = scIdx === SCENARIOS.length - 1;
     return (
       <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
-
-        {/* Progress dots */}
-        <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
-          <div style={{fontFamily:T.sans, fontSize:10, fontWeight:600, color:T2.text4, textTransform:"uppercase", letterSpacing:"1px"}}>Scenario {scIdx + 1} of {SCENARIOS.length}</div>
-          <div style={{display:"flex", gap:6}}>
-            {SCENARIOS.map((_, i) => (
-              <div key={i} style={{width:6, height:6, borderRadius:"50%", background: i <= scIdx ? T.gold : T2.border, transition:"background 0.3s"}}/>
-            ))}
-          </div>
-        </div>
 
         <div style={cs.card}>
           <div style={cs.label}>{sc.label}</div>
           <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, fontWeight:600, color:T2.text, lineHeight:1.35, margin:"0 0 12px"}}>{sc.context}</p>
           <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#A8998A", lineHeight:1.6, margin:0, fontStyle:"italic"}}>{sc.challenge}</p>
-        </div>
-
-        <div style={cs.card}>
-          <div style={cs.label}>What Makes a Killer Opening</div>
-          <div style={{display:"flex", flexDirection:"column", gap:10, marginBottom:16}}>
-            {sc.tips.map((tip, i) => (
-              <div key={i} style={{display:"flex", gap:10, alignItems:"flex-start"}}>
-                <div style={{width:20, height:20, borderRadius:"50%", background:"rgba(138,158,132,0.12)", border:"1px solid rgba(138,158,132,0.3)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:2}}>
-                  <span style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold}}>{i+1}</span>
-                </div>
-                <span style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, lineHeight:1.6}}>{tip}</span>
-              </div>
-            ))}
-          </div>
-          <div style={{padding:"12px 14px", background:"rgba(138,158,132,0.06)", borderRadius:4, borderLeft:"2px solid "+T.gold}}>
-            <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:6}}>Example Opening</div>
-            <p style={{fontFamily:T.serif, fontSize:isDesktop?14:13, fontStyle:"italic", color:T2.text, margin:0, lineHeight:1.6}}>{sc.example}</p>
-          </div>
         </div>
 
         {timerState === 'idle' && (
@@ -149,16 +127,11 @@ export function D13PracticeWidget({T, T2, isDesktop}) {
             <div style={{...cs.card, textAlign:"center", padding:isDesktop?"28px":"22px"}}>
               <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12}}>Nice work</div>
               <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>
-                {isLast
-                  ? "Three moments. All practised. The more you do this out loud, the more natural it becomes when it counts."
-                  : "That's the moment. The more you practise it out loud, the more natural it becomes when it counts."}
+                That's the moment. The more you practise it out loud, the more natural it becomes when it counts.
               </p>
             </div>
             <button onClick={tryAgain} style={cs.cta}>Try Again →</button>
-            {isLast
-              ? <button onClick={() => setPhase('complete')} style={{...cs.cta, marginTop:0, background:"rgba(138,158,132,0.15)", color:T2.text, border:"0.5px solid "+T.gold}}>Finish →</button>
-              : <button onClick={nextScenario} style={{...cs.cta, marginTop:0, background:"rgba(138,158,132,0.15)", color:T2.text, border:"0.5px solid "+T.gold}}>Next: {SCENARIOS[scIdx+1].label} →</button>
-            }
+            <button onClick={() => setPhase('complete')} style={{...cs.cta, marginTop:0, background:"rgba(138,158,132,0.15)", color:T2.text, border:"0.5px solid "+T.gold}}>Finish →</button>
           </>
         )}
       </div>
@@ -167,14 +140,9 @@ export function D13PracticeWidget({T, T2, isDesktop}) {
 
   if (phase === 'complete') return (
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
-      <div style={{display:"flex", gap:6, justifyContent:"center", marginBottom:4}}>
-        {SCENARIOS.map((_, i) => (
-          <div key={i} style={{width:6, height:6, borderRadius:"50%", background:T.gold}}/>
-        ))}
-      </div>
       <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px 28px":"26px 20px"}}>
-        <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:14}}>All Three Done</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.35, margin:"0 0 12px"}}>You've rehearsed every moment.</p>
+        <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:14}}>Warm-Up Done</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.35, margin:"0 0 12px"}}>You've rehearsed the moment.</p>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Every time you practise out loud, the real moment gets easier. The next time one of these arrives, you'll be ready.</p>
       </div>
       <button onClick={restart} style={cs.cta}>Start Again →</button>

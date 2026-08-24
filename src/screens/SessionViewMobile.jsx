@@ -72,6 +72,12 @@ export function MobileSessionView({
   const d12NavFnRef = useRef(null);
   const [d11NavLabel, setD11NavLabel] = useState(null);
   const d11NavFnRef = useRef(null);
+  const [d8NavLabel, setD8NavLabel] = useState(null);
+  const d8NavFnRef = useRef(null);
+  const [d13NavLabel, setD13NavLabel] = useState(null);
+  const d13NavFnRef = useRef(null);
+  const [d14NavLabel, setD14NavLabel] = useState(null);
+  const d14NavFnRef = useRef(null);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [d1SimRecording, setD1SimRecording] = useState(false);
   const [d2SimRecording, setD2SimRecording] = useState(false);
@@ -1602,7 +1608,7 @@ T.goldDark : T2.text4,
         </div>
       )}
       {isNT && step==="Rehearsal" && (
-        <D8PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))}/>
+        <D8PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD8NavLabel} onNavFn={d8NavFnRef}/>
       )}
        {/* ── D9 (Day 9) Mobile Steps ─────────────────────────────────────── */}
       {/* ── D9 Connection Mobile Steps ─────────────────────────────────── */}
@@ -2802,7 +2808,7 @@ strokeLinecap="round"/></svg>
       })()}
       {isD14 && step==="Rehearsal" && (
         <>
-          <D14PracticeWidget T={T} T2={T2} isDesktop={false}/>
+          <D14PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD14NavLabel} onNavFn={d14NavFnRef}/>
         </>
       )}
       {isD14 && step==="Simulation" && (
@@ -2947,7 +2953,7 @@ strokeLinecap="round"/></svg>
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Rehearsal · Day 13</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>Make Your Value Visible</h2>
-          <D13PracticeWidget T={T} T2={T2} isDesktop={false}/>
+          <D13PracticeWidget T={T} T2={T2} isDesktop={false} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD13NavLabel} onNavFn={d13NavFnRef}/>
         </>
       )}
       {isD13 && step==="Simulation" && (
@@ -3099,7 +3105,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         )}
         {idx < STEPS.length-1 && (() => {
-          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD2 && step==="Simulation" && d2SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD5 && step==="Rehearsal" && d5RehearsalRecording)||(isD5 && step==="Simulation" && d5SimRecording)||(isD6 && step==="Rehearsal" && d6RehearsalRecording)||(isD6 && step==="Simulation" && d6SimRecording)||(isD7 && step==="Rehearsal" && d7NavLabel===null)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)||(isD10 && step==="Simulation" && d10SimRecording)||(isD12 && step==="Rehearsal" && d12NavLabel===null)||(isD11 && step==="Rehearsal" && d11NavLabel===null);
+          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD2 && step==="Simulation" && d2SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD5 && step==="Rehearsal" && d5RehearsalRecording)||(isD5 && step==="Simulation" && d5SimRecording)||(isD6 && step==="Rehearsal" && d6RehearsalRecording)||(isD6 && step==="Simulation" && d6SimRecording)||(isD7 && step==="Rehearsal" && d7NavLabel===null)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)||(isD10 && step==="Simulation" && d10SimRecording)||(isD12 && step==="Rehearsal" && d12NavLabel===null)||(isD11 && step==="Rehearsal" && d11NavLabel===null)||(isNT && step==="Rehearsal" && d8NavLabel===null)||(isD13 && step==="Rehearsal" && d13NavLabel===null)||(isD14 && step==="Rehearsal" && d14NavLabel===null);
           const navLabel = isD1 && step==="Rehearsal" && d1NavLabel
             ? d1NavLabel
             : isD3 && step==="Rehearsal" && d3NavLabel
@@ -3112,11 +3118,17 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
                     ? d12NavLabel
                     : isD11 && step==="Rehearsal" && d11NavLabel
                       ? d11NavLabel
-                      : isNT
-                      ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Rehearsal":NAV_LABELS[idx])
-                      : isD7 && idx===1
-                        ? "See your foundations"
-                        : NAV_LABELS[idx];
+                      : isNT && step==="Rehearsal" && d8NavLabel
+                        ? d8NavLabel
+                        : isD13 && step==="Rehearsal" && d13NavLabel
+                          ? d13NavLabel
+                          : isD14 && step==="Rehearsal" && d14NavLabel
+                            ? d14NavLabel
+                            : isNT
+                            ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Rehearsal":NAV_LABELS[idx])
+                          : isD7 && idx===1
+                          ? "See your foundations"
+                          : NAV_LABELS[idx];
           const isSkip = navLabel === "Skip";
           return (
           <button
@@ -3127,6 +3139,9 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
               else if (isD7 && step==="Rehearsal" && d7NavFnRef.current) { d7NavFnRef.current(); }
               else if (isD12 && step==="Rehearsal" && d12NavFnRef.current) { d12NavFnRef.current(); }
               else if (isD11 && step==="Rehearsal" && d11NavFnRef.current) { d11NavFnRef.current(); }
+              else if (isNT && step==="Rehearsal" && d8NavFnRef.current) { d8NavFnRef.current(); }
+              else if (isD13 && step==="Rehearsal" && d13NavFnRef.current) { d13NavFnRef.current(); }
+              else if (isD14 && step==="Rehearsal" && d14NavFnRef.current) { d14NavFnRef.current(); }
               else { setIdx(i=>i+1); }
             }}
             disabled={navDisabled}
