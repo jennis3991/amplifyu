@@ -1230,7 +1230,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
 
       {/* SINGLE CONTENT CARD */}
       <div style={{...cs.card,padding:isDesktop?"26px 28px":"20px 20px"}}>
-        <h3 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.15,margin:"0 0 "+(isDesktop?"22px":"18px")}}>The First Step to Great Communication.</h3>
+        <h3 style={{fontFamily:T.serif,fontSize:isDesktop?26:16,fontWeight:600,color:T2.text,lineHeight:1.15,margin:"0 0 "+(isDesktop?"22px":"18px"),whiteSpace:isDesktop?"normal":"nowrap"}}>The First Step to Great Communication.</h3>
 
         {/* Point 1 — personalised feedback */}
         <div style={{display:"flex",alignItems:"flex-start",gap:isDesktop?16:12}}>
