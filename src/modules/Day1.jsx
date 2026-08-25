@@ -1230,17 +1230,42 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
 
       {/* SINGLE CONTENT CARD */}
       <div style={{...cs.card,padding:isDesktop?"26px 28px":"20px 20px"}}>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?11:10,fontWeight:500,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:isDesktop?14:12,margin:"0 0 "+(isDesktop?"14px":"12px")}}>Every great communicator starts by listening.</p>
-        <h3 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.15,margin:"0 0 "+(isDesktop?"18px":"14px")}}>The First Step to Great Communication.</h3>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.7,margin:"0 0 "+(isDesktop?"14px":"12px")}}>
-          Record yourself speaking and receive personalised feedback from your AmplifyU Coach on your clarity, structure, brevity, focus and simplicity.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.7,margin:"0 0 "+(isDesktop?"14px":"12px")}}>
-          Self-review is one of the fastest ways to improve communication — trusted by elite speakers, performers and Fortune 500 leaders because <strong>awareness comes before change.</strong>
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?18:17,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic"}}>
-          This is your baseline. Every session from here builds greater clarity, confidence and influence.
-        </p>
+        <h3 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.15,margin:"0 0 "+(isDesktop?"22px":"18px")}}>The First Step to Great Communication.</h3>
+
+        {/* Point 1 — personalised feedback */}
+        <div style={{display:"flex",alignItems:"flex-start",gap:isDesktop?16:12}}>
+          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
+              <circle cx="10" cy="9" r="3.2" stroke={T.gold} strokeWidth="1.3"/>
+              <path d="M4.5 19c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/>
+              <path d="M18 5.3l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7.7-1.6z" fill={T.gold}/>
+              <path d="M20.5 11.2l.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4.4-.9z" fill={T.gold}/>
+            </svg>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
+            Record yourself speaking and receive personalised feedback from your AmplifyU Coach on your <strong style={{color:T.gold,fontWeight:700}}>clarity, structure, brevity, focus and simplicity</strong>.
+          </p>
+        </div>
+
+        <div style={{height:1,background:T2.divider,margin:isDesktop?"18px 0":"14px 0"}}/>
+
+        {/* Point 2 — trust + baseline */}
+        <div style={{display:"flex",alignItems:"flex-start",gap:isDesktop?16:12}}>
+          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
+              <path d="M12 3l7 3v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/>
+              <path d="M12 8.2l1 2.1 2.3.3-1.7 1.6.4 2.3-2-1.1-2 1.1.4-2.3-1.7-1.6 2.3-.3 1-2.1z" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <div style={{flex:1}}>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0}}>
+              Self-review is one of the fastest ways to improve communication — trusted by elite speakers, performers and Fortune 500 leaders because <strong style={{color:T.gold,fontWeight:700}}>awareness comes before change</strong>.
+            </p>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:isDesktop?"10px 0 0":"8px 0 0",fontStyle:"italic"}}>
+              This is your baseline. Every session from here builds greater clarity, confidence and influence.
+            </p>
+          </div>
+        </div>
       </div>
 
       <button onClick={()=>setPhase('prompt')} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Choose a Topic to Begin →</button>
