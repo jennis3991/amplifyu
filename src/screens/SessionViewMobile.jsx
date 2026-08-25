@@ -2988,7 +2988,7 @@ strokeLinecap="round"/></svg>
                 <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
                   <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </div>
-                <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
+                <span style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
               </div>
             ))}
             {reviewTab==="workplace" && (
@@ -2999,7 +2999,7 @@ strokeLinecap="round"/></svg>
                     <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
                       <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
                     </div>
-                    <span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
+                    <span style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.6,fontWeight:300}}>{b}</span>
                   </div>
                 ))}
               </>
