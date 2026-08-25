@@ -1292,7 +1292,7 @@ T.goldDark : T2.text4,
                     <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.4,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (
                     <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:8}}>
                       {n.bullets.map((b,j)=>(
@@ -1338,7 +1338,7 @@ T.goldDark : T2.text4,
             ))}
             <div style={{marginTop:24,marginBottom:18}}>
               <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Real Lesson</div>
-              <div style={{fontFamily:T.serif,fontSize:19,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.4}}>Teaching forces you to understand. Simplifying forces you to think.</div>
+              <div style={{fontFamily:T.serif,fontSize:19,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.4}}>Teaching forces you to understand.<br/>Simplifying forces you to think.</div>
             </div>
           </>
         );

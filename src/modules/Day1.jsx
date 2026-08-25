@@ -1220,7 +1220,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
                 <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:isDesktop?8:6}}>{s.icon}</div>
                 <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:T.gold,marginBottom:3}}>{s.n}</div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:52}}>{s.label}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?16:13,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:52}}>{s.label}</div>
               </div>
               {i<3&&<div style={{height:1,width:isDesktop?12:5,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:isDesktop?30:24}}/>}
             </div>
