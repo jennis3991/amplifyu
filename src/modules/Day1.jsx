@@ -1022,6 +1022,87 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   const [hoveredDim, setHoveredDim] = useState(null);
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
+
+  // ── My Saved Results — shares the au1_toolkits store with Day 2/8/11, but
+  // this source (voice-analysis-day1) is capped and listed independently.
+  const RESULT_CAP = 5;
+  const isMineVoice = r => r.source === 'voice-analysis-day1';
+  const [savedResults, setSavedResults] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("au1_toolkits") || "[]"); } catch { return []; }
+  });
+  const myResults = savedResults.filter(isMineVoice);
+  const [resultsOpen, setResultsOpen] = useState(false);
+  const [pendingResult, setPendingResult] = useState(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const confirmDeleteTimerRef = useRef(null);
+
+  function saveVoiceResult(result, transcriptText, promptText) {
+    const entry = {
+      id: Date.now(),
+      source: 'voice-analysis-day1',
+      prompt: promptText || '',
+      transcript: transcriptText || '',
+      result,
+      timestamp: Date.now(),
+    };
+    if (myResults.length >= RESULT_CAP) {
+      setPendingResult(entry);
+      return;
+    }
+    const next = [entry, ...savedResults];
+    setSavedResults(next);
+    try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+  }
+
+  function deleteVoiceResult(id) {
+    setSavedResults(prev => {
+      let next = prev.filter(r => r.id !== id);
+      let freedForPending = false;
+      if (pendingResult && next.filter(isMineVoice).length < RESULT_CAP) {
+        next = [pendingResult, ...next];
+        freedForPending = true;
+      }
+      try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+      if (freedForPending) setPendingResult(null);
+      return next;
+    });
+  }
+
+  useEffect(() => () => clearTimeout(confirmDeleteTimerRef.current), []);
+  function handleDeleteClick(id) {
+    clearTimeout(confirmDeleteTimerRef.current);
+    if (confirmDeleteId === id) {
+      setConfirmDeleteId(null);
+      deleteVoiceResult(id);
+    } else {
+      setConfirmDeleteId(id);
+      confirmDeleteTimerRef.current = setTimeout(() => setConfirmDeleteId(null), 3000);
+    }
+  }
+
+  function loadVoiceResult(r) {
+    setPrompt(r.prompt || null);
+    setTranscript(r.transcript || '');
+    setFeedback(r.result || null);
+    setRound1(null);
+    setAudioURL(null);
+    setPhase('feedback');
+  }
+
+  // Picks up a "My Saved Work" card click from the Toolkit tab — a pending
+  // load flag written just before navigation, consumed once here on mount.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('au1_pending_load');
+      if (!raw) return;
+      const pending = JSON.parse(raw);
+      if (pending?.source !== 'voice-analysis-day1') return;
+      localStorage.removeItem('au1_pending_load');
+      const entry = savedResults.find(r => r.id === pending.id && r.source === 'voice-analysis-day1');
+      if (entry) loadVoiceResult(entry);
+    } catch {}
+  }, []);
+
   const audioRef = useRef(null);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -1180,6 +1261,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
       const parsed=JSON.parse(m[0]);
       if(!isRetry){setRound1({...parsed,_transcript:text});setFeedback({...parsed,_transcript:text});}
       else setFeedback({...parsed,_transcript:text,prev:round1});
+      saveVoiceResult(parsed, text, prompt);
     }catch{
       if(!isRetry){setRound1({...mock,_transcript:text});setFeedback({...mock,_transcript:text});}
       else setFeedback({...mock,_transcript:text,prev:round1});
@@ -1270,6 +1352,37 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
           </div>
         </div>
       </div>
+
+      {myResults.length>0 && (
+        <div style={{background:T2.surface||"rgba(255,255,255,0.025)",borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+          <button onClick={()=>setResultsOpen(v=>!v)} style={{width:"100%",background:"none",border:"none",padding:isDesktop?"14px 18px":"12px 16px",cursor:"pointer",fontFamily:T.sans,fontSize:12,color:T2.text3,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <span>My Saved Results ({myResults.length})</span>
+            <span style={{fontSize:14,opacity:0.6,transform:resultsOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
+          </button>
+          {resultsOpen && (
+            <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
+              {myResults.map(r=>{
+                const confirming = confirmDeleteId === r.id;
+                return (
+                  <div key={r.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
+                    <div onClick={()=>loadVoiceResult(r)} style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2,cursor:"pointer"}}>
+                      <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{r.result?.headline || r.prompt || "Voice analysis"}</span>
+                      <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(r.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}{typeof r.result?.overall==='number' ? ` · ${r.result.overall}/100` : ""}</span>
+                    </div>
+                    <button onClick={()=>handleDeleteClick(r.id)} title={confirming?"Tap again to delete":"Delete"} style={{background:"none",border:"none",cursor:"pointer",color:confirming?"#b05c4a":T2.text4,fontSize:confirming?11:18,fontWeight:confirming?700:400,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1,whiteSpace:"nowrap",transition:"all 0.15s"}}>{confirming?"Confirm?":"×"}</button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {pendingResult && (
+        <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
+          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You've reached your limit of {RESULT_CAP} saved results. This one won't be saved until you delete one above.</span>
+        </div>
+      )}
 
       <button onClick={()=>setPhase('prompt')} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Choose a Topic to Begin →</button>
     </div>
@@ -1543,10 +1656,16 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
       </div>
 
       {/* 4b HOW TO RESTRUCTURE */}
-      {feedback.restructure&&feedback.restructure.length>0&&(
+      {feedback.restructure&&feedback.restructure.length>0&&(() => {
+        // Dynamic next-level target: current Structure score + a sensible
+        // stretch (~8-10 points), rounded to a clean multiple of 5, capped
+        // at 100 — was previously a hardcoded "80%+" regardless of score.
+        const structScore=feedback.scores?.Structure||50;
+        const structTarget=Math.max(structScore,Math.min(100,Math.ceil((structScore+8)/5)*5));
+        return (
       <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px"}}>
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}>
-          <div style={cs.label}>How to hit 80%+ on Structure</div>
+          <div style={cs.label}>How to hit {structTarget}%+ on Structure</div>
         </div>
         <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,margin:"0 0 14px",lineHeight:1.5}}>Based on your response, here is exactly how to restructure it next time:</p>
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -1560,7 +1679,8 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
           ))}
         </div>
       </div>
-      )}
+        );
+      })()}
 
       {/* 5 STRENGTHS + OPPORTUNITY — personalised */}
       <div style={{display:isDesktop?"grid":"flex",gridTemplateColumns:"1fr 1fr",flexDirection:"column",gap:isDesktop?12:10}}>
