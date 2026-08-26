@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useWakeLock } from '../utils.js';
-import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
+import { VoiceRecorder } from './VoiceRecorder.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -28,26 +28,17 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
   const [revealCount, setRevealCount] = useState(0);
   const [summaryVis,  setSummaryVis]  = useState(false);
   const [topic,       setTopic]       = useState(null);
-  const [countdown,   setCountdown]   = useState(10);
-  const [isRec,       setIsRec]       = useState(false);
-  useWakeLock(isRec);
-  const [waveVals,    setWaveVals]    = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
+  const [voiceActive, setVoiceActive] = useState(false);
+  useWakeLock(voiceActive);
   const [coachResult, setCoachResult] = useState(null);
   const [preRow,      setPreRow]      = useState(0);
-  const [micError,    setMicError]    = useState(false);
-  const [transcribeFailed, setTranscribeFailed] = useState(false);
-  const [fallbackText, setFallbackText] = useState('');
 
-  const mediaRecRef  = useRef(null);
-  const audioChunksRef = useRef([]);
-  const waveRef      = useRef(null);
-  const cdRef        = useRef(null);
-
-  const dotCount  = useSequentialDots(phase === 'countdown');
-
+  // Block the app's "Next"/"Review" nav until the rehearsal is genuinely
+  // complete (coachResult exists) — not just while actively recording, so a
+  // user can't skip the rehearsal entirely via the top-level nav.
   useEffect(() => {
-    onRecordingChange?.(isRec || phase === 'analyzing');
-  }, [isRec, phase]);
+    onRecordingChange?.(phase !== 'coach');
+  }, [phase]);
 
   // Demo sequential reveal
   useEffect(() => {
@@ -60,30 +51,6 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
     return () => [t1,t2,t3,t4].forEach(clearTimeout);
   }, [phase]);
 
-  // Countdown → auto-start
-  useEffect(() => {
-    if (phase !== 'countdown') { clearInterval(cdRef.current); setCountdown(10); return; }
-    let c = 10;
-    setCountdown(10);
-    cdRef.current = setInterval(() => {
-      c--;
-      setCountdown(c);
-      if (c <= 0) {
-        clearInterval(cdRef.current);
-        doStart();
-        setPhase('rec');
-      }
-    }, 1000);
-    return () => clearInterval(cdRef.current);
-  }, [phase]); // eslint-disable-line
-
-  // Waveform animation
-  useEffect(() => {
-    if (!isRec) { clearInterval(waveRef.current); return; }
-    waveRef.current = setInterval(() => setWaveVals(() => Array.from({length:9}, () => 0.2 + Math.random() * 0.8)), 150);
-    return () => clearInterval(waveRef.current);
-  }, [isRec]);
-
   // PRE rows reveal on coach screen
   useEffect(() => {
     if (phase !== 'coach') { setPreRow(0); return; }
@@ -92,56 +59,6 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
     const t3 = setTimeout(() => setPreRow(3), 1800);
     return () => [t1,t2,t3].forEach(clearTimeout);
   }, [phase]);
-
-  function doStart() {
-    setIsRec(true);
-    setMicError(false); setTranscribeFailed(false);
-    audioChunksRef.current = [];
-    if (navigator.mediaDevices?.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
-        let mr;
-        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
-        catch { mr = new MediaRecorder(stream); }
-        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-        mr.start(1000);
-        mediaRecRef.current = mr;
-      }).catch(() => { setIsRec(false); setMicError(true); });
-    } else {
-      setIsRec(false); setMicError(true);
-    }
-  }
-
-  function stopRecording(cb) {
-    const mr = mediaRecRef.current;
-    if (!mr || mr.state === 'inactive') { cb('', true); return; }
-    mr.onstop = async () => {
-      mr.stream.getTracks().forEach(t => t.stop());
-      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
-      try {
-        const b64 = await blobToB64(blob);
-        const res = await fetch('/api/transcribe', {
-          method: 'POST', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Transcription failed');
-        cb((data.text || '').trim(), false);
-      } catch (err) {
-        console.error('[D5Setup] transcribe error:', err);
-        cb('', true);
-      }
-    };
-    try { mr.stop(); } catch(e) { cb('', true); }
-  }
-
-  function doStop() {
-    setIsRec(false);
-    stopRecording((text, failed) => {
-      if (failed) { setTranscribeFailed(true); return; }
-      setPhase('analyzing');
-      analyzeTranscript(text);
-    });
-  }
 
   async function analyzeTranscript(text) {
     try {
@@ -257,7 +174,7 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
         {SETUP_TOPICS.map(t => {
           const sel = topic?.id === t.id;
           return (
-            <button key={t.id} onClick={() => { setTopic(t); setPhase('countdown'); }}
+            <button key={t.id} onClick={() => { setTopic(t); setPhase('ready'); }}
               style={{padding:isDesktop?'16px 14px':'13px 12px', borderRadius:6, border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`, background:sel?'rgba(82,112,96,0.1)':T2.surface, cursor:'pointer', textAlign:'center', alignItems:'center', display:'flex', flexDirection:'column', gap:10, outline:'none', transition:'all 0.15s'}}>
               <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3, opacity:0.8}}>{t.icon}</div>
               <span style={{fontFamily:T.sans, fontSize:isDesktop?12:11, color:T2.text, lineHeight:1.4, fontWeight:sel?600:400}}>{t.label}</span>
@@ -268,58 +185,21 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
     </div>
   );
 
-  // ── COUNTDOWN ────────────────────────────────────────────────────────────
-  if (phase === 'countdown') return (
+  // ── READY / RECORD ──────────────────────────────────────────────────────
+  // Canonical Day 1/4/7 pattern: show the question and guidance, then hand
+  // off to the shared VoiceRecorder — which starts idle ("Tap to start
+  // recording") and never auto-starts.
+  if (phase === 'ready') return (
     <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
       <div style={cs.card}>
         <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Your Question</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 28px'}}>"{topic?.label}"</p>
-        <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:16}}>
-          <SequentialDots dotCount={dotCount}/>
-          <p style={{fontFamily:T.sans, fontSize:12, color:T2.text4, margin:0, fontStyle:'italic', textAlign:'center'}}>Start with your point. Then your reason. Then one example.</p>
-          <div style={{fontFamily:T.serif, fontSize:isDesktop?52:44, fontWeight:600, color:T2.text, lineHeight:1, letterSpacing:'-2px'}}>{countdown}</div>
-        </div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 12px'}}>"{topic?.label}"</p>
+        <p style={{fontFamily:T.sans, fontSize:12, color:T2.text4, margin:0, fontStyle:'italic', textAlign:'center'}}>Start with your point. Then your reason. Then one example.</p>
       </div>
-    </div>
-  );
-
-  // ── REC ───────────────────────────────────────────────────────────────────
-  if (phase === 'rec') return (
-    <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
-      <div style={cs.card}>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?19:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 6px'}}>"{topic?.label}"</p>
-        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.4)', textTransform:'uppercase', letterSpacing:'3px', marginBottom:20}}>Point · Reason · Example</div>
-        <div style={{display:'flex', alignItems:'center', gap:2, height:40, marginBottom:14}}>
-          {waveVals.map((v,i) => <div key={i} style={{flex:1, height:Math.round(v*34)+'px', background:`rgba(138,158,132,${0.3+v*0.5})`, borderRadius:2, transition:'height 0.15s'}}/>)}
-        </div>
-        <div style={{display:'flex', alignItems:'center', gap:8}}>
-          <div style={{width:7, height:7, borderRadius:'50%', background:'#c0392b'}}/>
-          <span style={{fontFamily:T.sans, fontSize:11, color:T2.text3}}>Recording — tap Done when finished.</span>
-        </div>
-      </div>
-      {isRec ? (
-        <button onClick={doStop} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
-          Done →
-        </button>
-      ) : (micError || transcribeFailed) ? (
-        <button onClick={doStart} style={cs.cta}>
-          Try Recording Again →
-        </button>
-      ) : null}
-      {!isRec && (micError || transcribeFailed) && (
-        <div style={cs.card}>
-          <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
-          <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px'}}>
-            {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
-          </p>
-          <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width:'100%', minHeight:80, background:'transparent', border:'none', borderBottom:'0.5px solid '+T2.border, padding:'8px 0', fontFamily:T.sans, fontSize:13, color:T2.text, resize:'none', outline:'none', lineHeight:1.6, boxSizing:'border-box'}}/>
-          {fallbackText.trim().length > 10 && (
-            <button onClick={() => { setMicError(false); setTranscribeFailed(false); const t = fallbackText.trim(); setFallbackText(''); setPhase('analyzing'); analyzeTranscript(t); }} style={{...cs.cta, marginTop:14}}>
-              Submit →
-            </button>
-          )}
-        </div>
-      )}
+      <VoiceRecorder T={T} T2={T2} onRecordingChange={setVoiceActive} onDone={(text) => {
+        setPhase('analyzing');
+        analyzeTranscript(text);
+      }}/>
     </div>
   );
 
