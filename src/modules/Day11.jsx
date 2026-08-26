@@ -244,7 +244,7 @@ Return ONLY valid JSON:
 {
   "signature": "<2-3 sentence paragraph. Warm, specific, second person. Describes their unique professional identity.>",
   "strengths": ["<2-4 word label>", "<2-4 word label>", "<2-4 word label>", "<2-4 word label>", "<2-4 word label>"],
-  "statement": "<One sentence, in quotes, 15-25 words. Written as if a sponsor is introducing them.>",
+  "statement": "<One sentence, in quotes, 15-25 words, written in FIRST PERSON as if they are confidently describing themselves (e.g. 'I'm the person...', not 'This is someone who...').>",
   "coachNote": "<2-3 sentences. Warm coaching insight. Reference something specific they said.>"
 }`;
     try {
@@ -805,10 +805,12 @@ Keep it under 280 words. Make every word earn its place.`;
   // ── IMPORT ────────────────────────────────────────────────────────────────
   if (phase === 'import') {
     const tabs = [
-      { id: 'summary',    label: 'My Rehearsal',        recommended: true  },
-      { id: 'screenshot', label: 'Upload Screenshots',  recommended: false },
-      { id: 'cv',         label: 'Upload CV',           recommended: false },
+      { id: 'summary',    label: 'My Rehearsal',    recommended: true,  actionable: false },
+      { id: 'screenshot', label: 'Add your LinkedIn', recommended: false, actionable: true },
+      { id: 'cv',         label: 'Add your CV',       recommended: false, actionable: true },
     ];
+    // Same ID-card icon as step 2 ("Add your LinkedIn or CV") in the HOW IT WORKS explainer above
+    const IdCardIcon = c => <svg width={isDesktop?15:13} height={isDesktop?15:13} viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="14" rx="2" stroke={c} strokeWidth="1.3"/><circle cx="8" cy="10" r="2" stroke={c} strokeWidth="1.3"/><path d="M5 15c0-1.5 1.3-2.5 3-2.5s3 1 3 2.5" stroke={c} strokeWidth="1.3" strokeLinecap="round"/><path d="M13 8h3M13 11h3" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg>;
     // Same completion signal already used to gate the "My Rehearsal" tab/default
     // above (a real, non-fallback Rehearsal result — saveBrandRehearsal only
     // ever fires on the success path in D11PracticeWidget.runAnalysis).
@@ -904,13 +906,21 @@ Keep it under 280 words. Make every word earn its place.`;
           ))}
         </div>
         <div style={{ display: "flex", gap: 6 }}>
-          {tabs.map(tab => (
-            <button key={tab.id} onClick={() => setInputMode(inputMode === tab.id ? 'paste' : tab.id)}
-              style={{ flex: 1, padding: isDesktop ? "10px 6px" : "8px 4px", borderRadius: 4, border: `0.5px solid ${inputMode === tab.id ? T.gold : T2.border}`, background: inputMode === tab.id ? "rgba(200,164,106,0.07)" : "transparent", fontFamily: T.sans, fontSize: isDesktop ? 11 : 10, fontWeight: inputMode === tab.id ? 600 : 400, color: inputMode === tab.id ? T.gold : T2.text3, cursor: "pointer", transition: "all 0.15s", position: "relative", lineHeight: 1.3 }}>
-              {tab.label}
-              {tab.recommended && <span style={{ position: "absolute", top: -9, left: "50%", transform: "translateX(-50%)", fontSize: 8, background: "#4a7c59", color: "#fff", padding: "2px 7px", borderRadius: 10, fontWeight: 700, letterSpacing: "0.4px", whiteSpace: "nowrap" }}>Recommended</span>}
-            </button>
-          ))}
+          {tabs.map(tab => {
+            const selected = inputMode === tab.id;
+            const border = tab.actionable ? `1.5px solid ${T.gold}` : `0.5px solid ${selected ? T.gold : T2.border}`;
+            const boxShadow = tab.actionable ? "0 0 0 3px rgba(200,164,106,0.12)" : "none";
+            return (
+              <button key={tab.id} onClick={() => setInputMode(inputMode === tab.id ? 'paste' : tab.id)}
+                style={{ flex: 1, padding: isDesktop ? "10px 6px" : "8px 4px", borderRadius: 4, border, boxShadow, background: selected ? "rgba(200,164,106,0.07)" : "transparent", fontFamily: T.sans, fontSize: isDesktop ? 11 : 10, fontWeight: selected ? 600 : 400, color: selected ? T.gold : T2.text3, cursor: "pointer", transition: "all 0.15s", position: "relative", lineHeight: 1.3 }}>
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
+                  {tab.actionable && IdCardIcon(T.gold)}
+                  {tab.label}
+                </span>
+                {tab.recommended && <span style={{ position: "absolute", top: -9, left: "50%", transform: "translateX(-50%)", fontSize: 8, background: "#4a7c59", color: "#fff", padding: "2px 7px", borderRadius: 10, fontWeight: 700, letterSpacing: "0.4px", whiteSpace: "nowrap" }}>Recommended</span>}
+              </button>
+            );
+          })}
         </div>
 
         {inputMode === 'paste' && (
