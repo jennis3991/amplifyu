@@ -461,6 +461,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
   // Sequential dots — shared hook
   const dotCount = useSequentialDots(phase === 'pause1' || phase === 'pause2');
+  const analyzingDotCount = useSequentialDots(phase === 'transcribing' || phase === 'analyzing');
 
   // Recording
   const [isRec, setIsRec] = useState(false);
@@ -508,9 +509,11 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
     return () => clearInterval(waveRef.current);
   }, [isRec]);
 
-  // Block the app's "Next"/"Review" nav while actively recording or analysing
+  // Block the app's "Next"/"Review" nav while actively recording, transcribing,
+  // or analysing — covers the whole pipeline, not just the final AI call, so a
+  // user can't navigate away mid-transcription and lose an unsaved answer.
   useEffect(() => {
-    onRecordingChange?.(isRec || phase === 'analyzing');
+    onRecordingChange?.(isRec || phase === 'transcribing' || phase === 'analyzing');
   }, [isRec, phase]);
 
   function doStart() {
@@ -558,8 +561,13 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   function doStop() {
     setIsRec(false);
     const currentPhase = phase;
+    // Transition to a loading screen immediately — before the async
+    // stop/transcribe chain — so the UI doesn't sit frozen on the recording
+    // screen (with the recording controls already gone) while MediaRecorder
+    // finalises the blob and /api/transcribe runs.
+    setPhase('transcribing');
     stopRecording((text, failed) => {
-      if (failed) { setTranscribeFailed(true); return; }
+      if (failed) { setTranscribeFailed(true); setPhase(currentPhase); return; }
       const captured = text || '[No speech detected]';
       if (currentPhase === 'rec1') {
         setTranscript1(captured);
@@ -765,6 +773,14 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
     </>);
   }
 
+  // ── TRANSCRIBING ─────────────────────────────────────────────────────────────
+  if (phase === 'transcribing') return grid(
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, gap: 16}}>
+      <SequentialDots dotCount={analyzingDotCount} />
+      <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text4, margin: 0}}>Processing your answer…</p>
+    </div>
+  );
+
   // ── TRANSITION ──────────────────────────────────────────────────────────────
   if (phase === 'transition') return grid(<>
     <div style={{...cs.card, textAlign: 'center', padding: isDesktop ? '40px 32px' : '28px 22px'}}>
@@ -779,7 +795,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // ── ANALYZING ───────────────────────────────────────────────────────────────
   if (phase === 'analyzing') return grid(
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, gap: 16}}>
-      <div style={{width: 36, height: 36, border: '2px solid rgba(138,158,132,0.15)', borderTop: '2px solid rgba(138,158,132,0.65)', borderRadius: '50%'}} />
+      <SequentialDots dotCount={analyzingDotCount} />
       <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text4, margin: 0}}>Analysing your responses…</p>
     </div>
   );
