@@ -97,6 +97,26 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
     });
   }
 
+  // ── Delete confirmation — first tap arms a 3s confirm window, second tap deletes
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const confirmDeleteTimerRef = useRef(null);
+  useEffect(() => () => clearTimeout(confirmDeleteTimerRef.current), []);
+  function handleDeleteClick(id) {
+    clearTimeout(confirmDeleteTimerRef.current);
+    if (confirmDeleteId === id) {
+      setConfirmDeleteId(null);
+      deleteToolkit(id);
+    } else {
+      setConfirmDeleteId(id);
+      confirmDeleteTimerRef.current = setTimeout(() => setConfirmDeleteId(null), 3000);
+    }
+  }
+
+  function loadRehearsalToolkit(t) {
+    setResult({ signature: t.signature || '', strengths: t.strengths || [], statement: t.statement || '', coachNote: t.coachNote || '' });
+    setPhase('results');
+  }
+
   const recognitionRef  = useRef(null);
   const audioChunksRef  = useRef([]);
   const timerRef        = useRef(null);
@@ -295,15 +315,18 @@ Return ONLY valid JSON:
           </button>
           {toolkitsOpen && (
             <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
-              {myToolkitsRehearsal.map(t=>(
-                <div key={t.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
-                  <div style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2}}>
-                    <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{(t.strengths||[]).slice(0,2).join(', ') || "Professional Signature"}</span>
-                    <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(t.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</span>
+              {myToolkitsRehearsal.map(t=>{
+                const confirming = confirmDeleteId === t.id;
+                return (
+                  <div key={t.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
+                    <div onClick={()=>loadRehearsalToolkit(t)} style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2,cursor:"pointer"}}>
+                      <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{(t.strengths||[]).slice(0,2).join(', ') || "Professional Signature"}</span>
+                      <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(t.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</span>
+                    </div>
+                    <button onClick={()=>handleDeleteClick(t.id)} title={confirming?"Tap again to delete":"Delete"} style={{background:"none",border:"none",cursor:"pointer",color:confirming?"#b05c4a":T2.text4,fontSize:confirming?11:18,fontWeight:confirming?700:400,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1,whiteSpace:"nowrap",transition:"all 0.15s"}}>{confirming?"Confirm?":"×"}</button>
                   </div>
-                  <button onClick={()=>deleteToolkit(t.id)} title="Delete" style={{background:"none",border:"none",cursor:"pointer",color:T2.text4,fontSize:18,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1}}>×</button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -539,6 +562,29 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
       if (freedForPending) { setSavedToolkitId(pendingToolkit.id); setPendingToolkit(null); }
       return next;
     });
+  }
+
+  // ── Delete confirmation — first tap arms a 3s confirm window, second tap deletes
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const confirmDeleteTimerRef = useRef(null);
+  useEffect(() => () => clearTimeout(confirmDeleteTimerRef.current), []);
+  function handleDeleteClick(id) {
+    clearTimeout(confirmDeleteTimerRef.current);
+    if (confirmDeleteId === id) {
+      setConfirmDeleteId(null);
+      deleteToolkit(id);
+    } else {
+      setConfirmDeleteId(id);
+      confirmDeleteTimerRef.current = setTimeout(() => setConfirmDeleteId(null), 3000);
+    }
+  }
+
+  function loadSimToolkit(t) {
+    setAnalysisResult({ rewrittenHeadline: t.headline || '', rewrittenAbout: t.about || '', rewrittenExperience: t.experience || [] });
+    setAnalysisFallback(false);
+    setSavedToolkitId(t.id);
+    if (t.cv) { setCvResult(t.cv); setCvPhase('done'); } else { setCvResult(''); setCvPhase('idle'); }
+    setPhase('toolkit');
   }
 
   const checkRef   = useRef(null);
@@ -827,15 +873,18 @@ Keep it under 280 words. Make every word earn its place.`;
             </button>
             {toolkitsOpen && (
               <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
-                {myToolkitsSim.map(t=>(
-                  <div key={t.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
-                    <div style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2}}>
-                      <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{t.headline || "Untitled toolkit"}</span>
-                      <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(t.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}{t.cv ? " · CV included" : ""}</span>
+                {myToolkitsSim.map(t=>{
+                  const confirming = confirmDeleteId === t.id;
+                  return (
+                    <div key={t.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
+                      <div onClick={()=>loadSimToolkit(t)} style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2,cursor:"pointer"}}>
+                        <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{t.headline || "Untitled toolkit"}</span>
+                        <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(t.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}{t.cv ? " · CV included" : ""}</span>
+                      </div>
+                      <button onClick={()=>handleDeleteClick(t.id)} title={confirming?"Tap again to delete":"Delete"} style={{background:"none",border:"none",cursor:"pointer",color:confirming?"#b05c4a":T2.text4,fontSize:confirming?11:18,fontWeight:confirming?700:400,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1,whiteSpace:"nowrap",transition:"all 0.15s"}}>{confirming?"Confirm?":"×"}</button>
                     </div>
-                    <button onClick={()=>deleteToolkit(t.id)} title="Delete" style={{background:"none",border:"none",cursor:"pointer",color:T2.text4,fontSize:18,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1}}>×</button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
