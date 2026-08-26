@@ -267,71 +267,22 @@ const BOARDROOM_ICONS = {
 export function D5SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const [phase,        setPhase]        = useState('select');
   const [topic,        setTopic]        = useState(null);
-  const [cardVisible,  setCardVisible]  = useState(false);
-  const [cardOut,      setCardOut]      = useState(false);
-  const [recVisible,   setRecVisible]   = useState(false);
-  const [countdown,    setCountdown]    = useState(10);
-  const [isRec,        setIsRec]        = useState(false);
-  useWakeLock(isRec);
-  const [waveVals,     setWaveVals]     = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
+  const [voiceActive,  setVoiceActive]  = useState(false);
+  useWakeLock(voiceActive);
   const [preResult,    setPreResult]    = useState(null);
   const [revealRow,    setRevealRow]    = useState(0);
   const [revealCoach,  setRevealCoach]  = useState(false);
   const [debriefResult,setDebriefResult]= useState(null);
-  const [micError,     setMicError]     = useState(false);
-  const [transcribeFailed, setTranscribeFailed] = useState(false);
-  const [fallbackText, setFallbackText] = useState('');
 
-  const mediaRecRef      = useRef(null);
-  const audioChunksRef   = useRef([]);
-  const waveRef          = useRef(null);
   const transcript1Ref   = useRef('');
   const topicRef         = useRef(null);
-  const thinkingTargetRef= useRef('rec1');
-  const countdownIdRef   = useRef(null);
 
+  // Block the app's "Next"/"Review" nav until the simulation is genuinely
+  // complete (debrief reached) — not just while actively recording, so a
+  // user can't skip straight to review before finishing both questions.
   useEffect(() => {
-    onRecordingChange?.(isRec || phase === 'analyzing1' || phase === 'analyzing2');
-  }, [isRec, phase]);
-
-  // Waveform animation
-  useEffect(() => {
-    if (!isRec) { clearInterval(waveRef.current); return; }
-    waveRef.current = setInterval(() => setWaveVals(() => Array.from({length:9}, () => 0.2 + Math.random() * 0.8)), 150);
-    return () => clearInterval(waveRef.current);
-  }, [isRec]);
-
-  // Thinking card — runs when phase === 'thinking'
-  useEffect(() => {
-    if (phase !== 'thinking') {
-      setCardVisible(false); setCardOut(false); setRecVisible(false); setCountdown(10);
-      clearInterval(countdownIdRef.current);
-      return;
-    }
-    setCardVisible(false); setCardOut(false); setRecVisible(false); setCountdown(10);
-    clearInterval(countdownIdRef.current);
-    const t1 = setTimeout(() => {
-      setCardVisible(true);
-      let c = 10;
-      const id = setInterval(() => {
-        c--;
-        setCountdown(c);
-        if (c <= 0) {
-          clearInterval(id);
-          countdownIdRef.current = null;
-          setCardOut(true);
-          setTimeout(() => {
-            setCardVisible(false); setCardOut(false); setRecVisible(true);
-            setIsRec(true);
-            startRecording();
-          }, 400);
-          setTimeout(() => { setPhase(thinkingTargetRef.current); }, 900);
-        }
-      }, 1000);
-      countdownIdRef.current = id;
-    }, 1000);
-    return () => { clearTimeout(t1); clearInterval(countdownIdRef.current); };
-  }, [phase]); // eslint-disable-line
+    onRecordingChange?.(phase !== 'debrief');
+  }, [phase]);
 
   // PRE reveal sequential fade-in
   useEffect(() => {
@@ -342,67 +293,6 @@ export function D5SimWidget({T, T2, isDesktop, onRecordingChange}) {
     const t4 = setTimeout(() => setRevealCoach(true), 2700);
     return () => [t1,t2,t3,t4].forEach(clearTimeout);
   }, [phase]);
-
-  function startRecording() {
-    setMicError(false); setTranscribeFailed(false);
-    audioChunksRef.current = [];
-    if (navigator.mediaDevices?.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
-        let mr;
-        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
-        catch { mr = new MediaRecorder(stream); }
-        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-        mr.start(1000);
-        mediaRecRef.current = mr;
-      }).catch(() => { setIsRec(false); setMicError(true); });
-    } else {
-      setIsRec(false); setMicError(true);
-    }
-  }
-
-  function stopRecording(cb) {
-    const mr = mediaRecRef.current;
-    if (!mr || mr.state === 'inactive') { cb('', true); return; }
-    mr.onstop = async () => {
-      mr.stream.getTracks().forEach(t => t.stop());
-      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
-      try {
-        const b64 = await blobToB64(blob);
-        const res = await fetch('/api/transcribe', {
-          method: 'POST', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Transcription failed');
-        cb((data.text || '').trim(), false);
-      } catch (err) {
-        console.error('[D5Boardroom] transcribe error:', err);
-        cb('', true);
-      }
-    };
-    try { mr.stop(); } catch(e) { cb('', true); }
-  }
-
-  function doStop1() {
-    setIsRec(false);
-    stopRecording((text, failed) => {
-      if (failed) { setTranscribeFailed(true); return; }
-      const t1 = text || '[first answer]';
-      transcript1Ref.current = t1;
-      setPhase('analyzing1');
-      analyzePRE(t1);
-    });
-  }
-
-  function doStop2() {
-    setIsRec(false);
-    stopRecording((text, failed) => {
-      if (failed) { setTranscribeFailed(true); return; }
-      const t2 = text || '[second answer]';
-      setPhase('analyzing2');
-      analyzeDebrief(transcript1Ref.current, t2);
-    });
-  }
 
   async function analyzePRE(text) {
     const t = topicRef.current;
@@ -496,14 +386,6 @@ Return only valid JSON with all fields present.`,
     }
   }
 
-  function reset() {
-    setPhase('select'); setTopic(null); topicRef.current = null;
-    setPreResult(null); setDebriefResult(null); setIsRec(false);
-    setRevealRow(0); setRevealCoach(false);
-    setMicError(false); setTranscribeFailed(false); setFallbackText('');
-    transcript1Ref.current = '';
-  }
-
   const cs = {
     card:    {background:T2.surface, borderRadius:4, border:'0.5px solid '+T2.border, padding:isDesktop?'20px 24px':'16px 18px'},
     label:   {fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2px', marginBottom:8},
@@ -556,7 +438,7 @@ Return only valid JSON with all fields present.`,
           );
         })}
       </div>
-      <button onClick={() => { if (topic) { thinkingTargetRef.current='rec1'; setPhase('thinking'); } }}
+      <button onClick={() => { if (topic) setPhase('q1'); }}
         disabled={!topic}
         style={{...cs.cta, opacity:topic?1:0.4, cursor:topic?'pointer':'default'}}>
         Enter the Boardroom →
@@ -564,85 +446,26 @@ Return only valid JSON with all fields present.`,
     </div>
   );
 
-  const currentQ = thinkingTargetRef.current === 'rec2' ? topicRef.current?.q2 : topicRef.current?.question;
-
-  // ── THINKING ───────────────────────────────────────────────────────────────
-  if (phase === 'thinking') return grid(<>
-    {thinkingTargetRef.current === 'rec2' && preResult?.q2Instruction && (
-      <div style={{background:'rgba(138,158,132,0.07)', borderRadius:4, border:'0.5px solid rgba(138,158,132,0.25)', padding:'14px 18px'}}>
-        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.7)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:6}}>Your instruction</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, color:'rgba(245,239,230,0.8)', lineHeight:1.5, margin:0, fontStyle:'italic'}}>{preResult.q2Instruction}</p>
-      </div>
-    )}
-    <div style={cs.card}>
-      <div style={cs.label}>{thinkingTargetRef.current === 'rec2' ? 'Question 2' : 'Your Question'}</div>
-      <p style={{fontFamily:T.serif, fontSize:isDesktop?22:18, fontWeight:600, color:T2.text, lineHeight:1.3, margin:0}}>"{currentQ}"</p>
-    </div>
-    <div style={{opacity:cardVisible&&!cardOut?1:0, transition:cardOut?'opacity 0.4s ease':cardVisible?'opacity 0.5s ease':'none', display:'flex', flexDirection:'column', gap:14}}>
-      <div style={{background:'rgba(245,239,230,0.03)', border:'0.5px solid rgba(138,158,132,0.25)', borderRadius:6, padding:isDesktop?'28px 32px':'20px 22px', textAlign:'center'}}>
-        {["WHAT'S YOUR POINT?","WHY?","CAN YOU PROVE IT?"].map((line,i)=>(
-          <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:'rgba(245,239,230,0.8)', lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:500}}>{line}</p>
-        ))}
-      </div>
-      <p style={{fontFamily:T.serif, fontSize:isDesktop?36:28, fontWeight:600, color:T2.text3, textAlign:'center', margin:0, lineHeight:1}}>{countdown}</p>
-    </div>
-    {recVisible && (
-      <p style={{fontFamily:T.serif, fontSize:isDesktop?16:14, fontStyle:'italic', color:T2.text3, textAlign:'center', margin:'4px 0 0'}}>Answer when you're ready.</p>
-    )}
-  </>);
-
-  // ── REC 1 ──────────────────────────────────────────────────────────────────
-  if (phase === 'rec1') return grid(<>
+  // ── Q1: READY / RECORD ────────────────────────────────────────────────────
+  // Canonical Day 1/4/7 pattern: show the question and guidance, then hand
+  // off to the shared VoiceRecorder — which starts idle ("Tap to start
+  // recording") and never auto-starts.
+  if (phase === 'q1') return grid(<>
     <div style={cs.card}>
       <div style={cs.label}>Your Question</div>
-      <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 20px'}}>"{topicRef.current?.question}"</p>
-      <div style={{display:'flex', alignItems:'center', gap:2, height:40, marginBottom:16}}>
-        {waveVals.map((v,i)=><div key={i} style={{flex:1, height:Math.round(v*34)+'px', background:`rgba(138,158,132,${0.3+v*0.5})`, borderRadius:2, transition:'height 0.15s'}}/>)}
-      </div>
-      <div style={{display:'flex', alignItems:'center', gap:8}}>
-        <div style={{width:7, height:7, borderRadius:'50%', background:'#c0392b'}}/>
-        <span style={{fontFamily:T.sans, fontSize:11, color:T2.text3}}>Answer when you're ready.</span>
-      </div>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?22:18, fontWeight:600, color:T2.text, lineHeight:1.3, margin:0}}>"{topicRef.current?.question}"</p>
     </div>
-    <div style={{display:'flex', gap:8}}>
-      {[{n:'1', label:'Point', hint:'Lead with your view'},
-        {n:'2', label:'Reason', hint:'Explain why'},
-        {n:'3', label:'Example', hint:'Make it concrete'}].map((s,i) => (
-        <div key={i} style={{flex:1, background:'rgba(138,158,132,0.08)', border:'1px solid rgba(138,158,132,0.3)', borderRadius:6, padding:'14px 10px', textAlign:'center'}}>
-          <div style={{fontFamily:T.serif, fontSize:isDesktop?22:18, fontWeight:700, color:T.gold, lineHeight:1, marginBottom:6}}>{s.n}</div>
-          <div style={{fontFamily:T.sans, fontSize:isDesktop?13:11, fontWeight:700, color:T2.text, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:4}}>{s.label}</div>
-          <div style={{fontFamily:T.sans, fontSize:isDesktop?11:10, color:T2.text3, lineHeight:1.4}}>{s.hint}</div>
-        </div>
+    <div style={{background:'rgba(245,239,230,0.03)', border:'0.5px solid rgba(138,158,132,0.25)', borderRadius:6, padding:isDesktop?'28px 32px':'20px 22px', textAlign:'center'}}>
+      {["WHAT'S YOUR POINT?","WHY?","CAN YOU PROVE IT?"].map((line,i)=>(
+        <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:'rgba(245,239,230,0.8)', lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:500}}>{line}</p>
       ))}
     </div>
-    {isRec ? (
-      <button onClick={doStop1} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
-        Done →
-      </button>
-    ) : (micError || transcribeFailed) ? (
-      <button onClick={() => { setIsRec(true); startRecording(); }} style={cs.cta}>
-        Try Recording Again →
-      </button>
-    ) : null}
-    {!isRec && (micError || transcribeFailed) && (
-      <div style={cs.card}>
-        <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
-        <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px'}}>
-          {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
-        </p>
-        <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width:'100%', minHeight:80, background:'transparent', border:'none', borderBottom:'0.5px solid '+T2.border, padding:'8px 0', fontFamily:T.sans, fontSize:13, color:T2.text, resize:'none', outline:'none', lineHeight:1.6, boxSizing:'border-box'}}/>
-        {fallbackText.trim().length > 10 && (
-          <button onClick={() => {
-            setMicError(false); setTranscribeFailed(false);
-            const t1 = fallbackText.trim(); setFallbackText('');
-            transcript1Ref.current = t1;
-            setPhase('analyzing1'); analyzePRE(t1);
-          }} style={{...cs.cta, marginTop:14}}>
-            Submit →
-          </button>
-        )}
-      </div>
-    )}
+    <VoiceRecorder T={T} T2={T2} onRecordingChange={setVoiceActive} onDone={(text) => {
+      const t1 = text || '[first answer]';
+      transcript1Ref.current = t1;
+      setPhase('analyzing1');
+      analyzePRE(t1);
+    }}/>
   </>);
 
   // ── ANALYZING 1 ────────────────────────────────────────────────────────────
@@ -692,7 +515,7 @@ Return only valid JSON with all fields present.`,
             <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, color:'rgba(138,158,132,0.85)', lineHeight:1.55, margin:0, fontStyle:'italic'}}>{preResult.q2Instruction}</p>
           </div>
           <p style={{fontFamily:T.sans, fontSize:12, color:T2.text3, textAlign:'center', margin:0}}>Ready for question two?</p>
-          <button onClick={() => { thinkingTargetRef.current='rec2'; setPhase('thinking'); }} style={cs.sageCta}>
+          <button onClick={() => setPhase('q2')} style={cs.sageCta}>
             Next Question →
           </button>
         </>
@@ -700,57 +523,23 @@ Return only valid JSON with all fields present.`,
     </>);
   }
 
-  // ── REC 2 ──────────────────────────────────────────────────────────────────
-  if (phase === 'rec2') return grid(<>
-    <div style={cs.card}>
-      <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:12}}>Question 2</div>
-      <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 20px'}}>"{topicRef.current?.q2}"</p>
-      <div style={{display:'flex', alignItems:'center', gap:2, height:40, marginBottom:16}}>
-        {waveVals.map((v,i)=><div key={i} style={{flex:1, height:Math.round(v*34)+'px', background:`rgba(138,158,132,${0.3+v*0.5})`, borderRadius:2, transition:'height 0.15s'}}/>)}
-      </div>
-      <div style={{display:'flex', alignItems:'center', gap:8}}>
-        <div style={{width:7, height:7, borderRadius:'50%', background:'#c0392b'}}/>
-        <span style={{fontFamily:T.sans, fontSize:11, color:T2.text3}}>Answer when you're ready.</span>
-      </div>
-    </div>
-    <div style={{display:'flex', gap:8}}>
-      {[{n:'1', label:'Point', hint:'Lead with your view'},
-        {n:'2', label:'Reason', hint:'Explain why'},
-        {n:'3', label:'Example', hint:'Make it concrete'}].map((s,i) => (
-        <div key={i} style={{flex:1, background:'rgba(138,158,132,0.08)', border:'1px solid rgba(138,158,132,0.3)', borderRadius:6, padding:'14px 10px', textAlign:'center'}}>
-          <div style={{fontFamily:T.serif, fontSize:isDesktop?22:18, fontWeight:700, color:T.gold, lineHeight:1, marginBottom:6}}>{s.n}</div>
-          <div style={{fontFamily:T.sans, fontSize:isDesktop?13:11, fontWeight:700, color:T2.text, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:4}}>{s.label}</div>
-          <div style={{fontFamily:T.sans, fontSize:isDesktop?11:10, color:T2.text3, lineHeight:1.4}}>{s.hint}</div>
-        </div>
-      ))}
-    </div>
-    {isRec ? (
-      <button onClick={doStop2} style={{...cs.cta, background:'rgba(138,158,132,0.12)', color:T2.text, border:'0.5px solid rgba(138,158,132,0.3)'}}>
-        Done →
-      </button>
-    ) : (micError || transcribeFailed) ? (
-      <button onClick={() => { setIsRec(true); startRecording(); }} style={cs.cta}>
-        Try Recording Again →
-      </button>
-    ) : null}
-    {!isRec && (micError || transcribeFailed) && (
-      <div style={cs.card}>
-        <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
-        <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px'}}>
-          {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
-        </p>
-        <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width:'100%', minHeight:80, background:'transparent', border:'none', borderBottom:'0.5px solid '+T2.border, padding:'8px 0', fontFamily:T.sans, fontSize:13, color:T2.text, resize:'none', outline:'none', lineHeight:1.6, boxSizing:'border-box'}}/>
-        {fallbackText.trim().length > 10 && (
-          <button onClick={() => {
-            setMicError(false); setTranscribeFailed(false);
-            const t2 = fallbackText.trim(); setFallbackText('');
-            setPhase('analyzing2'); analyzeDebrief(transcript1Ref.current, t2);
-          }} style={{...cs.cta, marginTop:14}}>
-            Submit →
-          </button>
-        )}
+  // ── Q2: READY / RECORD ────────────────────────────────────────────────────
+  if (phase === 'q2') return grid(<>
+    {preResult?.q2Instruction && (
+      <div style={{background:'rgba(138,158,132,0.07)', borderRadius:4, border:'0.5px solid rgba(138,158,132,0.25)', padding:'14px 18px'}}>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.7)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:6}}>Your instruction</div>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, color:'rgba(245,239,230,0.8)', lineHeight:1.5, margin:0, fontStyle:'italic'}}>{preResult.q2Instruction}</p>
       </div>
     )}
+    <div style={cs.card}>
+      <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:12}}>Question 2</div>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:0}}>"{topicRef.current?.q2}"</p>
+    </div>
+    <VoiceRecorder T={T} T2={T2} onRecordingChange={setVoiceActive} onDone={(text) => {
+      const t2 = text || '[second answer]';
+      setPhase('analyzing2');
+      analyzeDebrief(transcript1Ref.current, t2);
+    }}/>
   </>);
 
   // ── ANALYZING 2 ────────────────────────────────────────────────────────────
@@ -800,10 +589,6 @@ Return only valid JSON with all fields present.`,
           <div style={{display:'inline-block', padding:'10px 18px', background:'rgba(138,158,132,0.1)', borderRadius:20, border:'0.5px solid rgba(138,158,132,0.3)'}}>
             <p style={{fontFamily:T.serif, fontSize:isDesktop?16:14, fontStyle:'italic', color:T2.text, margin:0, lineHeight:1.4}}>{d.takeaway}</p>
           </div>
-        </div>
-        <div style={{display:'flex', gap:10, flexDirection:isDesktop?'row':'column'}}>
-          <button onClick={reset} style={{...cs.ghost, flex:1}}>Try Again</button>
-          <button style={{...cs.sageCta, flex:1}}>Continue →</button>
         </div>
       </div>
     );
