@@ -119,6 +119,7 @@ return (
     onTouchStart={e=>{swipeRef.current={x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now(),el:e.target};}}
     onTouchEnd={e=>{
       if(isD4 && step==="Simulation")return;
+      if(isD2 && step==="Simulation")return;
       if(window.getSelection&&window.getSelection().toString())return;
       if(Date.now()-swipeRef.current.t>500)return;
       const el=swipeRef.current.el;

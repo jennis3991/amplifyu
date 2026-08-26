@@ -131,6 +131,72 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
 
+  // ── My Saved Results — shares the au1_toolkits store with Day 8/Day 11, but
+  // this source (voice-analysis-day2) is capped and listed independently.
+  const RESULT_CAP = 5;
+  const isMineVoice = r => r.source === 'voice-analysis-day2';
+  const [savedResults, setSavedResults] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("au1_toolkits") || "[]"); } catch { return []; }
+  });
+  const myResults = savedResults.filter(isMineVoice);
+  const [resultsOpen, setResultsOpen] = useState(false);
+  const [pendingResult, setPendingResult] = useState(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const confirmDeleteTimerRef = useRef(null);
+
+  function saveVoiceResult(result, transcriptText, promptText) {
+    const entry = {
+      id: Date.now(),
+      source: 'voice-analysis-day2',
+      prompt: promptText || '',
+      transcript: transcriptText || '',
+      result,
+      timestamp: Date.now(),
+    };
+    if (myResults.length >= RESULT_CAP) {
+      setPendingResult(entry);
+      return;
+    }
+    const next = [entry, ...savedResults];
+    setSavedResults(next);
+    try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+  }
+
+  function deleteVoiceResult(id) {
+    setSavedResults(prev => {
+      let next = prev.filter(r => r.id !== id);
+      let freedForPending = false;
+      if (pendingResult && next.filter(isMineVoice).length < RESULT_CAP) {
+        next = [pendingResult, ...next];
+        freedForPending = true;
+      }
+      try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+      if (freedForPending) setPendingResult(null);
+      return next;
+    });
+  }
+
+  useEffect(() => () => clearTimeout(confirmDeleteTimerRef.current), []);
+  function handleDeleteClick(id) {
+    clearTimeout(confirmDeleteTimerRef.current);
+    if (confirmDeleteId === id) {
+      setConfirmDeleteId(null);
+      deleteVoiceResult(id);
+    } else {
+      setConfirmDeleteId(id);
+      confirmDeleteTimerRef.current = setTimeout(() => setConfirmDeleteId(null), 3000);
+    }
+  }
+
+  function loadVoiceResult(r) {
+    setPrompt(r.prompt || null);
+    setTranscript(r.transcript || '');
+    setFeedback(r.result || null);
+    setRound1(null);
+    setAudioURL(null);
+    setPhase('feedback');
+  }
+
   const audioRef = useRef(null);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -283,6 +349,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       const parsed=JSON.parse(m[0]);
       if(!parsed||typeof parsed.overall!=='number'||!parsed.scores) throw new Error('Malformed response');
       if(!isRetry){setRound1(parsed);setFeedback(parsed);}else setFeedback({...parsed,prev:round1});
+      saveVoiceResult(parsed, text, prompt);
     }catch(err){
       console.error('[D2SimWidget] analyzeText error:', err);
       if(!isRetry){setRound1(mock);setFeedback(mock);}else setFeedback({...mock,prev:round1});
@@ -403,6 +470,38 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           </div>
         </div>
       </div>
+
+      {myResults.length>0 && (
+        <div style={{background:T2.surface||"rgba(255,255,255,0.025)",borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+          <button onClick={()=>setResultsOpen(v=>!v)} style={{width:"100%",background:"none",border:"none",padding:isDesktop?"14px 18px":"12px 16px",cursor:"pointer",fontFamily:T.sans,fontSize:12,color:T2.text3,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <span>My Saved Results ({myResults.length})</span>
+            <span style={{fontSize:14,opacity:0.6,transform:resultsOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
+          </button>
+          {resultsOpen && (
+            <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
+              {myResults.map(r=>{
+                const confirming = confirmDeleteId === r.id;
+                return (
+                  <div key={r.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
+                    <div onClick={()=>loadVoiceResult(r)} style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2,cursor:"pointer"}}>
+                      <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{r.result?.headline || r.prompt || "Voice analysis"}</span>
+                      <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(r.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}{typeof r.result?.overall==='number' ? ` · ${r.result.overall}/100` : ""}</span>
+                    </div>
+                    <button onClick={()=>handleDeleteClick(r.id)} title={confirming?"Tap again to delete":"Delete"} style={{background:"none",border:"none",cursor:"pointer",color:confirming?"#b05c4a":T2.text4,fontSize:confirming?11:18,fontWeight:confirming?700:400,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1,whiteSpace:"nowrap",transition:"all 0.15s"}}>{confirming?"Confirm?":"×"}</button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {pendingResult && (
+        <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
+          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You've reached your limit of {RESULT_CAP} saved results. This one won't be saved until you delete one above.</span>
+        </div>
+      )}
+
       <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose a Speaking Prompt →</button>
     </div>
   );
