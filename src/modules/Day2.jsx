@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
 import { useWakeLock } from '../utils.js';
+import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -109,6 +110,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const DIMS = ["Pace","Pitch","Tone","Pauses","Vocal Energy","Range","Presence"];
 
   const [phase, setPhase] = useState('intro');
+  const dotCount = useSequentialDots(phase === 'analyzing');
   const [cat, setCat] = useState('Presence');
   const [prompt, setPrompt] = useState(null);
   const [timeLeft, setTimeLeft] = useState(90);
@@ -240,8 +242,12 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   function doStop(){
     const elapsedSec = startTimeRef.current ? Math.round((Date.now() - startTimeRef.current) / 1000) : 0;
     setIsRec(false);clearTimeout(timerRef.current);
+    // Transition to the analyzing screen immediately — before the async
+    // stop/transcribe chain — so the UI doesn't sit frozen on 'recording'
+    // while MediaRecorder finalises the blob and /api/transcribe runs.
+    setPhase('analyzing');
     stopRecording((text, failed) => {
-      if (failed) { setTranscribeFailed(true); return; }
+      if (failed) { setTranscribeFailed(true); setPhase('recording'); return; }
       setTranscript(text);
       const m = computeMetrics(text, elapsedSec);
       setRecMetrics(m);
@@ -500,11 +506,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // ── ANALYZING ───────────────────────────────────────────────────────────────
   if(phase==='analyzing') return (
     <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
-      <div style={{display:"flex",gap:6}}>
-        {[0,1,2].map(i=>(
-          <div key={i} style={{width:6,height:6,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.22}s infinite`}}/>
-        ))}
-      </div>
+      <SequentialDots dotCount={dotCount}/>
       <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>Analysing your voice…</p>
       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Evaluating pace, pitch, tone, pauses, energy, range, and presence.</p>
     </div>
