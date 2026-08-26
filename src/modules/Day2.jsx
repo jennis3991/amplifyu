@@ -359,11 +359,43 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           ))}
         </div>
       </div>
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
-        <div style={cs.label}>Find Your Voice</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>Yesterday measured <strong>what you said</strong>. Today measures <strong>how you sound</strong>.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>{"Your AmplifyU Coach analyses seven dimensions of your vocal delivery — "}<strong>pace, pitch, tone, pauses, vocal energy, range and presence</strong>{" — to reveal how your voice shapes the way people experience your message."}</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>{"This is your vocal baseline: a snapshot of the habits that build authority, confidence, and connection."}</p>
+      <div style={{...cs.card,padding:isDesktop?"26px 28px":"20px 20px"}}>
+        <h3 style={{fontFamily:T.serif,fontSize:isDesktop?26:16,fontWeight:600,color:T2.text,lineHeight:1.15,margin:"0 0 "+(isDesktop?"22px":"18px"),whiteSpace:isDesktop?"normal":"nowrap"}}>Find Your Voice</h3>
+
+        {/* Point 1 — what changes today */}
+        <div style={{display:"flex",alignItems:"flex-start",gap:isDesktop?16:12}}>
+          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
+              <circle cx="10" cy="9" r="3.2" stroke={T.gold} strokeWidth="1.3"/>
+              <path d="M4.5 19c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/>
+              <path d="M18 5.3l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7.7-1.6z" fill={T.gold}/>
+              <path d="M20.5 11.2l.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4.4-.9z" fill={T.gold}/>
+            </svg>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
+            Yesterday measured <strong>what you said</strong>. Today measures <strong>how you sound</strong>.
+          </p>
+        </div>
+
+        <div style={{height:1,background:T2.divider,margin:isDesktop?"18px 0":"14px 0"}}/>
+
+        {/* Point 2 — what the coach analyses + baseline note */}
+        <div style={{display:"flex",alignItems:"flex-start",gap:isDesktop?16:12}}>
+          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
+              <path d="M12 3l7 3v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/>
+              <path d="M12 8.2l1 2.1 2.3.3-1.7 1.6.4 2.3-2-1.1-2 1.1.4-2.3-1.7-1.6 2.3-.3 1-2.1z" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <div style={{flex:1}}>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0}}>
+              {"Your AmplifyU Coach analyses seven dimensions of your vocal delivery — "}<strong>pace, pitch, tone, pauses, vocal energy, range and presence</strong>{" — to reveal how your voice shapes the way people experience your message."}
+            </p>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:isDesktop?"10px 0 0":"8px 0 0",fontStyle:"italic"}}>
+              This is your vocal baseline: a snapshot of the habits that build authority, confidence, and connection.
+            </p>
+          </div>
+        </div>
       </div>
       <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose a Speaking Prompt →</button>
     </div>
