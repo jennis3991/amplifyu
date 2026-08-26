@@ -687,12 +687,18 @@ ${profileContent || '(no profile provided — use professional general context)'
 Analyse whether this LinkedIn profile communicates their Professional Signature.
 Keep all signals short (3-5 words). Be specific, not generic.
 
+Headline rules — the "rewrittenHeadline" field:
+- Structure: [real job title(s), pipe-separated] optionally followed by ONE further pipe-separated segment ONLY if a genuinely concrete, specific skill, achievement, or keyword-rich value statement is available from the input.
+- If no such concrete detail is available, output title(s) only — e.g. "Senior IDT Advisor for Corporate Relations | Shell Digital Transformation Leader & Founder" — rather than inventing a vague tagline to fill that slot.
+- Prioritize and use verbatim any real job titles, company names, or role descriptions explicitly present in the input (Rehearsal answers, pasted LinkedIn text, or CV). Do not paraphrase real titles into vaguer language.
+- Never write it as a narrative sentence or value-proposition tagline (e.g. NOT "I turn AI strategy into stories that move stakeholders"). It must read as short, scannable, keyword-dense fragments separated by pipes — standard LinkedIn headline convention, not an elevator pitch.
+
 Return ONLY valid JSON:
 {
   "alignmentScore": <integer 0-100>,
   "currentSignals": ["<3-5 word phrase>", "<3-5 word phrase>", "<3-5 word phrase>"],
   "missingSignals": ["<3-5 word phrase>", "<3-5 word phrase>", "<3-5 word phrase>", "<3-5 word phrase>"],
-  "rewrittenHeadline": "<powerful headline under 200 chars that embodies their signature>",
+  "rewrittenHeadline": "<pipe-separated headline per the Headline rules above, under 200 chars>",
   "rewrittenAbout": "<3 short paragraphs. First person. Strategic, specific, authentic. Reference their signature. Translate any company-specific jargon into transferable language. Separate with \\n\\n>",
   "rewrittenExperience": ["<impactful bullet>", "<impactful bullet>", "<impactful bullet>", "<impactful bullet>"]
 }`;
