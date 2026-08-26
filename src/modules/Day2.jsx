@@ -108,9 +108,19 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   };
   const ALL_PROMPTS = Object.values(PROMPTS).flat();
   const DIMS = ["Pace","Pitch","Tone","Pauses","Vocal Energy","Range","Presence"];
+  const DIM_INFO = {
+    "Pace": "How quickly you speak, measured in words per minute.",
+    "Pitch": "How much your voice rises and falls, rather than staying flat.",
+    "Tone": "The warmth and emotional colour carried in your voice.",
+    "Pauses": "How well you use silence and breath to let key points land.",
+    "Vocal Energy": "The dynamism and enthusiasm projected through your voice.",
+    "Range": "The overall span between your quietest and most powerful moments.",
+    "Presence": "How grounded, confident, and commanding you sound overall.",
+  };
 
   const [phase, setPhase] = useState('intro');
   const dotCount = useSequentialDots(phase === 'analyzing');
+  const [expandedDim, setExpandedDim] = useState(null);
   const [cat, setCat] = useState('Presence');
   const [prompt, setPrompt] = useState(null);
   const [timeLeft, setTimeLeft] = useState(90);
@@ -380,23 +390,30 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
   const FOCUS=["Vary your pace","Use more pauses","Raise your energy","Vary your pitch","Stronger opening","Slow down key points","Increase your range"];
 
-  function getAudio(){
-    if(!audioRef.current&&audioURL){
-      audioRef.current=new Audio(audioURL);
-      audioRef.current.addEventListener('ended',()=>{setPlaying(false);setAudioProgress(0);});
-    }
-    return audioRef.current;
+  // Plays `a` once it's actually ready to play, instead of calling play()
+  // unconditionally — a blob: src can still be at readyState 0 (HAVE_NOTHING)
+  // immediately after the <audio> element mounts, and WebKit/Safari can drop
+  // a play() call made that early rather than queuing it. Same fix as Day 4.
+  function playWhenReady(a){
+    const start=()=>a.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));
+    if(a.readyState>=2){ start(); }
+    else{ a.addEventListener('canplay', start, {once:true}); }
   }
   function togglePlay(){
-    if(!audioURL){setPlaying(p=>!p);return;}
-    const a=getAudio();if(!a)return;
+    const a=audioRef.current;if(!a)return;
     if(playing){a.pause();setPlaying(false);}
-    else{a.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
+    else{playWhenReady(a);}
   }
   function seekTo(pos){
-    const a=getAudio();if(!a)return;
+    const a=audioRef.current;if(!a)return;
     a.currentTime=pos*(a.duration||0);
-    if(!playing)a.play().then(()=>setPlaying(true)).catch(()=>{});
+    if(!playing)playWhenReady(a);
+  }
+  function skip(sec){
+    const a=audioRef.current;if(!a)return;
+    const dur=a.duration||recMetrics?.elapsedSec||0;
+    a.currentTime=Math.max(0,Math.min(dur,(a.currentTime||0)+sec));
+    if(!playing)playWhenReady(a);
   }
 
   const cs={
@@ -602,17 +619,27 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     </div>
   );
 
-  // ── ANALYZING ───────────────────────────────────────────────────────────────
-  if(phase==='analyzing') return (
-    <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
-      <SequentialDots dotCount={dotCount}/>
-      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>Analysing your voice…</p>
-      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Evaluating pace, pitch, tone, pauses, energy, range, and presence.</p>
-    </div>
-  );
+  // ── ANALYZING / FEEDBACK ─────────────────────────────────────────────────────
+  // Share one persistent <audio> element across both phases (same position in
+  // the returned tree each render, so React updates rather than remounts it)
+  // so the browser starts decoding the recording in the background during
+  // analysis, instead of only starting once the results screen mounts.
+  if(phase==='analyzing' || ((phase==='feedback'||phase==='comparison')&&feedback)) {
+    const audioEl = audioURL && (
+      <audio ref={audioRef} src={audioURL} onEnded={()=>{setPlaying(false);setAudioProgress(0);}} style={{display:"none"}}/>
+    );
 
-  // ── FEEDBACK ────────────────────────────────────────────────────────────────
-  if((phase==='feedback'||phase==='comparison')&&feedback) {
+    if(phase==='analyzing') return (
+      <>
+        <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
+          <SequentialDots dotCount={dotCount}/>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>Analysing your voice…</p>
+          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Evaluating pace, pitch, tone, pauses, energy, range, and presence.</p>
+        </div>
+        {audioEl}
+      </>
+    );
+
     const isComparison=phase==='comparison';
     const RANGLES=DIMS.map((_,i)=>-90+i*(360/DIMS.length));
     const cx=100,cy=100,rMax=72;
@@ -622,6 +649,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     const WBARS=Array.from({length:60},(_,i)=>Math.max(0.08,Math.min(1,Math.sin(i/59*Math.PI)*0.65+0.25+Math.sin(i*4.7)*0.13+Math.cos(i*2.3)*0.11)));
     const scoreColor=s=>s>=80?T.gold:s>=70?"#7A9E84":T2.text3;
     return (
+    <>
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       {/* 1 HERO — Voice Mirror */}
       <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)",position:"relative",overflow:"hidden"}}>
@@ -656,12 +684,17 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       </div>
       {/* 2 HEAR IT BACK */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
-        {audioURL&&<audio ref={audioRef} src={audioURL} onEnded={()=>setPlaying(false)} style={{display:"none"}}/>}
         <div style={cs.label}>Hear it back</div>
         {playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
         <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:isDesktop?14:10}}>
+          <button onClick={()=>skip(-15)} title="Back 15s" style={{width:32,height:32,borderRadius:"50%",border:"0.5px solid "+T2.border,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,color:T2.text3}}>
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><path d="M4 4v4h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.6 12.5A6.5 6.5 0 1 0 5.5 6.5L4 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><text x="10" y="13.5" textAnchor="middle" fontSize="6.5" fontWeight="700" fill="currentColor" fontFamily="Inter, sans-serif">15</text></svg>
+          </button>
           <button onClick={togglePlay} style={{width:40,height:40,borderRadius:"50%",border:"none",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
             {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
+          </button>
+          <button onClick={()=>skip(15)} title="Forward 15s" style={{width:32,height:32,borderRadius:"50%",border:"0.5px solid "+T2.border,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,color:T2.text3}}>
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none" style={{transform:"scaleX(-1)"}}><path d="M4 4v4h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.6 12.5A6.5 6.5 0 1 0 5.5 6.5L4 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><text x="10" y="13.5" textAnchor="middle" fontSize="6.5" fontWeight="700" fill="currentColor" fontFamily="Inter, sans-serif" style={{transform:"scaleX(-1)",transformOrigin:"10px 10px"}}>15</text></svg>
           </button>
           <div style={{flex:1,position:"relative"}}>
             <div style={{display:"flex",position:"relative",height:isDesktop?28:42,marginBottom:4}}>
@@ -706,7 +739,11 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <div style={cs.label}>Your Voice Profile</div>
         <div style={{display:isDesktop?"flex":"block",gap:24,alignItems:"center"}}>
           <div style={{flexShrink:0,display:"flex",justifyContent:"center"}}>
-            <svg viewBox="0 0 200 200" width={isDesktop?200:170} height={isDesktop?200:170}>
+            {/* viewBox padded well beyond the 0-200 data box (labels sit at radius
+                116 from a center at 100,100, so at axis-aligned angles they land
+                up to 116 units from center — past the 200x200 box edges without
+                this margin, which was clipping "Range" and others) */}
+            <svg viewBox="-45 -45 290 290" width={isDesktop?200:170} height={isDesktop?200:170}>
               {[0.25,0.5,0.75,1].map((p,i)=><polygon key={i} points={gridPoly(p)} fill="none" stroke={T2.border} strokeWidth={p===1?"0.8":"0.5"}/>)}
               {RANGLES.map((a,i)=>{const[x,y]=rPt(100,a);return<line key={i} x1={cx} y1={cy} x2={x.toFixed(1)} y2={y.toFixed(1)} stroke={T2.border} strokeWidth="0.5"/>;})}
               <polygon points={dataPoly} fill="rgba(138,158,132,0.18)" stroke="rgba(82,112,96,0.7)" strokeWidth="1.5"/>
@@ -715,14 +752,17 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
             </svg>
           </div>
           <div style={{flex:1,display:"flex",flexDirection:"column",gap:10,marginTop:isDesktop?0:10}}>
-            {DIMS.map((d,i)=>{const sc=feedback.scores?.[d]||50;const prev=round1?.scores?.[d];const diff=prev?sc-prev:null;return(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
-                <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text,width:isDesktop?90:76,flexShrink:0}}>{d}</span>
-                <div style={{flex:1,height:4,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-                  <div style={{height:"100%",width:sc+"%",background:"linear-gradient(90deg,rgba(138,158,132,0.5),rgba(82,112,96,0.85))",borderRadius:2,transition:"width 1s ease"}}/>
+            {DIMS.map((d,i)=>{const sc=feedback.scores?.[d]||50;const prev=round1?.scores?.[d];const diff=prev?sc-prev:null;const isOpen=expandedDim===d;return(
+              <div key={i}>
+                <div onClick={()=>setExpandedDim(isOpen?null:d)} style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}}>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text,width:isDesktop?90:76,flexShrink:0,borderBottom:"1px dotted "+T2.text4}}>{d}</span>
+                  <div style={{flex:1,height:4,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:sc+"%",background:"linear-gradient(90deg,rgba(138,158,132,0.5),rgba(82,112,96,0.85))",borderRadius:2,transition:"width 1s ease"}}/>
+                  </div>
+                  <span style={{fontFamily:T.serif,fontSize:isDesktop?13:12,fontWeight:600,color:scoreColor(sc),width:24,textAlign:"right",flexShrink:0}}>{sc}</span>
+                  {diff!==null&&<span style={{fontFamily:T.sans,fontSize:10,color:diff>0?"rgba(82,112,96,0.9)":diff<0?"rgba(160,80,60,0.7)":T2.text4,width:22,flexShrink:0}}>{diff>0?`+${diff}`:diff===0?"":diff}</span>}
                 </div>
-                <span style={{fontFamily:T.serif,fontSize:isDesktop?13:12,fontWeight:600,color:scoreColor(sc),width:24,textAlign:"right",flexShrink:0}}>{sc}</span>
-                {diff!==null&&<span style={{fontFamily:T.sans,fontSize:10,color:diff>0?"rgba(82,112,96,0.9)":diff<0?"rgba(160,80,60,0.7)":T2.text4,width:22,flexShrink:0}}>{diff>0?`+${diff}`:diff===0?"":diff}</span>}
+                {isOpen&&<p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,margin:"4px 0 0",paddingLeft:isDesktop?100:86}}>{DIM_INFO[d]}</p>}
               </div>
             );})}
           </div>
@@ -822,24 +862,10 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           );})}
         </div>
       </div>
-      {/* 7 RETRY CTA */}
-      <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"22px 28px":"18px 20px",border:"0.5px solid rgba(138,158,132,0.15)",display:isDesktop?"flex":"block",alignItems:"center",gap:20}}>
-        <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginBottom:isDesktop?0:14}}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l2 5h5l-4 3 2 5-5-3.5-5 3.5 2-5-4-3h5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>
-        </div>
-        <div style={{flex:1,marginBottom:isDesktop?0:14}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>Ready for Round Two?</div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.65)",margin:0,lineHeight:1.5}}>Now that you know what to improve, try again while the feedback is fresh.</p>
-        </div>
-        <div style={{textAlign:isDesktop?"right":"left"}}>
-          <button onClick={()=>{setPhase('recording');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');}} style={{padding:"12px 24px",borderRadius:4,border:"none",background:"rgba(82,112,96,0.85)",color:"white",fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:8,whiteSpace:"nowrap"}}>
-            Improve My Score <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </button>
-          <div style={{fontFamily:T.sans,fontSize:10,color:"rgba(245,239,230,0.3)",marginTop:6}}>Expected gain: +10–20 points</div>
-        </div>
-      </div>
       <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Start over</button>
     </div>
+    {audioEl}
+    </>
     );
   }
 

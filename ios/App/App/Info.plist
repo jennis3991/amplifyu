@@ -25,7 +25,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Turn on your camera so AmplifyU can record your practice session and coach you on how your body language and presence communicate confidence and impact.</string>
+	<string>AmplifyU uses your camera in the Day 12 Simulation exercise to record a short self-practice video (60–90 seconds) so you can watch yourself back and improve your body language, eye contact, and presence. Recordings stay on your device and are never uploaded or shared.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Turn on your microphone so AmplifyU can listen to your practice session and coach you on how to communicate with greater clarity, confidence and impact.</string>
 	<key>UILaunchStoryboardName</key>
