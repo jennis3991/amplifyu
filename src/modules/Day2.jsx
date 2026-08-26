@@ -686,17 +686,8 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>Hear it back</div>
         {playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
-        <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:isDesktop?14:10}}>
-          <button onClick={()=>skip(-15)} title="Back 15s" style={{width:32,height:32,borderRadius:"50%",border:"0.5px solid "+T2.border,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,color:T2.text3}}>
-            <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><path d="M4 4v4h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.6 12.5A6.5 6.5 0 1 0 5.5 6.5L4 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><text x="10" y="13.5" textAnchor="middle" fontSize="6.5" fontWeight="700" fill="currentColor" fontFamily="Inter, sans-serif">15</text></svg>
-          </button>
-          <button onClick={togglePlay} style={{width:40,height:40,borderRadius:"50%",border:"none",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
-            {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
-          </button>
-          <button onClick={()=>skip(15)} title="Forward 15s" style={{width:32,height:32,borderRadius:"50%",border:"0.5px solid "+T2.border,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,color:T2.text3}}>
-            <svg width="15" height="15" viewBox="0 0 20 20" fill="none" style={{transform:"scaleX(-1)"}}><path d="M4 4v4h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.6 12.5A6.5 6.5 0 1 0 5.5 6.5L4 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><text x="10" y="13.5" textAnchor="middle" fontSize="6.5" fontWeight="700" fill="currentColor" fontFamily="Inter, sans-serif" style={{transform:"scaleX(-1)",transformOrigin:"10px 10px"}}>15</text></svg>
-          </button>
-          <div style={{flex:1,position:"relative"}}>
+        <div style={{marginBottom:isDesktop?14:10}}>
+          <div style={{position:"relative"}}>
             <div style={{display:"flex",position:"relative",height:isDesktop?28:42,marginBottom:4}}>
               {MARKERS.map((m,i)=>{
                 const approxSec=recMetrics?.elapsedSec?Math.round(m.pos*recMetrics.elapsedSec):null;
@@ -725,6 +716,17 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
               <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{recMetrics?.elapsedSec?`${Math.floor(recMetrics.elapsedSec/60)}:${String(recMetrics.elapsedSec%60).padStart(2,'0')}`:"1:30"}</span>
             </div>
           </div>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:14}}>
+            <button onClick={()=>skip(-15)} title="Back 15s" style={{width:32,height:32,borderRadius:"50%",border:"0.5px solid "+T2.border,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,color:T2.text3}}>
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><path d="M4 4v4h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.6 12.5A6.5 6.5 0 1 0 5.5 6.5L4 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><text x="10" y="13.5" textAnchor="middle" fontSize="6.5" fontWeight="700" fill="currentColor" fontFamily="Inter, sans-serif">15</text></svg>
+            </button>
+            <button onClick={togglePlay} style={{width:40,height:40,borderRadius:"50%",border:"none",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
+              {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
+            </button>
+            <button onClick={()=>skip(15)} title="Forward 15s" style={{width:32,height:32,borderRadius:"50%",border:"0.5px solid "+T2.border,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,color:T2.text3}}>
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none" style={{transform:"scaleX(-1)"}}><path d="M4 4v4h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.6 12.5A6.5 6.5 0 1 0 5.5 6.5L4 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><text x="10" y="13.5" textAnchor="middle" fontSize="6.5" fontWeight="700" fill="currentColor" fontFamily="Inter, sans-serif" style={{transform:"scaleX(-1)",transformOrigin:"10px 10px"}}>15</text></svg>
+            </button>
+          </div>
         </div>
         {rawText&&<div style={{marginTop:12,borderTop:"0.5px solid "+T2.border,paddingTop:10}}>
           <button onClick={()=>setShowTranscript(s=>!s)} style={{background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:5,fontFamily:T.sans,fontSize:10,color:T2.text3,fontWeight:500}}>
@@ -743,7 +745,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
                 116 from a center at 100,100, so at axis-aligned angles they land
                 up to 116 units from center — past the 200x200 box edges without
                 this margin, which was clipping "Range" and others) */}
-            <svg viewBox="-45 -45 290 290" width={isDesktop?200:170} height={isDesktop?200:170}>
+            <svg viewBox="-45 -45 290 290" width={isDesktop?248:210} height={isDesktop?248:210}>
               {[0.25,0.5,0.75,1].map((p,i)=><polygon key={i} points={gridPoly(p)} fill="none" stroke={T2.border} strokeWidth={p===1?"0.8":"0.5"}/>)}
               {RANGLES.map((a,i)=>{const[x,y]=rPt(100,a);return<line key={i} x1={cx} y1={cy} x2={x.toFixed(1)} y2={y.toFixed(1)} stroke={T2.border} strokeWidth="0.5"/>;})}
               <polygon points={dataPoly} fill="rgba(138,158,132,0.18)" stroke="rgba(82,112,96,0.7)" strokeWidth="1.5"/>
@@ -795,20 +797,6 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
               {feedback.wpmNote&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.55,margin:"10px 0 0",fontStyle:"italic"}}>{feedback.wpmNote}</p>}
             </div>
           )}
-          {/* Hedge count */}
-          {recMetrics.hedges >= 0 && (
-            <div style={{display:"flex",alignItems:"center",gap:16,background:T2.bg,borderRadius:6,padding:"14px 16px",marginBottom:16}}>
-              <div>
-                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>Confidence hedges</div>
-                <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4}}>I think, maybe, perhaps…</div>
-              </div>
-              <div style={{marginLeft:"auto",textAlign:"right"}}>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?28:24,fontWeight:600,color:recMetrics.hedges===0?T.gold:recMetrics.hedges<=2?T2.text:"#B05C4A",lineHeight:1}}>{recMetrics.hedges}</div>
-                <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:2}}>{recMetrics.hedges===0?"Clean — no hedging":"detected"}</div>
-              </div>
-            </div>
-          )}
-          {feedback.confidenceNote&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0,fontStyle:"italic"}}>{feedback.confidenceNote}</p>}
         </div>
       )}
       {/* 3 WHAT CAME ACROSS WELL + BIGGEST OPPORTUNITY */}
@@ -824,7 +812,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
               <div style={{width:34,height:34,borderRadius:"50%",background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{item.icon}</div>
               <div>
                 <div style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontWeight:600,color:T2.text,marginBottom:2}}>{item.text}</div>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.4}}>{item.sub}</div>
+                <div style={{fontFamily:T.serif,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.5}}>{item.sub}</div>
               </div>
             </div>
           ))}
@@ -837,7 +825,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
             </div>
             <div>
               <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 8px"}}>{feedback.improve?.[0]?.title||"Vary your pace deliberately."}</p>
-              <p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>{feedback.improve?.[0]?.detail||"Slow down on your most important ideas to give them weight."}</p>
+              <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.6,margin:0}}>{feedback.improve?.[0]?.detail||"Slow down on your most important ideas to give them weight."}</p>
             </div>
           </div>
         </div>
