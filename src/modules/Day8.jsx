@@ -794,6 +794,21 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
     });
   }
 
+  // ── Delete confirmation — first tap arms a 3s confirm window, second tap deletes
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const confirmDeleteTimerRef = useRef(null);
+  useEffect(() => () => clearTimeout(confirmDeleteTimerRef.current), []);
+  function handleDeleteClick(id) {
+    clearTimeout(confirmDeleteTimerRef.current);
+    if (confirmDeleteId === id) {
+      setConfirmDeleteId(null);
+      deleteStory(id);
+    } else {
+      setConfirmDeleteId(id);
+      confirmDeleteTimerRef.current = setTimeout(() => setConfirmDeleteId(null), 3000);
+    }
+  }
+
   function loadStory(entry) {
     setPendingStory(null);
     setResult({ storyWorld: entry.storyWorld, scenes: entry.scenes, story: entry.story, coverTitle: entry.coverTitle, coverSubtitle: entry.coverSubtitle });
@@ -805,6 +820,20 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
     setActiveScene(0);
     setPhase('results');
   }
+
+  // Picks up a "My Saved Work" card click from the Toolkit tab — a pending
+  // load flag written just before navigation, consumed once here on mount.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('au1_pending_load');
+      if (!raw) return;
+      const pending = JSON.parse(raw);
+      if (pending?.source !== 'speechwriter') return;
+      localStorage.removeItem('au1_pending_load');
+      const entry = savedStories.find(s => s.id === pending.id && s.source === 'speechwriter');
+      if (entry) loadStory(entry);
+    } catch {}
+  }, []);
 
   const EXAMPLE_BRIEFS = [
     "A TED-style pitch for a new product — emotional, direct, show real human impact",
@@ -938,15 +967,18 @@ Return ONLY valid JSON:
           </button>
           {storiesOpen && (
             <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
-              {myStories.map(s=>(
-                <div key={s.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
-                  <button onClick={()=>loadStory(s)} style={{flex:1,minWidth:0,textAlign:"left",background:"none",border:"none",padding:isDesktop?"12px 18px":"11px 16px",cursor:"pointer",display:"flex",flexDirection:"column",gap:2}}>
-                    <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{s.coverTitle || s.storyWorld?.subject || "Untitled story"}</span>
-                    <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(s.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</span>
-                  </button>
-                  <button onClick={()=>deleteStory(s.id)} title="Delete story" style={{background:"none",border:"none",cursor:"pointer",color:T2.text4,fontSize:18,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1}}>×</button>
-                </div>
-              ))}
+              {myStories.map(s=>{
+                const confirming = confirmDeleteId === s.id;
+                return (
+                  <div key={s.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
+                    <button onClick={()=>loadStory(s)} style={{flex:1,minWidth:0,textAlign:"left",background:"none",border:"none",padding:isDesktop?"12px 18px":"11px 16px",cursor:"pointer",display:"flex",flexDirection:"column",gap:2}}>
+                      <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{s.coverTitle || s.storyWorld?.subject || "Untitled story"}</span>
+                      <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(s.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</span>
+                    </button>
+                    <button onClick={()=>handleDeleteClick(s.id)} title={confirming?"Tap again to delete":"Delete"} style={{background:"none",border:"none",cursor:"pointer",color:confirming?"#b05c4a":T2.text4,fontSize:confirming?11:18,fontWeight:confirming?700:400,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1,whiteSpace:"nowrap",transition:"all 0.15s"}}>{confirming?"Confirm?":"×"}</button>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -1330,6 +1362,21 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
     });
   }
 
+  // ── Delete confirmation — first tap arms a 3s confirm window, second tap deletes
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const confirmDeleteTimerRef = useRef(null);
+  useEffect(() => () => clearTimeout(confirmDeleteTimerRef.current), []);
+  function handleDeleteClick(id) {
+    clearTimeout(confirmDeleteTimerRef.current);
+    if (confirmDeleteId === id) {
+      setConfirmDeleteId(null);
+      deleteStory(id);
+    } else {
+      setConfirmDeleteId(id);
+      confirmDeleteTimerRef.current = setTimeout(() => setConfirmDeleteId(null), 3000);
+    }
+  }
+
   const recRef    = useRef(null);
   const audioChunksRef = useRef([]);
   const timerRef  = useRef(null);
@@ -1475,15 +1522,18 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
           </button>
           {storiesOpen && (
             <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
-              {myStories.map(s=>(
-                <div key={s.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
-                  <div style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2}}>
-                    <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{s.coverTitle || s.storyWorld?.subject || "Untitled story"}</span>
-                    <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(s.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</span>
+              {myStories.map(s=>{
+                const confirming = confirmDeleteId === s.id;
+                return (
+                  <div key={s.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
+                    <div style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2}}>
+                      <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{s.coverTitle || s.storyWorld?.subject || "Untitled story"}</span>
+                      <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(s.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</span>
+                    </div>
+                    <button onClick={()=>handleDeleteClick(s.id)} title={confirming?"Tap again to delete":"Delete"} style={{background:"none",border:"none",cursor:"pointer",color:confirming?"#b05c4a":T2.text4,fontSize:confirming?11:18,fontWeight:confirming?700:400,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1,whiteSpace:"nowrap",transition:"all 0.15s"}}>{confirming?"Confirm?":"×"}</button>
                   </div>
-                  <button onClick={()=>deleteStory(s.id)} title="Delete story" style={{background:"none",border:"none",cursor:"pointer",color:T2.text4,fontSize:18,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1}}>×</button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

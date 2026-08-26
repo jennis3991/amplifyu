@@ -207,6 +207,20 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     setPhase('feedback');
   }
 
+  // Picks up a "My Saved Work" card click from the Toolkit tab — a pending
+  // load flag written just before navigation, consumed once here on mount.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('au1_pending_load');
+      if (!raw) return;
+      const pending = JSON.parse(raw);
+      if (pending?.source !== 'voice-analysis-day2') return;
+      localStorage.removeItem('au1_pending_load');
+      const entry = savedResults.find(r => r.id === pending.id && r.source === 'voice-analysis-day2');
+      if (entry) loadVoiceResult(entry);
+    } catch {}
+  }, []);
+
   const audioRef = useRef(null);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);

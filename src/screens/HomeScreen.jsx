@@ -101,7 +101,7 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
 }
 
 export function HomeScreen({done, cur, streak, onStart, roleId, activeRole,
-dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false}) {
+dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false, onOpenTab}) {
   const T2 = Object.assign({}, T, DK);
   const [selectedDay, setSelectedDay] = useState(cur);
   const [showAffordance, setShowAffordance] = useState(
@@ -170,6 +170,31 @@ finishDate + ".";
   const catProgress = getCategoryProgress(done);
   // ── shared blocks used in both layouts ──────────────────────────────────
   const storedAmbition = (() => { try { return localStorage.getItem("au1_ambition") || ""; } catch { return ""; } })();
+  const savedWorkCount = (() => {
+    try {
+      const stories = JSON.parse(localStorage.getItem("au1_stories") || "[]").length;
+      const toolkits = JSON.parse(localStorage.getItem("au1_toolkits") || "[]").length;
+      return stories + toolkits;
+    } catch { return 0; }
+  })();
+  const SavedWorkCard = () => (
+    <div style={{background:T2.surface,borderRadius:isDesktop?8:10,border:"0.5px solid "+T2.border,padding:isDesktop?"24px 28px":"18px 16px",display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
+      <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19V5a2 2 0 012-2h13a1 1 0 011 1v14" stroke={T.gold} strokeWidth="1.3"/><path d="M4 19a2 2 0 002 2h13a1 1 0 001-1v-1" stroke={T.gold} strokeWidth="1.3"/><path d="M8 7h8M8 11h5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>
+      </div>
+      <div style={{flex:1,minWidth:200}}>
+        <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,marginBottom:3}}>
+          {savedWorkCount>0 ? `${savedWorkCount} saved result${savedWorkCount!==1?"s":""} across your sessions` : "Nothing saved yet"}
+        </div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,margin:0}}>
+          {savedWorkCount>0 ? "Every day's saved work — Rehearsal, Simulation and results — lives in one place." : "Results you save from Day 2, 8, and 11's Simulation and Rehearsal steps will collect here."}
+        </p>
+      </div>
+      <button onClick={()=>onOpenTab && onOpenTab("mywork")} style={{padding:isDesktop?"11px 20px":"10px 16px",borderRadius:6,border:"none",background:T.ink,color:T.bg,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>
+        My Saved Work →
+      </button>
+    </div>
+  );
   const InsightCard = () => (
     <div style={{background:T2.cardDark,borderRadius:isDesktop?8:2,padding:isDesktop?"24px 28px":"22px 24px",position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",top:10,right:18,fontSize:72,lineHeight:1,color:"rgba(255,255,255,0.04)",fontFamily:T.serif}}>"</div>
@@ -416,6 +441,13 @@ finishDate + ".";
             </div>
           </section>
 
+          {/* ── Your Saved Work ── */}
+          <section style={{ padding: "0 88px 56px" }}>
+            <div style={{ fontSize: 9.5, fontWeight: 500, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", fontFamily: T.sans, marginBottom: 10 }}>Your Saved Work</div>
+            <div style={{ width: 20, height: 1, background: T.gold, opacity: 0.5, marginBottom: 24 }}/>
+            <SavedWorkCard/>
+          </section>
+
         </div>
 
       </div>
@@ -534,6 +566,13 @@ finishDate + ".";
             </div>
           )}
         </div>
+      </section>
+
+      {/* ── SECTION 5: Your Saved Work ── */}
+      <section style={{padding:"0 24px 56px",background:T2.bg}}>
+        <div style={{fontSize:11,fontWeight:500,color:T.gold,textTransform:"uppercase",letterSpacing:"3px",fontFamily:T.sans,marginBottom:10}}>Your Saved Work</div>
+        <div style={{width:20,height:1,background:T.gold,marginBottom:24,opacity:0.5}}/>
+        <SavedWorkCard/>
       </section>
 
     </div>

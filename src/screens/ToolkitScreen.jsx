@@ -1,8 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 import { FURTHER_READING, PHRASES, SAY_THIS, QUICK_PREP, DAILY_INSIGHTS, POWER_PHRASES } from '../data.js';
 import { Scene } from '../scenes.jsx';
 import { PracticeSpace } from '../modules/PracticeSpace.jsx';
+
+// ─── My Saved Work — aggregates every day's saved-results store into one list ──
+// Two localStorage keys hold everything: au1_stories (Day 8's two sources) and
+// au1_toolkits (Day 2 and Day 11's three sources). Each source keeps its own
+// independent cap, enforced by its own widget — this view only reads/deletes,
+// it never writes new entries or touches caps.
+function loadSavedWork() {
+  let stories = [], toolkits = [];
+  try { stories = JSON.parse(localStorage.getItem("au1_stories") || "[]"); } catch {}
+  try { toolkits = JSON.parse(localStorage.getItem("au1_toolkits") || "[]"); } catch {}
+  return [...stories, ...toolkits].sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
+}
+const SAVED_WORK_KEY = { 'speechwriter':'au1_stories', 'rehearsal':'au1_stories', 'brand-rehearsal':'au1_toolkits', 'linkedin-audit':'au1_toolkits', 'voice-analysis-day2':'au1_toolkits' };
+const SAVED_WORK_SOURCES = {
+  'voice-analysis-day2': {
+    dayLabel: "Day 2 · Voice", clickable: true, day: 2, step: "Simulation",
+    icon: c => <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={c} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg>,
+    getTitle: e => e.result?.headline || e.prompt || "Voice analysis",
+    getPreview: e => e.result?.subtitle || (e.transcript ? e.transcript.slice(0,140) : ""),
+    getBadge: e => typeof e.result?.overall === 'number' ? `${e.result.overall}/100` : null,
+  },
+  'brand-rehearsal': {
+    dayLabel: "Day 11 · Rehearsal", clickable: true, day: 11, step: "Rehearsal",
+    icon: c => <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={c} strokeWidth="1.3" strokeLinejoin="round"/></svg>,
+    getTitle: e => (e.strengths||[]).slice(0,2).join(', ') || "Professional Signature",
+    getPreview: e => e.statement || (e.signature ? e.signature.slice(0,140) : ""),
+    getBadge: () => null,
+  },
+  'linkedin-audit': {
+    dayLabel: "Day 11 · LinkedIn", clickable: true, day: 11, step: "Simulation",
+    icon: c => <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="14" rx="2" stroke={c} strokeWidth="1.3"/><circle cx="8" cy="10" r="2" stroke={c} strokeWidth="1.3"/><path d="M5 15c0-1.5 1.3-2.5 3-2.5s3 1 3 2.5" stroke={c} strokeWidth="1.3" strokeLinecap="round"/><path d="M13 8h3M13 11h3" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg>,
+    getTitle: e => e.headline || "Untitled toolkit",
+    getPreview: e => (e.about||"").split(/\n+/)[0]?.slice(0,140) || "",
+    getBadge: e => e.cv ? "CV included" : null,
+  },
+  'speechwriter': {
+    dayLabel: "Day 8 · Story Lab", clickable: true, day: 8, step: "Simulation",
+    icon: c => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 19V5a2 2 0 012-2h13a1 1 0 011 1v14" stroke={c} strokeWidth="1.3"/><path d="M4 19a2 2 0 002 2h13a1 1 0 001-1v-1" stroke={c} strokeWidth="1.3"/><path d="M8 7h8M8 11h5" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg>,
+    getTitle: e => e.coverTitle || e.storyWorld?.subject || "Untitled story",
+    getPreview: e => e.coverSubtitle || (e.story ? e.story.slice(0,140) : ""),
+    getBadge: () => null,
+  },
+  'rehearsal': {
+    dayLabel: "Day 8 · Rehearsal", clickable: false, day: 8, step: "Rehearsal",
+    icon: c => <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={c} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg>,
+    getTitle: e => e.coverTitle || "Untitled story",
+    getPreview: e => e.coachObservation || (e.beats?.[0] ? e.beats[0].slice(0,140) : ""),
+    getBadge: () => null,
+  },
+};
 
 export function ToolkitScreen({onQuickPrep, onStartSession, dark=false, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
@@ -24,13 +74,41 @@ export function ToolkitScreen({onQuickPrep, onStartSession, dark=false, DK={}, i
   function copy(p) { try{navigator.clipboard?.writeText(p);}catch{} 
 setCopied(p); setTimeout(()=>setCopied(null),2000); }
   function toggleSave(p) {
-    const next = saved.includes(p) ? saved.filter(x=>x!==p) : [...saved, 
+    const next = saved.includes(p) ? saved.filter(x=>x!==p) : [...saved,
 p];
     setSaved(next);
-    try { localStorage.setItem("au1_saved_phrases", JSON.stringify(next)); 
+    try { localStorage.setItem("au1_saved_phrases", JSON.stringify(next));
 } catch {}
   }
-  const toolkitTabs = [["aitools","AI Tools"],["practice","Practice Space"],["story","My Story"],["sayThis","Say This Instead"],["phrases","Phrases"],["saved","♥ Saved"+(saved.length>0?" ("+saved.length+")":"")],["reading","Reading List"],["prep","Quick Prep"]];
+
+  // ── My Saved Work ────────────────────────────────────────────────────────
+  const [allSaved, setAllSaved] = useState(() => loadSavedWork());
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const confirmDeleteTimerRef = useRef(null);
+  useEffect(() => { if (tab === "mywork") setAllSaved(loadSavedWork()); }, [tab]);
+  function handleDeleteWork(entry) {
+    clearTimeout(confirmDeleteTimerRef.current);
+    if (confirmDeleteId === entry.id) {
+      setConfirmDeleteId(null);
+      const key = SAVED_WORK_KEY[entry.source];
+      try {
+        const list = JSON.parse(localStorage.getItem(key) || "[]").filter(e => e.id !== entry.id);
+        localStorage.setItem(key, JSON.stringify(list));
+      } catch {}
+      setAllSaved(prev => prev.filter(e => e.id !== entry.id));
+    } else {
+      setConfirmDeleteId(entry.id);
+      confirmDeleteTimerRef.current = setTimeout(() => setConfirmDeleteId(null), 3000);
+    }
+  }
+  function openSavedWork(entry) {
+    const cfg = SAVED_WORK_SOURCES[entry.source];
+    if (!cfg?.clickable) return;
+    try { localStorage.setItem("au1_pending_load", JSON.stringify({ source: entry.source, id: entry.id })); } catch {}
+    onStartSession && onStartSession(cfg.day, cfg.step);
+  }
+
+  const toolkitTabs = [["aitools","AI Tools"],["mywork","My Saved Work"+(allSaved.length>0?" ("+allSaved.length+")":"")],["practice","Practice Space"],["story","My Story"],["sayThis","Say This Instead"],["phrases","Phrases"],["saved","♥ Saved"+(saved.length>0?" ("+saved.length+")":"")],["reading","Reading List"],["prep","Quick Prep"]];
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}}>
       {!isDesktop && (
@@ -414,6 +492,48 @@ p];
           </div>
         );
       })()}
+      {tab==="mywork" && (
+        <div style={isDesktop?{maxWidth:720,margin:"0 auto",padding:"32px 88px 80px"}:{padding:"16px 20px 60px"}}>
+          {allSaved.length===0 ? (
+            <div style={{textAlign:"center",padding:"40px 20px"}}>
+              <div style={{fontSize:32,marginBottom:12}}>📁</div>
+              <div style={{fontFamily:T.serif,fontSize:18,fontWeight:700,color:T2.text,marginBottom:8}}>Nothing saved yet</div>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6}}>Results you save from Day 2, Day 8, and Day 11's Simulation and Rehearsal steps will collect here.</p>
+            </div>
+          ) : (
+            <>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300,marginBottom:isDesktop?24:16}}>{allSaved.length} saved result{allSaved.length!==1?"s":""} across the programme.</p>
+              <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                {allSaved.map(entry => {
+                  const cfg = SAVED_WORK_SOURCES[entry.source];
+                  if (!cfg) return null;
+                  const confirming = confirmDeleteId === entry.id;
+                  const title = cfg.getTitle(entry);
+                  const preview = cfg.getPreview(entry);
+                  const badge = cfg.getBadge(entry);
+                  return (
+                    <div key={entry.id} style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,display:"flex",alignItems:"stretch",overflow:"hidden"}}>
+                      <div onClick={()=>openSavedWork(entry)} style={{flex:1,minWidth:0,padding:isDesktop?"16px 18px":"14px 16px",display:"flex",gap:12,alignItems:"flex-start",cursor:cfg.clickable?"pointer":"default"}}>
+                        <div style={{width:32,height:32,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>{cfg.icon(T.gold)}</div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:3,flexWrap:"wrap"}}>
+                            <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.2px"}}>{cfg.dayLabel}</span>
+                            {badge && <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text3,background:T2.bg,border:"0.5px solid "+T2.border,borderRadius:10,padding:"1px 7px"}}>{badge}</span>}
+                          </div>
+                          <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500,marginBottom:preview?3:0}}>{title}</div>
+                          {preview && <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.45}}>{preview}</div>}
+                          <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:5}}>{new Date(entry.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</div>
+                        </div>
+                      </div>
+                      <button onClick={()=>handleDeleteWork(entry)} title={confirming?"Tap again to delete":"Delete"} style={{background:"none",border:"none",cursor:"pointer",color:confirming?"#b05c4a":T2.text4,fontSize:confirming?11:18,fontWeight:confirming?700:400,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1,alignSelf:"center",whiteSpace:"nowrap",transition:"all 0.15s"}}>{confirming?"Confirm?":"×"}</button>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </div>
+      )}
       {tab==="practice" && (
         <div style={isDesktop?{maxWidth:720,margin:"0 auto",padding:"24px 88px 80px"}:{padding:"0 20px 60px"}}>
           <PracticeSpace T2={Object.assign({},T,DK)} isDesktop={isDesktop}/>

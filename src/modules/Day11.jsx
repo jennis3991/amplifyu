@@ -117,6 +117,20 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
     setPhase('results');
   }
 
+  // Picks up a "My Saved Work" card click from the Toolkit tab — a pending
+  // load flag written just before navigation, consumed once here on mount.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('au1_pending_load');
+      if (!raw) return;
+      const pending = JSON.parse(raw);
+      if (pending?.source !== 'brand-rehearsal') return;
+      localStorage.removeItem('au1_pending_load');
+      const entry = savedToolkits.find(t => t.id === pending.id && t.source === 'brand-rehearsal');
+      if (entry) loadRehearsalToolkit(entry);
+    } catch {}
+  }, []);
+
   const recognitionRef  = useRef(null);
   const audioChunksRef  = useRef([]);
   const timerRef        = useRef(null);
@@ -586,6 +600,20 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
     if (t.cv) { setCvResult(t.cv); setCvPhase('done'); } else { setCvResult(''); setCvPhase('idle'); }
     setPhase('toolkit');
   }
+
+  // Picks up a "My Saved Work" card click from the Toolkit tab — a pending
+  // load flag written just before navigation, consumed once here on mount.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('au1_pending_load');
+      if (!raw) return;
+      const pending = JSON.parse(raw);
+      if (pending?.source !== 'linkedin-audit') return;
+      localStorage.removeItem('au1_pending_load');
+      const entry = savedToolkits.find(t => t.id === pending.id && t.source === 'linkedin-audit');
+      if (entry) loadSimToolkit(entry);
+    } catch {}
+  }, []);
 
   const checkRef   = useRef(null);
   const rewriteRef = useRef(null);
