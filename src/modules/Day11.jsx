@@ -491,6 +491,7 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
   const [toolkitsOpen, setToolkitsOpen] = useState(false);
   const [pendingToolkit, setPendingToolkit] = useState(null);
   const [savedToolkitId, setSavedToolkitId] = useState(null);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   function saveToolkit(ar) {
     const entry = {
@@ -762,29 +763,51 @@ Keep it under 280 words. Make every word earn its place.`;
       { id: 'screenshot', label: 'Upload Screenshots',  recommended: false },
       { id: 'cv',         label: 'Upload CV',           recommended: false },
     ];
+    // Same completion signal already used to gate the "My Rehearsal" tab/default
+    // above (a real, non-fallback Rehearsal result — saveBrandRehearsal only
+    // ever fires on the success path in D11PracticeWidget.runAnalysis).
+    const rehearsalReady = !!latestRehearsalToolkit;
+    const howItWorksStep = rehearsalReady ? 2 : 1;
+    const targetTabId = tabs.some(t => t.id === inputMode) ? inputMode : (rehearsalReady ? 'summary' : 'screenshot');
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 18 : 16, animation: "fadeUp 0.5s ease both" }}>
 
-        {/* HOW IT WORKS — modeled on Day 1 Simulation's icon-row explainer */}
+        {/* HOW IT WORKS — dynamic progress indicator, checkmark style matches the top step-progress bar */}
         <div style={{ background: T2.surface || "rgba(255,255,255,0.025)", borderRadius: 4, border: "0.5px solid " + T2.border, padding: isDesktop ? "22px 24px" : "18px 20px" }}>
           <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 6 }}>How it works</div>
           <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 28 : 22, fontWeight: 600, color: T2.text, lineHeight: 1.2, marginBottom: isDesktop ? 20 : 16 }}>Four steps to a brand-aligned LinkedIn.</h2>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 0 }}>
             {[
-              { n: 1, label: "Rehearsal feeds your brand insight", icon: <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg> },
-              { n: 2, label: "Add your LinkedIn or CV",            icon: <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="14" rx="2" stroke={T.gold} strokeWidth="1.3"/><circle cx="8" cy="10" r="2" stroke={T.gold} strokeWidth="1.3"/><path d="M5 15c0-1.5 1.3-2.5 3-2.5s3 1 3 2.5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><path d="M13 8h3M13 11h3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg> },
-              { n: 3, label: "AI audits it against your brand",    icon: <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="10" cy="10" r="6" stroke={T.gold} strokeWidth="1.3"/><path d="M14.5 14.5L19 19" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/><path d="M7.5 10l1.5 1.5 3-3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-              { n: 4, label: "Get your improved brand toolkit",    icon: <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 2l1.8 3.7 4.1.6-3 2.9.7 4.1L11 11.3 7.4 13.3l.7-4.1-3-2.9 4.1-.6L11 2z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg> },
-            ].map((s, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", flex: 1 }}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
-                  <div style={{ width: isDesktop?48:36, height: isDesktop?48:36, borderRadius: "50%", background: "rgba(138,158,132,0.08)", border: "0.5px solid rgba(138,158,132,0.25)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: isDesktop?8:6 }}>{s.icon}</div>
-                  <div style={{ fontFamily: T.sans, fontSize: isDesktop?9:8, fontWeight: 700, color: T.gold, marginBottom: 3 }}>{s.n}</div>
-                  <div style={{ fontFamily: T.sans, fontSize: isDesktop?12:9, color: T2.text2, textAlign: "center", lineHeight: 1.3, maxWidth: isDesktop?76:52 }}>{s.label}</div>
+              { n: 1, label: "Rehearsal feeds your brand insight", icon: c => <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={c} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg> },
+              { n: 2, label: "Add your LinkedIn or CV",            icon: c => <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="14" rx="2" stroke={c} strokeWidth="1.3"/><circle cx="8" cy="10" r="2" stroke={c} strokeWidth="1.3"/><path d="M5 15c0-1.5 1.3-2.5 3-2.5s3 1 3 2.5" stroke={c} strokeWidth="1.3" strokeLinecap="round"/><path d="M13 8h3M13 11h3" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg> },
+              { n: 3, label: "AI audits it against your brand",    icon: c => <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="10" cy="10" r="6" stroke={c} strokeWidth="1.3"/><path d="M14.5 14.5L19 19" stroke={c} strokeWidth="1.3" strokeLinecap="round"/><path d="M7.5 10l1.5 1.5 3-3" stroke={c} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+              { n: 4, label: "Get your improved brand toolkit",    icon: c => <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 2l1.8 3.7 4.1.6-3 2.9.7 4.1L11 11.3 7.4 13.3l.7-4.1-3-2.9 4.1-.6L11 2z" stroke={c} strokeWidth="1.3" strokeLinejoin="round"/></svg> },
+            ].map((s, i) => {
+              const status = s.n < howItWorksStep ? 'done' : s.n === howItWorksStep ? 'active' : 'upcoming';
+              const iconColor   = status === 'upcoming' ? T2.text4 : T.gold;
+              const circleBg    = status === 'done' ? "rgba(200,164,106,0.15)" : status === 'active' ? "rgba(200,164,106,0.09)" : "transparent";
+              const circleBorder= status === 'upcoming' ? T2.border : T.gold;
+              const numColor    = status === 'upcoming' ? T2.text4 : T.gold;
+              const labelColor  = status === 'active' ? T.gold : status === 'upcoming' ? T2.text4 : T2.text2;
+              const lineCol     = status === 'upcoming' ? "rgba(138,158,132,0.12)" : "rgba(138,158,132,0.2)";
+              return (
+                <div key={i} style={{ display: "flex", alignItems: "center", flex: 1 }}>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1, opacity: status === 'upcoming' ? 0.5 : 1, transition: "opacity 0.3s" }}>
+                    <div style={{ width: isDesktop?48:36, height: isDesktop?48:36, borderRadius: "50%", background: circleBg, border: `${status === 'active' ? 1.5 : 0.5}px solid ${circleBorder}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: isDesktop?8:6, boxShadow: status === 'active' ? "0 0 0 3px rgba(200,164,106,0.12)" : "none", transition: "all 0.3s" }}>
+                      {status === 'done'
+                        ? <svg width={isDesktop?16:13} height={isDesktop?16:13} viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4" stroke={T.gold} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        : s.icon(iconColor)}
+                    </div>
+                    <div style={{ fontFamily: T.sans, fontSize: isDesktop?9:8, fontWeight: 700, color: numColor, marginBottom: 3 }}>{s.n}</div>
+                    <div style={{ fontFamily: T.sans, fontSize: isDesktop?12:9, color: labelColor, fontWeight: status === 'active' ? 700 : 400, textAlign: "center", lineHeight: 1.3, maxWidth: isDesktop?76:52 }}>{s.label}</div>
+                    {status === 'active' && s.n === 2 && (
+                      <span style={{ fontFamily: T.sans, fontSize: isDesktop?12:10, color: T.gold, marginTop: 3, lineHeight: 1 }} aria-hidden="true">↓</span>
+                    )}
+                  </div>
+                  {i < 3 && <div style={{ height: 1, width: isDesktop?12:5, background: lineCol, flexShrink: 0, marginBottom: isDesktop?30:24 }}/>}
                 </div>
-                {i < 3 && <div style={{ height: 1, width: isDesktop?12:5, background: "rgba(138,158,132,0.2)", flexShrink: 0, marginBottom: isDesktop?30:24 }}/>}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -824,6 +847,13 @@ Keep it under 280 words. Make every word earn its place.`;
           </div>
         )}
 
+        <div style={{ display: "flex", gap: 6, marginBottom: -2 }}>
+          {tabs.map(tab => (
+            <div key={tab.id} style={{ flex: 1, display: "flex", justifyContent: "center", visibility: tab.id === targetTabId ? "visible" : "hidden" }}>
+              <span style={{ fontSize: isDesktop ? 13 : 11, color: T.gold, lineHeight: 1 }} aria-hidden="true">▾</span>
+            </div>
+          ))}
+        </div>
         <div style={{ display: "flex", gap: 6 }}>
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setInputMode(inputMode === tab.id ? 'paste' : tab.id)}
@@ -902,15 +932,23 @@ Keep it under 280 words. Make every word earn its place.`;
           <button onClick={runAnalysis} disabled={!hasProfile} style={{ ...cta(!hasProfile), flex: 1 }}>
             {"✦  Analyse My LinkedIn →"}
           </button>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4, background: "rgba(44,36,22,0.04)", border: "0.5px solid rgba(44,36,22,0.12)", borderRadius: 6, padding: "10px 16px", flexShrink: 0 }}>
+          <button onClick={() => setPrivacyOpen(v => !v)} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4, background: privacyOpen ? "rgba(44,36,22,0.08)" : "rgba(44,36,22,0.04)", border: "0.5px solid rgba(44,36,22,0.12)", borderRadius: 6, padding: "10px 16px", flexShrink: 0, cursor: "pointer", fontFamily: T.sans }}>
             <svg width="16" height="18" viewBox="0 0 16 20" fill="none" style={{ opacity: 0.55 }}>
               <path d="M8 1L1 4v6c0 5 3.5 8.5 7 9.5C11.5 18.5 15 15 15 10V4L8 1Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
               <path d="M5 10l2.5 2.5L11 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             <span style={{ ...sn, fontSize: 10, color: T2.text3, fontWeight: 600, textAlign: "center", lineHeight: 1.3 }}>100% Private</span>
-            <span style={{ ...sn, fontSize: 10, color: T2.text4, textAlign: "center", lineHeight: 1.3 }}>Never shared.</span>
-          </div>
+            <span style={{ ...sn, fontSize: 10, color: T2.text4, textAlign: "center", lineHeight: 1.3 }}>{privacyOpen ? "Tap to close" : "Never shared."}</span>
+          </button>
         </div>
+
+        {privacyOpen && (
+          <div style={{ background: "rgba(44,36,22,0.04)", border: "0.5px solid rgba(44,36,22,0.12)", borderRadius: 6, padding: isDesktop ? "14px 16px" : "12px 14px", animation: "fadeUp 0.25s ease both" }}>
+            <p style={{ ...sn, fontSize: isDesktop ? 12 : 11, color: T2.text3, lineHeight: 1.6, margin: 0 }}>
+              Your LinkedIn or CV content is only sent to generate your Brand Toolkit — it's never stored on our servers. Your finished toolkit is saved locally on your device only.
+            </p>
+          </div>
+        )}
       </div>
     );
   }
