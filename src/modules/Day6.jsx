@@ -77,9 +77,12 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
 
   const dotCount  = useSequentialDots(phase === 'ready');
 
+  // Block the app's "Next"/"Simulation" nav until the rehearsal is genuinely
+  // complete (coach result shown) — not just while actively recording, so a
+  // user can't skip the rehearsal entirely via the top-level nav.
   useEffect(() => {
-    onRecordingChange?.(isRec || phase === 'analyzing');
-  }, [isRec, phase]);
+    onRecordingChange?.(phase !== 'coach');
+  }, [phase]);
 
   // Waveform animation during recording
   useEffect(() => {
@@ -439,10 +442,18 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const audioChunksRef   = useRef([]);
   const timerRef         = useRef(null);
   const purposeForAnalysis = useRef('');
+  // Defense-in-depth against submitAnswer being re-entered for the same
+  // question (e.g. a double-tap landing before React unmounts the Submit
+  // button) — belt-and-braces alongside the immediate phase transition below.
+  const submittingRef    = useRef(false);
 
+  // Block the app's "Next"/"Review" nav until the simulation is genuinely
+  // complete (final results shown) — not just while actively recording or
+  // between questions, so a user can't skip straight to review before
+  // finishing all questions.
   useEffect(() => {
-    onRecordingChange?.(isListening || phase === 'analyzing' || (phase === 'per-feedback' && perFeedLoading) || phase === 'reviewing');
-  }, [isListening, phase, perFeedLoading]);
+    onRecordingChange?.(phase !== 'results');
+  }, [phase]);
 
   // Stop any in-flight recording if the widget unmounts mid-answer
   useEffect(() => () => {
@@ -481,7 +492,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
     setPhase('questions');
   }
 
-  function startSim(){setQIdx(0);setAnswers([]);setCurrentAnswer('');setRecTime(0);setPhase('simulation');}
+  function startSim(){submittingRef.current=false;setQIdx(0);setAnswers([]);setCurrentAnswer('');setRecTime(0);setPhase('simulation');}
 
   function startListening(){
     setMicError(false); setTranscribeFailed(false);
@@ -558,19 +569,33 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   }
 
   function submitAnswer(){
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     const mr = mediaRecRef.current;
+    // Leave the 'simulation' phase immediately — before the async
+    // finalize/transcribe chain — so the Submit button unmounts on the very
+    // first tap. It previously stayed mounted through the whole transcribe
+    // round-trip, so an eager second tap could re-enter this function after
+    // finalizeRecording had already nulled mediaRecRef, taking the
+    // "nothing recorded" branch and submitting an empty answer — which then
+    // flashed on screen until the real transcription silently overwrote it
+    // a moment later.
+    setPerFeedback(null);
+    setPerFeedLoading(true);
+    setPhase('per-feedback');
     if (!mr || mr.state === 'inactive') {
       proceedAnswer(fallbackText.trim());
       return;
     }
     setIsListening(false);
     finalizeRecording((text, failed) => {
-      if (failed) { setTranscribeFailed(true); return; }
+      if (failed) { submittingRef.current = false; setTranscribeFailed(true); setPhase('simulation'); return; }
       proceedAnswer(text || fallbackText.trim());
     });
   }
 
   function continueToNext(){
+    submittingRef.current = false;
     setCurrentAnswer('');setRecTime(0);setPerFeedback(null);
     setMicError(false);setTranscribeFailed(false);setFallbackText('');
     mediaRecRef.current=null;audioChunksRef.current=[];
