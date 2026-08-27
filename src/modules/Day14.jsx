@@ -41,10 +41,10 @@ export function D14LoopDiagram({ T, T2, isDesktop }) {
   // and the connecting arrows are drawn as literal arcs of that same circle,
   // so the whole loop reads as one continuous ring rather than a squashed
   // oval with disjointed corner curves.
-  const W = isDesktop ? 440 : 290, H = isDesktop ? 320 : 210;
-  const cx = W / 2, cy = H / 2;
-  const R = isDesktop ? 125 : 78;
-  const angleInset = isDesktop ? 13 : 15; // degrees trimmed off each end so arcs clear the pills
+  const W = isDesktop ? 520 : 320, H = isDesktop ? 380 : 245;
+  const cx = W / 2, cy = isDesktop ? 200 : 130;
+  const R = isDesktop ? 150 : 92;
+  const angleInset = isDesktop ? 20 : 22; // degrees trimmed off each end so the visible arc sits mostly in the open gap between pills
 
   const angle = (i) => -90 + i * 72;
   const ptAt = (deg) => {
@@ -80,7 +80,9 @@ export function D14LoopDiagram({ T, T2, isDesktop }) {
           position: 'absolute', left: (pts[i].x / W * 100) + '%', top: (pts[i].y / H * 100) + '%', transform: 'translate(-50%,-50%)',
           display: 'flex', alignItems: 'center', gap: isDesktop ? 10 : 6,
           padding: isDesktop ? '10px 20px' : '6px 12px', borderRadius: 24,
-          background: 'rgba(138,158,132,0.12)', border: '0.5px solid rgba(138,158,132,0.35)',
+          // Solid (not translucent) fill — the arrows pass behind several of
+          // these pills, and a tinted rgba fill let the stroke show through.
+          background: T2.surface, border: '0.5px solid rgba(138,158,132,0.35)',
           whiteSpace: 'nowrap',
         }}>
           {s.icon(iconSize)}
