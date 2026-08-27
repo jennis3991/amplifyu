@@ -435,15 +435,64 @@ Return ONLY valid JSON:
         <h2 style={{fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:'0 0 14px'}}>
           Four conversations.<br/>Four personalities.
         </h2>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:'0 0 10px'}}>
-          Choose one connection habit to focus on, then navigate a realistic workplace conversation.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:'0 0 10px'}}>
-          Your AmplifyU Coach will assess how well you adapt your style and provide personalised feedback on your listening, curiosity, empathy and ability to build genuine rapport.
-        </p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:0}}>
-          Each conversation runs for <strong>3 back-and-forth exchanges</strong> — record your answer, wait a moment while they respond in character, then record your next answer. You'll see "Start Recording" appear three times in total.
-        </p>
+      </div>
+
+      {/* HOW IT WORKS — same 4-step icon format as Day 1's Simulation intro */}
+      <div style={{...cs.card,padding:isDesktop?'22px 24px':'18px 20px'}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:'uppercase',letterSpacing:'2px',marginBottom:6}}>How it works</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:isDesktop?20:16}}>A simple 4-step rapport check-in.</h2>
+        <div style={{display:'flex',alignItems:'flex-start',gap:0}}>
+          {[
+            {n:1,label:'Choose a character',              icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 18c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:2,label:'Speak naturally',                  icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3,label:'Realistic workplace conversation', icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 5h14a1 1 0 011 1v8a1 1 0 01-1 1H9l-4 3v-3H4a1 1 0 01-1-1V6a1 1 0 011-1z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:4,label:'AmplifyU coach feedback',          icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+          ].map((s,i)=>(
+            <div key={i} style={{display:'flex',alignItems:'center',flex:1}}>
+              <div style={{display:'flex',flexDirection:'column',alignItems:'center',flex:1}}>
+                <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:'50%',background:'rgba(138,158,132,0.08)',border:'0.5px solid rgba(138,158,132,0.25)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:isDesktop?8:6}}>{s.icon}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:T.gold,marginBottom:3}}>{s.n}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?12:9,color:T2.text2,textAlign:'center',lineHeight:1.3,maxWidth:isDesktop?80:60}}>{s.label}</div>
+              </div>
+              {i<3&&<div style={{height:1,width:isDesktop?12:5,background:'rgba(138,158,132,0.2)',flexShrink:0,marginBottom:isDesktop?30:24}}/>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* SECOND CARD — condensed explanation, same visual pattern as Day 1 */}
+      <div style={{...cs.card,padding:isDesktop?'26px 28px':'20px 20px'}}>
+        <h3 style={{fontFamily:T.serif,fontSize:isDesktop?24:16,fontWeight:600,color:T2.text,lineHeight:1.2,margin:'0 0 '+(isDesktop?'22px':'18px')}}>Adapt your style. Build genuine rapport.</h3>
+
+        {/* Point 1 — choose habit + navigate conversation */}
+        <div style={{display:'flex',alignItems:'flex-start',gap:isDesktop?16:12}}>
+          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:'50%',background:'rgba(138,158,132,0.08)',border:'0.5px solid rgba(138,158,132,0.25)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
+              <circle cx="10" cy="9" r="3.2" stroke={T.gold} strokeWidth="1.3"/>
+              <path d="M4.5 19c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/>
+              <path d="M18 5.3l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7.7-1.6z" fill={T.gold}/>
+              <path d="M20.5 11.2l.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4.4-.9z" fill={T.gold}/>
+            </svg>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
+            Choose a connection habit, then navigate a realistic workplace conversation. Your AmplifyU Coach gives personalised feedback on your <strong style={{color:T.gold,fontWeight:700}}>listening, curiosity, empathy and rapport</strong>.
+          </p>
+        </div>
+
+        <div style={{height:1,background:T2.divider,margin:isDesktop?'18px 0':'14px 0'}}/>
+
+        {/* Point 2 — the 3-exchange rhythm */}
+        <div style={{display:'flex',alignItems:'flex-start',gap:isDesktop?16:12}}>
+          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:'50%',background:'rgba(138,158,132,0.08)',border:'0.5px solid rgba(138,158,132,0.25)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none">
+              <path d="M4 10a7 7 0 0112-4.5M18 5v4h-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M18 12a7 7 0 01-12 4.5M4 17v-4h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
+            Each conversation runs <strong style={{color:T.gold,fontWeight:700}}>3 back-and-forth exchanges</strong> — record, wait for their in-character reply, then record again. You'll see "Start Recording" three times in total.
+          </p>
+        </div>
       </div>
       <div style={{...cs.card,borderLeft:'2px solid '+T.gold,padding:0,overflow:'hidden'}}>
         <button onClick={()=>setExOpen(o=>!o)} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',padding:isDesktop?'18px 22px':'14px 18px',background:'transparent',border:'none',cursor:'pointer',textAlign:'left',gap:12}}>
