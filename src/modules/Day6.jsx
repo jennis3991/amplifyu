@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 import { useWakeLock } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
+import { VoiceRecorder } from './VoiceRecorder.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -64,16 +65,8 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
   const [scenario,    setScenario]    = useState(null);
   const [isRec,       setIsRec]       = useState(false);
   useWakeLock(isRec);
-  const [waveVals,    setWaveVals]    = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [coachResult, setCoachResult] = useState(null);
   const [visCount,    setVisCount]    = useState(0);
-  const [micError,    setMicError]    = useState(false);
-  const [transcribeFailed, setTranscribeFailed] = useState(false);
-  const [fallbackText, setFallbackText] = useState('');
-
-  const mediaRecRef = useRef(null);
-  const audioChunksRef = useRef([]);
-  const waveRef     = useRef(null);
 
   const dotCount  = useSequentialDots(phase === 'ready');
 
@@ -84,69 +77,12 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
     onRecordingChange?.(phase !== 'coach');
   }, [phase]);
 
-  // Waveform animation during recording
-  useEffect(() => {
-    if (!isRec) { clearInterval(waveRef.current); return; }
-    waveRef.current = setInterval(() => setWaveVals(() => Array.from({length:9}, () => 0.2 + Math.random() * 0.8)), 150);
-    return () => clearInterval(waveRef.current);
-  }, [isRec]);
-
   // Sequential section reveal on coach screen (500ms between each)
   useEffect(() => {
     if (phase !== 'coach') { setVisCount(0); return; }
     const timers = [1,2,3,4,5,6].map((n, i) => setTimeout(() => setVisCount(n), i * 500));
     return () => timers.forEach(clearTimeout);
   }, [phase]);
-
-  function doStart() {
-    setIsRec(true);
-    setMicError(false); setTranscribeFailed(false);
-    audioChunksRef.current = [];
-    if (navigator.mediaDevices?.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
-        let mr;
-        try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
-        catch { mr = new MediaRecorder(stream); }
-        mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-        mr.start(1000);
-        mediaRecRef.current = mr;
-      }).catch(() => { setIsRec(false); setMicError(true); });
-    } else {
-      setIsRec(false); setMicError(true);
-    }
-  }
-
-  function stopRecording(cb) {
-    const mr = mediaRecRef.current;
-    if (!mr || mr.state === 'inactive') { cb('', true); return; }
-    mr.onstop = async () => {
-      mr.stream.getTracks().forEach(t => t.stop());
-      const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
-      try {
-        const b64 = await blobToB64(blob);
-        const res = await fetch('/api/transcribe', {
-          method: 'POST', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Transcription failed');
-        cb((data.text || '').trim(), false);
-      } catch (err) {
-        console.error('[D6FindYourWords] transcribe error:', err);
-        cb('', true);
-      }
-    };
-    try { mr.stop(); } catch(e) { cb('', true); }
-  }
-
-  function doStop() {
-    setIsRec(false);
-    stopRecording((text, failed) => {
-      if (failed) { setTranscribeFailed(true); return; }
-      setPhase('analyzing');
-      analyzeTranscript(text);
-    });
-  }
 
   async function analyzeTranscript(text) {
     try {
@@ -228,7 +164,7 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
       <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, fontStyle:'italic', margin:0, textAlign:'center'}}>
         Say what comes naturally. Don't filter it.
       </p>
-      <button onClick={() => { setPhase('rec'); doStart(); }}
+      <button onClick={() => setPhase('rec')}
         style={{...cs.cta, maxWidth:340, fontSize:isDesktop?15:14, padding:isDesktop?'14px 28px':'13px 24px'}}>
         Start Speaking →
       </button>
@@ -236,42 +172,18 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
   );
 
   // ── REC ───────────────────────────────────────────────────────────────────
+  // Canonical Day 1/4/5/7 pattern: hand off to the shared VoiceRecorder —
+  // sage circle, idle until tapped, never auto-starts.
   if (phase === 'rec') return (
     <div style={{display:'flex', flexDirection:'column', gap:isDesktop?18:14, alignItems:'center'}}>
       <div style={{...cs.card, width:'100%', boxSizing:'border-box', textAlign:'left'}}>
         <div style={cs.label}>Your Scenario</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.6, margin:0, fontStyle:'italic'}}>{scenario?.label}</p>
       </div>
-      <div style={{display:'flex', gap:4, alignItems:'center', height:44, padding:'0 8px'}}>
-        {waveVals.map((v, i) => (
-          <div key={i} style={{width:4, borderRadius:2, background:T.gold, height:(v * 36)+'px', transition:'height 0.12s ease', flexShrink:0, opacity:0.85}}/>
-        ))}
-      </div>
-      {isRec && <p style={{fontFamily:T.sans, fontSize:12, color:T2.text3, margin:0, textAlign:'center'}}>Recording — speak naturally</p>}
-      {isRec ? (
-        <button onClick={doStop}
-          style={{...cs.cta, maxWidth:340, background:'rgba(82,112,96,0.85)', color:'#fff', fontSize:isDesktop?15:14, padding:isDesktop?'14px 28px':'13px 24px'}}>
-          I've Said It — Stop Recording
-        </button>
-      ) : (micError || transcribeFailed) ? (
-        <button onClick={doStart} style={{...cs.cta, maxWidth:340, fontSize:isDesktop?15:14, padding:isDesktop?'14px 28px':'13px 24px'}}>
-          Try Recording Again →
-        </button>
-      ) : null}
-      {!isRec && (micError || transcribeFailed) && (
-        <div style={{...cs.card, width:'100%', boxSizing:'border-box', textAlign:'left'}}>
-          <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
-          <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px'}}>
-            {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
-          </p>
-          <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width:'100%', minHeight:80, background:'transparent', border:'none', borderBottom:'0.5px solid '+T2.border, padding:'8px 0', fontFamily:T.sans, fontSize:13, color:T2.text, resize:'none', outline:'none', lineHeight:1.6, boxSizing:'border-box'}}/>
-          {fallbackText.trim().length > 10 && (
-            <button onClick={() => { setMicError(false); setTranscribeFailed(false); const t = fallbackText.trim(); setFallbackText(''); setPhase('analyzing'); analyzeTranscript(t); }} style={{...cs.cta, marginTop:14}}>
-              Submit →
-            </button>
-          )}
-        </div>
-      )}
+      <VoiceRecorder T={T} T2={T2} onRecordingChange={setIsRec} onDone={(text) => {
+        setPhase('analyzing');
+        analyzeTranscript(text);
+      }}/>
     </div>
   );
 
