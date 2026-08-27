@@ -544,12 +544,6 @@ Return only valid JSON with all fields present.`,
 
   // ── Q2: READY / RECORD ────────────────────────────────────────────────────
   if (phase === 'q2') return grid(<>
-    {preResult?.q2Instruction && (
-      <div style={{background:'rgba(138,158,132,0.07)', borderRadius:4, border:'0.5px solid rgba(138,158,132,0.25)', padding:'14px 18px'}}>
-        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.7)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:6}}>Your instruction</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, color:'rgba(245,239,230,0.8)', lineHeight:1.5, margin:0, fontStyle:'italic'}}>{preResult.q2Instruction}</p>
-      </div>
-    )}
     <div style={cs.card}>
       <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:12}}>Question 2</div>
       <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:0}}>"{topicRef.current?.q2}"</p>
