@@ -21,7 +21,7 @@ import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
 import { D11PracticeWidget, D11SimWidget } from '../modules/Day11.jsx';
 import { D12PracticeWidget, D12SimWidget } from '../modules/Day12.jsx';
 import { D13PracticeWidget, D13SimWidget } from '../modules/Day13.jsx';
-import { D14PracticeWidget, D14SimWidget } from '../modules/Day14.jsx';
+import { D14PracticeWidget, D14SimWidget, D14LoopDiagram } from '../modules/Day14.jsx';
 import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
 import { Scene, OBScene } from '../scenes.jsx';
 import { Timer } from '../components/Timer.jsx';
@@ -3985,14 +3985,7 @@ setAmbitionSaved(true); } catch {}
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>The Competence–Confidence Loop</h2>
           <div style={{padding:"24px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,marginBottom:20}}>
             <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>Many people believe confidence comes first. The reality is the opposite.</p>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:0,flexWrap:"wrap",rowGap:10,margin:"20px 0",padding:"0 12px"}}>
-              {["Practice","Competence","Confidence","Action","Growth","Practice"].map((s,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:0}}>
-                  <div style={{padding:"10px 18px",borderRadius:24,background:"rgba(138,158,132,0.12)",border:`0.5px ${i===5?"dashed":"solid"} rgba(138,158,132,0.35)`,fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:T.gold,whiteSpace:"nowrap",opacity:i===5?0.55:1}}>{s}</div>
-                  {i<5 && <span style={{fontFamily:T.sans,fontSize:14,color:"rgba(138,158,132,0.5)",margin:"0 6px"}}>{i===4?"↻":"→"}</span>}
-                </div>
-              ))}
-            </div>
+            <D14LoopDiagram T={T} T2={T2} isDesktop={true}/>
             <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16,display:"flex",flexDirection:"column",gap:10}}>
               {[
                 ["Clarity","practised organising ideas under pressure"],

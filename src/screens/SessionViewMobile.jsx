@@ -15,7 +15,7 @@ import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
 import { D11PracticeWidget, D11SimWidget } from '../modules/Day11.jsx';
 import { D12PracticeWidget, D12SimWidget } from '../modules/Day12.jsx';
 import { D13PracticeWidget, D13SimWidget } from '../modules/Day13.jsx';
-import { D14PracticeWidget, D14SimWidget } from '../modules/Day14.jsx';
+import { D14PracticeWidget, D14SimWidget, D14LoopDiagram } from '../modules/Day14.jsx';
 import { D7SimWidget, D7PracticeWidget } from '../modules/Day7.jsx';
 import AICoachTab from '../components/AICoachTab.jsx';
 import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
@@ -2677,13 +2677,8 @@ strokeLinecap="round"/></svg>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science Behind Growth</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>The Competence–Confidence Loop</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,marginBottom:14}}>Many people believe confidence comes first. The reality is the opposite.</p>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:4,rowGap:8,marginBottom:16,padding:"14px",background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border}}>
-            {["Practice","Competence","Confidence","Action","Growth","Practice"].map((s,i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:4}}>
-                <span style={{padding:"6px 12px",borderRadius:20,background:"rgba(138,158,132,0.12)",border:`0.5px ${i===5?"dashed":"solid"} rgba(138,158,132,0.3)`,fontFamily:T.serif,fontSize:13,fontWeight:600,color:T.gold,opacity:i===5?0.55:1}}>{s}</span>
-                {i<5 && <span style={{color:"rgba(138,158,132,0.5)",fontSize:12}}>{i===4?"↻":"→"}</span>}
-              </div>
-            ))}
+          <div style={{marginBottom:16,padding:"14px",background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border}}>
+            <D14LoopDiagram T={T} T2={T2} isDesktop={false}/>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
             {[["Clarity","organising ideas"],["Storytelling","emotional connection"],["Presence","influencing perception"],["Brand & Exposure","making value visible"]].map(([mod,out],i)=>(

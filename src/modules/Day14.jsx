@@ -1,6 +1,97 @@
 import { useState, useEffect } from 'react';
 import { ROLES, LESSONS } from '../data.js';
 
+// ─── D14 Theory — Competence-Confidence Loop (circular diagram) ────────────
+// Five pill nodes arranged in a pentagon, connected by curved arrows that
+// close back to "Practice" — a true loop rather than a wrapping row of pills.
+export function D14LoopDiagram({ T, T2, isDesktop }) {
+  const STEPS = [
+    { label: 'Practice', icon: (s) => (
+      <svg width={s} height={s} viewBox="0 0 20 20" fill="none">
+        <path d="M4 10a6 6 0 0110-4.5M16 3v4h-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M16 10a6 6 0 01-10 4.5M4 17v-4h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )},
+    { label: 'Competence', icon: (s) => (
+      <svg width={s} height={s} viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="7" stroke={T.gold} strokeWidth="1.3"/>
+        <path d="M7 10l2 2 4-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )},
+    { label: 'Confidence', icon: (s) => (
+      <svg width={s} height={s} viewBox="0 0 20 20" fill="none">
+        <polygon points="10,2 12.5,7.3 18,8 14,11.8 15,17.5 10,14.8 5,17.5 6,11.8 2,8 7.5,7.3" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/>
+      </svg>
+    )},
+    { label: 'Action', icon: (s) => (
+      <svg width={s} height={s} viewBox="0 0 20 20" fill="none">
+        <path d="M4 10h11M10 5l5 5-5 5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )},
+    { label: 'Growth', icon: (s) => (
+      <svg width={s} height={s} viewBox="0 0 20 20" fill="none">
+        <path d="M10 17V9" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/>
+        <path d="M10 9C10 6 7.3 5 5 5c0 3 2.3 5 5 5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/>
+        <path d="M10 11c0-2.7 2.3-4 4.5-4 0 2.7-1.8 4.5-4.5 4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/>
+      </svg>
+    )},
+  ];
+
+  const W = isDesktop ? 520 : 320, H = isDesktop ? 300 : 200;
+  const cx = W / 2, cy = H / 2;
+  const rx = isDesktop ? 170 : 100, ry = isDesktop ? 105 : 68;
+  const inset = isDesktop ? 50 : 32;
+  const bulge = isDesktop ? 24 : 15;
+
+  const pts = STEPS.map((_, i) => {
+    const rad = (-90 + i * 72) * Math.PI / 180;
+    return { x: cx + rx * Math.cos(rad), y: cy + ry * Math.sin(rad) };
+  });
+
+  const paths = pts.map((A, i) => {
+    const B = pts[(i + 1) % pts.length];
+    const dx = B.x - A.x, dy = B.y - A.y;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    const ux = dx / dist, uy = dy / dist;
+    const sx = A.x + ux * inset, sy = A.y + uy * inset;
+    const ex = B.x - ux * inset, ey = B.y - uy * inset;
+    const mx = (sx + ex) / 2, my = (sy + ey) / 2;
+    const ovx = mx - cx, ovy = my - cy;
+    const odist = Math.sqrt(ovx * ovx + ovy * ovy) || 1;
+    const cpx = mx + (ovx / odist) * bulge, cpy = my + (ovy / odist) * bulge;
+    return `M ${sx.toFixed(1)} ${sy.toFixed(1)} Q ${cpx.toFixed(1)} ${cpy.toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+  });
+
+  const iconSize = isDesktop ? 20 : 15;
+
+  return (
+    <div style={{position: 'relative', width: '100%', maxWidth: W, aspectRatio: `${W} / ${H}`, margin: isDesktop ? '24px auto' : '16px auto'}}>
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} style={{position: 'absolute', top: 0, left: 0}}>
+        <defs>
+          <marker id="d14loop-arrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 Z" fill="rgba(138,158,132,0.6)"/>
+          </marker>
+        </defs>
+        {paths.map((d, i) => (
+          <path key={i} d={d} fill="none" stroke="rgba(138,158,132,0.55)" strokeWidth={isDesktop ? 1.6 : 1.3} markerEnd="url(#d14loop-arrow)"/>
+        ))}
+      </svg>
+      {STEPS.map((s, i) => (
+        <div key={i} style={{
+          position: 'absolute', left: (pts[i].x / W * 100) + '%', top: (pts[i].y / H * 100) + '%', transform: 'translate(-50%,-50%)',
+          display: 'flex', alignItems: 'center', gap: isDesktop ? 10 : 6,
+          padding: isDesktop ? '10px 20px' : '6px 12px', borderRadius: 24,
+          background: 'rgba(138,158,132,0.12)', border: '0.5px solid rgba(138,158,132,0.35)',
+          whiteSpace: 'nowrap',
+        }}>
+          {s.icon(iconSize)}
+          <span style={{fontFamily: T.serif, fontSize: isDesktop ? 16 : 13, fontWeight: 600, color: T.gold}}>{s.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ─── D14 Practice Widget — Your Journey ─────────────────────────────────────
 export function D14PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, onNavFn}) {
   const stored = (() => { try { return JSON.parse(localStorage.getItem('au1_d14_reflection') || '{}'); } catch { return {}; } })();
