@@ -292,8 +292,14 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
 
   function doStop(onText){
     setIsRec(false);
+    // Transition to the loading screen immediately — before the async
+    // stop/transcribe chain — so the button doesn't briefly revert to
+    // "Start Recording" while MediaRecorder finalises the blob and
+    // /api/transcribe runs. handleTurnDone() sets this same phase again
+    // once it actually runs; this just closes the gap before that.
+    setPhase(turnRef.current<3?'thinking':'analyzing');
     stopRecording((text, failed) => {
-      if (failed) { setTranscribeFailed(true); return; }
+      if (failed) { setTranscribeFailed(true); setPhase('turn'+turnRef.current); return; }
       onText(text);
     });
   }
