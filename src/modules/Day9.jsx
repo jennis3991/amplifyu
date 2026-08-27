@@ -225,6 +225,7 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
   useWakeLock(isRec);
   const [waveVals, setWaveVals] = useState(Array.from({length:9},()=>0.3+Math.random()*0.3));
   const [debrief, setDebrief] = useState(null);
+  const [expandedDim, setExpandedDim] = useState(null);
 
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
@@ -360,12 +361,14 @@ Score 0-100 on each dimension:
 - ${c.scoreLabels[1]}: ${c.scoreHints[1]}
 - ${c.scoreLabels[2]}: ${c.scoreHints[2]}
 
+Also give an overall connection score 0-100 — your own holistic judgment of how well they connected with ${c.label} across the whole conversation. This is not a mean of the three dimension scores; weigh them however you judge best, the way a coach would.
+
 Also write:
 - insight: 2 sentences. Specific to what they said. What they did well + one concrete thing to practise. Warm, direct coach voice.
 - quote: one short original line capturing the lesson for this character style. Not a famous quote — your own words.
 
 Return ONLY valid JSON:
-{"scores":{"${c.scoreLabels[0]}":number,"${c.scoreLabels[1]}":number,"${c.scoreLabels[2]}":number},"insight":"...","quote":"..."}`}]
+{"overall":number,"scores":{"${c.scoreLabels[0]}":number,"${c.scoreLabels[1]}":number,"${c.scoreLabels[2]}":number},"insight":"...","quote":"..."}`}]
         })
       });
       const data=await res.json();
@@ -375,6 +378,7 @@ Return ONLY valid JSON:
       else throw new Error('no json');
     }catch(_){
       setDebrief({
+        overall:65,
         scores:{[char.scoreLabels[0]]:68,[char.scoreLabels[1]]:65,[char.scoreLabels[2]]:62},
         insight:'You engaged with the scenario and showed a willingness to adapt across the conversation. The clearest growth area is leading with your main point — every response, without exception.',
         quote:'Adaptability is not about changing who you are. It\'s about understanding who you\'re talking to.'
@@ -580,27 +584,35 @@ Return ONLY valid JSON:
   // ── DEBRIEF ──────────────────────────────────────────────────────────────────
   if(phase==='debrief'&&debrief&&char){
     const entries=Object.entries(debrief.scores||{});
-    const overall=Math.round(entries.reduce((a,[,v])=>a+v,0)/Math.max(entries.length,1));
+    // debrief.overall is the LLM's own holistic judgment (same pattern as
+    // Day 1/2/10) — the computed mean is only a safety net for the rare
+    // malformed response that's missing the field.
+    const overall=typeof debrief.overall==='number'?debrief.overall:Math.round(entries.reduce((a,[,v])=>a+v,0)/Math.max(entries.length,1));
     return(
       <div style={{display:'flex',flexDirection:'column',gap:isDesktop?14:12}}>
         <div style={{...cs.card,textAlign:'center',padding:isDesktop?'28px 24px':'22px 18px',background:'rgba(138,158,132,0.05)',border:'0.5px solid rgba(138,158,132,0.3)'}}>
           <div style={cs.label}>{char.label} · Session Complete</div>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?52:40,fontWeight:600,color:T.gold,lineHeight:1,marginBottom:6}}>{overall}</div>
-          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Connection score across 3 turns</p>
+          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Overall connection score</p>
         </div>
         <div style={cs.card}>
           <div style={cs.label}>Scores by Dimension</div>
-          {entries.map(([label,score],i)=>(
+          {entries.map(([label,score],i)=>{
+            const isOpen=expandedDim===label;
+            const hintIdx=char.scoreLabels.indexOf(label);
+            const hint=hintIdx>=0?char.scoreHints[hintIdx]:char.scoreHints[i];
+            return(
             <div key={i} style={{marginBottom:i<entries.length-1?14:0}}>
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:5}}>
-                <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,fontWeight:500}}>{label}</span>
+              <div onClick={()=>setExpandedDim(isOpen?null:label)} style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:5,cursor:'pointer'}}>
+                <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,fontWeight:500,borderBottom:'1px dotted '+T2.text4}}>{label}</span>
                 <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:700,color:score>=75?T.gold:score>=55?'#7A9E84':T2.text3}}>{score}</span>
               </div>
               <div style={{height:4,background:T2.bg,borderRadius:2,overflow:'hidden'}}>
                 <div style={{height:'100%',width:score+'%',background:score>=75?T.gold:score>=55?'rgba(138,158,132,0.7)':'rgba(180,80,60,0.35)',borderRadius:2,transition:'width 0.9s ease'}}/>
               </div>
+              {isOpen&&<p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,margin:'6px 0 0'}}>{hint}</p>}
             </div>
-          ))}
+            );})}
         </div>
         <div style={{...cs.card,borderLeft:'2px solid '+T.gold}}>
           <div style={cs.label}>Your Coach Says</div>
