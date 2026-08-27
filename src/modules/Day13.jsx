@@ -17,6 +17,8 @@ const SCENARIOS = [
     sub: 'A senior leader walks past',
     context: 'A senior leader you respect is walking towards you. You have about 10 seconds before they pass.',
     challenge: 'Most people look down, say nothing, and spend the rest of the day replaying the missed moment.',
+    promptLead: "They're about to walk past.",
+    promptDetail: "A senior leader you respect is a few steps away, moving quickly, phone in hand. Before they're gone, say one specific line that opens the door — their name, a genuine observation, and a question.",
     tips: [
       "Use their name — it signals confidence, not presumption",
       "One specific observation, not a generic compliment",
@@ -30,6 +32,8 @@ const SCENARIOS = [
     sub: 'You have an idea — the room is moving on',
     context: 'You have something worth saying. The conversation is about to close and move on.',
     challenge: "Most people think \"I'll raise it later\" — and never do. The moment disappears in seconds.",
+    promptLead: "The meeting's about to move on.",
+    promptDetail: "The team's been debating whether to hire externally or promote from within for the new lead role. Before it shifts to the next topic, say one specific point that makes clear the value you'd bring to that decision.",
     tips: [
       "Don't apologise for contributing — \"Before we move on...\" is enough",
       "Lead with the idea, not the build-up",
@@ -43,6 +47,8 @@ const SCENARIOS = [
     sub: 'Someone worth knowing is standing nearby',
     context: "After a presentation or at an event. Someone you'd genuinely like to know is standing near you.",
     challenge: 'Most people check their phone and leave wishing they had said something.',
+    promptLead: "This is the moment to say something.",
+    promptDetail: "Someone you'd genuinely like to know is standing a few feet away, and no one's talking to them right now. Say one specific, curious line that opens a real conversation — reference something they actually said or did, not a generic compliment.",
     tips: [
       "Specific beats generic — reference something they actually said",
       "Ask a question that shows you were genuinely paying attention",
@@ -104,7 +110,14 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
         </div>
 
         {!recDone && (
-          <VoiceRecorder T={T} T2={T2} onDone={() => setRecDone(true)}/>
+          <>
+            <div style={{...cs.card, borderLeft:"3px solid "+T.gold, padding:isDesktop?"22px 26px":"18px 20px"}}>
+              <div style={cs.label}>Your Challenge</div>
+              <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.35, margin:"0 0 10px"}}>"{sc.promptLead}"</p>
+              <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, lineHeight:1.65, margin:0}}>{sc.promptDetail}</p>
+            </div>
+            <VoiceRecorder T={T} T2={T2} onDone={() => setRecDone(true)}/>
+          </>
         )}
 
         {recDone && (
