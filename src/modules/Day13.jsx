@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { VoiceRecorder } from './VoiceRecorder.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -57,15 +58,7 @@ function pickScenarioIdx() { return Math.floor(Math.random() * SCENARIOS.length)
 export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, onNavFn}) {
   const [phase, setPhase] = useState('intro');
   const [scIdx, setScIdx] = useState(pickScenarioIdx);
-  const [timerState, setTimerState] = useState('idle');
-  const [timeLeft, setTimeLeft] = useState(20);
-
-  useEffect(() => {
-    if (timerState !== 'running') return;
-    if (timeLeft <= 0) { setTimerState('done'); return; }
-    const t = setTimeout(() => setTimeLeft(n => n - 1), 1000);
-    return () => clearTimeout(t);
-  }, [timerState, timeLeft]);
+  const [recDone, setRecDone] = useState(false);
 
   useEffect(() => {
     if (!onNavLabel) return;
@@ -78,10 +71,9 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
     }
   }, [phase]);
 
-  const startTimer = () => { setTimeLeft(20); setTimerState('running'); };
-  const tryAgain  = () => { setTimerState('idle'); setTimeLeft(20); };
+  const tryAgain = () => { setRecDone(false); };
 
-  const restart = () => { setPhase('intro'); setScIdx(pickScenarioIdx()); setTimerState('idle'); setTimeLeft(20); };
+  const restart = () => { setPhase('intro'); setScIdx(pickScenarioIdx()); setRecDone(false); };
 
   const cs = {
     card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px"},
@@ -96,7 +88,7 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>Most career-defining moments come from conversations, not job boards.</p>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>The problem is not knowing this — it's that most people freeze when the moment arrives. Quick warm-up: one real moment, 20 seconds. It will happen to you.</p>
       </div>
-      <button onClick={() => { setTimerState('idle'); setTimeLeft(20); setPhase('practice'); }} style={cs.cta}>Let's Begin →</button>
+      <button onClick={() => { setRecDone(false); setPhase('practice'); }} style={cs.cta}>Let's Begin →</button>
     </div>
   );
 
@@ -111,18 +103,11 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
           <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#A8998A", lineHeight:1.6, margin:0, fontStyle:"italic"}}>{sc.challenge}</p>
         </div>
 
-        {timerState === 'idle' && (
-          <button onClick={startTimer} style={cs.cta}>Start 20s Timer — Speak Your Opening</button>
+        {!recDone && (
+          <VoiceRecorder T={T} T2={T2} onDone={() => setRecDone(true)}/>
         )}
 
-        {timerState === 'running' && (
-          <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px":"24px"}}>
-            <div style={{fontFamily:T.serif, fontSize:isDesktop?56:44, fontWeight:700, color:timeLeft <= 5 ? "#C97B5A" : T.gold, lineHeight:1, marginBottom:10, transition:"color 0.3s"}}>{timeLeft}</div>
-            <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text4}}>seconds — speak your opening out loud</div>
-          </div>
-        )}
-
-        {timerState === 'done' && (
+        {recDone && (
           <>
             <div style={{...cs.card, textAlign:"center", padding:isDesktop?"28px":"22px"}}>
               <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12}}>Nice work</div>
