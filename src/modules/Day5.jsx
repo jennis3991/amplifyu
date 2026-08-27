@@ -404,7 +404,7 @@ Return only valid JSON with all fields present.`,
     <div>
       <div style={{fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:12}}>The Boardroom · Simulation</div>
       <h2 style={{fontFamily:T.serif, fontSize:isDesktop?40:28, fontWeight:600, color:T2.text, lineHeight:1.1, margin:'0 0 16px'}}>
-        One question.<br/>Ten seconds to think.<br/>Then answer.
+        Two questions.<br/>No time to prepare.<br/>Just answer.
       </h2>
       <p style={{fontFamily:T.sans, fontSize:isDesktop?16:15, color:T2.text3, lineHeight:1.6, fontWeight:400, margin:0}}>
         Every executive structures before they speak. Today you'll do the same — without being told how.
@@ -424,7 +424,7 @@ Return only valid JSON with all fields present.`,
     <div style={{display:'flex', flexDirection:'column', gap:isDesktop?28:20}}>
       {leftPanel}
       <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.65, margin:0, fontWeight:300}}>
-        Choose a topic. You'll have 10 seconds to think, then answer. Speak for around 45–60 seconds — the coach analyses your structure without telling you what it's looking for.
+        Choose a topic, then answer two questions back to back. Tap the mic when you're ready and speak for around 45–60 seconds each time — the coach analyses your structure without telling you what it's looking for.
       </p>
       <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:isDesktop?14:10}}>
         {BOARDROOM_TOPICS.map(t => {
@@ -456,7 +456,7 @@ Return only valid JSON with all fields present.`,
       <p style={{fontFamily:T.serif, fontSize:isDesktop?22:18, fontWeight:600, color:T2.text, lineHeight:1.3, margin:0}}>"{topicRef.current?.question}"</p>
     </div>
     <div style={{background:'rgba(245,239,230,0.03)', border:'0.5px solid rgba(138,158,132,0.25)', borderRadius:6, padding:isDesktop?'28px 32px':'20px 22px', textAlign:'center'}}>
-      {["WHAT'S YOUR POINT?","WHY?","CAN YOU PROVE IT?"].map((line,i)=>(
+      {["Point","Reason","Example"].map((line,i)=>(
         <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:'rgba(245,239,230,0.8)', lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:500}}>{line}</p>
       ))}
     </div>
@@ -534,6 +534,11 @@ Return only valid JSON with all fields present.`,
     <div style={cs.card}>
       <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:12}}>Question 2</div>
       <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:0}}>"{topicRef.current?.q2}"</p>
+    </div>
+    <div style={{background:'rgba(245,239,230,0.03)', border:'0.5px solid rgba(138,158,132,0.25)', borderRadius:6, padding:isDesktop?'28px 32px':'20px 22px', textAlign:'center'}}>
+      {["Point","Reason","Example"].map((line,i)=>(
+        <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:'rgba(245,239,230,0.8)', lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:500}}>{line}</p>
+      ))}
     </div>
     <VoiceRecorder T={T} T2={T2} onRecordingChange={setVoiceActive} onDone={(text) => {
       const t2 = text || '[second answer]';
