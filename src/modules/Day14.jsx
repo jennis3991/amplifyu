@@ -37,29 +37,28 @@ export function D14LoopDiagram({ T, T2, isDesktop }) {
     )},
   ];
 
-  const W = isDesktop ? 520 : 320, H = isDesktop ? 300 : 200;
+  // A true circle (not an ellipse) — nodes sit evenly on its circumference
+  // and the connecting arrows are drawn as literal arcs of that same circle,
+  // so the whole loop reads as one continuous ring rather than a squashed
+  // oval with disjointed corner curves.
+  const W = isDesktop ? 440 : 290, H = isDesktop ? 320 : 210;
   const cx = W / 2, cy = H / 2;
-  const rx = isDesktop ? 170 : 100, ry = isDesktop ? 105 : 68;
-  const inset = isDesktop ? 50 : 32;
-  const bulge = isDesktop ? 24 : 15;
+  const R = isDesktop ? 125 : 78;
+  const angleInset = isDesktop ? 13 : 15; // degrees trimmed off each end so arcs clear the pills
 
-  const pts = STEPS.map((_, i) => {
-    const rad = (-90 + i * 72) * Math.PI / 180;
-    return { x: cx + rx * Math.cos(rad), y: cy + ry * Math.sin(rad) };
-  });
+  const angle = (i) => -90 + i * 72;
+  const ptAt = (deg) => {
+    const rad = deg * Math.PI / 180;
+    return { x: cx + R * Math.cos(rad), y: cy + R * Math.sin(rad) };
+  };
 
-  const paths = pts.map((A, i) => {
-    const B = pts[(i + 1) % pts.length];
-    const dx = B.x - A.x, dy = B.y - A.y;
-    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-    const ux = dx / dist, uy = dy / dist;
-    const sx = A.x + ux * inset, sy = A.y + uy * inset;
-    const ex = B.x - ux * inset, ey = B.y - uy * inset;
-    const mx = (sx + ex) / 2, my = (sy + ey) / 2;
-    const ovx = mx - cx, ovy = my - cy;
-    const odist = Math.sqrt(ovx * ovx + ovy * ovy) || 1;
-    const cpx = mx + (ovx / odist) * bulge, cpy = my + (ovy / odist) * bulge;
-    return `M ${sx.toFixed(1)} ${sy.toFixed(1)} Q ${cpx.toFixed(1)} ${cpy.toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+  const pts = STEPS.map((_, i) => ptAt(angle(i)));
+
+  const paths = STEPS.map((_, i) => {
+    const a1 = angle(i) + angleInset;
+    const a2 = angle(i + 1) - angleInset;
+    const s = ptAt(a1), e = ptAt(a2);
+    return `M ${s.x.toFixed(1)} ${s.y.toFixed(1)} A ${R} ${R} 0 0 1 ${e.x.toFixed(1)} ${e.y.toFixed(1)}`;
   });
 
   const iconSize = isDesktop ? 20 : 15;
