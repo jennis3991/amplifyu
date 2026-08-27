@@ -94,14 +94,31 @@ export function D14LoopDiagram({ T, T2, isDesktop }) {
 }
 
 // ─── D14 Practice Widget — Your Journey ─────────────────────────────────────
+// "What held you back most at the start?" restates the onboarding
+// "challenge" question (au1_quiz) almost verbatim, just trimmed of
+// punctuation — so a saved onboarding answer can prefill it directly.
+const SHIFT_OPTIONS = [
+  "Speaking up confidently with senior leaders",
+  "Structuring my thoughts clearly under pressure",
+  "Making my work visible and getting credit for it",
+  "Setting boundaries and asserting myself",
+];
+const normalizeForMatch = (s) => (s || '').toLowerCase().replace(/[—\-.,]/g, '').replace(/\s+/g, ' ').trim();
+
 export function D14PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, onNavFn}) {
   const stored = (() => { try { return JSON.parse(localStorage.getItem('au1_d14_reflection') || '{}'); } catch { return {}; } })();
   const storedAmbition = (() => { try { return localStorage.getItem('au1_ambition') || ''; } catch { return ''; } })();
+  const quiz = (() => { try { return JSON.parse(localStorage.getItem('au1_quiz') || '{}'); } catch { return {}; } })();
+  const matchedShift = (() => {
+    const target = normalizeForMatch(quiz.challenge);
+    if (!target) return '';
+    return SHIFT_OPTIONS.find(o => normalizeForMatch(o) === target) || '';
+  })();
 
   const [phase, setPhase] = useState('intro');
   const [jobTitle, setJobTitle] = useState(stored.jobTitle || '');
   const [knownFor, setKnownFor] = useState(stored.knownFor || storedAmbition || '');
-  const [shift, setShift] = useState(stored.shift || '');
+  const [shift, setShift] = useState(stored.shift || matchedShift || '');
   const [proud, setProud] = useState(stored.proud || '');
   const [hard, setHard] = useState(stored.hard || '');
 
@@ -193,12 +210,7 @@ export function D14PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
 
       <Q
         label="What held you back most at the start?"
-        options={[
-          "Speaking up confidently with senior leaders",
-          "Structuring my thoughts clearly under pressure",
-          "Making my work visible and getting credit for it",
-          "Setting boundaries and asserting myself",
-        ]}
+        options={SHIFT_OPTIONS}
         value={shift}
         onChange={setShift}
       />
