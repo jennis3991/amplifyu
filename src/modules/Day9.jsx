@@ -686,8 +686,6 @@ Return ONLY valid JSON:
             <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>{char.mockGoodNote}</p>
           </div>
         </div>
-        <button onClick={()=>{resetSession();setPhase('turn1');}} style={cs.sage}>Try Again with {char.label} →</button>
-        <button onClick={()=>{resetSession();setChar(null);setPhase('select');}} style={cs.cta}>Try a Different Character →</button>
       </div>
     );
   }
