@@ -403,12 +403,6 @@ Return only valid JSON with all fields present.`,
   const leftPanel = (
     <div>
       <div style={{fontFamily:T.sans, fontSize:11, fontWeight:600, color:T.gold, textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:12}}>The Boardroom · Simulation</div>
-      <h2 style={{fontFamily:T.serif, fontSize:isDesktop?40:28, fontWeight:600, color:T2.text, lineHeight:1.1, margin:'0 0 16px'}}>
-        Two questions.<br/>No time to prepare.<br/>Just answer.
-      </h2>
-      <p style={{fontFamily:T.sans, fontSize:isDesktop?16:15, color:T2.text3, lineHeight:1.6, fontWeight:400, margin:0}}>
-        Every executive structures before they speak. Today you'll do the same — without being told how.
-      </p>
     </div>
   );
 
@@ -423,9 +417,34 @@ Return only valid JSON with all fields present.`,
   if (phase === 'select') return (
     <div style={{display:'flex', flexDirection:'column', gap:isDesktop?28:20}}>
       {leftPanel}
-      <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.65, margin:0, fontWeight:300}}>
-        Choose a topic, then answer two questions back to back. Tap the mic when you're ready and speak for around 45–60 seconds each time — the coach analyses your structure without telling you what it's looking for.
+
+      {/* HOW IT WORKS — same 4-step icon format as Day 1's Simulation intro */}
+      <div style={{...cs.card, padding:isDesktop?'22px 24px':'18px 20px'}}>
+        <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2px', marginBottom:6}}>How it works</div>
+        <h2 style={{fontFamily:T.serif, fontSize:isDesktop?28:22, fontWeight:600, color:T2.text, lineHeight:1.2, marginBottom:isDesktop?20:16}}>Two answers. One structure to hold.</h2>
+        <div style={{display:'flex', alignItems:'flex-start', gap:0}}>
+          {[
+            {n:1, label:'Choose a topic',        icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:2, label:'Answer two questions',   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3, label:'AI scores structure',    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:4, label:'Compare & reflect',      icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="4" y="10" width="5" height="8" rx="1" stroke={T.gold} strokeWidth="1.3"/><rect x="13" y="5" width="5" height="13" rx="1" stroke={T.gold} strokeWidth="1.3"/></svg>},
+          ].map((s,i) => (
+            <div key={i} style={{display:'flex', alignItems:'center', flex:1}}>
+              <div style={{display:'flex', flexDirection:'column', alignItems:'center', flex:1}}>
+                <div style={{width:isDesktop?48:36, height:isDesktop?48:36, borderRadius:'50%', background:'rgba(138,158,132,0.08)', border:'0.5px solid rgba(138,158,132,0.25)', display:'flex', alignItems:'center', justifyContent:'center', marginBottom:isDesktop?8:6}}>{s.icon}</div>
+                <div style={{fontFamily:T.sans, fontSize:isDesktop?9:8, fontWeight:700, color:T.gold, marginBottom:3}}>{s.n}</div>
+                <div style={{fontFamily:T.sans, fontSize:isDesktop?12:9, color:T2.text2, textAlign:'center', lineHeight:1.3, maxWidth:isDesktop?76:60}}>{s.label}</div>
+              </div>
+              {i<3 && <div style={{height:1, width:isDesktop?12:5, background:'rgba(138,158,132,0.2)', flexShrink:0, marginBottom:isDesktop?30:24}}/>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.65, margin:0, fontWeight:300, fontStyle:'italic'}}>
+        Every executive structures before they speak. Today you'll do the same — without being told how.
       </p>
+
       <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:isDesktop?14:10}}>
         {BOARDROOM_TOPICS.map(t => {
           const sel = topic?.id === t.id;
@@ -455,9 +474,9 @@ Return only valid JSON with all fields present.`,
       <div style={cs.label}>Your Question</div>
       <p style={{fontFamily:T.serif, fontSize:isDesktop?22:18, fontWeight:600, color:T2.text, lineHeight:1.3, margin:0}}>"{topicRef.current?.question}"</p>
     </div>
-    <div style={{background:'rgba(245,239,230,0.03)', border:'0.5px solid rgba(138,158,132,0.25)', borderRadius:6, padding:isDesktop?'28px 32px':'20px 22px', textAlign:'center'}}>
+    <div style={{background:'rgba(138,158,132,0.07)', border:'0.5px solid rgba(138,158,132,0.25)', borderRadius:6, padding:isDesktop?'28px 32px':'20px 22px', textAlign:'center'}}>
       {["Point","Reason","Example"].map((line,i)=>(
-        <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:'rgba(245,239,230,0.8)', lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:500}}>{line}</p>
+        <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:T2.text, lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:600}}>{line}</p>
       ))}
     </div>
     <VoiceRecorder T={T} T2={T2} onRecordingChange={setVoiceActive} onDone={(text) => {
@@ -535,9 +554,9 @@ Return only valid JSON with all fields present.`,
       <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:12}}>Question 2</div>
       <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:0}}>"{topicRef.current?.q2}"</p>
     </div>
-    <div style={{background:'rgba(245,239,230,0.03)', border:'0.5px solid rgba(138,158,132,0.25)', borderRadius:6, padding:isDesktop?'28px 32px':'20px 22px', textAlign:'center'}}>
+    <div style={{background:'rgba(138,158,132,0.07)', border:'0.5px solid rgba(138,158,132,0.25)', borderRadius:6, padding:isDesktop?'28px 32px':'20px 22px', textAlign:'center'}}>
       {["Point","Reason","Example"].map((line,i)=>(
-        <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:'rgba(245,239,230,0.8)', lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:500}}>{line}</p>
+        <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:T2.text, lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:600}}>{line}</p>
       ))}
     </div>
     <VoiceRecorder T={T} T2={T2} onRecordingChange={setVoiceActive} onDone={(text) => {
