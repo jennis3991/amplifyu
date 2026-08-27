@@ -176,12 +176,116 @@ p];
             {sub && <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,fontWeight:300,marginTop:2}}>{sub}</div>}
           </div>
         );
+        // Section header with an optional "View all →" on the right — used by
+        // Your Paths and Explore by Skill. Not wired to a destination yet (no
+        // dedicated browse page exists this pass), so it's non-interactive.
+        const secLink = (label) => (
+          <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:isDesktop?8:6}}>
+            <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"2px"}}>{label}</div>
+            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text3,display:"flex",alignItems:"center",gap:4}}>View all <span style={{color:T.gold}}>→</span></span>
+          </div>
+        );
+
+        // Icon tint presets — reused across Your Paths and Explore by Skill so
+        // the two sections read as one coherent palette (deep sage, warm tan,
+        // muted sage, near-black), varying which card gets which tone.
+        const TINT_DEEP  = {circle:"#527060", cardBg:"rgba(82,112,96,0.06)",  cardBorder:"rgba(82,112,96,0.25)"};
+        const TINT_TAN   = {circle:"#B8903A", cardBg:"rgba(184,144,58,0.07)", cardBorder:"rgba(184,144,58,0.28)"};
+        const TINT_SAGE  = {circle:"#8A9E84", cardBg:T2.surface, cardBorder:T2.border};
+        const TINT_INK   = {circle:"#231E18", cardBg:T2.surface, cardBorder:T2.border};
+        const ICON_C = "#F5EFE6";
+
+        const PATHS = [
+          {label:"Promotion Path",    desc:"Get recognised for your impact.",              mins:15, tint:TINT_DEEP,
+           icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8 4h8v4a4 4 0 01-4 4 4 4 0 01-4-4V4z" stroke={ICON_C} strokeWidth="1.4" strokeLinejoin="round"/><path d="M8 4H5a1 1 0 00-1 1v1a3 3 0 003 3M16 4h3a1 1 0 011 1v1a3 3 0 01-3 3" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round"/><path d="M12 12v3M9 19h6M10 15h4v4h-4z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round"/></svg>,
+           steps:[{n:"SAR Builder",day:10,step:"Rehearsal"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Leadership Hot Seat",day:6,step:"Simulation"}]},
+          {label:"Presentation Path", desc:"Deliver with confidence and impact.",           mins:12, tint:TINT_TAN,
+           icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="12" rx="1.5" stroke={ICON_C} strokeWidth="1.4"/><path d="M9 20l3-4 3 4" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 9l3 3 2-2 3 3" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+           steps:[{n:"Story Architect",day:8,step:"Simulation"},{n:"Pixar Builder",day:8,step:"Rehearsal"},{n:"Story Sprint",day:8,step:"Simulation"}]},
+          {label:"Visibility Path",   desc:"Build your brand and expand your reach.",       mins:14, tint:TINT_DEEP,
+           icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke={ICON_C} strokeWidth="1.4"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5" stroke={ICON_C} strokeWidth="1.4" strokeLinecap="round"/></svg>,
+           steps:[{n:"Rapport Builder",day:9,step:"Simulation"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Clarity Check-In",day:1,step:"Simulation"}]},
+        ];
+
+        const SKILLS = [
+          {label:"Storytelling",  desc:"Build stories people remember.",                tint:TINT_DEEP,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 5.5c-1.3-1-3.2-1.3-6-1v10c2.8-.3 4.7 0 6 1 1.3-1 3.2-1.3 6-1v-10c-2.8-.3-4.7 0-6 1z" stroke={ICON_C} strokeWidth="1.2" strokeLinejoin="round"/><path d="M10 5.5v10" stroke={ICON_C} strokeWidth="1.2"/></svg>},
+          {label:"Leadership",    desc:"Lead and handle high-stakes conversations.",     tint:TINT_TAN,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="6.5" r="2.5" stroke={ICON_C} strokeWidth="1.2"/><circle cx="14" cy="7" r="2" stroke={ICON_C} strokeWidth="1.2"/><path d="M2.5 16c0-3 2-4.5 4.5-4.5s4.5 1.5 4.5 4.5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/><path d="M12.5 12c2 0 4 1.2 4.2 4" stroke={ICON_C} strokeWidth="1.1" strokeLinecap="round"/></svg>},
+          {label:"Presence",      desc:"Speak with confidence and authority.",           tint:TINT_SAGE,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke={ICON_C} strokeWidth="1.2"/><path d="M4.5 17c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>},
+          {label:"Influence",     desc:"Get buy-in and move people.",                    tint:TINT_SAGE,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 8v4h2.5L12 16V4L5.5 8H3z" stroke={ICON_C} strokeWidth="1.2" strokeLinejoin="round"/><path d="M15 7.5a3 3 0 010 5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>},
+          {label:"Personal Brand",desc:"Shape how you're perceived.",                    tint:TINT_TAN,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><polygon points="10,2 12.2,7.2 18,7.8 13.6,11.6 15,17.3 10,14.2 5,17.3 6.4,11.6 2,7.8 7.8,7.2" stroke={ICON_C} strokeWidth="1.1" strokeLinejoin="round"/></svg>},
+          {label:"Clarity",       desc:"Make complex ideas simple.",                     tint:TINT_INK,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M8 3l1.2 3.3L12.5 7.5 9.2 8.7 8 12l-1.2-3.3L3.5 7.5l3.3-1.2L8 3z" fill={ICON_C}/><path d="M15 11l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z" fill={ICON_C}/></svg>},
+        ];
+
         return (
           <div style={{maxWidth:isDesktop?1160:undefined,margin:"0 auto",padding:isDesktop?"40px 88px 80px":"20px 20px 60px"}}>
 
-            {/* ── RECOMMENDED FOR YOU ───────────────────────────────────── */}
+            {/* ── YOUR PATHS ────────────────────────────────────────────── */}
             <div style={{marginBottom:isDesktop?48:32}}>
-              {sec("Recommended For You")}
+              {secLink("Your Paths")}
+              <div style={{marginTop:16,display:"flex",flexDirection:"column",gap:12}}>
+                {PATHS.map((path,i)=>(
+                  <div key={i} onClick={()=>launch(path.steps[0].day,path.steps[0].step)}
+                    style={{background:path.tint.cardBg,borderRadius:10,border:"0.5px solid "+path.tint.cardBorder,padding:isDesktop?"20px 24px":"16px 16px",display:"flex",alignItems:"center",gap:16,cursor:"pointer"}}>
+                    <div style={{width:isDesktop?56:48,height:isDesktop?56:48,borderRadius:"50%",background:path.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{path.icon}</div>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontFamily:T.serif,fontSize:isDesktop?19:17,fontWeight:600,color:T2.text,marginBottom:3}}>{path.label}</div>
+                      <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:6}}>{path.desc}</div>
+                      <div style={{display:"flex",alignItems:"center",gap:6}}>
+                        <Time n={path.mins}/>
+                        <span style={{color:T2.text4,fontSize:11}}>•</span>
+                        <span style={{fontFamily:T.sans,fontSize:12,color:T2.text4}}>{path.steps.length} tools</span>
+                      </div>
+                    </div>
+                    <span style={{fontFamily:T.sans,fontSize:18,color:T2.text3,flexShrink:0}}>→</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── EXPLORE BY SKILL ──────────────────────────────────────── */}
+            <div style={{marginBottom:isDesktop?48:32}}>
+              {secLink("Explore by Skill")}
+              <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr":"1fr 1fr",gap:12}}>
+                {SKILLS.map((sk,i)=>(
+                  <div key={i} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"18px":"14px"}}>
+                    <div style={{width:36,height:36,borderRadius:"50%",background:sk.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:10}}>{sk.icon}</div>
+                    <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,marginBottom:4}}>{sk.label}</div>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:6}}>
+                      <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.4}}>{sk.desc}</div>
+                      <span style={{fontFamily:T.sans,fontSize:14,color:T2.text3,flexShrink:0}}>→</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── FEATURED TOOLS ────────────────────────────────────────── */}
+            <div style={{marginBottom:isDesktop?48:32}}>
+              {sec("Featured Tools")}
+              <div style={{marginTop:16,background:"#0D0B08",borderRadius:10,border:"0.5px solid rgba(138,158,132,0.15)",padding:isDesktop?"24px 28px":"18px 18px",display:"flex",alignItems:"center",gap:16}}>
+                <div style={{width:44,height:44,borderRadius:10,background:"rgba(138,158,132,0.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 4h8l5 5v9H4V4z" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3" fill="none"/><path d="M11 4v6h5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3"/><path d="M7 12h5M7 15h3" stroke="rgba(138,158,132,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                </div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontFamily:T.serif,fontSize:isDesktop?19:17,fontWeight:600,color:"#F5EFE6",marginBottom:4}}>Story Architect</div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.55)",fontWeight:300}}>Build powerful stories and presentations in minutes.</div>
+                </div>
+                <button onClick={()=>launch(8,"Simulation")} style={{padding:isDesktop?"12px 26px":"10px 16px",borderRadius:6,border:"none",background:T.gold,color:"#0D0B08",fontFamily:T.sans,fontSize:13,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Launch →</button>
+              </div>
+            </div>
+
+            {/* ── BROWSE ALL TOOLS (secondary — everything below is quietly
+                 grouped, not competing section headers; re-homed under Skills
+                 in a later pass) ─────────────────────────────────────────── */}
+            <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:20}}>Browse all tools →</div>
+
+            <div style={{marginBottom:isDesktop?32:24}}>
               <div style={{marginTop:16,background:T2.surface,borderRadius:12,border:"0.5px solid "+T2.border,overflow:"hidden",display:"flex",alignItems:"stretch",minHeight:isDesktop?140:120}}>
                 <div style={{flex:1,padding:isDesktop?"28px 32px":"20px 20px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
                   <div>
@@ -202,32 +306,7 @@ p];
               </div>
             </div>
 
-            {/* ── FEATURED TOOLS ────────────────────────────────────────── */}
             <div style={{marginBottom:isDesktop?48:32}}>
-              {sec("Featured Tools")}
-              <div style={{marginTop:16}}>
-                <div style={{background:"#0D0B08",borderRadius:10,border:"0.5px solid rgba(138,158,132,0.15)",padding:isDesktop?"28px":"22px",display:"flex",flexDirection:isDesktop?"row":"column",justifyContent:"space-between",gap:isDesktop?24:16,alignItems:isDesktop?"center":"flex-start"}}>
-                  <div style={{flex:1}}>
-                    <div style={{width:44,height:44,borderRadius:10,background:"rgba(138,158,132,0.1)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
-                      <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 4h8l5 5v9H4V4z" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3" fill="none"/><path d="M11 4v6h5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3"/><path d="M7 12h5M7 15h3" stroke="rgba(138,158,132,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                    </div>
-                    <div style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:8}}>Story Architect</div>
-                    <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.55)",lineHeight:1.6,marginBottom:14,fontWeight:300}}>Build powerful stories and presentations in minutes.</div>
-                    <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                      {["Presentation","Pitch","Leadership Talks"].map((tag,j)=><span key={j} style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.45)",padding:"3px 10px",border:"0.5px solid rgba(138,158,132,0.2)",borderRadius:20}}>{tag}</span>)}
-                    </div>
-                  </div>
-                  <div style={{display:"flex",alignItems:"center",gap:16,flexShrink:0}}>
-                    <Time n={8}/>
-                    <button onClick={()=>launch(8,"Simulation")} style={{padding:"10px 22px",borderRadius:5,border:"1px solid rgba(245,239,230,0.25)",background:"transparent",color:"#F5EFE6",fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer"}}>Launch →</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* ── CREATE ────────────────────────────────────────────────── */}
-            <div style={{marginBottom:isDesktop?48:32}}>
-              {sec("Create","Build communication assets.")}
               <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:14}}>
                 {[
                   {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="14" height="16" rx="1.5" stroke={T2.text3} strokeWidth="1.3" fill="none"/><path d="M7 8h5M7 11h8M7 14h6" stroke={T2.text3} strokeWidth="1.2" strokeLinecap="round"/><path d="M13 3v4" stroke={T2.text3} strokeWidth="1.2"/></svg>,
@@ -255,26 +334,9 @@ p];
               </div>
             </div>
 
-            {/* ── SKILLS GYM ────────────────────────────────────────────── */}
             <div style={{marginBottom:isDesktop?48:32}}>
-              {/* Header */}
-              <div style={{background:"#0D0B08",borderRadius:"10px 10px 0 0",padding:isDesktop?"22px 28px":"18px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16}}>
-                <div>
-                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.65)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:5}}>Skills Gym</div>
-                  <div style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:"rgba(245,239,230,0.92)",lineHeight:1.2}}>Build real communication muscle</div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.38)",fontWeight:300,marginTop:4}}>Daily practice, live scenarios, AI coaching</div>
-                </div>
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style={{flexShrink:0,opacity:0.35}}>
-                  <rect x="3" y="12" width="22" height="4" rx="2" stroke="rgba(138,158,132,0.9)" strokeWidth="1.4" fill="none"/>
-                  <rect x="1" y="10" width="4" height="8" rx="1.5" stroke="rgba(138,158,132,0.9)" strokeWidth="1.4" fill="none"/>
-                  <rect x="23" y="10" width="4" height="8" rx="1.5" stroke="rgba(138,158,132,0.9)" strokeWidth="1.4" fill="none"/>
-                  <rect x="8" y="8" width="4" height="12" rx="1.5" stroke="rgba(138,158,132,0.9)" strokeWidth="1.4" fill="none"/>
-                  <rect x="16" y="8" width="4" height="12" rx="1.5" stroke="rgba(138,158,132,0.9)" strokeWidth="1.4" fill="none"/>
-                </svg>
-              </div>
-
               {/* Practice Space featured row */}
-              <div style={{border:"0.5px solid rgba(138,158,132,0.2)",borderTop:"none",background:"rgba(138,158,132,0.06)",padding:isDesktop?"20px 28px":"16px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16}}>
+              <div style={{border:"0.5px solid rgba(138,158,132,0.2)",borderRadius:"10px 10px 0 0",background:"rgba(138,158,132,0.06)",padding:isDesktop?"20px 28px":"16px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16}}>
                 <div style={{flex:1}}>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
                     <div style={{width:7,height:7,borderRadius:"50%",background:T.gold}}/>
@@ -328,10 +390,8 @@ p];
               </div>
             </div>
 
-            {/* ── DISCOVER ──────────────────────────────────────────────── */}
             <div style={{marginBottom:isDesktop?48:32}}>
-              {sec("Discover","Increase self-awareness.")}
-              <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:14}}>
+              <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:14}}>
                 {[
                   {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke={T2.text3} strokeWidth="1.3" fill="none"/><path d="M5 19c0-4 2.7-6 6-6s6 2 6 6" stroke={T2.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>,
                    label:"Clarity Check-In", desc:"Establish your communication baseline and track your progress.", tags:["Self-Awareness","Confidence","Progress"], time:4, day:1, step:"Simulation"},
@@ -458,43 +518,6 @@ p];
                 </div>
               </div>
             )}
-
-            {/* ── TOOL PATHS ────────────────────────────────────────────── */}
-            <div>
-              {sec("Tool Paths","Guided journeys to help you achieve your goals.")}
-              <div style={{marginTop:16,display:"flex",flexDirection:"column",gap:12}}>
-                {[
-                  {label:"Promotion Path",     desc:"Stand out and get noticed.",             steps:[{n:"SAR Builder",day:10,step:"Rehearsal"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Leadership Hot Seat",day:6,step:"Simulation"}]},
-                  {label:"Presentation Path",  desc:"Deliver with confidence and impact.",    steps:[{n:"Story Architect",day:8,step:"Simulation"},{n:"Pixar Builder",day:8,step:"Rehearsal"},{n:"Story Sprint",day:8,step:"Simulation"}]},
-                  {label:"Visibility Path",    desc:"Build your brand and expand your reach.",steps:[{n:"Rapport Builder",day:9,step:"Simulation"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Clarity Check-In",day:1,step:"Simulation"}]},
-                ].map((path,i)=>(
-                  <div key={i} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 28px":"18px 20px"}}>
-                    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:16,marginBottom:16}}>
-                      <div>
-                        <div style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:700,color:T2.text,marginBottom:2}}>{path.label}</div>
-                        <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,fontWeight:300}}>{path.desc}</div>
-                      </div>
-                    </div>
-                    <div style={{display:"flex",alignItems:"center",marginBottom:16,flexWrap:"wrap",gap:4}}>
-                      {path.steps.map((s,j)=>(
-                        <div key={j} style={{display:"flex",alignItems:"center",gap:4}}>
-                          <div style={{display:"flex",alignItems:"center",gap:6}}>
-                            <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"0.5px solid rgba(138,158,132,0.35)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                              <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{j+1}</span>
-                            </div>
-                            <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3}}>{s.n}</span>
-                          </div>
-                          {j<2 && <span style={{fontFamily:T.sans,fontSize:12,color:T2.border,margin:"0 4px"}}>→</span>}
-                        </div>
-                      ))}
-                    </div>
-                    <button onClick={()=>launch(path.steps[0].day,path.steps[0].step)} style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text,background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:4}}>
-                      Start Path <span style={{color:T.gold}}>→</span>
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
 
           </div>
         );
