@@ -246,23 +246,13 @@ export function ToolkitScreen({onQuickPrep, onStartSession, dark=false, DK={}, i
   }, []);
   const [openPathId, setOpenPathId] = useState(null);
   const [openSkillId, setOpenSkillId] = useState(null);
+  const [openPrepSub, setOpenPrepSub] = useState(null);
   const [openCat, setOpenCat] = useState(0);
   const [copied, setCopied] = useState(null);
   const [openMod, setOpenMod] = useState(null);
   const [openMasterCard, setOpenMasterCard] = useState(null);
-  const [saved, setSaved] = useState(() => {
-    try { return JSON.parse(localStorage.getItem("au1_saved_phrases") || 
-"[]"); } catch { return []; }
-  });
-  function copy(p) { try{navigator.clipboard?.writeText(p);}catch{} 
+  function copy(p) { try{navigator.clipboard?.writeText(p);}catch{}
 setCopied(p); setTimeout(()=>setCopied(null),2000); }
-  function toggleSave(p) {
-    const next = saved.includes(p) ? saved.filter(x=>x!==p) : [...saved,
-p];
-    setSaved(next);
-    try { localStorage.setItem("au1_saved_phrases", JSON.stringify(next));
-} catch {}
-  }
 
   // ── My Saved Work ────────────────────────────────────────────────────────
   const [allSaved, setAllSaved] = useState(() => loadSavedWork());
@@ -291,7 +281,7 @@ p];
     onStartSession && onStartSession(cfg.day, cfg.step);
   }
 
-  const toolkitTabs = [["aitools","AI Tools"],["mywork","My Saved Work"+(allSaved.length>0?" ("+allSaved.length+")":"")],["practice","Practice Space"],["story","My Story"],["sayThis","Say This Instead"],["phrases","Phrases"],["saved","♥ Saved"+(saved.length>0?" ("+saved.length+")":"")],["reading","Reading List"],["prep","Quick Prep"]];
+  const toolkitTabs = [["aitools","AI Tools"],["mywork","My Saved Work"+(allSaved.length>0?" ("+allSaved.length+")":"")],["practice","Practice Space"],["story","My Story"],["quickprep","Quick Prep"]];
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}}>
       {!isDesktop && (
@@ -743,192 +733,165 @@ and at home.{" "}
           </div>
         </div>
       )}
-      {tab==="sayThis" && (
-        <div style={{padding:"16px 20px 0",display:"flex",flexDirection:"column",gap:10}}>
-          <div style={{background:T2.cardDark,borderRadius:2,padding:"22px 24px"}}>
-            <h2 
-style={{fontFamily:T.serif,fontSize:22,fontWeight:700,color:"white",marginBottom:8}}>Upgrade 
-Your Language</h2>
-            <p style={{fontSize:13,color:"rgba(255,255,255,0.5)"}}>Replace 
-weak phrases with ones that command authority.</p>
-          </div>
-          {SAY_THIS.map((item,i) => (
-            <div key={i} 
-style={{background:T2.surface,borderRadius:2,padding:"16px 18px"}}>
-              <div 
-style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>{item.ctx}</div>
-              <div style={{display:"flex",gap:8,marginBottom:8}}>
-                <span style={{fontSize:14,flexShrink:0}}>X</span>
-                <p 
-style={{margin:0,fontSize:14,color:T.red,textDecoration:"line-through",opacity:0.8}}>{item.bad}</p>
-              </div>
-              <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                <span style={{fontSize:14,flexShrink:0}}>OK</span>
-                <p 
-style={{margin:0,flex:1,fontSize:14,color:T2.green,fontWeight:600,fontStyle:"italic"}}>{item.good}</p>
-                <button onClick={()=>copy(item.good)} style={{padding:"5px 12px",borderRadius:8,border:"1px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:11,cursor:"pointer"}}>{copied===item.good?"OK":"Copy"}</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-      {tab==="phrases" && (
-        <div style={{padding:"16px 20px 0",display:"flex",flexDirection:"column",gap:8}}>
-          {PHRASES.map((cat,i) => (
-            <div key={cat.cat} 
-style={{background:T2.surface,borderRadius:2,overflow:"hidden",border:"1px solid "+T2.border}}>
-              <button onClick={()=>setOpenCat(openCat===i?-1:i)} 
-style={{width:"100%",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center",border:"none",background:"transparent",cursor:"pointer"}}>
-                <span 
-style={{fontSize:15,fontWeight:600,color:T.text}}>{cat.cat}</span>
-                <span 
-style={{color:T2.text3,display:"inline-block",transform:openCat===i?"rotate(90deg)":"none",transition:"transform 0.2s"}}>›</span>
-              </button>
-              {openCat===i && (
-                <div style={{borderTop:"1px solid "+T2.divider}}>
-                  {cat.phrases.map((p,pi) => (
-                    <div key={pi} style={{padding:"11px 18px",display:"flex",alignItems:"center",gap:10,borderBottom:pi<cat.phrases.length-1?"1px solid "+T2.divider:"none"}}>
-                      <div 
-style={{width:2,height:2,background:T.gold,flexShrink:0}}/>
-                      <p 
-style={{margin:0,flex:1,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{p}</p>
-                      <button onClick={()=>copy(p)} style={{padding:"4px 10px",borderRadius:8,border:"1px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:11,cursor:"pointer"}}>{copied===p?"OK":"Copy"}</button>
+      {tab==="quickprep" && (() => {
+        const SUBFOLDERS = [
+          {id:"ritual", label:"Pre-Meeting Ritual", desc:"A 2-minute routine before any important conversation.", tint:TK.sageDark,
+           icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="11" r="6.5" stroke={TK.onDark} strokeWidth="1.3"/><path d="M10 8v3l2 1.5" stroke={TK.onDark} strokeWidth="1.3" strokeLinecap="round"/><path d="M8 2h4M10 2v2" stroke={TK.onDark} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+          {id:"phrases", label:"Phrases", desc:"Ready-to-use lines for common moments.", tint:TK.sage,
+           icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14a1 1 0 011 1v7a1 1 0 01-1 1h-6l-4 3v-3H3a1 1 0 01-1-1V6a1 1 0 011-1z" stroke={TK.onDark} strokeWidth="1.3" strokeLinejoin="round"/><path d="M6 8h8M6 11h5" stroke={TK.onDark} strokeWidth="1.2" strokeLinecap="round"/></svg>},
+          {id:"language", label:"Language Upgrade", desc:"Replace weak phrases with ones that command authority.", tint:TK.taupe,
+           icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 16V5M10 5l-4 4M10 5l4 4" stroke={TK.onDark} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>},
+          {id:"reading", label:"Reading List", desc:"28 books across 14 modules.", tint:TK.ink,
+           icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 5.5c-1.3-1-3.2-1.3-6-1v10c2.8-.3 4.7 0 6 1 1.3-1 3.2-1.3 6-1v-10c-2.8-.3-4.7 0-6 1z" stroke={TK.onDark} strokeWidth="1.2" strokeLinejoin="round"/><path d="M10 5.5v10" stroke={TK.onDark} strokeWidth="1.2"/></svg>},
+        ];
+
+        if (openPrepSub) {
+          const sub = SUBFOLDERS.find(s => s.id === openPrepSub);
+          return (
+            <div style={{background:TK.bg,minHeight:"100vh"}}>
+              <div style={{position:"relative",background:TK.ink,overflow:"hidden",padding:isDesktop?"28px 88px":"20px 20px"}}>
+                <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 80% 20%, rgba(168,179,163,0.08) 0%, transparent 55%)"}}/>
+                <div style={{position:"relative",maxWidth:isDesktop?1160:undefined,margin:isDesktop?"0 auto":undefined}}>
+                  <button onClick={()=>setOpenPrepSub(null)} style={{width:36,height:36,borderRadius:"50%",background:"rgba(248,246,241,0.1)",border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",marginBottom:16}}>
+                    <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M11 3L5 9l6 6" stroke={TK.onDark} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </button>
+                  <div style={{display:"flex",alignItems:"center",gap:14}}>
+                    <div style={{width:44,height:44,borderRadius:10,background:sub.tint,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{sub.icon}</div>
+                    <div>
+                      <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:TK.onDark,margin:"0 0 3px"}}>{sub.label}</h2>
+                      <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(248,246,241,0.6)",margin:0}}>{sub.desc}</p>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-      {tab==="saved" && (
-        <div style={{padding:"16px 20px 0",display:"flex",flexDirection:"column",gap:12}}>
-          {saved.length===0 ? (
-            <div style={{textAlign:"center",padding:"40px 20px"}}>
-              <div style={{fontSize:32,marginBottom:12}}>♥</div>
-              <div 
-style={{fontFamily:T.serif,fontSize:18,fontWeight:700,color:T2.text,marginBottom:8}}>No 
-saved phrases yet</div>
-              <p style={{fontSize:13,color:T2.text3,lineHeight:1.6}}>Tap 
-the ♥ on any phrase in the Phrases tab to save it here for quick 
-access.</p>
-            </div>
-          ) : (
-            <>
-              <div 
-style={{background:T.cardDark,borderRadius:2,padding:"16px 18px"}}>
-                <div 
-style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>Your 
-phrase collection</div>
-                <p 
-style={{fontSize:12,color:"rgba(255,255,255,0.45)",margin:0}}>{saved.length} 
-phrase{saved.length!==1?"s":""} saved — tap to copy, ♥ to remove</p>
-              </div>
-              {saved.map((p,i) => (
-                <div key={i} 
-style={{background:T2.surface,borderRadius:12,padding:"14px 16px",display:"flex",alignItems:"center",gap:10,border:"1px solid "+T2.border}}>
-                  <div 
-style={{width:2,alignSelf:"stretch",background:T.gold,flexShrink:0,borderRadius:1}}/>
-                  <p 
-style={{margin:0,flex:1,fontSize:14,color:T2.text,fontStyle:"italic",lineHeight:1.5}}>{p}</p>
-                  <div style={{display:"flex",gap:6,flexShrink:0}}>
-                    <button onClick={()=>copy(p)} style={{padding:"5px 10px",borderRadius:8,border:"1px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:11,cursor:"pointer"}}>{copied===p?"✓":"Copy"}</button>
-                    <button onClick={()=>toggleSave(p)} 
-style={{padding:"5px 10px",borderRadius:8,border:"1px solid rgba(138,158,132,0.3)",background:"rgba(138,158,132,0.08)",color:T.gold,fontSize:12,cursor:"pointer"}}>♥</button>
                   </div>
                 </div>
-              ))}
-            </>
-          )}
-        </div>
-      )}
-      {tab==="reading" && (
-        <div style={isDesktop ? {padding:"32px 0"} : {padding:"16px 20px 0"}}>
-          {(() => {
-            const MODULE_TITLES = ["Speak Clearly","Voice Control","Eliminate Fillers","Short Sentences","PRE Structure","Storytelling","PIE Framework","Executive Presence","Influence","Difficult Conversations","Personal Brand","Networking","Leadership Voice","High Stakes Moments"];
-            return (
-              <>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,fontWeight:300,marginBottom:isDesktop?28:20}}>28 books across 14 modules</p>
-                <div style={{display:"flex",flexDirection:"column",gap:isDesktop?2:8}}>
-                  {FURTHER_READING.map((mod, mi) => {
-                    const isOpen = openMod === mi;
-                    return (
-                      <div key={mi} style={{border:"0.5px solid "+T2.border,borderRadius:4,overflow:"hidden",background:isOpen?T2.bg:T2.surface}}>
-                        <button onClick={() => setOpenMod(isOpen ? null : mi)} style={{
-                          width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",
-                          padding:isDesktop?"18px 24px":"14px 18px",
-                          border:"none",background:"transparent",cursor:"pointer",textAlign:"left",
-                        }}>
-                          <div style={{display:"flex",alignItems:"center",gap:14}}>
-                            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4,fontWeight:500,width:24,flexShrink:0}}>{"0"+(mi+1)}</span>
-                            <span style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,letterSpacing:"-0.2px"}}>{MODULE_TITLES[mi]}</span>
+              </div>
+
+              <div style={isDesktop?{maxWidth:900,margin:"0 auto",padding:"28px 88px 60px"}:{padding:"16px 20px 40px"}}>
+                {openPrepSub==="ritual" && (
+                  <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                    {QUICK_PREP.map((s,i) => (
+                      <div key={s.num}>
+                        <div style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:"14px 18px",display:"flex",alignItems:"flex-start",gap:14}}>
+                          <div style={{width:28,height:28,borderRadius:8,background:TK.sageDark,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                            <span style={{fontSize:11,fontWeight:800,color:TK.onDark}}>{s.num}</span>
                           </div>
-                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{transform:isOpen?"rotate(180deg)":"none",transition:"transform 0.2s ease",flexShrink:0}}>
-                            <path d="M3 5l4 4 4-4" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
+                          <div style={{flex:1}}>
+                            <div style={{fontSize:14,fontWeight:700,color:TK.text,marginBottom:3}}>{s.title}</div>
+                            <div style={{fontSize:13,color:TK.text3,lineHeight:1.5}}>{s.desc}</div>
+                          </div>
+                          <div style={{background:TK.bg,border:"0.5px solid "+TK.border,borderRadius:8,padding:"4px 10px"}}>
+                            <div style={{fontSize:11,fontWeight:700,color:TK.text3,fontFamily:"monospace"}}>{s.secs}s</div>
+                          </div>
+                        </div>
+                        {i<QUICK_PREP.length-1 && <div style={{width:1,height:6,background:TK.border,margin:"0 auto"}}/>}
+                      </div>
+                    ))}
+                    <button onClick={onQuickPrep} style={{width:"100%",padding:"15px",borderRadius:8,border:"none",background:TK.ink,color:TK.onDark,fontSize:15,fontWeight:700,cursor:"pointer",marginTop:6}}>Start Quick Prep</button>
+                  </div>
+                )}
+
+                {openPrepSub==="phrases" && (
+                  <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                    {PHRASES.map((cat,i) => (
+                      <div key={cat.cat} style={{background:TK.surface,borderRadius:10,overflow:"hidden",border:"0.5px solid "+TK.border}}>
+                        <button onClick={()=>setOpenCat(openCat===i?-1:i)} style={{width:"100%",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center",border:"none",background:"transparent",cursor:"pointer"}}>
+                          <span style={{fontSize:15,fontWeight:600,color:TK.text}}>{cat.cat}</span>
+                          <span style={{color:TK.text3,display:"inline-block",transform:openCat===i?"rotate(90deg)":"none",transition:"transform 0.2s"}}>›</span>
                         </button>
-                        {isOpen && (
-                          <div style={{borderTop:"0.5px solid "+T2.border,padding:isDesktop?"24px 24px 28px":"16px 18px 20px",display:"flex",flexDirection:"column",gap:16}}>
-                            {mod.books.map((book, bi) => (
-                              <div key={bi} style={{paddingBottom:bi<mod.books.length-1?16:0,borderBottom:bi<mod.books.length-1?"0.5px solid "+T2.divider:"none"}}>
-                                <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,letterSpacing:"-0.2px",marginBottom:2}}>{book.title}</p>
-                                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,marginBottom:10}}>{book.author}</p>
-                                <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.goldDark,lineHeight:1.5,marginBottom:10}}>{book.connection}</p>
-                                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text2,lineHeight:1.7,fontWeight:300,marginBottom:14}}>{book.summary}</p>
-                                <a href={book.amazon} target="_blank" rel="noreferrer" style={{display:"inline-flex",alignItems:"center",gap:6,padding:"7px 14px",background:T2.ink,color:T2.bg,borderRadius:3,fontSize:12,fontFamily:T.sans,fontWeight:500,letterSpacing:"0.02em",textDecoration:"none"}}>Get the book →</a>
+                        {openCat===i && (
+                          <div style={{borderTop:"0.5px solid "+TK.border}}>
+                            {cat.phrases.map((p,pi) => (
+                              <div key={pi} style={{padding:"11px 18px",display:"flex",alignItems:"center",gap:10,borderBottom:pi<cat.phrases.length-1?"0.5px solid "+TK.border:"none"}}>
+                                <div style={{width:2,height:2,background:TK.sageDark,flexShrink:0}}/>
+                                <p style={{margin:0,flex:1,fontSize:14,color:TK.text,fontStyle:"italic"}}>{p}</p>
+                                <button onClick={()=>copy(p)} style={{padding:"4px 10px",borderRadius:8,border:"0.5px solid "+TK.border,background:"transparent",color:TK.text3,fontSize:11,cursor:"pointer"}}>{copied===p?"✓":"Copy"}</button>
                               </div>
                             ))}
                           </div>
                         )}
                       </div>
-                    );
-                  })}
-                </div>
-              </>
-            );
-          })()}
-        </div>
-      )}
+                    ))}
+                  </div>
+                )}
 
-      {tab==="prep" && (
-        <div style={{padding:"16px 20px 0",display:"flex",flexDirection:"column",gap:10}}>
-          <div style={{background:T2.navyLight,border:"1px solid "+T.accentMd,borderRadius:16,padding:"14px 16px"}}>
-            <div
-style={{fontSize:14,fontWeight:700,color:T.accent,marginBottom:3}}>Pre-Meeting
-Ritual</div>
-            <div style={{fontSize:13,color:T.accent,opacity:0.8}}>2 
-minutes before any important conversation</div>
-          </div>
-          {QUICK_PREP.map((s,i) => (
-            <div key={s.num}>
-              <div 
-style={{background:T2.surface,borderRadius:2,padding:"14px 18px",display:"flex",alignItems:"flex-start",gap:14}}>
-                <div 
-style={{width:28,height:28,borderRadius:0,background:T.navy,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                  <span 
-style={{fontSize:11,fontWeight:800,color:"white"}}>{s.num}</span>
-                </div>
-                <div style={{flex:1}}>
-                  <div 
-style={{fontSize:14,fontWeight:700,color:T2.text,marginBottom:3}}>{s.title}</div>
-                  <div 
-style={{fontSize:13,color:T2.text3,lineHeight:1.5}}>{s.desc}</div>
-                </div>
-                <div 
-style={{background:T2.card,borderRadius:8,padding:"4px 10px"}}>
-                  <div 
-style={{fontSize:11,fontWeight:700,color:T2.text2,fontFamily:"monospace"}}>{s.secs}s</div>
-                </div>
+                {openPrepSub==="language" && (
+                  <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                    {SAY_THIS.map((item,i) => (
+                      <div key={i} style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:"16px 18px"}}>
+                        <div style={{fontSize:10,fontWeight:700,color:TK.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>{item.ctx}</div>
+                        <div style={{display:"flex",gap:8,marginBottom:8}}>
+                          <span style={{fontSize:14,flexShrink:0,color:TK.text3}}>✕</span>
+                          <p style={{margin:0,fontSize:14,color:TK.text3,textDecoration:"line-through"}}>{item.bad}</p>
+                        </div>
+                        <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                          <span style={{fontSize:14,flexShrink:0,color:TK.sageDark}}>✓</span>
+                          <p style={{margin:0,flex:1,fontSize:14,color:TK.sageDark,fontWeight:600,fontStyle:"italic"}}>{item.good}</p>
+                          <button onClick={()=>copy(item.good)} style={{padding:"5px 12px",borderRadius:8,border:"0.5px solid "+TK.border,background:"transparent",color:TK.text3,fontSize:11,cursor:"pointer"}}>{copied===item.good?"✓":"Copy"}</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {openPrepSub==="reading" && (() => {
+                  const MODULE_TITLES = ["Speak Clearly","Voice Control","Eliminate Fillers","Short Sentences","PRE Structure","Storytelling","PIE Framework","Executive Presence","Influence","Difficult Conversations","Personal Brand","Networking","Leadership Voice","High Stakes Moments"];
+                  return (
+                    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?2:8}}>
+                      {FURTHER_READING.map((mod, mi) => {
+                        const isOpen = openMod === mi;
+                        return (
+                          <div key={mi} style={{border:"0.5px solid "+TK.border,borderRadius:8,overflow:"hidden",background:isOpen?TK.bg:TK.surface}}>
+                            <button onClick={() => setOpenMod(isOpen ? null : mi)} style={{
+                              width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",
+                              padding:isDesktop?"18px 24px":"14px 18px",
+                              border:"none",background:"transparent",cursor:"pointer",textAlign:"left",
+                            }}>
+                              <div style={{display:"flex",alignItems:"center",gap:14}}>
+                                <span style={{fontFamily:T.sans,fontSize:11,color:TK.text3,fontWeight:500,width:24,flexShrink:0}}>{"0"+(mi+1)}</span>
+                                <span style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:TK.text,letterSpacing:"-0.2px"}}>{MODULE_TITLES[mi]}</span>
+                              </div>
+                              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{transform:isOpen?"rotate(180deg)":"none",transition:"transform 0.2s ease",flexShrink:0}}>
+                                <path d="M3 5l4 4 4-4" stroke={TK.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </button>
+                            {isOpen && (
+                              <div style={{borderTop:"0.5px solid "+TK.border,padding:isDesktop?"24px 24px 28px":"16px 18px 20px",display:"flex",flexDirection:"column",gap:16}}>
+                                {mod.books.map((book, bi) => (
+                                  <div key={bi} style={{paddingBottom:bi<mod.books.length-1?16:0,borderBottom:bi<mod.books.length-1?"0.5px solid "+TK.border:"none"}}>
+                                    <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:TK.text,letterSpacing:"-0.2px",marginBottom:2}}>{book.title}</p>
+                                    <p style={{fontFamily:T.sans,fontSize:12,color:TK.text3,marginBottom:10}}>{book.author}</p>
+                                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:TK.sageDark,lineHeight:1.5,marginBottom:10}}>{book.connection}</p>
+                                    <p style={{fontFamily:T.sans,fontSize:13,color:TK.text,lineHeight:1.7,fontWeight:300,marginBottom:14}}>{book.summary}</p>
+                                    <a href={book.amazon} target="_blank" rel="noreferrer" style={{display:"inline-flex",alignItems:"center",gap:6,padding:"7px 14px",background:TK.ink,color:TK.onDark,borderRadius:6,fontSize:12,fontFamily:T.sans,fontWeight:500,letterSpacing:"0.02em",textDecoration:"none"}}>Get the book →</a>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })()}
               </div>
-              {i<QUICK_PREP.length-1 && <div 
-style={{width:1,height:6,background:T.border,margin:"0 auto"}}/>}
             </div>
-          ))}
-          <button onClick={onQuickPrep}
-style={{width:"100%",padding:"15px",borderRadius:isDesktop?8:0,border:"none",background:T.navy,color:"white",fontSize:15,fontWeight:700,cursor:"pointer"}}>Start
-Quick Prep</button>
-        </div>
-      )}
+          );
+        }
+
+        return (
+          <div style={{maxWidth:isDesktop?1160:undefined,margin:"0 auto",padding:isDesktop?"40px 88px 80px":"20px 20px 60px",background:TK.bg}}>
+            <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:TK.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Quick Prep</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+              {SUBFOLDERS.map((s,i)=>(
+                <div key={i} onClick={()=>setOpenPrepSub(s.id)} style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:isDesktop?"18px":"14px",cursor:"pointer"}}>
+                  <div style={{width:36,height:36,borderRadius:"50%",background:s.tint,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 10px"}}>{s.icon}</div>
+                  <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:TK.text,marginBottom:4,textAlign:"center"}}>{s.label}</div>
+                  <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:TK.text3,lineHeight:1.4,textAlign:"center"}}>{s.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
       </div>
     </div>
   );
