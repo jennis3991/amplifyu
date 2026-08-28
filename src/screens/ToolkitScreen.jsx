@@ -282,7 +282,7 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
     onStartSession && onStartSession(cfg.day, cfg.step);
   }
 
-  const toolkitTabs = [["aitools","AI Tools"],["mywork","My Saved Work"+(allSaved.length>0?" ("+allSaved.length+")":"")],["practice","Practice Space"],["story","My Story"],["quickprep","Quick Prep"]];
+  const toolkitTabs = [["aitools","AI Tools"],["mywork","My Saved Work"+(allSaved.length>0?" ("+allSaved.length+")":"")],["practice","Practice Space"],["quickprep","Quick Prep"],["story","My Story"]];
   return (
     <div style={{background:T2.bg,minHeight:"100vh"}}>
       {!isDesktop && (
