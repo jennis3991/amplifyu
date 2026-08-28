@@ -466,7 +466,7 @@ p];
               <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr":"1fr 1fr",gap:12}}>
                 {SKILLS.map((sk,i)=>(
                   <div key={i} onClick={()=>setOpenSkillId(sk.id)} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"18px":"14px",cursor:"pointer"}}>
-                    <div style={{width:36,height:36,borderRadius:"50%",background:sk.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:10}}>{sk.icon}</div>
+                    <div style={{width:36,height:36,borderRadius:"50%",background:sk.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 10px"}}>{sk.icon}</div>
                     <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,marginBottom:4}}>{sk.label}</div>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:6}}>
                       <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.4}}>{sk.desc}</div>
