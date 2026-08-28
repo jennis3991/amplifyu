@@ -70,44 +70,61 @@ const MASTER_COMMUNICATORS = [
   {emoji:"🎤",name:"Simon Sinek",role:"Master of Structure",sub:"Known for turning complex ideas into memorable frameworks. His communication is simple, organised, and impossible to forget — because he builds the idea with you, not at you.",watchFor:["Clear beginning, middle, end","Strategic repetition of key phrases","Memorable, simple language","Pauses that let ideas land"],connection:[["Day 1","Feynman Technique"],["Day 5","PRE Framework"]],reflection:"How does he make complex ideas feel inevitable and simple?"},
 ];
 
+// ─── Toolkit-only colour system — AI Tools tab + hero/tab-nav only ──────────
+// Sophisticated, understated palette (Soho House-adjacent). Deliberately not
+// the shared theme.js tokens — the other 8 Toolkit tabs keep those. No gold,
+// mustard, burgundy or terracotta anywhere in this object.
+const TK = {
+  bg:      "#F4F1EA", // Warm Ivory — main background
+  surface: "#EAE6DE", // Soft Stone — cards and containers
+  border:  "#D8D0C4", // Light Taupe — borders/dividers
+  sage:    "#A8B3A3", // Muted Sage — primary accent
+  sageDark:"#718071", // Deep Sage — stronger accent/active states
+  text:    "#242321", // Charcoal — primary text and dark icons
+  ink:     "#161513", // Soft Black — deepest contrast/navigation
+  text3:   "#958C80", // Warm Taupe Text — secondary text/metadata
+  onDark:  "#F8F6F1", // Warm Off-White — icon artwork on dark backgrounds
+  taupe:   "#B7ADA0", // Warm Taupe — icon assignment (Leadership, Personal Brand)
+};
+
 // ─── Path Detail Screen — dark header + progress card + numbered step list ──
 // Shared by all three Toolkit Paths (Promotion / Presentation / Visibility).
 // "Step X of Y" / percentage is derived from the coarse whole-day `done`
 // array (the app has no finer-grained per-step completion tracking) — a step
 // counts as complete once its underlying lesson day is marked done.
-function PathDetailScreen({ T, T2, isDesktop, path, onBack, launch, done }) {
+function PathDetailScreen({ T, isDesktop, path, onBack, launch, done }) {
   const completedSteps = path.steps.filter(s => done.includes(s.day)).length;
   const currentStepNum = Math.min(completedSteps + 1, path.steps.length);
   const pct = Math.round((currentStepNum / path.steps.length) * 100);
   const totalMins = path.steps.reduce((sum,s) => sum + s.time, 0);
-  const Time = ({n}) => <div style={{display:"flex",alignItems:"center",gap:5}}><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke={T2.text4} strokeWidth="1.2"/><path d="M8 5v3l2 1.5" stroke={T2.text4} strokeWidth="1.2" strokeLinecap="round"/></svg><span style={{fontFamily:T.sans,fontSize:12,color:T2.text4}}>{n} min</span></div>;
+  const Time = ({n}) => <div style={{display:"flex",alignItems:"center",gap:5}}><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke={TK.text3} strokeWidth="1.2"/><path d="M8 5v3l2 1.5" stroke={TK.text3} strokeWidth="1.2" strokeLinecap="round"/></svg><span style={{fontFamily:T.sans,fontSize:12,color:TK.text3}}>{n} min</span></div>;
 
   return (
-    <div style={{background:T2.bg,minHeight:"100vh"}}>
+    <div style={{background:TK.bg,minHeight:"100vh"}}>
       {/* Dark header banner */}
-      <div style={{position:"relative",background:"#0D0B08",overflow:"hidden",padding:isDesktop?"36px 88px 0":"24px 20px 0"}}>
-        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 80% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)"}}/>
+      <div style={{position:"relative",background:TK.ink,overflow:"hidden",padding:isDesktop?"36px 88px 0":"24px 20px 0"}}>
+        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 80% 20%, rgba(168,179,163,0.08) 0%, transparent 55%)"}}/>
         <div style={{position:"relative",maxWidth:isDesktop?1160:undefined,margin:isDesktop?"0 auto":undefined}}>
-          <button onClick={onBack} style={{width:40,height:40,borderRadius:"50%",background:"rgba(245,239,230,0.1)",border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",marginBottom:isDesktop?28:20}}>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 3L5 9l6 6" stroke="#F5EFE6" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <button onClick={onBack} style={{width:40,height:40,borderRadius:"50%",background:"rgba(248,246,241,0.1)",border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",marginBottom:isDesktop?28:20}}>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 3L5 9l6 6" stroke={TK.onDark} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
           <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:24,paddingBottom:44}}>
             <div>
-              <h1 style={{fontFamily:T.serif,fontSize:isDesktop?42:28,fontWeight:600,color:"#F5EFE6",lineHeight:1.1,margin:"0 0 10px"}}>{path.label}</h1>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"rgba(245,239,230,0.6)",margin:"0 0 16px"}}>{path.desc}</p>
+              <h1 style={{fontFamily:T.serif,fontSize:isDesktop?42:28,fontWeight:600,color:TK.onDark,lineHeight:1.1,margin:"0 0 10px"}}>{path.label}</h1>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"rgba(248,246,241,0.6)",margin:"0 0 16px"}}>{path.desc}</p>
               <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
-                <span style={{display:"flex",alignItems:"center",gap:5,fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.5)"}}>
-                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="rgba(245,239,230,0.5)" strokeWidth="1.2"/><path d="M8 5v3l2 1.5" stroke="rgba(245,239,230,0.5)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <span style={{display:"flex",alignItems:"center",gap:5,fontFamily:T.sans,fontSize:13,color:"rgba(248,246,241,0.5)"}}>
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="rgba(248,246,241,0.5)" strokeWidth="1.2"/><path d="M8 5v3l2 1.5" stroke="rgba(248,246,241,0.5)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                   {path.steps.length} tools
                 </span>
-                <span style={{color:"rgba(245,239,230,0.3)"}}>•</span>
-                <span style={{fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.5)"}}>{totalMins} min total</span>
-                <span style={{color:"rgba(245,239,230,0.3)"}}>•</span>
-                <span style={{fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.5)"}}>Beginner friendly</span>
+                <span style={{color:"rgba(248,246,241,0.3)"}}>•</span>
+                <span style={{fontFamily:T.sans,fontSize:13,color:"rgba(248,246,241,0.5)"}}>{totalMins} min total</span>
+                <span style={{color:"rgba(248,246,241,0.3)"}}>•</span>
+                <span style={{fontFamily:T.sans,fontSize:13,color:"rgba(248,246,241,0.5)"}}>Beginner friendly</span>
               </div>
             </div>
-            <div style={{width:isDesktop?110:80,height:isDesktop?110:80,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"1px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <div style={{width:isDesktop?74:54,height:isDesktop?74:54,borderRadius:"50%",background:"rgba(138,158,132,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>{path.icon}</div>
+            <div style={{width:isDesktop?110:80,height:isDesktop?110:80,borderRadius:"50%",background:"rgba(168,179,163,0.1)",border:"1px solid rgba(168,179,163,0.22)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <div style={{width:isDesktop?74:54,height:isDesktop?74:54,borderRadius:"50%",background:path.tint,display:"flex",alignItems:"center",justifyContent:"center"}}>{path.icon}</div>
             </div>
           </div>
         </div>
@@ -115,20 +132,20 @@ function PathDetailScreen({ T, T2, isDesktop, path, onBack, launch, done }) {
 
       <div style={isDesktop?{maxWidth:1160,margin:"0 auto",padding:"0 88px 60px"}:{padding:"0 20px 40px"}}>
         {/* Your Progress card */}
-        <div style={{marginTop:-24,position:"relative",zIndex:2,background:T2.surface,borderRadius:12,border:"0.5px solid "+T2.border,padding:isDesktop?"24px 28px":"18px 20px",boxShadow:"0 6px 24px rgba(20,16,10,0.1)"}}>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Progress</div>
+        <div style={{marginTop:-24,position:"relative",zIndex:2,background:TK.surface,borderRadius:12,border:"0.5px solid "+TK.border,padding:isDesktop?"24px 28px":"18px 20px",boxShadow:"0 6px 24px rgba(22,21,19,0.1)"}}>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:TK.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Progress</div>
           <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:12}}>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?22:19,fontWeight:600,color:T2.text}}>Step {currentStepNum} of {path.steps.length}</div>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text}}>{pct}%</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?22:19,fontWeight:600,color:TK.text}}>Step {currentStepNum} of {path.steps.length}</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:TK.text}}>{pct}%</div>
           </div>
-          <div style={{height:8,background:T2.border,borderRadius:4,overflow:"hidden"}}>
-            <div style={{height:"100%",width:pct+"%",background:T.goldDark,borderRadius:4,transition:"width 0.4s ease"}}/>
+          <div style={{height:8,background:TK.border,borderRadius:4,overflow:"hidden"}}>
+            <div style={{height:"100%",width:pct+"%",background:TK.sageDark,borderRadius:4,transition:"width 0.4s ease"}}/>
           </div>
         </div>
 
         {/* YOUR PATH */}
         <div style={{marginTop:isDesktop?40:28}}>
-          <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Your Path</div>
+          <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:TK.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Your Path</div>
           <div style={{display:"flex",flexDirection:"column"}}>
             {path.steps.map((s,i) => {
               const isActive = i === currentStepNum - 1;
@@ -136,31 +153,31 @@ function PathDetailScreen({ T, T2, isDesktop, path, onBack, launch, done }) {
               return (
                 <div key={i} style={{display:"flex",gap:16}}>
                   <div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0}}>
-                    <div style={{width:34,height:34,borderRadius:"50%",background:s.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                      <span style={{fontFamily:T.sans,fontSize:14,fontWeight:700,color:"#F5EFE6"}}>{i+1}</span>
+                    <div style={{width:34,height:34,borderRadius:"50%",background:s.tint,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                      <span style={{fontFamily:T.sans,fontSize:14,fontWeight:700,color:TK.onDark}}>{i+1}</span>
                     </div>
-                    {!isLast && <div style={{flex:1,minHeight:44,borderLeft:"1.5px dotted "+T2.border,marginTop:4}}/>}
+                    {!isLast && <div style={{flex:1,minHeight:44,borderLeft:"1.5px dotted "+TK.border,marginTop:4}}/>}
                   </div>
-                  <div style={{flex:1,background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"20px 22px":"16px 16px",marginBottom:isLast?0:16,display:"flex",flexDirection:"column",gap:10,minWidth:0}}>
+                  <div style={{flex:1,background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:isDesktop?"20px 22px":"16px 16px",marginBottom:isLast?0:16,display:"flex",flexDirection:"column",gap:10,minWidth:0}}>
                     <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
-                      <div style={{width:40,height:40,borderRadius:8,background:s.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{s.icon}</div>
+                      <div style={{width:40,height:40,borderRadius:8,background:s.tint,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{s.icon}</div>
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontFamily:T.serif,fontSize:isDesktop?17:16,fontWeight:600,color:T2.text,marginBottom:s.subtitle?2:3}}>{s.label}</div>
-                        {s.subtitle && <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,marginBottom:4}}>{s.subtitle}</div>}
-                        <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{s.desc}</div>
+                        <div style={{fontFamily:T.serif,fontSize:isDesktop?17:16,fontWeight:600,color:TK.text,marginBottom:s.subtitle?2:3}}>{s.label}</div>
+                        {s.subtitle && <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:TK.sageDark,marginBottom:4}}>{s.subtitle}</div>}
+                        <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:TK.text3,lineHeight:1.5}}>{s.desc}</div>
                       </div>
                     </div>
                     {s.tags && s.tags.length > 0 && (
                       <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                        {s.tags.map((tag,j)=><span key={j} style={{fontFamily:T.sans,fontSize:11,color:T2.text3,padding:"3px 10px",border:"0.5px solid "+T2.border,borderRadius:20,whiteSpace:"nowrap"}}>{tag}</span>)}
+                        {s.tags.map((tag,j)=><span key={j} style={{fontFamily:T.sans,fontSize:11,color:TK.text3,padding:"3px 10px",border:"0.5px solid "+TK.border,borderRadius:20,whiteSpace:"nowrap"}}>{tag}</span>)}
                       </div>
                     )}
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:2,flexWrap:"wrap",gap:10}}>
                       <Time n={s.time}/>
                       <button onClick={()=>launch(s.day,s.step)} style={isActive ? {
-                          padding:isDesktop?"11px 24px":"10px 18px",borderRadius:6,border:"none",background:T.ink,color:T.bg,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,
+                          padding:isDesktop?"11px 24px":"10px 18px",borderRadius:6,border:"none",background:TK.ink,color:TK.onDark,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,
                         } : {
-                          padding:isDesktop?"11px 24px":"10px 18px",borderRadius:6,border:"1px solid "+T2.border,background:"transparent",color:T2.text,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,
+                          padding:isDesktop?"11px 24px":"10px 18px",borderRadius:6,border:"1px solid "+TK.border,background:"transparent",color:TK.text,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,
                         }}>
                         Start <span>→</span>
                       </button>
@@ -181,37 +198,37 @@ function PathDetailScreen({ T, T2, isDesktop, path, onBack, launch, done }) {
 // multi-step journey (yet), so no progress card / numbered list — just a
 // header and a "Featured Simulation" card. Built to hold more tools
 // alongside the featured one in a later pass without changing this shape.
-function SkillDetailScreen({ T, T2, isDesktop, skill, onBack, launch }) {
+function SkillDetailScreen({ T, isDesktop, skill, onBack, launch }) {
   const f = skill.featured;
   return (
-    <div style={{background:T2.bg,minHeight:"100vh"}}>
-      <div style={{position:"relative",background:"#0D0B08",overflow:"hidden",padding:isDesktop?"36px 88px 44px":"24px 20px 32px"}}>
-        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 80% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)"}}/>
+    <div style={{background:TK.bg,minHeight:"100vh"}}>
+      <div style={{position:"relative",background:TK.ink,overflow:"hidden",padding:isDesktop?"36px 88px 44px":"24px 20px 32px"}}>
+        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 80% 20%, rgba(168,179,163,0.08) 0%, transparent 55%)"}}/>
         <div style={{position:"relative",maxWidth:isDesktop?1160:undefined,margin:isDesktop?"0 auto":undefined}}>
-          <button onClick={onBack} style={{width:40,height:40,borderRadius:"50%",background:"rgba(245,239,230,0.1)",border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",marginBottom:isDesktop?28:20}}>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 3L5 9l6 6" stroke="#F5EFE6" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <button onClick={onBack} style={{width:40,height:40,borderRadius:"50%",background:"rgba(248,246,241,0.1)",border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",marginBottom:isDesktop?28:20}}>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 3L5 9l6 6" stroke={TK.onDark} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
           <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:24}}>
             <div>
-              <h1 style={{fontFamily:T.serif,fontSize:isDesktop?42:28,fontWeight:600,color:"#F5EFE6",lineHeight:1.1,margin:"0 0 10px"}}>{skill.label}</h1>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"rgba(245,239,230,0.6)",margin:0}}>{skill.desc}</p>
+              <h1 style={{fontFamily:T.serif,fontSize:isDesktop?42:28,fontWeight:600,color:TK.onDark,lineHeight:1.1,margin:"0 0 10px"}}>{skill.label}</h1>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"rgba(248,246,241,0.6)",margin:0}}>{skill.desc}</p>
             </div>
-            <div style={{width:isDesktop?80:60,height:isDesktop?80:60,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"1px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <div style={{width:isDesktop?50:38,height:isDesktop?50:38,borderRadius:"50%",background:skill.tint.circle,display:"flex",alignItems:"center",justifyContent:"center"}}>{skill.bigIcon}</div>
+            <div style={{width:isDesktop?80:60,height:isDesktop?80:60,borderRadius:"50%",background:"rgba(168,179,163,0.1)",border:"1px solid rgba(168,179,163,0.22)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <div style={{width:isDesktop?50:38,height:isDesktop?50:38,borderRadius:"50%",background:skill.tint,display:"flex",alignItems:"center",justifyContent:"center"}}>{skill.bigIcon}</div>
             </div>
           </div>
         </div>
       </div>
 
       <div style={isDesktop?{maxWidth:1160,margin:"0 auto",padding:"32px 88px 60px"}:{padding:"24px 20px 40px"}}>
-        <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Featured Simulation</div>
-        <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"18px 18px",display:"flex",gap:16,alignItems:"center",flexWrap:isDesktop?"nowrap":"wrap"}}>
-          <div style={{width:44,height:44,borderRadius:8,background:f.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{f.icon}</div>
+        <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:TK.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Featured Simulation</div>
+        <div style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:isDesktop?"22px 24px":"18px 18px",display:"flex",gap:16,alignItems:"center",flexWrap:isDesktop?"nowrap":"wrap"}}>
+          <div style={{width:44,height:44,borderRadius:8,background:f.tint,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{f.icon}</div>
           <div style={{flex:1,minWidth:isDesktop?0:"100%"}}>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,marginBottom:4}}>{f.label}</div>
-            <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{f.desc}</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:TK.text,marginBottom:4}}>{f.label}</div>
+            <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:TK.text3,lineHeight:1.5}}>{f.desc}</div>
           </div>
-          <button onClick={()=>launch(f.day,f.step)} style={{padding:isDesktop?"12px 24px":"10px 18px",borderRadius:6,border:"none",background:T.ink,color:T.bg,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Start →</button>
+          <button onClick={()=>launch(f.day,f.step)} style={{padding:isDesktop?"12px 24px":"10px 18px",borderRadius:6,border:"none",background:TK.ink,color:TK.onDark,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Start →</button>
         </div>
       </div>
     </div>
@@ -280,31 +297,31 @@ p];
       {!isDesktop && (
         <div style={{position:"relative",height:260,overflow:"hidden"}}>
           <img loading="lazy" src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
-          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.35)"}}/>
-          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.78) 0%,rgba(10,8,5,0.2) 50%,transparent 100%)"}}/>
+          <div style={{position:"absolute",inset:0,background:"rgba(22,21,19,0.35)"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(22,21,19,0.78) 0%,rgba(22,21,19,0.2) 50%,transparent 100%)"}}/>
           <div style={{position:"absolute",bottom:24,left:24}}>
-            <div style={{fontSize:10,fontWeight:600,color:"rgba(245,239,230,0.55)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:8,fontFamily:T.sans}}>Your Operating System</div>
-            <h1 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:"#F5EFE6",letterSpacing:"-0.5px",lineHeight:1.1}}>Toolkit</h1>
+            <div style={{fontSize:10,fontWeight:600,color:"rgba(248,246,241,0.55)",textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:8,fontFamily:T.sans}}>Your Operating System</div>
+            <h1 style={{fontFamily:T.serif,fontSize:30,fontWeight:600,color:TK.onDark,letterSpacing:"-0.5px",lineHeight:1.1}}>Toolkit</h1>
           </div>
         </div>
       )}
       {isDesktop && (
         <div style={{position:"relative",height:420,overflow:"hidden",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
           <img loading="lazy" src="/programme-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
-          <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.35)"}}/>
-          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.75) 0%,rgba(10,8,5,0.2) 45%,transparent 100%)"}}/>
+          <div style={{position:"absolute",inset:0,background:"rgba(22,21,19,0.35)"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(22,21,19,0.75) 0%,rgba(22,21,19,0.2) 45%,transparent 100%)"}}/>
           <div style={{position:"relative",zIndex:2,maxWidth:1160,margin:"0 auto",width:"100%",padding:"0 88px 0",boxSizing:"border-box"}}>
             <div style={{animation:"fadeUp 0.7s ease both",paddingBottom:0}}>
-              <div style={{fontSize:10,letterSpacing:"0.22em",textTransform:"uppercase",color:"rgba(245,239,230,0.55)",fontFamily:T.sans,fontWeight:500,marginBottom:14}}>Your Communication Operating System</div>
-              <h1 style={{fontFamily:T.serif,fontSize:72,fontWeight:600,color:"#F5EFE6",letterSpacing:"-3px",lineHeight:0.92,marginBottom:18}}>Toolkit</h1>
-              <p style={{fontFamily:T.sans,fontSize:16,color:"rgba(245,239,230,0.6)",fontWeight:300,margin:0,maxWidth:480}}>Powerful AI tools and exercises designed to help you communicate with greater clarity, confidence and impact.</p>
+              <div style={{fontSize:10,letterSpacing:"0.22em",textTransform:"uppercase",color:"rgba(248,246,241,0.55)",fontFamily:T.sans,fontWeight:500,marginBottom:14}}>Your Communication Operating System</div>
+              <h1 style={{fontFamily:T.serif,fontSize:72,fontWeight:600,color:TK.onDark,letterSpacing:"-3px",lineHeight:0.92,marginBottom:18}}>Toolkit</h1>
+              <p style={{fontFamily:T.sans,fontSize:16,color:"rgba(248,246,241,0.6)",fontWeight:300,margin:0,maxWidth:480}}>Powerful AI tools and exercises designed to help you communicate with greater clarity, confidence and impact.</p>
             </div>
           </div>
           {/* Tab nav — sits at the bottom of the hero */}
-          <div style={{position:"relative",zIndex:2,background:"rgba(10,8,4,0.55)",backdropFilter:"blur(8px)",borderTop:"1px solid rgba(255,255,255,0.08)",marginTop:28}}>
+          <div style={{position:"relative",zIndex:2,background:"rgba(22,21,19,0.55)",backdropFilter:"blur(8px)",borderTop:"1px solid rgba(255,255,255,0.08)",marginTop:28}}>
             <div style={{maxWidth:1160,margin:"0 auto",padding:"0 88px",display:"flex",gap:2}}>
               {toolkitTabs.map(([id,label]) => (
-                <button key={id} onClick={()=>setTab(id)} style={{padding:"12px 18px",border:"none",background:"transparent",fontSize:13,fontWeight:tab===id?600:400,color:tab===id?"rgba(245,239,230,0.95)":"rgba(245,239,230,0.45)",cursor:"pointer",borderBottom:tab===id?"2px solid "+T.gold:"2px solid transparent",transition:"all 0.2s"}}>
+                <button key={id} onClick={()=>setTab(id)} style={{padding:"12px 18px",border:"none",background:"transparent",fontSize:13,fontWeight:tab===id?600:400,color:tab===id?"rgba(248,246,241,0.95)":"rgba(248,246,241,0.45)",cursor:"pointer",borderBottom:tab===id?"2px solid "+TK.sageDark:"2px solid transparent",transition:"all 0.2s"}}>
                   {label}
                 </button>
               ))}
@@ -314,31 +331,29 @@ p];
       )}
       {!isDesktop && (<div style={{padding:"12px 20px 0",display:"flex",gap:8,overflowX:"auto",scrollbarWidth:"none",borderBottom:"1px solid "+T2.divider}}>
         {toolkitTabs.map(([id,label]) => (
-          <button key={id} onClick={()=>setTab(id)} style={{padding:"8px 14px",borderRadius:20,border:"1px solid "+(tab===id?T.gold:T2.border),background:tab===id?"rgba(138,158,132,0.1)":"transparent",color:tab===id?T.gold:T2.text3,fontSize:12,fontWeight:500,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,marginBottom:8}}>{label}</button>
+          <button key={id} onClick={()=>setTab(id)} style={{padding:"8px 14px",borderRadius:20,border:"1px solid "+(tab===id?TK.sageDark:T2.border),background:tab===id?"rgba(168,179,163,0.14)":"transparent",color:tab===id?TK.sageDark:T2.text3,fontSize:12,fontWeight:500,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,marginBottom:8}}>{label}</button>
         ))}
       </div>)}
       <div style={isDesktop?{maxWidth:1160,margin:"0 auto",padding:"24px 88px 60px"}:{}}>
       {tab==="aitools" && (() => {
         const launch = (day,step) => onStartSession && onStartSession(day,step);
-        const Time = ({n}) => <div style={{display:"flex",alignItems:"center",gap:5}}><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke={T2.text4} strokeWidth="1.2"/><path d="M8 5v3l2 1.5" stroke={T2.text4} strokeWidth="1.2" strokeLinecap="round"/></svg><span style={{fontFamily:T.sans,fontSize:12,color:T2.text4}}>{n} min</span></div>;
+        const Time = ({n}) => <div style={{display:"flex",alignItems:"center",gap:5}}><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke={TK.text3} strokeWidth="1.2"/><path d="M8 5v3l2 1.5" stroke={TK.text3} strokeWidth="1.2" strokeLinecap="round"/></svg><span style={{fontFamily:T.sans,fontSize:12,color:TK.text3}}>{n} min</span></div>;
         // Section header with an optional "View all →" on the right — used by
         // Your Paths and Explore by Skill. Not wired to a destination yet (no
         // dedicated browse page exists this pass), so it's non-interactive.
         const secLink = (label) => (
           <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:isDesktop?8:6}}>
-            <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"2px"}}>{label}</div>
-            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T2.text3,display:"flex",alignItems:"center",gap:4}}>View all <span style={{color:T.gold}}>→</span></span>
+            <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:TK.text,textTransform:"uppercase",letterSpacing:"2px"}}>{label}</div>
+            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:TK.text3,display:"flex",alignItems:"center",gap:4}}>View all <span style={{color:TK.sageDark}}>→</span></span>
           </div>
         );
 
         // Icon tint presets — reused across Your Paths and Explore by Skill so
         // the two sections read as one coherent palette (deep sage, warm tan,
         // muted sage, near-black), varying which card gets which tone.
-        const TINT_DEEP  = {circle:"#527060", cardBg:"rgba(82,112,96,0.06)",  cardBorder:"rgba(82,112,96,0.25)"};
-        const TINT_TAN   = {circle:"#B8903A", cardBg:"rgba(184,144,58,0.07)", cardBorder:"rgba(184,144,58,0.28)"};
-        const TINT_SAGE  = {circle:"#8A9E84", cardBg:T2.surface, cardBorder:T2.border};
-        const TINT_INK   = {circle:"#231E18", cardBg:T2.surface, cardBorder:T2.border};
-        const ICON_C = "#F5EFE6";
+        // Plain colour strings now (all cards share one Soft Stone
+        // background per the new palette — only the icon circle varies).
+        const ICON_C = TK.onDark;
 
         // Canonical, reused step definitions — appear in more than one Path.
         // "Achievement Story Builder" consolidates what used to be three
@@ -347,47 +362,47 @@ p];
         // screens; see the audit note above PATHS for details.
         const STEP_ACHIEVEMENT = {
           label:"Achievement Story Builder", desc:"Structure your wins into compelling stories for reviews, interviews and promotions.",
-          tags:["Reviews","Promotions","Interviews"], time:5, day:10, step:"Rehearsal", tint:TINT_DEEP,
+          tags:["Reviews","Promotions","Interviews"], time:5, day:10, step:"Rehearsal", tint:TK.sageDark,
           icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3h7l4 4v10H5V3z" stroke={ICON_C} strokeWidth="1.3"/><path d="M12 3v4h4" stroke={ICON_C} strokeWidth="1.3"/><path d="M7.5 10h5M7.5 13h3.5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>,
         };
         const STEP_PROMOTION_PREP = {
           label:"Promotion Prep", subtitle:"Real World Conversation Coaching", desc:"Practice a promotion conversation and get AI feedback to improve your delivery.",
-          time:8, day:6, step:"Simulation", tint:TINT_TAN,
+          time:8, day:6, step:"Simulation", tint:TK.taupe,
           icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14a1 1 0 011 1v7a1 1 0 01-1 1h-6l-4 3v-3H3a1 1 0 01-1-1V6a1 1 0 011-1z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round"/><path d="M6 8h8M6 11h5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>,
         };
 
         const PATHS = [
-          {id:"promotion", label:"Promotion Path",    desc:"Stand out and get noticed.",             tint:TINT_DEEP,
+          {id:"promotion", label:"Promotion Path",    desc:"Stand out and get noticed.",             tint:TK.sageDark,
            useCases:["Performance Reviews","Promotions","Interviews","Executive Meetings"],
            icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8 4h8v4a4 4 0 01-4 4 4 4 0 01-4-4V4z" stroke={ICON_C} strokeWidth="1.4" strokeLinejoin="round"/><path d="M8 4H5a1 1 0 00-1 1v1a3 3 0 003 3M16 4h3a1 1 0 011 1v1a3 3 0 01-3 3" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round"/><path d="M12 12v3M9 19h6M10 15h4v4h-4z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round"/></svg>,
            steps:[
              STEP_ACHIEVEMENT,
              STEP_PROMOTION_PREP,
-             {label:"Leadership Hot Seat", desc:"Step into the hot seat and handle tough questions with confidence.", time:8, day:10, step:"Simulation", tint:TINT_DEEP,
+             {label:"Leadership Hot Seat", desc:"Step into the hot seat and handle tough questions with confidence.", time:8, day:10, step:"Simulation", tint:TK.sageDark,
               icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4h8v6H6V4z" stroke={ICON_C} strokeWidth="1.3"/><path d="M6 10v6M14 10v6M4 17h12" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-             {label:"Pressure Response Drill", desc:"Sharp structured answers under pressure.", tags:["Meetings"], time:3, day:5, step:"Simulation", tint:TINT_TAN,
+             {label:"Pressure Response Drill", desc:"Sharp structured answers under pressure.", tags:["Meetings"], time:3, day:5, step:"Simulation", tint:TK.taupe,
               icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M12 3l-8 11h8l-2 5 8-11h-8l2-5z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>},
            ]},
-          {id:"presentation", label:"Presentation Path", desc:"Deliver with confidence and impact.",    tint:TINT_TAN,
+          {id:"presentation", label:"Presentation Path", desc:"Deliver with confidence and impact.",    tint:TK.sage,
            useCases:["Presentations","Pitches","Storytelling","Leadership Talks"],
            icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="12" rx="1.5" stroke={ICON_C} strokeWidth="1.4"/><path d="M9 20l3-4 3 4" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 9l3 3 2-2 3 3" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
            steps:[
-             {label:"Story Architect", desc:"Build powerful stories and presentations in minutes.", time:8, day:8, step:"Simulation", tint:TINT_DEEP,
+             {label:"Story Architect", desc:"Build powerful stories and presentations in minutes.", time:8, day:8, step:"Simulation", tint:TK.sageDark,
               icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 4h8l5 5v9H4V4z" stroke={ICON_C} strokeWidth="1.3" fill="none"/><path d="M11 4v6h5" stroke={ICON_C} strokeWidth="1.3"/><path d="M7 12h5M7 15h3" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>},
-             {label:"Pixar Story Builder", desc:"Build unforgettable stories using the Pixar framework.", tags:["Storytelling","Presentations","Leadership"], time:4, day:8, step:"Rehearsal", tint:TINT_TAN,
+             {label:"Pixar Story Builder", desc:"Build unforgettable stories using the Pixar framework.", tags:["Storytelling","Presentations","Leadership"], time:4, day:8, step:"Rehearsal", tint:TK.taupe,
               icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/><rect x="12" y="3" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/><rect x="3" y="12" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/><rect x="12" y="12" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/></svg>},
              STEP_ACHIEVEMENT,
-             {label:"Executive Briefing", desc:"Complex ideas, clear delivery.", tags:["Executive Comms"], time:4, day:4, step:"Simulation", tint:TINT_TAN,
+             {label:"Executive Briefing", desc:"Complex ideas, clear delivery.", tags:["Executive Comms"], time:4, day:4, step:"Simulation", tint:TK.taupe,
               icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 16V8l4 4 3-6 3 5 4-3v8H4z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>},
            ]},
-          {id:"visibility", label:"Visibility Path",   desc:"Build your brand and expand your reach.", tint:TINT_DEEP,
+          {id:"visibility", label:"Visibility Path",   desc:"Build your brand and expand your reach.", tint:TK.text,
            useCases:["LinkedIn","Personal Brand","Networking","Brand Building"],
            icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke={ICON_C} strokeWidth="1.4"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5" stroke={ICON_C} strokeWidth="1.4" strokeLinecap="round"/></svg>,
            steps:[
-             {label:"Brand Audit", desc:"Discover what signals your communication sends to the world.", tags:["LinkedIn","Presence","Personal Brand"], time:5, day:11, step:"Simulation", tint:TINT_DEEP,
+             {label:"Brand Audit", desc:"Discover what signals your communication sends to the world.", tags:["LinkedIn","Presence","Personal Brand"], time:5, day:11, step:"Simulation", tint:TK.sageDark,
               icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4.5H17l-3.7 2.7 1.4 4.3L11 12l-3.7 2.5 1.4-4.3L5 7.5h4.5z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>},
              STEP_PROMOTION_PREP,
-             {label:"Rapport Builder", desc:"Connect with anyone, anywhere.", tags:["Networking"], time:5, day:9, step:"Simulation", tint:TINT_DEEP,
+             {label:"Rapport Builder", desc:"Connect with anyone, anywhere.", tags:["Networking"], time:5, day:9, step:"Simulation", tint:TK.sageDark,
               icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="8" cy="8" r="3" stroke={ICON_C} strokeWidth="1.3" fill="none"/><circle cx="14" cy="8" r="3" stroke={ICON_C} strokeWidth="1.3" fill="none"/><path d="M4 18c0-3 2-4 4-4h6c2 0 4 1 4 4" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>},
            ]},
         ];
@@ -399,46 +414,46 @@ p];
         // deliberately two label objects sharing one route, not two tools.
         const STEP_AI_CONVO_PREP = {
           label:"AI Conversation Prep", desc:"Practice a high-stakes conversation and get AI feedback to improve your delivery.",
-          day:6, step:"Simulation", tint:TINT_TAN,
+          day:6, step:"Simulation", tint:TK.taupe,
           icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14a1 1 0 011 1v7a1 1 0 01-1 1h-6l-4 3v-3H3a1 1 0 01-1-1V6a1 1 0 011-1z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round"/><path d="M6 8h8M6 11h5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>,
         };
 
         const SKILLS = [
-          {id:"storytelling", label:"Storytelling",  desc:"Build stories people remember.",                tint:TINT_DEEP,
+          {id:"storytelling", label:"Storytelling",  desc:"Build stories people remember.",                tint:TK.sage,
            icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 5.5c-1.3-1-3.2-1.3-6-1v10c2.8-.3 4.7 0 6 1 1.3-1 3.2-1.3 6-1v-10c-2.8-.3-4.7 0-6 1z" stroke={ICON_C} strokeWidth="1.2" strokeLinejoin="round"/><path d="M10 5.5v10" stroke={ICON_C} strokeWidth="1.2"/></svg>,
-           featured:{label:"Story Architect", desc:"Build powerful stories and presentations in minutes.", day:8, step:"Simulation", tint:TINT_DEEP,
+           featured:{label:"Story Architect", desc:"Build powerful stories and presentations in minutes.", day:8, step:"Simulation", tint:TK.sageDark,
              icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 4h8l5 5v9H4V4z" stroke={ICON_C} strokeWidth="1.3" fill="none"/><path d="M11 4v6h5" stroke={ICON_C} strokeWidth="1.3"/><path d="M7 12h5M7 15h3" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>}},
-          {id:"leadership", label:"Leadership",    desc:"Lead and handle high-stakes conversations.",     tint:TINT_TAN,
+          {id:"leadership", label:"Leadership",    desc:"Lead and handle high-stakes conversations.",     tint:TK.taupe,
            icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="6.5" r="2.5" stroke={ICON_C} strokeWidth="1.2"/><circle cx="14" cy="7" r="2" stroke={ICON_C} strokeWidth="1.2"/><path d="M2.5 16c0-3 2-4.5 4.5-4.5s4.5 1.5 4.5 4.5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/><path d="M12.5 12c2 0 4 1.2 4.2 4" stroke={ICON_C} strokeWidth="1.1" strokeLinecap="round"/></svg>,
            featured:STEP_AI_CONVO_PREP},
-          {id:"presence", label:"Presence",      desc:"Speak with confidence and authority.",           tint:TINT_SAGE,
+          {id:"presence", label:"Presence",      desc:"Speak with confidence and authority.",           tint:TK.sage,
            icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke={ICON_C} strokeWidth="1.2"/><path d="M4.5 17c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>,
-           featured:{label:"Find Your Voice", desc:"Discover your vocal range and unlock a more expressive, resonant voice.", day:2, step:"Simulation", tint:TINT_SAGE,
+           featured:{label:"Find Your Voice", desc:"Discover your vocal range and unlock a more expressive, resonant voice.", day:2, step:"Simulation", tint:TK.sage,
              icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="8" y="3" width="4" height="8" rx="2" stroke={ICON_C} strokeWidth="1.3"/><path d="M5 9a5 5 0 0010 0" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round"/><path d="M10 14v2M8 16h4" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round"/></svg>}},
-          {id:"influence", label:"Influence",     desc:"Get buy-in and move people.",                    tint:TINT_SAGE,
+          {id:"influence", label:"Influence",     desc:"Get buy-in and move people.",                    tint:TK.text,
            icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 8v4h2.5L12 16V4L5.5 8H3z" stroke={ICON_C} strokeWidth="1.2" strokeLinejoin="round"/><path d="M15 7.5a3 3 0 010 5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>,
            featured:STEP_AI_CONVO_PREP},
-          {id:"personal-brand", label:"Personal Brand",desc:"Shape how you're perceived.",                    tint:TINT_TAN,
+          {id:"personal-brand", label:"Personal Brand",desc:"Shape how you're perceived.",                    tint:TK.taupe,
            icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><polygon points="10,2 12.2,7.2 18,7.8 13.6,11.6 15,17.3 10,14.2 5,17.3 6.4,11.6 2,7.8 7.8,7.2" stroke={ICON_C} strokeWidth="1.1" strokeLinejoin="round"/></svg>,
-           featured:{label:"Brand Audit", desc:"Discover what signals your communication sends to the world.", day:11, step:"Simulation", tint:TINT_TAN,
+           featured:{label:"Brand Audit", desc:"Discover what signals your communication sends to the world.", day:11, step:"Simulation", tint:TK.taupe,
              icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4.5H17l-3.7 2.7 1.4 4.3L11 12l-3.7 2.5 1.4-4.3L5 7.5h4.5z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>}},
-          {id:"clarity", label:"Clarity",       desc:"Make complex ideas simple.",                     tint:TINT_INK,
+          {id:"clarity", label:"Clarity",       desc:"Make complex ideas simple.",                     tint:TK.ink,
            icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M8 3l1.2 3.3L12.5 7.5 9.2 8.7 8 12l-1.2-3.3L3.5 7.5l3.3-1.2L8 3z" fill={ICON_C}/><path d="M15 11l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z" fill={ICON_C}/></svg>,
-           featured:{label:"Clarity Check-In", desc:"Establish your communication baseline and track your progress.", day:1, step:"Simulation", tint:TINT_INK,
+           featured:{label:"Clarity Check-In", desc:"Establish your communication baseline and track your progress.", day:1, step:"Simulation", tint:TK.ink,
              icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke={ICON_C} strokeWidth="1.3" fill="none"/><path d="M5 19c0-4 2.7-6 6-6s6 2 6 6" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>}},
         ];
 
         if (openPathId) {
           const openPath = PATHS.find(p => p.id === openPathId);
-          return <PathDetailScreen T={T} T2={T2} isDesktop={isDesktop} path={openPath} done={done} launch={launch} onBack={()=>setOpenPathId(null)}/>;
+          return <PathDetailScreen T={T} isDesktop={isDesktop} path={openPath} done={done} launch={launch} onBack={()=>setOpenPathId(null)}/>;
         }
         if (openSkillId) {
           const openSkill = SKILLS.find(s => s.id === openSkillId);
-          return <SkillDetailScreen T={T} T2={T2} isDesktop={isDesktop} skill={{...openSkill, bigIcon: openSkill.icon}} launch={launch} onBack={()=>setOpenSkillId(null)}/>;
+          return <SkillDetailScreen T={T} isDesktop={isDesktop} skill={{...openSkill, bigIcon: openSkill.icon}} launch={launch} onBack={()=>setOpenSkillId(null)}/>;
         }
 
         return (
-          <div style={{maxWidth:isDesktop?1160:undefined,margin:"0 auto",padding:isDesktop?"40px 88px 80px":"20px 20px 60px"}}>
+          <div style={{maxWidth:isDesktop?1160:undefined,margin:"0 auto",padding:isDesktop?"40px 88px 80px":"20px 20px 60px",background:TK.bg}}>
 
             {/* ── YOUR PATHS ────────────────────────────────────────────── */}
             <div style={{marginBottom:isDesktop?48:32}}>
@@ -446,23 +461,23 @@ p];
               <div style={{marginTop:16,display:"flex",flexDirection:"column",gap:12}}>
                 {PATHS.map((path,i)=>(
                   <div key={i} onClick={()=>setOpenPathId(path.id)}
-                    style={{background:path.tint.cardBg,borderRadius:10,border:"0.5px solid "+path.tint.cardBorder,padding:isDesktop?"20px 24px":"16px 16px",display:"flex",alignItems:"flex-start",gap:16,cursor:"pointer"}}>
-                    <div style={{width:isDesktop?56:48,height:isDesktop?56:48,borderRadius:"50%",background:path.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{path.icon}</div>
+                    style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:isDesktop?"20px 24px":"16px 16px",display:"flex",alignItems:"flex-start",gap:16,cursor:"pointer"}}>
+                    <div style={{width:isDesktop?56:48,height:isDesktop?56:48,borderRadius:"50%",background:path.tint,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{path.icon}</div>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontFamily:T.serif,fontSize:isDesktop?19:17,fontWeight:600,color:T2.text,marginBottom:3}}>{path.label}</div>
-                      <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:6}}>{path.desc}</div>
+                      <div style={{fontFamily:T.serif,fontSize:isDesktop?19:17,fontWeight:600,color:TK.text,marginBottom:3}}>{path.label}</div>
+                      <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:TK.text3,marginBottom:6}}>{path.desc}</div>
                       <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:path.useCases?10:0}}>
                         <Time n={path.steps.reduce((sum,s)=>sum+s.time,0)}/>
-                        <span style={{color:T2.text4,fontSize:11}}>•</span>
-                        <span style={{fontFamily:T.sans,fontSize:12,color:T2.text4}}>{path.steps.length} tools</span>
+                        <span style={{color:TK.text3,fontSize:11}}>•</span>
+                        <span style={{fontFamily:T.sans,fontSize:12,color:TK.text3}}>{path.steps.length} tools</span>
                       </div>
                       {path.useCases && (
                         <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                          {path.useCases.map((uc,j)=><span key={j} style={{fontFamily:T.sans,fontSize:11,color:T2.text3,padding:"3px 10px",border:"0.5px solid "+path.tint.cardBorder,borderRadius:20,whiteSpace:"nowrap",background:T2.surface}}>{uc}</span>)}
+                          {path.useCases.map((uc,j)=><span key={j} style={{fontFamily:T.sans,fontSize:11,color:TK.text3,padding:"3px 10px",border:"0.5px solid "+TK.border,borderRadius:20,whiteSpace:"nowrap",background:TK.bg}}>{uc}</span>)}
                         </div>
                       )}
                     </div>
-                    <span style={{fontFamily:T.sans,fontSize:18,color:T2.text3,flexShrink:0}}>→</span>
+                    <span style={{fontFamily:T.sans,fontSize:18,color:TK.text3,flexShrink:0}}>→</span>
                   </div>
                 ))}
               </div>
@@ -473,12 +488,12 @@ p];
               {secLink("Explore by Skill")}
               <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr":"1fr 1fr",gap:12}}>
                 {SKILLS.map((sk,i)=>(
-                  <div key={i} onClick={()=>setOpenSkillId(sk.id)} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"18px":"14px",cursor:"pointer"}}>
-                    <div style={{width:36,height:36,borderRadius:"50%",background:sk.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 10px"}}>{sk.icon}</div>
-                    <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,marginBottom:4}}>{sk.label}</div>
+                  <div key={i} onClick={()=>setOpenSkillId(sk.id)} style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:isDesktop?"18px":"14px",cursor:"pointer"}}>
+                    <div style={{width:36,height:36,borderRadius:"50%",background:sk.tint,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 10px"}}>{sk.icon}</div>
+                    <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:TK.text,marginBottom:4}}>{sk.label}</div>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:6}}>
-                      <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.4}}>{sk.desc}</div>
-                      <span style={{fontFamily:T.sans,fontSize:14,color:T2.text3,flexShrink:0}}>→</span>
+                      <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:TK.text3,lineHeight:1.4}}>{sk.desc}</div>
+                      <span style={{fontFamily:T.sans,fontSize:14,color:TK.text3,flexShrink:0}}>→</span>
                     </div>
                   </div>
                 ))}
