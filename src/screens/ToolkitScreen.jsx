@@ -358,6 +358,7 @@ p];
 
         const PATHS = [
           {id:"promotion", label:"Promotion Path",    desc:"Stand out and get noticed.",             tint:TINT_DEEP,
+           useCases:["Performance Reviews","Promotions","Interviews","Executive Meetings"],
            icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8 4h8v4a4 4 0 01-4 4 4 4 0 01-4-4V4z" stroke={ICON_C} strokeWidth="1.4" strokeLinejoin="round"/><path d="M8 4H5a1 1 0 00-1 1v1a3 3 0 003 3M16 4h3a1 1 0 011 1v1a3 3 0 01-3 3" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round"/><path d="M12 12v3M9 19h6M10 15h4v4h-4z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round"/></svg>,
            steps:[
              STEP_ACHIEVEMENT,
@@ -368,6 +369,7 @@ p];
               icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M12 3l-8 11h8l-2 5 8-11h-8l2-5z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>},
            ]},
           {id:"presentation", label:"Presentation Path", desc:"Deliver with confidence and impact.",    tint:TINT_TAN,
+           useCases:["Presentations","Pitches","Storytelling","Leadership Talks"],
            icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="12" rx="1.5" stroke={ICON_C} strokeWidth="1.4"/><path d="M9 20l3-4 3 4" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 9l3 3 2-2 3 3" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
            steps:[
              {label:"Story Architect", desc:"Build powerful stories and presentations in minutes.", time:8, day:8, step:"Simulation", tint:TINT_DEEP,
@@ -379,6 +381,7 @@ p];
               icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 16V8l4 4 3-6 3 5 4-3v8H4z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>},
            ]},
           {id:"visibility", label:"Visibility Path",   desc:"Build your brand and expand your reach.", tint:TINT_DEEP,
+           useCases:["LinkedIn","Personal Brand","Networking","Brand Building"],
            icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke={ICON_C} strokeWidth="1.4"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5" stroke={ICON_C} strokeWidth="1.4" strokeLinecap="round"/></svg>,
            steps:[
              {label:"Brand Audit", desc:"Discover what signals your communication sends to the world.", tags:["LinkedIn","Presence","Personal Brand"], time:5, day:11, step:"Simulation", tint:TINT_DEEP,
@@ -443,16 +446,21 @@ p];
               <div style={{marginTop:16,display:"flex",flexDirection:"column",gap:12}}>
                 {PATHS.map((path,i)=>(
                   <div key={i} onClick={()=>setOpenPathId(path.id)}
-                    style={{background:path.tint.cardBg,borderRadius:10,border:"0.5px solid "+path.tint.cardBorder,padding:isDesktop?"20px 24px":"16px 16px",display:"flex",alignItems:"center",gap:16,cursor:"pointer"}}>
+                    style={{background:path.tint.cardBg,borderRadius:10,border:"0.5px solid "+path.tint.cardBorder,padding:isDesktop?"20px 24px":"16px 16px",display:"flex",alignItems:"flex-start",gap:16,cursor:"pointer"}}>
                     <div style={{width:isDesktop?56:48,height:isDesktop?56:48,borderRadius:"50%",background:path.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{path.icon}</div>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontFamily:T.serif,fontSize:isDesktop?19:17,fontWeight:600,color:T2.text,marginBottom:3}}>{path.label}</div>
                       <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:6}}>{path.desc}</div>
-                      <div style={{display:"flex",alignItems:"center",gap:6}}>
+                      <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:path.useCases?10:0}}>
                         <Time n={path.steps.reduce((sum,s)=>sum+s.time,0)}/>
                         <span style={{color:T2.text4,fontSize:11}}>•</span>
                         <span style={{fontFamily:T.sans,fontSize:12,color:T2.text4}}>{path.steps.length} tools</span>
                       </div>
+                      {path.useCases && (
+                        <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                          {path.useCases.map((uc,j)=><span key={j} style={{fontFamily:T.sans,fontSize:11,color:T2.text3,padding:"3px 10px",border:"0.5px solid "+path.tint.cardBorder,borderRadius:20,whiteSpace:"nowrap",background:T2.surface}}>{uc}</span>)}
+                        </div>
+                      )}
                     </div>
                     <span style={{fontFamily:T.sans,fontSize:18,color:T2.text3,flexShrink:0}}>→</span>
                   </div>
