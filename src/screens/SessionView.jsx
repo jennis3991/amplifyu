@@ -779,7 +779,14 @@ setAmbitionSaved(true); } catch {}
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{marginBottom:24}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Rehearsal · Day 10</div>
-            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>Make Your Work Visible</h2>
+            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:"0 0 16px"}}>Make Your Work Visible</h2>
+            <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
+                <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+              <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
+            </div>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:14}}>
             <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"}}>
@@ -2661,7 +2668,14 @@ setAmbitionSaved(true); } catch {}
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Train Your Instrument</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:560 }}>Voice requires repetition. Work through each exercise, then take the speed challenge.</p>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:20, maxWidth:560 }}>Voice requires repetition. Work through each exercise, then take the speed challenge.</p>
+          <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:24}}>
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
+              <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
+          </div>
           <D2PracticeWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
@@ -3700,7 +3714,14 @@ setAmbitionSaved(true); } catch {}
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Practice Presence</div>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Build Grounded Physical Confidence</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:32, maxWidth:600 }}>Seven rounds. Gestures, posture, eye contact, movement, expression, and grounded presence.</p>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:20, maxWidth:600 }}>Seven rounds. Gestures, posture, eye contact, movement, expression, and grounded presence.</p>
+          <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:24}}>
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
+              <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
+          </div>
           <D12PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={() => setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD12NavLabel} onNavFn={d12NavFnRef}/>
         </div>
       );
@@ -3923,7 +3944,14 @@ setAmbitionSaved(true); } catch {}
 
       if (step==="Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:28}}>Make Your Value Visible</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Make Your Value Visible</h2>
+          <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:24}}>
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
+              <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
+          </div>
           <D13PracticeWidget T={T} T2={T2} isDesktop={true} onSimulation={()=>setIdx(STEPS.indexOf('Simulation'))} onNavLabel={setD13NavLabel} onNavFn={d13NavFnRef}/>
         </div>
       );

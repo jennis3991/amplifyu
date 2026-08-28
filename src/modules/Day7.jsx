@@ -137,6 +137,13 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>The Six</h2>
       </div>
       {progressBar(0)}
+      <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
+          <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+        <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
+      </div>
       <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"22px 24px" }}>
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Challenge</div>
         <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:0, fontWeight:400 }}>Think of one real conversation coming up this week — a meeting, a presentation, a difficult discussion. Speak for 30 seconds about which of this week's skills you'll use in it — and why.</p>

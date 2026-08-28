@@ -831,6 +831,13 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Rehearsal · Day 1</div>
       <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Voice Warm-Up</h2>
       <p style={{ fontFamily: T.sans, fontSize: isDesktop ? 16 : 15, color: "#A8998A", lineHeight: 1.6, fontWeight: 400, marginBottom: 24 }}>Choose one topic below and speak for around 30 seconds. This is simply a chance to find your voice. Just speak naturally, and we'll take care of the rest.</p>
+      <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:20}}>
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
+          <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+        <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
+      </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isDesktop ? 12 : 10 }}>
         {TOPICS.map((topic, i) => {
           const isSel = sel === i;
