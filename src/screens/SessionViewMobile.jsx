@@ -49,7 +49,7 @@ export function MobileSessionView({
   T2, step, STEPS, idx, setIdx, lesson, isDone, onComplete, onBack,
   isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isD14, isNT,
   selSc, setSelSc, exitConfirm, setExitConfirm,
-  accordionOpen, setAccordionOpen, savedBooks, saveBook,
+  accordionOpen, setAccordionOpen,
   setNtStory,
   d1MobCard, setD1MobCard, d2MobCard, setD2MobCard,
   d3MobCard, setD3MobCard, d4MobCard, setD4MobCard,
@@ -3006,58 +3006,22 @@ strokeLinecap="round"/></svg>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.05,letterSpacing:"-0.5px",marginBottom:12}}>Go Deeper</h2>
             <p style={{fontFamily:T.sans,fontSize:14,fontWeight:300,color:T2.text2,lineHeight:1.65,marginBottom:0}}>You've learned the techniques. These books will make you unstoppable.</p>
           </div>
-          {/* Book cards */}
+          {/* Book cards — mirrors the Reading List format in Toolkit */}
           {(()=>{
             const fr = FURTHER_READING[lesson.day-1];
             if(!fr) return null;
-            return fr.books.map((book,bi)=>{
-              const saved = savedBooks.includes(book.title);
-              return (
-                <div key={bi} style={{background:"white",borderRadius:8,margin:"0 4px",boxShadow:"0 2px 8px rgba(44,36,22,0.08),0 8px 24px rgba(44,36,22,0.04)",overflow:"hidden"}}>
-                  {/* Cover + info row */}
-                  <div style={{display:"flex",gap:0,alignItems:"stretch"}}>
-                    {/* Cover */}
-                    <div style={{width:110,flexShrink:0,background:"linear-gradient(145deg,#2C2416 0%,#4A3828 55%,#2C2416 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"16px 10px",textAlign:"center",position:"relative"}}>
-                      <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.3))"}}/>
-                      <p style={{fontFamily:T.serif,fontSize:11,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,marginBottom:8}}>{book.title}</p>
-                      <div style={{width:20,height:1,background:T.gold,opacity:0.5,marginBottom:8}}/>
-                      <p style={{fontFamily:T.sans,fontSize:9,color:"rgba(245,239,230,0.5)",letterSpacing:"0.3px"}}>{book.author}</p>
-                    </div>
-                    {/* Info */}
-                    <div style={{flex:1,padding:"18px 16px"}}>
-                      <h3 style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"#2C2416",marginBottom:4,letterSpacing:"-0.2px"}}>{book.title}</h3>
-                      <p style={{fontFamily:T.sans,fontSize:12,color:"#6B5E44",marginBottom:12}}>{book.author}</p>
-                      {book.quote && (
-                        <p style={{fontFamily:T.sans,fontSize:13,fontStyle:"italic",color:"#2C2416",lineHeight:1.55,marginBottom:10,borderLeft:"3px solid "+T.gold,paddingLeft:10}}>
-                          <span style={{color:T.gold,fontStyle:"normal"}}>"</span>{book.quote}<span style={{color:T.gold,fontStyle:"normal"}}>"</span>
-                        </p>
-                      )}
-                      {book.rating && (
-                        <p style={{fontFamily:T.sans,fontSize:12,color:"#8A7B66",marginBottom:0}}>
-                          <span style={{color:"#C9A227"}}>★★★★★</span> {book.rating}/5 · {book.reviewCount}
-                        </p>
-                      )}
-                    </div>
+            return (
+              <div style={{padding:"0 20px",margin:"0 4px"}}>
+                {fr.books.map((book,bi)=>(
+                  <div key={bi} style={{paddingBottom:bi<fr.books.length-1?20:0,marginBottom:bi<fr.books.length-1?20:0,borderBottom:bi<fr.books.length-1?"0.5px solid #EDE8DF":"none"}}>
+                    <p style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:"#2C2416",letterSpacing:"-0.2px",marginBottom:2}}>{book.title}</p>
+                    <p style={{fontFamily:T.sans,fontSize:12,color:"#8A7B66",marginBottom:10}}>{book.author}</p>
+                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.goldDark,lineHeight:1.5,marginBottom:12}}>{book.connection}</p>
+                    <a href={book.amazon} target="_blank" rel="noreferrer" style={{display:"inline-flex",alignItems:"center",gap:6,padding:"8px 14px",background:"#2C2416",color:"#F7F3EC",borderRadius:6,fontSize:12,fontFamily:T.sans,fontWeight:500,letterSpacing:"0.02em",textDecoration:"none"}}>Get the book →</a>
                   </div>
-                  {/* Why + actions */}
-                  {book.why && (
-                    <div style={{padding:"14px 16px 0",borderTop:"0.5px solid #EDE8DF"}}>
-                      <div style={{fontSize:10,fontWeight:600,textTransform:"uppercase",letterSpacing:"1.5px",color:T.gold,fontFamily:T.sans,marginBottom:6}}>Why this book</div>
-                      <p style={{fontFamily:T.sans,fontSize:13,color:"#2C2416",lineHeight:1.65,fontWeight:300,marginBottom:14}}>{book.why}</p>
-                    </div>
-                  )}
-                  <div style={{display:"flex",gap:10,padding:"0 16px 18px"}}>
-                    <a href={book.amazon} target="_blank" rel="noreferrer"
-                      style={{flex:1,display:"block",background:"#2C2416",color:"#F7F3EC",padding:"11px 0",borderRadius:4,fontFamily:T.sans,fontSize:13,fontWeight:600,textDecoration:"none",textAlign:"center"}}>
-                      Buy on Amazon →
-                    </a>
-                    <button onClick={()=>saveBook(book.title)} style={{flex:1,background:"transparent",color:saved?T.gold:"#8A7B66",border:"1px solid "+(saved?T.gold:"#DDD5C4"),padding:"11px 0",borderRadius:4,fontFamily:T.sans,fontSize:13,fontWeight:500,cursor:"pointer"}}>
-                      {saved?"✓ Saved":"+ Save to List"}
-                    </button>
-                  </div>
-                </div>
-              );
-            });
+                ))}
+              </div>
+            );
           })()}
           {/* Ambition Statement — only on Day 7 */}
           {lesson.day === 7 && (

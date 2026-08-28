@@ -76,11 +76,6 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const [d9SimRecording, setD9SimRecording] = useState(false);
   const [d10SimRecording, setD10SimRecording] = useState(false);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
-  const [savedBooks, setSavedBooks] = useState(() => { try { return JSON.parse(localStorage.getItem("au1_saved_books")||"[]"); } catch { return []; } });
-  function saveBook(title) {
-    const next = savedBooks.includes(title) ? savedBooks.filter(t=>t!==title) : [...savedBooks, title];
-    setSavedBooks(next); try { localStorage.setItem("au1_saved_books", JSON.stringify(next)); } catch {}
-  }
   const [note, setNote] = useState(() => {
     try { return localStorage.getItem("au1_note_"+lesson.day) || ""; } catch { return ""; }
   });
@@ -4407,55 +4402,19 @@ setAmbitionSaved(true); } catch {}
 
                       {/* Divider before books */}
                       <h2 style={{ fontFamily: T.serif, fontSize: "clamp(28px,2.5vw,36px)", fontWeight: 600, color: T2.text, letterSpacing: "-0.3px", lineHeight: 1.15, marginBottom: 12 }}>Go Deeper</h2>
-                      <p style={{ fontFamily: T.sans, fontSize: 15, fontWeight: 300, color: T2.text2, maxWidth: 500, marginBottom: 40, lineHeight: 1.65 }}>You've learned the techniques. These books will make you unstoppable.</p>
+                      <p style={{ fontFamily: T.sans, fontSize: 15, fontWeight: 300, color: T2.text2, maxWidth: 500, marginBottom: 32, lineHeight: 1.65 }}>You've learned the techniques. These books will make you unstoppable.</p>
 
-                      {/* Book cards */}
-                      {fr && fr.books.map((book, bi) => {
-                        const saved = savedBooks.includes(book.title);
-                        return (
-                          <div key={bi} style={{ background: "white", borderRadius: 8, padding: "36px", boxShadow: "0 2px 8px rgba(44,36,22,0.08), 0 8px 24px rgba(44,36,22,0.04)", marginBottom: 32, display: "grid", gridTemplateColumns: "200px 1fr", gap: 40, alignItems: "start" }}>
-                            {/* Cover placeholder */}
-                            <div style={{ width: 200, height: 300, background: "linear-gradient(145deg,#2C2416 0%,#4A3828 55%,#2C2416 100%)", borderRadius: 4, boxShadow: "0 4px 16px rgba(44,36,22,0.18), 3px 0 0 rgba(0,0,0,0.15)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px 16px", textAlign: "center", flexShrink: 0, position: "relative", overflow: "hidden" }}>
-                              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.3))" }}/>
-                              <p style={{ fontFamily: T.serif, fontSize: 15, fontWeight: 600, color: "#F5EFE6", lineHeight: 1.25, marginBottom: 12 }}>{book.title}</p>
-                              <div style={{ width: 24, height: 1, background: T.gold, opacity: 0.5, marginBottom: 10 }}/>
-                              <p style={{ fontFamily: T.sans, fontSize: 10, color: "rgba(245,239,230,0.5)", letterSpacing: "0.5px" }}>{book.author}</p>
-                            </div>
-                            {/* Info */}
-                            <div>
-                              <h2 style={{ fontFamily: T.serif, fontSize: "clamp(22px,2vw,28px)", fontWeight: 600, color: T2.text, marginBottom: 6, letterSpacing: "-0.2px" }}>{book.title}</h2>
-                              <p style={{ fontFamily: T.sans, fontSize: 15, color: T2.text2, marginBottom: 20 }}>{book.author}</p>
-                              {book.quote && (
-                                <p style={{ fontFamily: T.sans, fontSize: 17, fontStyle: "italic", color: T2.text, lineHeight: 1.65, marginBottom: 14, borderLeft: "3px solid "+T.gold, paddingLeft: 16 }}>
-                                  <span style={{ color: T.gold, fontStyle: "normal" }}>"</span>{book.quote}<span style={{ color: T.gold, fontStyle: "normal" }}>"</span>
-                                </p>
-                              )}
-                              {book.rating && (
-                                <p style={{ fontFamily: T.sans, fontSize: 13, color: T2.text3, marginBottom: 22 }}>
-                                  <span style={{ color: "#C9A227" }}>★★★★★</span> {book.rating}/5 · {book.reviewCount}
-                                </p>
-                              )}
-                              {book.why && (
-                                <div style={{ marginBottom: 24 }}>
-                                  <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", color: T.gold, fontFamily: T.sans, marginBottom: 8 }}>Why this book</div>
-                                  <p style={{ fontFamily: T.sans, fontSize: 14, color: T2.text, lineHeight: 1.7, fontWeight: 300 }}>{book.why}</p>
-                                </div>
-                              )}
-                              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                                <a href={book.amazon} target="_blank" rel="noreferrer"
-                                  style={{ display: "inline-block", background: T.ink, color: T.bg, padding: "11px 24px", borderRadius: 4, fontFamily: T.sans, fontSize: 13, fontWeight: 600, textDecoration: "none", transition: "all 0.25s ease", flexShrink: 0 }}
-                                  onMouseEnter={e=>{ e.currentTarget.style.background=T.gold; e.currentTarget.style.transform="translateY(-2px)"; }}
-                                  onMouseLeave={e=>{ e.currentTarget.style.background=T.ink; e.currentTarget.style.transform="none"; }}
-                                >Buy on Amazon →</a>
-                                <button onClick={()=>saveBook(book.title)} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "transparent", color: saved ? T.gold : T2.text3, border: "1px solid " + (saved ? T.gold : T2.border), padding: "11px 20px", borderRadius: 4, fontFamily: T.sans, fontSize: 13, fontWeight: 500, cursor: "pointer", transition: "all 0.2s ease", flexShrink: 0 }}
-                                  onMouseEnter={e=>{ e.currentTarget.style.borderColor=T.gold; e.currentTarget.style.color=T.gold; }}
-                                  onMouseLeave={e=>{ if (!saved){ e.currentTarget.style.borderColor=T2.border; e.currentTarget.style.color=T2.text3; } }}
-                                >{saved ? "✓ Saved" : "+ Save to List"}</button>
-                              </div>
-                            </div>
+                      {/* Book cards — mirrors the Reading List format in Toolkit */}
+                      <div style={{ maxWidth: 500 }}>
+                        {fr && fr.books.map((book, bi) => (
+                          <div key={bi} style={{ paddingBottom: bi < fr.books.length - 1 ? 24 : 0, marginBottom: bi < fr.books.length - 1 ? 24 : 0, borderBottom: bi < fr.books.length - 1 ? "0.5px solid " + T2.border : "none" }}>
+                            <p style={{ fontFamily: T.serif, fontSize: 18, fontWeight: 600, color: T2.text, letterSpacing: "-0.2px", marginBottom: 2 }}>{book.title}</p>
+                            <p style={{ fontFamily: T.sans, fontSize: 13, color: T2.text3, marginBottom: 10 }}>{book.author}</p>
+                            <p style={{ fontFamily: T.serif, fontSize: 15, fontStyle: "italic", color: T.goldDark, lineHeight: 1.5, marginBottom: 14 }}>{book.connection}</p>
+                            <a href={book.amazon} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 16px", background: T.ink, color: T.bg, borderRadius: 6, fontSize: 13, fontFamily: T.sans, fontWeight: 500, letterSpacing: "0.02em", textDecoration: "none" }}>Get the book →</a>
                           </div>
-                        );
-                      })}
+                        ))}
+                      </div>
 
 
                       {/* Next session button */}
@@ -4646,7 +4605,6 @@ setAmbitionSaved(true); } catch {}
       isD6={isD6} isD7={isD7} isD9={isD9} isD10={isD10} isD11={isD11} isD12={isD12} isD13={isD13} isD14={isD14} isNT={isNT}
       selSc={selSc} setSelSc={setSelSc} exitConfirm={exitConfirm} setExitConfirm={setExitConfirm}
       accordionOpen={accordionOpen} setAccordionOpen={setAccordionOpen}
-      savedBooks={savedBooks} saveBook={saveBook}
       setNtStory={setNtStory}
       d1MobCard={d1MobCard} setD1MobCard={setD1MobCard}
       d2MobCard={d2MobCard} setD2MobCard={setD2MobCard}
