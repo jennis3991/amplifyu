@@ -358,16 +358,6 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
   return null;
 }
 
-// Retention is derived from the tier distribution the model classified facts into,
-// rather than asked of the model as a second, independently-generated number —
-// this makes "captured all Tier 1/2 facts → high Retention" true by construction.
-const TIER_WEIGHTS = {1: 1.0, 2: 0.6, 3: 0.25};
-function computeRetentionScore(facts) {
-  if (!facts || !facts.length) return 0;
-  const sum = facts.reduce((a, f) => a + (TIER_WEIGHTS[f.tier] || TIER_WEIGHTS[3]), 0);
-  return Math.round(100 * sum / facts.length);
-}
-
 // ─── D4 Simulation Widget — Breaking News Live ───────────────────────────────
 export function D4SimWidget({T, T2, isDesktop}) {
   const STORIES = [
@@ -482,7 +472,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
       return;
     }
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are a senior news editor reviewing a breaking news report about: "${story}". The reporter's transcript: "${text}".\n\nFirst, extract every distinct fact or point they mentioned (up to 8 items). Classify each one by EDITORIAL IMPORTANCE to the story — how central it is to what the story fundamentally is, NOT a prediction of whether a viewer would remember it:\n- tier 1: the most essential facts — what the story fundamentally is\n- tier 2: secondary but relevant supporting facts\n- tier 3: filler or color detail, least essential\n\nThen score the communication quality, using the tier breakdown you just produced to ground your judgment — e.g. a report cluttered with tier-3 filler ahead of its tier-1/2 facts should score lower on cognitive load, and a headline built from a tier-1 fact should score higher.\n\nReturn ONLY valid JSON:\n{"facts":[{"text":"<fact>","tier":<1, 2, or 3>}, ... up to 8 items, in the order mentioned],"headline":"<the single most memorable sentence that captures the story — max 12 words>","compressionScore":<0-100: how effectively they simplified as time reduced — 100 = perfect compression>,"cognitiveLoadScore":<0-100: 100 = very easy to follow, 0 = overwhelming>,"headlineScore":<0-100: could the story be reduced to one memorable sentence, ideally built from a tier-1 fact?>,"coachNote":"<2-3 sentences of warm, encouraging, professional coaching — open with something specific they did well, then offer one clear forward-looking observation about short sentences or adapting under pressure. Never criticise, never use 'but' to negate the positive, never use deficit language. Growth-framed, motivational, executive coach tone.>"}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are a senior news editor reviewing a breaking news report about: "${story}". The reporter's transcript: "${text}".\n\nExtract every distinct fact or point they mentioned (up to 8 items). Classify each one by EDITORIAL IMPORTANCE to the story — how central it is to what the story fundamentally is, NOT a prediction of whether a viewer would remember it:\n- tier 1: the most essential facts — what the story fundamentally is\n- tier 2: secondary but relevant supporting facts\n- tier 3: filler or color detail, least essential\n\nThen write a short coaching note, referencing the tier breakdown where useful — e.g. praising a strong tier-1 lead, or gently noting if essential facts were buried under filler.\n\nReturn ONLY valid JSON:\n{"facts":[{"text":"<fact>","tier":<1, 2, or 3>}, ... up to 8 items, in the order mentioned],"headline":"<the single most memorable sentence that captures the story — max 12 words>","coachNote":"<2-3 sentences of warm, encouraging, professional coaching — open with something specific they did well, then offer one clear forward-looking observation about short sentences or adapting under pressure. Never criticise, never use 'but' to negate the positive, never use deficit language. Growth-framed, motivational, executive coach tone.>"}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -490,7 +480,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
       const parsed=JSON.parse(m[0]);
       const facts=Array.isArray(parsed.facts)?parsed.facts.filter(f=>f&&f.text&&[1,2,3].includes(f.tier)):[];
       if(!facts.length) throw new Error('no valid facts in response');
-      setResult({...parsed, facts, retentionScore: computeRetentionScore(facts)});
+      setResult({...parsed, facts});
       setPhase('recall');
     }catch(err){
       console.error('[D4SimWidget] analyzeReport error:', err);
@@ -564,7 +554,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
       </div>
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px",background:"rgba(138,158,132,0.04)"}}>
         <div style={cs.label}>Your Broadcast Analyst</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>After your broadcast, your AI broadcast analyst scores your Retention, Compression, Cognitive Load, and Headline quality — and ranks every fact you reported by how essential it actually was to the story.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>After your broadcast, your AI broadcast analyst ranks every fact you reported by how essential it actually was to the story — so you can see what to lead with next time.</p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>That gap is Miller's Law in action.</p>
       </div>
       <div style={{display:"flex",alignItems:"center",gap:8,padding:isDesktop?"12px 16px":"10px 14px",background:"rgba(138,158,132,0.06)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)"}}>
@@ -675,7 +665,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
         <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
           <SequentialDots dotCount={dotCount}/>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>The audience is processing your report…</p>
-          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Measuring retention, compression, cognitive load.</p>
+          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Ranking your facts by editorial importance.</p>
         </div>
         {audioEl}
       </>
@@ -686,11 +676,10 @@ export function D4SimWidget({T, T2, isDesktop}) {
     const tier1=facts.filter(f=>f.tier===1);
     const tier2=facts.filter(f=>f.tier===2);
     const tier3=facts.filter(f=>f.tier===3);
-    const scoreColor=s=>s>=75?T.gold:s>=55?"#7A9E84":"rgba(180,80,60,0.8)";
     const TIER_META={
-      1:{label:"Essential",color:T.gold,bg:"rgba(200,164,106,0.10)",border:"rgba(200,164,106,0.35)"},
-      2:{label:"Supporting",color:"#7A9E84",bg:"rgba(122,158,132,0.07)",border:"rgba(122,158,132,0.22)"},
-      3:{label:"Detail",color:T2.text4,bg:"transparent",border:T2.border},
+      1:{heading:"Key Messages",subtext:"Focus on landing these",color:T.gold,bg:"rgba(200,164,106,0.10)",border:"rgba(200,164,106,0.35)"},
+      2:{heading:"Supporting Facts",subtext:null,color:"#7A9E84",bg:"rgba(122,158,132,0.07)",border:"rgba(122,158,132,0.22)"},
+      3:{heading:"Additional Detail",subtext:null,color:T2.text3,bg:"transparent",border:T2.border},
     };
 
     return (
@@ -704,20 +693,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
         )}
 
         <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Broadcast Results</div>
-          <div style={{display:"flex",gap:isDesktop?24:16,alignItems:"flex-start",marginBottom:20,flexWrap:"wrap"}}>
-            {[
-              {label:"Retention",val:result.retentionScore,tip:"Weighted coverage of essential facts"},
-              {label:"Compression",val:result.compressionScore,tip:"Simplified under pressure"},
-              {label:"Cognitive Load",val:result.cognitiveLoadScore,tip:"Ease of following"},
-              {label:"Headline",val:result.headlineScore,tip:"One-sentence clarity"},
-            ].map((s,i)=>(
-              <div key={i} style={{textAlign:"center",flex:"1 1 80px"}}>
-                <div style={{fontFamily:T.serif,fontSize:isDesktop?38:30,fontWeight:600,color:scoreColor(s.val),lineHeight:1}}>{s.val}</div>
-                <div style={{fontFamily:T.sans,fontSize:10,color:"rgba(245,239,230,0.55)",marginTop:3}}>{s.label}</div>
-              </div>
-            ))}
-          </div>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Your Broadcast</div>
           <div style={{display:"flex",alignItems:"center",gap:14}}>
             <button onClick={togglePlay} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 16px",background:"rgba(245,239,230,0.08)",border:"0.5px solid rgba(245,239,230,0.2)",borderRadius:4,color:"#F5EFE6",fontFamily:T.serif,fontSize:12,cursor:"pointer",flexShrink:0}}>
               {playing?<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/><rect x="8" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/></svg>:<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 1l9 5-9 5V1z" fill="#F5EFE6"/></svg>}
@@ -743,13 +719,16 @@ export function D4SimWidget({T, T2, isDesktop}) {
             <svg width="13" height="13" viewBox="0 0 22 22" fill="none"><path d="M11 3v3M11 16v3M3 11h3M16 11h3M5.6 5.6l2.1 2.1M14.3 14.3l2.1 2.1M5.6 16.4l2.1-2.1M14.3 7.7l2.1-2.1" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>
             Story Priority Breakdown
           </div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:14,lineHeight:1.5}}>Here's how the facts in your report rank by editorial importance. Focus on landing the essentials and supporting facts — the details matter less.</p>
-          {[1,2].map(tier=>{
-            const items=tier===1?tier1:tier2; const meta=TIER_META[tier];
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:14,lineHeight:1.5}}>Here's how the facts in your report rank by importance. Focus on landing your Key Messages and Supporting Facts.</p>
+          {[1,2,3].map(tier=>{
+            const items=tier===1?tier1:tier===2?tier2:tier3; const meta=TIER_META[tier];
             if(!items.length) return null;
             return (
               <div key={tier} style={{marginBottom:12}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:meta.color,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Tier {tier} · {meta.label}</div>
+                <div style={{marginBottom:8}}>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:meta.color,textTransform:"uppercase",letterSpacing:"1.5px"}}>{meta.heading}</div>
+                  {meta.subtext&&<div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,marginTop:2}}>{meta.subtext}</div>}
+                </div>
                 <div style={{display:"flex",flexDirection:"column",gap:8}}>
                   {items.map((f,i)=>(
                     <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"10px 12px",background:meta.bg,borderRadius:4,border:"0.5px solid "+meta.border}}>
@@ -761,16 +740,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
               </div>
             );
           })}
-          {tier3.length>0&&(
-            <div style={{opacity:0.55}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Tier 3 · Detail</div>
-              <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                {tier3.map((f,i)=>(
-                  <div key={i} style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.5}}>· {f.text}</div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
