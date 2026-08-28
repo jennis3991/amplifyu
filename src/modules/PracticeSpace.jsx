@@ -104,7 +104,6 @@ export function PracticeSpace({T2, isDesktop}) {
   const sc = todaysScenario();
   const todayDone = sessions.some(s => s.date === today);
   const recent = sessions.slice(0, 5);
-  const avgScore = recent.length > 0 ? Math.round(recent.reduce((a,s) => a + s.overall, 0) / recent.length) : null;
 
   function startRec() {
     setIsRec(true); liveRef.current = ''; setTranscript('');
@@ -166,28 +165,6 @@ export function PracticeSpace({T2, isDesktop}) {
   // ── HOME ──────────────────────────────────────────────────────────────────
   if (phase === 'home') return (
     <div style={{padding:isDesktop?'32px 0':'16px 0'}}>
-
-      {/* Streak + avg */}
-      <div style={{background:'#0E0B08',borderRadius:10,padding:isDesktop?'28px 32px':'20px 22px',marginBottom:16,display:'flex',alignItems:'center',justifyContent:'space-between',gap:16}}>
-        <div>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:'rgba(138,158,132,0.6)',textTransform:'uppercase',letterSpacing:'2px',marginBottom:6}}>Current Streak</div>
-          <div style={{display:'flex',alignItems:'baseline',gap:8}}>
-            <span style={{fontFamily:T.serif,fontSize:isDesktop?56:48,fontWeight:600,color:T.gold,lineHeight:1}}>{streak.current}</span>
-            <span style={{fontFamily:T.sans,fontSize:13,color:'rgba(245,239,230,0.4)'}}>day{streak.current!==1?'s':''}</span>
-          </div>
-          {streak.longest>0 && <div style={{fontFamily:T.sans,fontSize:11,color:'rgba(245,239,230,0.3)',marginTop:4}}>Best: {streak.longest}</div>}
-        </div>
-        {avgScore ? (
-          <div style={{textAlign:'center',padding:'18px 24px',background:'rgba(138,158,132,0.08)',borderRadius:8,border:'0.5px solid rgba(138,158,132,0.18)'}}>
-            <div style={{fontFamily:T.serif,fontSize:isDesktop?40:34,fontWeight:600,color:T.gold,lineHeight:1}}>{avgScore}</div>
-            <div style={{fontFamily:T.sans,fontSize:10,color:'rgba(245,239,230,0.35)',marginTop:4,letterSpacing:'0.5px'}}>Avg score</div>
-          </div>
-        ) : (
-          <div style={{textAlign:'center',padding:'18px 24px',background:'rgba(138,158,132,0.05)',borderRadius:8,border:'0.5px solid rgba(138,158,132,0.1)'}}>
-            <div style={{fontFamily:T.sans,fontSize:11,color:'rgba(245,239,230,0.25)',lineHeight:1.5}}>Complete a session<br/>to see your score</div>
-          </div>
-        )}
-      </div>
 
       {/* Today's challenge */}
       <div style={{background:'rgba(247,243,236,0.8)',border:'1px solid rgba(138,158,132,0.2)',borderRadius:10,padding:isDesktop?'24px 28px':'18px 20px',marginBottom:16}}>
