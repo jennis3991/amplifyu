@@ -985,8 +985,12 @@ Return ONLY valid JSON:
       )}
 
       <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"}}>
-        <textarea value={brief} onChange={e=>setBrief(e.target.value)} placeholder={"Describe the presentation, speech, meeting or story you need to tell. Include your audience, your goal, and anything you want people to remember."} rows={isDesktop?5:4} style={{width:"100%",background:"transparent",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,resize:"none",boxSizing:"border-box",fontWeight:300}}/>
-        {brief.trim()&&<div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:6,textAlign:"right"}}>{brief.trim().split(/\s+/).length} words</div>}
+        <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>What to include</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px",fontWeight:300}}>Describe the presentation, speech, meeting or story you need to tell. Include your audience, your goal, and anything you want people to remember.</p>
+        <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:14}}>
+          <textarea value={brief} onChange={e=>setBrief(e.target.value)} placeholder={"Start typing…"} rows={isDesktop?5:4} style={{width:"100%",background:"transparent",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,resize:"none",boxSizing:"border-box",fontWeight:300}}/>
+          {brief.trim()&&<div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:6,textAlign:"right"}}>{brief.trim().split(/\s+/).length} words</div>}
+        </div>
       </div>
       <div>
         <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Or try an example</div>
