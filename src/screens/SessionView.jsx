@@ -31,7 +31,7 @@ import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 import { getScenariosForDay, getPIEEmphasis } from '../utils.js';
 import { D7SimWidget, D7PracticeWidget } from '../modules/Day7.jsx';
 
-export function SessionView({lesson, isDone, onComplete, onBack, roleId,
+export function SessionView({lesson, isDone, onComplete, onBack, onExitToTab, roleId,
 activeRole, dark=false, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
   const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory","Example","Rehearsal","Simulation","Review"]:["Insight","Theory","Example","Rehearsal","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
@@ -4628,7 +4628,7 @@ setAmbitionSaved(true); } catch {}
   return (
     <MobileSessionView
       T2={T2} step={step} STEPS={STEPS} idx={idx} setIdx={setIdx}
-      lesson={lesson} isDone={isDone} onComplete={onComplete} onBack={onBack}
+      lesson={lesson} isDone={isDone} onComplete={onComplete} onBack={onBack} onExitToTab={onExitToTab}
       isD1={isD1} isD2={isD2} isD3={isD3} isD4={isD4} isD5={isD5}
       isD6={isD6} isD7={isD7} isD9={isD9} isD10={isD10} isD11={isD11} isD12={isD12} isD13={isD13} isD14={isD14} isNT={isNT}
       selSc={selSc} setSelSc={setSelSc} exitConfirm={exitConfirm} setExitConfirm={setExitConfirm}

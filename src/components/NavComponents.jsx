@@ -16,7 +16,7 @@ const IC   = "rgba(255,255,255,0.72)";
 
 function activeColor(id) { return id === "home" ? GOLD : SAGE; }
 
-function NavIcon({ id, active, color }) {
+export function NavIcon({ id, active, color }) {
   const c = active ? (color || GOLD) : IC;
   const s = { stroke:c, strokeWidth:"1.5", strokeLinecap:"round", strokeLinejoin:"round" };
 
