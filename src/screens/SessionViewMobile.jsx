@@ -560,11 +560,11 @@ T.goldDark : T2.text4,
               const obs = d10ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d10ExObs,[card.id]:true}; try{localStorage.setItem('d10ExObserved',JSON.stringify(next));}catch{} setD10MobCard(card.id); }}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>}
-                  {!open && <div onClick={()=>{ const next={...d10ExObs,[card.id]:true}; try{localStorage.setItem('d10ExObserved',JSON.stringify(next));}catch{} setD10MobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{height:240,overflow:"hidden"}}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>
+                  {!open && <div style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
-                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setD10MobCard(open?null:card.id)}>
+                  <div style={{padding:"16px 16px 14px"}}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
                     <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
@@ -574,7 +574,7 @@ T.goldDark : T2.text4,
                         <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
                         <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
                       </div>
-                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
+                      <span onClick={()=>{ const next=open?null:card.id; setD10MobCard(next); if(next && !d10ExObs[card.id]){ const upd={...d10ExObs,[card.id]:true}; try{localStorage.setItem('d10ExObserved',JSON.stringify(upd));}catch{} } }} style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400,cursor:"pointer"}}>{open?"Close":"Read →"}</span>
                     </div>
                   </div>
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
@@ -828,15 +828,9 @@ T.goldDark : T2.text4,
               const obs = d2ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:`0.5px solid ${open?"rgba(200,164,106,0.4)":T2.border}`,marginBottom:16,background:T2.surface,transition:"border-color 0.25s"}}>
-                  {!open && (
-                    <div style={{height:240,overflow:"hidden",position:"relative",cursor:"pointer"}}
-                      onClick={()=>{
-                        setD2MobCard(card.id);
-                        if (!d2ExObs[card.id]) { d2ExObs[card.id]=true; localStorage.setItem('d2ExObserved',JSON.stringify(d2ExObs)); }
-                      }}>
-                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
-                    </div>
-                  )}
+                  <div style={{height:240,overflow:"hidden"}}>
+                    <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                  </div>
                   {!open && (
                     <div style={{padding:"8px 18px",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:8}}>
                       <div style={{width:20,height:20,borderRadius:"50%",border:`1.5px solid ${obs?"#619164":"rgba(160,128,90,0.4)"}`,background:obs?"rgba(97,145,100,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.25s"}}>
@@ -845,12 +839,7 @@ T.goldDark : T2.text4,
                       <span style={{fontFamily:T.sans,fontSize:12,fontWeight:obs?600:400,color:obs?"#619164":"rgba(160,128,90,0.6)",letterSpacing:"0.02em"}}>{obs?"Observed":"Mark as observed"}</span>
                     </div>
                   )}
-                  <div style={{padding:"16px 18px 4px",cursor:"pointer"}}
-                    onClick={()=>{
-                      const next = open ? null : card.id;
-                      setD2MobCard(next);
-                      if (next && !d2ExObs[card.id]) { d2ExObs[card.id]=true; localStorage.setItem('d2ExObserved',JSON.stringify(d2ExObs)); }
-                    }}>
+                  <div style={{padding:"16px 18px 4px"}}>
                     <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
@@ -863,7 +852,12 @@ T.goldDark : T2.text4,
                         </div>
                         <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
                       </div>
-                      <div style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0}}>
+                      <div onClick={()=>{
+                          const next = open ? null : card.id;
+                          setD2MobCard(next);
+                          if (next && !d2ExObs[card.id]) { d2ExObs[card.id]=true; localStorage.setItem('d2ExObserved',JSON.stringify(d2ExObs)); }
+                        }}
+                        style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0,cursor:"pointer"}}>
                         <span>{open?"Close":"Read"}</span>
                         <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.25s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </div>
@@ -1007,15 +1001,9 @@ T.goldDark : T2.text4,
               const obs = d3ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:`0.5px solid ${open?"rgba(200,164,106,0.4)":T2.border}`,marginBottom:16,background:T2.surface,transition:"border-color 0.25s"}}>
-                  {!open && (
-                    <div style={{height:240,overflow:"hidden",position:"relative",cursor:"pointer"}}
-                      onClick={()=>{
-                        setD3MobCard(card.id);
-                        if (!d3ExObs[card.id]) { d3ExObs[card.id]=true; localStorage.setItem('d3ExObserved',JSON.stringify(d3ExObs)); }
-                      }}>
-                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
-                    </div>
-                  )}
+                  <div style={{height:240,overflow:"hidden"}}>
+                    <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                  </div>
                   {!open && (
                     <div style={{padding:"8px 18px",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:8}}>
                       <div style={{width:20,height:20,borderRadius:"50%",border:`1.5px solid ${obs?"#619164":"rgba(160,128,90,0.4)"}`,background:obs?"rgba(97,145,100,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.25s"}}>
@@ -1024,12 +1012,7 @@ T.goldDark : T2.text4,
                       <span style={{fontFamily:T.sans,fontSize:12,fontWeight:obs?600:400,color:obs?"#619164":"rgba(160,128,90,0.6)",letterSpacing:"0.02em"}}>{obs?"Observed":"Mark as observed"}</span>
                     </div>
                   )}
-                  <div style={{padding:"16px 18px 4px",cursor:"pointer"}}
-                    onClick={()=>{
-                      const next = open ? null : card.id;
-                      setD3MobCard(next);
-                      if (next && !d3ExObs[card.id]) { d3ExObs[card.id]=true; localStorage.setItem('d3ExObserved',JSON.stringify(d3ExObs)); }
-                    }}>
+                  <div style={{padding:"16px 18px 4px"}}>
                     <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
@@ -1042,7 +1025,12 @@ T.goldDark : T2.text4,
                         </div>
                         <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
                       </div>
-                      <div style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0}}>
+                      <div onClick={()=>{
+                          const next = open ? null : card.id;
+                          setD3MobCard(next);
+                          if (next && !d3ExObs[card.id]) { d3ExObs[card.id]=true; localStorage.setItem('d3ExObserved',JSON.stringify(d3ExObs)); }
+                        }}
+                        style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0,cursor:"pointer"}}>
                         <span>{open?"Close":"Read"}</span>
                         <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.25s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </div>
@@ -1195,15 +1183,9 @@ T.goldDark : T2.text4,
               const obs = d4ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:`0.5px solid ${open?"rgba(200,164,106,0.4)":T2.border}`,marginBottom:16,background:T2.surface,transition:"border-color 0.25s"}}>
-                  {!open && (
-                    <div style={{height:240,overflow:"hidden",position:"relative",cursor:"pointer"}}
-                      onClick={()=>{
-                        setD4MobCard(card.id);
-                        if (!d4ExObs[card.id]) { d4ExObs[card.id]=true; localStorage.setItem('d4ExObserved',JSON.stringify(d4ExObs)); }
-                      }}>
-                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:card.imgPos||"center center",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
-                    </div>
-                  )}
+                  <div style={{height:240,overflow:"hidden"}}>
+                    <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:card.imgPos||"center center",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                  </div>
                   {!open && (
                     <div style={{padding:"8px 18px",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:8}}>
                       <div style={{width:20,height:20,borderRadius:"50%",border:`1.5px solid ${obs?"#619164":"rgba(160,128,90,0.4)"}`,background:obs?"rgba(97,145,100,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.25s"}}>
@@ -1212,12 +1194,7 @@ T.goldDark : T2.text4,
                       <span style={{fontFamily:T.sans,fontSize:12,fontWeight:obs?600:400,color:obs?"#619164":"rgba(160,128,90,0.6)",letterSpacing:"0.02em"}}>{obs?"Observed":"Mark as observed"}</span>
                     </div>
                   )}
-                  <div style={{padding:"16px 18px 4px",cursor:"pointer"}}
-                    onClick={()=>{
-                      const next = open ? null : card.id;
-                      setD4MobCard(next);
-                      if (next && !d4ExObs[card.id]) { d4ExObs[card.id]=true; localStorage.setItem('d4ExObserved',JSON.stringify(d4ExObs)); }
-                    }}>
+                  <div style={{padding:"16px 18px 4px"}}>
                     <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
@@ -1230,7 +1207,12 @@ T.goldDark : T2.text4,
                         </div>
                         <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
                       </div>
-                      <div style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0}}>
+                      <div onClick={()=>{
+                          const next = open ? null : card.id;
+                          setD4MobCard(next);
+                          if (next && !d4ExObs[card.id]) { d4ExObs[card.id]=true; localStorage.setItem('d4ExObserved',JSON.stringify(d4ExObs)); }
+                        }}
+                        style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0,cursor:"pointer"}}>
                         <span>{open?"Close":"Read"}</span>
                         <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.25s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </div>
@@ -1377,16 +1359,10 @@ T.goldDark : T2.text4,
               const obs = d1ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:`0.5px solid ${open?"rgba(200,164,106,0.4)":T2.border}`,marginBottom:16,background:T2.surface,transition:"border-color 0.25s"}}>
-                  {/* Image — gallery only, hidden when open */}
-                  {!open && (
-                    <div style={{height:240,overflow:"hidden",position:"relative",cursor:"pointer"}}
-                      onClick={()=>{
-                        setD1MobCard(card.id);
-                        if (!d1ExObs[card.id]) { d1ExObs[card.id]=true; localStorage.setItem('d1ExObserved',JSON.stringify(d1ExObs)); }
-                      }}>
-                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
-                    </div>
-                  )}
+                  {/* Image — stays visible whether open or collapsed */}
+                  <div style={{height:240,overflow:"hidden"}}>
+                    <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                  </div>
                   {/* Observed badge — full-width strip below image */}
                   {!open && (
                     <div style={{padding:"8px 18px",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:8}}>
@@ -1397,12 +1373,7 @@ T.goldDark : T2.text4,
                     </div>
                   )}
                   {/* Text area — name, eyebrow, summary, superpower row */}
-                  <div style={{padding:"16px 18px 4px",cursor:"pointer"}}
-                    onClick={()=>{
-                      const next = open ? null : card.id;
-                      setD1MobCard(next);
-                      if (next && !d1ExObs[card.id]) { d1ExObs[card.id]=true; localStorage.setItem('d1ExObserved',JSON.stringify(d1ExObs)); }
-                    }}>
+                  <div style={{padding:"16px 18px 4px"}}>
                     <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
@@ -1415,7 +1386,12 @@ T.goldDark : T2.text4,
                         </div>
                         <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
                       </div>
-                      <div style={{fontFamily:T.sans,fontSize:14,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0}}>
+                      <div onClick={()=>{
+                          const next = open ? null : card.id;
+                          setD1MobCard(next);
+                          if (next && !d1ExObs[card.id]) { d1ExObs[card.id]=true; localStorage.setItem('d1ExObserved',JSON.stringify(d1ExObs)); }
+                        }}
+                        style={{fontFamily:T.sans,fontSize:14,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0,cursor:"pointer"}}>
                         <span>{open?"Close":"Read"}</span>
                         <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.25s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </div>
@@ -1558,11 +1534,11 @@ T.goldDark : T2.text4,
               const obs = d8ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d8ExObs,[card.id]:true}; try{localStorage.setItem('d8ExObserved',JSON.stringify(next));}catch{} setNtMobCard(card.id); }}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>}
-                  {!open && <div onClick={()=>{ const next={...d8ExObs,[card.id]:true}; try{localStorage.setItem('d8ExObserved',JSON.stringify(next));}catch{} setNtMobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{height:240,overflow:"hidden"}}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>
+                  {!open && <div style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
-                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setNtMobCard(open?null:card.id)}>
+                  <div style={{padding:"16px 16px 14px"}}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
                     <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
@@ -1572,7 +1548,7 @@ T.goldDark : T2.text4,
                         <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
                         <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
                       </div>
-                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
+                      <span onClick={()=>{ const next=open?null:card.id; setNtMobCard(next); if(next && !d8ExObs[card.id]){ const upd={...d8ExObs,[card.id]:true}; try{localStorage.setItem('d8ExObserved',JSON.stringify(upd));}catch{} } }} style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400,cursor:"pointer"}}>{open?"Close":"Read →"}</span>
                     </div>
                   </div>
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
@@ -1709,11 +1685,11 @@ T.goldDark : T2.text4,
               const obs = d9ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d9ExObs,[card.id]:true}; try{localStorage.setItem('d9ExObserved',JSON.stringify(next));}catch{} setD9OpenCard("d9ex"+card.id); }}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>}
-                  {!open && <div onClick={()=>{ const next={...d9ExObs,[card.id]:true}; try{localStorage.setItem('d9ExObserved',JSON.stringify(next));}catch{} setD9OpenCard("d9ex"+card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{height:240,overflow:"hidden"}}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>
+                  {!open && <div style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
-                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setD9OpenCard(open?null:("d9ex"+card.id))}>
+                  <div style={{padding:"16px 16px 14px"}}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
                     <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
@@ -1723,7 +1699,7 @@ T.goldDark : T2.text4,
                         <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
                         <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
                       </div>
-                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
+                      <span onClick={()=>{ const next=open?null:("d9ex"+card.id); setD9OpenCard(next); if(next && !d9ExObs[card.id]){ const upd={...d9ExObs,[card.id]:true}; try{localStorage.setItem('d9ExObserved',JSON.stringify(upd));}catch{} } }} style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400,cursor:"pointer"}}>{open?"Close":"Read →"}</span>
                     </div>
                   </div>
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
@@ -1872,15 +1848,9 @@ T.goldDark : T2.text4,
               const obs = d5ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:`0.5px solid ${open?"rgba(200,164,106,0.4)":T2.border}`,marginBottom:16,background:T2.surface,transition:"border-color 0.25s"}}>
-                  {!open && (
-                    <div style={{height:240,overflow:"hidden",position:"relative",cursor:"pointer"}}
-                      onClick={()=>{
-                        setD5MobCard(card.id);
-                        if (!d5ExObs[card.id]) { d5ExObs[card.id]=true; localStorage.setItem('d5ExObserved',JSON.stringify(d5ExObs)); }
-                      }}>
-                      <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
-                    </div>
-                  )}
+                  <div style={{height:240,overflow:"hidden"}}>
+                    <img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"100%",display:"block",objectFit:"cover",objectPosition:"center center",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/>
+                  </div>
                   {!open && (
                     <div style={{padding:"8px 18px",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:8}}>
                       <div style={{width:20,height:20,borderRadius:"50%",border:`1.5px solid ${obs?"#619164":"rgba(160,128,90,0.4)"}`,background:obs?"rgba(97,145,100,0.12)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.25s"}}>
@@ -1889,12 +1859,7 @@ T.goldDark : T2.text4,
                       <span style={{fontFamily:T.sans,fontSize:12,fontWeight:obs?600:400,color:obs?"#619164":"rgba(160,128,90,0.6)",letterSpacing:"0.02em"}}>{obs?"Observed":"Mark as observed"}</span>
                     </div>
                   )}
-                  <div style={{padding:"16px 18px 4px",cursor:"pointer"}}
-                    onClick={()=>{
-                      const next = open ? null : card.id;
-                      setD5MobCard(next);
-                      if (next && !d5ExObs[card.id]) { d5ExObs[card.id]=true; localStorage.setItem('d5ExObserved',JSON.stringify(d5ExObs)); }
-                    }}>
+                  <div style={{padding:"16px 18px 4px"}}>
                     <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
@@ -1907,7 +1872,12 @@ T.goldDark : T2.text4,
                         </div>
                         <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{card.superpowerText}</p>
                       </div>
-                      <div style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0}}>
+                      <div onClick={()=>{
+                          const next = open ? null : card.id;
+                          setD5MobCard(next);
+                          if (next && !d5ExObs[card.id]) { d5ExObs[card.id]=true; localStorage.setItem('d5ExObserved',JSON.stringify(d5ExObs)); }
+                        }}
+                        style={{fontFamily:T.sans,fontSize:12,fontWeight:500,color:T2.text3,display:"flex",alignItems:"center",gap:3,flexShrink:0,cursor:"pointer"}}>
                         <span>{open?"Close":"Read"}</span>
                         <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style={{transform:open?"rotate(180deg)":"none",transition:"transform 0.25s"}}><path d="M3 6l5 5 5-5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </div>
@@ -2181,11 +2151,11 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               const obs = d6ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d6ExObs,[card.id]:true}; try{localStorage.setItem('d6ExObserved',JSON.stringify(next));}catch{} setD6MobCard(card.id); }}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>}
-                  {!open && <div onClick={()=>{ const next={...d6ExObs,[card.id]:true}; try{localStorage.setItem('d6ExObserved',JSON.stringify(next));}catch{} setD6MobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{height:240,overflow:"hidden"}}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>
+                  {!open && <div style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
-                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setD6MobCard(open?null:card.id)}>
+                  <div style={{padding:"16px 16px 14px"}}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
                     <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
@@ -2195,7 +2165,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                         <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
                         <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
                       </div>
-                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
+                      <span onClick={()=>{ const next=open?null:card.id; setD6MobCard(next); if(next && !d6ExObs[card.id]){ const upd={...d6ExObs,[card.id]:true}; try{localStorage.setItem('d6ExObserved',JSON.stringify(upd));}catch{} } }} style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400,cursor:"pointer"}}>{open?"Close":"Read →"}</span>
                     </div>
                   </div>
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
@@ -2348,11 +2318,11 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               const obs = d11ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d11ExObs,[card.id]:true}; try{localStorage.setItem('d11ExObserved',JSON.stringify(next));}catch{} setD11MobCard(card.id); }}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>}
-                  {!open && <div onClick={()=>{ const next={...d11ExObs,[card.id]:true}; try{localStorage.setItem('d11ExObserved',JSON.stringify(next));}catch{} setD11MobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{height:240,overflow:"hidden"}}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>
+                  {!open && <div style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
-                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setD11MobCard(open?null:card.id)}>
+                  <div style={{padding:"16px 16px 14px"}}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
                     <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
@@ -2362,7 +2332,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                         <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
                         <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
                       </div>
-                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
+                      <span onClick={()=>{ const next=open?null:card.id; setD11MobCard(next); if(next && !d11ExObs[card.id]){ const upd={...d11ExObs,[card.id]:true}; try{localStorage.setItem('d11ExObserved',JSON.stringify(upd));}catch{} } }} style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400,cursor:"pointer"}}>{open?"Close":"Read →"}</span>
                     </div>
                   </div>
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
@@ -2490,11 +2460,11 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               const obs = d12ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d12ExObs,[card.id]:true}; try{localStorage.setItem('d12ExObserved',JSON.stringify(next));}catch{} setD12MobCard(card.id); }}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>}
-                  {!open && <div onClick={()=>{ const next={...d12ExObs,[card.id]:true}; try{localStorage.setItem('d12ExObserved',JSON.stringify(next));}catch{} setD12MobCard(card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{height:240,overflow:"hidden"}}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>
+                  {!open && <div style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
-                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setD12MobCard(open?null:card.id)}>
+                  <div style={{padding:"16px 16px 14px"}}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
                     <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
@@ -2504,7 +2474,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                         <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
                         <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
                       </div>
-                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
+                      <span onClick={()=>{ const next=open?null:card.id; setD12MobCard(next); if(next && !d12ExObs[card.id]){ const upd={...d12ExObs,[card.id]:true}; try{localStorage.setItem('d12ExObserved',JSON.stringify(upd));}catch{} } }} style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400,cursor:"pointer"}}>{open?"Close":"Read →"}</span>
                     </div>
                   </div>
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
@@ -2900,11 +2870,11 @@ strokeLinecap="round"/></svg>
               const obs = d13ExObs[card.id];
               return (
                 <div key={card.id} style={{borderRadius:8,overflow:"hidden",border:"0.5px solid "+T2.border,marginBottom:16,background:T2.surface}}>
-                  {!open && <div style={{height:240,overflow:"hidden"}} onClick={()=>{ const next={...d13ExObs,[card.id]:true}; try{localStorage.setItem('d13ExObserved',JSON.stringify(next));}catch{} setD12MobCard("d13ex"+card.id); }}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>}
-                  {!open && <div onClick={()=>{ const next={...d13ExObs,[card.id]:true}; try{localStorage.setItem('d13ExObserved',JSON.stringify(next));}catch{} setD12MobCard("d13ex"+card.id); }} style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{height:240,overflow:"hidden"}}><img loading="lazy" src={card.img} alt={card.name} style={{width:"100%",height:"auto",display:"block",objectFit:"cover",objectPosition:"center top",transition:"opacity 0.4s ease",opacity:0}} onLoad={e=>e.currentTarget.style.opacity="1"}/></div>
+                  {!open && <div style={{padding:"8px 14px",background:obs?"rgba(97,145,100,0.12)":"rgba(30,26,20,0.04)",borderBottom:"0.5px solid "+T2.border,display:"flex",alignItems:"center",gap:6}}>
                     <span style={{fontSize:11,color:obs?"rgba(97,145,100,1)":"rgba(160,128,90,0.7)",fontFamily:T.sans,fontWeight:500}}>{obs?"✓ Observed":"◉ Observed"}</span>
                   </div>}
-                  <div style={{padding:"16px 16px 14px"}} onClick={()=>setD12MobCard(open?null:("d13ex"+card.id))}>
+                  <div style={{padding:"16px 16px 14px"}}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
                     <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
@@ -2914,7 +2884,7 @@ strokeLinecap="round"/></svg>
                         <div style={{fontFamily:T.sans,fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:2}}>✦ SUPERPOWER</div>
                         <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{card.superpowerText}</div>
                       </div>
-                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400}}>{open?"Close":"Read →"}</span>
+                      <span onClick={()=>{ const next=open?null:("d13ex"+card.id); setD12MobCard(next); if(next && !d13ExObs[card.id]){ const upd={...d13ExObs,[card.id]:true}; try{localStorage.setItem('d13ExObserved',JSON.stringify(upd));}catch{} } }} style={{fontFamily:T.sans,fontSize:12,color:T2.text3,fontWeight:400,cursor:"pointer"}}>{open?"Close":"Read →"}</span>
                     </div>
                   </div>
                   {open && <div style={{padding:"0 16px 20px",borderTop:"0.5px solid "+T2.border}}>
