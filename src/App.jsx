@@ -289,7 +289,7 @@ reset</button>
         {tab==="home" && <HomeScreen done={done} cur={cur} streak={streak} onStart={startSession} roleId={roleId} activeRole={activeRole} dark={dark} DK={DK} showNudge={showNudge} onDismissNudge={()=>setShowNudge(false)} isDesktop={isDesktop} onOpenTab={(t)=>{try{localStorage.setItem("au1_open_toolkit_tab",t);}catch{}setTab("toolkit");}}/>}
         {tab==="sessions" && <SessionsScreen done={done} cur={cur} onStart={startSession} roleId={roleId} dark={dark} DK={DK} isDesktop={isDesktop} onOpenTab={(t)=>{try{localStorage.setItem("au1_open_toolkit_tab",t);}catch{}setTab("toolkit");}}/>}
         {tab==="progress" && <ProgressScreen done={done} cur={cur} streak={streak} roleId={roleId} activeRole={activeRole} onChangeRole={(r)=>{setRoleId(r);lsSet("au1_role",r);}} dark={dark} toggleDark={toggleDark} DK={DK} onReset={()=>setConfirmReset(true)} isDesktop={isDesktop} onStart={startSession}/>}
-        {tab==="toolkit" && <ToolkitScreen onQuickPrep={() => setView("quickprep")} onStartSession={startSessionAtStep} dark={dark} DK={DK} isDesktop={isDesktop}/>}
+        {tab==="toolkit" && <ToolkitScreen onQuickPrep={() => setView("quickprep")} onStartSession={startSessionAtStep} dark={dark} DK={DK} isDesktop={isDesktop} done={done}/>}
         {tab==="identity" && <IdentityScreen done={done}/>}
       </div>
       {!isDesktop && <TabBar tab={tab} setTab={setTab} done={done} dark={dark}/>}

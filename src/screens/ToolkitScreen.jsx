@@ -61,7 +61,113 @@ const SAVED_WORK_SOURCES = {
   },
 };
 
-export function ToolkitScreen({onQuickPrep, onStartSession, dark=false, DK={}, isDesktop=false}) {
+// ─── Path Detail Screen — dark header + progress card + numbered step list ──
+// Shared by all three Toolkit Paths (Promotion / Presentation / Visibility).
+// "Step X of Y" / percentage is derived from the coarse whole-day `done`
+// array (the app has no finer-grained per-step completion tracking) — a step
+// counts as complete once its underlying lesson day is marked done.
+function PathDetailScreen({ T, T2, isDesktop, path, onBack, launch, done }) {
+  const completedSteps = path.steps.filter(s => done.includes(s.day)).length;
+  const currentStepNum = Math.min(completedSteps + 1, path.steps.length);
+  const pct = Math.round((currentStepNum / path.steps.length) * 100);
+  const totalMins = path.steps.reduce((sum,s) => sum + s.time, 0);
+  const Time = ({n}) => <div style={{display:"flex",alignItems:"center",gap:5}}><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke={T2.text4} strokeWidth="1.2"/><path d="M8 5v3l2 1.5" stroke={T2.text4} strokeWidth="1.2" strokeLinecap="round"/></svg><span style={{fontFamily:T.sans,fontSize:12,color:T2.text4}}>{n} min</span></div>;
+
+  return (
+    <div style={{background:T2.bg,minHeight:"100vh"}}>
+      {/* Dark header banner */}
+      <div style={{position:"relative",background:"#0D0B08",overflow:"hidden",padding:isDesktop?"36px 88px 0":"24px 20px 0"}}>
+        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 80% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)"}}/>
+        <div style={{position:"relative",maxWidth:isDesktop?1160:undefined,margin:isDesktop?"0 auto":undefined}}>
+          <button onClick={onBack} style={{width:40,height:40,borderRadius:"50%",background:"rgba(245,239,230,0.1)",border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",marginBottom:isDesktop?28:20}}>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 3L5 9l6 6" stroke="#F5EFE6" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:24,paddingBottom:44}}>
+            <div>
+              <h1 style={{fontFamily:T.serif,fontSize:isDesktop?42:28,fontWeight:600,color:"#F5EFE6",lineHeight:1.1,margin:"0 0 10px"}}>{path.label}</h1>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"rgba(245,239,230,0.6)",margin:"0 0 16px"}}>{path.desc}</p>
+              <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+                <span style={{display:"flex",alignItems:"center",gap:5,fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.5)"}}>
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="rgba(245,239,230,0.5)" strokeWidth="1.2"/><path d="M8 5v3l2 1.5" stroke="rgba(245,239,230,0.5)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                  {path.steps.length} tools
+                </span>
+                <span style={{color:"rgba(245,239,230,0.3)"}}>•</span>
+                <span style={{fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.5)"}}>{totalMins} min total</span>
+                <span style={{color:"rgba(245,239,230,0.3)"}}>•</span>
+                <span style={{fontFamily:T.sans,fontSize:13,color:"rgba(245,239,230,0.5)"}}>Beginner friendly</span>
+              </div>
+            </div>
+            <div style={{width:isDesktop?110:80,height:isDesktop?110:80,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"1px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <div style={{width:isDesktop?74:54,height:isDesktop?74:54,borderRadius:"50%",background:"rgba(138,158,132,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>{path.icon}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style={isDesktop?{maxWidth:1160,margin:"0 auto",padding:"0 88px 60px"}:{padding:"0 20px 40px"}}>
+        {/* Your Progress card */}
+        <div style={{marginTop:-24,position:"relative",zIndex:2,background:T2.surface,borderRadius:12,border:"0.5px solid "+T2.border,padding:isDesktop?"24px 28px":"18px 20px",boxShadow:"0 6px 24px rgba(20,16,10,0.1)"}}>
+          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Your Progress</div>
+          <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:12}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?22:19,fontWeight:600,color:T2.text}}>Step {currentStepNum} of {path.steps.length}</div>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text}}>{pct}%</div>
+          </div>
+          <div style={{height:8,background:T2.border,borderRadius:4,overflow:"hidden"}}>
+            <div style={{height:"100%",width:pct+"%",background:T.goldDark,borderRadius:4,transition:"width 0.4s ease"}}/>
+          </div>
+        </div>
+
+        {/* YOUR PATH */}
+        <div style={{marginTop:isDesktop?40:28}}>
+          <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Your Path</div>
+          <div style={{display:"flex",flexDirection:"column"}}>
+            {path.steps.map((s,i) => {
+              const isActive = i === currentStepNum - 1;
+              const isLast = i === path.steps.length - 1;
+              return (
+                <div key={i} style={{display:"flex",gap:16}}>
+                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0}}>
+                    <div style={{width:34,height:34,borderRadius:"50%",background:s.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                      <span style={{fontFamily:T.sans,fontSize:14,fontWeight:700,color:"#F5EFE6"}}>{i+1}</span>
+                    </div>
+                    {!isLast && <div style={{flex:1,minHeight:44,borderLeft:"1.5px dotted "+T2.border,marginTop:4}}/>}
+                  </div>
+                  <div style={{flex:1,background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"20px 22px":"16px 16px",marginBottom:isLast?0:16,display:"flex",flexDirection:"column",gap:10,minWidth:0}}>
+                    <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
+                      <div style={{width:40,height:40,borderRadius:8,background:s.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{s.icon}</div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontFamily:T.serif,fontSize:isDesktop?17:16,fontWeight:600,color:T2.text,marginBottom:s.subtitle?2:3}}>{s.label}</div>
+                        {s.subtitle && <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,marginBottom:4}}>{s.subtitle}</div>}
+                        <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{s.desc}</div>
+                      </div>
+                    </div>
+                    {s.tags && s.tags.length > 0 && (
+                      <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                        {s.tags.map((tag,j)=><span key={j} style={{fontFamily:T.sans,fontSize:11,color:T2.text3,padding:"3px 10px",border:"0.5px solid "+T2.border,borderRadius:20,whiteSpace:"nowrap"}}>{tag}</span>)}
+                      </div>
+                    )}
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:2,flexWrap:"wrap",gap:10}}>
+                      <Time n={s.time}/>
+                      <button onClick={()=>launch(s.day,s.step)} style={isActive ? {
+                          padding:isDesktop?"11px 24px":"10px 18px",borderRadius:6,border:"none",background:T.ink,color:T.bg,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,
+                        } : {
+                          padding:isDesktop?"11px 24px":"10px 18px",borderRadius:6,border:"1px solid "+T2.border,background:"transparent",color:T2.text,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,
+                        }}>
+                        Start <span>→</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ToolkitScreen({onQuickPrep, onStartSession, dark=false, DK={}, isDesktop=false, done=[]}) {
   const T2 = Object.assign({}, T, DK);
   const [tab, setTab] = useState("aitools");
   useEffect(() => {
@@ -70,6 +176,7 @@ export function ToolkitScreen({onQuickPrep, onStartSession, dark=false, DK={}, i
       if (pending) { setTab(pending); localStorage.removeItem("au1_open_toolkit_tab"); }
     } catch(_) {}
   }, []);
+  const [openPathId, setOpenPathId] = useState(null);
   const [openCat, setOpenCat] = useState(0);
   const [copied, setCopied] = useState(null);
   const [openMod, setOpenMod] = useState(null);
@@ -195,16 +302,49 @@ p];
         const TINT_INK   = {circle:"#231E18", cardBg:T2.surface, cardBorder:T2.border};
         const ICON_C = "#F5EFE6";
 
+        // Canonical, reused step definitions — appear in more than one Path.
+        // "Achievement Story Builder" consolidates what used to be three
+        // separate names ("Achievement Story Builder" / "SAR Builder" /
+        // "Story Sprint") for what turned out to be at most two distinct
+        // screens; see the audit note above PATHS for details.
+        const STEP_ACHIEVEMENT = {
+          label:"Achievement Story Builder", desc:"Structure your wins into compelling stories for reviews, interviews and promotions.",
+          tags:["Reviews","Promotions","Interviews"], time:5, day:10, step:"Rehearsal", tint:TINT_DEEP,
+          icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3h7l4 4v10H5V3z" stroke={ICON_C} strokeWidth="1.3"/><path d="M12 3v4h4" stroke={ICON_C} strokeWidth="1.3"/><path d="M7.5 10h5M7.5 13h3.5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>,
+        };
+        const STEP_PROMOTION_PREP = {
+          label:"Promotion Prep", subtitle:"Real World Conversation Coaching", desc:"Practice a promotion conversation and get AI feedback to improve your delivery.",
+          time:8, day:6, step:"Simulation", tint:TINT_TAN,
+          icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14a1 1 0 011 1v7a1 1 0 01-1 1h-6l-4 3v-3H3a1 1 0 01-1-1V6a1 1 0 011-1z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round"/><path d="M6 8h8M6 11h5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>,
+        };
+
         const PATHS = [
-          {label:"Promotion Path",    desc:"Get recognised for your impact.",              mins:15, tint:TINT_DEEP,
+          {id:"promotion", label:"Promotion Path",    desc:"Stand out and get noticed.",             tint:TINT_DEEP,
            icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8 4h8v4a4 4 0 01-4 4 4 4 0 01-4-4V4z" stroke={ICON_C} strokeWidth="1.4" strokeLinejoin="round"/><path d="M8 4H5a1 1 0 00-1 1v1a3 3 0 003 3M16 4h3a1 1 0 011 1v1a3 3 0 01-3 3" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round"/><path d="M12 12v3M9 19h6M10 15h4v4h-4z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round"/></svg>,
-           steps:[{n:"SAR Builder",day:10,step:"Rehearsal"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Leadership Hot Seat",day:6,step:"Simulation"}]},
-          {label:"Presentation Path", desc:"Deliver with confidence and impact.",           mins:12, tint:TINT_TAN,
+           steps:[
+             STEP_ACHIEVEMENT,
+             STEP_PROMOTION_PREP,
+             {label:"Leadership Hot Seat", desc:"Step into the hot seat and handle tough questions with confidence.", time:8, day:10, step:"Simulation", tint:TINT_DEEP,
+              icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4h8v6H6V4z" stroke={ICON_C} strokeWidth="1.3"/><path d="M6 10v6M14 10v6M4 17h12" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+           ]},
+          {id:"presentation", label:"Presentation Path", desc:"Deliver with confidence and impact.",    tint:TINT_TAN,
            icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="12" rx="1.5" stroke={ICON_C} strokeWidth="1.4"/><path d="M9 20l3-4 3 4" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 9l3 3 2-2 3 3" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-           steps:[{n:"Story Architect",day:8,step:"Simulation"},{n:"Pixar Builder",day:8,step:"Rehearsal"},{n:"Story Sprint",day:8,step:"Simulation"}]},
-          {label:"Visibility Path",   desc:"Build your brand and expand your reach.",       mins:14, tint:TINT_DEEP,
+           steps:[
+             {label:"Story Architect", desc:"Build powerful stories and presentations in minutes.", time:8, day:8, step:"Simulation", tint:TINT_DEEP,
+              icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 4h8l5 5v9H4V4z" stroke={ICON_C} strokeWidth="1.3" fill="none"/><path d="M11 4v6h5" stroke={ICON_C} strokeWidth="1.3"/><path d="M7 12h5M7 15h3" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>},
+             {label:"Pixar Story Builder", desc:"Build unforgettable stories using the Pixar framework.", tags:["Storytelling","Presentations","Leadership"], time:4, day:8, step:"Rehearsal", tint:TINT_TAN,
+              icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/><rect x="12" y="3" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/><rect x="3" y="12" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/><rect x="12" y="12" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/></svg>},
+             STEP_ACHIEVEMENT,
+           ]},
+          {id:"visibility", label:"Visibility Path",   desc:"Build your brand and expand your reach.", tint:TINT_DEEP,
            icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke={ICON_C} strokeWidth="1.4"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5" stroke={ICON_C} strokeWidth="1.4" strokeLinecap="round"/></svg>,
-           steps:[{n:"Rapport Builder",day:9,step:"Simulation"},{n:"Brand Audit",day:11,step:"Simulation"},{n:"Clarity Check-In",day:1,step:"Simulation"}]},
+           steps:[
+             {label:"Brand Audit", desc:"Discover what signals your communication sends to the world.", tags:["LinkedIn","Presence","Personal Brand"], time:5, day:11, step:"Simulation", tint:TINT_DEEP,
+              icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4.5H17l-3.7 2.7 1.4 4.3L11 12l-3.7 2.5 1.4-4.3L5 7.5h4.5z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>},
+             STEP_PROMOTION_PREP,
+             {label:"Rapport Builder", desc:"Connect with anyone, anywhere.", tags:["Networking"], time:5, day:9, step:"Simulation", tint:TINT_DEEP,
+              icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="8" cy="8" r="3" stroke={ICON_C} strokeWidth="1.3" fill="none"/><circle cx="14" cy="8" r="3" stroke={ICON_C} strokeWidth="1.3" fill="none"/><path d="M4 18c0-3 2-4 4-4h6c2 0 4 1 4 4" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>},
+           ]},
         ];
 
         const SKILLS = [
@@ -222,6 +362,11 @@ p];
            icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M8 3l1.2 3.3L12.5 7.5 9.2 8.7 8 12l-1.2-3.3L3.5 7.5l3.3-1.2L8 3z" fill={ICON_C}/><path d="M15 11l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z" fill={ICON_C}/></svg>},
         ];
 
+        if (openPathId) {
+          const openPath = PATHS.find(p => p.id === openPathId);
+          return <PathDetailScreen T={T} T2={T2} isDesktop={isDesktop} path={openPath} done={done} launch={launch} onBack={()=>setOpenPathId(null)}/>;
+        }
+
         return (
           <div style={{maxWidth:isDesktop?1160:undefined,margin:"0 auto",padding:isDesktop?"40px 88px 80px":"20px 20px 60px"}}>
 
@@ -230,14 +375,14 @@ p];
               {secLink("Your Paths")}
               <div style={{marginTop:16,display:"flex",flexDirection:"column",gap:12}}>
                 {PATHS.map((path,i)=>(
-                  <div key={i} onClick={()=>launch(path.steps[0].day,path.steps[0].step)}
+                  <div key={i} onClick={()=>setOpenPathId(path.id)}
                     style={{background:path.tint.cardBg,borderRadius:10,border:"0.5px solid "+path.tint.cardBorder,padding:isDesktop?"20px 24px":"16px 16px",display:"flex",alignItems:"center",gap:16,cursor:"pointer"}}>
                     <div style={{width:isDesktop?56:48,height:isDesktop?56:48,borderRadius:"50%",background:path.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{path.icon}</div>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontFamily:T.serif,fontSize:isDesktop?19:17,fontWeight:600,color:T2.text,marginBottom:3}}>{path.label}</div>
                       <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:6}}>{path.desc}</div>
                       <div style={{display:"flex",alignItems:"center",gap:6}}>
-                        <Time n={path.mins}/>
+                        <Time n={path.steps.reduce((sum,s)=>sum+s.time,0)}/>
                         <span style={{color:T2.text4,fontSize:11}}>•</span>
                         <span style={{fontFamily:T.sans,fontSize:12,color:T2.text4}}>{path.steps.length} tools</span>
                       </div>
@@ -348,8 +493,11 @@ p];
                 <button onClick={()=>setTab("practice")} style={{padding:isDesktop?"10px 22px":"9px 16px",borderRadius:5,border:"1px solid rgba(138,158,132,0.4)",background:"transparent",color:T.gold,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Open →</button>
               </div>
 
-              {/* Leadership Hot Seat */}
-              <div style={{border:"0.5px solid rgba(138,158,132,0.2)",borderTop:"none",background:T2.surface,padding:isDesktop?"18px 28px":"15px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,cursor:"pointer"}} onClick={()=>launch(6,"Simulation")}>
+              {/* Leadership Hot Seat — Day 10 Simulation. Was previously wired
+                  to launch(6,"Simulation"), which is actually the unrelated
+                  "AI Conversation Prep" screen; fixed to point at the real
+                  "The Leadership Hot Seat" screen (Day 10, Simulation). */}
+              <div style={{border:"0.5px solid rgba(138,158,132,0.2)",borderTop:"none",background:T2.surface,padding:isDesktop?"18px 28px":"15px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,cursor:"pointer"}} onClick={()=>launch(10,"Simulation")}>
                 <div style={{flex:1}}>
                   <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:700,color:T2.text,marginBottom:3}}>Leadership Hot Seat</div>
                   <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,fontWeight:300,lineHeight:1.5}}>Practise high-stakes conversations with live AI feedback.</div>
@@ -363,15 +511,15 @@ p];
                 </div>
               </div>
 
-              {/* 4 drill cards in a grid */}
-              <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr 1fr":"1fr 1fr",borderLeft:"0.5px solid "+T2.border,borderBottom:"0.5px solid "+T2.border}}>
+              {/* Drill cards in a grid — "Story Sprint" (formerly day:8/
+                  Simulation) removed: it was a mislabeled duplicate of the
+                  same route as "Story Architect", not a distinct tool. */}
+              <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr":"1fr 1fr",borderLeft:"0.5px solid "+T2.border,borderBottom:"0.5px solid "+T2.border}}>
                 {[
                   {icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M12 3l-8 11h8l-2 5 8-11h-8l2-5z" stroke={T2.text3} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>,
                    label:"Pressure Response Drill", desc:"Sharp structured answers under pressure.", tag:"Meetings", time:3, day:5, step:"Simulation"},
                   {icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><circle cx="8" cy="8" r="3" stroke={T2.text3} strokeWidth="1.3" fill="none"/><circle cx="14" cy="8" r="3" stroke={T2.text3} strokeWidth="1.3" fill="none"/><path d="M4 18c0-3 2-4 4-4h6c2 0 4 1 4 4" stroke={T2.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>,
                    label:"Rapport Builder", desc:"Connect with anyone, anywhere.", tag:"Networking", time:5, day:9, step:"Simulation"},
-                  {icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M4 6h14a1 1 0 011 1v7a1 1 0 01-1 1h-5l-4 3v-3H5a1 1 0 01-1-1V7a1 1 0 011-1z" stroke={T2.text3} strokeWidth="1.3" fill="none"/></svg>,
-                   label:"Story Sprint", desc:"Tell your story in 60 seconds. Scored.", tag:"Pitches", time:3, day:8, step:"Simulation"},
                   {icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M4 16V8l4 4 3-6 3 5 4-3v8H4z" stroke={T2.text3} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>,
                    label:"Executive Briefing", desc:"Complex ideas, clear delivery.", tag:"Executive Comms", time:4, day:4, step:"Simulation"},
                 ].map((t,i)=>(
