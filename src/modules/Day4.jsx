@@ -378,9 +378,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
   const [audioURL, setAudioURL] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
-  const [userPoints, setUserPoints] = useState(['','','']);
   const [result, setResult] = useState(null);
-  const [pointsSubmitted, setPointsSubmitted] = useState(false);
   const [round1, setRound1] = useState(null);
   const [micError, setMicError] = useState(false);
 
@@ -495,7 +493,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
     setPhase('recall');
   }
 
-  function reset(){setPhase('intro');setStory(null);setTimeLeft(60);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setRound1(null);setUserPoints(['','','']);setPointsSubmitted(false);setAudioURL(null);}
+  function reset(){setPhase('intro');setStory(null);setTimeLeft(60);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setRound1(null);setAudioURL(null);}
 
   // Plays `a` once it's actually ready to play, instead of calling play()
   // unconditionally — a blob: src can still be at readyState 0 (HAVE_NOTHING)
@@ -559,6 +557,10 @@ export function D4SimWidget({T, T2, isDesktop}) {
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>After your broadcast, your AI broadcast analyst scores your Retention, Compression, Cognitive Load, and Headline quality — and reveals the gap between what you said and what your audience remembered.</p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>That gap is Miller's Law in action.</p>
       </div>
+      <div style={{display:"flex",alignItems:"center",gap:8,padding:isDesktop?"12px 16px":"10px 14px",background:"rgba(138,158,132,0.06)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)"}}>
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" style={{flexShrink:0}}><circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/><line x1="10" y1="9" x2="10" y2="14" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/><circle cx="10" cy="6.3" r="1" fill="rgba(138,158,132,0.8)"/></svg>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.5,margin:0}}>This is a private practice simulation. Nothing is broadcast live or shared publicly — your recording is used only to generate your feedback.</p>
+      </div>
       <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose Your Breaking Story →</button>
     </div>
   );
@@ -596,6 +598,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.6)",textTransform:"uppercase",letterSpacing:"2px"}}>{isRec?"On Air":"Ready"}</div>
           {isRec&&<div style={{marginLeft:"auto",fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:timeLeft<=10?"#CC4444":T.gold,lineHeight:1}}>{timeLeft}s</div>}
         </div>
+        <div style={{fontFamily:T.sans,fontSize:9,color:"rgba(245,239,230,0.35)",letterSpacing:"0.05em",marginBottom:8}}>Practice simulation · not broadcast or shared publicly</div>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,margin:"0 0 8px"}}>🔴 BREAKING: {story}</p>
         {producerMsg && (
           <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,marginTop:10}}>
@@ -665,6 +668,13 @@ export function D4SimWidget({T, T2, isDesktop}) {
     return (
       <>
       <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+        {result.headline&&(
+          <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
+            <div style={cs.label}>Your story in one sentence</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>"{result.headline}"</p>
+          </div>
+        )}
+
         <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Broadcast Results</div>
           <div style={{display:"flex",gap:isDesktop?24:16,alignItems:"flex-start",marginBottom:20,flexWrap:"wrap"}}>
@@ -725,50 +735,6 @@ export function D4SimWidget({T, T2, isDesktop}) {
             </div>
           )}
         </div>
-
-        {result.headline&&(
-          <div style={{...cs.card,borderLeft:"2px solid "+T.gold}}>
-            <div style={cs.label}>Your story in one sentence</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.3,margin:0}}>"{result.headline}"</p>
-          </div>
-        )}
-
-        {!pointsSubmitted?(
-          <div style={cs.card}>
-            <div style={cs.label}>What were your 3 key points?</div>
-            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,marginBottom:14}}>Write the 3 facts you intended your audience to remember. Then compare with what the AI actually retained.</p>
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
-              {userPoints.map((pt,i)=>(
-                <div key={i} style={{display:"flex",gap:10,alignItems:"center"}}>
-                  <div style={{width:24,height:24,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{i+1}</span>
-                  </div>
-                  <input value={pt} onChange={e=>{const n=[...userPoints];n[i]=e.target.value;setUserPoints(n);}} placeholder={`Key point ${i+1}…`} style={{flex:1,padding:"10px 12px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,outline:"none"}}/>
-                </div>
-              ))}
-            </div>
-            <button onClick={()=>setPointsSubmitted(true)} disabled={userPoints.filter(p=>p.trim()).length<1} style={{...cs.cta,background:userPoints.filter(p=>p.trim()).length<1?"rgba(44,36,22,0.25)":T.ink,cursor:userPoints.filter(p=>p.trim()).length<1?"not-allowed":"pointer"}}>Compare with Audience →</button>
-          </div>
-        ):(
-          <div style={cs.card}>
-            <div style={cs.label}>You vs the Audience</div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
-              <div>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>You intended</div>
-                {userPoints.filter(p=>p.trim()).map((pt,i)=>(
-                  <div key={i} style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,marginBottom:6}}>· {pt}</div>
-                ))}
-              </div>
-              <div>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>Audience remembered</div>
-                {(result.remembered||[]).map((pt,i)=>(
-                  <div key={i} style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,marginBottom:6}}>· {pt}</div>
-                ))}
-              </div>
-            </div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T2.text3,margin:0,lineHeight:1.5}}>The audience remembered different things than you intended. This is the gap that Miller's Law explains.</p>
-          </div>
-        )}
 
         <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
           <div style={cs.label}>Your AmplifyU Coach Says</div>
