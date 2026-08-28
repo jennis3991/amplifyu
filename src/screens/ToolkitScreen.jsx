@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+// (deploy retrigger touch — GitHub webhook missed the previous push)
 import { T } from '../theme.js';
 import { FURTHER_READING, PHRASES, SAY_THIS, QUICK_PREP, DAILY_INSIGHTS, POWER_PHRASES } from '../data.js';
 import { Scene } from '../scenes.jsx';
