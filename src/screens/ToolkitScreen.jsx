@@ -61,6 +61,15 @@ const SAVED_WORK_SOURCES = {
   },
 };
 
+// "Study a Master" reference — lives in the Practice Space tab (it's a
+// reflection exercise, not an AI tool, so it doesn't belong on AI Tools).
+const MASTER_COMMUNICATORS = [
+  {emoji:"🌍",name:"David Attenborough",role:"Master of Clarity",sub:"Known for explaining the most complex subjects in a way anyone can understand. His communication is calm, precise, and remarkably clear — never a word wasted.",watchFor:["Pace and deliberate pacing","Simplicity of language","Precision in word choice","Storytelling that draws you in"],connection:[["Day 1","Clarity"],["Day 4","Precision"]],reflection:"What makes his explanations so easy to follow?"},
+  {emoji:"🎙️",name:"Steven Bartlett",role:"Master of Listening",sub:"Known for creating conversations that reveal profound insight. He speaks less than almost any other interviewer — and gets more from his guests because of it.",watchFor:["Active listening over speaking","Follow-up questions that go deeper","Comfortable silence — he never fills it","Genuine curiosity over performance"],connection:[["Day 3","Pause Principle"],["Day 6","High-Stakes Conversations"]],reflection:"How often does he speak versus listen? What does the silence do?"},
+  {emoji:"⚖️",name:"Amal Clooney",role:"Master of Precision Under Pressure",sub:"Known for communicating on some of the world's most challenging issues — human rights, international justice. What makes her remarkable isn't volume or emotion. It's clarity, precision, and calm conviction.",watchFor:["Structured, evidence-based arguments","Deliberate and considered language","Composed delivery under scrutiny","Calm authority without aggression"],connection:[["Day 4","Precision"],["Day 5","PRE Framework"],["Day 6","Composure"]],reflection:"How does she remain calm while discussing emotionally charged topics?"},
+  {emoji:"🎤",name:"Simon Sinek",role:"Master of Structure",sub:"Known for turning complex ideas into memorable frameworks. His communication is simple, organised, and impossible to forget — because he builds the idea with you, not at you.",watchFor:["Clear beginning, middle, end","Strategic repetition of key phrases","Memorable, simple language","Pauses that let ideas land"],connection:[["Day 1","Feynman Technique"],["Day 5","PRE Framework"]],reflection:"How does he make complex ideas feel inevitable and simple?"},
+];
+
 // ─── Path Detail Screen — dark header + progress card + numbered step list ──
 // Shared by all three Toolkit Paths (Promotion / Presentation / Visibility).
 // "Step X of Y" / percentage is derived from the coarse whole-day `done`
@@ -311,21 +320,7 @@ p];
       <div style={isDesktop?{maxWidth:1160,margin:"0 auto",padding:"24px 88px 60px"}:{}}>
       {tab==="aitools" && (() => {
         const launch = (day,step) => onStartSession && onStartSession(day,step);
-        const MASTER_COMMUNICATORS = [
-          {emoji:"🌍",name:"David Attenborough",role:"Master of Clarity",sub:"Known for explaining the most complex subjects in a way anyone can understand. His communication is calm, precise, and remarkably clear — never a word wasted.",watchFor:["Pace and deliberate pacing","Simplicity of language","Precision in word choice","Storytelling that draws you in"],connection:[["Day 1","Clarity"],["Day 4","Precision"]],reflection:"What makes his explanations so easy to follow?"},
-          {emoji:"🎙️",name:"Steven Bartlett",role:"Master of Listening",sub:"Known for creating conversations that reveal profound insight. He speaks less than almost any other interviewer — and gets more from his guests because of it.",watchFor:["Active listening over speaking","Follow-up questions that go deeper","Comfortable silence — he never fills it","Genuine curiosity over performance"],connection:[["Day 3","Pause Principle"],["Day 6","High-Stakes Conversations"]],reflection:"How often does he speak versus listen? What does the silence do?"},
-          {emoji:"⚖️",name:"Amal Clooney",role:"Master of Precision Under Pressure",sub:"Known for communicating on some of the world's most challenging issues — human rights, international justice. What makes her remarkable isn't volume or emotion. It's clarity, precision, and calm conviction.",watchFor:["Structured, evidence-based arguments","Deliberate and considered language","Composed delivery under scrutiny","Calm authority without aggression"],connection:[["Day 4","Precision"],["Day 5","PRE Framework"],["Day 6","Composure"]],reflection:"How does she remain calm while discussing emotionally charged topics?"},
-          {emoji:"🎤",name:"Simon Sinek",role:"Master of Structure",sub:"Known for turning complex ideas into memorable frameworks. His communication is simple, organised, and impossible to forget — because he builds the idea with you, not at you.",watchFor:["Clear beginning, middle, end","Strategic repetition of key phrases","Memorable, simple language","Pauses that let ideas land"],connection:[["Day 1","Feynman Technique"],["Day 5","PRE Framework"]],reflection:"How does he make complex ideas feel inevitable and simple?"},
-        ];
-        const SI2 = {stroke:T2.text3,strokeWidth:"1.4",strokeLinecap:"round",strokeLinejoin:"round"};
-        const Tag = ({label}) => <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,padding:"3px 10px",border:"0.5px solid "+T2.border,borderRadius:20,whiteSpace:"nowrap"}}>{label}</span>;
         const Time = ({n}) => <div style={{display:"flex",alignItems:"center",gap:5}}><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke={T2.text4} strokeWidth="1.2"/><path d="M8 5v3l2 1.5" stroke={T2.text4} strokeWidth="1.2" strokeLinecap="round"/></svg><span style={{fontFamily:T.sans,fontSize:12,color:T2.text4}}>{n} min</span></div>;
-        const sec = (label,sub) => (
-          <div style={{marginBottom:isDesktop?8:6}}>
-            <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"2px"}}>{label}</div>
-            {sub && <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,fontWeight:300,marginTop:2}}>{sub}</div>}
-          </div>
-        );
         // Section header with an optional "View all →" on the right — used by
         // Your Paths and Explore by Skill. Not wired to a destination yet (no
         // dedicated browse page exists this pass), so it's non-interactive.
@@ -369,6 +364,8 @@ p];
              STEP_PROMOTION_PREP,
              {label:"Leadership Hot Seat", desc:"Step into the hot seat and handle tough questions with confidence.", time:8, day:10, step:"Simulation", tint:TINT_DEEP,
               icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4h8v6H6V4z" stroke={ICON_C} strokeWidth="1.3"/><path d="M6 10v6M14 10v6M4 17h12" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+             {label:"Pressure Response Drill", desc:"Sharp structured answers under pressure.", tags:["Meetings"], time:3, day:5, step:"Simulation", tint:TINT_TAN,
+              icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M12 3l-8 11h8l-2 5 8-11h-8l2-5z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>},
            ]},
           {id:"presentation", label:"Presentation Path", desc:"Deliver with confidence and impact.",    tint:TINT_TAN,
            icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="12" rx="1.5" stroke={ICON_C} strokeWidth="1.4"/><path d="M9 20l3-4 3 4" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 9l3 3 2-2 3 3" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
@@ -378,6 +375,8 @@ p];
              {label:"Pixar Story Builder", desc:"Build unforgettable stories using the Pixar framework.", tags:["Storytelling","Presentations","Leadership"], time:4, day:8, step:"Rehearsal", tint:TINT_TAN,
               icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/><rect x="12" y="3" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/><rect x="3" y="12" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/><rect x="12" y="12" width="7" height="7" rx="1" stroke={ICON_C} strokeWidth="1.3" fill="none"/></svg>},
              STEP_ACHIEVEMENT,
+             {label:"Executive Briefing", desc:"Complex ideas, clear delivery.", tags:["Executive Comms"], time:4, day:4, step:"Simulation", tint:TINT_TAN,
+              icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 16V8l4 4 3-6 3 5 4-3v8H4z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>},
            ]},
           {id:"visibility", label:"Visibility Path",   desc:"Build your brand and expand your reach.", tint:TINT_DEEP,
            icon:<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke={ICON_C} strokeWidth="1.4"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5" stroke={ICON_C} strokeWidth="1.4" strokeLinecap="round"/></svg>,
@@ -478,263 +477,6 @@ p];
               </div>
             </div>
 
-            {/* ── FEATURED TOOLS ────────────────────────────────────────── */}
-            <div style={{marginBottom:isDesktop?48:32}}>
-              {sec("Featured Tools")}
-              <div style={{marginTop:16,background:"#0D0B08",borderRadius:10,border:"0.5px solid rgba(138,158,132,0.15)",padding:isDesktop?"24px 28px":"18px 18px",display:"flex",alignItems:"center",gap:16}}>
-                <div style={{width:44,height:44,borderRadius:10,background:"rgba(138,158,132,0.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 4h8l5 5v9H4V4z" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3" fill="none"/><path d="M11 4v6h5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.3"/><path d="M7 12h5M7 15h3" stroke="rgba(138,158,132,0.6)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                </div>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontFamily:T.serif,fontSize:isDesktop?19:17,fontWeight:600,color:"#F5EFE6",marginBottom:4}}>Story Architect</div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(245,239,230,0.55)",fontWeight:300}}>Build powerful stories and presentations in minutes.</div>
-                </div>
-                <button onClick={()=>launch(8,"Simulation")} style={{padding:isDesktop?"12px 26px":"10px 16px",borderRadius:6,border:"none",background:T.gold,color:"#0D0B08",fontFamily:T.sans,fontSize:13,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Launch →</button>
-              </div>
-            </div>
-
-            {/* ── BROWSE ALL TOOLS (secondary — everything below is quietly
-                 grouped, not competing section headers; re-homed under Skills
-                 in a later pass) ─────────────────────────────────────────── */}
-            <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:600,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:20}}>Browse all tools →</div>
-
-            <div style={{marginBottom:isDesktop?32:24}}>
-              <div style={{marginTop:16,background:T2.surface,borderRadius:12,border:"0.5px solid "+T2.border,overflow:"hidden",display:"flex",alignItems:"stretch",minHeight:isDesktop?140:120}}>
-                <div style={{flex:1,padding:isDesktop?"28px 32px":"20px 20px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
-                  <div>
-                    <div style={{marginBottom:10}}>
-                      <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px"}}>Recommended For You</span>
-                    </div>
-                    <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:6}}>Brand Audit</div>
-                    <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,marginBottom:12,maxWidth:380}}>Discover what your LinkedIn profile and communication style currently signal about you.</div>
-                    <div style={{display:"flex",gap:12,alignItems:"center",flexWrap:"wrap"}}>
-                      <span style={{fontFamily:T.sans,fontSize:12,color:T2.text4}}>Based on: Day 11 — Brand</span>
-                      <Time n={5}/>
-                    </div>
-                  </div>
-                </div>
-                <div style={{display:"flex",alignItems:"center",padding:isDesktop?"0 32px":"0 20px",flexShrink:0}}>
-                  <button onClick={()=>launch(11,"Simulation")} style={{padding:isDesktop?"14px 28px":"12px 20px",borderRadius:6,border:"none",background:T2.text,color:T2.bg,fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>Launch →</button>
-                </div>
-              </div>
-            </div>
-
-            <div style={{marginBottom:isDesktop?48:32}}>
-              <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:14}}>
-                {[
-                  {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="14" height="16" rx="1.5" stroke={T2.text3} strokeWidth="1.3" fill="none"/><path d="M7 8h5M7 11h8M7 14h6" stroke={T2.text3} strokeWidth="1.2" strokeLinecap="round"/><path d="M13 3v4" stroke={T2.text3} strokeWidth="1.2"/></svg>,
-                   label:"Achievement Story Builder", desc:"Structure your wins into compelling stories for interviews, reviews and promotions. SAR — Situation, Action, Result", tags:["Performance Reviews","Promotions","Interviews"], time:8, day:10, step:"Rehearsal"},
-                  {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/><rect x="12" y="3" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/><rect x="3" y="12" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/><rect x="12" y="12" width="7" height="7" rx="1" stroke={T2.text3} strokeWidth="1.3" fill="none"/></svg>,
-                   label:"Pixar Story Builder", desc:"Build unforgettable stories using the Pixar framework.", tags:["Storytelling","Presentations","Leadership"], time:4, day:8, step:"Rehearsal"},
-                ].map((t,i)=>(
-                  <div key={i} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"18px 20px",cursor:"pointer"}} onClick={()=>launch(t.day,t.step)}>
-                    <div style={{display:"flex",gap:14,marginBottom:14,alignItems:"flex-start"}}>
-                      <div style={{width:40,height:40,borderRadius:8,background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{t.icon}</div>
-                      <div>
-                        <div style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:700,color:T2.text,marginBottom:4}}>{t.label}</div>
-                        <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,fontWeight:300}}>{t.desc}</div>
-                      </div>
-                    </div>
-                    <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
-                      {t.tags.map((tag,j)=><Tag key={j} label={tag}/>)}
-                    </div>
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                      <Time n={t.time}/>
-                      <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text}}>Open →</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{marginBottom:isDesktop?48:32}}>
-              {/* Practice Space featured row */}
-              <div style={{border:"0.5px solid rgba(138,158,132,0.2)",borderRadius:"10px 10px 0 0",background:"rgba(138,158,132,0.06)",padding:isDesktop?"20px 28px":"16px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16}}>
-                <div style={{flex:1}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
-                    <div style={{width:7,height:7,borderRadius:"50%",background:T.gold}}/>
-                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px"}}>Practice Space</span>
-                  </div>
-                  <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:3}}>Daily Challenge · Score History · Streak</div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,fontWeight:300}}>30 scenarios. Rotates daily. Track your improvement over time.</div>
-                </div>
-                <button onClick={()=>setTab("practice")} style={{padding:isDesktop?"10px 22px":"9px 16px",borderRadius:5,border:"1px solid rgba(138,158,132,0.4)",background:"transparent",color:T.gold,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Open →</button>
-              </div>
-
-              {/* Leadership Hot Seat — Day 10 Simulation. Was previously wired
-                  to launch(6,"Simulation"), which is actually the unrelated
-                  "AI Conversation Prep" screen; fixed to point at the real
-                  "The Leadership Hot Seat" screen (Day 10, Simulation). */}
-              <div style={{border:"0.5px solid rgba(138,158,132,0.2)",borderTop:"none",background:T2.surface,padding:isDesktop?"18px 28px":"15px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,cursor:"pointer"}} onClick={()=>launch(10,"Simulation")}>
-                <div style={{flex:1}}>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:700,color:T2.text,marginBottom:3}}>Leadership Hot Seat</div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,fontWeight:300,lineHeight:1.5}}>Practise high-stakes conversations with live AI feedback.</div>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:8}}>
-                    {["Promotion","Executive Meetings","Difficult Conversations"].map((tag,j)=><Tag key={j} label={tag}/>)}
-                  </div>
-                </div>
-                <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6,flexShrink:0}}>
-                  <Time n={5}/>
-                  <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text}}>Open →</span>
-                </div>
-              </div>
-
-              {/* Drill cards in a grid — "Story Sprint" (formerly day:8/
-                  Simulation) removed: it was a mislabeled duplicate of the
-                  same route as "Story Architect", not a distinct tool. */}
-              <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr":"1fr 1fr",borderLeft:"0.5px solid "+T2.border,borderBottom:"0.5px solid "+T2.border}}>
-                {[
-                  {icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M12 3l-8 11h8l-2 5 8-11h-8l2-5z" stroke={T2.text3} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>,
-                   label:"Pressure Response Drill", desc:"Sharp structured answers under pressure.", tag:"Meetings", time:3, day:5, step:"Simulation"},
-                  {icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><circle cx="8" cy="8" r="3" stroke={T2.text3} strokeWidth="1.3" fill="none"/><circle cx="14" cy="8" r="3" stroke={T2.text3} strokeWidth="1.3" fill="none"/><path d="M4 18c0-3 2-4 4-4h6c2 0 4 1 4 4" stroke={T2.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>,
-                   label:"Rapport Builder", desc:"Connect with anyone, anywhere.", tag:"Networking", time:5, day:9, step:"Simulation"},
-                  {icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M4 16V8l4 4 3-6 3 5 4-3v8H4z" stroke={T2.text3} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>,
-                   label:"Executive Briefing", desc:"Complex ideas, clear delivery.", tag:"Executive Comms", time:4, day:4, step:"Simulation"},
-                ].map((t,i)=>(
-                  <div key={i} onClick={()=>launch(t.day,t.step)} style={{background:T2.surface,borderTop:"0.5px solid "+T2.border,borderRight:"0.5px solid "+T2.border,padding:isDesktop?"18px 20px":"13px 14px",cursor:"pointer",display:"flex",flexDirection:"column",justifyContent:"space-between",minHeight:isDesktop?148:126}}>
-                    <div>
-                      <div style={{width:32,height:32,borderRadius:7,background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:10}}>{t.icon}</div>
-                      <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:700,color:T2.text,marginBottom:3,lineHeight:1.3}}>{t.label}</div>
-                      <div style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:T2.text3,lineHeight:1.5,fontWeight:300}}>{t.desc}</div>
-                    </div>
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:10}}>
-                      <Time n={t.time}/>
-                      <span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text}}>→</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{marginBottom:isDesktop?48:32}}>
-              <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:14}}>
-                {[
-                  {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke={T2.text3} strokeWidth="1.3" fill="none"/><path d="M5 19c0-4 2.7-6 6-6s6 2 6 6" stroke={T2.text3} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>,
-                   label:"Clarity Check-In", desc:"Establish your communication baseline and track your progress.", tags:["Self-Awareness","Confidence","Progress"], time:4, day:1, step:"Simulation"},
-                  {icon:<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4.5H17l-3.7 2.7 1.4 4.3L11 12l-3.7 2.5 1.4-4.3L5 7.5h4.5z" stroke={T2.text3} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>,
-                   label:"Brand Audit", desc:"Discover what signals your communication sends to the world.", tags:["LinkedIn","Presence","Personal Brand"], time:5, day:11, step:"Simulation"},
-                ].map((t,i)=>(
-                  <div key={i} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"18px 20px",cursor:"pointer"}} onClick={()=>launch(t.day,t.step)}>
-                    <div style={{display:"flex",gap:14,marginBottom:14,alignItems:"flex-start"}}>
-                      <div style={{width:40,height:40,borderRadius:8,background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{t.icon}</div>
-                      <div>
-                        <div style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:700,color:T2.text,marginBottom:4}}>{t.label}</div>
-                        <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,fontWeight:300}}>{t.desc}</div>
-                      </div>
-                    </div>
-                    <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
-                      {t.tags.map((tag,j)=><Tag key={j} label={tag}/>)}
-                    </div>
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                      <Time n={t.time}/>
-                      <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text}}>Open →</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              {/* Study a Master — full-width card */}
-              <div style={{marginTop:14,background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"18px 20px",cursor:"pointer"}} onClick={()=>setOpenMod('studyMaster')}>
-                <div style={{display:"flex",gap:14,marginBottom:14,alignItems:"flex-start"}}>
-                  <div style={{width:40,height:40,borderRadius:8,background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><ellipse cx="11" cy="11" rx="8.5" ry="5.5" stroke={T2.text3} strokeWidth="1.3"/><circle cx="11" cy="11" r="2.5" stroke={T2.text3} strokeWidth="1.3"/></svg>
-                  </div>
-                  <div style={{flex:1}}>
-                    <div style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:700,color:T2.text,marginBottom:4}}>Study a Master</div>
-                    <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,fontWeight:300}}>Watch someone who inspires you and study how they communicate. Observe the habits that make them exceptional.</div>
-                  </div>
-                </div>
-                <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
-                  {["Observation","Self-Awareness","Learning"].map((tag,j)=><Tag key={j} label={tag}/>)}
-                </div>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                  <Time n={20}/>
-                  <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text}}>Open →</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Study a Master modal */}
-            {openMod==='studyMaster' && (
-              <div style={{position:"fixed",inset:0,zIndex:200,display:"flex",alignItems:"flex-start",justifyContent:"center",overflowY:"auto",background:"rgba(10,8,5,0.55)",backdropFilter:"blur(4px)",padding:"40px 20px 60px"}}>
-                <div style={{background:T2.bg,borderRadius:12,width:"100%",maxWidth:680,position:"relative",animation:"fadeUp 0.3s ease both"}}>
-                  <div style={{padding:isDesktop?"36px 40px":"24px 22px",borderBottom:"0.5px solid "+T2.divider,display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:16}}>
-                    <div>
-                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Discover · Week 1 Reference</div>
-                      <h2 style={{fontFamily:T.serif,fontSize:isDesktop?32:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:"0 0 12px"}}>Study a Master</h2>
-                      <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,margin:0,fontWeight:300}}>Find someone who inspires you — or someone you think is a master communicator. Watch them. Observe how they communicate, what habits they use, and how they hold presence. Then bring one thing back to your own communication this week.</p>
-                    </div>
-                    <button onClick={()=>{setOpenMod(null);setOpenMasterCard(null);}} style={{background:"none",border:"none",cursor:"pointer",padding:"4px",flexShrink:0,marginTop:4}}>
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke={T2.text3} strokeWidth="1.5" strokeLinecap="round"/></svg>
-                    </button>
-                  </div>
-                  <div style={{padding:isDesktop?"28px 40px 36px":"20px 22px 28px"}}>
-                    <div style={{background:"rgba(138,158,132,0.07)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)",padding:"18px 20px",marginBottom:24}}>
-                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your Task</div>
-                      <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                        {["Choose someone you find compelling — a speaker, leader, interviewer, advocate, or anyone who communicates in a way you admire.","Watch them with intention. Notice how they speak, how they hold the room, and what specific habits make them effective.","Pick one thing you observed and bring it into a real conversation this week."].map((t,i)=>(
-                          <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-                            <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.15)",border:"0.5px solid rgba(138,158,132,0.35)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                              <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
-                            </div>
-                            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.65,margin:0,fontWeight:300}}>{t}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>Need Inspiration?</div>
-                    <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,fontWeight:300,marginBottom:16}}>Four exceptional communicators — each a master of a different skill. Expand a card for what to watch for.</p>
-                    <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:10}}>
-                      {MASTER_COMMUNICATORS.map((c,ci)=>{
-                        const open=openMasterCard===ci;
-                        return (
-                          <div key={ci} onClick={()=>setOpenMasterCard(open?null:ci)}
-                            style={{background:T2.surface,borderRadius:8,border:`0.5px solid ${open?T.gold:T2.border}`,cursor:"pointer",transition:"all 0.2s",boxShadow:open?"0 4px 20px rgba(138,158,132,0.1)":"none"}}>
-                            <div style={{padding:"18px 20px 14px"}}>
-                              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?0:6}}>
-                                <div style={{flex:1,paddingRight:10}}>
-                                  <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{c.role}</div>
-                                  <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.2}}>{c.name}</div>
-                                </div>
-                                <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.5)",flexShrink:0,marginTop:3,display:"inline-block",transform:open?"rotate(90deg)":"none",transition:"transform 0.2s"}}>▸</span>
-                              </div>
-                            </div>
-                            {open&&(
-                              <div style={{borderTop:"0.5px solid "+T2.divider,padding:"14px 20px 18px",display:"flex",flexDirection:"column",gap:12}}>
-                                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,margin:0,fontWeight:300}}>{c.sub}</p>
-                                <div>
-                                  <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:7}}>Watch For</div>
-                                  <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-                                    {c.watchFor.map((w,wi)=>(
-                                      <span key={wi} style={{padding:"4px 10px",borderRadius:20,border:"0.5px solid "+T2.border,fontFamily:T.sans,fontSize:11,color:T2.text,background:T2.bg}}>{w}</span>
-                                    ))}
-                                  </div>
-                                </div>
-                                <div>
-                                  <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:6}}>AmplifyU Connection</div>
-                                  <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
-                                    {c.connection.map(([day,principle],di)=>(
-                                      <div key={di} style={{display:"flex",alignItems:"center",gap:5,padding:"3px 8px",background:"rgba(138,158,132,0.08)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)"}}>
-                                        <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{day}</span>
-                                        <span style={{fontFamily:T.sans,fontSize:10,color:T2.text3}}>{principle}</span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                                <div style={{padding:"10px 14px",background:"rgba(138,158,132,0.05)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-                                  <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:5}}>Reflection Prompt</div>
-                                  <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{c.reflection}</p>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
           </div>
         );
       })()}
@@ -783,6 +525,110 @@ p];
       {tab==="practice" && (
         <div style={isDesktop?{maxWidth:720,margin:"0 auto",padding:"24px 88px 80px"}:{padding:"0 20px 60px"}}>
           <PracticeSpace T2={Object.assign({},T,DK)} isDesktop={isDesktop}/>
+
+          {/* Study a Master — moved here from AI Tools; it's a reflection
+              exercise, not an AI tool. */}
+          <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"2px",marginTop:isDesktop?40:28,marginBottom:16}}>Reflection Exercise</div>
+          <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"18px 20px",cursor:"pointer"}} onClick={()=>setOpenMod('studyMaster')}>
+            <div style={{display:"flex",gap:14,marginBottom:14,alignItems:"flex-start"}}>
+              <div style={{width:40,height:40,borderRadius:8,background:T2.bg,border:"0.5px solid "+T2.border,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><ellipse cx="11" cy="11" rx="8.5" ry="5.5" stroke={T2.text3} strokeWidth="1.3"/><circle cx="11" cy="11" r="2.5" stroke={T2.text3} strokeWidth="1.3"/></svg>
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?15:14,fontWeight:700,color:T2.text,marginBottom:4}}>Study a Master</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,fontWeight:300}}>Watch someone who inspires you and study how they communicate. Observe the habits that make them exceptional.</div>
+              </div>
+            </div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
+              {["Observation","Self-Awareness","Learning"].map((tag,j)=><span key={j} style={{fontFamily:T.sans,fontSize:11,color:T2.text3,padding:"3px 10px",border:"0.5px solid "+T2.border,borderRadius:20,whiteSpace:"nowrap"}}>{tag}</span>)}
+            </div>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <div style={{display:"flex",alignItems:"center",gap:5}}><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke={T2.text4} strokeWidth="1.2"/><path d="M8 5v3l2 1.5" stroke={T2.text4} strokeWidth="1.2" strokeLinecap="round"/></svg><span style={{fontFamily:T.sans,fontSize:12,color:T2.text4}}>20 min</span></div>
+              <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text}}>Open →</span>
+            </div>
+          </div>
+
+          {/* Study a Master modal */}
+          {openMod==='studyMaster' && (
+            <div style={{position:"fixed",inset:0,zIndex:200,display:"flex",alignItems:"flex-start",justifyContent:"center",overflowY:"auto",background:"rgba(10,8,5,0.55)",backdropFilter:"blur(4px)",padding:"40px 20px 60px"}}>
+              <div style={{background:T2.bg,borderRadius:12,width:"100%",maxWidth:680,position:"relative",animation:"fadeUp 0.3s ease both"}}>
+                <div style={{padding:isDesktop?"36px 40px":"24px 22px",borderBottom:"0.5px solid "+T2.divider,display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:16}}>
+                  <div>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Reflection Exercise</div>
+                    <h2 style={{fontFamily:T.serif,fontSize:isDesktop?32:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:"0 0 12px"}}>Study a Master</h2>
+                    <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.7,margin:0,fontWeight:300}}>Find someone who inspires you — or someone you think is a master communicator. Watch them. Observe how they communicate, what habits they use, and how they hold presence. Then bring one thing back to your own communication this week.</p>
+                  </div>
+                  <button onClick={()=>{setOpenMod(null);setOpenMasterCard(null);}} style={{background:"none",border:"none",cursor:"pointer",padding:"4px",flexShrink:0,marginTop:4}}>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke={T2.text3} strokeWidth="1.5" strokeLinecap="round"/></svg>
+                  </button>
+                </div>
+                <div style={{padding:isDesktop?"28px 40px 36px":"20px 22px 28px"}}>
+                  <div style={{background:"rgba(138,158,132,0.07)",borderRadius:8,border:"0.5px solid rgba(138,158,132,0.2)",padding:"18px 20px",marginBottom:24}}>
+                    <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your Task</div>
+                    <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                      {["Choose someone you find compelling — a speaker, leader, interviewer, advocate, or anyone who communicates in a way you admire.","Watch them with intention. Notice how they speak, how they hold the room, and what specific habits make them effective.","Pick one thing you observed and bring it into a real conversation this week."].map((t,i)=>(
+                        <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+                          <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(138,158,132,0.15)",border:"0.5px solid rgba(138,158,132,0.35)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                            <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{i+1}</span>
+                          </div>
+                          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.65,margin:0,fontWeight:300}}>{t}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>Need Inspiration?</div>
+                  <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,fontWeight:300,marginBottom:16}}>Four exceptional communicators — each a master of a different skill. Expand a card for what to watch for.</p>
+                  <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:10}}>
+                    {MASTER_COMMUNICATORS.map((c,ci)=>{
+                      const open=openMasterCard===ci;
+                      return (
+                        <div key={ci} onClick={()=>setOpenMasterCard(open?null:ci)}
+                          style={{background:T2.surface,borderRadius:8,border:`0.5px solid ${open?T.gold:T2.border}`,cursor:"pointer",transition:"all 0.2s",boxShadow:open?"0 4px 20px rgba(138,158,132,0.1)":"none"}}>
+                          <div style={{padding:"18px 20px 14px"}}>
+                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?0:6}}>
+                              <div style={{flex:1,paddingRight:10}}>
+                                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{c.role}</div>
+                                <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,lineHeight:1.2}}>{c.name}</div>
+                              </div>
+                              <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.5)",flexShrink:0,marginTop:3,display:"inline-block",transform:open?"rotate(90deg)":"none",transition:"transform 0.2s"}}>▸</span>
+                            </div>
+                          </div>
+                          {open&&(
+                            <div style={{borderTop:"0.5px solid "+T2.divider,padding:"14px 20px 18px",display:"flex",flexDirection:"column",gap:12}}>
+                              <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,margin:0,fontWeight:300}}>{c.sub}</p>
+                              <div>
+                                <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:7}}>Watch For</div>
+                                <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                                  {c.watchFor.map((w,wi)=>(
+                                    <span key={wi} style={{padding:"4px 10px",borderRadius:20,border:"0.5px solid "+T2.border,fontFamily:T.sans,fontSize:11,color:T2.text,background:T2.bg}}>{w}</span>
+                                  ))}
+                                </div>
+                              </div>
+                              <div>
+                                <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:6}}>AmplifyU Connection</div>
+                                <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                                  {c.connection.map(([day,principle],di)=>(
+                                    <div key={di} style={{display:"flex",alignItems:"center",gap:5,padding:"3px 8px",background:"rgba(138,158,132,0.08)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)"}}>
+                                      <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold}}>{day}</span>
+                                      <span style={{fontFamily:T.sans,fontSize:10,color:T2.text3}}>{principle}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div style={{padding:"10px 14px",background:"rgba(138,158,132,0.05)",borderRadius:4,borderLeft:"2px solid "+T.gold}}>
+                                <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:T.sans,marginBottom:5}}>Reflection Prompt</div>
+                                <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>{c.reflection}</p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
       {tab==="story" && (
