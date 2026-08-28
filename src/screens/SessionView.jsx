@@ -4407,7 +4407,7 @@ setAmbitionSaved(true); } catch {}
                       {/* Book cards — mirrors the Reading List format in Toolkit */}
                       <div style={{ maxWidth: 500 }}>
                         {fr && fr.books.map((book, bi) => (
-                          <div key={bi} style={{ paddingBottom: bi < fr.books.length - 1 ? 24 : 0, marginBottom: bi < fr.books.length - 1 ? 24 : 0, borderBottom: bi < fr.books.length - 1 ? "0.5px solid " + T2.border : "none" }}>
+                          <div key={bi} style={{ background: "#EDE7DD", border: "1px solid " + T2.border, borderRadius: 10, padding: "20px 22px", marginBottom: bi < fr.books.length - 1 ? 16 : 0 }}>
                             <p style={{ fontFamily: T.serif, fontSize: 18, fontWeight: 600, color: T2.text, letterSpacing: "-0.2px", marginBottom: 2 }}>{book.title}</p>
                             <p style={{ fontFamily: T.sans, fontSize: 13, color: T2.text3, marginBottom: 10 }}>{book.author}</p>
                             <p style={{ fontFamily: T.serif, fontSize: 15, fontStyle: "italic", color: T.goldDark, lineHeight: 1.5, marginBottom: 14 }}>{book.connection}</p>

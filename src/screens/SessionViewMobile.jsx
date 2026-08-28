@@ -3013,7 +3013,7 @@ strokeLinecap="round"/></svg>
             return (
               <div style={{padding:"0 20px",margin:"0 4px"}}>
                 {fr.books.map((book,bi)=>(
-                  <div key={bi} style={{paddingBottom:bi<fr.books.length-1?20:0,marginBottom:bi<fr.books.length-1?20:0,borderBottom:bi<fr.books.length-1?"0.5px solid #EDE8DF":"none"}}>
+                  <div key={bi} style={{background:"#EDE7DD",border:"1px solid #DDD5C4",borderRadius:10,padding:"16px 18px",marginBottom:bi<fr.books.length-1?14:0}}>
                     <p style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:"#2C2416",letterSpacing:"-0.2px",marginBottom:2}}>{book.title}</p>
                     <p style={{fontFamily:T.sans,fontSize:12,color:"#8A7B66",marginBottom:10}}>{book.author}</p>
                     <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T.goldDark,lineHeight:1.5,marginBottom:12}}>{book.connection}</p>
