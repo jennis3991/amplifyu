@@ -358,6 +358,16 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
   return null;
 }
 
+// Retention is derived from the tier distribution the model classified facts into,
+// rather than asked of the model as a second, independently-generated number —
+// this makes "captured all Tier 1/2 facts → high Retention" true by construction.
+const TIER_WEIGHTS = {1: 1.0, 2: 0.6, 3: 0.25};
+function computeRetentionScore(facts) {
+  if (!facts || !facts.length) return 0;
+  const sum = facts.reduce((a, f) => a + (TIER_WEIGHTS[f.tier] || TIER_WEIGHTS[3]), 0);
+  return Math.round(100 * sum / facts.length);
+}
+
 // ─── D4 Simulation Widget — Breaking News Live ───────────────────────────────
 export function D4SimWidget({T, T2, isDesktop}) {
   const STORIES = [
@@ -379,8 +389,8 @@ export function D4SimWidget({T, T2, isDesktop}) {
   const [playing, setPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
   const [result, setResult] = useState(null);
-  const [round1, setRound1] = useState(null);
   const [micError, setMicError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const audioRef = useRef(null);
   const mediaRecRef = useRef(null);
@@ -466,34 +476,34 @@ export function D4SimWidget({T, T2, isDesktop}) {
   }
 
   async function analyzeReport(text){
-    const isRetry=!!round1;
-    const base=isRetry?8:0;
-    const mock={
-      factsReported:["Story confirmed","Key detail 1","Key detail 2","Supporting context","Background info","Expert quote","Impact statement","Follow-up note"],
-      remembered:["Story confirmed","Key detail 1","Supporting context"],
-      forgotten:["Background info","Expert quote","Impact statement","Follow-up note"],
-      headline:`Breaking: ${story}.`,
-      retentionScore:Math.floor(Math.random()*20)+42+base,
-      compressionScore:Math.floor(Math.random()*20)+55+base,
-      cognitiveLoadScore:Math.floor(Math.random()*20)+50+base,
-      headlineScore:Math.floor(Math.random()*20)+60+base,
-      coachNote:"Your report covered a lot of ground. The strongest communicators lead with the most important fact and build from there. Try opening with your headline sentence next time — then support it."
-    };
     if(!text||text.trim().length<20){
-      if(!isRetry)setRound1(mock); setResult(mock); setPhase('recall'); return;
+      setErrorMsg("We couldn't hear enough in that recording to generate feedback. Please try again and speak for a few more seconds.");
+      setPhase('error');
+      return;
     }
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an AI audience member watching a breaking news report about: "${story}". The reporter's transcript: "${text}". Simulate what a typical viewer would remember vs forget, and score the communication quality. Return ONLY valid JSON:\n{"factsReported":["list every distinct fact or point they mentioned, up to 8 items"],"remembered":["list 3-5 things an average viewer would remember — favour vivid, concrete, emotional facts"],"forgotten":["list 2-4 facts that would likely be forgotten due to cognitive overload or poor prioritisation"],"headline":"<the single most memorable sentence that captures the story — max 12 words>","retentionScore":<0-100: percentage of facts audience retained>,"compressionScore":<0-100: how effectively they simplified as time reduced — 100 = perfect compression>,"cognitiveLoadScore":<0-100: 100 = very easy to follow, 0 = overwhelming>,"headlineScore":<0-100: could story be reduced to one memorable sentence?>,"coachNote":"<2-3 sentences of warm, encouraging, professional coaching — open with something specific they did well, then offer one clear forward-looking observation about short sentences or adapting under pressure. Never criticise, never use 'but' to negate the positive, never use deficit language. Growth-framed, motivational, executive coach tone.>"}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are a senior news editor reviewing a breaking news report about: "${story}". The reporter's transcript: "${text}".\n\nFirst, extract every distinct fact or point they mentioned (up to 8 items). Classify each one by EDITORIAL IMPORTANCE to the story — how central it is to what the story fundamentally is, NOT a prediction of whether a viewer would remember it:\n- tier 1: the most essential facts — what the story fundamentally is\n- tier 2: secondary but relevant supporting facts\n- tier 3: filler or color detail, least essential\n\nThen score the communication quality, using the tier breakdown you just produced to ground your judgment — e.g. a report cluttered with tier-3 filler ahead of its tier-1/2 facts should score lower on cognitive load, and a headline built from a tier-1 fact should score higher.\n\nReturn ONLY valid JSON:\n{"facts":[{"text":"<fact>","tier":<1, 2, or 3>}, ... up to 8 items, in the order mentioned],"headline":"<the single most memorable sentence that captures the story — max 12 words>","compressionScore":<0-100: how effectively they simplified as time reduced — 100 = perfect compression>,"cognitiveLoadScore":<0-100: 100 = very easy to follow, 0 = overwhelming>,"headlineScore":<0-100: could the story be reduced to one memorable sentence, ideally built from a tier-1 fact?>,"coachNote":"<2-3 sentences of warm, encouraging, professional coaching — open with something specific they did well, then offer one clear forward-looking observation about short sentences or adapting under pressure. Never criticise, never use 'but' to negate the positive, never use deficit language. Growth-framed, motivational, executive coach tone.>"}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
+      if(!m) throw new Error('no json in response');
       const parsed=JSON.parse(m[0]);
-      if(!isRetry)setRound1(parsed); setResult(parsed);
-    }catch{if(!isRetry)setRound1(mock); setResult(mock);}
-    setPhase('recall');
+      const facts=Array.isArray(parsed.facts)?parsed.facts.filter(f=>f&&f.text&&[1,2,3].includes(f.tier)):[];
+      if(!facts.length) throw new Error('no valid facts in response');
+      setResult({...parsed, facts, retentionScore: computeRetentionScore(facts)});
+      setPhase('recall');
+    }catch(err){
+      console.error('[D4SimWidget] analyzeReport error:', err);
+      setErrorMsg("We couldn't generate feedback for that recording. Please try again.");
+      setPhase('error');
+    }
   }
 
-  function reset(){setPhase('intro');setStory(null);setTimeLeft(60);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setRound1(null);setAudioURL(null);}
+  function reset(){setPhase('intro');setStory(null);setTimeLeft(60);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setAudioURL(null);setErrorMsg('');}
+
+  function retryRecording(){
+    setPhase('recording');setTranscript('');setAudioURL(null);setTimeLeft(60);setTimeElapsed(0);setProducerMsg(null);setErrorMsg('');
+  }
 
   // Plays `a` once it's actually ready to play, instead of calling play()
   // unconditionally — a blob: src can still be at readyState 0 (HAVE_NOTHING)
@@ -533,7 +543,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
             {n:1,label:"Choose a story",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M7 5v12M3 9h16" stroke={T.gold} strokeWidth="1.3"/></svg>},
             {n:2,label:"Go live",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
             {n:3,label:"Producer cuts",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M11 7v4l3 3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:4,label:"Audience recall",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3C7 3 3.5 6 3.5 10c0 2.5 1.3 4.7 3.3 6l-1 3 3.2-1.2C10 18 10.5 18 11 18c4 0 7.5-3.6 7.5-8S15 3 11 3z" stroke={T.gold} strokeWidth="1.3"/></svg>},
+            {n:4,label:"Priority check",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3C7 3 3.5 6 3.5 10c0 2.5 1.3 4.7 3.3 6l-1 3 3.2-1.2C10 18 10.5 18 11 18c4 0 7.5-3.6 7.5-8S15 3 11 3z" stroke={T.gold} strokeWidth="1.3"/></svg>},
             {n:5,label:"Miller's Law",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
           ].map((s,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
@@ -550,11 +560,11 @@ export function D4SimWidget({T, T2, isDesktop}) {
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
         <div style={cs.label}>The Challenge</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>You are a live news reporter. Report a breaking story to the nation — but as airtime shrinks, your sentences must get shorter and your message must get clearer.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>At 30 seconds, your producer will interrupt. At 15 seconds. At 5 seconds. Each time, you must compress further. Then the AI becomes your audience — and reveals what it actually remembered.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>At 30 seconds, your producer will interrupt. At 15 seconds. At 5 seconds. Each time, you must compress further. Then the AI becomes your editor — and reveals which facts you led with were actually essential.</p>
       </div>
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px",background:"rgba(138,158,132,0.04)"}}>
         <div style={cs.label}>Your Broadcast Analyst</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>After your broadcast, your AI broadcast analyst scores your Retention, Compression, Cognitive Load, and Headline quality — and reveals the gap between what you said and what your audience remembered.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>After your broadcast, your AI broadcast analyst scores your Retention, Compression, Cognitive Load, and Headline quality — and ranks every fact you reported by how essential it actually was to the story.</p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>That gap is Miller's Law in action.</p>
       </div>
       <div style={{display:"flex",alignItems:"center",gap:8,padding:isDesktop?"12px 16px":"10px 14px",background:"rgba(138,158,132,0.06)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)"}}>
@@ -638,6 +648,18 @@ export function D4SimWidget({T, T2, isDesktop}) {
     </div>
   );
 
+  // ── ERROR ────────────────────────────────────────────────────────────────────
+  if(phase==='error') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{...cs.card,textAlign:"center",padding:isDesktop?"40px 32px":"28px 22px"}}>
+        <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(180,80,60,0.8)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>Feedback Unavailable</div>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.5,margin:0}}>{errorMsg||"We couldn't generate feedback for that recording. Please try again."}</p>
+      </div>
+      <button onClick={retryRecording} style={cs.cta}>Try Again →</button>
+      <button onClick={()=>setPhase('choose')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Choose different story</button>
+    </div>
+  );
+
   // ── ANALYZING / RECALL ──────────────────────────────────────────────────────
   // Share one persistent <audio> element across both phases (same position in
   // the returned tree each render, so React updates rather than remounts it)
@@ -659,11 +681,17 @@ export function D4SimWidget({T, T2, isDesktop}) {
       </>
     );
 
-    const totalFacts=(result.factsReported||[]).length;
-    const remembered=(result.remembered||[]).length;
-    const forgotten=(result.forgotten||[]);
-    const retainPct=result.retentionScore||Math.round((remembered/Math.max(totalFacts,1))*100);
+    const facts=result.facts||[];
+    const totalFacts=facts.length;
+    const tier1=facts.filter(f=>f.tier===1);
+    const tier2=facts.filter(f=>f.tier===2);
+    const tier3=facts.filter(f=>f.tier===3);
     const scoreColor=s=>s>=75?T.gold:s>=55?"#7A9E84":"rgba(180,80,60,0.8)";
+    const TIER_META={
+      1:{label:"Essential",color:T.gold,bg:"rgba(200,164,106,0.10)",border:"rgba(200,164,106,0.35)"},
+      2:{label:"Supporting",color:"#7A9E84",bg:"rgba(122,158,132,0.07)",border:"rgba(122,158,132,0.22)"},
+      3:{label:"Detail",color:T2.text4,bg:"transparent",border:T2.border},
+    };
 
     return (
       <>
@@ -679,7 +707,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Broadcast Results</div>
           <div style={{display:"flex",gap:isDesktop?24:16,alignItems:"flex-start",marginBottom:20,flexWrap:"wrap"}}>
             {[
-              {label:"Retention",val:result.retentionScore,tip:"Facts audience remembered"},
+              {label:"Retention",val:result.retentionScore,tip:"Weighted coverage of essential facts"},
               {label:"Compression",val:result.compressionScore,tip:"Simplified under pressure"},
               {label:"Cognitive Load",val:result.cognitiveLoadScore,tip:"Ease of following"},
               {label:"Headline",val:result.headlineScore,tip:"One-sentence clarity"},
@@ -695,7 +723,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
               {playing?<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/><rect x="8" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/></svg>:<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 1l9 5-9 5V1z" fill="#F5EFE6"/></svg>}
               {playing?"Pause":"Play broadcast"}
             </button>
-            <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)"}}>You reported {totalFacts} facts. Audience retained {remembered}.</div>
+            <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)"}}>You reported {totalFacts} facts — {tier1.length} essential, {tier2.length} supporting, {tier3.length} detail.</div>
           </div>
           {audioURL&&(
             <div style={{marginTop:10}}>
@@ -713,25 +741,34 @@ export function D4SimWidget({T, T2, isDesktop}) {
         <div style={cs.card}>
           <div style={{...cs.label,display:"flex",alignItems:"center",gap:6}}>
             <svg width="13" height="13" viewBox="0 0 22 22" fill="none"><path d="M11 3v3M11 16v3M3 11h3M16 11h3M5.6 5.6l2.1 2.1M14.3 14.3l2.1 2.1M5.6 16.4l2.1-2.1M14.3 7.7l2.1-2.1" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>
-            Viewer Memory Test
+            Story Priority Breakdown
           </div>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:14,lineHeight:1.5}}>Here's what the AI audience remembered from your report:</p>
-          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
-            {(result.remembered||[]).map((pt,i)=>(
-              <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"10px 12px",background:"rgba(82,112,96,0.06)",borderRadius:4,border:"0.5px solid rgba(82,112,96,0.2)"}}>
-                <span style={{color:"#527060",flexShrink:0,fontWeight:700}}>✓</span>
-                <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5}}>{pt}</span>
-              </div>
-            ))}
-          </div>
-          {forgotten.length>0&&(
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {forgotten.map((pt,i)=>(
-                <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"10px 12px",background:"rgba(180,80,60,0.04)",borderRadius:4,border:"0.5px solid rgba(180,80,60,0.15)"}}>
-                  <span style={{color:"rgba(180,80,60,0.7)",flexShrink:0,fontWeight:700}}>✗</span>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.5,textDecoration:"line-through"}}>{pt}</span>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,marginBottom:14,lineHeight:1.5}}>Here's how the facts in your report rank by editorial importance. Focus on landing the essentials and supporting facts — the details matter less.</p>
+          {[1,2].map(tier=>{
+            const items=tier===1?tier1:tier2; const meta=TIER_META[tier];
+            if(!items.length) return null;
+            return (
+              <div key={tier} style={{marginBottom:12}}>
+                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:meta.color,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Tier {tier} · {meta.label}</div>
+                <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                  {items.map((f,i)=>(
+                    <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"10px 12px",background:meta.bg,borderRadius:4,border:"0.5px solid "+meta.border}}>
+                      <span style={{flexShrink:0,fontWeight:700,fontFamily:T.sans,fontSize:11,color:meta.color,width:16,height:16,borderRadius:"50%",border:"1px solid "+meta.color,display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1}}>{tier}</span>
+                      <span style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.5,fontWeight:tier===1?600:400}}>{f.text}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+            );
+          })}
+          {tier3.length>0&&(
+            <div style={{opacity:0.55}}>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Tier 3 · Detail</div>
+              <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                {tier3.map((f,i)=>(
+                  <div key={i} style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.5}}>· {f.text}</div>
+                ))}
+              </div>
             </div>
           )}
         </div>
