@@ -459,7 +459,7 @@ T.goldDark : T2.text4,
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (
                     <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                       {n.bullets.map((b,j)=>(
@@ -662,7 +662,7 @@ T.goldDark : T2.text4,
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (
                     <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                       {n.bullets.map((b,j)=>(
@@ -775,7 +775,7 @@ T.goldDark : T2.text4,
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (
                     <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                       {n.bullets.map((b,j)=>(
@@ -918,7 +918,7 @@ T.goldDark : T2.text4,
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (
                     <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                       {n.bullets.map((b,j)=>(
@@ -1107,7 +1107,7 @@ T.goldDark : T2.text4,
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (<div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                     {n.bullets.map((b,j)=>(<div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>))}
                   </div>)}
@@ -1293,7 +1293,7 @@ T.goldDark : T2.text4,
                     <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (
                     <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:8}}>
                       {n.bullets.map((b,j)=>(
@@ -1482,7 +1482,7 @@ T.goldDark : T2.text4,
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (<div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                     {n.bullets.map((b,j)=>(<div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>))}
                   </div>)}
@@ -1628,7 +1628,7 @@ T.goldDark : T2.text4,
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                     {n.bullets.map((b,j)=><div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>)}
                   </div>}
@@ -1790,7 +1790,7 @@ T.goldDark : T2.text4,
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (
                     <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                       {n.bullets.map((b,j)=>(
@@ -2110,7 +2110,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (<div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                     {n.bullets.map((b,j)=>(<div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>))}
                   </div>)}
@@ -2251,7 +2251,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (<div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                     {n.bullets.map((b,j)=>(<div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>))}
                   </div>)}
@@ -2421,7 +2421,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && (<div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                     {n.bullets.map((b,j)=>(<div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>))}
                   </div>)}
@@ -2661,7 +2661,7 @@ strokeLinecap="round"/></svg>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                     {n.bullets.map((b,j)=><div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>)}
                   </div>}
@@ -2830,7 +2830,7 @@ strokeLinecap="round"/></svg>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
                   </div>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
+                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
                   {open && <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
                     {n.bullets.map((b,j)=><div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>)}
                   </div>}
