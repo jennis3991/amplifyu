@@ -167,6 +167,48 @@ function PathDetailScreen({ T, T2, isDesktop, path, onBack, launch, done }) {
   );
 }
 
+// ─── Skill Detail Screen — dark header + one featured simulation ────────────
+// Simpler sibling of PathDetailScreen: a skill page doesn't have an ordered
+// multi-step journey (yet), so no progress card / numbered list — just a
+// header and a "Featured Simulation" card. Built to hold more tools
+// alongside the featured one in a later pass without changing this shape.
+function SkillDetailScreen({ T, T2, isDesktop, skill, onBack, launch }) {
+  const f = skill.featured;
+  return (
+    <div style={{background:T2.bg,minHeight:"100vh"}}>
+      <div style={{position:"relative",background:"#0D0B08",overflow:"hidden",padding:isDesktop?"36px 88px 44px":"24px 20px 32px"}}>
+        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 80% 20%, rgba(138,158,132,0.08) 0%, transparent 55%)"}}/>
+        <div style={{position:"relative",maxWidth:isDesktop?1160:undefined,margin:isDesktop?"0 auto":undefined}}>
+          <button onClick={onBack} style={{width:40,height:40,borderRadius:"50%",background:"rgba(245,239,230,0.1)",border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",marginBottom:isDesktop?28:20}}>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 3L5 9l6 6" stroke="#F5EFE6" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:24}}>
+            <div>
+              <h1 style={{fontFamily:T.serif,fontSize:isDesktop?42:28,fontWeight:600,color:"#F5EFE6",lineHeight:1.1,margin:"0 0 10px"}}>{skill.label}</h1>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"rgba(245,239,230,0.6)",margin:0}}>{skill.desc}</p>
+            </div>
+            <div style={{width:isDesktop?80:60,height:isDesktop?80:60,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"1px solid rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <div style={{width:isDesktop?50:38,height:isDesktop?50:38,borderRadius:"50%",background:skill.tint.circle,display:"flex",alignItems:"center",justifyContent:"center"}}>{skill.bigIcon}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style={isDesktop?{maxWidth:1160,margin:"0 auto",padding:"32px 88px 60px"}:{padding:"24px 20px 40px"}}>
+        <div style={{fontFamily:T.sans,fontSize:isDesktop?12:11,fontWeight:700,color:T2.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Featured Simulation</div>
+        <div style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"18px 18px",display:"flex",gap:16,alignItems:"center",flexWrap:isDesktop?"nowrap":"wrap"}}>
+          <div style={{width:44,height:44,borderRadius:8,background:f.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{f.icon}</div>
+          <div style={{flex:1,minWidth:isDesktop?0:"100%"}}>
+            <div style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,marginBottom:4}}>{f.label}</div>
+            <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{f.desc}</div>
+          </div>
+          <button onClick={()=>launch(f.day,f.step)} style={{padding:isDesktop?"12px 24px":"10px 18px",borderRadius:6,border:"none",background:T.ink,color:T.bg,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>Start →</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ToolkitScreen({onQuickPrep, onStartSession, dark=false, DK={}, isDesktop=false, done=[]}) {
   const T2 = Object.assign({}, T, DK);
   const [tab, setTab] = useState("aitools");
@@ -177,6 +219,7 @@ export function ToolkitScreen({onQuickPrep, onStartSession, dark=false, DK={}, i
     } catch(_) {}
   }, []);
   const [openPathId, setOpenPathId] = useState(null);
+  const [openSkillId, setOpenSkillId] = useState(null);
   const [openCat, setOpenCat] = useState(0);
   const [copied, setCopied] = useState(null);
   const [openMod, setOpenMod] = useState(null);
@@ -347,24 +390,49 @@ p];
            ]},
         ];
 
+        // Day 6's Simulation has two valid display names depending on
+        // context — "Promotion Prep" in the Promotion/Visibility Paths
+        // (STEP_PROMOTION_PREP above) and "AI Conversation Prep" here on the
+        // Leadership/Influence Skill pages. Same day/step link both times —
+        // deliberately two label objects sharing one route, not two tools.
+        const STEP_AI_CONVO_PREP = {
+          label:"AI Conversation Prep", desc:"Practice a high-stakes conversation and get AI feedback to improve your delivery.",
+          day:6, step:"Simulation", tint:TINT_TAN,
+          icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14a1 1 0 011 1v7a1 1 0 01-1 1h-6l-4 3v-3H3a1 1 0 01-1-1V6a1 1 0 011-1z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round"/><path d="M6 8h8M6 11h5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>,
+        };
+
         const SKILLS = [
-          {label:"Storytelling",  desc:"Build stories people remember.",                tint:TINT_DEEP,
-           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 5.5c-1.3-1-3.2-1.3-6-1v10c2.8-.3 4.7 0 6 1 1.3-1 3.2-1.3 6-1v-10c-2.8-.3-4.7 0-6 1z" stroke={ICON_C} strokeWidth="1.2" strokeLinejoin="round"/><path d="M10 5.5v10" stroke={ICON_C} strokeWidth="1.2"/></svg>},
-          {label:"Leadership",    desc:"Lead and handle high-stakes conversations.",     tint:TINT_TAN,
-           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="6.5" r="2.5" stroke={ICON_C} strokeWidth="1.2"/><circle cx="14" cy="7" r="2" stroke={ICON_C} strokeWidth="1.2"/><path d="M2.5 16c0-3 2-4.5 4.5-4.5s4.5 1.5 4.5 4.5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/><path d="M12.5 12c2 0 4 1.2 4.2 4" stroke={ICON_C} strokeWidth="1.1" strokeLinecap="round"/></svg>},
-          {label:"Presence",      desc:"Speak with confidence and authority.",           tint:TINT_SAGE,
-           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke={ICON_C} strokeWidth="1.2"/><path d="M4.5 17c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>},
-          {label:"Influence",     desc:"Get buy-in and move people.",                    tint:TINT_SAGE,
-           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 8v4h2.5L12 16V4L5.5 8H3z" stroke={ICON_C} strokeWidth="1.2" strokeLinejoin="round"/><path d="M15 7.5a3 3 0 010 5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>},
-          {label:"Personal Brand",desc:"Shape how you're perceived.",                    tint:TINT_TAN,
-           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><polygon points="10,2 12.2,7.2 18,7.8 13.6,11.6 15,17.3 10,14.2 5,17.3 6.4,11.6 2,7.8 7.8,7.2" stroke={ICON_C} strokeWidth="1.1" strokeLinejoin="round"/></svg>},
-          {label:"Clarity",       desc:"Make complex ideas simple.",                     tint:TINT_INK,
-           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M8 3l1.2 3.3L12.5 7.5 9.2 8.7 8 12l-1.2-3.3L3.5 7.5l3.3-1.2L8 3z" fill={ICON_C}/><path d="M15 11l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z" fill={ICON_C}/></svg>},
+          {id:"storytelling", label:"Storytelling",  desc:"Build stories people remember.",                tint:TINT_DEEP,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 5.5c-1.3-1-3.2-1.3-6-1v10c2.8-.3 4.7 0 6 1 1.3-1 3.2-1.3 6-1v-10c-2.8-.3-4.7 0-6 1z" stroke={ICON_C} strokeWidth="1.2" strokeLinejoin="round"/><path d="M10 5.5v10" stroke={ICON_C} strokeWidth="1.2"/></svg>,
+           featured:{label:"Story Architect", desc:"Build powerful stories and presentations in minutes.", day:8, step:"Simulation", tint:TINT_DEEP,
+             icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 4h8l5 5v9H4V4z" stroke={ICON_C} strokeWidth="1.3" fill="none"/><path d="M11 4v6h5" stroke={ICON_C} strokeWidth="1.3"/><path d="M7 12h5M7 15h3" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>}},
+          {id:"leadership", label:"Leadership",    desc:"Lead and handle high-stakes conversations.",     tint:TINT_TAN,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="6.5" r="2.5" stroke={ICON_C} strokeWidth="1.2"/><circle cx="14" cy="7" r="2" stroke={ICON_C} strokeWidth="1.2"/><path d="M2.5 16c0-3 2-4.5 4.5-4.5s4.5 1.5 4.5 4.5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/><path d="M12.5 12c2 0 4 1.2 4.2 4" stroke={ICON_C} strokeWidth="1.1" strokeLinecap="round"/></svg>,
+           featured:STEP_AI_CONVO_PREP},
+          {id:"presence", label:"Presence",      desc:"Speak with confidence and authority.",           tint:TINT_SAGE,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke={ICON_C} strokeWidth="1.2"/><path d="M4.5 17c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>,
+           featured:{label:"Find Your Voice", desc:"Discover your vocal range and unlock a more expressive, resonant voice.", day:2, step:"Simulation", tint:TINT_SAGE,
+             icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="8" y="3" width="4" height="8" rx="2" stroke={ICON_C} strokeWidth="1.3"/><path d="M5 9a5 5 0 0010 0" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round"/><path d="M10 14v2M8 16h4" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round"/></svg>}},
+          {id:"influence", label:"Influence",     desc:"Get buy-in and move people.",                    tint:TINT_SAGE,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 8v4h2.5L12 16V4L5.5 8H3z" stroke={ICON_C} strokeWidth="1.2" strokeLinejoin="round"/><path d="M15 7.5a3 3 0 010 5" stroke={ICON_C} strokeWidth="1.2" strokeLinecap="round"/></svg>,
+           featured:STEP_AI_CONVO_PREP},
+          {id:"personal-brand", label:"Personal Brand",desc:"Shape how you're perceived.",                    tint:TINT_TAN,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><polygon points="10,2 12.2,7.2 18,7.8 13.6,11.6 15,17.3 10,14.2 5,17.3 6.4,11.6 2,7.8 7.8,7.2" stroke={ICON_C} strokeWidth="1.1" strokeLinejoin="round"/></svg>,
+           featured:{label:"Brand Audit", desc:"Discover what signals your communication sends to the world.", day:11, step:"Simulation", tint:TINT_TAN,
+             icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4.5H17l-3.7 2.7 1.4 4.3L11 12l-3.7 2.5 1.4-4.3L5 7.5h4.5z" stroke={ICON_C} strokeWidth="1.3" strokeLinejoin="round" fill="none"/></svg>}},
+          {id:"clarity", label:"Clarity",       desc:"Make complex ideas simple.",                     tint:TINT_INK,
+           icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M8 3l1.2 3.3L12.5 7.5 9.2 8.7 8 12l-1.2-3.3L3.5 7.5l3.3-1.2L8 3z" fill={ICON_C}/><path d="M15 11l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z" fill={ICON_C}/></svg>,
+           featured:{label:"Clarity Check-In", desc:"Establish your communication baseline and track your progress.", day:1, step:"Simulation", tint:TINT_INK,
+             icon:<svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke={ICON_C} strokeWidth="1.3" fill="none"/><path d="M5 19c0-4 2.7-6 6-6s6 2 6 6" stroke={ICON_C} strokeWidth="1.3" strokeLinecap="round" fill="none"/></svg>}},
         ];
 
         if (openPathId) {
           const openPath = PATHS.find(p => p.id === openPathId);
           return <PathDetailScreen T={T} T2={T2} isDesktop={isDesktop} path={openPath} done={done} launch={launch} onBack={()=>setOpenPathId(null)}/>;
+        }
+        if (openSkillId) {
+          const openSkill = SKILLS.find(s => s.id === openSkillId);
+          return <SkillDetailScreen T={T} T2={T2} isDesktop={isDesktop} skill={{...openSkill, bigIcon: openSkill.icon}} launch={launch} onBack={()=>setOpenSkillId(null)}/>;
         }
 
         return (
@@ -398,7 +466,7 @@ p];
               {secLink("Explore by Skill")}
               <div style={{marginTop:16,display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr 1fr":"1fr 1fr",gap:12}}>
                 {SKILLS.map((sk,i)=>(
-                  <div key={i} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"18px":"14px"}}>
+                  <div key={i} onClick={()=>setOpenSkillId(sk.id)} style={{background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,padding:isDesktop?"18px":"14px",cursor:"pointer"}}>
                     <div style={{width:36,height:36,borderRadius:"50%",background:sk.tint.circle,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:10}}>{sk.icon}</div>
                     <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,marginBottom:4}}>{sk.label}</div>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:6}}>
