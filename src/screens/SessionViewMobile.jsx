@@ -47,7 +47,7 @@ function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
 }
 
 export function MobileSessionView({
-  T2, step, STEPS, idx, setIdx, lesson, isDone, onComplete, onBack, onExitToTab,
+  T2, step, STEPS, idx, setIdx, dark, toggleDark, lesson, isDone, onComplete, onBack, onExitToTab,
   isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isD14, isNT,
   selSc, setSelSc, exitConfirm, setExitConfirm,
   accordionOpen, setAccordionOpen,
@@ -207,37 +207,44 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         <img loading="lazy" src="/logo-mark.png" alt="AmplifyU" style={{width:30,height:30,objectFit:"cover",mixBlendMode:"screen",filter:"brightness(3) contrast(1.2)"}}/>
         <span style={{fontFamily:"'Inter',sans-serif",fontSize:11,fontWeight:600,letterSpacing:"3px",textTransform:"uppercase",color:"rgba(255,255,255,0.88)"}}>AmplifyU</span>
       </button>
-      <div style={{position:"relative"}}>
-        <button onClick={()=>setDayMenuOpen(v=>!v)} style={{display:"flex",alignItems:"center",gap:8,background:"none",border:"none",padding:"6px 2px",cursor:"pointer"}}>
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-            <rect x="2.5" y="3.5" width="15" height="13" rx="1.5" stroke="#c9a96e" strokeWidth="2"/>
-            <path d="M2.5 7.5h15" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M7 2v3M13 2v3" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round"/>
-            <circle cx="6.5" cy="11" r="1" fill="#c9a96e"/>
-            <circle cx="10" cy="11" r="1" fill="#c9a96e"/>
-            <circle cx="13.5" cy="11" r="1" fill="#c9a96e"/>
-            <circle cx="6.5" cy="14" r="1" fill="#c9a96e"/>
-            <circle cx="10" cy="14" r="1" fill="#c9a96e"/>
-            <circle cx="13.5" cy="14" r="1" fill="#c9a96e"/>
-          </svg>
-          <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,fontWeight:600,color:"#c9a96e",letterSpacing:"0.3px"}}>Day {lesson.day}</span>
-          <svg width="9" height="9" viewBox="0 0 12 12" fill="none" style={{transform:dayMenuOpen?"rotate(180deg)":"none",transition:"transform 0.2s",flexShrink:0}}><path d="M2.5 4.5L6 8l3.5-3.5" stroke="#c9a96e" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      <div style={{display:"flex",alignItems:"center",gap:14}}>
+        <div style={{position:"relative"}}>
+          <button onClick={()=>setDayMenuOpen(v=>!v)} style={{display:"flex",alignItems:"center",gap:8,background:"none",border:"none",padding:"6px 2px",cursor:"pointer"}}>
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <rect x="2.5" y="3.5" width="15" height="13" rx="1.5" stroke="#c9a96e" strokeWidth="2"/>
+              <path d="M2.5 7.5h15" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M7 2v3M13 2v3" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round"/>
+              <circle cx="6.5" cy="11" r="1" fill="#c9a96e"/>
+              <circle cx="10" cy="11" r="1" fill="#c9a96e"/>
+              <circle cx="13.5" cy="11" r="1" fill="#c9a96e"/>
+              <circle cx="6.5" cy="14" r="1" fill="#c9a96e"/>
+              <circle cx="10" cy="14" r="1" fill="#c9a96e"/>
+              <circle cx="13.5" cy="14" r="1" fill="#c9a96e"/>
+            </svg>
+            <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,fontWeight:600,color:"#c9a96e",letterSpacing:"0.3px"}}>Day {lesson.day}</span>
+            <svg width="9" height="9" viewBox="0 0 12 12" fill="none" style={{transform:dayMenuOpen?"rotate(180deg)":"none",transition:"transform 0.2s",flexShrink:0}}><path d="M2.5 4.5L6 8l3.5-3.5" stroke="#c9a96e" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          {dayMenuOpen && (
+            <>
+              <div onClick={()=>setDayMenuOpen(false)} style={{position:"fixed",inset:0,zIndex:299}}/>
+              <div style={{position:"absolute",top:"calc(100% + 8px)",right:0,zIndex:300,minWidth:168,background:"linear-gradient(to bottom, #28221D 0%, #171411 100%)",border:"0.5px solid rgba(255,255,255,0.1)",borderRadius:10,boxShadow:"0 12px 32px rgba(0,0,0,0.5)",overflow:"hidden",animation:"fadeUp 0.18s ease both"}}>
+                <button onClick={()=>{setDayMenuOpen(false);onExitToTab && onExitToTab("home");}} style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:"12px 16px",background:"none",border:"none",borderBottom:"0.5px solid rgba(255,255,255,0.08)",cursor:"pointer",textAlign:"left"}}>
+                  <NavIcon id="home" active color="#E7C27A"/>
+                  <span style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:"rgba(255,255,255,0.9)"}}>Home</span>
+                </button>
+                <button onClick={()=>{setDayMenuOpen(false);onExitToTab && onExitToTab("sessions");}} style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:"12px 16px",background:"none",border:"none",cursor:"pointer",textAlign:"left"}}>
+                  <NavIcon id="sessions" active color="#8A9E84"/>
+                  <span style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:"rgba(255,255,255,0.9)"}}>Programme</span>
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+        <button onClick={()=>toggleDark && toggleDark()} aria-label={dark?"Switch to light mode":"Switch to dark mode"} style={{background:"none",border:"none",padding:4,margin:0,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          {dark
+            ? <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+            : <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(245,239,230,0.85)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>}
         </button>
-        {dayMenuOpen && (
-          <>
-            <div onClick={()=>setDayMenuOpen(false)} style={{position:"fixed",inset:0,zIndex:299}}/>
-            <div style={{position:"absolute",top:"calc(100% + 8px)",right:0,zIndex:300,minWidth:168,background:"linear-gradient(to bottom, #28221D 0%, #171411 100%)",border:"0.5px solid rgba(255,255,255,0.1)",borderRadius:10,boxShadow:"0 12px 32px rgba(0,0,0,0.5)",overflow:"hidden",animation:"fadeUp 0.18s ease both"}}>
-              <button onClick={()=>{setDayMenuOpen(false);onExitToTab && onExitToTab("home");}} style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:"12px 16px",background:"none",border:"none",borderBottom:"0.5px solid rgba(255,255,255,0.08)",cursor:"pointer",textAlign:"left"}}>
-                <NavIcon id="home" active color="#E7C27A"/>
-                <span style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:"rgba(255,255,255,0.9)"}}>Home</span>
-              </button>
-              <button onClick={()=>{setDayMenuOpen(false);onExitToTab && onExitToTab("sessions");}} style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:"12px 16px",background:"none",border:"none",cursor:"pointer",textAlign:"left"}}>
-                <NavIcon id="sessions" active color="#8A9E84"/>
-                <span style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:"rgba(255,255,255,0.9)"}}>Programme</span>
-              </button>
-            </div>
-          </>
-        )}
       </div>
     </div>
      {/* Header image + Exit button overlay */}

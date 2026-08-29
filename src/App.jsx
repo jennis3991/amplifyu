@@ -236,7 +236,7 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
         <SessionView lesson={LESSONS[Math.min(selDay-1,13)]}
 isDone={done.includes(selDay)} onComplete={() => completeDay(selDay)}
 onBack={() => setView("main")} onExitToTab={(t)=>{setTab(t);setView("main");}} roleId={roleId} activeRole={activeRole}
-dark={dark} DK={DK} isDesktop={isDesktop}/>
+dark={dark} toggleDark={toggleDark} DK={DK} isDesktop={isDesktop}/>
       </div>
     );
   }
