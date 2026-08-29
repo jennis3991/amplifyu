@@ -1221,7 +1221,13 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
     if(navigator.mediaDevices?.getUserMedia && window.MediaRecorder){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
         const mimeType=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg'].find(t=>MediaRecorder.isTypeSupported(t))||'';
-        const mr=mimeType?new MediaRecorder(stream,{mimeType}):new MediaRecorder(stream);
+        // Speech doesn't need anywhere near MediaRecorder's default bitrate —
+        // without this, iOS in particular defaults to a much higher rate that
+        // makes a 60-90s recording several MB, which fills the localStorage
+        // budget for saved recordings in just a couple of takes.
+        let mr;
+        try { mr=mimeType?new MediaRecorder(stream,{mimeType,audioBitsPerSecond:32000}):new MediaRecorder(stream,{audioBitsPerSecond:32000}); }
+        catch { mr=mimeType?new MediaRecorder(stream,{mimeType}):new MediaRecorder(stream); }
         audioChunksRef.current=[];
         mr.ondataavailable=e=>{if(e.data.size>0)audioChunksRef.current.push(e.data);};
         mr.start(1000); mediaRecRef.current=mr;

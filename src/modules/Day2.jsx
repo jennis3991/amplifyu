@@ -311,9 +311,14 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     if(navigator.mediaDevices?.getUserMedia){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
         try {
+          // Speech doesn't need anywhere near MediaRecorder's default bitrate
+          // — without this, iOS in particular defaults to a much higher rate
+          // that makes a 60-90s recording several MB, which fills the
+          // localStorage budget for saved recordings in just a couple of takes.
+          const mimeType=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg'].find(t=>MediaRecorder.isTypeSupported(t))||'';
           let mr;
-          try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
-          catch { mr = new MediaRecorder(stream); }
+          try { mr = mimeType?new MediaRecorder(stream,{mimeType,audioBitsPerSecond:32000}):new MediaRecorder(stream,{audioBitsPerSecond:32000}); }
+          catch { mr = mimeType?new MediaRecorder(stream,{mimeType}):new MediaRecorder(stream); }
           mr.ondataavailable=e=>{if(e.data.size>0)audioChunksRef.current.push(e.data);};
           mr.start(1000);mediaRecRef.current=mr;
         } catch(err) {
