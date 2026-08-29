@@ -1010,6 +1010,12 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   const [prompt, setPrompt] = useState(saved.prompt || null);
   const [elapsed, setElapsed] = useState(0);
   const [isRec, setIsRec] = useState(false);
+  // True from the moment "Start Recording" is tapped until getUserMedia has
+  // actually resolved and MediaRecorder is live — without this, isRec used to
+  // flip (and the UI switch to "recording") before the mic was really ready,
+  // so a quick tap-to-stop could hit doStop() while mediaRecRef was still
+  // null, silently discarding the whole take (no audio, no playback).
+  const [preparingMic, setPreparingMic] = useState(false);
   useWakeLock(isRec);
   const dotCount = useSequentialDots(phase === 'analyzing');
   const [transcript, setTranscript] = useState(saved.transcript || '');
@@ -1017,10 +1023,15 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   const [analyzing, setAnalyzing] = useState(false);
   const [feedback, setFeedback] = useState(saved.feedback || null);
   const [round1, setRound1] = useState(saved.round1 || null);
-  const [selectedFocus, setSelectedFocus] = useState(saved.selectedFocus || []);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
 
   const [audioURL, setAudioURL] = useState(saved.audioURL || null);
+  // A `blob:` URL only lives as long as the page load that created it — if this
+  // widget's state was restored from sessionStorage after a reload, audioURL
+  // can be a non-null but dead reference. Flips true the first time playback
+  // actually fails, so we can show a clear explanation instead of a silently
+  // inert player.
+  const [audioBroken, setAudioBroken] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
   const [waveAnim, setWaveAnim] = useState(0);
@@ -1128,8 +1139,8 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   // Block the app's "Next"/"Review" nav while actively recording or transcribing,
   // so an accidental tap can't discard an in-progress or just-finished recording.
   useEffect(()=>{
-    onRecordingChange?.(isRec || analyzing);
-  },[isRec, analyzing]);
+    onRecordingChange?.(isRec || preparingMic || analyzing);
+  },[isRec, preparingMic, analyzing]);
 
   // Persist results across accidental navigation away (e.g. swiping to another step) —
   // mid-recording/analysing states aren't resumable, so those collapse back to 'prompt' on save.
@@ -1137,10 +1148,10 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
     try{
       const persistedPhase=(phase==='recording'||phase==='analyzing')?(prompt?'prompt':'intro'):phase;
       sessionStorage.setItem(D1SIM_KEY, JSON.stringify({
-        phase:persistedPhase, cat, prompt, transcript, feedback, round1, selectedFocus, audioURL,
+        phase:persistedPhase, cat, prompt, transcript, feedback, round1, audioURL,
       }));
     }catch{}
-  },[phase, cat, prompt, transcript, feedback, round1, selectedFocus, audioURL]);
+  },[phase, cat, prompt, transcript, feedback, round1, audioURL]);
 
   // Stop any in-flight recording/playback if the widget unmounts (e.g. user swipes away)
   useEffect(()=>{
@@ -1183,7 +1194,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   },[playing]);
 
   function doStart(){
-    setIsRec(true); setElapsed(0); setTranscript(''); setAudioURL(null); setMicError(false); setTranscribeFailed(false);
+    setPreparingMic(true); setElapsed(0); setTranscript(''); setAudioURL(null); setMicError(false); setTranscribeFailed(false);
     if(navigator.mediaDevices?.getUserMedia && window.MediaRecorder){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
         const mimeType=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg'].find(t=>MediaRecorder.isTypeSupported(t))||'';
@@ -1191,9 +1202,10 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
         audioChunksRef.current=[];
         mr.ondataavailable=e=>{if(e.data.size>0)audioChunksRef.current.push(e.data);};
         mr.start(1000); mediaRecRef.current=mr;
-      }).catch(()=>{ setIsRec(false); setMicError(true); });
+        setPreparingMic(false); setIsRec(true);
+      }).catch(()=>{ setPreparingMic(false); setIsRec(false); setMicError(true); });
     } else {
-      setIsRec(false); setMicError(true);
+      setPreparingMic(false); setIsRec(false); setMicError(true);
     }
   }
 
@@ -1283,7 +1295,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
     setPrompt(p); setPhase('recording'); setElapsed(0); setIsRec(false); setTranscript(''); setFallback('');
   }
 
-  function reset(){setPhase('intro');setPrompt(null);setElapsed(0);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setSelectedFocus([]);setAudioURL(null);try{sessionStorage.removeItem(D1SIM_KEY);}catch{}}
+  function reset(){setPhase('intro');setPrompt(null);setElapsed(0);setIsRec(false);setPreparingMic(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);try{sessionStorage.removeItem(D1SIM_KEY);}catch{}}
 
   const cs={
     card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"},
@@ -1460,21 +1472,25 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
         {!isRec && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20}}>Speak naturally — around 2 minutes is a good guide.</p>}
         {/* Record button — same mic-circle pattern as Rehearsal */}
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16}}>
-          <button onClick={isRec ? doStop : doStart} style={{
-            width:80,height:80,borderRadius:"50%",border:"none",cursor:"pointer",
-            background:isRec?"#B05C4A":"#8A9E84",
+          <button onClick={preparingMic ? undefined : (isRec ? doStop : doStart)} disabled={preparingMic} style={{
+            width:80,height:80,borderRadius:"50%",border:"none",cursor:preparingMic?"default":"pointer",
+            background:isRec?"#B05C4A":preparingMic?T2.border:"#8A9E84",
             display:"flex",alignItems:"center",justifyContent:"center",
             boxShadow:isRec?"0 0 0 8px rgba(176,92,74,0.15)":"0 0 0 6px rgba(138,158,132,0.12)",
             transition:"all 0.2s ease",
           }}>
             {isRec
               ? <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="6" y="6" width="12" height="12" rx="2" fill="white"/></svg>
-              : <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" fill="white"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="white" strokeWidth="1.8" strokeLinecap="round"/><line x1="12" y1="19" x2="12" y2="23" stroke="white" strokeWidth="1.8" strokeLinecap="round"/></svg>
+              : preparingMic
+                ? <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{animation:"spin 0.8s linear infinite"}}><circle cx="12" cy="12" r="9" stroke={T2.text3} strokeWidth="2" strokeDasharray="40 60" strokeLinecap="round"/></svg>
+                : <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" fill="white"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="white" strokeWidth="1.8" strokeLinecap="round"/><line x1="12" y1="19" x2="12" y2="23" stroke="white" strokeWidth="1.8" strokeLinecap="round"/></svg>
             }
           </button>
           {isRec
             ? <div style={{fontFamily:T.sans,fontSize:13,color:"#B05C4A",fontWeight:600}}>Recording — {fmtElapsed(elapsed)} &nbsp;·&nbsp; tap to stop</div>
-            : <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>Tap to start recording</div>}
+            : preparingMic
+              ? <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>Preparing microphone…</div>
+              : <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>Tap to start recording</div>}
         </div>
       </div>
       {/* Text fallback — only surfaces on genuine mic/transcription failure */}
@@ -1533,6 +1549,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
         audioRef.current=new Audio(audioURL);
         audioRef.current.onloadedmetadata=()=>{ if(audioRef.current.duration&&isFinite(audioRef.current.duration)) setAudioDuration(audioRef.current.duration); };
         audioRef.current.addEventListener('ended',()=>{setPlaying(false);setAudioProgress(0);});
+        audioRef.current.addEventListener('error',()=>{setPlaying(false);setAudioBroken(true);});
       }
       return audioRef.current;
     }
@@ -1540,12 +1557,19 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
       if(!audioURL){setPlaying(p=>!p);return;}
       const a=getAudio();if(!a)return;
       if(playing){a.pause();setPlaying(false);}
-      else{a.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));}
+      else{a.play().then(()=>setPlaying(true)).catch(()=>{setPlaying(false);setAudioBroken(true);});}
     }
     function seekTo(pos){
       const a=getAudio();if(!a)return;
       a.currentTime=pos*(a.duration||0);
       if(!playing)a.play().then(()=>setPlaying(true)).catch(()=>{});
+    }
+    function skip(delta){
+      const a=getAudio();if(!a)return;
+      const dur=a.duration||audioDuration||0;if(!dur)return;
+      const t=Math.max(0,Math.min(dur,(a.currentTime||0)+delta));
+      a.currentTime=t;
+      setAudioProgress(t/dur);
     }
     return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
@@ -1580,13 +1604,11 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
       {/* 3 HEAR IT BACK — full player only, at top */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>Hear it back</div>
-        {!audioURL&&<p style={{fontFamily:T.serif,fontSize:13,color:T2.text3,margin:"8px 0 0",lineHeight:1.5}}>Audio playback is not available on this device.</p>}
-        {audioURL&&playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
-        {audioURL&&<div style={{display:"flex",alignItems:"center",gap:12,marginBottom:isDesktop?14:10}}>
-          <button onClick={togglePlay} style={{width:40,height:40,borderRadius:"50%",border:"none",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
-            {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
-          </button>
-          <div style={{flex:1,position:"relative"}}>
+        {!audioURL&&<p style={{fontFamily:T.serif,fontSize:13,color:T2.text3,margin:"8px 0 0",lineHeight:1.5}}>We don't have an audio recording for this response — your written feedback below is still complete.</p>}
+        {audioURL&&audioBroken&&<p style={{fontFamily:T.serif,fontSize:13,color:T2.text3,margin:"8px 0 0",lineHeight:1.5}}>Your recording doesn't carry over after a reload, so playback isn't available right now — your written feedback below is still complete.</p>}
+        {audioURL&&!audioBroken&&playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
+        {audioURL&&!audioBroken&&<div style={{marginBottom:isDesktop?14:10}}>
+          <div style={{position:"relative"}}>
             <div style={{display:"flex",position:"relative",height:isDesktop?20:32,marginBottom:4}}>
               {MARKERS.map((m,i)=>{
                 const row=!isDesktop&&i%2===1;
@@ -1612,6 +1634,17 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
               <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{fmtTime(audioProgress*audioDuration)}</span>
               <span style={{fontFamily:T.sans,fontSize:9,color:T2.text4}}>{fmtTime(audioDuration)}</span>
             </div>
+          </div>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:22,marginTop:16}}>
+            <button onClick={()=>skip(-10)} aria-label="Rewind 10 seconds" style={{width:36,height:36,borderRadius:"50%",border:"0.5px solid "+T2.border,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
+              <svg width="15" height="13" viewBox="0 0 16 14" fill="none"><path d="M8 1L1 7l7 6V1z" fill={T2.text3}/><path d="M15 1L8 7l7 6V1z" fill={T2.text3}/></svg>
+            </button>
+            <button onClick={togglePlay} style={{width:48,height:48,borderRadius:"50%",border:"none",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
+              {playing?<svg width="14" height="16" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="14" height="16" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
+            </button>
+            <button onClick={()=>skip(10)} aria-label="Forward 10 seconds" style={{width:36,height:36,borderRadius:"50%",border:"0.5px solid "+T2.border,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
+              <svg width="15" height="13" viewBox="0 0 16 14" fill="none"><path d="M8 1l7 6-7 6V1z" fill={T2.text3}/><path d="M1 1l7 6-7 6V1z" fill={T2.text3}/></svg>
+            </button>
           </div>
         </div>}
         {rawText1&&<div style={{marginTop:12,borderTop:"0.5px solid "+T2.border,paddingTop:10}}>
@@ -1752,9 +1785,9 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
           </div>
         )}
         <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
-          {FOCUS.filter(f=>!feedback.priorityFocus||f.toLowerCase()!==feedback.priorityFocus.toLowerCase()).map((f,i)=>{const sel=selectedFocus.includes(f);return(
-            <button key={i} onClick={()=>setSelectedFocus(sf=>sel?sf.filter(x=>x!==f):[...sf,f])} style={{display:"flex",alignItems:"center",gap:6,padding:"7px 14px",borderRadius:20,border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.1)":"transparent",color:sel?T.gold:T2.text3,fontFamily:T.serif,fontSize:isDesktop?12:11,cursor:"pointer",transition:"all 0.15s",fontWeight:sel?600:400}}>{f}</button>
-          );})}
+          {FOCUS.filter(f=>!feedback.priorityFocus||f.toLowerCase()!==feedback.priorityFocus.toLowerCase()).map((f,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"7px 14px",borderRadius:20,border:`0.5px solid ${T.gold}`,background:"rgba(138,158,132,0.1)",color:T.gold,fontFamily:T.serif,fontSize:isDesktop?12:11,fontWeight:600}}>{f}</div>
+          ))}
         </div>
       </div>
     </div>

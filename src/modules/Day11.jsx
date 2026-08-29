@@ -384,7 +384,8 @@ Return ONLY valid JSON:
         <p style={{ ...sn, fontSize: isDesktop ? 13 : 12, color: T2.text4, lineHeight: 1.6, margin: 0, fontStyle: "italic" }}>{q.hint}</p>
         {showText ? (
           <>
-            <textarea value={textAnswer} onChange={e => setTextAnswer(e.target.value)} placeholder="Type your answer here..." rows={isDesktop ? 5 : 4}
+            <style>{`.d11-ph::placeholder{color:${T2.text4};opacity:1;}`}</style>
+            <textarea className="d11-ph" value={textAnswer} onChange={e => setTextAnswer(e.target.value)} placeholder="Type your answer here..." rows={isDesktop ? 5 : 4}
               style={{ width: "100%", background: "transparent", border: "none", borderBottom: "0.5px solid " + T2.divider, padding: "8px 0", fontFamily: T.serif, fontSize: isDesktop ? 16 : 14, color: T2.text, resize: "none", outline: "none", lineHeight: 1.7, boxSizing: "border-box", fontStyle: "italic" }} />
             <button onClick={() => submitAnswer(textAnswer)} disabled={textAnswer.trim().length < 8} style={cta(textAnswer.trim().length < 8)}>Next →</button>
           </>
@@ -643,8 +644,8 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
   function cta(disabled) {
     return {
       width: "100%", padding: "15px", borderRadius: 4, border: "none",
-      background: disabled ? "rgba(44,36,22,0.15)" : (T.ink || "#2C2416"),
-      color: disabled ? "rgba(44,36,22,0.3)" : (T2.bg || "#F7F3EC"),
+      background: disabled ? T2.border : (T.ink || "#2C2416"),
+      color: disabled ? T2.text4 : (T2.bg || "#F7F3EC"),
       fontSize: isDesktop ? 14 : 13, fontWeight: 600,
       cursor: disabled ? "not-allowed" : "pointer",
       fontFamily: T.sans, minHeight: 48, transition: "all 0.2s",
@@ -860,6 +861,9 @@ Keep it under 280 words. Make every word earn its place.`;
     const targetTabId = tabs.some(t => t.id === inputMode) ? inputMode : (rehearsalReady ? 'summary' : 'screenshot');
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: isDesktop ? 18 : 16, animation: "fadeUp 0.5s ease both" }}>
+        {/* Placeholder text defaults to the browser's own grey regardless of `color`,
+            so it goes near-invisible on a dark background unless overridden explicitly. */}
+        <style>{`.d11-ph::placeholder{color:${T2.text4};opacity:1;}`}</style>
 
         {/* HOW IT WORKS — dynamic progress indicator, checkmark style matches the top step-progress bar */}
         <div style={{ background: T2.surface || "rgba(255,255,255,0.025)", borderRadius: 4, border: "0.5px solid " + T2.border, padding: isDesktop ? "22px 24px" : "18px 20px" }}>
@@ -881,7 +885,7 @@ Keep it under 280 words. Make every word earn its place.`;
               const lineCol     = status === 'upcoming' ? "rgba(138,158,132,0.12)" : "rgba(138,158,132,0.2)";
               return (
                 <div key={i} style={{ display: "flex", alignItems: "center", flex: 1 }}>
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1, opacity: status === 'upcoming' ? 0.5 : 1, transition: "opacity 0.3s" }}>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1, opacity: status === 'upcoming' ? 0.85 : 1, transition: "opacity 0.3s" }}>
                     <div style={{ width: isDesktop?48:36, height: isDesktop?48:36, borderRadius: "50%", background: circleBg, border: `${status === 'active' ? 1.5 : 0.5}px solid ${circleBorder}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: isDesktop?8:6, boxShadow: status === 'active' ? "0 0 0 3px rgba(200,164,106,0.12)" : "none", transition: "all 0.3s" }}>
                       {status === 'done'
                         ? <svg width={isDesktop?16:13} height={isDesktop?16:13} viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4" stroke={T.gold} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -966,11 +970,12 @@ Keep it under 280 words. Make every word earn its place.`;
 
         {inputMode === 'paste' && (
           <textarea
+            className="d11-ph"
             value={profileText}
             onChange={e => setProfileText(e.target.value)}
             placeholder={"Paste your LinkedIn profile content here...\n\nHeadline:\ne.g. Senior Marketing Manager | Brand Strategy | Consumer Insights\n\nAbout:\ne.g. I help brands find their voice and connect with the people who matter most...\n\nExperience:\ne.g. Marketing Manager at Acme Corp (2020-present)\n- Led rebranding campaign reaching 2M+ customers\n- Managed cross-functional team of 12 across 3 regions"}
             rows={isDesktop ? 8 : 6}
-            style={{ width: "100%", background: "rgba(44,36,22,0.05)", border: "1px solid rgba(44,36,22,0.2)", borderRadius: 6, padding: "14px 16px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box" }}
+            style={{ width: "100%", background: T2.surface, border: "1px solid " + T2.border, borderRadius: 6, padding: "14px 16px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box" }}
           />
         )}
 
@@ -983,7 +988,7 @@ Keep it under 280 words. Make every word earn its place.`;
                 {latestRehearsalToolkit.statement && <p style={{ ...sn, fontSize: isDesktop ? 13 : 12, color: T2.text3, lineHeight: 1.6, marginTop: 10, fontStyle: "italic" }}>{latestRehearsalToolkit.statement}</p>}
               </div>
             ) : (
-              <div style={{ background: "rgba(44,36,22,0.03)", border: "1px dashed rgba(44,36,22,0.15)", borderRadius: 6, padding: "24px 20px", textAlign: "center" }}>
+              <div style={{ background: T2.surface, border: "1px dashed " + T2.border, borderRadius: 6, padding: "24px 20px", textAlign: "center" }}>
                 <p style={{ ...sn, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: 0 }}>Complete the Rehearsal step first to generate your Professional Signature.</p>
               </div>
             )}
@@ -992,7 +997,7 @@ Keep it under 280 words. Make every word earn its place.`;
 
         {inputMode === 'screenshot' && (
           <div style={{ animation: "fadeUp 0.25s ease both" }}>
-            <label style={{ display: "block", border: "1px dashed rgba(44,36,22,0.2)", borderRadius: 6, padding: isDesktop ? "32px 20px" : "24px 16px", textAlign: "center", cursor: "pointer", transition: "border-color 0.2s", background: "rgba(44,36,22,0.03)" }}>
+            <label style={{ display: "block", border: "1px dashed " + T2.border, borderRadius: 6, padding: isDesktop ? "32px 20px" : "24px 16px", textAlign: "center", cursor: "pointer", transition: "border-color 0.2s", background: T2.surface, color: T2.text3 }}>
               <input type="file" accept="image/*" multiple onChange={e => handleScreenshots(e.target.files)} style={{ display: "none" }} />
               {screenshots.length === 0 ? (
                 <>
@@ -1019,11 +1024,12 @@ Keep it under 280 words. Make every word earn its place.`;
           <div style={{ animation: "fadeUp 0.25s ease both" }}>
             <div style={{ ...sn, fontSize: 11, color: T2.text4, marginBottom: 8 }}>Copy and paste from your PDF or Word document</div>
             <textarea
+              className="d11-ph"
               value={cvText}
               onChange={e => setCvText(e.target.value)}
               placeholder="Paste your CV content here..."
               rows={isDesktop ? 8 : 7}
-              style={{ width: "100%", background: "rgba(44,36,22,0.05)", border: "1px solid rgba(44,36,22,0.2)", borderRadius: 6, padding: "14px 16px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box" }}
+              style={{ width: "100%", background: T2.surface, border: "1px solid " + T2.border, borderRadius: 6, padding: "14px 16px", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text, resize: "vertical", outline: "none", lineHeight: 1.65, boxSizing: "border-box" }}
             />
           </div>
         )}
@@ -1032,7 +1038,7 @@ Keep it under 280 words. Make every word earn its place.`;
           <button onClick={runAnalysis} disabled={!hasProfile} style={{ ...cta(!hasProfile), flex: 1 }}>
             {"✦  Analyse My LinkedIn →"}
           </button>
-          <button onClick={() => setPrivacyOpen(v => !v)} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4, background: privacyOpen ? "rgba(44,36,22,0.08)" : "rgba(44,36,22,0.04)", border: "0.5px solid rgba(44,36,22,0.12)", borderRadius: 6, padding: "10px 16px", flexShrink: 0, cursor: "pointer", fontFamily: T.sans }}>
+          <button onClick={() => setPrivacyOpen(v => !v)} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4, background: privacyOpen ? T2.surface : "transparent", border: "0.5px solid " + T2.border, borderRadius: 6, padding: "10px 16px", flexShrink: 0, cursor: "pointer", fontFamily: T.sans, color: T2.text3 }}>
             <svg width="16" height="18" viewBox="0 0 16 20" fill="none" style={{ opacity: 0.55 }}>
               <path d="M8 1L1 4v6c0 5 3.5 8.5 7 9.5C11.5 18.5 15 15 15 10V4L8 1Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
               <path d="M5 10l2.5 2.5L11 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1043,7 +1049,7 @@ Keep it under 280 words. Make every word earn its place.`;
         </div>
 
         {privacyOpen && (
-          <div style={{ background: "rgba(44,36,22,0.04)", border: "0.5px solid rgba(44,36,22,0.12)", borderRadius: 6, padding: isDesktop ? "14px 16px" : "12px 14px", animation: "fadeUp 0.25s ease both" }}>
+          <div style={{ background: T2.surface, border: "0.5px solid " + T2.border, borderRadius: 6, padding: isDesktop ? "14px 16px" : "12px 14px", animation: "fadeUp 0.25s ease both" }}>
             <p style={{ ...sn, fontSize: isDesktop ? 12 : 11, color: T2.text3, lineHeight: 1.6, margin: 0 }}>
               Your LinkedIn or CV content is only sent to generate your Brand Toolkit — it's never stored on our servers. Your finished toolkit is saved locally on your device only.
             </p>

@@ -137,7 +137,8 @@ export function D10MobileSAR({onComplete}) {
 
 
 // ─── Leadership Hot Seat — D10 Simulation (mobile) ───────────────────────────
-export function D10MobileSim({onRecordingChange}) {
+export function D10MobileSim({T2: _T2, onRecordingChange}) {
+  const T2 = _T2 || T;
   const [scenario, setScenario] = useState(null);
   const [r, setR] = useState(null);
   const [l, setL] = useState(false);
@@ -239,10 +240,10 @@ export function D10MobileSim({onRecordingChange}) {
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
         {SCENARIOS.map(sc=>(
           <div key={sc.id} onClick={()=>{setScenario(sc);setR(null);setMicError(false);setTranscribeFailed(false);setFallbackText('');}}
-            style={{padding:"12px",background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,cursor:"pointer",display:"flex",flexDirection:"column",gap:8,minHeight:110}}>
+            style={{padding:"12px",background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,cursor:"pointer",display:"flex",flexDirection:"column",gap:8,minHeight:110}}>
             <div>{sc.icon}</div>
-            <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontWeight:600,color:"#2C2416",lineHeight:1.25,flex:1}}>{sc.title}</div>
-            <div style={{fontFamily:"'Inter',sans-serif",fontSize:10,color:"#8A7B66",lineHeight:1.4}}>{sc.tag}</div>
+            <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.25,flex:1}}>{sc.title}</div>
+            <div style={{fontFamily:"'Inter',sans-serif",fontSize:10,color:T2.text3,lineHeight:1.4}}>{sc.tag}</div>
           </div>
         ))}
       </div>
@@ -266,7 +267,7 @@ export function D10MobileSim({onRecordingChange}) {
             <div style={{padding:"14px 16px",background:"rgba(180,80,60,0.08)",borderRadius:4,border:"1px solid rgba(180,80,60,0.25)",marginBottom:10}}>
               <div style={{fontSize:9,fontWeight:700,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>{micError?"We couldn't access your microphone":"We couldn't hear that clearly"}</div>
               <p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#6B5E44",lineHeight:1.6,margin:"0 0 10px",fontWeight:300}}>{micError?"Check your microphone permission, or type your response instead.":"Try recording again, or type your response instead."}</p>
-              <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type your response here…" style={{width:"100%",borderRadius:4,border:"0.5px solid #DDD5C4",padding:"12px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:100,marginBottom:8,boxSizing:"border-box",background:"rgba(247,243,236,0.8)"}}/>
+              <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type your response here…" style={{width:"100%",borderRadius:4,border:"0.5px solid #DDD5C4",padding:"12px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:100,marginBottom:8,boxSizing:"border-box",background:T2.surface,color:T2.text}}/>
               <button onClick={()=>go(fallbackText)} disabled={!fallbackText.trim()} style={{width:"100%",padding:"11px",borderRadius:3,border:"none",background:!fallbackText.trim()?"#DDD5C4":"#2C2416",color:!fallbackText.trim()?"#6B5E44":"#F7F3EC",fontSize:13,fontWeight:600,cursor:!fallbackText.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif"}}>Submit Typed Response →</button>
             </div>
           )}
