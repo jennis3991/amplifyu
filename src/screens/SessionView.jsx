@@ -75,6 +75,8 @@ activeRole, dark=false, DK={}, isDesktop=false}) {
   const [d6SimRecording, setD6SimRecording] = useState(false);
   const [d9SimRecording, setD9SimRecording] = useState(false);
   const [d10SimRecording, setD10SimRecording] = useState(false);
+  const [d4SimRecording, setD4SimRecording] = useState(false);
+  const [d8SimRecording, setD8SimRecording] = useState(false);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [note, setNote] = useState(() => {
     try { return localStorage.getItem("au1_note_"+lesson.day) || ""; } catch { return ""; }
@@ -1868,7 +1870,7 @@ setAmbitionSaved(true); } catch {}
           <div style={{fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>AI Practice</div>
           <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>🎥 Breaking News Live</div>
           <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:32}}>Report it live. Watch what your audience remembers.</h2>
-          <D4SimWidget T={T} T2={T2} isDesktop={true}/>
+          <D4SimWidget T={T} T2={T2} isDesktop={true} onRecordingChange={setD4SimRecording}/>
         </div>
       );
 
@@ -2347,7 +2349,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <StoryArchitectWidget T={T} T2={T2} isDesktop={true}/>
+          <StoryArchitectWidget T={T} T2={T2} isDesktop={true} onRecordingChange={setD8SimRecording}/>
         </div>
       );
 
@@ -4538,7 +4540,7 @@ setAmbitionSaved(true); } catch {}
               </button>
             )}
             {idx < STEPS.length - 1 && (() => {
-              const navDisabled = (isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording) || (isD12 && step === "Rehearsal" && d12NavLabel === null) || (isD11 && step === "Rehearsal" && d11NavLabel === null) || (isD3 && step === "Rehearsal" && d3NavLabel === null) || (isNT && step === "Rehearsal" && d8NavLabel === null) || (isD13 && step === "Rehearsal" && d13NavLabel === null) || (isD14 && step === "Rehearsal" && d14NavLabel === null);
+              const navDisabled = (isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD4 && step === "Simulation" && d4SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording) || (isD12 && step === "Rehearsal" && d12NavLabel === null) || (isD11 && step === "Rehearsal" && d11NavLabel === null) || (isD3 && step === "Rehearsal" && d3NavLabel === null) || (isNT && step === "Rehearsal" && d8NavLabel === null) || (isNT && step === "Simulation" && d8SimRecording) || (isD13 && step === "Rehearsal" && d13NavLabel === null) || (isD14 && step === "Rehearsal" && d14NavLabel === null);
               return (
               <button
                 onClick={() => {

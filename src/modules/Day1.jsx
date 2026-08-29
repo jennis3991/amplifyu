@@ -829,7 +829,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   if (phase === 'select') return (
     <div style={{ padding: isDesktop ? "44px 52px" : "0 0", overflowY: "auto" }}>
       <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Rehearsal · Day 1</div>
-      <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Voice Warm-Up</h2>
+      <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: T2.text, lineHeight: 1.1, marginBottom: 20 }}>Voice Warm-Up</h2>
       <p style={{ fontFamily: T.sans, fontSize: isDesktop ? 16 : 15, color: "#A8998A", lineHeight: 1.6, fontWeight: 400, marginBottom: 24 }}>Choose one topic below and speak for around 30 seconds. This is simply a chance to find your voice. Just speak naturally, and we'll take care of the rest.</p>
       <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:20}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
@@ -878,10 +878,10 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
         Choose a different topic
       </button>
       <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Rehearsal · Day 1</div>
-      <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 36 : 26, fontWeight: 600, color: "#2C2416", lineHeight: 1.1, marginBottom: 20 }}>Your topic</h2>
+      <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 36 : 26, fontWeight: 600, color: T2.text, lineHeight: 1.1, marginBottom: 20 }}>Your topic</h2>
       <div style={{ background: "rgba(138,158,132,0.10)", border: "1.5px solid #8A9E84", borderRadius: 8, padding: isDesktop ? "22px 24px" : "18px 20px", marginBottom: 28, display: "flex", alignItems: "flex-start", gap: 16 }}>
         <div style={{ color: "#8A9E84", flexShrink: 0, marginTop: 2 }}>{TOPICS[sel].icon}</div>
-        <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, fontWeight: 500, color: "#2C2416", lineHeight: 1.5, margin: 0 }}>{TOPICS[sel].label}</p>
+        <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, fontWeight: 500, color: T2.text, lineHeight: 1.5, margin: 0 }}>{TOPICS[sel].label}</p>
       </div>
       <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, marginBottom: 28 }}>Speak about this for around 30 seconds. Don't worry about being perfect — there's no recording saved or scored here.</p>
 

@@ -359,7 +359,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
 }
 
 // ─── D4 Simulation Widget — Breaking News Live ───────────────────────────────
-export function D4SimWidget({T, T2, isDesktop}) {
+export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const STORIES = [
     {cat:"💼 Business", items:["Four-Day Work Week Announced Nationwide","Major Cyber Attack Takes Down Global Tech Giant"]},
     {cat:"🔬 Science", items:["Scientists Confirm Evidence of Life on Mars","Asteroid Narrowly Misses Earth"]},
@@ -389,6 +389,10 @@ export function D4SimWidget({T, T2, isDesktop}) {
   const waveRef = useRef(null);
 
   const dotCount = useSequentialDots(phase === 'analyzing');
+
+  // Block the app's "Next"/"Review" nav while live on air or while the report
+  // is being analysed, so an accidental tap can't cut off a broadcast in progress.
+  useEffect(()=>{ onRecordingChange?.(isRec || phase === 'analyzing'); },[isRec, phase]);
 
   const PRODUCER_MSGS = [
     {at:30, msg:"Thirty seconds left. Cut the detail. Give us the key points."},

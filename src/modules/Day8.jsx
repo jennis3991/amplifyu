@@ -393,7 +393,7 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
 // ─── Story Architect Widget (Simulation) ──────────────────────────────────────
 
 
-export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
+export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordingChange }) {
   const T  = Tp  || Timport;
   const T2 = T2p || T2D;
 
@@ -733,6 +733,10 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false }) {
   const [brief,      setBrief]     = useState('');
   const [result,     setResult]    = useState(null);
   const [apiError,   setApiError]  = useState(false);
+
+  // Block the app's "Next"/"Review" nav while the story is being generated,
+  // so an accidental tap can't cut off an in-flight AI request.
+  useEffect(()=>{ onRecordingChange?.(phase === 'generating'); },[phase]);
   const [storyImage,     setStoryImage]    = useState(null);
   const [storyImageErr,  setStoryImageErr] = useState('');
   const [activeScene,    setActiveScene]   = useState(0);

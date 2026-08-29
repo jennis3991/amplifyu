@@ -88,6 +88,8 @@ export function MobileSessionView({
   const [d6RehearsalRecording, setD6RehearsalRecording] = useState(false);
   const [d6SimRecording, setD6SimRecording] = useState(false);
   const [d9SimRecording, setD9SimRecording] = useState(false);
+  const [d4SimRecording, setD4SimRecording] = useState(false);
+  const [d8SimRecording, setD8SimRecording] = useState(false);
   const [d3NavLabel, setD3NavLabel] = useState(null);
   const d3NavFnRef = useRef(null);
   const [d4NavLabel, setD4NavLabel] = useState(null);
@@ -474,7 +476,7 @@ T.goldDark : T2.text4,
               const open = d10MobCard===("d10i"+i);
               return (
                 <div key={i} onClick={()=>setD10MobCard(open?null:"d10i"+i)}
-                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -534,7 +536,7 @@ T.goldDark : T2.text4,
             const open = d10MobCard===("d10t"+i);
             return (
               <div key={i} onClick={()=>setD10MobCard(open?null:"d10t"+i)}
-                style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",marginBottom:i<2?8:0,transition:"border-color 0.2s"}}>
+                style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",marginBottom:i<2?8:0,transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:0}}>
                   <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.3,flex:1}}>{p.head}</div>
                   <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:8,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -684,7 +686,7 @@ T.goldDark : T2.text4,
               const open = d7MobCard===("d7i"+i);
               return (
                 <div key={i} onClick={()=>setD7MobCard(open?null:"d7i"+i)}
-                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
@@ -797,7 +799,7 @@ T.goldDark : T2.text4,
               const open = d2MobCard===("d2i"+i);
               return (
                 <div key={i} onClick={()=>setD2MobCard(open?null:"d2i"+i)}
-                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
@@ -934,7 +936,7 @@ T.goldDark : T2.text4,
               const open = d3MobCard===("d3i"+i);
               return (
                 <div key={i} onClick={()=>setD3MobCard(open?null:"d3i"+i)}
-                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
@@ -978,7 +980,7 @@ T.goldDark : T2.text4,
             const open=d3MobCard===("d3t"+i);
             return (
               <div key={i} onClick={()=>setD3MobCard(open?null:"d3t"+i)}
-                style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"12px 14px",cursor:"pointer",transition:"border-color 0.2s"}}>
+                style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"12px 14px",cursor:"pointer",transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:6}}>
                   <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flex:1}}>{p.label}</div>
                   <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -1117,7 +1119,7 @@ T.goldDark : T2.text4,
               const open=d4MobCard===("d4i"+i);
               return (
                 <div key={i} onClick={()=>setD4MobCard(open?null:"d4i"+i)}
-                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -1284,7 +1286,7 @@ T.goldDark : T2.text4,
       )}
       {isD4 && step==="Simulation" && (
         <>
-          <D4SimWidget T={T} T2={T2} isDesktop={false}/>
+          <D4SimWidget T={T} T2={T2} isDesktop={false} onRecordingChange={setD4SimRecording}/>
         </>
       )}
        {/* ── D1 Mobile Steps ─────────────────────────────────────────────── */}
@@ -1297,7 +1299,7 @@ T.goldDark : T2.text4,
             {D1_CLARITY_FACTS_DATA.map((n,i)=>{
               const open = d1MobCard===("cf"+i);
               return (
-                <div key={i} onClick={()=>setD1MobCard(open?null:"cf"+i)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                <div key={i} onClick={()=>setD1MobCard(open?null:"cf"+i)} style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:5}}>
                     <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
@@ -1480,7 +1482,7 @@ T.goldDark : T2.text4,
               const open=ntMobCard===("nti"+i);
               return (
                 <div key={i} onClick={()=>setNtMobCard(open?null:("nti"+i))}
-                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -1510,7 +1512,7 @@ T.goldDark : T2.text4,
             ].map((n,i)=>{
               const open=ntMobCard===("ntt"+i);
               return (
-                <div key={i} onClick={()=>setNtMobCard(open?null:("ntt"+i))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                <div key={i} onClick={()=>setNtMobCard(open?null:("ntt"+i))} style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -1608,7 +1610,7 @@ T.goldDark : T2.text4,
       })()}
       {isNT && step==="Simulation" && (
         <div onTouchStart={e=>e.stopPropagation()} onTouchEnd={e=>e.stopPropagation()}>
-          <StoryArchitectWidget T={T} T2={T2} isDesktop={false}/>
+          <StoryArchitectWidget T={T} T2={T2} isDesktop={false} onRecordingChange={setD8SimRecording}/>
         </div>
       )}
       {isNT && step==="Rehearsal" && (
@@ -1626,7 +1628,7 @@ T.goldDark : T2.text4,
             {D9_INSIGHT_CARDS.map((n,i)=>{
               const open=d9OpenCard===("d9i"+i);
               return (
-                <div key={i} onClick={()=>setD9OpenCard(open?null:("d9i"+i))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s"}}>
+                <div key={i} onClick={()=>setD9OpenCard(open?null:("d9i"+i))} style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -1655,7 +1657,7 @@ T.goldDark : T2.text4,
             ].map((n,i)=>{
               const open=d9OpenCard===("d9t"+i);
               return (
-                <div key={i} onClick={()=>setD9OpenCard(open?null:("d9t"+i))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                <div key={i} onClick={()=>setD9OpenCard(open?null:("d9t"+i))} style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -1669,7 +1671,7 @@ T.goldDark : T2.text4,
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Four Communication Styles</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:12}}>
             {D9_COMM_STYLES.map((s,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"12px"}}>
+              <div key={i} style={{background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"12px"}}>
                 <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:s.colour,textTransform:"uppercase",letterSpacing:"1px",marginBottom:6}}>{s.label}</div>
                 <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,marginBottom:4}}>{s.values.join(" · ")}</div>
                 <div style={{fontFamily:T.sans,fontSize:11,color:T.gold,lineHeight:1.5}}>{s.connect.join(" · ")}</div>
@@ -1795,7 +1797,7 @@ T.goldDark : T2.text4,
               const open = d5MobCard===("d5i"+i);
               return (
                 <div key={i} onClick={()=>setD5MobCard(open?null:"d5i"+i)}
-                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -1832,7 +1834,7 @@ T.goldDark : T2.text4,
               {n:"Reason",  role:"Cognitive bridge",         body:"Connect your point to meaning. This is how you make the idea stick — not just land."},
               {n:"Example", role:"Memorable closing proof",  body:"Finish with evidence. The recency effect means your example is the last thing heard — and the most recalled."},
             ].map((b,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"16px 18px"}}>
+              <div key={i} style={{background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"16px 18px"}}>
                 <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4,textTransform:"uppercase",letterSpacing:"1.5px"}}>{b.n}</div>
                 <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,marginBottom:6}}>{b.role}</div>
                 <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>{b.body}</p>
@@ -1995,7 +1997,7 @@ T.goldDark : T2.text4,
             const open = d2MobCard===("d2t"+i);
             return (
               <div key={i} onClick={()=>setD2MobCard(open?null:"d2t"+i)}
-                style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px 16px",marginBottom:10,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px 16px",marginBottom:10,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?6:4}}>
                   <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,flex:1}}>{sc.label}</div>
                   <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
@@ -2023,7 +2025,7 @@ T.goldDark : T2.text4,
               {word:"Pause", body:"The silence that makes the next word hit harder."},
               {word:"Power", body:"Volume as intention, not volume as effort."},
             ].map((n,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+              <div key={i} style={{background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
                 <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,marginBottom:6}}>{n.word}</div>
                 <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{n.body}</p>
               </div>
@@ -2116,7 +2118,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               const open=d6MobCard===("d6i"+i);
               return (
                 <div key={i} onClick={()=>setD6MobCard(open?null:"d6i"+i)}
-                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -2147,7 +2149,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               {n:"Framing",             role:"Language changes temperature", body:"'You're wrong' escalates. 'I see this differently' opens space. Same disagreement — completely different outcome."},
               {n:"Listening",           role:"Being heard starts with hearing", body:"People de-escalate when they feel understood. Composure includes genuinely hearing — not just waiting to respond."},
             ].map((b,i) => (
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+              <div key={i} style={{background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
                 <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4,textTransform:"uppercase",letterSpacing:"1px"}}>{b.n}</div>
                 <div style={{fontFamily:T.serif,fontSize:13,fontWeight:600,color:T2.text,marginBottom:4}}>{b.role}</div>
                 <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,fontWeight:300,margin:0}}>{b.body}</p>
@@ -2257,7 +2259,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               const open=d11MobCard===("d11i"+i);
               return (
                 <div key={i} onClick={()=>setD11MobCard(open?null:"d11i"+i)}
-                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -2296,7 +2298,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           {D11_INGREDIENTS.map((ing,i)=>{
             const open = d11MobCard===("ing"+i);
             return (
-              <div key={i} onClick={()=>setD11MobCard(open?null:"ing"+i)} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"14px",marginBottom:8,cursor:"pointer",transition:"border-color 0.2s"}}>
+              <div key={i} onClick={()=>setD11MobCard(open?null:"ing"+i)} style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"14px",marginBottom:8,cursor:"pointer",transition:"border-color 0.2s"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   <div style={{width:24,height:24,borderRadius:"50%",background:open?T.gold:"rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
                     <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"white"}}>{i+1}</span>
@@ -2427,7 +2429,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               const open=d12MobCard===("d12i"+i);
               return (
                 <div key={i} onClick={()=>setD12MobCard(open?null:"d12i"+i)}
-                  style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -2458,7 +2460,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
               {title:"Gesture & Memory",  body:"Purposeful gestures improve listener comprehension and information retention."},
               {title:"Trust & Congruence",body:"Communication feels more believable when verbal and nonverbal signals align consistently."},
             ].map((c,i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
+              <div key={i} style={{background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
                 <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{c.title}</div>
                 <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,fontWeight:400,margin:0}}>{c.body}</p>
               </div>
@@ -2674,7 +2676,7 @@ strokeLinecap="round"/></svg>
             {D14_INSIGHT_CARDS.map((n,i)=>{
               const open=d12MobCard===("d14i"+i);
               return (
-                <div key={i} onClick={()=>setD12MobCard(open?null:("d14i"+i))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                <div key={i} onClick={()=>setD12MobCard(open?null:("d14i"+i))} style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -2700,7 +2702,7 @@ strokeLinecap="round"/></svg>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
             {[["Clarity","organising ideas"],["Storytelling","emotional connection"],["Presence","influencing perception"],["Brand & Exposure","making value visible"]].map(([mod,out],i)=>(
-              <div key={i} style={{background:"rgba(237,232,223,0.6)",border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"12px 14px"}}>
+              <div key={i} style={{background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"12px 14px"}}>
                 <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>When you learned <strong>{mod}</strong>, you practised {out}. Confidence followed.</p>
               </div>
             ))}
@@ -2757,7 +2759,7 @@ strokeLinecap="round"/></svg>
                   const isSel = d14Selected.includes(sp.id);
                   return (
                     <div key={sp.id} onClick={()=>d14Toggle(sp.id)}
-                      style={{position:"relative",padding:"14px 12px",background:isSel?"rgba(200,164,106,0.1)":"rgba(237,232,223,0.6)",border:`1px solid ${isSel?T.gold:"rgba(138,158,132,0.18)"}`,borderRadius:8,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",cursor:"pointer"}}>
+                      style={{position:"relative",padding:"14px 12px",background:isSel?"rgba(200,164,106,0.1)":T2.surface,border:`1px solid ${isSel?T.gold:"rgba(138,158,132,0.18)"}`,borderRadius:8,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",cursor:"pointer"}}>
                       {isSel && (
                         <div style={{position:"absolute",top:-6,right:-6,width:18,height:18,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 4px rgba(0,0,0,0.2)"}}>
                           <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2l2.3 2.3 4.7-5" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -2808,7 +2810,7 @@ strokeLinecap="round"/></svg>
                   </div>
                 ))}
               </div>
-              <div style={{padding:"18px 16px",background:"rgba(237,232,223,0.6)",borderRadius:8,borderLeft:"2px solid "+T.gold,marginBottom:16}}>
+              <div style={{padding:"18px 16px",background:T2.surface,borderRadius:8,borderLeft:"2px solid "+T.gold,marginBottom:16}}>
                 <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>{d14PersonalLine}</p>
               </div>
               <button onClick={()=>setD14Revealed(false)} style={{display:"flex",alignItems:"center",gap:6,background:"transparent",border:"none",cursor:"pointer",padding:0}}>
@@ -2843,7 +2845,7 @@ strokeLinecap="round"/></svg>
             {D13_INSIGHT_CARDS.map((n,i)=>{
               const open=d12MobCard===("d13i"+i);
               return (
-                <div key={i} onClick={()=>setD12MobCard(open?null:("d13i"+i))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                <div key={i} onClick={()=>setD12MobCard(open?null:("d13i"+i))} style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -2868,7 +2870,7 @@ strokeLinecap="round"/></svg>
             {D13_THEORY_CARDS.map((n,i)=>{
               const open=d12MobCard===("d13t"+i);
               return (
-                <div key={i} onClick={()=>setD12MobCard(open?null:("d13t"+i))} style={{background:"rgba(237,232,223,0.6)",border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
+                <div key={i} onClick={()=>setD12MobCard(open?null:("d13t"+i))} style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s,box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
                     <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
                     <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
@@ -3090,7 +3092,7 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         )}
         {idx < STEPS.length-1 && (() => {
-          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD2 && step==="Simulation" && d2SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD5 && step==="Rehearsal" && d5RehearsalRecording)||(isD5 && step==="Simulation" && d5SimRecording)||(isD6 && step==="Rehearsal" && d6RehearsalRecording)||(isD6 && step==="Simulation" && d6SimRecording)||(isD7 && step==="Rehearsal" && d7NavLabel===null)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD10 && step==="Rehearsal" && !d10SarDone)||(isD10 && step==="Simulation" && d10SimRecording)||(isD12 && step==="Rehearsal" && d12NavLabel===null)||(isD11 && step==="Rehearsal" && d11NavLabel===null)||(isNT && step==="Rehearsal" && d8NavLabel===null)||(isD13 && step==="Rehearsal" && d13NavLabel===null)||(isD14 && step==="Rehearsal" && d14NavLabel===null);
+          const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD2 && step==="Simulation" && d2SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD5 && step==="Rehearsal" && d5RehearsalRecording)||(isD5 && step==="Simulation" && d5SimRecording)||(isD6 && step==="Rehearsal" && d6RehearsalRecording)||(isD6 && step==="Simulation" && d6SimRecording)||(isD7 && step==="Rehearsal" && d7NavLabel===null)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD4 && step==="Simulation" && d4SimRecording)||(isD10 && step==="Rehearsal" && !d10SarDone)||(isD10 && step==="Simulation" && d10SimRecording)||(isD12 && step==="Rehearsal" && d12NavLabel===null)||(isD11 && step==="Rehearsal" && d11NavLabel===null)||(isNT && step==="Rehearsal" && d8NavLabel===null)||(isNT && step==="Simulation" && d8SimRecording)||(isD13 && step==="Rehearsal" && d13NavLabel===null)||(isD14 && step==="Rehearsal" && d14NavLabel===null);
           const navLabel = isD1 && step==="Rehearsal" && d1NavLabel
             ? d1NavLabel
             : isD3 && step==="Rehearsal" && d3NavLabel

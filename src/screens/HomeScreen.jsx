@@ -495,7 +495,7 @@ finishDate + ".";
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:6}}>
               {finished?"Programme Complete":`Day ${cur} — ${lesson?.tag??""}${todayDone?"  ✓":""}`}
             </div>
-            <div style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T.ink,lineHeight:1.2}}>
+            <div style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2}}>
               {finished?"You communicate differently now.":lesson?.title}
             </div>
           </div>
