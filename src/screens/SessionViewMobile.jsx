@@ -47,7 +47,7 @@ function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
 }
 
 export function MobileSessionView({
-  T2, step, STEPS, idx, setIdx, dark, toggleDark, lesson, isDone, onComplete, onBack, onExitToTab,
+  T2, step, STEPS, idx, setIdx, dark, toggleDark, lesson, isDone, onComplete, onBack, onExitToTab, onExitClick,
   isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isD14, isNT,
   selSc, setSelSc, exitConfirm, setExitConfirm,
   accordionOpen, setAccordionOpen,
@@ -352,7 +352,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
       })()}
       {/* Exit button — top left over image */}
       <button
-        onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
+        onClick={() => onExitClick ? onExitClick() : (idx === 0 ? onBack() : setExitConfirm(true))}
         style={{
           position:"absolute",top:14,left:14,zIndex:50,
           height:36,padding:"0 14px 0 10px",

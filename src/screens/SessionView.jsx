@@ -45,6 +45,28 @@ activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
   const [selSc, setSelSc] = useState(0);
   const [checks, setChecks] = useState({});
   const [exitConfirm, setExitConfirm] = useState(false);
+  // True when this session was opened by tapping an entry in "My Saved Work"
+  // (a read-only reopen of already-saved results, not new in-progress work) —
+  // set by ToolkitScreen.openSavedWork just before navigating here, and
+  // consumed exactly once, synchronously, before this component's children
+  // (and their own au1_pending_load effects) ever mount.
+  const [fromSavedWork] = useState(() => {
+    try {
+      const v = localStorage.getItem('au1_saved_work_session') === '1';
+      if (v) localStorage.removeItem('au1_saved_work_session');
+      return v;
+    } catch { return false; }
+  });
+  function handleExit() {
+    if (fromSavedWork) {
+      try { localStorage.setItem("au1_open_toolkit_tab", "mywork"); } catch {}
+      onBack();
+    } else if (idx === 0) {
+      onBack();
+    } else {
+      setExitConfirm(true);
+    }
+  }
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [workplaceOpen, setWorkplaceOpen] = useState(false);
   const [reviewTab, setReviewTab] = useState('learned');
@@ -4353,7 +4375,7 @@ setAmbitionSaved(true); } catch {}
                 <img loading="lazy" src={`/review-chair-portrait.jpg?v=${encodeURIComponent(typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : '')}`} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center" }}/>
               </div>
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.3) 50%, transparent 75%)" }}/>
-              <button onClick={() => setExitConfirm(true)} style={{ position: "absolute", top: 24, left: 24, zIndex: 10, display: "flex", alignItems: "center", gap: 6, background: "#F5EFE6", border: "1px solid rgba(44,36,22,0.18)", borderRadius: 4, padding: "8px 16px 8px 12px", cursor: "pointer" }}>
+              <button onClick={handleExit} style={{ position: "absolute", top: 24, left: 24, zIndex: 10, display: "flex", alignItems: "center", gap: 6, background: "#F5EFE6", border: "1px solid rgba(44,36,22,0.18)", borderRadius: 4, padding: "8px 16px 8px 12px", cursor: "pointer" }}>
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 <span style={{ fontSize: 14, color: "#2C2416", fontFamily: T.sans, fontWeight: 500 }}>← Exit</span>
               </button>
@@ -4481,7 +4503,7 @@ setAmbitionSaved(true); } catch {}
               </div>
               {/* Back button — floats over left panel */}
               <button
-                onClick={() => idx === 0 ? onBack() : setExitConfirm(true)}
+                onClick={handleExit}
                 style={{
                   position: "absolute", top: 16, left: 24,
                   display: "flex", alignItems: "center", gap: 6,
@@ -4630,7 +4652,7 @@ setAmbitionSaved(true); } catch {}
   return (
     <MobileSessionView
       T2={T2} step={step} STEPS={STEPS} idx={idx} setIdx={setIdx} dark={dark} toggleDark={toggleDark}
-      lesson={lesson} isDone={isDone} onComplete={onComplete} onBack={onBack} onExitToTab={onExitToTab}
+      lesson={lesson} isDone={isDone} onComplete={onComplete} onBack={onBack} onExitToTab={onExitToTab} onExitClick={handleExit}
       isD1={isD1} isD2={isD2} isD3={isD3} isD4={isD4} isD5={isD5}
       isD6={isD6} isD7={isD7} isD9={isD9} isD10={isD10} isD11={isD11} isD12={isD12} isD13={isD13} isD14={isD14} isNT={isNT}
       selSc={selSc} setSelSc={setSelSc} exitConfirm={exitConfirm} setExitConfirm={setExitConfirm}

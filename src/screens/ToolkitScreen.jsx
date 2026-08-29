@@ -286,7 +286,13 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
   function openSavedWork(entry) {
     const cfg = SAVED_WORK_SOURCES[entry.source];
     if (!cfg?.clickable) return;
-    try { localStorage.setItem("au1_pending_load", JSON.stringify({ source: entry.source, id: entry.id })); } catch {}
+    try {
+      localStorage.setItem("au1_pending_load", JSON.stringify({ source: entry.source, id: entry.id }));
+      // Lets the session screen know this is a read-only reopen of saved
+      // work, not new in-progress work — so Exit skips the "leave this
+      // session?" confirmation and returns straight to this tab.
+      localStorage.setItem("au1_saved_work_session", "1");
+    } catch {}
     onStartSession && onStartSession(cfg.day, cfg.step);
   }
 
