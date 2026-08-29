@@ -646,9 +646,10 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     if(phase==='analyzing') return (
       <>
         <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
-          <SequentialDots dotCount={dotCount}/>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>Analysing your voice…</p>
-          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Evaluating pace, pitch, tone, pauses, energy, range, and presence.</p>
+          <SequentialDots dotCount={dotCount}
+            messages={["Evaluating pace, pitch, tone, pauses, energy, range, and presence.","Listening for where your voice carries the most conviction.","Mapping your pace against your pauses.","Finding the moments worth quoting back to you.","Almost there…"]}
+            textStyle={{fontFamily:T.sans,fontSize:13,color:T2.text3}}/>
         </div>
         {audioEl}
       </>

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { T as Timport } from '../theme.js';
+import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -1245,26 +1246,6 @@ Return ONLY valid JSON:
   return null;
 }
 
-// ─── useD8SequentialDots / D8SequentialDots ──────────────────────────────────
-function useD8SequentialDots(active) {
-  const [dotCount, setDotCount] = useState(0);
-  useEffect(() => {
-    if (!active) { setDotCount(0); return; }
-    const timers = [1,2,3].map((n, i) => setTimeout(() => setDotCount(n), (i+1)*600));
-    return () => timers.forEach(clearTimeout);
-  }, [active]);
-  return dotCount;
-}
-function D8SequentialDots({ dotCount }) {
-  return (
-    <div style={{ display:"flex", gap:8 }}>
-      {[1,2,3].map(n => (
-        <div key={n} style={{ width:8, height:8, borderRadius:"50%", background:n<=dotCount?"rgba(138,158,132,0.7)":"rgba(138,158,132,0.15)", transition:"background 0.3s" }}/>
-      ))}
-    </div>
-  );
-}
-
 const SC_PROJECT  = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><path d="M3 9h6"/><path d="M3 15h6"/></svg>;
 const SC_MISTAKE  = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
 const SC_SEARCH   = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
@@ -1390,7 +1371,8 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
   const timerRef  = useRef(null);
   const maxTimRef = useRef(null);
 
-  const dotCount = useD8SequentialDots(phase === 'speak');
+  const dotCount = useSequentialDots(phase === 'speak');
+  const procDotCount = useSequentialDots(phase === 'processing');
 
   useEffect(() => {
     if (phase === 'recording') {
@@ -1603,7 +1585,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         ))}
       </div>
       <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10, padding:"8px 0" }}>
-        <D8SequentialDots dotCount={dotCount}/>
+        <SequentialDots dotCount={dotCount} size={8} gap={8}/>
         <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, margin:0 }}>Just speak. We'll find the shape of your story.</p>
       </div>
       {micError && <p style={{fontFamily:T.sans,fontSize:12,color:"#B05C4A",margin:0,textAlign:"center"}}>Check your microphone permission and try again.</p>}
@@ -1645,8 +1627,10 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
   if (phase === 'processing') return (
     <div style={{ display:"flex", alignItems:"center", justifyContent:"center", minHeight:340 }}>
       <div style={{ background:"#0E0B08", borderRadius:10, padding:"40px 44px", maxWidth:460, width:"100%", textAlign:"center" }}>
-        <p style={{ fontFamily:T.serif, fontSize:isDesktop?22:19, fontStyle:"italic", color:"rgba(245,239,230,0.9)", lineHeight:1.55, margin:"0 0 14px" }}>Finding the shape of your story...</p>
-        <p style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.38)", margin:0, fontWeight:300 }}>Your AmplifyU coach is listening.</p>
+        <p style={{ fontFamily:T.serif, fontSize:isDesktop?22:19, fontStyle:"italic", color:"rgba(245,239,230,0.9)", lineHeight:1.55, margin:"0 0 22px" }}>Finding the shape of your story...</p>
+        <SequentialDots dotCount={procDotCount} activeColor="rgba(245,239,230,0.85)" inactiveColor="rgba(245,239,230,0.15)"
+          messages={["Your AmplifyU coach is listening.","Finding your setup, your turn, and your outcome.","Shaping your six beats.","Almost there…"]}
+          textStyle={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"rgba(245,239,230,0.38)",fontWeight:300}}/>
       </div>
     </div>
   );

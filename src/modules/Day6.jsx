@@ -361,6 +361,9 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const audioChunksRef   = useRef([]);
   const timerRef         = useRef(null);
   const purposeForAnalysis = useRef('');
+  const genDotCount      = useSequentialDots(phase === 'analyzing');
+  const perFeedDotCount  = useSequentialDots(phase === 'per-feedback' && perFeedLoading);
+  const reviewDotCount   = useSequentialDots(phase === 'reviewing');
   // Defense-in-depth against submitAnswer being re-entered for the same
   // question (e.g. a double-tap landing before React unmounts the Submit
   // button) — belt-and-braces alongside the immediate phase transition below.
@@ -658,9 +661,10 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // ── ANALYZING ──
   if(phase==='analyzing') return (
     <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"48px 0":"32px 0"}}>
-      <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}</div>
       <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,textAlign:"center"}}>Analysing your stakeholder…</p>
-      <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text4||T2.text3,margin:0,textAlign:"center"}}>Generating the toughest questions you're likely to face.</p>
+      <SequentialDots dotCount={genDotCount} activeColor={T.gold} inactiveColor={T2.border}
+        messages={["Generating the toughest questions you're likely to face.","Thinking like "+(form.stakeholder||"they")+" would.","Weighing what they'll push back on hardest.","Almost there…"]}
+        textStyle={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text4||T2.text3}}/>
     </div>
   );
 
@@ -772,8 +776,14 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
       </div>
       {perFeedLoading ? (
         <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px"}}>
-          <div style={{display:"flex",gap:6,justifyContent:"center",marginBottom:10}}>{[0,1,2].map(i=><div key={i} style={{width:7,height:7,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}</div>
-          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0}}>Your coach is reviewing your answer…</p>
+          <SequentialDots dotCount={perFeedDotCount} size={7} gap={6} activeColor={T.gold} inactiveColor={T2.border}
+            messages={[
+              "Your coach is reviewing your answer…",
+              "Weighing how "+(form.stakeholder||"they")+" would react.",
+              "Checking whether your point actually lands.",
+              qIdx<questions.length-1 ? `Wrapping up question ${qIdx+1} of ${questions.length}…` : "Wrapping up your final question…",
+            ]}
+            textStyle={{fontFamily:T.sans,fontSize:13,color:T2.text3}}/>
         </div>
       ) : perFeedback ? (
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -821,8 +831,9 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // ── REVIEWING ──
   if(phase==='reviewing') return (
     <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"48px 0":"32px 0"}}>
-      <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}</div>
-      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,textAlign:"center"}}>Your AmplifyU coach is reviewing your responses…</p>
+      <SequentialDots dotCount={reviewDotCount} activeColor={T.gold} inactiveColor={T2.border}
+        messages={["Your AmplifyU coach is reviewing your responses…","Looking across all "+questions.length+" answers for a pattern.","Finding your strongest moment under pressure.","Almost there…"]}
+        textStyle={{fontFamily:T.sans,fontSize:14,color:T2.text3}}/>
     </div>
   );
 

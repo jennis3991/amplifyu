@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ROLES, LESSONS } from '../data.js';
+import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
 // ─── D14 Theory — Competence-Confidence Loop (circular diagram) ────────────
 // Five pill nodes arranged in a pentagon, connected by curved arrows that
@@ -272,6 +273,7 @@ export function D14SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
   const [blueprint, setBlueprint] = useState(null);
   const [error, setError] = useState('');
+  const dotCount = useSequentialDots(phase === 'generating');
 
   const cs = {
     card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px"},
@@ -394,8 +396,10 @@ export function D14SimWidget({T, T2, isDesktop}) {
   if (phase === 'generating') return (
     <div style={{...cs.card, textAlign:"center", padding:isDesktop?"48px 32px":"32px 24px"}}>
       <div style={cs.label}>Your Coach is Working</div>
-      <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.4, margin:"0 0 12px"}}>Building your personalised blueprint...</p>
-      <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text4, lineHeight:1.6, margin:0}}>Analysing your journey, your role, and your reflection. This takes around 15 seconds.</p>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.4, margin:"0 0 20px"}}>Building your personalised blueprint...</p>
+      <SequentialDots dotCount={dotCount} activeColor={T.gold} inactiveColor={T2.border}
+        messages={["Analysing your journey, your role, and your reflection — this takes around 15 seconds.","Weighing your strengths against where you're headed.","Drafting the conversations worth having next.","Shaping your habits into a plan you'll actually keep.","Adding the final touches…"]}
+        textStyle={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text4,lineHeight:1.6}}/>
     </div>
   );
 

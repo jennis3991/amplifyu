@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 import { useWakeLock } from '../utils.js';
+import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
 const D1SIM_KEY = 'au_d1sim_state';
 function loadD1SimState() {
@@ -1010,6 +1011,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   const [elapsed, setElapsed] = useState(0);
   const [isRec, setIsRec] = useState(false);
   useWakeLock(isRec);
+  const dotCount = useSequentialDots(phase === 'analyzing');
   const [transcript, setTranscript] = useState(saved.transcript || '');
   const [fallback, setFallback] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
@@ -1490,12 +1492,11 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
 
   // ── ANALYZING ────────────────────────────────────────────────────────────
   if(phase==='analyzing') return (
-    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"60px 20px",gap:20}}>
-      <div style={{width:48,height:48,borderRadius:"50%",border:`2px solid ${T2.border}`,borderTop:`2px solid ${T.gold}`,animation:"spin 0.8s linear infinite"}}/>
-      <div style={{textAlign:"center"}}>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?22:18,color:T2.text,marginBottom:6}}>Analysing your clarity…</p>
-        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text4,margin:0}}>Your AmplifyU coach is reviewing your response.</p>
-      </div>
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"60px 20px",gap:22}}>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?22:18,color:T2.text,margin:0,textAlign:"center"}}>Analysing your clarity…</p>
+      <SequentialDots dotCount={dotCount} activeColor={T.gold} inactiveColor={T2.border}
+        messages={["Your AmplifyU coach is reviewing your response.","Listening for your clearest moments.","Weighing structure against simplicity.","Finding the words worth upgrading.","Almost there…"]}
+        textStyle={{fontFamily:T.sans,fontSize:13,color:T2.text4}}/>
     </div>
   );
 
