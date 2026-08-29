@@ -101,7 +101,7 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
 }
 
 export function HomeScreen({done, cur, streak, onStart, roleId, activeRole,
-dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false, onOpenTab, onGoToProgramme}) {
+dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false, onOpenTab, onGoToProgramme, toggleDark}) {
   const T2 = Object.assign({}, T, DK);
   const [selectedDay, setSelectedDay] = useState(cur);
   const [showAffordance, setShowAffordance] = useState(
@@ -470,6 +470,9 @@ finishDate + ".";
             <div style={{width:pct+"%",height:"100%",background:"linear-gradient(90deg,#b8956a,#c9a96e)",borderRadius:1,transition:"width 1s ease"}}/>
           </div>
           <span style={{fontSize:10,color:"#c9a96e",fontWeight:500,fontFamily:T.sans}}>{pct}%</span>
+          <button onClick={()=>toggleDark && toggleDark()} aria-label={dark?"Switch to light mode":"Switch to dark mode"} style={{background:"none",border:"none",padding:4,margin:0,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,lineHeight:1}}>
+            {dark?"☀️":"🌙"}
+          </button>
         </div>
       </div>
 
