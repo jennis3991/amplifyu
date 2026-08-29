@@ -1306,8 +1306,9 @@ Return ONLY valid JSON:
         </div>
 
         {/* Footer */}
-        <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+        <div style={{display:"flex",gap:10,flexWrap:"wrap",alignItems:"center",justifyContent:"space-between"}}>
           <button onClick={()=>{setResult(null);setPhase('brief');}} style={{padding:isDesktop?"13px 18px":"12px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text3,fontSize:isDesktop?13:12,cursor:"pointer",fontFamily:T.sans,minHeight:44}}>← Edit Brief</button>
+          {!pendingStory && <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4,fontStyle:"italic"}}>Saved to "My Saved Work"</span>}
         </div>
       </div>
     );
@@ -1741,6 +1742,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
             <button onClick={() => onSimulation?.()} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.gold, color:"white", fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50, animation:"fadeUp 0.5s ease both" }}>
               Continue to Story Architect →
             </button>
+            {!pendingStory && <p style={{ fontFamily:T.sans, fontSize:11, color:T2.text4, fontStyle:"italic", textAlign:"center", margin:"12px 0 0" }}>Saved to "My Saved Work"</p>}
           </>
         )}
       </div>

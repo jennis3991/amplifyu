@@ -361,6 +361,85 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const audioChunksRef   = useRef([]);
   const timerRef         = useRef(null);
   const purposeForAnalysis = useRef('');
+
+  // ── My Saved Results — just the stakeholder profile + 5 questions, not the
+  // full per-answer critique/transcript (deliberately lighter than Day 1/2's
+  // save, since the coaching notes are considered too much to persist here).
+  // Shares the au1_toolkits store with Day 1/2/11.
+  const PREP_CAP = 5;
+  const isMinePrep = r => r.source === 'conversation-prep-day6';
+  const [savedPreps, setSavedPreps] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("au1_toolkits") || "[]"); } catch { return []; }
+  });
+  const myPreps = savedPreps.filter(isMinePrep);
+  const [prepsOpen, setPrepsOpen] = useState(false);
+  const [pendingPrep, setPendingPrep] = useState(null);
+  const [confirmDeletePrepId, setConfirmDeletePrepId] = useState(null);
+  const confirmDeletePrepTimerRef = useRef(null);
+  useEffect(() => () => clearTimeout(confirmDeletePrepTimerRef.current), []);
+
+  function saveConversationPrep(profileObj, questionsArr, stakeholderLabel, purposeText) {
+    const entry = {
+      id: Date.now(),
+      source: 'conversation-prep-day6',
+      stakeholder: stakeholderLabel || '',
+      purpose: purposeText || '',
+      profile: profileObj,
+      questions: questionsArr,
+      timestamp: Date.now(),
+    };
+    if (myPreps.length >= PREP_CAP) { setPendingPrep(entry); return; }
+    const next = [entry, ...savedPreps];
+    setSavedPreps(next);
+    try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+  }
+
+  function deleteConversationPrep(id) {
+    setSavedPreps(prev => {
+      let next = prev.filter(r => r.id !== id);
+      let freedForPending = false;
+      if (pendingPrep && next.filter(isMinePrep).length < PREP_CAP) {
+        next = [pendingPrep, ...next];
+        freedForPending = true;
+      }
+      try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+      if (freedForPending) setPendingPrep(null);
+      return next;
+    });
+  }
+
+  function handleDeletePrepClick(id) {
+    clearTimeout(confirmDeletePrepTimerRef.current);
+    if (confirmDeletePrepId === id) {
+      setConfirmDeletePrepId(null);
+      deleteConversationPrep(id);
+    } else {
+      setConfirmDeletePrepId(id);
+      confirmDeletePrepTimerRef.current = setTimeout(() => setConfirmDeletePrepId(null), 3000);
+    }
+  }
+
+  function loadConversationPrep(entry) {
+    setPendingPrep(null);
+    setProfile(entry.profile);
+    setQuestions(entry.questions || []);
+    setPhase('questions');
+  }
+
+  // Picks up a "My Saved Work" card click from the Toolkit tab — a pending
+  // load flag written just before navigation, consumed once here on mount.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('au1_pending_load');
+      if (!raw) return;
+      const pending = JSON.parse(raw);
+      if (pending?.source !== 'conversation-prep-day6') return;
+      localStorage.removeItem('au1_pending_load');
+      const entry = savedPreps.find(r => r.id === pending.id && r.source === 'conversation-prep-day6');
+      if (entry) loadConversationPrep(entry);
+    } catch {}
+  }, []);
+
   const genDotCount      = useSequentialDots(phase === 'analyzing');
   const perFeedDotCount  = useSequentialDots(phase === 'per-feedback' && perFeedLoading);
   const reviewDotCount   = useSequentialDots(phase === 'reviewing');
@@ -406,10 +485,14 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
       if(!parsed.profile||!Array.isArray(parsed.questions)||parsed.questions.length===0) throw new Error('Malformed response');
       setProfile(parsed.profile);
       setQuestions(parsed.questions);
+      saveConversationPrep(parsed.profile, parsed.questions, form.stakeholder, ap);
     }catch(err){
       console.error('[D6SimWidget] generate error:', err);
-      setProfile({stakeholderLabel:form.stakeholder,goal:"Get answers",riskLevel:"High",concerns:["ROI","Risk","Timeline","Resources"],insight:`This ${form.stakeholder} will focus on practical implications and challenge your assumptions. Expect probing questions about evidence, alternatives, and risk.`});
-      setQuestions(["Why should we prioritise this now?","What are the main risks — and how have you mitigated them?","How will we measure success?","What is the expected ROI?","Why is this the right approach over alternatives?"]);
+      const fallbackProfile={stakeholderLabel:form.stakeholder,goal:"Get answers",riskLevel:"High",concerns:["ROI","Risk","Timeline","Resources"],insight:`This ${form.stakeholder} will focus on practical implications and challenge your assumptions. Expect probing questions about evidence, alternatives, and risk.`};
+      const fallbackQuestions=["Why should we prioritise this now?","What are the main risks — and how have you mitigated them?","How will we measure success?","What is the expected ROI?","Why is this the right approach over alternatives?"];
+      setProfile(fallbackProfile);
+      setQuestions(fallbackQuestions);
+      saveConversationPrep(fallbackProfile, fallbackQuestions, form.stakeholder, ap);
     }
     setPhase('questions');
   }
@@ -566,6 +649,37 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.15,margin:"0 0 6px"}}>AI Conversation Prep</h2>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>Choose your scenario, add a few details, and get ready for high-stakes conversations. Your coach will generate tough questions and help you deliver with confidence.</p>
       </div>
+
+      {myPreps.length>0 && (
+        <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
+          <button onClick={()=>setPrepsOpen(v=>!v)} style={{width:"100%",background:"none",border:"none",padding:isDesktop?"14px 18px":"12px 16px",cursor:"pointer",fontFamily:T.sans,fontSize:12,color:T2.text3,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <span>My Saved Results ({myPreps.length})</span>
+            <span style={{fontSize:14,opacity:0.6,transform:prepsOpen?"rotate(180deg)":"none",display:"inline-block",transition:"transform 0.2s"}}>▾</span>
+          </button>
+          {prepsOpen && (
+            <div style={{display:"flex",flexDirection:"column",borderTop:"0.5px solid "+T2.border}}>
+              {myPreps.map(r=>{
+                const confirming = confirmDeletePrepId === r.id;
+                return (
+                  <div key={r.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
+                    <div onClick={()=>loadConversationPrep(r)} style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2,cursor:"pointer"}}>
+                      <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{r.profile?.stakeholderLabel || r.stakeholder || "Conversation prep"}</span>
+                      <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(r.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}{r.purpose?` · ${r.purpose}`:""}</span>
+                    </div>
+                    <button onClick={()=>handleDeletePrepClick(r.id)} title={confirming?"Tap again to delete":"Delete"} style={{background:"none",border:"none",cursor:"pointer",color:confirming?"#b05c4a":T2.text4,fontSize:confirming?11:18,fontWeight:confirming?700:400,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1,whiteSpace:"nowrap",transition:"all 0.15s"}}>{confirming?"Confirm?":"×"}</button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+      {pendingPrep && (
+        <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
+          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You've reached your limit of {PREP_CAP} saved results. This one won't be saved until you delete one above.</span>
+        </div>
+      )}
+
       {/* Section 1 */}
       <div style={{display:"flex",flexDirection:"column",gap:14}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
@@ -717,6 +831,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
       </div>
       <button onClick={startSim} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start Simulation →</button>
       <button onClick={()=>setPhase('setup')} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:"6px 0",textAlign:"center"}}>← Edit conversation details</button>
+      {!pendingPrep && <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,fontStyle:"italic",textAlign:"center",margin:0}}>Saved to "My Saved Work"</p>}
     </div>
     );
   }

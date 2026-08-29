@@ -7,16 +7,16 @@ import { PracticeSpace } from '../modules/PracticeSpace.jsx';
 
 // ─── My Saved Work — aggregates every day's saved-results store into one list ──
 // Two localStorage keys hold everything: au1_stories (Day 8's two sources) and
-// au1_toolkits (Day 1, Day 2, and Day 11's four sources). Each source keeps its own
-// independent cap, enforced by its own widget — this view only reads/deletes,
-// it never writes new entries or touches caps.
+// au1_toolkits (Day 1, Day 2, Day 6, and Day 11's five sources). Each source keeps
+// its own independent cap, enforced by its own widget — this view only reads/
+// deletes, it never writes new entries or touches caps.
 function loadSavedWork() {
   let stories = [], toolkits = [];
   try { stories = JSON.parse(localStorage.getItem("au1_stories") || "[]"); } catch {}
   try { toolkits = JSON.parse(localStorage.getItem("au1_toolkits") || "[]"); } catch {}
   return [...stories, ...toolkits].sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
 }
-const SAVED_WORK_KEY = { 'speechwriter':'au1_stories', 'rehearsal':'au1_stories', 'brand-rehearsal':'au1_toolkits', 'linkedin-audit':'au1_toolkits', 'voice-analysis-day1':'au1_toolkits', 'voice-analysis-day2':'au1_toolkits' };
+const SAVED_WORK_KEY = { 'speechwriter':'au1_stories', 'rehearsal':'au1_stories', 'brand-rehearsal':'au1_toolkits', 'linkedin-audit':'au1_toolkits', 'voice-analysis-day1':'au1_toolkits', 'voice-analysis-day2':'au1_toolkits', 'conversation-prep-day6':'au1_toolkits' };
 const SAVED_WORK_SOURCES = {
   'voice-analysis-day1': {
     dayLabel: "Day 1 · Clarity", clickable: true, day: 1, step: "Simulation",
@@ -31,6 +31,13 @@ const SAVED_WORK_SOURCES = {
     getTitle: e => e.result?.headline || e.prompt || "Voice analysis",
     getPreview: e => e.result?.subtitle || (e.transcript ? e.transcript.slice(0,140) : ""),
     getBadge: e => typeof e.result?.overall === 'number' ? `${e.result.overall}/100` : null,
+  },
+  'conversation-prep-day6': {
+    dayLabel: "Day 6 · Conversation Prep", clickable: true, day: 6, step: "Simulation",
+    icon: c => <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M18 12a2 2 0 01-2 2H7l-3 3V5a2 2 0 012-2h10a2 2 0 012 2z" stroke={c} strokeWidth="1.3" strokeLinejoin="round"/><circle cx="7.5" cy="8.5" r="0.9" fill={c}/><circle cx="11" cy="8.5" r="0.9" fill={c}/><circle cx="14.5" cy="8.5" r="0.9" fill={c}/></svg>,
+    getTitle: e => e.profile?.stakeholderLabel ? `Prep: ${e.profile.stakeholderLabel}` : (e.stakeholder || "Conversation prep"),
+    getPreview: e => e.purpose || e.profile?.insight?.slice(0,140) || "",
+    getBadge: e => Array.isArray(e.questions) ? `${e.questions.length} questions` : null,
   },
   'brand-rehearsal': {
     dayLabel: "Day 11 · Rehearsal", clickable: true, day: 11, step: "Rehearsal",

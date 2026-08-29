@@ -1123,6 +1123,7 @@ Keep it under 280 words. Make every word earn its place.`;
 
         <button onClick={runRewrite} style={cta(false)}>Rewrite My LinkedIn →</button>
         <button onClick={() => setPhase('import')} style={{ background: "none", border: "none", fontFamily: T.sans, fontSize: 13, color: T2.text4, cursor: "pointer", padding: "4px 0", textAlign: "left" }}>← Back</button>
+        {!pendingToolkit && <p style={{ fontFamily: T.sans, fontSize: 11, color: T2.text4, fontStyle: "italic", textAlign: "center", margin: 0 }}>Saved to "My Saved Work"</p>}
       </div>
     );
   }

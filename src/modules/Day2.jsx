@@ -905,6 +905,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
         </div>
       </div>
       <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Start over</button>
+      {!pendingResult && <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,fontStyle:"italic",textAlign:"center",margin:0}}>Saved to "My Saved Work"</p>}
     </div>
     {audioEl}
     </>

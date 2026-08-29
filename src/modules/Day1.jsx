@@ -1833,6 +1833,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
           ))}
         </div>
       </div>
+      {!pendingResult && <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,fontStyle:"italic",textAlign:"center",margin:0}}>Saved to "My Saved Work"</p>}
     </div>
     );
   }
