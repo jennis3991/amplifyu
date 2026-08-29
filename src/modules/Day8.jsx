@@ -760,6 +760,15 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
   // cap was already reached — stays visible/usable in this session, and gets
   // saved automatically the moment a slot frees up (via deleteStory below).
   const [pendingStory, setPendingStory] = useState(null);
+  // The cover image only exists after the story text is already saved (image
+  // generation runs as a separate, slower async step) — this tracks which
+  // saved/pending entry the current view's image belongs to, so it can be
+  // attached once generation finishes. Set by saveStory and loadStory.
+  const currentStoryIdRef = useRef(null);
+  // Set the moment attaching a cover image to a saved entry blows the quota,
+  // so the story view can tell the user right away instead of the image
+  // just silently not being there next time they open it.
+  const [imageSaveWarning, setImageSaveWarning] = useState(null); // null | 'dropped'
 
   function persistStories(next) {
     setSavedStories(next);
@@ -767,6 +776,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
   }
 
   function saveStory(parsed, briefText) {
+    setImageSaveWarning(null);
     const entry = {
       id: Date.now(),
       source: 'speechwriter',
@@ -776,13 +786,31 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
       story: parsed.story || '',
       coverTitle: parsed.coverTitle || '',
       coverSubtitle: parsed.coverSubtitle || '',
+      image: null,
       timestamp: Date.now(),
     };
+    currentStoryIdRef.current = entry.id;
     if (myStories.length >= STORY_CAP) {
       setPendingStory(entry);
       return;
     }
     persistStories([entry, ...savedStories]);
+  }
+
+  // The cover image finishes generating well after the story text is already
+  // saved, so it's attached to the existing entry once ready rather than
+  // being part of the original save. A full-quality generated cover is by far
+  // the largest thing this app puts in localStorage — if adding one would
+  // exceed the quota, keep the story (already safely saved without it) and
+  // tell the user, instead of failing the whole save or losing the story.
+  function attachStoryImage(id, url) {
+    setPendingStory(prev => (prev && prev.id === id) ? {...prev, image: url} : prev);
+    setSavedStories(prev => {
+      if (!prev.some(s => s.id === id)) return prev; // capped/pending — nothing persisted yet to attach to
+      const withImage = prev.map(s => s.id === id ? {...s, image: url} : s);
+      try { localStorage.setItem("au1_stories", JSON.stringify(withImage)); return withImage; }
+      catch { setImageSaveWarning('dropped'); return prev; }
+    });
   }
 
   function deleteStory(id) {
@@ -793,7 +821,15 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
         next = [pendingStory, ...next];
         freedForPending = true;
       }
-      try { localStorage.setItem("au1_stories", JSON.stringify(next)); } catch {}
+      try { localStorage.setItem("au1_stories", JSON.stringify(next)); }
+      catch {
+        // The promoted pending story's image is the likely culprit if this is
+        // full — retry without it rather than losing the promotion entirely.
+        try {
+          localStorage.setItem("au1_stories", JSON.stringify(next.map(s => s.id === pendingStory?.id ? {...s, image: null} : s)));
+          if (freedForPending && pendingStory?.image) setImageSaveWarning('dropped');
+        } catch {}
+      }
       if (freedForPending) setPendingStory(null);
       return next;
     });
@@ -816,11 +852,13 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
 
   function loadStory(entry) {
     setPendingStory(null);
+    currentStoryIdRef.current = entry.id;
     setResult({ storyWorld: entry.storyWorld, scenes: entry.scenes, story: entry.story, coverTitle: entry.coverTitle, coverSubtitle: entry.coverSubtitle });
     setCoverTitle(entry.coverTitle || '');
     setCoverSubtitle(entry.coverSubtitle || '');
     setBrief(entry.brief || '');
-    setStoryImage(null);
+    setStoryImage(entry.image || null);
+    setImageSaveWarning(null);
     setApiError(false);
     setActiveScene(0);
     setPhase('results');
@@ -870,6 +908,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
       }
       if (data.url) {
         setStoryImage(data.url);
+        if (currentStoryIdRef.current) attachStoryImage(currentStoryIdRef.current, data.url);
       } else {
         setStoryImageErr(data.error || 'Image generation failed');
         setStoryImage('error');
@@ -1076,6 +1115,12 @@ Return ONLY valid JSON:
         {pendingStory&&(
           <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px",marginBottom:20}}>
             <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You've reached your limit of {STORY_CAP} saved stories. This one is here to view now, but won't be saved — delete a story from My Stories (on the brief screen) to free up a slot.</span>
+          </div>
+        )}
+
+        {imageSaveWarning&&(
+          <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px",marginBottom:20}}>
+            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>Your story is saved, but the cover image couldn't be stored because you're low on space. Delete an old story from My Stories (on the brief screen) to save images for new ones.</span>
           </div>
         )}
 
