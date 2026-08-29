@@ -101,7 +101,7 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
 }
 
 export function HomeScreen({done, cur, streak, onStart, roleId, activeRole,
-dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false, onOpenTab}) {
+dark=false, DK={}, showNudge=false, onDismissNudge, isDesktop=false, onOpenTab, onGoToProgramme}) {
   const T2 = Object.assign({}, T, DK);
   const [selectedDay, setSelectedDay] = useState(cur);
   const [showAffordance, setShowAffordance] = useState(
@@ -461,10 +461,10 @@ finishDate + ".";
 
       {/* ── Fixed header ── */}
       <div style={{position:"fixed",top:0,left:0,right:0,zIndex:200,height:`calc(${NAV_H}px + env(safe-area-inset-top, 0px))`,paddingTop:"env(safe-area-inset-top, 0px)",paddingLeft:20,paddingRight:20,background:"#0F0D0A",borderBottom:"0.5px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div style={{display:"flex",alignItems:"center",gap:10}}>
+        <button onClick={()=>onGoToProgramme && onGoToProgramme()} style={{display:"flex",alignItems:"center",gap:10,background:"none",border:"none",padding:0,cursor:"pointer"}}>
           <img loading="lazy" src="/logo-mark.webp" alt="AmplifyU" style={{width:30,height:30,objectFit:"cover",mixBlendMode:"screen",filter:"brightness(3) contrast(1.2)"}}/>
           <span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,letterSpacing:"3px",textTransform:"uppercase",color:"rgba(255,255,255,0.88)"}}>AmplifyU</span>
-        </div>
+        </button>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <div style={{width:64,height:1,background:"rgba(255,255,255,0.1)",borderRadius:1,overflow:"hidden"}}>
             <div style={{width:pct+"%",height:"100%",background:"linear-gradient(90deg,#b8956a,#c9a96e)",borderRadius:1,transition:"width 1s ease"}}/>
