@@ -187,7 +187,7 @@ finishDate + ".";
           {savedWorkCount>0 ? `${savedWorkCount} saved result${savedWorkCount!==1?"s":""} across your sessions` : "Nothing saved yet"}
         </div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,margin:0}}>
-          {savedWorkCount>0 ? "Every day's saved work — Rehearsal, Simulation and results — lives in one place." : "Results you save from Day 2, 8, and 11's Simulation and Rehearsal steps will collect here."}
+          {savedWorkCount>0 ? "Every day's saved work — Rehearsal, Simulation and results — lives in one place." : "Results you save from Day 1, as well as 2, 8, and 11's Simulation and Rehearsal steps will collect here."}
         </p>
       </div>
       <button onClick={()=>onOpenTab && onOpenTab("mywork")} style={{padding:isDesktop?"11px 20px":"10px 16px",borderRadius:6,border:"none",background:T.ink,color:T.bg,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>

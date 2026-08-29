@@ -472,7 +472,7 @@ export function D4SimWidget({T, T2, isDesktop}) {
       return;
     }
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are a senior news editor reviewing a breaking news report about: "${story}". The reporter's transcript: "${text}".\n\nExtract every distinct fact or point they mentioned (up to 8 items). Classify each one by EDITORIAL IMPORTANCE to the story — how central it is to what the story fundamentally is, NOT a prediction of whether a viewer would remember it:\n- tier 1: the most essential facts — what the story fundamentally is\n- tier 2: secondary but relevant supporting facts\n- tier 3: filler or color detail, least essential\n\nThen write a short coaching note, referencing the tier breakdown where useful — e.g. praising a strong tier-1 lead, or gently noting if essential facts were buried under filler.\n\nReturn ONLY valid JSON:\n{"facts":[{"text":"<fact>","tier":<1, 2, or 3>}, ... up to 8 items, in the order mentioned],"headline":"<the single most memorable sentence that captures the story — max 12 words>","coachNote":"<2-3 sentences of warm, encouraging, professional coaching — open with something specific they did well, then offer one clear forward-looking observation about short sentences or adapting under pressure. Never criticise, never use 'but' to negate the positive, never use deficit language. Growth-framed, motivational, executive coach tone.>"}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are a senior news editor reviewing a breaking news report about: "${story}". The reporter's transcript: "${text}".\n\nExtract every distinct fact or point they mentioned (up to 8 items). Classify each one by EDITORIAL IMPORTANCE to the story — how central it is to what the story fundamentally is, NOT a prediction of whether a viewer would remember it:\n- tier 1: the most essential facts — what the story fundamentally is\n- tier 2: secondary but relevant supporting facts\n- tier 3: filler or color detail, least essential\n\nThen write a short coaching note, referencing the breakdown where useful — e.g. praising a strong key-messages lead, or gently noting if key messages were buried under supporting facts or additional detail. In the coaching note, refer to these groups only as "key messages", "supporting facts", and "additional detail" — never use the word "tier".\n\nReturn ONLY valid JSON:\n{"facts":[{"text":"<fact>","tier":<1, 2, or 3>}, ... up to 8 items, in the order mentioned],"headline":"<the single most memorable sentence that captures the story — max 12 words>","coachNote":"<2-3 sentences of warm, encouraging, professional coaching — open with something specific they did well, then offer one clear forward-looking observation about short sentences or adapting under pressure. Never criticise, never use 'but' to negate the positive, never use deficit language. Growth-framed, motivational, executive coach tone.>"}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
@@ -513,6 +513,13 @@ export function D4SimWidget({T, T2, isDesktop}) {
     const a=audioRef.current;if(!a)return;
     a.currentTime=pos*(a.duration||0);
     if(!playing)playWhenReady(a);
+  }
+  function skip(delta){
+    const a=audioRef.current;if(!a)return;
+    const dur=a.duration||0;if(!dur)return;
+    const t=Math.max(0,Math.min(dur,(a.currentTime||0)+delta));
+    a.currentTime=t;
+    setAudioProgress(t/dur);
   }
 
   const cs={
@@ -601,9 +608,9 @@ export function D4SimWidget({T, T2, isDesktop}) {
         <div style={{fontFamily:T.sans,fontSize:9,color:"rgba(245,239,230,0.35)",letterSpacing:"0.05em",marginBottom:8}}>Practice simulation · not broadcast or shared publicly</div>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontWeight:600,color:"#F5EFE6",lineHeight:1.3,margin:"0 0 8px"}}>🔴 BREAKING: {story}</p>
         {producerMsg && (
-          <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,marginTop:10}}>
-            <div style={{fontFamily:T.sans,fontSize:9,color:"#C8A46A",textTransform:"uppercase",letterSpacing:"2px",marginBottom:4}}>🎧 Producer</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:"#C8A46A",lineHeight:1.4,margin:0}}>{producerMsg}</p>
+          <div key={producerMsg} style={{marginTop:10,padding:"12px 14px",background:"rgba(200,164,106,0.16)",border:"1px solid rgba(200,164,106,0.55)",borderRadius:6,animation:"coachReveal 0.35s ease"}}>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"#E8C58A",textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>🎧 Producer</div>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?23:20,fontWeight:600,fontStyle:"italic",color:"#F3DFB2",lineHeight:1.35,margin:0}}>{producerMsg}</p>
           </div>
         )}
         {isRec&&(
@@ -694,15 +701,9 @@ export function D4SimWidget({T, T2, isDesktop}) {
 
         <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Your Broadcast</div>
-          <div style={{display:"flex",alignItems:"center",gap:14}}>
-            <button onClick={togglePlay} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 16px",background:"rgba(245,239,230,0.08)",border:"0.5px solid rgba(245,239,230,0.2)",borderRadius:4,color:"#F5EFE6",fontFamily:T.serif,fontSize:12,cursor:"pointer",flexShrink:0}}>
-              {playing?<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/><rect x="8" y="1" width="3" height="10" fill="#F5EFE6" rx="1"/></svg>:<svg width="10" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 1l9 5-9 5V1z" fill="#F5EFE6"/></svg>}
-              {playing?"Pause":"Play broadcast"}
-            </button>
-            <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)"}}>You reported {totalFacts} facts — {tier1.length} essential, {tier2.length} supporting, {tier3.length} detail.</div>
-          </div>
+          <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",marginBottom:14}}>You reported {totalFacts} facts — {tier1.length} essential, {tier2.length} supporting, {tier3.length} detail.</div>
           {audioURL&&(
-            <div style={{marginTop:10}}>
+            <div>
               <div
                 onClick={(e)=>{const r=e.currentTarget.getBoundingClientRect();seekTo((e.clientX-r.left)/r.width);}}
                 style={{width:"100%",height:4,background:"rgba(245,239,230,0.1)",borderRadius:2,position:"relative",cursor:"pointer",marginBottom:4}}>
@@ -712,6 +713,17 @@ export function D4SimWidget({T, T2, isDesktop}) {
               <div style={{fontFamily:"var(--sans,'Inter',sans-serif)",fontSize:9,color:"rgba(245,239,230,0.3)",textAlign:"right"}}>{Math.floor(audioProgress*60/60)}:{String(Math.round(audioProgress*60)%60).padStart(2,'0')} / 1:00</div>
             </div>
           )}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:24,marginTop:18}}>
+            <button onClick={()=>skip(-10)} aria-label="Rewind 10 seconds" style={{width:40,height:40,borderRadius:"50%",border:"0.5px solid rgba(245,239,230,0.25)",background:"rgba(245,239,230,0.06)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
+              <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><path d="M8 1L1 7l7 6V1z" fill="#F5EFE6"/><path d="M15 1L8 7l7 6V1z" fill="#F5EFE6"/></svg>
+            </button>
+            <button onClick={togglePlay} style={{width:56,height:56,borderRadius:"50%",border:"none",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",boxShadow:"0 0 0 6px rgba(138,158,132,0.12)",flexShrink:0}}>
+              {playing?<svg width="16" height="18" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="3" height="10" fill="#0A0804" rx="1"/><rect x="8" y="1" width="3" height="10" fill="#0A0804" rx="1"/></svg>:<svg width="16" height="18" viewBox="0 0 12 12" fill="none"><path d="M2 1l9 5-9 5V1z" fill="#0A0804"/></svg>}
+            </button>
+            <button onClick={()=>skip(10)} aria-label="Forward 10 seconds" style={{width:40,height:40,borderRadius:"50%",border:"0.5px solid rgba(245,239,230,0.25)",background:"rgba(245,239,230,0.06)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
+              <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><path d="M8 1l7 6-7 6V1z" fill="#F5EFE6"/><path d="M1 1l7 6-7 6V1z" fill="#F5EFE6"/></svg>
+            </button>
+          </div>
         </div>
 
         <div style={cs.card}>
@@ -746,13 +758,13 @@ export function D4SimWidget({T, T2, isDesktop}) {
           <div style={cs.label}>Your AmplifyU Coach Says</div>
           <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
             <div style={{fontFamily:T.serif,fontSize:isDesktop?44:34,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
-            <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0,flex:1}}>{result.coachNote}</p>
+            <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0,flex:1}}>{result.coachNote}</p>
           </div>
         </div>
 
-        <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"22px 28px":"18px 20px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,fontStyle:"italic",color:"rgba(245,239,230,0.7)",lineHeight:1.6,margin:"0 0 8px"}}>The strongest communicators know that attention is limited. If people can't remember it, they can't repeat it. And if they can't repeat it, the message is lost.</p>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,fontWeight:700,color:T.gold,margin:0,textTransform:"uppercase",letterSpacing:"1.5px"}}>That is Miller's Law in action.</p>
+        <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?19:17,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:"0 0 10px"}}>The strongest communicators know that attention is limited. If people can't remember it, they can't repeat it. And if they can't repeat it, the message is lost.</p>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:700,color:T.gold,margin:0,textTransform:"uppercase",letterSpacing:"1.5px"}}>That is Miller's Law in action.</p>
         </div>
 
       </div>

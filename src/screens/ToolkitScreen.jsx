@@ -501,7 +501,7 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
             <div style={{textAlign:"center",padding:"40px 20px"}}>
               <div style={{fontSize:32,marginBottom:12}}>📁</div>
               <div style={{fontFamily:T.serif,fontSize:18,fontWeight:700,color:T2.text,marginBottom:8}}>Nothing saved yet</div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6}}>Results you save from Day 2, Day 8, and Day 11's Simulation and Rehearsal steps will collect here.</p>
+              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6}}>Results you save from Day 1, as well as Day 2, Day 8, and Day 11's Simulation and Rehearsal steps will collect here.</p>
             </div>
           ) : (
             <>
