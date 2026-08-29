@@ -797,17 +797,42 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
     persistStories([entry, ...savedStories]);
   }
 
+  // Downscales + re-encodes a data: URI for storage. The saved copy is only
+  // ever displayed at up to ~340px tall in the reopened story view (never at
+  // the generated image's native 1024x1536), and localStorage has nowhere
+  // near the room for a full-quality PNG per story — so this trades quality
+  // that was never visible for a ~90%+ size cut, well before the quota-fallback
+  // below is ever needed. Falls back to the original url if canvas access
+  // fails for any reason (the quota-fallback still protects that path).
+  async function compressImageForStorage(dataURI, maxWidth = 640, quality = 0.75) {
+    const img = new Image();
+    img.src = dataURI;
+    if (img.decode) await img.decode();
+    else await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; });
+    const scale = Math.min(1, maxWidth / img.naturalWidth);
+    const w = Math.max(1, Math.round(img.naturalWidth * scale));
+    const h = Math.max(1, Math.round(img.naturalHeight * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+    return canvas.toDataURL('image/jpeg', quality);
+  }
+
   // The cover image finishes generating well after the story text is already
   // saved, so it's attached to the existing entry once ready rather than
   // being part of the original save. A full-quality generated cover is by far
-  // the largest thing this app puts in localStorage — if adding one would
-  // exceed the quota, keep the story (already safely saved without it) and
-  // tell the user, instead of failing the whole save or losing the story.
-  function attachStoryImage(id, url) {
-    setPendingStory(prev => (prev && prev.id === id) ? {...prev, image: url} : prev);
+  // the largest thing this app puts in localStorage — even compressed, if
+  // adding one would exceed the quota, keep the story (already safely saved
+  // without it) and tell the user, instead of failing the whole save or
+  // losing the story.
+  async function attachStoryImage(id, url) {
+    let stored = url;
+    try { stored = await compressImageForStorage(url); }
+    catch (err) { console.error('[Day8] cover compression failed, storing full-quality copy:', err); }
+    setPendingStory(prev => (prev && prev.id === id) ? {...prev, image: stored} : prev);
     setSavedStories(prev => {
       if (!prev.some(s => s.id === id)) return prev; // capped/pending — nothing persisted yet to attach to
-      const withImage = prev.map(s => s.id === id ? {...s, image: url} : s);
+      const withImage = prev.map(s => s.id === id ? {...s, image: stored} : s);
       try { localStorage.setItem("au1_stories", JSON.stringify(withImage)); return withImage; }
       catch { setImageSaveWarning('dropped'); return prev; }
     });
