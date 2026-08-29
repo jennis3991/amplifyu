@@ -766,13 +766,13 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
             </div>
           </div>
           <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:14}}>
-            <button onClick={()=>skip(-15)} title="Back 15s" style={{width:32,height:32,borderRadius:"50%",border:"0.5px solid "+T2.border,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,color:T2.text3}}>
+            <button onClick={()=>skip(-15)} title="Back 15s" style={{width:32,height:32,border:"none",background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,color:T2.text3}}>
               <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><path d="M4 4v4h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.6 12.5A6.5 6.5 0 1 0 5.5 6.5L4 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><text x="10" y="13.5" textAnchor="middle" fontSize="6.5" fontWeight="700" fill="currentColor" fontFamily="Inter, sans-serif">15</text></svg>
             </button>
             <button onClick={togglePlay} style={{width:40,height:40,borderRadius:"50%",border:"none",background:T2.text,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>
               {playing?<svg width="12" height="14" viewBox="0 0 12 14"><rect x="0" y="0" width="4" height="14" fill={T.bg} rx="1"/><rect x="8" y="0" width="4" height="14" fill={T.bg} rx="1"/></svg>:<svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6V1z" fill={T.bg}/></svg>}
             </button>
-            <button onClick={()=>skip(15)} title="Forward 15s" style={{width:32,height:32,borderRadius:"50%",border:"0.5px solid "+T2.border,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,color:T2.text3}}>
+            <button onClick={()=>skip(15)} title="Forward 15s" style={{width:32,height:32,border:"none",background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,color:T2.text3}}>
               <svg width="15" height="15" viewBox="0 0 20 20" fill="none" style={{transform:"scaleX(-1)"}}><path d="M4 4v4h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.6 12.5A6.5 6.5 0 1 0 5.5 6.5L4 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><text x="10" y="13.5" textAnchor="middle" fontSize="6.5" fontWeight="700" fill="currentColor" fontFamily="Inter, sans-serif" style={{transform:"scaleX(-1)",transformOrigin:"10px 10px"}}>15</text></svg>
             </button>
           </div>
@@ -893,18 +893,15 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?44:34,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0,flex:1}}>{feedback.insight}</p>
-          <div style={{width:36,height:36,borderRadius:"50%",background:"rgba(138,158,132,0.1)",border:"1px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,alignSelf:"flex-end"}}>
-            <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.5 4H15l-3.75 2.75 1.5 4.5L9 11l-3.75 2.75 1.5-4.5L3 6h4.5z" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/></svg>
-          </div>
         </div>
       </div>
       {/* 6 FOCUS NEXT ROUND */}
       <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
         <div style={cs.label}>Focus next round</div>
         <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
-          {FOCUS.map((f,i)=>{const sel=selectedFocus.includes(f);return(
-            <button key={i} onClick={()=>setSelectedFocus(sf=>sel?sf.filter(x=>x!==f):[...sf,f])} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:20,border:`0.5px solid ${sel?T.gold:T2.border}`,background:sel?"rgba(138,158,132,0.1)":"transparent",color:sel?T.gold:T2.text,fontFamily:T.serif,fontSize:isDesktop?13:12,cursor:"pointer",transition:"all 0.15s",fontWeight:sel?600:400}}>{f}</button>
-          );})}
+          {FOCUS.map((f,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:20,border:`0.5px solid ${T.gold}`,background:"rgba(138,158,132,0.1)",color:T.gold,fontFamily:T.serif,fontSize:isDesktop?13:12,fontWeight:600}}>{f}</div>
+          ))}
         </div>
       </div>
       <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Start over</button>
