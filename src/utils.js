@@ -16,6 +16,28 @@ s[i]; } else break; }
   return st;
 }
 
+// Rough, browser-agnostic localStorage headroom check for warning users before
+// a saved recording's audio gets silently dropped. There's no reliable
+// synchronous way to read the *actual* per-browser quota — Safari, Chrome, and
+// Firefox all differ, and none expose it directly via a sync API (the async
+// navigator.storage.estimate() also isn't consistently accurate for
+// localStorage specifically, especially in Safari). So this assumes the
+// lowest common quota among major browsers (5MB) as a conservative ceiling and
+// measures real usage against it — worst case on a browser with a larger
+// quota this warns a little earlier than strictly necessary; it should never
+// warn too late.
+const ASSUMED_STORAGE_QUOTA_BYTES = 5 * 1024 * 1024;
+export function localStorageUsageRatio() {
+  try {
+    let chars = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      chars += (k ? k.length : 0) + (localStorage.getItem(k) || '').length;
+    }
+    return (chars * 2) / ASSUMED_STORAGE_QUOTA_BYTES; // *2: localStorage strings are UTF-16
+  } catch { return 0; }
+}
+
 // Keeps the screen awake (via the Screen Wake Lock API, Safari 16.4+) for as
 // long as `active` is true — used to stop iOS auto-locking mid-recording.
 // Only guards against the inactivity timer; a manual lock-button press or

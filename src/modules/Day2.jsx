@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
-import { useWakeLock } from '../utils.js';
+import { useWakeLock, localStorageUsageRatio } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
 function blobToB64(blob) {
@@ -153,14 +153,20 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const [pendingResult, setPendingResult] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const confirmDeleteTimerRef = useRef(null);
+  // Set the moment a save falls back to dropping the audio (quota) or fails
+  // outright, so the feedback screen can tell the user right away instead of
+  // saving silently. Cleared at the start of every new save attempt.
+  const [audioSaveWarning, setAudioSaveWarning] = useState(null); // null | 'dropped' | 'failed'
 
   function saveVoiceResult(result, transcriptText, promptText) {
+    setAudioSaveWarning(null);
     const entry = {
       id: Date.now(),
       source: 'voice-analysis-day2',
       prompt: promptText || '',
       transcript: transcriptText || '',
       result,
+      audio: audioDataURIRef.current || null,
       timestamp: Date.now(),
     };
     if (myResults.length >= RESULT_CAP) {
@@ -169,7 +175,17 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     }
     const next = [entry, ...savedResults];
     setSavedResults(next);
-    try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); } catch {}
+    // A recording's base64 data: URI is the one thing here big enough to blow
+    // localStorage's quota — if it does, drop just the audio and save the rest
+    // rather than losing the whole toolkit list to a silent QuotaExceededError,
+    // and tell the user their audio specifically didn't make it.
+    try { localStorage.setItem("au1_toolkits", JSON.stringify(next)); }
+    catch {
+      try {
+        localStorage.setItem("au1_toolkits", JSON.stringify(next.map(e => e.id === entry.id ? {...e, audio: null} : e)));
+        if (entry.audio) setAudioSaveWarning('dropped');
+      } catch { setAudioSaveWarning('failed'); }
+    }
   }
 
   function deleteVoiceResult(id) {
@@ -203,7 +219,8 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     setTranscript(r.transcript || '');
     setFeedback(r.result || null);
     setRound1(null);
-    setAudioURL(null);
+    setPlaying(false); setAudioProgress(0);
+    setAudioURL(r.audio || null);
     setPhase('feedback');
   }
 
@@ -225,6 +242,11 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
   const timerRef = useRef(null);
+  // Persistent (base64 data: URI) copy of the recording, captured alongside the
+  // transcribe call. Unlike the blob: URL in audioURL, this survives being
+  // written to localStorage and read back on a later visit, so a saved result
+  // can still play its recording back after this page's blob store is gone.
+  const audioDataURIRef = useRef(null);
   const waveRef = useRef(null);
   const startTimeRef = useRef(null);
 
@@ -285,6 +307,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     setMicError(false);setTranscribeFailed(false);
     startTimeRef.current = Date.now();
     audioChunksRef.current=[];
+    audioDataURIRef.current=null;
     if(navigator.mediaDevices?.getUserMedia){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
         try {
@@ -314,6 +337,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       mr.stream.getTracks().forEach(t=>t.stop());
       try{
         const b64=await blobToB64(blob);
+        audioDataURIRef.current='data:'+blobType+';base64,'+b64;
         const res=await fetch('/api/transcribe',{
           method:'POST', headers:{'Content-Type':'application/json'},
           body:JSON.stringify({b64, mimeType:blobType}),
@@ -530,6 +554,11 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       {pendingResult && (
         <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
           <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You've reached your limit of {RESULT_CAP} saved results. This one won't be saved until you delete one above.</span>
+        </div>
+      )}
+      {!pendingResult && myResults.length>0 && localStorageUsageRatio()>0.8 && (
+        <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
+          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You're running low on saved-recording space — delete an old one above to keep saving audio for new results.</span>
         </div>
       )}
 
@@ -751,6 +780,14 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           {showTranscript&&<p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.7,margin:"10px 0 0",background:"rgba(44,36,22,0.04)",borderRadius:4,padding:"10px 12px"}}>{rawText}</p>}
         </div>}
       </div>
+
+      {audioSaveWarning&&(
+        <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
+          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{audioSaveWarning==='dropped'
+            ? "Saved, but audio couldn't be stored because you're low on space. Delete an old recording from My Saved Work to save audio for new ones."
+            : "This result couldn't be saved to My Saved Work — you're out of storage space. Delete an old recording and try again."}</span>
+        </div>
+      )}
       {/* 3 VOICE PROFILE */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>Your Voice Profile</div>
