@@ -470,8 +470,10 @@ finishDate + ".";
             <div style={{width:pct+"%",height:"100%",background:"linear-gradient(90deg,#b8956a,#c9a96e)",borderRadius:1,transition:"width 1s ease"}}/>
           </div>
           <span style={{fontSize:10,color:"#c9a96e",fontWeight:500,fontFamily:T.sans}}>{pct}%</span>
-          <button onClick={()=>toggleDark && toggleDark()} aria-label={dark?"Switch to light mode":"Switch to dark mode"} style={{background:"none",border:"none",padding:4,margin:0,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,lineHeight:1}}>
-            {dark?"☀️":"🌙"}
+          <button onClick={()=>toggleDark && toggleDark()} aria-label={dark?"Switch to light mode":"Switch to dark mode"} style={{background:"none",border:"none",padding:4,margin:0,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            {dark
+              ? <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+              : <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(245,239,230,0.85)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>}
           </button>
         </div>
       </div>
