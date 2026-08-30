@@ -251,7 +251,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
         {SCENARIOS.map(sc=>(
           <div key={sc.id} onClick={()=>{setScenario(sc);setR(null);setMicError(false);setTranscribeFailed(false);setFallbackText('');}}
-            style={{padding:"12px",background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,cursor:"pointer",display:"flex",flexDirection:"column",gap:8,minHeight:110}}>
+            style={{padding:"12px",background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:8,minHeight:110,textAlign:"center"}}>
             <div>{sc.icon}</div>
             <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.25,flex:1}}>{sc.title}</div>
             <div style={{fontFamily:"'Inter',sans-serif",fontSize:10,color:T2.text3,lineHeight:1.4}}>{sc.tag}</div>
