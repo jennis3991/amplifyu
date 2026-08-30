@@ -12,6 +12,32 @@ function blobToB64(blob) {
   });
 }
 
+// Turns raw mic-loudness samples captured during recording into real pause
+// data — an opening pause (silence before the first word) and a count of
+// pauses taken between ideas during the response. Measured from the actual
+// recording, not guessed from the transcript.
+function computeRehearsalPauseMetrics(samples, elapsedSec) {
+  if (!samples || samples.length < 5 || !elapsedSec) return null;
+  const sampleIntervalSec = 0.1;
+  const avg = samples.reduce((a, b) => a + b, 0) / samples.length;
+  const silenceThresh = Math.max(0.008, avg * 0.3);
+
+  let leadIdx = samples.findIndex(s => s >= silenceThresh);
+  if (leadIdx === -1) leadIdx = 0;
+  const openingPauseSec = +(leadIdx * sampleIntervalSec).toFixed(2);
+  const openingPauseReal = openingPauseSec >= 0.8;
+
+  const minPauseSamples = Math.round(0.4 / sampleIntervalSec);
+  let midPauseCount = 0, run = 0;
+  for (let i = leadIdx; i < samples.length; i++) {
+    if (samples[i] < silenceThresh) { run++; }
+    else { if (run >= minPauseSamples) midPauseCount++; run = 0; }
+  }
+  if (run >= minPauseSamples) midPauseCount++;
+
+  return { openingPauseSec, openingPauseReal, midPauseCount, pausesPerMin: +(midPauseCount / (elapsedSec / 60)).toFixed(1) };
+}
+
 function findFillerClusters(text) {
   if (!text) return [];
   const re = /\b(um+|uh+|er+|ah+|like|you know|sort of|kind of|basically|literally)\b/gi;
@@ -110,8 +136,15 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
   const waveRef = useRef(null);
+  const startTimeRef = useRef(null);
+  // Real signal data captured from the mic during recording — feeds the
+  // opening-pause and between-ideas pause measurement below.
+  const audioAnalyserCtxRef = useRef(null);
+  const energySampleIntervalRef = useRef(null);
+  const energySamplesRef = useRef([]);
 
   const dotCount = useSequentialDots(phase === 'pause');
+  const analyzingDotCount = useSequentialDots(phase === 'analyzing');
 
   useEffect(() => {
     if (!onNavLabel) return;
@@ -124,6 +157,12 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
     }
   }, [phase, coachResult]);
 
+  // Guards against leaking an AudioContext if the component unmounts mid-recording.
+  useEffect(() => () => {
+    clearInterval(energySampleIntervalRef.current);
+    try { audioAnalyserCtxRef.current?.close(); } catch(e) {}
+  }, []);
+
   useEffect(() => {
     if (!isRec) { clearInterval(waveRef.current); return; }
     waveRef.current = setInterval(() => setWaveVals(() => Array.from({length: 9}, () => 0.2 + Math.random() * 0.8)), 150);
@@ -134,6 +173,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
     setIsRec(true);
     setMicError(false); setTranscribeFailed(false);
     audioChunksRef.current = [];
+    startTimeRef.current = Date.now();
     if (navigator.mediaDevices?.getUserMedia) {
       navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
         let mr;
@@ -142,6 +182,25 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
         mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
         mr.start(1000);
         mediaRecRef.current = mr;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          const actx = new AC();
+          audioAnalyserCtxRef.current = actx;
+          const srcNode = actx.createMediaStreamSource(stream);
+          const analyser = actx.createAnalyser();
+          analyser.fftSize = 1024;
+          srcNode.connect(analyser);
+          const buf = new Float32Array(analyser.fftSize);
+          energySamplesRef.current = [];
+          energySampleIntervalRef.current = setInterval(() => {
+            analyser.getFloatTimeDomainData(buf);
+            let sumSq = 0;
+            for (let i = 0; i < buf.length; i++) sumSq += buf[i] * buf[i];
+            energySamplesRef.current.push(Math.sqrt(sumSq / buf.length));
+          }, 100);
+        } catch (sigErr) {
+          console.error('[D3Rehearsal] pause signal setup error:', sigErr);
+        }
       }).catch(() => { setIsRec(false); setMicError(true); });
     } else {
       setIsRec(false); setMicError(true);
@@ -150,8 +209,14 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
   function stopRecording(cb) {
     const mr = mediaRecRef.current;
-    if (!mr || mr.state === 'inactive') { cb('', true); return; }
+    if (!mr || mr.state === 'inactive') {
+      clearInterval(energySampleIntervalRef.current);
+      try { audioAnalyserCtxRef.current?.close(); } catch(e) {}
+      cb('', true); return;
+    }
     mr.onstop = async () => {
+      clearInterval(energySampleIntervalRef.current);
+      try { audioAnalyserCtxRef.current?.close(); } catch(e) {}
       mr.stream.getTracks().forEach(t => t.stop());
       const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
       try {
@@ -173,30 +238,44 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   }
 
   function doStop() {
+    const elapsedSec = startTimeRef.current ? Math.round((Date.now() - startTimeRef.current) / 1000) : 0;
+    // Captured before stopRecording's async transcribe chain runs, since the
+    // sample buffer is cleared at the start of the next recording.
+    const pauseMetrics = computeRehearsalPauseMetrics(energySamplesRef.current, elapsedSec);
     setIsRec(false);
+    // Show a dedicated processing screen immediately — without this the UI
+    // sits on the frozen recording card while MediaRecorder finalises the
+    // blob and /api/transcribe runs, which reads as stalled rather than busy.
+    setPhase('analyzing');
     stopRecording((text, failed) => {
-      if (failed) { setTranscribeFailed(true); return; }
+      if (failed) { setTranscribeFailed(true); setPhase('recording'); return; }
       setPhase('coach');
-      analyzeTranscript(text);
+      analyzeTranscript(text, pauseMetrics);
     });
   }
 
-  async function analyzeTranscript(text) {
+  async function analyzeTranscript(text, pauseMetrics) {
     const hasTranscript = text.length > 0;
+    // Measured directly from the recording, not guessed by the AI — falls
+    // back to a reasonable default only when there's no audio at all (e.g.
+    // the typed-fallback path after a mic/transcription failure).
+    const openingPause = pauseMetrics?.openingPauseReal ?? true;
+    const midSpeechPause = (pauseMetrics?.midPauseCount ?? 0) > 0;
+    const fallbackLine = midSpeechPause
+      ? "You named a real challenge and let it land with a real pause — your next step is to bring that same discipline to the very first moment before you speak."
+      : "You named a real challenge and spoke about it clearly — your next step is to hold a full second of silence before your first word, and again between your key points.";
     try {
       const res = await fetch('/api/claude', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           model: 'claude-sonnet-4-5',
-          max_tokens: 350,
-          system: `You are the AmplifyU coach. The user has just completed The Pause Drill warm-up for Day 3. Observe their response and return a JSON object with three fields:
+          max_tokens: 200,
+          system: `You are the AmplifyU coach. The user has just completed The Pause Drill warm-up for Day 3. You are given MEASURED pause data taken directly from their recording — treat it as fact, never contradict it or guess your own version. Return a JSON object with one field:
 
-openingPause (boolean — true if they paused for at least one second before their first word, false if they began immediately)
-midSpeechPause (boolean — true if they paused intentionally at any point during the response, not just at the start)
 coachLine (one warm sentence of no more than 28 words)
 
-CRITICAL TONE RULES FOR coachLine:
+CRITICAL TONE RULES:
 — coachLine MUST always open with a positive observation, regardless of whether they paused. Never open with what they did wrong.
 — coachLine MUST ground itself in what they actually said — either quote a short phrase verbatim in quotation marks, or name the specific topic, example, or detail they raised. Never write an observation generic enough to apply to any response.
 — If the transcript is empty, a placeholder, or contains no real speech, keep the observation general rather than inventing or quoting content that wasn't said.
@@ -206,22 +285,23 @@ CRITICAL TONE RULES FOR coachLine:
 — Never reference "the Hot Seat", "the simulation", or any other screen by name. The feedback is self-contained.
 — Structure: [affirm the specific thing they said, referencing it directly] — [clear, professional cue for their next step with the pause technique].
 
-The lines below illustrate TONE ONLY — never reuse their wording. Build the actual coachLine from the specific transcript given.
-If openingPause is true: affirm the opening pause, referencing what they said. Tone reference, do not copy: "You took a deliberate pause before diving into [specific detail] — that discipline is exactly what separates confident communicators."
-If openingPause is false and midSpeechPause is true: affirm the mid-speech pause, referencing what they said, then cue the opening pause. Tone reference, do not copy: "You paused intentionally when you got to [specific detail] — your next step is to bring that same discipline to the very first moment before you speak."
-If both are false: affirm the specific thing they said clearly — then offer the opening pause as the next step. Tone reference, do not copy: "You were clear about [specific detail] — your next step is to hold a full second of silence before your first word."
+The lines below illustrate TONE ONLY — never reuse their wording. Build the actual coachLine from the specific transcript given, and match it to the measured pause data provided.
+If openingPause is true and midSpeechPause is true: affirm both — they paused before starting AND paused between ideas. Tone reference, do not copy: "You opened with a deliberate pause and let [specific detail] land before moving on — that's exactly the rhythm confident communicators use."
+If openingPause is true and midSpeechPause is false: affirm the opening pause, referencing what they said, then cue pausing between ideas too. Tone reference, do not copy: "You took a deliberate pause before diving into [specific detail] — your next step is to bring that same pause between your ideas, not just at the start."
+If openingPause is false and midSpeechPause is true: affirm the pauses between ideas, referencing what they said, then cue the opening pause. Tone reference, do not copy: "You let [specific detail] land with a real pause before moving on — your next step is to bring that same discipline to the very first moment before you speak."
+If both are false: affirm the specific thing they said clearly — then offer the pause as the next step, both before starting and between ideas. Tone reference, do not copy: "You were clear about [specific detail] — your next step is to hold a full second of silence before your first word, and again between your key points."
 
 Never use the word fillers. Never use the word perfect. Always frame as growth.`,
-          messages: [{role: 'user', content: `Topic: ${topic?.label}\n\nResponse: ${hasTranscript ? text : '[Transcription unavailable — the user did respond. Assume a reasonable response, set openingPause true, and write an affirming coachLine.]'}`}],
+          messages: [{role: 'user', content: `Topic: ${topic?.label}\n\nMeasured pause data (from the actual recording): openingPause=${openingPause}, midSpeechPause=${midSpeechPause}${pauseMetrics?.midPauseCount!=null?` (${pauseMetrics.midPauseCount} pause(s) detected between ideas)`:''}\n\nResponse: ${hasTranscript ? text : '[Transcription unavailable — the user did respond. Assume a reasonable response and write an affirming coachLine.]'}`}],
         }),
       });
       const data = await res.json();
       const raw = (data.content || []).map(b => b.text || '').join('');
       const m = raw.match(/\{[\s\S]*\}/);
-      if (m) setCoachResult(JSON.parse(m[0]));
-      else throw new Error('no json');
+      const parsed = m ? JSON.parse(m[0]) : null;
+      setCoachResult({openingPause, midSpeechPause, pauseMetrics, coachLine: parsed?.coachLine || fallbackLine});
     } catch(e) {
-      setCoachResult({openingPause: true, midSpeechPause: false, coachLine: "You named a real challenge and spoke about it clearly — your next step is to hold a full second of silence before your first word."});
+      setCoachResult({openingPause, midSpeechPause, pauseMetrics, coachLine: fallbackLine});
     }
   }
 
@@ -239,7 +319,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
         Today's goal isn't to speak faster. It's to become comfortable with silence.
       </h2>
       <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text3, lineHeight:1.7, margin:'0 0 10px'}}>
-        Pick a topic below and speak for around 30 seconds. Before your first word, take a deliberate pause — even just one second. The strongest communicators don't rush to answer. They give themselves permission to think.
+        Pick a topic below and speak for around 30 seconds. Before your first word, take a deliberate pause — even just one second. Then, as you speak, practise pausing between your important ideas rather than running them together. The strongest communicators don't rush to answer, and they don't rush between points — they give themselves, and their listener, permission to think.
       </p>
       <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px', fontStyle:'italic'}}>
         If you feel the urge to use a filler word — just pause instead.
@@ -349,6 +429,17 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
     )}
   </>);
 
+  // ── ANALYZING ────────────────────────────────────────────────────────────────
+  if (phase === 'analyzing') return grid(
+    <div style={{...cs.card, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, gap: 16, textAlign: 'center'}}>
+      <SequentialDots dotCount={analyzingDotCount} />
+      <div>
+        <p style={{fontFamily: T.serif, fontSize: isDesktop ? 17 : 15, color: T2.text, fontStyle: 'italic', margin: '0 0 6px'}}>Measuring your pauses…</p>
+        <p style={{fontFamily: T.sans, fontSize: 12, color: T2.text4, margin: 0}}>Listening for where you gave your ideas room to breathe.</p>
+      </div>
+    </div>
+  );
+
   // ── COACH OBSERVATION ───────────────────────────────────────────────────────
   if (phase === 'coach') {
     if (!coachResult) return grid(
@@ -362,7 +453,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
         <div style={{background: '#0A0804', borderRadius: 8, padding: isDesktop ? '32px 36px' : '24px 22px', border: '0.5px solid rgba(138,158,132,0.15)'}}>
           <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 16}}>Your AmplifyU Coach Says</div>
           <p style={{fontFamily: T.serif, fontSize: isDesktop ? 24 : 20, color: 'rgba(245,239,230,0.92)', lineHeight: 1.4, margin: '0 0 20px'}}>{coachResult.coachLine}</p>
-          <p style={{fontFamily: T.sans, fontSize: 12, color: 'rgba(138,158,132,0.45)', margin: 0, letterSpacing: '0.05em'}}>Ready for the simulation?</p>
+          <p style={{fontFamily: T.sans, fontSize: 12, color: 'rgba(138,158,132,0.45)', margin: 0, letterSpacing: '0.05em'}}>Now take that learning further into the simulation.</p>
         </div>
         <button
           onClick={() => { if (onSimulation) onSimulation(); }}
