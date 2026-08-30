@@ -134,6 +134,7 @@ return (
     onTouchEnd={e=>{
       if(isD4 && step==="Simulation")return;
       if(isD2 && step==="Simulation")return;
+      if(isD10 && step==="Rehearsal")return;
       if(window.getSelection&&window.getSelection().toString())return;
       if(Date.now()-swipeRef.current.t>500)return;
       const el=swipeRef.current.el;
