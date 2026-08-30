@@ -31,6 +31,110 @@ function findFillerClusters(text) {
   return clusters;
 }
 
+// Autocorrelation-based pitch (F0) detector — the standard lightweight
+// technique for real-time browser pitch tracking without an external
+// library. Returns -1 for silent/unvoiced frames.
+function detectPitchHz(buf, sampleRate) {
+  const SIZE = buf.length;
+  let rms = 0;
+  for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
+  rms = Math.sqrt(rms / SIZE);
+  if (rms < 0.01) return -1;
+
+  let r1 = 0, r2 = SIZE - 1;
+  const thres = 0.2;
+  for (let i = 0; i < SIZE / 2; i++) { if (Math.abs(buf[i]) < thres) { r1 = i; break; } }
+  for (let i = 1; i < SIZE / 2; i++) { if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; } }
+  const trimmed = buf.slice(r1, r2);
+  const n = trimmed.length;
+  if (n < 8) return -1;
+
+  const c = new Float32Array(n);
+  for (let lag = 0; lag < n; lag++) {
+    let sum = 0;
+    for (let i = 0; i < n - lag; i++) sum += trimmed[i] * trimmed[i + lag];
+    c[lag] = sum;
+  }
+  let d = 0;
+  while (d < n - 1 && c[d] > c[d + 1]) d++;
+  let maxVal = -1, maxPos = -1;
+  for (let i = d; i < n; i++) { if (c[i] > maxVal) { maxVal = c[i]; maxPos = i; } }
+  if (maxPos <= 0) return -1;
+
+  let T0 = maxPos;
+  const x1 = c[T0 - 1] || 0, x2 = c[T0], x3 = c[T0 + 1] || 0;
+  const a = (x1 + x3 - 2 * x2) / 2, b = (x3 - x1) / 2;
+  if (a) T0 = T0 - b / (2 * a);
+  const hz = sampleRate / T0;
+  // Human speech F0 sits roughly 70-400Hz — anything outside that is almost
+  // certainly an octave error or noise, not a real pitch reading.
+  return (hz >= 70 && hz <= 400) ? hz : -1;
+}
+
+// Turns the raw per-sample energy/pitch readings captured during recording
+// into the four genuinely-measured dimensions (Pauses, Vocal Energy, Range,
+// Pitch). Thresholds are calibrated for typical browser mic input with
+// auto-gain-control on (the getUserMedia default) — approximate, not
+// device-verified, but every input here comes from the actual recording,
+// never from the transcript or an LLM guess.
+function computeSignalMetrics(energySamples, pitchSamples, elapsedSec) {
+  if (!energySamples || energySamples.length < 10 || !elapsedSec) return null;
+  const sampleIntervalSec = 0.1;
+
+  const sortedE = [...energySamples].sort((a, b) => a - b);
+  const pct = (arr, p) => arr[Math.min(arr.length - 1, Math.max(0, Math.floor(p * arr.length)))];
+  const avgEnergy = energySamples.reduce((a, b) => a + b, 0) / energySamples.length;
+  const p10 = pct(sortedE, 0.1), p90 = pct(sortedE, 0.9);
+  const dynamicRange = p90 - p10;
+
+  let energyScore;
+  if (avgEnergy < 0.015) energyScore = 55;
+  else if (avgEnergy < 0.03) energyScore = 72;
+  else if (avgEnergy < 0.06) energyScore = 90;
+  else if (avgEnergy < 0.12) energyScore = 95;
+  else energyScore = 78;
+
+  let rangeScore;
+  if (dynamicRange < 0.01) rangeScore = 55;
+  else if (dynamicRange < 0.03) rangeScore = 74;
+  else if (dynamicRange < 0.06) rangeScore = 92;
+  else rangeScore = 82;
+
+  const minPauseSamples = Math.round(0.5 / sampleIntervalSec);
+  const silenceThresh = Math.max(0.008, avgEnergy * 0.25);
+  let pauseCount = 0, pauseSampleTotal = 0, run = 0;
+  for (const s of energySamples) {
+    if (s < silenceThresh) { run++; }
+    else { if (run >= minPauseSamples) { pauseCount++; pauseSampleTotal += run; } run = 0; }
+  }
+  if (run >= minPauseSamples) { pauseCount++; pauseSampleTotal += run; }
+  const pauseTimeSec = pauseSampleTotal * sampleIntervalSec;
+  const pausesPerMin = pauseCount / (elapsedSec / 60);
+
+  let pausesScore;
+  if (pausesPerMin < 1) pausesScore = 58;
+  else if (pausesPerMin <= 4) pausesScore = 92;
+  else if (pausesPerMin <= 7) pausesScore = 75;
+  else pausesScore = 55;
+
+  let avgPitchHz = null, pitchScore = null;
+  if (pitchSamples && pitchSamples.length >= 5) {
+    avgPitchHz = pitchSamples.reduce((a, b) => a + b, 0) / pitchSamples.length;
+    const variance = pitchSamples.reduce((a, b) => a + (b - avgPitchHz) ** 2, 0) / pitchSamples.length;
+    // Coefficient of variation, not raw stdDev — keeps the score fair across
+    // naturally lower- and higher-pitched voices instead of just rewarding
+    // a wide Hz swing in absolute terms.
+    const cv = Math.sqrt(variance) / avgPitchHz;
+    if (cv < 0.05) pitchScore = 55;
+    else if (cv < 0.10) pitchScore = 72;
+    else if (cv < 0.18) pitchScore = 92;
+    else if (cv < 0.28) pitchScore = 82;
+    else pitchScore = 68;
+  }
+
+  return { avgEnergy, energyScore, dynamicRange, rangeScore, pauseCount, pauseTimeSec, pausesPerMin, pausesScore, avgPitchHz, pitchScore };
+}
+
 export function D2PracticeWidget({T, T2, isDesktop}) {
   const EXERCISES=[
     {id:"sentence",title:"Same Sentence Challenge",sentence:'"That\'s an interesting idea."',
@@ -107,15 +211,14 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     ],
   };
   const ALL_PROMPTS = Object.values(PROMPTS).flat();
-  const DIMS = ["Pace","Pitch","Tone","Pauses","Vocal Energy","Range","Presence"];
+  const DIMS = ["Pace","Pitch","Pauses","Vocal Energy","Range","Confidence Hedges"];
   const DIM_INFO = {
     "Pace": "How quickly you speak, measured in words per minute.",
-    "Pitch": "How much your voice rises and falls, rather than staying flat.",
-    "Tone": "The warmth and emotional colour carried in your voice.",
-    "Pauses": "How well you use silence and breath to let key points land.",
-    "Vocal Energy": "The dynamism and enthusiasm projected through your voice.",
-    "Range": "The overall span between your quietest and most powerful moments.",
-    "Presence": "How grounded, confident, and commanding you sound overall.",
+    "Pitch": "How much your voice rises and falls in inflection rather than staying flat — measured directly from your recording.",
+    "Pauses": "How much you let silence and breath land between ideas, measured from the gaps in your recording.",
+    "Vocal Energy": "The average loudness and dynamism of your voice, measured directly from your recording.",
+    "Range": "How much your volume varies between your quietest and loudest moments, measured directly from your recording.",
+    "Confidence Hedges": "How rarely you soften a statement with words like 'I think' or 'maybe', counted from your transcript.",
   };
 
   const [phase, setPhase] = useState('intro');
@@ -249,6 +352,19 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const audioDataURIRef = useRef(null);
   const waveRef = useRef(null);
   const startTimeRef = useRef(null);
+  // Real signal data captured from the mic during recording — feeds Pauses,
+  // Vocal Energy, Range and Pitch, none of which come from the transcript.
+  const audioAnalyserCtxRef = useRef(null);
+  const energySampleIntervalRef = useRef(null);
+  const energySamplesRef = useRef([]);
+  const pitchSamplesRef = useRef([]);
+
+  // Guards against leaking an AudioContext if the component unmounts mid-recording
+  // (e.g. navigating away) — browsers cap how many can be open at once.
+  useEffect(()=>()=>{
+    clearInterval(energySampleIntervalRef.current);
+    try { audioAnalyserCtxRef.current?.close(); } catch(e) {}
+  },[]);
 
   useEffect(()=>{
     onRecordingChange?.(isRec || phase==='analyzing');
@@ -283,6 +399,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     const fillersPerMin = +(fillers / elapsedSec * 60).toFixed(1);
     const hedgeRegex = /\b(i think|i guess|maybe|perhaps|kind of|sort of|i suppose|i feel like|possibly)\b/gi;
     const hedges = (text.match(hedgeRegex) || []).length;
+    const hedgesPerMin = +(hedges / elapsedSec * 60).toFixed(1);
     const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 3).length || 1;
     const avgSentLen = Math.round(wordCount / sentences);
     let paceLabel, paceScore;
@@ -291,7 +408,13 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     else if (wpm < 155) { paceLabel = 'ideal'; paceScore = 94; }
     else if (wpm < 180) { paceLabel = 'slightly fast'; paceScore = 74; }
     else { paceLabel = 'fast'; paceScore = 55; }
-    return { wordCount, wpm, fillers, fillersPerMin, hedges, avgSentLen, paceLabel, paceScore, elapsedSec };
+    let hedgeScore;
+    if (hedgesPerMin < 1) hedgeScore = 95;
+    else if (hedgesPerMin < 2) hedgeScore = 82;
+    else if (hedgesPerMin < 4) hedgeScore = 68;
+    else if (hedgesPerMin < 6) hedgeScore = 52;
+    else hedgeScore = 40;
+    return { wordCount, wpm, fillers, fillersPerMin, hedges, hedgesPerMin, hedgeScore, avgSentLen, paceLabel, paceScore, elapsedSec };
   }
 
   function doStart(){
@@ -321,6 +444,28 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           catch { mr = mimeType?new MediaRecorder(stream,{mimeType}):new MediaRecorder(stream); }
           mr.ondataavailable=e=>{if(e.data.size>0)audioChunksRef.current.push(e.data);};
           mr.start(1000);mediaRecRef.current=mr;
+          try {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            const actx = new AC();
+            audioAnalyserCtxRef.current = actx;
+            const srcNode = actx.createMediaStreamSource(stream);
+            const analyser = actx.createAnalyser();
+            analyser.fftSize = 1024;
+            srcNode.connect(analyser);
+            const buf = new Float32Array(analyser.fftSize);
+            energySamplesRef.current = [];
+            pitchSamplesRef.current = [];
+            energySampleIntervalRef.current = setInterval(() => {
+              analyser.getFloatTimeDomainData(buf);
+              let sumSq = 0;
+              for (let i = 0; i < buf.length; i++) sumSq += buf[i] * buf[i];
+              energySamplesRef.current.push(Math.sqrt(sumSq / buf.length));
+              const hz = detectPitchHz(buf, actx.sampleRate);
+              if (hz > 0) pitchSamplesRef.current.push(hz);
+            }, 100);
+          } catch (sigErr) {
+            console.error('[D2Voice] signal analysis setup error:', sigErr);
+          }
         } catch(err) {
           console.error('[D2Voice] recorder start error:', err);
           stream.getTracks().forEach(t => t.stop());
@@ -334,8 +479,14 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
   function stopRecording(cb){
     const mr=mediaRecRef.current;
-    if(!mr||mr.state==='inactive'){ cb('', true); return; }
+    if(!mr||mr.state==='inactive'){
+      clearInterval(energySampleIntervalRef.current);
+      try { audioAnalyserCtxRef.current?.close(); } catch(e) {}
+      cb('', true); return;
+    }
     mr.onstop=async()=>{
+      clearInterval(energySampleIntervalRef.current);
+      try { audioAnalyserCtxRef.current?.close(); } catch(e) {}
       const blobType=mr.mimeType||'audio/webm';
       const blob=new Blob(audioChunksRef.current,{type:blobType});
       setAudioURL(URL.createObjectURL(blob));
@@ -360,6 +511,9 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
   function doStop(){
     const elapsedSec = startTimeRef.current ? Math.round((Date.now() - startTimeRef.current) / 1000) : 0;
+    // Captured before stopRecording's async transcribe chain runs, since the
+    // sample buffers are cleared at the start of the next recording.
+    const signal = computeSignalMetrics(energySamplesRef.current, pitchSamplesRef.current, elapsedSec);
     setIsRec(false);clearTimeout(timerRef.current);
     // Transition to the analyzing screen immediately — before the async
     // stop/transcribe chain — so the UI doesn't sit frozen on 'recording'
@@ -369,8 +523,9 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       if (failed) { setTranscribeFailed(true); setPhase('recording'); return; }
       setTranscript(text);
       const m = computeMetrics(text, elapsedSec);
-      setRecMetrics(m);
-      analyzeText(text, m);
+      const merged = m ? { ...m, ...signal } : m;
+      setRecMetrics(merged);
+      analyzeText(text, merged);
     });
   }
 
@@ -394,7 +549,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       setPhase(isRetry?'comparison':'feedback');return;
     }
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1000,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery.\n\nIMPORTANT: All feedback must reference what this person ACTUALLY SAID. Quote or paraphrase specific words and phrases from the transcript. Do not write generic vocal coaching advice.\n\nSpeaking prompt: "${prompt}"\nTranscript: "${text}"${metrics && metrics.wpm > 0 ? `\n\nMeasured delivery data:\n- Speaking pace: ${metrics.wpm} WPM (${metrics.paceLabel}) — ideal executive range is 120–150 WPM\n- Confidence hedges ("I think", "maybe", etc.): ${metrics.hedges}\n- Average sentence length: ${metrics.avgSentLen} words` : ''}\n\nReturn ONLY valid JSON. Use the measured paceScore (${metrics?.paceScore||65}) for the Pace dimension:\n{"overall":<50-100>,"headline":"<max 10 words: single most important vocal insight, referencing what they said>","subtitle":"<one warm encouraging sentence specific to this delivery>","wpmNote":"<1 sentence naming their exact WPM and what it means for their listener — skip if no pace data>","confidenceNote":"<1 sentence about their directness: praise clear statements, gently flag hedging if hedges > 3, quoting a specific moment>","scores":{"Pace":<use ${metrics?.paceScore||65}>,"Pitch":<50-100>,"Tone":<50-100>,"Pauses":<50-100>,"Vocal Energy":<50-100>,"Range":<50-100>,"Presence":<50-100>},"worked":["<vocal strength 1 — short title, specific to what they said>","<vocal strength 2 — short title, specific to what they said>","<vocal strength 3 — short title>"],"workedSubs":["<1 sentence expanding on worked[0], quoting or paraphrasing specific words they actually said>","<1 sentence expanding on worked[1], referencing a specific moment in their delivery>","<1 sentence expanding on worked[2]>"],"improve":[{"title":"<4-7 words naming the single most impactful vocal change>","detail":"<1-2 sentences referencing a specific moment in their transcript where this would have landed harder>"}],"insight":"<2-3 personalised sentences referencing specific words or phrases they used: what vocal quality is working, what one change would elevate it most>","moments":[{"label":"<moment type e.g. Pace rush / Energy peak / Strong moment / Energy dip / Pitch drop>","quote":"<copy 4-6 consecutive words from the transcript exactly where this moment occurred>","color":"<#C8A46A for pace/energy rush, #527060 for strong moment, #B05C4A for dip/drop>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"}]}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1000,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery.\n\nIMPORTANT: All feedback must reference what this person ACTUALLY SAID. Quote or paraphrase specific words and phrases from the transcript. Do not write generic vocal coaching advice.\n\nSpeaking prompt: "${prompt}"\nTranscript: "${text}"${metrics && metrics.wpm > 0 ? `\n\nMeasured delivery data (from the actual recording, not inferred):\n- Speaking pace: ${metrics.wpm} WPM (${metrics.paceLabel}) — ideal executive range is 120–150 WPM\n- Pauses: ${metrics.pauseCount ?? 0} pause(s) detected, ${metrics.pausesPerMin!=null?metrics.pausesPerMin.toFixed(1):'0'} per minute\n- Pitch inflection: ${metrics.pitchScore!=null?metrics.pitchScore+'/100 (higher = more natural rise and fall, lower = flatter/more monotone)':'not detected'}\n- Vocal energy: ${metrics.energyScore ?? 'n/a'}/100 average loudness\n- Range: ${metrics.rangeScore ?? 'n/a'}/100 variation between quiet and loud moments\n- Confidence hedges ("I think", "maybe", etc.): ${metrics.hedges} (${metrics.hedgesPerMin ?? metrics.hedges} per minute)\n- Average sentence length: ${metrics.avgSentLen} words` : ''}\n\nReturn ONLY valid JSON. All six scores below are measured directly from the recording and transcript — use the exact values given, do not invent your own:\n{"overall":<50-100>,"headline":"<max 10 words: single most important vocal insight, referencing what they said>","subtitle":"<one warm encouraging sentence specific to this delivery>","wpmNote":"<1 sentence naming their exact WPM and what it means for their listener — skip if no pace data>","confidenceNote":"<1 sentence about their directness: praise clear statements, gently flag hedging if hedges > 3, quoting a specific moment>","scores":{"Pace":<use ${metrics?.paceScore||65}>,"Pitch":<use ${metrics?.pitchScore||65}>,"Pauses":<use ${metrics?.pausesScore||65}>,"Vocal Energy":<use ${metrics?.energyScore||65}>,"Range":<use ${metrics?.rangeScore||65}>,"Confidence Hedges":<use ${metrics?.hedgeScore||65}>},"worked":["<vocal strength 1 — short title, specific to what they said>","<vocal strength 2 — short title, specific to what they said>","<vocal strength 3 — short title>"],"workedSubs":["<1 sentence expanding on worked[0], quoting or paraphrasing specific words they actually said>","<1 sentence expanding on worked[1], referencing a specific moment in their delivery>","<1 sentence expanding on worked[2]>"],"improve":[{"title":"<4-7 words naming the single most impactful vocal change>","detail":"<1-2 sentences referencing a specific moment in their transcript where this would have landed harder>"}],"insight":"<2-3 personalised sentences referencing specific words or phrases they used: what vocal quality is working, what one change would elevate it most>","moments":[{"label":"<moment type e.g. Pace rush / Energy peak / Strong moment / Energy dip / Pitch drop>","quote":"<copy 4-6 consecutive words from the transcript exactly where this moment occurred>","color":"<#C8A46A for pace/energy rush, #527060 for strong moment, #B05C4A for dip/drop>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"}]}`}]})});
       const d=await res.json();
       if(!res.ok) throw new Error(d.error||'Request failed');
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
@@ -854,6 +1009,22 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
               {feedback.wpmNote&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.55,margin:"10px 0 0",fontStyle:"italic"}}>{feedback.wpmNote}</p>}
             </div>
           )}
+          {/* Confidence Hedges */}
+          {recMetrics.hedges != null && (
+            <div style={{background:T2.surface,borderRadius:6,padding:isDesktop?"16px 18px":"14px 16px"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:4}}>Confidence Hedges</div>
+                  <div style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text4}}>I think, maybe, perhaps…</div>
+                </div>
+                <div style={{textAlign:"right",flexShrink:0}}>
+                  <span style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text}}>{recMetrics.hedges}</span>
+                  <div style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>detected</div>
+                </div>
+              </div>
+              {feedback.confidenceNote&&<p style={{fontFamily:T.serif,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.55,margin:"10px 0 0",fontStyle:"italic"}}>{feedback.confidenceNote}</p>}
+            </div>
+          )}
         </div>
       )}
       {/* 3 WHAT CAME ACROSS WELL + BIGGEST OPPORTUNITY */}
@@ -906,6 +1077,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       </div>
       <button onClick={reset} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Start over</button>
       {!pendingResult && <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,fontStyle:"italic",textAlign:"center",margin:0}}>Saved to "My Saved Work"</p>}
+      <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,fontStyle:"italic",textAlign:"center",margin:0}}>Voice metrics are directional estimates from your recording, not clinical-grade measurements.</p>
     </div>
     {audioEl}
     </>
