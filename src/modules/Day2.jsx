@@ -851,7 +851,11 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     const gridPoly=(pct)=>RANGLES.map(a=>{const[x,y]=rPt(100,a);return`${(cx+(x-cx)*pct).toFixed(1)},${(cy+(y-cy)*pct).toFixed(1)}`;}).join(' ');
     const dataPoly=DIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores?.[d]||50,RANGLES[i]);return`${x.toFixed(1)},${y.toFixed(1)}`;}).join(' ');
     const WBARS=Array.from({length:60},(_,i)=>Math.max(0.08,Math.min(1,Math.sin(i/59*Math.PI)*0.65+0.25+Math.sin(i*4.7)*0.13+Math.cos(i*2.3)*0.11)));
-    const scoreColor=s=>s>=80?T.gold:s>=70?"#7A9E84":T2.text3;
+    const scoreColor=s=>s>=80?T.gold:s>=70?"#7A9E84":"#B05C4A";
+    const scoreTier=s=>s>=80?"Strong":s>=70?"Good":"Focus area";
+    const dimScores=DIMS.map(d=>feedback.scores?.[d]||50);
+    const focusDims=DIMS.filter((d,i)=>dimScores[i]<70);
+    const strongCount=dimScores.filter(s=>s>=80).length;
     return (
     <>
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
@@ -951,6 +955,11 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       {/* 3 VOICE PROFILE */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>Your Voice Profile</div>
+        <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:"0 0 16px"}}>
+          {focusDims.length===0
+            ? `Strong across all ${DIMS.length} dimensions — no clear focus area.`
+            : `Strong in ${strongCount} of ${DIMS.length} dimensions — ${focusDims.length===1?focusDims[0]:focusDims.slice(0,-1).join(", ")+" and "+focusDims[focusDims.length-1]} need${focusDims.length===1?"s":""} the most attention.`}
+        </p>
         <div style={{display:isDesktop?"flex":"block",gap:24,alignItems:"center"}}>
           <div style={{flexShrink:0,display:"flex",justifyContent:"center"}}>
             {/* viewBox padded well beyond the 0-200 data box (labels sit at radius
@@ -966,14 +975,15 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
             </svg>
           </div>
           <div style={{flex:1,display:"flex",flexDirection:"column",gap:10,marginTop:isDesktop?0:10}}>
-            {DIMS.map((d,i)=>{const sc=feedback.scores?.[d]||50;const prev=round1?.scores?.[d];const diff=prev?sc-prev:null;const isOpen=expandedDim===d;return(
+            {DIMS.map((d,i)=>{const sc=feedback.scores?.[d]||50;const prev=round1?.scores?.[d];const diff=prev?sc-prev:null;const isOpen=expandedDim===d;const tierColor=scoreColor(sc);return(
               <div key={i}>
                 <div onClick={()=>setExpandedDim(isOpen?null:d)} style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}}>
                   <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text,width:isDesktop?90:76,flexShrink:0,borderBottom:"1px dotted "+T2.text4}}>{d}</span>
                   <div style={{flex:1,height:4,background:T2.bg,borderRadius:2,overflow:"hidden"}}>
-                    <div style={{height:"100%",width:sc+"%",background:"linear-gradient(90deg,rgba(138,158,132,0.5),rgba(82,112,96,0.85))",borderRadius:2,transition:"width 1s ease"}}/>
+                    <div style={{height:"100%",width:sc+"%",background:`linear-gradient(90deg,${tierColor}66,${tierColor})`,borderRadius:2,transition:"width 1s ease"}}/>
                   </div>
-                  <span style={{fontFamily:T.serif,fontSize:isDesktop?13:12,fontWeight:600,color:scoreColor(sc),width:24,textAlign:"right",flexShrink:0}}>{sc}</span>
+                  <span style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:tierColor,textTransform:"uppercase",letterSpacing:"0.06em",width:isDesktop?58:52,flexShrink:0,textAlign:"right"}}>{scoreTier(sc)}</span>
+                  <span style={{fontFamily:T.serif,fontSize:isDesktop?13:12,fontWeight:600,color:tierColor,width:24,textAlign:"right",flexShrink:0}}>{sc}</span>
                   {diff!==null&&<span style={{fontFamily:T.sans,fontSize:10,color:diff>0?"rgba(82,112,96,0.9)":diff<0?"rgba(160,80,60,0.7)":T2.text4,width:22,flexShrink:0}}>{diff>0?`+${diff}`:diff===0?"":diff}</span>}
                 </div>
                 {isOpen&&<p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,margin:"4px 0 0",paddingLeft:isDesktop?100:86}}>{DIM_INFO[d]}</p>}
