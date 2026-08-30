@@ -557,7 +557,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // Recording
   const [isRec, setIsRec] = useState(false);
   useWakeLock(isRec);
-  const [timeLeft, setTimeLeft] = useState(90);
+  const [timeLeft, setTimeLeft] = useState(45);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [transcript1, setTranscript1] = useState('');
   const [transcript2, setTranscript2] = useState('');
@@ -608,7 +608,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   }, [isRec, phase]);
 
   function doStart() {
-    setIsRec(true); setTimeLeft(90);
+    setIsRec(true); setTimeLeft(45);
     setMicError(false); setTranscribeFailed(false);
     audioChunksRef.current = [];
     if (navigator.mediaDevices?.getUserMedia) {
@@ -700,7 +700,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
     setPhase('select'); setScenario(null);
     setBriefSecs(45); setBriefDone(false);
     setTranscript1(''); setTranscript2('');
-    setFeedback(null); setIsRec(false); setTimeLeft(90);
+    setFeedback(null); setIsRec(false); setTimeLeft(45);
   }
 
   const cs = {
