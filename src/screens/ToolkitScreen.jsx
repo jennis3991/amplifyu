@@ -567,8 +567,9 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
               <div style={{position:"relative",background:TK.ink,overflow:"hidden",padding:isDesktop?"28px 88px":"20px 20px"}}>
                 <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 80% 20%, rgba(168,179,163,0.08) 0%, transparent 55%)"}}/>
                 <div style={{position:"relative",maxWidth:isDesktop?1160:undefined,margin:isDesktop?"0 auto":undefined}}>
-                  <button onClick={()=>setOpenPracticeSub(null)} style={{width:36,height:36,borderRadius:"50%",background:"rgba(248,246,241,0.1)",border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",marginBottom:16}}>
+                  <button onClick={()=>setOpenPracticeSub(null)} style={{height:36,padding:"0 14px 0 10px",borderRadius:18,background:"rgba(248,246,241,0.1)",border:"none",display:"flex",alignItems:"center",gap:6,cursor:"pointer",marginBottom:16}}>
                     <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M11 3L5 9l6 6" stroke={TK.onDark} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <span style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:TK.onDark}}>Exit</span>
                   </button>
                   <div style={{display:"flex",alignItems:"center",gap:14}}>
                     <div style={{width:44,height:44,borderRadius:10,background:sub.tint,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{sub.icon}</div>
@@ -696,7 +697,7 @@ in the margins.<br/>For everyone in the margins.</h2>
           <div 
 style={{display:"flex",flexDirection:"column",gap:14,paddingBottom:40}}>
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>
-              Eight months ago, I returned from maternity leave. Two small 
+              A year ago, I returned from maternity leave. Two small
 children at home, a career that mattered to me, and a hard new reality: I 
 could no longer afford to be anything less than precise. Every meeting, 
 every conversation had to <strong>earn its place.</strong>

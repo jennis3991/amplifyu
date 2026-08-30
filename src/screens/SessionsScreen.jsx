@@ -250,7 +250,7 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
             <div style={{ marginBottom: 36 }}>
               <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 10, fontFamily: T.sans }}>Skills Gym</div>
               <h2 style={{ fontFamily: T.serif, fontSize: 32, fontWeight: 500, color: T2.text, letterSpacing: "-1px", lineHeight: 1.1 }}>Practice Space</h2>
-              <p style={{ fontSize: 13, color: T2.text3, marginTop: 6, fontFamily: T.sans, fontWeight: 300 }}>Daily challenges, 30 scenarios, score history and streak tracking. Practise any time, on any topic.</p>
+              <p style={{ fontSize: 13, color: T2.text3, marginTop: 6, fontFamily: T.sans, fontWeight: 300 }}>Meeting prep simulations, a daily scenario challenge with score history and streak tracking, and communicators to study and learn from. Practise any time, on any topic.</p>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 32, padding: "22px 20px 22px 0", borderTop: "1px solid " + T2.divider }}>
               <div style={{ width: 56, flexShrink: 0, display: "flex", justifyContent: "flex-end" }}>
@@ -317,7 +317,7 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 8, fontFamily: T.sans }}>Skills Gym</div>
             <h2 style={{ fontFamily: T.serif, fontSize: 26, fontWeight: 500, color: T2.text, letterSpacing: "-0.8px", lineHeight: 1.1, margin: 0 }}>Practice Space</h2>
-            <p style={{ fontSize: 12, color: T2.text3, marginTop: 6, fontFamily: T.sans, fontWeight: 300 }}>Daily challenges, 30 scenarios, score history and streak tracking.</p>
+            <p style={{ fontSize: 12, color: T2.text3, marginTop: 6, fontFamily: T.sans, fontWeight: 300 }}>Meeting prep simulations, a daily scenario challenge with score history and streak tracking, and communicators to study and learn from.</p>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "18px 0", borderTop: "0.5px solid " + T2.divider }}>
             <div style={{ width: 44, flexShrink: 0, display: "flex", justifyContent: "flex-end" }}>
