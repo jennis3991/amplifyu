@@ -677,7 +677,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           </div>
           <div style={{flex:1}}>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0}}>
-              {"Your AmplifyU Coach analyses seven dimensions of your vocal delivery — "}<strong>pace, pitch, tone, pauses, vocal energy, range and presence</strong>{" — to reveal how your voice shapes the way people experience your message."}
+              {"Your AmplifyU Coach measures six dimensions of your vocal delivery, directly from your recording — "}<strong>pace, pitch, pauses, vocal energy, range and confidence hedges</strong>{" — to reveal how your voice shapes the way people experience your message."}
             </p>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:isDesktop?"10px 0 0":"8px 0 0",fontStyle:"italic"}}>
               This is your vocal baseline: a snapshot of the habits that build authority, confidence, and connection.
@@ -738,7 +738,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       <div style={{display:"flex",flexDirection:"column",gap:16}}>
         <div>
           <h2 style={cs.h2}>Choose a speaking prompt</h2>
-          <p style={{...cs.body,marginBottom:16}}>{"Pick a topic, speak for 60-90 seconds. Your coach listens for pace, pitch, tone, pauses, vocal energy, range and presence."}</p>
+          <p style={{...cs.body,marginBottom:16}}>{"Pick a topic, speak for 60-90 seconds. Your coach measures your pace, pitch, pauses, vocal energy, range and confidence hedges."}</p>
         </div>
         <div style={{display:"flex",gap:8,marginBottom:4}}>
           {Object.keys(PROMPTS).map(c=>(
@@ -837,7 +837,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:"48px 24px",textAlign:"center"}}>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.5,margin:0}}>Analysing your voice…</p>
           <SequentialDots dotCount={dotCount}
-            messages={["Evaluating pace, pitch, tone, pauses, energy, range, and presence.","Listening for where your voice carries the most conviction.","Mapping your pace against your pauses.","Finding the moments worth quoting back to you.","Almost there…"]}
+            messages={["Measuring your pace, pitch, pauses, energy, and range.","Listening for where your voice carries the most conviction.","Counting your confidence hedges.","Finding the moments worth quoting back to you.","Almost there…"]}
             textStyle={{fontFamily:T.sans,fontSize:13,color:T2.text3}}/>
         </div>
         {audioEl}
