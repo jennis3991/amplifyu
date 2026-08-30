@@ -686,6 +686,10 @@ Return ONLY valid JSON:
             <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0}}>{char.mockGoodNote}</p>
           </div>
         </div>
+        <div style={{...cs.card,borderLeft:'3px solid '+T.gold,background:'rgba(138,158,132,0.05)'}}>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:'italic',color:T2.text,lineHeight:1.6,margin:0}}>Every real person you talk to at work leans one of these ways — Driver, Thinker, Connector, Visionary. The more you practise reading that and adjusting to it here, the more naturally it'll happen when it actually counts.</p>
+        </div>
+        <button onClick={()=>{setChar(null);setPhase('select');}} style={cs.cta}>Practice Another Character →</button>
       </div>
     );
   }

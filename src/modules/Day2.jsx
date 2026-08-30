@@ -52,9 +52,11 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
      lesson:"Lower pitch signals authority. Higher pitch signals energy or uncertainty."},
   ];
   const [openEx, setOpenEx] = useState(null);
+  const [viewed, setViewed] = useState(() => new Set());
+  const allViewed = viewed.size >= EXERCISES.length;
 
   const card=(ex,i)=>(
-    <div key={ex.id} onClick={()=>setOpenEx(openEx===i?null:i)}
+    <div key={ex.id} onClick={()=>{setOpenEx(openEx===i?null:i); setViewed(prev => prev.has(ex.id) ? prev : new Set(prev).add(ex.id));}}
       style={isDesktop
         ?{background:T2.surface,borderRadius:4,border:`0.5px solid ${openEx===i?T.gold:T2.border}`,padding:"20px 24px",cursor:"pointer",transition:"border-color 0.2s",marginBottom:14}
         :{background:T2.surface,border:`1px solid ${openEx===i?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px",cursor:"pointer",transition:"border-color 0.2s"}}>
@@ -80,9 +82,15 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
     </div>
   );
 
+  const closingCard = allViewed && (
+    <div style={{background:T2.surface,borderRadius:isDesktop?4:8,border:"0.5px solid "+T2.border,borderLeft:"3px solid "+T.gold,padding:isDesktop?"20px 24px":"16px",marginTop:isDesktop?0:10}}>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>Every time you play with your pace, your pauses, and your pitch out loud, you're building a voice you can actually direct — not one that just happens to you. The next time it matters, you'll hear the difference.</p>
+    </div>
+  );
+
   return isDesktop
-    ? <>{EXERCISES.map((ex,i)=>card(ex,i))}</>
-    : <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{EXERCISES.map((ex,i)=>card(ex,i))}</div>;
+    ? <>{EXERCISES.map((ex,i)=>card(ex,i))}{closingCard}</>
+    : <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{EXERCISES.map((ex,i)=>card(ex,i))}{closingCard && <div style={{gridColumn:"1 / -1"}}>{closingCard}</div>}</div>;
 }
 
 // ─── D2 SIM WIDGET — voice recording + AI vocal coach ────────────────────────
