@@ -11,7 +11,7 @@ import { MobileSessionView } from './SessionViewMobile.jsx';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
-import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
+import { D10SimFeedback, D10MobileSAR, D10MobileSim, explainD10Score } from '../modules/Day10.jsx';
 import { useSequentialDots, SequentialDots } from '../modules/SequentialDots.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
 import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidget } from '../modules/Day4.jsx';
@@ -453,6 +453,7 @@ setAmbitionSaved(true); } catch {}
       const [activeScenario, setActiveScenario] = useState(null);
       const [simFallback, setSimFallback] = useState('');
       const [simResult, setSimResult] = useState(null);
+      const [expandedSimDim, setExpandedSimDim] = useState(null);
       const [simIsRec, setSimIsRec] = useState(false);
       const [simTimeLeft, setSimTimeLeft] = useState(30);
       const [simWave, setSimWave] = useState(Array(10).fill(0.3));
@@ -532,7 +533,7 @@ setAmbitionSaved(true); } catch {}
         setSimPhase('feedback');
       }
       function resetSim(){
-        setSimPhase('intro');setActiveScenario(null);setSimFallback('');setSimResult(null);setSimIsRec(false);setSimTimeLeft(30);setSimMicError(false);setSimTranscribeFailed(false);
+        setSimPhase('intro');setActiveScenario(null);setSimFallback('');setSimResult(null);setExpandedSimDim(null);setSimIsRec(false);setSimTimeLeft(30);setSimMicError(false);setSimTranscribeFailed(false);
         clearInterval(simWaveIntRef.current);
         if(simStreamRef.current){simStreamRef.current.getTracks().forEach(t=>t.stop());simStreamRef.current=null;}
         try{if(simCtxRef.current){simCtxRef.current.close();simCtxRef.current=null;}}catch{}
@@ -1149,13 +1150,21 @@ setAmbitionSaved(true); } catch {}
                 </div>
                 {/* Score bars */}
                 <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                  {Object.entries(simResult.scores||{}).map(([dim,sc])=>(
-                    <div key={dim} style={{display:"flex",alignItems:"center",gap:10}}>
-                      <span style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.55)",width:90,flexShrink:0}}>{dim}</span>
-                      <div style={{flex:1,height:3,background:"rgba(245,239,230,0.07)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",width:sc+"%",background:sc>=80?"rgba(82,112,96,0.8)":sc>=65?T.gold:"rgba(180,80,60,0.7)",borderRadius:2,transition:"width 1s ease"}}/></div>
-                      <span style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:scoreColor(sc),width:24,textAlign:"right",flexShrink:0}}>{sc}</span>
-                    </div>
-                  ))}
+                  {Object.entries(simResult.scores||{}).map(([dim,sc])=>{
+                    const isOpen = expandedSimDim===dim;
+                    return (
+                      <div key={dim} onClick={()=>setExpandedSimDim(isOpen?null:dim)} style={{cursor:"pointer"}}>
+                        <div style={{display:"flex",alignItems:"center",gap:10}}>
+                          <span style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.55)",width:90,flexShrink:0}}>{dim}</span>
+                          <div style={{flex:1,height:3,background:"rgba(245,239,230,0.07)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",width:sc+"%",background:sc>=80?"rgba(82,112,96,0.8)":sc>=65?T.gold:"rgba(180,80,60,0.7)",borderRadius:2,transition:"width 1s ease"}}/></div>
+                          <span style={{fontFamily:T.serif,fontSize:12,fontWeight:600,color:scoreColor(sc),width:24,textAlign:"right",flexShrink:0}}>{sc}</span>
+                        </div>
+                        {isOpen && (
+                          <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(245,239,230,0.6)",lineHeight:1.6,margin:"8px 0 0 100px"}}>{explainD10Score(dim,sc)}</p>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               {/* Strength + Improve */}
@@ -1173,7 +1182,7 @@ setAmbitionSaved(true); } catch {}
                 <div style={cs10.label}>Your AmplifyU Coach Says</div>
                 <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>{simResult.insight}</p>
               </div>
-              <button onClick={()=>setSimPhase('picking')} style={cs10.cta}>Try Another Scenario →</button>
+              <button onClick={()=>{setSimPhase('picking');setExpandedSimDim(null);}} style={cs10.cta}>Try Another Scenario →</button>
               <button onClick={resetSim} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"4px 0",textAlign:"center"}}>← Start over</button>
             </div>
           </div>

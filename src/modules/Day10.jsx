@@ -147,11 +147,49 @@ export function D10MobileSAR({onComplete}) {
 }
 
 
+// One sentence of tailored advice per Leadership Hot Seat score dimension,
+// shared by the mobile (D10MobileSim below) and desktop (SessionView.jsx)
+// results views so tapping a score explains what to do about it. Tiers match
+// each view's own scoreColor thresholds (>=80 high, >=65 mid, else low).
+export function explainD10Score(dim, score) {
+  const tier = score>=80 ? 'high' : score>=65 ? 'mid' : 'low';
+  const TEXT = {
+    Clarity: {
+      high: "Your point came through immediately — no one had to work to understand what you meant.",
+      mid: "Your point mostly landed, but a clearer opening line would remove any doubt about what you meant.",
+      low: "Your point got lost in the response — lead with a single, unambiguous sentence that states your position.",
+    },
+    Structure: {
+      high: "You built your answer in a clear order — the listener could follow your logic from start to finish.",
+      mid: "There was some structure here, but tightening the order — point, then evidence — would make it land harder.",
+      low: "Your answer didn't follow a clear order — decide your point first, then build the evidence around it.",
+    },
+    Confidence: {
+      high: "You spoke with real conviction — no hedging, no undercutting your own answer.",
+      mid: "You mostly sounded sure of yourself, but a few hedges softened the impact — own the statement fully.",
+      low: "Hedging language undercut your answer — say what you mean without qualifying it away.",
+    },
+    Brevity: {
+      high: "You said exactly what needed saying and stopped — nothing wasted.",
+      mid: "Your answer ran a little long — cut anything that isn't doing work for your main point.",
+      low: "Your answer ran long — aim to make your point in half the time, then stop.",
+    },
+    Impact: {
+      high: "This answer would land in the room — memorable, specific, and hard to argue with.",
+      mid: "This answer would register, but sharpening the result you're claiming would make it unforgettable.",
+      low: "This answer wouldn't stick in the room — anchor it to a specific, memorable outcome.",
+    },
+  };
+  return TEXT[dim]?.[tier] || '';
+}
+
 // ─── Leadership Hot Seat — D10 Simulation (mobile) ───────────────────────────
 export function D10MobileSim({T2: _T2, onRecordingChange}) {
   const T2 = _T2 || T;
+  const [introSeen, setIntroSeen] = useState(false);
   const [scenario, setScenario] = useState(null);
   const [r, setR] = useState(null);
+  const [expandedDim, setExpandedDim] = useState(null);
   const [l, setL] = useState(false);
   const dotCount = useSequentialDots(l);
   const [isRec, setIsRec] = useState(false);
@@ -242,8 +280,40 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
   }
 
   function resetToScenarios(){
-    setScenario(null); setR(null); setMicError(false); setTranscribeFailed(false); setFallbackText(''); setIsRec(false);
+    setScenario(null); setR(null); setExpandedDim(null); setMicError(false); setTranscribeFailed(false); setFallbackText(''); setIsRec(false);
   }
+
+  if (!introSeen) return (
+    <div>
+      <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#A8998A",lineHeight:1.6,marginBottom:18,fontWeight:300}}>Four real scenarios. 30 seconds each. Speak — get coached.</p>
+      <div style={{display:"flex",alignItems:"flex-start",marginBottom:20}}>
+        {[
+          {n:1,label:"Pick a\nscenario",icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="14" height="16" rx="2" stroke="#8A9E84" strokeWidth="1.3"/><path d="M7 7h8M7 11h8M7 15h5" stroke="#8A9E84" strokeWidth="1.3" strokeLinecap="round"/></svg>},
+          {n:2,label:"Hear the\nchallenge",icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M11 3C7 3 3.5 6 3.5 10c0 2.5 1.3 4.7 3.3 6l-1 3 3.2-1.2C10 18 10.5 18 11 18c4 0 7.5-3.6 7.5-8S15 3 11 3z" stroke="#8A9E84" strokeWidth="1.3"/></svg>},
+          {n:3,label:"Speak your\nanswer",icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke="#8A9E84" strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2" stroke="#8A9E84" strokeWidth="1.3" strokeLinecap="round"/></svg>},
+          {n:4,label:"Get\ncoached",icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4.5H17l-3.75 2.75 1.5 4.75L11 11.5l-3.75 2.5 1.5-4.75L5 6.5h4.5z" stroke="#8A9E84" strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+        ].map((s,i)=>(
+          <div key={i} style={{display:"flex",alignItems:"center",flex:i<3?1:"none"}}>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+              <div style={{width:38,height:38,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:6}}>{s.icon}</div>
+              <div style={{fontFamily:"'Inter',sans-serif",fontSize:9,fontWeight:700,color:"#C9A84C",marginBottom:2}}>{s.n}</div>
+              <div style={{fontFamily:"'Inter',sans-serif",fontSize:10,color:T2.text3,textAlign:"center",lineHeight:1.3,whiteSpace:"pre-line"}}>{s.label}</div>
+            </div>
+            {i<3&&<div style={{height:1,width:10,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:22}}/>}
+          </div>
+        ))}
+      </div>
+      <div style={{padding:"16px",background:T2.surface,borderRadius:8,border:"0.5px solid rgba(138,158,132,0.15)",marginBottom:10}}>
+        <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:"'Inter',sans-serif"}}>The First Step</div>
+        <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>Pick the scenario that feels most real to you. Frame the Situation, explain your Action, land the Result — then stop. Nobody wants your full backstory.</p>
+      </div>
+      <div style={{padding:"16px",background:T2.surface,borderRadius:8,border:"0.5px solid rgba(138,158,132,0.15)",marginBottom:20}}>
+        <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:"'Inter',sans-serif"}}>Your AmplifyU Coach</div>
+        <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>You'll be scored on Clarity, Structure, Confidence, Brevity and Impact — then shown exactly what a stronger version sounds like.</p>
+      </div>
+      <button onClick={()=>setIntroSeen(true)} style={{width:"100%",padding:"15px",borderRadius:3,border:"none",background:"#2C2416",color:"#F7F3EC",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Start the Simulation →</button>
+    </div>
+  );
 
   if (!scenario) return (
     <div>
@@ -323,13 +393,21 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
             <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontWeight:600,color:"rgba(255,255,255,0.92)",lineHeight:1.3,margin:0,paddingTop:4}}>{r.headline}</p>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:7}}>
-            {Object.entries(r.scores||{}).map(([dim,sc])=>(
-              <div key={dim} style={{display:"flex",alignItems:"center",gap:8}}>
-                <span style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"rgba(245,239,230,0.55)",width:66,flexShrink:0}}>{dim}</span>
-                <div style={{flex:1,height:3,background:"rgba(245,239,230,0.07)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",width:sc+"%",background:scoreColor(sc),borderRadius:2}}/></div>
-                <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:12,fontWeight:600,color:scoreColor(sc),width:22,textAlign:"right",flexShrink:0}}>{sc}</span>
-              </div>
-            ))}
+            {Object.entries(r.scores||{}).map(([dim,sc])=>{
+              const isOpen = expandedDim===dim;
+              return (
+                <div key={dim} onClick={()=>setExpandedDim(isOpen?null:dim)} style={{cursor:"pointer"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8}}>
+                    <span style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"rgba(245,239,230,0.55)",width:66,flexShrink:0}}>{dim}</span>
+                    <div style={{flex:1,height:3,background:"rgba(245,239,230,0.07)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",width:sc+"%",background:scoreColor(sc),borderRadius:2}}/></div>
+                    <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:12,fontWeight:600,color:scoreColor(sc),width:22,textAlign:"right",flexShrink:0}}>{sc}</span>
+                  </div>
+                  {isOpen && (
+                    <p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"rgba(245,239,230,0.6)",lineHeight:1.6,margin:"8px 0 0"}}>{explainD10Score(dim,sc)}</p>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
         <div style={{display:"flex",gap:8}}>
