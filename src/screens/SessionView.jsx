@@ -4431,7 +4431,7 @@ setAmbitionSaved(true); } catch {}
                               <div style={{ width: 24, height: 24, borderRadius: "50%", background: "rgba(138,158,132,0.12)", border: "1px solid rgba(138,158,132,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
                                 <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-3.5" stroke={T.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                               </div>
-                              <span style={{ fontFamily: T.sans, fontSize: 17, color: T2.text, lineHeight: 1.65, fontWeight: 300 }}>{b}</span>
+                              <span style={{ fontFamily: T.sans, fontSize: 15, color: T2.text, lineHeight: 1.65, fontWeight: 300 }}>{b}</span>
                             </div>
                           ))}
                         </div>
@@ -4446,7 +4446,7 @@ setAmbitionSaved(true); } catch {}
                               <div style={{ width: 24, height: 24, borderRadius: "50%", background: "rgba(138,158,132,0.1)", border: "1px solid rgba(138,158,132,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
                                 <span style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold }}>{i + 1}</span>
                               </div>
-                              <span style={{ fontFamily: T.sans, fontSize: 17, color: T2.text, lineHeight: 1.65, fontWeight: 300 }}>{b}</span>
+                              <span style={{ fontFamily: T.sans, fontSize: 15, color: T2.text, lineHeight: 1.65, fontWeight: 300 }}>{b}</span>
                             </div>
                           ))}
                         </div>
