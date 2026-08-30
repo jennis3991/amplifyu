@@ -246,6 +246,9 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
             <p style={{fontFamily:T.sans, fontSize:12, color:T2.text4, margin:'14px 0 0', lineHeight:1.6, fontStyle:'italic'}}>{coachResult.bridgeLine}</p>
           )}
         </div>
+        <div style={{...cs.card, borderLeft:'3px solid '+T.gold, background:'rgba(138,158,132,0.05)'}}>
+          <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text, lineHeight:1.6, margin:0}}>The next time someone puts you on the spot, you'll already know how to shape your answer — state where you stand, back it up, then ground it in something real.</p>
+        </div>
         <button onClick={() => onSimulation?.()} style={cs.sageCta}>
           Enter the Boardroom →
         </button>

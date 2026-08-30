@@ -914,6 +914,9 @@ setAmbitionSaved(true); } catch {}
                     </div>
                   ))}
                 </div>
+                <div style={{marginTop:16,borderLeft:"3px solid "+T.gold,background:"rgba(138,158,132,0.05)",borderRadius:"0 4px 4px 0",padding:"14px 16px"}}>
+                  <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>This is the version of your work you'll reach for the next time someone asks "so what have you been up to?" — practised, not improvised.</p>
+                </div>
                 <button onClick={()=>setIdx(STEPS.indexOf("Simulation"))} style={{width:"100%",padding:"15px",borderRadius:4,border:"none",background:"rgba(82,112,96,0.85)",color:"white",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,marginTop:20}}>
                   Enter the Hot Seat →
                 </button>

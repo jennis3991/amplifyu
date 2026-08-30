@@ -137,10 +137,15 @@ export function D10MobileSAR({onComplete}) {
         </div>
       )}
       {res&&(
-        <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}>
-          <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>Your performance statement</div>
-          <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:"#2C2416",margin:0,lineHeight:1.65}}>{res}</p>
-        </div>
+        <>
+          <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}>
+            <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>Your performance statement</div>
+            <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:"#2C2416",margin:0,lineHeight:1.65}}>{res}</p>
+          </div>
+          <div style={{padding:"14px 16px",background:"rgba(237,232,223,0.6)",borderRadius:4,marginTop:10}}>
+            <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>This is the version of your work you'll reach for the next time someone asks "so what have you been up to?" — practised, not improvised.</p>
+          </div>
+        </>
       )}
     </div>
   );
