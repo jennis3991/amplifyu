@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
+import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -78,8 +79,6 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
       if (onNavFn) onNavFn.current = null;
     }
   }, [phase]);
-
-  const restart = () => { setPhase('intro'); setScIdx(pickScenarioIdx()); setRecDone(false); setAnalyzing(false); setFeedback(null); };
 
   const cs = {
     card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px"},
@@ -192,7 +191,6 @@ Give brief, specific coaching. Return ONLY valid JSON:
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.35, margin:"0 0 12px"}}>You've rehearsed the moment.</p>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Every time you practise out loud, the real moment gets easier. The next time one of these arrives, you'll be ready.</p>
       </div>
-      <button onClick={restart} style={cs.cta}>Start Again →</button>
     </div>
   );
 
@@ -217,29 +215,23 @@ const CIRCUIT_CHARS = [
     listensFor: 'genuine enthusiasm and plain language over jargon — whether the answer sounds like something a real person would say to a friend',
     question: "Theo spots you by the coffee station after the townhall and grins: \"Okay, real talk — what's something you're working on right now that actually gets you excited?\" What do you say?",
   },
-  {
-    id: 'priya',
-    name: 'Priya Shah',
-    role: 'Head of Strategy',
-    vibe: 'Direct and time-pressed — respects people who get straight to the point',
-    listensFor: 'brevity, a concrete and specific result, and confidence without padding or hedging',
-    question: "Priya introduces herself briskly between sessions: \"I've got about two minutes before my next meeting — what's the one thing I should know about the impact you've had this year?\" What do you say?",
-  },
 ];
 
 export function D13SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
   const [charIdx, setCharIdx] = useState(0);
-  const [scores, setScores] = useState([null, null, null]);
+  const [scores, setScores] = useState([null, null]);
   const [debrief, setDebrief] = useState(null);
   const [transcript, setTranscript] = useState('');
   const [interimText, setInterimText] = useState('');
-  const [recordState, setRecordState] = useState('idle'); // 'idle' | 'recording' | 'done'
+  const [recordState, setRecordState] = useState('idle'); // 'idle' | 'recording'
+  const [captureFailed, setCaptureFailed] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(true);
   const [fallbackInput, setFallbackInput] = useState('');
+  const dotCount = useSequentialDots(phase === 'analyzing');
 
-  const answersRef = useRef(['', '', '']);
-  const scoresRef = useRef([null, null, null]);
+  const answersRef = useRef(['', '']);
+  const scoresRef = useRef([null, null]);
   const charIdxRef = useRef(0);
   const recognitionRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -269,13 +261,17 @@ export function D13SimWidget({T, T2, isDesktop}) {
     });
   };
 
+  // Once speaking is done, there's nothing left for the user to confirm —
+  // transcribing and scoring both happen behind the single "{name} is
+  // thinking about your answer" loading screen (the 'analyzing' phase).
   const stopRecording = () => {
     const mr = recognitionRef.current;
-    if (!mr || mr.state === 'inactive') { setRecordState(transcriptRef.current ? 'done' : 'idle'); return; }
-    setRecordState('processing');
+    if (!mr || mr.state === 'inactive') { setRecordState('idle'); return; }
+    setPhase('analyzing');
     mr.onstop = async () => {
       mr.stream.getTracks().forEach(t => t.stop());
       const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      let text = '';
       try {
         const b64 = await blobToB64(blob);
         const res = await fetch('/api/transcribe', {
@@ -284,23 +280,24 @@ export function D13SimWidget({T, T2, isDesktop}) {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Transcription failed');
-        transcriptRef.current = (data.text || '').trim();
-        setTranscript(transcriptRef.current);
+        text = (data.text || '').trim();
       } catch (err) {
         console.error('[D13SimWidget] transcribe error:', err);
       }
-      setRecordState(transcriptRef.current ? 'done' : 'idle');
+      if (!text) {
+        setCaptureFailed(true);
+        setRecordState('idle');
+        setPhase('question');
+        return;
+      }
+      setCaptureFailed(false);
+      transcriptRef.current = text;
+      setTranscript(text);
+      const ci = charIdxRef.current;
+      answersRef.current[ci] = text;
+      await scoreChar(ci);
     };
-    try { mr.stop(); } catch(e) { setRecordState(transcriptRef.current ? 'done' : 'idle'); }
-  };
-
-  const reRecord = () => {
-    if (recognitionRef.current && recognitionRef.current.state !== 'inactive') { try { recognitionRef.current.onstop = null; recognitionRef.current.stop(); } catch(e) {} }
-    recognitionRef.current = null;
-    transcriptRef.current = '';
-    setTranscript('');
-    setInterimText('');
-    setRecordState('idle');
+    try { mr.stop(); } catch(e) { setRecordState('idle'); setPhase('question'); }
   };
 
   const resetRecording = () => {
@@ -310,6 +307,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
     setTranscript('');
     setInterimText('');
     setRecordState('idle');
+    setCaptureFailed(false);
     setFallbackInput('');
   };
 
@@ -354,7 +352,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
       const s = scoresRef.current[i];
       return "--- " + sc.name + " (" + sc.role + ") ---\nQuestion: " + sc.question + "\nAnswer: " + a + "\nScores: Opening " + (s?.opening||0) + "/5, Connection " + (s?.connection||0) + "/5, Impression " + (s?.impression||0) + "/5";
     }).join('\n\n');
-    const prompt = "You are an expert communication coach. A user just completed The Networking Circuit at a company townhall — one question each from three very different people. Analyse their answers across all three.\n\n" + all + "\n\nGive specific, direct, encouraging coaching based on what they actually wrote.\n\nRespond ONLY with valid JSON on a single line: {\"insight\":\"2-3 specific sentences about their communication pattern\",\"practice\":\"one concrete thing to focus on next time\",\"quote\":\"a short inspiring quote about connection or confidence\"}";
+    const prompt = "You are an expert communication coach. A user just completed The Networking Circuit at a company townhall — one question each from two very different people. Analyse their answers across both.\n\n" + all + "\n\nGive specific, direct, encouraging coaching based on what they actually wrote.\n\nRespond ONLY with valid JSON on a single line: {\"insight\":\"2-3 specific sentences about their communication pattern\",\"practice\":\"one concrete thing to focus on next time\",\"quote\":\"a short inspiring quote about connection or confidence\"}";
     try {
       const res = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-5', messages:[{role:'user', content:prompt}], max_tokens:350})});
       const data = await res.json();
@@ -380,7 +378,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
 
   const handleNext = async () => {
     const nextIdx = charIdxRef.current + 1;
-    if (nextIdx < 3) {
+    if (nextIdx < CIRCUIT_CHARS.length) {
       charIdxRef.current = nextIdx;
       setCharIdx(nextIdx);
       resetRecording();
@@ -393,11 +391,11 @@ export function D13SimWidget({T, T2, isDesktop}) {
 
   const reset = () => {
     charIdxRef.current = 0;
-    answersRef.current = ['', '', ''];
-    scoresRef.current = [null, null, null];
+    answersRef.current = ['', ''];
+    scoresRef.current = [null, null];
     setCharIdx(0);
     setPhase('intro');
-    setScores([null, null, null]);
+    setScores([null, null]);
     setDebrief(null);
     resetRecording();
   };
@@ -406,7 +404,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
       <div style={cs.card}>
         <div style={cs.label}>The Networking Circuit · Simulation</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Three people at a company townhall. Three real conversations. One chance to make an impression.</p>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Two people at a company townhall. Two real conversations. One chance to make an impression.</p>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AmplifyU Coach sets the scene and asks one question per person. Speak out loud what you would actually say — then get scored on your opening, connection, and the impression you leave.</p>
       </div>
       {CIRCUIT_CHARS.map((sc, i) => (
@@ -431,7 +429,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
       <div style={{display:"flex", flexDirection:"column", gap:isDesktop?12:10}}>
         <div style={{...cs.card, display:"flex", alignItems:"center", justifyContent:"space-between", gap:12, padding:isDesktop?"14px 24px":"10px 16px"}}>
           <div>
-            <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:2}}>Person {charIdx+1} of 3</div>
+            <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:2}}>Person {charIdx+1} of {CIRCUIT_CHARS.length}</div>
             <div style={{fontFamily:T.sans, fontSize:isDesktop?14:13, fontWeight:600, color:T2.text}}>{sc.name} — <span style={{fontWeight:400, color:T2.text4}}>{sc.role}</span></div>
           </div>
         </div>
@@ -446,6 +444,9 @@ export function D13SimWidget({T, T2, isDesktop}) {
           <>
             {recordState === 'idle' && (
               <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px 28px":"24px 20px"}}>
+                {captureFailed && (
+                  <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#B05C4A", marginBottom:10, lineHeight:1.5}}>Didn't quite catch that — give it another go</div>
+                )}
                 <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, marginBottom:20, lineHeight:1.5}}>Speak your response out loud — tap when you're ready</div>
                 <button
                   onClick={startRecording}
@@ -470,25 +471,6 @@ export function D13SimWidget({T, T2, isDesktop}) {
                 <button onClick={stopRecording} style={cs.cta}>Done Speaking →</button>
               </div>
             )}
-
-            {recordState === 'processing' && (
-              <div style={{...cs.card, padding:isDesktop?"24px":"18px", textAlign:"center"}}>
-                <span style={{fontFamily:T.sans, fontSize:13, color:T2.text3, fontStyle:"italic"}}>Transcribing your answer…</span>
-              </div>
-            )}
-
-            {recordState === 'done' && (
-              <div style={{...cs.card, padding:isDesktop?"24px":"18px"}}>
-                <div style={cs.label}>You said</div>
-                <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, margin:"0 0 20px"}}>
-                  {transcript || <span style={{color:T2.text4, fontStyle:"italic"}}>Nothing captured — try again</span>}
-                </p>
-                <button onClick={handleSubmit} disabled={!transcript.trim()} style={{...cs.cta, marginBottom:10, background:transcript.trim()?T.ink:"rgba(44,36,22,0.2)", cursor:transcript.trim()?"pointer":"not-allowed"}}>
-                  Submit — Get Scored →
-                </button>
-                <button onClick={reRecord} style={{background:"none", border:"none", fontFamily:T.sans, fontSize:12, color:T2.text4, cursor:"pointer", padding:"4px 0", width:"100%", textAlign:"center"}}>Record Again</button>
-              </div>
-            )}
           </>
         ) : (
           <div style={cs.card}>
@@ -509,17 +491,20 @@ export function D13SimWidget({T, T2, isDesktop}) {
     );
   }
 
-  if (phase === 'analyzing') return (
-    <div style={{...cs.card, textAlign:"center", padding:isDesktop?"40px":"28px"}}>
-      <div style={cs.label}>Your coach is reviewing</div>
-      <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>Scoring your response for {CIRCUIT_CHARS[charIdx].name}...</p>
-    </div>
-  );
+  if (phase === 'analyzing') {
+    const firstName = CIRCUIT_CHARS[charIdx].name.split(' ')[0];
+    return (
+      <div style={{...cs.card, display:"flex", flexDirection:"column", alignItems:"center", gap:14, textAlign:"center", padding:isDesktop?"40px":"28px"}}>
+        <SequentialDots dotCount={dotCount} activeColor={T.gold} inactiveColor="rgba(200,164,106,0.2)"/>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>{firstName} is thinking about your answer…</p>
+      </div>
+    );
+  }
 
   if (phase === 'scoring') {
     const sc = CIRCUIT_CHARS[charIdx];
     const score = scores[charIdx];
-    const isLast = charIdx === 2;
+    const isLast = charIdx === CIRCUIT_CHARS.length - 1;
     const dims = [{key:'opening', label:'Opening'}, {key:'connection', label:'Connection'}, {key:'impression', label:'Impression'}];
     return (
       <div style={{display:"flex", flexDirection:"column", gap:isDesktop?12:10}}>
@@ -553,7 +538,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
   if (phase === 'debriefing') return (
     <div style={{...cs.card, textAlign:"center", padding:isDesktop?"40px":"28px"}}>
       <div style={cs.label}>Circuit Complete</div>
-      <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>Your coach is reviewing all three conversations...</p>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>Your coach is reviewing both conversations...</p>
     </div>
   );
 

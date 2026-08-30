@@ -264,7 +264,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         // ── Simulation panes ───────────────────────────────────────────────
         if(isD4 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Breaking News Live" headline="Report it live. Watch what your audience remembers." liveIndicator />;
         if(isD1 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Simulation · Day 1" headline="Awareness is where every great communicator begins." />;
-        if(isD13 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="The Networking Circuit" headline="Three people. Three conversations. One chance to make an impression." />;
+        if(isD13 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="The Networking Circuit" headline="Two people. Two real conversations. One chance to make an impression." />;
         if(isD14 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Your Communication Blueprint" headline="Build the system you'll use for the rest of your career." />;
         if(step==="Simulation"){
           const SIM={
@@ -3001,7 +3001,7 @@ strokeLinecap="round"/></svg>
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Simulation · Day 13</div>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Networking Circuit</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Three people. Three conversations. One chance to make an impression.</p>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Two people. Two real conversations. One chance to make an impression.</p>
           <D13SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}

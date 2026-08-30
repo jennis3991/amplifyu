@@ -4004,7 +4004,7 @@ setAmbitionSaved(true); } catch {}
       if (step==="Simulation") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>The Networking Circuit</h2>
-          <p style={{fontFamily:T.sans,fontSize:17,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32,maxWidth:600}}>Three people. Three conversations. One chance to make an impression.</p>
+          <p style={{fontFamily:T.sans,fontSize:17,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:32,maxWidth:600}}>Two people. Two real conversations. One chance to make an impression.</p>
           <D13SimWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
