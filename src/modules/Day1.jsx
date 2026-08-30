@@ -3,11 +3,6 @@ import { T } from '../theme.js';
 import { useWakeLock, localStorageUsageRatio } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
-const D1SIM_KEY = 'au_d1sim_state';
-function loadD1SimState() {
-  try { return JSON.parse(sessionStorage.getItem(D1SIM_KEY)) || {}; } catch { return {}; }
-}
-
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
     const r = new FileReader();
@@ -1004,10 +999,9 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   const DIMS = ["Clarity","Structure","Brevity","Focus","Simplicity"];
   const FOCUS = ["Shorter opening","Lead with main point","Sharper ending","Stronger structure"];
 
-  const saved = loadD1SimState();
-  const [phase, setPhase] = useState(saved.phase || 'intro');
-  const [cat, setCat] = useState(saved.cat || 'Work');
-  const [prompt, setPrompt] = useState(saved.prompt || null);
+  const [phase, setPhase] = useState('intro');
+  const [cat, setCat] = useState('Work');
+  const [prompt, setPrompt] = useState(null);
   const [elapsed, setElapsed] = useState(0);
   const [isRec, setIsRec] = useState(false);
   // True from the moment "Start Recording" is tapped until getUserMedia has
@@ -1018,14 +1012,14 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   const [preparingMic, setPreparingMic] = useState(false);
   useWakeLock(isRec);
   const dotCount = useSequentialDots(phase === 'analyzing');
-  const [transcript, setTranscript] = useState(saved.transcript || '');
+  const [transcript, setTranscript] = useState('');
   const [fallback, setFallback] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
-  const [feedback, setFeedback] = useState(saved.feedback || null);
-  const [round1, setRound1] = useState(saved.round1 || null);
+  const [feedback, setFeedback] = useState(null);
+  const [round1, setRound1] = useState(null);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
 
-  const [audioURL, setAudioURL] = useState(saved.audioURL || null);
+  const [audioURL, setAudioURL] = useState(null);
   // A `blob:` URL only lives as long as the page load that created it — if this
   // widget's state was restored from sessionStorage after a reload, audioURL
   // can be a non-null but dead reference. Flips true the first time playback
@@ -1164,16 +1158,10 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
     onRecordingChange?.(isRec || preparingMic || analyzing);
   },[isRec, preparingMic, analyzing]);
 
-  // Persist results across accidental navigation away (e.g. swiping to another step) —
-  // mid-recording/analysing states aren't resumable, so those collapse back to 'prompt' on save.
-  useEffect(()=>{
-    try{
-      const persistedPhase=(phase==='recording'||phase==='analyzing')?(prompt?'prompt':'intro'):phase;
-      sessionStorage.setItem(D1SIM_KEY, JSON.stringify({
-        phase:persistedPhase, cat, prompt, transcript, feedback, round1, audioURL,
-      }));
-    }catch{}
-  },[phase, cat, prompt, transcript, feedback, round1, audioURL]);
+  // No sessionStorage phase persistence here (matches Day 2) — a completed
+  // result is already durably saved to "My Saved Results" via saveVoiceResult,
+  // so every fresh visit to this step starts at 'intro' and lets the user
+  // run the simulation again, rather than jumping back into the last result.
 
   // Stop any in-flight recording/playback if the widget unmounts (e.g. user swipes away)
   useEffect(()=>{
@@ -1324,7 +1312,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
     setPrompt(p); setPhase('recording'); setElapsed(0); setIsRec(false); setTranscript(''); setFallback('');
   }
 
-  function reset(){setPhase('intro');setPrompt(null);setElapsed(0);setIsRec(false);setPreparingMic(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);try{sessionStorage.removeItem(D1SIM_KEY);}catch{}}
+  function reset(){setPhase('intro');setPrompt(null);setElapsed(0);setIsRec(false);setPreparingMic(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);}
 
   const cs={
     card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"},
@@ -1348,14 +1336,14 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
           {[
             {n:1,label:"Choose a topic",     icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
             {n:2,label:"Speak naturally",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:3,label:"AI scores clarity",  icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:3,label:"AmplifyU coach scores clarity",  icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
             {n:4,label:"Reflect & listen",   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke={T.gold} strokeWidth="1.3"/><path d="M8 9a3 3 0 016 0v4a3 3 0 01-6 0V9z" stroke={T.gold} strokeWidth="1.3"/></svg>},
           ].map((s,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
                 <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:isDesktop?8:6}}>{s.icon}</div>
                 <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:T.gold,marginBottom:3}}>{s.n}</div>
-                <div style={{fontFamily:T.sans,fontSize:isDesktop?16:13,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:52}}>{s.label}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:52}}>{s.label}</div>
               </div>
               {i<3&&<div style={{height:1,width:isDesktop?12:5,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:isDesktop?30:24}}/>}
             </div>
