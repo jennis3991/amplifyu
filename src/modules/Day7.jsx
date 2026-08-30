@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
+import { detectPitchHz, computeSignalMetrics } from './voiceSignal.js';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -214,6 +215,8 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   const [isRec,      setIsRec]     = useState(false);
   const [result,     setResult]    = useState(null);
   const [waveVals,   setWaveVals]  = useState(Array(14).fill(0.3));
+  const [signalMetrics, setSignalMetrics] = useState(null);
+  const [expandedSkill, setExpandedSkill] = useState(null);
 
   const mediaRef  = useRef(null);
   const audioChunksRef = useRef([]);
@@ -221,6 +224,22 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   const waveRef   = useRef(null);
   const [micError, setMicError] = useState(false);
   const dotCount = useSequentialDots(phase === 'analyzing');
+
+  // Real signal data captured from the mic during recording — feeds the
+  // Pauses and Voice Control scores directly, the same way Day 2 measures
+  // them, instead of asking the AI to guess vocal delivery from a transcript
+  // it can't actually hear.
+  const startTimeRef = useRef(null);
+  const audioAnalyserCtxRef = useRef(null);
+  const energySampleIntervalRef = useRef(null);
+  const energySamplesRef = useRef([]);
+  const pitchSamplesRef = useRef([]);
+
+  // Guards against leaking an AudioContext if the component unmounts mid-recording.
+  useEffect(()=>()=>{
+    clearInterval(energySampleIntervalRef.current);
+    try { audioAnalyserCtxRef.current?.close(); } catch(e) {}
+  },[]);
 
   // Timer
   useEffect(()=>{
@@ -256,6 +275,29 @@ export function D7SimWidget({ T, T2, isDesktop }) {
         mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
         mr.start(1000);
         mediaRef.current=mr;
+        startTimeRef.current = Date.now();
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          const actx = new AC();
+          audioAnalyserCtxRef.current = actx;
+          const srcNode = actx.createMediaStreamSource(stream);
+          const analyser = actx.createAnalyser();
+          analyser.fftSize = 1024;
+          srcNode.connect(analyser);
+          const buf = new Float32Array(analyser.fftSize);
+          energySamplesRef.current = [];
+          pitchSamplesRef.current = [];
+          energySampleIntervalRef.current = setInterval(() => {
+            analyser.getFloatTimeDomainData(buf);
+            let sumSq = 0;
+            for (let i = 0; i < buf.length; i++) sumSq += buf[i] * buf[i];
+            energySamplesRef.current.push(Math.sqrt(sumSq / buf.length));
+            const hz = detectPitchHz(buf, actx.sampleRate);
+            if (hz > 0) pitchSamplesRef.current.push(hz);
+          }, 100);
+        } catch (sigErr) {
+          console.error('[D7Sim] signal analysis setup error:', sigErr);
+        }
         setIsRec(true);setTimeLeft(90);setPhase('recording');
       }).catch(()=>{ setMicError(true); });
     } else {
@@ -267,6 +309,8 @@ export function D7SimWidget({ T, T2, isDesktop }) {
     return new Promise(resolve => {
       const mr = mediaRef.current;
       clearInterval(timerRef.current);
+      clearInterval(energySampleIntervalRef.current);
+      try { audioAnalyserCtxRef.current?.close(); } catch(e) {}
       setIsRec(false);
       if (!mr || mr.state === 'inactive') { resolve(''); return; }
       mr.onstop = async () => {
@@ -293,9 +337,15 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   async function doSubmit(){
     setPhase('analyzing');
     const spokenText = await stopRecAndTranscribe();
+    // Captured after the recorder/analyser have fully stopped, so the sample
+    // buffers are complete — read before anything can reset them.
+    const elapsedSec = startTimeRef.current ? Math.round((Date.now() - startTimeRef.current) / 1000) : 0;
+    const signal = computeSignalMetrics(energySamplesRef.current, pitchSamplesRef.current, elapsedSec);
+    setSignalMetrics(signal);
     const text=(spokenText||'').trim()||(fallback||'').trim();
     if(!text){setPhase('brief');return;}
     setTranscript(text);
+    let parsed;
     try{
       const res=await fetch("/api/claude",{
         method:"POST",headers:{"Content-Type":"application/json"},
@@ -306,16 +356,25 @@ export function D7SimWidget({ T, T2, isDesktop }) {
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
-      setResult(JSON.parse(m[0]));
+      parsed = JSON.parse(m[0]);
     }catch{
-      setResult({
+      parsed = {
         scores:{clarity:7,voiceControl:6,pauses:6,precision:7,structure:7,composure:8},
         memorable:"Communication is about making ideas easy for others to understand.",
         strongest:"Your explanation showed genuine understanding of the core Week 1 concepts.",
         growth:"Adding deliberate structure — one clear point per idea — would sharpen your impact.",
         coachInsight:"You demonstrated real understanding of Week 1. Your communication feels natural and grounded. As you move into Week 2, focus on building more contrast through deliberate pacing and pauses — that's where good communicators become great ones.",
-      });
+      };
     }
+    // Pauses and Voice Control are about vocal delivery, not word content —
+    // the AI can't hear the recording, so replace its guess with the same
+    // real signal measurement Day 2 uses whenever the mic actually captured
+    // enough audio to measure it from.
+    if (signal) {
+      if (signal.pausesScore != null) parsed.scores.pauses = Math.max(1, Math.min(10, Math.round(signal.pausesScore / 10)));
+      if (signal.pitchScore != null) parsed.scores.voiceControl = Math.max(1, Math.min(10, Math.round(signal.pitchScore / 10)));
+    }
+    setResult(parsed);
     setPhase('results');
   }
 
@@ -326,6 +385,60 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   };
   const scoreColor=s=>s>=8?"#527060":s>=5?T.gold:"#B05C4A";
   const avg=result?Math.round(Object.values(result.scores).reduce((a,b)=>a+b,0)/6):0;
+
+  // One sentence per skill, tailored to the person's own score. Pauses and
+  // Voice Control reference the actual measured numbers when the mic
+  // captured enough signal; everything else is inferred from what they said,
+  // since clarity/precision/structure/composure are about content, not
+  // audio delivery.
+  function explainSkill(key, score, signal){
+    if(key==='pauses' && signal?.pausesPerMin!=null){
+      const perMin=signal.pausesPerMin;
+      if(perMin<1) return `You paused almost never — about ${perMin.toFixed(1)} deliberate pauses a minute — so your listener had little time to absorb each idea before the next one arrived.`;
+      if(perMin<=4) return `You paused around ${perMin.toFixed(1)} times a minute, measured from your actual recording — enough space for your ideas to land without losing momentum.`;
+      if(perMin<=7) return `You paused fairly often — about ${perMin.toFixed(1)} times a minute — which is fine, but a few of those breaks could be tightened so your explanation keeps its drive.`;
+      return `You paused very frequently — about ${perMin.toFixed(1)} times a minute — enough to break your flow. Aim for fewer, more deliberate pauses rather than frequent small ones.`;
+    }
+    if(key==='voiceControl' && signal?.pitchScore!=null){
+      if(score>=8) return "Measured from your recording: your pitch rose and fell naturally as you spoke, which is what made you sound engaged rather than flat.";
+      if(score>=5) return "Measured from your recording: your pitch varied some, but leaned flat in places — raising and lowering it more on your key points would add more contrast.";
+      return "Measured from your recording: your pitch stayed largely flat throughout — deliberately varying it on your most important words will make you sound more engaged.";
+    }
+    const TEXT={
+      clarity:{
+        high:"Your explanation was easy to follow — ideas landed without needing to be re-read or re-explained.",
+        mid:"Your explanation was mostly clear, though a few ideas would land harder if simplified further.",
+        low:"Your explanation was hard to follow in places — aim for one idea per sentence, in plain language.",
+      },
+      precision:{
+        high:"You chose your words efficiently — there was little padding around the actual idea.",
+        mid:"Some of your sentences carried more words than the idea needed — a tighter edit would sharpen it.",
+        low:"Your answer had a lot of padding around the core idea — cut anything that isn't doing work.",
+      },
+      structure:{
+        high:"Your explanation followed a clear order — point, then support — which made it easy to follow.",
+        mid:"There was some structure to your answer, but the order of your ideas could be tightened.",
+        low:"Your points came in no clear order, which made it harder to follow your logic.",
+      },
+      composure:{
+        high:"You sounded steady and in control throughout, even while explaining live under time pressure.",
+        mid:"You sounded mostly composed, with a few moments of hesitation under the pressure of explaining live.",
+        low:"There were clear signs of hesitation or rushing — the pressure of explaining live got to you a little.",
+      },
+      pauses:{
+        high:"Your explanation had a good rhythm, based on what your coach could infer from the transcript.",
+        mid:"Your explanation could have used a bit more breathing room between ideas.",
+        low:"Your explanation read as rushed, with ideas run together rather than given space.",
+      },
+      voiceControl:{
+        high:"Your explanation read as animated and varied, based on what your coach could infer from the transcript.",
+        mid:"Your explanation read as fairly even in tone, based on what your coach could infer from the transcript.",
+        low:"Your explanation read as flat in tone, based on what your coach could infer from the transcript.",
+      },
+    };
+    const tier = score>=8?'high':score>=5?'mid':'low';
+    return TEXT[key]?.[tier] || '';
+  }
 
   // ── INTRO ─────────────────────────────────────────────────────────────────
   if(phase==='intro'||phase==='brief') return (
@@ -498,19 +611,24 @@ export function D7SimWidget({ T, T2, isDesktop }) {
           </div>
           <RadarChart scores={result.scores} gold={T.gold} size={isDesktop?180:150}/>
         </div>
-        {/* 6 score cards */}
+        {/* 6 score cards — tap any one for what it means for you */}
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:isDesktop?10:8}}>
           {skills.map(({key,label})=>{
             const s=result.scores[key]||0;
+            const isOpen=expandedSkill===key;
+            const measured=(key==='pauses'&&signalMetrics?.pausesPerMin!=null)||(key==='voiceControl'&&signalMetrics?.pitchScore!=null);
             return (
-              <div key={key} style={{background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border,padding:"14px 16px"}}>
+              <div key={key} onClick={()=>setExpandedSkill(isOpen?null:key)} style={{background:T2.surface,borderRadius:6,border:"0.5px solid "+(isOpen?T.gold:T2.border),padding:"14px 16px",cursor:"pointer",gridColumn:isOpen?"1 / -1":"auto",transition:"border-color 0.15s"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                  <span style={{fontFamily:T.sans,fontSize:isDesktop?10:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px"}}>{label}</span>
+                  <span style={{fontFamily:T.sans,fontSize:isDesktop?10:9,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px"}}>{label}{measured&&<span style={{color:T.gold}}> · measured</span>}</span>
                   <span style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:scoreColor(s),lineHeight:1}}>{s}<span style={{fontSize:10,color:T2.text3}}>/10</span></span>
                 </div>
                 <div style={{height:3,background:T2.border,borderRadius:2,overflow:"hidden"}}>
                   <div style={{height:"100%",width:(s/10*100)+"%",background:scoreColor(s),borderRadius:2,transition:"width 1s ease"}}/>
                 </div>
+                {isOpen&&(
+                  <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,margin:"10px 0 0"}}>{explainSkill(key,s,signalMetrics)}</p>
+                )}
               </div>
             );
           })}
