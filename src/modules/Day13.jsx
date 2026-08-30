@@ -202,41 +202,34 @@ Give brief, specific coaching. Return ONLY valid JSON:
 // ─── D13 Simulation Widget — The Networking Circuit ───────────────────────
 const CIRCUIT_CHARS = [
   {
-    id: 'marcus',
-    name: 'Marcus Chen',
-    role: 'Senior VP, Strategy',
-    challenge: 'Polite but distracted — has somewhere to be',
-    questions: [
-      "Marcus Chen, Senior VP of Strategy, is walking past you at a networking event. He glances at his phone and pauses briefly. What's your opening line?",
-      "He replies: \"Sorry — just a lot on tonight.\" He's still half-distracted. What do you say to keep him engaged?",
-    ],
+    id: 'renata',
+    name: 'Renata Ellis',
+    role: 'VP, People & Culture',
+    vibe: 'Warm and instantly curious — makes you feel like the only person in the room',
+    listensFor: 'genuine warmth and honesty — whether the person opens up with something real rather than a polished, guarded answer',
+    question: "Renata catches your eye during a break in the townhall and comes straight over, warm and unhurried: \"I don't think we've properly met yet — I'd love to know, what's something you're proud of lately that most people around here probably don't know about?\" What do you say?",
+  },
+  {
+    id: 'theo',
+    name: 'Theo Brandt',
+    role: 'Head of Product',
+    vibe: 'Enthusiastic and down-to-earth — genuinely lights up hearing what people are working on',
+    listensFor: 'genuine enthusiasm and plain language over jargon — whether the answer sounds like something a real person would say to a friend',
+    question: "Theo spots you by the coffee station after the townhall and grins: \"Okay, real talk — what's something you're working on right now that actually gets you excited?\" What do you say?",
   },
   {
     id: 'priya',
-    name: 'Priya Sharma',
-    role: 'Head of Product, TechVenture',
-    challenge: 'Direct and quietly sceptical of small talk',
-    questions: [
-      "Priya Sharma, Head of Product, introduces herself and asks directly: \"What do you do?\" She has no patience for vague answers. What do you say?",
-      "She nods and says: \"Interesting.\" Then silence. She's waiting to be genuinely impressed. What do you say next?",
-    ],
-  },
-  {
-    id: 'james',
-    name: 'James Okafor',
-    role: "Tonight's Keynote Speaker",
-    challenge: 'Warm but in high demand — the queue is forming',
-    questions: [
-      "James Okafor just finished his keynote. You have about 15 seconds before someone else pulls him away. What's your opening?",
-      "He smiles and asks: \"What specifically resonated with you?\" He wants a real answer, not flattery. What do you say?",
-    ],
+    name: 'Priya Shah',
+    role: 'Head of Strategy',
+    vibe: 'Direct and time-pressed — respects people who get straight to the point',
+    listensFor: 'brevity, a concrete and specific result, and confidence without padding or hedging',
+    question: "Priya introduces herself briskly between sessions: \"I've got about two minutes before my next meeting — what's the one thing I should know about the impact you've had this year?\" What do you say?",
   },
 ];
 
 export function D13SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
   const [charIdx, setCharIdx] = useState(0);
-  const [qIdx, setQIdx] = useState(0);
   const [scores, setScores] = useState([null, null, null]);
   const [debrief, setDebrief] = useState(null);
   const [transcript, setTranscript] = useState('');
@@ -245,7 +238,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
   const [speechSupported, setSpeechSupported] = useState(true);
   const [fallbackInput, setFallbackInput] = useState('');
 
-  const answersRef = useRef([['',''],['',''],['','']]);
+  const answersRef = useRef(['', '', '']);
   const scoresRef = useRef([null, null, null]);
   const charIdxRef = useRef(0);
   const recognitionRef = useRef(null);
@@ -337,18 +330,18 @@ export function D13SimWidget({T, T2, isDesktop}) {
 
   const scoreChar = async (ci) => {
     const sc = CIRCUIT_CHARS[ci];
-    const [a1, a2] = answersRef.current[ci];
-    const prompt = "You are an expert communication coach evaluating how someone handled two networking moments.\n\nCharacter: " + sc.name + " — " + sc.role + "\nChallenge: " + sc.challenge + "\n\nQ1 — " + sc.questions[0] + "\nTheir answer: \"" + a1 + "\"\n\nQ2 — " + sc.questions[1] + "\nTheir answer: \"" + a2 + "\"\n\nScore them 1-5 on:\n- opening: Was the opening specific, confident, and engaging — not generic?\n- adaptability: Did they read the character's energy and respond to it?\n- impression: Would this leave a memorable, positive impression?\n\nRespond ONLY with valid JSON on a single line: {\"opening\":X,\"adaptability\":X,\"impression\":X,\"note\":\"one specific sentence — what worked or what to try differently next time\"}";
+    const answer = answersRef.current[ci];
+    const prompt = "You are an expert communication coach evaluating a single networking moment at a company townhall.\n\nCharacter: " + sc.name + " — " + sc.role + "\nPersonality: " + sc.vibe + "\nWhat they're listening for: " + sc.listensFor + "\n\nQuestion — " + sc.question + "\nTheir answer: \"" + answer + "\"\n\nScore them 1-5 on:\n- opening: Was the answer specific, confident, and engaging — not generic?\n- connection: Did they read this person's energy and respond in a way that builds real rapport with them specifically?\n- impression: Would this leave a memorable, positive impression?\n\nRespond ONLY with valid JSON on a single line: {\"opening\":X,\"connection\":X,\"impression\":X,\"note\":\"one specific sentence — what worked or what to try differently next time\"}";
     try {
       const res = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-5', messages:[{role:'user', content:prompt}], max_tokens:200})});
       const data = await res.json();
       const text = data.content?.[0]?.text || '{}';
       const m = text.match(/\{[\s\S]*\}/);
-      const parsed = m ? JSON.parse(m[0]) : {opening:3, adaptability:3, impression:3, note:'Good effort in a challenging moment.'};
+      const parsed = m ? JSON.parse(m[0]) : {opening:3, connection:3, impression:3, note:'Good effort in a challenging moment.'};
       scoresRef.current = scoresRef.current.map((s, i) => i === ci ? parsed : s);
       setScores(prev => prev.map((s, i) => i === ci ? parsed : s));
     } catch(e) {
-      const fb = {opening:3, adaptability:3, impression:3, note:'Good effort in a challenging moment.'};
+      const fb = {opening:3, connection:3, impression:3, note:'Good effort in a challenging moment.'};
       scoresRef.current = scoresRef.current.map((s, i) => i === ci ? fb : s);
       setScores(prev => prev.map((s, i) => i === ci ? fb : s));
     }
@@ -357,11 +350,11 @@ export function D13SimWidget({T, T2, isDesktop}) {
 
   const runDebrief = async () => {
     const all = CIRCUIT_CHARS.map((sc, i) => {
-      const [a1, a2] = answersRef.current[i];
+      const a = answersRef.current[i];
       const s = scoresRef.current[i];
-      return "--- " + sc.name + " (" + sc.role + ") ---\nQ1: " + sc.questions[0] + "\nAnswer: " + a1 + "\nQ2: " + sc.questions[1] + "\nAnswer: " + a2 + "\nScores: Opening " + (s?.opening||0) + "/5, Adaptability " + (s?.adaptability||0) + "/5, Impression " + (s?.impression||0) + "/5";
+      return "--- " + sc.name + " (" + sc.role + ") ---\nQuestion: " + sc.question + "\nAnswer: " + a + "\nScores: Opening " + (s?.opening||0) + "/5, Connection " + (s?.connection||0) + "/5, Impression " + (s?.impression||0) + "/5";
     }).join('\n\n');
-    const prompt = "You are an expert communication coach. A user just completed The Networking Circuit — two questions each with three different professional characters. Analyse their answers across all three.\n\n" + all + "\n\nGive specific, direct, encouraging coaching based on what they actually wrote.\n\nRespond ONLY with valid JSON on a single line: {\"insight\":\"2-3 specific sentences about their communication pattern\",\"practice\":\"one concrete thing to focus on next time\",\"quote\":\"a short inspiring quote about connection or confidence\"}";
+    const prompt = "You are an expert communication coach. A user just completed The Networking Circuit at a company townhall — one question each from three very different people. Analyse their answers across all three.\n\n" + all + "\n\nGive specific, direct, encouraging coaching based on what they actually wrote.\n\nRespond ONLY with valid JSON on a single line: {\"insight\":\"2-3 specific sentences about their communication pattern\",\"practice\":\"one concrete thing to focus on next time\",\"quote\":\"a short inspiring quote about connection or confidence\"}";
     try {
       const res = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-5', messages:[{role:'user', content:prompt}], max_tokens:350})});
       const data = await res.json();
@@ -379,14 +372,10 @@ export function D13SimWidget({T, T2, isDesktop}) {
     const answer = (speechSupported ? transcript : fallbackInput).trim();
     if (!answer) return;
     const ci = charIdxRef.current;
-    answersRef.current[ci][qIdx] = answer;
+    answersRef.current[ci] = answer;
     resetRecording();
-    if (qIdx === 0) {
-      setQIdx(1);
-    } else {
-      setPhase('analyzing');
-      await scoreChar(ci);
-    }
+    setPhase('analyzing');
+    await scoreChar(ci);
   };
 
   const handleNext = async () => {
@@ -394,7 +383,6 @@ export function D13SimWidget({T, T2, isDesktop}) {
     if (nextIdx < 3) {
       charIdxRef.current = nextIdx;
       setCharIdx(nextIdx);
-      setQIdx(0);
       resetRecording();
       setPhase('question');
     } else {
@@ -405,10 +393,9 @@ export function D13SimWidget({T, T2, isDesktop}) {
 
   const reset = () => {
     charIdxRef.current = 0;
-    answersRef.current = [['',''],['',''],['','']];
+    answersRef.current = ['', '', ''];
     scoresRef.current = [null, null, null];
     setCharIdx(0);
-    setQIdx(0);
     setPhase('intro');
     setScores([null, null, null]);
     setDebrief(null);
@@ -419,8 +406,8 @@ export function D13SimWidget({T, T2, isDesktop}) {
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
       <div style={cs.card}>
         <div style={cs.label}>The Networking Circuit · Simulation</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Three people. Three conversations. One chance to make an impression.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AmplifyU Coach sets the scene and asks you two questions per person. Speak out loud what you would actually say — then get scored on your opening, adaptability, and the impression you leave.</p>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Three people at a company townhall. Three real conversations. One chance to make an impression.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AmplifyU Coach sets the scene and asks one question per person. Speak out loud what you would actually say — then get scored on your opening, connection, and the impression you leave.</p>
       </div>
       {CIRCUIT_CHARS.map((sc, i) => (
         <div key={sc.id} style={{...cs.card, display:"flex", alignItems:"flex-start", gap:14}}>
@@ -430,7 +417,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
           <div>
             <div style={{fontFamily:T.sans, fontSize:isDesktop?14:13, fontWeight:600, color:T2.text, marginBottom:2}}>{sc.name}</div>
             <div style={{fontFamily:T.sans, fontSize:isDesktop?12:11, color:T2.text4, marginBottom:4}}>{sc.role}</div>
-            <div style={{fontFamily:T.sans, fontSize:isDesktop?12:11, color:"#A8998A", fontStyle:"italic"}}>{sc.challenge}</div>
+            <div style={{fontFamily:T.sans, fontSize:isDesktop?12:11, color:"#A8998A", fontStyle:"italic"}}>{sc.vibe}</div>
           </div>
         </div>
       ))}
@@ -447,14 +434,11 @@ export function D13SimWidget({T, T2, isDesktop}) {
             <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:2}}>Person {charIdx+1} of 3</div>
             <div style={{fontFamily:T.sans, fontSize:isDesktop?14:13, fontWeight:600, color:T2.text}}>{sc.name} — <span style={{fontWeight:400, color:T2.text4}}>{sc.role}</span></div>
           </div>
-          <div style={{background:"rgba(138,158,132,0.08)", border:"0.5px solid rgba(138,158,132,0.25)", borderRadius:3, padding:"4px 10px", flexShrink:0}}>
-            <span style={{fontFamily:T.sans, fontSize:11, color:T.gold}}>Q{qIdx+1} of 2</span>
-          </div>
         </div>
 
         <div style={{...cs.card, background:"rgba(138,158,132,0.05)", borderLeft:"2px solid "+T.gold}}>
           <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10}}>Your Coach</div>
-          <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, margin:0}}>{sc.questions[qIdx]}</p>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, margin:0}}>{sc.question}</p>
         </div>
 
         {/* ── Voice recorder ─────────────────────────────────────────── */}
@@ -500,7 +484,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
                   {transcript || <span style={{color:T2.text4, fontStyle:"italic"}}>Nothing captured — try again</span>}
                 </p>
                 <button onClick={handleSubmit} disabled={!transcript.trim()} style={{...cs.cta, marginBottom:10, background:transcript.trim()?T.ink:"rgba(44,36,22,0.2)", cursor:transcript.trim()?"pointer":"not-allowed"}}>
-                  {qIdx === 0 ? "Next Question →" : "Submit — Get Scored →"}
+                  Submit — Get Scored →
                 </button>
                 <button onClick={reRecord} style={{background:"none", border:"none", fontFamily:T.sans, fontSize:12, color:T2.text4, cursor:"pointer", padding:"4px 0", width:"100%", textAlign:"center"}}>Record Again</button>
               </div>
@@ -517,7 +501,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
               style={{width:"100%", minHeight:isDesktop?80:70, background:"transparent", border:"none", borderBottom:"0.5px solid "+T2.divider, padding:"6px 0 10px", fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, resize:"none", outline:"none", lineHeight:1.6, boxSizing:"border-box"}}
             />
             <button onClick={handleSubmit} disabled={!fallbackInput.trim()} style={{...cs.cta, marginTop:14, background:fallbackInput.trim()?T.ink:"rgba(44,36,22,0.2)", cursor:fallbackInput.trim()?"pointer":"not-allowed"}}>
-              {qIdx === 0 ? "Next Question →" : "Submit — Get Scored →"}
+              Submit — Get Scored →
             </button>
           </div>
         )}
@@ -528,7 +512,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
   if (phase === 'analyzing') return (
     <div style={{...cs.card, textAlign:"center", padding:isDesktop?"40px":"28px"}}>
       <div style={cs.label}>Your coach is reviewing</div>
-      <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>Scoring your responses for {CIRCUIT_CHARS[charIdx].name}...</p>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>Scoring your response for {CIRCUIT_CHARS[charIdx].name}...</p>
     </div>
   );
 
@@ -536,7 +520,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
     const sc = CIRCUIT_CHARS[charIdx];
     const score = scores[charIdx];
     const isLast = charIdx === 2;
-    const dims = [{key:'opening', label:'Opening'}, {key:'adaptability', label:'Adaptability'}, {key:'impression', label:'Impression'}];
+    const dims = [{key:'opening', label:'Opening'}, {key:'connection', label:'Connection'}, {key:'impression', label:'Impression'}];
     return (
       <div style={{display:"flex", flexDirection:"column", gap:isDesktop?12:10}}>
         <div style={cs.card}>
@@ -574,7 +558,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
   );
 
   if (phase === 'debrief') {
-    const dims = [{key:'opening', label:'Opening'}, {key:'adaptability', label:'Adaptability'}, {key:'impression', label:'Impression'}];
+    const dims = [{key:'opening', label:'Opening'}, {key:'connection', label:'Connection'}, {key:'impression', label:'Impression'}];
     return (
       <div style={{display:"flex", flexDirection:"column", gap:isDesktop?12:10}}>
         <div style={cs.card}>
@@ -582,7 +566,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
           <div style={{display:"flex", flexDirection:"column", gap:16}}>
             {CIRCUIT_CHARS.map((sc, i) => {
               const s = scores[i];
-              const avg = s ? Math.round((s.opening + s.adaptability + s.impression) / 3 * 10) / 10 : 0;
+              const avg = s ? Math.round((s.opening + s.connection + s.impression) / 3 * 10) / 10 : 0;
               return (
                 <div key={sc.id}>
                   <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:6}}>
