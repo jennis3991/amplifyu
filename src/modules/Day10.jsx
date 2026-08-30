@@ -98,8 +98,16 @@ export function D10SimFeedback({input, scenario}) {
 }
 
 // ─── SAR Builder — D10 Practice (mobile) ─────────────────────────────────────
+const D10_SAR_LOADING_MESSAGES = [
+  "AmplifyU is carving your story…",
+  "Finding the sharpest angle…",
+  "Leading with your result…",
+  "Almost ready…",
+];
+
 export function D10MobileSAR({onComplete}) {
   const [res,setRes]=useState(""); const [l,setL]=useState(false);
+  const sarDotCount = useSequentialDots(l);
 
   async function go(text){
     if(!text||!text.trim())return;
@@ -123,7 +131,10 @@ export function D10MobileSAR({onComplete}) {
         </div>
       )}
       {l && (
-        <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#8A7B66",textAlign:"center",padding:"20px 0",margin:0}}>Building your SAR…</p>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,padding:"28px 0"}}>
+          <SequentialDots dotCount={sarDotCount} size={7} gap={6} activeColor="#8A9E84" inactiveColor="rgba(138,158,132,0.2)"
+            messages={D10_SAR_LOADING_MESSAGES} textStyle={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#8A7B66"}}/>
+        </div>
       )}
       {res&&(
         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}>

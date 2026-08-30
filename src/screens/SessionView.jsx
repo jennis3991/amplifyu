@@ -12,6 +12,7 @@ import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
 import { D10SimFeedback, D10MobileSAR, D10MobileSim } from '../modules/Day10.jsx';
+import { useSequentialDots, SequentialDots } from '../modules/SequentialDots.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
 import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidget } from '../modules/Day4.jsx';
 import { D1WarmUpWidget, D1SimWidget } from '../modules/Day1.jsx';
@@ -429,11 +430,19 @@ setAmbitionSaved(true); } catch {}
       return <RightContent/>;
     };
 
+    const D10_SAR_LOADING_MESSAGES = [
+      "AmplifyU is carving your story…",
+      "Finding the sharpest angle…",
+      "Leading with your result…",
+      "Almost ready…",
+    ];
+
     // ── D10 RightContent — Day 10: Performance ────────────────────────────────
     const D10RightContent = ({onRecordingChange}) => {
       const [simInput, setSimInput] = useState("");
       const [sarS, setSarS] = useState(""); const [sarA, setSarA] = useState(""); const [sarR, setSarR] = useState("");
       const [sarResult, setSarResult] = useState(""); const [sarLoading, setSarLoading] = useState(false);
+      const sarDotCount = useSequentialDots(sarLoading);
       const [storyCard, setStoryCard] = useState(null);
       const [openInsight, setOpenInsight] = useState(null);
       const [d10ExObserved, setD10ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d10ExObserved')||'{}'); } catch { return {}; } });
@@ -912,7 +921,10 @@ setAmbitionSaved(true); } catch {}
 
             {/* Polishing state */}
             {sarLoading&&!sarResult&&(
-              <div style={{textAlign:"center",padding:"32px 0",color:T2.text3,fontFamily:T.sans,fontSize:13,fontStyle:"italic"}}>Sharpening your statement...</div>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14,padding:"32px 0"}}>
+                <SequentialDots dotCount={sarDotCount} activeColor={T.gold} inactiveColor="rgba(200,164,106,0.2)"
+                  messages={D10_SAR_LOADING_MESSAGES} textStyle={{fontFamily:T.sans,fontSize:13,color:T2.text3}}/>
+              </div>
             )}
 
             {/* Voice prompter — one step at a time */}
