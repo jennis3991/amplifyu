@@ -772,7 +772,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
         </div>
 
         <div style={{...cs.card,borderLeft:"3px solid "+T.gold,background:"rgba(138,158,132,0.05)"}}>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>The next time you're in a room where every second counts — a stand-up, a crisis call, an elevator pitch — this is the rep that makes brevity feel natural instead of rushed.</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>The next time you're in a room where every second counts — a stand-up, a crisis call, an elevator pitch — this is the rep that makes getting to the point feel natural instead of rushed.</p>
         </div>
 
       </div>

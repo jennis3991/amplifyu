@@ -1005,7 +1005,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T.gold,lineHeight:1.65,margin:0}}>{result.recommendation}</p>
       </div>
       <div style={{...cs.card,borderLeft:"3px solid "+T.gold,background:"rgba(138,158,132,0.05)"}}>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>The prep you just did doesn't disappear when the real conversation starts — it's the reason you'll sound composed instead of caught off guard. That's the whole point of doing this before it counts.</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>The prep you just did doesn't disappear when the real conversation starts — it becomes the calm you carry into it. That's what preparation is really for.</p>
       </div>
       {/* Repeat options */}
       <div style={{display:"flex",flexDirection:"column",gap:10,marginTop:4}}>
