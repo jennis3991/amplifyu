@@ -899,6 +899,7 @@ and at home.{" "}
                                     <a href={book.amazon} target="_blank" rel="noreferrer" style={{display:"inline-flex",alignItems:"center",gap:6,padding:"7px 14px",background:TK.ink,color:TK.onDark,borderRadius:6,fontSize:12,fontFamily:T.sans,fontWeight:500,letterSpacing:"0.02em",textDecoration:"none"}}>Get the book →</a>
                                   </div>
                                 ))}
+                                <p style={{fontFamily:T.sans,fontSize:11,color:TK.text3,margin:0,lineHeight:1.5}}>As an Amazon Associate, AmplifyU earns from qualifying purchases.</p>
                               </div>
                             )}
                           </div>

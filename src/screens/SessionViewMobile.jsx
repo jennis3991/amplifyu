@@ -3054,6 +3054,7 @@ strokeLinecap="round"/></svg>
                     <a href={book.amazon} target="_blank" rel="noreferrer" style={{display:"inline-flex",alignItems:"center",gap:6,padding:"8px 14px",background:"#2C2416",color:"#F7F3EC",borderRadius:6,fontSize:12,fontFamily:T.sans,fontWeight:500,letterSpacing:"0.02em",textDecoration:"none"}}>Get the book →</a>
                   </div>
                 ))}
+                <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,margin:"12px 4px 0",lineHeight:1.5}}>As an Amazon Associate, AmplifyU earns from qualifying purchases.</p>
               </div>
             );
           })()}

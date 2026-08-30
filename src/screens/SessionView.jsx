@@ -4467,6 +4467,7 @@ setAmbitionSaved(true); } catch {}
                           </div>
                         ))}
                       </div>
+                      {fr && <p style={{ fontFamily: T.sans, fontSize: 11, color: T2.text4, marginTop: 12, lineHeight: 1.5 }}>As an Amazon Associate, AmplifyU earns from qualifying purchases.</p>}
 
 
                       {/* Next session button */}
