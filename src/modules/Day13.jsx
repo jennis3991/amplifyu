@@ -65,6 +65,8 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
   const [phase, setPhase] = useState('intro');
   const [scIdx, setScIdx] = useState(pickScenarioIdx);
   const [recDone, setRecDone] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
     if (!onNavLabel) return;
@@ -77,9 +79,7 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
     }
   }, [phase]);
 
-  const tryAgain = () => { setRecDone(false); };
-
-  const restart = () => { setPhase('intro'); setScIdx(pickScenarioIdx()); setRecDone(false); };
+  const restart = () => { setPhase('intro'); setScIdx(pickScenarioIdx()); setRecDone(false); setAnalyzing(false); setFeedback(null); };
 
   const cs = {
     card: {background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, padding:isDesktop?"24px":"18px"},
@@ -94,12 +94,46 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>Most career-defining moments come from conversations, not job boards.</p>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>The problem is not knowing this — it's that most people freeze when the moment arrives. Quick warm-up: one real moment, 20 seconds. It will happen to you.</p>
       </div>
-      <button onClick={() => { setRecDone(false); setPhase('practice'); }} style={cs.cta}>Let's Begin →</button>
+      <button onClick={() => { setRecDone(false); setAnalyzing(false); setFeedback(null); setPhase('practice'); }} style={cs.cta}>Let's Begin →</button>
     </div>
   );
 
   if (phase === 'practice') {
     const sc = SCENARIOS[scIdx];
+
+    async function handleDone(text) {
+      setRecDone(true);
+      setAnalyzing(true);
+      try {
+        const res = await fetch('/api/claude', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-5', max_tokens: 250,
+            messages: [{ role: 'user', content:
+`You are an executive communication coach. Someone just practised this real-world moment out loud:
+
+Scenario: ${sc.context}
+Challenge: ${sc.promptDetail}
+
+What they said: "${text || 'No speech captured.'}"
+
+Give brief, specific coaching. Return ONLY valid JSON:
+{"landed":"one encouraging sentence about what worked in their response, referencing what they actually said","improve":["first specific, actionable point to sharpen it","second specific, actionable point to sharpen it"]}` }],
+          }),
+        });
+        const data = await res.json();
+        const raw = (data.content||[]).map(b=>b.text||'').join('').trim();
+        const m = raw.match(/\{[\s\S]*\}/);
+        setFeedback(JSON.parse(m[0]));
+      } catch {
+        setFeedback({
+          landed: "You said something out loud instead of staying silent — that's the hardest part, and you did it.",
+          improve: sc.tips.slice(0, 2),
+        });
+      }
+      setAnalyzing(false);
+    }
+
     return (
       <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
 
@@ -116,20 +150,35 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
               <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.35, margin:"0 0 10px"}}>"{sc.promptLead}"</p>
               <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, lineHeight:1.65, margin:0}}>{sc.promptDetail}</p>
             </div>
-            <VoiceRecorder T={T} T2={T2} onDone={() => setRecDone(true)}/>
+            <VoiceRecorder T={T} T2={T2} onDone={handleDone}/>
           </>
         )}
 
-        {recDone && (
+        {recDone && analyzing && (
+          <div style={{...cs.card, textAlign:"center", padding:isDesktop?"28px":"22px"}}>
+            <div style={cs.label}>Your coach is listening</div>
+            <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>Finding what worked — and what to sharpen.</p>
+          </div>
+        )}
+
+        {recDone && !analyzing && feedback && (
           <>
-            <div style={{...cs.card, textAlign:"center", padding:isDesktop?"28px":"22px"}}>
-              <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12}}>Nice work</div>
-              <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>
-                That's the moment. The more you practise it out loud, the more natural it becomes when it counts.
-              </p>
+            <div style={{...cs.card, background:"rgba(138,158,132,0.06)", borderLeft:"2px solid "+T.gold}}>
+              <div style={cs.label}>What Landed</div>
+              <p style={{fontFamily:T.serif, fontSize:isDesktop?16:15, color:T2.text, lineHeight:1.6, margin:0}}>{feedback.landed}</p>
             </div>
-            <button onClick={tryAgain} style={cs.cta}>Try Again →</button>
-            <button onClick={() => setPhase('complete')} style={{...cs.cta, marginTop:0, background:"rgba(138,158,132,0.15)", color:T2.text, border:"0.5px solid "+T.gold}}>Finish →</button>
+            <div style={cs.card}>
+              <div style={cs.label}>To Sharpen It</div>
+              <div style={{display:"flex", flexDirection:"column", gap:10}}>
+                {(feedback.improve||[]).map((pt,i)=>(
+                  <div key={i} style={{display:"flex", gap:8, alignItems:"flex-start"}}>
+                    <span style={{fontFamily:T.sans, fontSize:13, color:T.gold, flexShrink:0, lineHeight:1.6}}>•</span>
+                    <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, lineHeight:1.6, margin:0}}>{pt}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button onClick={() => setPhase('complete')} style={cs.cta}>Finish →</button>
           </>
         )}
       </div>
