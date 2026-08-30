@@ -1437,6 +1437,36 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
     }
   }
 
+  function loadRehearsalStory(entry) {
+    setStoryResult({
+      storyTitle: entry.coverTitle || 'Your Career Story',
+      beat1: entry.beats?.[0] || '',
+      beat2: entry.beats?.[1] || '',
+      beat3: entry.beats?.[2] || '',
+      beat4: entry.beats?.[3] || '',
+      beat5: entry.beats?.[4] || '',
+      beat6: entry.beats?.[5] || '',
+      coachObservation: entry.coachObservation || '',
+      readyLine: 'Now let Story Architect turn this into something you can use in any room.',
+    });
+    setStoryFallback(false);
+    setPhase('reveal');
+  }
+
+  // Picks up a "My Saved Work" card click from the Toolkit tab — a pending
+  // load flag written just before navigation, consumed once here on mount.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('au1_pending_load');
+      if (!raw) return;
+      const pending = JSON.parse(raw);
+      if (pending?.source !== 'rehearsal') return;
+      localStorage.removeItem('au1_pending_load');
+      const entry = savedStories.find(s => s.id === pending.id && s.source === 'rehearsal');
+      if (entry) loadRehearsalStory(entry);
+    } catch {}
+  }, []);
+
   const recRef    = useRef(null);
   const audioChunksRef = useRef([]);
   const timerRef  = useRef(null);
@@ -1587,10 +1617,10 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
                 const confirming = confirmDeleteId === s.id;
                 return (
                   <div key={s.id} style={{display:"flex",alignItems:"stretch",borderBottom:"0.5px solid "+T2.border}}>
-                    <div style={{flex:1,minWidth:0,padding:isDesktop?"12px 18px":"11px 16px",display:"flex",flexDirection:"column",gap:2}}>
+                    <button onClick={()=>loadRehearsalStory(s)} style={{flex:1,minWidth:0,textAlign:"left",background:"none",border:"none",padding:isDesktop?"12px 18px":"11px 16px",cursor:"pointer",display:"flex",flexDirection:"column",gap:2}}>
                       <span style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500}}>{s.coverTitle || s.storyWorld?.subject || "Untitled story"}</span>
                       <span style={{fontFamily:T.sans,fontSize:11,color:T2.text4}}>{new Date(s.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</span>
-                    </div>
+                    </button>
                     <button onClick={()=>handleDeleteClick(s.id)} title={confirming?"Tap again to delete":"Delete"} style={{background:"none",border:"none",cursor:"pointer",color:confirming?"#b05c4a":T2.text4,fontSize:confirming?11:18,fontWeight:confirming?700:400,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1,whiteSpace:"nowrap",transition:"all 0.15s"}}>{confirming?"Confirm?":"×"}</button>
                   </div>
                 );

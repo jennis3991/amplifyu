@@ -61,7 +61,7 @@ const SAVED_WORK_SOURCES = {
     getBadge: () => null,
   },
   'rehearsal': {
-    dayLabel: "Day 8 · Rehearsal", clickable: false, day: 8, step: "Rehearsal",
+    dayLabel: "Day 8 · Rehearsal", clickable: true, day: 8, step: "Rehearsal",
     icon: c => <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={c} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg>,
     getTitle: e => e.coverTitle || "Untitled story",
     getPreview: e => e.coachObservation || (e.beats?.[0] ? e.beats[0].slice(0,140) : ""),
