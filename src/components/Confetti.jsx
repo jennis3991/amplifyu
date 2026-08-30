@@ -271,7 +271,7 @@ strokeWidth="1.5"
                   ? "14 sessions. You set out to be " + amb + ". You now have the voice to match the ambition."
                   : "14 sessions. You now communicate with clarity, structure, and impact. This is just the beginning.";
               })()
-            ) : "Each session is a rep. Every rep builds the habit. Keep going."}
+            ) : day === 1 ? "You practised speaking clearly out loud today — not just read about it. That's what makes it stick. The next time clarity counts in a real room, you'll be ready." : "Each session is a rep. Every rep builds the habit. Keep going."}
           </p>
 
           {/* Rank up */}
