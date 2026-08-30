@@ -288,7 +288,7 @@ export const LESSONS = [
    teaser:"Find out why short sentences are strategic, not simple — and why mastering this is the hidden foundation of every great professional story.",
    recap:"Yesterday you practised editing ruthlessly — short sentences land hard, long ones bury the point. Every word you cut increases impact."},
 
-  {day:5,week:1,mins:14,title:"Structure: PRE",tag:"Framework",scene:"structure",
+  {day:5,week:1,mins:14,title:"Structure",tag:"Framework",scene:"structure",
    quote:"Structure is the backbone of every powerful communication.",
    insight:"Great communicators rarely improvise their thinking. You'll leave this session with a simple framework for organising every answer with clarity and confidence.",
    pieLink:"Performance: Structured communicators are seen as clearer thinkers. PRE is your default response architecture — and the skeleton beneath every story worth telling.",
