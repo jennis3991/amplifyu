@@ -135,7 +135,7 @@ const DAY_BADGES = {
   14: { img:"/badge-knight.jpg", label:"Communication Master", sub:"14 sessions. A voice that commands rooms.",      color:"#C9A84C" },
 };
 
-export function Celebrate({day, onClose}) {
+export function Celebrate({day, onClose, rankUp}) {
   const [phase, setPhase] = useState("burst");
   const [notifyDone, setNotifyDone] = useState(() => {
     try { return !!localStorage.getItem("au1_practiceSpaceNotify"); } catch { return false; }
@@ -274,6 +274,23 @@ strokeWidth="1.5"
             ) : "Each session is a rep. Every rep builds the habit. Keep going."}
           </p>
 
+          {/* Rank up */}
+          {rankUp && (
+            <div style={{
+              display:"flex",alignItems:"center",gap:14,
+              margin:"0 0 20px",padding:"14px 16px",
+              borderRadius:12,
+              background: isComplete ? "rgba(255,255,255,0.06)" : "rgba(183,154,107,0.08)",
+              border:"1px solid "+(isComplete ? "rgba(255,255,255,0.12)" : "rgba(183,154,107,0.25)"),
+              animation:"textFade 0.5s ease 0.4s both",
+            }}>
+              <img loading="lazy" src={rankUp.img} alt={rankUp.name} style={{width:44,height:44,objectFit:"contain",flexShrink:0}}/>
+              <div>
+                <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:2}}>Rank Up</div>
+                <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:isComplete?"white":T.text}}>You've been promoted to {rankUp.name}.</div>
+              </div>
+            </div>
+          )}
 
           {/* Progress ring label */}
           {!isComplete && (

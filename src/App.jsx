@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { applyUpdate } from "./pwa.js";
 import { T } from "./theme.js";
 import { LESSONS, ROLES } from "./data.js";
-import { useIsDesktop, getStreak, ls, lsSet } from "./utils.js";
+import { useIsDesktop, getStreak, ls, lsSet, getPieceInfo } from "./utils.js";
 import { SpeechTest } from "./screens/SpeechTest.jsx";
 import { SessionView } from "./screens/SessionView.jsx";
 import { HomeScreen } from "./screens/HomeScreen.jsx";
@@ -122,6 +122,7 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   }, [tab, view]);
   const [selDay, setSelDay] = useState(1);
   const [cel, setCel] = useState(null);
+  const [rankUp, setRankUp] = useState(null);
   const sessionStartRef = useRef(null);
   const streak = getStreak(done);
   const activeRole = ROLES.find(r => r.id === roleId) || null;
@@ -160,9 +161,14 @@ lsSet("au1_dark",d); }
   function startSessionAtStep(d, stepName) { try{localStorage.setItem("au1_initial_step",stepName);}catch{} sessionStartRef.current = Date.now(); setSelDay(d); setView("session"); }
   function completeDay(d) {
     if (!done.includes(d)) {
+      const beforePiece = getPieceInfo(done.length).current;
       const upd = [...done, d];
       setDone(upd);
       lsSet("au1_done", upd);
+      const afterPiece = getPieceInfo(upd.length).current;
+      if (afterPiece.name !== beforePiece.name) {
+        setRankUp(afterPiece);
+      }
       const nx = Math.min(d+1, 14);
       setCur(nx);
       lsSet("au1_day", nx);
@@ -231,7 +237,7 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
     return (
       <div style={wrapStyle}>
         <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
-        {cel && <Celebrate day={cel} onClose={() => { setCel(null); setView("main"); setTab("home"); }}/>}
+        {cel && <Celebrate day={cel} rankUp={rankUp} onClose={() => { setCel(null); setRankUp(null); setView("main"); setTab("home"); }}/>}
         {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole} inSession={view==="session"} onExitToTab={(t)=>{setTab(t);setView("main");}} day={selDay}/>}
         <SessionView lesson={LESSONS[Math.min(selDay-1,13)]}
 isDone={done.includes(selDay)} onComplete={() => completeDay(selDay)}
@@ -259,7 +265,7 @@ style={Object.assign({},wrapStyle,{display:"flex",flexDirection:"column",height:
 <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes 
 slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
       <UpdateBanner />
-      {cel && <Celebrate day={cel} onClose={() => setCel(null)}/>}
+      {cel && <Celebrate day={cel} rankUp={rankUp} onClose={() => { setCel(null); setRankUp(null); }}/>}
       {confirmReset && (
         <div 
 style={{position:"fixed",inset:0,zIndex:300,background:"rgba(11,13,16,0.7)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",padding:"24px"}}>
