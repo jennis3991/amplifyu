@@ -1182,6 +1182,9 @@ setAmbitionSaved(true); } catch {}
                 <div style={cs10.label}>Your AmplifyU Coach Says</div>
                 <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>{simResult.insight}</p>
               </div>
+              <div style={{...cs10.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
+                <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>The real hot seat won't announce itself — a review, a promotion conversation, a tough question in a meeting. The more you rehearse landing your impact here, the more it'll just come out that way when it matters.</p>
+              </div>
               <button onClick={()=>{setSimPhase('picking');setExpandedSimDim(null);}} style={cs10.cta}>Try Another Scenario →</button>
               <button onClick={resetSim} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"4px 0",textAlign:"center"}}>← Start over</button>
             </div>

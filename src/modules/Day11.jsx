@@ -1240,7 +1240,7 @@ Keep it under 280 words. Make every word earn its place.`;
 
         <div style={{ borderLeft: "2px solid rgba(200,164,106,0.22)", paddingLeft: 14, marginTop: 4 }}>
           <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 13, fontStyle: "italic", color: T2.text3, lineHeight: 1.75, margin: 0 }}>
-            Great brands are consistent. Whether someone reads your LinkedIn, your CV or meets you in person, they should come away with the same impression. That's how reputations are built.
+            Great brands are consistent. Whether someone reads your LinkedIn, your CV, or meets you in person, they should come away with the same impression — the one you just wrote down. That's how reputations are built, and it starts the next time someone looks you up.
           </p>
         </div>
 

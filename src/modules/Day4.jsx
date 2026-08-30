@@ -771,6 +771,10 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
           <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:700,color:T.gold,margin:0,textTransform:"uppercase",letterSpacing:"1.5px"}}>That is Miller's Law in action.</p>
         </div>
 
+        <div style={{...cs.card,borderLeft:"3px solid "+T.gold,background:"rgba(138,158,132,0.05)"}}>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>The next time you're in a room where every second counts — a stand-up, a crisis call, an elevator pitch — this is the rep that makes brevity feel natural instead of rushed.</p>
+        </div>
+
       </div>
       {audioEl}
       </>

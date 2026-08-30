@@ -428,6 +428,9 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
           <div style={{fontSize:9,fontWeight:700,color:"#8A7B66",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>Your AmplifyU Coach Says</div>
           <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,color:"#2C2416",margin:0,lineHeight:1.6}}>{r.insight}</p>
         </div>
+        <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}>
+          <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>The real hot seat won't announce itself — a review, a promotion conversation, a tough question in a meeting. The more you rehearse landing your impact here, the more it'll just come out that way when it matters.</p>
+        </div>
         <button onClick={resetToScenarios} style={{padding:"11px",borderRadius:3,border:"0.5px solid #DDD5C4",background:"transparent",color:"#6B5E44",fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Try another scenario →</button>
       </div>}
     </div>

@@ -611,9 +611,10 @@ Return only valid JSON with all fields present.`,
         </div>
         <div style={cs.card}>
           <div style={cs.label}>Take This Into Your Next Meeting</div>
-          <div style={{display:'inline-block', padding:'10px 18px', background:'rgba(138,158,132,0.1)', borderRadius:20, border:'0.5px solid rgba(138,158,132,0.3)'}}>
+          <div style={{display:'inline-block', padding:'10px 18px', background:'rgba(138,158,132,0.1)', borderRadius:20, border:'0.5px solid rgba(138,158,132,0.3)', marginBottom:12}}>
             <p style={{fontFamily:T.serif, fontSize:isDesktop?16:14, fontStyle:'italic', color:T2.text, margin:0, lineHeight:1.4}}>{d.takeaway}</p>
           </div>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.6, margin:0}}>PRE only becomes instinct once you've said it out loud under pressure — twice, just now. The next time someone asks your opinion on the spot, this is the shape it'll fall into.</p>
         </div>
       </div>
     );
