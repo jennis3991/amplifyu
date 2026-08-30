@@ -115,8 +115,7 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
         });
         const claudeData = await claudeRes.json();
         coverPrompt = claudeData.content?.[0]?.text?.trim() || null;
-        if (coverPrompt) console.log('[cover-image] Art director prompt ready:', coverPrompt.slice(0, 120) + '...');
-        else console.warn('[cover-image] Claude returned no content, falling back');
+        if (!coverPrompt) console.warn('[cover-image] Claude returned no content, falling back');
       } catch (err) {
         console.warn('[cover-image] Claude art director failed, falling back:', err.message);
       }
