@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
+import { ReadAloudButton } from '../components/ReadAloudButton.jsx';
 import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
@@ -31,7 +32,7 @@ function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
     <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
       {image && <img loading="lazy" src={image} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>}
       {image && <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.78) 0%, rgba(10,8,5,0.08) 50%, transparent 100%)"}}/>}
-      <div style={{position:"relative",zIndex:2}}>
+      <div className="au-tts-hero" style={{position:"relative",zIndex:2}}>
         <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>{label}</div>
         {liveIndicator ? (
           <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10}}>
@@ -61,6 +62,12 @@ export function MobileSessionView({
   roleId, activeRole, swipeRef, note, saveNote, checks, setChecks,
   ntOpenCard, setNtOpenCard, ntStory,
 }) {
+  const ttsBodyRef = useRef(null);
+  const getTtsText = () => {
+    const hero = document.querySelector('.au-tts-hero');
+    const body = ttsBodyRef.current;
+    return [hero?.innerText, body?.innerText].filter(Boolean).join('. ');
+  };
   const [d9OpenCard, setD9OpenCard] = useState(null);
   const [pixarOpen, setPixarOpen] = useState(false);
   const [d14Selected, setD14Selected] = useState([]);
@@ -384,11 +391,17 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         </svg>
         <span style={{fontSize:13,fontWeight:500}}>← Exit</span>
       </button>
+      {/* Read aloud — Insight/Theory/Example only, top right over image */}
+      {(step==="Insight"||step==="Theory"||step==="Example") && (
+        <div style={{position:"absolute",top:14,right:14,zIndex:50}}>
+          <ReadAloudButton getText={getTtsText} resetKey={idx}/>
+        </div>
+      )}
       {/* Day + title — only on Insight and Review */}
       {(step==="Insight"||step==="Review") && (
         <>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.88) 0%,rgba(10,8,5,0.3) 50%,transparent 80%)",pointerEvents:"none"}}/>
-          <div style={{position:"absolute",bottom:20,left:20,right:20,zIndex:2}}>
+          <div className="au-tts-hero" style={{position:"absolute",bottom:20,left:20,right:20,zIndex:2}}>
             <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.55)",textTransform:"uppercase",letterSpacing:"2px",fontFamily:T.sans,marginBottom:8}}>Day {lesson.day} · {lesson.tag}</div>
             {step==="Insight" ? (
               <h1 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:"white",lineHeight:1.2,margin:0}}>{lesson.title}</h1>
@@ -488,6 +501,9 @@ T.goldDark : T2.text4,
       );
     })()}
      <div key={idx} style={{padding:"20px 20px 0",display:"flex",flexDirection:"column",gap:14,animation:"tabFadeIn 0.28s ease-out"}}>
+      {/* Read-aloud reads only this inner region — excludes the Previous/Next
+          nav buttons below, which are siblings outside this div. */}
+      <div ref={ttsBodyRef}>
        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
       {isD10 && step==="Insight" && (
         <>
@@ -3103,6 +3119,7 @@ strokeLinecap="round"/></svg>
           })()}
         </>
       )}
+      </div>
        {/* Navigation */}
       <div style={{display:"flex",gap:10,paddingBottom:8,paddingTop:6}}>
         {idx > 0 && (() => {

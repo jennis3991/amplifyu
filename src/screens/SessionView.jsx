@@ -7,6 +7,7 @@ import { D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_NEURO, THEORY_DATA, F
   D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS,
 } from '../data.js';
 import { SessionLeftPanel, ExCard } from './SessionLeftPanel.jsx';
+import { ReadAloudButton } from '../components/ReadAloudButton.jsx';
 import { MobileSessionView } from './SessionViewMobile.jsx';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
@@ -38,7 +39,9 @@ activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
   const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory","Example","Rehearsal","Simulation","Review"]:["Insight","Theory","Example","Rehearsal","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
   const rightPanelRef = useRef(null);
+  const leftPanelWrapRef = useRef(null);
   const reviewPanelRef = useRef(null);
+  const getTtsText = () => [leftPanelWrapRef.current?.innerText, rightPanelRef.current?.innerText].filter(Boolean).join('. ');
   useEffect(() => {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
@@ -4525,7 +4528,7 @@ setAmbitionSaved(true); } catch {}
               width: "40%", flexShrink: 0,
               position: "relative", overflow: "hidden", zIndex: 1,
             }}>
-              <div key={idx} className="au-step-enter" style={{ height: "100%" }}>
+              <div key={idx} ref={leftPanelWrapRef} className="au-step-enter" style={{ height: "100%" }}>
                 <SessionLeftPanel
                   T2={T2} step={step} lesson={lesson} isDone={isDone}
                   isD1={isD1} isD2={isD2} isD3={isD3} isD4={isD4} isD5={isD5}
@@ -4556,6 +4559,13 @@ setAmbitionSaved(true); } catch {}
               overflowY: "auto", position: "relative", zIndex: 1,
               borderLeft: "1px solid " + T2.divider,
             }}>
+              {(step==="Insight"||step==="Theory"||step==="Example") && (
+                <div style={{ position: "sticky", top: 16, zIndex: 10, display: "flex", justifyContent: "flex-end", padding: "0 24px", marginBottom: -34, pointerEvents: "none" }}>
+                  <div style={{ pointerEvents: "auto" }}>
+                    <ReadAloudButton getText={getTtsText} resetKey={idx}/>
+                  </div>
+                </div>
+              )}
               <div style={{ position: "relative", zIndex: 1 }}>
                 {isD1 && step === "Rehearsal"
                   ? <D1WarmUpWidget key="d1-warmup" T={T} T2={T2} isDesktop={true}
