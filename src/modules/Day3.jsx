@@ -302,8 +302,8 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
     const openingPause = pauseMetrics?.openingPauseReal ?? true;
     const midSpeechPause = (pauseMetrics?.midPauseCount ?? 0) > 0;
     const fallbackLine = midSpeechPause
-      ? "You named a real challenge and let it land with a real pause — your next step is to bring that same discipline to the very first moment before you speak."
-      : "You named a real challenge and spoke about it clearly — your next step is to hold a full second of silence before your first word, and again between your key points.";
+      ? "You named a real challenge and let it land with a real pause."
+      : "You named a real challenge and spoke about it clearly.";
     try {
       const res = await fetch('/api/claude', {
         method: 'POST',
@@ -323,13 +323,13 @@ CRITICAL TONE RULES:
 — Write in the voice of a calm, professional, direct executive coach. Motivational, never slangy.
 — Never use informal phrases like "one beat of stillness", "beat of silence", "carry that stillness", or similar. Use clear, professional language.
 — Never reference "the Hot Seat", "the simulation", or any other screen by name. The feedback is self-contained.
-— Structure: [affirm the specific thing they said, referencing it directly] — [clear, professional cue for their next step with the pause technique].
+— Structure: affirm the specific thing they said, referencing it directly. Do NOT include a "next step" instruction or cue — the screen shows that separately. coachLine is affirmation only.
 
 The lines below illustrate TONE ONLY — never reuse their wording. Build the actual coachLine from the specific transcript given, and match it to the measured pause data provided.
 If openingPause is true and midSpeechPause is true: affirm both — they paused before starting AND paused between ideas. Tone reference, do not copy: "You opened with a deliberate pause and let [specific detail] land before moving on — that's exactly the rhythm confident communicators use."
-If openingPause is true and midSpeechPause is false: affirm the opening pause, referencing what they said, then cue pausing between ideas too. Tone reference, do not copy: "You took a deliberate pause before diving into [specific detail] — your next step is to bring that same pause between your ideas, not just at the start."
-If openingPause is false and midSpeechPause is true: affirm the pauses between ideas, referencing what they said, then cue the opening pause. Tone reference, do not copy: "You let [specific detail] land with a real pause before moving on — your next step is to bring that same discipline to the very first moment before you speak."
-If both are false: affirm the specific thing they said clearly — then offer the pause as the next step, both before starting and between ideas. Tone reference, do not copy: "You were clear about [specific detail] — your next step is to hold a full second of silence before your first word, and again between your key points."
+If openingPause is true and midSpeechPause is false: affirm the opening pause, referencing what they said. Tone reference, do not copy: "You took a deliberate pause before diving into [specific detail] — a strong instinct that most speakers skip."
+If openingPause is false and midSpeechPause is true: affirm the pauses between ideas, referencing what they said. Tone reference, do not copy: "You let [specific detail] land with a real pause before moving on — that kind of restraint is rare."
+If both are false: affirm the specific thing they said clearly, referencing it directly. Tone reference, do not copy: "You were clear and direct about [specific detail]."
 
 Never use the word fillers. Never use the word perfect. Always frame as growth.`,
           messages: [{role: 'user', content: `Topic: ${topic?.label}\n\nMeasured pause data (from the actual recording): openingPause=${openingPause}, midSpeechPause=${midSpeechPause}${pauseMetrics?.midPauseCount!=null?` (${pauseMetrics.midPauseCount} pause(s) detected between ideas)`:''}\n\nResponse: ${hasTranscript ? text : '[Transcription unavailable — the user did respond. Assume a reasonable response and write an affirming coachLine.]'}`}],
