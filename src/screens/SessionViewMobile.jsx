@@ -17,6 +17,7 @@ import { D12PracticeWidget, D12SimWidget } from '../modules/Day12.jsx';
 import { D13PracticeWidget, D13SimWidget } from '../modules/Day13.jsx';
 import { D14PracticeWidget, D14SimWidget, D14LoopDiagram } from '../modules/Day14.jsx';
 import { D7SimWidget, D7PracticeWidget } from '../modules/Day7.jsx';
+import { SavedResultSection } from '../modules/SavedResultCard.jsx';
 import AICoachTab from '../components/AICoachTab.jsx';
 import { NavIcon } from '../components/NavComponents.jsx';
 import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
@@ -3046,6 +3047,10 @@ strokeLinecap="round"/></svg>
               </>
             )}
           </div>
+          <div style={{padding:"0 20px"}}>
+            <SavedResultSection T={T} T2={T2} isDesktop={false} day={lesson.day} isNT={isNT} onExitToTab={onExitToTab}/>
+          </div>
+
           {/* Go Deeper heading */}
           <div style={{padding:"20px 24px 4px"}}>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.05,letterSpacing:"-0.5px",marginBottom:12}}>Go Deeper</h2>

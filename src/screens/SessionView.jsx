@@ -31,6 +31,7 @@ import AICoachTab from '../components/AICoachTab.jsx';
 import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 import { getScenariosForDay, getPIEEmphasis } from '../utils.js';
 import { D7SimWidget, D7PracticeWidget } from '../modules/Day7.jsx';
+import { SavedResultSection } from '../modules/SavedResultCard.jsx';
 
 export function SessionView({lesson, isDone, onComplete, onBack, onExitToTab, roleId,
 activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
@@ -4478,6 +4479,8 @@ setAmbitionSaved(true); } catch {}
                           ))}
                         </div>
                       )}
+
+                      <SavedResultSection T={T} T2={T2} isDesktop={true} day={lesson.day} isNT={isNT} onExitToTab={onExitToTab}/>
 
                       {/* Divider before books */}
                       <h2 style={{ fontFamily: T.serif, fontSize: "clamp(28px,2.5vw,36px)", fontWeight: 600, color: T2.text, letterSpacing: "-0.3px", lineHeight: 1.15, marginBottom: 12 }}>Go Deeper</h2>

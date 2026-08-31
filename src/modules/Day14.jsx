@@ -281,6 +281,22 @@ export function D14SimWidget({T, T2, isDesktop}) {
     cta: {width:"100%", padding:isDesktop?"14px":"13px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:isDesktop?15:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:48, transition:"all 0.2s"},
   };
 
+  // Saves the generated Blueprint so it can surface on the Review tab's
+  // "Your Saved Result" card and in Toolkit's My Saved Work — same
+  // au1_toolkits store the other days' widgets already write to. Previously
+  // the Blueprint only lived in this component's React state and was lost
+  // on reload or navigation.
+  function saveBlueprint(parsed) {
+    try {
+      const existing = JSON.parse(localStorage.getItem('au1_toolkits') || '[]');
+      const mine = existing.filter(e => e.source === 'blueprint-day14');
+      const others = existing.filter(e => e.source !== 'blueprint-day14');
+      const entry = { id: Date.now(), source: 'blueprint-day14', blueprint: parsed, timestamp: Date.now() };
+      const nextMine = [entry, ...mine].slice(0, 5);
+      localStorage.setItem('au1_toolkits', JSON.stringify([...others, ...nextMine]));
+    } catch {}
+  }
+
   const generate = async () => {
     setPhase('generating');
     setError('');
@@ -357,6 +373,7 @@ export function D14SimWidget({T, T2, isDesktop}) {
       const parsed = m ? JSON.parse(m[0]) : null;
       if (parsed && parsed.journey) {
         setBlueprint(parsed);
+        saveBlueprint(parsed);
         setPhase('blueprint');
       } else {
         setError('Something went wrong generating your blueprint. Please try again.');

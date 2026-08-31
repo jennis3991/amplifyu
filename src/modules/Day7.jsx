@@ -335,6 +335,20 @@ export function D7SimWidget({ T, T2, isDesktop }) {
     });
   }
 
+  // Saves the Week 1 Review result so it can surface on the Review tab's
+  // "Your Saved Result" card and in Toolkit's My Saved Work — same
+  // au1_toolkits store the other days' widgets already write to.
+  function saveWeek1Result(parsed, text) {
+    try {
+      const existing = JSON.parse(localStorage.getItem('au1_toolkits') || '[]');
+      const mine = existing.filter(e => e.source === 'week1-review-day7');
+      const others = existing.filter(e => e.source !== 'week1-review-day7');
+      const entry = { id: Date.now(), source: 'week1-review-day7', transcript: text || '', result: parsed, timestamp: Date.now() };
+      const nextMine = [entry, ...mine].slice(0, 5);
+      localStorage.setItem('au1_toolkits', JSON.stringify([...others, ...nextMine]));
+    } catch {}
+  }
+
   async function doSubmit(){
     setPhase('analyzing');
     const spokenText = await stopRecAndTranscribe();
@@ -376,6 +390,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
       if (signal.pitchScore != null) parsed.scores.voiceControl = Math.max(1, Math.min(10, Math.round(signal.pitchScore / 10)));
     }
     setResult(parsed);
+    saveWeek1Result(parsed, text);
     setPhase('results');
   }
 

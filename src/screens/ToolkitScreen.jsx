@@ -16,8 +16,8 @@ function loadSavedWork() {
   try { toolkits = JSON.parse(localStorage.getItem("au1_toolkits") || "[]"); } catch {}
   return [...stories, ...toolkits].sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
 }
-const SAVED_WORK_KEY = { 'speechwriter':'au1_stories', 'rehearsal':'au1_stories', 'brand-rehearsal':'au1_toolkits', 'linkedin-audit':'au1_toolkits', 'voice-analysis-day1':'au1_toolkits', 'voice-analysis-day2':'au1_toolkits', 'conversation-prep-day6':'au1_toolkits' };
-const SAVED_WORK_SOURCES = {
+export const SAVED_WORK_KEY = { 'speechwriter':'au1_stories', 'rehearsal':'au1_stories', 'brand-rehearsal':'au1_toolkits', 'linkedin-audit':'au1_toolkits', 'voice-analysis-day1':'au1_toolkits', 'voice-analysis-day2':'au1_toolkits', 'conversation-prep-day6':'au1_toolkits', 'week1-review-day7':'au1_toolkits', 'blueprint-day14':'au1_toolkits' };
+export const SAVED_WORK_SOURCES = {
   'voice-analysis-day1': {
     dayLabel: "Day 1 · Clarity", clickable: true, day: 1, step: "Simulation",
     icon: c => <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={c} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg>,
@@ -65,6 +65,27 @@ const SAVED_WORK_SOURCES = {
     icon: c => <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={c} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg>,
     getTitle: e => e.coverTitle || "Untitled story",
     getPreview: e => e.coachObservation || (e.beats?.[0] ? e.beats[0].slice(0,140) : ""),
+    getBadge: () => null,
+  },
+  'week1-review-day7': {
+    dayLabel: "Day 7 · Week 1 Review", clickable: true, day: 7, step: "Simulation",
+    icon: c => <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={c} strokeWidth="1.3" strokeLinejoin="round"/></svg>,
+    getTitle: e => e.result?.memorable || "Week 1 Review",
+    getPreview: e => e.result?.coachInsight || e.result?.strongest || "",
+    getBadge: e => {
+      const s = e.result?.scores;
+      if (!s) return null;
+      const vals = Object.values(s).filter(v => typeof v === 'number');
+      if (!vals.length) return null;
+      const avg = Math.round((vals.reduce((a,b)=>a+b,0) / vals.length) * 10);
+      return `${avg}/100`;
+    },
+  },
+  'blueprint-day14': {
+    dayLabel: "Day 14 · Blueprint", clickable: true, day: 14, step: "Simulation",
+    icon: c => <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M11 2l1.8 3.7 4.1.6-3 2.9.7 4.1L11 11.3 7.4 13.3l.7-4.1-3-2.9 4.1-.6L11 2z" stroke={c} strokeWidth="1.3" strokeLinejoin="round"/></svg>,
+    getTitle: e => e.blueprint?.archetype || "Communication Blueprint",
+    getPreview: e => e.blueprint?.brandStatement || e.blueprint?.journey || "",
     getBadge: () => null,
   },
 };
