@@ -1,10 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
-
-async function fireRankUpHaptic() {
-  try { await Haptics.impact({ style: ImpactStyle.Medium }); } catch (_) {}
-}
 
 // No chime asset exists in the repo (or any audio-playback infra) — this
 // synthesizes a soft two-note bell in place of a sourced sound file.
@@ -189,7 +184,6 @@ export function Celebrate({day, onClose, rankUp}) {
         const r = el.getBoundingClientRect();
         setSpotlight({ x: r.left + r.width / 2, y: r.top + r.height / 2, radius: Math.max(r.width, r.height) });
       }
-      fireRankUpHaptic();
       playRankUpChime();
     }, 900);
     const clearTimer = setTimeout(() => setSpotlight(null), 900 + 1600);
