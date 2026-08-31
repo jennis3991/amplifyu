@@ -336,7 +336,10 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
         Today's goal isn't to speak faster. It's to become comfortable with silence.
       </h2>
       <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text3, lineHeight:1.7, margin:'0 0 10px'}}>
-        Pick a topic below and speak for around 30 seconds. Before your first word, take a deliberate pause — even just one second. Then, as you speak, practise pausing between your important ideas rather than running them together. The strongest communicators don't rush to answer, and they don't rush between points — they give themselves, and their listener, permission to think.
+        Pick a topic below. As you speak, practise pausing between your important ideas.
+      </p>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text3, lineHeight:1.7, margin:'0 0 10px'}}>
+        The strongest communicators don't rush to answer or rush between points. They give themselves, and their listener, permission to think.
       </p>
       <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px', fontStyle:'italic'}}>
         If you feel the urge to use a filler word — just pause instead.
