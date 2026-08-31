@@ -456,7 +456,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
           <p style={{fontFamily: T.sans, fontSize: 12, color: 'rgba(138,158,132,0.45)', margin: 0, letterSpacing: '0.05em'}}>Now take that learning further into the simulation.</p>
         </div>
         <div style={{...cs.card, borderLeft: '3px solid ' + T.gold, background: 'rgba(138,158,132,0.05)'}}>
-          <p style={{fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, fontStyle: 'italic', color: T2.text, lineHeight: 1.6, margin: 0}}>The next time you feel the urge to fill a silence with "um" or "like," you'll have already practised sitting in that pause — and it'll feel like control, not awkwardness.</p>
+          <p style={{fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, fontStyle: 'italic', color: T2.text, lineHeight: 1.6, margin: 0}}>You don't have to fill the silence. You can own it.</p>
         </div>
         <button
           onClick={() => { if (onSimulation) onSimulation(); }}

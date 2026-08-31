@@ -143,7 +143,7 @@ export function D10MobileSAR({onComplete}) {
             <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:"#2C2416",margin:0,lineHeight:1.65}}>{res}</p>
           </div>
           <div style={{padding:"14px 16px",background:"rgba(237,232,223,0.6)",borderRadius:4,marginTop:10}}>
-            <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>This is the version of your work you'll reach for the next time someone asks "so what have you been up to?" — practised, not improvised.</p>
+            <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>When someone asks what you've achieved, you'll have a story ready.</p>
           </div>
         </>
       )}

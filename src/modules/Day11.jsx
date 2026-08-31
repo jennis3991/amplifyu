@@ -491,7 +491,7 @@ Return ONLY valid JSON:
           <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 13, fontStyle: "italic", color: T2.text3, lineHeight: 1.8, margin: 0 }}>{result.coachNote}</p>
         </div>
         <div style={{ borderLeft: "3px solid " + T.gold, background: "rgba(138,158,132,0.05)", borderRadius: "0 6px 6px 0", padding: isDesktop ? "16px 18px" : "13px 15px" }}>
-          <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 13, fontStyle: "italic", color: T2.text, lineHeight: 1.6, margin: 0 }}>This is the sentence you reach for the next time someone asks "so, what do you do?" — say it enough times here, and it'll come out steady when it counts.</p>
+          <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 13, fontStyle: "italic", color: T2.text, lineHeight: 1.6, margin: 0 }}>Know who you are, what you bring, and why it matters.</p>
         </div>
         <button onClick={() => onSimulation?.()} style={cta(false)}>Continue to Brand Analysis →</button>
       </div>

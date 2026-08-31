@@ -270,7 +270,7 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
           <div style={{animation:'fadeUp 0.4s ease both'}}>
             <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text3, textAlign:'center', lineHeight:1.65, margin:'0 0 16px'}}>{coachResult.coachLine}</p>
             <div style={{...cs.card, borderLeft:'3px solid '+T.gold, background:'rgba(138,158,132,0.05)', marginBottom:16}}>
-              <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text, lineHeight:1.6, margin:0}}>The words you just tried on don't disappear when the conversation gets real — they're already in your mouth, ready for when the pressure shows up.</p>
+              <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text, lineHeight:1.6, margin:0}}>The difficult conversation hasn't changed. How you prepare for it has.</p>
             </div>
             <button onClick={() => onSimulation?.()}
               style={{...cs.cta, fontSize:isDesktop?15:14, padding:isDesktop?'15px':'13px'}}>
