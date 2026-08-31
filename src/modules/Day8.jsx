@@ -1053,7 +1053,7 @@ Return ONLY valid JSON:
         </div>
       )}
 
-      <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:isDesktop?"24px":"18px"}}>
+      <div style={{background:T2.surface,borderRadius:8,border:"1px solid rgba(44,36,22,0.3)",padding:isDesktop?"24px":"18px"}}>
         <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>What to include</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px",fontWeight:300}}>Describe the presentation, speech, meeting or story you need to tell. Include your audience, your goal, and anything you want people to remember.</p>
         <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:14}}>
@@ -1636,7 +1636,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         </div>
       )}
 
-      <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, margin:0 }}>Choose the story that feels most meaningful to you. Speak for around 60 seconds. Don't worry about telling it perfectly — just tell it naturally. Your AmplifyU coach will identify the strongest parts of your story and help shape it into one you can use again and again.</p>
+      <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, margin:0 }}>Choose the story that feels most meaningful to you. Don't worry about telling it perfectly — just tell it naturally. Your AmplifyU coach will identify the strongest parts of your story and help shape it into one you can use again and again.</p>
       <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
           <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
