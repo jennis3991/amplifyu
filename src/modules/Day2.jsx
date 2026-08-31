@@ -94,6 +94,7 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
 }
 
 // ─── D2 SIM WIDGET — voice recording + AI vocal coach ────────────────────────
+const D2_SIMULATION_MAX_SEC = 180;
 export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const PROMPTS = {
     Presence:[
@@ -131,7 +132,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const [expandedDim, setExpandedDim] = useState(null);
   const [cat, setCat] = useState('Presence');
   const [prompt, setPrompt] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(90);
+  const [timeLeft, setTimeLeft] = useState(D2_SIMULATION_MAX_SEC);
   const [isRec, setIsRec] = useState(false);
   useWakeLock(isRec);
   const [transcript, setTranscript] = useState('');
@@ -277,6 +278,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
   useEffect(()=>{
     if(isRec&&timeLeft>0){timerRef.current=setTimeout(()=>setTimeLeft(t=>t-1),1000);}
+    else if(isRec&&timeLeft<=0){doStop();}
     return ()=>clearTimeout(timerRef.current);
   },[isRec,timeLeft]);
 
@@ -484,9 +486,9 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     setPhase(isRetry?'comparison':'feedback');
   }
 
-  function selectPrompt(p){setPrompt(p);setPhase('recording');setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');}
+  function selectPrompt(p){setPrompt(p);setPhase('recording');setTimeLeft(D2_SIMULATION_MAX_SEC);setIsRec(false);setTranscript('');setFallback('');}
   function surprise(){selectPrompt(ALL_PROMPTS[Math.floor(Math.random()*ALL_PROMPTS.length)]);}
-  function reset(){setPhase('intro');setPrompt(null);setTimeLeft(90);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);setSelectedFocus([]);setRecMetrics(null);}
+  function reset(){setPhase('intro');setPrompt(null);setTimeLeft(D2_SIMULATION_MAX_SEC);setIsRec(false);setTranscript('');setFallback('');setFeedback(null);setRound1(null);setAudioURL(null);setSelectedFocus([]);setRecMetrics(null);}
 
   function quoteToPos(fullText, quote) {
     if (!fullText || !quote) return null;
@@ -712,7 +714,6 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           ):(
             <button onClick={doStop} style={{...cs.cta,width:"auto",padding:"12px 32px",background:"#8A4A3A"}}>Stop & Analyse →</button>
           )}
-          {isRec&&<button onClick={()=>{setTimeLeft(t=>Math.min(t+30,120));}} style={{padding:"12px 20px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:12,cursor:"pointer",fontFamily:T.sans}}>+30s</button>}
         </div>
         {!isRec && (micError || transcribeFailed) && (
           <div style={{...cs.card, textAlign:"left", marginTop:12, border:"1px solid rgba(180,80,60,0.35)", background:"rgba(180,80,60,0.06)"}}>

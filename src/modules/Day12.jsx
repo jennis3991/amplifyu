@@ -223,6 +223,7 @@ function getSupportedVideoMime() {
 }
 
 // ─── D12 Simulation Widget — Video Presence Recorder ─────────────────────────
+const D12_SIMULATION_MAX_SEC = 180;
 export function D12SimWidget({T, T2, isDesktop}) {
   const PROMPTS = [
     {label:"Inspire",    text:"Tell a short story about something that genuinely changed how you see the world."},
@@ -256,6 +257,11 @@ export function D12SimWidget({T, T2, isDesktop}) {
     if (timerRef.current)   clearInterval(timerRef.current);
     if (blobUrl)            URL.revokeObjectURL(blobUrl);
   },[]);
+
+  // Hard cap — Simulation recordings auto-stop (and auto-submit) at 180s.
+  useEffect(()=>{
+    if (isRecording && recTime>=D12_SIMULATION_MAX_SEC) stopRecording();
+  },[isRecording, recTime]);
 
   const cs = {
     card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:isDesktop?"22px 24px":"16px 18px"},
@@ -465,7 +471,7 @@ export function D12SimWidget({T, T2, isDesktop}) {
         {isRecording && (
           <div style={{position:"absolute",top:12,left:12,display:"flex",alignItems:"center",gap:7,padding:"5px 12px",background:"rgba(10,8,4,0.72)",borderRadius:20,backdropFilter:"blur(4px)"}}>
             <div style={{width:8,height:8,borderRadius:"50%",background:"#E05555",animation:"pulse 1.2s ease infinite"}}/>
-            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:"#F5EFE6",letterSpacing:"1px"}}>{fmtTime(recTime)}</span>
+            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:"#F5EFE6",letterSpacing:"1px"}}>{fmtTime(recTime)} / {fmtTime(D12_SIMULATION_MAX_SEC)}</span>
           </div>
         )}
       </div>

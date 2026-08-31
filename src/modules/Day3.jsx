@@ -139,6 +139,7 @@ const TOPICS = [
   },
 ];
 
+const D3_REHEARSAL_MAX_SEC = 120;
 export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimulation}) {
   const [phase, setPhase] = useState('select');
   const [topic, setTopic] = useState(null);
@@ -150,9 +151,11 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   const [transcribeFailed, setTranscribeFailed] = useState(false);
   const [fallbackText, setFallbackText] = useState('');
 
+  const [elapsed, setElapsed] = useState(0);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
   const waveRef = useRef(null);
+  const timerRef = useRef(null);
   const startTimeRef = useRef(null);
   // Real signal data captured from the mic during recording — feeds the
   // opening-pause and between-ideas pause measurement below.
@@ -162,6 +165,20 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
   const dotCount = useSequentialDots(phase === 'pause');
   const analyzingDotCount = useSequentialDots(phase === 'analyzing');
+
+  useEffect(() => {
+    if (isRec) {
+      timerRef.current = setInterval(() => setElapsed(e => e + 1), 1000);
+    } else {
+      clearInterval(timerRef.current);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [isRec]);
+
+  // Hard cap — Rehearsal recordings auto-stop (and auto-submit) at 120s.
+  useEffect(() => {
+    if (isRec && elapsed >= D3_REHEARSAL_MAX_SEC) doStop();
+  }, [isRec, elapsed]);
 
   useEffect(() => {
     if (!onNavLabel) return;
@@ -188,6 +205,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
 
   function doStart() {
     setIsRec(true);
+    setElapsed(0);
     setMicError(false); setTranscribeFailed(false);
     audioChunksRef.current = [];
     startTimeRef.current = Date.now();
@@ -420,7 +438,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth.`
       </div>
       <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
         <div style={{width: 7, height: 7, borderRadius: '50%', background: '#c0392b'}} />
-        <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording — speak for around 30 seconds</span>
+        <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording — {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D3_REHEARSAL_MAX_SEC/60)}:{String(D3_REHEARSAL_MAX_SEC%60).padStart(2,'0')}</span>
       </div>
     </div>
     {isRec ? (
@@ -562,6 +580,7 @@ const HOT_SEAT_SCENARIOS = {
 };
 
 // ─── D3 Simulation Widget — The Hot Seat ─────────────────────────────────────
+const D3_SIMULATION_MAX_SEC = 180;
 export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const [phase, setPhase] = useState('select');
   const [track] = useState(() => {
@@ -580,7 +599,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // Recording
   const [isRec, setIsRec] = useState(false);
   useWakeLock(isRec);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(D3_SIMULATION_MAX_SEC);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [transcript1, setTranscript1] = useState('');
   const [transcript2, setTranscript2] = useState('');
@@ -609,9 +628,10 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
     return () => clearTimeout(briefTimerRef.current);
   }, [phase, briefSecs]);
 
-  // Recording timer — soft guide only, no forced cutoff
+  // Recording timer — hard cap; auto-stops (and auto-submits) at 0.
   useEffect(() => {
-    if (!isRec || timeLeft <= 0) return;
+    if (!isRec) return;
+    if (timeLeft <= 0) { doStop(); return; }
     timerRef.current = setTimeout(() => setTimeLeft(t => t - 1), 1000);
     return () => clearTimeout(timerRef.current);
   }, [isRec, timeLeft]);
@@ -631,7 +651,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   }, [isRec, phase]);
 
   function doStart() {
-    setIsRec(true); setTimeLeft(30);
+    setIsRec(true); setTimeLeft(D3_SIMULATION_MAX_SEC);
     setMicError(false); setTranscribeFailed(false);
     audioChunksRef.current = [];
     if (navigator.mediaDevices?.getUserMedia) {
@@ -673,6 +693,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   }
 
   function doStop() {
+    if (!isRec) return;
     setIsRec(false);
     const currentPhase = phase;
     // Transition to a loading screen immediately — before the async

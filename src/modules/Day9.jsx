@@ -86,6 +86,7 @@ export function D9PracticeWidget({T, T2, isDesktop}) {
 }
 
 // ─── D9 Simulation Widget — The Rapport Builder ──────────────────────────
+const D9_SIMULATION_MAX_SEC = 180;
 export function D9SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const CHARS = [
     {
@@ -226,6 +227,7 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
   const [waveVals, setWaveVals] = useState(Array.from({length:9},()=>0.3+Math.random()*0.3));
   const [debrief, setDebrief] = useState(null);
   const [expandedDim, setExpandedDim] = useState(null);
+  const [elapsed, setElapsed] = useState(0);
 
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
@@ -238,12 +240,27 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
   const waveRef = useRef(null);
+  const timerRef = useRef(null);
 
   useEffect(()=>{
     if(!isRec){clearInterval(waveRef.current);return;}
     waveRef.current=setInterval(()=>setWaveVals(Array.from({length:9},()=>0.2+Math.random()*0.8)),150);
     return()=>clearInterval(waveRef.current);
   },[isRec]);
+
+  useEffect(()=>{
+    if(isRec){
+      timerRef.current=setInterval(()=>setElapsed(e=>e+1),1000);
+    } else {
+      clearInterval(timerRef.current);
+    }
+    return()=>clearInterval(timerRef.current);
+  },[isRec]);
+
+  // Hard cap — each turn's Simulation recording auto-stops (and auto-submits) at 180s.
+  useEffect(()=>{
+    if(isRec && elapsed>=D9_SIMULATION_MAX_SEC) doStop(handleTurnDone);
+  },[isRec, elapsed]);
 
   // Block the app's "Next"/"Review" nav while actively recording or the conversation is processing
   useEffect(()=>{
@@ -252,6 +269,7 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
 
   function doStart(){
     setIsRec(true);
+    setElapsed(0);
     setMicError(false); setTranscribeFailed(false); setFallbackText('');
     audioChunksRef.current=[];
     if(navigator.mediaDevices?.getUserMedia){
@@ -595,7 +613,7 @@ Return ONLY valid JSON:
           {isRec&&(
             <div style={{display:'flex',alignItems:'center',gap:8,marginTop:4}}>
               <div style={{width:7,height:7,borderRadius:'50%',background:'#c0392b'}}/>
-              <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>Recording — speak for 30-45 seconds</span>
+              <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>Recording — {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D9_SIMULATION_MAX_SEC/60)}:{String(D9_SIMULATION_MAX_SEC%60).padStart(2,'0')}</span>
             </div>
           )}
         </div>

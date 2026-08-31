@@ -619,6 +619,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
 
 
 // ─── VOICE WARM-UP — D1 Practice ─────────────────────────────────────────────
+const D1_REHEARSAL_MAX_SEC = 120;
 export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComplete }) {
   const roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
 
@@ -721,6 +722,11 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     }
     return () => clearInterval(timerRef.current);
   }, [isRec]);
+
+  // Hard cap — Rehearsal recordings auto-stop (and auto-submit) at 120s.
+  useEffect(() => {
+    if (isRec && elapsed >= D1_REHEARSAL_MAX_SEC) stopRec();
+  }, [isRec, elapsed]);
 
   function selectTopic(i) {
     setSel(sel === i ? null : i);
@@ -919,7 +925,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
           </button>
           {isRec && (
             <div style={{ fontFamily: T.sans, fontSize: 13, color: "#B05C4A", fontWeight: 600 }}>
-              Recording — {fmtTime(elapsed)} &nbsp;·&nbsp; tap to stop
+              Recording — {fmtTime(elapsed)} / {fmtTime(D1_REHEARSAL_MAX_SEC)} &nbsp;·&nbsp; tap to stop
             </div>
           )}
           {!isRec && !micError && !transcribeFailed && (
@@ -945,6 +951,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
 }
 
 // ─── RECORD & REVIEW™ — D1 Simulation ────────────────────────────────────────
+const D1_SIMULATION_MAX_SEC = 180;
 export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) {
   const _roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
 
@@ -1186,6 +1193,11 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
     }
     return ()=>clearInterval(timerRef.current);
   },[isRec]);
+
+  // Hard cap — Simulation recordings auto-stop (and auto-submit) at 180s.
+  useEffect(()=>{
+    if(isRec && elapsed>=D1_SIMULATION_MAX_SEC) doStop();
+  },[isRec, elapsed]);
 
   useEffect(()=>{
     if(!isRec){clearInterval(waveRef.current);return;}
@@ -1509,7 +1521,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
             }
           </button>
           {isRec
-            ? <div style={{fontFamily:T.sans,fontSize:13,color:"#B05C4A",fontWeight:600}}>Recording — {fmtElapsed(elapsed)} &nbsp;·&nbsp; tap to stop</div>
+            ? <div style={{fontFamily:T.sans,fontSize:13,color:"#B05C4A",fontWeight:600}}>Recording — {fmtElapsed(elapsed)} / {fmtElapsed(D1_SIMULATION_MAX_SEC)} &nbsp;·&nbsp; tap to stop</div>
             : preparingMic
               ? <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>Preparing microphone…</div>
               : <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>Tap to start recording</div>}

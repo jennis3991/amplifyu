@@ -187,7 +187,7 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
         <div style={cs.label}>Your Scenario</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.6, margin:0, fontStyle:'italic'}}>{scenario?.label}</p>
       </div>
-      <VoiceRecorder T={T} T2={T2} onRecordingChange={setIsRec} onDone={(text) => {
+      <VoiceRecorder T={T} T2={T2} maxSeconds={120} onRecordingChange={setIsRec} onDone={(text) => {
         setPhase('analyzing');
         analyzeTranscript(text);
       }}/>
@@ -316,6 +316,7 @@ function DropDown({field, value, placeholder, options, onSelect, open, onToggle,
 }
 
 // ─── D6 Simulation Widget — AI Conversation Prep ────────────────────────────
+const D6_SIMULATION_MAX_SEC = 180;
 export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const INDUSTRIES = ['Technology','Finance','Healthcare','Education','Hospitality','Retail','Sales','Marketing','Legal','Consulting','Other'];
   const MEETING_OPTIONS = [
@@ -472,6 +473,12 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
     timerRef.current=setInterval(()=>setRecTime(t=>t+1),1000);
     return()=>clearInterval(timerRef.current);
   },[isListening]);
+
+  // Hard cap — Simulation recordings auto-submit at 180s (cumulative across
+  // pause/resume, since MediaRecorder.pause() keeps the buffered audio).
+  useEffect(()=>{
+    if(isListening && recTime>=D6_SIMULATION_MAX_SEC) submitAnswer();
+  },[isListening, recTime]);
 
   async function generate(){
     const ap=form.purpose==='Something else'?purposeOther:form.purpose;
@@ -855,7 +862,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <button onClick={isListening?stopListening:startListening}
           style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center",gap:10,padding:"18px",borderRadius:4,border:`1.5px solid ${isListening?"#CC4444":T2.border}`,background:isListening?"rgba(204,68,68,0.06)":"transparent",cursor:"pointer",fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:isListening?"#CC4444":T2.text3,transition:"all 0.2s"}}>
           <div style={{width:10,height:10,borderRadius:"50%",background:isListening?"#CC4444":"rgba(138,158,132,0.5)",animation:isListening?"glowPulse 1s ease infinite":"none",flexShrink:0}}/>
-          {isListening?`Recording… ${recTime}s — tap to pause`:mediaRecRef.current&&mediaRecRef.current.state==='paused'?"Tap to resume":"Tap to speak your answer"}
+          {isListening?`Recording… ${recTime}s / ${D6_SIMULATION_MAX_SEC}s — tap to pause`:mediaRecRef.current&&mediaRecRef.current.state==='paused'?"Tap to resume":"Tap to speak your answer"}
         </button>
         {micError && <p style={{fontFamily:T.sans,fontSize:12,color:"#B05C4A",margin:"10px 0 0"}}>Check your microphone permission, or type your response below instead.</p>}
       </div>

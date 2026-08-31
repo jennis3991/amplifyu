@@ -16,11 +16,15 @@ function blobToB64(blob) {
 //
 // Props:
 //   T, T2            — theme objects
+//   maxSeconds        — hard recording cap; once elapsed reaches this, the
+//                       recording auto-stops and auto-submits exactly as if
+//                       the user tapped stop. Required by every call site —
+//                       there is no uncapped mode.
 //   onDone(text)      — called once a recording has been transcribed (or the
 //                       user submits typed fallback text after a failure)
 //   onRecordingChange(active) — called whenever recording/transcribing starts
 //                       or stops, so the parent can gate its own nav/CTA state
-export function VoiceRecorder({ T, T2, onDone, onRecordingChange }) {
+export function VoiceRecorder({ T, T2, maxSeconds, onDone, onRecordingChange }) {
   const [isRec, setIsRec] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [transcribing, setTranscribing] = useState(false);
@@ -44,6 +48,14 @@ export function VoiceRecorder({ T, T2, onDone, onRecordingChange }) {
     }
     return () => clearInterval(timerRef.current);
   }, [isRec]);
+
+  // Hard cap — auto-stop (which auto-submits via the normal stopRec flow)
+  // the instant elapsed reaches maxSeconds, so nobody can prop the mic open.
+  useEffect(() => {
+    if (isRec && maxSeconds && elapsed >= maxSeconds) {
+      stopRec();
+    }
+  }, [isRec, elapsed, maxSeconds]);
 
   // Stop any in-flight recording if the component unmounts (e.g. user swipes away mid-recording)
   useEffect(() => {
@@ -144,7 +156,7 @@ export function VoiceRecorder({ T, T2, onDone, onRecordingChange }) {
       </button>
       {isRec && (
         <div style={{ fontFamily: T.sans, fontSize: 13, color: "#B05C4A", fontWeight: 600 }}>
-          Recording — {fmtTime(elapsed)} &nbsp;·&nbsp; tap to stop
+          Recording — {fmtTime(elapsed)}{maxSeconds ? ` / ${fmtTime(maxSeconds)}` : ''} &nbsp;·&nbsp; tap to stop
         </div>
       )}
       {!isRec && !micError && !transcribeFailed && (

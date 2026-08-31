@@ -11,23 +11,24 @@ function blobToB64(blob) {
 
 // ─── D11 Rehearsal Widget — AmplifyU Coaching Conversation ───────────────────
 
+const D11_REHEARSAL_MAX_SEC = 120;
 const QUESTIONS = [
   {
     q:    "What do people consistently come to you for?",
     hint: "Think about the problems people ask you to solve, the advice they seek, or the situations where they naturally rely on you.",
-    duration: 30,
+    duration: D11_REHEARSAL_MAX_SEC,
     ack:  "That's helpful. I'm starting to see a pattern.",
   },
   {
     q:    "What makes you different from other people in your role?",
     hint: "Imagine someone recommended you for an important project. What would they say about you? What makes you memorable?",
-    duration: 30,
+    duration: D11_REHEARSAL_MAX_SEC,
     ack:  "Interesting. One more question.",
   },
   {
     q:    "Tell me about a piece of work you're genuinely proud of.",
     hint: "What happened? Why are you proud of it? What does that story reveal about you?",
-    duration: 45,
+    duration: D11_REHEARSAL_MAX_SEC,
     ack:  null,
   },
 ];

@@ -127,7 +127,7 @@ export function D10MobileSAR({onComplete}) {
         <div style={{marginBottom:4}}>
           <div style={{fontSize:10,fontWeight:700,color:"#8A9E84",textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:"'Inter',sans-serif",marginBottom:8}}>Situation &middot; Action &middot; Result</div>
           <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#6B5E44",lineHeight:1.6,margin:"0 0 18px"}}>Speak your whole story in one go: what was the challenge, what did YOU specifically do, and what was the measurable result?</p>
-          <VoiceRecorder T={T} onDone={go}/>
+          <VoiceRecorder T={T} maxSeconds={120} onDone={go}/>
         </div>
       )}
       {l && (
@@ -189,6 +189,7 @@ export function explainD10Score(dim, score) {
 }
 
 // ─── Leadership Hot Seat — D10 Simulation (mobile) ───────────────────────────
+const D10_SIMULATION_MAX_SEC = 180;
 export function D10MobileSim({T2: _T2, onRecordingChange}) {
   const T2 = _T2 || T;
   const [introSeen, setIntroSeen] = useState(false);
@@ -203,15 +204,31 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
   const [fallbackText, setFallbackText] = useState('');
+  const [elapsed, setElapsed] = useState(0);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
   const waveRef = useRef(null);
+  const timerRef = useRef(null);
 
   useEffect(()=>{
     if(!isRec){clearInterval(waveRef.current);return;}
     waveRef.current=setInterval(()=>setWaveVals(Array.from({length:9},()=>0.2+Math.random()*0.8)),150);
     return()=>clearInterval(waveRef.current);
   },[isRec]);
+
+  useEffect(()=>{
+    if(isRec){
+      timerRef.current=setInterval(()=>setElapsed(e=>e+1),1000);
+    } else {
+      clearInterval(timerRef.current);
+    }
+    return()=>clearInterval(timerRef.current);
+  },[isRec]);
+
+  // Hard cap — Simulation recordings auto-stop (and auto-submit) at 180s.
+  useEffect(()=>{
+    if(isRec && elapsed>=D10_SIMULATION_MAX_SEC) doStop();
+  },[isRec, elapsed]);
 
   useEffect(()=>{ onRecordingChange?.(isRec||l); },[isRec,l]);
 
@@ -233,7 +250,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
   const scoreColor = s => s>=80 ? "#8A9E84" : s>=65 ? "#C9A84C" : "#8A7B66";
 
   function doStart(){
-    setIsRec(true); setMicError(false); setTranscribeFailed(false); setFallbackText('');
+    setIsRec(true); setElapsed(0); setMicError(false); setTranscribeFailed(false); setFallbackText('');
     audioChunksRef.current=[];
     if(navigator.mediaDevices?.getUserMedia){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
@@ -290,7 +307,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
 
   if (!introSeen) return (
     <div>
-      <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#A8998A",lineHeight:1.6,marginBottom:18,fontWeight:300}}>Four real scenarios. 30 seconds each. Speak — get coached.</p>
+      <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#A8998A",lineHeight:1.6,marginBottom:18,fontWeight:300}}>Four real scenarios. Up to 3 minutes each. Speak — get coached.</p>
       <div style={{display:"flex",alignItems:"flex-start",marginBottom:20}}>
         {[
           {n:1,label:"Pick a\nscenario",icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="14" height="16" rx="2" stroke="#8A9E84" strokeWidth="1.3"/><path d="M7 7h8M7 11h8M7 15h5" stroke="#8A9E84" strokeWidth="1.3" strokeLinecap="round"/></svg>},
@@ -361,7 +378,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
             <div style={{padding:"20px 16px",background:"#0E0B08",borderRadius:8,marginBottom:10,textAlign:"center"}}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginBottom:14}}>
                 <div style={{width:7,height:7,borderRadius:"50%",background:"#CC4444",animation:"glowPulse 1s ease infinite"}}/>
-                <span style={{fontFamily:"'Inter',sans-serif",fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.5)",textTransform:"uppercase",letterSpacing:"2px"}}>Recording</span>
+                <span style={{fontFamily:"'Inter',sans-serif",fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.5)",textTransform:"uppercase",letterSpacing:"2px"}}>Recording — {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D10_SIMULATION_MAX_SEC/60)}:{String(D10_SIMULATION_MAX_SEC%60).padStart(2,'0')}</span>
               </div>
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:3,height:34,marginBottom:16}}>
                 {waveVals.map((v,i)=><div key={i} style={{width:4,borderRadius:2,background:"#C9A84C",height:Math.max(3,v*30),transition:"height 0.1s ease"}}/>)}

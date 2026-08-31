@@ -166,7 +166,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Challenge</div>
         <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:0, fontWeight:400 }}>Think of one real conversation coming up this week — a meeting, a presentation, a difficult discussion. Speak for 30 seconds about which of this week's skills you'll use in it — and why.</p>
       </div>
-      <VoiceRecorder T={T} T2={T2} onDone={onRecordingDone}/>
+      <VoiceRecorder T={T} T2={T2} maxSeconds={120} onDone={onRecordingDone}/>
     </div>
   );
 
@@ -207,9 +207,10 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
 }
 
 // ─── D7 Simulation Widget — Week 1 Master Challenge ───────────────────────────
+const D7_SIMULATION_MAX_SEC = 180;
 export function D7SimWidget({ T, T2, isDesktop }) {
   const [phase,      setPhase]     = useState('intro');
-  const [timeLeft,   setTimeLeft]  = useState(90);
+  const [timeLeft,   setTimeLeft]  = useState(D7_SIMULATION_MAX_SEC);
   const [transcript, setTranscript]= useState('');
   const [fallback,   setFallback]  = useState('');
   const [isRec,      setIsRec]     = useState(false);
@@ -298,7 +299,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
         } catch (sigErr) {
           console.error('[D7Sim] signal analysis setup error:', sigErr);
         }
-        setIsRec(true);setTimeLeft(90);setPhase('recording');
+        setIsRec(true);setTimeLeft(D7_SIMULATION_MAX_SEC);setPhase("recording");
       }).catch(()=>{ setMicError(true); });
     } else {
       setMicError(true);
@@ -488,7 +489,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>This is not a test — it's a demonstration of everything you've built.</p>
       </div>
 
-      <button onClick={()=>{setIsRec(false);setTimeLeft(90);setPhase('recording');}}
+      <button onClick={()=>{setIsRec(false);setTimeLeft(D7_SIMULATION_MAX_SEC);setPhase('recording');}}
         style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
         I'm Ready →
       </button>
@@ -516,7 +517,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
             Now explain what you learned as if you were teaching someone else. Not as a student — <span style={{color:T.gold,fontWeight:500}}>as a communicator.</span>
           </p>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0}}>
-            You have 90 seconds. Click start when you are ready.
+            You have {D7_SIMULATION_MAX_SEC} seconds. Click start when you are ready.
           </p>
         </div>
         {/* Text fallback — shown after a microphone failure */}
@@ -560,7 +561,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
         </div>
         {/* Progress bar */}
         <div style={{height:2,background:"rgba(245,239,230,0.07)",borderRadius:1,marginBottom:isDesktop?18:14,overflow:"hidden"}}>
-          <div style={{height:"100%",width:((90-timeLeft)/90*100)+"%",background:timeLeft<=10?"#CC4444":T.gold,borderRadius:1,transition:"width 1s linear"}}/>
+          <div style={{height:"100%",width:((D7_SIMULATION_MAX_SEC-timeLeft)/D7_SIMULATION_MAX_SEC*100)+"%",background:timeLeft<=10?"#CC4444":T.gold,borderRadius:1,transition:"width 1s linear"}}/>
         </div>
         {/* Waveform */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:3,height:isDesktop?44:36,marginBottom:isDesktop?18:14}}>

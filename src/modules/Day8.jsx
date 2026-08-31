@@ -1332,6 +1332,7 @@ const SC_MENTOR   = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="n
 
 const BEAT_LABELS = ["Once upon a time…","Every day…","Until one day…","Because of that…","Because of that…","Until finally…"];
 
+const D8_REHEARSAL_MAX_SEC = 120;
 export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulation, onNavLabel, onNavFn }) {
   const T  = Tp  || Timport;
   const T2 = T2p || T2D;
@@ -1516,7 +1517,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         mr.start(1000);
         recRef.current = mr;
         setPhase('recording');
-        maxTimRef.current = setTimeout(doStop, 180000);
+        maxTimRef.current = setTimeout(doStop, D8_REHEARSAL_MAX_SEC * 1000);
       }).catch(() => { setMicError(true); });
     } else {
       setMicError(true);
@@ -1717,7 +1718,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
           </div>
         ))}
       </div>
-      <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text4, margin:0, textAlign:"center" }}>Aim for around 60 seconds · 3 minute max</p>
+      <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text4, margin:0, textAlign:"center" }}>Aim for around 60 seconds · 2 minute max</p>
       <button onClick={doStop} style={{ width:"100%", padding:"15px", borderRadius:4, border:"1px solid "+T2.border, background:"transparent", color:T2.text, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
         Done — Stop Recording
       </button>

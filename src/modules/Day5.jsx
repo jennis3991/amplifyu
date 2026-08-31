@@ -203,7 +203,7 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 12px'}}>"{topic?.label}"</p>
         <p style={{fontFamily:T.sans, fontSize:12, color:T2.text4, margin:0, fontStyle:'italic', textAlign:'center'}}>Start with your point. Then your reason. Then one example.</p>
       </div>
-      <VoiceRecorder T={T} T2={T2} onRecordingChange={setVoiceActive} onDone={(text) => {
+      <VoiceRecorder T={T} T2={T2} maxSeconds={120} onRecordingChange={setVoiceActive} onDone={(text) => {
         setPhase('analyzing');
         analyzeTranscript(text);
       }}/>
@@ -489,7 +489,7 @@ Return only valid JSON with all fields present.`,
         <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:T2.text, lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:600}}>{line}</p>
       ))}
     </div>
-    <VoiceRecorder T={T} T2={T2} onRecordingChange={setVoiceActive} onDone={(text) => {
+    <VoiceRecorder T={T} T2={T2} maxSeconds={180} onRecordingChange={setVoiceActive} onDone={(text) => {
       const t1 = text || '[first answer]';
       transcript1Ref.current = t1;
       setPhase('analyzing1');
@@ -563,7 +563,7 @@ Return only valid JSON with all fields present.`,
         <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:T2.text, lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:600}}>{line}</p>
       ))}
     </div>
-    <VoiceRecorder T={T} T2={T2} onRecordingChange={setVoiceActive} onDone={(text) => {
+    <VoiceRecorder T={T} T2={T2} maxSeconds={180} onRecordingChange={setVoiceActive} onDone={(text) => {
       const t2 = text || '[second answer]';
       setPhase('analyzing2');
       analyzeDebrief(transcript1Ref.current, t2);

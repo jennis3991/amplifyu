@@ -149,7 +149,7 @@ Give brief, specific coaching. Return ONLY valid JSON:
               <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.35, margin:"0 0 10px"}}>"{sc.promptLead}"</p>
               <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, lineHeight:1.65, margin:0}}>{sc.promptDetail}</p>
             </div>
-            <VoiceRecorder T={T} T2={T2} onDone={handleDone}/>
+            <VoiceRecorder T={T} T2={T2} maxSeconds={120} onDone={handleDone}/>
           </>
         )}
 
@@ -221,6 +221,7 @@ const CIRCUIT_CHARS = [
   },
 ];
 
+const D13_SIMULATION_MAX_SEC = 180;
 export function D13SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
   const [charIdx, setCharIdx] = useState(0);
@@ -232,6 +233,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
   const [captureFailed, setCaptureFailed] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(true);
   const [fallbackInput, setFallbackInput] = useState('');
+  const [elapsed, setElapsed] = useState(0);
   const dotCount = useSequentialDots(phase === 'analyzing');
 
   const answersRef = useRef(['', '']);
@@ -240,15 +242,31 @@ export function D13SimWidget({T, T2, isDesktop}) {
   const recognitionRef = useRef(null);
   const audioChunksRef = useRef([]);
   const transcriptRef = useRef('');
+  const timerRef = useRef(null);
 
   useEffect(() => {
     return () => { if (recognitionRef.current && recognitionRef.current.state !== 'inactive') { try { recognitionRef.current.onstop = null; recognitionRef.current.stop(); } catch(e) {} } };
   }, []);
 
+  useEffect(() => {
+    if (recordState === 'recording') {
+      timerRef.current = setInterval(() => setElapsed(e => e + 1), 1000);
+    } else {
+      clearInterval(timerRef.current);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [recordState]);
+
+  // Hard cap — each turn's Simulation recording auto-stops (and auto-submits) at 180s.
+  useEffect(() => {
+    if (recordState === 'recording' && elapsed >= D13_SIMULATION_MAX_SEC) stopRecording();
+  }, [recordState, elapsed]);
+
   const startRecording = () => {
     transcriptRef.current = '';
     setTranscript('');
     setInterimText('');
+    setElapsed(0);
     if (!navigator.mediaDevices?.getUserMedia) { setSpeechSupported(false); return; }
     audioChunksRef.current = [];
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
@@ -469,7 +487,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
               <div style={{...cs.card, padding:isDesktop?"24px":"18px"}}>
                 <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:16}}>
                   <div style={{width:8, height:8, borderRadius:"50%", background:"#C97B5A", animation:"glowPulse 1s ease infinite"}}/>
-                  <span style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:"#C97B5A", textTransform:"uppercase", letterSpacing:"1.5px"}}>Recording</span>
+                  <span style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:"#C97B5A", textTransform:"uppercase", letterSpacing:"1.5px"}}>Recording — {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D13_SIMULATION_MAX_SEC/60)}:{String(D13_SIMULATION_MAX_SEC%60).padStart(2,'0')}</span>
                 </div>
                 <div style={{minHeight:60, fontFamily:T.serif, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, marginBottom:16}}>
                   <span style={{color:T2.text4, fontStyle:"italic"}}>Listening...</span>

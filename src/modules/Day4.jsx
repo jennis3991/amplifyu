@@ -284,7 +284,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
       <div style={cs.label}>Message</div>
       <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: T2.text, lineHeight: 1.4, margin: 0}}>{topic.label}</p>
     </div>
-    <VoiceRecorder T={T} T2={T2} onRecordingChange={setD4Recording} onDone={(text) => {
+    <VoiceRecorder T={T} T2={T2} maxSeconds={120} onRecordingChange={setD4Recording} onDone={(text) => {
       setTranscript1(text || '[first attempt]');
       setPhase('interrupt');
     }}/>
@@ -318,7 +318,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
       <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 12}}>Take 2 — Half the words</div>
       <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: T2.text, lineHeight: 1.4, margin: 0}}>{topic.label}</p>
     </div>
-    <VoiceRecorder T={T} T2={T2} onRecordingChange={setD4Recording} onDone={(text) => {
+    <VoiceRecorder T={T} T2={T2} maxSeconds={120} onRecordingChange={setD4Recording} onDone={(text) => {
       const t2 = text || '[second attempt]';
       setTranscript2(t2);
       setPhase('coach');
@@ -365,6 +365,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
 }
 
 // ─── D4 Simulation Widget — Breaking News Live ───────────────────────────────
+const D4_SIMULATION_MAX_SEC = 180;
 export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const STORIES = [
     {cat:"💼 Business", items:["Four-Day Work Week Announced Nationwide","Major Cyber Attack Takes Down Global Tech Giant"]},
@@ -374,7 +375,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
   const [phase, setPhase] = useState('intro');
   const [story, setStory] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(D4_SIMULATION_MAX_SEC);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [isRec, setIsRec] = useState(false);
   const [transcript, setTranscript] = useState('');
@@ -400,10 +401,12 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // is being analysed, so an accidental tap can't cut off a broadcast in progress.
   useEffect(()=>{ onRecordingChange?.(isRec || phase === 'analyzing'); },[isRec, phase]);
 
+  // Thresholds are expressed as elapsed seconds — kept in sync with
+  // D4_SIMULATION_MAX_SEC so "at" always lands on the right remaining-time mark.
   const PRODUCER_MSGS = [
-    {at:30, msg:"Thirty seconds left. Cut the detail. Give us the key points."},
-    {at:45, msg:"Fifteen seconds left. Wrap up the story. What do people need to remember?"},
-    {at:55, msg:"Five seconds. One headline. Go."},
+    {at:D4_SIMULATION_MAX_SEC-30, msg:"Thirty seconds left. Cut the detail. Give us the key points."},
+    {at:D4_SIMULATION_MAX_SEC-15, msg:"Fifteen seconds left. Wrap up the story. What do people need to remember?"},
+    {at:D4_SIMULATION_MAX_SEC-5,  msg:"Five seconds. One headline. Go."},
   ];
 
   useEffect(()=>{
@@ -430,7 +433,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
   },[playing]);
 
   function doStart(){
-    setIsRec(true);setProducerMsg(null);setTranscript('');setAudioURL(null);setTimeElapsed(0);setTimeLeft(60);setMicError(false);
+    setIsRec(true);setProducerMsg(null);setTranscript('');setAudioURL(null);setTimeElapsed(0);setTimeLeft(D4_SIMULATION_MAX_SEC);setMicError(false);
     audioChunksRef.current=[];
     if(navigator.mediaDevices?.getUserMedia){
       navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
@@ -499,10 +502,10 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
     }
   }
 
-  function reset(){setPhase('intro');setStory(null);setTimeLeft(60);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setAudioURL(null);setErrorMsg('');}
+  function reset(){setPhase('intro');setStory(null);setTimeLeft(D4_SIMULATION_MAX_SEC);setTimeElapsed(0);setIsRec(false);setTranscript('');setFallback('');setProducerMsg(null);setResult(null);setAudioURL(null);setErrorMsg('');}
 
   function retryRecording(){
-    setPhase('recording');setTranscript('');setAudioURL(null);setTimeLeft(60);setTimeElapsed(0);setProducerMsg(null);setErrorMsg('');
+    setPhase('recording');setTranscript('');setAudioURL(null);setTimeLeft(D4_SIMULATION_MAX_SEC);setTimeElapsed(0);setProducerMsg(null);setErrorMsg('');
   }
 
   // Plays `a` once it's actually ready to play, instead of calling play()
@@ -544,7 +547,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>How It Works</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>A 60-second live news broadcast.</h2>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>A live news broadcast — up to 3 minutes.</h2>
         <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
           {[
             {n:1,label:"Choose a story",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M7 5v12M3 9h16" stroke={T.gold} strokeWidth="1.3"/></svg>},
@@ -604,7 +607,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       <div style={cs.card}>
         <div style={cs.label}>Breaking News</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:16}}>Choose your story. You have 60 seconds to report it live to the nation.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:16}}>Choose your story. You have up to 3 minutes to report it live to the nation.</p>
         {STORIES.map((cat,ci)=>(
           <div key={ci} style={{marginBottom:ci<STORIES.length-1?16:0}}>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{cat.cat.replace(/^[^\s]+\s/,'')}</div>
