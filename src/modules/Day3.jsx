@@ -12,6 +12,23 @@ function blobToB64(blob) {
   });
 }
 
+// Quick local filler-word read on a single answer — no API round trip, so it
+// can appear instantly on the Q1-to-Q2 transition screen instead of that
+// screen just saying "Good."
+function countFillers(text) {
+  if (!text) return 0;
+  const re = /\b(um+|uh+|er+|ah+|like|you know|sort of|kind of|basically|literally)\b/gi;
+  return (text.match(re) || []).length;
+}
+function q1Observation(text) {
+  if (!text || text === '[No speech detected]') return "Good. On to the next one.";
+  const n = countFillers(text);
+  if (n === 0) return "Good — clean and direct. Not a single filler word.";
+  if (n === 1) return "Good — just one filler word slipped in. Barely noticeable.";
+  if (n <= 3) return `Good — ${n} filler words crept in, but your point still landed.`;
+  return `Good — ${n} filler words in that one. Notice it, don't fight it.`;
+}
+
 // Turns raw mic-loudness samples captured during recording into real pause
 // data — an opening pause (silence before the first word) and a count of
 // pauses taken between ideas during the response. Measured from the actual
@@ -560,7 +577,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // Recording
   const [isRec, setIsRec] = useState(false);
   useWakeLock(isRec);
-  const [timeLeft, setTimeLeft] = useState(45);
+  const [timeLeft, setTimeLeft] = useState(30);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
   const [transcript1, setTranscript1] = useState('');
   const [transcript2, setTranscript2] = useState('');
@@ -611,7 +628,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   }, [isRec, phase]);
 
   function doStart() {
-    setIsRec(true); setTimeLeft(45);
+    setIsRec(true); setTimeLeft(30);
     setMicError(false); setTranscribeFailed(false);
     audioChunksRef.current = [];
     if (navigator.mediaDevices?.getUserMedia) {
@@ -697,13 +714,6 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
       console.error(e);
     }
     setPhase('feedback');
-  }
-
-  function reset() {
-    setPhase('select'); setScenario(null);
-    setBriefSecs(45); setBriefDone(false);
-    setTranscript1(''); setTranscript2('');
-    setFeedback(null); setIsRec(false); setTimeLeft(45);
   }
 
   const cs = {
@@ -870,8 +880,9 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // ── TRANSCRIBING ─────────────────────────────────────────────────────────────
   if (phase === 'transcribing') return grid(
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, gap: 16}}>
-      <SequentialDots dotCount={analyzingDotCount} />
-      <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text4, margin: 0}}>Processing your answer…</p>
+      <SequentialDots dotCount={analyzingDotCount}
+        messages={["Listening back to what you said…", "Catching every word…", "Almost there…"]}
+        textStyle={{fontFamily: T.sans, fontSize: 13, color: T2.text4}}/>
     </div>
   );
 
@@ -879,7 +890,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   if (phase === 'transition') return grid(<>
     <div style={{...cs.card, textAlign: 'center', padding: isDesktop ? '40px 32px' : '28px 22px'}}>
       <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 20}}>Q1 Complete</div>
-      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 26 : 20, fontWeight: 600, color: T2.text, lineHeight: 1.3, margin: '0 0 10px'}}>Good.</p>
+      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, fontWeight: 600, color: T2.text, lineHeight: 1.35, margin: '0 0 10px'}}>{q1Observation(transcript1)}</p>
       <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: 'rgba(245,239,230,0.6)', lineHeight: 1.45, margin: 0}}>One more question — and this one pushes back.</p>
     </div>
     <button onClick={() => setPhase('pause2')} style={cs.cta}>Continue →</button>
@@ -889,8 +900,9 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // ── ANALYZING ───────────────────────────────────────────────────────────────
   if (phase === 'analyzing') return grid(
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, gap: 16}}>
-      <SequentialDots dotCount={analyzingDotCount} />
-      <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text4, margin: 0}}>Analysing your responses…</p>
+      <SequentialDots dotCount={analyzingDotCount}
+        messages={["Comparing both your answers…", "Checking how your position held under pressure…", "Counting pauses and filler words…", "Shaping your feedback…"]}
+        textStyle={{fontFamily: T.sans, fontSize: 13, color: T2.text4}}/>
     </div>
   );
 
@@ -943,10 +955,6 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <div style={cs.card}>
           <div style={cs.label}>Take This Into Your Next Meeting</div>
           <span style={{display: 'inline-block', padding: '9px 18px', borderRadius: 20, border: '0.5px solid rgba(138,158,132,0.3)', fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: T2.text, lineHeight: 1.4}}>{feedback.takeaway}</span>
-        </div>
-        <div style={{display: 'flex', gap: 12}}>
-          <button onClick={reset} style={{...cs.ghost, flex: 1}}>Try Again</button>
-          <button onClick={reset} style={{...cs.cta, flex: 2}}>Continue →</button>
         </div>
       </div>
     );
