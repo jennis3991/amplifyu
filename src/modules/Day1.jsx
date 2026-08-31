@@ -1021,7 +1021,6 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   const dotCount = useSequentialDots(phase === 'analyzing');
   const [transcript, setTranscript] = useState('');
   const [fallback, setFallback] = useState('');
-  const [analyzing, setAnalyzing] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [round1, setRound1] = useState(null);
   const [waveVals, setWaveVals] = useState([0.3,0.5,0.4,0.6,0.4,0.5,0.3,0.6,0.4]);
@@ -1159,11 +1158,12 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
     try{const p=document.getElementById('au-right-panel');if(p)p.scrollTop=0;}catch(_){}
   },[phase]);
 
-  // Block the app's "Next"/"Review" nav while actively recording or transcribing,
-  // so an accidental tap can't discard an in-progress or just-finished recording.
+  // Block the app's "Next"/"Review" nav while actively recording, transcribing,
+  // or analysing, so an accidental tap can't discard an in-progress or
+  // just-finished recording, or navigate away mid-scoring and lose the result.
   useEffect(()=>{
-    onRecordingChange?.(isRec || preparingMic || analyzing);
-  },[isRec, preparingMic, analyzing]);
+    onRecordingChange?.(isRec || preparingMic || phase==='analyzing');
+  },[isRec, preparingMic, phase]);
 
   // No sessionStorage phase persistence here (matches Day 2) — a completed
   // result is already durably saved to "My Saved Results" via saveVoiceResult,
@@ -1298,9 +1298,9 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
       markers:[]
     };
     if(!text||text.trim().length<15){
-      if(!isRetry){setRound1({...mock,_transcript:text});setFeedback({...mock,_transcript:text});}
-      else setFeedback({...mock,_transcript:text,prev:round1});
-      setPhase(isRetry?'comparison':'feedback');
+      // Too little was actually said to score honestly — show a real error
+      // instead of fabricating a plausible-looking score from nothing.
+      setPhase('empty');
       return;
     }
     try{
@@ -1550,6 +1550,18 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
     </div>
   );
 
+  // ── EMPTY / NO RESPONSE ───────────────────────────────────────────────────
+  if(phase==='empty') return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"60px 20px",gap:18,textAlign:"center"}}>
+      <div style={{width:56,height:56,borderRadius:"50%",background:"#F0EBE2",display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" stroke="#A8998A" strokeWidth="1.6"/><line x1="4" y1="4" x2="20" y2="20" stroke="#B05C4A" strokeWidth="1.6" strokeLinecap="round"/></svg>
+      </div>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,color:T2.text,margin:0}}>We couldn't hear a clear response.</p>
+      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,maxWidth:340,lineHeight:1.6}}>That was too short to score honestly — please try again and speak for a little longer.</p>
+      <button onClick={()=>{setPhase('recording');setElapsed(0);setIsRec(false);setTranscript('');setFallback('');setMicError(false);setTranscribeFailed(false);}} style={{...cs.cta,width:"auto",padding:"12px 28px"}}>Try Again →</button>
+    </div>
+  );
+
   // ── FEEDBACK ─────────────────────────────────────────────────────────────
   if(phase==='feedback' && feedback) {
     const RDIMS=["Clarity","Structure","Brevity","Simplicity","Focus"];
@@ -1642,7 +1654,10 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
         {audioURL&&audioBroken&&<p style={{fontFamily:T.serif,fontSize:13,color:T2.text3,margin:"8px 0 0",lineHeight:1.5}}>Your recording doesn't carry over after a reload, so playback isn't available right now — your written feedback below is still complete.</p>}
         {audioURL&&!audioBroken&&playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
         {audioURL&&!audioBroken&&<div style={{marginBottom:isDesktop?14:10}}>
-          <div style={{position:"relative"}}>
+          {/* Scrubbing/seeking here must never leak into the page's
+              swipe-to-navigate gesture — that's what was jumping users to the
+              next/previous step and losing their recording mid-drag. */}
+          <div style={{position:"relative"}} onTouchStart={e=>e.stopPropagation()} onTouchMove={e=>e.stopPropagation()} onTouchEnd={e=>e.stopPropagation()}>
             <div style={{display:"flex",position:"relative",height:isDesktop?20:32,marginBottom:4}}>
               {MARKERS.map((m,i)=>{
                 const row=!isDesktop&&i%2===1;

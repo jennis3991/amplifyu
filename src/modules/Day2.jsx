@@ -456,8 +456,11 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       moments:null
     };
     if(!text||text.trim().length<15){
-      if(!isRetry){setRound1(mock);setFeedback(mock);}else setFeedback({...mock,prev:round1});
-      setPhase(isRetry?'comparison':'feedback');return;
+      // Too little was actually said to score honestly — show a real error
+      // instead of fabricating a plausible-looking score from nothing.
+      setTranscribeFailed(true);
+      setPhase('recording');
+      return;
     }
     // Each voice dimension gets its own instruction: a real measured value
     // must be used exactly, but when the mic didn't capture enough signal
@@ -815,7 +818,10 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <div style={cs.label}>Hear it back</div>
         {playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
         <div style={{marginBottom:isDesktop?14:10}}>
-          <div style={{position:"relative"}}>
+          {/* Scrubbing/seeking here must never leak into the page's
+              swipe-to-navigate gesture — that's what was jumping users to the
+              next/previous step and losing their recording mid-drag. */}
+          <div style={{position:"relative"}} onTouchStart={e=>e.stopPropagation()} onTouchMove={e=>e.stopPropagation()} onTouchEnd={e=>e.stopPropagation()}>
             <div style={{display:"flex",position:"relative",height:isDesktop?28:42,marginBottom:4}}>
               {MARKERS.map((m,i)=>{
                 const approxSec=recMetrics?.elapsedSec?Math.round(m.pos*recMetrics.elapsedSec):null;

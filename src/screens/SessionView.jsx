@@ -4578,17 +4578,21 @@ setAmbitionSaved(true); } catch {}
 
           {/* Navigation — right */}
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            {idx > 0 && (
-              <button onClick={() => setIdx(i => i - 1)} style={{
+            {idx > 0 && (() => {
+              const backDisabled = (isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD4 && step === "Simulation" && d4SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording) || (isD12 && step === "Rehearsal" && d12NavLabel === null) || (isD11 && step === "Rehearsal" && d11NavLabel === null) || (isD3 && step === "Rehearsal" && d3NavLabel === null) || (isNT && step === "Rehearsal" && d8NavLabel === null) || (isNT && step === "Simulation" && d8SimRecording) || (isD13 && step === "Rehearsal" && d13NavLabel === null) || (isD14 && step === "Rehearsal" && d14NavLabel === null);
+              return (
+              <button onClick={() => setIdx(i => i - 1)} disabled={backDisabled} style={{
                 display: "flex", alignItems: "center", gap: 6,
                 padding: "8px 16px", borderRadius: 5,
                 background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)",
-                color: "rgba(255,255,255,0.5)", fontSize: 12, cursor: "pointer", fontFamily: T.sans,
+                color: "rgba(255,255,255,0.5)", fontSize: 12, cursor: backDisabled ? "not-allowed" : "pointer", fontFamily: T.sans,
+                opacity: backDisabled ? 0.4 : 1,
               }}>
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Back
               </button>
-            )}
+              );
+            })()}
             {idx < STEPS.length - 1 && (() => {
               const navDisabled = (isD1 && step === "Rehearsal" && d1NavLabel === null) || (isD1 && step === "Simulation" && d1SimRecording) || (isD2 && step === "Simulation" && d2SimRecording) || (isD3 && step === "Simulation" && d3SimRecording) || (isD4 && step === "Rehearsal" && d4NavLabel === null) || (isD4 && step === "Simulation" && d4SimRecording) || (isD5 && step === "Rehearsal" && d5RehearsalRecording) || (isD5 && step === "Simulation" && d5SimRecording) || (isD6 && step === "Rehearsal" && d6RehearsalRecording) || (isD6 && step === "Simulation" && d6SimRecording) || (isD7 && step === "Rehearsal" && d7NavLabel === null) || (isD9 && step === "Simulation" && d9SimRecording) || (isD10 && step === "Simulation" && d10SimRecording) || (isD12 && step === "Rehearsal" && d12NavLabel === null) || (isD11 && step === "Rehearsal" && d11NavLabel === null) || (isD3 && step === "Rehearsal" && d3NavLabel === null) || (isNT && step === "Rehearsal" && d8NavLabel === null) || (isNT && step === "Simulation" && d8SimRecording) || (isD13 && step === "Rehearsal" && d13NavLabel === null) || (isD14 && step === "Rehearsal" && d14NavLabel === null);
               return (

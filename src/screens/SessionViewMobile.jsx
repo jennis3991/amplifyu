@@ -3096,20 +3096,24 @@ strokeLinecap="round"/></svg>
       )}
        {/* Navigation */}
       <div style={{display:"flex",gap:10,paddingBottom:8,paddingTop:6}}>
-        {idx > 0 && (
-          <button onClick={()=>setIdx(i=>i-1)} style={{
+        {idx > 0 && (() => {
+          const backDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD2 && step==="Simulation" && d2SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD5 && step==="Rehearsal" && d5RehearsalRecording)||(isD5 && step==="Simulation" && d5SimRecording)||(isD6 && step==="Rehearsal" && d6RehearsalRecording)||(isD6 && step==="Simulation" && d6SimRecording)||(isD7 && step==="Rehearsal" && d7NavLabel===null)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD4 && step==="Simulation" && d4SimRecording)||(isD10 && step==="Rehearsal" && !d10SarDone)||(isD10 && step==="Simulation" && d10SimRecording)||(isD12 && step==="Rehearsal" && d12NavLabel===null)||(isD11 && step==="Rehearsal" && d11NavLabel===null)||(isNT && step==="Rehearsal" && d8NavLabel===null)||(isNT && step==="Simulation" && d8SimRecording)||(isD13 && step==="Rehearsal" && d13NavLabel===null)||(isD14 && step==="Rehearsal" && d14NavLabel===null);
+          return (
+          <button onClick={()=>setIdx(i=>i-1)} disabled={backDisabled} style={{
             padding:"14px 18px",borderRadius:14,
             border:"1px solid "+T2.border,
             background:T2.surface,color:T2.text3,
-            fontSize:12,fontWeight:500,cursor:"pointer",
+            fontSize:12,fontWeight:500,cursor:backDisabled ? "not-allowed" : "pointer",
             display:"flex",alignItems:"center",gap:5,flexShrink:0,
+            opacity:backDisabled ? 0.4 : 1,
           }}>
-            <svg width="12" height="12" viewBox="0 0 14 14" 
-fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.6" 
+            <svg width="12" height="12" viewBox="0 0 14 14"
+fill="none"><path d="M9 2L4 7l5 5" stroke={T2.text3} strokeWidth="1.6"
 strokeLinecap="round" strokeLinejoin="round"/></svg>
             Previous
           </button>
-        )}
+          );
+        })()}
         {idx < STEPS.length-1 && (() => {
           const navDisabled = (isD1 && step==="Rehearsal" && d1NavLabel===null)||(isD1 && step==="Simulation" && d1SimRecording)||(isD2 && step==="Simulation" && d2SimRecording)||(isD3 && step==="Rehearsal" && d3NavLabel===null)||(isD3 && step==="Simulation" && d3SimRecording)||(isD5 && step==="Rehearsal" && d5RehearsalRecording)||(isD5 && step==="Simulation" && d5SimRecording)||(isD6 && step==="Rehearsal" && d6RehearsalRecording)||(isD6 && step==="Simulation" && d6SimRecording)||(isD7 && step==="Rehearsal" && d7NavLabel===null)||(isD9 && step==="Simulation" && d9SimRecording)||(isD4 && step==="Rehearsal" && d4NavLabel===null)||(isD4 && step==="Simulation" && d4SimRecording)||(isD10 && step==="Rehearsal" && !d10SarDone)||(isD10 && step==="Simulation" && d10SimRecording)||(isD12 && step==="Rehearsal" && d12NavLabel===null)||(isD11 && step==="Rehearsal" && d11NavLabel===null)||(isNT && step==="Rehearsal" && d8NavLabel===null)||(isNT && step==="Simulation" && d8SimRecording)||(isD13 && step==="Rehearsal" && d13NavLabel===null)||(isD14 && step==="Rehearsal" && d14NavLabel===null);
           const navLabel = isD1 && step==="Rehearsal" && d1NavLabel
