@@ -342,25 +342,70 @@ export function D12SimWidget({T, T2, isDesktop}) {
 
   if (phase === 'intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
-      <div style={cs.card}>
-        <div style={cs.label}>Why self-review works</div>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 12px"}}>You cannot improve what you cannot see.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:"0 0 10px"}}>Self-review on video is one of the most powerful development tools used by elite speakers, leaders, and performers. Most people have never seen themselves communicate.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0}}>Watching yourself back — with the volume off first — reveals physical signals you're completely unaware of.</p>
-      </div>
-      <div style={cs.card}>
-        <div style={cs.label}>The Process</div>
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>
-          {["Choose a prompt","Record yourself naturally for 60–90 seconds","Watch back with sound OFF — observe body language only","Watch again with sound ON — notice alignment","Rate what you see and read your coaching notes"].map((t,i)=>(
-            <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-              <div style={{width:22,height:22,borderRadius:"50%",border:"1px solid rgba(138,158,132,0.4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold}}>{i+1}</span>
+
+      {/* HOW IT WORKS — top, both desktop + mobile */}
+      <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:6}}>How it works</div>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:isDesktop?20:16}}>A simple 4-step presence check-in.</h2>
+        <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
+          {[
+            {n:1,label:"Choose a prompt",   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:2,label:"Record yourself",   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="3" y="6" width="11" height="10" rx="1.5" stroke={T.gold} strokeWidth="1.3"/><path d="M14 9.5l4.5-2.5v9L14 13.5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:3,label:"Watch it back",     icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M2 11s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/><circle cx="11" cy="11" r="2.6" stroke={T.gold} strokeWidth="1.3"/></svg>},
+            {n:4,label:"Rate & reflect",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+          ].map((s,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
+                <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:isDesktop?8:6}}>{s.icon}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?9:8,fontWeight:700,color:T.gold,marginBottom:3}}>{s.n}</div>
+                <div style={{fontFamily:T.sans,fontSize:isDesktop?13:11,color:T2.text2,textAlign:"center",lineHeight:1.3,maxWidth:isDesktop?76:52}}>{s.label}</div>
               </div>
-              <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5,paddingTop:2}}>{t}</span>
+              {i<3&&<div style={{height:1,width:isDesktop?12:5,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:isDesktop?30:24}}/>}
             </div>
           ))}
         </div>
       </div>
+
+      {/* SINGLE CONTENT CARD */}
+      <div style={{...cs.card,padding:isDesktop?"26px 28px":"20px 20px"}}>
+        <h3 style={{fontFamily:T.serif,fontSize:isDesktop?26:16,fontWeight:600,color:T2.text,lineHeight:1.15,margin:"0 0 "+(isDesktop?"22px":"18px")}}>You Cannot Improve What You Cannot See.</h3>
+
+        {/* Point 1 — see yourself */}
+        <div style={{display:"flex",alignItems:"flex-start",gap:isDesktop?16:12}}>
+          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
+              <circle cx="10" cy="9" r="3.2" stroke={T.gold} strokeWidth="1.3"/>
+              <path d="M4.5 19c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/>
+              <path d="M18 5.3l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7.7-1.6z" fill={T.gold}/>
+              <path d="M20.5 11.2l.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4.4-.9z" fill={T.gold}/>
+            </svg>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
+            Record yourself speaking naturally on camera. Watching it back reveals <strong style={{color:T.gold,fontWeight:700}}>posture, gestures, eye contact and energy</strong> you're completely unaware of in the moment.
+          </p>
+        </div>
+
+        <div style={{height:1,background:T2.divider,margin:isDesktop?"18px 0":"14px 0"}}/>
+
+        {/* Point 2 — trust + baseline */}
+        <div style={{display:"flex",alignItems:"flex-start",gap:isDesktop?16:12}}>
+          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
+              <path d="M12 3l7 3v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/>
+              <path d="M12 8.2l1 2.1 2.3.3-1.7 1.6.4 2.3-2-1.1-2 1.1.4-2.3-1.7-1.6 2.3-.3 1-2.1z" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <div style={{flex:1}}>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0}}>
+              Self-review on video is one of the fastest ways to improve communication — trusted by elite speakers, performers and Fortune 500 leaders because <strong style={{color:T.gold,fontWeight:700}}>awareness comes before change</strong>.
+            </p>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:isDesktop?"10px 0 0":"8px 0 0",fontStyle:"italic"}}>
+              This is your baseline. Every session from here builds greater presence and confidence.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose a Prompt →</button>
     </div>
   );
