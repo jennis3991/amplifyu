@@ -558,15 +558,32 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
           ))}
         </div>
       </div>
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px"}}>
+      <div style={{...cs.card,padding:isDesktop?"26px 28px":"20px 20px"}}>
         <div style={cs.label}>The Challenge</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>You are a live news reporter. Report a breaking story to the nation — but as airtime shrinks, your sentences must get shorter and your message must get clearer.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>At 30 seconds, your producer will interrupt. At 15 seconds. At 5 seconds. Each time, you must compress further. Then the AI becomes your editor — and reveals which facts you led with were actually essential.</p>
-      </div>
-      <div style={{...cs.card,padding:isDesktop?"22px 24px":"16px 18px",background:"rgba(138,158,132,0.04)"}}>
-        <div style={cs.label}>Your Broadcast Analyst</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:10}}>After your broadcast, your AI broadcast analyst ranks every fact you reported by how essential it actually was to the story — so you can see what to lead with next time.</p>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontStyle:"italic"}}>That gap is Miller's Law in action.</p>
+        <div style={{display:"flex",alignItems:"flex-start",gap:isDesktop?16:12,marginTop:14}}>
+          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="16" r="2" stroke={T.gold} strokeWidth="1.3"/>
+              <path d="M7 13a7 7 0 0110 0M4 10a11 11 0 0116 0" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
+            Report a breaking story to the nation. As airtime shrinks, your sentences must get <strong style={{color:T.gold,fontWeight:700}}>shorter</strong> — and your message must get <strong style={{color:T.gold,fontWeight:700}}>clearer</strong>.
+          </p>
+        </div>
+        <div style={{height:1,background:T2.divider,margin:isDesktop?"18px 0":"14px 0"}}/>
+        <div style={{display:"flex",alignItems:"flex-start",gap:isDesktop?16:12}}>
+          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="13" r="8" stroke={T.gold} strokeWidth="1.3"/>
+              <path d="M12 9v4l3 2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/>
+              <path d="M9 2h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
+            Your producer interrupts at 30, 15, and 5 seconds. Each cut forces you to compress further. Afterwards, your <strong style={{color:T.gold,fontWeight:700}}>AI editor</strong> reveals which facts you led with were actually essential.
+          </p>
+        </div>
       </div>
       <div style={{display:"flex",alignItems:"center",gap:8,padding:isDesktop?"12px 16px":"10px 14px",background:"rgba(138,158,132,0.06)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)"}}>
         <svg width="14" height="14" viewBox="0 0 20 20" fill="none" style={{flexShrink:0}}><circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/><line x1="10" y1="9" x2="10" y2="14" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/><circle cx="10" cy="6.3" r="1" fill="rgba(138,158,132,0.8)"/></svg>
