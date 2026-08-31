@@ -1447,7 +1447,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       beat5: entry.beats?.[4] || '',
       beat6: entry.beats?.[5] || '',
       coachObservation: entry.coachObservation || '',
-      readyLine: 'Now let Story Architect turn this into something you can use in any room.',
+      readyLine: 'You already know how to tell a story. Now make it unforgettable.',
     });
     setStoryFallback(false);
     setPhase('reveal');
@@ -1560,7 +1560,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 900,
-          system: `You are the AmplifyU coach and a master storyteller. The user has spoken freely for approximately 60 seconds about a real career story. Their chosen story territory was: "${cardTitle}". Your task is to extract six narrative beats from their transcript. Beat 1 (Once upon a time): the situation, context, or belief before everything changed. Beat 2 (Every day): their normal routine or mindset before the disruption. Beat 3 (Until one day): the turning point or inciting incident. Beat 4 (Because of that): their first response — what they chose to do. Beat 5 (Because of that): the deeper shift or consequence that followed. Beat 6 (Until finally): the resolution — where they ended up and what it meant. Use their actual words wherever possible. Write each beat in first person, 2–3 sentences maximum, in natural spoken English. Return a JSON object with exactly these keys: storyTitle (a specific, evocative 4–7 word name for this exact story — never generic, e.g. "The Presentation That Changed Everything"), beat1, beat2, beat3, beat4, beat5, beat6, coachObservation (one warm, specific sentence identifying the single most powerful moment — reference something they actually said), readyLine (return exactly: "Now let Story Architect turn this into something you can use in any room."). Return only valid JSON.`,
+          system: `You are the AmplifyU coach and a master storyteller. The user has spoken freely for approximately 60 seconds about a real career story. Their chosen story territory was: "${cardTitle}". Your task is to extract six narrative beats from their transcript. Beat 1 (Once upon a time): the situation, context, or belief before everything changed. Beat 2 (Every day): their normal routine or mindset before the disruption. Beat 3 (Until one day): the turning point or inciting incident. Beat 4 (Because of that): their first response — what they chose to do. Beat 5 (Because of that): the deeper shift or consequence that followed. Beat 6 (Until finally): the resolution — where they ended up and what it meant. Use their actual words wherever possible. Write each beat in first person, 2–3 sentences maximum, in natural spoken English. Return a JSON object with exactly these keys: storyTitle (a specific, evocative 4–7 word name for this exact story — never generic, e.g. "The Presentation That Changed Everything"), beat1, beat2, beat3, beat4, beat5, beat6, coachObservation (one warm, specific sentence identifying the single most powerful moment — reference something they actually said), readyLine (return exactly: "You already know how to tell a story. Now make it unforgettable."). Return only valid JSON.`,
           messages: [{ role: 'user', content: `Transcript: "${text || 'No speech detected.'}"` }],
         }),
       });
@@ -1576,7 +1576,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         beat5:            json.beat5            || 'What followed shifted something fundamental.',
         beat6:            json.beat6            || 'I came out the other side changed.',
         coachObservation: json.coachObservation || 'There is real power in what you just shared.',
-        readyLine:        json.readyLine        || 'Now let Story Architect turn this into something you can use in any room.',
+        readyLine:        json.readyLine        || 'You already know how to tell a story. Now make it unforgettable.',
       };
       setStoryResult(built);
       saveRehearsalStory(built);
@@ -1591,7 +1591,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         beat5:            'What followed shifted something fundamental.',
         beat6:            'I came out the other side changed.',
         coachObservation: 'There is real power in what you just shared.',
-        readyLine:        'Now let Story Architect turn this into something you can use in any room.',
+        readyLine:        'You already know how to tell a story. Now make it unforgettable.',
       });
     }
     setPhase('reveal');

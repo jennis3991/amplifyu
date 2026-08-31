@@ -199,7 +199,7 @@ export function D12PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Practice Complete</div>
         <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>You're Building Presence</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 24px"}}>You've explored gestures, posture, eye contact, expression, and grounded energy. These physical signals shape how every conversation you have is experienced.</p>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Your body helps people experience the message."</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"You don't need to perform presence. You already have it."</p>
       </div>
     </div>
   );
@@ -478,7 +478,7 @@ export function D12SimWidget({T, T2, isDesktop}) {
               ? "Strong session. Your physical signals look well-aligned. Record again and look for one moment where you could create even more stillness or emphasis."
               : `You flagged ${Object.entries(observations).filter(([,v])=>v==="Needs work").map(([k])=>k.toLowerCase()).join(" and ")} as areas to work on. These are the fastest wins — small, deliberate changes in ${Object.entries(observations).filter(([,v])=>v==="Needs work")[0]?.[0]?.toLowerCase()} can shift how you're perceived immediately.`}
           </p>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Awareness is the first act of transformation."</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Awareness is the first step. Confidence is what happens next."</p>
         </div>
       )}
 
