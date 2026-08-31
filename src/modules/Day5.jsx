@@ -201,7 +201,7 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
       <div style={cs.card}>
         <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Your Question</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 12px'}}>"{topic?.label}"</p>
-        <p style={{fontFamily:T.sans, fontSize:12, color:T2.text4, margin:0, fontStyle:'italic', textAlign:'center'}}>Start with your point. Then your reason. Then one example.</p>
+        <p style={{fontFamily:T.sans, fontSize:12, color:T2.text2, margin:0, fontStyle:'italic', textAlign:'center'}}>Start with your point. Then your reason. Then one example.</p>
       </div>
       <VoiceRecorder T={T} T2={T2} maxSeconds={120} onRecordingChange={setVoiceActive} onDone={(text) => {
         setPhase('analyzing');
@@ -239,15 +239,15 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
                 <span style={{color:row.present?'rgba(82,112,96,0.9)':'rgba(200,150,60,0.85)', fontSize:16, fontWeight:700, width:20, textAlign:'center', flexShrink:0}}>{row.present?'✓':'△'}</span>
                 <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, fontWeight:700, color:T2.text, textTransform:'uppercase', letterSpacing:'1.5px'}}>{row.label}</span>
               </div>
-              {row.quote && <p style={{fontFamily:T.serif, fontSize:isDesktop?14:13, color:T2.text2, lineHeight:1.55, margin:'0 0 0 34px', fontStyle:'italic'}}>"{row.quote}"</p>}
+              {row.quote && <p style={{fontFamily:T.serif, fontSize:isDesktop?14:15, color:T2.text2, lineHeight:1.55, margin:'0 0 0 34px', fontStyle:'italic'}}>"{row.quote}"</p>}
             </div>
           ))}
           {preRow >= 3 && (
-            <p style={{fontFamily:T.sans, fontSize:12, color:T2.text4, margin:'14px 0 0', lineHeight:1.6, fontStyle:'italic'}}>{coachResult.bridgeLine}</p>
+            <p style={{fontFamily:T.sans, fontSize:isDesktop?12:14, color:T2.text3, margin:'14px 0 0', lineHeight:1.6, fontStyle:'italic'}}>{coachResult.bridgeLine}</p>
           )}
         </div>
         <div style={{...cs.card, borderLeft:'3px solid '+T.gold, background:'rgba(138,158,132,0.05)'}}>
-          <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text, lineHeight:1.6, margin:0}}>Thinking clearly under pressure — that's a skill you can master.</p>
+          <p style={{fontFamily:T.serif, fontSize:isDesktop?15:16, fontStyle:'italic', color:T2.text, lineHeight:1.6, margin:0}}>Thinking clearly under pressure — that's a skill you can master.</p>
         </div>
         <button onClick={() => onSimulation?.()} style={cs.sageCta}>
           Enter the Boardroom →
@@ -431,7 +431,7 @@ Return only valid JSON with all fields present.`,
       {/* HOW IT WORKS — same 4-step icon format as Day 1's Simulation intro */}
       <div style={{...cs.card, padding:isDesktop?'22px 24px':'18px 20px'}}>
         <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2px', marginBottom:6}}>How it works</div>
-        <h2 style={{fontFamily:T.serif, fontSize:isDesktop?28:22, fontWeight:600, color:T2.text, lineHeight:1.2, marginBottom:isDesktop?20:16}}>Express your Point, Reason and Example.</h2>
+        <h2 style={{fontFamily:T.serif, fontSize:isDesktop?28:22, fontWeight:600, color:T2.text, lineHeight:1.2, marginBottom:isDesktop?20:16}}>Practice structuring your thoughts.</h2>
         <div style={{display:'flex', alignItems:'flex-start', gap:0}}>
           {[
             {n:1, label:'Choose a topic',        icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},

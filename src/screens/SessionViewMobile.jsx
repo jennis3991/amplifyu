@@ -329,7 +329,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD2 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Voice Warm-Up · Day 2" headline="The way you sound changes everything. Let's hear your voice." />;
         if(isD3 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Rehearsal · Day 3" headline="The pause is a tool. Let's use it." />;
         if(isD4 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Rehearsal · Day 4" headline="Say less. Mean more." />;
-        if(isD5 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="The PRE Card Sort" headline="Sort the cards. Train the instinct." />;
+        if(isD5 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="The Setup" headline="Point. Reason. Example. Now make it yours." />;
         if(isD6 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Find Your Words" headline="The right words under pressure don't come from thinking faster. They come from having them ready." />;
         if(isD9 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Rehearsal · Day 9" headline="The most connected people listen more than they speak." />;
         if(isD10 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Your Work Visible" headline="Turn what you do into a story people remember." />;
