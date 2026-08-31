@@ -20,13 +20,18 @@ function countFillers(text) {
   const re = /\b(um+|uh+|er+|ah+|like|you know|sort of|kind of|basically|literally)\b/gi;
   return (text.match(re) || []).length;
 }
+// This is a local, instant filler-word count only — it has no way to judge
+// whether the answer actually addressed the question, so it must never
+// characterise the response itself (e.g. "clean and direct") as that's a
+// claim about content this function can't verify. Report only what's
+// actually measured: the filler count.
 function q1Observation(text) {
-  if (!text || text === '[No speech detected]') return "Good. On to the next one.";
+  if (!text || text === '[No speech detected]') return "No response captured. On to the next one.";
   const n = countFillers(text);
-  if (n === 0) return "Good — clean and direct. Not a single filler word.";
-  if (n === 1) return "Good — just one filler word slipped in. Barely noticeable.";
-  if (n <= 3) return `Good — ${n} filler words crept in, but your point still landed.`;
-  return `Good — ${n} filler words in that one. Notice it, don't fight it.`;
+  if (n === 0) return "No filler words in that one.";
+  if (n === 1) return "Just one filler word slipped in — barely noticeable.";
+  if (n <= 3) return `${n} filler words crept in there.`;
+  return `${n} filler words in that one. Notice it, don't fight it.`;
 }
 
 // Turns raw mic-loudness samples captured during recording into real pause
@@ -847,58 +852,71 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   }
 
   // ── SCREEN 4: RECORDING ─────────────────────────────────────────────────────
+  // Deliberately NOT using grid() here — grid() always puts the intro/coach-tip
+  // leftPanel first, which on mobile pushed the actual question below the fold
+  // with no auto-scroll, so users lost sight of what they were answering the
+  // moment recording started. The question card is now the first thing on the
+  // page during recording; the coach-tip reminder moves below it instead.
   if (phase === 'rec1' || phase === 'rec2') {
     const qNum = phase === 'rec1' ? 1 : 2;
     const mins = Math.floor(timeLeft / 60);
     const secs = String(timeLeft % 60).padStart(2, '0');
-    return grid(<>
-      <div style={cs.card}>
-        <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 12}}>Question {qNum} of 2</div>
-        <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: T2.text, lineHeight: 1.4, margin: '0 0 22px'}}>{phase === 'rec1' ? scenario.q1 : scenario.q2}</p>
-        <div style={{display: 'flex', alignItems: 'center', gap: 2, height: 44, marginBottom: 14}}>
-          {waveVals.map((v, i) => (
-            <div key={i} style={{flex: 1, height: Math.round(v * 38) + 'px', background: `rgba(138,158,132,${0.3 + v * 0.5})`, borderRadius: 2, transition: 'height 0.15s'}} />
-          ))}
-        </div>
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-          <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
-            <div style={{width: 7, height: 7, borderRadius: '50%', background: '#c0392b'}} />
-            <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording</span>
+    return (
+      <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+        <div style={{...cs.card, borderLeft: '2px solid ' + T.gold}}>
+          <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 12}}>Question {qNum} of 2</div>
+          <p style={{fontFamily: T.serif, fontSize: isDesktop ? 20 : 18, fontWeight: 600, color: T2.text, lineHeight: 1.4, margin: '0 0 22px'}}>{phase === 'rec1' ? scenario.q1 : scenario.q2}</p>
+          <div style={{display: 'flex', alignItems: 'center', gap: 2, height: 44, marginBottom: 14}}>
+            {waveVals.map((v, i) => (
+              <div key={i} style={{flex: 1, height: Math.round(v * 38) + 'px', background: `rgba(138,158,132,${0.3 + v * 0.5})`, borderRadius: 2, transition: 'height 0.15s'}} />
+            ))}
           </div>
-          <span style={{fontFamily: T.sans, fontSize: 12, color: T2.text3, fontVariantNumeric: 'tabular-nums'}}>{mins}:{secs}</span>
+          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+              <div style={{width: 7, height: 7, borderRadius: '50%', background: '#c0392b'}} />
+              <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording</span>
+            </div>
+            <span style={{fontFamily: T.sans, fontSize: 12, color: T2.text3, fontVariantNumeric: 'tabular-nums'}}>{mins}:{secs}</span>
+          </div>
+        </div>
+        {isRec ? (
+          <button onClick={doStop} style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
+            Submit Answer →
+          </button>
+        ) : (micError || transcribeFailed) ? (
+          <button onClick={doStart} style={cs.cta}>
+            Try Recording Again →
+          </button>
+        ) : null}
+        {!isRec && (micError || transcribeFailed) && (
+          <div style={cs.card}>
+            <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+            <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: '0 0 10px'}}>
+              {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
+            </p>
+            <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width: '100%', minHeight: 80, background: 'transparent', border: 'none', borderBottom: '0.5px solid ' + T2.border, padding: '8px 0', fontFamily: T.sans, fontSize: 13, color: T2.text, resize: 'none', outline: 'none', lineHeight: 1.6, boxSizing: 'border-box'}}/>
+            {fallbackText.trim().length > 10 && (
+              <button onClick={() => {
+                setMicError(false); setTranscribeFailed(false);
+                const captured = fallbackText.trim();
+                setFallbackText('');
+                if (phase === 'rec1') { setTranscript1(captured); setPhase('transition'); }
+                else { setTranscript2(captured); setPhase('analyzing'); analyzeResponses(transcript1, captured); }
+              }} style={{...cs.cta, marginTop: 14}}>
+                Submit →
+              </button>
+            )}
+          </div>
+        )}
+        <div style={cs.cue}>Pause · Breathe · Respond</div>
+        <div style={{background: 'rgba(138,158,132,0.07)', borderRadius: 6, border: '0.5px solid rgba(138,158,132,0.18)', padding: '14px 16px'}}>
+          <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.7)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 8}}>Coach Tip</div>
+          <p style={{fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, fontStyle: 'italic', color: T2.text2, lineHeight: 1.65, margin: 0}}>
+            When you feel the urge to fill the silence — pause instead. Great communicators don't fill silence. They use it.
+          </p>
         </div>
       </div>
-      {isRec ? (
-        <button onClick={doStop} style={{...cs.cta, background: 'rgba(138,158,132,0.12)', color: T2.text, border: '0.5px solid rgba(138,158,132,0.3)'}}>
-          Submit Answer →
-        </button>
-      ) : (micError || transcribeFailed) ? (
-        <button onClick={doStart} style={cs.cta}>
-          Try Recording Again →
-        </button>
-      ) : null}
-      {!isRec && (micError || transcribeFailed) && (
-        <div style={cs.card}>
-          <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
-          <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: '0 0 10px'}}>
-            {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
-          </p>
-          <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width: '100%', minHeight: 80, background: 'transparent', border: 'none', borderBottom: '0.5px solid ' + T2.border, padding: '8px 0', fontFamily: T.sans, fontSize: 13, color: T2.text, resize: 'none', outline: 'none', lineHeight: 1.6, boxSizing: 'border-box'}}/>
-          {fallbackText.trim().length > 10 && (
-            <button onClick={() => {
-              setMicError(false); setTranscribeFailed(false);
-              const captured = fallbackText.trim();
-              setFallbackText('');
-              if (phase === 'rec1') { setTranscript1(captured); setPhase('transition'); }
-              else { setTranscript2(captured); setPhase('analyzing'); analyzeResponses(transcript1, captured); }
-            }} style={{...cs.cta, marginTop: 14}}>
-              Submit →
-            </button>
-          )}
-        </div>
-      )}
-      <div style={cs.cue}>Pause · Breathe · Respond</div>
-    </>);
+    );
   }
 
   // ── TRANSCRIBING ─────────────────────────────────────────────────────────────

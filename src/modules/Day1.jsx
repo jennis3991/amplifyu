@@ -1816,15 +1816,19 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
       </div>
       )}
 
-      {/* 6 WORD UPGRADES */}
+      {/* 6 PHRASE UPGRADES — the prompt heavily prefers phrase-level rewrites
+          over single-word swaps (see "prefer a phrase-level rewrite... this
+          should be the more common type" above), so a true one-word swap is
+          the exception here, not the rule — flagged with its own tag rather
+          than being the section's namesake. */}
       {feedback.wordUpgrades&&feedback.wordUpgrades.length>0&&(
         <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 18px"}}>
-          <div style={cs.label}>Word Upgrades</div>
-          <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,margin:"0 0 14px",lineHeight:1.5}}>The best communicators choose precise words. Here are personalised upgrades based on what you said:</p>
+          <div style={cs.label}>Phrase Upgrades</div>
+          <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,margin:"0 0 14px",lineHeight:1.5}}>The best communicators choose precise language. Here are personalised upgrades based on what you said:</p>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {feedback.wordUpgrades.map((u,i)=>(
               <div key={i} style={{display:"flex",flexDirection:"column",gap:5}}>
-                {u.type==="rephrase"&&<div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"1.5px"}}>Rephrase for impact</div>}
+                {u.type==="word"&&<div style={{fontFamily:T.sans,fontSize:8,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"1.5px"}}>Word swap</div>}
                 <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
                   <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:"#C4714A",background:"rgba(196,113,74,0.08)",border:"0.5px solid rgba(196,113,74,0.2)",borderRadius:3,padding:"4px 10px",lineHeight:1.5}}>{u.word}</span>
                   <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke={T2.text4} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
