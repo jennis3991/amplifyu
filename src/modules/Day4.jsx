@@ -206,7 +206,13 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
         Say it once.<br/>Say it short.<br/>Stop.
       </h2>
       <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text3, lineHeight:1.7, fontWeight:400, margin:'0 0 10px'}}>
-        Choose one prompt below. Challenge yourself to use only short sentences. One idea. Stop. Next idea. Stop. If your message still makes sense without a sentence, leave it out. Great communicators don't trim their sentences. They end them sooner.
+        Choose one prompt below. Challenge yourself to use only short sentences.
+      </p>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text3, lineHeight:1.7, fontWeight:400, margin:'0 0 10px'}}>
+        One idea. Stop. Next idea. Stop.
+      </p>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text3, lineHeight:1.7, fontWeight:400, margin:'0 0 10px'}}>
+        If your message still makes sense without a sentence, leave it out. Great communicators don't say more. They know when to stop.
       </p>
       <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:14}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
