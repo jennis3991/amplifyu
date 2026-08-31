@@ -1,5 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+
+async function fireRankUpHaptic() {
+  try { await Haptics.impact({ style: ImpactStyle.Medium }); } catch (_) {}
+}
+
+// No chime asset exists in the repo (or any audio-playback infra) — this
+// synthesizes a soft two-note bell in place of a sourced sound file.
+let sharedChimeCtx = null;
+function playRankUpChime() {
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    if (!sharedChimeCtx) sharedChimeCtx = new Ctx();
+    const ctx = sharedChimeCtx;
+    if (ctx.state === 'suspended') ctx.resume();
+    const now = ctx.currentTime;
+    [{ freq: 784.0, start: 0, dur: 0.9 }, { freq: 1046.5, start: 0.09, dur: 0.9 }].forEach(({ freq, start, dur }) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, now + start);
+      gain.gain.linearRampToValueAtTime(0.16, now + start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + start + dur);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + start);
+      osc.stop(now + start + dur + 0.05);
+    });
+  } catch (_) {}
+}
 
 export function Confetti() {
   const pieces = Array.from({length:18}, (_,i) => ({
@@ -140,10 +172,29 @@ export function Celebrate({day, onClose, rankUp}) {
   const [notifyDone, setNotifyDone] = useState(() => {
     try { return !!localStorage.getItem("au1_practiceSpaceNotify"); } catch { return false; }
   });
+  const [spotlight, setSpotlight] = useState(null);
+  const rankUpImgRef = useRef(null);
   useEffect(() => {
     const t = setTimeout(() => setPhase("settled"), 800);
     return () => clearTimeout(t);
   }, []);
+
+  // Spotlight + haptic cue — fires once the rank-up block has finished
+  // animating in (textFade completes ~0.9s after the sheet mounts).
+  useEffect(() => {
+    if (!rankUp) return;
+    const revealTimer = setTimeout(() => {
+      const el = rankUpImgRef.current;
+      if (el) {
+        const r = el.getBoundingClientRect();
+        setSpotlight({ x: r.left + r.width / 2, y: r.top + r.height / 2, radius: Math.max(r.width, r.height) });
+      }
+      fireRankUpHaptic();
+      playRankUpChime();
+    }, 900);
+    const clearTimer = setTimeout(() => setSpotlight(null), 900 + 1600);
+    return () => { clearTimeout(revealTimer); clearTimeout(clearTimer); };
+  }, [rankUp]);
 
   const isComplete = day === 14;
 
@@ -175,7 +226,23 @@ export function Celebrate({day, onClose, rankUp}) {
           from { transform:translateY(12px); opacity:0; }
           to   { transform:translateY(0); opacity:1; }
         }
+        @keyframes spotlightFade {
+          0%   { opacity:0; }
+          18%  { opacity:1; }
+          75%  { opacity:1; }
+          100% { opacity:0; }
+        }
       `}</style>
+
+      {/* Spotlight — briefly dims everything but the new piece, echoing the
+          single-beam chess photography used elsewhere in the app. */}
+      {spotlight && (
+        <div style={{
+          position:"fixed", inset:0, zIndex:260, pointerEvents:"none",
+          background:`radial-gradient(circle ${spotlight.radius*3.2}px at ${spotlight.x}px ${spotlight.y}px, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 22%, rgba(8,6,3,0.72) 68%, rgba(5,4,2,0.88) 100%)`,
+          animation:"spotlightFade 1.6s ease both",
+        }}/>
+      )}
 
       <div style={{
         width:"100%",maxWidth:430,
@@ -284,7 +351,7 @@ strokeWidth="1.5"
               border:"1px solid "+(isComplete ? "rgba(255,255,255,0.12)" : "rgba(183,154,107,0.25)"),
               animation:"textFade 0.5s ease 0.4s both",
             }}>
-              <img loading="lazy" src={rankUp.img} alt={rankUp.name} style={{width:44,height:44,objectFit:"contain",flexShrink:0}}/>
+              <img ref={rankUpImgRef} loading="lazy" src={rankUp.img} alt={rankUp.name} style={{width:44,height:44,objectFit:"contain",flexShrink:0}}/>
               <div>
                 <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:2}}>Rank Up</div>
                 <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:isComplete?"white":T.text}}>You've been promoted to {rankUp.name}.</div>
