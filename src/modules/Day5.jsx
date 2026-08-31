@@ -431,7 +431,7 @@ Return only valid JSON with all fields present.`,
       {/* HOW IT WORKS — same 4-step icon format as Day 1's Simulation intro */}
       <div style={{...cs.card, padding:isDesktop?'22px 24px':'18px 20px'}}>
         <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2px', marginBottom:6}}>How it works</div>
-        <h2 style={{fontFamily:T.serif, fontSize:isDesktop?28:22, fontWeight:600, color:T2.text, lineHeight:1.2, marginBottom:isDesktop?20:16}}>Two answers. One structure to hold.</h2>
+        <h2 style={{fontFamily:T.serif, fontSize:isDesktop?28:22, fontWeight:600, color:T2.text, lineHeight:1.2, marginBottom:isDesktop?20:16}}>Express your Point, Reason and Example.</h2>
         <div style={{display:'flex', alignItems:'flex-start', gap:0}}>
           {[
             {n:1, label:'Choose a topic',        icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
