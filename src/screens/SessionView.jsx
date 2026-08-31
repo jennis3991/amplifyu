@@ -3311,7 +3311,7 @@ setAmbitionSaved(true); } catch {}
           </div>
           <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, overflow:"hidden" }}>
             <button onClick={()=>setFormulaOpen(o=>!o)} style={{ width:"100%", padding:"20px 32px", display:"flex", alignItems:"center", justifyContent:"space-between", border:"none", background:"transparent", cursor:"pointer", textAlign:"left" }}>
-              <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px" }}>How they map to the Brand Formula</div>
+              <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px" }}>How they map to The AmplifyU Brand Formula</div>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform:formulaOpen?"rotate(180deg)":"none", transition:"transform 0.2s", flexShrink:0, marginLeft:16 }}><path d="M3 6l5 5 5-5" stroke={T.gold} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
             {formulaOpen && (
@@ -3330,7 +3330,7 @@ setAmbitionSaved(true); } catch {}
                     {ing.lesson && (
                       <div style={{ padding:"10px 14px", background:"rgba(138,158,132,0.08)", borderRadius:4, borderLeft:"2px solid rgba(138,158,132,0.4)" }}>
                         <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", display:"block", marginBottom:4 }}>AmplifyU Lesson</span>
-                        <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.6, fontWeight:400, fontStyle:"italic", margin:0 }}>{ing.lesson}</p>
+                        <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text, lineHeight:1.6, fontWeight:400, fontStyle:"italic", margin:0 }}>{ing.lesson}</p>
                       </div>
                     )}
                   </div>
@@ -3405,7 +3405,7 @@ setAmbitionSaved(true); } catch {}
             {/* Recipe heading */}
             <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The AmplifyU Brand Formula</div>
             <h3 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:10 }}>The Recipe for a Memorable Personal Brand</h3>
-            <p style={{ fontFamily:T.sans, fontSize:15, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:24, maxWidth:600 }}>Great personal brands don't happen accidentally. They are built through six repeated psychological signals. Tap any ingredient to see the full explanation.</p>
+            <p style={{ fontFamily:T.sans, fontSize:15, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:24, maxWidth:600 }}>Great personal brands don't happen accidentally. They are built through six repeated psychological signals. Tap any component to see the full explanation.</p>
 
             {/* 6 expandable ingredient boxes */}
             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginBottom:28 }}>

@@ -850,9 +850,9 @@ Keep it under 280 words. Make every word earn its place.`;
   // ── IMPORT ────────────────────────────────────────────────────────────────
   if (phase === 'import') {
     const tabs = [
-      { id: 'summary',    label: 'My Rehearsal',    recommended: true,  actionable: false },
-      { id: 'screenshot', label: 'Add your LinkedIn', recommended: false, actionable: true },
-      { id: 'cv',         label: 'Add your CV',       recommended: false, actionable: true },
+      { id: 'summary',    label: 'My Rehearsal',    num: 1, recommended: true,  actionable: false },
+      { id: 'screenshot', label: 'Add your LinkedIn', num: 2, recommended: false, actionable: true },
+      { id: 'cv',         label: 'Add your CV',       num: 2, recommended: false, actionable: true },
     ];
     // Same ID-card icon as step 2 ("Add your LinkedIn or CV") in the HOW IT WORKS explainer above
     const IdCardIcon = c => <svg width={isDesktop?15:13} height={isDesktop?15:13} viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="14" rx="2" stroke={c} strokeWidth="1.3"/><circle cx="8" cy="10" r="2" stroke={c} strokeWidth="1.3"/><path d="M5 15c0-1.5 1.3-2.5 3-2.5s3 1 3 2.5" stroke={c} strokeWidth="1.3" strokeLinecap="round"/><path d="M13 8h3M13 11h3" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg>;
@@ -962,6 +962,7 @@ Keep it under 280 words. Make every word earn its place.`;
               <button key={tab.id} onClick={() => setInputMode(inputMode === tab.id ? 'paste' : tab.id)}
                 style={{ flex: 1, padding: isDesktop ? "10px 6px" : "8px 4px", borderRadius: 4, border, boxShadow, background: selected ? "rgba(200,164,106,0.07)" : "transparent", fontFamily: T.sans, fontSize: isDesktop ? 11 : 10, fontWeight: selected ? 600 : 400, color: selected ? T.gold : T2.text3, cursor: "pointer", transition: "all 0.15s", position: "relative", lineHeight: 1.3 }}>
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
+                  <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 14, height: 14, borderRadius: "50%", background: selected ? T.gold : T2.text4, color: selected ? "#fff" : T2.bg, fontSize: 9, fontWeight: 700, flexShrink: 0 }}>{tab.num}</span>
                   {tab.actionable && IdCardIcon(T.gold)}
                   {tab.label}
                 </span>

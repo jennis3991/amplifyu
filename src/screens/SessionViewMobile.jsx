@@ -2308,11 +2308,11 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             ))}
           </div>
           <div style={{padding:"12px 14px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T2.border,marginBottom:20}}>
-            <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text2,lineHeight:1.6,margin:0}}>"People rarely remember everything about you. They remember the strongest signal you gave them."</p>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.6,margin:0}}>"People rarely remember everything about you. They remember the strongest signal you gave them."</p>
           </div>
            {/* Brand formula */}
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>The Brand Formula</div>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:12}}>Six ingredients. Tap any to expand.</p>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>The AmplifyU Brand Formula</div>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:12}}>Six components. Tap any to expand.</p>
           {D11_INGREDIENTS.map((ing,i)=>{
             const open = d11MobCard===("ing"+i);
             return (
@@ -2341,7 +2341,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
             );
           })}
            <div style={{padding:"14px 16px",background:T2.surface,borderLeft:"3px solid "+T.gold,borderRadius:4,marginTop:4}}>
-            <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.6}}>Your brand is the story people tell themselves about you after repeated exposure.</p>
+            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.6}}>Your brand is the story people tell themselves about you after repeated exposure.</p>
           </div>
         </>
       )}
