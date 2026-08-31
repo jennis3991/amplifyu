@@ -38,11 +38,13 @@ activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
   const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory","Example","Rehearsal","Simulation","Review"]:["Insight","Theory","Example","Rehearsal","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
   const rightPanelRef = useRef(null);
+  const reviewPanelRef = useRef(null);
   useEffect(() => {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
     if (rightPanelRef.current) rightPanelRef.current.scrollTop = 0;
+    if (reviewPanelRef.current) reviewPanelRef.current.scrollTop = 0;
   }, [idx]);
   const [selSc, setSelSc] = useState(0);
   const [checks, setChecks] = useState({});
@@ -4421,7 +4423,7 @@ setAmbitionSaved(true); } catch {}
               // ── OPTION 1: Book-First Editorial Layout (all modules) ───────────
               {
                 return (
-                  <div style={{ flex: 1, background: T2.bg, borderLeft: "1px solid " + T2.divider, overflowY: "auto" }}>
+                  <div ref={reviewPanelRef} style={{ flex: 1, background: T2.bg, borderLeft: "1px solid " + T2.divider, overflowY: "auto" }}>
                     <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 48px" }}>
                       {/* Header */}
                       <div style={{ fontSize: 12, fontWeight: 500, textTransform: "uppercase", letterSpacing: "2px", color: T.gold, marginBottom: 20, fontFamily: T.sans }}>Day {lesson.day} Complete ✓</div>

@@ -111,11 +111,14 @@ export function MobileSessionView({
     reset();
     // A step's content (e.g. Review, which loads book cards and other
     // async content) can grow taller after this first paint, which on iOS
-    // WKWebView silently undoes an immediate scrollTo — re-assert it a
-    // frame and a beat later so the step always opens at the top.
+    // WKWebView silently undoes an immediate scrollTo. Residual momentum
+    // from a swipe-to-navigate gesture can also carry over onto the newly
+    // mounted step and scroll it down before the user touches it. Re-assert
+    // the top position across several beats — through content reflow and
+    // past when swipe momentum decays — so the step reliably opens at top.
     const raf = requestAnimationFrame(reset);
-    const t = setTimeout(reset, 60);
-    return () => { cancelAnimationFrame(raf); clearTimeout(t); };
+    const timeouts = [60, 150, 300, 500].map(ms => setTimeout(reset, ms));
+    return () => { cancelAnimationFrame(raf); timeouts.forEach(clearTimeout); };
   }, [idx]);
 
   useEffect(() => {
