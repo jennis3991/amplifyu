@@ -205,7 +205,9 @@ const CIRCUIT_CHARS = [
     role: 'VP, People & Culture',
     vibe: 'Warm and instantly curious — makes you feel like the only person in the room',
     listensFor: 'genuine warmth and honesty — whether the person opens up with something real rather than a polished, guarded answer',
-    question: "Renata catches your eye during a break in the townhall and comes straight over, warm and unhurried: \"I don't think we've properly met yet — I'd love to know, what's something you're proud of lately that most people around here probably don't know about?\" What do you say?",
+    lead: "Renata catches your eye during a break in the townhall and comes straight over, warm and unhurried:",
+    quote: "I don't think we've properly met yet — I'd love to know, what's something you're proud of lately that most people around here probably don't know about?",
+    get question() { return `${this.lead} "${this.quote}" What do you say?`; },
   },
   {
     id: 'theo',
@@ -213,7 +215,9 @@ const CIRCUIT_CHARS = [
     role: 'Head of Product',
     vibe: 'Enthusiastic and down-to-earth — genuinely lights up hearing what people are working on',
     listensFor: 'genuine enthusiasm and plain language over jargon — whether the answer sounds like something a real person would say to a friend',
-    question: "Theo spots you by the coffee station after the townhall and grins: \"Okay, real talk — what's something you're working on right now that actually gets you excited?\" What do you say?",
+    lead: "Theo spots you by the coffee station after the townhall and grins:",
+    quote: "Okay, real talk — what's something you're working on right now that actually gets you excited?",
+    get question() { return `${this.lead} "${this.quote}" What do you say?`; },
   },
 ];
 
@@ -436,7 +440,9 @@ export function D13SimWidget({T, T2, isDesktop}) {
 
         <div style={{...cs.card, background:"rgba(138,158,132,0.05)", borderLeft:"2px solid "+T.gold}}>
           <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10}}>Your Coach</div>
-          <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, margin:0}}>{sc.question}</p>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, margin:"0 0 10px"}}>{sc.lead}</p>
+          <p style={{fontFamily:T.serif, fontSize:isDesktop?17:16, fontStyle:"italic", color:T2.text, lineHeight:1.5, margin:"0 0 10px"}}>"{sc.quote}"</p>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, fontWeight:600, color:T2.text, lineHeight:1.65, margin:0}}>What do you say?</p>
         </div>
 
         {/* ── Voice recorder ─────────────────────────────────────────── */}

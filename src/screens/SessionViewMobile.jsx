@@ -334,7 +334,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD10 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Your Work Visible" headline="Turn what you do into a story people remember." />;
         if(isD11 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Build Your Brand" headline="Every career has a reputation. The best careers have one by design." />;
         if(isD12 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Practice Presence" headline="Seven rounds. Every physical signal that shapes how communication lands." />;
-        if(isD13 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Your Value Visible" headline="Four exercises. Make your value impossible to ignore." />;
+        if(isD13 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Yourself Visible" headline="The moment will come. Show up — don't let it pass." />;
         if(isD14 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Day 14 · Capstone" headline="You are not the communicator you were 14 days ago." />;
         if(isNT && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Story Lab" headline="The best communicators have a handful of go-to stories. Let's find one of yours." />;
         if(isD7 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Teach It Forward" headline="The best test of what you know is whether you can teach it." />;
@@ -2986,7 +2986,7 @@ strokeLinecap="round"/></svg>
       {isD13 && step==="Rehearsal" && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Rehearsal · Day 13</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>Make Your Value Visible</h2>
+          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>Make Yourself Visible</h2>
           <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:16}}>
             <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
               <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>

@@ -747,8 +747,8 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 25%, rgba(138,158,132,0.08) 0%, transparent 55%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.3) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Make Your Value Visible</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>Four exercises. One goal: make your value impossible to ignore.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Make Yourself Visible</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:340, lineHeight:1.2, marginBottom:16 }}>The moment will come. Show up — don't let it pass.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
