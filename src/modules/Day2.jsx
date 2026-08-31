@@ -469,11 +469,11 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     // injecting the same placeholder number every time — that's what was
     // producing an identical, non-representative score across recordings.
     const scoreField = (label, value) => value != null
-      ? `"${label}":<use exactly ${value} — this was measured from the real recording>`
-      : `"${label}":<50-100 — this wasn't captured this time, so judge it as best you can from the transcript and pacing of the words>`;
+      ? `"${label}":<use exactly ${value} — this was measured from the real recording, unless this was not a genuine attempt, in which case use 0 regardless>`
+      : `"${label}":<0-100 — this wasn't captured this time, so judge it as best you can from the transcript and pacing of the words>`;
     const scoresSchema = `{${scoreField('Pace', metrics?.paceScore)},${scoreField('Pitch', metrics?.pitchScore)},${scoreField('Pauses', metrics?.pausesScore)},${scoreField('Vocal Energy', metrics?.energyScore)},${scoreField('Range', metrics?.rangeScore)},${scoreField('Confidence Hedges', metrics?.hedgeScore)}}`;
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1000,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery.\n\nIMPORTANT: All feedback must reference what this person ACTUALLY SAID. Quote or paraphrase specific words and phrases from the transcript. Do not write generic vocal coaching advice.\n\nSpeaking prompt: "${prompt}"\nTranscript: "${text}"${metrics && metrics.wpm > 0 ? `\n\nMeasured delivery data (from the actual recording, not inferred):\n- Speaking pace: ${metrics.wpm} WPM (${metrics.paceLabel}) — ideal executive range is 120–150 WPM\n- Pauses: ${metrics.pauseCount ?? 0} pause(s) detected, ${metrics.pausesPerMin!=null?metrics.pausesPerMin.toFixed(1):'0'} per minute\n- Pitch inflection: ${metrics.pitchScore!=null?metrics.pitchScore+'/100 (higher = more natural rise and fall, lower = flatter/more monotone)':'not detected'}\n- Vocal energy: ${metrics.energyScore ?? 'n/a'}/100 average loudness\n- Range: ${metrics.rangeScore ?? 'n/a'}/100 variation between quiet and loud moments\n- Confidence hedges ("I think", "maybe", etc.): ${metrics.hedges} (${metrics.hedgesPerMin ?? metrics.hedges} per minute)\n- Average sentence length: ${metrics.avgSentLen} words` : ''}\n\nReturn ONLY valid JSON. For each of the six scores below, follow its own instruction — some were genuinely measured from the recording and must use that exact number, others weren't captured this time and need your own honest estimate from the transcript:\n{"overall":<50-100>,"headline":"<max 10 words: single most important vocal insight, referencing what they said>","subtitle":"<one warm encouraging sentence specific to this delivery>","wpmNote":"<1 sentence naming their exact WPM and what it means for their listener — skip if no pace data>","confidenceNote":"<1 sentence about their directness: praise clear statements, gently flag hedging if hedges > 3, quoting a specific moment>","scores":${scoresSchema},"worked":["<vocal strength 1 — short title, specific to what they said>","<vocal strength 2 — short title, specific to what they said>","<vocal strength 3 — short title>"],"workedSubs":["<1 sentence expanding on worked[0], quoting or paraphrasing specific words they actually said>","<1 sentence expanding on worked[1], referencing a specific moment in their delivery>","<1 sentence expanding on worked[2]>"],"improve":[{"title":"<4-7 words naming the single most impactful vocal change>","detail":"<1-2 sentences referencing a specific moment in their transcript where this would have landed harder>"}],"insight":"<2-3 personalised sentences referencing specific words or phrases they used: what vocal quality is working, what one change would elevate it most>","moments":[{"label":"<moment type e.g. Pace rush / Energy peak / Strong moment / Energy dip / Pitch drop>","quote":"<copy 4-6 consecutive words from the transcript exactly where this moment occurred>","color":"<#C8A46A for pace/energy rush, #527060 for strong moment, #B05C4A for dip/drop>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"}]}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1000,messages:[{role:"user",content:`You are a world-class vocal performance coach. Analyse this spoken delivery.\n\nCRITICAL — GENUINE ATTEMPT CHECK (do this first, before any scoring): Judge whether the transcript below is a genuine, substantive attempt to actually answer the prompt — not test input (e.g. "test test test", "asdf", keyboard mashing), a single throwaway word, or a response that doesn't meaningfully engage with the question at all. If it is NOT a genuine attempt: set "overall" to 0 and every score in "scores" to 0 regardless of any measured audio data — this exercise is about real communication, not just making sound. Write a direct, honest headline (e.g. "This isn't a real answer yet — let's try again") and a short encouraging subtitle. Set "worked" to an empty array and "improve" to an empty array — never invent vocal strengths for something that wasn't real communication. Keep "insight" short and honest, telling them to give it a genuine attempt. Skip "wpmNote" and "confidenceNote" (omit or leave empty). Set "moments" to null. Then stop — ignore all the scoring instructions below. Only when the transcript IS a genuine, substantive attempt should you continue and score it honestly — a real but weak attempt can still score low; 0 is reserved specifically for non-attempts.\n\nIMPORTANT: All feedback must reference what this person ACTUALLY SAID. Quote or paraphrase specific words and phrases from the transcript. Do not write generic vocal coaching advice.\n\nSpeaking prompt: "${prompt}"\nTranscript: "${text}"${metrics && metrics.wpm > 0 ? `\n\nMeasured delivery data (from the actual recording, not inferred):\n- Speaking pace: ${metrics.wpm} WPM (${metrics.paceLabel}) — ideal executive range is 120–150 WPM\n- Pauses: ${metrics.pauseCount ?? 0} pause(s) detected, ${metrics.pausesPerMin!=null?metrics.pausesPerMin.toFixed(1):'0'} per minute\n- Pitch inflection: ${metrics.pitchScore!=null?metrics.pitchScore+'/100 (higher = more natural rise and fall, lower = flatter/more monotone)':'not detected'}\n- Vocal energy: ${metrics.energyScore ?? 'n/a'}/100 average loudness\n- Range: ${metrics.rangeScore ?? 'n/a'}/100 variation between quiet and loud moments\n- Confidence hedges ("I think", "maybe", etc.): ${metrics.hedges} (${metrics.hedgesPerMin ?? metrics.hedges} per minute)\n- Average sentence length: ${metrics.avgSentLen} words` : ''}\n\nReturn ONLY valid JSON. For each of the six scores below, follow its own instruction — some were genuinely measured from the recording and must use that exact number, others weren't captured this time and need your own honest estimate from the transcript:\n{"overall":<0-100>,"headline":"<max 10 words: single most important vocal insight, referencing what they said>","subtitle":"<one warm encouraging sentence specific to this delivery>","wpmNote":"<1 sentence naming their exact WPM and what it means for their listener — skip if no pace data>","confidenceNote":"<1 sentence about their directness: praise clear statements, gently flag hedging if hedges > 3, quoting a specific moment>","scores":${scoresSchema},"worked":["<vocal strength 1 — short title, specific to what they said>","<vocal strength 2 — short title, specific to what they said>","<vocal strength 3 — short title>"],"workedSubs":["<1 sentence expanding on worked[0], quoting or paraphrasing specific words they actually said>","<1 sentence expanding on worked[1], referencing a specific moment in their delivery>","<1 sentence expanding on worked[2]>"],"improve":[{"title":"<4-7 words naming the single most impactful vocal change>","detail":"<1-2 sentences referencing a specific moment in their transcript where this would have landed harder>"}],"insight":"<2-3 personalised sentences referencing specific words or phrases they used: what vocal quality is working, what one change would elevate it most>","moments":[{"label":"<moment type e.g. Pace rush / Energy peak / Strong moment / Energy dip / Pitch drop>","quote":"<copy 4-6 consecutive words from the transcript exactly where this moment occurred>","color":"<#C8A46A for pace/energy rush, #527060 for strong moment, #B05C4A for dip/drop>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"},{"label":"<moment type>","quote":"<4-6 consecutive words from transcript>","color":"<hex>"}]}`}]})});
       const d=await res.json();
       if(!res.ok) throw new Error(d.error||'Request failed');
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
@@ -504,9 +504,13 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
   const rawText = transcript || fallback;
   const STATIC_MARKERS=[{pos:0.18,label:"Pace rush",color:"#C8A46A"},{pos:0.44,label:"Energy dip",color:"#B05C4A"},{pos:0.66,label:"Strong moment",color:"#527060"},{pos:0.85,label:"Pitch drop",color:"#B05C4A"}];
+  // A non-genuine attempt (feedback.worked deliberately empty — see the
+  // GENUINE ATTEMPT CHECK in the prompt) must never fall back to these
+  // static placeholder markers — there's no real delivery to annotate.
+  const isGenuineAttempt = !feedback?.worked || feedback.worked.length>0;
   const aiMarkers=(feedback?.moments && rawText)
     ? feedback.moments.map((m,i)=>{const pos=quoteToPos(rawText,m.quote);return {pos:pos!=null?pos:STATIC_MARKERS[i]?.pos??0.2+i*0.2,label:m.label,color:m.color||"#C8A46A",quote:m.quote};}).sort((a,b)=>a.pos-b.pos)
-    : STATIC_MARKERS;
+    : (isGenuineAttempt ? STATIC_MARKERS : []);
   const fillerMarkers=rawText?findFillerClusters(rawText).slice(0,3).map(idx=>({pos:Math.max(0.05,Math.min(0.92,idx/rawText.length)),label:"Filler cluster",color:"#C4714A"})):[];
   const MARKERS=[...aiMarkers,...fillerMarkers].filter((m,i,arr)=>!arr.slice(0,i).some(p=>Math.abs(p.pos-m.pos)<0.06)).sort((a,b)=>a.pos-b.pos);
 
@@ -772,11 +776,11 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     const cx=100,cy=100,rMax=72;
     const rPt=(sc,aDeg)=>{const a=aDeg*Math.PI/180;return[cx+(sc/100)*rMax*Math.cos(a),cy+(sc/100)*rMax*Math.sin(a)];};
     const gridPoly=(pct)=>RANGLES.map(a=>{const[x,y]=rPt(100,a);return`${(cx+(x-cx)*pct).toFixed(1)},${(cy+(y-cy)*pct).toFixed(1)}`;}).join(' ');
-    const dataPoly=DIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores?.[d]||50,RANGLES[i]);return`${x.toFixed(1)},${y.toFixed(1)}`;}).join(' ');
+    const dataPoly=DIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores?.[d]??50,RANGLES[i]);return`${x.toFixed(1)},${y.toFixed(1)}`;}).join(' ');
     const WBARS=Array.from({length:60},(_,i)=>Math.max(0.08,Math.min(1,Math.sin(i/59*Math.PI)*0.65+0.25+Math.sin(i*4.7)*0.13+Math.cos(i*2.3)*0.11)));
     const scoreColor=s=>s>=80?T.gold:s>=70?"#7A9E84":"#B05C4A";
     const scoreTier=s=>s>=80?"Strong":s>=70?"Good":"Focus area";
-    const dimScores=DIMS.map(d=>feedback.scores?.[d]||50);
+    const dimScores=DIMS.map(d=>feedback.scores?.[d]??50);
     const focusDims=DIMS.filter((d,i)=>dimScores[i]<70);
     const strongCount=dimScores.filter(s=>s>=80).length;
     return (
@@ -896,12 +900,12 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
               {[0.25,0.5,0.75,1].map((p,i)=><polygon key={i} points={gridPoly(p)} fill="none" stroke={T2.border} strokeWidth={p===1?"0.8":"0.5"}/>)}
               {RANGLES.map((a,i)=>{const[x,y]=rPt(100,a);return<line key={i} x1={cx} y1={cy} x2={x.toFixed(1)} y2={y.toFixed(1)} stroke={T2.border} strokeWidth="0.5"/>;})}
               <polygon points={dataPoly} fill="rgba(138,158,132,0.18)" stroke="rgba(82,112,96,0.7)" strokeWidth="1.5"/>
-              {DIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores?.[d]||50,RANGLES[i]);return<circle key={i} cx={x.toFixed(1)} cy={y.toFixed(1)} r="3" fill={T.gold} opacity="0.9"/>;})}
+              {DIMS.map((d,i)=>{const[x,y]=rPt(feedback.scores?.[d]??50,RANGLES[i]);return<circle key={i} cx={x.toFixed(1)} cy={y.toFixed(1)} r="3" fill={T.gold} opacity="0.9"/>;})}
               {DIMS.map((d,i)=>{const[x,y]=rPt(116,RANGLES[i]);const anch=x<cx-4?"end":x>cx+4?"start":"middle";return<text key={i} x={x.toFixed(1)} y={y.toFixed(1)} textAnchor={anch} dominantBaseline="middle" style={{fontFamily:"'Inter',sans-serif",fontSize:"7.5px",fill:"rgba(44,36,22,0.55)",fontWeight:500}}>{d}</text>;})}
             </svg>
           </div>
           <div style={{flex:1,display:"flex",flexDirection:"column",gap:10,marginTop:isDesktop?0:10}}>
-            {DIMS.map((d,i)=>{const sc=feedback.scores?.[d]||50;const prev=round1?.scores?.[d];const diff=prev?sc-prev:null;const isOpen=expandedDim===d;const tierColor=scoreColor(sc);return(
+            {DIMS.map((d,i)=>{const sc=feedback.scores?.[d]??50;const prev=round1?.scores?.[d];const diff=prev?sc-prev:null;const isOpen=expandedDim===d;const tierColor=scoreColor(sc);return(
               <div key={i}>
                 <div onClick={()=>setExpandedDim(isOpen?null:d)} style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}}>
                   <span style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text,width:isDesktop?90:76,flexShrink:0,borderBottom:"1px dotted "+T2.text4}}>{d}</span>
@@ -963,7 +967,10 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           )}
         </div>
       )}
-      {/* 3 WHAT CAME ACROSS WELL + BIGGEST OPPORTUNITY */}
+      {/* 3 WHAT CAME ACROSS WELL + BIGGEST OPPORTUNITY — skipped entirely for
+          a non-genuine attempt, since feedback.worked is deliberately empty
+          then. It used to fall back to generic fabricated praise here. */}
+      {feedback.worked&&feedback.worked.length>0&&(
       <div style={{display:isDesktop?"grid":"flex",gridTemplateColumns:"1fr 1fr",flexDirection:"column",gap:isDesktop?12:10}}>
         <div style={{...cs.card,padding:isDesktop?"20px 22px":"16px 18px"}}>
           <div style={cs.label}>What came across well</div>
@@ -994,6 +1001,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           </div>
         </div>
       </div>
+      )}
       {/* 4 AMPLIFYU COACH SAYS */}
       <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
         <div style={cs.label}>Your AI Vocal Coach Says</div>
