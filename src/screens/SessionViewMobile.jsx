@@ -137,6 +137,7 @@ return (
     onTouchStart={e=>{swipeRef.current={x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now(),el:e.target};}}
     onTouchEnd={e=>{
       if(isD4 && step==="Simulation")return;
+      if(isD1 && step==="Simulation")return;
       if(isD2 && step==="Simulation")return;
       if(isD10 && step==="Rehearsal")return;
       if(window.getSelection&&window.getSelection().toString())return;
