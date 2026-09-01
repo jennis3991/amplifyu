@@ -75,30 +75,24 @@ export function extractReadableText(root) {
   return parts.join(' ');
 }
 
-// Mic-with-soundwave icon (no circle/oval container). Hero images range
-// from near-black photos to pale illustrations, so the shapes render twice:
-// a soft dark halo sized slightly larger first, then the crisp foreground
-// color on top — keeps the icon legible either way without a background
-// shape.
-const MIC_LINES = [
-  [4, 14, 4, 18], [7.5, 11, 7.5, 21], [11, 8, 11, 24],
-  [21, 8, 21, 24], [24.5, 11, 24.5, 21], [28, 14, 28, 18],
-  [16, 21.5, 16, 25], [12.5, 25, 19.5, 25],
-];
+// Plain mic glyph — no side waveform bars, kept deliberately quiet (no
+// circle/oval container). Hero images range from near-black photos to pale
+// illustrations, so the shape renders twice: a soft dark halo sized
+// slightly larger first, then the crisp foreground color on top — keeps
+// the icon legible either way without a background shape.
 function MicWaveIcon({ color }) {
   const halo = 'rgba(15,12,8,0.55)';
   return (
     <>
-      {MIC_LINES.map(([x1, y1, x2, y2], i) => (
-        <line key={'h' + i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={halo} strokeWidth="3.2" strokeLinecap="round"/>
-      ))}
       <rect x="12.7" y="5.2" width="6.6" height="11.6" rx="3.3" fill={halo}/>
-      <path d="M10 15.5a6 6 0 0 0 12 0" stroke={halo} strokeWidth="3.2" strokeLinecap="round" fill="none"/>
-      {MIC_LINES.map(([x1, y1, x2, y2], i) => (
-        <line key={'f' + i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
-      ))}
+      <path d="M9 14.5a7 7 0 0 0 14 0" stroke={halo} strokeWidth="3.2" strokeLinecap="round" fill="none"/>
+      <line x1="16" y1="21.5" x2="16" y2="25.5" stroke={halo} strokeWidth="3.2" strokeLinecap="round"/>
+      <line x1="12" y1="25.5" x2="20" y2="25.5" stroke={halo} strokeWidth="3.2" strokeLinecap="round"/>
+
       <rect x="13.5" y="6" width="5" height="10" rx="2.5" fill={color}/>
-      <path d="M10 15.5a6 6 0 0 0 12 0" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
+      <path d="M9 14.5a7 7 0 0 0 14 0" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
+      <line x1="16" y1="21.5" x2="16" y2="25.5" stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
+      <line x1="12" y1="25.5" x2="20" y2="25.5" stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
     </>
   );
 }
