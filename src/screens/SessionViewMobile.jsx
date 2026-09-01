@@ -503,7 +503,7 @@ T.goldDark : T2.text4,
      <div key={idx} style={{padding:"20px 20px 0",display:"flex",flexDirection:"column",gap:14,animation:"tabFadeIn 0.28s ease-out"}}>
       {/* Read-aloud reads only this inner region — excludes the Previous/Next
           nav buttons below, which are siblings outside this div. */}
-      <div ref={ttsBodyRef}>
+      <div ref={ttsBodyRef} style={{display:'contents'}}>
        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
       {isD10 && step==="Insight" && (
         <>
