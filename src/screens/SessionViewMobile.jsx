@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
-import { ReadAloudButton } from '../components/ReadAloudButton.jsx';
+import { ReadAloudButton, extractReadableText } from '../components/ReadAloudButton.jsx';
 import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
@@ -66,7 +66,7 @@ export function MobileSessionView({
   const getTtsText = () => {
     const hero = document.querySelector('.au-tts-hero');
     const body = ttsBodyRef.current;
-    return [hero?.innerText, body?.innerText].filter(Boolean).join('. ');
+    return [extractReadableText(hero), extractReadableText(body)].filter(Boolean).join('. ');
   };
   const [d9OpenCard, setD9OpenCard] = useState(null);
   const [pixarOpen, setPixarOpen] = useState(false);

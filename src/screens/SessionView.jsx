@@ -7,7 +7,7 @@ import { D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_NEURO, THEORY_DATA, F
   D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS,
 } from '../data.js';
 import { SessionLeftPanel, ExCard } from './SessionLeftPanel.jsx';
-import { ReadAloudButton } from '../components/ReadAloudButton.jsx';
+import { ReadAloudButton, extractReadableText } from '../components/ReadAloudButton.jsx';
 import { MobileSessionView } from './SessionViewMobile.jsx';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
@@ -41,7 +41,7 @@ activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
   const rightPanelRef = useRef(null);
   const leftPanelWrapRef = useRef(null);
   const reviewPanelRef = useRef(null);
-  const getTtsText = () => [leftPanelWrapRef.current?.innerText, rightPanelRef.current?.innerText].filter(Boolean).join('. ');
+  const getTtsText = () => [extractReadableText(leftPanelWrapRef.current), extractReadableText(rightPanelRef.current)].filter(Boolean).join('. ');
   useEffect(() => {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;

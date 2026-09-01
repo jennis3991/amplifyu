@@ -1,24 +1,106 @@
 import { useEffect, useRef, useState } from 'react';
 
+const PAUSE_MS = 350; // gap between spoken chunks
+const RATE = 0.9; // slightly slower than default for a calmer cadence
+
 // iOS WebKit's SpeechSynthesis silently stops mid-utterance on long text
-// (empirically ~15s+) — chunking into short sentence groups and queueing
-// multiple utterances avoids the cutoff and gives a clean, reliable stop
-// (speechSynthesis.pause()/resume() is unreliable in WKWebView on iOS).
-function splitIntoChunks(text, maxLen = 220) {
+// (empirically ~15s+). Splitting at real sentence boundaries — rather than
+// grouping several sentences into one utterance — both avoids that cutoff
+// and, combined with the inter-chunk pause below, gives natural cadence
+// instead of sentences running together.  A single sentence longer than
+// maxLen (rare) is still broken at word boundaries as a safety fallback,
+// never merged with neighboring sentences.
+function splitIntoChunks(text, maxLen = 200) {
   const sentences = text.replace(/\s+/g, ' ').trim().match(/[^.!?]+[.!?]*/g) || [];
   const chunks = [];
-  let cur = '';
-  for (const s of sentences) {
-    const next = (cur ? cur + ' ' : '') + s.trim();
-    if (next.length > maxLen && cur) {
-      chunks.push(cur);
-      cur = s.trim();
-    } else {
-      cur = next;
+  for (let s of sentences) {
+    s = s.trim();
+    if (!s) continue;
+    if (s.length <= maxLen) { chunks.push(s); continue; }
+    let rest = s;
+    while (rest.length > maxLen) {
+      let cut = rest.lastIndexOf(' ', maxLen);
+      if (cut <= 0) cut = maxLen;
+      chunks.push(rest.slice(0, cut).trim());
+      rest = rest.slice(cut).trim();
     }
+    if (rest) chunks.push(rest);
   }
-  if (cur) chunks.push(cur);
   return chunks;
+}
+
+// Section eyebrows ("THE SCIENCE", "COMMUNICATION COLLECTION", "THE REAL
+// LESSON", per-card "superpower" tags, etc.) all share one visual formula
+// throughout the app: small uppercase text with letter-spacing. There's no
+// shared class name for it (everything is inline-styled), so it's detected
+// by that rendered signature instead of by markup.
+function isEyebrowLabel(el) {
+  const cs = window.getComputedStyle(el);
+  if (cs.textTransform !== 'uppercase') return false;
+  const size = parseFloat(cs.fontSize);
+  if (!(size <= 12)) return false;
+  const ls = cs.letterSpacing;
+  return ls && ls !== 'normal' && ls !== '0px';
+}
+
+// Numbered-step markers ("01", "02" …) render as their own leaf element
+// containing nothing but a bare 1-2 digit number — distinct from a stat
+// like "30%" or "14 days", which always has surrounding text.
+function isBareNumberMarker(el) {
+  if (el.children.length > 0) return false;
+  const t = (el.textContent || '').trim();
+  return /^\d{1,2}$/.test(t);
+}
+
+// Walks a subtree collecting only real content text, skipping eyebrow
+// labels and bare numeral markers (and their whole subtree, in case either
+// ever wraps a nested span) so they're never read aloud.
+export function extractReadableText(root) {
+  if (!root) return '';
+  const parts = [];
+  function walk(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const t = node.textContent.replace(/\s+/g, ' ').trim();
+      if (t) parts.push(t);
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) return;
+    const el = node;
+    const cs = window.getComputedStyle(el);
+    if (cs.display === 'none' || cs.visibility === 'hidden') return;
+    if (isEyebrowLabel(el) || isBareNumberMarker(el)) return;
+    for (const child of el.childNodes) walk(child);
+  }
+  walk(root);
+  return parts.join(' ');
+}
+
+// Mic-with-soundwave icon (no circle/oval container). Hero images range
+// from near-black photos to pale illustrations, so the shapes render twice:
+// a soft dark halo sized slightly larger first, then the crisp foreground
+// color on top — keeps the icon legible either way without a background
+// shape.
+const MIC_LINES = [
+  [4, 14, 4, 18], [7.5, 11, 7.5, 21], [11, 8, 11, 24],
+  [21, 8, 21, 24], [24.5, 11, 24.5, 21], [28, 14, 28, 18],
+  [16, 21.5, 16, 25], [12.5, 25, 19.5, 25],
+];
+function MicWaveIcon({ color }) {
+  const halo = 'rgba(15,12,8,0.55)';
+  return (
+    <>
+      {MIC_LINES.map(([x1, y1, x2, y2], i) => (
+        <line key={'h' + i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={halo} strokeWidth="3.2" strokeLinecap="round"/>
+      ))}
+      <rect x="12.7" y="5.2" width="6.6" height="11.6" rx="3.3" fill={halo}/>
+      <path d="M10 15.5a6 6 0 0 0 12 0" stroke={halo} strokeWidth="3.2" strokeLinecap="round" fill="none"/>
+      {MIC_LINES.map(([x1, y1, x2, y2], i) => (
+        <line key={'f' + i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
+      ))}
+      <rect x="13.5" y="6" width="5" height="10" rx="2.5" fill={color}/>
+      <path d="M10 15.5a6 6 0 0 0 12 0" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
+    </>
+  );
 }
 
 export function isReadAloudSupported() {
@@ -29,23 +111,44 @@ export function isReadAloudSupported() {
 // always reflects what's actually on screen.
 // resetKey: changes (e.g. tab/day index) stop any in-progress reading —
 // otherwise it would keep narrating content the user has since left.
-export function ReadAloudButton({ getText, resetKey, style, size = 34 }) {
+export function ReadAloudButton({ getText, resetKey, style, size = 30 }) {
   const [speaking, setSpeaking] = useState(false);
   const cancelledRef = useRef(false);
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     try { window.speechSynthesis?.cancel(); } catch (_) {}
     cancelledRef.current = true;
     setSpeaking(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetKey]);
 
-  useEffect(() => () => { try { window.speechSynthesis?.cancel(); } catch (_) {} }, []);
+  useEffect(() => () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    try { window.speechSynthesis?.cancel(); } catch (_) {}
+  }, []);
 
   function stop() {
     cancelledRef.current = true;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     try { window.speechSynthesis.cancel(); } catch (_) {}
     setSpeaking(false);
+  }
+
+  function speakFrom(chunks, i) {
+    if (cancelledRef.current) return;
+    if (i >= chunks.length) { setSpeaking(false); return; }
+    const u = new SpeechSynthesisUtterance(chunks[i]);
+    u.rate = RATE;
+    const advance = () => {
+      if (cancelledRef.current) return;
+      if (i + 1 >= chunks.length) { setSpeaking(false); return; }
+      timeoutRef.current = setTimeout(() => speakFrom(chunks, i + 1), PAUSE_MS);
+    };
+    u.onend = advance;
+    u.onerror = advance;
+    window.speechSynthesis.speak(u);
   }
 
   function play() {
@@ -57,14 +160,7 @@ export function ReadAloudButton({ getText, resetKey, style, size = 34 }) {
     if (!chunks.length) return;
     cancelledRef.current = false;
     setSpeaking(true);
-    chunks.forEach((chunk, i) => {
-      const u = new SpeechSynthesisUtterance(chunk);
-      if (i === chunks.length - 1) {
-        u.onend = () => { if (!cancelledRef.current) setSpeaking(false); };
-        u.onerror = () => { if (!cancelledRef.current) setSpeaking(false); };
-      }
-      window.speechSynthesis.speak(u);
-    });
+    speakFrom(chunks, 0);
   }
 
   function toggle() {
@@ -73,28 +169,25 @@ export function ReadAloudButton({ getText, resetKey, style, size = 34 }) {
 
   if (!isReadAloudSupported()) return null;
 
+  const iconColor = speaking ? '#E7C27A' : '#F5EFE6';
+
   return (
     <button
       onClick={toggle}
       aria-label={speaking ? "Stop reading aloud" : "Read aloud"}
       style={{
-        width: size, height: size, borderRadius: '50%',
-        border: 'none', cursor: 'pointer', flexShrink: 0,
+        width: size, height: size, padding: 0,
+        border: 'none', background: 'transparent', cursor: 'pointer', flexShrink: 0,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: speaking ? 'rgba(138,158,132,0.92)' : 'rgba(247,243,236,0.92)',
-        boxShadow: '0 1px 6px rgba(44,36,22,0.15)',
-        transition: 'background 0.2s ease',
+        filter: 'drop-shadow(0 1px 3px rgba(0,0,0,0.55))',
         ...style,
       }}>
-      {speaking ? (
-        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" fill="white"/></svg>
-      ) : (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2C2416" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
-          <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
-          <path d="M18 6a9 9 0 0 1 0 12"/>
-        </svg>
-      )}
+      <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
+        <g style={speaking ? { animation: 'auReadAloudPulse 1s ease-in-out infinite' } : undefined}>
+          <MicWaveIcon color={iconColor}/>
+        </g>
+      </svg>
+      <style>{`@keyframes auReadAloudPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }`}</style>
     </button>
   );
 }
