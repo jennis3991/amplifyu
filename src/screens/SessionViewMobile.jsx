@@ -391,8 +391,11 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         </svg>
         <span style={{fontSize:13,fontWeight:500}}>← Exit</span>
       </button>
-      {/* Read aloud — Insight/Theory/Example only, top right over image */}
-      {(step==="Insight"||step==="Theory"||step==="Example") && (
+      {/* Read aloud — Insight/Theory/Example only, top right over image.
+          Button hidden for now (pending ElevenLabs audio) — everything it
+          depends on (ReadAloudButton, getTtsText, extractReadableText) is
+          still intact; flip this condition back to re-enable. */}
+      {false && (step==="Insight"||step==="Theory"||step==="Example") && (
         <div style={{position:"absolute",top:14,right:14,zIndex:50}}>
           <ReadAloudButton getText={getTtsText} resetKey={idx}/>
         </div>

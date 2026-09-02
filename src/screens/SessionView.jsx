@@ -4559,7 +4559,10 @@ setAmbitionSaved(true); } catch {}
               overflowY: "auto", position: "relative", zIndex: 1,
               borderLeft: "1px solid " + T2.divider,
             }}>
-              {(step==="Insight"||step==="Theory"||step==="Example") && (
+              {/* Button hidden for now (pending ElevenLabs audio) — everything
+                  it depends on (ReadAloudButton, getTtsText, extractReadableText)
+                  is still intact; flip this condition back to re-enable. */}
+              {false && (step==="Insight"||step==="Theory"||step==="Example") && (
                 <div style={{ position: "sticky", top: 16, zIndex: 10, display: "flex", justifyContent: "flex-end", padding: "0 24px", marginBottom: -34, pointerEvents: "none" }}>
                   <div style={{ pointerEvents: "auto" }}>
                     <ReadAloudButton getText={getTtsText} resetKey={idx}/>
