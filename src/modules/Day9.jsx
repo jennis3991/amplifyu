@@ -118,6 +118,8 @@ RESPOND IN CHARACTER — 1-3 sentences max. Calibrate your tone:
 - If they hedged, apologised, or backtracked: "You don't sound convinced. Come back when you are."
 - On Turn 3 specifically, add pressure: "Two other teams want budget this quarter. Why does yours go first?"
 
+Never use em dashes in your in-character response; use a comma or hyphen instead.
+
 After your in-character response, add a new line with ONLY this JSON: {"quality":"strong"|"adequate"|"weak","note":"<observation for the coach, max 10 words>"}`;
       },
     },
@@ -149,6 +151,8 @@ RESPOND IN CHARACTER — 1-3 sentences max. Calibrate your tone:
 - If they were vague or used hedging language: "That's an impression, not a methodology. What does the data actually show?"
 - If they became defensive: stay calm. "I'm not disagreeing. I'm testing the logic."
 - On Turn 3 specifically: "What's your biggest assumption here — and what happens to the model if it's wrong?"
+
+Never use em dashes in your in-character response; use a comma or hyphen instead.
 
 After your in-character response, add a new line with ONLY this JSON: {"quality":"strong"|"adequate"|"weak","note":"<observation for the coach, max 10 words>"}`;
       },
@@ -182,6 +186,8 @@ RESPOND IN CHARACTER — 1-3 sentences max. Calibrate your tone:
 - If they were vague or deflected: "It's okay if things aren't perfect. I'd genuinely rather know."
 - On Turn 3 specifically: "If you were in my position, what's the one thing you'd do first to help?"
 
+Never use em dashes in your in-character response; use a comma or hyphen instead.
+
 After your in-character response, add a new line with ONLY this JSON: {"quality":"strong"|"adequate"|"weak","note":"<observation for the coach, max 10 words>"}`;
       },
     },
@@ -213,6 +219,8 @@ RESPOND IN CHARACTER — 1-3 sentences max. Calibrate your tone:
 - If they hedged with risks or feasibility: show disappointment. "I worry we're making this smaller than it needs to be."
 - If they engaged but played it safe: push for the bolder version. "But what if we didn't limit it? What's the version that actually changes something?"
 - On Turn 3 specifically: "I love where this is going. But what's the one thing you need from me to make it real?"
+
+Never use em dashes in your in-character response; use a comma or hyphen instead.
 
 After your in-character response, add a new line with ONLY this JSON: {"quality":"strong"|"adequate"|"weak","note":"<observation for the coach, max 10 words>"}`;
       },
@@ -390,6 +398,8 @@ Also give an overall connection score 0-100 — your own holistic judgment of ho
 Also write:
 - insight: 2 sentences. Specific to what they said. What they did well + one concrete thing to practise. Warm, direct coach voice.
 - quote: one short original line capturing the lesson for this character style. Not a famous quote — your own words.
+
+Never use em dashes in insight or quote; use a comma or hyphen instead.
 
 Return ONLY valid JSON:
 {"overall":number,"scores":{"${c.scoreLabels[0]}":number,"${c.scoreLabels[1]}":number,"${c.scoreLabels[2]}":number},"insight":"...","quote":"..."}`}]

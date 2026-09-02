@@ -30,7 +30,7 @@ export function D10SimFeedback({input, scenario}) {
     setLoading(true);
     const scenarioCtx = scenario ? `Scenario: "${scenario}"\n\n` : "";
     try {
-      const res = await fetch("/api/claude", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:600,messages:[{role:"user",content:`You are an elite executive communication coach. Score this leadership hot seat response.\n\n${scenarioCtx}Response: "${input}"\n\nWord count: ${wordCount}\n\nReturn ONLY valid JSON:\n{\n  "overall":<50-100>,\n  "Clarity":<50-100>,\n  "Confidence":<50-100>,\n  "Brevity":<50-100>,\n  "Ownership":<50-100>,\n  "StratThinking":<50-100>,\n  "Presence":<50-100>,\n  "coaching":"<One specific, editorial coaching sentence — reference the actual words used. Not generic. Think: \'Your strongest point arrived 18 words in\' not \'good job\'>",\n  "coaching2":"<One specific follow-up coaching sentence — a concrete next step or upgrade>"\n}`}]})});
+      const res = await fetch("/api/claude", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:600,messages:[{role:"user",content:`You are an elite executive communication coach. Score this leadership hot seat response.\n\n${scenarioCtx}Response: "${input}"\n\nWord count: ${wordCount}\n\nNever use em dashes anywhere in your response; use a comma or hyphen instead.\n\nReturn ONLY valid JSON:\n{\n  "overall":<50-100>,\n  "Clarity":<50-100>,\n  "Confidence":<50-100>,\n  "Brevity":<50-100>,\n  "Ownership":<50-100>,\n  "StratThinking":<50-100>,\n  "Presence":<50-100>,\n  "coaching":"<One specific, editorial coaching sentence — reference the actual words used. Not generic. Think: \'Your strongest point arrived 18 words in\' not \'good job\'>",\n  "coaching2":"<One specific follow-up coaching sentence — a concrete next step or upgrade>"\n}`}]})});
       const d = await res.json();
       const raw = (d.content||[]).map(b=>b.text||"").join("").trim();
       try { const m = raw.match(/\{[\s\S]*\}/); setResult(JSON.parse(m[0])); }
@@ -113,7 +113,7 @@ export function D10MobileSAR({onComplete}) {
     if(!text||!text.trim())return;
     setL(true);
     try{
-      const resp=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:250,messages:[{role:"user",content:`You are an executive communication coach. Sharpen this spoken SAR (Situation, Action, Result) story into 2-3 crisp, confident sentences. Lead with the result. Return ONLY the sharpened story:\n\n${text}`}]})});
+      const resp=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:250,messages:[{role:"user",content:`You are an executive communication coach. Sharpen this spoken SAR (Situation, Action, Result) story into 2-3 crisp, confident sentences. Lead with the result. Never use em dashes; use a comma or hyphen instead. Return ONLY the sharpened story:\n\n${text}`}]})});
       const d=await resp.json();
       const txt=(d.content||[]).map(b=>b.text||"").join("").trim();
       setRes(txt);if(onComplete)onComplete();
@@ -292,7 +292,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
   async function go(text){
     if(!text||!text.trim()||!scenario)return; setL(true);
     try{
-      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an executive communication coach. A professional was asked: "${scenario.prompt}"\n\nTheir spoken response: "${text}"\n\nEvaluate and return ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important observation>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Confidence":<50-100>,"Brevity":<50-100>,"Impact":<50-100>},"strength":"<one sentence: what they did well>","improve":"<one sentence: single most important improvement>","rewrite":"<sharper 2-3 sentence version of their answer, leading with result>","insight":"<2 sentences of personalised coaching>"}`}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an executive communication coach. A professional was asked: "${scenario.prompt}"\n\nTheir spoken response: "${text}"\n\nNever use em dashes anywhere in your response; use a comma or hyphen instead.\n\nEvaluate and return ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important observation>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Confidence":<50-100>,"Brevity":<50-100>,"Impact":<50-100>},"strength":"<one sentence: what they did well>","improve":"<one sentence: single most important improvement>","rewrite":"<sharper 2-3 sentence version of their answer, leading with result>","insight":"<2 sentences of personalised coaching>"}`}]})});
       const d=await res.json(); const raw=(d.content||[]).map(b=>b.text||"").join("").trim();
       const m=raw.match(/\{[\s\S]*\}/); setR(JSON.parse(m[0]));
     }catch{

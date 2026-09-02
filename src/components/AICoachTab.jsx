@@ -96,6 +96,7 @@ scoreHeadline: one diagnostic sentence, second person. Do NOT start with "You".
 scoreSubline: one brief, forward-looking encouragement. Max 10 words.
 
 If transcript is very short (under 30 words): score conservatively, note brevity kindly, still return all fields.
+Never use em dashes anywhere in your response text; use a comma or hyphen instead.
 Return ONLY valid JSON. No preamble. No markdown fences. No explanation.
 Exactly this shape:
 {

@@ -261,7 +261,9 @@ Return ONLY valid JSON:
   "strengths": ["<2-4 word label>", "<2-4 word label>", "<2-4 word label>", "<2-4 word label>", "<2-4 word label>"],
   "statement": "<One sentence, in quotes, 15-25 words, written in FIRST PERSON as if they are confidently describing themselves (e.g. 'I'm the person...', not 'This is someone who...').>",
   "coachNote": "<2-3 sentences. Warm coaching insight. Reference something specific they said.>"
-}`;
+}
+
+Never use em dashes anywhere in your response; use a comma or hyphen instead.`;
     try {
       const res = await fetch("/api/claude", {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -733,6 +735,8 @@ Headline rules — the "rewrittenHeadline" field:
 - Prioritize and use verbatim any real job titles, company names, or role descriptions explicitly present in the input (Rehearsal answers, pasted LinkedIn text, or CV). Do not paraphrase real titles into vaguer language.
 - Never write it as a narrative sentence or value-proposition tagline (e.g. NOT "I turn AI strategy into stories that move stakeholders"). It must read as short, scannable, keyword-dense fragments separated by pipes — standard LinkedIn headline convention, not an elevator pitch.
 
+Never use em dashes anywhere in your response; use a comma or hyphen instead.
+
 Return ONLY valid JSON:
 {
   "alignmentScore": <integer 0-100>,
@@ -830,7 +834,7 @@ KEY ACHIEVEMENTS
 SKILLS & EXPERTISE
 [6-8 skills, comma separated]
 
-Keep it under 280 words. Make every word earn its place.`;
+Keep it under 280 words. Make every word earn its place. Never use em dashes anywhere in the output; use a comma or hyphen instead.`;
 
     try {
       const res = await fetch("/api/claude", {

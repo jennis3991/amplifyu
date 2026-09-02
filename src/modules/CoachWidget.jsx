@@ -17,6 +17,7 @@ export function CoachWidget({ lesson, scenario }) {
       "You are a premium executive communication coach. The user practised: " + lesson.title + ". " +
       (scenario ? "Scenario: " + scenario + ". " : "") +
       "Rewrite their response to be more confident, clear, and authoritative. " +
+      "Never use em dashes in your response; use a comma or hyphen instead. " +
       "Reply with ONLY this JSON (no markdown): " +
       '{"rephrased":"improved version","insight":"one precise coaching observation, max 20 words"}';
     try {

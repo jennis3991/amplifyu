@@ -116,7 +116,7 @@ Challenge: ${sc.promptDetail}
 
 What they said: "${text || 'No speech captured.'}"
 
-Give brief, specific coaching. Return ONLY valid JSON:
+Give brief, specific coaching. Never use em dashes anywhere in your response; use a comma or hyphen instead. Return ONLY valid JSON:
 {"landed":"one encouraging sentence about what worked in their response, referencing what they actually said","improve":["first specific, actionable point to sharpen it","second specific, actionable point to sharpen it"]}` }],
           }),
         });
@@ -351,7 +351,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
   const scoreChar = async (ci) => {
     const sc = CIRCUIT_CHARS[ci];
     const answer = answersRef.current[ci];
-    const prompt = "You are an expert communication coach evaluating a single networking moment at a company townhall.\n\nCharacter: " + sc.name + " — " + sc.role + "\nPersonality: " + sc.vibe + "\nWhat they're listening for: " + sc.listensFor + "\n\nQuestion — " + sc.question + "\nTheir answer: \"" + answer + "\"\n\nScore them 1-5 on:\n- opening: Was the answer specific, confident, and engaging — not generic?\n- connection: Did they read this person's energy and respond in a way that builds real rapport with them specifically?\n- impression: Would this leave a memorable, positive impression?\n\nRespond ONLY with valid JSON on a single line: {\"opening\":X,\"connection\":X,\"impression\":X,\"note\":\"one specific sentence — what worked or what to try differently next time\"}";
+    const prompt = "You are an expert communication coach evaluating a single networking moment at a company townhall.\n\nCharacter: " + sc.name + " — " + sc.role + "\nPersonality: " + sc.vibe + "\nWhat they're listening for: " + sc.listensFor + "\n\nQuestion — " + sc.question + "\nTheir answer: \"" + answer + "\"\n\nScore them 1-5 on:\n- opening: Was the answer specific, confident, and engaging — not generic?\n- connection: Did they read this person's energy and respond in a way that builds real rapport with them specifically?\n- impression: Would this leave a memorable, positive impression?\n\nNever use em dashes in your response; use a comma or hyphen instead.\n\nRespond ONLY with valid JSON on a single line: {\"opening\":X,\"connection\":X,\"impression\":X,\"note\":\"one specific sentence — what worked or what to try differently next time\"}";
     try {
       const res = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-5', messages:[{role:'user', content:prompt}], max_tokens:200})});
       const data = await res.json();
@@ -374,7 +374,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
       const s = scoresRef.current[i];
       return "--- " + sc.name + " (" + sc.role + ") ---\nQuestion: " + sc.question + "\nAnswer: " + a + "\nScores: Opening " + (s?.opening||0) + "/5, Connection " + (s?.connection||0) + "/5, Impression " + (s?.impression||0) + "/5";
     }).join('\n\n');
-    const prompt = "You are an expert communication coach. A user just completed The Networking Circuit at a company townhall — one question each from two very different people. Analyse their answers across both.\n\n" + all + "\n\nGive specific, direct, encouraging coaching based on what they actually wrote.\n\nRespond ONLY with valid JSON on a single line: {\"insight\":\"2-3 specific sentences about their communication pattern\",\"practice\":\"one concrete thing to focus on next time\",\"quote\":\"a short inspiring quote about connection or confidence\"}";
+    const prompt = "You are an expert communication coach. A user just completed The Networking Circuit at a company townhall — one question each from two very different people. Analyse their answers across both.\n\n" + all + "\n\nGive specific, direct, encouraging coaching based on what they actually wrote.\n\nNever use em dashes in your response; use a comma or hyphen instead.\n\nRespond ONLY with valid JSON on a single line: {\"insight\":\"2-3 specific sentences about their communication pattern\",\"practice\":\"one concrete thing to focus on next time\",\"quote\":\"a short inspiring quote about connection or confidence\"}";
     try {
       const res = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-5', messages:[{role:'user', content:prompt}], max_tokens:350})});
       const data = await res.json();

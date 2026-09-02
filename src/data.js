@@ -5,12 +5,12 @@
 // ─── DAY 9 CONNECTION — constants
 export const D9_INSIGHT_CARDS = [
   { word:"People Remember How You Make Them Feel", sub:"Long after a conversation ends, people rarely remember every word. They remember how they felt.",
-    bullets:["Connection creates emotional memory — feelings outlast facts.","Relationships grow when people feel understood, not just heard."] },
+    bullets:["Connection creates emotional memory. Feelings outlast facts.","Relationships grow when people feel understood, not just heard."] },
   { word:"Listening Is a Competitive Advantage", sub:"Most people listen to reply. Few listen to understand.",
-    bullets:["Active listening builds trust faster than talking ever can.","People feel valued when they feel truly heard — not just acknowledged."] },
+    bullets:["Active listening builds trust faster than talking ever can.","People feel valued when they feel truly heard, not just acknowledged."] },
   { word:"Great Questions Create Great Conversations", sub:"The quality of a conversation is often determined by the quality of the questions.",
-    bullets:["Curiosity creates connection. People feel interesting when someone is genuinely interested.","Questions reveal what matters most — and that's where real rapport lives."] },
-  { word:"Empathy Builds Trust", sub:"People trust those who understand their perspective — even when they disagree.",
+    bullets:["Curiosity creates connection. People feel interesting when someone is genuinely interested.","Questions reveal what matters most, and that's where real rapport lives."] },
+  { word:"Empathy Builds Trust", sub:"People trust those who understand their perspective, even when they disagree.",
     bullets:["Understanding comes before influence. You cannot move someone you don't understand.","Empathy is not agreement. It's the willingness to see the world through another person's eyes."] },
 ];
 
@@ -23,26 +23,26 @@ export const D9_COMM_STYLES = [
 
 export const D9_EXAMPLES = [
   { id:"salesperson", name:"The Best Salesperson", headline:"People Buy From People Who Understand Them",
-    body:"The highest-performing salesperson in a company wasn't the most persuasive. She spent more time listening than speaking. She asked about challenges before recommending solutions. She understood what customers actually needed — not what she assumed they needed. Customers felt understood. They trusted her. Her numbers reflected it.",
+    body:"The highest-performing salesperson in a company wasn't the most persuasive. She spent more time listening than speaking. She asked about challenges before recommending solutions. She understood what customers actually needed, not what she assumed they needed. Customers felt understood. They trusted her. Her numbers reflected it.",
     lesson:"People buy from people who understand them. The same is true of influence, leadership, and every professional relationship." },
   { id:"oprah", name:"Oprah's Superpower", headline:"Connection Begins With Attention",
-    body:"One reason Oprah became such a powerful communicator wasn't because she talked brilliantly. It was because she listened brilliantly. Guests felt genuinely heard — often for the first time. Her questions weren't prepared traps. They were authentic curiosity. She wasn't waiting for her turn to speak. She was fully present. That presence created some of the most powerful conversations in broadcast history.",
+    body:"One reason Oprah became such a powerful communicator wasn't because she talked brilliantly. It was because she listened brilliantly. Guests felt genuinely heard, often for the first time. Her questions weren't prepared traps. They were authentic curiosity. She wasn't waiting for her turn to speak. She was fully present. That presence created some of the most powerful conversations in broadcast history.",
     lesson:"Connection begins with attention. Full, genuine, unhurried attention is one of the rarest gifts you can give another person." },
   { id:"ceo", name:"The CEO Who Asked Better Questions", headline:"Curiosity Is Often More Powerful Than Expertise",
-    body:"A CEO entered meetings with one goal: not to impress people, but to learn from them. Instead of giving answers, he asked — 'What am I missing?' The quality of conversations improved dramatically. His teams felt respected. They shared more honestly. Better decisions followed. His reputation for curiosity became one of his most powerful leadership tools.",
+    body:"A CEO entered meetings with one goal: not to impress people, but to learn from them. Instead of giving answers, he asked, 'What am I missing?' The quality of conversations improved dramatically. His teams felt respected. They shared more honestly. Better decisions followed. His reputation for curiosity became one of his most powerful leadership tools.",
     lesson:"Curiosity is often more powerful than expertise. The question that opens a room is worth more than the answer that closes it." },
   { id:"networking", name:"The Networking Event", headline:"People Enjoy Talking to People Who Are Interested in Them",
-    body:"Two people attend the same networking event. One talks about themselves all evening — their achievements, their company, their plans. One asks thoughtful questions, listens carefully, and makes people feel like the most interesting person in the room. At the end of the night, everyone remembers the second person — even though they said far less. They left feeling good about themselves. And that feeling becomes associated with who they met.",
+    body:"Two people attend the same networking event. One talks about themselves all evening, their achievements, their company, their plans. One asks thoughtful questions, listens carefully, and makes people feel like the most interesting person in the room. At the end of the night, everyone remembers the second person, even though they said far less. They left feeling good about themselves. And that feeling becomes associated with who they met.",
     lesson:"People enjoy talking to people who are interested in them. Interest is magnetic. It is one of the most underrated tools in professional communication." },
 ];
 
 // ─── DAY 9 MAKING A STORY LAND — legacy delivery constants (retained for compatibility)
 
 export const D9_FIVE_PS = [
-  { p:"Pace", heading:"Slow Down to Speed Up", body:"Most people speak too fast when nervous. Great speakers do the opposite — they slow down and give ideas space to breathe.", quote:'"If you want people to remember it, slow down when you say it." — Carmine Gallo' },
+  { p:"Pace", heading:"Slow Down to Speed Up", body:"Most people speak too fast when nervous. Great speakers do the opposite. They slow down and give ideas space to breathe.", quote:'"If you want people to remember it, slow down when you say it." - Carmine Gallo' },
   { p:"Pause", heading:"Silence Is Your Superpower", body:"The pause before the reveal. The beat after a powerful statement. The moment where you let the audience catch up. Amateur speakers fear silence. Masters use it intentionally.", quote:null },
   { p:"Presence", heading:"Command the Room", body:"Presence isn't about being loud. It's about being grounded. Confident. Fully there. Stand still. Make eye contact. Believe what you're saying. The room will feel it.", quote:null },
-  { p:"Projection", heading:"Be Heard", body:"Not volume — clarity. Speak from your chest, not your throat. Project confidence, not just sound.", quote:'"Speak as if you\'re addressing the person furthest from you." — TED coaching principle' },
+  { p:"Projection", heading:"Be Heard", body:"Not volume, clarity. Speak from your chest, not your throat. Project confidence, not just sound.", quote:'"Speak as if you\'re addressing the person furthest from you." - TED coaching principle' },
   { p:"Precision", heading:"Choose Every Word", body:'Vague language weakens delivery. Concrete language strengthens it. "Last week" → "Tuesday morning at 9am". "We had a good result" → "Revenue jumped 40% in 10 days". Specificity creates credibility.', quote:null },
 ];
 
@@ -75,122 +75,122 @@ export const D9_CARDS = [
 
 // ─── NARRATIVE TRANSPORTATION — module constants
 export const NT_PIXAR = [
-  { beat: "Once upon a time…", desc: "Establish the world before the change — the normal, expected state." },
+  { beat: "Once upon a time…", desc: "Establish the world before the change - the normal, expected state." },
   { beat: "Every day…", desc: "Show the routine. What did the character expect from their world?" },
   { beat: "Until one day…", desc: "The inciting incident. Something breaks the pattern and nothing is the same." },
   { beat: "Because of that…", desc: "Chain of cause and effect. Decisions drive consequences forward." },
   { beat: "Because of that…", desc: "The stakes rise. Actions compound into further complications." },
-  { beat: "Until finally…", desc: "Resolution — and the meaning that lasts beyond the story itself." },
+  { beat: "Until finally…", desc: "Resolution, and the meaning that lasts beyond the story itself." },
 ];
 export const NT_NEURO = [
   { word:"Curiosity", sub:"Stories create open loops the brain wants to close.",
-    bullets:["When you structure your message as a narrative, people lean in — they genuinely want to know what happens next.","Open loops hold attention. Data closes doors. Story opens them."] },
+    bullets:["When you structure your message as a narrative, people lean in. They genuinely want to know what happens next.","Open loops hold attention. Data closes doors. Story opens them."] },
   { word:"Empathy",   sub:"A well-told story activates the listener's brain as if they're living it themselves.",
-    bullets:["That shared experience builds trust faster than any data point.","When your audience feels inside the story, they're not just listening — they're experiencing."] },
+    bullets:["That shared experience builds trust faster than any data point.","When your audience feels inside the story, they're not just listening. They're experiencing."] },
   { word:"Memory",    sub:"Narrative makes your message far easier to remember.",
-    bullets:["The stories you tell can stay with people for years — long after the facts have faded.","People forget statistics. They remember stories. Always."] },
+    bullets:["The stories you tell can stay with people for years, long after the facts have faded.","People forget statistics. They remember stories. Always."] },
   { word:"Action",    sub:"Stories move people to act, not just agree.",
-    bullets:["When your message creates an emotional connection, it leads to action — not just agreement, but real change.","The most influential professionals aren't the most knowledgeable. They're the best storytellers."] },
+    bullets:["When your message creates an emotional connection, it leads to action, not just agreement, but real change.","The most influential professionals aren't the most knowledgeable. They're the best storytellers."] },
 ];
 export const NT_EXAMPLES = [
-  { name: "Steve Jobs — iPhone Launch, 2007", story: '"An iPod… a phone… an internet communicator… Are you getting it? These are not three separate devices. This is one device."', lesson: "Build tension slowly through repetition. Then release it at exactly the right moment." },
+  { name: "Steve Jobs - iPhone Launch, 2007", story: '"An iPod… a phone… an internet communicator… Are you getting it? These are not three separate devices. This is one device."', lesson: "Build tension slowly through repetition. Then release it at exactly the right moment." },
   { name: "The NASA Janitor", story: 'When JFK visited NASA in 1962 and asked a janitor what he was doing, the janitor set down his mop and said: "I\'m helping put a man on the moon, Mr President."', lesson: "The story around the work matters as much as the work itself. Narrative gives meaning to effort." },
-  { name: "Two Surgeons", story: 'Surgeon A: "Success rate 92%. Recovery: 10 days." Surgeon B: "A father of two came in terrified he\'d never play football with his son again. Three weeks later he sent us a photo from the park."', lesson: "Data informs. Story transforms. One creates confidence — the other creates trust." },
+  { name: "Two Surgeons", story: 'Surgeon A: "Success rate 92%. Recovery: 10 days." Surgeon B: "A father of two came in terrified he\'d never play football with his son again. Three weeks later he sent us a photo from the park."', lesson: "Data informs. Story transforms. One creates confidence. The other creates trust." },
 ];
 export const NT_28 = {
   bad: "Today I'll walk you through our Q3 cyber risk assessment, covering threat vectors, mitigation strategies, and budget implications.",
-  good: "Imagine arriving at the office tomorrow to find every system locked. Your laptop. The servers. The client database. You pick up your phone to call IT — and the line is dead. This is what a Category 1 breach looks like in the first 90 minutes. This morning, I want to show you exactly what we're doing to make sure you never live through that moment.",
+  good: "Imagine arriving at the office tomorrow to find every system locked. Your laptop. The servers. The client database. You pick up your phone to call IT, and the line is dead. This is what a Category 1 breach looks like in the first 90 minutes. This morning, I want to show you exactly what we're doing to make sure you never live through that moment.",
   lesson: "Start in the aftermath. Let them feel the consequence before you explain the cause.",
 };
 
 export const THEORY_DATA = [
   // Day 1 — Speak Simply
-  {theory:"The Feynman Technique",concept:"If you can't explain something simply, you don't fully understand it yet. True mastery shows itself through clarity, not complexity. The most intelligent thing you can do in any room is make what you know easy for others to grasp.",life:"When your explanation gets complicated, that's not the listener's problem — it's a signal you haven't finished thinking. Simplicity is the destination."},
+  {theory:"The Feynman Technique",concept:"If you can't explain something simply, you don't fully understand it yet. True mastery shows itself through clarity, not complexity. The most intelligent thing you can do in any room is make what you know easy for others to grasp.",life:"When your explanation gets complicated, that's not the listener's problem. It's a signal you haven't finished thinking. Simplicity is the destination."},
   // Day 2 — Slow Down
-  {theory:"Cognitive Load Theory (Sweller, 1988)",concept:"The human brain has a limited capacity to process information at once. When that capacity is overwhelmed, comprehension collapses — regardless of how smart the listener is. The speaker controls the cognitive load, not the listener.",life:"When you speak fast, you eat into your listener's processing space. Slow down, and you give their brain room to actually absorb what you're saying — and to trust you."},
+  {theory:"Cognitive Load Theory (Sweller, 1988)",concept:"The human brain has a limited capacity to process information at once. When that capacity is overwhelmed, comprehension collapses, regardless of how smart the listener is. The speaker controls the cognitive load, not the listener.",life:"When you speak fast, you eat into your listener's processing space. Slow down, and you give their brain room to actually absorb what you're saying, and to trust you."},
   // Day 3 — Eliminate Fillers
-  {theory:"The Credibility Drain Effect",concept:"Research shows that filler words reduce perceived competence by up to 22% — independent of actual content. The listener can't help it. The association between hesitation sounds and uncertainty is neurologically automatic.",life:"Every filler is a tiny withdrawal from your authority account. A deliberate pause makes the same deposit back — and costs nothing. Silence signals thought."},
+  {theory:"The Credibility Drain Effect",concept:"Research shows that filler words reduce perceived competence by up to 22%, independent of actual content. The listener can't help it. The association between hesitation sounds and uncertainty is neurologically automatic.",life:"Every filler is a tiny withdrawal from your authority account. A deliberate pause makes the same deposit back, and costs nothing. Silence signals thought."},
   // Day 4 — Short Sentences
-  {theory:"Miller's Law (George Miller, 1956)",concept:"Working memory can hold approximately 7 (plus or minus 2) chunks of information at once. Beyond that, things drop. Short sentences stay within this window. Long sentences exceed it — and the excess is lost. This is also why every great story has one point, not seven.",life:"When your sentence runs long, you're asking the brain to hold more than it can. Short sentences are not simple — they are strategic. They are also the first discipline of great storytelling."},
+  {theory:"Miller's Law (George Miller, 1956)",concept:"Working memory can hold approximately 7 (plus or minus 2) chunks of information at once. Beyond that, things drop. Short sentences stay within this window. Long sentences exceed it, and the excess is lost. This is also why every great story has one point, not seven.",life:"When your sentence runs long, you're asking the brain to hold more than it can. Short sentences are not simple. They are strategic. They are also the first discipline of great storytelling."},
   // Day 5 — Structure: PRE
-  {theory:"Primacy and Recency Effect (Ebbinghaus)",concept:"People remember the first and last things they hear most clearly. Everything in the middle fades. This is one of the most robust findings in memory science — and it is why both the PRE framework and SAR storytelling put the most important information first and last.",life:"Lead with your point. End with your point. The middle is where you support it — but never hide the message there. The same rule applies to stories: start with stakes, end with results."},
+  {theory:"Primacy and Recency Effect (Ebbinghaus)",concept:"People remember the first and last things they hear most clearly. Everything in the middle fades. This is one of the most robust findings in memory science, and it is why both the PRE framework and SAR storytelling put the most important information first and last.",life:"Lead with your point. End with your point. The middle is where you support it, but never hide the message there. The same rule applies to stories: start with stakes, end with results."},
   // Day 6 — Why Stories Work
-  {theory:"Dual Coding Theory (Allan Paivio, 1971)",concept:"The brain encodes information more deeply when it's processed through both verbal and visual channels simultaneously. Story activates both. Facts alone activate only one. This is why retention from story is 65% versus 10% from data alone — and why every skill you built in Week 1 comes together in the moment you tell a story.",life:"When you tell a story, you're not being soft — you're using the brain's full capacity. Data without narrative uses half the system. Clarity + story = full power."},
+  {theory:"Dual Coding Theory (Allan Paivio, 1971)",concept:"The brain encodes information more deeply when it's processed through both verbal and visual channels simultaneously. Story activates both. Facts alone activate only one. This is why retention from story is 65% versus 10% from data alone, and why every skill you built in Week 1 comes together in the moment you tell a story.",life:"When you tell a story, you're not being soft. You're using the brain's full capacity. Data without narrative uses half the system. Clarity + story = full power."},
   // Day 7 — Week 1 Review
-  {theory:"The Habit Loop (Charles Duhigg)",concept:"Every habit follows a loop: Cue, Routine, Reward. The more the loop repeats, the more automatic the behaviour becomes — until it requires no conscious effort. You've been running this loop six times this week.",life:"You've spent this week building six cue-routine-reward loops: simplicity, pace, silence, short sentences, structure, and story. Each repetition embeds them deeper. This is how elite communicators make it look effortless."},
+  {theory:"The Habit Loop (Charles Duhigg)",concept:"Every habit follows a loop: Cue, Routine, Reward. The more the loop repeats, the more automatic the behaviour becomes, until it requires no conscious effort. You've been running this loop six times this week.",life:"You've spent this week building six cue-routine-reward loops: simplicity, pace, silence, short sentences, structure, and story. Each repetition embeds them deeper. This is how elite communicators make it look effortless."},
   // Day 8 — SAR: Story Architecture
-  {theory:"The Recency Effect (Murdock, 1962)",concept:"The last item in a sequence is remembered most reliably. Your Result — the final part of SAR — carries the most memory weight of any element in your story. The Situation sets context. The Action shows character. The Result is what the listener walks away with.",life:"Most people bury their Result in the middle or rush it at the end. The brain is ready to catch it last. Make it the most precise, deliberate sentence you say. Never bury it."},
+  {theory:"The Recency Effect (Murdock, 1962)",concept:"The last item in a sequence is remembered most reliably. Your Result, the final part of SAR, carries the most memory weight of any element in your story. The Situation sets context. The Action shows character. The Result is what the listener walks away with.",life:"Most people bury their Result in the middle or rush it at the end. The brain is ready to catch it last. Make it the most precise, deliberate sentence you say. Never bury it."},
   // Day 9 — Making a Story Land
-  {theory:"The Three Story Killers",concept:"Research on professional communication identifies three consistent reasons stories fail to land: excessive setup (the Situation takes more than 20% of the story's time), too many characters (the listener loses track of who matters), and a vague Result (no number, no specific change, no clear outcome). All three are editing problems, not content problems.",life:"A story that doesn't land isn't a story — it's a report. The fix is almost always in the editing: one sentence for Situation, cut anyone who isn't essential, and make the Result the sharpest thing you say."},
+  {theory:"The Three Story Killers",concept:"Research on professional communication identifies three consistent reasons stories fail to land: excessive setup (the Situation takes more than 20% of the story's time), too many characters (the listener loses track of who matters), and a vague Result (no number, no specific change, no clear outcome). All three are editing problems, not content problems.",life:"A story that doesn't land isn't a story. It's a report. The fix is almost always in the editing: one sentence for Situation, cut anyone who isn't essential, and make the Result the sharpest thing you say."},
   // Day 10 — Performance
-  {theory:"The Performance Iceberg (Harvey Coleman, 1996)",concept:"Career success is shaped by three factors — Performance, Image, and Exposure. Performance accounts for just 10%. Not because it doesn't matter — it's the foundation and your licence to operate. But it is not the multiplier. Most high performers spend their entire career optimising the 10% while leaving the 90% untouched.",life:"Invisible excellence does not scale. Visibility is not vanity — it is a communication skill. The gap between actual contribution and perceived contribution is where careers stall. This module closes that gap."},
+  {theory:"The Performance Iceberg (Harvey Coleman, 1996)",concept:"Career success is shaped by three factors, Performance, Image, and Exposure. Performance accounts for just 10%. Not because it doesn't matter, it's the foundation and your licence to operate. But it is not the multiplier. Most high performers spend their entire career optimising the 10% while leaving the 90% untouched.",life:"Invisible excellence does not scale. Visibility is not vanity. It is a communication skill. The gap between actual contribution and perceived contribution is where careers stall. This module closes that gap."},
   // Day 11 — PIE: Performance
-  {theory:"The Performance Iceberg",concept:"Performance is the foundation everything else is built on. Without it, Image and Exposure are hollow. But here is what most high performers miss: even exceptional performance is invisible if it is not communicated. 90% of what you do sits below the waterline — unseen, uncredited, and professionally irrelevant unless you bring it to the surface.",life:"The most common mistake talented people make is believing that great work speaks for itself. It doesn't. You must learn to surface it — with clarity, with specificity, and with the stories that make the invisible visible."},
+  {theory:"The Performance Iceberg",concept:"Performance is the foundation everything else is built on. Without it, Image and Exposure are hollow. But here is what most high performers miss: even exceptional performance is invisible if it is not communicated. 90% of what you do sits below the waterline, unseen, uncredited, and professionally irrelevant unless you bring it to the surface.",life:"The most common mistake talented people make is believing that great work speaks for itself. It doesn't. You must learn to surface it, with clarity, with specificity, and with the stories that make the invisible visible."},
   // Day 12 — PIE: Visible Ambition
-  {theory:"The Network Effect",concept:"In network science, each new connection doesn't just add value linearly — it multiplies it. Each relationship you build expands the reach of every other relationship you have. But the multiplier only activates when those relationships understand not just who you are — but where you're going.",life:"Exposure is not self-promotion. It's building the network that will speak for you in rooms you're not in — and that can only advocate for your ambition if they know what it is. Presence + stated ambition = momentum."},
+  {theory:"The Network Effect",concept:"In network science, each new connection doesn't just add value linearly. It multiplies it. Each relationship you build expands the reach of every other relationship you have. But the multiplier only activates when those relationships understand not just who you are, but where you're going.",life:"Exposure is not self-promotion. It's building the network that will speak for you in rooms you're not in, and that can only advocate for your ambition if they know what it is. Presence + stated ambition = momentum."},
   // Day 13 — PIE: Image
-  {theory:"The Halo Effect (Edward Thorndike, 1920)",concept:"A single strong first impression activates a cognitive bias where positive traits are assumed to extend across all other areas. The room fills in the gaps in your favour. One strong signal — a story that shows who you are, a composed presence, a clear point — does more than an hour of competent work.",life:"You don't need to prove everything in the first 30 seconds — you only need to create one strong signal. The halo does the rest. And now that you can tell a story, you have one of the most powerful first impression tools available."},
+  {theory:"The Halo Effect (Edward Thorndike, 1920)",concept:"A single strong first impression activates a cognitive bias where positive traits are assumed to extend across all other areas. The room fills in the gaps in your favour. One strong signal - a story that shows who you are, a composed presence, a clear point - does more than an hour of competent work.",life:"You don't need to prove everything in the first 30 seconds. You only need to create one strong signal. The halo does the rest. And now that you can tell a story, you have one of the most powerful first impression tools available."},
   // Day 14 — Full Integration
-  {theory:"The Competence-Confidence Loop",concept:"Competence and confidence are not a chicken-and-egg problem. Competence builds first through deliberate practice. Confidence follows as the brain recognises its own capability. Once it does, it accelerates further learning — and the loop compounds. You've been running this loop for 14 days.",life:"You've built competence in clarity, structure, story, PIE, and ambition communication in deliberate increments. The confidence you feel now isn't borrowed — it's earned. And it compounds from here. AmplifyU."},
+  {theory:"The Competence-Confidence Loop",concept:"Competence and confidence are not a chicken-and-egg problem. Competence builds first through deliberate practice. Confidence follows as the brain recognises its own capability. Once it does, it accelerates further learning, and the loop compounds. You've been running this loop for 14 days.",life:"You've built competence in clarity, structure, story, PIE, and ambition communication in deliberate increments. The confidence you feel now isn't borrowed. It's earned. And it compounds from here. AmplifyU."},
 ];
 
 // ─── FURTHER READING DATA
 export const FURTHER_READING = [
   { books: [ // Day 1
-    { title: "Simply Said", author: "Jay Sullivan", quote: "Clarity isn't dumbing down. It's opening up.", rating: "4.5", reviewCount: "6,200 reviews", why: "Sullivan spent decades coaching Fortune 500 executives. This is the most practical guide to audience-centred communication ever written — technique on every page.", connection: "The practical companion to Speak Clearly — a manual for audience-centred communication.", amazon: "https://www.amazon.co.uk/s?k=Simply+Said+Jay+Sullivan" },
+    { title: "Simply Said", author: "Jay Sullivan", quote: "Clarity isn't dumbing down. It's opening up.", rating: "4.5", reviewCount: "6,200 reviews", why: "Sullivan spent decades coaching Fortune 500 executives. This is the most practical guide to audience-centred communication ever written, technique on every page.", connection: "The practical companion to Speak Clearly, a manual for audience-centred communication.", amazon: "https://www.amazon.co.uk/s?k=Simply+Said+Jay+Sullivan" },
     { title: "The Pyramid Principle", author: "Barbara Minto", quote: "Lead with the answer. Then support it.", rating: "4.6", reviewCount: "9,400 reviews", why: "Used by McKinsey and every top consulting firm worldwide. The intellectual foundation of structured, decisive communication that leaders actually use.", connection: "Minto's top-down structure is the intellectual backbone of simple, decisive communication.", amazon: "https://www.amazon.co.uk/s?k=The+Pyramid+Principle+Barbara+Minto" },
   ]},
   { books: [ // Day 2
-    { title: "Speak with No Fear", author: "Mike Acker", quote: "Confidence is a skill, not a personality trait.", rating: "4.5", reviewCount: "8,300 reviews", why: "Acker dismantles the fear that makes people rush and fill silence. The mindset work behind genuine vocal control — essential for anyone who wants to slow down with authority.", connection: "Goes deep on the inner work of confident delivery — the mindset behind voice control.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
+    { title: "Speak with No Fear", author: "Mike Acker", quote: "Confidence is a skill, not a personality trait.", rating: "4.5", reviewCount: "8,300 reviews", why: "Acker dismantles the fear that makes people rush and fill silence. The mindset work behind genuine vocal control, essential for anyone who wants to slow down with authority.", connection: "Goes deep on the inner work of confident delivery, the mindset behind voice control.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
     { title: "Talk Like TED", author: "Carmine Gallo", quote: "Passion is the great equaliser.", rating: "4.6", reviewCount: "12,000 reviews", why: "Gallo reverse-engineered 500 TED talks to find what makes speakers compelling. His chapter on pacing alone is worth the entire book.", connection: "Analyses the world's most-watched talks to reveal what commanding speakers do differently.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
   ]},
   { books: [ // Day 3
-    { title: "Talk Like TED", author: "Carmine Gallo", quote: "The best TED speakers don't avoid pauses — they weaponize them.", rating: "4.6", reviewCount: "12,000 reviews", why: "Gallo spent 5 years analysing the world's most-watched TED talks. This is the playbook for filler-free, powerful delivery.", connection: "The science behind the world's greatest communicators — every filler-free technique evidenced here.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
+    { title: "Talk Like TED", author: "Carmine Gallo", quote: "The best TED speakers don't avoid pauses. They weaponize them.", rating: "4.6", reviewCount: "12,000 reviews", why: "Gallo spent 5 years analysing the world's most-watched TED talks. This is the playbook for filler-free, powerful delivery.", connection: "The science behind the world's greatest communicators, every filler-free technique evidenced here.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
     { title: "Speak with No Fear", author: "Mike Acker", quote: "Silence is not your enemy. It's your tool.", rating: "4.5", reviewCount: "8,300 reviews", why: "Practical exercises to eliminate verbal crutches and embrace the power of the pause. Essential reading for anyone who wants to speak with calm authority.", connection: "Practical techniques to eliminate verbal crutches and embrace the power of the pause.", amazon: "https://www.amazon.co.uk/s?k=Speak+with+No+Fear+Mike+Acker" },
   ]},
   { books: [ // Day 4
-    { title: "On Writing Well", author: "William Zinsser", quote: "If a word isn't doing work, cut it.", rating: "4.7", reviewCount: "14,000 reviews", why: "The most-cited book on clear communication, by a writer who spent 50 years practising it. Every chapter translates directly to how you should speak.", connection: "The timeless authority on cutting clutter — every principle applies equally to your spoken sentences.", amazon: "https://www.amazon.co.uk/s?k=On+Writing+Well+William+Zinsser" },
-    { title: "The Elements of Style", author: "Strunk & White", quote: "Omit needless words.", rating: "4.6", reviewCount: "22,000 reviews", why: "The shortest, most important book on brevity ever written. Three rules cover the entire philosophy of short sentences. Read it in an afternoon; apply it for life.", connection: "The definitive handbook of brevity — the complete philosophy behind short sentences.", amazon: "https://www.amazon.co.uk/s?k=The+Elements+of+Style+Strunk+White" },
+    { title: "On Writing Well", author: "William Zinsser", quote: "If a word isn't doing work, cut it.", rating: "4.7", reviewCount: "14,000 reviews", why: "The most-cited book on clear communication, by a writer who spent 50 years practising it. Every chapter translates directly to how you should speak.", connection: "The timeless authority on cutting clutter, every principle applies equally to your spoken sentences.", amazon: "https://www.amazon.co.uk/s?k=On+Writing+Well+William+Zinsser" },
+    { title: "The Elements of Style", author: "Strunk & White", quote: "Omit needless words.", rating: "4.6", reviewCount: "22,000 reviews", why: "The shortest, most important book on brevity ever written. Three rules cover the entire philosophy of short sentences. Read it in an afternoon; apply it for life.", connection: "The definitive handbook of brevity, the complete philosophy behind short sentences.", amazon: "https://www.amazon.co.uk/s?k=The+Elements+of+Style+Strunk+White" },
   ]},
   { books: [ // Day 5
     { title: "The McKinsey Way", author: "Ethan Rasiel", quote: "Structure your answer before you open your mouth.", rating: "4.4", reviewCount: "7,800 reviews", why: "Reveals how the world's best-paid communicators structure thinking and delivery. The PRE framework draws directly from the principles inside.", connection: "The operating manual for the structured thinking that PRE is built on.", amazon: "https://www.amazon.co.uk/s?k=The+McKinsey+Way+Ethan+Rasiel" },
-    { title: "The Minto Pyramid Principle", author: "Barbara Minto", quote: "The mind's natural tendency is to think in groups.", rating: "4.5", reviewCount: "5,200 reviews", why: "The complete system behind structured communication. If PRE gave you the skeleton, Minto gives you the full anatomy of a compelling argument.", connection: "The full method behind structured communication — go deeper into the framework PRE draws from.", amazon: "https://www.amazon.co.uk/s?k=The+Minto+Pyramid+Principle+Barbara+Minto" },
+    { title: "The Minto Pyramid Principle", author: "Barbara Minto", quote: "The mind's natural tendency is to think in groups.", rating: "4.5", reviewCount: "5,200 reviews", why: "The complete system behind structured communication. If PRE gave you the skeleton, Minto gives you the full anatomy of a compelling argument.", connection: "The full method behind structured communication. Go deeper into the framework PRE draws from.", amazon: "https://www.amazon.co.uk/s?k=The+Minto+Pyramid+Principle+Barbara+Minto" },
   ]},
   { books: [ // Day 6
     { title: "The Storyteller's Secret", author: "Carmine Gallo", quote: "Facts tell. Stories sell.", rating: "4.6", reviewCount: "9,100 reviews", why: "Gallo interviewed 50+ world-class communicators to uncover how they use story to move people. One of the most useful books on professional storytelling ever published.", connection: "Reveals how the world's most inspiring communicators use story as their primary instrument.", amazon: "https://www.amazon.co.uk/s?k=The+Storyteller%27s+Secret+Carmine+Gallo" },
-    { title: "Building a StoryBrand", author: "Donald Miller", quote: "Make your customer the hero, not your brand.", rating: "4.7", reviewCount: "18,000 reviews", why: "Miller's SB7 framework is the clearest model for professional storytelling available. Used by thousands of organisations to clarify their message instantly.", connection: "Miller's SB7 framework shows how to make your audience the hero — essential for professional storytelling.", amazon: "https://www.amazon.co.uk/s?k=Building+a+StoryBrand+Donald+Miller" },
+    { title: "Building a StoryBrand", author: "Donald Miller", quote: "Make your customer the hero, not your brand.", rating: "4.7", reviewCount: "18,000 reviews", why: "Miller's SB7 framework is the clearest model for professional storytelling available. Used by thousands of organisations to clarify their message instantly.", connection: "Miller's SB7 framework shows how to make your audience the hero, essential for professional storytelling.", amazon: "https://www.amazon.co.uk/s?k=Building+a+StoryBrand+Donald+Miller" },
   ]},
   { books: [ // Day 7
-    { title: "Promoting Yourself", author: "Harvey Mackay", quote: "Your reputation is your most valuable asset.", rating: "4.3", reviewCount: "4,600 reviews", why: "The definitive guide to making your value visible without feeling inauthentic. Mackay's strategies have helped thousands build the professional presence they deserve.", connection: "The definitive guide to making your value visible — the heart of the PIE Framework.", amazon: "https://www.amazon.co.uk/s?k=Promoting+Yourself+Harvey+Mackay" },
-    { title: "The 2-Hour Job Search", author: "Steve Dalton", quote: "Be known before you need to be.", rating: "4.5", reviewCount: "6,700 reviews", why: "A methodical, evidence-based system for building visibility strategically. Counterintuitive and immediately actionable — read it before you need it.", connection: "A methodical approach to being known before you need to be — exactly what PIE is about.", amazon: "https://www.amazon.co.uk/s?k=The+2-Hour+Job+Search+Steve+Dalton" },
+    { title: "Promoting Yourself", author: "Harvey Mackay", quote: "Your reputation is your most valuable asset.", rating: "4.3", reviewCount: "4,600 reviews", why: "The definitive guide to making your value visible without feeling inauthentic. Mackay's strategies have helped thousands build the professional presence they deserve.", connection: "The definitive guide to making your value visible, the heart of the PIE Framework.", amazon: "https://www.amazon.co.uk/s?k=Promoting+Yourself+Harvey+Mackay" },
+    { title: "The 2-Hour Job Search", author: "Steve Dalton", quote: "Be known before you need to be.", rating: "4.5", reviewCount: "6,700 reviews", why: "A methodical, evidence-based system for building visibility strategically. Counterintuitive and immediately actionable. Read it before you need it.", connection: "A methodical approach to being known before you need to be, exactly what PIE is about.", amazon: "https://www.amazon.co.uk/s?k=The+2-Hour+Job+Search+Steve+Dalton" },
   ]},
   { books: [ // Day 8
     { title: "The Storyteller's Secret", author: "Carmine Gallo", quote: "Facts tell. Stories sell.", rating: "4.6", reviewCount: "9,100 reviews", why: "The most practical book on professional storytelling available. Gallo's 50+ interviews reveal exactly how world-class communicators use narrative to create impact.", connection: "Reveals how the world's most inspiring communicators use story as their primary instrument.", amazon: "https://www.amazon.co.uk/s?k=The+Storyteller%27s+Secret+Carmine+Gallo" },
-    { title: "Storyworthy", author: "Matthew Dicks", quote: "Every story is about a five-second moment.", rating: "4.8", reviewCount: "7,200 reviews", why: "A multiple Moth GrandSLAM winner teaches you how to find stories in everyday life and craft them into moments people never forget. The practitioner's craft guide.", connection: "Dicks' method for finding and telling stories from everyday life — the practitioner's craft behind narrative transportation.", amazon: "https://www.amazon.co.uk/s?k=Storyworthy+Matthew+Dicks" },
+    { title: "Storyworthy", author: "Matthew Dicks", quote: "Every story is about a five-second moment.", rating: "4.8", reviewCount: "7,200 reviews", why: "A multiple Moth GrandSLAM winner teaches you how to find stories in everyday life and craft them into moments people never forget. The practitioner's craft guide.", connection: "Dicks' method for finding and telling stories from everyday life, the practitioner's craft behind narrative transportation.", amazon: "https://www.amazon.co.uk/s?k=Storyworthy+Matthew+Dicks" },
   ]},
   { books: [ // Day 9
-    { title: "Just Listen", author: "Mark Goulston", quote: "The secret to influencing people is making them feel understood before you try to be understood.", rating: "4.6", reviewCount: "9,200 reviews", why: "A former FBI hostage negotiation trainer and psychiatrist reveals the listening techniques that work in the most high-stakes human moments. The most practical guide to genuine connection ever written.", connection: "The direct companion to today's session — the science and skill of making people feel truly heard.", amazon: "https://www.amazon.co.uk/s?k=Just+Listen+Mark+Goulston" },
-    { title: "Surrounded by Idiots", author: "Thomas Erikson", quote: "There are no difficult people — only people you have not yet learned to understand.", rating: "4.4", reviewCount: "22,000 reviews", why: "Erikson's DISC-based model of human communication styles has sold millions of copies for a reason. Once you can spot a Driver, Analytical, Expressive, or Amiable, every conversation becomes easier to navigate.", connection: "The practical framework behind adapting your communication style to every personality in the room.", amazon: "https://www.amazon.co.uk/s?k=Surrounded+by+Idiots+Thomas+Erikson" },
+    { title: "Just Listen", author: "Mark Goulston", quote: "The secret to influencing people is making them feel understood before you try to be understood.", rating: "4.6", reviewCount: "9,200 reviews", why: "A former FBI hostage negotiation trainer and psychiatrist reveals the listening techniques that work in the most high-stakes human moments. The most practical guide to genuine connection ever written.", connection: "The direct companion to today's session, the science and skill of making people feel truly heard.", amazon: "https://www.amazon.co.uk/s?k=Just+Listen+Mark+Goulston" },
+    { title: "Surrounded by Idiots", author: "Thomas Erikson", quote: "There are no difficult people, only people you have not yet learned to understand.", rating: "4.4", reviewCount: "22,000 reviews", why: "Erikson's DISC-based model of human communication styles has sold millions of copies for a reason. Once you can spot a Driver, Analytical, Expressive, or Amiable, every conversation becomes easier to navigate.", connection: "The practical framework behind adapting your communication style to every personality in the room.", amazon: "https://www.amazon.co.uk/s?k=Surrounded+by+Idiots+Thomas+Erikson" },
   ]},
   { books: [ // Day 10
-    { title: "Crucial Conversations", author: "Patterson, Grenny, McMillan & Switzler", quote: "The conversation is the relationship.", rating: "4.6", reviewCount: "31,000 reviews", why: "The most widely used framework for high-stakes dialogue. Millions of leaders have applied these tools to conversations that define careers, teams, and organisations.", connection: "The essential toolkit for high-stakes dialogue — the direct companion to this module.", amazon: "https://www.amazon.co.uk/s?k=Crucial+Conversations+Patterson+Grenny" },
-    { title: "Radical Candor", author: "Kim Scott", quote: "Care personally. Challenge directly.", rating: "4.5", reviewCount: "19,000 reviews", why: "The clearest framework for feedback that builds trust rather than eroding it. Scott's 2×2 model gives you a language for honest, constructive communication.", connection: "The operating framework for feedback that is both honest and kind — care personally, challenge directly.", amazon: "https://www.amazon.co.uk/s?k=Radical+Candor+Kim+Scott" },
+    { title: "Crucial Conversations", author: "Patterson, Grenny, McMillan & Switzler", quote: "The conversation is the relationship.", rating: "4.6", reviewCount: "31,000 reviews", why: "The most widely used framework for high-stakes dialogue. Millions of leaders have applied these tools to conversations that define careers, teams, and organisations.", connection: "The essential toolkit for high-stakes dialogue, the direct companion to this module.", amazon: "https://www.amazon.co.uk/s?k=Crucial+Conversations+Patterson+Grenny" },
+    { title: "Radical Candor", author: "Kim Scott", quote: "Care personally. Challenge directly.", rating: "4.5", reviewCount: "19,000 reviews", why: "The clearest framework for feedback that builds trust rather than eroding it. Scott's 2×2 model gives you a language for honest, constructive communication.", connection: "The operating framework for feedback that is both honest and kind - care personally, challenge directly.", amazon: "https://www.amazon.co.uk/s?k=Radical+Candor+Kim+Scott" },
   ]},
   { books: [ // Day 11
-    { title: "Known", author: "Mark Schaefer", quote: "In a noisy world, be consistently useful.", rating: "4.5", reviewCount: "5,100 reviews", why: "Research-backed and practical — Schaefer's four-step framework shows exactly how to build the kind of visibility that creates real career leverage.", connection: "A methodical, research-backed roadmap to becoming known in your field — less hustle, more strategy.", amazon: "https://www.amazon.co.uk/s?k=Known+Mark+Schaefer" },
+    { title: "Known", author: "Mark Schaefer", quote: "In a noisy world, be consistently useful.", rating: "4.5", reviewCount: "5,100 reviews", why: "Research-backed and practical, Schaefer's four-step framework shows exactly how to build the kind of visibility that creates real career leverage.", connection: "A methodical, research-backed roadmap to becoming known in your field - less hustle, more strategy.", amazon: "https://www.amazon.co.uk/s?k=Known+Mark+Schaefer" },
     { title: "Crushing It!", author: "Gary Vaynerchuk", quote: "Document. Don't create. Show up every day.", rating: "4.4", reviewCount: "11,000 reviews", why: "The most energetic case for authentic personal brand building available. Whether you love or challenge his style, the principles of consistent visibility are undeniable.", connection: "The energetic case for showing up consistently and building a brand around your authentic voice.", amazon: "https://www.amazon.co.uk/s?k=Crushing+It+Gary+Vaynerchuk" },
   ]},
   { books: [ // Day 12
     { title: "Never Eat Alone", author: "Keith Ferrazzi", quote: "The currency of real networking is generosity.", rating: "4.4", reviewCount: "13,000 reviews", why: "The most human book on building professional relationships ever written. Ferrazzi's generosity-first philosophy turns networking from transactional to transformational.", connection: "The generosity-first philosophy of relationship building that makes networking feel natural.", amazon: "https://www.amazon.co.uk/s?k=Never+Eat+Alone+Keith+Ferrazzi" },
-    { title: "How to Win Friends and Influence People", author: "Dale Carnegie", quote: "Be genuinely interested in other people.", rating: "4.7", reviewCount: "85,000 reviews", why: "Nearly 90 years old and still the most-read book on human relations for a reason. Carnegie's principles are not tricks — they are truths about how people connect.", connection: "Still the most proven book on making people feel valued — the foundation of every lasting professional relationship.", amazon: "https://www.amazon.co.uk/s?k=How+to+Win+Friends+and+Influence+People+Dale+Carnegie" },
+    { title: "How to Win Friends and Influence People", author: "Dale Carnegie", quote: "Be genuinely interested in other people.", rating: "4.7", reviewCount: "85,000 reviews", why: "Nearly 90 years old and still the most-read book on human relations for a reason. Carnegie's principles are not tricks. They are truths about how people connect.", connection: "Still the most proven book on making people feel valued, the foundation of every lasting professional relationship.", amazon: "https://www.amazon.co.uk/s?k=How+to+Win+Friends+and+Influence+People+Dale+Carnegie" },
   ]},
   { books: [ // Day 13
-    { title: "Dare to Lead", author: "Brené Brown", quote: "Vulnerability is the birthplace of innovation and change.", rating: "4.6", reviewCount: "24,000 reviews", why: "A decade of rigorous research on what courageous leadership actually looks like. Brown's framework gives you permission to lead with honesty — and the tools to do it.", connection: "The research behind brave, vulnerable leadership communication — what a leadership voice really sounds like.", amazon: "https://www.amazon.co.uk/s?k=Dare+to+Lead+Bren%C3%A9+Brown" },
+    { title: "Dare to Lead", author: "Brené Brown", quote: "Vulnerability is the birthplace of innovation and change.", rating: "4.6", reviewCount: "24,000 reviews", why: "A decade of rigorous research on what courageous leadership actually looks like. Brown's framework gives you permission to lead with honesty, and the tools to do it.", connection: "The research behind brave, vulnerable leadership communication, what a leadership voice really sounds like.", amazon: "https://www.amazon.co.uk/s?k=Dare+to+Lead+Bren%C3%A9+Brown" },
     { title: "Leaders Eat Last", author: "Simon Sinek", quote: "Great leaders sacrifice themselves for their people.", rating: "4.6", reviewCount: "17,000 reviews", why: "Sinek's most important book. Drawing on biology and military examples, he shows why leaders who communicate safety, purpose, and meaning build teams that perform at the highest level.", connection: "Sinek's case for why the best leaders communicate safety, purpose, and meaning above all else.", amazon: "https://www.amazon.co.uk/s?k=Leaders+Eat+Last+Simon+Sinek" },
   ]},
   { books: [ // Day 14
     { title: "Talk Like TED", author: "Carmine Gallo", quote: "Passion is the great equaliser.", rating: "4.6", reviewCount: "12,000 reviews", why: "The ultimate integration read. Gallo's nine habits bring together storytelling, delivery, clarity, and presence into a complete model for world-class communication.", connection: "The framework for peak performance in your most important professional moments.", amazon: "https://www.amazon.co.uk/s?k=Talk+Like+TED+Carmine+Gallo" },
-    { title: "The Art of Explanation", author: "Lee LeFever", quote: "Explanation is the bridge between knowing and understanding.", rating: "4.3", reviewCount: "3,800 reviews", why: "LeFever's method for making complex ideas land clearly is the final skill that ties everything together. If you can explain anything to anyone, you have real executive presence.", connection: "LeFever's method for making complex ideas land clearly — essential for any high-stakes presentation.", amazon: "https://www.amazon.co.uk/s?k=The+Art+of+Explanation+Lee+LeFever" },
+    { title: "The Art of Explanation", author: "Lee LeFever", quote: "Explanation is the bridge between knowing and understanding.", rating: "4.3", reviewCount: "3,800 reviews", why: "LeFever's method for making complex ideas land clearly is the final skill that ties everything together. If you can explain anything to anyone, you have real executive presence.", connection: "LeFever's method for making complex ideas land clearly, essential for any high-stakes presentation.", amazon: "https://www.amazon.co.uk/s?k=The+Art+of+Explanation+Lee+LeFever" },
   ]},
 ];
 
@@ -213,18 +213,18 @@ export const REVIEW_CLOSING = [
 ];
 
 export const REVIEW_BULLETS = [
-  ["Complexity signals confusion — simplicity signals mastery.", "If you can't explain it simply, you haven't finished thinking.", "Every unnecessary word costs you credibility with your listener."],
-  ["Speed signals anxiety; deliberate pace signals authority.", "Cognitive load collapses comprehension — give listeners space to absorb.", "Three seconds of intentional silence communicates more than ten words."],
-  ["Filler words reduce perceived competence by up to 22%.", "A pause is not weakness — it is thought made visible.", "Replace 'um' and 'er' with breath, intention, and the next word."],
-  ["One idea per sentence — always, without exception.", "Short sentences land harder and are remembered longer.", "Miller's Law: your listener's brain holds seven items at once — respect that."],
+  ["Complexity signals confusion. Simplicity signals mastery.", "If you can't explain it simply, you haven't finished thinking.", "Every unnecessary word costs you credibility with your listener."],
+  ["Speed signals anxiety; deliberate pace signals authority.", "Cognitive load collapses comprehension. Give listeners space to absorb.", "Three seconds of intentional silence communicates more than ten words."],
+  ["Filler words reduce perceived competence by up to 22%.", "A pause is not weakness. It is thought made visible.", "Replace 'um' and 'er' with breath, intention, and the next word."],
+  ["One idea per sentence - always, without exception.", "Short sentences land harder and are remembered longer.", "Miller's Law: your listener's brain holds seven items at once. Respect that."],
   ["Lead with your conclusion, then earn it with evidence.", "Point → Reason → Example: the fastest path from idea to understanding.", "Structure is a gift to your listener, not a constraint on your thinking."],
-  ["The communicators who stay calm under pressure gain the room — every time.", "Composure is the foundation that holds clarity, structure, and story together when it counts most.", "Prepare your first sentence before every difficult conversation — it anchors you when pressure rises."],
-  ["Six habits in six days: clarity, voice, no fillers, short sentences, PRE structure, and composure under pressure.", "Communication mastery is not one big insight — it is six small habits repeated until they become automatic.", "The skills you built this week are the foundation every great communicator stands on."],
+  ["The communicators who stay calm under pressure gain the room, every time.", "Composure is the foundation that holds clarity, structure, and story together when it counts most.", "Prepare your first sentence before every difficult conversation. It anchors you when pressure rises."],
+  ["Six habits in six days: clarity, voice, no fillers, short sentences, PRE structure, and composure under pressure.", "Communication mastery is not one big insight. It is six small habits repeated until they become automatic.", "The skills you built this week are the foundation every great communicator stands on."],
   ["You learned why storytelling creates influence faster than information alone.", "You mastered the 6-beat story arc: Hook, Character, Problem, Turning Point, Resolution, Meaning.", "You built and rehearsed your own professional story with your AmplifyU Coach."],
-  ["Genuine connection starts with curiosity — asking better questions, not delivering better answers.", "The 70/30 rule: listen 70% of the time. People feel most understood when they do most of the talking.", "Different people need different conversations — adapting your style to theirs is the mark of a master communicator.", "Empathy is not agreement. It is the practice of making people feel genuinely heard before you respond."],
-  ["Invisible excellence does not scale — visibility is a communication skill, not a personality trait.", "Performance without visibility is philanthropy — your work needs a voice.", "The gap between actual and perceived contribution is where careers stall. Communication closes it."],
-  ["Your brand is what people say about you when you leave the room.", "Consistency of voice and presence builds trust over years, not weeks.", "You cannot be known for everything — choose your niche deliberately."],
-  ["Give first, always — generosity is the foundation of every lasting network.", "People remember how you made them feel, never just what you said.", "A warm, curious introduction is worth ten cold connections."],
+  ["Genuine connection starts with curiosity, asking better questions, not delivering better answers.", "The 70/30 rule: listen 70% of the time. People feel most understood when they do most of the talking.", "Different people need different conversations. Adapting your style to theirs is the mark of a master communicator.", "Empathy is not agreement. It is the practice of making people feel genuinely heard before you respond."],
+  ["Invisible excellence does not scale. Visibility is a communication skill, not a personality trait.", "Performance without visibility is philanthropy. Your work needs a voice.", "The gap between actual and perceived contribution is where careers stall. Communication closes it."],
+  ["Your brand is what people say about you when you leave the room.", "Consistency of voice and presence builds trust over years, not weeks.", "You cannot be known for everything. Choose your niche deliberately."],
+  ["Give first, always. Generosity is the foundation of every lasting network.", "People remember how you made them feel, never just what you said.", "A warm, curious introduction is worth ten cold connections."],
   ["A leadership voice is earned through vulnerability, not volume.", "Brave language builds the psychological safety that makes teams great.", "The words you choose every day define the culture around you."],
   ["Thorough preparation turns high stakes into high performance.", "The Talk Like TED method: emotional, novel, and always memorable.", "Your best performance lives on the other side of genuine preparation."],
 ];
@@ -235,16 +235,16 @@ export const LESSONS = [
   {day:1,week:1,mins:14,title:"Speak Clearly",tag:"Clarity",scene:"clarity",
    quote:"Clear communication creates opportunity.",
    insight:"By the end of today's session, you'll know how to communicate with greater clarity, confidence and influence.",
-   pieLink:"Performance and Exposure: Your ideas create impact when others understand them — including the idea of where you're going next. Clarity about your work and your ambition are the same skill.",
+   pieLink:"Performance and Exposure: Your ideas create impact when others understand them, including the idea of where you're going next. Clarity about your work and your ambition are the same skill.",
    phrases:["My view is…","The key point is…","What this means is…"],
    bad:"This is a multi-faceted situation with several interdependencies…",
    good:"Here's the issue, and here's what I think we should do.",
-   practice:"Two exercises. First: explain what you do and the value you bring — in three sentences. No jargon. No qualifiers. Second: explain what you want next in your career — in one sentence. Say it as if you're telling a trusted senior leader, not writing a CV.",
+   practice:"Two exercises. First: explain what you do and the value you bring, in three sentences. No jargon. No qualifiers. Second: explain what you want next in your career, in one sentence. Say it as if you're telling a trusted senior leader, not writing a CV.",
    scenarios:["Your manager asks for an update","A senior leader asks what you do","Someone asks a question you find difficult to answer clearly"],
    review:["Did I make my point without jargon?","Was I clear in under 30 seconds?","Could someone repeat back what I said?"],
    promise:"Clarity is a habit. The more you practice it, the more authority you project.",
    teaser:"Clarity is the foundation of influence, leadership and career growth. Discover why the clearest communicators are often the most influential.",
-   recap:"Yesterday you learned that clear communication creates opportunity — transform complex ideas into messages people understand, remember and act on. The clearest communicators use fewer words, not more."},
+   recap:"Yesterday you learned that clear communication creates opportunity. Transform complex ideas into messages people understand, remember and act on. The clearest communicators use fewer words, not more."},
 
   {day:2,week:1,mins:13,title:"The Voice Advantage",tag:"Voice",scene:"voice",
    quote:"Master the instrument behind your message.",
@@ -253,12 +253,12 @@ export const LESSONS = [
    phrases:["Let me take a moment to think about that.","Here's what I've considered…","My view, after reflection, is…"],
    bad:"So I was thinking we could maybe, if it works, try to…",
    good:"Here's what I'd recommend. And here's why.",
-   practice:"Record yourself speaking for 60 seconds on any topic. Play it back. Count your filler words. Then record again — slower, deliberate, with pauses.",
+   practice:"Record yourself speaking for 60 seconds on any topic. Play it back. Count your filler words. Then record again, slower, deliberate, with pauses.",
    scenarios:["Presenting to the board","A high-stakes negotiation","An unexpected question"],
    review:["Did I pause before answering?","Did I avoid rushing through my points?","Did I sound calm, even under pressure?"],
    promise:"Speed is anxiety. Pace is confidence. Today you chose pace.",
-   teaser:"Discover why your voice is your most underused asset — and how mastering four simple levers changes how every room responds to you.",
-   recap:"Yesterday you worked on your voice — the pace, tone, and control that signals confidence before a word lands. Slowing down is not hesitation; it is authority."},
+   teaser:"Discover why your voice is your most underused asset, and how mastering four simple levers changes how every room responds to you.",
+   recap:"Yesterday you worked on your voice, the pace, tone, and control that signals confidence before a word lands. Slowing down is not hesitation; it is authority."},
 
   {day:3,week:1,mins:13,title:"Eliminate Fillers",tag:"Credibility",scene:"clarity",
    quote:"What you don't say is as powerful as what you do.",
@@ -267,61 +267,61 @@ export const LESSONS = [
    phrases:["[pause]…","What I mean is…","To be precise…"],
    bad:"Um, so I was kind of thinking, like, maybe we could…",
    good:"[pause] Here's what I think we should do.",
-   practice:"Have a 2-minute conversation about anything — catch every filler word. Replace each with a deliberate pause. Record and replay. Notice the difference.",
+   practice:"Have a 2-minute conversation about anything. Catch every filler word. Replace each with a deliberate pause. Record and replay. Notice the difference.",
    scenarios:["A difficult question from leadership","A panel presentation","A one-on-one with your manager"],
    review:["Did I pause instead of filling?","Was I comfortable with silence?","Did I feel more authoritative?"],
    promise:"Every filler word you remove is replaced by credibility.",
-   teaser:"Discover why filler words quietly erode your authority — and how one simple shift makes you sound more credible, confident, and in control.",
-   recap:"Yesterday you tackled fillers — the ums, ahs, and you-knows that signal uncertainty. Silence is more powerful than filler; it tells the room you are thinking, not floundering."},
+   teaser:"Discover why filler words quietly erode your authority, and how one simple shift makes you sound more credible, confident, and in control.",
+   recap:"Yesterday you tackled fillers, the ums, ahs, and you-knows that signal uncertainty. Silence is more powerful than filler; it tells the room you are thinking, not floundering."},
 
   {day:4,week:1,mins:14,title:"Short Sentences",tag:"Editing",scene:"clarity",
    quote:"Short sentences are easier to follow. Easier to remember. And far more persuasive.",
    insight:"Long sentences hide great ideas. By the end of today, you'll know how to make every sentence simpler, clearer and more memorable.",
-   pieLink:"Performance: Decision-makers remember concise inputs. Long-winded answers signal uncertain thinking. Short sentences are not simple — they are strategic. They are also the first rule of great storytelling.",
+   pieLink:"Performance: Decision-makers remember concise inputs. Long-winded answers signal uncertain thinking. Short sentences are not simple. They are strategic. They are also the first rule of great storytelling.",
    phrases:["Here's the point.","In short…","What matters is…"],
    bad:"I've been thinking about this for a while now and there are several considerations to factor in before we reach a conclusion that everyone can get behind…",
    good:"Here's the issue. Here's what I'd do. Here's why.",
-   practice:"Take your last long email and cut it by 40%. Every sentence must earn its place. Then read it aloud — if you run out of breath, the sentence is too long.",
+   practice:"Take your last long email and cut it by 40%. Every sentence must earn its place. Then read it aloud, if you run out of breath, the sentence is too long.",
    scenarios:["Briefing a CEO","Summarising a complex project","Making a recommendation under time pressure"],
    review:["Did I cut unnecessary words?","Were my sentences short and punchy?","Did my message land faster?"],
    promise:"Short sentences are a gift to the listener. This discipline will make your stories land harder than anything else you practise this week.",
-   teaser:"Find out why short sentences are strategic, not simple — and why mastering this is the hidden foundation of every great professional story.",
-   recap:"Yesterday you practised editing ruthlessly — short sentences land hard, long ones bury the point. Every word you cut increases impact."},
+   teaser:"Find out why short sentences are strategic, not simple, and why mastering this is the hidden foundation of every great professional story.",
+   recap:"Yesterday you practised editing ruthlessly, short sentences land hard, long ones bury the point. Every word you cut increases impact."},
 
   {day:5,week:1,mins:14,title:"Structure",tag:"Framework",scene:"structure",
    quote:"Structure is the backbone of every powerful communication.",
    insight:"Great communicators rarely improvise their thinking. You'll leave this session with a simple framework for organising every answer with clarity and confidence.",
-   pieLink:"Performance: Structured communicators are seen as clearer thinkers. PRE is your default response architecture — and the skeleton beneath every story worth telling.",
-   phrases:["My view is X, because Y — for example Z.","The point I want to make is…","Here's why that matters…"],
+   pieLink:"Performance: Structured communicators are seen as clearer thinkers. PRE is your default response architecture, and the skeleton beneath every story worth telling.",
+   phrases:["My view is X, because Y - for example Z.","The point I want to make is…","Here's why that matters…"],
    bad:"Well, there are a few things to consider, and it depends on the context…",
    good:"My view is we should move now. Because the window closes in Q2. For example, last year we missed exactly this opportunity.",
    practice:"Answer three questions using PRE: your role, your biggest contribution this year, and where you want to be in 18 months. Each answer: one point, one reason, one example.",
    scenarios:["A senior leader asks your opinion","You're asked to present without preparation","A sponsor asks what you want next"],
    review:["Did I lead with my point?","Did I give one clear reason?","Did I ground it with an example?"],
-   promise:"Structure is not a constraint — it's a superpower. PRE is the skeleton. Story is the skin. Both together is what makes ideas move people.",
-   teaser:"The PRE framework gives you a three-part structure that makes every answer land with precision — and turns out to be the skeleton inside every great professional story.",
-   recap:"Yesterday you learned the PRE framework — Point, Reason, Example. Three components that give every answer, opinion, and presentation a structure that commands instant respect."},
+   promise:"Structure is not a constraint. It's a superpower. PRE is the skeleton. Story is the skin. Both together is what makes ideas move people.",
+   teaser:"The PRE framework gives you a three-part structure that makes every answer land with precision, and turns out to be the skeleton inside every great professional story.",
+   recap:"Yesterday you learned the PRE framework, Point, Reason, Example. Three components that give every answer, opinion, and presentation a structure that commands instant respect."},
 
   {day:6,week:1,mins:15,title:"High-Stakes Conversations",tag:"Composure",scene:"structure",
    quote:"The strongest communicator is often the calmest person in the room.",
    insight:"Pressure reveals your habits. Today you'll practise staying calm, clear and composed when the conversation matters most.",
    pieLink:"Performance: Composure under pressure is one of the most visible signals of leadership. How you communicate when it's hard is what separates good communicators from great ones.",
    phrases:["I understand your concern, and I see it differently.","I wanted to raise something important.","I can't commit to that without compromising quality."],
-   bad:"That's not fair — I've been working really hard and nobody seems to notice.",
+   bad:"That's not fair. I've been working really hard and nobody seems to notice.",
    good:"I hear that. I'd like to share what I've observed and explore what we can do together.",
-   practice:"Choose one difficult conversation you've been avoiding. Write down the first sentence you'll say — calm, clear, and direct. Practise saying it out loud until it sounds natural, not rehearsed.",
+   practice:"Choose one difficult conversation you've been avoiding. Write down the first sentence you'll say, calm, clear, and direct. Practise saying it out loud until it sounds natural, not rehearsed.",
    scenarios:["A senior leader dismisses your input in a meeting","A colleague gives you harsh feedback you disagree with","You need to push back on an unrealistic deadline"],
    review:["Did I stay calm when the pressure rose?","Did I lead with composure before content?","Did I listen before I responded?"],
-   promise:"Week 1 ends here — with the skill that reveals everything else. Structure, voice, clarity, and brevity all collapse under pressure unless composure holds them together. You've built the foundation. Now hold it when it matters.",
+   promise:"Week 1 ends here, with the skill that reveals everything else. Structure, voice, clarity, and brevity all collapse under pressure unless composure holds them together. You've built the foundation. Now hold it when it matters.",
    teaser:"Understand the biology of pressure responses and the techniques elite communicators use to stay composed when stakes are highest.",
-   recap:"Yesterday you prepared for high-stakes conversations — the moments that define careers, relationships, and trust. The communicators who stay calm under pressure gain the advantage."},
+   recap:"Yesterday you prepared for high-stakes conversations, the moments that define careers, relationships, and trust. The communicators who stay calm under pressure gain the advantage."},
 
   {day:7,week:1,mins:12,title:"Week 1 Review",tag:"Integration",scene:"structure",
-   quote:"Excellence is not an act — it's a habit. And habits are built one rep at a time.",
+   quote:"Excellence is not an act. It's a habit. And habits are built one rep at a time.",
    insight:"Skills become strengths through repetition. By the end of today, you'll combine everything you've learned into one confident communication style.",
    pieLink:"All three: This week was foundational. Clarity serves Performance. Pace and presence serve Image. Story serves Exposure. Everything from here builds on what you've established.",
    phrases:["My view is… because… for example…","[pause] Here's what I think.","In short… and here's the story that proves it."],
-   bad:"[Reverting to old habits under pressure — rushing, filling, rambling]",
+   bad:"[Reverting to old habits under pressure, rushing, filling, rambling]",
    good:"[Using all six tools deliberately, especially when the stakes are highest]",
    practice:"Have one high-stakes conversation today using all six habits: clarity, pace, no fillers, short sentences, PRE structure, and a story that proves your point. Notice which feels hardest.",
    scenarios:["A team meeting where you need to be heard","A 1:1 with your manager about your development","Any conversation that matters this week"],
@@ -332,99 +332,99 @@ export const LESSONS = [
 
   // ── WEEK 2 
   {day:8,week:2,mins:15,title:"Narrative Transportation",tag:"Storytelling",scene:"story",
-   quote:"A story well told can change how someone thinks, feels, and acts — all at once.",
+   quote:"A story well told can change how someone thinks, feels, and acts, all at once.",
    insight:"Facts inform. Stories move people. You'll discover how to build stories that capture attention, create emotion and stay with your audience.",
    pieLink:"Performance alone gets you noticed. Story makes you remembered. The same achievement, told as a narrative, creates 22× more retention and deeper trust in any audience.",
    phrases:["Once upon a time, I was working on…","Until one day, something shifted…","Because of that, I made a decision…","Until finally, we arrived at…"],
    bad:"I manage cross-functional teams to deliver strategic outcomes within agreed budget parameters.",
-   good:"Two years ago, our product was invisible. I built a coalition of seven teams who had never worked together — and we shipped something that changed how our customers see us.",
+   good:"Two years ago, our product was invisible. I built a coalition of seven teams who had never worked together, and we shipped something that changed how our customers see us.",
    practice:"Build your professional story using the 6-beat arc. Think of a challenge you overcame, a change you drove, or a result you created. Use your AmplifyU Coach to craft it into something unforgettable.",
-   scenarios:["Your MD asks you to open a board presentation — no slides, just your opening words to set the stakes","You're in an interview and the panel asks: Tell me about yourself. Give them the version that makes them lean forward.","A sceptical stakeholder thinks your proposal is too risky. Open with a story that changes the energy in the room."],
+   scenarios:["Your MD asks you to open a board presentation, no slides, just your opening words to set the stakes","You're in an interview and the panel asks: Tell me about yourself. Give them the version that makes them lean forward.","A sceptical stakeholder thinks your proposal is too risky. Open with a story that changes the energy in the room."],
    review:["I can name all 6 beats of the story arc framework","I understand why storytelling activates a different response in the brain than facts alone","I've built and rehearsed at least one version of my own professional story"],
    promise:"You now have a framework that turns your experience into influence. Use it in your very next meeting.",
-   teaser:"Learn the exact 6-beat storytelling framework used by the world's most compelling communicators — and build your own story with your AmplifyU Coach.",
-   recap:"Yesterday you discovered the power of story — how a well-told narrative transports rather than informs. A great story activates the brain like lived experience; it is your most powerful professional tool."},
+   teaser:"Learn the exact 6-beat storytelling framework used by the world's most compelling communicators, and build your own story with your AmplifyU Coach.",
+   recap:"Yesterday you discovered the power of story, how a well-told narrative transports rather than informs. A great story activates the brain like lived experience; it is your most powerful professional tool."},
 
   {day:9,week:2,mins:15,title:"Connection",tag:"Rapport",scene:"voice",
    quote:"People may forget what you said. They rarely forget how you made them feel.",
    insight:"People remember how you made them feel. In this session, you'll strengthen your ability to build trust through curiosity, empathy and genuine connection.",
    pieLink:"Image: How you make people feel shapes how they perceive you. Connection creates the emotional memory that builds lasting professional relationships.",
-   phrases:["What's the most interesting thing you're working on right now?","What am I missing here?","That's interesting — tell me more about that."],
+   phrases:["What's the most interesting thing you're working on right now?","What am I missing here?","That's interesting, tell me more about that."],
    bad:"Talking about yourself all evening at a networking event.",
    good:"Asking thoughtful questions and leaving people feeling genuinely understood.",
    practice:"In your next conversation, listen 70% and speak 30%. Observe what changes.",
    scenarios:["A networking event where you want to build meaningful connections","A first meeting with a new stakeholder or senior leader","A team meeting where you want to create a stronger connection"],
    review:["Did I listen more than I spoke?","Did I ask at least one question that opened a genuine conversation?","Did I adapt my communication style to the person I was talking to?"],
    promise:"The ability to make people feel understood is one of the rarest and most valuable skills in professional life. You now know how to build it.",
-   teaser:"Discover how the world's most connected professionals build trust, rapport, and influence — through curiosity, empathy, and the art of making people feel heard.",
-   recap:"Yesterday you built connection — the ability to make people feel genuinely heard and understood. Strong relationships are not built through charisma; they are built through curiosity."},
+   teaser:"Discover how the world's most connected professionals build trust, rapport, and influence, through curiosity, empathy, and the art of making people feel heard.",
+   recap:"Yesterday you built connection, the ability to make people feel genuinely heard and understood. Strong relationships are not built through charisma; they are built through curiosity."},
 
   {day:10,week:2,mins:15,title:"Performance",tag:"Impact",scene:"pie",theoryImageDay:11,
    quote:"Great work does not automatically create visibility.",
    insight:"Exceptional work deserves exceptional visibility. You'll leave this session knowing how to communicate your value with confidence so your contributions are recognised and remembered.",
-   pieLink:"Performance: This is the foundation — and it is not the ceiling. Visibility without substance is noise. But substance without visibility is invisibility. Both matter.",
+   pieLink:"Performance: This is the foundation, and it is not the ceiling. Visibility without substance is noise. But substance without visibility is invisibility. Both matter.",
    phrases:["My specific contribution was…","The impact of that was…","What I built, led, or delivered was…","Because of that, the result was…","Here's what changed as a result of my work…"],
    bad:"I've been working really hard on this.",
    good:"I led the onboarding redesign and delivered it two weeks early. The result: 40% reduction in drop-off and a renewed client account.",
-   practice:"List your top three contributions this month. For each, ask: do the people who shape your future know this happened? If not — that's your work this week.",
-   scenarios:["Performance review — make your top contributions specific and outcome-led","A senior stakeholder asks what you've been focused on","Someone takes credit for your work in a meeting"],
+   practice:"List your top three contributions this month. For each, ask: do the people who shape your future know this happened? If not, that's your work this week.",
+   scenarios:["Performance review, make your top contributions specific and outcome-led","A senior stakeholder asks what you've been focused on","Someone takes credit for your work in a meeting"],
    review:["Did I name my contribution or just describe my effort?","Did I connect my work to a measurable outcome?","Do the right people know what I delivered this week?"],
    promise:"Part of leadership is making value visible. You now have the language, the structure, and the mindset to do it with confidence.",
-   teaser:"Discover why 90% of career advancement depends on how visible your work is — not just how good it is.",
-   recap:"Yesterday you confronted a surprising truth: performance accounts for just 10% of career success. Making your work visible and getting credit for it is not optional — it is essential."},
+   teaser:"Discover why 90% of career advancement depends on how visible your work is, not just how good it is.",
+   recap:"Yesterday you confronted a surprising truth: performance accounts for just 10% of career success. Making your work visible and getting credit for it is not optional. It is essential."},
 
   {day:11,week:2,mins:14,title:"Brand Identity",tag:"Presence",scene:"presence",
    quote:"Your personal brand is what people say about you when you're not in the room.",
    insight:"Your reputation begins long before you speak. Today you'll shape the habits, signals and stories that define your professional brand.",
-   pieLink:"Image: This module is the bridge. Everything you've built — clarity, voice, credibility, structure, composure — now becomes the architecture of how you're perceived.",
+   pieLink:"Image: This module is the bridge. Everything you've built - clarity, voice, credibility, structure, composure - now becomes the architecture of how you're perceived.",
    phrases:["I want to be known for…","What I stand for is…","My approach is always…"],
-   bad:"[Showing up without intention — letting others fill the gaps with their own assumptions]",
+   bad:"[Showing up without intention, letting others fill the gaps with their own assumptions]",
    good:"[Entering every room with clear intention: consistent signals, a story ready, and a brand you've chosen]",
-   practice:"Write down three words you want people to use to describe you. Then ask: does the way you currently show up — your wardrobe, your digital presence, your communication — match those words?",
+   practice:"Write down three words you want people to use to describe you. Then ask: does the way you currently show up - your wardrobe, your digital presence, your communication - match those words?",
    scenarios:["Walking into a room with a new senior stakeholder","Introducing yourself at a networking event","Updating your LinkedIn profile"],
-   review:["Do my signals match my intentions?","Do I have a consistent story about who I am?","Have I chosen my brand — or let others choose it for me?"],
+   review:["Do my signals match my intentions?","Do I have a consistent story about who I am?","Have I chosen my brand, or let others choose it for me?"],
    promise:"Your image is already being built, in every room you enter. This is where you take control.",
-   teaser:"Discover how to shape the way others perceive you — with intentional signals, consistent behaviour, and stories that make your brand unforgettable.",
-   recap:"Yesterday you explored your personal brand — the signals that shape how others perceive you before you speak. Perception is not random; it is built from your appearance, your stories, and your consistency."},
+   teaser:"Discover how to shape the way others perceive you, with intentional signals, consistent behaviour, and stories that make your brand unforgettable.",
+   recap:"Yesterday you explored your personal brand, the signals that shape how others perceive you before you speak. Perception is not random; it is built from your appearance, your stories, and your consistency."},
 
   {day:12,week:2,mins:15,title:"Influence",tag:"Nonverbal",scene:"presence",
    quote:"People don't just hear confidence. They see it.",
    insight:"People judge your presence before your words. By the end of today, you'll know how to use posture, eye contact and body language to communicate confidence without saying a word.",
-   pieLink:"Image: Presence is the ultimate image signal — the physical expression of everything you've been building. When your body communicates what your words say, people feel it.",
+   pieLink:"Image: Presence is the ultimate image signal, the physical expression of everything you've been building. When your body communicates what your words say, people feel it.",
    phrases:["Let me show you what I mean…","I want to be present with you on this…","Here's what I'm seeing…"],
-   practice:"The Presence Challenge — 7 rounds building gestures, posture, eye contact, expression, and grounded energy.",
+   practice:"The Presence Challenge - 7 rounds building gestures, posture, eye contact, expression, and grounded energy.",
    scenarios:["A high-stakes presentation where your energy matters as much as your content","A difficult conversation where calm presence changes the outcome","Any moment where how you show up is as important as what you say"],
    review:["Did my body language support my message today?","Was I physically calm and grounded in difficult moments?","Did I make people feel at ease through my presence?"],
    promise:"Presence is not a personality trait. It is a set of physical habits. You are building them.",
    teaser:"Learn how gestures, posture, eye contact, and calm energy shape how every conversation you have is experienced.",
-   recap:"Yesterday you worked on presence — the nonverbal signals that communicate confidence and warmth before a word is said. How you move, stand, and hold space is communication."},
+   recap:"Yesterday you worked on presence, the nonverbal signals that communicate confidence and warmth before a word is said. How you move, stand, and hold space is communication."},
 
   {day:13,week:2,mins:14,title:"Exposure",tag:"Visibility",scene:"pie",theoryImageDay:12,
    quote:"Performance gets you in the door. Exposure opens the next one.",
-   insight:"Visibility isn't about being louder—it's about being remembered. You'll discover how to raise your profile with purpose so the right people recognise your potential.",
-   pieLink:"Exposure: The career multiplier — but only when it carries your direction. Being in the right rooms and being known for going somewhere specific are two different things. You need both.",
+   insight:"Visibility isn't about being louder, it's about being remembered. You'll discover how to raise your profile with purpose so the right people recognise your potential.",
+   pieLink:"Exposure: The career multiplier, but only when it carries your direction. Being in the right rooms and being known for going somewhere specific are two different things. You need both.",
    phrases:["My ambition is…","What I'm building toward is…","In the next 18 months, I want to be…","I'd like to be considered for…","I wanted you to know that I'm actively working toward…"],
-   bad:"[Being visible but vague — showing up without a direction others can support]",
-   good:"[Being visible AND clear — so the people who can help you know exactly how to do it]",
+   bad:"[Being visible but vague, showing up without a direction others can support]",
+   good:"[Being visible AND clear, so the people who can help you know exactly how to do it]",
    practice:"Two things: name one senior person who should know your ambition but doesn't. Then write the one sentence you would say to them. Say it out loud. Own it.",
    scenarios:["A sponsor asks where you see yourself going","A senior leader asks what you want next","A skip-level conversation where you need to be remembered"],
    review:["Do the right people know what I want next?","Have I said my ambition out loud to someone who matters this week?","Am I being visible, or am I being visible with direction?"],
    promise:"Exposure without stated ambition is presence. Exposure with stated ambition is momentum. You now know the difference.",
-   teaser:"Discover why being visible isn't enough — and how to become visible with direction so the right people know exactly where you're going and how to help you get there.",
-   recap:"Yesterday you focused on exposure — being understood by the people who influence your career, not just being seen. Presence without stated ambition is just attendance."},
+   teaser:"Discover why being visible isn't enough, and how to become visible with direction so the right people know exactly where you're going and how to help you get there.",
+   recap:"Yesterday you focused on exposure, being understood by the people who influence your career, not just being seen. Presence without stated ambition is just attendance."},
 
   {day:14,week:2,mins:15,title:"Amplified",tag:"Capstone",scene:"clarity",
    quote:"Your future will be shaped by the conversations you choose to have, the stories you choose to tell, and the clarity with which you communicate who you are.",
-   insight:"Fourteen days ago you started building a new way to communicate. Today you'll prove it—bringing together clarity, confidence, presence and influence into a style that's uniquely yours.",
+   insight:"Fourteen days ago you started building a new way to communicate. Today you'll prove it, bringing together clarity, confidence, presence and influence into a style that's uniquely yours.",
    pieLink:"Everything: Performance + Image + Exposure + Stated Ambition, delivered with clarity, structure, and story. This is the full picture.",
    phrases:["My view is…","Let me tell you what happened…","What I'm building toward is…","What I bring that others don't is…"],
-   bad:"[Reverting when the pressure is highest — losing the story, losing the structure, losing the point]",
-   good:"[Staying deliberate, clear, and confident — using every tool, especially when it's hardest]",
+   bad:"[Reverting when the pressure is highest, losing the story, losing the structure, losing the point]",
+   good:"[Staying deliberate, clear, and confident, using every tool, especially when it's hardest]",
    practice:"Have one conversation today where you use everything: PRE structure, a SAR story that passes the 3-Point Test, a confident phrase about your ambition, and deliberate presence.",
    scenarios:["A performance conversation that defines how this year is remembered","A pitch to leadership that needs to move people","Any conversation where you need to show up as the communicator you've become"],
    review:["Did I use structure under pressure?","Did my story pass the 3-Point Test?","Did I communicate my ambition as clearly as my work?"],
-   promise:"14 days. 6 storytelling tools. One clear direction. This is the beginning — not the end. AmplifyU.",
-   teaser:"The final session. Everything comes together: clarity, structure, story, PIE, and your stated ambition — all working as one commanding, deliberate voice."},
+   promise:"14 days. 6 storytelling tools. One clear direction. This is the beginning, not the end. AmplifyU.",
+   teaser:"The final session. Everything comes together: clarity, structure, story, PIE, and your stated ambition, all working as one commanding, deliberate voice."},
 ];
 
 // ─── ROLE DEFINITIONS 
@@ -443,7 +443,7 @@ export const ROLE_SCENARIOS = {
     3:["You're presenting your analysis to a leadership team","A director asks a challenge question mid-presentation","You're in a town hall and unexpectedly asked to contribute"],
     4:["Your manager asks you to summarise a 30-page report in two minutes","A CEO asks you to explain a complex risk in plain language","You need to brief a board member in the lift"],
     5:["A stakeholder asks your recommendation on a contested issue","You're asked to explain a risk or constraint clearly and quickly","Your manager asks what you think should happen next"],
-    6:["Telling the story of a project that went wrong — and what you learned","Introducing yourself at a new stakeholder meeting with a story","Pitching an idea that requires buy-in from someone more senior"],
+    6:["Telling the story of a project that went wrong, and what you learned","Introducing yourself at a new stakeholder meeting with a story","Pitching an idea that requires buy-in from someone more senior"],
     7:["A cross-functional meeting where you need your voice heard","A 1:1 with your manager about your development","Any high-stakes conversation from this week"],
     8:["A performance review where you need to show your impact clearly","An internal interview for a stretch role","Explaining your contribution when someone else took the credit"],
     9:["Telling your career story to a new senior sponsor","Making a complex technical outcome sound like a human story","Turning a setback into a story that shows your judgment"],
@@ -459,7 +459,7 @@ export const ROLE_SCENARIOS = {
     3:["Presenting a RAG status update to the exec team","A steering committee asks why a milestone was missed","You're chairing a tense delivery meeting and need to maintain authority"],
     4:["Briefing a CIO on programme status in 90 seconds","Summarising a complex dependency issue in one clear sentence","Giving a 2-minute update at a board that doesn't want detail"],
     5:["Asked to give your view on a risks and issues paper","A sponsor asks what you'd do differently if you could restart","Making a recommendation when the options are all imperfect"],
-    6:["Explaining why a previous programme failed — and what you learned","Pitching a new approach to a sceptical sponsor","Making a delayed milestone feel like a managed decision, not a failure"],
+    6:["Explaining why a previous programme failed, and what you learned","Pitching a new approach to a sceptical sponsor","Making a delayed milestone feel like a managed decision, not a failure"],
     7:["A programme board where multiple workstreams need to align","A 1:1 with your SRO about your leadership of the programme","The highest-pressure delivery conversation from this week"],
     8:["End of programme review where your leadership is being assessed","Interviewing for a more senior delivery role","Explaining your approach to managing stakeholder conflict as a SAR story"],
     9:["Turning a programme failure into a story that shows your growth","Making a complex timeline story land with a non-technical board","Opening a steering committee with a story that sets the right tone"],
@@ -474,28 +474,28 @@ export const ROLE_SCENARIOS = {
     2:["You're giving difficult feedback and need to stay calm and clear","A 1:1 where you need to be honest about someone's performance","A team meeting where you need to slow down and be heard"],
     3:["Chairing a team meeting where everyone is talking at once","Delivering feedback you've been putting off","Responding to a challenge from a team member in front of others"],
     4:["Summarising your team's output for a senior stakeholder in 60 seconds","Writing a performance summary that has to be brief and powerful","Giving feedback that lands in two sentences, not twenty"],
-    5:["A team member asks for your view on a contentious decision","You need to push back on a directive from above — to your team's face","Explaining a change of direction clearly and without undermining confidence"],
+    5:["A team member asks for your view on a contentious decision","You need to push back on a directive from above, to your team's face","Explaining a change of direction clearly and without undermining confidence"],
     6:["Inspiring your team after a difficult period with a story from your own experience","Explaining why a change is happening in a way that lands well","Making a team member feel seen and valued through a specific story"],
     7:["A team retrospective where honesty is needed","A 1:1 with your most challenging team member","The most important people conversation you've had this week"],
-    8:["A promotion panel where you're advocating for a team member using SAR","Your own performance review — articulating your impact as a leader","An interview for a more senior people leadership role"],
+    8:["A promotion panel where you're advocating for a team member using SAR","Your own performance review, articulating your impact as a leader","An interview for a more senior people leadership role"],
     9:["Making a difficult performance story land with compassion and clarity","Telling a team member's story on their behalf in a talent review","Turning a team setback into a story that builds confidence"],
     10:["A talent review where you need to articulate your team's contribution","A budget conversation where you're defending your team's headcount","A senior leader asks what makes your team high-performing"],
     11:["Walking into a company all-hands as a visible leader","Your first meeting with a new skip-level or senior stakeholder","The moment a new team member forms their first impression of you"],
     12:["Requesting a seat at a leadership forum your peers attend","Building a relationship with a senior leader who can advocate for your team","Volunteering to present your team's work at a wider audience"],
     13:["Introducing yourself as a leader to a new organisational audience","Being asked what kind of leader you are","A conversation that will shape how your leadership is talked about"],
-    14:["A high-stakes people conversation — feedback, promotion, or performance","The most important leadership moment you have this quarter","Any conversation where you're showing up as the leader your team needs"],
+    14:["A high-stakes people conversation - feedback, promotion, or performance","The most important leadership moment you have this quarter","Any conversation where you're showing up as the leader your team needs"],
   },
   senior: {
-    1:["An analyst asks you to clarify the strategic direction in one sentence","A journalist or external stakeholder asks what your organisation does","A board member asks you to summarise the situation — right now"],
+    1:["An analyst asks you to clarify the strategic direction in one sentence","A journalist or external stakeholder asks what your organisation does","A board member asks you to summarise the situation, right now"],
     2:["You're presenting strategy to a board and a challenge question derails you","A peer challenges your position in front of the executive team","You're asked for your view on something you haven't fully considered"],
     3:["Delivering an update to the board where the news is mixed","An investor or regulator meeting where every word matters","A public panel where you're representing your organisation"],
-    4:["A board that has two minutes — make every word count","Writing an executive summary that will be read by the CEO","Giving a 90-second investment case with no notes"],
+    4:["A board that has two minutes, make every word count","Writing an executive summary that will be read by the CEO","Giving a 90-second investment case with no notes"],
     5:["Asked for your view on a strategic trade-off with no perfect answer","You need to change the direction of a conversation in a senior room","Making a recommendation when the politics are complicated"],
     6:["Explaining your strategic vision in a way that creates belief, not just understanding","Pitching for investment with a story that makes the numbers human","Making a complex transformation feel inevitable through narrative"],
     7:["An ExCo or board meeting where your judgment is being assessed","A 1:1 with your CEO or chair about your leadership","The highest-stakes communication moment from this week"],
-    8:["A board review of your leadership track record told as a SAR","An executive interview for a step-up role","Being asked about a failure and what it taught you — as a story"],
+    8:["A board review of your leadership track record told as a SAR","An executive interview for a step-up role","Being asked about a failure and what it taught you, as a story"],
     9:["Making a strategic pivot land with a board who didn't see it coming","Turning a year of difficult results into a story of deliberate leadership","Opening an investor presentation with a story, not a slide"],
-    10:["A shareholder or investor meeting — what have you actually delivered","A performance review with your CEO or remuneration committee","Explaining how you've moved the organisation forward this year"],
+    10:["A shareholder or investor meeting, what have you actually delivered","A performance review with your CEO or remuneration committee","Explaining how you've moved the organisation forward this year"],
     11:["Walking into your first board meeting as a new executive","The moment a new organisation forms its impression of your leadership","An external event where you're visible as the face of your organisation"],
     12:["Accepting a speaking invitation that will raise your external profile","Building a relationship with a non-executive who can be a sponsor","Creating a moment of visibility that is strategic, not accidental"],
     13:["Being asked what kind of leader you are by someone who matters","An executive search firm asks how peers would describe you","A conversation where your personal brand needs to be unmistakable"],
@@ -683,19 +683,19 @@ export const WORKPLACE_APPLICATION = [
     "Before your next meeting, explain the main topic to yourself in one sentence.",
     "Test every key message: 'Could a 10-year-old understand this?'",
     "Replace jargon with plain language in your next email or report.",
-    "After explaining an idea, ask a colleague to reflect it back to you — gaps reveal themselves instantly.",
+    "After explaining an idea, ask a colleague to reflect it back to you, gaps reveal themselves instantly.",
   ],
   // Day 2 — Voice Control
   [
     "Slow down deliberately when delivering your most important point.",
     "Record yourself on your next call or presentation and review your vocal range.",
-    "Use a three-second pause before any key statement — it signals control.",
+    "Use a three-second pause before any key statement, it signals control.",
     "Vary your energy: start measured, build as your message builds.",
   ],
   // Day 3 — Eliminate Fillers
   [
     "Record a 60-second practice run before any important presentation.",
-    "Replace every 'um' and 'uh' with a deliberate pause — silence sounds more confident.",
+    "Replace every 'um' and 'uh' with a deliberate pause, silence sounds more confident.",
     "Prepare and memorise your opening sentence for every meeting.",
     "Ask a trusted colleague to quietly signal when you use filler words.",
   ],
@@ -704,7 +704,7 @@ export const WORKPLACE_APPLICATION = [
     "Rewrite your next email with one idea per sentence.",
     "In your next presentation, use no sentence longer than 15 words.",
     "Strip 'basically', 'in terms of', and 'as I said' from your next report.",
-    "When asked a question, answer in three sentences or fewer — then stop.",
+    "When asked a question, answer in three sentences or fewer, then stop.",
   ],
   // Day 5 — Precision (PRE)
   [
@@ -718,7 +718,7 @@ export const WORKPLACE_APPLICATION = [
     "Prepare three calm, confident responses to the toughest questions you expect this week.",
     "Before a difficult conversation, take three slow breaths to reset your nervous system.",
     "When challenged in a meeting, pause for two seconds before responding.",
-    "Practise composure in low-stakes conversations first — build the reflex before you need it.",
+    "Practise composure in low-stakes conversations first, build the reflex before you need it.",
   ],
   // Day 7 — Week 1 Review
   [
@@ -736,9 +736,9 @@ export const WORKPLACE_APPLICATION = [
   ],
   // Day 9 — Connections
   [
-    "Before your next one-to-one, prepare three genuine questions about the other person's work, priorities, or challenges — and ask them before you share your own agenda.",
+    "Before your next one-to-one, prepare three genuine questions about the other person's work, priorities, or challenges, and ask them before you share your own agenda.",
     "In meetings this week, practise the 70/30 rule: listen more than you speak, and reflect back what you hear before you respond.",
-    "Identify one colleague whose communication style differs from yours — a Driver, Analytical, or Expressive — and consciously adapt your pace and approach to match theirs.",
+    "Identify one colleague whose communication style differs from yours - a Driver, Analytical, or Expressive - and consciously adapt your pace and approach to match theirs.",
     "End every significant conversation this week with: 'Is there anything else on your mind?' Then stay silent and listen fully.",
   ],
   // Day 10 — Visibility
@@ -746,35 +746,35 @@ export const WORKPLACE_APPLICATION = [
     "Write down your three core professional strengths and look for opportunities to demonstrate them.",
     "Prepare one observation or insight to contribute in your next senior meeting.",
     "Update your professional summary or LinkedIn using the clarity principles from Day 1.",
-    "Find one opportunity this week to make your work visible — a concise update, a shared result.",
+    "Find one opportunity this week to make your work visible, a concise update, a shared result.",
   ],
   // Day 11 — Brand Identity
   [
-    "Choose three words you want to be known for — then check whether your current presence signals them.",
+    "Choose three words you want to be known for, then check whether your current presence signals them.",
     "Audit your LinkedIn headline: does it reflect your brand, or just your job title?",
     "In your next meeting, make one deliberate choice that aligns with the professional reputation you are building.",
     "Ask a trusted colleague: 'What three words would you use to describe how I communicate?'",
   ],
   // Day 12 — Influence / Nonverbal
   [
-    "In your next presentation, plant your feet before you speak — a grounded posture signals authority instantly.",
+    "In your next presentation, plant your feet before you speak, a grounded posture signals authority instantly.",
     "Make deliberate eye contact for three to five seconds when making your most important point.",
-    "Use open hand gestures when sharing ideas — closed body language signals defensiveness.",
-    "Before a high-stakes conversation, take two minutes to stand tall and breathe — presence is a physical state.",
+    "Use open hand gestures when sharing ideas, closed body language signals defensiveness.",
+    "Before a high-stakes conversation, take two minutes to stand tall and breathe, presence is a physical state.",
   ],
   // Day 13 — Exposure
   [
-    "Name one senior person who influences your career but does not know your ambition — plan one sentence to tell them.",
+    "Name one senior person who influences your career but does not know your ambition, plan one sentence to tell them.",
     "In your next skip-level or senior conversation, state one specific thing you are working toward.",
-    "Share a project win publicly this week — a team update, a message to a stakeholder, or a LinkedIn post.",
-    "Find one room this week where you are not currently visible — and get in it.",
+    "Share a project win publicly this week, a team update, a message to a stakeholder, or a LinkedIn post.",
+    "Find one room this week where you are not currently visible, and get in it.",
   ],
   // Day 14 — Communication System
   [
     "Block 10 minutes each week to review and practise one communication habit.",
     "Set a 30-day challenge: pick one skill from the programme and practise it daily.",
-    "Pair with a colleague as an accountability partner — observe and give feedback on each other.",
-    "Identify the one communication situation where everything you've learned will matter most — and prepare for it.",
+    "Pair with a colleague as an accountability partner, observe and give feedback on each other.",
+    "Identify the one communication situation where everything you've learned will matter most, and prepare for it.",
   ],
 ];
 
@@ -788,14 +788,14 @@ export const D7_INSIGHT_CARDS = [
   { word: "You've already done something most professionals never do.",
     sub: "Six communication habits. Seven days. Deliberately.",
     bullets: [
-      "Most people spend a career reacting — you spent a week conditioning. That gap is already opening.",
+      "Most people spend a career reacting. You spent a week conditioning. That gap is already opening.",
       "The decision to practise deliberately is rarer than it looks.",
     ]
   },
   { word: "Every rep this week physically changed your brain.",
     sub: "Repetition doesn't just reinforce knowledge. It rewires how you communicate.",
     bullets: [
-      "Each time you practised, your brain strengthened the neural pathway for that behaviour — making it faster, stronger, and more automatic.",
+      "Each time you practised, your brain strengthened the neural pathway for that behaviour, making it faster, stronger, and more automatic.",
       "This is biology, not motivation.",
     ]
   },
@@ -810,7 +810,7 @@ export const D7_INSIGHT_CARDS = [
     sub: "Elite communicators aren't naturally gifted. They've simply repeated their foundations enough times that the effort became invisible.",
     bullets: [
       "That process is now in motion for you.",
-      "Repetition is the only path — and you've already started.",
+      "Repetition is the only path, and you've already started.",
     ]
   },
 ];
@@ -818,16 +818,16 @@ export const D7_INSIGHT_CARDS = [
 export const D10_FACTS = [
   { word:"Hard work is often invisible.",
     sub:"Your most valuable work is rarely seen by the people who decide your future.",
-    bullets:["That work — conversations, problem-solving, and crisis handling — creates real value that is never automatically visible to decision-makers.","If no one knows about it, it doesn't count toward your recognition or advancement."] },
+    bullets:["That work - conversations, problem-solving, and crisis handling - creates real value that is never automatically visible to decision-makers.","If no one knows about it, it doesn't count toward your recognition or advancement."] },
   { word:"People can only evaluate what they can see.",
     sub:"Perceived contribution drives decisions, not actual contribution.",
-    bullets:["When your work is unclear, others fill in the gaps — and rarely in your favour.","Visibility replaces assumption with evidence."] },
+    bullets:["When your work is unclear, others fill in the gaps, and rarely in your favour.","Visibility replaces assumption with evidence."] },
   { word:"Visibility is not vanity. It is professional responsibility.",
     sub:"Making your impact clear is a leadership skill.",
-    bullets:["Communicating what you deliver helps your team and organisation understand what is working.","That is clarity and leadership — not self-promotion."] },
+    bullets:["Communicating what you deliver helps your team and organisation understand what is working.","That is clarity and leadership, not self-promotion."] },
   { word:"Being excellent and being recognised are different skills.",
     sub:"You were taught one. No one taught you the other.",
-    bullets:["High performers are rarely recognised for their best work — because it lives below the waterline.","Until now."] },
+    bullets:["High performers are rarely recognised for their best work, because it lives below the waterline.","Until now."] },
 ];
 
 export const D3_FACTS = [
@@ -835,7 +835,7 @@ export const D3_FACTS = [
     sub:"Filler-free speech signals you mean what you say.",
     bullets:[
       "When every word is chosen, listeners trust that you believe what you're saying.",
-      "Fillers signal uncertainty — even when you're completely confident. Remove them and your conviction comes through.",
+      "Fillers signal uncertainty, even when you're completely confident. Remove them and your conviction comes through.",
     ]},
   { word:"Authority",
     sub:"The pause is your most powerful punctuation mark.",
@@ -858,20 +858,20 @@ export const D3_FACTS = [
 ];
 
 export const D3_PAUSE_REASONS = [
-  { n:1, label:"Fear of Silence",   body:"Most people worry pauses make them look unprepared. They don't. A well-placed pause signals you're thinking carefully — and that's exactly what audiences respect." },
-  { n:2, label:"Rushing",           body:"Fillers appear most when we're moving faster than our thoughts. Slowing down by even 10% gives your brain the space to find the right word — every time." },
-  { n:3, label:"Lack of Structure", body:"When you know your key points, you need far fewer fillers. A clear structure means you always know where you're going — and that confidence shows." },
+  { n:1, label:"Fear of Silence",   body:"Most people worry pauses make them look unprepared. They don't. A well-placed pause signals you're thinking carefully, and that's exactly what audiences respect." },
+  { n:2, label:"Rushing",           body:"Fillers appear most when we're moving faster than our thoughts. Slowing down by even 10% gives your brain the space to find the right word, every time." },
+  { n:3, label:"Lack of Structure", body:"When you know your key points, you need far fewer fillers. A clear structure means you always know where you're going, and that confidence shows." },
 ];
 
 export const D4_FACTS = [
   { word:"Processing Speed", sub:"Short sentences let your audience follow effortlessly.",
     bullets:["When ideas are easy to absorb, people can focus on meaning rather than structure.","The harder a sentence is to read, the more mental energy goes into decoding it instead of understanding it."] },
   { word:"Retention",        sub:"Sentences under 15 words are more memorable.",
-    bullets:["The discipline of cutting forces you to find the essential idea — which makes it stick.","Every word you remove is one less thing your audience has to hold in working memory."] },
+    bullets:["The discipline of cutting forces you to find the essential idea, which makes it stick.","Every word you remove is one less thing your audience has to hold in working memory."] },
   { word:"Impact",           sub:"When you say less, each word carries more.",
-    bullets:["Short sentences give each idea room to breathe and land fully before the next one arrives.","Brevity is a form of respect — it signals that you've done the thinking so your audience doesn't have to."] },
+    bullets:["Short sentences give each idea room to breathe and land fully before the next one arrives.","Brevity is a form of respect. It signals that you've done the thinking so your audience doesn't have to."] },
   { word:"Persuasion",       sub:"Some of the most memorable lines in history are under 10 words:",
-    bullets:["\"I have a dream.\" \"Yes we can.\" \"Just do it.\" Brevity is not simplicity — it is precision.","Short sentences move people because they leave no room for doubt or distraction."] },
+    bullets:["\"I have a dream.\" \"Yes we can.\" \"Just do it.\" Brevity is not simplicity. It is precision.","Short sentences move people because they leave no room for doubt or distraction."] },
 ];
 
 export const D1_CLARITY_FACTS_DATA = [
@@ -890,9 +890,9 @@ export const D1_FEYNMAN_DATA = [
  // ── D11 shared constants (used by both desktop + mobile) ──────────────────
 
 export const D11_FACTS = [
-  { word:"First Impressions Are Fast", sub:"People start forming judgements in 100 milliseconds — before you've said a word.",
+  { word:"First Impressions Are Fast", sub:"People start forming judgements in 100 milliseconds, before you've said a word.",
     bullets:["The signals you give off before you speak are already shaping how you're received.","You cannot not communicate. Every element of your presence is being decoded."] },
-  { word:"People Read Signals", sub:"Every signal you send is being judged — fast and unconsciously.",
+  { word:"People Read Signals", sub:"Every signal you send is being judged, fast and unconsciously.",
     bullets:["Humans make rapid judgments about confidence, competence, and trustworthiness from minimal cues.","The gap between how you think you come across and how you actually land is where reputations are shaped."] },
   { word:"Stories Shape Reputation", sub:"Narrative becomes identity.",
     bullets:["Stories are remembered far more effectively than disconnected information.","The most powerful brand-building tool you have is the story others tell about you when you're not in the room."] },
@@ -901,12 +901,12 @@ export const D11_FACTS = [
 ];
 
 export const D11_INGREDIENTS = [
-  {n:"Authority",    tagline:"Be known for something",         psych:"Authority Bias",          psychBody:"People naturally trust perceived expertise. If you're clearly exceptional in one area, credibility rises fast.",                                                                                              body:"The strongest brands stand for something specific. Not 'good at many things' — but known for one thing first.",    takeaway:"Own a category."},
+  {n:"Authority",    tagline:"Be known for something",         psych:"Authority Bias",          psychBody:"People naturally trust perceived expertise. If you're clearly exceptional in one area, credibility rises fast.",                                                                                              body:"The strongest brands stand for something specific. Not 'good at many things', but known for one thing first.",    takeaway:"Own a category."},
   {n:"Generosity",   tagline:"Give value freely",               psych:"Reciprocity (Cialdini)",  psychBody:"When people receive value, they naturally feel more positively toward the source.",                                                                                                                       body:"The fastest way to build goodwill is to help before asking. Teach. Share. Educate. Simplify. Practical tips, frameworks, behind-the-scenes lessons.",  takeaway:"Give before you ask."},
-  {n:"Relatability", tagline:"Share the human story",           psych:"Narrative Identity",      psychBody:"We connect with people whose journeys feel emotionally relatable. Similarity Attraction effect.",                                                                                                         body:"Expertise creates admiration. Story creates connection. People don't just want polished success — they want setbacks, lessons, beginnings, ambition, growth.",  takeaway:"Let people see the journey."},
-  {n:"Energy",       tagline:"Passion is perception",           psych:"Emotional Contagion",     psychBody:"Emotion spreads socially. Your energy influences how others feel — and whether they believe the message matters.",                                                                                        body:"Energy communicates belief. If you sound disengaged, people assume the message lacks importance. Conviction, warmth, and emotional presence are felt before they're heard.",  takeaway:"Passion is contagious."},
-  {n:"Familiarity",  tagline:"Repeated exposure builds trust",  psych:"Mere Exposure Effect",   psychBody:"The more often people encounter something, the more positively they tend to feel about it.",                                                                                                              body:"People trust what feels familiar. Series. Podcasts. Regular posts. Repeated appearances. Consistent presence — not one big moment.",  takeaway:"Consistency creates comfort."},
-  {n:"Polarity",     tagline:"Have a point of view",            psych:"Von Restorff Effect",     psychBody:"Things that stand out are remembered more easily than things that blend in. Distinctiveness is memorable.",                                                                                              body:"Memorable brands stand for something. They have opinions, preferences, perspectives — not to provoke, but to be distinct. Neutrality is forgettable.",  takeaway:"Being memorable requires definition."},
+  {n:"Relatability", tagline:"Share the human story",           psych:"Narrative Identity",      psychBody:"We connect with people whose journeys feel emotionally relatable. Similarity Attraction effect.",                                                                                                         body:"Expertise creates admiration. Story creates connection. People don't just want polished success. They want setbacks, lessons, beginnings, ambition, growth.",  takeaway:"Let people see the journey."},
+  {n:"Energy",       tagline:"Passion is perception",           psych:"Emotional Contagion",     psychBody:"Emotion spreads socially. Your energy influences how others feel, and whether they believe the message matters.",                                                                                        body:"Energy communicates belief. If you sound disengaged, people assume the message lacks importance. Conviction, warmth, and emotional presence are felt before they're heard.",  takeaway:"Passion is contagious."},
+  {n:"Familiarity",  tagline:"Repeated exposure builds trust",  psych:"Mere Exposure Effect",   psychBody:"The more often people encounter something, the more positively they tend to feel about it.",                                                                                                              body:"People trust what feels familiar. Series. Podcasts. Regular posts. Repeated appearances. Consistent presence, not one big moment.",  takeaway:"Consistency creates comfort."},
+  {n:"Polarity",     tagline:"Have a point of view",            psych:"Von Restorff Effect",     psychBody:"Things that stand out are remembered more easily than things that blend in. Distinctiveness is memorable.",                                                                                              body:"Memorable brands stand for something. They have opinions, preferences, perspectives, not to provoke, but to be distinct. Neutrality is forgettable.",  takeaway:"Being memorable requires definition."},
 ];
 // ── D12 shared constants ──────────────────────────────────────────────────
 export const D12_FACTS = [
@@ -935,13 +935,13 @@ export const D12_EXAMPLES = [
     lesson:"Warmth and expression create connection." },
   { id:"gestures", name:"Gestures Create Clarity", role:"Communication Principle",
     headline:"People understand ideas faster when they can see them.",
-    body:"Great communicators use their hands to reinforce scale, contrast, direction, growth, and emotion. This helps listeners visually process ideas while listening — messages become easier to follow and remember.",
+    body:"Great communicators use their hands to reinforce scale, contrast, direction, growth, and emotion. This helps listeners visually process ideas while listening. Messages become easier to follow and remember.",
     signals:["Scale","Contrast","Direction","Growth","Emotion"],
     result:"Messages become easier to follow and remember.",
     lesson:"People understand ideas faster when they can see them." },
   { id:"grounded", name:"Grounded Energy", role:"Communication Principle",
     headline:"Calm energy shapes how conversations feel.",
-    body:"In difficult conversations, calm communicators often slow their movement, soften their posture, and maintain steady presence. This physical calmness influences the emotional tone of the conversation itself — communication feels calmer, clearer, and more emotionally safe.",
+    body:"In difficult conversations, calm communicators often slow their movement, soften their posture, and maintain steady presence. This physical calmness influences the emotional tone of the conversation itself. Communication feels calmer, clearer, and more emotionally safe.",
     signals:["Slowed movement","Softened posture","Steady presence","Calm breathing","Grounded energy"],
     result:"Communication feels calmer, clearer, and more emotionally safe.",
     lesson:"Calm energy shapes how conversations feel." },
@@ -950,11 +950,11 @@ export const D12_EXAMPLES = [
 // ── D14 shared constants ──────────────────────────────────────────────────
 export const D14_INSIGHT_CARDS = [
   { word:"You Have Built More Than Skills", sub:"Over 14 days you've practised behaviours used by some of the world's most effective communicators.",
-    bullets:["Clear thinking creates clear communication — and you've trained both.","Small improvements compound into major transformation. You have already begun."] },
+    bullets:["Clear thinking creates clear communication, and you've trained both.","Small improvements compound into major transformation. You have already begun."] },
   { word:"Confidence Is Earned", sub:"Confidence does not arrive before action. It follows action, repetition, and practice.",
     bullets:["Confidence grows from competence. Competence grows from deliberate practice.","Every session you completed was a deposit into your confidence account."] },
-  { word:"Communication Changes Careers", sub:"Every major opportunity involves communication — interviews, presentations, leadership, networking, influence.",
-    bullets:["Communication amplifies capability. The clearest voice is often the most influential.","The skills you've built don't just help you perform — they help others see your performance."] },
+  { word:"Communication Changes Careers", sub:"Every major opportunity involves communication, interviews, presentations, leadership, networking, influence.",
+    bullets:["Communication amplifies capability. The clearest voice is often the most influential.","The skills you've built don't just help you perform. They help others see your performance."] },
   { word:"This Is Only The Beginning", sub:"The goal of AmplifyU was never perfection. The goal was momentum.",
     bullets:["Great communicators are built through repetition, not revelation.","Every future conversation becomes an opportunity to practise, improve, and amplify your impact."] },
 ];
@@ -962,11 +962,11 @@ export const D14_INSIGHT_CARDS = [
 // ── D13 shared constants ──────────────────────────────────────────────────
 export const D13_INSIGHT_CARDS = [
   { word:"Great Work Is Not Enough", sub:"People can only reward work they can see.",
-    bullets:["Performance is the foundation. Visibility is the multiplier.","Many talented people go unnoticed because they wait for their work to speak for itself — it rarely does."] },
+    bullets:["Performance is the foundation. Visibility is the multiplier.","Many talented people go unnoticed because they wait for their work to speak for itself. It rarely does."] },
   { word:"Opportunities Travel Through People", sub:"Most career-defining opportunities come from conversations, not job boards.",
     bullets:["Networks create access. Relationships create opportunities.","The people who know your value become the doors to new possibilities."] },
   { word:"Visibility Compounds", sub:"One introduction leads to another. One opportunity creates another.",
-    bullets:["Exposure grows exponentially — the more people who know your value, the faster opportunities find you.","Early visibility investments pay compound returns over time."] },
+    bullets:["Exposure grows exponentially, the more people who know your value, the faster opportunities find you.","Early visibility investments pay compound returns over time."] },
   { word:"Ambition Must Be Visible", sub:"People cannot support ambitions they've never heard.",
     bullets:["Many people have goals. Few communicate them clearly to the right people.","The right people need to know where you're going to help you get there."] },
 ];
@@ -975,33 +975,33 @@ export const D13_THEORY_CARDS = [
   { word:"The PIE Model", sub:"Career success is shaped by three compounding forces.",
     bullets:["Performance: Can you do the job? Image: How are you perceived? Exposure: Who knows what you're capable of?","Research consistently shows that visibility and relationships play a larger role in advancement than most people expect."] },
   { word:"The Mere Exposure Effect", sub:"People naturally trust and prefer things they encounter repeatedly.",
-    bullets:["The more familiar you become, the more trusted and memorable you become.","Consistent presence builds the familiarity that creates opportunity — even before people consciously recognise it."] },
+    bullets:["The more familiar you become, the more trusted and memorable you become.","Consistent presence builds the familiarity that creates opportunity, even before people consciously recognise it."] },
   { word:"Weak Tie Theory", sub:"Most major opportunities come through acquaintances, not close friends.",
-    bullets:["Acquaintances connect you to new information, new networks, and new opportunities your close circle can't see.","Your next opportunity is often one conversation away — with someone you barely know."] },
+    bullets:["Acquaintances connect you to new information, new networks, and new opportunities your close circle can't see.","Your next opportunity is often one conversation away, with someone you barely know."] },
   { word:"Sponsorship vs Mentorship", sub:"Mentors advise. Sponsors advocate.",
-    bullets:["Mentors speak to you. Sponsors speak about you when you're not in the room.","Exposure helps create sponsors — people who actively open doors and put your name forward without being asked."] },
+    bullets:["Mentors speak to you. Sponsors speak about you when you're not in the room.","Exposure helps create sponsors, people who actively open doors and put your name forward without being asked."] },
 ];
 
 export const D13_EXAMPLES = [
   { id:"hidden", name:"The Hidden Expert", headline:"Visibility Amplifies Value",
-    body:"Two employees perform equally well. One quietly delivers excellent work. The other delivers excellent work and regularly shares progress with stakeholders. The second doesn't work harder — they communicate more strategically. Opportunities, promotions, and strategic invitations go to the person whose value is visible, not just real.",
+    body:"Two employees perform equally well. One quietly delivers excellent work. The other delivers excellent work and regularly shares progress with stakeholders. The second doesn't work harder. They communicate more strategically. Opportunities, promotions, and strategic invitations go to the person whose value is visible, not just real.",
     lesson:"Visibility amplifies value. If the right people don't know what you're capable of, your capability is invisible to opportunity." },
   { id:"conference", name:"The Conference Conversation", headline:"Relationships Create Momentum",
-    body:"Many careers have been changed by a single introduction — one conversation at the right moment with the right person. The opportunity wasn't planned. It wasn't on a job board. It was the result of being in the room, being memorable, and being ready. Exposure creates the conditions for what looks like luck but is really preparation meeting visibility.",
+    body:"Many careers have been changed by a single introduction, one conversation at the right moment with the right person. The opportunity wasn't planned. It wasn't on a job board. It was the result of being in the room, being memorable, and being ready. Exposure creates the conditions for what looks like luck but is really preparation meeting visibility.",
     lesson:"Relationships create momentum. Invest in them before you need them." },
   { id:"sponsor", name:"The Internal Sponsor", headline:"Say Your Ambition Out Loud",
-    body:"An employee told a senior leader directly: 'My goal is to move into strategy within the next two years.' Months later, a new role appeared. The leader remembered. The employee was recommended. No one else had made their ambition that clear. The outcome wasn't luck — it was the direct result of one clear, courageous conversation.",
+    body:"An employee told a senior leader directly: 'My goal is to move into strategy within the next two years.' Months later, a new role appeared. The leader remembered. The employee was recommended. No one else had made their ambition that clear. The outcome wasn't luck. It was the direct result of one clear, courageous conversation.",
     lesson:"People cannot support goals they don't know about. Say your ambition out loud to someone who can help." },
   { id:"network", name:"The Network Effect", headline:"Exposure Compounds",
-    body:"Person A knows 10 people. Person B knows 100 people. Person B doesn't have ten times more opportunities — they often have exponentially more. Each relationship is a node that can route opportunities in unexpected directions. The most connected professionals aren't lucky. They invest consistently in building relationships long before they need them.",
+    body:"Person A knows 10 people. Person B knows 100 people. Person B doesn't have ten times more opportunities. They often have exponentially more. Each relationship is a node that can route opportunities in unexpected directions. The most connected professionals aren't lucky. They invest consistently in building relationships long before they need them.",
     lesson:"Exposure compounds. Every relationship is a potential multiplier of opportunity." },
 ];
 
  // ── D2 shared constants (used by both desktop + mobile) ───────────────────
 
 export const D2_INSIGHT_CARDS = [
-  {word:"Attention",       sub:"A flat voice loses the room in seconds",       bullets:["The brain is wired to respond to variation. Monotone delivery is processed as low-priority — people tune out almost instantly.","Varying pace, pitch, and tone keeps the brain alert and signals that what you're saying is worth their attention."]},
-  {word:"First Impression",sub:"Your voice speaks before your words do",        bullets:["Listeners form an impression of your confidence, energy, and credibility within moments of hearing you — before your message even begins.","Delivery shapes the room. A controlled, warm voice signals authority. A rushed or flat voice signals uncertainty."]},
-  {word:"Memory",          sub:"Contrast makes ideas stick",                     bullets:["When delivery has rhythm — pauses, pace shifts, vocal emphasis — the brain finds it easier to process, store, and recall.","Information delivered in a varied, engaging voice is significantly more memorable than the same words spoken flatly."]},
-  {word:"Influence",       sub:"Same words, completely different meaning",       bullets:["The exact same sentence can sound inspiring, uncertain, authoritative, or disengaged depending entirely on how it's delivered.","Voice doesn't decorate meaning — it creates it. Mastering your delivery is mastering the impact of every word you say."]},
+  {word:"Attention",       sub:"A flat voice loses the room in seconds",       bullets:["The brain is wired to respond to variation. Monotone delivery is processed as low-priority. People tune out almost instantly.","Varying pace, pitch, and tone keeps the brain alert and signals that what you're saying is worth their attention."]},
+  {word:"First Impression",sub:"Your voice speaks before your words do",        bullets:["Listeners form an impression of your confidence, energy, and credibility within moments of hearing you, before your message even begins.","Delivery shapes the room. A controlled, warm voice signals authority. A rushed or flat voice signals uncertainty."]},
+  {word:"Memory",          sub:"Contrast makes ideas stick",                     bullets:["When delivery has rhythm - pauses, pace shifts, vocal emphasis - the brain finds it easier to process, store, and recall.","Information delivered in a varied, engaging voice is significantly more memorable than the same words spoken flatly."]},
+  {word:"Influence",       sub:"Same words, completely different meaning",       bullets:["The exact same sentence can sound inspiring, uncertain, authoritative, or disengaged depending entirely on how it's delivered.","Voice doesn't decorate meaning. It creates it. Mastering your delivery is mastering the impact of every word you say."]},
 ];

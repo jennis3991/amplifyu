@@ -129,7 +129,7 @@ export function PracticeSpace({T2, isDesktop}) {
     if (!text.trim()) return;
     setLoading(true); setSubmitError(false);
     try {
-      const res = await fetch('/api/claude', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,messages:[{role:'user',content:`Elite executive communication coach. Score this Practice Space response.\n\nScenario: "${scenario.prompt}"\nResponse: "${text}"\n\nReturn ONLY JSON: {"overall":<50-100>,"Clarity":<50-100>,"Confidence":<50-100>,"Brevity":<50-100>,"Ownership":<50-100>,"coaching":"<one specific coaching sentence referencing their actual words — not generic>"}`}]})});
+      const res = await fetch('/api/claude', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,messages:[{role:'user',content:`Elite executive communication coach. Score this Practice Space response.\n\nScenario: "${scenario.prompt}"\nResponse: "${text}"\n\nNever use em dashes anywhere in your response; use a comma or hyphen instead.\n\nReturn ONLY JSON: {"overall":<50-100>,"Clarity":<50-100>,"Confidence":<50-100>,"Brevity":<50-100>,"Ownership":<50-100>,"coaching":"<one specific coaching sentence referencing their actual words — not generic>"}`}]})});
       if (!res.ok) throw new Error('api');
       const d = await res.json();
       const raw = (d.content||[]).map(b=>b.text||'').join('').trim();
