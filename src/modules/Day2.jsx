@@ -430,6 +430,14 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       if (failed) { setTranscribeFailed(true); setPhase('recording'); return; }
       setTranscript(text);
       const m = computeMetrics(text, elapsedSec);
+      // A deliberate, slow speaker who elongates words rather than leaving
+      // hard silences will naturally register very few discrete pause
+      // events — flagging "not enough pauses" on top of "speaking too
+      // slowly" is a contradictory pair of notes for the same underlying
+      // trait, so drop the pauses flag when pace is already the focus area.
+      if (m?.paceLabel === 'slow' && signal?.pausesPerMin != null && signal.pausesPerMin < 1) {
+        signal.pausesScore = 75;
+      }
       // Combine independently — a short/failed text-metrics read (m is null
       // under 5s) must not throw away a perfectly good audio-signal read,
       // and vice versa. Previously `m ? {...m,...signal} : m` discarded
