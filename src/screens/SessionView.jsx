@@ -2406,7 +2406,14 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <StoryArchitectWidget T={T} T2={T2} isDesktop={true} onRecordingChange={setD8SimRecording}/>
+          {/* No onRecordingChange here (unlike other days' widgets): NTRightContent
+              is redefined on every SessionView render, so any prop-driven parent
+              state update while this is mounted (e.g. onRecordingChange firing when
+              phase becomes "generating") remounts this whole subtree and wipes the
+              in-flight generation — reported as "Generate My Story" bouncing back
+              to the blank brief form on desktop. Losing the brief nav-lock this
+              would have provided is the tradeoff for not resetting mid-generation. */}
+          <StoryArchitectWidget T={T} T2={T2} isDesktop={true}/>
         </div>
       );
 
