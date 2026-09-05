@@ -1152,10 +1152,15 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   const audioDataURIRef = useRef(null);
 
   useEffect(()=>{
-    window.scrollTo(0,0);
-    document.documentElement.scrollTop=0;
-    document.body.scrollTop=0;
-    try{const p=document.getElementById('au-right-panel');if(p)p.scrollTop=0;}catch(_){}
+    // Landing on the intro resets fully to the top, but stepping forward into
+    // "choose a topic" or "speak" reads as jarring if the viewport snaps all
+    // the way back up — landing partway down instead reads as a continuation
+    // of the same flow rather than a hard reset.
+    const target = (phase==='prompt' || phase==='recording') ? Math.round(window.innerHeight*0.35) : 0;
+    window.scrollTo(0,target);
+    document.documentElement.scrollTop=target;
+    document.body.scrollTop=target;
+    try{const p=document.getElementById('au-right-panel');if(p)p.scrollTop=target;}catch(_){}
   },[phase]);
 
   // Block the app's "Next"/"Review" nav while actively recording, transcribing,
