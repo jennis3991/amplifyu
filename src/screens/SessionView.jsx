@@ -180,7 +180,9 @@ setAmbitionSaved(true); } catch {}
         {STEPS.map((s, i) => {
           const done2 = i < idx;
           const active = i === idx;
-          const locked = i > idx && !isDone;
+          // Steps are always clickable — matches mobile's step arc, which
+          // has never gated navigation on isDone.
+          const locked = false;
           // Colours per state
           const circleBg    = done2 ? "#8A9E84" : active ? "#F5EFE6" : "rgba(255,255,255,0.15)";
           const circleBorder= done2 ? "#8A9E84" : active ? "#F5EFE6" : "rgba(255,255,255,0.3)";
