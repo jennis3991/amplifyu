@@ -605,11 +605,46 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
               <div style={isDesktop?{maxWidth:900,margin:"0 auto",padding:"28px 88px 60px"}:{padding:"16px 20px 40px"}}>
                 {openPracticeSub==="meeting" && (
                   <div>
-                    <div style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:isDesktop?"22px 24px":"18px 20px",marginBottom:16}}>
-                      <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:TK.sageDark,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Day 6 · High-Stakes Conversations</div>
-                      <p style={{fontFamily:T.sans,fontSize:14,color:TK.text3,lineHeight:1.7,fontWeight:300,margin:0}}>Step into a live meeting scenario — a stakeholder pushing back, a tense update, a moment that needs composure. Respond in the moment and your AI coach scores your clarity, structure and presence.</p>
+                    {/* Photo banner — same simulation-hero image and framing Day 6's own
+                        Simulation step uses, so this reads as a preview of that real
+                        moment rather than a generic placeholder. */}
+                    <div style={{position:"relative",height:200,borderRadius:10,overflow:"hidden",marginBottom:24}}>
+                      <img loading="lazy" src="/simulation-hero.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
+                      <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.15) 55%, transparent 100%)"}}/>
+                      <div style={{position:"absolute",bottom:18,left:20,right:20}}>
+                        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:TK.sage,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>AI Conversation Prep</div>
+                        <div style={{fontFamily:T.serif,fontSize:isDesktop?26:21,fontWeight:600,color:TK.onDark,lineHeight:1.2,letterSpacing:"-0.3px"}}>Prepare for the conversations that matter most.</div>
+                      </div>
                     </div>
-                    <button onClick={()=>onStartSession && onStartSession(6,"Simulation")} style={{width:"100%",padding:"15px",borderRadius:8,border:"none",background:TK.ink,color:TK.onDark,fontSize:15,fontWeight:700,cursor:"pointer"}}>Start Meeting Prep →</button>
+
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:TK.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>What To Expect</div>
+                    <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+                      {[
+                        {n:1,title:"A stakeholder pushes back",desc:"A live, unscripted moment — a tense update, a hard question, pushback you didn't plan for."},
+                        {n:2,title:"You respond in the moment",desc:"No retakes, no scripting. Speak the way you would in the real room."},
+                        {n:3,title:"Your AI coach scores it",desc:"Clarity, structure and presence, broken down immediately after you finish."},
+                      ].map(step => (
+                        <div key={step.n} style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:isDesktop?"18px 20px":"16px 18px",display:"flex",alignItems:"flex-start",gap:14}}>
+                          <div style={{width:28,height:28,borderRadius:8,background:TK.sageDark,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                            <span style={{fontSize:12,fontWeight:800,color:TK.onDark}}>{step.n}</span>
+                          </div>
+                          <div style={{flex:1}}>
+                            <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:TK.text,marginBottom:3,letterSpacing:"-0.1px"}}>{step.title}</div>
+                            <div style={{fontFamily:T.sans,fontSize:13,color:TK.text3,lineHeight:1.55}}>{step.desc}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div style={{display:"flex",gap:8,marginBottom:24,flexWrap:"wrap"}}>
+                      {["Clarity","Structure","Presence"].map(tag => (
+                        <span key={tag} style={{fontFamily:T.sans,fontSize:11,color:TK.text3,padding:"5px 14px",border:"0.5px solid "+TK.border,borderRadius:20,background:TK.bg}}>{tag}</span>
+                      ))}
+                    </div>
+
+                    <button onClick={()=>onStartSession && onStartSession(6,"Simulation")} style={{width:"100%",padding:"15px",borderRadius:8,border:"none",background:TK.ink,color:TK.onDark,fontSize:15,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+                      Start Meeting Prep <span>→</span>
+                    </button>
                   </div>
                 )}
                 {openPracticeSub==="challenge" && (
@@ -847,26 +882,39 @@ and at home.{" "}
                 )}
 
                 {openPrepSub==="phrases" && (
-                  <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                    {PHRASES.map((cat,i) => (
-                      <div key={cat.cat} style={{background:TK.surface,borderRadius:10,overflow:"hidden",border:"0.5px solid "+TK.border}}>
-                        <button onClick={()=>setOpenCat(openCat===i?-1:i)} style={{width:"100%",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center",border:"none",background:"transparent",cursor:"pointer"}}>
-                          <span style={{fontSize:15,fontWeight:600,color:TK.text}}>{cat.cat}</span>
-                          <span style={{color:TK.text3,display:"inline-block",transform:openCat===i?"rotate(90deg)":"none",transition:"transform 0.2s"}}>›</span>
-                        </button>
-                        {openCat===i && (
-                          <div style={{borderTop:"0.5px solid "+TK.border}}>
-                            {cat.phrases.map((p,pi) => (
-                              <div key={pi} style={{padding:"11px 18px",display:"flex",alignItems:"center",gap:10,borderBottom:pi<cat.phrases.length-1?"0.5px solid "+TK.border:"none"}}>
-                                <div style={{width:2,height:2,background:TK.sageDark,flexShrink:0}}/>
-                                <p style={{margin:0,flex:1,fontSize:14,color:TK.text,fontStyle:"italic"}}>{p}</p>
-                                <button onClick={()=>copy(p)} style={{padding:"4px 10px",borderRadius:8,border:"0.5px solid "+TK.border,background:"transparent",color:TK.text3,fontSize:11,cursor:"pointer"}}>{copied===p?"✓":"Copy"}</button>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                  <div style={{display:"flex",flexDirection:"column",gap:isDesktop?2:8}}>
+                    {PHRASES.map((cat,i) => {
+                      const isOpen = openCat===i;
+                      return (
+                        <div key={cat.cat} style={{border:"0.5px solid "+TK.border,borderRadius:8,overflow:"hidden",background:isOpen?TK.bg:TK.surface}}>
+                          <button onClick={()=>setOpenCat(isOpen?-1:i)} style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",padding:isDesktop?"18px 24px":"14px 18px",border:"none",background:"transparent",cursor:"pointer",textAlign:"left"}}>
+                            <div style={{display:"flex",alignItems:"center",gap:14}}>
+                              <span style={{fontFamily:T.sans,fontSize:11,color:TK.text3,fontWeight:500,width:24,flexShrink:0}}>{"0"+(i+1)}</span>
+                              <span style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:TK.text,letterSpacing:"-0.2px"}}>{cat.cat}</span>
+                            </div>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{transform:isOpen?"rotate(180deg)":"none",transition:"transform 0.2s ease",flexShrink:0}}>
+                              <path d="M3 5l4 4 4-4" stroke={TK.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          </button>
+                          {isOpen && (
+                            <div style={{borderTop:"0.5px solid "+TK.border,padding:isDesktop?"20px 24px 24px":"14px 18px 18px",display:"flex",flexDirection:"column",gap:10}}>
+                              {cat.phrases.map((p,pi) => (
+                                <div key={pi} style={{background:TK.surface,borderRadius:8,borderLeft:"2px solid "+TK.sageDark,padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
+                                  <p style={{margin:0,flex:1,fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:TK.text,lineHeight:1.5}}>"{p}"</p>
+                                  <button onClick={()=>copy(p)} aria-label="Copy" style={{width:30,height:30,borderRadius:"50%",border:"none",background:copied===p?"rgba(113,128,113,0.18)":TK.bg,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,transition:"background 0.15s"}}>
+                                    {copied===p ? (
+                                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3 6-6" stroke={TK.sageDark} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                    ) : (
+                                      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="4.5" y="4.5" width="8" height="8" rx="1.5" stroke={TK.text3} strokeWidth="1.2"/><path d="M2.5 9.5V2.5a1 1 0 011-1h7" stroke={TK.text3} strokeWidth="1.2" strokeLinecap="round"/></svg>
+                                    )}
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
 
