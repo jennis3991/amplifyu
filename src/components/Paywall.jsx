@@ -119,7 +119,7 @@ export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and be
           padding: "14px 28px calc(28px + env(safe-area-inset-bottom,0px))",
           boxSizing: "border-box",
           position: "relative",
-          animation: "pwSlideUp 0.35s cubic-bezier(0.22,0.61,0.36,1) both",
+          animation: "pwSlideUp 0.42s cubic-bezier(0.22,1,0.36,1)",
           fontFamily: T.sans,
         }}
       >
