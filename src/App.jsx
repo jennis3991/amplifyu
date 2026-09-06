@@ -260,7 +260,7 @@ dark={dark} toggleDark={toggleDark} DK={DK} isDesktop={isDesktop}/>
         
 <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes 
 slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
-        <QuickPrepFlow onBack={() => setView("main")}/>
+        <QuickPrepFlow onBack={() => setView("main")} isDesktop={isDesktop}/>
       </div>
     );
   }

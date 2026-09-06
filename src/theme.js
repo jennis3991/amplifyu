@@ -51,6 +51,23 @@ export const T = {
   accentMd: "#C4B9AC",
 };
 
+// ═══════════════════════════════════════════════════════════════════════════
+// TOOLKIT DESIGN SYSTEM — warm ivory / sage / ink editorial palette
+// Used by ToolkitScreen and the flows launched from it (Quick Prep, etc.)
+// ═══════════════════════════════════════════════════════════════════════════
+export const TK = {
+  bg:      "#F4F1EA", // Warm Ivory — main background
+  surface: "#EAE6DE", // Soft Stone — cards and containers
+  border:  "#D8D0C4", // Light Taupe — borders/dividers
+  sage:    "#A8B3A3", // Muted Sage — primary accent
+  sageDark:"#718071", // Deep Sage — stronger accent/active states
+  text:    "#242321", // Charcoal — primary text and dark icons
+  ink:     "#161513", // Soft Black — deepest contrast/navigation
+  text3:   "#958C80", // Warm Taupe Text — secondary text/metadata
+  onDark:  "#F8F6F1", // Warm Off-White — icon artwork on dark backgrounds
+  taupe:   "#B7ADA0", // Warm Taupe — icon assignment (Leadership, Personal Brand)
+};
+
 // SVG colour palette (used in diagram components)
 export const C = {
   gold:"#B79A6B", teal:"#7BA99A", red:"#C47A7A", green:"#4A9E76",

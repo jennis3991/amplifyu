@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 // (deploy retrigger touch — GitHub webhook missed the previous push)
-import { T } from '../theme.js';
+import { T, TK } from '../theme.js';
 import { FURTHER_READING, PHRASES, SAY_THIS, QUICK_PREP, DAILY_INSIGHTS, POWER_PHRASES } from '../data.js';
 import { Scene } from '../scenes.jsx';
 import { PracticeSpace } from '../modules/PracticeSpace.jsx';
@@ -99,22 +99,8 @@ const MASTER_COMMUNICATORS = [
   {emoji:"🎤",name:"Simon Sinek",role:"Master of Structure",sub:"Known for turning complex ideas into memorable frameworks. His communication is simple, organised, and impossible to forget — because he builds the idea with you, not at you.",watchFor:["Clear beginning, middle, end","Strategic repetition of key phrases","Memorable, simple language","Pauses that let ideas land"],connection:[["Day 1","Feynman Technique"],["Day 5","PRE Framework"]],reflection:"How does he make complex ideas feel inevitable and simple?"},
 ];
 
-// ─── Toolkit-only colour system — AI Tools tab + hero/tab-nav only ──────────
-// Sophisticated, understated palette (Soho House-adjacent). Deliberately not
-// the shared theme.js tokens — the other 8 Toolkit tabs keep those. No gold,
-// mustard, burgundy or terracotta anywhere in this object.
-const TK = {
-  bg:      "#F4F1EA", // Warm Ivory — main background
-  surface: "#EAE6DE", // Soft Stone — cards and containers
-  border:  "#D8D0C4", // Light Taupe — borders/dividers
-  sage:    "#A8B3A3", // Muted Sage — primary accent
-  sageDark:"#718071", // Deep Sage — stronger accent/active states
-  text:    "#242321", // Charcoal — primary text and dark icons
-  ink:     "#161513", // Soft Black — deepest contrast/navigation
-  text3:   "#958C80", // Warm Taupe Text — secondary text/metadata
-  onDark:  "#F8F6F1", // Warm Off-White — icon artwork on dark backgrounds
-  taupe:   "#B7ADA0", // Warm Taupe — icon assignment (Leadership, Personal Brand)
-};
+// TK (Toolkit colour system) now lives in theme.js so it can be shared with
+// flows launched from this screen, e.g. QuickPrepFlow.
 
 // ─── Path Detail Screen — dark header + progress card + numbered step list ──
 // Shared by all three Toolkit Paths (Promotion / Presentation / Visibility).
@@ -859,25 +845,35 @@ and at home.{" "}
 
               <div style={isDesktop?{maxWidth:900,margin:"0 auto",padding:"28px 88px 60px"}:{padding:"16px 20px 40px"}}>
                 {openPrepSub==="ritual" && (
-                  <div style={{display:"flex",flexDirection:"column",gap:10}}>
-                    {QUICK_PREP.map((s,i) => (
-                      <div key={s.num}>
-                        <div style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:"14px 18px",display:"flex",alignItems:"flex-start",gap:14}}>
-                          <div style={{width:28,height:28,borderRadius:8,background:TK.sageDark,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                            <span style={{fontSize:11,fontWeight:800,color:TK.onDark}}>{s.num}</span>
+                  <div>
+                    <div style={{position:"relative",height:200,borderRadius:10,overflow:"hidden",marginBottom:24}}>
+                      <img loading="lazy" src="/day1-lounge.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
+                      <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.15) 55%, transparent 100%)"}}/>
+                      <div style={{position:"absolute",bottom:18,left:20,right:20}}>
+                        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:TK.sage,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Pre-Meeting Ritual</div>
+                        <div style={{fontFamily:T.serif,fontSize:isDesktop?26:21,fontWeight:600,color:TK.onDark,lineHeight:1.2,letterSpacing:"-0.3px"}}>Two minutes to walk in ready.</div>
+                      </div>
+                    </div>
+
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:TK.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>The Routine</div>
+                    <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:24}}>
+                      {QUICK_PREP.map((s) => (
+                        <div key={s.num} style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:isDesktop?"18px 20px":"16px 18px",display:"flex",alignItems:"flex-start",gap:14}}>
+                          <div style={{width:28,height:28,borderRadius:8,background:TK.sageDark,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
+                            <span style={{fontSize:12,fontWeight:800,color:TK.onDark}}>{s.num}</span>
                           </div>
                           <div style={{flex:1}}>
-                            <div style={{fontSize:14,fontWeight:700,color:TK.text,marginBottom:3}}>{s.title}</div>
-                            <div style={{fontSize:13,color:TK.text3,lineHeight:1.5}}>{s.desc}</div>
+                            <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:TK.text,marginBottom:3,letterSpacing:"-0.1px"}}>{s.title}</div>
+                            <div style={{fontFamily:T.sans,fontSize:13,color:TK.text3,lineHeight:1.55}}>{s.desc}</div>
                           </div>
-                          <div style={{background:TK.bg,border:"0.5px solid "+TK.border,borderRadius:8,padding:"4px 10px"}}>
-                            <div style={{fontSize:11,fontWeight:700,color:TK.text3,fontFamily:"monospace"}}>{s.secs}s</div>
-                          </div>
+                          <div style={{fontFamily:"monospace",fontSize:11,fontWeight:700,color:TK.text3,background:TK.bg,border:"0.5px solid "+TK.border,borderRadius:8,padding:"4px 10px",flexShrink:0,marginTop:1}}>{s.secs}s</div>
                         </div>
-                        {i<QUICK_PREP.length-1 && <div style={{width:1,height:6,background:TK.border,margin:"0 auto"}}/>}
-                      </div>
-                    ))}
-                    <button onClick={onQuickPrep} style={{width:"100%",padding:"15px",borderRadius:8,border:"none",background:TK.ink,color:TK.onDark,fontSize:15,fontWeight:700,cursor:"pointer",marginTop:6}}>Start Quick Prep</button>
+                      ))}
+                    </div>
+
+                    <button onClick={onQuickPrep} style={{width:"100%",padding:"15px",borderRadius:8,border:"none",background:TK.ink,color:TK.onDark,fontSize:15,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+                      Start Quick Prep <span>→</span>
+                    </button>
                   </div>
                 )}
 
