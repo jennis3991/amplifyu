@@ -263,7 +263,7 @@ export function ToolkitScreen({onQuickPrep, onStartSession, dark=false, DK={}, i
   const [openSkillId, setOpenSkillId] = useState(null);
   const [openPrepSub, setOpenPrepSub] = useState(null);
   const [openPracticeSub, setOpenPracticeSub] = useState(null);
-  const [openCat, setOpenCat] = useState(0);
+  const [openCat, setOpenCat] = useState(-1);
   const [copied, setCopied] = useState(null);
   const [openMod, setOpenMod] = useState(null);
   const [openMasterCard, setOpenMasterCard] = useState(null);
@@ -878,7 +878,18 @@ and at home.{" "}
                 )}
 
                 {openPrepSub==="phrases" && (
-                  <div style={{display:"flex",flexDirection:"column",gap:isDesktop?2:8}}>
+                  <div>
+                    <div style={{position:"relative",height:200,borderRadius:10,overflow:"hidden",marginBottom:24}}>
+                      <img loading="lazy" src="/example-quill.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
+                      <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.15) 55%, transparent 100%)"}}/>
+                      <div style={{position:"absolute",bottom:18,left:20,right:20}}>
+                        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:TK.sage,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Phrases</div>
+                        <div style={{fontFamily:T.serif,fontSize:isDesktop?26:21,fontWeight:600,color:TK.onDark,lineHeight:1.2,letterSpacing:"-0.3px"}}>The right words, ready when you need them.</div>
+                      </div>
+                    </div>
+
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:TK.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>Browse By Moment</div>
+                    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?2:8}}>
                     {PHRASES.map((cat,i) => {
                       const isOpen = openCat===i;
                       return (
@@ -911,6 +922,7 @@ and at home.{" "}
                         </div>
                       );
                     })}
+                    </div>
                   </div>
                 )}
 
