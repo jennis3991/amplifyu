@@ -2,6 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 import { useWakeLock, localStorageUsageRatio } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
+import { Paywall } from '../components/Paywall.jsx';
+import { trialExhausted, incrementTrialCount } from '../lib/purchases.js';
+
+const REHEARSAL_TRIAL_KEY = 'au1_trial_d1_rehearsal';
+const SIMULATION_TRIAL_KEY = 'au1_trial_d1_simulation';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -620,7 +625,8 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
 
 // ─── VOICE WARM-UP — D1 Practice ─────────────────────────────────────────────
 const D1_REHEARSAL_MAX_SEC = 120;
-export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComplete }) {
+export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComplete, onEntitled }) {
+  const [showPaywall, setShowPaywall] = useState(false);
   const roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
 
   const IC_BRIEF  = <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="8" y1="12" x2="16" y2="12"/></svg>;
@@ -791,6 +797,11 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   }
 
   async function runCoach(spoken) {
+    if (trialExhausted(REHEARSAL_TRIAL_KEY)) {
+      setAnalysing(false);
+      setShowPaywall(true);
+      return;
+    }
     const topicText = TOPICS[sel].label;
     try {
       const content = spoken.length > 10
@@ -807,6 +818,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     } catch {
       setAiObs("Your voice was clear and your energy was right. That's the foundation — everything else builds from here.");
     }
+    incrementTrialCount(REHEARSAL_TRIAL_KEY);
     setAnalysing(false);
     setRecDone(true);
   }
@@ -826,6 +838,14 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   }
 
   const fmtTime = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+  if (showPaywall) return (
+    <Paywall
+      headline="You've used your free Rehearsal — subscribe to keep practicing"
+      onClose={() => setShowPaywall(false)}
+      onSubscribed={() => { onEntitled?.(); setShowPaywall(false); }}
+    />
+  );
 
   // ── Phase: select topic ───────────────────────────────────────────────────
   if (phase === 'select') return (
@@ -952,7 +972,8 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
 
 // ─── RECORD & REVIEW™ — D1 Simulation ────────────────────────────────────────
 const D1_SIMULATION_MAX_SEC = 180;
-export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) {
+export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, onEntitled}) {
+  const [showSimPaywall, setShowSimPaywall] = useState(false);
   const _roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
 
   const _WORK_BY_ROLE = {
@@ -1275,6 +1296,11 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
   }
 
   async function analyzeText(text){
+    if (trialExhausted(SIMULATION_TRIAL_KEY)) {
+      setPhase('recording');
+      setShowSimPaywall(true);
+      return;
+    }
     setPhase('analyzing');
     const isRetry=!!round1;
     const mockScores=()=>Object.fromEntries(DIMS.map(d=>[d,Math.floor(Math.random()*22)+60+(isRetry?10:0)]));
@@ -1321,6 +1347,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
       if(!isRetry){setRound1({...mock,_transcript:text});setFeedback({...mock,_transcript:text});}
       else setFeedback({...mock,_transcript:text,prev:round1});
     }
+    incrementTrialCount(SIMULATION_TRIAL_KEY);
     setPhase(isRetry?'comparison':'feedback');
   }
 
@@ -1340,6 +1367,14 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange}) 
     ghost:{width:"100%",padding:"11px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.sans,minHeight:44},
   };
   const fmtElapsed = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+  if (showSimPaywall) return (
+    <Paywall
+      headline="You've used your free Simulation — subscribe to keep practicing"
+      onClose={() => setShowSimPaywall(false)}
+      onSubscribed={() => { onEntitled?.(); setShowSimPaywall(false); }}
+    />
+  );
 
   // ── INTRO ─────────────────────────────────────────────────────────────────
   if(phase==='intro') return (

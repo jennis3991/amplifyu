@@ -56,7 +56,7 @@ const BENEFITS = [
   { icon: PersonIcon, text: "Build your personal brand and storytelling" },
 ];
 
-export function Paywall({ onClose, onSubscribed }) {
+export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and beyond" }) {
   const [status, setStatus] = useState("idle"); // idle | purchasing | restoring | subscribed | restored
   const [priceString, setPriceString] = useState("£9.99");
 
@@ -163,7 +163,7 @@ export function Paywall({ onClose, onSubscribed }) {
         <h1 style={{
           fontFamily: T.serif, fontSize: "clamp(30px, 7vw, 38px)", fontWeight: 500,
           color: CREAM, textAlign: "center", margin: "0 0 14px", lineHeight: 1.12,
-        }}>Unlock Day 2 and beyond</h1>
+        }}>{headline}</h1>
 
         {/* Subtext */}
         <p style={{

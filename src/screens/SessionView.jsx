@@ -2185,7 +2185,7 @@ setAmbitionSaved(true); } catch {}
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Simulation · Day 1</div>
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:28}}>Clarity Check-In</h2>
-          <D1SimWidget T={T} T2={T2} isDesktop={true} warmUpTopic={d1WarmUpTopic} onRecordingChange={setD1SimRecording}/>
+          <D1SimWidget T={T} T2={T2} isDesktop={true} warmUpTopic={d1WarmUpTopic} onRecordingChange={setD1SimRecording} onEntitled={() => setEntitled(true)}/>
         </div>
       );
 
@@ -4595,6 +4595,7 @@ setAmbitionSaved(true); } catch {}
                       onNavLabel={setD1NavLabel}
                       onNavFn={d1NavFnRef}
                       onComplete={(topic) => { setD1WarmUpTopic(topic); setIdx(i => i + 1); }}
+                      onEntitled={() => setEntitled(true)}
                     />
                   : isD1 ? <D1RightContent/> : isD2 ? <D2RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD6 ? <D6RightContent/> : isD7 ? <D7RightContent/> : isD11 ? <D11RightContent/> : isD12 ? <D12RightContent/> : isD13 ? <D13RightContent/> : isD14 ? <D14RightContent/> : isD10 ? <D10RightContent onRecordingChange={setD10SimRecording}/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
               </div>

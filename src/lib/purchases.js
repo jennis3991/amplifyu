@@ -20,6 +20,26 @@ export function isEntitled() {
   }
 }
 
+const FREE_TRIAL_LIMIT = 2;
+
+export function getTrialCount(key) {
+  try {
+    return parseInt(localStorage.getItem(key), 10) || 0;
+  } catch (_) {
+    return 0;
+  }
+}
+
+export function incrementTrialCount(key) {
+  try {
+    localStorage.setItem(key, String(getTrialCount(key) + 1));
+  } catch (_) {}
+}
+
+export function trialExhausted(key) {
+  return getTrialCount(key) >= FREE_TRIAL_LIMIT && !isEntitled();
+}
+
 function fetchSubscriptionProduct() {
   return NativePurchases.getProduct({
     productIdentifier: MONTHLY_PRODUCT_ID,

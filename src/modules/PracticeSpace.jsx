@@ -1,5 +1,9 @@
 import { useState, useRef } from 'react';
 import { T } from '../theme.js';
+import { Paywall } from '../components/Paywall.jsx';
+import { trialExhausted, incrementTrialCount } from '../lib/purchases.js';
+
+const CHALLENGE_TRIAL_KEY = 'au1_trial_practice_challenge';
 
 const SCENARIOS = [
   // Executive Communication
@@ -92,6 +96,7 @@ export function PracticeSpace({T2, isDesktop}) {
   const [isRec, setIsRec] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
   const [result, setResult] = useState(null);
   const [sessions, setSessions] = useState(loadSessions);
   const [streak, setStreak] = useState(loadStreak);
@@ -127,6 +132,7 @@ export function PracticeSpace({T2, isDesktop}) {
   async function submit() {
     const text = liveRef.current || transcript || fallback;
     if (!text.trim()) return;
+    if (trialExhausted(CHALLENGE_TRIAL_KEY)) { setShowPaywall(true); return; }
     setLoading(true); setSubmitError(false);
     try {
       const res = await fetch('/api/claude', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,messages:[{role:'user',content:`Elite executive communication coach. Score this Practice Space response.\n\nScenario: "${scenario.prompt}"\nResponse: "${text}"\n\nNever use em dashes anywhere in your response; use a comma or hyphen instead.\n\nReturn ONLY JSON: {"overall":<50-100>,"Clarity":<50-100>,"Confidence":<50-100>,"Brevity":<50-100>,"Ownership":<50-100>,"coaching":"<one specific coaching sentence referencing their actual words — not generic>"}`}]})});
@@ -143,6 +149,7 @@ export function PracticeSpace({T2, isDesktop}) {
       const newStreak = computeNewStreak(streak);
       setStreak(newStreak);
       setResult(parsed);
+      incrementTrialCount(CHALLENGE_TRIAL_KEY);
       setPhase('result');
     } catch { setSubmitError(true); }
     setLoading(false);
@@ -161,6 +168,14 @@ export function PracticeSpace({T2, isDesktop}) {
     catBadge: (cat) => ({fontFamily:T.sans,fontSize:10,fontWeight:500,color:CAT_COLORS[cat]||T.gold,padding:'3px 10px',border:`0.5px solid ${CAT_COLORS[cat]||T.gold}`,borderRadius:20,opacity:0.8}),
     tagBadge: {fontFamily:T.sans,fontSize:10,color:'rgba(44,36,22,0.45)',padding:'3px 10px',border:'0.5px solid rgba(44,36,22,0.12)',borderRadius:20},
   };
+
+  if (showPaywall) return (
+    <Paywall
+      headline="You've used your free Today's Challenge — subscribe to keep practicing"
+      onClose={() => setShowPaywall(false)}
+      onSubscribed={() => setShowPaywall(false)}
+    />
+  );
 
   // ── HOME ──────────────────────────────────────────────────────────────────
   if (phase === 'home') return (
