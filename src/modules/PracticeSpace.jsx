@@ -5,6 +5,15 @@ import { trialExhausted, incrementTrialCount } from '../lib/purchases.js';
 
 const CHALLENGE_TRIAL_KEY = 'au1_trial_practice_challenge';
 
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
 const SCENARIOS = [
   // Executive Communication
   {id:1,  category:"Executive",   tag:"Brevity · Clarity",         title:"The Lift Encounter",         prompt:"Your CEO stops you in the lift. 'Quick question — what's the biggest risk facing your team right now?'"},
@@ -101,36 +110,61 @@ export function PracticeSpace({T2, isDesktop}) {
   const [sessions, setSessions] = useState(loadSessions);
   const [streak, setStreak] = useState(loadStreak);
   const [histFilter, setHistFilter] = useState('All');
-  const recRef = useRef(null);
-  const liveRef = useRef('');
+  const [preparingMic, setPreparingMic] = useState(false);
+  const [micError, setMicError] = useState(false);
+  const [transcribeFailed, setTranscribeFailed] = useState(false);
+  const mediaRecRef = useRef(null);
+  const audioChunksRef = useRef([]);
 
-  const SpeechRec = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
   const today = todayStr();
   const sc = todaysScenario();
   const todayDone = sessions.some(s => s.date === today);
   const recent = sessions.slice(0, 5);
 
   function startRec() {
-    setIsRec(true); liveRef.current = ''; setTranscript('');
-    if (!SpeechRec) return;
-    const rec = new SpeechRec();
-    rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
-    rec.onresult = e => {
-      const t = Array.from(e.results).map(r => r[0].transcript).join(' ');
-      liveRef.current = t; setTranscript(t);
-    };
-    rec.onend = () => { setIsRec(false); recRef.current = null; };
-    rec.onerror = () => { setIsRec(false); recRef.current = null; };
-    recRef.current = rec; rec.start();
+    setPreparingMic(true); setMicError(false); setTranscribeFailed(false); setTranscript('');
+    if (!(navigator.mediaDevices?.getUserMedia && window.MediaRecorder)) {
+      setPreparingMic(false); setMicError(true); return;
+    }
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+      const mimeType = ['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg'].find(t => MediaRecorder.isTypeSupported(t)) || '';
+      let mr;
+      try { mr = mimeType ? new MediaRecorder(stream, { mimeType, audioBitsPerSecond: 32000 }) : new MediaRecorder(stream, { audioBitsPerSecond: 32000 }); }
+      catch { mr = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream); }
+      audioChunksRef.current = [];
+      mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+      mr.start(1000);
+      mediaRecRef.current = mr;
+      setPreparingMic(false); setIsRec(true);
+    }).catch(() => { setPreparingMic(false); setIsRec(false); setMicError(true); });
   }
 
   function stopRec() {
     setIsRec(false);
-    if (recRef.current) { recRef.current.stop(); recRef.current = null; }
+    const mr = mediaRecRef.current;
+    if (!mr || mr.state === 'inactive') return;
+    mr.onstop = async () => {
+      const blobType = mr.mimeType || 'audio/webm';
+      const blob = new Blob(audioChunksRef.current, { type: blobType });
+      mr.stream.getTracks().forEach(t => t.stop());
+      try {
+        const b64 = await blobToB64(blob);
+        const res = await fetch('/api/transcribe', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ b64, mimeType: blobType }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Transcription failed');
+        setTranscript((data.text || '').trim());
+      } catch {
+        setTranscribeFailed(true);
+      }
+    };
+    mr.stop();
   }
 
   async function submit() {
-    const text = liveRef.current || transcript || fallback;
+    const text = transcript || fallback;
     if (!text.trim()) return;
     if (trialExhausted(CHALLENGE_TRIAL_KEY)) { setShowPaywall(true); return; }
     setLoading(true); setSubmitError(false);
@@ -156,11 +190,11 @@ export function PracticeSpace({T2, isDesktop}) {
   }
 
   function goChallenge(sc) {
-    setScenario(sc); setTranscript(''); setFallback(''); setResult(null); liveRef.current = ''; setPhase('challenge');
+    setScenario(sc); setTranscript(''); setFallback(''); setResult(null); setMicError(false); setTranscribeFailed(false); setPhase('challenge');
   }
 
   function goHome() {
-    setPhase('home'); setScenario(null); setResult(null); setTranscript(''); setFallback(''); liveRef.current = '';
+    setPhase('home'); setScenario(null); setResult(null); setTranscript(''); setFallback('');
   }
 
   const cs = {
@@ -253,25 +287,31 @@ export function PracticeSpace({T2, isDesktop}) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?21:18,fontWeight:600,color:'rgba(255,255,255,0.92)',lineHeight:1.4,margin:0}}>"{scenario.prompt}"</p>
       </div>
 
-      {SpeechRec && (
-        <div style={{textAlign:'center',marginBottom:16}}>
-          <button onClick={isRec?stopRec:startRec} style={{width:64,height:64,borderRadius:'50%',border:`2px solid ${isRec?'#8A9E84':'rgba(44,36,22,0.15)'}`,background:isRec?'rgba(138,158,132,0.1)':'transparent',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 8px',transition:'all 0.2s'}}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={isRec?'#8A9E84':'rgba(44,36,22,0.35)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="9" y="2" width="6" height="11" rx="3"/>
-              <path d="M5 10a7 7 0 0 0 14 0"/>
-              <line x1="12" y1="19" x2="12" y2="22"/>
-              <line x1="9" y1="22" x2="15" y2="22"/>
-            </svg>
-          </button>
-          <div style={{fontFamily:T.sans,fontSize:12,color:isRec?'#8A9E84':'rgba(44,36,22,0.35)'}}>{isRec?'Recording — tap to stop':'Tap to speak'}</div>
+      <div style={{textAlign:'center',marginBottom:16}}>
+        <button onClick={preparingMic?undefined:(isRec?stopRec:startRec)} disabled={preparingMic} style={{width:64,height:64,borderRadius:'50%',border:`2px solid ${isRec?'#8A9E84':'rgba(44,36,22,0.15)'}`,background:isRec?'rgba(138,158,132,0.1)':'transparent',cursor:preparingMic?'default':'pointer',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 8px',transition:'all 0.2s'}}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={isRec?'#8A9E84':'rgba(44,36,22,0.35)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="9" y="2" width="6" height="11" rx="3"/>
+            <path d="M5 10a7 7 0 0 0 14 0"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+            <line x1="9" y1="22" x2="15" y2="22"/>
+          </svg>
+        </button>
+        <div style={{fontFamily:T.sans,fontSize:12,color:isRec?'#8A9E84':'rgba(44,36,22,0.35)'}}>
+          {preparingMic ? 'Preparing microphone…' : isRec ? 'Recording — tap to stop' : 'Tap to speak'}
+        </div>
+      </div>
+
+      {(micError || transcribeFailed) && (
+        <div style={{marginBottom:12,padding:'12px 14px',background:'rgba(180,60,60,0.07)',border:'0.5px solid rgba(180,60,60,0.2)',borderRadius:4,fontFamily:T.sans,fontSize:12,color:'#8B3A3A',textAlign:'center'}}>
+          {micError ? 'Check your microphone permission, or type your response below.' : "We couldn't quite hear that — type your response below, or tap the mic to try again."}
         </div>
       )}
 
-      <textarea value={transcript||fallback} onChange={e=>{setFallback(e.target.value);setTranscript('');liveRef.current='';}}
+      <textarea value={transcript||fallback} onChange={e=>{setFallback(e.target.value);setTranscript('');}}
         placeholder="Respond clearly and confidently — aim for 30 to 60 seconds."
         style={{width:'100%',borderRadius:4,border:'0.5px solid #DDD5C4',padding:'12px 14px',fontSize:14,fontFamily:T.sans,resize:'none',height:130,boxSizing:'border-box',background:'rgba(247,243,236,0.8)',outline:'none',marginBottom:12}}/>
 
-      <button onClick={submit} disabled={loading||(!transcript.trim()&&!fallback.trim()&&!liveRef.current.trim())}
+      <button onClick={submit} disabled={loading||(!transcript.trim()&&!fallback.trim())}
         style={{width:'100%',padding:'14px',borderRadius:4,border:'none',background:loading||(!transcript.trim()&&!fallback.trim())?'#DDD5C4':'#2C2416',color:loading||(!transcript.trim()&&!fallback.trim())?'#6B5E44':'#F7F3EC',fontSize:14,fontWeight:600,cursor:loading||(!transcript.trim()&&!fallback.trim())?'not-allowed':'pointer',fontFamily:T.sans,minHeight:48}}>
         {loading?'Coaching in progress…':'Get Coached →'}
       </button>
