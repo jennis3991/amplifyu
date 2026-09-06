@@ -2,6 +2,7 @@ import { StrictMode, Component } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import { registerSW } from "./pwa.js";
+import { initPurchases } from "./lib/purchases.js";
 
 // Inject x-access-code header on every /api/ request so server-side
 // validation can reject unauthenticated callers.
@@ -39,3 +40,4 @@ createRoot(document.getElementById("root")).render(
 );
 
 registerSW();
+initPurchases();
