@@ -46,11 +46,31 @@ activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
   const reviewPanelRef = useRef(null);
   const getTtsText = () => [extractReadableText(leftPanelWrapRef.current), extractReadableText(rightPanelRef.current)].filter(Boolean).join('. ');
   useEffect(() => {
+    // This hook runs unconditionally (hooks can't be conditional), but its
+    // targets (rightPanelRef/reviewPanelRef) are desktop-only DOM nodes —
+    // when rendering the mobile branch, MobileSessionView owns scroll reset
+    // instead (with its own, longer scroll-behavior override window below).
+    // Without this guard, both effects fire on the same idx change and race
+    // on the shared document.documentElement.style.scrollBehavior override,
+    // corrupting each other's "previous value" restore.
+    if (!isDesktop) return;
+    // Same scoped scroll-behavior override as SessionViewMobile's step reset
+    // — index.html sets `scroll-behavior: smooth` globally, which would
+    // otherwise turn this instant top-reset into a visible animated glide.
+    const prevScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = "auto";
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
     if (rightPanelRef.current) rightPanelRef.current.scrollTop = 0;
     if (reviewPanelRef.current) reviewPanelRef.current.scrollTop = 0;
+    const restoreScrollBehavior = requestAnimationFrame(() => {
+      document.documentElement.style.scrollBehavior = prevScrollBehavior;
+    });
+    return () => {
+      cancelAnimationFrame(restoreScrollBehavior);
+      document.documentElement.style.scrollBehavior = prevScrollBehavior;
+    };
   }, [idx]);
   const [selSc, setSelSc] = useState(0);
   const [checks, setChecks] = useState({});

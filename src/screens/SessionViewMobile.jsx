@@ -112,6 +112,16 @@ export function MobileSessionView({
   const [swipeHint, setSwipeHint] = useState(() => { try { return !localStorage.getItem('au_swipe_hint_seen'); } catch { return true; } });
   const [swipeHintVisible, setSwipeHintVisible] = useState(true);
   useEffect(() => {
+    // index.html sets `scroll-behavior: smooth` globally. Left in place, each
+    // of the repeated resets below animates instead of snapping, and since
+    // WKWebView momentum can shove the position away between corrections,
+    // the visible result is a jarring multi-stage glide rather than a single
+    // instant reset. Force instant scrolling just for this correction
+    // window, then hand `scroll-behavior` back to the CSS default — this
+    // must stay scoped here, not touch the global rule, so user-initiated
+    // smooth scrolling elsewhere (e.g. Home's "Journey" link) is unaffected.
+    const prevScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = "auto";
     const reset = () => {
       window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;
@@ -127,7 +137,15 @@ export function MobileSessionView({
     // past when swipe momentum decays — so the step reliably opens at top.
     const raf = requestAnimationFrame(reset);
     const timeouts = [60, 150, 300, 500].map(ms => setTimeout(reset, ms));
-    return () => { cancelAnimationFrame(raf); timeouts.forEach(clearTimeout); };
+    const restoreScrollBehavior = setTimeout(() => {
+      document.documentElement.style.scrollBehavior = prevScrollBehavior;
+    }, 520);
+    return () => {
+      cancelAnimationFrame(raf);
+      timeouts.forEach(clearTimeout);
+      clearTimeout(restoreScrollBehavior);
+      document.documentElement.style.scrollBehavior = prevScrollBehavior;
+    };
   }, [idx]);
 
   useEffect(() => {

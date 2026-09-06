@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { T, S, SI } from "../theme.js";
 import { getSubscriptionProduct, purchaseSubscription, restorePurchases } from "../lib/purchases.js";
 
@@ -100,13 +101,20 @@ export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and be
   const busy = status === "purchasing" || status === "restoring";
   const done = status === "subscribed" || status === "restored";
 
-  return (
+  // Rendered via portal straight into <body>: this component is mounted deep
+  // inside per-step wrappers that briefly animate their own `transform`
+  // (e.g. SessionViewMobile's tabFadeIn) on every step change. Per the CSS
+  // spec, an ancestor with an active transform becomes the containing block
+  // for `position: fixed` descendants, so without the portal this sheet's
+  // fixed positioning briefly binds to that small animating wrapper instead
+  // of the viewport, leaving the real screen fully visible behind it for a
+  // frame. The portal sidesteps that ancestry entirely.
+  return createPortal(
     <div
       style={{
         position: "fixed", inset: 0, zIndex: 400,
         background: "rgba(10,8,5,0.6)",
         display: "flex", alignItems: "flex-end", justifyContent: "center",
-        animation: "pwFadeIn 0.25s ease both",
       }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}
     >
@@ -215,7 +223,7 @@ export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and be
             marginBottom: 16,
           }}
         >
-          {status === "purchasing" ? "Processing…" : status === "subscribed" ? "Subscribed ✓" : "Subscribe Now"}
+          {status === "purchasing" ? "Processing…" : status === "subscribed" ? "Subscribed ✓" : "Continue your journey"}
         </button>
 
         {/* Footer */}
@@ -234,9 +242,9 @@ export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and be
       </div>
 
       <style>{`
-        @keyframes pwFadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes pwSlideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
       `}</style>
-    </div>
+    </div>,
+    document.body
   );
 }
