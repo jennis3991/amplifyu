@@ -168,6 +168,9 @@ setAmbitionSaved(true); } catch {}
     ? ["Insight","Theory","Example","Rehearsal","Simulation","Review"]
     : SESSION_STEPS;
   const step = STEPS[idx];
+  // Day 2's Simulation is the paywall trigger; every step of every day after
+  // that is fully premium.
+  const requiresEntitlement = lesson.day > 2 || (lesson.day === 2 && step === "Simulation");
 
  // ── D1 shared constants (used by both desktop and mobile) ─────────────────
 
@@ -2749,13 +2752,6 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Simulation" && !entitled) return (
-        <Paywall
-          onClose={() => setIdx(STEPS.indexOf("Rehearsal"))}
-          onSubscribed={() => setEntitled(true)}
-        />
-      );
-
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Simulation · Day 2</div>
@@ -4589,7 +4585,12 @@ setAmbitionSaved(true); } catch {}
                 </div>
               )}
               <div style={{ position: "relative", zIndex: 1 }}>
-                {isD1 && step === "Rehearsal"
+                {requiresEntitlement && !entitled
+                  ? <Paywall
+                      onClose={() => isD2 ? setIdx(STEPS.indexOf("Rehearsal")) : onBack()}
+                      onSubscribed={() => setEntitled(true)}
+                    />
+                  : isD1 && step === "Rehearsal"
                   ? <D1WarmUpWidget key="d1-warmup" T={T} T2={T2} isDesktop={true}
                       onNavLabel={setD1NavLabel}
                       onNavFn={d1NavFnRef}
@@ -4721,7 +4722,7 @@ setAmbitionSaved(true); } catch {}
   return (
     <MobileSessionView
       T2={T2} step={step} STEPS={STEPS} idx={idx} setIdx={setIdx} dark={dark} toggleDark={toggleDark}
-      entitled={entitled} onEntitled={() => setEntitled(true)}
+      entitled={entitled} onEntitled={() => setEntitled(true)} requiresEntitlement={requiresEntitlement}
       lesson={lesson} isDone={isDone} onComplete={onComplete} onBack={onBack} onExitToTab={onExitToTab} onExitClick={handleExit}
       isD1={isD1} isD2={isD2} isD3={isD3} isD4={isD4} isD5={isD5}
       isD6={isD6} isD7={isD7} isD9={isD9} isD10={isD10} isD11={isD11} isD12={isD12} isD13={isD13} isD14={isD14} isNT={isNT}

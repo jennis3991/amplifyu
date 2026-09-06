@@ -51,7 +51,7 @@ function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
 
 export function MobileSessionView({
   T2, step, STEPS, idx, setIdx, dark, toggleDark, lesson, isDone, onComplete, onBack, onExitToTab, onExitClick,
-  entitled, onEntitled,
+  entitled, onEntitled, requiresEntitlement,
   isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isD14, isNT,
   selSc, setSelSc, exitConfirm, setExitConfirm,
   accordionOpen, setAccordionOpen,
@@ -509,6 +509,13 @@ T.goldDark : T2.text4,
       {/* Read-aloud reads only this inner region — excludes the Previous/Next
           nav buttons below, which are siblings outside this div. */}
       <div ref={ttsBodyRef} style={{display:'contents'}}>
+       {requiresEntitlement && !entitled ? (
+        <Paywall
+          onClose={() => isD2 ? setIdx(STEPS.indexOf("Rehearsal")) : onBack()}
+          onSubscribed={onEntitled}
+        />
+       ) : (
+       <>
        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
       {isD10 && step==="Insight" && (
         <>
@@ -2019,13 +2026,7 @@ T.goldDark : T2.text4,
           <D2PracticeWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
-      {isD2 && step==="Simulation" && !entitled && (
-        <Paywall
-          onClose={() => setIdx(STEPS.indexOf("Rehearsal"))}
-          onSubscribed={onEntitled}
-        />
-      )}
-      {isD2 && step==="Simulation" && entitled && (
+      {isD2 && step==="Simulation" && (
         <>
           <D2SimWidget T={T} T2={T2} isDesktop={false} onRecordingChange={setD2SimRecording}/>
         </>
@@ -3130,6 +3131,8 @@ strokeLinecap="round"/></svg>
           })()}
         </>
       )}
+       </>
+       )}
       </div>
        {/* Navigation */}
       <div style={{display:"flex",gap:10,paddingBottom:8,paddingTop:6}}>
