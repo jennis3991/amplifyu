@@ -915,21 +915,39 @@ and at home.{" "}
                 )}
 
                 {openPrepSub==="language" && (
-                  <div style={{display:"flex",flexDirection:"column",gap:10}}>
-                    {SAY_THIS.map((item,i) => (
-                      <div key={i} style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:"16px 18px"}}>
-                        <div style={{fontSize:10,fontWeight:700,color:TK.text3,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>{item.ctx}</div>
-                        <div style={{display:"flex",gap:8,marginBottom:8}}>
-                          <span style={{fontSize:14,flexShrink:0,color:TK.text3}}>✕</span>
-                          <p style={{margin:0,fontSize:14,color:TK.text3,textDecoration:"line-through"}}>{item.bad}</p>
-                        </div>
-                        <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                          <span style={{fontSize:14,flexShrink:0,color:TK.sageDark}}>✓</span>
-                          <p style={{margin:0,flex:1,fontSize:14,color:TK.sageDark,fontWeight:600,fontStyle:"italic"}}>{item.good}</p>
-                          <button onClick={()=>copy(item.good)} style={{padding:"5px 12px",borderRadius:8,border:"0.5px solid "+TK.border,background:"transparent",color:TK.text3,fontSize:11,cursor:"pointer"}}>{copied===item.good?"✓":"Copy"}</button>
-                        </div>
+                  <div>
+                    <div style={{position:"relative",height:200,borderRadius:10,overflow:"hidden",marginBottom:24}}>
+                      <img loading="lazy" src="/review-chair.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
+                      <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.88) 0%, rgba(10,8,5,0.15) 55%, transparent 100%)"}}/>
+                      <div style={{position:"absolute",bottom:18,left:20,right:20}}>
+                        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:TK.sage,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Language Upgrade</div>
+                        <div style={{fontFamily:T.serif,fontSize:isDesktop?26:21,fontWeight:600,color:TK.onDark,lineHeight:1.2,letterSpacing:"-0.3px"}}>Say it like you mean it.</div>
                       </div>
-                    ))}
+                    </div>
+
+                    <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:TK.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>The Upgrade</div>
+                    <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                      {SAY_THIS.map((item,i) => (
+                        <div key={i} style={{background:TK.surface,borderRadius:10,border:"0.5px solid "+TK.border,padding:isDesktop?"20px 22px":"16px 18px"}}>
+                          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:TK.sageDark,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>{item.ctx}</div>
+                          <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10}}>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{flexShrink:0,marginTop:4}}><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke={TK.text3} strokeWidth="1.4" strokeLinecap="round"/></svg>
+                            <p style={{margin:0,fontFamily:T.sans,fontSize:14,color:TK.text3,textDecoration:"line-through",lineHeight:1.5}}>{item.bad}</p>
+                          </div>
+                          <div style={{display:"flex",alignItems:"center",gap:10}}>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{flexShrink:0}}><path d="M2 6.5l2.5 2.5L10 3" stroke={TK.sageDark} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            <p style={{margin:0,flex:1,fontFamily:T.serif,fontSize:16,fontStyle:"italic",color:TK.text,lineHeight:1.5}}>"{item.good}"</p>
+                            <button onClick={()=>copy(item.good)} aria-label="Copy" style={{width:30,height:30,borderRadius:"50%",border:"none",background:copied===item.good?"rgba(113,128,113,0.18)":TK.bg,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,transition:"background 0.15s"}}>
+                              {copied===item.good ? (
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3 6-6" stroke={TK.sageDark} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                              ) : (
+                                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="4.5" y="4.5" width="8" height="8" rx="1.5" stroke={TK.text3} strokeWidth="1.2"/><path d="M2.5 9.5V2.5a1 1 0 011-1h7" stroke={TK.text3} strokeWidth="1.2" strokeLinecap="round"/></svg>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
 
