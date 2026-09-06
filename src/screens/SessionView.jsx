@@ -33,10 +33,13 @@ import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 import { getScenariosForDay, getPIEEmphasis } from '../utils.js';
 import { D7SimWidget, D7PracticeWidget } from '../modules/Day7.jsx';
 import { SavedResultSection } from '../modules/SavedResultCard.jsx';
+import { Paywall } from '../components/Paywall.jsx';
+import { isEntitled } from '../lib/purchases.js';
 
 export function SessionView({lesson, isDone, onComplete, onBack, onExitToTab, roleId,
 activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
+  const [entitled, setEntitled] = useState(() => isEntitled());
   const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory","Example","Rehearsal","Simulation","Review"]:["Insight","Theory","Example","Rehearsal","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
   const rightPanelRef = useRef(null);
   const leftPanelWrapRef = useRef(null);
@@ -2746,6 +2749,13 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
+      if (step === "Simulation" && !entitled) return (
+        <Paywall
+          onClose={() => setIdx(STEPS.indexOf("Rehearsal"))}
+          onSubscribed={() => setEntitled(true)}
+        />
+      );
+
       if (step === "Simulation") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Simulation · Day 2</div>
@@ -4711,6 +4721,7 @@ setAmbitionSaved(true); } catch {}
   return (
     <MobileSessionView
       T2={T2} step={step} STEPS={STEPS} idx={idx} setIdx={setIdx} dark={dark} toggleDark={toggleDark}
+      entitled={entitled} onEntitled={() => setEntitled(true)}
       lesson={lesson} isDone={isDone} onComplete={onComplete} onBack={onBack} onExitToTab={onExitToTab} onExitClick={handleExit}
       isD1={isD1} isD2={isD2} isD3={isD3} isD4={isD4} isD5={isD5}
       isD6={isD6} isD7={isD7} isD9={isD9} isD10={isD10} isD11={isD11} isD12={isD12} isD13={isD13} isD14={isD14} isNT={isNT}

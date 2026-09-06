@@ -26,6 +26,7 @@ import { Scene, OBScene } from '../scenes.jsx';
 import { Timer } from '../components/Timer.jsx';
 import { PBar } from '../components/NavComponents.jsx';
 import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
+import { Paywall } from '../components/Paywall.jsx';
 
 function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
   return (
@@ -50,6 +51,7 @@ function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
 
 export function MobileSessionView({
   T2, step, STEPS, idx, setIdx, dark, toggleDark, lesson, isDone, onComplete, onBack, onExitToTab, onExitClick,
+  entitled, onEntitled,
   isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isD14, isNT,
   selSc, setSelSc, exitConfirm, setExitConfirm,
   accordionOpen, setAccordionOpen,
@@ -2017,7 +2019,13 @@ T.goldDark : T2.text4,
           <D2PracticeWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}
-      {isD2 && step==="Simulation" && (
+      {isD2 && step==="Simulation" && !entitled && (
+        <Paywall
+          onClose={() => setIdx(STEPS.indexOf("Rehearsal"))}
+          onSubscribed={onEntitled}
+        />
+      )}
+      {isD2 && step==="Simulation" && entitled && (
         <>
           <D2SimWidget T={T} T2={T2} isDesktop={false} onRecordingChange={setD2SimRecording}/>
         </>
