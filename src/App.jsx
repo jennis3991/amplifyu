@@ -16,6 +16,7 @@ import { Onboarding } from "./screens/Onboarding.jsx";
 import { FloatingNav, TabBar } from "./components/NavComponents.jsx";
 import { Celebrate } from "./components/Confetti.jsx";
 import { AccessGate } from "./components/AccessGate.jsx";
+import { Paywall } from "./components/Paywall.jsx";
 
 // ── UpdateBanner ─────────────────────────────────────────────────────────────
 // Listens for 'sw-update-available' and renders a slim fixed bottom banner.
@@ -202,6 +203,12 @@ lsSet("au1_dark",d); }
 
   // Speech test route — bypass all app state
   if (window.location.pathname === '/speech-test') return <SpeechTest />;
+
+  // Paywall test route — bypass all app state, for manually previewing the
+  // Day 2 Simulation paywall before the real entitlement gate is wired up.
+  if (window.location.pathname === '/paywall-test') {
+    return <Paywall onClose={() => { window.location.href = '/'; }} />;
+  }
 
   // Reflection screen — check FIRST, before the !boarded onboarding check
   if (reflectionData) {
