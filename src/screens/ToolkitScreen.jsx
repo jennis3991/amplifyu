@@ -4,6 +4,7 @@ import { T, TK } from '../theme.js';
 import { FURTHER_READING, PHRASES, SAY_THIS, QUICK_PREP, DAILY_INSIGHTS, POWER_PHRASES } from '../data.js';
 import { Scene } from '../scenes.jsx';
 import { PracticeSpace } from '../modules/PracticeSpace.jsx';
+import { StoryReel, DEFAULT_STORY_SCENES } from '../components/StoryReel.jsx';
 
 // ─── My Saved Work — aggregates every day's saved-results store into one list ──
 // Two localStorage keys hold everything: au1_stories (Day 8's two sources) and
@@ -724,16 +725,9 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
       })()}
       {tab==="story" && (
         <div style={{padding:"16px 20px 0",display:"flex",flexDirection:"column",gap:0}}>
-          {/* Header card */}
-          <div style={{background:T.cardDark,borderRadius:2,padding:"22px 24px",marginBottom:16,position:"relative",overflow:"hidden"}}>
-            <div 
-style={{position:"absolute",top:-10,right:10,fontSize:90,lineHeight:1,color:"rgba(255,255,255,0.04)",fontFamily:T.serif}}>"</div>
-            <div 
-style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:2,marginBottom:8}}>The 
-story behind AmplifyU</div>
-            <h2 
-style={{fontFamily:T.serif,fontSize:20,fontWeight:700,color:"white",lineHeight:1.25,marginBottom:0}}>Built 
-in the margins.<br/>For everyone in the margins.</h2>
+          {/* Story reel — opens into the founder's story, scene by scene */}
+          <div style={{marginBottom:16}}>
+            <StoryReel scenes={DEFAULT_STORY_SCENES} coverImage="/founder-photo.jpg" />
           </div>
           {/* Story body */}
           <div 
