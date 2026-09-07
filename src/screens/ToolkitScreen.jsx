@@ -727,7 +727,7 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
         <div style={{padding:"16px 20px 0",display:"flex",flexDirection:"column",gap:0}}>
           {/* Story reel — opens into the founder's story, scene by scene */}
           <div style={{marginBottom:16}}>
-            <StoryReel scenes={DEFAULT_STORY_SCENES} coverImage="/founder-photo.jpg" />
+            <StoryReel scenes={DEFAULT_STORY_SCENES} coverImage="/founder-photo.jpg" caption="Here's my story, crafted with my own AmplifyU Speechwriter." />
           </div>
           {/* Story body */}
           <div 

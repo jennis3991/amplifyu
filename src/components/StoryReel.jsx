@@ -83,11 +83,14 @@ function useSceneProgress(activeScene, durationMs, isRunning, onComplete) {
   return progress;
 }
 
-// Fades its children in (opacity + slight upward translate) on every mount —
-// pair with `key={activeScene}` so it remounts, and re-fades, per scene.
+// Turns its children in like a book page on every mount — pair with
+// `key={activeScene}` so it remounts, and re-turns, per scene. Hinges on the
+// left edge for forward navigation (page turning away to the right) and the
+// right edge for backward (turning back in from the left), like an actual
+// page-flip rather than a generic crossfade.
 // `children` may be a render function `(shown) => node` so a nested element
 // (the emotion pill) can key its own, separately-delayed fade off the same flag.
-function SceneFade({ children, reducedMotion }) {
+function ScenePage({ children, reducedMotion, direction = 1 }) {
   const [shown, setShown] = useState(reducedMotion);
   useEffect(() => {
     if (reducedMotion) { setShown(true); return; }
@@ -96,11 +99,13 @@ function SceneFade({ children, reducedMotion }) {
     const raf1 = requestAnimationFrame(() => { raf2 = requestAnimationFrame(() => setShown(true)); });
     return () => { cancelAnimationFrame(raf1); if (raf2) cancelAnimationFrame(raf2); };
   }, [reducedMotion]);
+  const hiddenRotate = direction >= 0 ? 'rotateY(-90deg)' : 'rotateY(90deg)';
   return (
     <div style={{
+      transformOrigin: direction >= 0 ? 'left center' : 'right center',
+      transform: shown ? 'rotateY(0deg)' : hiddenRotate,
       opacity: shown ? 1 : 0,
-      transform: shown ? 'translateY(0)' : 'translateY(10px)',
-      transition: reducedMotion ? 'none' : 'opacity 260ms ease, transform 260ms ease',
+      transition: reducedMotion ? 'none' : 'transform 420ms cubic-bezier(.22,.68,.32,1), opacity 200ms ease',
     }}>
       {typeof children === 'function' ? children(shown) : children}
     </div>
@@ -122,15 +127,23 @@ function CloseIcon() {
   return <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1.5 1.5l11 11M12.5 1.5l-11 11" stroke={CREAM} strokeWidth="1.6" strokeLinecap="round" /></svg>;
 }
 
-export function StoryReel({ scenes, coverImage, backgroundImage = '/d8-story-book.jpg' }) {
+export function StoryReel({ scenes, coverImage, backgroundImage = '/d8-story-book.jpg', caption }) {
   const reducedMotion = usePrefersReducedMotion();
   const [isOpen, setIsOpen] = useState(false);
   const [activeScene, setActiveScene] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const total = scenes.length;
   const scene = scenes[activeScene];
 
-  function goTo(i) { setActiveScene(((i % total) + total) % total); }
+  function goTo(i) {
+    const wrapped = ((i % total) + total) % total;
+    // Which way the page should turn — forward unless this is clearly a
+    // step back (adjacent-index prev, or wrap-around prev from scene 1).
+    const isPrevStep = wrapped === activeScene - 1 || (activeScene === 0 && wrapped === total - 1 && i < 0);
+    setDirection(isPrevStep ? -1 : 1);
+    setActiveScene(wrapped);
+  }
   function next() { goTo(activeScene + 1); }
   function prev() { goTo(activeScene - 1); }
 
@@ -163,6 +176,11 @@ export function StoryReel({ scenes, coverImage, backgroundImage = '/d8-story-boo
           <span style={{ fontFamily: FONT_SANS, fontSize: 11, letterSpacing: '2.5px', textTransform: 'uppercase', color: 'rgba(240,235,226,0.55)' }}>
             Tap to play
           </span>
+          {caption && (
+            <p style={{ fontFamily: FONT_SERIF, fontSize: 14, fontStyle: 'italic', color: 'rgba(240,235,226,0.7)', margin: '4px 0 0', maxWidth: 320 }}>
+              {caption}
+            </p>
+          )}
         </div>
       </button>
     );
@@ -217,8 +235,8 @@ export function StoryReel({ scenes, coverImage, backgroundImage = '/d8-story-boo
           </button>
         </div>
 
-        <div className="story-reel-content" style={{ flex: 1, background: CREAM, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <SceneFade key={activeScene} reducedMotion={reducedMotion}>
+        <div className="story-reel-content" style={{ flex: 1, background: CREAM, display: 'flex', flexDirection: 'column', justifyContent: 'center', perspective: 1200 }}>
+          <ScenePage key={activeScene} reducedMotion={reducedMotion} direction={direction}>
             {(shown) => (
               <>
                 <div style={{ fontFamily: FONT_SANS, fontSize: 11, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(26,23,20,0.42)', marginBottom: 12 }}>
@@ -242,7 +260,7 @@ export function StoryReel({ scenes, coverImage, backgroundImage = '/d8-story-boo
                 </span>
               </>
             )}
-          </SceneFade>
+          </ScenePage>
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 24, pointerEvents: 'auto' }}>
             <button onClick={prev} style={{
