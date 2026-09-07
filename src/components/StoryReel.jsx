@@ -85,27 +85,34 @@ function useSceneProgress(activeScene, durationMs, isRunning, onComplete) {
   return progress;
 }
 
-// Turns its children in like a book page turning right-to-left on every
-// mount — pair with `key` so it remounts, and re-turns, on each change.
+// Reveals its children with a solid wipe that slides off to the left on
+// every mount — pair with `key` so it remounts, and re-wipes, on each
+// change. The new content is rendered in its final position from the very
+// first frame; an opaque panel (matching the content pane's own background)
+// sits on top and translates off-screen left, so the reveal boundary sweeps
+// right-to-left. Just a translateX under the hood — no perspective/rotation,
+// so it stays smooth even on lower-power devices.
 // `children` may be a render function `(shown) => node` so a nested element
 // (the emotion pill) can key its own, separately-delayed fade off the same flag.
 function ScenePage({ children, reducedMotion }) {
-  const [shown, setShown] = useState(reducedMotion);
+  const [swept, setSwept] = useState(reducedMotion);
   useEffect(() => {
-    if (reducedMotion) { setShown(true); return; }
-    setShown(false);
+    if (reducedMotion) { setSwept(true); return; }
+    setSwept(false);
     let raf2;
-    const raf1 = requestAnimationFrame(() => { raf2 = requestAnimationFrame(() => setShown(true)); });
+    const raf1 = requestAnimationFrame(() => { raf2 = requestAnimationFrame(() => setSwept(true)); });
     return () => { cancelAnimationFrame(raf1); if (raf2) cancelAnimationFrame(raf2); };
   }, [reducedMotion]);
   return (
-    <div style={{
-      transformOrigin: 'left center',
-      transform: shown ? 'rotateY(0deg)' : 'rotateY(-90deg)',
-      opacity: shown ? 1 : 0,
-      transition: reducedMotion ? 'none' : 'transform 1250ms cubic-bezier(.22,.68,.32,1), opacity 450ms ease',
-    }}>
-      {typeof children === 'function' ? children(shown) : children}
+    <div style={{ position: 'relative' }}>
+      {typeof children === 'function' ? children(swept) : children}
+      {!reducedMotion && (
+        <div aria-hidden="true" style={{
+          position: 'absolute', inset: 0, background: CREAM, pointerEvents: 'none',
+          transform: swept ? 'translateX(-100%)' : 'translateX(0%)',
+          transition: 'transform 750ms cubic-bezier(.65,0,.35,1)',
+        }} />
+      )}
     </div>
   );
 }
@@ -255,7 +262,7 @@ export function StoryReel({
           </button>
         </div>
 
-        <div className="story-reel-content" style={{ flex: 1, background: CREAM, display: 'flex', flexDirection: 'column', justifyContent: 'center', perspective: 1200 }}>
+        <div className="story-reel-content" style={{ flex: 1, background: CREAM, display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
           {!started ? (
             <ScenePage key="intro" reducedMotion={reducedMotion}>
               {() => (
