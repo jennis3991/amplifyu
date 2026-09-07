@@ -23,12 +23,14 @@ const STYLE_TAG = `
 .story-reel-content { padding: 28px 24px 24px; }
 .story-reel-quote { font-size: 20px; }
 .story-reel-cover-title { font-size: 24px; }
+.story-reel-segment { height: 2px; border-radius: 1px; }
 @media (min-width: 720px) {
   .story-reel-body { flex-direction: row; }
   .story-reel-media { flex: 0 0 42%; }
   .story-reel-content { padding: 44px 48px; }
   .story-reel-quote { font-size: 27px; }
   .story-reel-cover-title { font-size: 32px; }
+  .story-reel-segment { height: 3px; border-radius: 2px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .story-reel-kenburns, .story-reel-pulse { animation: none !important; }
@@ -83,14 +85,11 @@ function useSceneProgress(activeScene, durationMs, isRunning, onComplete) {
   return progress;
 }
 
-// Turns its children in like a book page on every mount — pair with
-// `key={activeScene}` so it remounts, and re-turns, per scene. Hinges on the
-// left edge for forward navigation (page turning away to the right) and the
-// right edge for backward (turning back in from the left), like an actual
-// page-flip rather than a generic crossfade.
+// Turns its children in like a book page turning right-to-left on every
+// mount — pair with `key` so it remounts, and re-turns, on each change.
 // `children` may be a render function `(shown) => node` so a nested element
 // (the emotion pill) can key its own, separately-delayed fade off the same flag.
-function ScenePage({ children, reducedMotion, direction = 1 }) {
+function ScenePage({ children, reducedMotion }) {
   const [shown, setShown] = useState(reducedMotion);
   useEffect(() => {
     if (reducedMotion) { setShown(true); return; }
@@ -99,13 +98,12 @@ function ScenePage({ children, reducedMotion, direction = 1 }) {
     const raf1 = requestAnimationFrame(() => { raf2 = requestAnimationFrame(() => setShown(true)); });
     return () => { cancelAnimationFrame(raf1); if (raf2) cancelAnimationFrame(raf2); };
   }, [reducedMotion]);
-  const hiddenRotate = direction >= 0 ? 'rotateY(-90deg)' : 'rotateY(90deg)';
   return (
     <div style={{
-      transformOrigin: direction >= 0 ? 'left center' : 'right center',
-      transform: shown ? 'rotateY(0deg)' : hiddenRotate,
+      transformOrigin: 'left center',
+      transform: shown ? 'rotateY(0deg)' : 'rotateY(-90deg)',
       opacity: shown ? 1 : 0,
-      transition: reducedMotion ? 'none' : 'transform 420ms cubic-bezier(.22,.68,.32,1), opacity 200ms ease',
+      transition: reducedMotion ? 'none' : 'transform 1250ms cubic-bezier(.22,.68,.32,1), opacity 450ms ease',
     }}>
       {typeof children === 'function' ? children(shown) : children}
     </div>
@@ -127,27 +125,31 @@ function CloseIcon() {
   return <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1.5 1.5l11 11M12.5 1.5l-11 11" stroke={CREAM} strokeWidth="1.6" strokeLinecap="round" /></svg>;
 }
 
-export function StoryReel({ scenes, coverImage, backgroundImage = '/d8-story-book.jpg', caption }) {
+export function StoryReel({
+  scenes, coverImage, backgroundImage = '/d8-story-book.jpg', caption,
+  mediaEyebrow, mediaHeadline, introHeadline, introSubhead,
+}) {
   const reducedMotion = usePrefersReducedMotion();
   const [isOpen, setIsOpen] = useState(false);
+  // When an introHeadline is given, the reel opens on a title card first —
+  // otherwise it drops straight into scene 0, same as before.
+  const [started, setStarted] = useState(!introHeadline);
   const [activeScene, setActiveScene] = useState(0);
-  const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const total = scenes.length;
   const scene = scenes[activeScene];
 
-  function goTo(i) {
-    const wrapped = ((i % total) + total) % total;
-    // Which way the page should turn — forward unless this is clearly a
-    // step back (adjacent-index prev, or wrap-around prev from scene 1).
-    const isPrevStep = wrapped === activeScene - 1 || (activeScene === 0 && wrapped === total - 1 && i < 0);
-    setDirection(isPrevStep ? -1 : 1);
-    setActiveScene(wrapped);
-  }
+  function goTo(i) { setActiveScene(((i % total) + total) % total); }
   function next() { goTo(activeScene + 1); }
   function prev() { goTo(activeScene - 1); }
+  function begin() { setStarted(true); }
+  function close() {
+    setIsOpen(false);
+    setStarted(!introHeadline);
+    setActiveScene(0);
+  }
 
-  const isRunning = isOpen && !isPaused && !reducedMotion;
+  const isRunning = isOpen && started && !isPaused && !reducedMotion;
   const progress = useSceneProgress(activeScene, SCENE_MS, isRunning, next);
 
   function pauseOn() { setIsPaused(true); }
@@ -198,26 +200,30 @@ export function StoryReel({ scenes, coverImage, backgroundImage = '/d8-story-boo
     >
       <style>{STYLE_TAG}</style>
 
-      {/* Segmented progress bar */}
-      <div style={{ display: 'flex', gap: 4, padding: '14px 16px 0', position: 'relative', zIndex: 2 }}>
+      {/* Segmented progress bar — thinner on mobile than desktop (see
+          .story-reel-segment). Inactive (empty) while the title card shows.
+          The button keeps a taller invisible tap target via padding so the
+          thin bar itself doesn't shrink the touch area. */}
+      <div style={{ display: 'flex', gap: 4, padding: '11px 16px 0', position: 'relative', zIndex: 2 }}>
         {scenes.map((_, i) => (
-          <button key={i} onClick={() => goTo(i)} aria-label={`Go to scene ${i + 1}: ${scenes[i].title}`} style={{
-            flex: 1, height: 3, borderRadius: 2, background: 'rgba(240,235,226,0.28)',
-            border: 'none', padding: 0, cursor: 'pointer', overflow: 'hidden',
+          <button key={i} onClick={() => started && goTo(i)} aria-label={`Go to scene ${i + 1}: ${scenes[i].title}`} style={{
+            flex: 1, background: 'transparent', border: 'none', padding: '6px 0', cursor: started ? 'pointer' : 'default',
           }}>
-            <div style={{
-              height: '100%', borderRadius: 2, background: SAGE,
-              width: i < activeScene ? '100%' : i > activeScene ? '0%' : `${(reducedMotion ? 1 : progress) * 100}%`,
-              transition: reducedMotion || i === activeScene ? 'none' : 'width 150ms ease',
-            }} />
+            <div className="story-reel-segment" style={{ background: 'rgba(240,235,226,0.28)', overflow: 'hidden' }}>
+              <div className="story-reel-segment" style={{
+                background: SAGE,
+                width: !started ? '0%' : i < activeScene ? '100%' : i > activeScene ? '0%' : `${(reducedMotion ? 1 : progress) * 100}%`,
+                transition: reducedMotion || i === activeScene ? 'none' : 'width 150ms ease',
+              }} />
+            </div>
           </button>
         ))}
       </div>
 
       {/* Tap zones — bottom layer, so real controls (which set pointerEvents:auto) win over them */}
       <div style={{ position: 'absolute', inset: 0, display: 'flex', zIndex: 1 }}>
-        <button onClick={prev} aria-label="Previous scene" style={{ flex: 1, background: 'transparent', border: 'none', cursor: 'pointer' }} />
-        <button onClick={next} aria-label="Next scene" style={{ flex: 1, background: 'transparent', border: 'none', cursor: 'pointer' }} />
+        <button onClick={started ? prev : undefined} aria-label={started ? 'Previous scene' : 'Story intro'} style={{ flex: 1, background: 'transparent', border: 'none', cursor: started ? 'pointer' : 'default' }} />
+        <button onClick={started ? next : begin} aria-label={started ? 'Next scene' : 'Begin story'} style={{ flex: 1, background: 'transparent', border: 'none', cursor: 'pointer' }} />
       </div>
 
       <div className="story-reel-body" style={{ position: 'relative', zIndex: 2, pointerEvents: 'none' }}>
@@ -225,8 +231,22 @@ export function StoryReel({ scenes, coverImage, backgroundImage = '/d8-story-boo
           <img loading="lazy" src={backgroundImage} alt="" className={reducedMotion ? '' : 'story-reel-kenburns'} style={{
             position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover',
           }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(26,23,20,0.15) 0%, rgba(26,23,20,0.55) 100%)' }} />
-          <button onClick={() => setIsOpen(false)} aria-label="Close story" style={{
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(26,23,20,0.1) 0%, rgba(26,23,20,0.7) 100%)' }} />
+          {(mediaEyebrow || mediaHeadline) && (
+            <div style={{ position: 'absolute', bottom: 18, left: 20, right: 20 }}>
+              {mediaEyebrow && (
+                <div style={{ fontFamily: FONT_SANS, fontSize: 10, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(168,179,163,0.9)', marginBottom: 8 }}>
+                  {mediaEyebrow}
+                </div>
+              )}
+              {mediaHeadline && (
+                <div style={{ fontFamily: FONT_SERIF, fontWeight: 600, color: CREAM, fontSize: 21, lineHeight: 1.2, letterSpacing: '-0.2px' }}>
+                  {mediaHeadline}
+                </div>
+              )}
+            </div>
+          )}
+          <button onClick={close} aria-label="Close story" style={{
             position: 'absolute', top: 14, right: 14, width: 30, height: 30, borderRadius: '50%',
             border: 'none', background: 'rgba(26,23,20,0.5)', cursor: 'pointer', pointerEvents: 'auto',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -236,42 +256,68 @@ export function StoryReel({ scenes, coverImage, backgroundImage = '/d8-story-boo
         </div>
 
         <div className="story-reel-content" style={{ flex: 1, background: CREAM, display: 'flex', flexDirection: 'column', justifyContent: 'center', perspective: 1200 }}>
-          <ScenePage key={activeScene} reducedMotion={reducedMotion} direction={direction}>
-            {(shown) => (
-              <>
-                <div style={{ fontFamily: FONT_SANS, fontSize: 11, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(26,23,20,0.42)', marginBottom: 12 }}>
-                  Scene {activeScene + 1} of {total} · {scene.title}
-                </div>
-                <h3 className="story-reel-quote" style={{ fontFamily: FONT_SERIF, fontWeight: 600, color: INK, margin: '0 0 16px', lineHeight: 1.25, letterSpacing: '-0.2px' }}>
-                  "{scene.quote}"
-                </h3>
-                <p style={{ fontFamily: FONT_SANS, fontSize: 14.5, color: 'rgba(26,23,20,0.72)', lineHeight: 1.7, margin: '0 0 20px' }}>
-                  {scene.body}
-                </p>
-                <span style={{
-                  display: 'inline-block', fontFamily: FONT_SANS, fontSize: 11, fontWeight: 700, letterSpacing: '1.5px',
-                  textTransform: 'uppercase', color: SAGE, background: 'rgba(107,124,110,0.14)', border: '1px solid rgba(107,124,110,0.3)',
-                  borderRadius: 20, padding: '6px 14px',
-                  opacity: shown ? 1 : 0,
-                  transform: shown ? 'scale(1)' : 'scale(0.85)',
-                  transition: reducedMotion ? 'none' : 'opacity 260ms ease 160ms, transform 260ms ease 160ms',
-                }}>
-                  {scene.emotion}
-                </span>
-              </>
-            )}
-          </ScenePage>
+          {!started ? (
+            <ScenePage key="intro" reducedMotion={reducedMotion}>
+              {() => (
+                <>
+                  <h3 className="story-reel-quote" style={{ fontFamily: FONT_SERIF, fontWeight: 600, color: INK, margin: '0 0 10px', lineHeight: 1.28, letterSpacing: '-0.2px' }}>
+                    {introHeadline}
+                  </h3>
+                  {introSubhead && (
+                    <p style={{ fontFamily: FONT_SANS, fontSize: 13, color: 'rgba(26,23,20,0.5)', margin: 0 }}>
+                      {introSubhead}
+                    </p>
+                  )}
+                </>
+              )}
+            </ScenePage>
+          ) : (
+            <ScenePage key={activeScene} reducedMotion={reducedMotion}>
+              {(shown) => (
+                <>
+                  <div style={{ fontFamily: FONT_SANS, fontSize: 11, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(26,23,20,0.42)', marginBottom: 12 }}>
+                    Scene {activeScene + 1} of {total} · {scene.title}
+                  </div>
+                  <h3 className="story-reel-quote" style={{ fontFamily: FONT_SERIF, fontWeight: 600, color: INK, margin: '0 0 16px', lineHeight: 1.25, letterSpacing: '-0.2px' }}>
+                    "{scene.quote}"
+                  </h3>
+                  <p style={{ fontFamily: FONT_SANS, fontSize: 14.5, color: 'rgba(26,23,20,0.72)', lineHeight: 1.7, margin: '0 0 20px' }}>
+                    {scene.body}
+                  </p>
+                  <span style={{
+                    display: 'inline-block', fontFamily: FONT_SANS, fontSize: 11, fontWeight: 700, letterSpacing: '1.5px',
+                    textTransform: 'uppercase', color: SAGE, background: 'rgba(107,124,110,0.14)', border: '1px solid rgba(107,124,110,0.3)',
+                    borderRadius: 20, padding: '6px 14px',
+                    opacity: shown ? 1 : 0,
+                    transform: shown ? 'scale(1)' : 'scale(0.85)',
+                    transition: reducedMotion ? 'none' : 'opacity 260ms ease 160ms, transform 260ms ease 160ms',
+                  }}>
+                    {scene.emotion}
+                  </span>
+                </>
+              )}
+            </ScenePage>
+          )}
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 24, pointerEvents: 'auto' }}>
-            <button onClick={prev} style={{
-              background: 'none', border: 'none', cursor: 'pointer', fontFamily: FONT_SANS, fontSize: 13,
-              fontWeight: 600, color: INK, padding: '6px 0',
-            }}>← Previous</button>
-            <span style={{ fontFamily: FONT_SANS, fontSize: 12, color: 'rgba(26,23,20,0.4)' }}>Scene {activeScene + 1} of {total}</span>
-            <button onClick={next} style={{
-              background: 'none', border: 'none', cursor: 'pointer', fontFamily: FONT_SANS, fontSize: 13,
-              fontWeight: 600, color: INK, padding: '6px 0',
-            }}>Next →</button>
+            {started ? (
+              <>
+                <button onClick={prev} style={{
+                  background: 'none', border: 'none', cursor: 'pointer', fontFamily: FONT_SANS, fontSize: 13,
+                  fontWeight: 600, color: INK, padding: '6px 0',
+                }}>← Previous</button>
+                <span style={{ fontFamily: FONT_SANS, fontSize: 12, color: 'rgba(26,23,20,0.4)' }}>Scene {activeScene + 1} of {total}</span>
+                <button onClick={next} style={{
+                  background: 'none', border: 'none', cursor: 'pointer', fontFamily: FONT_SANS, fontSize: 13,
+                  fontWeight: 600, color: INK, padding: '6px 0',
+                }}>Next →</button>
+              </>
+            ) : (
+              <button onClick={begin} style={{
+                marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', fontFamily: FONT_SANS, fontSize: 13,
+                fontWeight: 600, color: INK, padding: '6px 0',
+              }}>Begin →</button>
+            )}
           </div>
         </div>
       </div>

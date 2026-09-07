@@ -727,7 +727,15 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
         <div style={{padding:"16px 20px 0",display:"flex",flexDirection:"column",gap:0}}>
           {/* Story reel — opens into the founder's story, scene by scene */}
           <div style={{marginBottom:16}}>
-            <StoryReel scenes={DEFAULT_STORY_SCENES} coverImage="/founder-photo.jpg" caption="Here's my story, crafted with my own AmplifyU Speechwriter." />
+            <StoryReel
+              scenes={DEFAULT_STORY_SCENES}
+              coverImage="/founder-photo.jpg"
+              caption="Here's my story, crafted with my own AmplifyU Speechwriter."
+              mediaEyebrow="The Story Architect"
+              mediaHeadline="Build a story that moves people."
+              introHeadline="A working mother rebuilding her career through deliberate communication practice"
+              introSubhead="Communication multiplies everything else"
+            />
           </div>
           {/* Story body */}
           <div 
