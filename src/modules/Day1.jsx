@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
-import { useWakeLock, localStorageUsageRatio } from '../utils.js';
+import { useWakeLock, localStorageUsageRatio, useOnlineStatus } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { Paywall } from '../components/Paywall.jsx';
 import { trialExhausted, incrementTrialCount } from '../lib/purchases.js';
@@ -678,10 +678,12 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   const [recDone, setRecDone] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [aiObs, setAiObs] = useState(null);
+  const [coachOffline, setCoachOffline] = useState(false);
   const [analysing, setAnalysing] = useState(false);
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
   const [fallbackText, setFallbackText] = useState('');
+  const online = useOnlineStatus();
   const timerRef = useRef(null);
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -689,7 +691,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   // Wire bottom nav
   useEffect(() => {
     if (phase === 'record') {
-      if (aiObs) {
+      if (aiObs || coachOffline) {
         onNavLabel("Start Simulation");
         onNavFn.current = () => onComplete(TOPICS[sel].label);
       } else if (analysing || isRec) {
@@ -704,7 +706,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       onNavLabel(null);
       onNavFn.current = null;
     }
-  }, [phase, sel, aiObs, analysing, isRec]);
+  }, [phase, sel, aiObs, coachOffline, analysing, isRec]);
 
   // Stop any in-flight recording if the widget unmounts (e.g. user swipes away mid-recording)
   useEffect(() => {
@@ -745,6 +747,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     setRecDone(false);
     setElapsed(0);
     setAiObs(null);
+    setCoachOffline(false);
     setAnalysing(false);
     setMicError(false);
     setTranscribeFailed(false);
@@ -802,6 +805,14 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       setShowPaywall(true);
       return;
     }
+    // Offline: don't burn a free attempt or fake a coaching response — the
+    // warm-up itself doesn't need a connection, only this feedback step does.
+    if (!online) {
+      setCoachOffline(true);
+      setAnalysing(false);
+      setRecDone(true);
+      return;
+    }
     const topicText = TOPICS[sel].label;
     try {
       const content = spoken.length > 10
@@ -815,10 +826,17 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       const d = await res.json();
       const obs = (d.content || []).map(b => b.text || '').join('').trim();
       setAiObs(obs || "Your voice was clear and your energy was right. That's the foundation — everything else builds from here.");
+      incrementTrialCount(REHEARSAL_TRIAL_KEY);
     } catch {
-      setAiObs("Your voice was clear and your energy was right. That's the foundation — everything else builds from here.");
+      // Connection could have dropped mid-request even though the check
+      // above passed — re-check rather than assume it was a genuine API error.
+      if (online) {
+        setAiObs("Your voice was clear and your energy was right. That's the foundation — everything else builds from here.");
+        incrementTrialCount(REHEARSAL_TRIAL_KEY);
+      } else {
+        setCoachOffline(true);
+      }
     }
-    incrementTrialCount(REHEARSAL_TRIAL_KEY);
     setAnalysing(false);
     setRecDone(true);
   }
@@ -913,6 +931,21 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
           <div style={{ width: 36, height: 36, border: "2px solid #DDD5C4", borderTop: "2px solid #8A9E84", borderRadius: "50%", margin: "0 auto 16px", animation: "d1spin 0.8s linear infinite" }} />
           <p style={{ fontFamily: T.sans, fontSize: 14, color: "#A8998A", margin: 0 }}>Your coach is listening…</p>
         </div>
+      ) : recDone && coachOffline ? (
+        <div style={{ background: "#F0EBE2", borderRadius: 8, padding: "24px 24px 22px", border: "0.5px solid #DDD5C4" }}>
+          <div style={{ fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: "#8A9E84", textTransform: "uppercase", letterSpacing: "2px", marginBottom: 14 }}>You're Offline</div>
+          <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 19 : 17, color: "#2C2416", lineHeight: 1.72, margin: "0 0 16px" }}>
+            Coaching feedback needs a connection, so we couldn't listen back this time — but your warm-up still counts.
+          </p>
+          <div style={{ height: "0.5px", background: "#DDD5C4", marginBottom: 16 }} />
+          <button onClick={() => onComplete(TOPICS[sel].label)} style={{
+            width: "100%", padding: "13px 20px", borderRadius: 4, border: "none",
+            background: "linear-gradient(135deg, #8A9E84 0%, #527060 100%)",
+            color: "white", fontFamily: T.sans, fontSize: 15, fontWeight: 600, cursor: "pointer",
+          }}>
+            Start Simulation →
+          </button>
+        </div>
       ) : recDone && aiObs ? (
         <div style={{ background: "#F0EBE2", borderRadius: 8, padding: "24px 24px 22px", border: "0.5px solid #DDD5C4" }}>
           <div style={{ fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 14 }}>Your AmplifyU Coach</div>
@@ -954,7 +987,9 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
           {!isRec && (micError || transcribeFailed) && (
             <div style={{ width: "100%", marginTop: 4, padding: "16px 18px", background: "#F0EBE2", borderRadius: 8, border: "0.5px solid #DDD5C4" }}>
               <p style={{ fontFamily: T.sans, fontSize: 13, color: "#6B5E44", lineHeight: 1.6, margin: "0 0 10px" }}>
-                {micError ? "We couldn't access your microphone. Check your permissions, or type your response instead." : "We couldn't quite hear that. Try again, or type your response instead."}
+                {micError
+                  ? (online ? "We couldn't access your microphone. Check your permissions, or type your response instead." : "You're offline — voice practice needs a connection. Type your response instead.")
+                  : "We couldn't quite hear that. Try again, or type your response instead."}
               </p>
               <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{ width: "100%", minHeight: 80, background: "transparent", border: "none", borderBottom: "0.5px solid #DDD5C4", padding: "8px 0", fontFamily: T.sans, fontSize: 13, color: "#2C2416", resize: "none", outline: "none", lineHeight: 1.6, boxSizing: "border-box" }}/>
               {fallbackText.trim().length > 10 && (
@@ -1063,6 +1098,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
   const [hoveredDim, setHoveredDim] = useState(null);
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
+  const online = useOnlineStatus();
 
   // ── My Saved Results — shares the au1_toolkits store with Day 2/8/11, but
   // this source (voice-analysis-day1) is capped and listed independently.
@@ -1570,8 +1606,8 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
       {/* Text fallback — only surfaces on genuine mic/transcription failure */}
       {!isRec && (micError || transcribeFailed) && (
         <div style={cs.card}>
-          <div style={cs.label}>{micError ? "Microphone unavailable" : "We couldn't quite hear that"}</div>
-          <p style={{...cs.body,marginBottom:10}}>{micError ? "Check your microphone permission, or type your response instead." : "Type your response instead, or tap Start Recording to try again."}</p>
+          <div style={cs.label}>{micError ? (online ? "Microphone unavailable" : "You're offline") : "We couldn't quite hear that"}</div>
+          <p style={{...cs.body,marginBottom:10}}>{micError ? (online ? "Check your microphone permission, or type your response instead." : "Voice practice needs a connection. Type your response instead.") : "Type your response instead, or tap Start Recording to try again."}</p>
           <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Write what you'd say for 90–120 seconds…" style={{width:"100%",minHeight:120,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
           {fallback.trim().length>15 && <button onClick={()=>{setMicError(false);setTranscribeFailed(false);analyzeText(fallback);}} style={{...cs.cta,marginTop:14}}>Analyse My Response →</button>}
         </div>
