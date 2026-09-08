@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useWakeLock } from '../utils.js';
+import { useWakeLock, useOnlineStatus } from '../utils.js';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -228,6 +228,7 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
   ];
 
   const [phase, setPhase] = useState('intro');
+  const online = useOnlineStatus();
   const [exOpen, setExOpen] = useState(false);
   const [char, setChar] = useState(null);
   const [isRec, setIsRec] = useState(false);
@@ -341,7 +342,11 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
     return h;
   }
 
+  // Returns null on failure (offline or request error) instead of fabricating
+  // a character reply — the caller ends the roleplay early rather than
+  // putting words in the character's mouth.
   async function callCharacter(sysPrompt, userText){
+    if(!online) return null;
     try{
       const res=await fetch('/api/claude',{
         method:'POST', headers:{'Content-Type':'application/json'},
@@ -364,7 +369,7 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
       }
       return{response:response||raw, quality};
     }catch(_){
-      return{response:'Interesting. Continue.', quality:'adequate'};
+      return null;
     }
   }
 
@@ -426,9 +431,10 @@ Return ONLY valid JSON:
     if(turn<3){
       setPhase('thinking');
       const hist=buildHistory(turn);
-      const {response,quality}=await callCharacter(char.sysPrompt(hist), transcript);
-      charResponsesRef.current[turn-1]=response;
-      qualitiesRef.current[turn-1]=quality;
+      const result=await callCharacter(char.sysPrompt(hist), transcript);
+      if(!result){ setPhase('connectionDropped'); return; }
+      charResponsesRef.current[turn-1]=result.response;
+      qualitiesRef.current[turn-1]=result.quality;
       turnRef.current=turn+1;
       setPhase('turn'+(turn+1));
     } else {
@@ -661,6 +667,25 @@ Return ONLY valid JSON:
       <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,margin:0,textAlign:'center'}}>
         {phase==='thinking'?`${char?.label} is considering your response…`:'Your coach is reviewing the full conversation…'}
       </p>
+    </div>
+  );
+
+  // ── CONNECTION DROPPED ── previously faked the character's reply here
+  // ({response:'Interesting. Continue.'}) and kept the roleplay going as if
+  // nothing happened. Now ends the roleplay honestly instead of putting
+  // words in the character's mouth.
+  if(phase==='connectionDropped') return(
+    <div style={cs.card}>
+      <div style={cs.label}>{online ? "Something Went Wrong" : "You're Offline"}</div>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:'0 0 8px'}}>
+        {online
+          ? `We lost the thread of your conversation with ${char?.label||'your character'} — rather than guess how they'd respond, we've ended the roleplay here.`
+          : `Roleplay needs a connection, so we've ended it here rather than guess how ${char?.label||'your character'} would respond.`}
+      </p>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:'0 0 16px'}}>
+        You completed {turnRef.current} of 3 turns.
+      </p>
+      <button onClick={()=>{resetSession();setChar(null);setPhase('select');}} style={cs.cta}>Choose a Character</button>
     </div>
   );
 
