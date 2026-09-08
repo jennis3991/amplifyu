@@ -2,11 +2,25 @@ export const config = { maxDuration: 30 };
 
 function validateAccessCode(req) {
   const expected = process.env.ACCESS_CODE || process.env.VITE_ACCESS_CODE || "";
+  const provided = req.headers["x-access-code"] || "";
+  // TEMPORARY DEBUG — diagnosing a persistent 401 on this route. Logs
+  // presence/length only, never the actual secret values. Remove once
+  // the mismatch is found.
+  console.log(
+    "[auth-debug]",
+    "ACCESS_CODE set:", process.env.ACCESS_CODE !== undefined,
+    "| ACCESS_CODE length:", (process.env.ACCESS_CODE || "").length,
+    "| VITE_ACCESS_CODE set:", process.env.VITE_ACCESS_CODE !== undefined,
+    "| VITE_ACCESS_CODE length:", (process.env.VITE_ACCESS_CODE || "").length,
+    "| header present:", Object.prototype.hasOwnProperty.call(req.headers, "x-access-code"),
+    "| provided length:", provided.length,
+    "| expected length:", expected.length,
+    "| match:", provided === expected
+  );
   if (!expected) {
     console.error("[auth] ACCESS_CODE env var is not set — /api/transcribe is OPEN to all callers");
     return true;
   }
-  const provided = req.headers["x-access-code"] || "";
   return provided === expected;
 }
 
