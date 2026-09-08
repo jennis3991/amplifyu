@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { applyUpdate } from "./pwa.js";
 import { T } from "./theme.js";
 import { LESSONS, ROLES } from "./data.js";
-import { useIsDesktop, getStreak, ls, lsSet, getPieceInfo } from "./utils.js";
+import { useIsDesktop, useOnlineStatus, getStreak, ls, lsSet, getPieceInfo } from "./utils.js";
 import { SpeechTest } from "./screens/SpeechTest.jsx";
 import { SessionView } from "./screens/SessionView.jsx";
 import { HomeScreen } from "./screens/HomeScreen.jsx";
@@ -92,6 +92,42 @@ function UpdateBanner() {
       >
         ×
       </button>
+    </div>
+  );
+}
+
+// ── OfflineBanner ────────────────────────────────────────────────────────────
+// navigator.onLine only reflects the device's network interface (e.g. flips
+// off in airplane mode) — lesson content is bundled locally and always
+// readable, but every AI feature (Simulation, Rehearsal, transcription,
+// LinkedIn analysis, Speech Writer) needs a live connection, so this makes
+// that limitation visible instead of letting those actions fail silently.
+function OfflineBanner() {
+  const online = useOnlineStatus();
+  if (online) return null;
+  return (
+    <div style={{
+      position: "fixed",
+      top: "env(safe-area-inset-top, 0px)",
+      left: "50%",
+      transform: "translateX(-50%)",
+      zIndex: 9999,
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      background: "#2C2416",
+      color: "#F7F3EC",
+      padding: "9px 16px",
+      borderRadius: "0 0 8px 8px",
+      boxShadow: "0 4px 24px rgba(44,36,22,0.35)",
+      fontFamily: "'Inter',-apple-system,sans-serif",
+      fontSize: 12.5,
+      fontWeight: 500,
+      lineHeight: 1.4,
+      maxWidth: "calc(100vw - 32px)",
+      textAlign: "center",
+    }}>
+      You're offline — lessons still work, but AI coaching needs a connection
     </div>
   );
 }
@@ -244,6 +280,7 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
     return (
       <div style={wrapStyle}>
         <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
+        <OfflineBanner />
         {cel && <Celebrate day={cel} rankUp={rankUp} onClose={() => { setCel(null); setRankUp(null); setView("main"); setTab("home"); }}/>}
         {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole} inSession={view==="session"} onExitToTab={(t)=>{setTab(t);setView("main");}} day={selDay}/>}
         <SessionView lesson={LESSONS[Math.min(selDay-1,13)]}
@@ -260,6 +297,7 @@ dark={dark} toggleDark={toggleDark} DK={DK} isDesktop={isDesktop}/>
         
 <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes 
 slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
+        <OfflineBanner />
         <QuickPrepFlow onBack={() => setView("main")} isDesktop={isDesktop}/>
       </div>
     );
@@ -272,6 +310,7 @@ style={Object.assign({},wrapStyle,{display:"flex",flexDirection:"column",height:
 <style>{`*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{-webkit-font-smoothing:antialiased;}body{background:#F7F3EC;}::-webkit-scrollbar{display:none;}button{cursor:pointer;font-family:inherit;}@keyframes 
 slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
       <UpdateBanner />
+      <OfflineBanner />
       {cel && <Celebrate day={cel} rankUp={rankUp} onClose={() => { setCel(null); setRankUp(null); }}/>}
       {confirmReset && (
         <div 

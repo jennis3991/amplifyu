@@ -87,6 +87,24 @@ export function useIsMobile() {
   return v;
 }
 
+// navigator.onLine reflects the device's network interface state (e.g. flips
+// false in airplane mode) — it does not confirm the AI backend is actually
+// reachable, only that there's no point attempting a request at all.
+export function useOnlineStatus() {
+  const [online, setOnline] = useState(() => typeof navigator === "undefined" || navigator.onLine);
+  useEffect(() => {
+    const goOnline = () => setOnline(true);
+    const goOffline = () => setOnline(false);
+    window.addEventListener("online", goOnline);
+    window.addEventListener("offline", goOffline);
+    return () => {
+      window.removeEventListener("online", goOnline);
+      window.removeEventListener("offline", goOffline);
+    };
+  }, []);
+  return online;
+}
+
 
 // ─── THEORY DIAGRAMS 
 

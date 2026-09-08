@@ -3,8 +3,9 @@
   "appName": "AmplifyU",
   "webDir": "dist",
   "server": {
-    "url": "https://amplifyu.vercel.app",
-    "cleartext": false
+    "hostname": "localhost",
+    "iosScheme": "https",
+    "androidScheme": "https"
   },
   "ios": {
     "contentInset": "never",
