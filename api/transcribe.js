@@ -10,12 +10,50 @@ function validateAccessCode(req) {
   return provided === expected;
 }
 
+// ── CORS allow-list ──────────────────────────────────────────────────────────
+// https://localhost is the native app's own origin post the local-bundle
+// switch (WKWebView serves the app from https://localhost, not the old
+// remote Vercel URL) — it must stay on this list or the native app's own
+// calls break. https://amplifyu.vercel.app is the origin for anyone using
+// the site directly in a browser.
+const ALLOWED_ORIGINS = ["https://localhost", "https://amplifyu.vercel.app"];
+
+// ── Rate limiting ────────────────────────────────────────────────────────────
+// Best-effort, in-memory per-IP limiter — no Redis/KV needed at this app's
+// scale. It only tracks requests seen by whichever serverless instance
+// handles them (resets on cold start, isn't a hard global cap under heavy
+// horizontal scaling), but it's enough to stop a single client — or a
+// leaked access code — hammering this endpoint.
+// 40/min: transcription is called once per recording, and some lesson steps
+// (multi-turn scenarios) record several times in a row; each Whisper call
+// is also cheaper than a full Claude generation. 40 covers a heavy
+// multi-recording session with retries while still blocking abuse.
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 40;
+const rateLimitBuckets = new Map();
+
+function isRateLimited(req) {
+  const ip = (req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "unknown").split(",")[0].trim();
+  const now = Date.now();
+  const bucket = rateLimitBuckets.get(ip);
+  if (!bucket || now > bucket.resetAt) {
+    rateLimitBuckets.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+  bucket.count++;
+  return bucket.count > RATE_LIMIT_MAX;
+}
+
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  const origin = req.headers.origin;
+  res.setHeader("Vary", "Origin");
+  if (origin && !ALLOWED_ORIGINS.includes(origin)) return res.status(403).json({ error: "Origin not allowed" });
+  if (origin) res.setHeader("Access-Control-Allow-Origin", origin);
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-access-code");
   if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  if (isRateLimited(req)) return res.status(429).json({ error: "Too many requests. Please try again shortly." });
   if (!validateAccessCode(req)) return res.status(401).json({ error: "Unauthorized" });
 
   const apiKey = process.env.OPENAI_KEY;
