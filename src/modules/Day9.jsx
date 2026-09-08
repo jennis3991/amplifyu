@@ -377,6 +377,7 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
     const c=char;
     const t=transcriptsRef.current;
     const q=qualitiesRef.current;
+    if(!online) return false;
     try{
       const res=await fetch('/api/claude',{
         method:'POST', headers:{'Content-Type':'application/json'},
@@ -413,15 +414,11 @@ Return ONLY valid JSON:
       const data=await res.json();
       const raw=(data.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
-      if(m) setDebrief(JSON.parse(m[0]));
-      else throw new Error('no json');
+      if(!m) throw new Error('no json');
+      setDebrief(JSON.parse(m[0]));
+      return true;
     }catch(_){
-      setDebrief({
-        overall:65,
-        scores:{[char.scoreLabels[0]]:68,[char.scoreLabels[1]]:65,[char.scoreLabels[2]]:62},
-        insight:'You engaged with the scenario and showed a willingness to adapt across the conversation. The clearest growth area is leading with your main point — every response, without exception.',
-        quote:'Adaptability is not about changing who you are. It\'s about understanding who you\'re talking to.'
-      });
+      return false;
     }
   }
 
@@ -439,8 +436,8 @@ Return ONLY valid JSON:
       setPhase('turn'+(turn+1));
     } else {
       setPhase('analyzing');
-      await runDebrief();
-      setPhase('debrief');
+      const ok = await runDebrief();
+      setPhase(ok ? 'debrief' : 'debriefFailed');
     }
   }
 
@@ -686,6 +683,15 @@ Return ONLY valid JSON:
         You completed {turnRef.current} of 3 turns.
       </p>
       <button onClick={()=>{resetSession();setChar(null);setPhase('select');}} style={cs.cta}>Choose a Character</button>
+    </div>
+  );
+
+  // ── DEBRIEF FAILED ───────────────────────────────────────────────────────────
+  if(phase==='debriefFailed') return(
+    <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:220,gap:16,textAlign:'center',padding:'0 8px'}}>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,color:T2.text,margin:0}}>{online?"We couldn't debrief that session.":"You're offline."}</p>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,maxWidth:320,lineHeight:1.6}}>{online?"Something went wrong reviewing your conversation. You can try again.":"This needs a connection to review your conversation. Try again once you're back online."}</p>
+      <button onClick={async()=>{setPhase('analyzing');const ok=await runDebrief();setPhase(ok?'debrief':'debriefFailed');}} style={{...cs.cta,width:'auto',padding:'12px 28px'}}>Try Again →</button>
     </div>
   );
 

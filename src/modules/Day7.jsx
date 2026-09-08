@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { detectPitchHz, computeSignalMetrics } from './voiceSignal.js';
@@ -66,6 +67,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
   const [phase, setPhase] = useState('intro'); // 'intro' | 'ready' | 'analyzing' | 'coach'
   const [transcript, setTranscript] = useState('');
   const [coachResult, setCoachResult] = useState(null);
+  const online = useOnlineStatus();
   const dotCount = useSequentialDots(phase === 'analyzing');
 
   // Wire bottom nav: disabled until the rehearsal recording is complete
@@ -91,6 +93,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
   }
 
   async function callCoach(text) {
+    if (!online) { setPhase('analysisFailed'); return; }
     try {
       const res = await fetch('/api/claude', {
         method: 'POST',
@@ -103,23 +106,20 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
         })
       });
       const data = await res.json();
-      const raw = data.content?.[0]?.text || '{}';
-      const json = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0] || '{}');
+      const raw = data.content?.[0]?.text || '';
+      const m = raw.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error();
+      const json = JSON.parse(m[0]);
       setCoachResult({
         identifiedRealSituation: json.identifiedRealSituation === true,
         identifiedSpecificSkill: json.identifiedSpecificSkill === true,
         coachLine: json.coachLine || 'Good effort — connect these skills to a real moment this week.',
         bridgeLine: json.bridgeLine || 'Now explain the whole week to someone who knows nothing about it. That is the real test.',
       });
+      setPhase('coach');
     } catch(_) {
-      setCoachResult({
-        identifiedRealSituation: false,
-        identifiedSpecificSkill: false,
-        coachLine: 'Good effort — connect these skills to a real moment this week.',
-        bridgeLine: 'Now explain the whole week to someone who knows nothing about it. That is the real test.',
-      });
+      setPhase('analysisFailed');
     }
-    setPhase('coach');
   }
 
   const chipBase = { fontFamily:T.sans, fontSize:12, fontWeight:600, padding:"8px 14px", borderRadius:20, letterSpacing:"0.3px" };
@@ -177,6 +177,14 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
     </div>
   );
 
+  if (phase === 'analysisFailed') return (
+    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:280, gap:16, textAlign:"center", padding:"0 8px" }}>
+      <p style={{ fontFamily:T.serif, fontSize:isDesktop?20:18, color:T2.text, margin:0 }}>{online ? "We couldn't read that reflection." : "You're offline."}</p>
+      <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, margin:0, maxWidth:320, lineHeight:1.6 }}>{online ? "Something went wrong analysing your recording. You can try again." : "This needs a connection to review your reflection. Try again once you're back online."}</p>
+      <button onClick={() => { setPhase('analyzing'); callCoach(transcript); }} style={{ padding:"12px 28px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:48 }}>Try Again →</button>
+    </div>
+  );
+
   if (phase === 'coach' && coachResult) {
     const { identifiedRealSituation, identifiedSpecificSkill, coachLine, bridgeLine } = coachResult;
     const showConnectionIndicator = identifiedRealSituation && identifiedSpecificSkill;
@@ -224,6 +232,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   const timerRef  = useRef(null);
   const waveRef   = useRef(null);
   const [micError, setMicError] = useState(false);
+  const online = useOnlineStatus();
   const dotCount = useSequentialDots(phase === 'analyzing');
 
   // Real signal data captured from the mic during recording — feeds the
@@ -349,17 +358,9 @@ export function D7SimWidget({ T, T2, isDesktop }) {
     } catch {}
   }
 
-  async function doSubmit(){
+  async function scoreTranscript(text, signal){
     setPhase('analyzing');
-    const spokenText = await stopRecAndTranscribe();
-    // Captured after the recorder/analyser have fully stopped, so the sample
-    // buffers are complete — read before anything can reset them.
-    const elapsedSec = startTimeRef.current ? Math.round((Date.now() - startTimeRef.current) / 1000) : 0;
-    const signal = computeSignalMetrics(energySamplesRef.current, pitchSamplesRef.current, elapsedSec);
-    setSignalMetrics(signal);
-    const text=(spokenText||'').trim()||(fallback||'').trim();
-    if(!text){setPhase('brief');return;}
-    setTranscript(text);
+    if(!online){ setPhase('scoreFailed'); return; }
     let parsed;
     try{
       const res=await fetch("/api/claude",{
@@ -371,15 +372,11 @@ export function D7SimWidget({ T, T2, isDesktop }) {
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
+      if(!m) throw new Error();
       parsed = JSON.parse(m[0]);
     }catch{
-      parsed = {
-        scores:{clarity:7,voiceControl:6,pauses:6,precision:7,structure:7,composure:8},
-        memorable:"Communication is about making ideas easy for others to understand.",
-        strongest:"Your explanation showed genuine understanding of the core Week 1 concepts.",
-        growth:"Adding deliberate structure — one clear point per idea — would sharpen your impact.",
-        coachInsight:"You demonstrated real understanding of Week 1. Your communication feels natural and grounded. As you move into Week 2, focus on building more contrast through deliberate pacing and pauses — that's where good communicators become great ones.",
-      };
+      setPhase('scoreFailed');
+      return;
     }
     // Pauses and Voice Control are about vocal delivery, not word content —
     // the AI can't hear the recording, so replace its guess with the same
@@ -392,6 +389,20 @@ export function D7SimWidget({ T, T2, isDesktop }) {
     setResult(parsed);
     saveWeek1Result(parsed, text);
     setPhase('results');
+  }
+
+  async function doSubmit(){
+    setPhase('analyzing');
+    const spokenText = await stopRecAndTranscribe();
+    // Captured after the recorder/analyser have fully stopped, so the sample
+    // buffers are complete — read before anything can reset them.
+    const elapsedSec = startTimeRef.current ? Math.round((Date.now() - startTimeRef.current) / 1000) : 0;
+    const signal = computeSignalMetrics(energySamplesRef.current, pitchSamplesRef.current, elapsedSec);
+    setSignalMetrics(signal);
+    const text=(spokenText||'').trim()||(fallback||'').trim();
+    if(!text){setPhase('brief');return;}
+    setTranscript(text);
+    await scoreTranscript(text, signal);
   }
 
   const cs={
@@ -604,6 +615,15 @@ export function D7SimWidget({ T, T2, isDesktop }) {
       <SequentialDots dotCount={dotCount}/>
       <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:"14px 0 4px",textAlign:"center"}}>Your AmplifyU coach is reviewing your response…</p>
       <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text3,margin:0,textAlign:"center",maxWidth:320}}>Evaluating all six Week 1 communication skills.</p>
+    </div>
+  );
+
+  // ── SCORE FAILED ─────────────────────────────────────────────────────────
+  if(phase==='scoreFailed') return (
+    <div style={{display:"flex",flexDirection:"column",gap:16,alignItems:"center",padding:isDesktop?"60px 0":"44px 0",textAlign:"center"}}>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,color:T2.text,margin:0}}>{online?"We couldn't score that.":"You're offline."}</p>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,maxWidth:320,lineHeight:1.6}}>{online?"Something went wrong reviewing your response. Your recording is still there, you can try again.":"This needs a connection to score your Week 1 recap. Try again once you're back online."}</p>
+      <button onClick={()=>scoreTranscript(transcript, signalMetrics)} style={{padding:"12px 28px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48}}>Try Again →</button>
     </div>
   );
 

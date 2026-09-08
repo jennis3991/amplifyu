@@ -30,7 +30,7 @@ import { Timer } from '../components/Timer.jsx';
 import { PBar, NAV_H } from '../components/NavComponents.jsx';
 import AICoachTab from '../components/AICoachTab.jsx';
 import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
-import { getScenariosForDay, getPIEEmphasis } from '../utils.js';
+import { getScenariosForDay, getPIEEmphasis, useOnlineStatus } from '../utils.js';
 import { D7SimWidget, D7PracticeWidget } from '../modules/Day7.jsx';
 import { SavedResultSection } from '../modules/SavedResultCard.jsx';
 import { Paywall } from '../components/Paywall.jsx';
@@ -39,6 +39,7 @@ import { isEntitled } from '../lib/purchases.js';
 export function SessionView({lesson, isDone, onComplete, onBack, onExitToTab, roleId,
 activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
+  const online = useOnlineStatus();
   const [entitled, setEntitled] = useState(() => isEntitled());
   const [idx, setIdx] = useState(()=>{ try{ const s=localStorage.getItem("au1_initial_step"); if(s){localStorage.removeItem("au1_initial_step"); const stps=lesson.day===8?["Insight","Theory","Example","Rehearsal","Simulation","Review"]:["Insight","Theory","Example","Rehearsal","Simulation","Review"]; const i=stps.indexOf(s); return i>=0?i:0;} }catch{} return 0; });
   const rightPanelRef = useRef(null);
@@ -476,6 +477,7 @@ setAmbitionSaved(true); } catch {}
       const [simInput, setSimInput] = useState("");
       const [sarS, setSarS] = useState(""); const [sarA, setSarA] = useState(""); const [sarR, setSarR] = useState("");
       const [sarResult, setSarResult] = useState(""); const [sarLoading, setSarLoading] = useState(false);
+      const [sarPolishFailed, setSarPolishFailed] = useState(false);
       const sarDotCount = useSequentialDots(sarLoading);
       const [storyCard, setStoryCard] = useState(null);
       const [openInsight, setOpenInsight] = useState(null);
@@ -558,13 +560,16 @@ setAmbitionSaved(true); } catch {}
       async function analyzeSimResponse(text){
         setSimPhase('analyzing');
         const scenario = activeScenario?.prompt || '';
-        const mock={overall:74,headline:"Clear ownership with room to sharpen the result.",scores:{Clarity:75,Structure:70,Confidence:72,Brevity:80,Impact:68},strength:"You spoke with genuine ownership and didn't shy away from the question.",improve:"Lead with the result before the context — flip the order for more impact.",rewrite:`I led a cross-functional project that increased efficiency by 30%. The key challenge was aligning three teams with competing priorities. I resolved this by establishing a weekly decision framework — and we delivered ahead of schedule.`,insight:"Your instinct to give context first is natural, but executives want the result first. Try: 'Result → How → Why it mattered.' You'll land harder, faster."};
-        if(!text||text.trim().length<10){setSimResult(mock);setSimPhase('feedback');return;}
+        if(!text||text.trim().length<10){setSimTranscribeFailed(true);setSimPhase('ready');return;}
+        setSimFallback(text);
+        if(!online){setSimPhase('scoreFailed');return;}
         try{
           const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an executive communication coach. A professional was asked: "${scenario}"\n\nTheir spoken response: "${text}"\n\nNever use em dashes anywhere in your response; use a comma or hyphen instead.\n\nEvaluate and return ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important observation>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Confidence":<50-100>,"Brevity":<50-100>,"Impact":<50-100>},"strength":"<one sentence: what they did well>","improve":"<one sentence: single most important improvement>","rewrite":"<sharper 2-3 sentence version of their answer, leading with result>","insight":"<2 sentences of personalised coaching>"}`}]})});
-          const d=await res.json(); const raw=(d.content||[]).map(b=>b.text||'').join('').trim(); const m=raw.match(/\{[\s\S]*\}/); setSimResult(JSON.parse(m[0]));
-        }catch{setSimResult(mock);}
-        setSimPhase('feedback');
+          const d=await res.json(); const raw=(d.content||[]).map(b=>b.text||'').join('').trim(); const m=raw.match(/\{[\s\S]*\}/);
+          if(!m) throw new Error();
+          setSimResult(JSON.parse(m[0]));
+          setSimPhase('feedback');
+        }catch{setSimPhase('scoreFailed');}
       }
       function resetSim(){
         setSimPhase('intro');setActiveScenario(null);setSimFallback('');setSimResult(null);setExpandedSimDim(null);setSimIsRec(false);setSimTimeLeft(30);setSimMicError(false);setSimTranscribeFailed(false);
@@ -617,22 +622,18 @@ setAmbitionSaved(true); } catch {}
         }catch(err){console.error("[SAR] transcribe error",err);}
         setSarTranscribing(false);
       }
-      function sarRedo(i){if(i===0)setSarS("");else if(i===1)setSarA("");else setSarR("");setSarStep(i);setSarResult("");}
+      function sarRedo(i){if(i===0)setSarS("");else if(i===1)setSarA("");else setSarR("");setSarStep(i);setSarResult("");setSarPolishFailed(false);}
       async function sarPolish(parts){
         setSarLoading(true);
+        setSarPolishFailed(false);
+        if(!online){ setSarPolishFailed(true); setSarLoading(false); return; }
         try{
           const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:350,messages:[{role:"user",content:`You are an executive communication coach. Sharpen this SAR story into 2-3 crisp sentences that communicate impact and ownership. Lead with the result. Make it specific and memorable. Never use em dashes; use a comma or hyphen instead. Return ONLY the sharpened story:\n\nSituation: ${parts[0]}\nAction: ${parts[1]}\nResult: ${parts[2]}`}]})});
-          const d=await res.json();setSarResult((d.content||[]).map(b=>b.text||"").join("").trim());
-        }catch{setSarResult("Lead with the result, then show how you got there. Specifics beat adjectives.");}
-        setSarLoading(false);
-      }
-
-      async function buildSAR() {
-        if (!sarS.trim()||!sarA.trim()||!sarR.trim()) return; setSarLoading(true);
-        try {
-          const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:350,messages:[{role:"user",content:`You are an executive communication coach. Sharpen this SAR story into 2-3 crisp sentences that communicate impact and ownership. Lead with the result. Make it specific and memorable. Never use em dashes; use a comma or hyphen instead. Return ONLY the sharpened story:\n\nSituation: ${sarS}\nAction: ${sarA}\nResult: ${sarR}`}]})});
-          const d = await res.json(); setSarResult((d.content||[]).map(b=>b.text||"").join("").trim());
-        } catch { setSarResult("Lead with the result, then show how you got there. Specifics beat adjectives."); }
+          const d=await res.json();
+          const txt=(d.content||[]).map(b=>b.text||"").join("").trim();
+          if(!txt) throw new Error();
+          setSarResult(txt);
+        }catch{setSarPolishFailed(true);}
         setSarLoading(false);
       }
 
@@ -965,8 +966,17 @@ setAmbitionSaved(true); } catch {}
               </div>
             )}
 
+            {/* Polish failed */}
+            {sarPolishFailed&&!sarLoading&&!sarResult&&(
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14,padding:"24px 0",textAlign:"center"}}>
+                <p style={{fontFamily:T.serif,fontSize:17,color:T2.text,margin:0}}>{online?"We couldn't sharpen that story.":"You're offline."}</p>
+                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,maxWidth:320,lineHeight:1.6}}>{online?"Something went wrong polishing your story. You can try again.":"This needs a connection to polish your story. Try again once you're back online."}</p>
+                <button onClick={()=>sarPolish([sarS,sarA,sarR])} style={{padding:"12px 28px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans}}>Try Again →</button>
+              </div>
+            )}
+
             {/* Voice prompter — one step at a time */}
-            {!sarResult&&!sarLoading&&(
+            {!sarResult&&!sarLoading&&!sarPolishFailed&&(
               <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"24px 28px"}}>
                 <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8,fontFamily:T.sans}}>
                   {SAR_DEF[sarStep].label} &middot; Step {sarStep+1} of 3
@@ -1174,6 +1184,15 @@ setAmbitionSaved(true); } catch {}
           </div>
         );
 
+        // ── SCORE FAILED ──
+        if(simPhase==='scoreFailed') return (
+          <div key={idx} style={{padding:"44px 52px",display:"flex",flexDirection:"column",alignItems:"center",gap:16,textAlign:"center"}}>
+            <p style={{fontFamily:T.serif,fontSize:20,color:T2.text,lineHeight:1.4,margin:0}}>{online?"We couldn't score that.":"You're offline."}</p>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,fontWeight:300,maxWidth:360}}>{online?"Something went wrong reviewing your response. You can try again.":"This needs a connection to score your response. Try again once you're back online."}</p>
+            <button onClick={()=>analyzeSimResponse(simFallback)} style={{...cs10.cta,width:"auto",padding:"12px 28px"}}>Try Again →</button>
+          </div>
+        );
+
         // ── FEEDBACK ──
         if(simPhase==='feedback'&&simResult) return (
           <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
@@ -1244,6 +1263,7 @@ setAmbitionSaved(true); } catch {}
       const [d3ExObserved, setD3ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d3ExObserved')||'{}'); } catch { return {}; } });
       const [d3ExOpenCard, setD3ExOpenCard] = useState(null);
       const [fillerInput, setFillerInput] = useState(""); const [fillerResult, setFillerResult] = useState(null); const [fillerLoading, setFillerLoading] = useState(false);
+      const [fillerFailed, setFillerFailed] = useState(false);
       const [pauseSecs, setPauseSecs] = useState(5); const [pauseActive, setPauseActive] = useState(false); const [pauseDone, setPauseDone] = useState(false);
       const [paceInput, setPaceInput] = useState(""); const [paceResult, setPaceResult] = useState(null); const [paceLoading, setPaceLoading] = useState(false);
 
@@ -1256,10 +1276,15 @@ setAmbitionSaved(true); } catch {}
 
       async function detectFillers() {
         if (!fillerInput.trim()) return; setFillerLoading(true);
+        setFillerFailed(false);
+        if (!online) { setFillerFailed(true); setFillerLoading(false); return; }
         try {
           const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:350,messages:[{role:"user",content:`Count and identify filler words (um, uh, like, you know, sort of, basically, literally, actually, right, okay) in this text. Then rewrite it without fillers, replacing them with pauses or removing them. Never use em dashes; use a comma or hyphen instead. Format: "Found X fillers: [list]\\n\\nFiller-free version: [rewritten text]"\n\n"${fillerInput}"`}]})});
-          const d = await res.json(); setFillerResult((d.content||[]).map(b=>b.text||"").join("").trim());
-        } catch { setFillerResult("Tip: Count every 'um', 'uh', 'like', 'you know'. Goal: under 3 per minute."); }
+          const d = await res.json();
+          const txt=(d.content||[]).map(b=>b.text||"").join("").trim();
+          if(!txt) throw new Error();
+          setFillerResult(txt);
+        } catch { setFillerFailed(true); }
         setFillerLoading(false);
       }
 
@@ -1502,6 +1527,11 @@ setAmbitionSaved(true); } catch {}
                 <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,margin:0,whiteSpace:"pre-wrap"}}>{fillerResult}</p>
               </div>
             )}
+            {fillerFailed && (
+              <div style={{background:"rgba(180,80,60,0.08)",borderLeft:"4px solid #B05C4A",borderRadius:4,padding:"20px 24px",marginTop:20}}>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong analysing that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}</p>
+              </div>
+            )}
           </div>
 
           {/* Exercise 2 — The 5-Second Pause */}
@@ -1593,9 +1623,9 @@ setAmbitionSaved(true); } catch {}
     // ── D4 RightContent — Day 4: Short Sentences ──────────────────────────────
     const D4RightContent = () => {
       const [d4CardOpen, setD4CardOpen] = useState(null);
-      const [sentInput, setSentInput] = useState(""); const [sentResult, setSentResult] = useState(null); const [sentLoading, setSentLoading] = useState(false);
-      const [connInput, setConnInput] = useState(""); const [connResult, setConnResult] = useState(null); const [connLoading, setConnLoading] = useState(false);
-      const [heming, setHeming] = useState(""); const [hemResult, setHemResult] = useState(null); const [hemLoading, setHemLoading] = useState(false);
+      const [sentInput, setSentInput] = useState(""); const [sentResult, setSentResult] = useState(null); const [sentLoading, setSentLoading] = useState(false); const [sentFailed, setSentFailed] = useState(false);
+      const [connInput, setConnInput] = useState(""); const [connResult, setConnResult] = useState(null); const [connLoading, setConnLoading] = useState(false); const [connFailed, setConnFailed] = useState(false);
+      const [heming, setHeming] = useState(""); const [hemResult, setHemResult] = useState(null); const [hemLoading, setHemLoading] = useState(false); const [hemFailed, setHemFailed] = useState(false);
       const [simInput, setSimInput] = useState("");
       const [d4ExObserved, setD4ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d4ExObserved')||'{}'); } catch { return {}; } });
       const [d4ExOpenCard, setD4ExOpenCard] = useState(null);
@@ -1604,29 +1634,43 @@ setAmbitionSaved(true); } catch {}
 
       async function splitSentence() {
         if (!sentInput.trim()) return; setSentLoading(true);
+        setSentFailed(false);
+        if (!online) { setSentFailed(true); setSentLoading(false); return; }
         try {
           const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:300,messages:[{role:"user",content:`Split this sentence into 2-4 short sentences (under 15 words each). Never use em dashes; use a comma or hyphen instead. Return ONLY the split version, no explanation: "${sentInput}"`}]})});
-          const d = await res.json(); setSentResult((d.content||[]).map(b=>b.text||"").join("").trim());
-        } catch { setSentResult("Try splitting at every connector: 'and', 'but', 'which', 'that'."); }
+          const d = await res.json();
+          const txt=(d.content||[]).map(b=>b.text||"").join("").trim();
+          if(!txt) throw new Error();
+          setSentResult(txt);
+        } catch { setSentFailed(true); }
         setSentLoading(false);
       }
 
       async function killConnectors() {
         if (!connInput.trim()) return; setConnLoading(true);
+        setConnFailed(false);
+        if (!online) { setConnFailed(true); setConnLoading(false); return; }
         try {
           const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:400,messages:[{role:"user",content:`Find the connectors (and, but, however, which, that, so, because) in this sentence and rewrite it as 2-5 short sentences. Never use em dashes. Start with a line like "Found X connectors:" then show the rewritten sentences on separate lines starting with →\n\n"${connInput}"`}]})});
-          const d = await res.json(); setConnResult((d.content||[]).map(b=>b.text||"").join("").trim());
-        } catch { setConnResult("Try splitting at every 'and', 'but', 'however', 'which', or 'that'."); }
+          const d = await res.json();
+          const txt=(d.content||[]).map(b=>b.text||"").join("").trim();
+          if(!txt) throw new Error();
+          setConnResult(txt);
+        } catch { setConnFailed(true); }
         setConnLoading(false);
       }
 
       async function hemingwayChallenge() {
         if (!heming.trim()) return; setHemLoading(true);
+        setHemFailed(false);
+        if (!online) { setHemFailed(true); setHemLoading(false); return; }
         try {
           const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:400,messages:[{role:"user",content:`Apply the Hemingway challenge to this paragraph — cut it to half the words, then half again. Never use em dashes in your response; use a comma or hyphen instead. Return JSON: {half:"cut in half",quarter:"cut in half again",lesson:"what was removed"}\n\n"${heming}"`}]})});
           const d = await res.json(); const raw=(d.content||[]).map(b=>b.text||"").join("").trim();
-          try { const m=raw.match(/\{[\s\S]*\}/); setHemResult(JSON.parse(m[0])); } catch { setHemResult({half:"We need to adjust our strategy.",quarter:"Adjust the strategy.",lesson:"Filler phrases and hedging language were removed — the meaning stayed identical."}); }
-        } catch { setHemResult(null); }
+          const m=raw.match(/\{[\s\S]*\}/);
+          if(!m) throw new Error();
+          setHemResult(JSON.parse(m[0]));
+        } catch { setHemFailed(true); }
         setHemLoading(false);
       }
 
@@ -1856,6 +1900,11 @@ setAmbitionSaved(true); } catch {}
                 <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.7,margin:0}}>{sentResult}</p>
               </div>
             )}
+            {sentFailed && (
+              <div style={{background:"rgba(180,80,60,0.08)",borderLeft:"4px solid #B05C4A",borderRadius:4,padding:"20px 24px",marginTop:20}}>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong splitting that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}</p>
+              </div>
+            )}
           </div>
 
           {/* Exercise 2 — Kill the Connectors */}
@@ -1882,6 +1931,11 @@ setAmbitionSaved(true); } catch {}
               <div style={{background:"rgba(138,158,132,0.1)",borderLeft:"4px solid "+T.gold,borderRadius:4,padding:"20px 24px",marginTop:20}}>
                 <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,textTransform:"uppercase",letterSpacing:"1px",color:T.gold,marginBottom:10}}>Split Here</div>
                 <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.7,margin:0,whiteSpace:"pre-wrap"}}>{connResult}</p>
+              </div>
+            )}
+            {connFailed && (
+              <div style={{background:"rgba(180,80,60,0.08)",borderLeft:"4px solid #B05C4A",borderRadius:4,padding:"20px 24px",marginTop:20}}>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong analysing that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}</p>
               </div>
             )}
           </div>
@@ -1933,6 +1987,11 @@ setAmbitionSaved(true); } catch {}
                 </div>
               </div>
             )}
+            {hemFailed && (
+              <div style={{background:"rgba(180,80,60,0.08)",borderLeft:"4px solid #B05C4A",borderRadius:4,padding:"20px 24px",marginTop:20}}>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong trimming that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}</p>
+              </div>
+            )}
           </div>
 
           {/* Tips Section */}
@@ -1966,51 +2025,9 @@ setAmbitionSaved(true); } catch {}
 
     const D1RightContent = () => {
       const [d1OpenCard, setD1OpenCard] = useState(null);
-      const [jargonInput, setJargonInput] = useState("");
-      const [jargonResult, setJargonResult] = useState("");
-      const [jargonLoading, setJargonLoading] = useState(false);
-      const [soWhatInput, setSoWhatInput] = useState("");
-      const [soWhatResult, setSoWhatResult] = useState(null);
-      const [soWhatLoading, setSoWhatLoading] = useState(false);
-      const [breathInput, setBreathInput] = useState("");
-      const [breathResult, setBreathResult] = useState(null);
-      const [breathLoading, setBreathLoading] = useState(false);
       const [simInput, setSimInput] = useState("");
       const [d1ExObserved, setD1ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d1ExObserved')||'{}'); } catch { return {}; } });
       const [d1ExOpenCard, setD1ExOpenCard] = useState(null);
-
-      async function simplifyJargon() {
-        if (!jargonInput.trim()) return;
-        setJargonLoading(true);
-        try {
-          const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:300,messages:[{role:"user",content:`Simplify this sentence, removing all jargon. Never use em dashes; use a comma or hyphen instead. Return ONLY the simplified sentence, nothing else: "${jargonInput}"`}]})});
-          const data = await res.json();
-          setJargonResult((data.content||[]).map(b=>b.text||"").join("").trim());
-        } catch { setJargonResult("Try again — keep it simple enough that a 10-year-old could understand."); }
-        setJargonLoading(false);
-      }
-
-      async function runSoWhat() {
-        if (!soWhatInput.trim()) return;
-        setSoWhatLoading(true);
-        try {
-          const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:400,messages:[{role:"user",content:`Apply the "So What?" chain 3 times to this idea: "${soWhatInput}". Never use em dashes in your response; use a comma or hyphen instead. Return JSON: {chain:[{q:"So what?",a:"..."},...],lead:"The real point to lead with"}`}]})});
-          const data = await res.json();
-          const raw = (data.content||[]).map(b=>b.text||"").join("").trim();
-          try { const m=raw.match(/\{[\s\S]*\}/); setSoWhatResult(JSON.parse(m[0])); } catch { setSoWhatResult({chain:[{q:"So what?",a:"Your audience cares about results."},{q:"So what?",a:"Results earn trust and opportunity."},{q:"So what?",a:"Lead with outcomes, not process."}],lead:"Lead with the outcome — not the work."}); }
-        } catch { setSoWhatResult(null); }
-        setSoWhatLoading(false);
-      }
-
-      async function runBreathTest() {
-        if (!breathInput.trim()) return; setBreathLoading(true);
-        try {
-          const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:200,messages:[{role:"user",content:`Condense this explanation into ONE clear sentence of under 15 words — something you can say in a single breath. Never use an em dash in your response. Return ONLY the sentence: "${breathInput}"`}]})});
-          const data = await res.json();
-          setBreathResult((data.content||[]).map(b=>b.text||"").join("").trim());
-        } catch { setBreathResult("Try again — aim for one idea, under 15 words."); }
-        setBreathLoading(false);
-      }
 
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
@@ -2215,39 +2232,8 @@ setAmbitionSaved(true); } catch {}
     // ── Right panel: unified editorial content across all 6 steps ─────────────
     // ── NT RightContent — all 6 steps ──────────────────────────────────────
     const NTRightContent = () => {
-      const [momentInput, setMomentInput] = useState(""); const [momentResult, setMomentResult] = useState(null); const [momentLoading, setMomentLoading] = useState(false);
-      const [beforeInput, setBeforeInput] = useState(""); const [afterInput, setAfterInput] = useState(""); const [baResult, setBAResult] = useState(null); const [baLoading, setBALoading] = useState(false);
-      const [storyBeats, setStoryBeats] = useState({setup:"",stakes:"",obstacle:"",choice:"",outcome:"",lesson:""}); const [storyResult, setStoryResult] = useState(null); const [storyLoading, setStoryLoading] = useState(false);
       const [d8ExObserved, setD8ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d8ExObserved')||'{}'); } catch { return {}; } });
       const [d8ExOpenCard, setD8ExOpenCard] = useState(null);
-
-      async function buildStory() {
-        const {setup,stakes,obstacle,choice,outcome,lesson} = storyBeats;
-        if (!setup.trim()||!stakes.trim()) return; setStoryLoading(true);
-        try {
-          const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:400,messages:[{role:"user",content:`Assemble these 6 beats into a compelling 3-4 sentence professional story. Use vivid, human language. Never use em dashes. Return ONLY the story paragraph:\nSetup: ${setup}\nStakes: ${stakes}\nObstacle: ${obstacle}\nChoice: ${choice}\nOutcome: ${outcome}\nLesson: ${lesson}`}]})});
-          const d = await res.json(); setStoryResult((d.content||[]).map(b=>b.text||"").join("").trim());
-        } catch { setStoryResult(null); }
-        setStoryLoading(false);
-      }
-
-      async function analyzeMoment() {
-        if (!momentInput.trim()) return; setMomentLoading(true);
-        try {
-          const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:300,messages:[{role:"user",content:`Identify the pivotal "5-second moment" of change in this story, and suggest how to make it more vivid. Never use em dashes in your response. Return in format:\n"The moment: [extracted moment]\n\nMake it more vivid:\n→ [suggestion 1]\n→ [suggestion 2]\n→ [suggestion 3]"\n\n"${momentInput}"`}]})});
-          const d = await res.json(); setMomentResult((d.content||[]).map(b=>b.text||"").join("").trim());
-        } catch { setMomentResult("Your pivotal moment is the heart of the story. Make it vivid — add sensory details, slow it down."); }
-        setMomentLoading(false);
-      }
-
-      async function testTransformation() {
-        if (!beforeInput.trim()||!afterInput.trim()) return; setBALoading(true);
-        try {
-          const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:250,messages:[{role:"user",content:`Analyse this before/after transformation and explain what changed and why it makes a compelling story. Never use em dashes in your response. Keep it under 3 sentences.\nBefore: "${beforeInput}"\nAfter: "${afterInput}"`}]})});
-          const d = await res.json(); setBAResult((d.content||[]).map(b=>b.text||"").join("").trim());
-        } catch { setBAResult("Clear transformation detected. This is what makes people listen — they see the journey, not just the destination."); }
-        setBALoading(false);
-      }
 
       if (step === "Insight") {
         return (

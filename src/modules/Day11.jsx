@@ -802,6 +802,7 @@ Return ONLY valid JSON:
 
   async function runCvRewrite() {
     setCvPhase('rewriting');
+    if (!online) { setCvPhase('cvFailed'); return; }
     const sig = savedSig || (futureWords.length > 0 ? `Known for: ${futureWords.join(', ')}` : 'a strategic professional');
     const prompt = `You are rewriting this professional's CV to align with their Personal Signature.
 
@@ -843,12 +844,12 @@ Keep it under 280 words. Make every word earn its place. Never use em dashes any
       });
       const data = await res.json();
       const text = (data.content || []).map(b => b.text || '').join('').trim();
+      if (!text) throw new Error();
       setCvResult(text);
       attachCvToToolkit(text);
       setCvPhase('done');
     } catch (_) {
-      setCvResult(`PROFESSIONAL SUMMARY\n${sig}\n\nKEY ACHIEVEMENTS\n• Led high-impact initiatives with measurable outcomes\n• Built trusted relationships across leadership and operational teams\n• Translated complex challenges into clear, actionable strategies\n• Delivered results balancing short-term execution with long-term vision\n• Brought clarity and direction to ambiguous situations\n\nSKILLS & EXPERTISE\nStrategic Planning · Stakeholder Engagement · Project Leadership · Clear Communication · Problem Solving · Cross-functional Collaboration`);
-      setCvPhase('done');
+      setCvPhase('cvFailed');
     }
   }
 
@@ -1246,6 +1247,18 @@ Keep it under 280 words. Make every word earn its place. Never use em dashes any
           <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 0", animation: "fadeUp 0.3s ease both" }}>
             <img loading="lazy" src="/logo-mark.png" alt="" style={{ width: 20, height: 20, objectFit: "cover", filter: "brightness(0.55) sepia(0.4)", animation: "breathe 2s ease infinite" }} />
             <span style={{ fontFamily: T.serif, fontSize: isDesktop ? 14 : 13, color: T2.text3, fontStyle: "italic" }}>Updating your CV...</span>
+          </div>
+        )}
+
+        {cvPhase === 'cvFailed' && (
+          <div style={{ borderTop: "0.5px solid " + T2.divider, paddingTop: 14, display: "flex", flexDirection: "column", gap: 10 }}>
+            <p style={{ ...sn, fontSize: isDesktop ? 13 : 12, color: "#B05C4A", margin: 0 }}>
+              {online ? "Something went wrong updating your CV. Try again." : "You're offline — this needs a connection. Try again once you're back online."}
+            </p>
+            <button onClick={runCvRewrite}
+              style={{ padding: "11px 20px", borderRadius: 4, border: `0.5px solid ${T2.border}`, background: "transparent", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text3, cursor: "pointer", fontWeight: 500, transition: "all 0.2s", width: "fit-content" }}>
+              Try Again →
+            </button>
           </div>
         )}
 

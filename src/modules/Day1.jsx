@@ -66,9 +66,16 @@ function highlightFillers(text, words) {
 }
 
 export function D1MobileJargonSwap() {
-  const [v,setV]=useState(""); const [r,setR]=useState(""); const [l,setL]=useState(false);
-  async function go(){if(!v.trim())return;setL(true);try{const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:200,messages:[{role:"user",content:`Simplify this, removing all jargon. Never use em dashes; use a comma or hyphen instead. Return ONLY the simplified sentence: "${v}"`}]})});const d=await res.json();setR((d.content||[]).map(b=>b.text||"").join("").trim());}catch{setR("Keep it simple enough that a 10-year-old could understand.");}setL(false);}
-  return(<div><textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Write your sentence…" style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:64,marginBottom:8,boxSizing:"border-box"}}/><button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:r?10:0}}>{l?"Simplifying…":"Simplify It →"}</button>{r&&<div style={{padding:"12px 14px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,color:"#2C2416",margin:0,lineHeight:1.6}}>{r}</p></div>}</div>);
+  const [v,setV]=useState(""); const [r,setR]=useState(""); const [l,setL]=useState(false); const [err,setErr]=useState(false);
+  const online = useOnlineStatus();
+  async function go(){
+    if(!v.trim())return;
+    setL(true); setErr(false); setR("");
+    if(!online){ setErr(true); setL(false); return; }
+    try{const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:200,messages:[{role:"user",content:`Simplify this, removing all jargon. Never use em dashes; use a comma or hyphen instead. Return ONLY the simplified sentence: "${v}"`}]})});const d=await res.json();const text=(d.content||[]).map(b=>b.text||"").join("").trim();if(!text)throw new Error();setR(text);}catch{setErr(true);}
+    setL(false);
+  }
+  return(<div><textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Write your sentence…" style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:64,marginBottom:8,boxSizing:"border-box"}}/><button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:(r||err)?10:0}}>{l?"Simplifying…":"Simplify It →"}</button>{r&&<div style={{padding:"12px 14px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,color:"#2C2416",margin:0,lineHeight:1.6}}>{r}</p></div>}{err&&<div style={{padding:"12px 14px",background:"rgba(176,92,74,0.08)",borderRadius:3,borderLeft:"2px solid #B05C4A"}}><p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#6B5E44",margin:0,lineHeight:1.5}}>{online?"Something went wrong simplifying that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}</p></div>}</div>);
 }
 export function D1MobileSim() { return null; } // replaced by D1SimWidget
 
@@ -129,6 +136,8 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
   const [explainText, setExplainText] = useState('');
   const [aiResult, setAiResult] = useState(null);
   const [aiLoading, setAiLoading] = useState(false);
+  const [explainError, setExplainError] = useState(false);
+  const online = useOnlineStatus();
 
   const round = ROUNDS[roundIdx];
   const isLast = roundIdx === ROUNDS.length - 1;
@@ -230,24 +239,24 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
   async function scoreExplain() {
     if (!explainText.trim() || explainText.trim().length < 5) return;
     setAiLoading(true);
-    const mock = {
-      praise:"Beautiful. You made transformation easy to picture.",
-      tip:"Could you make it even simpler in one revision?",
-      pts: Math.round(round.pts * 0.85),
-    };
+    setExplainError(false);
+    if (!online) {
+      setExplainError(true);
+      setAiLoading(false);
+      return;
+    }
     try {
       const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:300,messages:[{role:"user",content:`You are a warm, encouraging communication coach evaluating the Feynman Technique — the skill of explaining something SIMPLY and CLEARLY.\n\nThe challenge: explain the lifecycle of a butterfly to a curious 8-year-old.\nGoal: simplicity, clarity, and vivid imagery. NOT scientific accuracy.\n\nEvaluate ONLY on:\n1. Is it simple enough for an 8-year-old? (no jargon, everyday words)\n2. Is it easy to picture in your mind?\n3. Does it flow clearly?\n\nDo NOT comment on scientific terminology, completeness, or factual precision — that is irrelevant. A child-friendly word like "cocoon" is BETTER than the scientific term "chrysalis".\n\nUser's answer: "${explainText}"\n\nNever use em dashes in your response; use a comma or hyphen instead.\n\nReturn ONLY valid JSON:\n{"praise":"<one warm specific compliment on their clarity or imagery — max 12 words>","tip":"<one gentle suggestion to make it simpler or more vivid — max 12 words>","pts":<20-30>}`}]})});
       const d = await res.json();
       const raw = (d.content||[]).map(b=>b.text||'').join('').trim();
       const m = raw.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error();
       const parsed = JSON.parse(m[0]);
       setAiResult(parsed);
-      setTotalPts(p => p + (parsed.pts || mock.pts));
-      setExplainPts(p => p + (parsed.pts || mock.pts));
+      setTotalPts(p => p + (parsed.pts || 0));
+      setExplainPts(p => p + (parsed.pts || 0));
     } catch {
-      setAiResult(mock);
-      setTotalPts(p => p + mock.pts);
-      setExplainPts(p => p + mock.pts);
+      setExplainError(true);
     }
     setAiLoading(false);
   }
@@ -603,6 +612,11 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           <button onClick={scoreExplain} disabled={aiLoading||explainText.trim().length<5} style={{...cs.cta,background:aiLoading||explainText.trim().length<5?"rgba(44,36,22,0.25)":T.ink,cursor:aiLoading||explainText.trim().length<5?"not-allowed":"pointer"}}>
             {aiLoading?"Reading your explanation…":"Get Feedback →"}
           </button>
+          {explainError && (
+            <p style={{fontFamily:T.sans,fontSize:12,color:"#B05C4A",margin:0,textAlign:"center"}}>
+              {online ? "Something went wrong scoring that. Try again." : "You're offline — this needs a connection. Try again once you're back online."}
+            </p>
+          )}
         </>
       ) : (
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
@@ -1339,52 +1353,30 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
     }
     setPhase('analyzing');
     const isRetry=!!round1;
-    const mockScores=()=>Object.fromEntries(DIMS.map(d=>[d,Math.floor(Math.random()*22)+60+(isRetry?10:0)]));
-    const mockOverall=Math.floor(Math.random()*18)+62+(isRetry?12:0);
-    const mock={
-      overall:mockOverall,
-      headline:mockOverall>=80?"Your ideas landed with precision.":mockOverall>=70?"Your strongest idea arrived late.":"Your message needed a clearer focus.",
-      subtitle:isRetry?"Measurable progress. Keep going.":"A solid starting point. Now let's sharpen it.",
-      scores:mockScores(),
-      worked:["Natural and conversational tone","Confident, assured delivery"],
-      workedSubs:["Your language stayed grounded and jargon-free — easy to follow from the first sentence.","You didn't hedge or qualify unnecessarily. That directness builds trust."],
-      opportunities:[
-        {title:"Get to your main point sooner",detail:"Your core idea took about 30 seconds to appear. Try opening with it directly — context can follow."},
-        {title:"Reduce filler pauses between ideas",detail:"A silent pause reads as confidence. Replacing hesitation sounds with a beat of silence keeps your listener focused on your words."}
-      ],
-      wordUpgrades:[
-        {word:"I kind of just went with it",upgrade:"I committed to the direction",type:"rephrase",why:"Cuts the hedge so the sentence matches the confidence of the decision it's describing."},
-        {word:"stuff like that",upgrade:"specifics like delivery and pacing",type:"word",why:"Replaces a vague placeholder with the concrete detail you actually meant."}
-      ],
-      insight:"Your delivery felt natural and genuine. The opportunity is structure: if you lead with your clearest point in the first sentence, everything that follows lands harder.",
-      priorityFocus:"Lead with your main point first",
-      restructure:["Open with your core message in the first 5–10 seconds — context and evidence can follow.","Group related ideas together rather than alternating between points. You switched topics 3 times.","End with a single, memorable takeaway rather than trailing off. A strong last sentence doubles retention."],
-      // No transcript was actually analysed here (empty response or API
-      // failure) — leaving this empty rather than inventing marker positions
-      // that would look identical to genuine, transcript-derived ones.
-      markers:[]
-    };
     if(!text||text.trim().length<15){
       // Too little was actually said to score honestly — show a real error
       // instead of fabricating a plausible-looking score from nothing.
       setPhase('empty');
       return;
     }
+    if(!online){
+      setPhase('analysisFailed');
+      return;
+    }
     try{
       const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:1200,messages:[{role:"user",content:`You are a world-class executive communication coach. Analyse this spoken response for CLARITY only.\n\nPrompt: "${prompt}"\nResponse: "${text}"\n\nCRITICAL — GENUINE ATTEMPT CHECK (do this first, before any scoring): Judge whether this response is a genuine, substantive attempt to actually answer the prompt — not test input (e.g. "test test test", "asdf", keyboard mashing), a single throwaway word, or a response that doesn't meaningfully engage with the question at all. If it is NOT a genuine attempt: set "overall" to 0 and every score in "scores" to 0. Write a direct, honest headline (e.g. "This isn't a real answer yet — let's try again") and a short encouraging subtitle. Set "worked", "opportunities", "wordUpgrades", and "restructure" to empty arrays — never invent strengths or upgrades for something that wasn't real communication. Keep "insight" and "priorityFocus" short and honest, telling them to give it a genuine attempt. Set "markers" to an empty array. Then stop — ignore all the scoring instructions below. Only when the response IS a genuine, substantive attempt should you continue and score it honestly between 0 and 100 based on actual quality — a real but weak attempt can still score low; 0 is reserved specifically for non-attempts.\n\nIMPORTANT: All feedback must be PERSONALISED to what this specific person actually said. Reference their actual words, phrases, and ideas. Do not write generic feedback.\n\nWORD UPGRADES — this is NOT a thesaurus exercise. The goal is never "find a more sophisticated synonym" — it is "find a better way to say the same thing." Never replace a word simply because another word is technically synonymous or more impressive; if the replacement changes the meaning, nuance, or tone of what they said, or would sound unnatural spoken aloud, reject it.\n\nBefore suggesting an upgrade, work out: (1) what the speaker is actually trying to communicate, (2) the emotional or rhetorical purpose of the sentence, (3) how it connects to the surrounding sentences, (4) whether the new wording would sound natural spoken aloud, (5) whether it preserves the speaker's original meaning and voice. If an upgrade fails any of these, don't make it.\n\nDo NOT upgrade phrases that are already doing their job — casual, conversational lines that sound like something a real person would say ("let's just stay for another drink", "why don't we go somewhere for the weekend"), vivid lists that paint a picture, or natural connective phrases ("of course, X isn't perfect"). Leave these alone. NEVER force a fixed number of upgrades — if the response is already clear, natural and strong throughout, return an empty array.\n\nWhen something genuinely is worth upgrading, prefer a phrase-level rewrite over a single-word swap whenever that produces a better result — the aim is expressing the SAME underlying idea more clearly, naturally, precisely, or memorably, not decorating it with fancier vocabulary. Example: someone says "There's something really social about it" while describing how summer brings people together. BAD: "really social" → "communal" — technically related but a thesaurus swap that changes the register and doesn't fit natural speech. GOOD: rewrite the whole thought — "There's something about summer that brings people together." — because it understands what they were actually trying to say.\n\nPrioritise: clarity, natural spoken language, precision, concision, impact, stronger imagery, authentic voice.\nAvoid: overly sophisticated vocabulary, corporate or academic language, unnatural synonyms, thesaurus-style substitutions, words that technically fit but shift the nuance, or anything that makes the speaker sound like a different person. Every suggestion must pass this test: "Would a confident, articulate person naturally say this out loud?" If not, reject it. Optimise for the speaker sounding like the BEST VERSION OF THEMSELVES — not someone else.\n\nIdentify 0–4 moments worth upgrading (never forced to a fixed count). Two types:\nTYPE "word": a single weak, vague, or filler word/short phrase with a precise, natural replacement that preserves meaning exactly — e.g. "just" used as a weakener → remove it, a genuinely undermining hedge like "kind of" → a more direct alternative. Only use this type when a one-word swap is really all that's needed.\nTYPE "rephrase": the full original clause rewritten at the phrase level so the same idea lands more clearly, naturally, or memorably. Use this type whenever the fix requires more than swapping one word for another — this should be the more common type.\n\nFor every upgrade, also write "why": one short sentence naming the communication principle behind the change (what the speaker should learn from it — e.g. "Preserves the meaning while making the image more concrete" or "Cuts a hedge that undercuts an otherwise confident point"), not a description of the mechanical edit.\n\nCRITICAL — NEVER flatten intentional rhetorical devices. If the speaker repeats a word or phrase for emphasis (tripling, anaphora — e.g. "grew and grew and grew", "again and again", "day after day") this is DELIBERATE rhetoric for impact. Do NOT simplify to a flat word like "grew rapidly" — that destroys the effect. Either skip it or suggest an amplified version that preserves the device (e.g. "grew, expanded, and dominated"). Only target genuinely weak, vague, or unclear language.\n\nIdentify key moments in the transcript for waveform annotation — between 0 and 4 total, never forced to a fixed count. It is completely normal for a clean, focused response to have zero "ramble"/"unclear"/"filler" markers. NEVER invent a "ramble" or "unclear" moment just to hit a target count — only include a marker type if it is genuinely present in what they actually said. For each marker you do include, estimate its proportional position (0.0 = start, 1.0 = end) based on word count.\n\nMarker types:\n- "filler": where hesitation sounds (um, uh) cluster — only if genuinely present\n- "ramble": where the answer starts repeating or losing focus — only if genuinely present\n- "strong": the single clearest/most impactful statement — always include exactly one, even in a short or clean response\n- "unclear": where meaning becomes hard to follow — only if genuinely present\n- "clean": if there is no genuine ramble, unclear, or filler moment anywhere in the response, add exactly ONE marker of this type (alongside "strong") with label "Clean & focused" — this tells the speaker directly that their delivery was clean, rather than leaving an unexplained gap\n\nNever use em dashes anywhere in your response text (headline, subtitle, worked, workedSubs, opportunities, insight, restructure, etc.); use a comma or hyphen instead.\n\nReturn ONLY valid JSON:\n{"overall":<0-100>,"headline":"<max 10 words: single most important insight>","subtitle":"<one warm encouraging sentence>","scores":{"Clarity":<0-100>,"Structure":<0-100>,"Brevity":<0-100>,"Focus":<0-100>,"Simplicity":<0-100>},"worked":["<strength 1: short title, specific to what they said>","<strength 2: short title, specific to what they said>"],"workedSubs":["<1 sentence expanding on strength 1, quoting or paraphrasing something they actually said>","<1 sentence expanding on strength 2, quoting or paraphrasing something they actually said>"],"opportunities":[{"title":"<4-7 word title for opportunity 1, specific to what they said>","detail":"<1-2 sentences referencing a specific moment from their response>"},{"title":"<4-7 word title for opportunity 2, different from opportunity 1>","detail":"<1-2 sentences referencing another specific moment from their response>"}],"wordUpgrades":[{"word":"<exact phrase from transcript>","upgrade":"<clearer, more natural version — same meaning>","type":"<word|rephrase>","why":"<one short sentence naming the communication principle behind this change>"}],"insight":"<2 sentences of personalised coaching, referencing specific moments or phrases from their response>","priorityFocus":"<single most important thing to work on next — 5-8 words>","restructure":["<specific rewrite instruction 1 referencing what they actually said — e.g. move the point about X to the opening>","<specific rewrite instruction 2 — e.g. cut or compress the section where they said Y>","<specific rewrite instruction 3 — e.g. close with Z as a memorable final line>"],"markers":[{"pos":<0.0-1.0>,"label":"<Filler cluster|Ramble moment|Strongest point|Unclear section|Clean & focused>","type":"<filler|ramble|strong|unclear|clean>"}]}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
-      const m=raw.match(/\{[\s\S]*\}/);
+      if(!m) throw new Error();
       const parsed=JSON.parse(m[0]);
       if(!isRetry){setRound1({...parsed,_transcript:text});setFeedback({...parsed,_transcript:text});}
       else setFeedback({...parsed,_transcript:text,prev:round1});
       saveVoiceResult(parsed, text, prompt);
+      incrementTrialCount(SIMULATION_TRIAL_KEY);
+      setPhase(isRetry?'comparison':'feedback');
     }catch{
-      if(!isRetry){setRound1({...mock,_transcript:text});setFeedback({...mock,_transcript:text});}
-      else setFeedback({...mock,_transcript:text,prev:round1});
+      setPhase('analysisFailed');
     }
-    incrementTrialCount(SIMULATION_TRIAL_KEY);
-    setPhase(isRetry?'comparison':'feedback');
   }
 
   function surprise(){
@@ -1635,6 +1627,20 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
       <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,color:T2.text,margin:0}}>We couldn't hear a clear response.</p>
       <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,maxWidth:340,lineHeight:1.6}}>That was too short to score honestly — please try again and speak for a little longer.</p>
       <button onClick={()=>{setPhase('recording');setElapsed(0);setIsRec(false);setTranscript('');setFallback('');setMicError(false);setTranscribeFailed(false);}} style={{...cs.cta,width:"auto",padding:"12px 28px"}}>Try Again →</button>
+    </div>
+  );
+
+  // ── ANALYSIS FAILED ── previously fell back to a fully fabricated score
+  // here on any failure, including offline, and still burned a free trial
+  // attempt on it. Now shows an honest state and never fabricates a score.
+  if(phase==='analysisFailed') return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"60px 20px",gap:18,textAlign:"center"}}>
+      <div style={{width:56,height:56,borderRadius:"50%",background:"#F0EBE2",display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" stroke="#A8998A" strokeWidth="1.6"/><line x1="4" y1="4" x2="20" y2="20" stroke="#B05C4A" strokeWidth="1.6" strokeLinecap="round"/></svg>
+      </div>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,color:T2.text,margin:0}}>{online?"We couldn't score that.":"You're offline."}</p>
+      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,maxWidth:340,lineHeight:1.6}}>{online?"Something went wrong analysing your response. Your recording is still there — you can try again.":"This needs a connection to score your response. Try again once you're back online."}</p>
+      <button onClick={()=>analyzeText(transcript||fallback)} style={{...cs.cta,width:"auto",padding:"12px 28px"}}>Try Again →</button>
     </div>
   );
 
@@ -2017,22 +2023,33 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
 export function D1SimFeedback({input}) {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const online = useOnlineStatus();
   async function analyse() {
     if (!input.trim()) return;
     setLoading(true);
+    setError(false);
+    if (!online) { setError(true); setLoading(false); return; }
     try {
       const res = await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:500,messages:[{role:"user",content:`You are a clarity coach. Analyse this 60-second explanation for clarity:\n\n"${input}"\n\nNever use em dashes; use a comma or hyphen instead.\n\nReturn JSON: {score:number(1-10),strengths:[string,string],gaps:[string,string],rewrite:"one clearer version in 1-2 sentences"}`}]})});
       const data = await res.json();
       const raw = (data.content||[]).map(b=>b.text||"").join("").trim();
-      try { const m=raw.match(/\{[\s\S]*\}/); setResult(JSON.parse(m[0])); } catch { setResult({score:7,strengths:["Clear main point","Good conciseness"],gaps:["Passive voice detected","Key point arrived late"],rewrite:"Here's the clearer version: lead with your main outcome, then your evidence, then your ask."}); }
-    } catch { setResult(null); }
+      const m=raw.match(/\{[\s\S]*\}/);
+      if(!m) throw new Error();
+      setResult(JSON.parse(m[0]));
+    } catch { setError(true); }
     setLoading(false);
   }
   return (
     <div>
-      <button onClick={analyse} disabled={loading||!input.trim()} style={{width:"100%",padding:"12px",borderRadius:3,border:"none",background:loading||!input.trim()?"#DDD5C4":T.ink,color:loading||!input.trim()?"#6B5E44":T.bg,fontSize:13,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:result?16:0}}>
+      <button onClick={analyse} disabled={loading||!input.trim()} style={{width:"100%",padding:"12px",borderRadius:3,border:"none",background:loading||!input.trim()?"#DDD5C4":T.ink,color:loading||!input.trim()?"#6B5E44":T.bg,fontSize:13,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:(result||error)?16:0}}>
         {loading?"Analysing clarity…":"Get Clarity Score →"}
       </button>
+      {error && (
+        <p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#B05C4A",margin:0}}>
+          {online?"Something went wrong scoring that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}
+        </p>
+      )}
       {result && (
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
           <div style={{padding:"16px 20px",background:"#EDE8DF",borderRadius:4,border:"0.5px solid #DDD5C4",display:"flex",alignItems:"center",gap:16}}>

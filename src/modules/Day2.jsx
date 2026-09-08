@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
-import { useWakeLock, localStorageUsageRatio } from '../utils.js';
+import { useWakeLock, localStorageUsageRatio, useOnlineStatus } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { detectPitchHz, computeSignalMetrics } from './voiceSignal.js';
 
@@ -128,6 +128,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   };
 
   const [phase, setPhase] = useState('intro');
+  const online = useOnlineStatus();
   const dotCount = useSequentialDots(phase === 'analyzing');
   const [expandedDim, setExpandedDim] = useState(null);
   const [cat, setCat] = useState('Presence');
@@ -451,23 +452,15 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   async function analyzeText(text, metrics){
     setPhase('analyzing');
     const isRetry=!!round1;
-    const base=isRetry?8:0;
-    const mock={
-      overall:Math.floor(Math.random()*18)+66+base,
-      headline:"Your voice carried genuine presence and warmth.",
-      subtitle:isRetry?"Clear improvement. Your vocal control is growing.":"A strong foundation — now let's sharpen the edges.",
-      scores:Object.fromEntries(DIMS.map(d=>[d,Math.floor(Math.random()*22)+63+base])),
-      habits:[],
-      worked:["Natural, conversational warmth throughout","Good use of pause before key ideas"],
-      improve:[{title:"Vary your pace deliberately",detail:"Slow down on your most important points to give them weight and let the listener absorb what you're saying."}],
-      insight:"Your voice already has warmth and authenticity. The next level is intentional contrast: slow down when the idea matters most, raise your energy when you want to inspire. The gap between where you are and truly compelling delivery is smaller than you think.",
-      moments:null
-    };
     if(!text||text.trim().length<15){
       // Too little was actually said to score honestly — show a real error
       // instead of fabricating a plausible-looking score from nothing.
       setTranscribeFailed(true);
       setPhase('recording');
+      return;
+    }
+    if(!online){
+      setPhase('analysisFailed');
       return;
     }
     // Each voice dimension gets its own instruction: a real measured value
@@ -486,15 +479,16 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       if(!res.ok) throw new Error(d.error||'Request failed');
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
+      if(!m) throw new Error('Malformed response');
       const parsed=JSON.parse(m[0]);
       if(!parsed||typeof parsed.overall!=='number'||!parsed.scores) throw new Error('Malformed response');
       if(!isRetry){setRound1(parsed);setFeedback(parsed);}else setFeedback({...parsed,prev:round1});
       saveVoiceResult(parsed, text, prompt);
+      setPhase(isRetry?'comparison':'feedback');
     }catch(err){
       console.error('[D2SimWidget] analyzeText error:', err);
-      if(!isRetry){setRound1(mock);setFeedback(mock);}else setFeedback({...mock,prev:round1});
+      setPhase('analysisFailed');
     }
-    setPhase(isRetry?'comparison':'feedback');
   }
 
   function selectPrompt(p){setPrompt(p);setPhase('recording');setTimeLeft(D2_SIMULATION_MAX_SEC);setIsRec(false);setTranscript('');setFallback('');}
@@ -754,6 +748,18 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
         )}
       </div>
       <button onClick={()=>setPhase('choose')} style={{fontFamily:T.sans,fontSize:12,color:T2.text4,background:"none",border:"none",cursor:"pointer",textAlign:"left",padding:0}}>← Choose a different prompt</button>
+    </div>
+  );
+
+  if(phase==='analysisFailed') return (
+    <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <div style={{...cs.card,textAlign:"center"}}>
+        <div style={{...cs.label, color:"#B05C4A"}}>{online ? "Something went wrong" : "You're offline"}</div>
+        <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:"8px 0 16px"}}>
+          {online ? "We couldn't score that recording. Your answer is still there — you can try again." : "Scoring your voice needs a connection. Try again once you're back online."}
+        </p>
+        <button onClick={()=>analyzeText(transcript||fallback, recMetrics)} style={{...cs.cta,width:"auto",padding:"12px 32px"}}>Try Again →</button>
+      </div>
     </div>
   );
 

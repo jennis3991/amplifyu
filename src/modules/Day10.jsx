@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
-import { useWakeLock } from '../utils.js';
+import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
@@ -17,6 +17,8 @@ function blobToB64(blob) {
 export function D10SimFeedback({input, scenario}) {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const online = useOnlineStatus();
 
   const wordCount = input.trim().split(/\s+/).filter(Boolean).length;
   const rank = wordCount <= 35
@@ -28,14 +30,17 @@ export function D10SimFeedback({input, scenario}) {
   async function analyse() {
     if (!input.trim()) return;
     setLoading(true);
+    setError(false);
+    if (!online) { setError(true); setLoading(false); return; }
     const scenarioCtx = scenario ? `Scenario: "${scenario}"\n\n` : "";
     try {
       const res = await fetch("/api/claude", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:600,messages:[{role:"user",content:`You are an elite executive communication coach. Score this leadership hot seat response.\n\n${scenarioCtx}Response: "${input}"\n\nWord count: ${wordCount}\n\nNever use em dashes anywhere in your response; use a comma or hyphen instead.\n\nReturn ONLY valid JSON:\n{\n  "overall":<50-100>,\n  "Clarity":<50-100>,\n  "Confidence":<50-100>,\n  "Brevity":<50-100>,\n  "Ownership":<50-100>,\n  "StratThinking":<50-100>,\n  "Presence":<50-100>,\n  "coaching":"<One specific, editorial coaching sentence — reference the actual words used. Not generic. Think: \'Your strongest point arrived 18 words in\' not \'good job\'>",\n  "coaching2":"<One specific follow-up coaching sentence — a concrete next step or upgrade>"\n}`}]})});
       const d = await res.json();
       const raw = (d.content||[]).map(b=>b.text||"").join("").trim();
-      try { const m = raw.match(/\{[\s\S]*\}/); setResult(JSON.parse(m[0])); }
-      catch { setResult({overall:75,Clarity:78,Confidence:72,Brevity:70,Ownership:80,StratThinking:74,Presence:71,coaching:"Your contribution was clear. Now make the result the headline — lead with the outcome, then explain how.",coaching2:"Strong ownership language. Next level: one specific number would make this impossible to forget."}); }
-    } catch { setResult(null); }
+      const m = raw.match(/\{[\s\S]*\}/);
+      if(!m) throw new Error();
+      setResult(JSON.parse(m[0]));
+    } catch { setError(true); }
     setLoading(false);
   }
 
@@ -51,9 +56,15 @@ export function D10SimFeedback({input, scenario}) {
           <span style={{fontFamily:T.sans,fontSize:12,color:T.text3}}>{wordCount} words — {rank.note}</span>
         </div>
       )}
-      <button onClick={analyse} disabled={loading||!input.trim()} style={{width:"100%",padding:"14px",borderRadius:3,border:"none",background:loading||!input.trim()?"#DDD5C4":T.ink,color:loading||!input.trim()?"#6B5E44":"#F7F3EC",fontSize:14,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:T.sans,marginBottom:result?20:0}}>
+      <button onClick={analyse} disabled={loading||!input.trim()} style={{width:"100%",padding:"14px",borderRadius:3,border:"none",background:loading||!input.trim()?"#DDD5C4":T.ink,color:loading||!input.trim()?"#6B5E44":"#F7F3EC",fontSize:14,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:T.sans,marginBottom:(result||error)?20:0}}>
         {loading?"Coaching in progress…":"Get Coached →"}
       </button>
+
+      {error && (
+        <p style={{fontFamily:T.sans,fontSize:12,color:"#B05C4A",margin:0}}>
+          {online?"Something went wrong coaching that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}
+        </p>
+      )}
 
       {result && (
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
@@ -107,23 +118,30 @@ const D10_SAR_LOADING_MESSAGES = [
 
 export function D10MobileSAR({onComplete}) {
   const [res,setRes]=useState(""); const [l,setL]=useState(false);
+  const [err,setErr]=useState(false);
+  const [lastText,setLastText]=useState("");
+  const online = useOnlineStatus();
   const sarDotCount = useSequentialDots(l);
 
   async function go(text){
     if(!text||!text.trim())return;
+    setLastText(text);
     setL(true);
+    setErr(false);
+    if(!online){setErr(true);setL(false);return;}
     try{
       const resp=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:250,messages:[{role:"user",content:`You are an executive communication coach. Sharpen this spoken SAR (Situation, Action, Result) story into 2-3 crisp, confident sentences. Lead with the result. Never use em dashes; use a comma or hyphen instead. Return ONLY the sharpened story:\n\n${text}`}]})});
       const d=await resp.json();
       const txt=(d.content||[]).map(b=>b.text||"").join("").trim();
+      if(!txt) throw new Error();
       setRes(txt);if(onComplete)onComplete();
-    }catch{setRes("Lead with the result, then explain how you got there.");if(onComplete)onComplete();}
+    }catch{setErr(true);}
     setL(false);
   }
 
   return(
     <div>
-      {!res && !l && (
+      {!res && !l && !err && (
         <div style={{marginBottom:4}}>
           <div style={{fontSize:10,fontWeight:700,color:"#8A9E84",textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:"'Inter',sans-serif",marginBottom:8}}>Situation &middot; Action &middot; Result</div>
           <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#6B5E44",lineHeight:1.6,margin:"0 0 18px"}}>Speak your whole story in one go: what was the challenge, what did YOU specifically do, and what was the measurable result?</p>
@@ -134,6 +152,12 @@ export function D10MobileSAR({onComplete}) {
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,padding:"28px 0"}}>
           <SequentialDots dotCount={sarDotCount} size={7} gap={6} activeColor="#8A9E84" inactiveColor="rgba(138,158,132,0.2)"
             messages={D10_SAR_LOADING_MESSAGES} textStyle={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#8A7B66"}}/>
+        </div>
+      )}
+      {err && !l && (
+        <div style={{display:"flex",flexDirection:"column",gap:12,alignItems:"center",padding:"12px 0"}}>
+          <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#B05C4A",margin:0,textAlign:"center"}}>{online?"Something went wrong sharpening that story. You can try again.":"You're offline — this needs a connection. Try again once you're back online."}</p>
+          <button onClick={()=>go(lastText)} style={{padding:"10px 24px",borderRadius:3,border:"none",background:"#2C2416",color:"#F7F3EC",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Try Again →</button>
         </div>
       )}
       {res&&(
@@ -205,6 +229,9 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
   const [transcribeFailed, setTranscribeFailed] = useState(false);
   const [fallbackText, setFallbackText] = useState('');
   const [elapsed, setElapsed] = useState(0);
+  const [scoreFailed, setScoreFailed] = useState(false);
+  const [lastText, setLastText] = useState('');
+  const online = useOnlineStatus();
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
   const waveRef = useRef(null);
@@ -291,18 +318,23 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
 
   async function go(text){
     if(!text||!text.trim()||!scenario)return; setL(true);
+    setScoreFailed(false);
+    setLastText(text);
+    if(!online){ setScoreFailed(true); setL(false); return; }
     try{
       const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an executive communication coach. A professional was asked: "${scenario.prompt}"\n\nTheir spoken response: "${text}"\n\nNever use em dashes anywhere in your response; use a comma or hyphen instead.\n\nEvaluate and return ONLY valid JSON:\n{"overall":<50-100>,"headline":"<max 10 words: single most important observation>","scores":{"Clarity":<50-100>,"Structure":<50-100>,"Confidence":<50-100>,"Brevity":<50-100>,"Impact":<50-100>},"strength":"<one sentence: what they did well>","improve":"<one sentence: single most important improvement>","rewrite":"<sharper 2-3 sentence version of their answer, leading with result>","insight":"<2 sentences of personalised coaching>"}`}]})});
       const d=await res.json(); const raw=(d.content||[]).map(b=>b.text||"").join("").trim();
-      const m=raw.match(/\{[\s\S]*\}/); setR(JSON.parse(m[0]));
+      const m=raw.match(/\{[\s\S]*\}/);
+      if(!m) throw new Error();
+      setR(JSON.parse(m[0]));
     }catch{
-      setR({overall:74,headline:"Clear ownership with room to sharpen the result.",scores:{Clarity:75,Structure:70,Confidence:72,Brevity:80,Impact:68},strength:"You spoke with genuine ownership and didn't shy away from the question.",improve:"Lead with the result before the context — flip the order for more impact.",rewrite:"I led a cross-functional project that increased efficiency by 30%. The key challenge was aligning three teams with competing priorities. I resolved this by establishing a weekly decision framework — and we delivered ahead of schedule.",insight:"Your instinct to give context first is natural, but executives want the result first. Try: 'Result → How → Why it mattered.' You'll land harder, faster."});
+      setScoreFailed(true);
     }
     setL(false);
   }
 
   function resetToScenarios(){
-    setScenario(null); setR(null); setExpandedDim(null); setMicError(false); setTranscribeFailed(false); setFallbackText(''); setIsRec(false);
+    setScenario(null); setR(null); setExpandedDim(null); setMicError(false); setTranscribeFailed(false); setFallbackText(''); setIsRec(false); setScoreFailed(false);
   }
 
   if (!introSeen) return (
@@ -342,7 +374,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
       <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#A8998A",marginBottom:12,fontWeight:300}}>Choose your scenario:</p>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
         {SCENARIOS.map(sc=>(
-          <div key={sc.id} onClick={()=>{setScenario(sc);setR(null);setMicError(false);setTranscribeFailed(false);setFallbackText('');}}
+          <div key={sc.id} onClick={()=>{setScenario(sc);setR(null);setMicError(false);setTranscribeFailed(false);setFallbackText('');setScoreFailed(false);}}
             style={{padding:"12px",background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:8,minHeight:110,textAlign:"center"}}>
             <div>{sc.icon}</div>
             <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.25,flex:1}}>{sc.title}</div>
@@ -364,7 +396,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
         <div style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"rgba(138,158,132,0.6)"}}>{scenario.tag}</div>
       </div>
 
-      {!r && !l && (
+      {!r && !l && !scoreFailed && (
         <>
           {(micError||transcribeFailed) && (
             <div style={{padding:"14px 16px",background:"rgba(180,80,60,0.08)",borderRadius:4,border:"1px solid rgba(180,80,60,0.25)",marginBottom:10}}>
@@ -404,6 +436,14 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
         <SequentialDots dotCount={dotCount} size={7} gap={6} center={false} activeColor="#C9A84C" inactiveColor="rgba(201,168,76,0.2)"/>
         <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:"#2C2416",margin:0}}>Your AmplifyU coach is reviewing your response…</p>
       </div>}
+
+      {scoreFailed && !l && (
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14,padding:"28px 0",textAlign:"center"}}>
+          <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,color:"#2C2416",margin:0}}>{online?"We couldn't score that.":"You're offline."}</p>
+          <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#6B5E44",margin:0,maxWidth:300,lineHeight:1.6}}>{online?"Something went wrong reviewing your response. You can try again.":"This needs a connection to score your response. Try again once you're back online."}</p>
+          <button onClick={()=>go(lastText)} style={{padding:"12px 28px",borderRadius:3,border:"none",background:"#2C2416",color:"#F7F3EC",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Try Again →</button>
+        </div>
+      )}
 
       {r && <div style={{display:"flex",flexDirection:"column",gap:12}}>
         <div style={{padding:"18px",background:"#0E0B08",borderRadius:8}}>

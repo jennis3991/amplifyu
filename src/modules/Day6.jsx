@@ -67,6 +67,8 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
   useWakeLock(isRec);
   const [coachResult, setCoachResult] = useState(null);
   const [visCount,    setVisCount]    = useState(0);
+  const [lastTranscript, setLastTranscript] = useState('');
+  const online = useOnlineStatus();
 
   const dotCount  = useSequentialDots(phase === 'ready');
 
@@ -85,6 +87,8 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
   }, [phase]);
 
   async function analyzeTranscript(text) {
+    setLastTranscript(text);
+    if (!online) { setPhase('analysisFailed'); return; }
     try {
       const res = await fetch('/api/claude', {
         method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -97,19 +101,11 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
       const data = await res.json();
       const raw = (data.content || []).map(b => b.text || '').join('');
       const m = raw.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error();
       setCoachResult(JSON.parse(m[0]));
       setPhase('coach');
     } catch(e) {
-      setCoachResult({
-        languagePattern: 'composed',
-        openingSentence: text ? (text.split(/[.!?]/)[0] + '.').trim() : 'Your response was noted.',
-        patternObservation: "You stayed in the moment and responded without over-explaining — that restraint is the first signal of composure under pressure.",
-        upgradedPhrase: "I hear that. Here's where I stand.",
-        wordBank: ["I hear that", "Let me be clear", "Here's my position", "That said", "What I know is", "I want to be direct"],
-        avoidPhrase: null,
-        coachLine: "You have the instincts. The simulation will show you how they hold under real pressure.",
-      });
-      setPhase('coach');
+      setPhase('analysisFailed');
     }
   }
 
@@ -201,6 +197,15 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
         {[0,1,2].map(i => <div key={i} style={{width:8, height:8, borderRadius:'50%', background:T.gold, animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}
       </div>
       <p style={{fontFamily:T.sans, fontSize:14, color:T2.text3, margin:0, textAlign:'center'}}>Your AmplifyU coach is reading your language…</p>
+    </div>
+  );
+
+  // ── ANALYSIS FAILED ──────────────────────────────────────────────────────
+  if (phase === 'analysisFailed') return (
+    <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:16, padding:isDesktop?'52px 0':'36px 0', textAlign:'center'}}>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?20:18, color:T2.text, margin:0}}>{online ? "We couldn't read that response." : "You're offline."}</p>
+      <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, margin:0, maxWidth:320, lineHeight:1.6}}>{online ? "Something went wrong analysing your recording. You can try again." : "This needs a connection to read your language pattern. Try again once you're back online."}</p>
+      <button onClick={() => { setPhase('analyzing'); analyzeTranscript(lastTranscript); }} style={{...cs.cta, width:'auto', padding:'12px 28px'}}>Try Again →</button>
     </div>
   );
 
@@ -358,6 +363,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const [result,         setResult]        = useState(null);
   const [perFeedback,    setPerFeedback]   = useState(null);
   const [perFeedLoading, setPerFeedLoading]= useState(false);
+  const [perFeedFailed,  setPerFeedFailed] = useState(false);
   const [openDrop,       setOpenDrop]      = useState(null);
   const [micError,       setMicError]      = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
@@ -366,6 +372,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const audioChunksRef   = useRef([]);
   const timerRef         = useRef(null);
   const purposeForAnalysis = useRef('');
+  const lastAnswerRef    = useRef('');
 
   // ── My Saved Results — just the stakeholder profile + 5 questions, not the
   // full per-answer critique/transcript (deliberately lighter than Day 1/2's
@@ -565,20 +572,27 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   }
 
   async function proceedAnswer(answerText){
+    lastAnswerRef.current = answerText;
     setCurrentAnswer(answerText);
-    const newAnswers=[...answers,answerText];
-    setAnswers(newAnswers);
+    if (answers[qIdx] !== answerText) {
+      const newAnswers=[...answers];
+      newAnswers[qIdx]=answerText;
+      setAnswers(newAnswers);
+    }
     setPerFeedback(null);
+    setPerFeedFailed(false);
     setPerFeedLoading(true);
     setPhase('per-feedback');
+    if (!online) { setPerFeedFailed(true); setPerFeedLoading(false); return; }
     try{
       const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:800,messages:[{role:"user",content:"You are a senior executive communication coach giving detailed in-session feedback on a high-stakes conversation practice.\n\nContext: "+form.role+" preparing to meet "+form.stakeholder+" about "+purposeForAnalysis.current+"\n\nQuestion asked: \""+questions[qIdx]+"\"\nTheir spoken answer: \""+(answerText.trim()||"(no response given)")+"\"\n\nGive a full coaching critique. Be specific — reference their actual words and phrases. Do not be vague or generic. Never use em dashes anywhere in your response; use a comma or hyphen instead.\n\nReturn ONLY valid JSON:\n{\"overall\":\"<2-3 sentence overall assessment of this answer — what impression it would leave on "+form.stakeholder+", be honest>\",\"landed\":\"<1-2 sentences on what specifically worked in this answer and why it would land well>\",\"improve\":\"<2-3 sentences on what was missing, unclear, or weak — be direct and specific, referencing what they actually said>\",\"rewrite\":\"<A stronger version of their opening sentence or key point — how a confident senior professional would say it>\",\"landing\":\"<1-2 sentences of specific advice on how to make this point land more powerfully with "+form.stakeholder+">\"}" }]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
-      setPerFeedback(m?JSON.parse(m[0]):{overall:"Good attempt under pressure.",landed:"You stayed on topic and showed composure.",improve:"Lead with your clearest point first, then support it with evidence.",rewrite:"Here is a stronger opening — direct, specific, and confident.",landing:"Frame your answer around what "+form.stakeholder+" cares about most, not what feels comfortable to say."});
+      if(!m) throw new Error();
+      setPerFeedback(JSON.parse(m[0]));
     }catch{
-      setPerFeedback({overall:"Good attempt under pressure.",landed:"You stayed on topic and showed composure.",improve:"Lead with your clearest point first, then support it with evidence.",rewrite:"Here is a stronger opening — direct, specific, and confident.",landing:"Frame your answer around what "+form.stakeholder+" cares about most, not what feels comfortable to say."});
+      setPerFeedFailed(true);
     }finally{
       setPerFeedLoading(false);
     }
@@ -621,24 +635,18 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
   async function analyze(ans){
     const qa=questions.map((q,i)=>`Q${i+1}: ${q}\nA: ${ans[i]||'(no answer)'}`).join('\n\n');
-    const fallback={
-      scores:{composure:{score:7,note:"Stayed measured throughout"},clarity:{score:7,note:"Mostly direct answers"},confidence:{score:7,note:"Clear position held"},evidence:{score:6,note:"Could use more specific data"},brevity:{score:7,note:"Generally concise"}},
-      strengths:["Stayed composed under pressure","Clear on strategic rationale"],
-      development:["Prepare stronger evidence for risk questions","Sharpen responses to follow-up probing"],
-      hardestQuestion:questions[questions.length-1]||'Final question',
-      recommendation:"Your strongest answers were backed by evidence. Before the real conversation, prepare clearer responses to risk and objection questions — those are where hesitation tends to show."
-    };
+    if(!online){ setPhase('resultsFailed'); return; }
     try{
       const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:700,messages:[{role:"user",content:`You are an executive communication coach. Analyse these conversation practice responses.\n\nContext: ${form.role} preparing to meet ${form.stakeholder} about ${purposeForAnalysis.current}\n\n${qa}\n\nNever use em dashes anywhere in your response; use a comma or hyphen instead.\n\nReturn ONLY valid JSON:\n{"scores":{"composure":{"score":<1-10>,"note":"<8 words>"},"clarity":{"score":<1-10>,"note":"<8 words>"},"confidence":{"score":<1-10>,"note":"<8 words>"},"evidence":{"score":<1-10>,"note":"<8 words>"},"brevity":{"score":<1-10>,"note":"<8 words>"}},"strengths":["<strength1>","<strength2>"],"development":["<area1>","<area2>"],"hardestQuestion":"<question text that got weakest response>","recommendation":"<2-3 sentence personalised coaching recommendation>"}`}]})});
       const d=await res.json();
       const raw=(d.content||[]).map(b=>b.text||'').join('').trim();
       const m=raw.match(/\{[\s\S]*\}/);
-      if(m){const parsed=JSON.parse(m[0]);setResult(parsed);}
-      else{setResult(fallback);}
-    }catch(e){
-      setResult(fallback);
-    }finally{
+      if(!m) throw new Error();
+      const parsed=JSON.parse(m[0]);
+      setResult(parsed);
       setPhase('results');
+    }catch(e){
+      setPhase('resultsFailed');
     }
   }
 
@@ -926,6 +934,12 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
             ]}
             textStyle={{fontFamily:T.sans,fontSize:13,color:T2.text3}}/>
         </div>
+      ) : perFeedFailed ? (
+        <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px",display:"flex",flexDirection:"column",gap:12,alignItems:"center"}}>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,margin:0}}>{online?"We couldn't review that answer.":"You're offline."}</p>
+          <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,margin:0,maxWidth:320,lineHeight:1.6}}>{online?"Something went wrong coaching that answer. You can try again.":"This needs a connection to coach your answer. Try again once you're back online."}</p>
+          <button onClick={()=>proceedAnswer(lastAnswerRef.current)} style={{...cs.cta,width:"auto",padding:"10px 24px"}}>Try Again →</button>
+        </div>
       ) : perFeedback ? (
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {/* Overall assessment */}
@@ -975,6 +989,15 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
       <SequentialDots dotCount={reviewDotCount} activeColor={T.gold} inactiveColor={T2.border}
         messages={["Your AmplifyU coach is reviewing your responses…","Looking across all "+questions.length+" answers for a pattern.","Finding your strongest moment under pressure.","Almost there…"]}
         textStyle={{fontFamily:T.sans,fontSize:14,color:T2.text3}}/>
+    </div>
+  );
+
+  // ── RESULTS FAILED ──
+  if(phase==='resultsFailed') return (
+    <div style={{display:"flex",flexDirection:"column",gap:16,alignItems:"center",padding:isDesktop?"48px 0":"32px 0",textAlign:"center"}}>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,color:T2.text,margin:0}}>{online?"We couldn't build your report.":"You're offline."}</p>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,maxWidth:320,lineHeight:1.6}}>{online?"Something went wrong reviewing your answers. You can try again.":"This needs a connection to review your answers. Try again once you're back online."}</p>
+      <button onClick={()=>{setPhase('reviewing');analyze(answers);}} style={{...cs.cta,width:"auto",padding:"12px 28px"}}>Try Again →</button>
     </div>
   );
 

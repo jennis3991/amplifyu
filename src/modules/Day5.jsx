@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useWakeLock } from '../utils.js';
+import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 
 function blobToB64(blob) {
@@ -32,6 +32,8 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
   useWakeLock(voiceActive);
   const [coachResult, setCoachResult] = useState(null);
   const [preRow,      setPreRow]      = useState(0);
+  const [lastTranscript, setLastTranscript] = useState('');
+  const online = useOnlineStatus();
 
   // Block the app's "Next"/"Review" nav until the rehearsal is genuinely
   // complete (coachResult exists) — not just while actively recording, so a
@@ -61,6 +63,8 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
   }, [phase]);
 
   async function analyzeTranscript(text) {
+    setLastTranscript(text);
+    if (!online) { setPhase('analysisFailed'); return; }
     try {
       const res = await fetch('/api/claude', {
         method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -73,15 +77,11 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
       const data = await res.json();
       const raw = (data.content || []).map(b => b.text || '').join('');
       const m = raw.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error();
       setCoachResult(JSON.parse(m[0]));
       setPhase('coach');
     } catch(e) {
-      setCoachResult({
-        ledWithPosition: true, reasonPresent: true, examplePresent: false,
-        coachLine: "You opened with a clear position — now ground it in a specific example to make it land.",
-        bridgeLine: "The Boardroom asks one question. Ten seconds to think. Then it's yours.",
-      });
-      setPhase('coach');
+      setPhase('analysisFailed');
     }
   }
 
@@ -219,6 +219,15 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
     </div>
   );
 
+  // ── ANALYSIS FAILED ──────────────────────────────────────────────────────
+  if (phase === 'analysisFailed') return (
+    <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', minHeight:200, gap:16, textAlign:'center', padding:'0 8px'}}>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?20:18, color:T2.text, margin:0}}>{online ? "We couldn't read that answer." : "You're offline."}</p>
+      <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, margin:0, maxWidth:320, lineHeight:1.6}}>{online ? "Something went wrong analysing your recording. You can try again." : "This needs a connection to check your structure. Try again once you're back online."}</p>
+      <button onClick={() => { setPhase('analyzing'); analyzeTranscript(lastTranscript); }} style={{...cs.cta, width:'auto', padding:'12px 28px'}}>Try Again →</button>
+    </div>
+  );
+
   // ── COACH ─────────────────────────────────────────────────────────────────
   if (phase === 'coach' && coachResult) {
     const rows = [
@@ -285,7 +294,9 @@ export function D5SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const [debriefResult,setDebriefResult]= useState(null);
 
   const transcript1Ref   = useRef('');
+  const transcript2Ref   = useRef('');
   const topicRef         = useRef(null);
+  const online = useOnlineStatus();
 
   // Block the app's "Next"/"Review" nav until the simulation is genuinely
   // complete (debrief reached) — not just while actively recording, so a
@@ -306,6 +317,7 @@ export function D5SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
   async function analyzePRE(text) {
     const t = topicRef.current;
+    if (!online) { setPhase('preFailed'); return; }
     try {
       const res = await fetch('/api/claude', {
         method:'POST', headers:{'Content-Type':'application/json'},
@@ -328,23 +340,18 @@ Fields to extract: pointQuote (sentence where they stated their main position, o
       const data = await res.json();
       const raw = (data.content||[]).map(b=>b.text||'').join('');
       const m = raw.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error();
       setPreResult(JSON.parse(m[0]));
       setPhase('reveal');
     } catch(e) {
-      setPreResult({
-        pointQuote: text.split(/[.!?]/)[0]?.trim()||null, pointStrength:'present', pointTiming:3,
-        reasonQuote: text.split(/[.!?]/)[1]?.trim()||null, reasonStrength:'present',
-        exampleQuote:null, exampleStrength:'developing', exampleTiming:0,
-        overallStructure:'emerging',
-        coachInsight:"Your point came through — bring your example earlier to make it land harder.",
-        q2Instruction:"Open with your point in the first sentence.",
-      });
-      setPhase('reveal');
+      setPhase('preFailed');
     }
   }
 
   async function analyzeDebrief(t1, t2) {
     const t = topicRef.current;
+    transcript2Ref.current = t2;
+    if (!online) { setPhase('debriefFailed'); return; }
     try {
       const res = await fetch('/api/claude', {
         method:'POST', headers:{'Content-Type':'application/json'},
@@ -381,19 +388,11 @@ Return only valid JSON with all fields present.`,
       const data = await res.json();
       const raw = (data.content||[]).map(b=>b.text||'').join('');
       const m = raw.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error();
       setDebriefResult(JSON.parse(m[0]));
       setPhase('debrief');
     } catch(e) {
-      setDebriefResult({
-        q2PointQuote:null, q2PointStrength:'present',
-        q2ReasonQuote:null, q2ReasonStrength:'present',
-        q2ExampleQuote:null, q2ExampleStrength:'developing', q2OverallStructure:'emerging',
-        improvement:true,
-        headlineVerdict:"You held your structure under pressure — that's the real test of The Boardroom.",
-        comparisonInsight:"Your point arrived earlier in Q2, which gave the answer a stronger foundation from the start.",
-        takeaway:"State your position in the opening sentence — every time, before anything else.",
-      });
-      setPhase('debrief');
+      setPhase('debriefFailed');
     }
   }
 
@@ -507,6 +506,15 @@ Return only valid JSON with all fields present.`,
     </div>
   );
 
+  // ── Q1 ANALYSIS FAILED ───────────────────────────────────────────────────
+  if (phase === 'preFailed') return grid(
+    <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', minHeight:220, gap:16, textAlign:'center', padding:'0 8px'}}>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?20:18, color:T2.text, margin:0}}>{online ? "We couldn't read that answer." : "You're offline."}</p>
+      <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, margin:0, maxWidth:320, lineHeight:1.6}}>{online ? "Something went wrong analysing your recording. You can try again." : "This needs a connection to check your structure. Try again once you're back online."}</p>
+      <button onClick={() => { setPhase('analyzing1'); analyzePRE(transcript1Ref.current); }} style={{...cs.cta, width:'auto', padding:'12px 28px'}}>Try Again →</button>
+    </div>
+  );
+
   // ── REVEAL ─────────────────────────────────────────────────────────────────
   if (phase === 'reveal' && preResult) {
     const rows = [
@@ -577,6 +585,15 @@ Return only valid JSON with all fields present.`,
       <div style={{display:'flex', gap:8}}>{[0,1,2].map(i=><div key={i} style={{width:7,height:7,borderRadius:'50%',background:'rgba(138,158,132,0.6)'}}/>)}</div>
       <p style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:T2.text, margin:0, textAlign:'center'}}>Comparing your two answers…</p>
       <p style={{fontFamily:T.sans, fontSize:12, color:T2.text3, margin:0, textAlign:'center'}}>Looking for structural shift.</p>
+    </div>
+  );
+
+  // ── Q2 ANALYSIS FAILED ───────────────────────────────────────────────────
+  if (phase === 'debriefFailed') return grid(
+    <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', minHeight:220, gap:16, textAlign:'center', padding:'0 8px'}}>
+      <p style={{fontFamily:T.serif, fontSize:isDesktop?20:18, color:T2.text, margin:0}}>{online ? "We couldn't compare those answers." : "You're offline."}</p>
+      <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, margin:0, maxWidth:320, lineHeight:1.6}}>{online ? "Something went wrong analysing your recordings. You can try again." : "This needs a connection to compare your answers. Try again once you're back online."}</p>
+      <button onClick={() => { setPhase('analyzing2'); analyzeDebrief(transcript1Ref.current, transcript2Ref.current); }} style={{...cs.cta, width:'auto', padding:'12px 28px'}}>Try Again →</button>
     </div>
   );
 

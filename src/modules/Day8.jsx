@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { T as Timport } from '../theme.js';
+import { useOnlineStatus } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
 function blobToB64(blob) {
@@ -42,6 +43,7 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
   const [beatIndex,  setBeatIndex] = useState(0);
   const [beats,      setBeats]     = useState(Array(7).fill(''));
   const [genResult,  setGenResult] = useState(null);
+  const online = useOnlineStatus();
 
   const b           = BEATS[beatIndex];
   const currentBeat = beats[beatIndex];
@@ -65,19 +67,7 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
   async function generateStory() {
     setPhase('generating');
     const beatLines = BEATS.map((bt,i)=>`${bt.prompt.replace('…','')}: "${beats[i]}"`).join('\n');
-    const mock = {
-      beats: beats.map((raw,i)=>`${PROMPTS[i]} ${raw.trim().charAt(0).toLowerCase()+raw.trim().slice(1).replace(/\.$/,'')}.`),
-      improvements:[
-        "Added scene-setting language to immerse the listener immediately.",
-        "Established the 'normal world' — essential contrast before the disruption.",
-        "Sharpened the inciting incident so the shift feels sudden and real.",
-        "Made the action concrete — showing decision, not just reaction.",
-        "Linked cause and effect explicitly, building narrative momentum.",
-        "Grounded the resolution in a specific, tangible outcome.",
-        "Distilled the lesson into a single transferable idea.",
-      ],
-      coachNote:"Your story has a clear arc and a strong core message. The AI expanded your raw ideas into vivid narrative beats.",
-    };
+    if (!online) { setPhase('generateFailed'); return; }
     try {
       const res = await fetch("/api/claude",{
         method:"POST",
@@ -89,12 +79,13 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
       const d = await res.json();
       const raw = (d.content||[]).map(b=>b.text||'').join('').trim();
       const m = raw.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error();
       const parsed = JSON.parse(m[0]);
       setGenResult(parsed);
+      setPhase('generated');
     } catch {
-      setGenResult(mock);
+      setPhase('generateFailed');
     }
-    setPhase('generated');
   }
 
   // story strength
@@ -281,6 +272,15 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
       </div>
       <p style={{fontFamily:T.serif,fontSize:isDesktop?22:18,color:T2.text,lineHeight:1.4,margin:0}}>Your AI story coach is writing…</p>
       <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,margin:0,fontWeight:300}}>Expanding your beats. Explaining the improvements.</p>
+    </div>
+  );
+
+  // ── GENERATE FAILED ────────────────────────────────────────────────────────
+  if (phase==='generateFailed') return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16,padding:isDesktop?"60px 0":"44px 0",textAlign:"center"}}>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,color:T2.text,margin:0}}>{online?"We couldn't build your story.":"You're offline."}</p>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,maxWidth:320,lineHeight:1.6}}>{online?"Something went wrong expanding your beats. Your answers are still there, you can try again.":"This needs a connection to write your story. Try again once you're back online."}</p>
+      <button onClick={generateStory} style={cs.cta}>Try Again →</button>
     </div>
   );
 
@@ -1375,9 +1375,9 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
   const [elapsed,     setElapsed]     = useState(0);
   const [transcript,  setTranscript]  = useState('');
   const [storyResult, setStoryResult] = useState(null);
-  const [storyFallback, setStoryFallback] = useState(false);
   const [visCount,    setVisCount]    = useState(0);
   const [micError,    setMicError]    = useState(false);
+  const online = useOnlineStatus();
 
   // ── My Stories — shares the au1_stories key with StoryArchitectWidget, but
   // this source (rehearsal) is capped and listed independently from theirs.
@@ -1455,7 +1455,6 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       coachObservation: entry.coachObservation || '',
       readyLine: 'You already know how to tell a story. Now make it unforgettable.',
     });
-    setStoryFallback(false);
     setPhase('reveal');
   }
 
@@ -1499,14 +1498,14 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
 
   useEffect(() => {
     if (!onNavLabel) return;
-    if (phase === 'reveal' && storyResult && !storyFallback) {
+    if (phase === 'reveal' && storyResult) {
       onNavLabel("Continue");
       if (onNavFn) onNavFn.current = () => onSimulation?.();
     } else {
       onNavLabel(null);
       if (onNavFn) onNavFn.current = null;
     }
-  }, [phase, storyResult, storyFallback]);
+  }, [phase, storyResult]);
 
   function startRec() {
     setTranscript('');
@@ -1558,7 +1557,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
 
   async function callCoach(text) {
     const cardTitle = STORY_CARDS[selected]?.title || 'a career story';
-    setStoryFallback(false);
+    if (!online) { setPhase('storyFailed'); return; }
     try {
       const res = await fetch('/api/claude', {
         method: 'POST',
@@ -1571,8 +1570,10 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         }),
       });
       const data = await res.json();
-      const raw  = data.content?.[0]?.text || '{}';
-      const json = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0] || '{}');
+      const raw  = data.content?.[0]?.text || '';
+      const m = raw.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error();
+      const json = JSON.parse(m[0]);
       const built = {
         storyTitle:       json.storyTitle       || 'Your Career Story',
         beat1:            json.beat1            || 'Something brought me to this moment.',
@@ -1586,21 +1587,10 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       };
       setStoryResult(built);
       saveRehearsalStory(built);
+      setPhase('reveal');
     } catch (_) {
-      setStoryFallback(true);
-      setStoryResult({
-        storyTitle:       'Your Career Story',
-        beat1:            'Something brought me to this moment.',
-        beat2:            'Life was moving forward in its usual way.',
-        beat3:            'Then something changed.',
-        beat4:            'I responded differently than I expected.',
-        beat5:            'What followed shifted something fundamental.',
-        beat6:            'I came out the other side changed.',
-        coachObservation: 'There is real power in what you just shared.',
-        readyLine:        'You already know how to tell a story. Now make it unforgettable.',
-      });
+      setPhase('storyFailed');
     }
-    setPhase('reveal');
   }
 
   // ── Select ────────────────────────────────────────────────────────────────
@@ -1738,6 +1728,17 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         <SequentialDots dotCount={procDotCount} activeColor="rgba(245,239,230,0.85)" inactiveColor="rgba(245,239,230,0.15)"
           messages={["Your AmplifyU coach is listening.","Finding your setup, your turn, and your outcome.","Shaping your six beats.","Almost there…"]}
           textStyle={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"rgba(245,239,230,0.38)",fontWeight:300}}/>
+      </div>
+    </div>
+  );
+
+  // ── Story Failed ──────────────────────────────────────────────────────────
+  if (phase === 'storyFailed') return (
+    <div style={{ display:"flex", alignItems:"center", justifyContent:"center", minHeight:340 }}>
+      <div style={{ background:"#0E0B08", borderRadius:10, padding:"40px 44px", maxWidth:460, width:"100%", textAlign:"center", display:"flex", flexDirection:"column", gap:16, alignItems:"center" }}>
+        <p style={{ fontFamily:T.serif, fontSize:isDesktop?20:18, color:"rgba(245,239,230,0.92)", margin:0 }}>{online ? "We couldn't shape that story." : "You're offline."}</p>
+        <p style={{ fontFamily:T.sans, fontSize:13, color:"rgba(245,239,230,0.55)", margin:0, maxWidth:340, lineHeight:1.6 }}>{online ? "Something went wrong finding your beats. Your recording is still there, you can try again." : "This needs a connection to build your story. Try again once you're back online."}</p>
+        <button onClick={() => { setPhase('processing'); callCoach(transcript); }} style={{ padding:"12px 28px", borderRadius:4, border:"none", background:T.gold, color:"#1a1408", fontSize:14, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:48 }}>Try Again →</button>
       </div>
     </div>
   );

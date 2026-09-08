@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
@@ -68,6 +69,9 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
   const [recDone, setRecDone] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [feedback, setFeedback] = useState(null);
+  const [feedbackFailed, setFeedbackFailed] = useState(false);
+  const [lastText, setLastText] = useState('');
+  const online = useOnlineStatus();
 
   useEffect(() => {
     if (!onNavLabel) return;
@@ -103,6 +107,9 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
     async function handleDone(text) {
       setRecDone(true);
       setAnalyzing(true);
+      setFeedbackFailed(false);
+      setLastText(text);
+      if (!online) { setFeedbackFailed(true); setAnalyzing(false); return; }
       try {
         const res = await fetch('/api/claude', {
           method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -123,12 +130,10 @@ Give brief, specific coaching. Never use em dashes anywhere in your response; us
         const data = await res.json();
         const raw = (data.content||[]).map(b=>b.text||'').join('').trim();
         const m = raw.match(/\{[\s\S]*\}/);
+        if (!m) throw new Error();
         setFeedback(JSON.parse(m[0]));
       } catch {
-        setFeedback({
-          landed: "You said something out loud instead of staying silent — that's the hardest part, and you did it.",
-          improve: sc.tips.slice(0, 2),
-        });
+        setFeedbackFailed(true);
       }
       setAnalyzing(false);
     }
@@ -157,6 +162,14 @@ Give brief, specific coaching. Never use em dashes anywhere in your response; us
           <div style={{...cs.card, textAlign:"center", padding:isDesktop?"28px":"22px"}}>
             <div style={cs.label}>Your coach is listening</div>
             <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>Finding what worked — and what to sharpen.</p>
+          </div>
+        )}
+
+        {recDone && !analyzing && feedbackFailed && (
+          <div style={{...cs.card, textAlign:"center", padding:isDesktop?"28px":"22px", display:"flex", flexDirection:"column", gap:12, alignItems:"center"}}>
+            <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, margin:0}}>{online ? "We couldn't coach that." : "You're offline."}</p>
+            <p style={{fontFamily:T.sans, fontSize:13, color:T2.text3, margin:0, maxWidth:320, lineHeight:1.6}}>{online ? "Something went wrong reviewing your response. You can try again." : "This needs a connection to coach your response. Try again once you're back online."}</p>
+            <button onClick={() => handleDone(lastText)} style={{...cs.cta, width:"auto", padding:"12px 28px"}}>Try Again →</button>
           </div>
         )}
 
@@ -234,6 +247,9 @@ export function D13SimWidget({T, T2, isDesktop}) {
   const [speechSupported, setSpeechSupported] = useState(true);
   const [fallbackInput, setFallbackInput] = useState('');
   const [elapsed, setElapsed] = useState(0);
+  const [scoreFailedIdx, setScoreFailedIdx] = useState(null);
+  const [debriefFailed, setDebriefFailed] = useState(false);
+  const online = useOnlineStatus();
   const dotCount = useSequentialDots(phase === 'analyzing');
 
   const answersRef = useRef(['', '']);
@@ -351,24 +367,27 @@ export function D13SimWidget({T, T2, isDesktop}) {
   const scoreChar = async (ci) => {
     const sc = CIRCUIT_CHARS[ci];
     const answer = answersRef.current[ci];
+    setScoreFailedIdx(null);
+    if (!online) { setScoreFailedIdx(ci); setPhase('scoring'); return; }
     const prompt = "You are an expert communication coach evaluating a single networking moment at a company townhall.\n\nCharacter: " + sc.name + " — " + sc.role + "\nPersonality: " + sc.vibe + "\nWhat they're listening for: " + sc.listensFor + "\n\nQuestion — " + sc.question + "\nTheir answer: \"" + answer + "\"\n\nScore them 1-5 on:\n- opening: Was the answer specific, confident, and engaging — not generic?\n- connection: Did they read this person's energy and respond in a way that builds real rapport with them specifically?\n- impression: Would this leave a memorable, positive impression?\n\nNever use em dashes in your response; use a comma or hyphen instead.\n\nRespond ONLY with valid JSON on a single line: {\"opening\":X,\"connection\":X,\"impression\":X,\"note\":\"one specific sentence — what worked or what to try differently next time\"}";
     try {
       const res = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-5', messages:[{role:'user', content:prompt}], max_tokens:200})});
       const data = await res.json();
-      const text = data.content?.[0]?.text || '{}';
+      const text = data.content?.[0]?.text || '';
       const m = text.match(/\{[\s\S]*\}/);
-      const parsed = m ? JSON.parse(m[0]) : {opening:3, connection:3, impression:3, note:'Good effort in a challenging moment.'};
+      if (!m) throw new Error();
+      const parsed = JSON.parse(m[0]);
       scoresRef.current = scoresRef.current.map((s, i) => i === ci ? parsed : s);
       setScores(prev => prev.map((s, i) => i === ci ? parsed : s));
     } catch(e) {
-      const fb = {opening:3, connection:3, impression:3, note:'Good effort in a challenging moment.'};
-      scoresRef.current = scoresRef.current.map((s, i) => i === ci ? fb : s);
-      setScores(prev => prev.map((s, i) => i === ci ? fb : s));
+      setScoreFailedIdx(ci);
     }
     setPhase('scoring');
   };
 
   const runDebrief = async () => {
+    setDebriefFailed(false);
+    if (!online) { setDebriefFailed(true); setPhase('debrief'); return; }
     const all = CIRCUIT_CHARS.map((sc, i) => {
       const a = answersRef.current[i];
       const s = scoresRef.current[i];
@@ -378,12 +397,12 @@ export function D13SimWidget({T, T2, isDesktop}) {
     try {
       const res = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-5', messages:[{role:'user', content:prompt}], max_tokens:350})});
       const data = await res.json();
-      const text = data.content?.[0]?.text || '{}';
+      const text = data.content?.[0]?.text || '';
       const m = text.match(/\{[\s\S]*\}/);
-      const parsed = m ? JSON.parse(m[0]) : null;
-      setDebrief(parsed || {insight:'You completed the full circuit.', practice:'Focus on making your opening line specific to the person in front of you.', quote:'Every great professional relationship began with one brave sentence.'});
+      if (!m) throw new Error();
+      setDebrief(JSON.parse(m[0]));
     } catch(e) {
-      setDebrief({insight:'You completed the full circuit.', practice:'Focus on making your opening line specific to the person in front of you.', quote:'Every great professional relationship began with one brave sentence.'});
+      setDebriefFailed(true);
     }
     setPhase('debrief');
   };
@@ -419,6 +438,8 @@ export function D13SimWidget({T, T2, isDesktop}) {
     setPhase('intro');
     setScores([null, null]);
     setDebrief(null);
+    setScoreFailedIdx(null);
+    setDebriefFailed(false);
     resetRecording();
   };
 
@@ -554,6 +575,13 @@ export function D13SimWidget({T, T2, isDesktop}) {
             <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:"italic", color:T2.text, margin:0, lineHeight:1.6}}>{score.note}</p>
           </div>
         )}
+        {scoreFailedIdx === charIdx && (
+          <div style={{...cs.card, display:"flex", flexDirection:"column", gap:10, alignItems:"center", textAlign:"center"}}>
+            <p style={{fontFamily:T.sans, fontSize:13, color:"#B05C4A", margin:0}}>{online ? "We couldn't score that answer." : "You're offline."}</p>
+            <p style={{fontFamily:T.sans, fontSize:12, color:T2.text3, margin:0}}>{online ? "Something went wrong reviewing your answer. You can try again." : "This needs a connection to score your answer. Try again once you're back online."}</p>
+            <button onClick={() => scoreChar(charIdx)} style={{...cs.cta, width:"auto", padding:"10px 24px"}}>Try Again →</button>
+          </div>
+        )}
         <button onClick={handleNext} style={cs.cta}>{isLast ? "See Your Full Debrief →" : "Next: " + CIRCUIT_CHARS[charIdx+1].name + " →"}</button>
       </div>
     );
@@ -612,6 +640,13 @@ export function D13SimWidget({T, T2, isDesktop}) {
               <p style={{fontFamily:T.serif, fontSize:isDesktop?16:14, fontStyle:"italic", color:T.gold, margin:0, lineHeight:1.6}}>{debrief.quote}</p>
             </div>
           </>
+        )}
+        {debriefFailed && (
+          <div style={{...cs.card, display:"flex", flexDirection:"column", gap:10, alignItems:"center", textAlign:"center"}}>
+            <p style={{fontFamily:T.sans, fontSize:13, color:"#B05C4A", margin:0}}>{online ? "We couldn't build your debrief." : "You're offline."}</p>
+            <p style={{fontFamily:T.sans, fontSize:12, color:T2.text3, margin:0}}>{online ? "Something went wrong reviewing your conversations. You can try again." : "This needs a connection to review your conversations. Try again once you're back online."}</p>
+            <button onClick={runDebrief} style={{...cs.cta, width:"auto", padding:"10px 24px"}}>Try Again →</button>
+          </div>
         )}
         <button onClick={reset} style={cs.cta}>Try the Circuit Again →</button>
       </div>
