@@ -144,6 +144,12 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   const [dark, setDark] = useState(() => ls("au1_dark", false));
   const [reflectionData, setReflectionData] = useState(null);  // holds onboarding answers for reflection screen
   const [justBoarded, setJustBoarded] = useState(false);
+  const [showWelcomeMark, setShowWelcomeMark] = useState(false);
+  useEffect(() => {
+    if (!showWelcomeMark) return;
+    const t = setTimeout(() => setShowWelcomeMark(false), 1100);
+    return () => clearTimeout(t);
+  }, [showWelcomeMark]);
   const [view2, setView2] = useState("main");  // "main" | "reflection"
   const [tab, setTab] = useState("home");
   const [view, setView] = useState("main");
@@ -261,9 +267,28 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
             lsSet("au1_ob", true);
             setReflectionData(null);
             setJustBoarded(true);
+            setShowWelcomeMark(true);
             setTab("home");
           }}
         />
+      </div>
+    );
+  }
+
+  if (showWelcomeMark) {
+    return (
+      <div style={{
+        position: "fixed", inset: 0, background: "#161513",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        animation: "welcomeMarkFade 1.1s ease both",
+      }}>
+        <style>{`@keyframes welcomeMarkFade{0%{opacity:0}18%{opacity:1}72%{opacity:1}100%{opacity:0}}
+@keyframes welcomeMarkScale{0%{transform:scale(0.88)}18%{transform:scale(1)}100%{transform:scale(1.03)}}`}</style>
+        <img src="/app-icon-mark.png" alt="" style={{
+          width: 120, height: 120, objectFit: "cover", borderRadius: 26,
+          boxShadow: "0 12px 40px rgba(0,0,0,0.45)",
+          animation: "welcomeMarkScale 1.1s ease both",
+        }} />
       </div>
     );
   }
