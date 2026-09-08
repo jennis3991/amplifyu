@@ -795,6 +795,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
     mr.onstop = async () => {
       mr.stream.getTracks().forEach(t => t.stop());
       const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      if (!online) { cb('', true); return; }
       try {
         const b64 = await blobToB64(blob);
         const res = await fetch('/api/transcribe', {
@@ -1003,7 +1004,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
               <p style={{ fontFamily: T.sans, fontSize: 13, color: "#6B5E44", lineHeight: 1.6, margin: "0 0 10px" }}>
                 {micError
                   ? (online ? "We couldn't access your microphone. Check your permissions, or type your response instead." : "You're offline — voice practice needs a connection. Type your response instead.")
-                  : "We couldn't quite hear that. Try again, or type your response instead."}
+                  : (online ? "We couldn't quite hear that. Try again, or type your response instead." : "You're offline — this needs a connection. Try again once you're back online.")}
               </p>
               <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{ width: "100%", minHeight: 80, background: "transparent", border: "none", borderBottom: "0.5px solid #DDD5C4", padding: "8px 0", fontFamily: T.sans, fontSize: 13, color: "#2C2416", resize: "none", outline: "none", lineHeight: 1.6, boxSizing: "border-box" }}/>
               {fallbackText.trim().length > 10 && (
@@ -1325,6 +1326,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
       setAudioURL(URL.createObjectURL(blob));
       mr.stream.getTracks().forEach(t=>t.stop());
       let spoken='';
+      if(!online){ setTranscribeFailed(true); setPhase('recording'); return; }
       try{
         const b64=await blobToB64(blob);
         audioDataURIRef.current='data:'+blobType+';base64,'+b64;
@@ -1598,8 +1600,8 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
       {/* Text fallback — only surfaces on genuine mic/transcription failure */}
       {!isRec && (micError || transcribeFailed) && (
         <div style={cs.card}>
-          <div style={cs.label}>{micError ? (online ? "Microphone unavailable" : "You're offline") : "We couldn't quite hear that"}</div>
-          <p style={{...cs.body,marginBottom:10}}>{micError ? (online ? "Check your microphone permission, or type your response instead." : "Voice practice needs a connection. Type your response instead.") : "Type your response instead, or tap Start Recording to try again."}</p>
+          <div style={cs.label}>{micError ? (online ? "Microphone unavailable" : "You're offline") : (online ? "We couldn't quite hear that" : "You're offline")}</div>
+          <p style={{...cs.body,marginBottom:10}}>{micError ? (online ? "Check your microphone permission, or type your response instead." : "Voice practice needs a connection. Type your response instead.") : (online ? "Type your response instead, or tap Start Recording to try again." : "This needs a connection. Type your response instead, or try again once you're back online.")}</p>
           <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Write what you'd say for 90–120 seconds…" style={{width:"100%",minHeight:120,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:14,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
           {fallback.trim().length>15 && <button onClick={()=>{setMicError(false);setTranscribeFailed(false);analyzeText(fallback);}} style={{...cs.cta,marginTop:14}}>Analyse My Response →</button>}
         </div>

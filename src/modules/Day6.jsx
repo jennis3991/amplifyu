@@ -553,6 +553,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
     mr.onstop = async () => {
       mr.stream.getTracks().forEach(t => t.stop());
       const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      if (!online) { cb('', true); return; }
       try {
         const b64 = await blobToB64(blob);
         const res = await fetch('/api/transcribe', {
@@ -895,8 +896,8 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
       </button>
       {transcribeFailed && (
         <div style={cs.card}>
-          <div style={cs.label}>We couldn't quite hear that</div>
-          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:"0 0 10px"}}>Try recording again, or type your response instead.</p>
+          <div style={cs.label}>{online ? "We couldn't quite hear that" : "You're offline"}</div>
+          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:"0 0 10px"}}>{online ? "Try recording again, or type your response instead." : "This needs a connection. Type your response instead, or try again once you're back online."}</p>
         </div>
       )}
       {(micError || transcribeFailed) && (

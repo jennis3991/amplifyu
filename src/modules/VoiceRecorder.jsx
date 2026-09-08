@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useOnlineStatus } from '../utils.js';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -31,6 +32,7 @@ export function VoiceRecorder({ T, T2, maxSeconds, onDone, onRecordingChange }) 
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
   const [fallbackText, setFallbackText] = useState('');
+  const online = useOnlineStatus();
 
   const timerRef = useRef(null);
   const mediaRecRef = useRef(null);
@@ -101,6 +103,7 @@ export function VoiceRecorder({ T, T2, maxSeconds, onDone, onRecordingChange }) 
     mr.onstop = async () => {
       mr.stream.getTracks().forEach(t => t.stop());
       const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      if (!online) { setTranscribing(false); setTranscribeFailed(true); return; }
       try {
         const b64 = await blobToB64(blob);
         const res = await fetch('/api/transcribe', {
@@ -165,7 +168,9 @@ export function VoiceRecorder({ T, T2, maxSeconds, onDone, onRecordingChange }) 
       {!isRec && (micError || transcribeFailed) && (
         <div style={{ width: "100%", marginTop: 4, padding: "16px 18px", background: "#F0EBE2", borderRadius: 8, border: "0.5px solid #DDD5C4" }}>
           <p style={{ fontFamily: T.sans, fontSize: 13, color: "#6B5E44", lineHeight: 1.6, margin: "0 0 10px" }}>
-            {micError ? "We couldn't access your microphone. Check your permissions, or type your response instead." : "We couldn't quite hear that. Try again, or type your response instead."}
+            {micError
+              ? (online ? "We couldn't access your microphone. Check your permissions, or type your response instead." : "You're offline — voice practice needs a connection. Type your response instead.")
+              : (online ? "We couldn't quite hear that. Try again, or type your response instead." : "You're offline — this needs a connection. Try again once you're back online.")}
           </p>
           <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{ width: "100%", minHeight: 80, background: "transparent", border: "none", borderBottom: "0.5px solid #DDD5C4", padding: "8px 0", fontFamily: T.sans, fontSize: 13, color: "#2C2416", resize: "none", outline: "none", lineHeight: 1.6, boxSizing: "border-box" }}/>
           {fallbackText.trim().length > 10 && (

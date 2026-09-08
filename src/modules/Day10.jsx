@@ -296,6 +296,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
     mr.onstop=async()=>{
       mr.stream.getTracks().forEach(t=>t.stop());
       const blob=new Blob(audioChunksRef.current,{type:'audio/webm'});
+      if(!online){ cb('', true); return; }
       try{
         const b64=await blobToB64(blob);
         const res=await fetch('/api/transcribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({b64,mimeType:'audio/webm'})});
@@ -400,8 +401,8 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
         <>
           {(micError||transcribeFailed) && (
             <div style={{padding:"14px 16px",background:"rgba(180,80,60,0.08)",borderRadius:4,border:"1px solid rgba(180,80,60,0.25)",marginBottom:10}}>
-              <div style={{fontSize:9,fontWeight:700,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>{micError?"We couldn't access your microphone":"We couldn't hear that clearly"}</div>
-              <p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#6B5E44",lineHeight:1.6,margin:"0 0 10px",fontWeight:300}}>{micError?"Check your microphone permission, or type your response instead.":"Try recording again, or type your response instead."}</p>
+              <div style={{fontSize:9,fontWeight:700,color:"#B05C4A",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>{micError?"We couldn't access your microphone":(online?"We couldn't hear that clearly":"You're offline")}</div>
+              <p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#6B5E44",lineHeight:1.6,margin:"0 0 10px",fontWeight:300}}>{micError?"Check your microphone permission, or type your response instead.":(online?"Try recording again, or type your response instead.":"This needs a connection. Type your response instead, or try again once you're back online.")}</p>
               <textarea value={fallbackText} onChange={e=>setFallbackText(e.target.value)} placeholder="Type your response here…" style={{width:"100%",borderRadius:4,border:"0.5px solid #DDD5C4",padding:"12px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:100,marginBottom:8,boxSizing:"border-box",background:T2.surface,color:T2.text}}/>
               <button onClick={()=>go(fallbackText)} disabled={!fallbackText.trim()} style={{width:"100%",padding:"11px",borderRadius:3,border:"none",background:!fallbackText.trim()?"#DDD5C4":"#2C2416",color:!fallbackText.trim()?"#6B5E44":"#F7F3EC",fontSize:13,fontWeight:600,cursor:!fallbackText.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif"}}>Submit Typed Response →</button>
             </div>

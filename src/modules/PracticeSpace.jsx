@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { T } from '../theme.js';
+import { useOnlineStatus } from '../utils.js';
 import { Paywall } from '../components/Paywall.jsx';
 import { trialExhausted, incrementTrialCount } from '../lib/purchases.js';
 
@@ -113,6 +114,7 @@ export function PracticeSpace({T2, isDesktop}) {
   const [preparingMic, setPreparingMic] = useState(false);
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
+  const online = useOnlineStatus();
   const mediaRecRef = useRef(null);
   const audioChunksRef = useRef([]);
 
@@ -147,6 +149,7 @@ export function PracticeSpace({T2, isDesktop}) {
       const blobType = mr.mimeType || 'audio/webm';
       const blob = new Blob(audioChunksRef.current, { type: blobType });
       mr.stream.getTracks().forEach(t => t.stop());
+      if (!online) { setTranscribeFailed(true); return; }
       try {
         const b64 = await blobToB64(blob);
         const res = await fetch('/api/transcribe', {
@@ -303,7 +306,7 @@ export function PracticeSpace({T2, isDesktop}) {
 
       {(micError || transcribeFailed) && (
         <div style={{marginBottom:12,padding:'12px 14px',background:'rgba(180,60,60,0.07)',border:'0.5px solid rgba(180,60,60,0.2)',borderRadius:4,fontFamily:T.sans,fontSize:12,color:'#8B3A3A',textAlign:'center'}}>
-          {micError ? 'Check your microphone permission, or type your response below.' : "We couldn't quite hear that — type your response below, or tap the mic to try again."}
+          {micError ? 'Check your microphone permission, or type your response below.' : (online ? "We couldn't quite hear that — type your response below, or tap the mic to try again." : "You're offline — this needs a connection. Type your response below, or try again once you're back online.")}
         </div>
       )}
 

@@ -167,6 +167,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
   const [fallbackText, setFallbackText] = useState('');
+  const online = useOnlineStatus();
 
   const [elapsed, setElapsed] = useState(0);
   const mediaRecRef = useRef(null);
@@ -271,6 +272,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
       try { audioAnalyserCtxRef.current?.close(); } catch(e) {}
       mr.stream.getTracks().forEach(t => t.stop());
       const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      if (!online) { cb('', true); return; }
       try {
         const b64 = await blobToB64(blob);
         const res = await fetch('/api/transcribe', {
@@ -470,9 +472,9 @@ Never use the word fillers. Never use the word perfect. Always frame as growth. 
     ) : null}
     {!isRec && (micError || transcribeFailed) && (
       <div style={cs.card}>
-        <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+        <div style={cs.label}>{micError ? 'Microphone unavailable' : (online ? "We couldn't quite hear that" : "You're offline")}</div>
         <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: '0 0 10px'}}>
-          {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
+          {micError ? 'Check your microphone permission, or type your response instead.' : (online ? 'Type your response instead, or tap Try Recording Again above.' : 'This needs a connection. Type your response instead, or try again once you\'re back online.')}
         </p>
         <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width: '100%', minHeight: 80, background: 'transparent', border: 'none', borderBottom: '0.5px solid ' + T2.border, padding: '8px 0', fontFamily: T.sans, fontSize: 13, color: T2.text, resize: 'none', outline: 'none', lineHeight: 1.6, boxSizing: 'border-box'}}/>
         {fallbackText.trim().length > 10 && (
@@ -693,6 +695,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
     mr.onstop = async () => {
       mr.stream.getTracks().forEach(t => t.stop());
       const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
+      if (!online) { cb('', true); return; }
       try {
         const b64 = await blobToB64(blob);
         const res = await fetch('/api/transcribe', {
@@ -912,9 +915,9 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
         ) : null}
         {!isRec && (micError || transcribeFailed) && (
           <div style={cs.card}>
-            <div style={cs.label}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+            <div style={cs.label}>{micError ? 'Microphone unavailable' : (online ? "We couldn't quite hear that" : "You're offline")}</div>
             <p style={{fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: '0 0 10px'}}>
-              {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
+              {micError ? 'Check your microphone permission, or type your response instead.' : (online ? 'Type your response instead, or tap Try Recording Again above.' : 'This needs a connection. Type your response instead, or try again once you\'re back online.')}
             </p>
             <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{width: '100%', minHeight: 80, background: 'transparent', border: 'none', borderBottom: '0.5px solid ' + T2.border, padding: '8px 0', fontFamily: T.sans, fontSize: 13, color: T2.text, resize: 'none', outline: 'none', lineHeight: 1.6, boxSizing: 'border-box'}}/>
             {fallbackText.trim().length > 10 && (

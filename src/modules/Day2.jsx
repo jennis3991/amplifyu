@@ -399,6 +399,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       const blob=new Blob(audioChunksRef.current,{type:blobType});
       setAudioURL(URL.createObjectURL(blob));
       mr.stream.getTracks().forEach(t=>t.stop());
+      if(!online){ cb('', true); return; }
       try{
         const b64=await blobToB64(blob);
         audioDataURIRef.current='data:'+blobType+';base64,'+b64;
@@ -726,9 +727,9 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
         </div>
         {!isRec && (micError || transcribeFailed) && (
           <div style={{...cs.card, textAlign:"left", marginTop:12, border:"1px solid rgba(180,80,60,0.35)", background:"rgba(180,80,60,0.06)"}}>
-            <div style={{...cs.label, color:"#B05C4A"}}>{micError ? 'Microphone unavailable' : "We couldn't quite hear that"}</div>
+            <div style={{...cs.label, color:"#B05C4A"}}>{micError ? 'Microphone unavailable' : (online ? "We couldn't quite hear that" : "You're offline")}</div>
             <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:'0 0 10px'}}>
-              {micError ? 'Check your microphone permission, or type your response instead.' : 'Type your response instead, or tap Try Recording Again above.'}
+              {micError ? 'Check your microphone permission, or type your response instead.' : (online ? 'Type your response instead, or tap Try Recording Again above.' : 'This needs a connection. Type your response instead, or try again once you\'re back online.')}
             </p>
             <textarea value={fallback} onChange={e=>setFallback(e.target.value)} placeholder="Type what you'd say…" style={{width:"100%",minHeight:80,background:"transparent",border:"none",borderBottom:"0.5px solid "+T2.divider,padding:"8px 0",fontFamily:T.sans,fontSize:13,color:T2.text,resize:"none",outline:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
             {fallback.trim().length>10 && (

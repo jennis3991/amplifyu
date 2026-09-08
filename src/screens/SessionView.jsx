@@ -541,6 +541,7 @@ setAmbitionSaved(true); } catch {}
         if(mr&&mr.state!=="inactive"){
           mr.onstop=async()=>{
             setSimPhase('analyzing');
+            if(!online){ setSimTranscribeFailed(true); setSimPhase('ready'); return; }
             try{
               const blob=new Blob(simChunksRef.current,{type:simMimeRef.current});
               const b64=await simBlobToB64(blob);
@@ -1127,8 +1128,8 @@ setAmbitionSaved(true); } catch {}
               </div>
               {(simMicError||simTranscribeFailed)&&(
                 <div style={{...cs10.card,border:"0.5px solid rgba(180,80,60,0.35)"}}>
-                  <div style={{...cs10.label,color:"#B05C4A"}}>{simMicError?"We couldn't access your microphone":"We couldn't hear that clearly"}</div>
-                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:"0 0 14px",fontWeight:300}}>{simMicError?"Check your browser's microphone permission, or type your response instead.":"Try recording again, or type your response instead."}</p>
+                  <div style={{...cs10.label,color:"#B05C4A"}}>{simMicError?"We couldn't access your microphone":(online?"We couldn't hear that clearly":"You're offline")}</div>
+                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:"0 0 14px",fontWeight:300}}>{simMicError?"Check your browser's microphone permission, or type your response instead.":(online?"Try recording again, or type your response instead.":"This needs a connection. Type your response instead, or try again once you're back online.")}</p>
                   <textarea value={simFallback} onChange={e=>setSimFallback(e.target.value)} placeholder="Type your response here…" style={{width:"100%",borderRadius:3,border:"0.5px solid "+T2.border,padding:"12px 14px",fontSize:14,fontFamily:T.sans,resize:"none",height:100,boxSizing:"border-box",background:T2.bg,color:T2.text,outline:"none",lineHeight:1.6,marginBottom:10}}/>
                   <button onClick={()=>analyzeSimResponse(simFallback)} disabled={!simFallback.trim()} style={{width:"100%",padding:"12px",borderRadius:3,border:"none",background:!simFallback.trim()?"#DDD5C4":T.ink,color:!simFallback.trim()?"#6B5E44":T.bg,fontSize:13,fontWeight:600,cursor:!simFallback.trim()?"not-allowed":"pointer",fontFamily:T.sans}}>Submit Typed Response →</button>
                 </div>

@@ -310,17 +310,19 @@ export function D13SimWidget({T, T2, isDesktop}) {
       mr.stream.getTracks().forEach(t => t.stop());
       const blob = new Blob(audioChunksRef.current, {type: 'audio/webm'});
       let text = '';
-      try {
-        const b64 = await blobToB64(blob);
-        const res = await fetch('/api/transcribe', {
-          method: 'POST', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({b64, mimeType: 'audio/webm'}),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Transcription failed');
-        text = (data.text || '').trim();
-      } catch (err) {
-        console.error('[D13SimWidget] transcribe error:', err);
+      if (online) {
+        try {
+          const b64 = await blobToB64(blob);
+          const res = await fetch('/api/transcribe', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({b64, mimeType: 'audio/webm'}),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Transcription failed');
+          text = (data.text || '').trim();
+        } catch (err) {
+          console.error('[D13SimWidget] transcribe error:', err);
+        }
       }
       if (!text) {
         setCaptureFailed(true);
@@ -490,7 +492,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
             {recordState === 'idle' && (
               <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px 28px":"24px 20px"}}>
                 {captureFailed && (
-                  <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#B05C4A", marginBottom:10, lineHeight:1.5}}>Didn't quite catch that — give it another go</div>
+                  <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#B05C4A", marginBottom:10, lineHeight:1.5}}>{online ? "Didn't quite catch that — give it another go" : "You're offline — this needs a connection to score your answer"}</div>
                 )}
                 <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, marginBottom:20, lineHeight:1.5}}>Speak your response out loud — tap when you're ready</div>
                 <button
