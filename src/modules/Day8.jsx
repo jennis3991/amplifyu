@@ -733,7 +733,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
   const [phase,      setPhase]     = useState('brief');
   const [brief,      setBrief]     = useState('');
   const [result,     setResult]    = useState(null);
-  const [apiError,   setApiError]  = useState(false);
+  const online = useOnlineStatus();
 
   // Block the app's "Next"/"Review" nav while the story is being generated,
   // so an accidental tap can't cut off an in-flight AI request.
@@ -945,19 +945,11 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
     }
   }
 
-  function buildFallback(b) {
-    const bl = b.toLowerCase();
-    const isKids   = /child|kid|son|daughter|year.?old|baby|magical|fairy|princess/.test(bl);
-    const isUrgent = /urgent|crisis|risk|breaking|emergency|threat/.test(bl);
-    const topic    = b.trim().split(/[,.\-—]/)[0].trim() || 'Your Story';
-    if (isKids) return { storyWorld:{ subject:topic, audience:"Children (Age 5)", emotion:"Wonder", style:"Bedtime Story", visualWorld:"Magical Garden", character:"Luna", lesson:"Believe in yourself" }, scenes:[{number:1,title:"The Tiny Beginning",visual:"A tiny egg on a bright green leaf. Morning dew. Soft golden light.",emotion:"Curiosity",caption:"Every great journey starts small.",narrative:"Once upon a time, in a garden full of colour and magic, the tiniest of beginnings was about to become the greatest adventure."},{number:2,title:"Eating Everything Up",visual:"A hungry caterpillar on green leaves. Sunshine everywhere.",emotion:"Growth",caption:"Eat. Grow. Explore.",narrative:"Day after day, a curious little caterpillar grew bigger and stronger — one leaf at a time."},{number:3,title:"The Golden Chrysalis",visual:"A glowing chrysalis hanging from a moonlit branch. Stars above.",emotion:"Patience",caption:"Something magical is happening inside.",narrative:"Then came the waiting. Tucked inside a golden sleeping bag, something wonderful was quietly taking shape."},{number:4,title:"Transformation",visual:"Swirling rainbow light. Magical energy. Something becoming.",emotion:"Wonder",caption:"Beautiful things take time.",narrative:"Nobody could see it happening. But inside, absolutely everything was changing."},{number:5,title:"Emergence",visual:"Brilliant wings unfurling. Friends gathering. Sunlight.",emotion:"Achievement",caption:"Look what I became!",narrative:"And then — one perfect morning — the chrysalis opened. Something so beautiful, everyone stopped to look."},{number:6,title:"The First Flight",visual:"A butterfly soaring over a valley at golden sunset.",emotion:"Freedom",caption:"Believe in your wings.",narrative:"With one brave leap, she flew. The whole garden cheered. She had been becoming this all along."}], story:"Once upon a time, in a garden full of colour and magic, the most extraordinary journey began with the smallest of beginnings.\n\nDay after day, a curious caterpillar ate and grew and explored, learning that every leaf was an adventure.\n\nThen came the chrysalis — a golden sleeping bag of transformation. Something magical was happening inside.\n\nIn the darkness, everything changed. Quietly. Completely. Beautifully.\n\nAnd one morning, the chrysalis opened — and out stepped the most wonderful butterfly anyone had ever seen.\n\nShe looked at her wings. She took a breath. And she flew." };
-    if (isUrgent) return { storyWorld:{ subject:topic, audience:"Leadership", emotion:"Urgency", style:"Cinematic", visualWorld:"High Stakes", character:"The Decision Maker", lesson:"Act now" }, scenes:[{number:1,title:"The Current Reality",visual:"Dark screens. Data. The world as it stands right now.",emotion:"Awareness",caption:"This is where we are.",narrative:"Before anything changes, we need to see exactly where we stand. Clearly. Honestly."},{number:2,title:"What's at Stake",visual:"A countdown. Narrowing window. Numbers that matter.",emotion:"Tension",caption:"The window is closing.",narrative:"This isn't a future problem. The risk is live. The window is closing."},{number:3,title:"The Hidden Risk",visual:"One highlighted line in a long report. The thing everyone missed.",emotion:"Clarity",caption:"Here's what we're missing.",narrative:"There's a layer most people don't reach. This is it. And once you see it, you can't unsee it."},{number:4,title:"The Response",visual:"Clear action steps. Motion. Decision.",emotion:"Resolve",caption:"This is what we do.",narrative:"Not theory. Action. Here's exactly what needs to happen — and when."},{number:5,title:"Protected Future",visual:"Calm. Clear. Secure. The world on the other side.",emotion:"Confidence",caption:"This is what we're building.",narrative:"On the other side of this decision is a completely different reality."},{number:6,title:"The Decision",visual:"One chair. One table. One moment of choice.",emotion:"Action",caption:"One decision. Made today.",narrative:"Everything comes down to this. The team is ready. All that's needed now — is yes."}], story:"This is not a theoretical risk.\n\nHere is where we stand — clearly, honestly, without softening.\n\nThe gap between knowing and acting is exactly where organisations lose.\n\nHere's the insight that changes the frame. Not more effort — a different way of seeing.\n\nOn the other side of this decision is a fundamentally better operating environment.\n\nOne decision. Made today." };
-    return { storyWorld:{ subject:topic, audience:"Your audience", emotion:"Connection", style:"Presentation", visualWorld:"Your setting", character:"Your protagonist", lesson:"Your core message" }, scenes:[{number:1,title:"Where We Begin",visual:"The world as it is. Familiar. Real.",emotion:"Curiosity",caption:"Every story starts here.",narrative:"Before anything changes, we need to see the world as it truly is."},{number:2,title:"The Tension",visual:"A gap. A question. Something that needs answering.",emotion:"Tension",caption:"This is what makes it necessary.",narrative:"Something isn't working — or could work far better."},{number:3,title:"The Insight",visual:"One clear idea. A new way of seeing.",emotion:"Clarity",caption:"This changes everything.",narrative:"A new frame. Not more effort — different thinking."},{number:4,title:"The Path Forward",visual:"A direction. Steps becoming clear. Motion.",emotion:"Hope",caption:"From insight to action.",narrative:"The route becomes clear. It's not easy — but it's right."},{number:5,title:"What Becomes Possible",visual:"Open space. A different world.",emotion:"Confidence",caption:"This is what we're building.",narrative:"On the other side of this is something fundamentally better."},{number:6,title:"The Invitation",visual:"A shared moment. The audience, ready to choose.",emotion:"Action",caption:"Now it belongs to everyone.",narrative:"What will we choose to do with what we now know?"}], story:"Before anything changes, we need to see clearly.\n\nSomething isn't working — or could work far better.\n\nHere's the insight that changes the frame.\n\nWith that insight, a path becomes clear.\n\nOn the other side of this decision is something better.\n\nWhat will we choose?" };
-  }
 
   async function generate() {
     if (!brief.trim()) return;
-    setPhase('generating'); setApiError(false);
+    setPhase('generating');
+    if (!online) { setPhase('generateFailed'); return; }
     try {
       const res = await fetch("/api/claude", {
         method:"POST", headers:{"Content-Type":"application/json"},
@@ -1015,7 +1007,7 @@ Return ONLY valid JSON:
       setStoryImage('loading');
       generateStoryImage(parsed.scenes, parsed.storyWorld, ct, cs);
     } catch(_) {
-      setApiError(true); setResult(buildFallback(brief)); setPhase('results'); setStoryImage('error');
+      setPhase('generateFailed');
     }
   }
 
@@ -1093,6 +1085,15 @@ Return ONLY valid JSON:
     </div>
   );
 
+  // ── GENERATE FAILED ────────────────────────────────────────────────────────
+  if (phase==='generateFailed') return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16,padding:isDesktop?"64px 0":"44px 0",textAlign:"center"}}>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,color:T2.text,margin:0}}>{online?"We couldn't build your story.":"You're offline."}</p>
+      <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,margin:0,maxWidth:340,lineHeight:1.6}}>{online?"Something went wrong generating your story. Your brief is still there, you can try again.":"This needs a connection to write your story. Try again once you're back online."}</p>
+      <button onClick={generate} style={{padding:"13px 28px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:T.sans}}>Try Again →</button>
+    </div>
+  );
+
   // ── RESULTS ────────────────────────────────────────────────────────────────
   if (phase==='results' && result) {
     const sw     = result.storyWorld || {};
@@ -1129,13 +1130,6 @@ Return ONLY valid JSON:
 
     return (
       <div style={{display:"flex",flexDirection:"column",gap:0}}>
-
-        {apiError&&(
-          <div style={{background:"rgba(138,158,132,0.07)",borderRadius:6,border:"0.5px solid rgba(138,158,132,0.18)",padding:"10px 16px",marginBottom:20,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
-            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>AmplifyU Coach unavailable — showing a template story based on your brief.</span>
-            <button onClick={()=>{setApiError(false);generate();}} style={{background:"none",border:"none",color:T.gold,cursor:"pointer",fontFamily:T.sans,fontSize:11,fontWeight:600,padding:0,flexShrink:0}}>Try AI again →</button>
-          </div>
-        )}
 
         {pendingStory&&(
           <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px",marginBottom:20}}>
@@ -1574,16 +1568,14 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       const m = raw.match(/\{[\s\S]*\}/);
       if (!m) throw new Error();
       const json = JSON.parse(m[0]);
+      const beats = ['beat1','beat2','beat3','beat4','beat5','beat6'];
+      if (beats.some(k => !json[k]) || !json.coachObservation) throw new Error();
       const built = {
-        storyTitle:       json.storyTitle       || 'Your Career Story',
-        beat1:            json.beat1            || 'Something brought me to this moment.',
-        beat2:            json.beat2            || 'Life was moving forward in its usual way.',
-        beat3:            json.beat3            || 'Then something changed.',
-        beat4:            json.beat4            || 'I responded differently than I expected.',
-        beat5:            json.beat5            || 'What followed shifted something fundamental.',
-        beat6:            json.beat6            || 'I came out the other side changed.',
-        coachObservation: json.coachObservation || 'There is real power in what you just shared.',
-        readyLine:        json.readyLine        || 'You already know how to tell a story. Now make it unforgettable.',
+        storyTitle:       json.storyTitle || 'Your Career Story',
+        beat1: json.beat1, beat2: json.beat2, beat3: json.beat3,
+        beat4: json.beat4, beat5: json.beat5, beat6: json.beat6,
+        coachObservation: json.coachObservation,
+        readyLine:        json.readyLine || 'You already know how to tell a story. Now make it unforgettable.',
       };
       setStoryResult(built);
       saveRehearsalStory(built);

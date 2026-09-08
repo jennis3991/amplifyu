@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { T } from '../theme.js';
+import { useOnlineStatus } from '../utils.js';
 
 export function CoachWidget({ lesson, scenario }) {
   const [draft, setDraft]     = useState("");
@@ -8,11 +9,17 @@ export function CoachWidget({ lesson, scenario }) {
   const [err, setErr]         = useState(null);
   const [didCopy, setDidCopy] = useState(false);
   const taRef = useRef(null);
+  const online = useOnlineStatus();
 
   async function submit() {
     const txt = draft.trim();
     if (!txt || busy) return;
     setBusy(true); setCoaching(null); setErr(null);
+    if (!online) {
+      setErr("You're offline — this needs a connection. Try again once you're back online.");
+      setBusy(false);
+      return;
+    }
     const sysPrompt =
       "You are a premium executive communication coach. The user practised: " + lesson.title + ". " +
       (scenario ? "Scenario: " + scenario + ". " : "") +
@@ -29,13 +36,13 @@ export function CoachWidget({ lesson, scenario }) {
       const data = await res.json();
       if (!res.ok) throw new Error("API error");
       const text = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("").trim();
-      let result = null;
       const m = text.match(/\{[\s\S]*"rephrased"[\s\S]*\}/);
-      if (m) try { result = JSON.parse(m[0]); } catch (_) {}
-      if (!result) result = { rephrased: text || txt, insight: "Lead with clarity. Remove qualifiers." };
-      setCoaching({ rephrased: result.rephrased || txt, insight: result.insight || "" });
+      if (!m) throw new Error("parse");
+      const result = JSON.parse(m[0]);
+      if (!result.rephrased || !result.insight) throw new Error("incomplete");
+      setCoaching({ rephrased: result.rephrased, insight: result.insight });
     } catch (e) {
-      setErr("Your coach is unavailable right now. Try again in a moment.");
+      setErr(online ? "Your coach is unavailable right now. Try again in a moment." : "You're offline — this needs a connection. Try again once you're back online.");
     } finally {
       setBusy(false);
     }

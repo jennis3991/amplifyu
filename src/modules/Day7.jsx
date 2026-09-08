@@ -110,11 +110,12 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
       const m = raw.match(/\{[\s\S]*\}/);
       if (!m) throw new Error();
       const json = JSON.parse(m[0]);
+      if (!json.coachLine || !json.bridgeLine) throw new Error();
       setCoachResult({
         identifiedRealSituation: json.identifiedRealSituation === true,
         identifiedSpecificSkill: json.identifiedSpecificSkill === true,
-        coachLine: json.coachLine || 'Good effort — connect these skills to a real moment this week.',
-        bridgeLine: json.bridgeLine || 'Now explain the whole week to someone who knows nothing about it. That is the real test.',
+        coachLine: json.coachLine,
+        bridgeLine: json.bridgeLine,
       });
       setPhase('coach');
     } catch(_) {

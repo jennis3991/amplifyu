@@ -693,6 +693,8 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   const [elapsed, setElapsed] = useState(0);
   const [aiObs, setAiObs] = useState(null);
   const [coachOffline, setCoachOffline] = useState(false);
+  const [coachFailed, setCoachFailed] = useState(false);
+  const [lastSpoken, setLastSpoken] = useState('');
   const [analysing, setAnalysing] = useState(false);
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
@@ -705,7 +707,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   // Wire bottom nav
   useEffect(() => {
     if (phase === 'record') {
-      if (aiObs || coachOffline) {
+      if (aiObs || coachOffline || coachFailed) {
         onNavLabel("Start Simulation");
         onNavFn.current = () => onComplete(TOPICS[sel].label);
       } else if (analysing || isRec) {
@@ -720,7 +722,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       onNavLabel(null);
       onNavFn.current = null;
     }
-  }, [phase, sel, aiObs, coachOffline, analysing, isRec]);
+  }, [phase, sel, aiObs, coachOffline, coachFailed, analysing, isRec]);
 
   // Stop any in-flight recording if the widget unmounts (e.g. user swipes away mid-recording)
   useEffect(() => {
@@ -815,6 +817,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   }
 
   async function runCoach(spoken) {
+    setLastSpoken(spoken);
     if (trialExhausted(REHEARSAL_TRIAL_KEY)) {
       setAnalysing(false);
       setShowPaywall(true);
@@ -828,6 +831,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       setRecDone(true);
       return;
     }
+    setCoachFailed(false);
     const topicText = TOPICS[sel].label;
     try {
       const content = spoken.length > 10
@@ -840,14 +844,14 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       });
       const d = await res.json();
       const obs = (d.content || []).map(b => b.text || '').join('').trim();
-      setAiObs(obs || "Your voice was clear and your energy was right. That's the foundation — everything else builds from here.");
+      if (!obs) throw new Error();
+      setAiObs(obs);
       incrementTrialCount(REHEARSAL_TRIAL_KEY);
     } catch {
       // Connection could have dropped mid-request even though the check
       // above passed — re-check rather than assume it was a genuine API error.
       if (online) {
-        setAiObs("Your voice was clear and your energy was right. That's the foundation — everything else builds from here.");
-        incrementTrialCount(REHEARSAL_TRIAL_KEY);
+        setCoachFailed(true);
       } else {
         setCoachOffline(true);
       }
@@ -960,6 +964,29 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
           }}>
             Start Simulation →
           </button>
+        </div>
+      ) : recDone && coachFailed ? (
+        <div style={{ background: "#F0EBE2", borderRadius: 8, padding: "24px 24px 22px", border: "0.5px solid #DDD5C4" }}>
+          <div style={{ fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: "#B05C4A", textTransform: "uppercase", letterSpacing: "2px", marginBottom: 14 }}>Something Went Wrong</div>
+          <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 19 : 17, color: "#2C2416", lineHeight: 1.72, margin: "0 0 16px" }}>
+            We couldn't listen back this time, but your warm-up still counts. You can try again, or move on.
+          </p>
+          <div style={{ height: "0.5px", background: "#DDD5C4", marginBottom: 16 }} />
+          <div style={{ display: "flex", gap: 10 }}>
+            <button onClick={() => { setAnalysing(true); runCoach(lastSpoken); }} style={{
+              flex: 1, padding: "13px 20px", borderRadius: 4, border: "0.5px solid #DDD5C4",
+              background: "transparent", color: "#2C2416", fontFamily: T.sans, fontSize: 15, fontWeight: 600, cursor: "pointer",
+            }}>
+              Try Again
+            </button>
+            <button onClick={() => onComplete(TOPICS[sel].label)} style={{
+              flex: 1, padding: "13px 20px", borderRadius: 4, border: "none",
+              background: "linear-gradient(135deg, #8A9E84 0%, #527060 100%)",
+              color: "white", fontFamily: T.sans, fontSize: 15, fontWeight: 600, cursor: "pointer",
+            }}>
+              Start Simulation →
+            </button>
+          </div>
         </div>
       ) : recDone && aiObs ? (
         <div style={{ background: "#F0EBE2", borderRadius: 8, padding: "24px 24px 22px", border: "0.5px solid #DDD5C4" }}>
