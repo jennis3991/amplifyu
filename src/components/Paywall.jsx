@@ -227,7 +227,7 @@ export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and be
         </button>
 
         {/* Footer */}
-        <p style={{ textAlign: "center", fontSize: 12.5, color: "rgba(245,237,224,0.4)", margin: 0 }}>
+        <p style={{ textAlign: "center", fontSize: 12.5, color: "rgba(245,237,224,0.4)", margin: "0 0 10px" }}>
           Cancel anytime{" · "}
           <span
             onClick={handleRestore}
@@ -238,6 +238,11 @@ export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and be
           >
             {status === "restoring" ? "Restoring…" : status === "restored" ? "Restored ✓" : "Restore Purchases"}
           </span>
+        </p>
+        <p style={{ textAlign: "center", fontSize: 11.5, color: "rgba(245,237,224,0.3)", margin: 0 }}>
+          <a href="https://www.amplifyu.app/privacy-policy" target="_blank" rel="noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>Privacy Policy</a>
+          {" · "}
+          <a href="https://www.amplifyu.app/terms-of-service" target="_blank" rel="noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>Terms of Service</a>
         </p>
       </div>
 
