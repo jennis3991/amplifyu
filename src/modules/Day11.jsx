@@ -54,6 +54,7 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
   const [analysisMsgIdx, setAnalysisMsgIdx]= useState(0);
   const [result,         setResult]        = useState(null);
   const [copied,         setCopied]        = useState(false);
+  const online = useOnlineStatus();
 
   // ── My Saved Toolkits — shares the au1_toolkits key with D11SimWidget, but
   // this source (brand-rehearsal) is capped and listed independently.
@@ -265,6 +266,11 @@ Return ONLY valid JSON:
 }
 
 Never use em dashes anywhere in your response; use a comma or hyphen instead.`;
+    if (!online) {
+      clearInterval(analysisMsgRef.current);
+      setPhase('analysisFailed');
+      return;
+    }
     try {
       const res = await fetch("/api/claude", {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -281,15 +287,7 @@ Never use em dashes anywhere in your response; use a comma or hyphen instead.`;
       setTimeout(() => { setResult(parsed); setPhase('results'); }, 700);
     } catch (_) {
       clearInterval(analysisMsgRef.current);
-      setTimeout(() => {
-        setResult({
-          signature: "You bring a distinctive combination of clarity and care to everything you do. People rely on you not just for your expertise, but for your ability to cut through complexity and help others move forward with confidence. Your professional identity is built on earned trust.",
-          strengths: ["Clear Thinking", "Trusted Judgement", "Calm Leadership", "Practical Expertise", "Building Trust"],
-          statement: '"The person others turn to when clarity and calm matter most."',
-          coachNote: "What came through was the trust others place in you — that's not something you can manufacture, it's earned. That quiet reliability is a powerful brand foundation.",
-        });
-        setPhase('results');
-      }, 700);
+      setPhase('analysisFailed');
     }
   }
 
@@ -462,6 +460,21 @@ Never use em dashes anywhere in your response; use a comma or hyphen instead.`;
           </div>
         ))}
       </div>
+    </div>
+  );
+
+  // ── ANALYSIS FAILED ── previously fell back to a generic fabricated
+  // Professional Signature here, shown identically to a real result. Now
+  // shows an honest state and never fabricates a result.
+  if (phase === 'analysisFailed') return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16, padding: isDesktop ? "44px 0" : "32px 0", animation: "fadeUp 0.5s ease both" }}>
+      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, fontStyle: "italic", color: T2.text, textAlign: "center", margin: 0, lineHeight: 1.45 }}>
+        {online ? "Something went wrong finding your Professional Signature." : "You're offline."}
+      </p>
+      <p style={{ fontFamily: T.sans, fontSize: isDesktop ? 14 : 13, color: T2.text3, textAlign: "center", margin: 0, lineHeight: 1.6 }}>
+        {online ? "You can try again." : "This needs a connection to analyse your answers. Try again once you're back online."}
+      </p>
+      <button onClick={() => { setPhase('analyzing'); runAnalysis(transcripts); }} style={{ ...cta(false), marginTop: 8 }}>Try Again</button>
     </div>
   );
 
