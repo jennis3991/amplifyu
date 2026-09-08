@@ -144,11 +144,28 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   const [dark, setDark] = useState(() => ls("au1_dark", false));
   const [reflectionData, setReflectionData] = useState(null);  // holds onboarding answers for reflection screen
   const [justBoarded, setJustBoarded] = useState(false);
+  // Welcome-mark sequence — mirrors AccessGate's successful-code animation:
+  // the mark fades/scales in, then brightens with a glow and lifts slightly
+  // (same drop-shadow + cubic-bezier rise as AccessGate's logoRise), then
+  // the whole screen fades out to reveal Home (same opacity fade as
+  // AccessGate's exiting state) rather than the mark itself fading to
+  // nothing.
   const [showWelcomeMark, setShowWelcomeMark] = useState(false);
+  const [welcomeMarkIn, setWelcomeMarkIn] = useState(false);
+  const [welcomeMarkGlow, setWelcomeMarkGlow] = useState(false);
+  const [welcomeMarkExiting, setWelcomeMarkExiting] = useState(false);
   useEffect(() => {
-    if (!showWelcomeMark) return;
-    const t = setTimeout(() => setShowWelcomeMark(false), 1100);
-    return () => clearTimeout(t);
+    if (!showWelcomeMark) {
+      setWelcomeMarkIn(false);
+      setWelcomeMarkGlow(false);
+      setWelcomeMarkExiting(false);
+      return;
+    }
+    const raf = requestAnimationFrame(() => setWelcomeMarkIn(true));
+    const t1 = setTimeout(() => setWelcomeMarkGlow(true), 500);
+    const t2 = setTimeout(() => setWelcomeMarkExiting(true), 1200);
+    const t3 = setTimeout(() => setShowWelcomeMark(false), 1750);
+    return () => { cancelAnimationFrame(raf); clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [showWelcomeMark]);
   const [view2, setView2] = useState("main");  // "main" | "reflection"
   const [tab, setTab] = useState("home");
@@ -280,14 +297,18 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
       <div style={{
         position: "fixed", inset: 0, background: "#161513",
         display: "flex", alignItems: "center", justifyContent: "center",
-        animation: "welcomeMarkFade 1.1s ease both",
+        opacity: welcomeMarkExiting ? 0 : 1,
+        transition: "opacity 0.55s ease",
       }}>
-        <style>{`@keyframes welcomeMarkFade{0%{opacity:0}18%{opacity:1}72%{opacity:1}100%{opacity:0}}
-@keyframes welcomeMarkScale{0%{transform:scale(0.88)}18%{transform:scale(1)}100%{transform:scale(1.03)}}`}</style>
         <img src="/app-icon-mark.png" alt="" style={{
           width: 120, height: 120, objectFit: "cover", borderRadius: 26,
+          opacity: welcomeMarkIn ? 1 : 0,
+          transform: welcomeMarkIn
+            ? (welcomeMarkGlow ? "translateY(-10px) scale(1.08)" : "translateY(0) scale(1)")
+            : "translateY(0) scale(0.88)",
           boxShadow: "0 12px 40px rgba(0,0,0,0.45)",
-          animation: "welcomeMarkScale 1.1s ease both",
+          filter: welcomeMarkGlow ? "drop-shadow(0 0 24px rgba(255,255,255,0.55))" : "drop-shadow(0 0 0px rgba(255,255,255,0))",
+          transition: "opacity 0.45s ease, transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1), filter 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)",
         }} />
       </div>
     );
