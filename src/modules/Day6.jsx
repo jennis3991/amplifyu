@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
-import { useWakeLock } from '../utils.js';
+import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 
@@ -348,6 +348,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const [stakeholderIsOther, setStakeholderIsOther] = useState(false);
   const [profile,        setProfile]       = useState(null);
   const [questions,      setQuestions]     = useState([]);
+  const online = useOnlineStatus();
   const [qIdx,           setQIdx]          = useState(0);
   const [answers,        setAnswers]       = useState([]);
   const [currentAnswer,  setCurrentAnswer] = useState('');
@@ -484,6 +485,10 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
     const ap=form.purpose==='Something else'?purposeOther:form.purpose;
     purposeForAnalysis.current=ap;
     setPhase('analyzing');
+    if(!online){
+      setPhase('genFailed');
+      return;
+    }
     const pressureLabel = PRESSURES.find(p=>p.id===form.pressure)?.label||'Challenging';
     try{
       const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:800,messages:[{role:"user",content:`You are a senior executive coach preparing someone for a high-stakes conversation.\n\nContext:\n- Industry: ${form.industry}\n- Their role: ${form.role}\n- Meeting: ${form.stakeholder}\n- About: ${ap}\n- Pressure style: ${pressureLabel}${form.details?`\n- Additional context: ${form.details}`:''}\n\nGenerate a conversation profile and the 5 most important, highest-impact questions this stakeholder is likely to ask. Prioritise the questions they would definitely ask — the ones that probe rationale, risk, and evidence. Questions should feel specific, real, and build in difficulty.\n\nNever use em dashes anywhere in your response; use a comma or hyphen instead.\n\nReturn ONLY valid JSON:\n{"profile":{"stakeholderLabel":"${form.stakeholder}","goal":"<1-4 word goal>","riskLevel":"High|Medium|Low","concerns":["concern1","concern2","concern3","concern4"],"insight":"<2-3 sentences about what this stakeholder cares about and how they will challenge>"},"questions":["q1","q2","q3","q4","q5"]}`}]})});
@@ -496,15 +501,11 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
       setProfile(parsed.profile);
       setQuestions(parsed.questions);
       saveConversationPrep(parsed.profile, parsed.questions, form.stakeholder, ap);
+      setPhase('questions');
     }catch(err){
       console.error('[D6SimWidget] generate error:', err);
-      const fallbackProfile={stakeholderLabel:form.stakeholder,goal:"Get answers",riskLevel:"High",concerns:["ROI","Risk","Timeline","Resources"],insight:`This ${form.stakeholder} will focus on practical implications and challenge your assumptions. Expect probing questions about evidence, alternatives, and risk.`};
-      const fallbackQuestions=["Why should we prioritise this now?","What are the main risks — and how have you mitigated them?","How will we measure success?","What is the expected ROI?","Why is this the right approach over alternatives?"];
-      setProfile(fallbackProfile);
-      setQuestions(fallbackQuestions);
-      saveConversationPrep(fallbackProfile, fallbackQuestions, form.stakeholder, ap);
+      setPhase('genFailed');
     }
-    setPhase('questions');
   }
 
   function startSim(){submittingRef.current=false;setQIdx(0);setAnswers([]);setCurrentAnswer('');setRecTime(0);setPhase('simulation');}
@@ -789,6 +790,21 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
       <SequentialDots dotCount={genDotCount} activeColor={T.gold} inactiveColor={T2.border}
         messages={["Generating the toughest questions you're likely to face.","Thinking like "+(form.stakeholder||"they")+" would.","Weighing what they'll push back on hardest.","Almost there…"]}
         textStyle={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text4||T2.text3}}/>
+    </div>
+  );
+
+  // ── GENERATION FAILED ── previously fell back to a generic fabricated
+  // profile/questions here, saved to My Saved Work indistinguishably from a
+  // real one. Now shows an honest state and never saves fabricated data.
+  if(phase==='genFailed') return (
+    <div style={cs.card}>
+      <div style={cs.label}>{online ? "We Couldn't Prepare That" : "You're Offline"}</div>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.65,margin:"0 0 16px"}}>
+        {online
+          ? "Something went wrong generating your conversation prep. You can try again."
+          : "Conversation prep needs a connection, so we couldn't generate it this time. Try again once you're back online."}
+      </p>
+      <button onClick={generate} style={cs.cta}>Try Again</button>
     </div>
   );
 

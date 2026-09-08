@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useOnlineStatus } from '../utils.js';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -524,7 +525,7 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
   const [extracting,     setExtracting]    = useState(false);
   const [checkIdx,       setCheckIdx]      = useState(-1);
   const [analysisResult, setAnalysisResult]= useState(null);
-  const [analysisFallback, setAnalysisFallback] = useState(false);
+  const online = useOnlineStatus();
   const [rewriteCheckIdx,setRewriteCheckIdx]=useState(-1);
   const [copied,         setCopied]        = useState({});
   const [cvPhase,        setCvPhase]       = useState('idle');
@@ -609,7 +610,6 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
 
   function loadSimToolkit(t) {
     setAnalysisResult({ rewrittenHeadline: t.headline || '', rewrittenAbout: t.about || '', rewrittenExperience: t.experience || [] });
-    setAnalysisFallback(false);
     setSavedToolkitId(t.id);
     if (t.cv) { setCvResult(t.cv); setCvPhase('done'); } else { setCvResult(''); setCvPhase('idle'); }
     setPhase('toolkit');
@@ -711,7 +711,10 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
   async function runAnalysis() {
     setPhase('analyzing');
     setCheckIdx(-1);
-    setAnalysisFallback(false);
+    if (!online) {
+      setPhase('analysisFailed');
+      return;
+    }
     checkRef.current = setInterval(() => {
       setCheckIdx(i => Math.min(i + 1, CHECK_ITEMS.length - 1));
     }, 800);
@@ -763,23 +766,7 @@ Return ONLY valid JSON:
     } catch (_) {
       clearInterval(checkRef.current);
       setCheckIdx(CHECK_ITEMS.length - 1);
-      setAnalysisFallback(true);
-      setTimeout(() => {
-        setAnalysisResult({
-          alignmentScore: 54,
-          currentSignals: ["Reliable delivery", "Strong execution", "Technical experience"],
-          missingSignals: ["Strategic thinking", "Leadership presence", "Industry expertise", "Thought leadership"],
-          rewrittenHeadline: `${futureWords[0] || 'Strategic'} professional | ${futureWords[1] || 'Trusted'} advisor | Creating lasting impact`,
-          rewrittenAbout: `I help organisations move forward with clarity and confidence. My work sits at the intersection of strategy and execution — I translate ambitious goals into outcomes that actually happen.\n\nPeople come to me when they need someone who can hold the big picture and the detail simultaneously. Whether I'm advising a leadership team or driving a project from the ground up, I bring the same combination of rigour and care.\n\nI believe the best work happens when people feel supported and clear about where they're going. That's what I build.`,
-          rewrittenExperience: [
-            "Led cross-functional initiative delivering measurable impact across the organisation",
-            "Advised senior stakeholders on strategic direction, influencing key decisions",
-            "Built trusted relationships across teams and external partners",
-            "Translated complex challenges into clear recommendations with lasting results",
-          ],
-        });
-        setPhase('results');
-      }, 600);
+      setPhase('analysisFailed');
     }
   }
 
@@ -793,7 +780,7 @@ Return ONLY valid JSON:
       if (i >= REWRITE_ITEMS.length - 1) {
         clearInterval(rewriteRef.current);
         setTimeout(() => {
-          if (analysisResult && !analysisFallback) saveToolkit(analysisResult);
+          if (analysisResult) saveToolkit(analysisResult);
           setPhase('toolkit');
         }, 500);
       }
@@ -1090,6 +1077,21 @@ Keep it under 280 words. Make every word earn its place. Never use em dashes any
           );
         })}
       </div>
+    </div>
+  );
+
+  // ── ANALYSIS FAILED ── previously fell back to a generic fabricated
+  // analysis here, shown identically to a real result (only blocked from
+  // being saved). Now shows an honest state and never fabricates a result.
+  if (phase === 'analysisFailed') return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16, padding: isDesktop ? "40px 0" : "32px 0", animation: "fadeUp 0.5s ease both" }}>
+      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 20 : 17, fontStyle: "italic", color: T2.text, textAlign: "center", margin: 0, lineHeight: 1.45 }}>
+        {online ? "Something went wrong analysing your LinkedIn profile." : "You're offline."}
+      </p>
+      <p style={{ fontFamily: T.sans, fontSize: isDesktop ? 14 : 13, color: T2.text3, textAlign: "center", margin: 0, lineHeight: 1.6 }}>
+        {online ? "You can try again." : "This needs a connection to analyse your profile. Try again once you're back online."}
+      </p>
+      <button onClick={runAnalysis} style={{ ...cta(false), marginTop: 8 }}>Try Again</button>
     </div>
   );
 

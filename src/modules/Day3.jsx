@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
-import { useWakeLock } from '../utils.js';
+import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 
 function blobToB64(blob) {
@@ -611,6 +611,8 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
   // Feedback
   const [feedback, setFeedback] = useState(null);
+  const [analysisFailed, setAnalysisFailed] = useState(false);
+  const online = useOnlineStatus();
   const [micError, setMicError] = useState(false);
   const [transcribeFailed, setTranscribeFailed] = useState(false);
   const [fallbackText, setFallbackText] = useState('');
@@ -721,6 +723,12 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   }
 
   async function analyzeResponses(t1, t2) {
+    setAnalysisFailed(false);
+    if (!online) {
+      setAnalysisFailed(true);
+      setPhase('feedback');
+      return;
+    }
     try {
       const res = await fetch('/api/claude', {
         method: 'POST',
@@ -739,8 +747,10 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
       const raw = (data.content || []).map(b => b.text || '').join('');
       const m = raw.match(/\{[\s\S]*\}/);
       if (m) setFeedback(JSON.parse(m[0]));
+      else setAnalysisFailed(true);
     } catch(e) {
       console.error(e);
+      setAnalysisFailed(true);
     }
     setPhase('feedback');
   }
@@ -1001,6 +1011,21 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
       </div>
     );
   }
+
+  // ── FEEDBACK FAILED ──────────────────────────────────────────────────────
+  // Previously fell through to a permanent, unrecoverable "Loading…" text
+  // with no error state at all if analysis failed for any reason.
+  if (phase === 'feedback' && !feedback) return grid(
+    <div style={cs.card}>
+      <div style={cs.label}>{online ? "We Couldn't Analyse That" : "You're Offline"}</div>
+      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: T2.text, lineHeight: 1.65, margin: '0 0 16px'}}>
+        {online
+          ? "Something went wrong generating your feedback from your two responses. You can try again."
+          : "Feedback needs a connection, so we couldn't analyse your responses this time. Try again once you're back online."}
+      </p>
+      <button onClick={() => { setPhase('analyzing'); analyzeResponses(transcript1, transcript2); }} style={cs.cta}>Try Again</button>
+    </div>
+  );
 
   return grid(
     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 200}}>
