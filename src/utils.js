@@ -90,16 +90,34 @@ export function useIsMobile() {
 // navigator.onLine reflects the device's network interface state (e.g. flips
 // false in airplane mode) — it does not confirm the AI backend is actually
 // reachable, only that there's no point attempting a request at all.
+//
+// The window 'online'/'offline' events this used to rely on exclusively are
+// known to be unreliable inside a WKWebView loaded via a custom URL scheme
+// (this app's native setup) — a single missed 'offline'->'online' event pair
+// (e.g. around a background/foreground transition or a brief signal drop)
+// can leave this stuck reporting offline even once real connectivity is
+// back, with nothing to correct it. To self-heal that, this also re-reads
+// navigator.onLine directly on a short interval and whenever the app
+// returns to the foreground, rather than trusting the event listeners alone.
 export function useOnlineStatus() {
   const [online, setOnline] = useState(() => typeof navigator === "undefined" || navigator.onLine);
   useEffect(() => {
     const goOnline = () => setOnline(true);
     const goOffline = () => setOnline(false);
+    const resync = () => setOnline(navigator.onLine);
     window.addEventListener("online", goOnline);
     window.addEventListener("offline", goOffline);
+    document.addEventListener("visibilitychange", resync);
+    window.addEventListener("focus", resync);
+    window.addEventListener("pageshow", resync);
+    const interval = setInterval(resync, 4000);
     return () => {
       window.removeEventListener("online", goOnline);
       window.removeEventListener("offline", goOffline);
+      document.removeEventListener("visibilitychange", resync);
+      window.removeEventListener("focus", resync);
+      window.removeEventListener("pageshow", resync);
+      clearInterval(interval);
     };
   }, []);
   return online;
