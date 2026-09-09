@@ -24,12 +24,17 @@ const ALLOWED_ORIGINS = ["https://localhost", "https://amplifyu.vercel.app"];
 // handles them (resets on cold start, isn't a hard global cap under heavy
 // horizontal scaling), but it's enough to stop a single client — or a
 // leaked access code — hammering this endpoint.
-// 40/min: transcription is called once per recording, and some lesson steps
-// (multi-turn scenarios) record several times in a row; each Whisper call
-// is also cheaper than a full Claude generation. 40 covers a heavy
-// multi-recording session with retries while still blocking abuse.
+// 80/min: transcription is called once per recording, and some lesson steps
+// (multi-turn scenarios) record several times in a row; each Whisper call is
+// also cheaper than a full Claude generation. This also has to cover the app
+// owner (or QA) rapidly clicking through many days' rehearsal/simulation
+// steps back-to-back — a legitimate burst that can exceed a tightly-tuned
+// per-end-user estimate well before it looks like automated abuse. 80/min
+// still caps a runaway script while giving a fast full-app testing pass real
+// headroom. (Raised from 40 after exactly this burst tripped the limit
+// during a full-app QA sweep.)
 const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX = 40;
+const RATE_LIMIT_MAX = 80;
 const rateLimitBuckets = new Map();
 
 function isRateLimited(req) {

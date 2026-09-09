@@ -75,12 +75,16 @@ const ALLOWED_ORIGINS = ['https://localhost', 'https://amplifyu.vercel.app'];
 // handles them (resets on cold start, isn't a hard global cap under heavy
 // horizontal scaling), but it's enough to stop a single client — or a
 // leaked access code — hammering this endpoint.
-// 30/min: a real session calls this a handful of times (one per
-// rehearsal/simulation/coaching step, occasionally 2-3 more with a retry
-// after a network blip), so 30 comfortably covers a heavy session with
-// retries while still blocking a script making hundreds of calls a minute.
+// 60/min: a single end-user's session only calls this a handful of times,
+// but this also has to cover the app owner (or QA) rapidly clicking through
+// many days' rehearsal/simulation steps back-to-back while testing — a
+// legitimate burst that can exceed a tightly-tuned per-end-user estimate
+// well before it looks anything like automated abuse. 60/min still caps a
+// runaway script (hundreds/thousands of calls a minute) while giving a fast
+// full-app testing pass real headroom. (Raised from 30 after exactly this
+// burst tripped the limit during a full-app QA sweep.)
 const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX = 30;
+const RATE_LIMIT_MAX = 60;
 const rateLimitBuckets = new Map();
 
 function isRateLimited(req) {

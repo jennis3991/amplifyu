@@ -24,12 +24,17 @@ const ALLOWED_ORIGINS = ['https://localhost', 'https://amplifyu.vercel.app'];
 // handles them (resets on cold start, isn't a hard global cap under heavy
 // horizontal scaling), but it's enough to stop a single client — or a
 // leaked access code — hammering this endpoint.
-// 15/min: this is the most expensive call (gpt-image-1 generation), and
+// 30/min: this is the most expensive call (gpt-image-1 generation), and
 // naturally the lowest-volume — one story tops out around 1 cover + 6 scene
-// panels. 15 comfortably covers a full story plus a couple of retries while
-// keeping a tight cap on the priciest endpoint.
+// panels. Doubled from the original 15 alongside the other two endpoints
+// after a legitimate full-app QA sweep tripped this family of limits —
+// this one is less likely to be hit by that pattern (Day8's Story Lab is
+// one screen, not one per day), but keeping all three endpoints' safety
+// margins consistent is simpler to reason about than tuning each in
+// isolation. Still a tight cap relative to the other two endpoints given
+// the cost per call.
 const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX = 15;
+const RATE_LIMIT_MAX = 30;
 const rateLimitBuckets = new Map();
 
 function isRateLimited(req) {
