@@ -11,12 +11,18 @@ function validateAccessCode(req) {
 }
 
 // ── CORS allow-list ──────────────────────────────────────────────────────────
-// https://localhost is the native app's own origin post the local-bundle
-// switch (WKWebView serves the app from https://localhost, not the old
-// remote Vercel URL) — it must stay on this list or the native app's own
-// calls break. https://amplifyu.vercel.app is the origin for anyone using
-// the site directly in a browser.
-const ALLOWED_ORIGINS = ["https://localhost", "https://amplifyu.vercel.app"];
+// capacitor://localhost is the native app's REAL origin — confirmed via a
+// live device console log showing the failed fetch, plus direct curl tests
+// against this endpoint (Origin: capacitor://localhost -> 403, matching the
+// production outage this caused). The earlier assumption that the iosScheme:
+// "https" config setting would make WKWebView report "https://localhost" as
+// the fetch Origin was wrong: that setting affects the WebView's own secure-
+// context APIs (getUserMedia), not the Origin header value WKWebView sends
+// on outgoing cross-origin fetches, which still uses the literal registered
+// scheme name "capacitor". Keeping https://localhost too in case a future
+// Capacitor/iOS version changes this. https://amplifyu.vercel.app is the
+// origin for anyone using the site directly in a browser.
+const ALLOWED_ORIGINS = ["capacitor://localhost", "https://localhost", "https://amplifyu.vercel.app"];
 
 // ── Rate limiting ────────────────────────────────────────────────────────────
 // Best-effort, in-memory per-IP limiter — no Redis/KV needed at this app's
