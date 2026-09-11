@@ -884,7 +884,6 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
     setBrief(entry.brief || '');
     setStoryImage(entry.image || null);
     setImageSaveWarning(null);
-    setApiError(false);
     setActiveScene(0);
     setPhase('results');
   }
@@ -1180,13 +1179,13 @@ Return ONLY valid JSON:
                 so the box keeps the same 2:3 shape as the image itself —
                 displayed in full, nothing cropped. */}
             {storyImage==='loading'
-              ? <div style={{width:"min(100%, "+(isDesktop?340:240)+"px)",aspectRatio:"2 / 3",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:10,background:"#0E0B08"}}>
+              ? <div style={{width:isDesktop?"min(100%, 340px)":"100%",aspectRatio:"2 / 3",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:10,background:"#0E0B08"}}>
                   <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:"rgba(248,245,239,0.3)",animation:`glowPulse 1.4s ease ${i*0.2}s infinite`}}/>)}</div>
                   <span style={{fontFamily:T.sans,fontSize:11,color:"rgba(248,245,239,0.4)",fontWeight:300,letterSpacing:"0.04em"}}>Generating cover image…</span>
                 </div>
               : storyImage && storyImage!=='error'
-                ? <img loading="lazy" src={storyImage} alt="Story Cover" style={{width:"min(100%, "+(isDesktop?340:240)+"px)",aspectRatio:"2 / 3",objectFit:"cover",display:"block",margin:"0 auto"}}/>
-                : <div style={{width:"min(100%, "+(isDesktop?340:240)+"px)",aspectRatio:"2 / 3",margin:"0 auto",background:"linear-gradient(160deg,#1A1410 0%,#2C2416 100%)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                ? <img loading="lazy" src={storyImage} alt="Story Cover" style={{width:isDesktop?"min(100%, 340px)":"100%",aspectRatio:"2 / 3",objectFit:"cover",display:"block",margin:"0 auto"}}/>
+                : <div style={{width:isDesktop?"min(100%, 340px)":"100%",aspectRatio:"2 / 3",margin:"0 auto",background:"linear-gradient(160deg,#1A1410 0%,#2C2416 100%)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                     <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
                       <circle cx="28" cy="28" r="26" stroke="rgba(138,158,132,0.25)" strokeWidth="0.5"/>
                       <circle cx="28" cy="28" r="16" stroke="rgba(138,158,132,0.15)" strokeWidth="0.5"/>
