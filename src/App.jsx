@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Capacitor } from "@capacitor/core";
 import { applyUpdate } from "./pwa.js";
 import { T } from "./theme.js";
 import { LESSONS, ROLES } from "./data.js";
@@ -15,6 +16,7 @@ import { IdentityScreen } from "./screens/IdentityScreen.jsx";
 import { Onboarding } from "./screens/Onboarding.jsx";
 import { FloatingNav, TabBar } from "./components/NavComponents.jsx";
 import { Celebrate } from "./components/Confetti.jsx";
+import { AccessGate } from "./components/AccessGate.jsx";
 import { Paywall } from "./components/Paywall.jsx";
 
 // ── UpdateBanner ─────────────────────────────────────────────────────────────
@@ -134,6 +136,16 @@ function OfflineBanner() {
 // ─── ROOT 
 export default function App() {
   const isDesktop = useIsDesktop();
+  // Apple's App Store review only ever covers the native app binary, never
+  // the public website — so the access-code gate (removed from the native
+  // app per Apple's Guideline 2.1(b) rejection, which requires real users to
+  // reach the app with no code at all) stays in place for plain web/browser
+  // visitors, where it protects against the open Vercel URL being discovered
+  // and browsed for free (e.g. via Certificate Transparency log scanning).
+  const [authed, setAuthed] = useState(() => {
+    if (Capacitor.isNativePlatform()) return true;
+    try { return localStorage.getItem("au1_authed") === "true"; } catch (_) { return false; }
+  });
   const [boarded, setBoarded] = useState(() => ls("au1_ob", false));
   const [done, setDone] = useState(() => ls("au1_done", []));
   const [cur, setCur] = useState(() => 
@@ -255,6 +267,8 @@ lsSet("au1_dark",d); }
     navyLight:"rgba(138,158,132,0.1)", goldLight:"rgba(138,158,132,0.12)",
     goldDark:T.gold, greenBg:"rgba(82,112,96,0.2)", green:"#8A9E84",
   } : {};
+
+  if (!authed) return <AccessGate onSuccess={() => setAuthed(true)} />;
 
   // Speech test route — bypass all app state
   if (window.location.pathname === '/speech-test') return <SpeechTest />;
