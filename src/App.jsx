@@ -15,7 +15,6 @@ import { IdentityScreen } from "./screens/IdentityScreen.jsx";
 import { Onboarding } from "./screens/Onboarding.jsx";
 import { FloatingNav, TabBar } from "./components/NavComponents.jsx";
 import { Celebrate } from "./components/Confetti.jsx";
-import { AccessGate } from "./components/AccessGate.jsx";
 import { Paywall } from "./components/Paywall.jsx";
 
 // ── UpdateBanner ─────────────────────────────────────────────────────────────
@@ -135,7 +134,6 @@ function OfflineBanner() {
 // ─── ROOT 
 export default function App() {
   const isDesktop = useIsDesktop();
-  const [authed, setAuthed] = useState(() => { try { return localStorage.getItem("au1_authed") === "true"; } catch (_) { return false; } });
   const [boarded, setBoarded] = useState(() => ls("au1_ob", false));
   const [done, setDone] = useState(() => ls("au1_done", []));
   const [cur, setCur] = useState(() => 
@@ -257,8 +255,6 @@ lsSet("au1_dark",d); }
     navyLight:"rgba(138,158,132,0.1)", goldLight:"rgba(138,158,132,0.12)",
     goldDark:T.gold, greenBg:"rgba(82,112,96,0.2)", green:"#8A9E84",
   } : {};
-
-  if (!authed) return <AccessGate onSuccess={() => setAuthed(true)} />;
 
   // Speech test route — bypass all app state
   if (window.location.pathname === '/speech-test') return <SpeechTest />;
