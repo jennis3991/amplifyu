@@ -1172,34 +1172,43 @@ Return ONLY valid JSON:
         <div style={{marginBottom:isDesktop?28:22}}>
           <div style={{borderRadius:10,overflow:"hidden",border:"0.5px solid "+T2.border,background:INK}}>
 
-            {/* Image — the generator returns a portrait 1024x1536 (2:3) cover.
-                Forcing that into a wide, short landscape box (previously
-                width:100%/fixed short height with objectFit:cover) cropped
-                out most of the image. This bounds width (not just height)
-                so the box keeps the same 2:3 shape as the image itself —
-                displayed in full, nothing cropped. */}
-            {storyImage==='loading'
-              ? <div style={{width:isDesktop?"min(100%, 340px)":"100%",aspectRatio:"2 / 3",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:10,background:"#0E0B08"}}>
-                  <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:"rgba(248,245,239,0.3)",animation:`glowPulse 1.4s ease ${i*0.2}s infinite`}}/>)}</div>
-                  <span style={{fontFamily:T.sans,fontSize:11,color:"rgba(248,245,239,0.4)",fontWeight:300,letterSpacing:"0.04em"}}>Generating cover image…</span>
-                </div>
-              : storyImage && storyImage!=='error'
-                ? <img loading="lazy" src={storyImage} alt="Story Cover" style={{width:isDesktop?"min(100%, 340px)":"100%",aspectRatio:"2 / 3",objectFit:"cover",display:"block",margin:"0 auto"}}/>
-                : <div style={{width:isDesktop?"min(100%, 340px)":"100%",aspectRatio:"2 / 3",margin:"0 auto",background:"linear-gradient(160deg,#1A1410 0%,#2C2416 100%)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                    <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-                      <circle cx="28" cy="28" r="26" stroke="rgba(138,158,132,0.25)" strokeWidth="0.5"/>
-                      <circle cx="28" cy="28" r="16" stroke="rgba(138,158,132,0.15)" strokeWidth="0.5"/>
-                      <circle cx="28" cy="28" r="6"  stroke="rgba(138,158,132,0.1)"  strokeWidth="0.5"/>
-                      <circle cx="28" cy="28" r="2"  fill="rgba(138,158,132,0.35)"/>
-                    </svg>
-                  </div>
-            }
+            {/* On desktop, the image sits alongside the title/subtitle in a
+                row (book-jacket layout) instead of stacked above it — the
+                previous stacked layout left a lot of unused dark space either
+                side of the centered image on wide screens. Mobile stays
+                stacked, full width, unchanged. */}
+            <div style={{display:isDesktop?"flex":"block",alignItems:isDesktop?"stretch":undefined}}>
 
-            {/* Title block */}
-            <div style={{padding:isDesktop?"24px 28px 26px":"18px 20px 22px",background:INK}}>
-              <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:10}}>Book Cover · First Edition</div>
-              <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:500,color:"#F8F5EF",lineHeight:1.15,margin:"0 0 8px",letterSpacing:"-0.3px"}}>{coverTitle||sw.subject||"Your Story"}</h2>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(248,245,239,0.5)",margin:0,fontWeight:300,lineHeight:1.55}}>{coverSubtitle||sw.lesson||""}</p>
+              {/* Image — the generator returns a portrait 1024x1536 (2:3) cover.
+                  Forcing that into a wide, short landscape box (previously
+                  width:100%/fixed short height with objectFit:cover) cropped
+                  out most of the image. This bounds width (not just height)
+                  so the box keeps the same 2:3 shape as the image itself —
+                  displayed in full, nothing cropped. */}
+              {storyImage==='loading'
+                ? <div style={{width:isDesktop?300:"100%",flexShrink:0,aspectRatio:"2 / 3",margin:isDesktop?0:"0 auto",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:10,background:"#0E0B08"}}>
+                    <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:"rgba(248,245,239,0.3)",animation:`glowPulse 1.4s ease ${i*0.2}s infinite`}}/>)}</div>
+                    <span style={{fontFamily:T.sans,fontSize:11,color:"rgba(248,245,239,0.4)",fontWeight:300,letterSpacing:"0.04em"}}>Generating cover image…</span>
+                  </div>
+                : storyImage && storyImage!=='error'
+                  ? <img loading="lazy" src={storyImage} alt="Story Cover" style={{width:isDesktop?300:"100%",flexShrink:0,aspectRatio:"2 / 3",objectFit:"cover",display:"block",margin:isDesktop?0:"0 auto"}}/>
+                  : <div style={{width:isDesktop?300:"100%",flexShrink:0,aspectRatio:"2 / 3",margin:isDesktop?0:"0 auto",background:"linear-gradient(160deg,#1A1410 0%,#2C2416 100%)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                        <circle cx="28" cy="28" r="26" stroke="rgba(138,158,132,0.25)" strokeWidth="0.5"/>
+                        <circle cx="28" cy="28" r="16" stroke="rgba(138,158,132,0.15)" strokeWidth="0.5"/>
+                        <circle cx="28" cy="28" r="6"  stroke="rgba(138,158,132,0.1)"  strokeWidth="0.5"/>
+                        <circle cx="28" cy="28" r="2"  fill="rgba(138,158,132,0.35)"/>
+                      </svg>
+                    </div>
+              }
+
+              {/* Title block */}
+              <div style={{padding:isDesktop?"24px 32px":"18px 20px 22px",background:INK,display:isDesktop?"flex":"block",flexDirection:isDesktop?"column":undefined,justifyContent:isDesktop?"center":undefined,flex:isDesktop?1:undefined}}>
+                <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:10}}>Book Cover · First Edition</div>
+                <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:22,fontWeight:500,color:"#F8F5EF",lineHeight:1.15,margin:"0 0 8px",letterSpacing:"-0.3px"}}>{coverTitle||sw.subject||"Your Story"}</h2>
+                <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:"rgba(248,245,239,0.5)",margin:0,fontWeight:300,lineHeight:1.55}}>{coverSubtitle||sw.lesson||""}</p>
+              </div>
+
             </div>
 
             {/* Error bar */}
