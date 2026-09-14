@@ -144,6 +144,14 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
   // double-click on "Next"), which would otherwise schedule two qIdx
   // increments and push qIdx past the last valid QUESTIONS index.
   const submittingRef   = useRef(false);
+  // Guards against startRecording being invoked twice before the mic
+  // permission prompt resolves — the UI only switches out of the mic button
+  // once getUserMedia's promise settles, so a second tap in that window
+  // (plausible on iOS, where the permission prompt is async and touch events
+  // can double-fire) previously created a second, orphaned MediaRecorder
+  // whose delayed auto-stop fired a stale submitAnswer call that slipped
+  // past submittingRef and double-incremented qIdx past the last question.
+  const startingRef     = useRef(false);
 
   const recordingAvailable = !!(navigator.mediaDevices?.getUserMedia);
 
@@ -195,8 +203,11 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
 
   function startRecording() {
     if (!recordingAvailable) { setUseText(true); return; }
+    if (startingRef.current) return;
+    startingRef.current = true;
     audioChunksRef.current = [];
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+      startingRef.current = false;
       let mr;
       try { mr = new MediaRecorder(stream, {mimeType: 'audio/webm'}); }
       catch { mr = new MediaRecorder(stream); }
@@ -212,7 +223,7 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
         setTimer(t);
         if (t <= 0) { clearInterval(timerRef.current); stopRecording(); }
       }, 1000);
-    }).catch(() => { setUseText(true); setPhase('question'); });
+    }).catch(() => { startingRef.current = false; setUseText(true); setPhase('question'); });
   }
 
   function stopRecording() {
