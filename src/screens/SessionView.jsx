@@ -2179,8 +2179,8 @@ setAmbitionSaved(true); } catch {}
             <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
             <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:14,marginBottom:28}}>
               <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,margin:0}}>{reading.name}</h2>
-              {reading.id === "attenborough" && (() => {
-                const src = "/day1-attenborough.mp3";
+              {(reading.id === "attenborough" || reading.id === "branson") && (() => {
+                const src = reading.id === "attenborough" ? "/day1-attenborough.mp3" : "/day1-branson.mp3";
                 const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
                 return (
                   <button

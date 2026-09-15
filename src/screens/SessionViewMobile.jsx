@@ -1543,8 +1543,8 @@ T.goldDark : T2.text4,
                   <div style={{padding:"16px 18px 4px"}}>
                     <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,marginBottom:2}}>
                       <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,margin:0}}>{card.name}</h3>
-                      {card.id === "attenborough" && (() => {
-                        const src = "/day1-attenborough.mp3";
+                      {(card.id === "attenborough" || card.id === "branson") && (() => {
+                        const src = card.id === "attenborough" ? "/day1-attenborough.mp3" : "/day1-branson.mp3";
                         const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
                         return (
                           <button
