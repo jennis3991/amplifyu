@@ -91,6 +91,26 @@ export function MobileSessionView({
   const d14NavFnRef = useRef(null);
   const [d1WarmUpTopic, setD1WarmUpTopic] = useState(null);
   const [d1SimRecording, setD1SimRecording] = useState(false);
+  // Pre-recorded voice narration for lesson content (Insight/Theory/Example
+  // tabs) — separate from Rehearsal/Simulation's live AI transcription, this
+  // just plays a static audio file. One <audio> is reused across steps
+  // rather than created per-step, and only loads (network request) once the
+  // user actually taps play, so adding narration for more days/steps later
+  // doesn't add any upfront load cost.
+  const narrationAudioRef = useRef(null);
+  const [narrationPlaying, setNarrationPlaying] = useState(false);
+  function toggleNarration(src) {
+    const a = narrationAudioRef.current;
+    if (a && !a.paused && a.dataset.src === src) { a.pause(); setNarrationPlaying(false); return; }
+    if (!a || a.dataset.src !== src) {
+      if (a) a.pause();
+      const next = new Audio(src);
+      next.dataset.src = src;
+      next.onended = () => setNarrationPlaying(false);
+      narrationAudioRef.current = next;
+    }
+    narrationAudioRef.current.play().then(() => setNarrationPlaying(true)).catch(() => setNarrationPlaying(false));
+  }
   const [d2SimRecording, setD2SimRecording] = useState(false);
   const [d3SimRecording, setD3SimRecording] = useState(false);
   const [d5RehearsalRecording, setD5RehearsalRecording] = useState(false);
@@ -439,6 +459,11 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
     {(()=>{
       const icons = ["◎","✦","←→","▶","◈","✓"];
       const colors2 = [T.navy, T.gold, T.navy, T.navy, T.navy, T.green];
+      // Narration source for whichever step is currently active, if one
+      // exists — added one day/step at a time. The mic control itself
+      // always sits under the Review node (fixed position per design), but
+      // only appears once a step actually has narration to play.
+      const narrationSrc = (isD1 && step === "Insight") ? "/day1-insight.mp3" : null;
       return (
         <div style={{padding:"14px 0 0",userSelect:"none",overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
           {/* Connected arc row — min-width so all 6 steps always show */}
@@ -502,6 +527,27 @@ T.goldDark : T2.text4,
                       whiteSpace:"nowrap",
                       transition:"all 0.3s",
                     }}>{s}</span>
+                    {/* Narration mic — fixed under the Review node regardless
+                        of the active step, shown only once the currently
+                        active step actually has a narration clip to play. */}
+                    {i === STEPS.length - 1 && narrationSrc && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); toggleNarration(narrationSrc); }}
+                        aria-label={narrationPlaying ? "Pause narration" : "Play narration"}
+                        style={{
+                          width:18, height:18, borderRadius:"50%", marginTop:2,
+                          background: narrationPlaying ? T.goldLight : "transparent",
+                          border:"1px solid "+(narrationPlaying ? T.gold : T2.border),
+                          display:"flex", alignItems:"center", justifyContent:"center",
+                          cursor:"pointer", flexShrink:0, transition:"all 0.2s",
+                        }}>
+                        <svg width="8" height="8" viewBox="0 0 10 10" fill="none">
+                          <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={narrationPlaying ? T.gold : T2.text4} strokeWidth="1"/>
+                          <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={narrationPlaying ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
+                          <line x1="5" y1="9" x2="5" y2="9.5" stroke={narrationPlaying ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
+                        </svg>
+                      </button>
+                    )}
                   </div>
                   {/* Connector line to next node */}
                   {i < STEPS.length-1 && (

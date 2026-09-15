@@ -45,6 +45,45 @@ activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
   const rightPanelRef = useRef(null);
   const leftPanelWrapRef = useRef(null);
   const reviewPanelRef = useRef(null);
+  // Pre-recorded voice narration for lesson content — see the matching
+  // comment in SessionViewMobile.jsx. Same on-demand-load approach: nothing
+  // fetches until the user taps play.
+  const narrationAudioRef = useRef(null);
+  const [narrationPlaying, setNarrationPlaying] = useState(false);
+  function toggleNarration(src) {
+    const a = narrationAudioRef.current;
+    if (a && !a.paused && a.dataset.src === src) { a.pause(); setNarrationPlaying(false); return; }
+    if (!a || a.dataset.src !== src) {
+      if (a) a.pause();
+      const next = new Audio(src);
+      next.dataset.src = src;
+      next.onended = () => setNarrationPlaying(false);
+      narrationAudioRef.current = next;
+    }
+    narrationAudioRef.current.play().then(() => setNarrationPlaying(true)).catch(() => setNarrationPlaying(false));
+  }
+  function NarrationMic({ src }) {
+    const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+    return (
+      <button
+        onClick={() => toggleNarration(src)}
+        aria-label={playing ? "Pause narration" : "Play narration"}
+        style={{
+          position:"absolute", top:44, right:52, zIndex:2,
+          width:34, height:34, borderRadius:"50%",
+          background: playing ? T.goldLight : "transparent",
+          border:"1px solid "+(playing ? T.gold : T2.border),
+          display:"flex", alignItems:"center", justifyContent:"center",
+          cursor:"pointer", transition:"all 0.2s",
+        }}>
+        <svg width="13" height="13" viewBox="0 0 10 10" fill="none">
+          <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={playing ? T.gold : T2.text4} strokeWidth="1"/>
+          <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
+          <line x1="5" y1="9" x2="5" y2="9.5" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
+        </svg>
+      </button>
+    );
+  }
   const getTtsText = () => [extractReadableText(leftPanelWrapRef.current), extractReadableText(rightPanelRef.current)].filter(Boolean).join('. ');
   useEffect(() => {
     // This hook runs unconditionally (hooks can't be conditional), but its
@@ -2031,7 +2070,8 @@ setAmbitionSaved(true); } catch {}
       const [d1ExOpenCard, setD1ExOpenCard] = useState(null);
 
       if (step === "Insight") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",position:"relative"}}>
+          <NarrationMic src="/day1-insight.mp3" />
           <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Why Clarity Wins</h2>
           <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:36,maxWidth:600}}>Clear language makes ideas easier to understand, easier to remember, and easier to act on. Here's why clarity matters.</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:28}}>
