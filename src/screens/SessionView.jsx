@@ -70,19 +70,16 @@ activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
         aria-label={playing ? "Pause narration" : "Play narration"}
         style={{
           position:"absolute", top:44, right:52, zIndex:2,
-          width:36, height:36, borderRadius:11, flexShrink:0,
-          background:"linear-gradient(135deg, #D8CBB0 0%, #A99372 100%)",
-          border:"none", display:"flex", alignItems:"center", justifyContent:"center",
-          cursor:"pointer",
-          boxShadow: playing ? "0 0 0 3px rgba(198,166,100,0.35), 0 2px 6px rgba(0,0,0,0.15)" : "0 2px 6px rgba(0,0,0,0.15)",
-          transform: playing ? "scale(1.06)" : "scale(1)",
-          transition:"all 0.25s",
+          width:36, height:36, borderRadius:"50%", flexShrink:0,
+          background: playing ? T.goldLight : "transparent",
+          border:"1px solid "+(playing ? T.gold : T2.border),
+          display:"flex", alignItems:"center", justifyContent:"center",
+          cursor:"pointer", transition:"all 0.2s",
         }}>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <rect x="5.5" y="1" width="5" height="8" rx="2.5" fill="#EFE9DD" stroke="#B8934A" strokeWidth="1"/>
-          <path d="M2.5 8a5.5 5.5 0 0011 0" stroke="#B8934A" strokeWidth="1.3" strokeLinecap="round"/>
-          <line x1="8" y1="13.5" x2="8" y2="14.5" stroke="#B8934A" strokeWidth="1.3" strokeLinecap="round"/>
-          <line x1="5.5" y1="14.8" x2="10.5" y2="14.8" stroke="#B8934A" strokeWidth="1.3" strokeLinecap="round"/>
+        <svg width="15" height="15" viewBox="0 0 10 10" fill="none">
+          <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={playing ? T.gold : T2.text4} strokeWidth="1"/>
+          <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
+          <line x1="5" y1="9" x2="5" y2="9.5" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
         </svg>
       </button>
     );
