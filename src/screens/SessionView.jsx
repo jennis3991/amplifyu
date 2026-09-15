@@ -71,6 +71,7 @@ activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
         style={{
           position:"absolute", top:44, right:52, zIndex:2,
           width:36, height:36, borderRadius:"50%", flexShrink:0,
+          padding:0, boxSizing:"border-box", WebkitAppearance:"none", MozAppearance:"none", appearance:"none",
           background: playing ? T.goldLight : "transparent",
           border:"1px solid "+(playing ? T.gold : T2.border),
           display:"flex", alignItems:"center", justifyContent:"center",
@@ -2176,7 +2177,31 @@ setAmbitionSaved(true); } catch {}
               Back to Gallery
             </button>
             <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
-            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:14,marginBottom:28}}>
+              <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,margin:0}}>{reading.name}</h2>
+              {reading.id === "attenborough" && (() => {
+                const src = "/day1-attenborough.mp3";
+                const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                return (
+                  <button
+                    onClick={() => toggleNarration(src)}
+                    aria-label={playing ? "Pause narration" : "Play narration"}
+                    style={{
+                      width:36, height:36, borderRadius:"50%", flexShrink:0, marginTop:4,
+                      background: playing ? T.goldLight : "transparent",
+                      border:"1px solid "+(playing ? T.gold : T2.border),
+                      display:"flex", alignItems:"center", justifyContent:"center",
+                      cursor:"pointer", transition:"all 0.2s",
+                    }}>
+                    <svg width="15" height="15" viewBox="0 0 10 10" fill="none">
+                      <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={playing ? T.gold : T2.text4} strokeWidth="1"/>
+                      <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
+                      <line x1="5" y1="9" x2="5" y2="9.5" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
+                    </svg>
+                  </button>
+                );
+              })()}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:17,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:17,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
             {reading.quote && (

@@ -1391,13 +1391,14 @@ T.goldDark : T2.text4,
                   onClick={() => toggleNarration(src)}
                   aria-label={playing ? "Pause narration" : "Play narration"}
                   style={{
-                    width:34, height:34, borderRadius:"50%", flexShrink:0, marginTop:2,
+                    width:44, height:44, minWidth:44, borderRadius:"50%", flexShrink:0, marginTop:2,
+                    padding:0, boxSizing:"border-box", WebkitAppearance:"none", MozAppearance:"none", appearance:"none",
                     background: playing ? T.goldLight : "transparent",
                     border:"1px solid "+(playing ? T.gold : T2.border),
                     display:"flex", alignItems:"center", justifyContent:"center",
                     cursor:"pointer", transition:"all 0.2s",
                   }}>
-                  <svg width="14" height="14" viewBox="0 0 10 10" fill="none">
+                  <svg width="17" height="17" viewBox="0 0 10 10" fill="none">
                     <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={playing ? T.gold : T2.text4} strokeWidth="1"/>
                     <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
                     <line x1="5" y1="9" x2="5" y2="9.5" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
@@ -1540,7 +1541,32 @@ T.goldDark : T2.text4,
                   )}
                   {/* Text area — name, eyebrow, summary, superpower row */}
                   <div style={{padding:"16px 18px 4px"}}>
-                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
+                    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,marginBottom:2}}>
+                      <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,margin:0}}>{card.name}</h3>
+                      {card.id === "attenborough" && (() => {
+                        const src = "/day1-attenborough.mp3";
+                        const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                        return (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleNarration(src); }}
+                            aria-label={playing ? "Pause narration" : "Play narration"}
+                            style={{
+                              width:44, height:44, minWidth:44, borderRadius:"50%", flexShrink:0,
+                              padding:0, boxSizing:"border-box", WebkitAppearance:"none", MozAppearance:"none", appearance:"none",
+                              background: playing ? T.goldLight : "transparent",
+                              border:"1px solid "+(playing ? T.gold : T2.border),
+                              display:"flex", alignItems:"center", justifyContent:"center",
+                              cursor:"pointer", transition:"all 0.2s",
+                            }}>
+                            <svg width="17" height="17" viewBox="0 0 10 10" fill="none">
+                              <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={playing ? T.gold : T2.text4} strokeWidth="1"/>
+                              <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
+                              <line x1="5" y1="9" x2="5" y2="9.5" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
+                            </svg>
+                          </button>
+                        );
+                      })()}
+                    </div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:14,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
                     <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>
