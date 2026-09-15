@@ -459,11 +459,6 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
     {(()=>{
       const icons = ["◎","✦","←→","▶","◈","✓"];
       const colors2 = [T.navy, T.gold, T.navy, T.navy, T.navy, T.green];
-      // Narration source for whichever step is currently active, if one
-      // exists — added one day/step at a time. The mic control itself
-      // always sits under the Review node (fixed position per design), but
-      // only appears once a step actually has narration to play.
-      const narrationSrc = (isD1 && step === "Insight") ? "/day1-insight.mp3" : null;
       return (
         <div style={{padding:"14px 0 0",userSelect:"none",overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
           {/* Connected arc row — min-width so all 6 steps always show */}
@@ -527,27 +522,6 @@ T.goldDark : T2.text4,
                       whiteSpace:"nowrap",
                       transition:"all 0.3s",
                     }}>{s}</span>
-                    {/* Narration mic — fixed under the Review node regardless
-                        of the active step, shown only once the currently
-                        active step actually has a narration clip to play. */}
-                    {i === STEPS.length - 1 && narrationSrc && (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); toggleNarration(narrationSrc); }}
-                        aria-label={narrationPlaying ? "Pause narration" : "Play narration"}
-                        style={{
-                          width:18, height:18, borderRadius:"50%", marginTop:2,
-                          background: narrationPlaying ? T.goldLight : "transparent",
-                          border:"1px solid "+(narrationPlaying ? T.gold : T2.border),
-                          display:"flex", alignItems:"center", justifyContent:"center",
-                          cursor:"pointer", flexShrink:0, transition:"all 0.2s",
-                        }}>
-                        <svg width="8" height="8" viewBox="0 0 10 10" fill="none">
-                          <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={narrationPlaying ? T.gold : T2.text4} strokeWidth="1"/>
-                          <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={narrationPlaying ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-                          <line x1="5" y1="9" x2="5" y2="9.5" stroke={narrationPlaying ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-                        </svg>
-                      </button>
-                    )}
                   </div>
                   {/* Connector line to next node */}
                   {i < STEPS.length-1 && (
@@ -1407,7 +1381,34 @@ T.goldDark : T2.text4,
        {/* ── D1 Mobile Steps ─────────────────────────────────────────────── */}
       {isD1 && step==="Insight" && (
         <>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Why Clarity Wins</h2>
+          <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12,marginBottom:8}}>
+            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>Why Clarity Wins</h2>
+            {(() => {
+              const src = "/day1-insight.mp3";
+              const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+              return (
+                <button
+                  onClick={() => toggleNarration(src)}
+                  aria-label={playing ? "Pause narration" : "Play narration"}
+                  style={{
+                    width:34, height:34, borderRadius:10, flexShrink:0, marginTop:2,
+                    background:"linear-gradient(135deg, #D8CBB0 0%, #A99372 100%)",
+                    border:"none", display:"flex", alignItems:"center", justifyContent:"center",
+                    cursor:"pointer",
+                    boxShadow: playing ? "0 0 0 3px rgba(198,166,100,0.35), 0 2px 6px rgba(0,0,0,0.15)" : "0 2px 6px rgba(0,0,0,0.15)",
+                    transform: playing ? "scale(1.06)" : "scale(1)",
+                    transition:"all 0.25s",
+                  }}>
+                  <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+                    <rect x="5.5" y="1" width="5" height="8" rx="2.5" fill="#EFE9DD" stroke="#B8934A" strokeWidth="1"/>
+                    <path d="M2.5 8a5.5 5.5 0 0011 0" stroke="#B8934A" strokeWidth="1.3" strokeLinecap="round"/>
+                    <line x1="8" y1="13.5" x2="8" y2="14.5" stroke="#B8934A" strokeWidth="1.3" strokeLinecap="round"/>
+                    <line x1="5.5" y1="14.8" x2="10.5" y2="14.8" stroke="#B8934A" strokeWidth="1.3" strokeLinecap="round"/>
+                  </svg>
+                </button>
+              );
+            })()}
+          </div>
           <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>Clear language makes ideas easier to understand, easier to remember, and easier to act on.</p>
           <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Explore each card to learn more →</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
