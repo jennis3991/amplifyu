@@ -1,6 +1,6 @@
 import { NativePurchases, PURCHASE_TYPE } from "@capgo/native-purchases";
 
-const MONTHLY_PRODUCT_ID = "com.amplifyu.app.monthly";
+const MONTHLY_PRODUCT_ID = "com.amplifyu.app.monthly2";
 const ENTITLEMENT_KEY = "au1_entitled";
 
 let productPromise = null;
