@@ -60,6 +60,7 @@ const BENEFITS = [
 export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and beyond" }) {
   const [status, setStatus] = useState("idle"); // idle | purchasing | restoring | subscribed | restored
   const [priceString, setPriceString] = useState("£9.99");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Best-effort: reflect the real store price once it resolves, fall back to £9.99.
   useEffect(() => {
@@ -71,13 +72,18 @@ export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and be
   function handleSubscribe() {
     if (status === "purchasing" || status === "restoring") return;
     setStatus("purchasing");
+    setErrorMessage("");
     purchaseSubscription()
       .then(() => {
         setStatus("subscribed");
         setTimeout(() => { if (onSubscribed) onSubscribed(); else onClose?.(); }, 900);
       })
-      .catch(() => {
-        onClose?.();
+      .catch((err) => {
+        setStatus("idle");
+        const message = err?.message || "";
+        if (!/cancel/i.test(message)) {
+          setErrorMessage("Something went wrong with that purchase. Please try again.");
+        }
       });
   }
 
@@ -225,6 +231,12 @@ export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and be
         >
           {status === "purchasing" ? "Processing…" : status === "subscribed" ? "Subscribed ✓" : "Continue your journey"}
         </button>
+
+        {errorMessage && (
+          <p style={{ textAlign: "center", fontSize: 13, color: "#D98C6B", margin: "0 0 16px" }}>
+            {errorMessage}
+          </p>
+        )}
 
         {/* Footer */}
         <p style={{ textAlign: "center", fontSize: 12.5, color: "rgba(245,237,224,0.4)", margin: "0 0 10px" }}>
