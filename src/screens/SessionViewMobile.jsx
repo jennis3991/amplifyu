@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
 import { ReadAloudButton, extractReadableText } from '../components/ReadAloudButton.jsx';
-import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D1_CLARITY_FACTS_DATA, D11_FACTS, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS } from '../data.js';
+import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D11_FACTS, D11_INGREDIENTS, D2_INSIGHT_CARDS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
@@ -27,7 +27,7 @@ import { Timer } from '../components/Timer.jsx';
 import { PBar } from '../components/NavComponents.jsx';
 import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 import { Paywall } from '../components/Paywall.jsx';
-
+import D1Insight from '../modules/D1Insight.jsx';
 function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
   return (
     <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
@@ -1380,61 +1380,7 @@ T.goldDark : T2.text4,
       )}
        {/* ── D1 Mobile Steps ─────────────────────────────────────────────── */}
       {isD1 && step==="Insight" && (
-        <>
-          <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12,marginBottom:8}}>
-            <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>Why Clarity Wins</h2>
-            {(() => {
-              const src = "/day1-insight.mp3";
-              const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
-              return (
-                <button
-                  onClick={() => toggleNarration(src)}
-                  aria-label={playing ? "Pause narration" : "Play narration"}
-                  style={{
-                    width:44, height:44, minWidth:44, borderRadius:"50%", flexShrink:0, marginTop:2,
-                    padding:0, boxSizing:"border-box", WebkitAppearance:"none", MozAppearance:"none", appearance:"none",
-                    background: playing ? T.goldLight : "transparent",
-                    border:"1px solid "+(playing ? T.gold : T2.border),
-                    display:"flex", alignItems:"center", justifyContent:"center",
-                    cursor:"pointer", transition:"all 0.2s",
-                  }}>
-                  <svg width="17" height="17" viewBox="0 0 10 10" fill="none">
-                    <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={playing ? T.gold : T2.text4} strokeWidth="1"/>
-                    <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-                    <line x1="5" y1="9" x2="5" y2="9.5" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-                  </svg>
-                </button>
-              );
-            })()}
-          </div>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>Clear language makes ideas easier to understand, easier to remember, and easier to act on.</p>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14,letterSpacing:"0.02em"}}>Explore each card to learn more →</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-            {D1_CLARITY_FACTS_DATA.map((n,i)=>{
-              const open = d1MobCard===("cf"+i);
-              return (
-                <div key={i} onClick={()=>setD1MobCard(open?null:"cf"+i)} style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:5}}>
-                    <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
-                    <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
-                  </div>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
-                  {open && (
-                    <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:8}}>
-                      {n.bullets.map((b,j)=>(
-                        <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-                          <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/>
-                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:8}}>A clear message makes people lean in.</p>
-        </>
+        <D1Insight T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef}/>
       )}
       {isD1 && step==="Theory" && (()=>{
         const mSteps = [
