@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 import { D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_BULLETS, WORKPLACE_APPLICATION, LESSONS, SESSION_STEPS, NAV_LABELS,
   D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS,
-  D1_FEYNMAN_DATA,
   D11_FACTS, D11_INGREDIENTS, D2_INSIGHT_CARDS, D7_INSIGHT_CARDS,
   D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS,
 } from '../data.js';
@@ -18,6 +17,7 @@ import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../mo
 import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidget } from '../modules/Day4.jsx';
 import { D1WarmUpWidget, D1SimWidget } from '../modules/Day1.jsx';
 import D1Insight from '../modules/D1Insight.jsx';
+import D1Theory from '../modules/D1Theory.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget, D5SimWidget } from '../modules/Day5.jsx';
 import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
@@ -62,29 +62,6 @@ activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
       narrationAudioRef.current = next;
     }
     narrationAudioRef.current.play().then(() => setNarrationPlaying(true)).catch(() => setNarrationPlaying(false));
-  }
-  function NarrationMic({ src }) {
-    const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
-    return (
-      <button
-        onClick={() => toggleNarration(src)}
-        aria-label={playing ? "Pause narration" : "Play narration"}
-        style={{
-          position:"absolute", top:44, right:52, zIndex:2,
-          width:36, height:36, borderRadius:"50%", flexShrink:0,
-          padding:0, boxSizing:"border-box", WebkitAppearance:"none", MozAppearance:"none", appearance:"none",
-          background: playing ? T.goldLight : "transparent",
-          border:"1px solid "+(playing ? T.gold : T2.border),
-          display:"flex", alignItems:"center", justifyContent:"center",
-          cursor:"pointer", transition:"all 0.2s",
-        }}>
-        <svg width="15" height="15" viewBox="0 0 10 10" fill="none">
-          <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={playing ? T.gold : T2.text4} strokeWidth="1"/>
-          <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-          <line x1="5" y1="9" x2="5" y2="9.5" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-        </svg>
-      </button>
-    );
   }
   const getTtsText = () => [extractReadableText(leftPanelWrapRef.current), extractReadableText(rightPanelRef.current)].filter(Boolean).join('. ');
   useEffect(() => {
@@ -2062,7 +2039,6 @@ setAmbitionSaved(true); } catch {}
     };
 
     // ── D1 RightContent — Day 1: Speak Clearly ────────────────────────────────
-    const D1_FEYNMAN_STEPS = D1_FEYNMAN_DATA;
 
     const D1RightContent = () => {
       const [simInput, setSimInput] = useState("");
@@ -2075,40 +2051,11 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Theory") {
-        const steps = [
-          {n:"01",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><rect x="3" y="2" width="11" height="13" rx="1.5" stroke={T2.text4} strokeWidth="1.1"/><line x1="5.5" y1="5.5" x2="11.5" y2="5.5" stroke={T2.text4} strokeWidth="0.9"/><line x1="5.5" y1="8.5" x2="11.5" y2="8.5" stroke={T2.text4} strokeWidth="0.9"/><line x1="5.5" y1="11.5" x2="9.5" y2="11.5" stroke={T2.text4} strokeWidth="0.9"/></svg>,label:"Understand",desc:"Choose one concept and study it deeply.",focus:"Knowledge before communication."},
-          {n:"02",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M13.5 3h-10A1.5 1.5 0 002 4.5v5A1.5 1.5 0 003.5 11h2l2.5 3 2.5-3h3A1.5 1.5 0 0015 9.5v-5A1.5 1.5 0 0013.5 3z" stroke={T2.text4} strokeWidth="1.1"/></svg>,label:"Explain",desc:"Teach it in simple words - as if to someone else.",focus:"Mastery is demonstrated through clarity."},
-          {n:"03",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M12.5 3.5l1 1-7.5 7.5H4.5v-1.5l7.5-7.5z" stroke={T2.text4} strokeWidth="1.1" strokeLinejoin="round"/><line x1="4.5" y1="14" x2="12.5" y2="14" stroke={T2.text4} strokeWidth="0.9" strokeLinecap="round" strokeDasharray="1.5 1.5"/></svg>,label:"Simplify",desc:"Identify gaps and remove unnecessary complexity.",focus:"Simplicity is precision. Every word should earn its place."},
-          {n:"04",icon:<svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M14 8.5A5.5 5.5 0 013.5 6.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><path d="M3 8.5A5.5 5.5 0 0113.5 10.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><path d="M12 5l2 1.5-1.5 2" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 12l-2-1.5 1.5-2" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/></svg>,label:"Refine",desc:"Review, clarify, and improve. Repeat until it sticks.",focus:"Clarity is built through iteration, not perfection."},
-        ];
-        return (
-          <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",position:"relative"}}>
-            <NarrationMic src="/day1-theory.mp3" />
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:14}}>The Science</div>
-            <h2 style={{fontFamily:T.serif,fontSize:34,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>The Feynman Technique</h2>
-            <p style={{fontFamily:T.sans,fontSize:17,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:24}}>Richard Feynman won the Nobel Prize in Physics — and could explain quantum mechanics to a 12-year-old.</p>
-            <div style={{padding:"18px 22px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:28}}>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 5px",fontStyle:"italic"}}>"If you can't explain it simply, you don't understand it well enough."</p>
-              <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,margin:0}}>— Richard Feynman</p>
-            </div>
-            {steps.map((s,i)=>(
-              <div key={i} style={{display:"flex",gap:18,padding:"16px 18px",marginBottom:6,borderRadius:6,background:`rgba(44,36,22,${0.03+i*0.03})`}}>
-                <div style={{fontFamily:T.serif,fontSize:24,fontWeight:500,color:T.gold,opacity:0.85,lineHeight:1,minWidth:28,paddingTop:3}}>{s.n}</div>
-                <div style={{flex:1}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:"#8A9E84"}}>{s.label}</div></div>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:400,margin:"0 0 5px"}}>{s.desc}</p>
-                  <p style={{fontFamily:T.sans,fontSize:16,color:T2.text3,lineHeight:1.55,fontWeight:300,fontStyle:"italic",margin:0}}>{s.focus}</p>
-                </div>
-              </div>
-            ))}
-            <div style={{marginTop:28,marginBottom:22}}>
-              <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Real Lesson</div>
-              <div style={{fontFamily:T.serif,fontSize:20,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.4}}>Teaching forces you to understand. Simplifying forces you to think.</div>
-            </div>
-          </div>
-        );
-      }
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",position:"relative"}}>
+          <D1Theory T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
+        </div>
+      );
 
       if (step === "Example") {
         const D1_EDITORIAL = [

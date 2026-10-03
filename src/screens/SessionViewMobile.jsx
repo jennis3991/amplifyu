@@ -28,6 +28,7 @@ import { PBar } from '../components/NavComponents.jsx';
 import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 import { Paywall } from '../components/Paywall.jsx';
 import D1Insight from '../modules/D1Insight.jsx';
+import D1Theory from '../modules/D1Theory.jsx';
 function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
   return (
     <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
@@ -1382,63 +1383,9 @@ T.goldDark : T2.text4,
       {isD1 && step==="Insight" && (
         <D1Insight T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef}/>
       )}
-      {isD1 && step==="Theory" && (()=>{
-        const mSteps = [
-          {n:"01",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><rect x="3" y="2" width="11" height="13" rx="1.5" stroke={T2.text4} strokeWidth="1.1"/><line x1="5.5" y1="5.5" x2="11.5" y2="5.5" stroke={T2.text4} strokeWidth="0.9"/><line x1="5.5" y1="8.5" x2="11.5" y2="8.5" stroke={T2.text4} strokeWidth="0.9"/><line x1="5.5" y1="11.5" x2="9.5" y2="11.5" stroke={T2.text4} strokeWidth="0.9"/></svg>,label:"Understand",desc:"Choose one concept and study it deeply.",focus:"Knowledge before communication."},
-          {n:"02",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><path d="M13.5 3h-10A1.5 1.5 0 002 4.5v5A1.5 1.5 0 003.5 11h2l2.5 3 2.5-3h3A1.5 1.5 0 0015 9.5v-5A1.5 1.5 0 0013.5 3z" stroke={T2.text4} strokeWidth="1.1"/></svg>,label:"Explain",desc:"Teach it in simple words - as if to someone else.",focus:"Mastery is demonstrated through clarity."},
-          {n:"03",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><path d="M12.5 3.5l1 1-7.5 7.5H4.5v-1.5l7.5-7.5z" stroke={T2.text4} strokeWidth="1.1" strokeLinejoin="round"/><line x1="4.5" y1="14" x2="12.5" y2="14" stroke={T2.text4} strokeWidth="0.9" strokeLinecap="round" strokeDasharray="1.5 1.5"/></svg>,label:"Simplify",desc:"Identify gaps and remove unnecessary complexity.",focus:"Simplicity is precision. Every word should earn its place."},
-          {n:"04",icon:<svg width="16" height="16" viewBox="0 0 17 17" fill="none"><path d="M14 8.5A5.5 5.5 0 013.5 6.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><path d="M3 8.5A5.5 5.5 0 0113.5 10.5" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round"/><path d="M12 5l2 1.5-1.5 2" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 12l-2-1.5 1.5-2" stroke={T2.text4} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/></svg>,label:"Refine",desc:"Review, clarify, and improve. Repeat until it sticks.",focus:"Clarity is built through iteration, not perfection."},
-        ];
-        return (
-          <>
-            <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
-            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12,marginBottom:10}}>
-              <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>The Feynman Technique</h2>
-              {(() => {
-                const src = "/day1-theory.mp3";
-                const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
-                return (
-                  <button
-                    onClick={() => toggleNarration(src)}
-                    aria-label={playing ? "Pause narration" : "Play narration"}
-                    style={{
-                      width:34, height:34, borderRadius:"50%", flexShrink:0, marginTop:2,
-                      background: playing ? T.goldLight : "transparent",
-                      border:"1px solid "+(playing ? T.gold : T2.border),
-                      display:"flex", alignItems:"center", justifyContent:"center",
-                      cursor:"pointer", transition:"all 0.2s",
-                    }}>
-                    <svg width="14" height="14" viewBox="0 0 10 10" fill="none">
-                      <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={playing ? T.gold : T2.text4} strokeWidth="1"/>
-                      <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-                      <line x1="5" y1="9" x2="5" y2="9.5" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-                    </svg>
-                  </button>
-                );
-              })()}
-            </div>
-            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Richard Feynman won the Nobel Prize in Physics — and could explain quantum mechanics to a 12-year-old.</p>
-            <div style={{padding:"16px 18px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:22}}>
-              <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 5px",fontStyle:"italic"}}>"If you can't explain it simply, you don't understand it well enough."</p>
-              <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,margin:0}}>— Richard Feynman</p>
-            </div>
-            {mSteps.map((s,i)=>(
-              <div key={i} style={{display:"flex",gap:14,padding:"14px 16px",marginBottom:6,borderRadius:6,background:`rgba(44,36,22,${0.03+i*0.03})`}}>
-                <div style={{fontFamily:T.serif,fontSize:20,fontWeight:500,color:T.gold,opacity:0.85,lineHeight:1,minWidth:24,paddingTop:2}}>{s.n}</div>
-                <div style={{flex:1}}>
-                  <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:6}}>{s.icon}<div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:"#8A9E84"}}>{s.label}</div></div>
-                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:"0 0 4px"}}>{s.desc}</p>
-                  <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,lineHeight:1.5,fontWeight:300,fontStyle:"italic",margin:0}}>{s.focus}</p>
-                </div>
-              </div>
-            ))}
-            <div style={{marginTop:24,marginBottom:18}}>
-              <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Real Lesson</div>
-              <div style={{fontFamily:T.serif,fontSize:19,fontWeight:400,fontStyle:"italic",color:T2.text,lineHeight:1.4}}>Teaching forces you to understand.<br/>Simplifying forces you to think.</div>
-            </div>
-          </>
-        );
-      })()}
+      {isD1 && step==="Theory" && (
+        <D1Theory T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
+      )}
       {isD1 && step==="Example" && (()=>{
         const D1_EDITORIAL = [
           { id:"attenborough", img:"/d11-attenborough.jpg", name:"Sir David Attenborough", role:"Broadcaster & natural historian", superpower:"Master of Clarity",
