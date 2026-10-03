@@ -1000,6 +1000,19 @@ export const D13_EXAMPLES = [
 
  // ── D2 shared constants (used by both desktop + mobile) ───────────────────
 
+// Day 2 Theory — The 88 Keys
+export const D2_SCIENCE_CARDS = [
+  { word:"Prosody",            sub:"Your voice carries meaning before words do",  bullets:["Humans decode emotion through rhythm, pitch, pace and stress, faster than language itself.","The way you say something communicates intent, confidence and feeling before the content registers."] },
+  { word:"Processing Fluency", sub:"Easy to hear = easy to trust",                bullets:["Clear, varied, well-paced speech signals intelligence. The brain equates 'easy to process' with credibility.","Flat or rushed delivery creates cognitive friction, and the listener associates that friction with the speaker."] },
+  { word:"Vocal Contrast",     sub:"Variation is what keeps people in the room", bullets:["The same reason music works: contrast creates anticipation and emotional engagement.","No variation is cognitive wallpaper. It fades into the background within seconds, no matter how important the message."] },
+];
+export const D2_LEVERS = [
+  { word:"Pace",  body:"Speed up to create energy. Slow down to signal importance." },
+  { word:"Pitch", body:"Rise to engage. Drop to command." },
+  { word:"Pause", body:"The silence that makes the next word hit harder." },
+  { word:"Power", body:"Volume as intention, not volume as effort." },
+];
+
 export const D2_INSIGHT_CARDS = [
   {word:"Attention",       sub:"A flat voice loses the room in seconds",       bullets:["The brain is wired to respond to variation. Monotone delivery is processed as low-priority. People tune out almost instantly.","Varying pace, pitch, and tone keeps the brain alert and signals that what you're saying is worth their attention."]},
   {word:"First Impression",sub:"Your voice speaks before your words do",        bullets:["Listeners form an impression of your confidence, energy, and credibility within moments of hearing you, before your message even begins.","Delivery shapes the room. A controlled, warm voice signals authority. A rushed or flat voice signals uncertainty."]},

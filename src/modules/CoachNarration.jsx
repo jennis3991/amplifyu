@@ -170,11 +170,11 @@ export function useCueCards(cueIdx, cue) {
   return { openCard, tap, refs: useRef([]) };
 }
 
-export function CoachCardGrid({ T, T2, isDesktop: d, cards, cueCards, style }) {
+export function CoachCardGrid({ T, T2, isDesktop: d, cards, cueCards, columns = 2, style }) {
   const lift = warmLift(T, T2);
   const { openCard, tap, refs } = cueCards;
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "start", gap: d ? 12 : 10, marginBottom: d ? 32 : 24, ...style }}>
+    <div style={{ display: "grid", gridTemplateColumns: `repeat(${columns}, 1fr)`, alignItems: "start", gap: d ? 12 : 10, marginBottom: d ? 32 : 24, ...style }}>
       {cards.map((n, i) => {
         const open = openCard === i;
         return (
@@ -235,3 +235,44 @@ export const UpNextCard = forwardRef(function UpNextCard({ T, T2, isDesktop: d, 
     </button>
   );
 });
+
+// Short example clips played alongside the coach (A/B comparisons, demos).
+// One Audio per clip, kept at module level so a desktop remount neither
+// orphans a playing clip nor forgets which clips have been heard. Playing a
+// clip pauses the coach; the coach's onBeforePlay/onLeave should call stop().
+const clipAudio = {};
+const clipHeard = new Set();
+let clipPlayingSrc = null;
+const clipListeners = new Set();
+function notifyClips() { clipListeners.forEach(fn => fn()); }
+export function stopClips() {
+  Object.values(clipAudio).forEach(a => a.pause());
+  clipPlayingSrc = null;
+  notifyClips();
+}
+
+export function useClipPlayer(narration) {
+  const [, force] = useState(0);
+  useEffect(() => {
+    const fn = () => force(n => n + 1);
+    clipListeners.add(fn);
+    return () => clipListeners.delete(fn);
+  }, []);
+  function toggle(src) {
+    const was = clipPlayingSrc === src;
+    stopClips();
+    if (was) return;
+    narration?.pause();
+    let a = clipAudio[src];
+    if (!a) {
+      a = clipAudio[src] = new Audio(src);
+      a.addEventListener("ended", () => { if (clipPlayingSrc === src) clipPlayingSrc = null; notifyClips(); });
+    }
+    a.currentTime = 0;
+    clipPlayingSrc = src;
+    clipHeard.add(src);
+    notifyClips();
+    a.play().catch(() => { clipPlayingSrc = null; notifyClips(); });
+  }
+  return { playing: clipPlayingSrc, heard: src => clipHeard.has(src), toggle, stop: stopClips };
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { D1_CLARITY_FACTS_DATA } from "../data.js";
-import { useCoachNarration, useCueCards, CoachButton, CoachCardGrid, CoachStyles, PlayIcon, warmLift, fmt } from "./CoachNarration.jsx";
+import { useCoachNarration, useCueCards, useClipPlayer, stopClips, CoachButton, CoachCardGrid, CoachStyles, PlayIcon, warmLift, fmt } from "./CoachNarration.jsx";
 
 // ─── DAY 1 INSIGHT — guided, voice-synced clarity cards ──────────────────────
 // Shared by SessionView (desktop/tablet) and SessionViewMobile. The coach
@@ -30,25 +30,17 @@ const TEST_OPTIONS = [
 // Desktop can remount this mid-narration (see CoachNarration.jsx), so the
 // quick-test answer lives at module level where a remount can't wipe it.
 let testAnswer = null;
-// Example clips, one Audio per option, kept at module level for the same
-// remount reason.
-const optAudio = {};
-let optPlayingId = null;
-function stopOptions() {
-  Object.values(optAudio).forEach(a => a.pause());
-  optPlayingId = null;
-}
 
 export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
   const narration = useCoachNarration({
     src: SRC, cues: CUES, sharedAudioRef,
-    onBeforePlay: () => { stopOptions(); setOptPlaying(null); },
-    onLeave: stopOptions,
+    onBeforePlay: stopClips,
+    onLeave: stopClips,
   });
   const { playing, cueIdx, cue } = narration;
   const cueCards = useCueCards(cueIdx, cue);
   const [answer, setAnswer] = useState(testAnswer);
-  const [optPlaying, setOptPlaying] = useState(optPlayingId);
+  const clips = useClipPlayer(narration);
   // Options show two lines until expanded; answering expands both.
   const [expanded, setExpanded] = useState({});
   const testRef = useRef(null);
@@ -61,22 +53,6 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
     const el = cue.test ? testRef.current : cueCards.refs.current[cue.card];
     el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [cueIdx, playing]);
-
-  function playOption(o) {
-    const wasPlaying = optPlayingId === o.id;
-    stopOptions();
-    if (wasPlaying) { setOptPlaying(null); return; }
-    narration.pause();
-    let a = optAudio[o.id];
-    if (!a) {
-      a = optAudio[o.id] = new Audio(o.src);
-      a.addEventListener("ended", () => { if (optPlayingId === o.id) optPlayingId = null; setOptPlaying(p => (p === o.id ? null : p)); });
-    }
-    a.currentTime = 0;
-    optPlayingId = o.id;
-    setOptPlaying(o.id);
-    a.play().catch(() => { optPlayingId = null; setOptPlaying(null); });
-  }
 
   function choose(id) {
     if (answer) return;
@@ -112,7 +88,7 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
           {TEST_OPTIONS.map(o => {
             const picked = answer === o.id;
             const clear = answer && o.clear;
-            const isPlaying = optPlaying === o.id;
+            const isPlaying = clips.playing === o.src;
             const full = answer || expanded[o.id];
             return (
               <div key={o.id}
@@ -124,7 +100,7 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
                   boxShadow: clear ? lift.shadow : "none",
                   opacity: answer && !clear && !picked ? 0.6 : 1, transition: "all 0.25s",
                 }}>
-                <button onClick={() => playOption(o)} aria-label={(isPlaying ? "Pause option " : "Play option ") + o.id}
+                <button onClick={() => clips.toggle(o.src)} aria-label={(isPlaying ? "Pause option " : "Play option ") + o.id}
                   style={{
                     width: 44, height: 44, minWidth: 44, margin: "-4px -4px -4px -4px", flexShrink: 0, padding: 0,
                     WebkitAppearance: "none", appearance: "none", cursor: "pointer",

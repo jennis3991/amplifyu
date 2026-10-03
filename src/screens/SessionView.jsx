@@ -19,6 +19,7 @@ import { D1WarmUpWidget, D1SimWidget } from '../modules/Day1.jsx';
 import D1Insight from '../modules/D1Insight.jsx';
 import D1Theory from '../modules/D1Theory.jsx';
 import D2Insight from '../modules/D2Insight.jsx';
+import D2Theory from '../modules/D2Theory.jsx';
 import { PlayIcon } from '../modules/CoachNarration.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget, D5SimWidget } from '../modules/Day5.jsx';
@@ -2632,7 +2633,6 @@ setAmbitionSaved(true); } catch {}
     };
     // ── end D9RightContent ──
     const D2RightContent = () => {
-      const [d2TheoryOpen, setD2TheoryOpen] = useState(null);
       const [d2ExObserved, setD2ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d2ExObserved')||'{}'); } catch { return {}; } });
       const [d2ExOpenCard, setD2ExOpenCard] = useState(null);
 
@@ -2643,58 +2643,8 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The 88 Keys</h2>
-          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
-            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0, fontStyle:"italic" }}>"Your voice is a piano with 88 keys. You've been playing the same 5 your whole life."</p>
-          </div>
-          <div style={{ fontSize:11, fontWeight:600, color:T.goldDark, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14, fontFamily:T.sans }}>The Science of Vocal Influence</div>
-          <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:32 }}>
-            {[
-              {label:"Prosody",            sub:"Your voice carries meaning before words do",    bullets:["Humans decode emotion through rhythm, pitch, pace, and stress — faster than language itself.","The way you say something communicates intent, confidence, and feeling before the content registers."]},
-              {label:"Processing Fluency", sub:"Easy to hear = easy to trust",                  bullets:["Clear, varied, well-paced speech signals intelligence. The brain equates 'easy to process' with credibility.","Flat or rushed delivery creates cognitive friction — and the listener associates that friction with the speaker, not the content."]},
-              {label:"Vocal Contrast",     sub:"Variation is what keeps people in the room",   bullets:["The same reason music works: contrast creates anticipation and emotional engagement.","No variation in voice is cognitive wallpaper — it fades into the background within seconds, no matter how important the message."]},
-            ].map((sc,i)=>{
-              const open = d2TheoryOpen===i;
-              return (
-                <div key={i} onClick={()=>setD2TheoryOpen(open?null:i)} className="au-lift"
-                  style={{ padding:"18px 20px", background:T2.surface, borderRadius:4, border:`0.5px solid ${open?T.gold:T2.border}`, cursor:"pointer", transition:"border-color 0.2s, box-shadow 0.2s, transform 0.2s" }}
-                  onMouseEnter={e=>{ if(!open){e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.boxShadow="0 4px 20px rgba(138,158,132,0.22), 0 1px 6px rgba(138,158,132,0.12)";} }}
-                  onMouseLeave={e=>{ if(!open){e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.boxShadow="none";} }}>
-                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:open?8:6 }}>
-                    <div style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T.gold, lineHeight:1.3 }}>{sc.label}</div>
-                    <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.7)", marginLeft:8, flexShrink:0, marginTop:2, transition:"color 0.2s" }}>{open?"▴":"▸"}</span>
-                  </div>
-                  <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.5, fontWeight:400, margin:open?"0 0 12px":0 }}>{sc.sub}</p>
-                  {open && (
-                    <div style={{ borderTop:"0.5px solid "+T2.divider, paddingTop:12, display:"flex", flexDirection:"column", gap:8 }}>
-                      {sc.bullets.map((b,j)=>(
-                        <div key={j} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
-                          <div style={{ width:4, height:4, borderRadius:"50%", background:T.gold, flexShrink:0, marginTop:6 }}/>
-                          <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{b}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ fontSize:11, fontWeight:600, color:T.goldDark, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:14, fontFamily:T.sans }}>The Four Levers</div>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:32 }}>
-            {[
-              {word:"Pace",  body:"Speed up to create energy. Slow down to signal importance."},
-              {word:"Pitch", body:"Rise to engage. Drop to command."},
-              {word:"Pause", body:"The silence that makes the next word hit harder."},
-              {word:"Power", body:"Volume as intention, not volume as effort."},
-            ].map((n,i)=>(
-              <div key={i} style={{ padding:"18px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
-                <div style={{ fontFamily:T.serif, fontSize:20, fontWeight:600, color:T.gold, marginBottom:8 }}>{n.word}</div>
-                <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{n.body}</p>
-              </div>
-            ))}
-          </div>
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto", position:"relative" }}>
+          <D2Theory T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef}/>
         </div>
       );
 
