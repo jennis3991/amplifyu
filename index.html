@@ -239,6 +239,25 @@
     </style>
   </head>
   <body>
+    <!-- Launch mark for returning users: painted on the very first frame so
+         the native launch screen (same dark field, same 120pt mark, centred)
+         hands straight over with no parchment flash. LaunchMark.jsx takes it
+         over once React mounts, animates it and fades into the app. -->
+    <div id="au-boot-mark" style="display:none;position:fixed;inset:0;z-index:10000;background:#161513;align-items:center;justify-content:center">
+      <img src="/launch-mark.png" width="120" height="120" alt="" />
+    </div>
+    <script>
+      (function () {
+        try {
+          var native = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+          var authed = native || localStorage.getItem("au1_authed") === "true";
+          if (localStorage.getItem("au1_ob") === "true" && authed && location.pathname !== "/speech-test") {
+            document.getElementById("au-boot-mark").style.display = "flex";
+            document.documentElement.style.background = "#161513";
+          }
+        } catch (e) {}
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

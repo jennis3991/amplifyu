@@ -310,7 +310,7 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
         opacity: welcomeMarkExiting ? 0 : 1,
         transition: "opacity 0.55s ease",
       }}>
-        <img src="/app-icon-mark.png" alt="" style={{
+        <img src="/launch-mark.png" alt="" style={{
           width: 120, height: 120, objectFit: "cover", borderRadius: 26,
           opacity: welcomeMarkIn ? 1 : 0,
           transform: welcomeMarkIn
