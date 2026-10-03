@@ -22,14 +22,12 @@ const CUES = [
 ];
 
 // Both options are read by the same second voice (not the coach), so the
-// only difference is structure. The clear take is trimmed before the
-// recording's "And above all… you've got this" — warmth lives in the
-// response instead, so it doesn't sway the choice.
+// only difference is structure.
 const TEST_OPTIONS = [
   { id: "A", tag: "Muddled", src: "/day1-test-muddled.mp3", secs: 14,
-    text: "Don't worry about trying to remember every single word. It's probably better to focus on the main points you want to get across and then just speak naturally around those, rather than trying to memorise everything." },
-  { id: "B", tag: "Clear", src: "/day1-test-clear.mp3", secs: 12, clear: true,
-    text: "Don't memorise the presentation. Remember three things: the message, the evidence, and the ask. Know those three, and you'll always know where you're going." },
+    text: "Rather than attempting to commit the entirety of your presentation to memory, it's probably more effective to familiarise yourself with the overarching narrative and the key messages you're trying to convey, so that you can speak more naturally around the content without becoming overly dependent on a scripted delivery." },
+  { id: "B", tag: "Clear", src: "/day1-test-clear.mp3", secs: 14, clear: true,
+    text: "Don't memorise every word. Own the story.\n\nRemember three things:\nThe message.\nThe evidence.\nThe ask.\n\nKnow those three, and you'll always know where you're going.\n\nTake a breath. Trust yourself." },
 ];
 
 // Desktop renders this inside a component that's re-created on every parent
@@ -72,6 +70,8 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
   const [manual, setManual] = useState({ card: null, cue: -2 });
   const [answer, setAnswer] = useState(testAnswer);
   const [optPlaying, setOptPlaying] = useState(optPlayingId);
+  // Options show two lines until expanded; answering expands both.
+  const [expanded, setExpanded] = useState({});
   const cardRefs = useRef([]);
   const testRef = useRef(null);
 
@@ -258,23 +258,23 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
       {/* Quick test — the "show you the difference" moment */}
       <div ref={testRef} className={"au-d1-test" + (testLit && !answer ? " au-d1-pulse" : "")}
         style={{
-          background: T2.surface, borderRadius: d ? 4 : 8, padding: d ? "24px 26px" : "16px",
+          background: T2.surface, borderRadius: d ? 4 : 8, padding: d ? "22px 24px" : "16px 14px",
           border: "1px solid " + (testLit ? lift.border : T2.border), transition: "border-color 0.35s",
           animation: testLit && !answer ? "au-d1-pulse 1.6s ease-in-out infinite" : "none",
         }}>
         <div style={{ fontFamily: T.sans, fontSize: d ? 12 : 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 6 }}>Quick test</div>
-        <p style={{ fontFamily: T.serif, fontSize: d ? 24 : 20, fontWeight: 600, color: T2.text, lineHeight: 1.25, margin: 0, marginBottom: 6 }}>Your colleague is nervous before a big presentation. Which advice would help them more?</p>
-        <p style={{ fontFamily: T.sans, fontSize: d ? 14 : 13, color: T2.text3, lineHeight: 1.5, margin: 0, marginBottom: d ? 16 : 12 }}>Tap ▶ to hear each one, then choose.</p>
+        <p style={{ fontFamily: T.serif, fontSize: d ? 22 : 19, fontWeight: 600, color: T2.text, lineHeight: 1.25, margin: 0, marginBottom: d ? 14 : 12 }}>A nervous colleague asks for advice. Which helps more?</p>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {TEST_OPTIONS.map(o => {
             const picked = answer === o.id;
             const clear = answer && o.clear;
             const isPlaying = optPlaying === o.id;
+            const full = answer || expanded[o.id];
             return (
               <div key={o.id}
                 style={{
                   display: "flex", gap: 12, alignItems: "flex-start", borderRadius: d ? 4 : 8,
-                  padding: d ? "14px 16px" : "12px 14px",
+                  padding: d ? "12px 14px" : "10px 12px",
                   background: clear ? lift.bg : "transparent",
                   border: "1px solid " + (clear ? lift.border : picked ? T2.text3 : isPlaying ? lift.border : T2.border),
                   boxShadow: clear ? lift.shadow : "none",
@@ -282,29 +282,43 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
                 }}>
                 <button onClick={() => playOption(o)} aria-label={(isPlaying ? "Pause option " : "Play option ") + o.id}
                   style={{
-                    width: 34, height: 34, minWidth: 34, borderRadius: "50%", flexShrink: 0, padding: 0,
+                    width: 44, height: 44, minWidth: 44, margin: "-4px -4px -4px -4px", flexShrink: 0, padding: 0,
                     WebkitAppearance: "none", appearance: "none", cursor: "pointer",
-                    background: isPlaying ? T.gold : "transparent", border: "1px solid " + T.gold,
-                    display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s",
+                    background: "transparent", border: "none",
+                    display: "flex", alignItems: "center", justifyContent: "center",
                   }}>
+                  {/* 36px circle inside a 44px tap target (global button min-height) */}
+                  <span style={{ width: 36, height: 36, borderRadius: "50%", background: T.gold, display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {isPlaying ? (
-                    <svg width="10" height="10" viewBox="0 0 12 12"><rect x="2" y="1.5" width="2.8" height="9" rx="0.8" fill="#fff"/><rect x="7.2" y="1.5" width="2.8" height="9" rx="0.8" fill="#fff"/></svg>
+                    <svg width="12" height="12" viewBox="0 0 12 12"><rect x="2" y="1.5" width="2.8" height="9" rx="0.8" fill="#fff"/><rect x="7.2" y="1.5" width="2.8" height="9" rx="0.8" fill="#fff"/></svg>
                   ) : (
-                    <svg width="10" height="10" viewBox="0 0 12 12"><path d="M3 1.6v8.8a.6.6 0 00.9.5l7-4.4a.6.6 0 000-1L3.9 1.1a.6.6 0 00-.9.5z" fill={T.gold}/></svg>
+                    <svg width="12" height="12" viewBox="0 0 12 12"><path d="M3 1.6v8.8a.6.6 0 00.9.5l7-4.4a.6.6 0 000-1L3.9 1.1a.6.6 0 00-.9.5z" fill="#fff"/></svg>
                   )}
+                  </span>
                 </button>
+                <div style={{ flex: 1, minWidth: 0 }}>
                 <button onClick={() => choose(o.id)} disabled={!!answer}
                   style={{
                     flex: 1, display: "block", textAlign: "left", padding: 0, background: "transparent", border: "none",
                     WebkitAppearance: "none", appearance: "none", cursor: answer ? "default" : "pointer",
                   }}>
-                  <span style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
+                  <span style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 2, paddingTop: 2 }}>
                     <span style={{ fontFamily: T.sans, fontSize: 13, fontWeight: 600, color: clear ? T2.goldDark : T2.text3 }}>{o.id}</span>
                     {answer && <span style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.2px", color: o.clear ? T2.goldDark : T2.text3 }}>{o.tag}</span>}
                     <span style={{ fontFamily: T.sans, fontSize: 12, color: T2.text4, marginLeft: "auto", fontVariantNumeric: "tabular-nums" }}>{fmt(o.secs)}</span>
                   </span>
-                  <span style={{ display: "block", fontFamily: T.sans, fontSize: d ? 16 : 15, color: T2.text, lineHeight: 1.5 }}>"{o.text}"</span>
+                  <span style={{
+                    fontFamily: T.sans, fontSize: d ? 15 : 14, color: T2.text, lineHeight: 1.5, whiteSpace: full ? "pre-line" : "normal",
+                    ...(full ? { display: "block" } : { display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }),
+                  }}>"{full ? o.text : o.text.replace(/\s*\n+\s*/g, " ")}"</span>
                 </button>
+                {!answer && (
+                  <button onClick={() => setExpanded(e => ({ ...e, [o.id]: !e[o.id] }))}
+                    style={{ padding: "4px 0 0", background: "transparent", border: "none", WebkitAppearance: "none", appearance: "none", cursor: "pointer", fontFamily: T.sans, fontSize: 12, fontWeight: 500, color: T2.goldDark }}>
+                    {full ? "Show less" : "Read more"}
+                  </button>
+                )}
+                </div>
               </div>
             );
           })}
@@ -314,8 +328,8 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
             <p style={{ fontFamily: T.serif, fontSize: d ? 22 : 19, fontWeight: 600, color: T2.goldDark, margin: 0, marginBottom: 4 }}>{answer === "B" ? "Exactly." : "Interesting."}</p>
             <p style={{ fontFamily: T.sans, fontSize: d ? 16 : 14, color: T2.text, lineHeight: 1.6, margin: 0 }}>
               {answer === "B"
-                ? "Three things to hold onto: the message, the evidence, and the ask. When you're nervous, a simple structure is what you remember. And above all, they've got this."
-                : "The first is kind, but there's nothing to hold onto. The second gives them three anchors to remember on stage. That's clarity in action."}
+                ? "Three things to hold onto: the message, the evidence, and the ask. When you're nervous, a simple structure is what you remember."
+                : "The first is sensible, but it's long and abstract, with nothing to hold onto. The second gives them three anchors to remember on stage. That's clarity in action."}
             </p>
           </div>
         )}
