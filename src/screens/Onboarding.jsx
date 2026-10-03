@@ -20,7 +20,7 @@ export function Onboarding({onDone}) {
   }
 
   useEffect(() => {
-    ["/ob-q1.webp","/ob-q2.jpg","/ob-q3.jpg","/ob-q4.jpg","/ob-role-2.png"].forEach(src => {
+    ["/ob-q1.webp","/ob-q2.jpg","/ob-q3.jpg","/ob-q4.jpg","/ob-role-2.jpg"].forEach(src => {
       const img = new Image();
       img.src = src;
     });
@@ -440,7 +440,7 @@ export function Onboarding({onDone}) {
     return (
       <div style={{minHeight:"100vh",background:"#F7F3EC",fontFamily:T.sans,display:"flex",flexDirection:"column",opacity:roleVisible?1:0,transition:"opacity 0.32s ease"}}>
         <div style={{position:"relative",height:345,flexShrink:0,overflow:"hidden"}}>
-          <img loading="lazy" src="/ob-role-2.png" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>
+          <img loading="lazy" src="/ob-role-2.jpg" alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(10,8,5,0.85) 0%, transparent 45%)"}}/>
           <div style={{position:"absolute",bottom:20,left:24,right:24}}>
             <div style={{fontSize:9,color:T.gold,textTransform:"uppercase",letterSpacing:"3.5px",fontFamily:T.sans,marginBottom:10}}>Almost there.</div>
