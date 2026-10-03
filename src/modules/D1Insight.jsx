@@ -21,9 +21,15 @@ const CUES = [
   { t: 48.5, card: null, test: true }, // Hand-off — "Now let me show you the difference."
 ];
 
+// Both options are read by the same second voice (not the coach), so the
+// only difference is structure. The clear take is trimmed before the
+// recording's "And above all… you've got this" — warmth lives in the
+// response instead, so it doesn't sway the choice.
 const TEST_OPTIONS = [
-  { id: "A", text: "We need to leverage our existing capabilities to optimise our strategic positioning." },
-  { id: "B", text: "We need to use what we already have to improve our position." },
+  { id: "A", tag: "Muddled", src: "/day1-test-muddled.mp3", secs: 14,
+    text: "Don't worry about trying to remember every single word. It's probably better to focus on the main points you want to get across and then just speak naturally around those, rather than trying to memorise everything." },
+  { id: "B", tag: "Clear", src: "/day1-test-clear.mp3", secs: 12, clear: true,
+    text: "Don't memorise the presentation. Remember three things: the message, the evidence, and the ask. Know those three, and you'll always know where you're going." },
 ];
 
 // Desktop renders this inside a component that's re-created on every parent
@@ -32,6 +38,14 @@ const TEST_OPTIONS = [
 // back from the audio element itself.
 let testAnswer = null;
 let mounted = 0;
+// Example clips, one Audio per option, kept at module level for the same
+// remount reason.
+const optAudio = {};
+let optPlayingId = null;
+function stopOptions() {
+  Object.values(optAudio).forEach(a => a.pause());
+  optPlayingId = null;
+}
 
 function cueIndexAt(time) {
   let idx = -1;
@@ -57,6 +71,7 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
   // A tap wins until the narration reaches its next cue.
   const [manual, setManual] = useState({ card: null, cue: -2 });
   const [answer, setAnswer] = useState(testAnswer);
+  const [optPlaying, setOptPlaying] = useState(optPlayingId);
   const cardRefs = useRef([]);
   const testRef = useRef(null);
 
@@ -87,13 +102,14 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
       detachRef.current = null;
       // Leaving the Insight step stops the narration. Deferred so a desktop
       // remount (unmount + immediate mount) doesn't cut the voice off.
-      setTimeout(() => { if (mounted === 0) ours()?.pause(); }, 0);
+      setTimeout(() => { if (mounted === 0) { ours()?.pause(); stopOptions(); } }, 0);
     };
   }, []);
 
   function togglePlay() {
     let a = ours();
     if (a && !a.paused) { a.pause(); return; }
+    stopOptions(); setOptPlaying(null);
     if (!a) {
       audioRef.current?.pause();
       a = new Audio(SRC);
@@ -122,6 +138,22 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
     setManual({ card: openCard === i ? null : i, cue: cueIdx });
   }
 
+  function playOption(o) {
+    const wasPlaying = optPlayingId === o.id;
+    stopOptions();
+    if (wasPlaying) { setOptPlaying(null); return; }
+    ours()?.pause();
+    let a = optAudio[o.id];
+    if (!a) {
+      a = optAudio[o.id] = new Audio(o.src);
+      a.addEventListener("ended", () => { if (optPlayingId === o.id) optPlayingId = null; setOptPlaying(p => (p === o.id ? null : p)); });
+    }
+    a.currentTime = 0;
+    optPlayingId = o.id;
+    setOptPlaying(o.id);
+    a.play().catch(() => { optPlayingId = null; setOptPlaying(null); });
+  }
+
   function choose(id) {
     if (answer) return;
     testAnswer = id;
@@ -129,6 +161,13 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
   }
 
   const d = isDesktop;
+  // "Warm lift" for the active card/button: lighter parchment (or walnut in
+  // dark mode), a fine deep-sage hairline and a soft warm shadow — raised,
+  // not tinted. Sage stays in the titles and icons.
+  const dark = T2.bg !== T.bg;
+  const lift = dark
+    ? { bg: "#2A251E", border: "rgba(138,158,132,0.38)", shadow: "0 8px 28px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.3)" }
+    : { bg: T.bg, border: "rgba(82,112,96,0.4)", shadow: "0 6px 24px rgba(44,36,22,0.08), 0 1px 4px rgba(44,36,22,0.05)" };
   const remaining = playing || (started && time < DURATION - 0.5) ? DURATION - time : DURATION;
   const btnLabel = playing ? "Pause the coach" : started && time > 0 && time < DURATION - 0.5 ? "Resume the coach" : "Hear the coach";
 
@@ -136,7 +175,7 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
     <>
       <style>{`
         @keyframes au-d1-wave { 0%,100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
-        @keyframes au-d1-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(138,158,132,0.45); } 50% { box-shadow: 0 0 0 8px rgba(138,158,132,0); } }
+        @keyframes au-d1-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(82,112,96,0.22); } 50% { box-shadow: 0 0 0 6px rgba(82,112,96,0); } }
         .au-d1-card { transition: border-color 0.35s, box-shadow 0.35s, background 0.35s; scroll-margin: 96px 0 140px; }
         .au-d1-test { scroll-margin: 96px 0 140px; }
         @media (prefers-reduced-motion: reduce) { .au-d1-bar, .au-d1-pulse { animation: none !important; } }
@@ -154,9 +193,10 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
           display: "flex", alignItems: "center", gap: 12, width: d ? "auto" : "100%",
           padding: d ? "12px 22px 12px 14px" : "12px 18px 12px 12px", marginBottom: d ? 32 : 22,
           WebkitAppearance: "none", appearance: "none", cursor: "pointer",
-          background: playing ? T2.goldLight : T2.surface,
-          border: "1px solid " + (playing ? T.gold : T2.border), borderRadius: 999,
-          transition: "background 0.2s, border-color 0.2s",
+          background: playing ? lift.bg : T2.surface,
+          border: "1px solid " + (playing ? lift.border : T2.border), borderRadius: 999,
+          boxShadow: playing ? lift.shadow : "none",
+          transition: "background 0.2s, border-color 0.2s, box-shadow 0.2s",
         }}>
         <span style={{ width: 36, height: 36, borderRadius: "50%", background: T.gold, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
           {playing ? (
@@ -182,13 +222,12 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "start", gap: d ? 12 : 10, marginBottom: d ? 32 : 24 }}>
         {D1_CLARITY_FACTS_DATA.map((n, i) => {
           const open = openCard === i;
-          const lit = open && playing && narratedCard === i;
           return (
             <div key={i} ref={el => (cardRefs.current[i] = el)} onClick={() => tapCard(i)} className="au-d1-card"
               style={{
-                background: lit ? T2.goldLight : T2.surface, borderRadius: d ? 4 : 8, padding: d ? "22px 24px" : "14px",
-                border: `1px solid ${open ? T.gold : T2.border}`, cursor: "pointer",
-                boxShadow: lit ? "0 0 0 3px rgba(138,158,132,0.22), 0 4px 22px rgba(138,158,132,0.28)" : open ? "0 2px 12px rgba(138,158,132,0.2)" : "none",
+                background: open ? lift.bg : T2.surface, borderRadius: d ? 4 : 8, padding: d ? "22px 24px" : "14px",
+                border: `1px solid ${open ? lift.border : T2.border}`, cursor: "pointer",
+                boxShadow: open ? lift.shadow : "none",
               }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: d ? (open ? 10 : 6) : 5 }}>
                 <div style={{ fontFamily: T.serif, fontSize: d ? 24 : 18, fontWeight: 600, color: T.gold, lineHeight: 1.3, flex: 1 }}>{n.word}</div>
@@ -220,38 +259,63 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
       <div ref={testRef} className={"au-d1-test" + (testLit && !answer ? " au-d1-pulse" : "")}
         style={{
           background: T2.surface, borderRadius: d ? 4 : 8, padding: d ? "24px 26px" : "16px",
-          border: "1px solid " + (testLit ? T.gold : T2.border), transition: "border-color 0.35s",
+          border: "1px solid " + (testLit ? lift.border : T2.border), transition: "border-color 0.35s",
           animation: testLit && !answer ? "au-d1-pulse 1.6s ease-in-out infinite" : "none",
         }}>
         <div style={{ fontFamily: T.sans, fontSize: d ? 12 : 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 6 }}>Quick test</div>
-        <p style={{ fontFamily: T.serif, fontSize: d ? 24 : 20, fontWeight: 600, color: T2.text, lineHeight: 1.25, margin: 0, marginBottom: d ? 16 : 12 }}>Which message is easier to understand?</p>
+        <p style={{ fontFamily: T.serif, fontSize: d ? 24 : 20, fontWeight: 600, color: T2.text, lineHeight: 1.25, margin: 0, marginBottom: 6 }}>Your colleague is nervous before a big presentation. Which advice would help them more?</p>
+        <p style={{ fontFamily: T.sans, fontSize: d ? 14 : 13, color: T2.text3, lineHeight: 1.5, margin: 0, marginBottom: d ? 16 : 12 }}>Tap ▶ to hear each one, then choose.</p>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {TEST_OPTIONS.map(o => {
             const picked = answer === o.id;
-            const clear = answer && o.id === "B";
+            const clear = answer && o.clear;
+            const isPlaying = optPlaying === o.id;
             return (
-              <button key={o.id} onClick={() => choose(o.id)} disabled={!!answer}
+              <div key={o.id}
                 style={{
-                  display: "flex", gap: 12, alignItems: "flex-start", textAlign: "left", width: "100%",
-                  padding: d ? "14px 16px" : "12px 14px", borderRadius: d ? 4 : 8,
-                  WebkitAppearance: "none", appearance: "none", cursor: answer ? "default" : "pointer",
-                  background: clear ? T2.goldLight : "transparent",
-                  border: "1px solid " + (clear ? T.gold : picked ? T2.text3 : T2.border),
+                  display: "flex", gap: 12, alignItems: "flex-start", borderRadius: d ? 4 : 8,
+                  padding: d ? "14px 16px" : "12px 14px",
+                  background: clear ? lift.bg : "transparent",
+                  border: "1px solid " + (clear ? lift.border : picked ? T2.text3 : isPlaying ? lift.border : T2.border),
+                  boxShadow: clear ? lift.shadow : "none",
                   opacity: answer && !clear && !picked ? 0.6 : 1, transition: "all 0.25s",
                 }}>
-                <span style={{ fontFamily: T.sans, fontSize: 13, fontWeight: 600, color: clear ? T.gold : T2.text3, flexShrink: 0, marginTop: 2 }}>{o.id}</span>
-                <span style={{ fontFamily: T.sans, fontSize: d ? 16 : 15, color: T2.text, lineHeight: 1.5 }}>"{o.text}"</span>
-              </button>
+                <button onClick={() => playOption(o)} aria-label={(isPlaying ? "Pause option " : "Play option ") + o.id}
+                  style={{
+                    width: 34, height: 34, minWidth: 34, borderRadius: "50%", flexShrink: 0, padding: 0,
+                    WebkitAppearance: "none", appearance: "none", cursor: "pointer",
+                    background: isPlaying ? T.gold : "transparent", border: "1px solid " + T.gold,
+                    display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s",
+                  }}>
+                  {isPlaying ? (
+                    <svg width="10" height="10" viewBox="0 0 12 12"><rect x="2" y="1.5" width="2.8" height="9" rx="0.8" fill="#fff"/><rect x="7.2" y="1.5" width="2.8" height="9" rx="0.8" fill="#fff"/></svg>
+                  ) : (
+                    <svg width="10" height="10" viewBox="0 0 12 12"><path d="M3 1.6v8.8a.6.6 0 00.9.5l7-4.4a.6.6 0 000-1L3.9 1.1a.6.6 0 00-.9.5z" fill={T.gold}/></svg>
+                  )}
+                </button>
+                <button onClick={() => choose(o.id)} disabled={!!answer}
+                  style={{
+                    flex: 1, display: "block", textAlign: "left", padding: 0, background: "transparent", border: "none",
+                    WebkitAppearance: "none", appearance: "none", cursor: answer ? "default" : "pointer",
+                  }}>
+                  <span style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
+                    <span style={{ fontFamily: T.sans, fontSize: 13, fontWeight: 600, color: clear ? T2.goldDark : T2.text3 }}>{o.id}</span>
+                    {answer && <span style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.2px", color: o.clear ? T2.goldDark : T2.text3 }}>{o.tag}</span>}
+                    <span style={{ fontFamily: T.sans, fontSize: 12, color: T2.text4, marginLeft: "auto", fontVariantNumeric: "tabular-nums" }}>{fmt(o.secs)}</span>
+                  </span>
+                  <span style={{ display: "block", fontFamily: T.sans, fontSize: d ? 16 : 15, color: T2.text, lineHeight: 1.5 }}>"{o.text}"</span>
+                </button>
+              </div>
             );
           })}
         </div>
         {answer && (
           <div className="au-step-enter" style={{ marginTop: d ? 16 : 14 }}>
-            <p style={{ fontFamily: T.serif, fontSize: d ? 22 : 19, fontWeight: 600, color: T2.goldDark, margin: 0, marginBottom: 4 }}>{answer === "B" ? "Exactly." : "Interesting. Most people pick B."}</p>
+            <p style={{ fontFamily: T.serif, fontSize: d ? 22 : 19, fontWeight: 600, color: T2.goldDark, margin: 0, marginBottom: 4 }}>{answer === "B" ? "Exactly." : "Interesting."}</p>
             <p style={{ fontFamily: T.sans, fontSize: d ? 16 : 14, color: T2.text, lineHeight: 1.6, margin: 0 }}>
               {answer === "B"
-                ? "Same idea, but your brain didn't have to work as hard to understand the second one. That's clarity in action."
-                : "Both say the same thing, but B takes far less effort to understand. Your listener's brain is doing the decoding. That's clarity in action."}
+                ? "Three things to hold onto: the message, the evidence, and the ask. When you're nervous, a simple structure is what you remember. And above all, they've got this."
+                : "The first is kind, but there's nothing to hold onto. The second gives them three anchors to remember on stage. That's clarity in action."}
             </p>
           </div>
         )}
