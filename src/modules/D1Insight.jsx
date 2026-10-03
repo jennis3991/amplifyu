@@ -25,7 +25,7 @@ const CUES = [
 // only difference is structure.
 const TEST_OPTIONS = [
   { id: "A", tag: "Muddled", src: "/day1-test-muddled.mp3", secs: 14,
-    text: "Rather than attempting to commit the entirety of your presentation to memory, it's probably more effective to familiarise yourself with the overarching narrative and the key messages you're trying to convey, so that you can speak more naturally around the content without becoming overly dependent on a scripted delivery." },
+    text: "You probably don't need to memorise every word, but it's important to have a good understanding of the overall narrative and the key messages you're trying to communicate, so that you can speak naturally around the content rather than becoming too reliant on a script." },
   { id: "B", tag: "Clear", src: "/day1-test-clear.mp3", secs: 14, clear: true,
     text: "Don't memorise every word. Own the story.\n\nRemember three things:\nThe message.\nThe evidence.\nThe ask.\n\nKnow those three, and you'll always know where you're going.\n\nTake a breath. Trust yourself." },
 ];
