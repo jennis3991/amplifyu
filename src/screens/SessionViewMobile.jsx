@@ -29,6 +29,7 @@ import { EditorialTheoryCard, TheoryCard } from './TheoryCards.jsx';
 import { Paywall } from '../components/Paywall.jsx';
 import D1Insight from '../modules/D1Insight.jsx';
 import D1Theory from '../modules/D1Theory.jsx';
+import { PlayIcon } from '../modules/CoachNarration.jsx';
 function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
   return (
     <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
@@ -1391,7 +1392,7 @@ T.goldDark : T2.text4,
           { id:"attenborough", img:"/d11-attenborough.jpg", name:"Sir David Attenborough", role:"Broadcaster & natural historian", superpower:"Master of Clarity",
             superpowerText:"Makes the complex feel beautifully simple.",
             summary:"He explains the natural world so everyone can see it.",
-            body1:"Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon.",
+            body1:"Attenborough explains ecosystems, evolution and planetary forces: topics that could drown in scientific jargon.",
             body2:"Instead, he uses language anyone can picture. No technical terms. Just images people already understand.",
             whyItWorks:"He translates scientific complexity into vivid, everyday language. You don’t need a science degree to understand the Earth.",
             technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",
@@ -1399,10 +1400,10 @@ T.goldDark : T2.text4,
           },
           { id:"branson", img:"/d11-branson.jpg", name:"Sir Richard Branson", role:"Founder of Virgin Group", superpower:"Conversation over Corporation",
             superpowerText:"Makes big ideas feel personal.",
-            summary:"He speaks like a friend — even when addressing millions.",
+            summary:"He speaks like a friend, even when addressing millions.",
             body1:"Branson built a global empire. But he speaks like he’s chatting with a friend.",
             body2:"He makes big business ideas sound like everyday conversation. No corporate language. No complicated phrases. Just simple words that get straight to the point.",
-            whyItWorks:"He uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.",
+            whyItWorks:"He uses plain English, the words anyone would use. His message is so simple, you can repeat it back immediately.",
             technique:"Remove every word a 10-year-old wouldn’t understand. If what’s left still makes sense, you’ve found clarity.",
             lesson:"Jargon doesn’t make you sound smart. It makes you hard to understand. The clearest speakers use the simplest words.",
           },
@@ -1444,18 +1445,14 @@ T.goldDark : T2.text4,
                             onClick={(e) => { e.stopPropagation(); toggleNarration(src); }}
                             aria-label={playing ? "Pause narration" : "Play narration"}
                             style={{
-                              width:44, height:44, minWidth:44, borderRadius:"50%", flexShrink:0,
-                              padding:0, boxSizing:"border-box", WebkitAppearance:"none", MozAppearance:"none", appearance:"none",
-                              background: playing ? T.goldLight : "transparent",
-                              border:"1px solid "+(playing ? T.gold : T2.border),
-                              display:"flex", alignItems:"center", justifyContent:"center",
-                              cursor:"pointer", transition:"all 0.2s",
+                              width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                              padding:0, WebkitAppearance:"none", MozAppearance:"none", appearance:"none",
+                              background:"transparent", border:"none",
+                              display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
                             }}>
-                            <svg width="17" height="17" viewBox="0 0 10 10" fill="none">
-                              <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={playing ? T.gold : T2.text4} strokeWidth="1"/>
-                              <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-                              <line x1="5" y1="9" x2="5" y2="9.5" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-                            </svg>
+                            <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                              <PlayIcon playing={playing}/>
+                            </span>
                           </button>
                         );
                       })()}

@@ -150,7 +150,7 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
           animation: testLit && !answer ? "au-coach-pulse 1.6s ease-in-out infinite" : "none",
         }}>
         <div style={{ fontFamily: T.sans, fontSize: d ? 12 : 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 6 }}>Quick test</div>
-        <p style={{ fontFamily: T.serif, fontSize: d ? 22 : 19, fontWeight: 600, color: T2.text, lineHeight: 1.25, margin: 0, marginBottom: d ? 14 : 12 }}>A nervous colleague asks for advice. Which helps more?</p>
+        <p style={{ fontFamily: T.serif, fontSize: d ? 22 : 19, fontWeight: 600, color: T2.text, lineHeight: 1.25, margin: 0, marginBottom: d ? 14 : 12 }}>A nervous colleague asks for advice on presenting. Which helps more?</p>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {TEST_OPTIONS.map(o => {
             const picked = answer === o.id;

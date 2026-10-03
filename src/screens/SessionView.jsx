@@ -18,6 +18,7 @@ import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidge
 import { D1WarmUpWidget, D1SimWidget } from '../modules/Day1.jsx';
 import D1Insight from '../modules/D1Insight.jsx';
 import D1Theory from '../modules/D1Theory.jsx';
+import { PlayIcon } from '../modules/CoachNarration.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget, D5SimWidget } from '../modules/Day5.jsx';
 import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
@@ -172,6 +173,10 @@ setAmbitionSaved(true); } catch {}
   const [ntStory, setNtStory] = useState(() => { try { return localStorage.getItem("au1_nt_story") || ""; } catch { return ""; } });
   const [ntOpenCard, setNtOpenCard] = useState(null);
   const [d1MobCard, setD1MobCard] = useState(null);
+  // Desktop Day 1 Example reading view. Lives here, not in D1RightContent,
+  // because that component is re-created on every render of this one (e.g.
+  // when narration starts), which would drop the open card.
+  const [d1ExOpenCard, setD1ExOpenCard] = useState(null);
   const [d2MobCard, setD2MobCard] = useState(null);
   const [d3MobCard, setD3MobCard] = useState(null);
   const [d4MobCard, setD4MobCard] = useState(null);
@@ -2043,7 +2048,6 @@ setAmbitionSaved(true); } catch {}
     const D1RightContent = () => {
       const [simInput, setSimInput] = useState("");
       const [d1ExObserved, setD1ExObserved] = useState(() => { try { return JSON.parse(localStorage.getItem('d1ExObserved')||'{}'); } catch { return {}; } });
-      const [d1ExOpenCard, setD1ExOpenCard] = useState(null);
 
       if (step === "Insight") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",position:"relative"}}>
@@ -2062,7 +2066,7 @@ setAmbitionSaved(true); } catch {}
           { id:"attenborough", img:"/d11-attenborough.jpg", name:"Sir David Attenborough", role:"Broadcaster & natural historian", superpower:"Master of Clarity",
             superpowerText:"Makes the complex feel beautifully simple.",
             summary:"He explains the natural world so everyone can see it.",
-            body1:"Attenborough explains ecosystems, evolution, planetary forces — topics that could drown in scientific jargon.",
+            body1:"Attenborough explains ecosystems, evolution and planetary forces: topics that could drown in scientific jargon.",
             body2:"Instead, he uses language anyone can picture. No technical terms. Just images people already understand.",
             whyItWorks:"He translates scientific complexity into vivid, everyday language. You don’t need a science degree to understand the Earth.",
             technique:"Replace technical terms with pictures people already have in their heads. Make the abstract concrete.",
@@ -2070,10 +2074,10 @@ setAmbitionSaved(true); } catch {}
           },
           { id:"branson", img:"/d11-branson.jpg", name:"Sir Richard Branson", role:"Founder of Virgin Group", superpower:"Conversation over Corporation",
             superpowerText:"Makes big ideas feel personal.",
-            summary:"He speaks like a friend — even when addressing millions.",
+            summary:"He speaks like a friend, even when addressing millions.",
             body1:"Branson built a global empire. But he speaks like he’s chatting with a friend.",
             body2:"He makes big business ideas sound like everyday conversation. No corporate language. No complicated phrases. Just simple words that get straight to the point.",
-            whyItWorks:"He uses plain English — words anyone would use. His message is so simple, you can repeat it back immediately.",
+            whyItWorks:"He uses plain English, the words anyone would use. His message is so simple, you can repeat it back immediately.",
             technique:"Remove every word a 10-year-old wouldn’t understand. If what’s left still makes sense, you’ve found clarity.",
             lesson:"Jargon doesn’t make you sound smart. It makes you hard to understand. The clearest speakers use the simplest words.",
           },
@@ -2104,17 +2108,13 @@ setAmbitionSaved(true); } catch {}
                     onClick={() => toggleNarration(src)}
                     aria-label={playing ? "Pause narration" : "Play narration"}
                     style={{
-                      width:36, height:36, borderRadius:"50%", flexShrink:0, marginTop:4,
-                      background: playing ? T.goldLight : "transparent",
-                      border:"1px solid "+(playing ? T.gold : T2.border),
-                      display:"flex", alignItems:"center", justifyContent:"center",
-                      cursor:"pointer", transition:"all 0.2s",
+                      width:44, height:44, minWidth:44, flexShrink:0, marginTop:0, marginRight:-4,
+                      padding:0, background:"transparent", border:"none",
+                      display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
                     }}>
-                    <svg width="15" height="15" viewBox="0 0 10 10" fill="none">
-                      <rect x="3" y="0.5" width="4" height="6" rx="2" stroke={playing ? T.gold : T2.text4} strokeWidth="1"/>
-                      <path d="M1.5 5.5a3.5 3.5 0 007 0" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-                      <line x1="5" y1="9" x2="5" y2="9.5" stroke={playing ? T.gold : T2.text4} strokeWidth="1" strokeLinecap="round"/>
-                    </svg>
+                    <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <PlayIcon playing={playing}/>
+                    </span>
                   </button>
                 );
               })()}
