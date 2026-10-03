@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { D1_CLARITY_FACTS_DATA } from "../data.js";
-import { useCoachNarration, CoachButton, CoachStyles, PlayIcon, warmLift, fmt } from "./CoachNarration.jsx";
+import { useCoachNarration, useCueCards, CoachButton, CoachCardGrid, CoachStyles, PlayIcon, warmLift, fmt } from "./CoachNarration.jsx";
 
 // ─── DAY 1 INSIGHT — guided, voice-synced clarity cards ──────────────────────
 // Shared by SessionView (desktop/tablet) and SessionViewMobile. The coach
@@ -46,29 +46,21 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
     onLeave: stopOptions,
   });
   const { playing, cueIdx, cue } = narration;
-  // A tap wins until the narration reaches its next cue.
-  const [manual, setManual] = useState({ card: null, cue: -2 });
+  const cueCards = useCueCards(cueIdx, cue);
   const [answer, setAnswer] = useState(testAnswer);
   const [optPlaying, setOptPlaying] = useState(optPlayingId);
   // Options show two lines until expanded; answering expands both.
   const [expanded, setExpanded] = useState({});
-  const cardRefs = useRef([]);
   const testRef = useRef(null);
 
-  const narratedCard = cue ? cue.card : null;
-  const openCard = manual.cue === cueIdx ? manual.card : narratedCard;
   const testLit = playing && cue?.test;
 
   // Bring the narrated card (or the quick test) into view as each cue fires.
   useEffect(() => {
     if (!playing || !cue) return;
-    const el = cue.test ? testRef.current : cardRefs.current[cue.card];
+    const el = cue.test ? testRef.current : cueCards.refs.current[cue.card];
     el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [cueIdx, playing]);
-
-  function tapCard(i) {
-    setManual({ card: openCard === i ? null : i, cue: cueIdx });
-  }
 
   function playOption(o) {
     const wasPlaying = optPlayingId === o.id;
@@ -105,42 +97,7 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
 
       <CoachButton T={T} T2={T2} isDesktop={d} narration={narration} duration={DURATION} />
 
-      {/* Four clarity cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "start", gap: d ? 12 : 10, marginBottom: d ? 32 : 24 }}>
-        {D1_CLARITY_FACTS_DATA.map((n, i) => {
-          const open = openCard === i;
-          return (
-            <div key={i} ref={el => (cardRefs.current[i] = el)} onClick={() => tapCard(i)} className="au-coach-lit"
-              style={{
-                background: open ? lift.bg : T2.surface, borderRadius: d ? 4 : 8, padding: d ? "22px 24px" : "14px",
-                border: `1px solid ${open ? lift.border : T2.border}`, cursor: "pointer",
-                boxShadow: open ? lift.shadow : "none",
-              }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: d ? (open ? 10 : 6) : 5 }}>
-                <div style={{ fontFamily: T.serif, fontSize: d ? 24 : 18, fontWeight: 600, color: T.gold, lineHeight: 1.3, flex: 1 }}>{n.word}</div>
-                <span style={{ fontFamily: T.sans, fontSize: d ? 16 : 17, fontWeight: 600, color: open ? T.gold : T2.text4, marginLeft: 6, flexShrink: 0 }}>{open ? "▴" : "▸"}</span>
-              </div>
-              <p style={{ fontFamily: T.sans, fontSize: d ? 16 : 14, color: T2.text2, lineHeight: 1.45, fontWeight: 400, margin: open ? (d ? "0 0 14px" : "4px 0 8px") : (d ? 0 : "4px 0 0") }}>{n.sub}</p>
-              {open && (
-                <div style={{ borderTop: "0.5px solid " + T2.divider, paddingTop: d ? 14 : 10, display: "flex", flexDirection: "column", gap: 8 }}>
-                  {n.bullets.map((b, j) => (
-                    <div key={j} style={{ display: "flex", gap: d ? 10 : 8, alignItems: "flex-start" }}>
-                      <div style={{ width: d ? 4 : 3, height: d ? 4 : 3, borderRadius: "50%", background: T.gold, flexShrink: 0, marginTop: 6 }} />
-                      <p style={{ fontFamily: T.sans, fontSize: d ? 14 : 13, color: T2.text, lineHeight: 1.6, fontWeight: 400, margin: 0 }}>{b}</p>
-                    </div>
-                  ))}
-                  {n.note && (
-                    <div style={{ marginTop: 4, paddingLeft: 10, borderLeft: "2px solid " + T.gold }}>
-                      <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.2px", marginBottom: 3 }}>Coach's note</div>
-                      <p style={{ fontFamily: T.serif, fontSize: d ? 16 : 14, fontStyle: "italic", color: T2.text, lineHeight: 1.5, margin: 0 }}>{n.note}</p>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+      <CoachCardGrid T={T} T2={T2} isDesktop={d} cards={D1_CLARITY_FACTS_DATA} cueCards={cueCards} />
 
       {/* Quick test — the "show you the difference" moment */}
       <div ref={testRef} className={"au-coach-lit" + (testLit && !answer ? " au-coach-pulse" : "")}

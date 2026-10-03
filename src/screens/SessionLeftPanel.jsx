@@ -528,9 +528,9 @@ export function SessionLeftPanel({
       <div style={{ position: "absolute", inset: 0, background: lesson.day === 1 ? "rgba(10,8,5,0.50)" : "rgba(10,8,5,0.5)" }}/>
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.5) 40%, transparent 75%)" }}/>
       <div style={{ position: "relative", zIndex: 2, padding: "40px 48px", animation: "fadeUp 0.7s ease both" }}>
-        <div style={{ ...LP_LABEL, marginBottom:12 }}>{isD2?"DAY 2 · PACE":isD5?"DAY 5 · CONFIDENCE":isD6?"DAY 6 · GRAVITAS":isD11?"DAY 11 · SIMPLICITY":isD12?"DAY 12 · PRESENCE":isD13?"DAY 13 · INFLUENCE":isD14?"DAY 14 · MASTERY":`Day ${lesson.day} · ${lesson.tag}`}</div>
-        <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>{isD2?"Speak with Purpose":isD5?"Own the Room":isD6?"Command Attention":isD11?"Strip It Back":isD12?"Show Up Fully":isD13?"Lead the Room":isD14?"The Complete Communicator":lesson.title}</h2>
-        <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>{isD2?"The right pace makes every word land.":isD5?"Confidence is a skill, not a personality trait.":isD6?"True authority is felt before it is heard.":isD11?"Complexity is the enemy of connection.":isD12?"Presence is the difference between being heard and being remembered.":isD13?"Influence isn't about volume — it's about weight.":isD14?"Everything you've learned. Every day it compounds.":lesson.quote}</p>
+        <div style={{ ...LP_LABEL, marginBottom:12 }}>{isD5?"DAY 5 · CONFIDENCE":isD6?"DAY 6 · GRAVITAS":isD11?"DAY 11 · SIMPLICITY":isD12?"DAY 12 · PRESENCE":isD13?"DAY 13 · INFLUENCE":isD14?"DAY 14 · MASTERY":`Day ${lesson.day} · ${lesson.tag}`}</div>
+        <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>{isD5?"Own the Room":isD6?"Command Attention":isD11?"Strip It Back":isD12?"Show Up Fully":isD13?"Lead the Room":isD14?"The Complete Communicator":lesson.title}</h2>
+        <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>{isD5?"Confidence is a skill, not a personality trait.":isD6?"True authority is felt before it is heard.":isD11?"Complexity is the enemy of connection.":isD12?"Presence is the difference between being heard and being remembered.":isD13?"Influence isn't about volume — it's about weight.":isD14?"Everything you've learned. Every day it compounds.":lesson.quote}</p>
       </div>
     </div>
   );

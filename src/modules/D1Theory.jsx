@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useCoachNarration, CoachButton, CoachStyles, warmLift } from "./CoachNarration.jsx";
+import { useCoachNarration, CoachButton, CoachStyles, UpNextCard, warmLift } from "./CoachNarration.jsx";
 
 // ─── DAY 1 THEORY — the Feynman Technique, guided by the coach ───────────────
 // Shared by SessionView (desktop/tablet) and SessionViewMobile. As the coach
@@ -106,22 +106,7 @@ export default function D1Theory({ T, T2, isDesktop, sharedAudioRef, onNext }) {
       </div>
 
       {onNext && nextLit && (
-        <button ref={nextRef} onClick={onNext} className="au-coach-lit au-coach-pulse"
-          style={{
-            display: "flex", alignItems: "center", gap: 14, width: "100%", textAlign: "left",
-            padding: d ? "14px 20px" : "14px 16px", borderRadius: d ? 4 : 8, cursor: "pointer",
-            WebkitAppearance: "none", appearance: "none",
-            background: lift.bg, border: "1px solid " + lift.border, boxShadow: lift.shadow,
-            // Fade up into place (fadeUp lives in index.html), then pulse.
-            animation: "fadeUp 0.5s cubic-bezier(0.25,0.46,0.45,0.94) both, au-coach-pulse 1.6s ease-in-out 0.5s infinite",
-          }}>
-          <span style={{ flex: 1, minWidth: 0 }}>
-            <span style={{ display: "block", fontFamily: T.sans, fontSize: 10, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.4px", marginBottom: 2 }}>Up next</span>
-            <span style={{ display: "block", fontFamily: T.serif, fontSize: d ? 19 : 17, fontWeight: 600, color: T2.text, lineHeight: 1.25 }}>Masters of Clear Communication</span>
-            <span style={{ display: "block", fontFamily: T.sans, fontSize: 13, color: T2.text3, marginTop: 2 }}>Attenborough & Branson</span>
-          </span>
-          <span aria-hidden="true" style={{ fontFamily: T.sans, fontSize: 18, color: T2.goldDark, flexShrink: 0 }}>→</span>
-        </button>
+        <UpNextCard ref={nextRef} T={T} T2={T2} isDesktop={d} title="Masters of Clear Communication" sub="Attenborough & Branson" onClick={onNext} />
       )}
     </>
   );

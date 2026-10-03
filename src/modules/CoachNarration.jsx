@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, forwardRef } from "react";
 
 // ─── Coach narration — shared by the voice-guided lesson tabs ────────────────
 // A pre-recorded coach voice drives the screen: `cues` are times (seconds) in
@@ -158,3 +158,80 @@ export function CoachButton({ T, T2, isDesktop: d, narration, duration, style })
     </button>
   );
 }
+
+// Expandable insight cards that follow the coach: the narrated card opens and
+// lifts at its cue, and a tap wins until the narration reaches its next cue.
+// Cards: [{ word, sub, bullets, note? }]. Cues reference cards by index.
+export function useCueCards(cueIdx, cue) {
+  const [manual, setManual] = useState({ card: null, cue: -2 });
+  const narrated = cue && cue.card !== undefined ? cue.card : null;
+  const openCard = manual.cue === cueIdx ? manual.card : narrated;
+  const tap = i => setManual({ card: openCard === i ? null : i, cue: cueIdx });
+  return { openCard, tap, refs: useRef([]) };
+}
+
+export function CoachCardGrid({ T, T2, isDesktop: d, cards, cueCards, style }) {
+  const lift = warmLift(T, T2);
+  const { openCard, tap, refs } = cueCards;
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "start", gap: d ? 12 : 10, marginBottom: d ? 32 : 24, ...style }}>
+      {cards.map((n, i) => {
+        const open = openCard === i;
+        return (
+          <div key={i} ref={el => (refs.current[i] = el)} onClick={() => tap(i)} className="au-coach-lit"
+            style={{
+              background: open ? lift.bg : T2.surface, borderRadius: d ? 4 : 8, padding: d ? "22px 24px" : "14px",
+              border: `1px solid ${open ? lift.border : T2.border}`, cursor: "pointer",
+              boxShadow: open ? lift.shadow : "none",
+            }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: d ? (open ? 10 : 6) : 5 }}>
+              <div style={{ fontFamily: T.serif, fontSize: d ? 24 : 18, fontWeight: 600, color: T.gold, lineHeight: 1.3, flex: 1 }}>{n.word}</div>
+              <span style={{ fontFamily: T.sans, fontSize: d ? 16 : 17, fontWeight: 600, color: open ? T.gold : T2.text4, marginLeft: 6, flexShrink: 0 }}>{open ? "▴" : "▸"}</span>
+            </div>
+            <p style={{ fontFamily: T.sans, fontSize: d ? 16 : 14, color: T2.text2, lineHeight: 1.45, fontWeight: 400, margin: open ? (d ? "0 0 14px" : "4px 0 8px") : (d ? 0 : "4px 0 0") }}>{n.sub}</p>
+            {open && (
+              <div style={{ borderTop: "0.5px solid " + T2.divider, paddingTop: d ? 14 : 10, display: "flex", flexDirection: "column", gap: 8 }}>
+                {n.bullets.map((b, j) => (
+                  <div key={j} style={{ display: "flex", gap: d ? 10 : 8, alignItems: "flex-start" }}>
+                    <div style={{ width: d ? 4 : 3, height: d ? 4 : 3, borderRadius: "50%", background: T.gold, flexShrink: 0, marginTop: 6 }} />
+                    <p style={{ fontFamily: T.sans, fontSize: d ? 14 : 13, color: T2.text, lineHeight: 1.6, fontWeight: 400, margin: 0 }}>{b}</p>
+                  </div>
+                ))}
+                {n.note && (
+                  <div style={{ marginTop: 4, paddingLeft: 10, borderLeft: "2px solid " + T.gold }}>
+                    <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.2px", marginBottom: 3 }}>Coach's note</div>
+                    <p style={{ fontFamily: T.serif, fontSize: d ? 16 : 14, fontStyle: "italic", color: T2.text, lineHeight: 1.5, margin: 0 }}>{n.note}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// The coach's hand-off to the next tab. Rendered only while the hand-off
+// cue is playing, so it never duplicates the session's own Next button.
+export const UpNextCard = forwardRef(function UpNextCard({ T, T2, isDesktop: d, title, sub, onClick }, ref) {
+  const lift = warmLift(T, T2);
+  return (
+    <button ref={ref} onClick={onClick} className="au-coach-lit au-coach-pulse"
+      style={{
+        display: "flex", alignItems: "center", gap: 14, width: "100%", textAlign: "left",
+        padding: d ? "14px 20px" : "14px 16px", borderRadius: d ? 4 : 8, cursor: "pointer",
+        WebkitAppearance: "none", appearance: "none",
+        background: lift.bg, border: "1px solid " + lift.border, boxShadow: lift.shadow,
+        // Fade up into place (fadeUp lives in index.html), then pulse.
+        animation: "fadeUp 0.5s cubic-bezier(0.25,0.46,0.45,0.94) both, au-coach-pulse 1.6s ease-in-out 0.5s infinite",
+      }}>
+      <span style={{ flex: 1, minWidth: 0 }}>
+        <span style={{ display: "block", fontFamily: T.sans, fontSize: 10, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.4px", marginBottom: 2 }}>Up next</span>
+        <span style={{ display: "block", fontFamily: T.serif, fontSize: d ? 19 : 17, fontWeight: 600, color: T2.text, lineHeight: 1.25 }}>{title}</span>
+        {sub && <span style={{ display: "block", fontFamily: T.sans, fontSize: 13, color: T2.text3, marginTop: 2 }}>{sub}</span>}
+      </span>
+      <span aria-hidden="true" style={{ fontFamily: T.sans, fontSize: 18, color: T2.goldDark, flexShrink: 0 }}>→</span>
+    </button>
+  );
+});
