@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
 import { ReadAloudButton, extractReadableText } from '../components/ReadAloudButton.jsx';
-import { REVIEW_NARRATION, D2_EXAMPLE_AUDIO, D10_FACTS, D3_PAUSE_REASONS, D4_FACTS, D11_FACTS, D11_INGREDIENTS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS } from '../data.js';
+import { REVIEW_NARRATION, EXAMPLE_AUDIO, D10_FACTS, D3_PAUSE_REASONS, D4_FACTS, D11_FACTS, D11_INGREDIENTS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
@@ -937,8 +937,8 @@ T.goldDark : T2.text4,
                   <div style={{padding:"16px 18px 4px"}}>
                     <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,marginBottom:2}}>
                       <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,margin:0}}>{card.name}</h3>
-                      {D2_EXAMPLE_AUDIO[card.id] && (() => {
-                        const src = D2_EXAMPLE_AUDIO[card.id];
+                      {EXAMPLE_AUDIO[card.id] && (() => {
+                        const src = EXAMPLE_AUDIO[card.id];
                         const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
                         return (
                           <button
@@ -1025,18 +1025,18 @@ T.goldDark : T2.text4,
             summary:"No ums. No uhs. Just measured, deliberate speech.",
             body1:"Listen to Morgan Freeman narrate anything. You'll notice what he doesn't say.",
             body2:"No ums. No uhs. No fillers. Just measured, deliberate speech.",
-            body3:"When he needs to think, he pauses. That pause doesn't weaken his delivery — it strengthens it.",
-            whyItWorks:"Silence creates anticipation. Fillers create distraction. When Freeman pauses, your attention sharpens — you lean in to hear what comes next. The pause is the tool, not the gap.",
-            technique:"When you don't know what to say next, stop talking. Pause. Breathe. Then continue. Practice letting the silence sit — it signals confidence, not uncertainty.",
+            body3:"When he needs to think, he pauses. That pause doesn't weaken his delivery. It strengthens it.",
+            whyItWorks:"Silence creates anticipation. Fillers create distraction. When Freeman pauses, your attention sharpens, and you lean in to hear what comes next. The pause is the tool, not the gap.",
+            technique:"When you don't know what to say next, stop talking. Pause. Breathe. Then continue. Practice letting the silence sit. It signals confidence, not uncertainty.",
             lesson:"The pause is not your enemy. It's your most underused communication tool. Use it deliberately.",
           },
-          { id:"wintour", img:"/d3-wintour.jpg", name:"Anna Wintour", role:"Editor-in-Chief, Vogue", superpower:"Filler-Free Authority",
+          { id:"wintour", img:"/d3-wintour.jpg", name:"Anna Wintour", role:"Global Editorial Director, Vogue", superpower:"Filler-Free Authority",
             superpowerText:"Every word chosen. Zero wasted.",
-            summary:"She pauses between thoughts — no fillers, no hedging, just control.",
+            summary:"She pauses between thoughts. No fillers, no hedging, just control.",
             body1:"Anna Wintour runs Vogue. When she speaks, there's no fluff.",
-            body2:"Colleagues describe her meetings as famously brief — decisions made quickly and clearly, with no hedging. She treats decisiveness itself as a communication tool: state the position, don't soften it, move on.",
+            body2:"Colleagues describe her meetings as famously brief: decisions made quickly and clearly, with no hedging. She treats decisiveness itself as a communication tool: state the position, don't soften it, move on.",
             body3:"Fillers signal uncertainty. Pauses signal control. She always knows what she wants to say.",
-            whyItWorks:"She prepares before she speaks. That means she never needs to fill space with ums or uhs. The pause is deliberate — it communicates that the answer was worth waiting for.",
+            whyItWorks:"She prepares before she speaks. That means she never needs to fill space with ums or uhs. The pause is deliberate. It communicates that the answer was worth waiting for.",
             technique:"Prepare your answer before you speak. If you haven't decided what to say, don't start talking yet. Wait. Think. Then deliver.",
             lesson:"Filler-free speech starts with knowing your point. The cleaner your thinking, the cleaner your delivery.",
           },
@@ -1065,7 +1065,28 @@ T.goldDark : T2.text4,
                     </div>
                   )}
                   <div style={{padding:"16px 18px 4px"}}>
-                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
+                    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,marginBottom:2}}>
+                      <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,margin:0}}>{card.name}</h3>
+                      {EXAMPLE_AUDIO[card.id] && (() => {
+                        const src = EXAMPLE_AUDIO[card.id];
+                        const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                        return (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleNarration(src); }}
+                            aria-label={playing ? "Pause narration" : "Play narration"}
+                            style={{
+                              width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                              padding:0, WebkitAppearance:"none", appearance:"none",
+                              background:"transparent", border:"none",
+                              display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                            }}>
+                            <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                              <PlayIcon playing={playing}/>
+                            </span>
+                          </button>
+                        );
+                      })()}
+                    </div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>

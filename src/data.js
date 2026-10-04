@@ -1000,10 +1000,13 @@ export const D13_EXAMPLES = [
 
  // ── D2 shared constants (used by both desktop + mobile) ───────────────────
 
-// Day 2 Example narration, keyed by editorial card id.
-export const D2_EXAMPLE_AUDIO = {
+// Example-tab narration, keyed by editorial card id (ids are unique across
+// days). A card shows a play/pause button only when it has an entry here.
+export const EXAMPLE_AUDIO = {
   sinek: "/day2-sinek.mp3",
   brene: "/day2-brene.mp3",
+  freeman: "/day3-freeman.mp3",
+  wintour: "/day3-wintour.mp3",
 };
 
 // End-of-day coach message on the Review step, keyed by day.
