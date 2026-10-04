@@ -174,12 +174,16 @@ export function CoachCardGrid({ T, T2, isDesktop: d, cards, cueCards, columns = 
   const lift = warmLift(T, T2);
   const { openCard, tap, refs } = cueCards;
   return (
-    <div style={{ display: "grid", gridTemplateColumns: `repeat(${columns}, 1fr)`, alignItems: "start", gap: d ? 12 : 10, marginBottom: d ? 32 : 24, ...style }}>
+    <div style={{ display: "grid", gridTemplateColumns: `repeat(${columns}, 1fr)`, gap: d ? 12 : 10, marginBottom: d ? 32 : 24, ...style }}>
       {cards.map((n, i) => {
         const open = openCard === i;
+        // Cards in a row share a height, except the neighbour of an open
+        // card, which keeps its own height instead of stretching to match.
+        const besideOpen = openCard !== null && openCard !== i && Math.floor(openCard / columns) === Math.floor(i / columns);
         return (
           <div key={i} ref={el => (refs.current[i] = el)} onClick={() => tap(i)} className="au-coach-lit"
             style={{
+              alignSelf: besideOpen ? "start" : "stretch",
               background: open ? lift.bg : T2.surface, borderRadius: d ? 4 : 8, padding: d ? "22px 24px" : "14px",
               border: `1px solid ${open ? lift.border : T2.border}`, cursor: "pointer",
               boxShadow: open ? lift.shadow : "none",

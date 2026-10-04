@@ -122,18 +122,32 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
                   </span>
                   <span style={{ fontFamily: T.sans, fontSize: 13, color: T2.text3, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{fmt(o.secs)}</span>
                 </button>
-                {/* Full script — tap to choose */}
-                <button onClick={() => choose(o.id)} disabled={!!answer}
-                  style={{
-                    display: "block", width: "100%", textAlign: "left", padding: 0, background: "transparent", border: "none",
-                    WebkitAppearance: "none", appearance: "none", cursor: answer ? "default" : "pointer",
-                  }}>
-                  <span style={{ display: "block", fontFamily: T.sans, fontSize: d ? 15 : 14, color: T2.text, lineHeight: 1.55, whiteSpace: "pre-line" }}>"{o.text}"</span>
-                </button>
+                {/* Full script */}
+                <p style={{ fontFamily: T.sans, fontSize: d ? 15 : 14, color: T2.text, lineHeight: 1.55, whiteSpace: "pre-line", margin: 0 }}>"{o.text}"</p>
               </div>
             );
           })}
         </div>
+        {/* Answer bar — listening happens in the cards, choosing happens here */}
+        {!answer && (
+          <div style={{ marginTop: d ? 18 : 16 }}>
+            <p style={{ fontFamily: T.serif, fontSize: d ? 19 : 17, fontWeight: 600, color: T2.text, margin: 0, marginBottom: 10 }}>Which would you give them?</p>
+            <div style={{ display: "flex", gap: 10 }}>
+              {TEST_OPTIONS.map(o => (
+                <button key={o.id} onClick={() => choose(o.id)} aria-label={"Pick " + o.id}
+                  style={{
+                    flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+                    padding: "10px 14px", borderRadius: 999, cursor: "pointer",
+                    WebkitAppearance: "none", appearance: "none",
+                    background: lift.bg, border: "1px solid " + lift.border, boxShadow: lift.shadow,
+                  }}>
+                  <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: T2.text, color: T2.bg, fontFamily: T.serif, fontSize: 17, fontWeight: 600 }}>{o.id}</span>
+                  <span style={{ fontFamily: T.sans, fontSize: d ? 16 : 15, fontWeight: 600, color: T2.text }}>Pick {o.id}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         {answer && (
           <div className="au-step-enter" style={{ marginTop: d ? 16 : 14 }}>
             <p style={{ fontFamily: T.serif, fontSize: d ? 22 : 19, fontWeight: 600, color: T2.goldDark, margin: 0, marginBottom: 4 }}>{answer === "B" ? "Exactly." : "Interesting."}</p>
