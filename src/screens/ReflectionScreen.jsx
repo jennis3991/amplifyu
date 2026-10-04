@@ -3,6 +3,16 @@ import { T } from '../theme.js';
 import { ROLES } from '../data.js';
 import { useIsDesktop } from '../utils.js';
 
+// Match a saved onboarding answer to a map key, ignoring case and
+// punctuation, so answers saved before a copy edit (e.g. with an em dash)
+// still find their profile.
+const normAnswer = s => (s || "").toLowerCase().replace(/[—–\-.,!?'’]/g, " ").replace(/\s+/g, " ").trim();
+function matchAnswer(map, answer) {
+  const key = normAnswer(answer);
+  for (const k in map) if (normAnswer(k) === key) return map[k];
+  return undefined;
+}
+
 export function ReflectionScreen({ answers, onContinue }) {
   const isDesktop = useIsDesktop();
   const [reflection, setReflection] = useState(null);
@@ -27,7 +37,7 @@ export function ReflectionScreen({ answers, onContinue }) {
     "Speaking up confidently with senior leaders":         ["Executive Presence", "Clarity & Structure"],
     "Structuring my thoughts clearly under pressure.":     ["Clarity & Structure", "Executive Presence"],
     "Structuring my thoughts under pressure":              ["Clarity & Structure", "Executive Presence"],
-    "Making my work visible — and getting credit for it.": ["Visibility", "Personal Brand"],
+    "Making my work visible and getting credit for it.":   ["Visibility", "Personal Brand"],
     "Promoting my work and making it visible":             ["Visibility", "Personal Brand"],
     "Setting boundaries and asserting myself.":            ["Assertiveness", "Presence"],
     "Setting boundaries and asserting myself":             ["Assertiveness", "Presence"],
@@ -42,8 +52,8 @@ export function ReflectionScreen({ answers, onContinue }) {
   };
 
   const rawAreas = [
-    ...(focusAreaMap[challengeLabel] || ["Communication Clarity"]),
-    ...(focusAreaMap[contextLabel]   || ["Presence"]),
+    ...(matchAnswer(focusAreaMap, challengeLabel) || ["Communication Clarity"]),
+    ...(matchAnswer(focusAreaMap, contextLabel)   || ["Presence"]),
   ];
   const supplementaryPool = ["Influence", "Storytelling", "Executive Presence", "Assertiveness", "High-Stakes Composure", "Clarity & Structure"];
   const uniqueAreas = [...new Set(rawAreas)];
@@ -56,14 +66,16 @@ export function ReflectionScreen({ answers, onContinue }) {
   const tendencyMap = {
     "I stay quiet when I should speak up.":                 { label: "The Quiet Expert",        sub: "Depth and capability waiting to be heard." },
     "I stay quiet when I should speak up":                  { label: "The Quiet Expert",        sub: "Depth and capability waiting to be heard." },
-    "I speak but don't always land my point.":              { label: "The Active Voice",        sub: "Energy and presence — refining precision." },
-    "I speak but don't always land my point":               { label: "The Active Voice",        sub: "Energy and presence — refining precision." },
-    "I land my points but lack consistent presence.":       { label: "The Capable Communicator",sub: "Competent and credible — ready for more." },
-    "I land my points but lack consistent presence":        { label: "The Capable Communicator",sub: "Competent and credible — ready for more." },
+    "I speak, but I don't always land my point.":          { label: "The Active Voice",        sub: "Energy and presence. Refining precision." },
+    "I speak but don't always land my point.":              { label: "The Active Voice",        sub: "Energy and presence. Refining precision." },
+    "I speak but don't always land my point":               { label: "The Active Voice",        sub: "Energy and presence. Refining precision." },
+    "I land my points, but I lack consistent presence.":   { label: "The Capable Communicator",sub: "Competent and credible. Ready for more." },
+    "I land my points but lack consistent presence.":       { label: "The Capable Communicator",sub: "Competent and credible. Ready for more." },
+    "I land my points but lack consistent presence":        { label: "The Capable Communicator",sub: "Competent and credible. Ready for more." },
     "I'm already strong. I want to go to the next level.": { label: "The High Performer",      sub: "Strong foundation. Optimising for excellence." },
     "I'm strong — I want to go to the next level":         { label: "The High Performer",      sub: "Strong foundation. Optimising for excellence." },
   };
-  const tendency = tendencyMap[levelLabel] || { label: "The Growth Professional", sub: "The drive to communicate with clarity and impact." };
+  const tendency = matchAnswer(tendencyMap, levelLabel) || { label: "The Growth Professional", sub: "The drive to communicate with clarity and impact." };
 
   // Programme focus weights — derived from focus area priority order
   const focusWeightsBySize = { 5:[30,25,20,15,10], 4:[35,28,22,15], 3:[45,35,20], 2:[60,40] };
@@ -113,9 +125,9 @@ export function ReflectionScreen({ answers, onContinue }) {
 
   // Reflection text (quiz-derived, no API)
   const fallbackReflection = {
-    summary: "Here is what we are seeing — you want to " + contextLabel.toLowerCase().replace(/^telling /,"tell ").replace(/^building /,"build ").replace(/^influencing and communicating /,"influence and communicate ").replace(/^influencing /,"influence ").replace(/^navigating /,"navigate ").replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + ", but " + challengeLabel.toLowerCase().replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + " is standing in the way. That gap between your capability and how you're showing up is exactly where AmplifyU works. You already have more than most people start with.",
-    motivation: "The fact that you can name what's holding you back means you're thinking more clearly about this than most. " + (answers.role === "senior" ? "At your level, the difference between good and exceptional is almost never about knowledge — it's about how you land what you know." : "The skills you're building — clarity, presence, story — are the ones that open the doors that matter.") + " Your growth in this area will compound in ways you can't yet see.",
-    forward: "Here is where we will take you — 14 sessions built for someone at your stage, with scenarios drawn from your world as " + roleLabel + ". You will build the communication habits, personal brand, and visibility that turn your real capability into the career you are ready for.",
+    summary: "Here is what we are seeing: you want to " + contextLabel.toLowerCase().replace(/^telling /,"tell ").replace(/^building /,"build ").replace(/^influencing and communicating /,"influence and communicate ").replace(/^influencing /,"influence ").replace(/^navigating /,"navigate ").replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + ", but " + challengeLabel.toLowerCase().replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + " is standing in the way. That gap between your capability and how you're showing up is exactly where AmplifyU works. You already have more than most people start with.",
+    motivation: "The fact that you can name what's holding you back means you're thinking more clearly about this than most. " + (answers.role === "senior" ? "At your level, the difference between good and exceptional is almost never about knowledge. It's about how you land what you know." : "The skills you're building (clarity, presence and story) are the ones that open the doors that matter.") + " Your growth in this area will compound in ways you can't yet see.",
+    forward: "Here is where we will take you: 14 sessions built for someone at your stage, with scenarios drawn from your world as " + roleLabel + ". You will build the communication habits, personal brand, and visibility that turn your real capability into the career you are ready for.",
   };
 
   useEffect(() => {
@@ -210,7 +222,7 @@ export function ReflectionScreen({ answers, onContinue }) {
                 </div>
 
                 <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 6, fontFamily: T.sans }}>Programme Focus</div>
-                <div style={{ fontSize: 12, color: T.text2, marginBottom: 22, fontFamily: T.sans, lineHeight: 1.55 }}>Where your 14 sessions will focus — built around your goals and profile.</div>
+                <div style={{ fontSize: 12, color: T.text2, marginBottom: 22, fontFamily: T.sans, lineHeight: 1.55 }}>Where your 14 sessions will focus, built around your goals and profile.</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                   {programmeWeights.map(({ area, weight }) => (
                     <div key={area}>
@@ -384,7 +396,7 @@ export function ReflectionScreen({ answers, onContinue }) {
         {section >= 2 && (
           <div style={{ animation: "sectionFade 0.6s ease both" }}>
             <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 8, fontFamily: T.sans }}>Programme Focus</div>
-            <div style={{ fontSize: 12, color: T.text2, marginBottom: 20, fontFamily: T.sans, lineHeight: 1.5 }}>Where your 14 sessions will focus — built around your goals.</div>
+            <div style={{ fontSize: 12, color: T.text2, marginBottom: 20, fontFamily: T.sans, lineHeight: 1.5 }}>Where your 14 sessions will focus, built around your goals.</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {programmeWeights.map(({ area, weight }) => (
                 <div key={area}>

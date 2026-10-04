@@ -34,7 +34,7 @@ export function Onboarding({onDone}) {
       opts: [
         "Speaking up confidently with senior leaders.",
         "Structuring my thoughts clearly under pressure.",
-        "Making my work visible — and getting credit for it.",
+        "Making my work visible and getting credit for it.",
         "Setting boundaries and asserting myself.",
       ],
       scene: "presence",
@@ -60,7 +60,7 @@ export function Onboarding({onDone}) {
       opts: [
         "I stay quiet when I should speak up.",
         "I speak, but I don't always land my point.",
-        "I land my points — but I lack consistent presence.",
+        "I land my points, but I lack consistent presence.",
         "I'm already strong. I want to go to the next level.",
       ],
       scene: "structure",
@@ -384,7 +384,7 @@ export function Onboarding({onDone}) {
                   color: T.text4, fontSize: 12, cursor: "pointer", textAlign: "left",
                   fontFamily: T.sans, letterSpacing: "0.2px",
                 }}>
-                  Skip — use general scenarios →
+                  Skip and use general scenarios →
                 </button>
               </div>
             </div>
@@ -476,7 +476,7 @@ export function Onboarding({onDone}) {
               </div>
             ))}
             <button onClick={()=>pickRole(null)} style={{marginTop:20,padding:"10px 0",background:"none",border:"none",color:"#A8998A",fontSize:12,cursor:"pointer",textAlign:"left",fontFamily:T.sans,letterSpacing:"0.2px"}}>
-              Skip — use general scenarios →
+              Skip and use general scenarios →
             </button>
           </div>
         </div>
