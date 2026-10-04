@@ -1012,6 +1012,18 @@ export const REVIEW_NARRATION = {
   2: { src: "/day2-review.mp3", secs: 22 },
 };
 
+// Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)
+export const D3_THEORY_CARDS = [
+  { word:"The Real Cause", sub:"Fillers aren't really a habit. They're a symptom: your brain holding the floor while it catches up.",
+    bullets:["Speaking, thinking, and organising ideas all compete for the same mental bandwidth at once.","When your mouth moves faster than your thoughts, your brain reaches for a placeholder. That placeholder is the filler."] },
+  { word:"Inside the Moment", sub:"What actually happens in the moment you say 'um' or 'er'.",
+    bullets:["Your next thought isn't ready. The filler buys your brain time, but at the cost of your credibility.","The audience hears the filler before they hear the idea. It signals uncertainty, even when you feel confident."] },
+  { word:"The Strategic Pause", sub:"The solution is not to speak faster. It is to stop, and let your brain catch up.",
+    bullets:["When you feel the urge to fill, pause instead. Close your mouth. Let the silence work.","A pause signals control. It tells the room: what comes next is worth waiting for."] },
+  { word:"Why This Fix Works", sub:"Pause. Breathe. That single moment changes everything.",
+    bullets:["A breath creates mental clarity and calms the nervous system. In that moment, you give yourself the best possible chance of a strong response.","Speak in declarative statements. Calm. Clear. Certain. One idea. One sentence. Full stop. No hedge. No filler. Just the point."] },
+];
+
 // Day 2 Theory — The 88 Keys
 export const D2_SCIENCE_CARDS = [
   { word:"Prosody",            sub:"Your voice carries meaning before words do",  bullets:["Humans decode emotion through rhythm, pitch, pace and stress, faster than language itself.","The way you say something communicates intent, confidence and feeling before the content registers."] },

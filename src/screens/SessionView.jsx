@@ -21,6 +21,7 @@ import D1Theory from '../modules/D1Theory.jsx';
 import D2Insight from '../modules/D2Insight.jsx';
 import D2Theory from '../modules/D2Theory.jsx';
 import D3Insight from '../modules/D3Insight.jsx';
+import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget, D5SimWidget } from '../modules/Day5.jsx';
@@ -1343,45 +1344,8 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>The Cognitive Load Principle</h2>
-          <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:24}}>
-            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0,fontStyle:"italic"}}>Fillers happen when your brain is multitasking faster than it can think.</p>
-          </div>
-          {(()=>{
-            const [open3, setOpen3] = useState(null);
-            const CARDS = [
-              {label:"The Real Cause",           sub:"Fillers are not a habit. They are a symptom — your brain trying to hold the floor while it catches up.",
-                bullets:["Speaking, thinking, and organising ideas all compete for the same mental bandwidth at once.","When your mouth moves faster than your thoughts, your brain reaches for a placeholder. That placeholder is the filler."]},
-              {label:"Inside the Moment",        sub:"What actually happens in the moment you say 'um' or 'er'.",
-                bullets:["Your next thought isn't ready. The filler buys your brain time — but at the cost of your credibility.","The audience hears the filler before they hear the idea. It signals uncertainty, even when you feel confident."]},
-              {label:"The Strategic Pause",      sub:"The solution is not to speak faster. It is to stop — and let your brain catch up.",
-                bullets:["When you feel the urge to fill, pause instead. Close your mouth. Let the silence work.","A pause signals control. It tells the room: what comes next is worth waiting for."]},
-              {label:"Why This Fix Works",      sub:"Pause. Breathe. That single moment changes everything.",
-                bullets:["A breath creates mental clarity and calms the nervous system — in that moment, you give yourself the best possible chance of a strong response.","Speak in declarative statements. Calm. Clear. Certain. One idea. One sentence. Full stop. No hedge. No filler. Just the point."]},
-            ];
-            return (
-              <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:24}}>
-                {CARDS.map((p,i)=>{
-                  const isOpen=open3===i;
-                  return (
-                    <div key={i} onClick={()=>setOpen3(isOpen?null:i)}
-                      style={{padding:"18px 20px",background:T2.surface,borderRadius:4,border:`0.5px solid ${isOpen?"rgba(138,158,132,0.4)":T2.border}`,cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:isOpen?"0 2px 16px rgba(138,158,132,0.15)":"none"}}>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:isOpen?8:8}}>
-                        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",flex:1}}>{p.label}</div>
-                        <span style={{fontFamily:T.sans,fontSize:15,color:isOpen?T.gold:"rgba(138,158,132,0.6)",marginLeft:8,flexShrink:0}}>{isOpen?"▴":"▸"}</span>
-                      </div>
-                      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:400,margin:isOpen?"0 0 12px":0}}>{p.sub}</p>
-                      {isOpen && (<div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",flexDirection:"column",gap:8}}>
-                        {p.bullets.map((b,j)=>(<div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/><p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:0}}>{b}</p></div>))}
-                      </div>)}
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })()}
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto",position:"relative"}}>
+          <D3Theory T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
         </div>
       );
 
