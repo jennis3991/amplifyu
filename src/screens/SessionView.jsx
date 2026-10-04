@@ -4480,7 +4480,7 @@ setAmbitionSaved(true); } catch {}
             {/* RIGHT PANEL — Supporting content (40%) */}
             <div id="au-right-panel" ref={rightPanelRef} style={{
               flex: 1,
-              background: step === "Rehearsal" ? "rgba(247,243,236,0.92)" : T2.bg,
+              background: step === "Rehearsal" && !dark ? "rgba(247,243,236,0.92)" : T2.bg,
               overflowY: "auto", position: "relative", zIndex: 1,
               borderLeft: "1px solid " + T2.divider,
             }}>

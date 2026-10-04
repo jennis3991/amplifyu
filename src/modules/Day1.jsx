@@ -4,6 +4,7 @@ import { useWakeLock, localStorageUsageRatio, useOnlineStatus } from '../utils.j
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { Paywall } from '../components/Paywall.jsx';
 import { trialExhausted, incrementTrialCount } from '../lib/purchases.js';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 const REHEARSAL_TRIAL_KEY = 'au1_trial_d1_rehearsal';
 const SIMULATION_TRIAL_KEY = 'au1_trial_d1_simulation';
@@ -641,6 +642,10 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
 const D1_REHEARSAL_MAX_SEC = 120;
 export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComplete, onEntitled }) {
   const [showPaywall, setShowPaywall] = useState(false);
+  // Coach intro to the warm-up (no on-screen cues). The widget stays mounted
+  // across its phases, so the coach is paused explicitly when recording
+  // begins rather than relying on unmount.
+  const coach = useCoachNarration({ src: "/day1-rehearsal.mp3", cues: [] });
   const roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
 
   const IC_BRIEF  = <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="8" y1="12" x2="16" y2="12"/></svg>;
@@ -757,6 +762,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
   }
 
   function beginRehearsal() {
+    coach.pause();
     if (sel === null) return;
     setPhase('record');
     setIsRec(false);
@@ -890,6 +896,8 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 10 }}>Rehearsal · Day 1</div>
       <h2 style={{ fontFamily: T.serif, fontSize: isDesktop ? 40 : 28, fontWeight: 600, color: T2.text, lineHeight: 1.1, marginBottom: 20 }}>Voice Warm-Up</h2>
       <p style={{ fontFamily: T.sans, fontSize: isDesktop ? 16 : 15, color: "#A8998A", lineHeight: 1.6, fontWeight: 400, marginBottom: 24 }}>Choose one topic below and speak for around 30 seconds. This is simply a chance to find your voice. Just speak naturally, and we'll take care of the rest.</p>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={26} style={{ marginBottom: isDesktop ? 24 : 20 }} />
       <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:20}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
           <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
@@ -919,8 +927,10 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
       <button onClick={beginRehearsal} disabled={sel === null} style={{
         width: "100%", marginTop: isDesktop ? 24 : 20, padding: isDesktop ? "14px" : "13px",
         borderRadius: 4, border: "none",
-        background: sel === null ? "rgba(44,36,22,0.12)" : "#2C2416",
-        color: sel === null ? "#A8998A" : "#F7F3EC",
+        // Dark mode: a parchment button on the dark panel (the light-mode
+        // charcoal would disappear into it).
+        background: sel === null ? (T2.bg !== T.bg ? "rgba(255,255,255,0.08)" : "rgba(44,36,22,0.12)") : (T2.bg !== T.bg ? "#F7F3EC" : "#2C2416"),
+        color: sel === null ? (T2.bg !== T.bg ? "rgba(255,255,255,0.35)" : "#A8998A") : (T2.bg !== T.bg ? "#19160F" : "#F7F3EC"),
         fontSize: isDesktop ? 15 : 14, fontWeight: 600, fontFamily: T.sans,
         cursor: sel === null ? "not-allowed" : "pointer", minHeight: 48, transition: "all 0.2s",
       }}>
