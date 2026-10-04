@@ -1,3 +1,4 @@
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 import { useWakeLock, useOnlineStatus } from '../utils.js';
@@ -157,7 +158,13 @@ const TOPICS = [
 ];
 
 const D3_REHEARSAL_MAX_SEC = 120;
+// Coach intro audio outlives any one widget instance (same pattern as the
+// Day 1/2 Simulations) so a remount mid-narration can't orphan it.
+const d3DrillCoachSlot = { current: null };
+
 export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimulation}) {
+  // Coach intro: plays on the topic screens, stops when recording starts (doStart).
+  const coach = useCoachNarration({ src: "/day3-rehearsal.mp3", cues: [], sharedAudioRef: d3DrillCoachSlot });
   const [phase, setPhase] = useState('select');
   const [topic, setTopic] = useState(null);
   const [isRec, setIsRec] = useState(false);
@@ -222,6 +229,7 @@ export function D3PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimul
   }, [isRec]);
 
   function doStart() {
+    coach.pause();
     setIsRec(true);
     setElapsed(0);
     setMicError(false); setTranscribeFailed(false);
@@ -335,14 +343,15 @@ CRITICAL TONE RULES:
 — If the transcript is empty, a placeholder, or contains no real speech, keep the observation general rather than inventing or quoting content that wasn't said.
 — Never open with "No worries", "Don't worry", "That's okay", or any casual reassurance.
 — Write in the voice of a calm, professional, direct executive coach. Motivational, never slangy.
+— Never use em dashes in your response; use a comma or a full stop instead.
 — Never use informal phrases like "one beat of stillness", "beat of silence", "carry that stillness", or similar. Use clear, professional language.
 — Never reference "the Hot Seat", "the simulation", or any other screen by name. The feedback is self-contained.
 — Structure: affirm the specific thing they said, referencing it directly. Do NOT include a "next step" instruction or cue — the screen shows that separately. coachLine is affirmation only.
 
 The lines below illustrate TONE ONLY — never reuse their wording. Build the actual coachLine from the specific transcript given, and match it to the measured pause data provided.
-If openingPause is true and midSpeechPause is true: affirm both — they paused before starting AND paused between ideas. Tone reference, do not copy: "You opened with a deliberate pause and let [specific detail] land before moving on — that's exactly the rhythm confident communicators use."
-If openingPause is true and midSpeechPause is false: affirm the opening pause, referencing what they said. Tone reference, do not copy: "You took a deliberate pause before diving into [specific detail] — a strong instinct that most speakers skip."
-If openingPause is false and midSpeechPause is true: affirm the pauses between ideas, referencing what they said. Tone reference, do not copy: "You let [specific detail] land with a real pause before moving on — that kind of restraint is rare."
+If openingPause is true and midSpeechPause is true: affirm both — they paused before starting AND paused between ideas. Tone reference, do not copy: "You opened with a deliberate pause and let [specific detail] land before moving on, and that's exactly the rhythm confident communicators use."
+If openingPause is true and midSpeechPause is false: affirm the opening pause, referencing what they said. Tone reference, do not copy: "You took a deliberate pause before diving into [specific detail], a strong instinct that most speakers skip."
+If openingPause is false and midSpeechPause is true: affirm the pauses between ideas, referencing what they said. Tone reference, do not copy: "You let [specific detail] land with a real pause before moving on. That kind of restraint is rare."
 If both are false: affirm the specific thing they said clearly, referencing it directly. Tone reference, do not copy: "You were clear and direct about [specific detail]."
 
 Never use the word fillers. Never use the word perfect. Always frame as growth. Never use em dashes in coachLine; use a comma or hyphen instead.`,
@@ -379,8 +388,14 @@ Never use the word fillers. Never use the word perfect. Always frame as growth. 
         The strongest communicators don't rush to answer or rush between points. They give themselves, and their listener, permission to think.
       </p>
       <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px', fontStyle:'italic'}}>
-        If you feel the urge to use a filler word — just pause instead.
+        If you feel the urge to use a filler word, just pause instead.
       </p>
+      {(phase === 'select' || phase === 'pause') && (
+        <>
+          <CoachStyles />
+          <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={34} style={{ marginTop: 8, marginBottom: 14 }} />
+        </>
+      )}
       <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:14}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
           <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
