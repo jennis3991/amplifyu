@@ -1009,6 +1009,7 @@ export const D2_EXAMPLE_AUDIO = {
 // End-of-day coach message on the Review step, keyed by day.
 export const REVIEW_NARRATION = {
   1: { src: "/day1-review.mp3", secs: 18 },
+  2: { src: "/day2-review.mp3", secs: 22 },
 };
 
 // Day 2 Theory — The 88 Keys
