@@ -387,9 +387,6 @@ Never use the word fillers. Never use the word perfect. Always frame as growth. 
       <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text3, lineHeight:1.7, margin:'0 0 10px'}}>
         The strongest communicators don't rush to answer or rush between points. They give themselves, and their listener, permission to think.
       </p>
-      <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.6, margin:'0 0 10px', fontStyle:'italic'}}>
-        If you feel the urge to use a filler word, just pause instead.
-      </p>
       {(phase === 'select' || phase === 'pause') && (
         <>
           <CoachStyles />
@@ -559,7 +556,7 @@ const HOT_SEAT_SCENARIOS = {
       icon: IC_ICON(<><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></>),
       label:'The Weekend Ask',
       brief:`It's Friday afternoon. Your manager stops by your desk: "I need this finished by Monday morning."`,
-      q1:'So — can you make the weekend work?',
+      q1:'So, can you make the weekend work?',
       q2:"Your manager pushes: \"I really need this. Is there any way to make it work?\"",
     },
     {
@@ -615,7 +612,14 @@ const HOT_SEAT_SCENARIOS = {
 
 // ─── D3 Simulation Widget — The Hot Seat ─────────────────────────────────────
 const D3_SIMULATION_MAX_SEC = 120;
+// Coach intro audio outlives any one widget instance (same pattern as the
+// other Simulations) so a remount mid-narration can't orphan it.
+const d3SimCoachSlot = { current: null };
+
 export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
+  // Coach intro: plays while a scenario is chosen and the brief is read,
+  // stops when "I'm Ready" starts the first question.
+  const coach = useCoachNarration({ src: "/day3-simulation.mp3", cues: [], sharedAudioRef: d3SimCoachSlot });
   const [phase, setPhase] = useState('select');
   const [track] = useState(() => {
     try { return localStorage.getItem('amplifyu_track') || 'ic'; } catch { return 'ic'; }
@@ -687,6 +691,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   }, [isRec, phase]);
 
   function doStart() {
+    coach.pause();
     setIsRec(true); setTimeLeft(D3_SIMULATION_MAX_SEC);
     setMicError(false); setTranscribeFailed(false);
     audioChunksRef.current = [];
@@ -804,9 +809,15 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
       <div style={{background:'rgba(138,158,132,0.07)', borderRadius:6, border:'0.5px solid rgba(138,158,132,0.18)', padding:'14px 16px', marginBottom: phase !== 'select' ? 12 : 0}}>
         <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.7)', textTransform:'uppercase', letterSpacing:'2px', marginBottom:8}}>Coach Tip</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text2, lineHeight:1.65, margin:0}}>
-          When you feel the urge to fill the silence — pause instead. Great communicators don't fill silence. They use it.
+          When you feel the urge to fill the silence, pause instead. Great communicators don't fill silence. They use it.
         </p>
       </div>
+      {(phase === 'select' || phase === 'brief') && (
+        <>
+          <CoachStyles />
+          <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={36} style={{ marginTop: 14, marginBottom: 4 }} />
+        </>
+      )}
       {phase !== 'select' && <div style={cs.cue}>Pause · Breathe · Respond</div>}
     </div>
   );
@@ -862,7 +873,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <div style={{height: '100%', width: ((45 - briefSecs) / 45 * 100) + '%', background: 'rgba(138,158,132,0.55)', borderRadius: 2, transition: 'width 1s linear'}} />
       </div>
     </div>
-    <button onClick={() => setPhase('pause1')} style={cs.cta}>
+    <button onClick={() => { coach.pause(); setPhase('pause1'); }} style={cs.cta}>
       I'm Ready →
     </button>
     <div style={cs.cue}>Pause · Breathe · Respond</div>
@@ -952,7 +963,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <div style={{background: 'rgba(138,158,132,0.07)', borderRadius: 6, border: '0.5px solid rgba(138,158,132,0.18)', padding: '14px 16px'}}>
           <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.7)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 8}}>Coach Tip</div>
           <p style={{fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, fontStyle: 'italic', color: T2.text2, lineHeight: 1.65, margin: 0}}>
-            When you feel the urge to fill the silence — pause instead. Great communicators don't fill silence. They use it.
+            When you feel the urge to fill the silence, pause instead. Great communicators don't fill silence. They use it.
           </p>
         </div>
       </div>
@@ -973,7 +984,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
     <div style={{...cs.card, textAlign: 'center', padding: isDesktop ? '40px 32px' : '28px 22px'}}>
       <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: 'rgba(138,158,132,0.55)', textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 20}}>Q1 Complete</div>
       <p style={{fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, fontWeight: 600, color: T2.text, lineHeight: 1.35, margin: '0 0 10px'}}>{q1Observation(transcript1)}</p>
-      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: 'rgba(245,239,230,0.6)', lineHeight: 1.45, margin: 0}}>One more question — and this one pushes back.</p>
+      <p style={{fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, color: 'rgba(245,239,230,0.6)', lineHeight: 1.45, margin: 0}}>One more question, and this one pushes back.</p>
     </div>
     <button onClick={() => setPhase('pause2')} style={cs.cta}>Continue →</button>
     <div style={cs.cue}>Pause · Breathe · Respond</div>

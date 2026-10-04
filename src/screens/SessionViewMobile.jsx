@@ -326,18 +326,18 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD14 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Your Communication Blueprint" headline="Build the system you'll use for the rest of your career." />;
         if(step==="Simulation"){
           const SIM={
-            1:{label:"SPEAK CLEARLY — IN ACTION",heading:"Clarity under pressure. This is the real test."},
+            1:{label:"SPEAK CLEARLY IN ACTION",heading:"Clarity under pressure. This is the real test."},
             2:{label:"REAL-WORLD VOICE COACHING",heading:"This is where voice training becomes real."},
-            3:{label:"FILLER-FREE — IN ACTION",heading:"60 seconds. Zero fillers. Real stakes."},
-            4:{label:"BREVITY — IN ACTION",heading:"Short sentences. High stakes. Go."},
-            5:{label:"PRE — IN ACTION",heading:"Structure your thinking. Speak with precision."},
+            3:{label:"FILLER-FREE IN ACTION",heading:"60 seconds. Zero fillers. Real stakes."},
+            4:{label:"BREVITY IN ACTION",heading:"Short sentences. High stakes. Go."},
+            5:{label:"PRE IN ACTION",heading:"Structure your thinking. Speak with precision."},
             6:{label:"AI CONVERSATION PREP",heading:"Prepare for the conversations that matter most."},
             7:{label:"WEEK 1 MASTER CHALLENGE",heading:"Teach It Forward. Prove what you know."},
-            8:{label:"NARRATIVE — IN ACTION",heading:"Tell the story. Transport your audience."},
+            8:{label:"NARRATIVE IN ACTION",heading:"Tell the story. Transport your audience."},
             9:{label:"THE RAPPORT BUILDER",heading:"Adapt your style. Build genuine rapport."},
-            10:{label:"PERFORMANCE — IN ACTION",heading:"Communicate your impact with conviction."},
-            11:{label:"BRAND — IN ACTION",heading:"Your brand is built in every room you enter. Shape it."},
-            12:{label:"PRESENCE — IN ACTION",heading:"Every signal you send shapes what people believe."},
+            10:{label:"PERFORMANCE IN ACTION",heading:"Communicate your impact with conviction."},
+            11:{label:"BRAND IN ACTION",heading:"Your brand is built in every room you enter. Shape it."},
+            12:{label:"PRESENCE IN ACTION",heading:"Every signal you send shapes what people believe."},
           };
           const sh=SIM[lesson.day]||{label:"SIMULATION",heading:"Real scenario. Real pressure. Real coaching."};
           return <TabHeroPane image="/simulation-hero.jpg" label={sh.label} headline={sh.heading} />;
