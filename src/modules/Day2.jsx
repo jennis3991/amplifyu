@@ -3,6 +3,7 @@ import { T } from '../theme.js';
 import { useWakeLock, localStorageUsageRatio, useOnlineStatus } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { detectPitchHz, computeSignalMetrics } from './voiceSignal.js';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -95,7 +96,14 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
 
 // ─── D2 SIM WIDGET — voice recording + AI vocal coach ────────────────────────
 const D2_SIMULATION_MAX_SEC = 120;
+// Coach intro audio lives outside any one widget instance (same pattern as
+// the Day 1 Simulation) so it survives a remount mid-narration.
+const d2SimCoachSlot = { current: null };
+
 export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
+  // Coach intro: keeps playing while a prompt is chosen, stops when
+  // recording starts (see doStart).
+  const coach = useCoachNarration({ src: "/day2-simulation.mp3", cues: [], sharedAudioRef: d2SimCoachSlot });
   const PROMPTS = {
     Presence:[
       "Introduce yourself as if you're speaking to a room of 500 people.",
@@ -326,6 +334,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   }
 
   function doStart(){
+    coach.pause();
     // Clean up any stale recorder/stream left over from a previous attempt
     // so a leftover active MediaRecorder can't make the new one throw.
     const prevMr = mediaRecRef.current;
@@ -557,6 +566,8 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // ── INTRO ───────────────────────────────────────────────────────────────────
   if(phase==='intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={34} style={{ marginBottom: 0, alignSelf: isDesktop ? "flex-start" : "stretch" }} />
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>How It Works</div>
         <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>A simple 4-step vocal check-in.</h2>
