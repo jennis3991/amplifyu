@@ -1526,7 +1526,7 @@ setAmbitionSaved(true); } catch {}
             )}
             {fillerFailed && (
               <div style={{background:"rgba(180,80,60,0.08)",borderLeft:"4px solid #B05C4A",borderRadius:4,padding:"20px 24px",marginTop:20}}>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong analysing that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong analysing that. Try again.":"You're offline. This needs a connection. Try again once you're back online."}</p>
               </div>
             )}
           </div>

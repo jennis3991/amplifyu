@@ -469,7 +469,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth. 
       </div>
       <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
         <div style={{width: 7, height: 7, borderRadius: '50%', background: '#c0392b'}} />
-        <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording — {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D3_REHEARSAL_MAX_SEC/60)}:{String(D3_REHEARSAL_MAX_SEC%60).padStart(2,'0')}</span>
+        <span style={{fontFamily: T.sans, fontSize: 11, color: T2.text3, letterSpacing: '0.05em'}}>Recording {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D3_REHEARSAL_MAX_SEC/60)}:{String(D3_REHEARSAL_MAX_SEC%60).padStart(2,'0')}</span>
       </div>
     </div>
     {isRec ? (
@@ -565,13 +565,13 @@ const HOT_SEAT_SCENARIOS = {
       label:'The Salary Cut',
       brief:`Your manager calls you into a meeting: "Due to some company-wide changes, we need to reduce your salary starting next month."`,
       q1:"I know this isn't the news you were expecting, and I'd like to hear your thoughts.",
-      q2:"Your manager says: \"I know it's not easy news, but the decision has already been made — is there anything else you'd like me to know?\"",
+      q2:"Your manager says: \"I know it's not easy news, but the decision has already been made. Is there anything else you'd like me to know?\"",
     },
     {
       id:'feedback',
       icon: IC_ICON(<><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></>),
       label:'Responding to feedback',
-      brief:`Your manager has just shared some feedback from a stakeholder: your last project update email was described as "hard to follow." Your manager isn't criticising you — they're giving you a heads up before a wider review meeting this afternoon and asking for your reaction.`,
+      brief:`Your manager has just shared some feedback from a stakeholder: your last project update email was described as "hard to follow." Your manager isn't criticising you. They're giving you a heads up before a wider review meeting this afternoon and asking for your reaction.`,
       q1:"What's your initial reaction to that feedback?",
       q2:'What would you do differently next time?',
     },
