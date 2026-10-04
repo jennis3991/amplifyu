@@ -234,7 +234,7 @@ const CIRCUIT_CHARS = [
   },
 ];
 
-const D13_SIMULATION_MAX_SEC = 180;
+const D13_SIMULATION_MAX_SEC = 120;
 export function D13SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
   const [charIdx, setCharIdx] = useState(0);
@@ -273,7 +273,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
     return () => clearInterval(timerRef.current);
   }, [recordState]);
 
-  // Hard cap — each turn's Simulation recording auto-stops (and auto-submits) at 180s.
+  // Hard cap — each turn's Simulation recording auto-stops (and auto-submits) at 120s.
   useEffect(() => {
     if (recordState === 'recording' && elapsed >= D13_SIMULATION_MAX_SEC) stopRecording();
   }, [recordState, elapsed]);

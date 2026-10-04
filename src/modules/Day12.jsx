@@ -223,7 +223,7 @@ function getSupportedVideoMime() {
 }
 
 // ─── D12 Simulation Widget — Video Presence Recorder ─────────────────────────
-const D12_SIMULATION_MAX_SEC = 180;
+const D12_SIMULATION_MAX_SEC = 120;
 export function D12SimWidget({T, T2, isDesktop}) {
   const PROMPTS = [
     {label:"Inspire",    text:"Tell a short story about something that genuinely changed how you see the world."},
@@ -258,7 +258,7 @@ export function D12SimWidget({T, T2, isDesktop}) {
     if (blobUrl)            URL.revokeObjectURL(blobUrl);
   },[]);
 
-  // Hard cap — Simulation recordings auto-stop (and auto-submit) at 180s.
+  // Hard cap — Simulation recordings auto-stop (and auto-submit) at 120s.
   useEffect(()=>{
     if (isRecording && recTime>=D12_SIMULATION_MAX_SEC) stopRecording();
   },[isRecording, recTime]);

@@ -216,7 +216,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
 }
 
 // ─── D7 Simulation Widget — Week 1 Master Challenge ───────────────────────────
-const D7_SIMULATION_MAX_SEC = 180;
+const D7_SIMULATION_MAX_SEC = 120;
 export function D7SimWidget({ T, T2, isDesktop }) {
   const [phase,      setPhase]     = useState('intro');
   const [timeLeft,   setTimeLeft]  = useState(D7_SIMULATION_MAX_SEC);

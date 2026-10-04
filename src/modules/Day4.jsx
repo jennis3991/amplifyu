@@ -385,7 +385,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
 }
 
 // ─── D4 Simulation Widget — Breaking News Live ───────────────────────────────
-const D4_SIMULATION_MAX_SEC = 180;
+const D4_SIMULATION_MAX_SEC = 120;
 export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const STORIES = [
     {cat:"💼 Business", items:["Four-Day Work Week Announced Nationwide","Major Cyber Attack Takes Down Global Tech Giant"]},
@@ -567,7 +567,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>How It Works</div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>A live news broadcast — up to 3 minutes.</h2>
+        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>A live news broadcast, up to 2 minutes.</h2>
         <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
           {[
             {n:1,label:"Choose a story",icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M7 5v12M3 9h16" stroke={T.gold} strokeWidth="1.3"/></svg>},
@@ -627,7 +627,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
       <div style={cs.card}>
         <div style={cs.label}>Breaking News</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:16}}>Choose your story. You have up to 3 minutes to report it live to the nation.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:16}}>Choose your story. You have up to 2 minutes to report it live to the nation.</p>
         {STORIES.map((cat,ci)=>(
           <div key={ci} style={{marginBottom:ci<STORIES.length-1?16:0}}>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{cat.cat.replace(/^[^\s]+\s/,'')}</div>

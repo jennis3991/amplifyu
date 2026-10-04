@@ -599,7 +599,7 @@ const HOT_SEAT_SCENARIOS = {
 };
 
 // ─── D3 Simulation Widget — The Hot Seat ─────────────────────────────────────
-const D3_SIMULATION_MAX_SEC = 180;
+const D3_SIMULATION_MAX_SEC = 120;
 export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const [phase, setPhase] = useState('select');
   const [track] = useState(() => {

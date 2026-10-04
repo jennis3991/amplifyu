@@ -86,7 +86,7 @@ export function D9PracticeWidget({T, T2, isDesktop}) {
 }
 
 // ─── D9 Simulation Widget — The Rapport Builder ──────────────────────────
-const D9_SIMULATION_MAX_SEC = 180;
+const D9_SIMULATION_MAX_SEC = 120;
 export function D9SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const CHARS = [
     {
@@ -266,7 +266,7 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
     return()=>clearInterval(timerRef.current);
   },[isRec]);
 
-  // Hard cap — each turn's Simulation recording auto-stops (and auto-submits) at 180s.
+  // Hard cap — each turn's Simulation recording auto-stops (and auto-submits) at 120s.
   useEffect(()=>{
     if(isRec && elapsed>=D9_SIMULATION_MAX_SEC) doStop(handleTurnDone);
   },[isRec, elapsed]);

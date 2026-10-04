@@ -321,7 +321,7 @@ function DropDown({field, value, placeholder, options, onSelect, open, onToggle,
 }
 
 // ─── D6 Simulation Widget — AI Conversation Prep ────────────────────────────
-const D6_SIMULATION_MAX_SEC = 180;
+const D6_SIMULATION_MAX_SEC = 120;
 export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const INDUSTRIES = ['Technology','Finance','Healthcare','Education','Hospitality','Retail','Sales','Marketing','Legal','Consulting','Other'];
   const MEETING_OPTIONS = [
@@ -482,7 +482,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
     return()=>clearInterval(timerRef.current);
   },[isListening]);
 
-  // Hard cap — Simulation recordings auto-submit at 180s (cumulative across
+  // Hard cap — Simulation recordings auto-submit at 120s (cumulative across
   // pause/resume, since MediaRecorder.pause() keeps the buffered audio).
   useEffect(()=>{
     if(isListening && recTime>=D6_SIMULATION_MAX_SEC) submitAnswer();

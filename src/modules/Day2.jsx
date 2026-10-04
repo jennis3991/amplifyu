@@ -94,7 +94,7 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
 }
 
 // ─── D2 SIM WIDGET — voice recording + AI vocal coach ────────────────────────
-const D2_SIMULATION_MAX_SEC = 180;
+const D2_SIMULATION_MAX_SEC = 120;
 export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const PROMPTS = {
     Presence:[

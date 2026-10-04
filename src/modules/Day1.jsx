@@ -1058,9 +1058,16 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
 }
 
 // ─── RECORD & REVIEW™ — D1 Simulation ────────────────────────────────────────
-const D1_SIMULATION_MAX_SEC = 180;
+const D1_SIMULATION_MAX_SEC = 120;
+// Desktop renders the Simulation inside a component that can remount, so the
+// coach's audio lives in a module-level slot that outlives any one instance.
+const simCoachSlot = { current: null };
+
 export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, onEntitled}) {
   const [showSimPaywall, setShowSimPaywall] = useState(false);
+  // Coach intro: keeps playing while a conversation starter is chosen, and
+  // stops the moment recording starts (see doStart).
+  const coach = useCoachNarration({ src: "/day1-simulation.mp3", cues: [], sharedAudioRef: simCoachSlot });
   const _roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
 
   const _WORK_BY_ROLE = {
@@ -1308,7 +1315,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
     return ()=>clearInterval(timerRef.current);
   },[isRec]);
 
-  // Hard cap — Simulation recordings auto-stop (and auto-submit) at 180s.
+  // Hard cap — Simulation recordings auto-stop (and auto-submit) at 120s.
   useEffect(()=>{
     if(isRec && elapsed>=D1_SIMULATION_MAX_SEC) doStop();
   },[isRec, elapsed]);
@@ -1330,6 +1337,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
   },[playing]);
 
   function doStart(){
+    coach.pause();
     setPreparingMic(true); setElapsed(0); setTranscript(''); setAudioURL(null); setMicError(false); setTranscribeFailed(false);
     audioDataURIRef.current=null;
     if(navigator.mediaDevices?.getUserMedia && window.MediaRecorder){
@@ -1447,6 +1455,8 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
   // ── INTRO ─────────────────────────────────────────────────────────────────
   if(phase==='intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={49} style={{ marginBottom: 0, alignSelf: isDesktop ? "flex-start" : "stretch" }} />
 
       {/* HOW IT WORKS — top, both desktop + mobile */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
@@ -1502,7 +1512,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
           </div>
           <div style={{flex:1}}>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0}}>
-              Self-review is one of the fastest ways to improve communication — trusted by elite speakers, performers and Fortune 500 leaders because <strong style={{color:T.gold,fontWeight:700}}>awareness comes before change</strong>.
+              Self-review is one of the fastest ways to improve communication, trusted by elite speakers, performers and Fortune 500 leaders because <strong style={{color:T.gold,fontWeight:700}}>awareness comes before change</strong>.
             </p>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:isDesktop?"10px 0 0":"8px 0 0",fontStyle:"italic"}}>
               This is your baseline. Every session from here builds greater clarity, confidence and influence.
@@ -1611,7 +1621,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
             <div key={i} style={{width:isDesktop?4:3,background:isRec?T.gold:T2.border,borderRadius:2,height:isRec?Math.round(h*32)+"px":"4px",transition:"height 0.12s ease,background 0.3s ease"}}/>
           ))}
         </div>
-        {!isRec && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20}}>Speak naturally — around 2 minutes is a good guide.</p>}
+        {!isRec && <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,marginBottom:20}}>Speak naturally. Around 90 seconds is a good guide.</p>}
         {/* Record button — same mic-circle pattern as Rehearsal */}
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16}}>
           <button onClick={preparingMic ? undefined : (isRec ? doStop : doStart)} disabled={preparingMic} style={{

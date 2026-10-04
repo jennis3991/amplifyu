@@ -213,7 +213,7 @@ export function explainD10Score(dim, score) {
 }
 
 // ─── Leadership Hot Seat — D10 Simulation (mobile) ───────────────────────────
-const D10_SIMULATION_MAX_SEC = 180;
+const D10_SIMULATION_MAX_SEC = 120;
 export function D10MobileSim({T2: _T2, onRecordingChange}) {
   const T2 = _T2 || T;
   const [introSeen, setIntroSeen] = useState(false);
@@ -252,7 +252,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
     return()=>clearInterval(timerRef.current);
   },[isRec]);
 
-  // Hard cap — Simulation recordings auto-stop (and auto-submit) at 180s.
+  // Hard cap — Simulation recordings auto-stop (and auto-submit) at 120s.
   useEffect(()=>{
     if(isRec && elapsed>=D10_SIMULATION_MAX_SEC) doStop();
   },[isRec, elapsed]);
@@ -340,7 +340,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
 
   if (!introSeen) return (
     <div>
-      <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#A8998A",lineHeight:1.6,marginBottom:18,fontWeight:300}}>Four real scenarios. Up to 3 minutes each. Speak — get coached.</p>
+      <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#A8998A",lineHeight:1.6,marginBottom:18,fontWeight:300}}>Four real scenarios. Up to 2 minutes each. Speak and get coached.</p>
       <div style={{display:"flex",alignItems:"flex-start",marginBottom:20}}>
         {[
           {n:1,label:"Pick a\nscenario",icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="14" height="16" rx="2" stroke="#8A9E84" strokeWidth="1.3"/><path d="M7 7h8M7 11h8M7 15h5" stroke="#8A9E84" strokeWidth="1.3" strokeLinecap="round"/></svg>},

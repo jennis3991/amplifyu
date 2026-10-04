@@ -489,7 +489,7 @@ Return only valid JSON with all fields present.`,
         <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:T2.text, lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:600}}>{line}</p>
       ))}
     </div>
-    <VoiceRecorder T={T} T2={T2} maxSeconds={180} onRecordingChange={setVoiceActive} onDone={(text) => {
+    <VoiceRecorder T={T} T2={T2} maxSeconds={120} onRecordingChange={setVoiceActive} onDone={(text) => {
       const t1 = text || '[first answer]';
       transcript1Ref.current = t1;
       setPhase('analyzing1');
@@ -572,7 +572,7 @@ Return only valid JSON with all fields present.`,
         <p key={i} style={{fontFamily:T.serif, fontSize:isDesktop?18:16, color:T2.text, lineHeight:1.4, margin:i<2?'0 0 14px':0, fontWeight:600}}>{line}</p>
       ))}
     </div>
-    <VoiceRecorder T={T} T2={T2} maxSeconds={180} onRecordingChange={setVoiceActive} onDone={(text) => {
+    <VoiceRecorder T={T} T2={T2} maxSeconds={120} onRecordingChange={setVoiceActive} onDone={(text) => {
       const t2 = text || '[second answer]';
       setPhase('analyzing2');
       analyzeDebrief(transcript1Ref.current, t2);
