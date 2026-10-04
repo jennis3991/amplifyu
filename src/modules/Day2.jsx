@@ -45,10 +45,10 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
     {id:"pause",title:"Pause Power",sentence:'"We have one problem." [pause] "Time."',
      instruction:"Say it once with the pause. Once without. Feel the difference.",
      modes:["Without pause","With deliberate pause"],
-     lesson:"The pause is not empty — it's where your meaning lands."},
+     lesson:"The pause is not empty. It's where your meaning lands."},
     {id:"pitch",title:"Pitch Ladder",sentence:'"I believe this is the right direction, and I think we should move forward with confidence."',
      instruction:"Say the same sentence starting high and dropping steadily lower word by word. Let authority build as your voice descends.",
-     modes:["Higher pitch — start energised","Neutral pitch — controlled and clear","Lower pitch — authority and conviction"],
+     modes:["Higher pitch: start energised","Neutral pitch: controlled and clear","Lower pitch: authority and conviction"],
      lesson:"Lower pitch signals authority. Higher pitch signals energy or uncertainty."},
   ];
   const [openEx, setOpenEx] = useState(null);
@@ -84,7 +84,7 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
 
   const closingCard = allViewed && (
     <div style={{background:T2.surface,borderRadius:isDesktop?4:8,border:"0.5px solid "+T2.border,borderLeft:"3px solid "+T.gold,padding:isDesktop?"20px 24px":"16px",marginTop:isDesktop?0:10}}>
-      <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>Every time you play with your pace, your pauses, and your pitch out loud, you're building a voice you can actually direct — not one that just happens to you. The next time it matters, you'll hear the difference.</p>
+      <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>Every time you play with your pace, your pauses, and your pitch out loud, you're building a voice you can actually direct, not one that just happens to you. The next time it matters, you'll hear the difference.</p>
     </div>
   );
 

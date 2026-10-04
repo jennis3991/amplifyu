@@ -2011,8 +2011,9 @@ T.goldDark : T2.text4,
        {isD2 && step==="Rehearsal" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Train Your Instrument</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Voice requires repetition. Work through each exercise then take the speed challenge.</p>
-          <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:16}}>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Voice requires repetition. Work through each exercise out loud.</p>
+          <CoachIntro T={T} T2={T2} isDesktop={false} src="/day2-rehearsal.mp3" duration={28} sharedAudioRef={narrationAudioRef} style={{ marginBottom: 18 }}/>
+          <div style={{display:'inline-flex',alignSelf:'flex-start',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:16}}>
             <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
               <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
               <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>

@@ -2662,7 +2662,8 @@ setAmbitionSaved(true); } catch {}
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
           <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Train Your Instrument</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:20, maxWidth:560 }}>Voice requires repetition. Work through each exercise, then take the speed challenge.</p>
+          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:20, maxWidth:560 }}>Voice requires repetition. Work through each exercise out loud.</p>
+          <CoachIntro T={T} T2={T2} isDesktop={true} src="/day2-rehearsal.mp3" duration={28} sharedAudioRef={narrationAudioRef} style={{ marginBottom: 22 }}/>
           <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:24}}>
             <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
               <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
