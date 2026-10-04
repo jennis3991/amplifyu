@@ -2686,13 +2686,13 @@ setAmbitionSaved(true); } catch {}
         const D2_EDITORIAL = [
           { id:"brene", img:"/d2-brene-v2.jpg", name:"Brené Brown", role:"Researcher, author & speaker", superpower:"Master of Authenticity",
             superpowerText:"Makes vulnerability sound like confidence.",
-            summary:"She doesn't perform confidence. She speaks with honesty, warmth and intention — and people lean in.",
+            summary:"She doesn't perform confidence. She speaks with honesty, warmth and intention, and people lean in.",
             exploreLabel:"Explore her techniques",
             body1:"Brené Brown proves that powerful communication doesn't require a perfect voice. It requires an authentic one.",
-            body2:"Her delivery is conversational rather than theatrical — deliberate pauses, varied pace, warmth and moments of vulnerability make complex ideas feel personal and human.",
+            body2:"Her delivery is conversational rather than theatrical. Deliberate pauses, varied pace, warmth and moments of vulnerability make complex ideas feel personal and human.",
             body3:"She doesn't try to sound impressive. She sounds like herself.",
             whyItWorks:"Authenticity creates connection. A warm tone lowers distance. A well-placed pause gives an idea room to land. And vulnerability signals that there's a real person behind the words. People don't just listen to what you say. They listen to how safe, genuine and believable you sound saying it.",
-            technique:"Don't try to sound more confident — sound more like yourself. Slow down. Let your voice breathe. Allow a little warmth into your delivery. And when something matters, don't hide behind polished language. Say it like you mean it.",
+            technique:"Don't try to sound more confident. Sound more like yourself. Slow down. Let your voice breathe. Allow a little warmth into your delivery. And when something matters, don't hide behind polished language. Say it like you mean it.",
             lesson:"Your voice doesn't need to sound impressive to be powerful. Authenticity creates connection. Slow down, let your personality through, and give people something real to listen to.",
           },
           { id:"sinek", img:"/d2-sinek.jpg", name:"Simon Sinek", role:"Author & leadership speaker", superpower:"Master of Voice",
@@ -2701,7 +2701,7 @@ setAmbitionSaved(true); } catch {}
             exploreLabel:"Explore his techniques",
             body1:"Sinek doesn't just explain ideas. He performs them with his voice.",
             body2:"He changes pace. Lowers his tone. Speeds up with excitement. Slows down before the idea that matters most.",
-            body3:"He treats his voice as an instrument, not just a delivery method — using it to signal which words carry the weight.",
+            body3:"He treats his voice as an instrument, not just a delivery method, using it to signal which words carry the weight.",
             whyItWorks:"Great speakers don't speak at one speed. Sinek constantly varies his pace, emphasis and tone to keep attention and guide the listener through his thinking. His voice gives structure to the message.",
             technique:"Highlight important ideas with your voice, not just your words. Slow down before your biggest point. Speed up when telling a story. Change your pitch and emphasis to signal what matters. If your voice stays flat, your message will too.",
             lesson:"People don't just listen to what you say. They listen to how you say it. A dynamic voice turns information into influence.",
@@ -2723,7 +2723,27 @@ setAmbitionSaved(true); } catch {}
               Back to Gallery
             </button>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
-            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:14,marginBottom:28}}>
+              <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,margin:0}}>{reading.name}</h2>
+              {reading.id === "sinek" && (() => {
+                const src = "/day2-sinek.mp3";
+                const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                return (
+                  <button
+                    onClick={() => toggleNarration(src)}
+                    aria-label={playing ? "Pause narration" : "Play narration"}
+                    style={{
+                      width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                      padding:0, background:"transparent", border:"none",
+                      display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                    }}>
+                    <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <PlayIcon playing={playing}/>
+                    </span>
+                  </button>
+                );
+              })()}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
             {reading.quote && (

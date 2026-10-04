@@ -893,19 +893,19 @@ T.goldDark : T2.text4,
             summary:"His voice carries the emotion before the words do.",
             body1:"Sinek doesn't just explain ideas. He performs them with his voice.",
             body2:"He changes pace. Lowers his tone. Speeds up with excitement. Slows down before the idea that matters most.",
-            body3:"He treats his voice as an instrument, not just a delivery method — using it to signal which words carry the weight.",
+            body3:"He treats his voice as an instrument, not just a delivery method, using it to signal which words carry the weight.",
             whyItWorks:"Great speakers don't speak at one speed. Sinek constantly varies his pace, emphasis and tone to keep attention and guide the listener through his thinking. His voice gives structure to the message.",
             technique:"Highlight important ideas with your voice, not just your words. Slow down before your biggest point. Speed up when telling a story. Change your pitch and emphasis to signal what matters. If your voice stays flat, your message will too.",
             lesson:"People don't just listen to what you say. They listen to how you say it. A dynamic voice turns information into influence.",
           },
           { id:"brene", img:"/d2-brene-mobile.jpg", name:"Brené Brown", role:"Researcher, author & speaker", superpower:"Master of Authenticity",
             superpowerText:"Makes vulnerability sound like confidence.",
-            summary:"She doesn't perform confidence. She speaks with honesty, warmth and intention — and people lean in.",
+            summary:"She doesn't perform confidence. She speaks with honesty, warmth and intention, and people lean in.",
             body1:"Brené Brown proves that powerful communication doesn't require a perfect voice. It requires an authentic one.",
-            body2:"Her delivery is conversational rather than theatrical — deliberate pauses, varied pace, warmth and moments of vulnerability make complex ideas feel personal and human.",
+            body2:"Her delivery is conversational rather than theatrical. Deliberate pauses, varied pace, warmth and moments of vulnerability make complex ideas feel personal and human.",
             body3:"She doesn't try to sound impressive. She sounds like herself.",
             whyItWorks:"Authenticity creates connection. A warm tone lowers distance. A well-placed pause gives an idea room to land. And vulnerability signals that there's a real person behind the words. People don't just listen to what you say. They listen to how safe, genuine and believable you sound saying it.",
-            technique:"Don't try to sound more confident — sound more like yourself. Slow down. Let your voice breathe. Allow a little warmth into your delivery. And when something matters, don't hide behind polished language. Say it like you mean it.",
+            technique:"Don't try to sound more confident. Sound more like yourself. Slow down. Let your voice breathe. Allow a little warmth into your delivery. And when something matters, don't hide behind polished language. Say it like you mean it.",
             lesson:"Your voice doesn't need to sound impressive to be powerful. Authenticity creates connection. Slow down, let your personality through, and give people something real to listen to.",
           },
         ];
@@ -933,7 +933,28 @@ T.goldDark : T2.text4,
                     </div>
                   )}
                   <div style={{padding:"16px 18px 4px"}}>
-                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
+                    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,marginBottom:2}}>
+                      <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,margin:0}}>{card.name}</h3>
+                      {card.id === "sinek" && (() => {
+                        const src = "/day2-sinek.mp3";
+                        const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                        return (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleNarration(src); }}
+                            aria-label={playing ? "Pause narration" : "Play narration"}
+                            style={{
+                              width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                              padding:0, WebkitAppearance:"none", MozAppearance:"none", appearance:"none",
+                              background:"transparent", border:"none",
+                              display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                            }}>
+                            <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                              <PlayIcon playing={playing}/>
+                            </span>
+                          </button>
+                        );
+                      })()}
+                    </div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>

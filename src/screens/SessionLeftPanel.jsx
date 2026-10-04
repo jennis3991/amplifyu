@@ -607,7 +607,7 @@ export function SessionLeftPanel({
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Voice in Action</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Range creates engagement. Contrast creates emotion.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>The most compelling voices are the most controlled — and the most dynamic.</p>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>The most compelling voices are the most controlled, and the most dynamic.</p>
         </div>
       </div>
     );
