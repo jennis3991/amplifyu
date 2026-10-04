@@ -41,8 +41,6 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
   const cueCards = useCueCards(cueIdx, cue);
   const [answer, setAnswer] = useState(testAnswer);
   const clips = useClipPlayer(narration);
-  // Options show two lines until expanded; answering expands both.
-  const [expanded, setExpanded] = useState({});
   const testRef = useRef(null);
 
   const testLit = playing && cue?.test;
@@ -89,52 +87,49 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
             const picked = answer === o.id;
             const clear = answer && o.clear;
             const isPlaying = clips.playing === o.src;
-            const full = answer || expanded[o.id];
             return (
               <div key={o.id}
                 style={{
-                  display: "flex", gap: 12, alignItems: "flex-start", borderRadius: d ? 4 : 8,
-                  padding: d ? "12px 14px" : "10px 12px",
+                  borderRadius: d ? 4 : 8, padding: d ? "16px 18px" : "14px",
                   background: clear ? lift.bg : "transparent",
                   border: "1px solid " + (clear ? lift.border : picked ? T2.text3 : isPlaying ? lift.border : T2.border),
                   boxShadow: clear ? lift.shadow : "none",
                   opacity: answer && !clear && !picked ? 0.6 : 1, transition: "all 0.25s",
                 }}>
+                {/* A / B badge (label revealed only after answering) */}
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+                  <span style={{ width: 40, height: 40, borderRadius: "50%", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: clear ? T2.goldDark : T2.text, color: T2.bg, fontFamily: T.serif, fontSize: 21, fontWeight: 600 }}>{o.id}</span>
+                  {answer && <span style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.4px", color: o.clear ? T2.goldDark : T2.text3 }}>{o.tag}</span>}
+                </div>
+                {/* Play row: button, waveform, duration */}
                 <button onClick={() => clips.toggle(o.src)} aria-label={(isPlaying ? "Pause option " : "Play option ") + o.id}
                   style={{
-                    width: 44, height: 44, minWidth: 44, margin: "-4px -4px -4px -4px", flexShrink: 0, padding: 0,
-                    WebkitAppearance: "none", appearance: "none", cursor: "pointer",
-                    background: "transparent", border: "none",
-                    display: "flex", alignItems: "center", justifyContent: "center",
+                    display: "flex", alignItems: "center", gap: 12, width: "100%", padding: 0, marginBottom: 12,
+                    WebkitAppearance: "none", appearance: "none", cursor: "pointer", background: "transparent", border: "none",
                   }}>
-                  {/* 36px circle inside a 44px tap target (global button min-height) */}
-                  <span style={{ width: 36, height: 36, borderRadius: "50%", background: T.gold, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <PlayIcon playing={isPlaying} />
+                  <span style={{ width: 36, height: 36, borderRadius: "50%", background: T.gold, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <PlayIcon playing={isPlaying} />
                   </span>
+                  <span aria-hidden="true" style={{ flex: 1, display: "flex", alignItems: "center", gap: 3, height: 22, minWidth: 0, overflow: "hidden" }}>
+                    {[0.4, 0.75, 0.55, 1, 0.6, 0.85, 0.45, 0.7, 0.95, 0.5, 0.8, 0.4, 0.65, 0.9, 0.5, 0.35].map((h, k) => (
+                      <span key={k} className="au-coach-bar" style={{
+                        width: 3, height: 22 * h, borderRadius: 2, background: T.gold, flexShrink: 0,
+                        opacity: isPlaying ? 1 : 0.5, transformOrigin: "center",
+                        animation: isPlaying ? `au-coach-wave ${0.7 + (k % 5) * 0.12}s ease-in-out ${(k % 4) * 0.08}s infinite` : "none",
+                      }} />
+                    ))}
+                    <span style={{ flex: 1, height: 1, background: T2.border, marginLeft: 6 }} />
+                  </span>
+                  <span style={{ fontFamily: T.sans, fontSize: 13, color: T2.text3, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{fmt(o.secs)}</span>
                 </button>
-                <div style={{ flex: 1, minWidth: 0 }}>
+                {/* Full script — tap to choose */}
                 <button onClick={() => choose(o.id)} disabled={!!answer}
                   style={{
-                    flex: 1, display: "block", textAlign: "left", padding: 0, background: "transparent", border: "none",
+                    display: "block", width: "100%", textAlign: "left", padding: 0, background: "transparent", border: "none",
                     WebkitAppearance: "none", appearance: "none", cursor: answer ? "default" : "pointer",
                   }}>
-                  <span style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 2, paddingTop: 2 }}>
-                    <span style={{ fontFamily: T.sans, fontSize: 13, fontWeight: 600, color: clear ? T2.goldDark : T2.text3 }}>{o.id}</span>
-                    {answer && <span style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.2px", color: o.clear ? T2.goldDark : T2.text3 }}>{o.tag}</span>}
-                    <span style={{ fontFamily: T.sans, fontSize: 12, color: T2.text4, marginLeft: "auto", fontVariantNumeric: "tabular-nums" }}>{fmt(o.secs)}</span>
-                  </span>
-                  <span style={{
-                    fontFamily: T.sans, fontSize: d ? 15 : 14, color: T2.text, lineHeight: 1.5, whiteSpace: full ? "pre-line" : "normal",
-                    ...(full ? { display: "block" } : { display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }),
-                  }}>"{full ? o.text : o.text.replace(/\s*\n+\s*/g, " ")}"</span>
+                  <span style={{ display: "block", fontFamily: T.sans, fontSize: d ? 15 : 14, color: T2.text, lineHeight: 1.55, whiteSpace: "pre-line" }}>"{o.text}"</span>
                 </button>
-                {!answer && (
-                  <button onClick={() => setExpanded(e => ({ ...e, [o.id]: !e[o.id] }))}
-                    style={{ padding: "4px 0 0", background: "transparent", border: "none", WebkitAppearance: "none", appearance: "none", cursor: "pointer", fontFamily: T.sans, fontSize: 12, fontWeight: 500, color: T2.goldDark }}>
-                    {full ? "Show less" : "Read more"}
-                  </button>
-                )}
-                </div>
               </div>
             );
           })}
