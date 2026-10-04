@@ -107,7 +107,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const PROMPTS = {
     Presence:[
       "Introduce yourself as if you're speaking to a room of 500 people.",
-      "Describe what you do — in a way that makes people lean in.",
+      "Describe what you do, in a way that makes people lean in.",
       "Give a 90-second opening to a talk on the topic you care most about.",
       "Speak about something you believe most people get wrong.",
     ],
@@ -119,7 +119,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
     ],
     Story:[
       "Tell me about a moment that genuinely changed how you see the world.",
-      "Describe the best piece of advice you've ever received — and why it stuck.",
+      "Describe the best piece of advice you've ever received, and why it stuck.",
       "Tell me about someone who shaped who you are today.",
       "Describe a moment where you surprised yourself.",
     ],
@@ -128,7 +128,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
   const DIMS = ["Pace","Pitch","Pauses","Vocal Energy","Range","Confidence Hedges"];
   const DIM_INFO = {
     "Pace": "How quickly you speak, measured in words per minute.",
-    "Pitch": "How much your voice rises and falls in inflection rather than staying flat — measured directly from your recording.",
+    "Pitch": "How much your voice rises and falls in inflection rather than staying flat, measured directly from your recording.",
     "Pauses": "How much you let silence and breath land between ideas, measured from the gaps in your recording.",
     "Vocal Energy": "The average loudness and dynamism of your voice, measured directly from your recording.",
     "Range": "How much your volume varies between your quietest and loudest moments, measured directly from your recording.",
@@ -619,7 +619,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           </div>
           <div style={{flex:1}}>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0}}>
-              {"Your AmplifyU Coach measures six dimensions of your vocal delivery, directly from your recording — "}<strong>pace, pitch, pauses, vocal energy, range and confidence hedges</strong>{" — to reveal how your voice shapes the way people experience your message."}
+              {"Your AmplifyU Coach measures six dimensions of your vocal delivery, directly from your recording: "}<strong>pace, pitch, pauses, vocal energy, range and confidence hedges</strong>{", to reveal how your voice shapes the way people experience your message."}
             </p>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:isDesktop?"10px 0 0":"8px 0 0",fontStyle:"italic"}}>
               This is your vocal baseline: a snapshot of the habits that build authority, confidence, and connection.
@@ -660,7 +660,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       )}
       {!pendingResult && myResults.length>0 && localStorageUsageRatio()>0.8 && (
         <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
-          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You're running low on saved-recording space — delete an old one above to keep saving audio for new results.</span>
+          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You're running low on saved-recording space. Delete an old one above to keep saving audio for new results.</span>
         </div>
       )}
 
@@ -710,7 +710,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       <div style={cs.card}>
         <div style={cs.label}>Coaching Tips</div>
         <div style={{display:"flex",flexDirection:"column",gap:6}}>
-          {["Vary your pace — slow down on important ideas.","Let pauses breathe. Don't rush to fill silence.","Bring genuine energy and emotion to your words.","Speak for 90 seconds to 2 minutes."].map((tip,i)=>(
+          {["Vary your pace. Slow down on important ideas.","Let pauses breathe. Don't rush to fill silence.","Bring genuine energy and emotion to your words.","Speak for 90 seconds to 2 minutes."].map((tip,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
               <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
               <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5}}>{tip}</span>
@@ -768,7 +768,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
       <div style={{...cs.card,textAlign:"center"}}>
         <div style={{...cs.label, color:"#B05C4A"}}>{online ? "Something went wrong" : "You're offline"}</div>
         <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:"8px 0 16px"}}>
-          {online ? "We couldn't score that recording. Your answer is still there — you can try again." : "Scoring your voice needs a connection. Try again once you're back online."}
+          {online ? "We couldn't score that recording. Your answer is still there, so you can try again." : "Scoring your voice needs a connection. Try again once you're back online."}
         </p>
         <button onClick={()=>analyzeText(transcript||fallback, recMetrics)} style={{...cs.cta,width:"auto",padding:"12px 32px"}}>Try Again →</button>
       </div>
@@ -905,7 +905,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
           <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{audioSaveWarning==='dropped'
             ? "Saved, but audio couldn't be stored because you're low on space. Delete an old recording from My Saved Work to save audio for new ones."
-            : "This result couldn't be saved to My Saved Work — you're out of storage space. Delete an old recording and try again."}</span>
+            : "This result couldn't be saved to My Saved Work. You're out of storage space. Delete an old recording and try again."}</span>
         </div>
       )}
       {/* 3 VOICE PROFILE */}
@@ -913,8 +913,8 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <div style={cs.label}>Your Voice Profile</div>
         <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.5,margin:"0 0 16px"}}>
           {focusDims.length===0
-            ? `Strong across all ${DIMS.length} dimensions — no clear focus area.`
-            : `Strong in ${strongCount} of ${DIMS.length} dimensions — ${focusDims.length===1?focusDims[0]:focusDims.slice(0,-1).join(", ")+" and "+focusDims[focusDims.length-1]} need${focusDims.length===1?"s":""} the most attention.`}
+            ? `Strong across all ${DIMS.length} dimensions. No clear focus area.`
+            : `Strong in ${strongCount} of ${DIMS.length} dimensions. ${focusDims.length===1?focusDims[0]:focusDims.slice(0,-1).join(", ")+" and "+focusDims[focusDims.length-1]} need${focusDims.length===1?"s":""} the most attention.`}
         </p>
         <div style={{display:isDesktop?"flex":"block",gap:24,alignItems:"center"}}>
           <div style={{flexShrink:0,display:"flex",justifyContent:"center"}}>

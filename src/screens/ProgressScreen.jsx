@@ -148,7 +148,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
             </p>
           ) : (
             <p style={{fontFamily:T.sans,fontSize:13,color:"#c9a961",margin:0,textAlign:"center"}}>
-              {"You've reached the highest rank — "+pieceInfo.current.name}
+              {"You've reached the highest rank: "+pieceInfo.current.name}
             </p>
           )}
         </div>
@@ -185,7 +185,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
           ))}
           <div style={{marginTop:20,paddingTop:16,borderTop:"0.5px solid "+T2.divider}}>
             <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontWeight:600,color:T2.text,marginBottom:4}}>
-              {done.length>=14?"Programme complete — you've done the work.":done.length>=7?"You're into the second half — keep going.":done.length>=3?"You're building momentum.":"Every session moves you forward."}
+              {done.length>=14?"Programme complete. You've done the work.":done.length>=7?"You're into the second half. Keep going.":done.length>=3?"You're building momentum.":"Every session moves you forward."}
             </div>
             <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3}}>{done.length} of 14 sessions complete</div>
           </div>
@@ -257,7 +257,7 @@ onChangeRole, dark=false, toggleDark, DK={}, onReset, isDesktop=false, onStart})
                 <div style={{fontFamily:T.serif,fontSize:isDesktop?22:18,fontWeight:600,color:"#F5EFE6",marginBottom:4}}>{activeRole.label}</div>
                 <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",marginBottom:isDesktop?0:14}}>{activeRole.examples}</div>
               </div>
-              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.6)",lineHeight:1.7,margin:0,fontWeight:300,flex:isDesktop?"1.4":undefined,maxWidth:isDesktop?520:undefined}}>{activeRole.pieEmphasis||"Exposure is the lever most individual contributors are underusing. Your work is excellent — the gap is making sure the right people know about it."}</p>
+              <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.6)",lineHeight:1.7,margin:0,fontWeight:300,flex:isDesktop?"1.4":undefined,maxWidth:isDesktop?520:undefined}}>{activeRole.pieEmphasis||"Exposure is the lever most individual contributors are underusing. Your work is excellent. The gap is making sure the right people know about it."}</p>
             </div>
           ) : (
             <>
