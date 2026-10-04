@@ -40,6 +40,17 @@ import { SavedResultSection } from '../modules/SavedResultCard.jsx';
 import { Paywall } from '../components/Paywall.jsx';
 import { isEntitled } from '../lib/purchases.js';
 
+// Hosts a day's desktop panel. The panels (D1RightContent etc.) are defined
+// inside SessionView's render, so rendering them as <D1RightContent/> gave
+// React a brand-new component type on every SessionView render and remounted
+// the whole panel, wiping any widget state, e.g. a Simulation recording
+// reset to its intro the moment it reported "recording" to the parent.
+// Calling the panel from this stable host (keyed per day + step) keeps the
+// widgets inside mounted across parent re-renders. Panel hooks run as this
+// host's hooks, which is safe because each panel calls the same hooks in the
+// same order for a given step.
+function PanelHost({ render }) { return render(); }
+
 export function SessionView({lesson, isDone, onComplete, onBack, onExitToTab, roleId,
 activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
@@ -4507,7 +4518,9 @@ setAmbitionSaved(true); } catch {}
                       onComplete={(topic) => { setD1WarmUpTopic(topic); setIdx(i => i + 1); }}
                       onEntitled={() => setEntitled(true)}
                     />
-                  : isD1 ? <D1RightContent/> : isD2 ? <D2RightContent/> : isD3 ? <D3RightContent/> : isD4 ? <D4RightContent/> : isD5 ? <D5RightContent/> : isD6 ? <D6RightContent/> : isD7 ? <D7RightContent/> : isD11 ? <D11RightContent/> : isD12 ? <D12RightContent/> : isD13 ? <D13RightContent/> : isD14 ? <D14RightContent/> : isD10 ? <D10RightContent onRecordingChange={setD10SimRecording}/> : isNT ? <NTRightContent/> : isD9 ? <D9RightContent/> : <RightContent/>}
+                  : <PanelHost key={lesson.day + "-" + step} render={
+                      isD1 ? D1RightContent : isD2 ? D2RightContent : isD3 ? D3RightContent : isD4 ? D4RightContent : isD5 ? D5RightContent : isD6 ? D6RightContent : isD7 ? D7RightContent : isD11 ? D11RightContent : isD12 ? D12RightContent : isD13 ? D13RightContent : isD14 ? D14RightContent : isD10 ? () => D10RightContent({ onRecordingChange: setD10SimRecording }) : isNT ? NTRightContent : isD9 ? D9RightContent : RightContent
+                    }/>}
               </div>
             </div>
           </div>
