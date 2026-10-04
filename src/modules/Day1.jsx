@@ -76,7 +76,7 @@ export function D1MobileJargonSwap() {
     try{const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:200,messages:[{role:"user",content:`Simplify this, removing all jargon. Never use em dashes; use a comma or hyphen instead. Return ONLY the simplified sentence: "${v}"`}]})});const d=await res.json();const text=(d.content||[]).map(b=>b.text||"").join("").trim();if(!text)throw new Error();setR(text);}catch{setErr(true);}
     setL(false);
   }
-  return(<div><textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Write your sentence…" style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:64,marginBottom:8,boxSizing:"border-box"}}/><button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:(r||err)?10:0}}>{l?"Simplifying…":"Simplify It →"}</button>{r&&<div style={{padding:"12px 14px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,color:"#2C2416",margin:0,lineHeight:1.6}}>{r}</p></div>}{err&&<div style={{padding:"12px 14px",background:"rgba(176,92,74,0.08)",borderRadius:3,borderLeft:"2px solid #B05C4A"}}><p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#6B5E44",margin:0,lineHeight:1.5}}>{online?"Something went wrong simplifying that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}</p></div>}</div>);
+  return(<div><textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Write your sentence…" style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:64,marginBottom:8,boxSizing:"border-box"}}/><button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:(r||err)?10:0}}>{l?"Simplifying…":"Simplify It →"}</button>{r&&<div style={{padding:"12px 14px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,color:"#2C2416",margin:0,lineHeight:1.6}}>{r}</p></div>}{err&&<div style={{padding:"12px 14px",background:"rgba(176,92,74,0.08)",borderRadius:3,borderLeft:"2px solid #B05C4A"}}><p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#6B5E44",margin:0,lineHeight:1.5}}>{online?"Something went wrong simplifying that. Try again.":"You're offline. This needs a connection. Try again once you're back online."}</p></div>}</div>);
 }
 export function D1MobileSim() { return null; } // replaced by D1SimWidget
 
@@ -615,7 +615,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
           </button>
           {explainError && (
             <p style={{fontFamily:T.sans,fontSize:12,color:"#B05C4A",margin:0,textAlign:"center"}}>
-              {online ? "Something went wrong scoring that. Try again." : "You're offline — this needs a connection. Try again once you're back online."}
+              {online ? "Something went wrong scoring that. Try again." : "You're offline. This needs a connection. Try again once you're back online."}
             </p>
           )}
         </>
@@ -884,7 +884,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
 
   if (showPaywall) return (
     <Paywall
-      headline="You've used your free Rehearsal — subscribe to keep practicing"
+      headline="You've used your free Rehearsal. Subscribe to keep practicing."
       onClose={() => setShowPaywall(false)}
       onSubscribed={() => { onEntitled?.(); setShowPaywall(false); }}
     />
@@ -952,7 +952,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
         <div style={{ color: "#8A9E84", flexShrink: 0, marginTop: 2 }}>{TOPICS[sel].icon}</div>
         <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 18 : 16, fontWeight: 500, color: T2.text, lineHeight: 1.5, margin: 0 }}>{TOPICS[sel].label}</p>
       </div>
-      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, marginBottom: 28 }}>Speak about this for around 30 seconds. Don't worry about being perfect — there's no recording saved or scored here.</p>
+      <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, marginBottom: 28 }}>Speak about this for around 30 seconds. Don't worry about being perfect. There's no recording saved or scored here.</p>
 
       {analysing ? (
         <div style={{ textAlign: "center", padding: "32px 0" }}>
@@ -964,7 +964,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
         <div style={{ background: "#F0EBE2", borderRadius: 8, padding: "24px 24px 22px", border: "0.5px solid #DDD5C4" }}>
           <div style={{ fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: "#8A9E84", textTransform: "uppercase", letterSpacing: "2px", marginBottom: 14 }}>You're Offline</div>
           <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 19 : 17, color: "#2C2416", lineHeight: 1.72, margin: "0 0 16px" }}>
-            Coaching feedback needs a connection, so we couldn't listen back this time — but your warm-up still counts.
+            Coaching feedback needs a connection, so we couldn't listen back this time, but your warm-up still counts.
           </p>
           <div style={{ height: "0.5px", background: "#DDD5C4", marginBottom: 16 }} />
           <button onClick={() => onComplete(TOPICS[sel].label)} style={{
@@ -1030,7 +1030,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
           </button>
           {isRec && (
             <div style={{ fontFamily: T.sans, fontSize: 13, color: "#B05C4A", fontWeight: 600 }}>
-              Recording — {fmtTime(elapsed)} / {fmtTime(D1_REHEARSAL_MAX_SEC)} &nbsp;·&nbsp; tap to stop
+              Recording {fmtTime(elapsed)} / {fmtTime(D1_REHEARSAL_MAX_SEC)} &nbsp;·&nbsp; tap to stop
             </div>
           )}
           {!isRec && !micError && !transcribeFailed && (
@@ -1040,8 +1040,8 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
             <div style={{ width: "100%", marginTop: 4, padding: "16px 18px", background: "#F0EBE2", borderRadius: 8, border: "0.5px solid #DDD5C4" }}>
               <p style={{ fontFamily: T.sans, fontSize: 13, color: "#6B5E44", lineHeight: 1.6, margin: "0 0 10px" }}>
                 {micError
-                  ? (online ? "We couldn't access your microphone. Check your permissions, or type your response instead." : "You're offline — voice practice needs a connection. Type your response instead.")
-                  : (online ? "We couldn't quite hear that. Try again, or type your response instead." : "You're offline — this needs a connection. Try again once you're back online.")}
+                  ? (online ? "We couldn't access your microphone. Check your permissions, or type your response instead." : "You're offline. Voice practice needs a connection. Type your response instead.")
+                  : (online ? "We couldn't quite hear that. Try again, or type your response instead." : "You're offline. This needs a connection. Try again once you're back online.")}
               </p>
               <textarea value={fallbackText} onChange={e => setFallbackText(e.target.value)} placeholder="Type what you'd say…" style={{ width: "100%", minHeight: 80, background: "transparent", border: "none", borderBottom: "0.5px solid #DDD5C4", padding: "8px 0", fontFamily: T.sans, fontSize: 13, color: "#2C2416", resize: "none", outline: "none", lineHeight: 1.6, boxSizing: "border-box" }}/>
               {fallbackText.trim().length > 10 && (
@@ -1446,7 +1446,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
 
   if (showSimPaywall) return (
     <Paywall
-      headline="You've used your free Simulation — subscribe to keep practicing"
+      headline="You've used your free Simulation. Subscribe to keep practicing."
       onClose={() => setShowSimPaywall(false)}
       onSubscribed={() => { onEntitled?.(); setShowSimPaywall(false); }}
     />
@@ -1553,7 +1553,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
       )}
       {!pendingResult && myResults.length>0 && localStorageUsageRatio()>0.8 && (
         <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
-          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You're running low on saved-recording space — delete an old one above to keep saving audio for new results.</span>
+          <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You're running low on saved-recording space. Delete an old one above to keep saving audio for new results.</span>
         </div>
       )}
 
@@ -1587,7 +1587,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
       <div style={{display:"flex",flexDirection:"column",gap:16}}>
         <div>
           <p style={{...cs.body,marginBottom:0}}>Choose a conversation starter</p>
-          <p style={{...cs.body,marginBottom:16}}>Speak naturally. No preparation. The goal is not perfection — it's awareness.</p>
+          <p style={{...cs.body,marginBottom:16}}>Speak naturally. No preparation. The goal is not perfection. It's awareness.</p>
         </div>
         <div style={{display:"flex",gap:8,marginBottom:4}}>
           {Object.keys(PROMPTS).map(c=>(
@@ -1639,7 +1639,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
             }
           </button>
           {isRec
-            ? <div style={{fontFamily:T.sans,fontSize:13,color:"#B05C4A",fontWeight:600}}>Recording — {fmtElapsed(elapsed)} / {fmtElapsed(D1_SIMULATION_MAX_SEC)} &nbsp;·&nbsp; tap to stop</div>
+            ? <div style={{fontFamily:T.sans,fontSize:13,color:"#B05C4A",fontWeight:600}}>Recording {fmtElapsed(elapsed)} / {fmtElapsed(D1_SIMULATION_MAX_SEC)} &nbsp;·&nbsp; tap to stop</div>
             : preparingMic
               ? <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>Preparing microphone…</div>
               : <div style={{fontFamily:T.sans,fontSize:13,color:T2.text3}}>Tap to start recording</div>}
@@ -1675,7 +1675,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" stroke="#A8998A" strokeWidth="1.6"/><line x1="4" y1="4" x2="20" y2="20" stroke="#B05C4A" strokeWidth="1.6" strokeLinecap="round"/></svg>
       </div>
       <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,color:T2.text,margin:0}}>We couldn't hear a clear response.</p>
-      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,maxWidth:340,lineHeight:1.6}}>That was too short to score honestly — please try again and speak for a little longer.</p>
+      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,maxWidth:340,lineHeight:1.6}}>That was too short to score honestly. Please try again and speak for a little longer.</p>
       <button onClick={()=>{setPhase('recording');setElapsed(0);setIsRec(false);setTranscript('');setFallback('');setMicError(false);setTranscribeFailed(false);}} style={{...cs.cta,width:"auto",padding:"12px 28px"}}>Try Again →</button>
     </div>
   );
@@ -1689,7 +1689,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" stroke="#A8998A" strokeWidth="1.6"/><line x1="4" y1="4" x2="20" y2="20" stroke="#B05C4A" strokeWidth="1.6" strokeLinecap="round"/></svg>
       </div>
       <p style={{fontFamily:T.serif,fontSize:isDesktop?20:18,color:T2.text,margin:0}}>{online?"We couldn't score that.":"You're offline."}</p>
-      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,maxWidth:340,lineHeight:1.6}}>{online?"Something went wrong analysing your response. Your recording is still there — you can try again.":"This needs a connection to score your response. Try again once you're back online."}</p>
+      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,maxWidth:340,lineHeight:1.6}}>{online?"Something went wrong analysing your response. Your recording is still there, so you can try again.":"This needs a connection to score your response. Try again once you're back online."}</p>
       <button onClick={()=>analyzeText(transcript||fallback)} style={{...cs.cta,width:"auto",padding:"12px 28px"}}>Try Again →</button>
     </div>
   );
@@ -1701,10 +1701,10 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
     const cx=100,cy=100,rMax=72;
     const lPt=(aDeg)=>{const a=aDeg*Math.PI/180;return[cx+80*Math.cos(a),cy+80*Math.sin(a)];};
     const DIM_TIPS={
-      "Clarity":"How easy your words were to understand at first hearing — clear language, no ambiguity.",
-      "Structure":"How logically your ideas flowed — did you have a beginning, middle, and point that landed?",
+      "Clarity":"How easy your words were to understand at first hearing: clear language, no ambiguity.",
+      "Structure":"How logically your ideas flowed. Did you have a beginning, middle, and point that landed?",
       "Brevity":"How concisely you made your point. High scores mean no wasted words.",
-      "Focus":"How tightly you stayed on topic — high scores mean no tangents or drift.",
+      "Focus":"How tightly you stayed on topic. High scores mean no tangents or drift.",
       "Simplicity":"How free your language was from jargon or unnecessary complexity."
     };
     const rPt=(sc,aDeg)=>{const a=aDeg*Math.PI/180;return[cx+(sc/100)*rMax*Math.cos(a),cy+(sc/100)*rMax*Math.sin(a)];};
@@ -1782,8 +1782,8 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
       {/* 3 HEAR IT BACK — full player only, at top */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
         <div style={cs.label}>Hear it back</div>
-        {!audioURL&&<p style={{fontFamily:T.serif,fontSize:13,color:T2.text3,margin:"8px 0 0",lineHeight:1.5}}>We don't have an audio recording for this response — your written feedback below is still complete.</p>}
-        {audioURL&&audioBroken&&<p style={{fontFamily:T.serif,fontSize:13,color:T2.text3,margin:"8px 0 0",lineHeight:1.5}}>Your recording doesn't carry over after a reload, so playback isn't available right now — your written feedback below is still complete.</p>}
+        {!audioURL&&<p style={{fontFamily:T.serif,fontSize:13,color:T2.text3,margin:"8px 0 0",lineHeight:1.5}}>We don't have an audio recording for this response. Your written feedback below is still complete.</p>}
+        {audioURL&&audioBroken&&<p style={{fontFamily:T.serif,fontSize:13,color:T2.text3,margin:"8px 0 0",lineHeight:1.5}}>Your recording doesn't carry over after a reload, so playback isn't available right now. Your written feedback below is still complete.</p>}
         {audioURL&&!audioBroken&&playing&&(()=>{const active=[...MARKERS].reverse().find(m=>audioProgress>=m.pos);return active?(<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><div style={{width:6,height:6,borderRadius:"50%",background:active.color,flexShrink:0}}/><span style={{fontFamily:T.sans,fontSize:10,color:active.color,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em"}}>{active.label}</span></div>):null;})()}
         {audioURL&&!audioBroken&&<div style={{marginBottom:isDesktop?14:10}}>
           {/* Scrubbing/seeking here must never leak into the page's
@@ -1841,7 +1841,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
         <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px"}}>
           <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>{audioSaveWarning==='dropped'
             ? "Saved, but audio couldn't be stored because you're low on space. Delete an old recording from My Saved Work to save audio for new ones."
-            : "This result couldn't be saved to My Saved Work — you're out of storage space. Delete an old recording and try again."}</span>
+            : "This result couldn't be saved to My Saved Work. You're out of storage space. Delete an old recording and try again."}</span>
         </div>
       )}
 
@@ -2097,7 +2097,7 @@ export function D1SimFeedback({input}) {
       </button>
       {error && (
         <p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#B05C4A",margin:0}}>
-          {online?"Something went wrong scoring that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}
+          {online?"Something went wrong scoring that. Try again.":"You're offline. This needs a connection. Try again once you're back online."}
         </p>
       )}
       {result && (

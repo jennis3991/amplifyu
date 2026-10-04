@@ -280,3 +280,15 @@ export function useClipPlayer(narration) {
   }
   return { playing: clipPlayingSrc, heard: src => clipHeard.has(src), toggle, stop: stopClips };
 }
+
+// A single coach clip with no on-screen cues (e.g. a step intro or the
+// end-of-day review): just the "Hear the coach" button.
+export function CoachIntro({ T, T2, isDesktop, src, duration, sharedAudioRef, style }) {
+  const narration = useCoachNarration({ src, cues: [], sharedAudioRef });
+  return (
+    <>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={narration} duration={duration} style={style} />
+    </>
+  );
+}

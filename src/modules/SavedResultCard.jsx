@@ -39,7 +39,7 @@ function OneSavedResultCard({ T, T2, isDesktop, cfg, entry, showLabel, label, on
       <div style={{ ...cardStyle, borderStyle: 'dashed' }}>
         {showLabel && <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T2.text4, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 6 }}>{label}</div>}
         <p style={{ fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: 0, fontWeight: 300 }}>
-          No saved result yet for {cfg.dayLabel.split(' · ')[1] || cfg.dayLabel} — complete it and it'll show up here.
+          No saved result yet for {cfg.dayLabel.split(' · ')[1] || cfg.dayLabel}. Complete it and it'll show up here.
         </p>
       </div>
     );

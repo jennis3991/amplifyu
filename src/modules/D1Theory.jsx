@@ -67,13 +67,13 @@ export default function D1Theory({ T, T2, isDesktop, sharedAudioRef, onNext }) {
 
       <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: T.gold, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: d ? 14 : 10 }}>The Science</div>
       <h2 style={{ fontFamily: T.serif, fontSize: d ? 34 : 28, fontWeight: 600, color: T2.text, lineHeight: 1.1, margin: 0, marginBottom: d ? 14 : 10 }}>The Feynman Technique</h2>
-      <p style={{ fontFamily: T.sans, fontSize: d ? 17 : 16, color: T2.text2, lineHeight: 1.6, fontWeight: 400, margin: 0, marginBottom: d ? 22 : 18, maxWidth: 620 }}>Richard Feynman won the Nobel Prize in Physics — and could explain quantum mechanics to a 12-year-old.</p>
+      <p style={{ fontFamily: T.sans, fontSize: d ? 17 : 16, color: T2.text2, lineHeight: 1.6, fontWeight: 400, margin: 0, marginBottom: d ? 22 : 18, maxWidth: 620 }}>Richard Feynman won the Nobel Prize in Physics, and could explain quantum mechanics to a 12-year-old.</p>
 
       <CoachButton T={T} T2={T2} isDesktop={d} narration={narration} duration={DURATION} style={{ marginBottom: d ? 28 : 22 }} />
 
       <div style={{ padding: d ? "18px 22px" : "16px 18px", background: "rgba(44,36,22,0.07)", borderRadius: 4, borderLeft: "2px solid " + T.gold, marginBottom: d ? 28 : 22 }}>
         <p style={{ fontFamily: T.serif, fontSize: 22, fontWeight: 600, color: T2.text, lineHeight: 1.4, margin: "0 0 5px", fontStyle: "italic" }}>"If you can't explain it simply, you don't understand it well enough."</p>
-        <p style={{ fontFamily: T.sans, fontSize: 11, color: T2.text4, margin: 0 }}>— Richard Feynman</p>
+        <p style={{ fontFamily: T.sans, fontSize: 11, color: T2.text4, margin: 0 }}>Richard Feynman</p>
       </div>
 
       {STEPS.map((s, i) => {

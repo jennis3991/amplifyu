@@ -1000,6 +1000,11 @@ export const D13_EXAMPLES = [
 
  // ── D2 shared constants (used by both desktop + mobile) ───────────────────
 
+// End-of-day coach message on the Review step, keyed by day.
+export const REVIEW_NARRATION = {
+  1: { src: "/day1-review.mp3", secs: 18 },
+};
+
 // Day 2 Theory — The 88 Keys
 export const D2_SCIENCE_CARDS = [
   { word:"Prosody",            sub:"Your voice carries meaning before words do",  bullets:["Humans decode emotion through rhythm, pitch, pace and stress, faster than language itself.","The way you say something communicates intent, confidence and feeling before the content registers."] },

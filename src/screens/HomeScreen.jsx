@@ -72,7 +72,7 @@ function JourneyCard({ pieceInfo, catProgress, done, T, mobile=false }) {
               <img loading="lazy" src={pieceInfo.next.img} alt={pieceInfo.next.name} style={{ position:"absolute", width:"126%", height:"126%", top:"-13%", left:"-13%", objectFit:"cover" }}/>
             </div>
           </div>
-          <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>until you reach {pieceInfo.next.name}{done.length<6?" — your next rank":""}</p>
+          <p style={{ fontSize:13, color:"#9c9384", margin:0 }}>until you reach {pieceInfo.next.name}{done.length<6?", your next rank":""}</p>
         </div>
       ) : (
         <div style={{ borderTop:"0.5px solid #3a352a", paddingTop:14, marginBottom:14 }}>
@@ -214,7 +214,7 @@ finishDate + ".";
       <div onClick={()=>onStart(cur)} style={{borderRadius:isDesktop?8:24,overflow:"hidden",position:"relative",cursor:"pointer"}}>
         <Scene name={lesson ? lesson.scene : "clarity"} height={isDesktop?320:280} day={lesson ? lesson.day : null}/>
         <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"24px",background:"linear-gradient(to top,rgba(11,13,16,0.85) 0%,transparent 100%)"}}>
-          <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.55)",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Day {cur} — {lesson ? lesson.tag : ""}</div>
+          <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.55)",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Day {cur} · {lesson ? lesson.tag : ""}</div>
           <h2 style={{fontFamily:T.serif,fontSize:isDesktop?28:26,fontWeight:700,color:"white",lineHeight:1.2,marginBottom:14}}>{lesson ? lesson.title : ""}</h2>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <span style={{fontSize:12,fontWeight:500,color:"rgba(255,255,255,0.6)"}}>~15 min · 6 steps</span>
@@ -498,7 +498,7 @@ finishDate + ".";
         <div style={{padding:"24px 24px",display:"flex",flexDirection:"column",alignItems:"stretch",gap:16}}>
           <div style={{textAlign:"center"}}>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:6}}>
-              {finished?"Programme Complete":`Day ${cur} — ${lesson?.tag??""}${todayDone?"  ✓":""}`}
+              {finished?"Programme Complete":`Day ${cur} · ${lesson?.tag??""}${todayDone?"  ✓":""}`}
             </div>
             <div style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.2}}>
               {finished?"You communicate differently now.":lesson?.title}

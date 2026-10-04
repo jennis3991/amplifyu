@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
 import { ReadAloudButton, extractReadableText } from '../components/ReadAloudButton.jsx';
-import { D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D11_FACTS, D11_INGREDIENTS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS } from '../data.js';
+import { REVIEW_NARRATION, D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D11_FACTS, D11_INGREDIENTS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
@@ -31,7 +31,7 @@ import D1Insight from '../modules/D1Insight.jsx';
 import D1Theory from '../modules/D1Theory.jsx';
 import D2Insight from '../modules/D2Insight.jsx';
 import D2Theory from '../modules/D2Theory.jsx';
-import { PlayIcon } from '../modules/CoachNarration.jsx';
+import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
 function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
   return (
     <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
@@ -2967,6 +2967,9 @@ strokeLinecap="round"/></svg>
         <>
           {/* Header */}
           <div style={{fontSize:11,fontWeight:500,textTransform:"uppercase",letterSpacing:"2px",color:T.gold,marginBottom:16,fontFamily:T.sans}}>Day {lesson.day} Complete ✓</div>
+          {REVIEW_NARRATION[lesson.day] && (
+            <CoachIntro T={T} T2={T2} isDesktop={false} src={REVIEW_NARRATION[lesson.day].src} duration={REVIEW_NARRATION[lesson.day].secs} sharedAudioRef={narrationAudioRef} style={{ marginBottom: 18 }}/>
+          )}
           {isNT && (()=>{ try { return JSON.parse(localStorage.getItem("au1_stories")||"[]").length>0; } catch { return false; } })() && (
             <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:16,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
               <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
@@ -3049,7 +3052,7 @@ strokeLinecap="round"/></svg>
             const nextDay = lesson.day < 14 ? lesson.day + 1 : null;
             return (
               <button onClick={onComplete} style={{width:"100%",background:T.ink,color:T.bg,padding:"18px",borderRadius:4,border:"none",fontFamily:T.sans,fontSize:15,fontWeight:600,cursor:"pointer",textAlign:"center"}}>
-                {nextDay ? "Next: Day " + nextDay + " — " + (LESSONS[nextDay-1]?.title||"") + " →" : "Complete Programme →"}
+                {nextDay ? "Next: Day " + nextDay + ": " + (LESSONS[nextDay-1]?.title||"") + " →" : "Complete Programme →"}
               </button>
             );
           })()}

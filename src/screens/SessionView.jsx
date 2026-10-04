@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
-import { D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_BULLETS, WORKPLACE_APPLICATION, LESSONS, SESSION_STEPS, NAV_LABELS,
+import { REVIEW_NARRATION, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_NEURO, THEORY_DATA, FURTHER_READING, REVIEW_BULLETS, WORKPLACE_APPLICATION, LESSONS, SESSION_STEPS, NAV_LABELS,
   D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS,
   D11_FACTS, D11_INGREDIENTS, D7_INSIGHT_CARDS,
   D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS,
@@ -20,7 +20,7 @@ import D1Insight from '../modules/D1Insight.jsx';
 import D1Theory from '../modules/D1Theory.jsx';
 import D2Insight from '../modules/D2Insight.jsx';
 import D2Theory from '../modules/D2Theory.jsx';
-import { PlayIcon } from '../modules/CoachNarration.jsx';
+import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget, D5SimWidget } from '../modules/Day5.jsx';
 import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
@@ -4367,6 +4367,9 @@ setAmbitionSaved(true); } catch {}
                     <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 48px" }}>
                       {/* Header */}
                       <div style={{ fontSize: 12, fontWeight: 500, textTransform: "uppercase", letterSpacing: "2px", color: T.gold, marginBottom: 20, fontFamily: T.sans }}>Day {lesson.day} Complete ✓</div>
+                      {REVIEW_NARRATION[lesson.day] && (
+                        <CoachIntro T={T} T2={T2} isDesktop={true} src={REVIEW_NARRATION[lesson.day].src} duration={REVIEW_NARRATION[lesson.day].secs} sharedAudioRef={narrationAudioRef} style={{ marginBottom: 28 }}/>
+                      )}
 
                       {isNT && (() => { try { return JSON.parse(localStorage.getItem("au1_stories") || "[]").length > 0; } catch { return false; } })() && (
                         <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 32, padding: "16px 20px", background: T2.surface, borderRadius: 6, border: "0.5px solid " + T2.border }}>
@@ -4446,7 +4449,7 @@ setAmbitionSaved(true); } catch {}
                         onMouseEnter={e=>{ e.currentTarget.style.background=T.gold; e.currentTarget.style.transform="translateY(-2px)"; }}
                         onMouseLeave={e=>{ e.currentTarget.style.background=T.ink; e.currentTarget.style.transform="none"; }}
                       >
-                        {nextDay ? `Next: Day ${nextDay} — ${LESSONS[nextDay-1]?.title} →` : "Complete Programme →"}
+                        {nextDay ? `Next: Day ${nextDay}: ${LESSONS[nextDay-1]?.title} →` : "Complete Programme →"}
                       </button>
                     </div>
                   </div>
