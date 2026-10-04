@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { T } from '../theme.js';
 import { ReadAloudButton, extractReadableText } from '../components/ReadAloudButton.jsx';
-import { REVIEW_NARRATION, D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D11_FACTS, D11_INGREDIENTS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS } from '../data.js';
+import { REVIEW_NARRATION, D2_EXAMPLE_AUDIO, D10_FACTS, D3_FACTS, D3_PAUSE_REASONS, D4_FACTS, D11_FACTS, D11_INGREDIENTS, D9_INSIGHT_CARDS, D9_COMM_STYLES, D9_EXAMPLES, NT_PIXAR, NT_NEURO, REVIEW_CLOSING, REVIEW_BULLETS, WORKPLACE_APPLICATION, FURTHER_READING, SESSION_STEPS, NAV_LABELS, LESSONS, D7_INSIGHT_CARDS, D12_FACTS, D12_EXAMPLES, D13_INSIGHT_CARDS, D13_THEORY_CARDS, D13_EXAMPLES, D14_INSIGHT_CARDS } from '../data.js';
 import { getScenariosForDay } from '../utils.js';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
@@ -935,8 +935,8 @@ T.goldDark : T2.text4,
                   <div style={{padding:"16px 18px 4px"}}>
                     <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,marginBottom:2}}>
                       <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,margin:0}}>{card.name}</h3>
-                      {card.id === "sinek" && (() => {
-                        const src = "/day2-sinek.mp3";
+                      {D2_EXAMPLE_AUDIO[card.id] && (() => {
+                        const src = D2_EXAMPLE_AUDIO[card.id];
                         const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
                         return (
                           <button

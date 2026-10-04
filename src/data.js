@@ -1000,6 +1000,12 @@ export const D13_EXAMPLES = [
 
  // ── D2 shared constants (used by both desktop + mobile) ───────────────────
 
+// Day 2 Example narration, keyed by editorial card id.
+export const D2_EXAMPLE_AUDIO = {
+  sinek: "/day2-sinek.mp3",
+  brene: "/day2-brene.mp3",
+};
+
 // End-of-day coach message on the Review step, keyed by day.
 export const REVIEW_NARRATION = {
   1: { src: "/day1-review.mp3", secs: 18 },
