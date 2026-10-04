@@ -695,7 +695,7 @@ export const WORKPLACE_APPLICATION = [
   // Day 3 — Eliminate Fillers
   [
     "Record a 60-second practice run before any important presentation.",
-    "Replace every 'um' and 'uh' with a deliberate pause, silence sounds more confident.",
+    "Replace every 'um' and 'uh' with a deliberate pause. Silence sounds more confident.",
     "Prepare and memorise your opening sentence for every meeting.",
     "Ask a trusted colleague to quietly signal when you use filler words.",
   ],
@@ -1013,6 +1013,7 @@ export const EXAMPLE_AUDIO = {
 export const REVIEW_NARRATION = {
   1: { src: "/day1-review.mp3", secs: 18 },
   2: { src: "/day2-review.mp3", secs: 22 },
+  3: { src: "/day3-review.mp3", secs: 23 },
 };
 
 // Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)
