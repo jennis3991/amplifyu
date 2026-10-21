@@ -98,7 +98,7 @@ export default async function handler(req, res) {
 
     const artDirectorSystemPrompt = `You are a senior editorial art director at a world-class creative agency. You work with Netflix, Apple Books, Penguin Press, and Monocle. Your specialty is translating finished narratives into single, emotionally resonant cover images.
 
-You never illustrate the story literally. You find the symbolic essence — the one image that makes someone think "I need to know the story behind this."`;
+You build each cover from the story itself: one richly observed scene made of concrete details taken from the narrative, so anyone who has read the story recognises it instantly, and anyone who hasn't thinks "I need to know the story behind this."`;
 
     const artDirectorUserPrompt = `Analyse this completed story and write a precise image generation prompt for its book cover.
 
@@ -113,27 +113,21 @@ COMPLETE NARRATIVE:
 ${sceneList}
 
 YOUR PROCESS:
-1. Identify the Core Theme (e.g. Crisis Leadership, Career Growth, Innovation, Resilience, Communication, Decision Making)
-2. Identify the Central Conflict in one sentence
-3. Identify the Emotional Tone (e.g. Determination, Hope, Urgency, Reflection, Courage)
-4. Identify the Defining Moment — the single most pivotal point in the story
-5. Choose the most resonant Visual Metaphor — something SPECIFIC to this story, not generic
+1. Identify the Core Theme and the Emotional Tone of the story
+2. Identify the Defining Moment, the single most pivotal point in the story
+3. Choose ONE setting for the scene, taken from the story (a place, a time of day)
+4. Pick 3 to 5 concrete details that come directly from this narrative: objects, small personal traces, signs of the people and life in the story (without showing the people themselves). Each detail should earn its place by pointing to something specific in the story
+5. Compose these into one scene that captures the story's arc and its Defining Moment
 
-METAPHOR GUIDANCE (pick whichever fits, or invent a better one):
-- Crisis / urgency: a single red warning light glowing in a warmly lit office, phone off the hook on a polished desk in late-afternoon sun, a brass hourglass running out on an oak desk, empty executive chair by a window at golden hour
-- Career growth / change: closed leather notebook beside a packed suitcase, a single brass key on a desk, golden light through a train station window, open doorway with warm light beyond
-- Leadership / influence: conference room in warm morning light, empty podium in a softly lit hall, microphone stand on a warmly lit stage, window overlooking a city at golden hour
-- Innovation / thinking: a prototype model under a warm desk lamp, chess pieces mid-game, open sketchbook with wordless line drawings, laptop glowing with a simple pixel-art character on a styled oak desk
-- Communication / storytelling: vintage typewriter with a blank page, a fountain pen resting on a closed journal, warmly lit empty stage, a pen on a blank notepad in soft lamplight
-- Personal breakthrough: golden light through a window, open road at sunrise, a phone on a styled desk glowing with a single app-style icon, compass on a worn map
-- Trust / relationships: two coffee cups in warm light, a sealed envelope with no writing, two armchairs angled towards each other by a lamp
+AVOID GENERIC IMAGES: a laptop, a mug and a lamp on their own (or any stock desk set-up) could be any story and are not acceptable. If an object would fit almost every story, replace it with one that only fits this one.
 
 COVER REQUIREMENTS:
 - Single cinematic image — NOT a collage
 - NO people, NO faces, NO bodies, NO silhouettes
 - NO text, words, letters or numbers anywhere in the image. Image models misspell lettering, so avoid anything that would normally carry writing: no documents, printed pages, slides, pitch decks, charts, labels, signs, book spines, packaging, clocks with numerals or readable screens
 - Any paper, notebook or page must be blank or closed; a screen may glow with a simple abstract shape or a single wordless graphic (like a pixel-art character or an app-style icon), never words or numbers
-- Warm, inviting, premium light: golden hour, soft lamplight or warm morning sun; rich warm tones (amber, honey, cream, brass); evening scenes are welcome if warmly lit; the main subject clearly visible
+- Warm, inviting, premium light: golden hour, soft lamplight or warm morning sun; rich warm tones (amber, honey, cream, brass); the main subject clearly visible
+- Luminous overall: evening scenes are welcome, but the image must glow with warm mid-tones, never mostly shadow
 - NEVER cold, blue, grey, bleak or near-black; even urgent stories stay warm, with urgency shown through the subject and composition
 - Match the emotional arc: uplifting or triumphant stories should feel optimistic, aspirational and quietly celebratory
 - High-end lifestyle editorial styling: a considered, styled scene with rich textures (oak, linen, brass, plants) and a few personal details; never bare, austere, messy or cluttered (no crumbs, stains or dirt)
@@ -143,7 +137,7 @@ COVER REQUIREMENTS:
 - Sophisticated, aspirational, emotionally resonant
 - Portrait orientation (taller than wide)
 
-IMPORTANT: The image must be unique to this story. Someone should look at it and understand the subject, conflict, mood and stakes without reading any text.
+IMPORTANT: The image must be unique to this story. Someone who has read the story should recognise it at once from its details; someone who hasn't should sense the subject, mood and stakes without reading any text.
 
 Output ONLY the image generation prompt. No preamble. No analysis. No headers. Just the prompt that will be sent directly to the image model.`;
 
@@ -193,12 +187,17 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
 
     // ── Fallback: story-aware prompt built from storyWorld data ───────────
     if (!coverPrompt) {
-      coverPrompt = `A premium editorial book cover image for a story titled "${title}". Theme: ${subject}. Emotional tone: ${emotion}. Setting: ${visualWorld}. Choose a single strong visual metaphor that captures the essence of this story — an object, a space, or a moment of anticipation. Style: high-end lifestyle editorial, Apple editorial, Monocle, premium Penguin non-fiction. Warm, inviting light (golden hour, soft lamplight or warm morning sun), rich warm tones, a styled scene with rich textures, never cold, bleak, bare or messy. Shallow depth of field, soft cinematic glow, generous negative space. NO people, NO faces, NO text, letters or numbers anywhere in the image: any paper or page is blank. Portrait orientation. Sophisticated, aspirational, emotionally resonant.`;
+      coverPrompt = `A premium editorial book cover image for a story titled "${title}". Theme: ${subject}. Emotional tone: ${emotion}. Setting: ${visualWorld}. Show one richly observed scene with 3 to 5 concrete details specific to this story (objects and personal traces, not a generic desk set-up). Style: high-end lifestyle editorial, Apple editorial, Monocle, premium Penguin non-fiction. Warm, inviting light (golden hour, soft lamplight or warm morning sun), rich warm tones, luminous overall rather than mostly shadow, a styled scene with rich textures, never cold, bleak, bare or messy. Shallow depth of field, soft cinematic glow, generous negative space. NO people, NO faces, NO text, letters or numbers anywhere in the image: any paper or page is blank. Portrait orientation. Sophisticated, aspirational, emotionally resonant.`;
     }
 
     // Always end with the no-text rule, whichever prompt is used: image models
     // misspell any lettering they draw (e.g. "PETICH DECK" on a pitch deck).
     coverPrompt += ' Absolutely no text, words, letters, numbers or brand logos anywhere in the image; any paper or page is blank, and any screen shows at most a simple wordless shape or graphic.';
+
+    // TEMPORARY (added 2026-10-21): logs the final cover prompt so we can see
+    // why a cover misses. It contains story details, so remove it once covers
+    // are reliable (the same kind of log was removed on 2026-08-30, a2ed61f).
+    console.log('[cover-image] TEMP prompt:', coverPrompt);
 
     // ── Step 2: Generate image with OpenAI ────────────────────────────────
     // Medium quality: about a quarter of high's generation work, and sharp
