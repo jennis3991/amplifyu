@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ROLES, LESSONS } from '../data.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 // ─── D14 Theory — Competence-Confidence Loop (circular diagram) ────────────
 // Five pill nodes arranged in a pentagon, connected by curved arrows that
@@ -395,7 +396,7 @@ export function D14SimWidget({T, T2, isDesktop}) {
       <div style={cs.card}>
         <div style={cs.label}>Communication Blueprint</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Your personalised plan. Built from 14 days of work.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AmplifyU Coach will analyse your role, your journey, your strengths and gaps — and generate a blueprint that is specific to you.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AI Coach will analyse your role, your journey, your strengths and gaps — and generate a blueprint that is specific to you.</p>
       </div>
       {!hasReflection && (
         <div style={{...cs.card, background:"rgba(201,120,70,0.06)", border:"0.5px solid rgba(201,120,70,0.25)"}}>
@@ -407,13 +408,16 @@ export function D14SimWidget({T, T2, isDesktop}) {
           <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#C97846", lineHeight:1.6, margin:0}}>{error}</p>
         </div>
       )}
-      <button onClick={generate} style={cs.cta}>Generate My Blueprint</button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={generate} style={cs.cta}>Generate My Blueprint</button>
+      </div>
     </div>
   );
 
   if (phase === 'generating') return (
     <div style={{...cs.card, textAlign:"center", padding:isDesktop?"48px 32px":"32px 24px"}}>
-      <div style={cs.label}>Your Coach is Working</div>
+      <div style={cs.label}>Your AI Coach is Working</div>
       <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.4, margin:"0 0 20px"}}>Building your personalised blueprint...</p>
       <SequentialDots dotCount={dotCount} activeColor={T.gold} inactiveColor={T2.border}
         messages={["Analysing your journey, your role, and your reflection — this takes around 15 seconds.","Weighing your strengths against where you're headed.","Drafting the conversations worth having next.","Shaping your habits into a plan you'll actually keep.","Adding the final touches…"]}
@@ -431,6 +435,8 @@ export function D14SimWidget({T, T2, isDesktop}) {
 
     return (
       <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
+
+        <p style={{fontFamily:T.sans, fontSize:13, color:T2.text2, lineHeight:1.5, margin:0}}>Written by your AI coach from your answers.</p>
 
         <Sec label="Your Journey" accent>
           <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.8, margin:0}}>{blueprint.journey}</p>

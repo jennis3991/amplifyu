@@ -5,6 +5,7 @@ import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { Paywall } from '../components/Paywall.jsx';
 import { trialExhausted, incrementTrialCount } from '../lib/purchases.js';
 import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 const REHEARSAL_TRIAL_KEY = 'au1_trial_d1_rehearsal';
 const SIMULATION_TRIAL_KEY = 'au1_trial_d1_simulation';
@@ -622,7 +623,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
       ) : (
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
           <div style={{...cs.card,background:"#0A0804",border:"0.5px solid rgba(138,158,132,0.15)"}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Your AmplifyU coach says</div>
+            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Your AI coach says</div>
             <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,fontWeight:600,color:"#F5EFE6",lineHeight:1.4,margin:"0 0 10px"}}>{aiResult.praise}</p>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:"rgba(245,239,230,0.6)",lineHeight:1.6,margin:0}}>→ {aiResult.tip}</p>
           </div>
@@ -924,8 +925,9 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
           );
         })}
       </div>
+      <AICoachNote T={T} T2={T2} voice style={{ marginTop: isDesktop ? 24 : 20 }} />
       <button onClick={beginRehearsal} disabled={sel === null} style={{
-        width: "100%", marginTop: isDesktop ? 24 : 20, padding: isDesktop ? "14px" : "13px",
+        width: "100%", marginTop: 0, padding: isDesktop ? "14px" : "13px",
         borderRadius: 4, border: "none",
         // Dark mode: a parchment button on the dark panel (the light-mode
         // charcoal would disappear into it).
@@ -1000,7 +1002,7 @@ export function D1WarmUpWidget({ T, T2, isDesktop, onNavLabel, onNavFn, onComple
         </div>
       ) : recDone && aiObs ? (
         <div style={{ background: "#F0EBE2", borderRadius: 8, padding: "24px 24px 22px", border: "0.5px solid #DDD5C4" }}>
-          <div style={{ fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 14 }}>Your AmplifyU Coach</div>
+          <div style={{ fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 14 }}>Your AI Coach</div>
           <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 19 : 17, color: "#2C2416", lineHeight: 1.72, margin: "0 0 16px" }}>{aiObs}</p>
           <div style={{ height: "0.5px", background: "#DDD5C4", marginBottom: 16 }} />
           <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 14, color: "#6B5E44", lineHeight: 1.65, margin: "0 0 20px" }}>
@@ -1466,7 +1468,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
           {[
             {n:1,label:"Choose a topic",     icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
             {n:2,label:"Speak naturally",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:3,label:"AmplifyU coach scores clarity",  icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:3,label:"AI coach scores clarity",  icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
             {n:4,label:"Reflect & listen",   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke={T.gold} strokeWidth="1.3"/><path d="M8 9a3 3 0 016 0v4a3 3 0 01-6 0V9z" stroke={T.gold} strokeWidth="1.3"/></svg>},
           ].map((s,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
@@ -1496,7 +1498,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
             </svg>
           </div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
-            Record yourself speaking and receive personalised feedback from your AmplifyU Coach on your <strong style={{color:T.gold,fontWeight:700}}>clarity, structure, brevity, focus and simplicity</strong>.
+            Record yourself speaking and receive personalised feedback from your AI Coach on your <strong style={{color:T.gold,fontWeight:700}}>clarity, structure, brevity, focus and simplicity</strong>.
           </p>
         </div>
 
@@ -1557,7 +1559,10 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
         </div>
       )}
 
-      <button onClick={()=>setPhase('prompt')} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Choose a Topic to Begin →</button>
+      <div>
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={()=>setPhase('prompt')} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Choose a Topic to Begin →</button>
+      </div>
     </div>
   );
 
@@ -1663,7 +1668,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"60px 20px",gap:22}}>
       <p style={{fontFamily:T.serif,fontSize:isDesktop?22:18,color:T2.text,margin:0,textAlign:"center"}}>Analysing your clarity…</p>
       <SequentialDots dotCount={dotCount} activeColor={T.gold} inactiveColor={T2.border}
-        messages={["Your AmplifyU coach is reviewing your response.","Listening for your clearest moments.","Weighing structure against simplicity.","Finding the words worth upgrading.","Almost there…"]}
+        messages={["Your AI coach is reviewing your response.","Listening for your clearest moments.","Weighing structure against simplicity.","Finding the words worth upgrading.","Almost there…"]}
         textStyle={{fontFamily:T.sans,fontSize:13,color:T2.text4}}/>
     </div>
   );
@@ -1772,7 +1777,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
 
       {/* 2 COACH SAYS — moved to top */}
       <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
-        <div style={cs.label}>Your AmplifyU Coach Says</div>
+        <div style={cs.label}>Your AI Coach Says</div>
         <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
           <div style={{fontFamily:T.serif,fontSize:isDesktop?44:34,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0,flex:1}}>{feedback.insight}</p>

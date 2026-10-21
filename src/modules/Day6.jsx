@@ -3,6 +3,7 @@ import { T } from '../theme.js';
 import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -135,7 +136,7 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
       <div style={cs.card}>
         <div style={cs.label}>Your task</div>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.65, margin:0}}>
-          Choose one scenario below and respond naturally. Don't worry about finding the perfect words. Your AmplifyU coach will help you refine your response before you step into the simulation.
+          Choose one scenario below and respond naturally. Don't worry about finding the perfect words. Your AI coach will help you refine your response before you step into the simulation.
         </p>
       </div>
       <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:isDesktop?12:10}}>
@@ -150,10 +151,13 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
           );
         })}
       </div>
-      <button onClick={() => setPhase('ready')} disabled={!scenario}
-        style={{...cs.cta, opacity:scenario?1:0.4, cursor:scenario?'pointer':'not-allowed', fontSize:isDesktop?15:14, padding:isDesktop?'15px':'13px'}}>
-        Respond Naturally →
-      </button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={() => setPhase('ready')} disabled={!scenario}
+          style={{...cs.cta, opacity:scenario?1:0.4, cursor:scenario?'pointer':'not-allowed', fontSize:isDesktop?15:14, padding:isDesktop?'15px':'13px'}}>
+          Respond Naturally →
+        </button>
+      </div>
     </div>
   );
 
@@ -196,7 +200,7 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
       <div style={{display:'flex', gap:6}}>
         {[0,1,2].map(i => <div key={i} style={{width:8, height:8, borderRadius:'50%', background:T.gold, animation:`glowPulse 1.2s ease ${i*0.3}s infinite`}}/>)}
       </div>
-      <p style={{fontFamily:T.sans, fontSize:14, color:T2.text3, margin:0, textAlign:'center'}}>Your AmplifyU coach is reading your language…</p>
+      <p style={{fontFamily:T.sans, fontSize:14, color:T2.text3, margin:0, textAlign:'center'}}>Your AI coach is reading your language…</p>
     </div>
   );
 
@@ -229,7 +233,7 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
         {/* 2 — Coach observation (dark ink panel) */}
         {visCount >= 2 && (
           <div style={{background:'#0A0804', borderRadius:6, padding:isDesktop?'22px 24px':'18px 20px', border:'0.5px solid rgba(138,158,132,0.12)', animation:'fadeUp 0.4s ease both'}}>
-            <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:12}}>Your AmplifyU Coach Says</div>
+            <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:12}}>Your AI Coach Says</div>
             <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, color:'rgba(245,239,230,0.92)', lineHeight:1.55, margin:'0 0 14px', fontWeight:500}}>{coachResult.patternObservation}</p>
             <span style={{display:'inline-block', padding:'3px 10px', borderRadius:20, background:`${patternColor}22`, border:`0.5px solid ${patternColor}66`, fontFamily:T.sans, fontSize:10, fontWeight:700, color:patternColor, textTransform:'uppercase', letterSpacing:'1.5px'}}>
               {lp}
@@ -788,7 +792,10 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
           })}
         </div>
       </div>
-      <button onClick={generate} disabled={!canGenerate} style={{...cs.cta,opacity:canGenerate?1:0.4,fontSize:isDesktop?15:14,padding:isDesktop?"16px":"14px"}}>Generate My Questions →</button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={generate} disabled={!canGenerate} style={{...cs.cta,opacity:canGenerate?1:0.4,fontSize:isDesktop?15:14,padding:isDesktop?"16px":"14px"}}>Generate My Questions →</button>
+      </div>
     </div>
   );
 
@@ -945,7 +952,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {/* Overall assessment */}
           <div style={{...cs.card,borderLeft:"2px solid rgba(138,158,132,0.4)"}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Your AmplifyU Coach</div>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Your AI Coach</div>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>{perFeedback.overall}</p>
           </div>
           {/* What landed */}
@@ -988,7 +995,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   if(phase==='reviewing') return (
     <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"48px 0":"32px 0"}}>
       <SequentialDots dotCount={reviewDotCount} activeColor={T.gold} inactiveColor={T2.border}
-        messages={["Your AmplifyU coach is reviewing your responses…","Looking across all "+questions.length+" answers for a pattern.","Finding your strongest moment under pressure.","Almost there…"]}
+        messages={["Your AI coach is reviewing your responses…","Looking across all "+questions.length+" answers for a pattern.","Finding your strongest moment under pressure.","Almost there…"]}
         textStyle={{fontFamily:T.sans,fontSize:14,color:T2.text3}}/>
     </div>
   );

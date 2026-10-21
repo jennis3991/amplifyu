@@ -3,6 +3,7 @@ import { T } from '../theme.js';
 import { useOnlineStatus } from '../utils.js';
 import { Paywall } from '../components/Paywall.jsx';
 import { trialExhausted, incrementTrialCount } from '../lib/purchases.js';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 const CHALLENGE_TRIAL_KEY = 'au1_trial_practice_challenge';
 
@@ -290,6 +291,7 @@ export function PracticeSpace({T2, isDesktop}) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?21:18,fontWeight:600,color:'rgba(255,255,255,0.92)',lineHeight:1.4,margin:0}}>"{scenario.prompt}"</p>
       </div>
 
+      <AICoachNote T={T} T2={T2} style={{justifyContent:'center'}} />
       <div style={{textAlign:'center',marginBottom:16}}>
         <button onClick={preparingMic?undefined:(isRec?stopRec:startRec)} disabled={preparingMic} style={{width:64,height:64,borderRadius:'50%',border:`2px solid ${isRec?'#8A9E84':'rgba(44,36,22,0.15)'}`,background:isRec?'rgba(138,158,132,0.1)':'transparent',cursor:preparingMic?'default':'pointer',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 8px',transition:'all 0.2s'}}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={isRec?'#8A9E84':'rgba(44,36,22,0.35)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

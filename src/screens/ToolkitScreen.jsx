@@ -546,7 +546,7 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
                           </div>
                           <div style={{fontFamily:T.serif,fontSize:isDesktop?15:14,color:T2.text,fontWeight:500,marginBottom:preview?3:0}}>{title}</div>
                           {preview && <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.45}}>{preview}</div>}
-                          <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:5}}>{new Date(entry.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}</div>
+                          <div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:5}}>{new Date(entry.timestamp).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})} · Written by your AI coach from your answers.</div>
                         </div>
                       </div>
                       <button onClick={()=>handleDeleteWork(entry)} title={confirming?"Tap again to delete":"Delete"} style={{background:"none",border:"none",cursor:"pointer",color:confirming?"#b05c4a":T2.text4,fontSize:confirming?11:18,fontWeight:confirming?700:400,fontFamily:T.sans,padding:"0 16px",flexShrink:0,lineHeight:1,alignSelf:"center",whiteSpace:"nowrap",transition:"all 0.15s"}}>{confirming?"Confirm?":"×"}</button>
@@ -777,7 +777,7 @@ else. And it can be built — deliberately, in fifteen minutes a day."
             <div style={{background:dark?T2.surface:T2.card,borderRadius:2,padding:"18px 20px"}}>
               <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:2,marginBottom:10}}>Built with AmplifyU Coaching</div>
               <p style={{fontSize:14,color:T2.text,lineHeight:1.7,margin:0}}>
-                Every session includes your AmplifyU Coach that responds to your specific words — not generic feedback, but personalised evaluation of your structure, reasoning, and delivery. Tools to help you rewrite, rehearse, and reflect. The kind of support that used to require an expensive coach is now available every day, inside sessions you can complete in under twenty minutes.
+                Every session includes your AI Coach that responds to your specific words — not generic feedback, but personalised evaluation of your structure, reasoning, and delivery. Tools to help you rewrite, rehearse, and reflect. The kind of support that used to require an expensive coach is now available every day, inside sessions you can complete in under twenty minutes.
               </p>
             </div>
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>

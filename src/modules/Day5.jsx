@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -125,9 +126,12 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
         ))}
       </div>
       <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.7, margin:0, fontWeight:300}}>First, watch how it works in practice. Then try it yourself — before The Boardroom puts you on the spot.</p>
-      <button onClick={() => setPhase('demo')} style={{...cs.cta}}>
-        See It In Action →
-      </button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={() => setPhase('demo')} style={{...cs.cta}}>
+          See It In Action →
+        </button>
+      </div>
     </div>
   );
 
@@ -238,7 +242,7 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
     return (
       <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
         <div style={{background:'#0A0804', borderRadius:8, padding:isDesktop?'28px 32px':'22px 22px', border:'0.5px solid rgba(138,158,132,0.15)'}}>
-          <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:14}}>Your AmplifyU Coach Says</div>
+          <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:14}}>Your AI Coach Says</div>
           <p style={{fontFamily:T.serif, fontSize:isDesktop?22:18, color:'rgba(245,239,230,0.92)', lineHeight:1.45, margin:0}}>{coachResult.coachLine}</p>
         </div>
         <div style={cs.card}>
@@ -436,7 +440,7 @@ Return only valid JSON with all fields present.`,
           {[
             {n:1, label:'Choose a topic',        icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
             {n:2, label:'Answer two questions',   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:3, label:'AI scores structure',    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:3, label:'AI coach scores structure',    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
             {n:4, label:'Compare & reflect',      icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="4" y="10" width="5" height="8" rx="1" stroke={T.gold} strokeWidth="1.3"/><rect x="13" y="5" width="5" height="13" rx="1" stroke={T.gold} strokeWidth="1.3"/></svg>},
           ].map((s,i) => (
             <div key={i} style={{display:'flex', alignItems:'center', flex:1}}>
@@ -467,11 +471,14 @@ Return only valid JSON with all fields present.`,
           );
         })}
       </div>
-      <button onClick={() => { if (topic) setPhase('q1'); }}
-        disabled={!topic}
-        style={{...cs.cta, opacity:topic?1:0.4, cursor:topic?'pointer':'default'}}>
-        Enter the Boardroom →
-      </button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={() => { if (topic) setPhase('q1'); }}
+          disabled={!topic}
+          style={{...cs.cta, opacity:topic?1:0.4, cursor:topic?'pointer':'default'}}>
+          Enter the Boardroom →
+        </button>
+      </div>
     </div>
   );
 
@@ -548,7 +555,7 @@ Return only valid JSON with all fields present.`,
       {revealCoach && (
         <>
           <div style={{background:'#0A0804', borderRadius:8, padding:isDesktop?'28px 32px':'22px 22px', border:'0.5px solid rgba(138,158,132,0.15)'}}>
-            <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:14}}>Your AmplifyU Coach Says</div>
+            <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:14}}>Your AI Coach Says</div>
             <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, color:'rgba(245,239,230,0.92)', lineHeight:1.4, margin:'0 0 12px'}}>{preResult.coachInsight}</p>
             <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, color:'rgba(138,158,132,0.85)', lineHeight:1.55, margin:0, fontStyle:'italic'}}>{preResult.q2Instruction}</p>
           </div>
@@ -605,7 +612,7 @@ Return only valid JSON with all fields present.`,
     return (
       <div style={{display:'flex', flexDirection:'column', gap:isDesktop?14:12}}>
         <div style={{background:'#0A0804', borderRadius:8, padding:isDesktop?'28px 32px':'22px 22px', border:'0.5px solid rgba(138,158,132,0.15)'}}>
-          <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:14}}>Your AmplifyU Coach Says</div>
+          <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:14}}>Your AI Coach Says</div>
           <p style={{fontFamily:T.serif, fontSize:isDesktop?22:18, color:'rgba(245,239,230,0.92)', lineHeight:1.4, margin:0}}>{d.headlineVerdict}</p>
         </div>
         <div style={cs.card}>

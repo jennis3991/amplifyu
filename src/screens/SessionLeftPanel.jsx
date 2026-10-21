@@ -158,7 +158,7 @@ export function SessionLeftPanel({
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Week 1 Master Challenge</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Teach It Forward.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Explain what you learned as if teaching someone else. Your AmplifyU coach evaluates all six Week 1 skills.</p>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Explain what you learned as if teaching someone else. Your AI coach evaluates all six Week 1 skills.</p>
         </div>
       </div>
     );

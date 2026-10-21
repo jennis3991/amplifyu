@@ -36,6 +36,7 @@ import D4Insight from '../modules/D4Insight.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
   return (
     <div style={{width:"100%",height:320,background:"#0E0B08",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"24px 24px 12px",boxSizing:"border-box",position:"relative",overflow:"hidden"}}>
@@ -742,20 +743,23 @@ T.goldDark : T2.text4,
             <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:0,fontWeight:300}}>Think of something you did recently — a project, a problem you solved, a result you created. Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
           </div>
           <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"16px 18px",marginBottom:20}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your AmplifyU Coach</div>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:6,fontWeight:300}}>Your AmplifyU coach takes your three inputs and sharpens them into a crisp performance statement — ready for any conversation.</p>
+            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your AI Coach</div>
+            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:6,fontWeight:300}}>Your AI coach takes your three inputs and sharpens them into a crisp performance statement — ready for any conversation.</p>
             <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:0,fontStyle:"italic",fontWeight:300}}>Lead with the result. Make it specific. Own it.</p>
           </div>
-          <button onClick={()=>setD10PracticePhase('builder')} style={{width:"100%",padding:"14px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48}}>
-            Start the SAR Builder →
-          </button>
+          <div>
+            <AICoachNote T={T} T2={T2} />
+            <button onClick={()=>setD10PracticePhase('builder')} style={{width:"100%",padding:"14px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48}}>
+              Start the SAR Builder →
+            </button>
+          </div>
         </>
       )}
       {isD10 && step==="Rehearsal" && d10PracticePhase==='builder' && (
         <>
           <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Make Your Work Visible</div>
           <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>SAR Builder</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Situation. Action. Result. Describe what you did — your AmplifyU coach sharpens it into your performance statement.</p>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Situation. Action. Result. Describe what you did — your AI coach sharpens it into your performance statement.</p>
           <D10MobileSAR onComplete={()=>setD10SarDone(true)}/>
           {d10SarDone && (
             <button onClick={()=>setIdx(STEPS.indexOf('Simulation'))} style={{width:"100%",padding:"14px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,marginTop:12}}>

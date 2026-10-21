@@ -3,6 +3,11 @@ import { T } from '../theme.js';
 import { ROLES } from '../data.js';
 import { useIsDesktop } from '../utils.js';
 
+// One-time notice at the start of the programme that the coach is AI (EU AI
+// Act Art. 50(1)); it also covers the pre-recorded coach voice heard on the
+// lesson tabs, which carry no notice of their own.
+const AI_COACH_LINE = "Your AmplifyU coach is AI. Its voice and feedback are generated automatically, not by a person.";
+
 // Match a saved onboarding answer to a map key, ignoring case and
 // punctuation, so answers saved before a copy edit (e.g. with an em dash)
 // still find their profile.
@@ -94,7 +99,7 @@ export function ReflectionScreen({ answers, onContinue }) {
   const svgStar    = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M10 3l1.8 5h5.2l-4.2 3 1.6 5L10 13l-4.4 3 1.6-5L3 8h5.2z" stroke={T.text3} strokeWidth="1.3" strokeLinejoin="round"/></svg>;
   const svgChart   = <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ display: "block" }}><path d="M3 15l4-5 3 2 4-6 3 3" stroke={T.text3} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 
-  // Outcome cards — "By Day 14 you will be able to..." framing
+  // Outcome cards — "By Day 14 you'll understand how to..." framing
   const outcomeMap = {
     "Executive Presence":      { svg: svgMic,     title: "Command the room",           sub: "Speak with authority in any environment" },
     "Confidence":              { svg: svgBolt,    title: "Back yourself",              sub: "Communicate with conviction and inner confidence" },
@@ -203,6 +208,9 @@ export function ReflectionScreen({ answers, onContinue }) {
                         <p style={{ fontFamily: T.serif, fontSize: "clamp(15px,1.4vw,17px)", color: T.ink, lineHeight: 1.78, margin: 0, letterSpacing: "-0.1px" }}>
                           {reflection.forward}
                         </p>
+                        <p style={{ fontFamily: T.sans, fontSize: 13, color: T.text2, lineHeight: 1.6, margin: "16px 0 0" }}>
+                          {AI_COACH_LINE}
+                        </p>
                       </div>
                     </div>
                   )}
@@ -250,7 +258,7 @@ export function ReflectionScreen({ answers, onContinue }) {
           {section >= 2 && (
             <div style={{ marginBottom: 40, animation: "fadeUp 0.7s ease both" }}>
               <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 8, fontFamily: T.sans }}>By Day 14</div>
-              <div style={{ fontSize: 13, color: T.text2, marginBottom: 20, fontFamily: T.sans }}>{"You'll be able to..."}</div>
+              <div style={{ fontSize: 13, color: T.text2, marginBottom: 20, fontFamily: T.sans }}>{"You'll understand how to..."}</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 {outcomeCards.map((o, i) => (
                   <div key={i} style={{ padding: "18px 20px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8, textAlign: "center" }}>
@@ -314,6 +322,8 @@ export function ReflectionScreen({ answers, onContinue }) {
           </div>
 
         </div>
+        {/* AI notice — always visible, directly above the floating CTA */}
+        <p style={{ position: "fixed", bottom: 100, right: 40, width: 280, zIndex: 200, fontFamily: T.sans, fontSize: 13, color: "rgba(255,255,255,0.72)", lineHeight: 1.5, margin: 0, textAlign: "center" }}>{AI_COACH_LINE}</p>
         {/* Floating CTA — fixed bottom right, ENTER pill style */}
         <button
           onClick={handleContinue}
@@ -332,7 +342,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
   // ── MOBILE ────────────────────────────────────────────────────────────────
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 90, opacity:visible?1:0, transition:"opacity 0.38s ease" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 150, opacity:visible?1:0, transition:"opacity 0.38s ease" }}>
       <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
       {/* Slim black banner */}
@@ -383,6 +393,7 @@ export function ReflectionScreen({ answers, onContinue }) {
                 <div>
                   <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 10, fontFamily: T.sans }}>The path ahead</div>
                   <p style={{ fontFamily: T.serif, fontSize: 17, color: T.ink, lineHeight: 1.75, margin: 0, letterSpacing: "-0.1px" }}>{reflection.forward}</p>
+                  <p style={{ fontFamily: T.sans, fontSize: 13, color: T.text2, lineHeight: 1.6, margin: "14px 0 0" }}>{AI_COACH_LINE}</p>
                 </div>
               </div>
             )}
@@ -417,7 +428,7 @@ export function ReflectionScreen({ answers, onContinue }) {
         {section >= 2 && (
           <div style={{ animation: "sectionFade 0.7s ease both" }}>
             <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 6, fontFamily: T.sans }}>By Day 14</div>
-            <div style={{ fontSize: 12, color: T.text2, marginBottom: 16, fontFamily: T.sans }}>{"You'll be able to..."}</div>
+            <div style={{ fontSize: 12, color: T.text2, marginBottom: 16, fontFamily: T.sans }}>{"You'll understand how to..."}</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
               {outcomeCards.map((o, i) => (
                 <div key={i} style={{ padding: "14px 16px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8, textAlign: "center" }}>
@@ -463,7 +474,8 @@ export function ReflectionScreen({ answers, onContinue }) {
       </div>
 
       {/* Let's Begin — mobile fixed bottom, dark Begin Session style */}
-      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "14px 20px calc(24px + env(safe-area-inset-bottom, 0px))", background: "linear-gradient(to top, " + T.bg + " 70%, transparent)", zIndex: 100 }}>
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "28px 20px calc(24px + env(safe-area-inset-bottom, 0px))", background: "linear-gradient(to top, " + T.bg + " 84%, transparent)", zIndex: 100 }}>
+        <p style={{ fontFamily: T.sans, fontSize: 13, color: T.text2, lineHeight: 1.5, margin: "0 0 10px" }}>{AI_COACH_LINE}</p>
         <button onClick={handleContinue} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 24px", borderRadius: 6, border: "none", background: T.ink, color: T.bg, fontSize: 14, fontFamily: T.sans, fontWeight: 600, cursor: "pointer", transition: "all 0.25s ease" }}>
           {"Let's Begin"} →
         </button>

@@ -3,6 +3,7 @@ import { T } from '../theme.js';
 import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -98,7 +99,7 @@ export function D10SimFeedback({input, scenario}) {
 
           {/* Premium coaching */}
           <div style={{padding:"20px 22px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"3px solid "+T.gold,display:"flex",flexDirection:"column",gap:10}}>
-            <div style={{fontSize:9,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",fontFamily:T.sans}}>Coach feedback</div>
+            <div style={{fontSize:9,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"2px",fontFamily:T.sans}}>AI coach feedback</div>
             <p style={{fontFamily:T.serif,fontSize:16,color:T.text,lineHeight:1.65,margin:0}}>{result.coaching}</p>
             {result.coaching2 && <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T.text2,lineHeight:1.6,margin:0}}>{result.coaching2}</p>}
           </div>
@@ -363,10 +364,13 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
         <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>Pick the scenario that feels most real to you. Frame the Situation, explain your Action, land the Result — then stop. Nobody wants your full backstory.</p>
       </div>
       <div style={{padding:"16px",background:T2.surface,borderRadius:8,border:"0.5px solid rgba(138,158,132,0.15)",marginBottom:20}}>
-        <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:"'Inter',sans-serif"}}>Your AmplifyU Coach</div>
+        <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:"'Inter',sans-serif"}}>Your AI Coach</div>
         <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>You'll be scored on Clarity, Structure, Confidence, Brevity and Impact — then shown exactly what a stronger version sounds like.</p>
       </div>
-      <button onClick={()=>setIntroSeen(true)} style={{width:"100%",padding:"15px",borderRadius:3,border:"none",background:"#2C2416",color:"#F7F3EC",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Start the Simulation →</button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={()=>setIntroSeen(true)} style={{width:"100%",padding:"15px",borderRadius:3,border:"none",background:"#2C2416",color:"#F7F3EC",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Start the Simulation →</button>
+      </div>
     </div>
   );
 
@@ -435,7 +439,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
 
       {l && <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,padding:"32px 0",textAlign:"center"}}>
         <SequentialDots dotCount={dotCount} size={7} gap={6} center={false} activeColor="#C9A84C" inactiveColor="rgba(201,168,76,0.2)"/>
-        <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:"#2C2416",margin:0}}>Your AmplifyU coach is reviewing your response…</p>
+        <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:"#2C2416",margin:0}}>Your AI coach is reviewing your response…</p>
       </div>}
 
       {scoreFailed && !l && (
@@ -488,7 +492,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
           <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>{r.rewrite}</p>
         </div>
         <div style={{padding:"14px 16px",background:"rgba(237,232,223,0.6)",borderRadius:4}}>
-          <div style={{fontSize:9,fontWeight:700,color:"#8A7B66",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>Your AmplifyU Coach Says</div>
+          <div style={{fontSize:9,fontWeight:700,color:"#8A7B66",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6,fontFamily:"'Inter',sans-serif"}}>Your AI Coach Says</div>
           <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,color:"#2C2416",margin:0,lineHeight:1.6}}>{r.insight}</p>
         </div>
         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}>

@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { T as Timport } from '../theme.js';
 import { useOnlineStatus } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
+import { tagJpegAsAI } from '../lib/aiImageTag.js';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -289,7 +291,7 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
       {/* Header */}
       <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"24px 32px":"20px 22px",border:"0.5px solid rgba(138,158,132,0.2)"}}>
-        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>AmplifyU Coach · What I'd Recommend</div>
+        <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>AI Coach · What I'd Recommend</div>
         <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:"#F5EFE6",lineHeight:1.2,marginBottom:10}}>Your Story, Crafted</h2>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>{genResult.coachNote}</p>
       </div>
@@ -804,6 +806,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
   // that was never visible for a ~90%+ size cut, well before the quota-fallback
   // below is ever needed. Falls back to the original url if canvas access
   // fails for any reason (the quota-fallback still protects that path).
+  // The JPEG is also tagged as AI-generated (XMP metadata, see aiImageTag.js).
   async function compressImageForStorage(dataURI, maxWidth = 640, quality = 0.75) {
     const img = new Image();
     img.src = dataURI;
@@ -815,7 +818,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
     const canvas = document.createElement('canvas');
     canvas.width = w; canvas.height = h;
     canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-    return canvas.toDataURL('image/jpeg', quality);
+    return tagJpegAsAI(canvas.toDataURL('image/jpeg', quality));
   }
 
   // The cover image finishes generating well after the story text is already
@@ -825,10 +828,8 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
   // adding one would exceed the quota, keep the story (already safely saved
   // without it) and tell the user, instead of failing the whole save or
   // losing the story.
-  async function attachStoryImage(id, url) {
-    let stored = url;
-    try { stored = await compressImageForStorage(url); }
-    catch (err) { console.error('[Day8] cover compression failed, storing full-quality copy:', err); }
+  // `stored` is the already-compressed, AI-tagged copy (see generateStoryImage).
+  async function attachStoryImage(id, stored) {
     setPendingStory(prev => (prev && prev.id === id) ? {...prev, image: stored} : prev);
     setSavedStories(prev => {
       if (!prev.some(s => s.id === id)) return prev; // capped/pending — nothing persisted yet to attach to
@@ -931,8 +932,13 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
         return;
       }
       if (data.url) {
-        setStoryImage(data.url);
-        if (currentStoryIdRef.current) attachStoryImage(currentStoryIdRef.current, data.url);
+        // Compress and tag as AI-generated once; the same copy is shown now
+        // and saved with the story, so the marking travels with both.
+        let cover = data.url;
+        try { cover = await compressImageForStorage(data.url); }
+        catch (err) { console.error('[Day8] cover compression failed, using full-quality copy:', err); }
+        setStoryImage(cover);
+        if (currentStoryIdRef.current) attachStoryImage(currentStoryIdRef.current, cover);
       } else {
         setStoryImageErr(data.error || 'Image generation failed');
         setStoryImage('error');
@@ -1062,9 +1068,12 @@ Return ONLY valid JSON:
           ))}
         </div>
       </div>
-      <button onClick={generate} disabled={!brief.trim()} style={{width:"100%",padding:isDesktop?"16px":"15px",borderRadius:4,border:"none",background:brief.trim()?(T.ink||"#2C2416"):"rgba(44,36,22,0.25)",color:T2.bg||"#F7F3EC",fontSize:isDesktop?15:14,fontWeight:600,cursor:brief.trim()?"pointer":"default",fontFamily:T.sans,minHeight:50}}>
-        Generate My Story →
-      </button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={generate} disabled={!brief.trim()} style={{width:"100%",padding:isDesktop?"16px":"15px",borderRadius:4,border:"none",background:brief.trim()?(T.ink||"#2C2416"):"rgba(44,36,22,0.25)",color:T2.bg||"#F7F3EC",fontSize:isDesktop?15:14,fontWeight:600,cursor:brief.trim()?"pointer":"default",fontFamily:T.sans,minHeight:50}}>
+          Generate My Story →
+        </button>
+      </div>
     </div>
   );
 
@@ -1632,7 +1641,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         </div>
       )}
 
-      <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, margin:0 }}>Choose the story that feels most meaningful to you. Don't worry about telling it perfectly — just tell it naturally. Your AmplifyU coach will identify the strongest parts of your story and help shape it into one you can use again and again.</p>
+      <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, margin:0 }}>Choose the story that feels most meaningful to you. Don't worry about telling it perfectly — just tell it naturally. Your AI coach will identify the strongest parts of your story and help shape it into one you can use again and again.</p>
       <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
           <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
@@ -1653,11 +1662,14 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
           );
         })}
       </div>
-      <button
-        onClick={() => selected !== null && setPhase('speak')}
-        style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:selected!==null?T.ink:T2.border, color:selected!==null?(T2.bg||"#F7F3EC"):T2.text4, fontSize:15, fontWeight:600, cursor:selected!==null?"pointer":"default", fontFamily:T.sans, minHeight:50, transition:"all 0.2s" }}>
-        Let's Find It →
-      </button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button
+          onClick={() => selected !== null && setPhase('speak')}
+          style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:selected!==null?T.ink:T2.border, color:selected!==null?(T2.bg||"#F7F3EC"):T2.text4, fontSize:15, fontWeight:600, cursor:selected!==null?"pointer":"default", fontFamily:T.sans, minHeight:50, transition:"all 0.2s" }}>
+          Let's Find It →
+        </button>
+      </div>
     </div>
   );
 
@@ -1671,7 +1683,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       <h3 style={{ fontFamily:T.serif, fontSize:isDesktop?26:22, fontWeight:600, color:T2.text, lineHeight:1.2, margin:0 }}>{STORY_CARDS[selected]?.title}</h3>
       <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"28px 24px 22px" }}>
         <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:16 }}>Your Story</div>
-        <p style={{ fontFamily:T.serif, fontSize:isDesktop?22:19, color:T2.text, lineHeight:1.55, margin:0, fontWeight:500 }}>Speak for around 60 seconds. Your AmplifyU coach will find the shape of your story and turn it into something you can use anywhere.</p>
+        <p style={{ fontFamily:T.serif, fontSize:isDesktop?22:19, color:T2.text, lineHeight:1.55, margin:0, fontWeight:500 }}>Speak for around 60 seconds. Your AI coach will find the shape of your story and turn it into something you can use anywhere.</p>
       </div>
       <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T2.text3, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:6 }}>As you speak, try to touch on</div>
@@ -1726,7 +1738,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       <div style={{ background:"#0E0B08", borderRadius:10, padding:"40px 44px", maxWidth:460, width:"100%", textAlign:"center" }}>
         <p style={{ fontFamily:T.serif, fontSize:isDesktop?22:19, fontStyle:"italic", color:"rgba(245,239,230,0.9)", lineHeight:1.55, margin:"0 0 22px" }}>Finding the shape of your story...</p>
         <SequentialDots dotCount={procDotCount} activeColor="rgba(245,239,230,0.85)" inactiveColor="rgba(245,239,230,0.15)"
-          messages={["Your AmplifyU coach is listening.","Finding your setup, your turn, and your outcome.","Shaping your six beats.","Almost there…"]}
+          messages={["Your AI coach is listening.","Finding your setup, your turn, and your outcome.","Shaping your six beats.","Almost there…"]}
           textStyle={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"rgba(245,239,230,0.38)",fontWeight:300}}/>
       </div>
     </div>
@@ -1769,7 +1781,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         )}
         {visCount >= 8 && (
           <div style={{ background:"#0E0B08", borderRadius:8, padding:"24px 26px", marginBottom:16, animation:"fadeUp 0.5s ease both" }}>
-            <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.6)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:14 }}>Your AmplifyU Coach Says</div>
+            <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.6)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:14 }}>Your AI Coach Says</div>
             <p style={{ fontFamily:T.serif, fontSize:isDesktop?20:18, color:"rgba(245,239,230,0.9)", lineHeight:1.55, margin:0, fontWeight:500 }}>{coachObservation}</p>
           </div>
         )}

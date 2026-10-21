@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useOnlineStatus } from '../utils.js';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -382,7 +383,10 @@ Never use em dashes anywhere in your response; use a comma or hyphen instead.`;
         </div>
         {!recordingAvailable && <p style={{ ...sn, fontSize: 11, color: T2.text4, textAlign: "center", margin: 0 }}>Microphone access not available — you'll type your answers instead.</p>}
       </div>
-      <button onClick={() => { setQIdx(0); setPhase('question'); }} style={cta(false)}>Start Conversation →</button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={() => { setQIdx(0); setPhase('question'); }} style={cta(false)}>Start Conversation →</button>
+      </div>
     </div>
   );
 
@@ -893,7 +897,7 @@ Keep it under 280 words. Make every word earn its place. Never use em dashes any
             {[
               { n: 1, label: "Rehearsal feeds your brand insight", icon: c => <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={c} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg> },
               { n: 2, label: "Add your LinkedIn or CV",            icon: c => <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="14" rx="2" stroke={c} strokeWidth="1.3"/><circle cx="8" cy="10" r="2" stroke={c} strokeWidth="1.3"/><path d="M5 15c0-1.5 1.3-2.5 3-2.5s3 1 3 2.5" stroke={c} strokeWidth="1.3" strokeLinecap="round"/><path d="M13 8h3M13 11h3" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg> },
-              { n: 3, label: "AI audits it against your brand",    icon: c => <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="10" cy="10" r="6" stroke={c} strokeWidth="1.3"/><path d="M14.5 14.5L19 19" stroke={c} strokeWidth="1.3" strokeLinecap="round"/><path d="M7.5 10l1.5 1.5 3-3" stroke={c} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+              { n: 3, label: "AI coach audits it against your brand",    icon: c => <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="10" cy="10" r="6" stroke={c} strokeWidth="1.3"/><path d="M14.5 14.5L19 19" stroke={c} strokeWidth="1.3" strokeLinecap="round"/><path d="M7.5 10l1.5 1.5 3-3" stroke={c} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg> },
               { n: 4, label: "Get your improved brand toolkit",    icon: c => <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 2l1.8 3.7 4.1.6-3 2.9.7 4.1L11 11.3 7.4 13.3l.7-4.1-3-2.9 4.1-.6L11 2z" stroke={c} strokeWidth="1.3" strokeLinejoin="round"/></svg> },
             ].map((s, i) => {
               const status = s.n < howItWorksStep ? 'done' : s.n === howItWorksStep ? 'active' : 'upcoming';
@@ -1055,6 +1059,7 @@ Keep it under 280 words. Make every word earn its place. Never use em dashes any
           </div>
         )}
 
+        <AICoachNote T={T} T2={T2} />
         <div style={{ display: "flex", gap: 10, alignItems: "stretch" }}>
           <button onClick={runAnalysis} disabled={!hasProfile} style={{ ...cta(!hasProfile), flex: 1 }}>
             {"✦  Analyse My LinkedIn →"}

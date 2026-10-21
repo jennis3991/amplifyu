@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useWakeLock, useOnlineStatus } from '../utils.js';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -478,7 +479,7 @@ Return ONLY valid JSON:
             {n:1,label:'Choose a character',              icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 18c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
             {n:2,label:'Speak naturally',                  icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
             {n:3,label:'Realistic workplace conversation', icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 5h14a1 1 0 011 1v8a1 1 0 01-1 1H9l-4 3v-3H4a1 1 0 01-1-1V6a1 1 0 011-1z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
-            {n:4,label:'AmplifyU coach feedback',          icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:4,label:'AI coach feedback',          icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
           ].map((s,i)=>(
             <div key={i} style={{display:'flex',alignItems:'center',flex:1}}>
               <div style={{display:'flex',flexDirection:'column',alignItems:'center',flex:1}}>
@@ -507,7 +508,7 @@ Return ONLY valid JSON:
             </svg>
           </div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
-            Choose a connection habit, then navigate a realistic workplace conversation. Your AmplifyU Coach gives personalised feedback on your <strong style={{color:T.gold,fontWeight:700}}>listening, curiosity, empathy and rapport</strong>.
+            Choose a connection habit, then navigate a realistic workplace conversation. Your AI Coach gives personalised feedback on your <strong style={{color:T.gold,fontWeight:700}}>listening, curiosity, empathy and rapport</strong>.
           </p>
         </div>
 
@@ -560,7 +561,10 @@ Return ONLY valid JSON:
           </div>
         )}
       </div>
-      <button onClick={()=>setPhase('select')} style={cs.cta}>Choose Your Character →</button>
+      <div>
+        <AICoachNote T={T} T2={T2} characters />
+        <button onClick={()=>setPhase('select')} style={cs.cta}>Choose Your Character →</button>
+      </div>
     </div>
   );
 

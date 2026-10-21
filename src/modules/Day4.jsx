@@ -3,6 +3,7 @@ import { T } from '../theme.js';
 import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -260,11 +261,14 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
           );
         })}
       </div>
-      <button onClick={() => { if (topic) setPhase('pause'); }}
-        disabled={!topic}
-        style={{...cs.cta, opacity: topic ? 1 : 0.4, cursor: topic ? 'pointer' : 'default'}}>
-        Start The Edit →
-      </button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={() => { if (topic) setPhase('pause'); }}
+          disabled={!topic}
+          style={{...cs.cta, opacity: topic ? 1 : 0.4, cursor: topic ? 'pointer' : 'default'}}>
+          Start The Edit →
+        </button>
+      </div>
     </div>
   );
 
@@ -358,7 +362,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
       <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
         {/* Verdict panel */}
         <div style={{background: '#0A0804', borderRadius: 8, padding: isDesktop ? '32px 36px' : '24px 22px', border: '0.5px solid rgba(138,158,132,0.15)'}}>
-          <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 16}}>Your AmplifyU Coach Says</div>
+          <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 16}}>Your AI Coach Says</div>
           <p style={{fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, color: 'rgba(245,239,230,0.92)', lineHeight: 1.4, margin: '0 0 14px'}}>{coachResult.coachLine}</p>
           <p style={{fontFamily: T.serif, fontSize: isDesktop ? 16 : 14, color: 'rgba(138,158,132,0.8)', lineHeight: 1.55, margin: '0 0 10px', fontStyle: 'italic'}}>{coachResult.bridgeLine}</p>
           {coachResult.spokesFaster && (
@@ -610,7 +614,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
             </svg>
           </div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
-            Your producer interrupts at 30, 15, and 5 seconds. Each cut forces you to compress further. Afterwards, your <strong style={{color:T.gold,fontWeight:700}}>AI editor</strong> reveals which facts you led with were actually essential.
+            Your producer interrupts at 30, 15, and 5 seconds. Each cut forces you to compress further. Afterwards, your <strong style={{color:T.gold,fontWeight:700}}>AI coach</strong> reveals which facts you led with were actually essential.
           </p>
         </div>
       </div>
@@ -618,7 +622,10 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <svg width="14" height="14" viewBox="0 0 20 20" fill="none" style={{flexShrink:0}}><circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/><line x1="10" y1="9" x2="10" y2="14" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/><circle cx="10" cy="6.3" r="1" fill="rgba(138,158,132,0.8)"/></svg>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.5,margin:0}}>This is a private practice simulation. Nothing is broadcast live or shared publicly — your recording is used only to generate your feedback.</p>
       </div>
-      <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose Your Breaking Story →</button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose Your Breaking Story →</button>
+      </div>
     </div>
   );
 
@@ -805,7 +812,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
         </div>
 
         <div style={{...cs.card,padding:isDesktop?"22px 28px":"18px 20px"}}>
-          <div style={cs.label}>Your AmplifyU Coach Says</div>
+          <div style={cs.label}>Your AI Coach Says</div>
           <div style={{display:"flex",gap:isDesktop?18:12,alignItems:"flex-start"}}>
             <div style={{fontFamily:T.serif,fontSize:isDesktop?44:34,color:T.gold,lineHeight:0.8,flexShrink:0,marginTop:4,opacity:0.5}}>"</div>
             <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontStyle:"italic",color:T2.text,lineHeight:1.7,margin:0,flex:1}}>{result.coachNote}</p>

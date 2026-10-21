@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -97,7 +98,10 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>Most career-defining moments come from conversations, not job boards.</p>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>The problem is not knowing this — it's that most people freeze when the moment arrives. Quick warm-up: one real moment, 20 seconds. It will happen to you.</p>
       </div>
-      <button onClick={() => { setRecDone(false); setAnalyzing(false); setFeedback(null); setPhase('practice'); }} style={cs.cta}>Let's Begin →</button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={() => { setRecDone(false); setAnalyzing(false); setFeedback(null); setPhase('practice'); }} style={cs.cta}>Let's Begin →</button>
+      </div>
     </div>
   );
 
@@ -450,7 +454,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
       <div style={cs.card}>
         <div style={cs.label}>The Networking Circuit · Simulation</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Two people at a company townhall. Two real conversations. One chance to make an impression.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AmplifyU Coach sets the scene and asks one question per person. Speak out loud what you would actually say — then get scored on your opening, connection, and the impression you leave.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AI Coach sets the scene and asks one question per person. Speak out loud what you would actually say — then get scored on your opening, connection, and the impression you leave.</p>
       </div>
       {CIRCUIT_CHARS.map((sc, i) => (
         <div key={sc.id} style={{...cs.card, display:"flex", alignItems:"flex-start", gap:14}}>
@@ -464,7 +468,10 @@ export function D13SimWidget({T, T2, isDesktop}) {
           </div>
         </div>
       ))}
-      <button onClick={() => setPhase('question')} style={cs.cta}>Enter the Circuit →</button>
+      <div>
+        <AICoachNote T={T} T2={T2} characters />
+        <button onClick={() => setPhase('question')} style={cs.cta}>Enter the Circuit →</button>
+      </div>
     </div>
   );
 
@@ -480,7 +487,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
         </div>
 
         <div style={{...cs.card, background:"rgba(138,158,132,0.05)", borderLeft:"2px solid "+T.gold}}>
-          <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10}}>Your Coach</div>
+          <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:10}}>Your AI Coach</div>
           <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, margin:"0 0 10px"}}>{sc.lead}</p>
           <p style={{fontFamily:T.serif, fontSize:isDesktop?17:16, fontStyle:"italic", color:T2.text, lineHeight:1.5, margin:"0 0 10px"}}>"{sc.quote}"</p>
           <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, fontWeight:600, color:T2.text, lineHeight:1.65, margin:0}}>What do you say?</p>
@@ -573,7 +580,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
         </div>
         {score?.note && (
           <div style={{...cs.card, background:"rgba(138,158,132,0.06)", borderLeft:"2px solid "+T.gold}}>
-            <div style={cs.label}>Coach Says</div>
+            <div style={cs.label}>Your AI Coach Says</div>
             <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:"italic", color:T2.text, margin:0, lineHeight:1.6}}>{score.note}</p>
           </div>
         )}
@@ -633,7 +640,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
         {debrief && (
           <>
             <div style={{...cs.card, background:"rgba(138,158,132,0.06)", borderLeft:"2px solid "+T.gold}}>
-              <div style={cs.label}>Coach Says</div>
+              <div style={cs.label}>Your AI Coach Says</div>
               <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, lineHeight:1.7, margin:"0 0 16px"}}>{debrief.insight}</p>
               <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:6}}>Focus for next time</div>
               <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, lineHeight:1.6, margin:0}}>{debrief.practice}</p>

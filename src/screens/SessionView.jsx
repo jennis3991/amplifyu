@@ -43,6 +43,7 @@ import { D7SimWidget, D7PracticeWidget } from '../modules/Day7.jsx';
 import { SavedResultSection } from '../modules/SavedResultCard.jsx';
 import { Paywall } from '../components/Paywall.jsx';
 import { isEntitled } from '../lib/purchases.js';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 // Hosts a day's desktop panel. The panels (D1RightContent etc.) are defined
 // inside SessionView's render, so rendering them as <D1RightContent/> gave
@@ -926,13 +927,16 @@ setAmbitionSaved(true); } catch {}
               <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
             </div>
             <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your AmplifyU Coach</div>
-              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AmplifyU coach will take your three inputs and sharpen them into a crisp, powerful performance statement — ready to use in a review, conversation, or interview.</p>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your AI Coach</div>
+              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AI coach will take your three inputs and sharpen them into a crisp, powerful performance statement — ready to use in a review, conversation, or interview.</p>
               <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic",fontWeight:300}}>Lead with the result. Make it specific. Own it.</p>
             </div>
-            <button onClick={()=>setD10PracticePhase('builder')} style={{width:"100%",padding:"16px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:16,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:52}}>
-              Start the SAR Builder →
-            </button>
+            <div>
+              <AICoachNote T={T} T2={T2} />
+              <button onClick={()=>setD10PracticePhase('builder')} style={{width:"100%",padding:"16px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:16,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:52}}>
+                Start the SAR Builder →
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -1119,11 +1123,14 @@ setAmbitionSaved(true); } catch {}
                 <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>Frame the Situation. Explain your Action. Land the Result. Then stop.</p>
               </div>
               <div style={{...cs10.card}}>
-                <div style={cs10.label}>Your AmplifyU Coach</div>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AmplifyU coach will assess your spoken response across Clarity, Structure, Confidence, Brevity, and Impact — then rewrite your answer to show you exactly what a stronger version sounds like.</p>
+                <div style={cs10.label}>Your AI Coach</div>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AI coach will assess your spoken response across Clarity, Structure, Confidence, Brevity, and Impact — then rewrite your answer to show you exactly what a stronger version sounds like.</p>
                 <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic",fontWeight:300}}>Your impact. 30 seconds. Speak it.</p>
               </div>
-              <button onClick={()=>setSimPhase('picking')} style={cs10.cta}>Start the Simulation →</button>
+              <div>
+                <AICoachNote T={T} T2={T2} />
+                <button onClick={()=>setSimPhase('picking')} style={cs10.cta}>Start the Simulation →</button>
+              </div>
             </div>
           </div>
         );
@@ -1220,7 +1227,7 @@ setAmbitionSaved(true); } catch {}
         if(simPhase==='analyzing') return (
           <div key={idx} style={{padding:"44px 52px",display:"flex",flexDirection:"column",alignItems:"center",gap:16,textAlign:"center"}}>
             <div style={{display:"flex",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:T.gold,animation:`glowPulse 1.4s ease ${i*0.22}s infinite`}}/>)}</div>
-            <p style={{fontFamily:T.serif,fontSize:20,color:T2.text,lineHeight:1.4,margin:0}}>Your AmplifyU coach is reviewing your response…</p>
+            <p style={{fontFamily:T.serif,fontSize:20,color:T2.text,lineHeight:1.4,margin:0}}>Your AI coach is reviewing your response…</p>
             <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:0,fontWeight:300}}>Evaluating clarity, structure, confidence, brevity, and impact.</p>
           </div>
         );
@@ -1276,7 +1283,7 @@ setAmbitionSaved(true); } catch {}
               </div>
               {/* Insight */}
               <div style={{...cs10.card}}>
-                <div style={cs10.label}>Your AmplifyU Coach Says</div>
+                <div style={cs10.label}>Your AI Coach Says</div>
                 <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>{simResult.insight}</p>
               </div>
               <div style={{...cs10.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>

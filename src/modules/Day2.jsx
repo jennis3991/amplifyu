@@ -4,6 +4,7 @@ import { useWakeLock, localStorageUsageRatio, useOnlineStatus } from '../utils.j
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { detectPitchHz, computeSignalMetrics } from './voiceSignal.js';
 import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -575,7 +576,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           {[
             {n:1,label:"Choose a prompt",    icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M4 6h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V6z" stroke={T.gold} strokeWidth="1.3"/><path d="M4 6l7 5 7-5" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
             {n:2,label:"Speak naturally",   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2M8 19h6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:3,label:"AI scores voice",   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
+            {n:3,label:"AI coach scores voice",   icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><path d="M11 3l1.5 4H17l-3.5 2.5 1.5 4L11 11l-4 2.5 1.5-4L5 7h4.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>},
             {n:4,label:"Reflect & listen",  icon:<svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke={T.gold} strokeWidth="1.3"/><path d="M8 9a3 3 0 016 0v4a3 3 0 01-6 0V9z" stroke={T.gold} strokeWidth="1.3"/></svg>},
           ].map((s,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
@@ -619,7 +620,7 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
           </div>
           <div style={{flex:1}}>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0}}>
-              {"Your AmplifyU Coach measures six dimensions of your vocal delivery, directly from your recording: "}<strong>pace, pitch, pauses, vocal energy, range and confidence hedges</strong>{", to reveal how your voice shapes the way people experience your message."}
+              {"Your AI Coach measures six dimensions of your vocal delivery, directly from your recording: "}<strong>pace, pitch, pauses, vocal energy, range and confidence hedges</strong>{", to reveal how your voice shapes the way people experience your message."}
             </p>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:isDesktop?"10px 0 0":"8px 0 0",fontStyle:"italic"}}>
               This is your vocal baseline: a snapshot of the habits that build authority, confidence, and connection.
@@ -664,7 +665,10 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
         </div>
       )}
 
-      <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose a Speaking Prompt →</button>
+      <div>
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose a Speaking Prompt →</button>
+      </div>
     </div>
   );
 
@@ -1249,7 +1253,7 @@ function _unused_D2SimScenarios() {
       <div style={{padding:isDesktop?"36px 40px":"0 0"}}>
         <div style={{fontSize:10,color:T.gold,textTransform:"uppercase",letterSpacing:"0.2em",marginBottom:6,fontFamily:T.sans}}>{sc.label}</div>
         <div style={{background:T2.surface,borderRadius:6,padding:isDesktop?"16px 20px":"12px 14px",marginBottom:isDesktop?24:18,borderLeft:"2px solid "+T.gold}}>
-          <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>AmplifyU Coach</div>
+          <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>AI Coach</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?17:14,fontStyle:"italic",color:cream,margin:0,lineHeight:1.5}}>{aiMsg}</p>
         </div>
         <div style={{fontSize:10,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:12,fontFamily:T.sans}}>Start with…</div>
@@ -1269,7 +1273,7 @@ function _unused_D2SimScenarios() {
       <div style={{height:2,background:"linear-gradient(90deg,"+T.gold+",rgba(138,158,132,0.2))"}}/>
       <div style={{padding:isDesktop?"36px 40px":"0 0"}}>
         <div style={{background:T2.surface,borderRadius:6,padding:isDesktop?"16px 20px":"12px 14px",marginBottom:isDesktop?24:18,borderLeft:"2px solid "+T.gold}}>
-          <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>AmplifyU Coach</div>
+          <div style={{fontSize:9,color:creamDim,textTransform:"uppercase",letterSpacing:"0.15em",marginBottom:6,fontFamily:T.sans}}>AI Coach</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?17:14,fontStyle:"italic",color:cream,margin:0,lineHeight:1.5}}>{aiMsg}</p>
         </div>
         <textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Speak your response…" rows={isDesktop?5:4} style={{width:"100%",background:T2.surface,border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,padding:"14px 16px",fontFamily:T.serif,fontSize:isDesktop?16:14,color:cream,lineHeight:1.65,resize:"none",outline:"none",boxSizing:"border-box",caretColor:T.gold}}/>

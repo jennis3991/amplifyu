@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -426,11 +427,14 @@ Never use the word fillers. Never use the word perfect. Always frame as growth. 
           );
         })}
       </div>
-      <button onClick={() => { if (topic) setPhase('pause'); }}
-        disabled={!topic}
-        style={{...cs.cta, opacity: topic ? 1 : 0.4, cursor: topic ? 'pointer' : 'default'}}>
-        Continue →
-      </button>
+      <div>
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={() => { if (topic) setPhase('pause'); }}
+          disabled={!topic}
+          style={{...cs.cta, opacity: topic ? 1 : 0.4, cursor: topic ? 'pointer' : 'default'}}>
+          Continue →
+        </button>
+      </div>
     </div>
   );
 
@@ -520,7 +524,7 @@ Never use the word fillers. Never use the word perfect. Always frame as growth. 
     return (
       <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
         <div style={{background: '#0A0804', borderRadius: 8, padding: isDesktop ? '32px 36px' : '24px 22px', border: '0.5px solid rgba(138,158,132,0.15)'}}>
-          <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 16}}>Your AmplifyU Coach Says</div>
+          <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 16}}>Your AI Coach Says</div>
           <p style={{fontFamily: T.serif, fontSize: isDesktop ? 24 : 20, color: 'rgba(245,239,230,0.92)', lineHeight: 1.4, margin: '0 0 20px'}}>{coachResult.coachLine}</p>
           <p style={{fontFamily: T.sans, fontSize: 12, color: 'rgba(138,158,132,0.45)', margin: 0, letterSpacing: '0.05em'}}>Now take that learning further into the simulation.</p>
         </div>
@@ -847,11 +851,14 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
           );
         })}
       </div>
-      <button onClick={() => { if (scenario) { setPhase('brief'); setBriefSecs(45); setBriefDone(false); } }}
-        disabled={!scenario}
-        style={{...cs.cta, opacity: scenario ? 1 : 0.4, cursor: scenario ? 'pointer' : 'default'}}>
-        Enter the Hot Seat →
-      </button>
+      <div>
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={() => { if (scenario) { setPhase('brief'); setBriefSecs(45); setBriefDone(false); } }}
+          disabled={!scenario}
+          style={{...cs.cta, opacity: scenario ? 1 : 0.4, cursor: scenario ? 'pointer' : 'default'}}>
+          Enter the Hot Seat →
+        </button>
+      </div>
     </div>
   );
 
@@ -1016,7 +1023,7 @@ export function D3SimWidget({T, T2, isDesktop, onRecordingChange}) {
     return (
       <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
         <div style={{background: '#0A0804', borderRadius: 8, padding: isDesktop ? '28px 32px' : '22px 20px', border: '0.5px solid rgba(138,158,132,0.15)'}}>
-          <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 12}}>Your AmplifyU Coach Says</div>
+          <div style={{fontFamily: T.sans, fontSize: 9, fontWeight: 700, color: T.gold, textTransform: 'uppercase', letterSpacing: '2.5px', marginBottom: 12}}>Your AI Coach Says</div>
           <p style={{fontFamily: T.serif, fontSize: isDesktop ? 22 : 18, color: 'rgba(245,239,230,0.92)', lineHeight: 1.4, margin: 0}}>{feedback.headlineVerdict}</p>
         </div>
         <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: isDesktop ? 12 : 8}}>

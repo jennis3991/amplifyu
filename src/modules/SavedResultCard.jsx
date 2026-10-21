@@ -60,6 +60,7 @@ function OneSavedResultCard({ T, T2, isDesktop, cfg, entry, showLabel, label, on
           </div>
         )}
       </div>
+      <p style={{ fontFamily: T.sans, fontSize: 11, color: T2.text3, lineHeight: 1.5, margin: '0 0 8px' }}>Written by your AI coach from your answers.</p>
       {preview && <p style={{ fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.6, margin: '0 0 12px', fontWeight: 300 }}>{preview.length > 160 ? preview.slice(0,160)+'…' : preview}</p>}
       <button onClick={() => goToMySavedWork(onExitToTab)} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: T.sans, fontSize: 12, fontWeight: 600, color: T.gold, display: 'flex', alignItems: 'center', gap: 4 }}>
         View in My Saved Work

@@ -3,6 +3,7 @@ import { useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { detectPitchHz, computeSignalMetrics } from './voiceSignal.js';
+import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -150,9 +151,12 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Challenge</div>
         <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:0, fontWeight:400 }}>Think of one real conversation coming up this week — a meeting, a presentation, a difficult discussion. Speak for 30 seconds about which of this week's skills you'll use in it — and why.</p>
       </div>
-      <button onClick={enterRehearsal} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
-        Enter rehearsal →
-      </button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={enterRehearsal} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
+          Enter rehearsal →
+        </button>
+      </div>
     </div>
   );
 
@@ -196,7 +200,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
           <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>The Six</h2>
         </div>
         <div style={{ background:"#0E0B08", borderRadius:8, padding:"24px 26px" }}>
-          <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.6)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:14 }}>Your AmplifyU Coach Says</div>
+          <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.6)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:14 }}>Your AI Coach Says</div>
           <p style={{ fontFamily:T.serif, fontSize:isDesktop?20:18, color:"rgba(245,239,230,0.9)", lineHeight:1.55, margin:0, fontWeight:500 }}>{coachLine}</p>
         </div>
         {showConnectionIndicator && (
@@ -485,7 +489,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
           {[
             {n:1,label:"Read the\nbrief",icon:<svg width={isDesktop?24:20} height={isDesktop?24:20} viewBox="0 0 22 22" fill="none"><path d="M6 4h10a1 1 0 011 1v12a1 1 0 01-1 1H6a1 1 0 01-1-1V5a1 1 0 011-1z" stroke={T.gold} strokeWidth="1.3"/><path d="M8 8h6M8 11h6M8 14h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
             {n:2,label:"Speak &\nexplain",icon:<svg width={isDesktop?24:20} height={isDesktop?24:20} viewBox="0 0 22 22" fill="none"><rect x="8" y="3" width="6" height="10" rx="3" stroke={T.gold} strokeWidth="1.3"/><path d="M5 11a6 6 0 0012 0M11 17v2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-            {n:3,label:"AI\nanalyses",icon:<svg width={isDesktop?24:20} height={isDesktop?24:20} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M11 7v4l3 2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
+            {n:3,label:"AI coach\nanalyses",icon:<svg width={isDesktop?24:20} height={isDesktop?24:20} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke={T.gold} strokeWidth="1.3"/><path d="M11 7v4l3 2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
             {n:4,label:"See your\nresults",icon:<svg width={isDesktop?24:20} height={isDesktop?24:20} viewBox="0 0 22 22" fill="none"><path d="M4 16l4-4 3 3 4-5 3 3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><rect x="3" y="3" width="16" height="16" rx="1.5" stroke={T.gold} strokeWidth="1.3"/></svg>},
           ].map((s,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
@@ -511,15 +515,18 @@ export function D7SimWidget({ T, T2, isDesktop }) {
 
       {/* AmplifyU coach card */}
       <div style={cs.card}>
-        <div style={cs.label}>Your AmplifyU Coach</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AmplifyU coach will evaluate your explanation across all six Week 1 skills: Clarity, Voice Control, Pauses, Precision, Structure, and Composure.</p>
+        <div style={cs.label}>Your AI Coach</div>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AI coach will evaluate your explanation across all six Week 1 skills: Clarity, Voice Control, Pauses, Precision, Structure, and Composure.</p>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>This is not a test — it's a demonstration of everything you've built.</p>
       </div>
 
-      <button onClick={()=>{setIsRec(false);setTimeLeft(D7_SIMULATION_MAX_SEC);setPhase('recording');}}
-        style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
-        I'm Ready →
-      </button>
+      <div>
+        <AICoachNote T={T} T2={T2} />
+        <button onClick={()=>{setIsRec(false);setTimeLeft(D7_SIMULATION_MAX_SEC);setPhase('recording');}}
+          style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
+          I'm Ready →
+        </button>
+      </div>
     </div>
   );
 
@@ -614,7 +621,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   if(phase==='analyzing') return (
     <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",padding:isDesktop?"60px 0":"44px 0"}}>
       <SequentialDots dotCount={dotCount}/>
-      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:"14px 0 4px",textAlign:"center"}}>Your AmplifyU coach is reviewing your response…</p>
+      <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,margin:"14px 0 4px",textAlign:"center"}}>Your AI coach is reviewing your response…</p>
       <p style={{fontFamily:T.serif,fontSize:13,fontStyle:"italic",color:T2.text3,margin:0,textAlign:"center",maxWidth:320}}>Evaluating all six Week 1 communication skills.</p>
     </div>
   );
