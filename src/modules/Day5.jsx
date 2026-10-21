@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { AICoachNote } from '../components/AICoachNote.jsx';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -24,7 +25,13 @@ const SETUP_TOPICS = [
     label:"What's one thing companies spend too much time on?" },
 ];
 
+// Coach intro audio outlives any one widget instance (same pattern as Day 3)
+// so a remount mid-narration can't orphan it.
+const d5SetupCoachSlot = { current: null };
+
 export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingChange}) {
+  // Coach intro: plays through the intro, demo and question screens, stops once a question is picked.
+  const coach = useCoachNarration({ src: "/day5-rehearsal.mp3", cues: [], sharedAudioRef: d5SetupCoachSlot });
   const [phase,       setPhase]       = useState('bridge');
   const [revealCount, setRevealCount] = useState(0);
   const [summaryVis,  setSummaryVis]  = useState(false);
@@ -71,7 +78,7 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
         method: 'POST', headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001', max_tokens: 500,
-          system: `You are the AmplifyU coach. The user has just completed The Setup warm-up for Day 5: Structure PRE. They were explicitly asked to answer using Point, Reason, and Example. Analyse their transcript and extract the following fields. ledWithPosition (boolean — true if their opening sentence stated a clear position or view), reasonPresent (boolean — true if they gave a clear reason or justification), examplePresent (boolean — true if they grounded their answer in something concrete, specific, or real). pointQuote (the exact sentence or short phrase from their transcript where they stated their main point, or null if missing), reasonQuote (the exact sentence or short phrase where they gave their reason or logic, or null if missing), exampleQuote (the exact sentence or short phrase where they gave a concrete example, or null if missing). coachLine (one warm specific sentence maximum 25 words referencing what they actually said — if all three are present affirm the structure, if one is missing give one forward-looking nudge, never critical, never say perfect). bridgeLine — always return exactly: "The Boardroom asks one question. Ten seconds to think. Then it's yours." Never use em dashes in coachLine; use a comma or hyphen instead. Return only valid JSON with all these fields.`,
+          system: `You are the AmplifyU coach. The user has just completed The Setup warm-up for Day 5: Structure PRE. They were explicitly asked to answer using Point, Reason, and Example. Analyse their transcript and extract the following fields. ledWithPosition (boolean — true if their opening sentence stated a clear position or view), reasonPresent (boolean — true if they gave a clear reason or justification), examplePresent (boolean — true if they grounded their answer in something concrete, specific, or real). pointQuote (the exact sentence or short phrase from their transcript where they stated their main point, or null if missing), reasonQuote (the exact sentence or short phrase where they gave their reason or logic, or null if missing), exampleQuote (the exact sentence or short phrase where they gave a concrete example, or null if missing). coachLine (one warm specific sentence maximum 25 words referencing what they actually said — if all three are present affirm the structure, if one is missing give one forward-looking nudge, never critical, never say perfect). bridgeLine — always return exactly: "The Boardroom asks two questions. Take a breath, then make your case." Never use em dashes in coachLine; use a comma or hyphen instead. Return only valid JSON with all these fields.`,
           messages: [{role:'user', content:`Question: ${topic?.label || 'practice question'}\n\nTranscript: "${text || '[no transcript]'}"`}],
         }),
       });
@@ -97,9 +104,11 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
   if (phase === 'bridge') return (
     <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
       <div>
-        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Rehearsal · Day 5</div>
-        <h2 style={{fontFamily:T.serif, fontSize:isDesktop?30:24, fontWeight:600, color:T2.text, lineHeight:1.15, margin:'0 0 16px', letterSpacing:'-0.5px'}}>The simplest structure in communication.</h2>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>The Setup · Rehearsal</div>
+        <h2 style={{fontFamily:T.serif, fontSize:isDesktop?30:24, fontWeight:600, color:T2.text, lineHeight:1.15, margin:'0 0 16px', letterSpacing:'-0.5px'}}>A simple structure for any answer.</h2>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.7, margin:'0 0 14px', fontWeight:300}}>PRE is a three-part framework that makes any spoken answer clear, convincing, and easy to follow.</p>
+        <CoachStyles />
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={35} style={{ marginTop: 0, marginBottom: 14 }} />
         <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
           <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
             <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
@@ -110,9 +119,9 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
       </div>
       <div style={{background:T2.surface, borderRadius:6, border:'0.5px solid '+T2.border, overflow:'hidden'}}>
         {[
-          {letter:'P', word:'Point', desc:'Lead with your position. State what you think — clearly, in the first sentence.'},
+          {letter:'P', word:'Point', desc:'Lead with your position. State what you think, clearly, in the first sentence.'},
           {letter:'R', word:'Reason', desc:'Explain why. Give the logic or evidence behind your view.'},
-          {letter:'E', word:'Example', desc:'Make it real. Ground your reason in something concrete — a story, a stat, a moment.'},
+          {letter:'E', word:'Example', desc:'Make it real. Ground your reason in something concrete: a story, a stat, a moment.'},
         ].map((row, i) => (
           <div key={i} style={{display:'flex', alignItems:'flex-start', gap:16, padding:isDesktop?'16px 20px':'14px 16px', borderBottom:i<2?'0.5px solid '+T2.divider:'none'}}>
             <div style={{width:32, height:32, borderRadius:6, background:'rgba(138,158,132,0.1)', border:'0.5px solid rgba(138,158,132,0.25)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0}}>
@@ -125,9 +134,9 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
           </div>
         ))}
       </div>
-      <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.7, margin:0, fontWeight:300}}>First, watch how it works in practice. Then try it yourself — before The Boardroom puts you on the spot.</p>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.7, margin:0, fontWeight:300}}>First, watch how it works in practice. Then try it yourself, before The Boardroom puts you on the spot.</p>
       <div>
-        <AICoachNote T={T} T2={T2} />
+        <AICoachNote T={T} T2={T2} voice />
         <button onClick={() => setPhase('demo')} style={{...cs.cta}}>
           See It In Action →
         </button>
@@ -138,8 +147,8 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
   // ── DEMO ─────────────────────────────────────────────────────────────────
   const DEMO = {
     scenario: 'Should your organisation invest more in learning and development?',
-    point:    '"Yes — without question."',
-    reason:   '"Organisations that invest in their people retain them longer and perform better. Skills don\'t develop by accident — they develop by design."',
+    point:    '"Yes, without question."',
+    reason:   '"Organisations that invest in their people retain them longer and perform better. Skills don\'t develop by accident. They develop by design."',
     example:  '"At my last company, we introduced a monthly learning hour. Within six months, three people who\'d been considering leaving said it was one of the reasons they stayed."',
   };
 
@@ -154,6 +163,8 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
 
   if (phase === 'demo') return (
     <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={35} style={{ margin: 0 }} />
       <div style={cs.card}>
         <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>The Scenario</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:18, fontWeight:600, color:T2.text, lineHeight:1.3, margin:'0 0 20px'}}>"{DEMO.scenario}"</p>
@@ -177,6 +188,8 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
   // ── SELECT ────────────────────────────────────────────────────────────────
   if (phase === 'select') return (
     <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={35} style={{ margin: 0 }} />
       <div>
         <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Your Turn</div>
         <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0, fontWeight:300}}>Pick one question below. Answer it using Point, Reason, and Example.</p>
@@ -185,7 +198,7 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
         {SETUP_TOPICS.map(t => {
           const sel = topic?.id === t.id;
           return (
-            <button key={t.id} onClick={() => { setTopic(t); setPhase('ready'); }}
+            <button key={t.id} onClick={() => { coach.pause(); setTopic(t); setPhase('ready'); }}
               style={{padding:isDesktop?'16px 14px':'13px 12px', borderRadius:6, border:`${sel?'2px':'1px'} solid ${sel?'rgba(82,112,96,0.75)':T2.border}`, background:sel?'rgba(82,112,96,0.1)':T2.surface, cursor:'pointer', textAlign:'center', alignItems:'center', display:'flex', flexDirection:'column', gap:10, outline:'none', transition:'all 0.15s'}}>
               <div style={{color:sel?'rgba(82,112,96,0.9)':T2.text3, opacity:0.8}}>{t.icon}</div>
               <span style={{fontFamily:T.sans, fontSize:isDesktop?12:11, color:T2.text, lineHeight:1.4, fontWeight:sel?600:400}}>{t.label}</span>
@@ -260,7 +273,7 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
           )}
         </div>
         <div style={{...cs.card, borderLeft:'3px solid '+T.gold, background:'rgba(138,158,132,0.05)'}}>
-          <p style={{fontFamily:T.serif, fontSize:isDesktop?15:16, fontStyle:'italic', color:T2.text, lineHeight:1.6, margin:0}}>Thinking clearly under pressure — that's a skill you can master.</p>
+          <p style={{fontFamily:T.serif, fontSize:isDesktop?15:16, fontStyle:'italic', color:T2.text, lineHeight:1.6, margin:0}}>Thinking clearly under pressure is a skill you can master.</p>
         </div>
         <button onClick={() => onSimulation?.()} style={cs.sageCta}>
           Enter the Boardroom →
