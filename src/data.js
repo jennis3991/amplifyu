@@ -885,6 +885,17 @@ export const D5_FACTS = [
     bullets:["Lead with your point and you cut the cognitive overhead for whoever is listening.","Every conversation you structure well ends faster, with the outcome you want."] },
 ];
 
+export const D6_FACTS = [
+  { word:"Emotion",    sub:"Stress narrows thinking and makes reactive communication more likely.",
+    bullets:["Composure keeps your thinking wide open when it matters most.","In high-pressure moments, the first thing to go is nuance, unless you've trained for composure."] },
+  { word:"Perception", sub:"When others escalate, composure signals leadership.",
+    bullets:["Calm in the room reads as confidence, and builds credibility.","The person who stays grounded when everyone else reacts is the one people look to."] },
+  { word:"Influence",  sub:"Your emotional state affects everyone around you.",
+    bullets:["Calm is contagious. The steadiest person shapes the entire dynamic.","Leadership presence is largely the ability to manage your own state so others can borrow your calm."] },
+  { word:"Outcome",    sub:"Anyone can communicate well when things are easy.",
+    bullets:["The conversations that define your career often happen under pressure.","High-stakes moments aren't where performance breaks. They're where character becomes visible."] },
+];
+
 export const D1_CLARITY_FACTS_DATA = [
   { word:"Cognitive Load",    sub:"The harder to process, the harder to absorb",    bullets:["The brain naturally prefers information that feels easy to process.","If people are working to decode your words, they're not fully absorbing your message."] },
   { word:"Retention",         sub:"If people can repeat it, they remember it",          bullets:["Clear ideas are easier for the brain to store, retrieve, and share.","Complexity gets forgotten. Simplicity gets repeated."] },
