@@ -1694,25 +1694,25 @@ setAmbitionSaved(true); } catch {}
       if (step === "Example") {
         const D4_EDITORIAL = [
           { id:"hemingway", img:"/d4-hemingway.jpg", imgPos:"center 40%", name:"Ernest Hemingway", role:"Nobel Prize-winning novelist", superpower:"Master of Brevity",
-            superpowerText:"Every word earns its place — or it goes.",
+            superpowerText:"Every word earns its place, or it goes.",
             summary:"He won the Nobel Prize with short, precise sentences.",
             exploreLabel:"Explore his techniques",
             body1:"Hemingway won the Nobel Prize for literature. His secret? Short sentences.",
             body2:"No flourish. No decoration. Just truth.",
             body3:"Short sentences force precision. You can't hide weak ideas behind long ones. Every word earns its place or it goes.",
             whyItWorks:"Brevity forces clarity. When you limit words, you're forced to keep only the ones that matter. Long sentences let weak ideas hide behind structure. Short sentences expose them.",
-            technique:"Write your first draft. Then cut every unnecessary word. Read each sentence aloud — if you run out of breath before the full stop, it's too long. Over 15 words? Split it.",
+            technique:"Write your first draft. Then cut every unnecessary word. Read each sentence aloud. If you run out of breath before the full stop, it's too long. Over 15 words? Split it.",
             lesson:"Every word you add dilutes your message. The best writers know what to leave out. Clarity is a discipline.",
           },
           { id:"chanel", img:"/d4-chanel.jpg", imgPos:"center 55%", name:"Coco Chanel", role:"Fashion designer & founder of Chanel", superpower:"Elegance Through Elimination",
             superpowerText:"Short sentences. Maximum impact. Every time.",
-            summary:"She built an empire on less is more — in fashion and in words.",
+            summary:"She built an empire on less is more, in fashion and in words.",
             exploreLabel:"Explore her techniques",
             body1:"Chanel revolutionised fashion with one principle: remove everything that isn't essential.",
-            body2:"That same instinct for elimination shaped her design philosophy for decades — stripping away ornament, structure, and excess until only what mattered remained. She talked about clothing the same way she made it.",
+            body2:"That same instinct for elimination shaped her design philosophy for decades, stripping away ornament, structure, and excess until only what mattered remained. She talked about clothing the same way she made it.",
             body3:"Short sentences. Maximum impact. Every time.",
-            whyItWorks:"Each of her quotes is a complete thought. No wasted words. Just precision. The discipline of cutting in fashion is the same discipline as cutting in speech — both demand you decide what's essential and remove everything else.",
-            technique:"Take your last important email or message. Find the three most essential sentences. Delete the rest. See if the meaning survives. It almost always does.",
+            whyItWorks:"Each of her quotes is a complete thought. No wasted words. Just precision. The discipline of cutting in fashion is the same discipline as cutting in speech. Both demand you decide what's essential and remove everything else.",
+            technique:"Take your last important email or message. Find the three most essential sentences. Delete the rest. See if the meaning survives.",
             lesson:"Elegance in language, like elegance in fashion, is about knowing what to leave out. The most powerful sentences are the ones with nothing left to remove.",
           },
         ];
@@ -1732,7 +1732,27 @@ setAmbitionSaved(true); } catch {}
               Back to Gallery
             </button>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
-            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:14,marginBottom:28}}>
+              <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,margin:0}}>{reading.name}</h2>
+              {EXAMPLE_AUDIO[reading.id] && (() => {
+                const src = EXAMPLE_AUDIO[reading.id];
+                const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                return (
+                  <button
+                    onClick={() => toggleNarration(src)}
+                    aria-label={playing ? "Pause narration" : "Play narration"}
+                    style={{
+                      width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                      padding:0, background:"transparent", border:"none",
+                      display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                    }}>
+                    <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <PlayIcon playing={playing}/>
+                    </span>
+                  </button>
+                );
+              })()}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
             {reading.quote && (

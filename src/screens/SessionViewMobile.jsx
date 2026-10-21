@@ -1167,23 +1167,23 @@ T.goldDark : T2.text4,
       {isD4 && step==="Example" && (()=>{
         const D4_EDITORIAL = [
           { id:"hemingway", img:"/d4-hemingway.jpg", imgPos:"center center", name:"Ernest Hemingway", role:"Nobel Prize-winning novelist", superpower:"Master of Brevity",
-            superpowerText:"Every word earns its place — or it goes.",
+            superpowerText:"Every word earns its place, or it goes.",
             summary:"He won the Nobel Prize with short, precise sentences.",
             body1:"Hemingway won the Nobel Prize for literature. His secret? Short sentences.",
             body2:"No flourish. No decoration. Just truth.",
             body3:"Short sentences force precision. You can't hide weak ideas behind long ones. Every word earns its place or it goes.",
             whyItWorks:"Brevity forces clarity. When you limit words, you're forced to keep only the ones that matter. Long sentences let weak ideas hide behind structure. Short sentences expose them.",
-            technique:"Write your first draft. Then cut every unnecessary word. Read each sentence aloud — if you run out of breath before the full stop, it's too long. Over 15 words? Split it.",
+            technique:"Write your first draft. Then cut every unnecessary word. Read each sentence aloud. If you run out of breath before the full stop, it's too long. Over 15 words? Split it.",
             lesson:"Every word you add dilutes your message. The best writers know what to leave out. Clarity is a discipline.",
           },
           { id:"chanel", img:"/d4-chanel.jpg", imgPos:"center 65%", name:"Coco Chanel", role:"Fashion designer & founder of Chanel", superpower:"Elegance Through Elimination",
             superpowerText:"Short sentences. Maximum impact. Every time.",
-            summary:"She built an empire on less is more — in fashion and in words.",
+            summary:"She built an empire on less is more, in fashion and in words.",
             body1:"Chanel revolutionised fashion with one principle: remove everything that isn't essential.",
-            body2:"That same instinct for elimination shaped her design philosophy for decades — stripping away ornament, structure, and excess until only what mattered remained. She talked about clothing the same way she made it.",
+            body2:"That same instinct for elimination shaped her design philosophy for decades, stripping away ornament, structure, and excess until only what mattered remained. She talked about clothing the same way she made it.",
             body3:"Short sentences. Maximum impact. Every time.",
-            whyItWorks:"Each of her quotes is a complete thought. No wasted words. Just precision. The discipline of cutting in fashion is the same discipline as cutting in speech — both demand you decide what's essential and remove everything else.",
-            technique:"Take your last important email or message. Find the three most essential sentences. Delete the rest. See if the meaning survives. It almost always does.",
+            whyItWorks:"Each of her quotes is a complete thought. No wasted words. Just precision. The discipline of cutting in fashion is the same discipline as cutting in speech. Both demand you decide what's essential and remove everything else.",
+            technique:"Take your last important email or message. Find the three most essential sentences. Delete the rest. See if the meaning survives.",
             lesson:"Elegance in language, like elegance in fashion, is about knowing what to leave out. The most powerful sentences are the ones with nothing left to remove.",
           },
         ];
@@ -1211,7 +1211,28 @@ T.goldDark : T2.text4,
                     </div>
                   )}
                   <div style={{padding:"16px 18px 4px"}}>
-                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
+                    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,marginBottom:2}}>
+                      <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,margin:0}}>{card.name}</h3>
+                      {EXAMPLE_AUDIO[card.id] && (() => {
+                        const src = EXAMPLE_AUDIO[card.id];
+                        const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                        return (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleNarration(src); }}
+                            aria-label={playing ? "Pause narration" : "Play narration"}
+                            style={{
+                              width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                              padding:0, WebkitAppearance:"none", appearance:"none",
+                              background:"transparent", border:"none",
+                              display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                            }}>
+                            <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                              <PlayIcon playing={playing}/>
+                            </span>
+                          </button>
+                        );
+                      })()}
+                    </div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>

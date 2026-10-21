@@ -1007,6 +1007,8 @@ export const EXAMPLE_AUDIO = {
   brene: "/day2-brene.mp3",
   freeman: "/day3-freeman.mp3",
   wintour: "/day3-wintour.mp3",
+  hemingway: "/day4-hemingway.mp3",
+  chanel: "/day4-chanel.mp3",
 };
 
 // End-of-day coach message on the Review step, keyed by day.
