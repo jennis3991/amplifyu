@@ -1034,6 +1034,7 @@ export const EXAMPLE_AUDIO = {
   jensen: "/day5-jensen.mp3",
   indra: "/day5-indra.mp3",
   hamilton: "/day6-hamilton.mp3",
+  amal: "/day6-amal.mp3",
 };
 
 // End-of-day coach message on the Review step, keyed by day.
