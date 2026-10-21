@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 // (deploy retrigger touch — GitHub webhook missed the previous push)
 import { T, TK } from '../theme.js';
-import { FURTHER_READING, PHRASES, SAY_THIS, QUICK_PREP, DAILY_INSIGHTS, POWER_PHRASES } from '../data.js';
+import { FURTHER_READING, PHRASES, SAY_THIS, QUICK_PREP, DAILY_INSIGHTS, POWER_PHRASES, LESSONS } from '../data.js';
 import { Scene } from '../scenes.jsx';
 import { PracticeSpace } from '../modules/PracticeSpace.jsx';
 import { StoryReel, DEFAULT_STORY_SCENES } from '../components/StoryReel.jsx';
@@ -966,7 +966,7 @@ and at home.{" "}
                 )}
 
                 {openPrepSub==="reading" && (() => {
-                  const MODULE_TITLES = ["Speak Clearly","Voice Control","Eliminate Fillers","Short Sentences","PRE Structure","Storytelling","PIE Framework","Executive Presence","Influence","Difficult Conversations","Personal Brand","Networking","Leadership Voice","High Stakes Moments"];
+                  const MODULE_TITLES = LESSONS.map(l => l.title);
                   return (
                     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?2:8}}>
                       {FURTHER_READING.map((mod, mi) => {
@@ -979,7 +979,7 @@ and at home.{" "}
                               border:"none",background:"transparent",cursor:"pointer",textAlign:"left",
                             }}>
                               <div style={{display:"flex",alignItems:"center",gap:14}}>
-                                <span style={{fontFamily:T.sans,fontSize:11,color:TK.text3,fontWeight:500,width:24,flexShrink:0}}>{"0"+(mi+1)}</span>
+                                <span style={{fontFamily:T.sans,fontSize:11,color:TK.text3,fontWeight:500,width:24,flexShrink:0}}>{String(mi+1).padStart(2,"0")}</span>
                                 <span style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:TK.text,letterSpacing:"-0.2px"}}>{MODULE_TITLES[mi]}</span>
                               </div>
                               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{transform:isOpen?"rotate(180deg)":"none",transition:"transform 0.2s ease",flexShrink:0}}>
@@ -992,8 +992,7 @@ and at home.{" "}
                                   <div key={bi} style={{paddingBottom:bi<mod.books.length-1?16:0,borderBottom:bi<mod.books.length-1?"0.5px solid "+TK.border:"none"}}>
                                     <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:TK.text,letterSpacing:"-0.2px",marginBottom:2}}>{book.title}</p>
                                     <p style={{fontFamily:T.sans,fontSize:12,color:TK.text3,marginBottom:10}}>{book.author}</p>
-                                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:TK.sageDark,lineHeight:1.5,marginBottom:10}}>{book.connection}</p>
-                                    <p style={{fontFamily:T.sans,fontSize:13,color:TK.text,lineHeight:1.7,fontWeight:300,marginBottom:14}}>{book.summary}</p>
+                                    <p style={{fontFamily:T.serif,fontSize:14,fontStyle:"italic",color:TK.sageDark,lineHeight:1.5,marginBottom:14}}>{book.connection}</p>
                                     <a href={book.amazon} target="_blank" rel="noreferrer" style={{display:"inline-flex",alignItems:"center",gap:6,padding:"7px 14px",background:TK.ink,color:TK.onDark,borderRadius:6,fontSize:12,fontFamily:T.sans,fontWeight:500,letterSpacing:"0.02em",textDecoration:"none"}}>Get the book →</a>
                                   </div>
                                 ))}
