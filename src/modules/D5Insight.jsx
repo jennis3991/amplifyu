@@ -42,7 +42,8 @@ export default function D5Insight({ T, T2, isDesktop, sharedAudioRef, onNext }) 
 
       <CoachCardGrid T={T} T2={T2} isDesktop={d} cards={D5_FACTS} cueCards={cueCards} />
 
-      <p style={{ fontFamily: T.sans, fontSize: d ? 16 : 14, fontStyle: "italic", color: T.gold, lineHeight: 1.7, margin: d ? "24px 0 0" : "18px 0 0" }}>Structure is the backbone of every powerful communication.</p>
+      {/* Desktop already shows this line in the left panel. */}
+      {!d && <p style={{ fontFamily: T.sans, fontSize: 14, fontStyle: "italic", color: T.gold, lineHeight: 1.7, margin: "18px 0 0" }}>Structure is the backbone of every powerful communication.</p>}
 
       {onNext && nextLit && (
         <UpNextCard ref={nextRef} T={T} T2={T2} isDesktop={d} title="Primacy and Recency" sub="Why the start and the end stick" onClick={onNext} />
