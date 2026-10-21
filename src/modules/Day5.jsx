@@ -287,10 +287,10 @@ export function D5PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
 
 // ─── D5 Simulation Widget — The Boardroom ────────────────────────────────────
 const BOARDROOM_TOPICS = [
-  {id:'remote', label:'Remote work improves productivity',                        question:'Does remote work genuinely improve productivity — and why?',              q2:'Your leadership team wants everyone back in the office. Make your case.'},
-  {id:'ai',     label:'All companies should invest in AI',                        question:'Should all companies be investing in AI — and why?',                      q2:'A sceptical colleague says AI investment is overhyped for most businesses. Respond.'},
-  {id:'comms',  label:'Communication skills should be taught in every workplace', question:'Should communication skills be taught in every workplace — and why?',     q2:"A senior leader says communication training is a nice-to-have. Disagree."},
-  {id:'trust',  label:'How do you build trust in a team?',                        question:'How do you build trust in a team — and what makes it break down?',       q2:'A new team member says trust takes years to build. Do you agree?'},
+  {id:'remote', label:'Remote work improves productivity',                        question:'Does remote work genuinely improve productivity, and why?',              q2:'Your leadership team wants everyone back in the office. Make your case.'},
+  {id:'ai',     label:'All companies should invest in AI',                        question:'Should all companies be investing in AI, and why?',                      q2:'A sceptical colleague says AI investment is overhyped for most businesses. Respond.'},
+  {id:'comms',  label:'Communication skills should be taught in every workplace', question:'Should communication skills be taught in every workplace, and why?',     q2:"A senior leader says communication training is a nice-to-have. Disagree."},
+  {id:'trust',  label:'How do you build trust in a team?',                        question:'How do you build trust in a team, and what makes it break down?',       q2:'A new team member says trust takes years to build. Do you agree?'},
 ];
 
 const BOARDROOM_ICONS = {
@@ -300,7 +300,11 @@ const BOARDROOM_ICONS = {
   trust:  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>,
 };
 
+const d5SimCoachSlot = { current: null };
+
 export function D5SimWidget({T, T2, isDesktop, onRecordingChange}) {
+  // Coach intro: plays on the topic screen, stops when the user enters the Boardroom.
+  const coach = useCoachNarration({ src: "/day5-simulation.mp3", cues: [], sharedAudioRef: d5SimCoachSlot });
   const [phase,        setPhase]        = useState('select');
   const [topic,        setTopic]        = useState(null);
   const [voiceActive,  setVoiceActive]  = useState(false);
@@ -469,8 +473,13 @@ Return only valid JSON with all fields present.`,
       </div>
 
       <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.65, margin:0, fontWeight:300, fontStyle:'italic'}}>
-        Every executive structures before they speak. Today you'll do the same — without being told how.
+        Strong communicators organise their thinking before they speak. Now it's your turn, with a little more pressure.
       </p>
+
+      <div>
+        <CoachStyles />
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={33} style={{ margin: 0 }} />
+      </div>
 
       <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:isDesktop?14:10}}>
         {BOARDROOM_TOPICS.map(t => {
@@ -485,8 +494,8 @@ Return only valid JSON with all fields present.`,
         })}
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} />
-        <button onClick={() => { if (topic) setPhase('q1'); }}
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={() => { if (topic) { coach.pause(); setPhase('q1'); } }}
           disabled={!topic}
           style={{...cs.cta, opacity:topic?1:0.4, cursor:topic?'pointer':'default'}}>
           Enter the Boardroom →
@@ -560,7 +569,7 @@ Return only valid JSON with all fields present.`,
                 ? <p style={{fontFamily:T.serif, fontSize:isDesktop?15:14, fontStyle:'italic', color:T2.text, lineHeight:1.6, margin:0}}>"{row.quote}"</p>
                 : <p style={{fontFamily:T.serif, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.4, margin:0, fontStyle:'italic'}}>Not identified</p>
               }
-              {row.showLate && <p style={{fontFamily:T.sans, fontSize:11, color:T2.text3, margin:'8px 0 0'}}>Arrived late — earlier would have been stronger</p>}
+              {row.showLate && <p style={{fontFamily:T.sans, fontSize:11, color:T2.text3, margin:'8px 0 0'}}>Arrived late. Earlier would have been stronger.</p>}
             </div>
           </div>
         </div>
@@ -645,7 +654,7 @@ Return only valid JSON with all fields present.`,
           </div>
           <div style={{marginTop:10, padding:'8px 12px', borderRadius:4, background:d.improvement?'rgba(82,112,96,0.08)':'transparent', border:d.improvement?'0.5px solid rgba(82,112,96,0.25)':'none'}}>
             <p style={{fontFamily:T.sans, fontSize:12, color:d.improvement?'rgba(82,112,96,0.9)':T2.text3, margin:0, fontStyle:'italic'}}>
-              {d.improvement ? 'Structure strengthened in Q2' : 'Consistency across both — now make it instinct'}
+              {d.improvement ? 'Structure strengthened in Q2' : 'Consistency across both. Now make it instinct.'}
             </p>
           </div>
           <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.6, margin:'12px 0 0'}}>{d.comparisonInsight}</p>
@@ -655,7 +664,7 @@ Return only valid JSON with all fields present.`,
           <div style={{display:'inline-block', padding:'10px 18px', background:'rgba(138,158,132,0.1)', borderRadius:20, border:'0.5px solid rgba(138,158,132,0.3)', marginBottom:12}}>
             <p style={{fontFamily:T.serif, fontSize:isDesktop?16:14, fontStyle:'italic', color:T2.text, margin:0, lineHeight:1.4}}>{d.takeaway}</p>
           </div>
-          <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.6, margin:0}}>Structuring your answer on the spot only becomes instinct once you've said it out loud under pressure — twice, just now. The next time someone asks your opinion out of nowhere, this is the shape it'll fall into.</p>
+          <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.6, margin:0}}>Structuring your answer on the spot only becomes instinct once you've said it out loud under pressure, twice, just now. The next time someone asks your opinion out of nowhere, this is the shape it'll fall into.</p>
         </div>
       </div>
     );
