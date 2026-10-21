@@ -1310,7 +1310,7 @@ T.goldDark : T2.text4,
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Clear Communication</h2>
             <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Tap each card to explore how they do it.</p>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
+            <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:20}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D1_EDITORIAL.map(card=>{
               const open = d1MobCard===card.id;
               const obs = d1ExObs[card.id];

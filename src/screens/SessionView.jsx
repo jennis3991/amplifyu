@@ -2070,7 +2070,7 @@ setAmbitionSaved(true); } catch {}
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Masters of Clear Communication</h2>
             <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Two speakers who make complex ideas accessible.</p>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:24,maxWidth:640}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
+            <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:24,maxWidth:640}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
               {D1_EDITORIAL.map(card=>{
                 const obs = d1ExObserved[card.id];
