@@ -1514,7 +1514,7 @@ export function D1SimWidget({T, T2, isDesktop, warmUpTopic, onRecordingChange, o
           </div>
           <div style={{flex:1}}>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0}}>
-              Self-review is one of the fastest ways to improve communication, trusted by elite speakers, performers and Fortune 500 leaders because <strong style={{color:T.gold,fontWeight:700}}>awareness comes before change</strong>.
+              Listening back to yourself is one of the simplest ways to improve how you communicate, a habit many speakers, performers and coaches use, because <strong style={{color:T.gold,fontWeight:700}}>awareness comes before change</strong>.
             </p>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:isDesktop?"10px 0 0":"8px 0 0",fontStyle:"italic"}}>
               This is your baseline. Every session from here builds greater clarity, confidence and influence.
