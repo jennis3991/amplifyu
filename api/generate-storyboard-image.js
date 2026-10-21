@@ -198,11 +198,6 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
     // art director quotes with its exact spelling; one large word renders well.
     coverPrompt += ' Apart from any single name quoted above (spelled exactly as given), absolutely no text, words, letters, numbers or brand logos anywhere in the image; any other marks on paper are wordless sketches, arrows or ticks, and any screen shows at most a simple wordless shape or generic icon.';
 
-    // TEMPORARY (added 2026-10-21): logs the final cover prompt so we can see
-    // why a cover misses. It contains story details, so remove it once covers
-    // are reliable (the same kind of log was removed on 2026-08-30, a2ed61f).
-    console.log('[cover-image] TEMP prompt:', coverPrompt);
-
     // ── Step 2: Generate image with OpenAI ────────────────────────────────
     // Medium quality: about a quarter of high's generation work, and sharp
     // enough now the app keeps a 1024px copy (the earlier softness was mostly

@@ -65,10 +65,13 @@ export function NavIcon({ id, active, color }) {
 export function TabBar({ tab, setTab, done=[], dark }) {
   const piece = getPieceInfo(done.length).current;
   const identityActive = tab === "identity";
+  // Order: first two sit left of the chess-piece medallion, last two right.
+  // Progress and Programme swapped (2026-10) so Programme isn't mistaken for
+  // Progress.
   const NAV_ITEMS = [
     { id:"home",     label:"Home"      },
-    { id:"sessions", label:"Programme" },
     { id:"progress", label:"Progress"  },
+    { id:"sessions", label:"Programme" },
     { id:"toolkit",  label:"Toolkit"   },
   ];
 
