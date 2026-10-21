@@ -1762,30 +1762,30 @@ T.goldDark : T2.text4,
       )}
       {isD5 && step==="Example" && (()=>{
         const D5_EDITORIAL = [
-          { id:"jensen", img:"/d5-jensen.jpg", name:"Jensen Huang", role:"CEO & co-founder of NVIDIA", superpower:"PRE in Every Pitch",
+          { id:"jensen", img:"/d5-jensen.jpg", name:"Jensen Huang", role:"CEO & co-founder of NVIDIA", superpower:"PRE in Action",
             superpowerText:"Point. Reason. Example. Every time.",
             summary:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof.",
             quote:"\"I don't need to build a killer product overnight, I just need to build a winning product.\"",
             body1:"Huang's most famous idea sounds simple. But it's structured.",
             body2Lines:[
               {label:"Point",   text:"\"I just need to build a winning product.\""},
-              {label:"Reason",  text:"\"The goal of winning is so you can play again.\""},
-              {label:"Example", text:"\"It's just like pinball — play well enough to get another game, and you could be there for a long time.\""},
+              {label:"Reason",  text:"\"The goal of winning is so that you can play again.\""},
+              {label:"Example", text:"\"It's just like pinball. If you could just play well enough to get another game, you can be there for a long time.\""},
             ],
-            body3:"Said in 2003 at Stanford's eCorner — decades before the AI breakthrough that proved it true.",
+            body3:"Said in 2003 at Stanford, long before the AI boom made NVIDIA one of the world's most valuable companies.",
             whyItWorks:"NVIDIA kept making bets and staying in the game until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth. Sharp thesis. Strategic rationale. Lived proof.",
-            technique:"Lead with your point — don't build to it. Then give your reason in one sentence. Then make it concrete with a real example or analogy. Stop there.",
-            lesson:"PRE isn't a template — it's how clear thinkers communicate. Your point tells people where to look. Your reason tells them why it matters. Your example makes it stick.",
+            technique:"Lead with your point. Don't build to it. Then give your reason in one sentence. Then make it concrete with a real example or analogy. Stop there.",
+            lesson:"PRE isn't a template. It's how clear thinkers communicate. Your point tells people where to look. Your reason tells them why it matters. Your example makes it stick.",
           },
           { id:"indra", img:"/d5-indra.jpg", name:"Indra Nooyi", role:"Former CEO of PepsiCo", superpower:"Performance With Purpose",
             superpowerText:"Big belief. Clear reason. Concrete execution.",
-            summary:"Two decades leading PepsiCo — structured the same way every time.",
+            summary:"Twelve years leading PepsiCo, with a clear structure behind every big idea.",
             body1:"Nooyi ran one of the world's largest companies for 12 years. She led with structure.",
-            body2:"Her mandate — Performance with Purpose — followed the same shape every time: state the belief, explain why the world demands it, then show the concrete action taken. Under that banner, PepsiCo reduced sugar, sodium and saturated fat across its portfolio while investing in sustainability and its people.",
-            body3:"She didn't leave it as philosophy — she operationalised it.",
+            body2:"Her mandate, Performance with Purpose, followed a clear shape: state the belief, explain why the world demands it, then show the concrete action taken. Under that banner, PepsiCo reduced sugar, sodium and saturated fat across its portfolio while investing in sustainability and its people.",
+            body3:"She didn't leave it as philosophy. She operationalised it.",
             whyItWorks:"Point then reason then example. That's why she feels persuasive, intelligent, and trustworthy. Every statement is accountable to the next. Nothing floats without support.",
-            technique:"Start with your belief — not the context, not the background. One sentence. Then say why the world demands it. Then show what you did about it.",
-            lesson:"Structured communication isn't just clear — it's credible. When your point leads to your reason leads to your example, people trust your thinking.",
+            technique:"Start with your belief. Not the context, not the background. One sentence. Then say why the world demands it. Then show what you did about it.",
+            lesson:"Structured communication isn't just clear. It's credible. When your point leads to your reason leads to your example, people trust your thinking.",
           },
         ];
         let d5ExObs = {}; try { d5ExObs = JSON.parse(localStorage.getItem('d5ExObserved')||'{}'); } catch {}
@@ -1812,7 +1812,28 @@ T.goldDark : T2.text4,
                     </div>
                   )}
                   <div style={{padding:"16px 18px 4px"}}>
-                    <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,marginBottom:2}}>{card.name}</h3>
+                    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,marginBottom:2}}>
+                      <h3 style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,margin:0}}>{card.name}</h3>
+                      {EXAMPLE_AUDIO[card.id] && (() => {
+                        const src = EXAMPLE_AUDIO[card.id];
+                        const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                        return (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleNarration(src); }}
+                            aria-label={playing ? "Pause narration" : "Play narration"}
+                            style={{
+                              width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                              padding:0, WebkitAppearance:"none", appearance:"none",
+                              background:"transparent", border:"none",
+                              display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                            }}>
+                            <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                              <PlayIcon playing={playing}/>
+                            </span>
+                          </button>
+                        );
+                      })()}
+                    </div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:8}}>{card.superpower}</div>
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:"0 0 12px"}}>{card.summary}</p>

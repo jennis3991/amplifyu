@@ -620,7 +620,7 @@ export function SessionLeftPanel({
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>PRE in Action</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Point. Reason. Example. The architecture of every great professional answer.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>The world's most effective communicators all follow the same structure — whether they name it or not.</p>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Many of the world's most effective communicators use this structure, whether they name it or not.</p>
         </div>
       </div>
     );

@@ -2793,7 +2793,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D5_EDITORIAL = [
-          { id:"jensen", img:"/d5-jensen.jpg", imgPos:"center 40%", name:"Jensen Huang", role:"CEO & co-founder of NVIDIA", superpower:"PRE in Every Pitch",
+          { id:"jensen", img:"/d5-jensen.jpg", imgPos:"center 40%", name:"Jensen Huang", role:"CEO & co-founder of NVIDIA", superpower:"PRE in Action",
             superpowerText:"Point. Reason. Example. Every time.",
             summary:"He doesn't over-explain. Sharp thesis. Strategic rationale. Lived proof.",
             quote:"\"I don't need to build a killer product overnight, I just need to build a winning product.\"",
@@ -2801,24 +2801,24 @@ setAmbitionSaved(true); } catch {}
             body1:"Huang's most famous idea sounds simple. But it's structured.",
             body2Lines:[
               {label:"Point",   text:"\"I just need to build a winning product.\""},
-              {label:"Reason",  text:"\"The goal of winning is so you can play again.\""},
-              {label:"Example", text:"\"It's just like pinball — play well enough to get another game, and you could be there for a long time.\""},
+              {label:"Reason",  text:"\"The goal of winning is so that you can play again.\""},
+              {label:"Example", text:"\"It's just like pinball. If you could just play well enough to get another game, you can be there for a long time.\""},
             ],
-            body3:"Said in 2003 at Stanford's eCorner — decades before the AI breakthrough that proved it true.",
+            body3:"Said in 2003 at Stanford, long before the AI boom made NVIDIA one of the world's most valuable companies.",
             whyItWorks:"NVIDIA kept making bets and staying in the game until one breakthrough arrived: AI and accelerated computing. That single win transformed NVIDIA into one of the most valuable companies on earth. Sharp thesis. Strategic rationale. Lived proof.",
-            technique:"Lead with your point — don't build to it. Then give your reason in one sentence. Then make it concrete with a real example or analogy. Stop there.",
-            lesson:"PRE isn't a template — it's how clear thinkers communicate. Your point tells people where to look. Your reason tells them why it matters. Your example makes it stick.",
+            technique:"Lead with your point. Don't build to it. Then give your reason in one sentence. Then make it concrete with a real example or analogy. Stop there.",
+            lesson:"PRE isn't a template. It's how clear thinkers communicate. Your point tells people where to look. Your reason tells them why it matters. Your example makes it stick.",
           },
           { id:"indra", img:"/d5-indra.jpg", imgPos:"center 35%", name:"Indra Nooyi", role:"Former CEO of PepsiCo", superpower:"Performance With Purpose",
             superpowerText:"Big belief. Clear reason. Concrete execution.",
-            summary:"Two decades leading PepsiCo — structured the same way every time.",
+            summary:"Twelve years leading PepsiCo, with a clear structure behind every big idea.",
             exploreLabel:"Explore her techniques",
             body1:"Nooyi ran one of the world's largest companies for 12 years. She led with structure.",
-            body2:"Her mandate — Performance with Purpose — followed the same shape every time: state the belief, explain why the world demands it, then show the concrete action taken. Under that banner, PepsiCo reduced sugar, sodium and saturated fat across its portfolio while investing in sustainability and its people.",
-            body3:"She didn't leave it as philosophy — she operationalised it.",
+            body2:"Her mandate, Performance with Purpose, followed a clear shape: state the belief, explain why the world demands it, then show the concrete action taken. Under that banner, PepsiCo reduced sugar, sodium and saturated fat across its portfolio while investing in sustainability and its people.",
+            body3:"She didn't leave it as philosophy. She operationalised it.",
             whyItWorks:"Point then reason then example. That's why she feels persuasive, intelligent, and trustworthy. Every statement is accountable to the next. Nothing floats without support.",
-            technique:"Start with your belief — not the context, not the background. One sentence. Then say why the world demands it. Then show what you did about it.",
-            lesson:"Structured communication isn't just clear — it's credible. When your point leads to your reason leads to your example, people trust your thinking.",
+            technique:"Start with your belief. Not the context, not the background. One sentence. Then say why the world demands it. Then show what you did about it.",
+            lesson:"Structured communication isn't just clear. It's credible. When your point leads to your reason leads to your example, people trust your thinking.",
           },
         ];
         const reading = D5_EDITORIAL.find(c => c.id === d5ExOpenCard);
@@ -2837,7 +2837,27 @@ setAmbitionSaved(true); } catch {}
               Back to Gallery
             </button>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
-            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:14,marginBottom:28}}>
+              <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,margin:0}}>{reading.name}</h2>
+              {EXAMPLE_AUDIO[reading.id] && (() => {
+                const src = EXAMPLE_AUDIO[reading.id];
+                const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                return (
+                  <button
+                    onClick={() => toggleNarration(src)}
+                    aria-label={playing ? "Pause narration" : "Play narration"}
+                    style={{
+                      width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                      padding:0, background:"transparent", border:"none",
+                      display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                    }}>
+                    <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <PlayIcon playing={playing}/>
+                    </span>
+                  </button>
+                );
+              })()}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             {reading.body2Lines
               ? <div style={{display:"flex",flexDirection:"column",gap:14,margin:"0 0 14px"}}>
