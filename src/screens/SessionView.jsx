@@ -25,6 +25,7 @@ import D4Insight from '../modules/D4Insight.jsx';
 import D5Insight from '../modules/D5Insight.jsx';
 import D5Theory from '../modules/D5Theory.jsx';
 import D6Insight from '../modules/D6Insight.jsx';
+import D6Theory from '../modules/D6Theory.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -2969,28 +2970,8 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science of Composure</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>What Happens Under Pressure</h2>
-          <p style={{ fontFamily:T.sans, fontSize:18, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:28, maxWidth:640 }}>High-stakes conversations trigger biology before logic. Elite communicators understand the mechanics — and train to override them.</p>
-          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
-            <p style={{ fontFamily:T.serif, fontSize:22, fontWeight:600, color:T2.text, lineHeight:1.4, margin:0, fontStyle:"italic" }}>The strongest communicator is often the calmest person in the room.</p>
-          </div>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
-            {[
-              {n:"Threat Response",        role:"Biology before logic",       body:"Criticism, conflict, and disagreement can trigger the same fight-or-flight response as physical threat — faster speech, defensive tone, poor listening, impulsive reactions."},
-              {n:"Emotional Regulation",   role:"Pause before performance",   body:"The best communicators regulate emotion before they respond. Breathe lower. Slow your pace. Use shorter responses. Let strategic silence do the work."},
-              {n:"Framing",               role:"Language changes temperature", body:"'You're wrong' escalates. 'I see this differently' opens space. The same disagreement, framed calmly, reaches a completely different outcome."},
-              {n:"Listening",             role:"Being heard starts with hearing", body:"People de-escalate when they feel understood. Composure includes listening — not waiting to respond, but genuinely hearing what the other person is saying."},
-            ].map((b,i) => (
-              <div key={i} style={{ padding:"20px 22px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
-                <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:6 }}>{b.n}</div>
-                <div style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T2.text, marginBottom:8 }}>{b.role}</div>
-                <p style={{ fontFamily:T.sans, fontSize:15, color:T2.text3, lineHeight:1.65, fontWeight:300, margin:0 }}>{b.body}</p>
-              </div>
-            ))}
-          </div>
-          <p style={{ fontFamily:T.sans, fontSize:16, fontStyle:"italic", color:T.gold, lineHeight:1.7 }}>Composure isn't the absence of pressure — it's what you build so pressure doesn't change you.</p>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <D6Theory T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
         </div>
       );
 
