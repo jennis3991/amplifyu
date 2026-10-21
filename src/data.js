@@ -1030,6 +1030,7 @@ export const REVIEW_NARRATION = {
   2: { src: "/day2-review.mp3", secs: 22 },
   3: { src: "/day3-review.mp3", secs: 23 },
   4: { src: "/day4-review.mp3", secs: 20 },
+  5: { src: "/day5-review.mp3", secs: 20 },
 };
 
 // Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)
