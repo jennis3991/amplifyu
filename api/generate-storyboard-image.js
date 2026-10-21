@@ -121,11 +121,15 @@ YOUR PROCESS:
 
 AVOID GENERIC IMAGES: a laptop, a mug and a lamp on their own (or any stock desk set-up) could be any story and are not acceptable. If an object would fit almost every story, replace it with one that only fits this one.
 
+SHOW THE STORY'S MILESTONES: if the story centres on launching something (an app, a product, a business), show that moment, e.g. a phone glowing with a simple, generic app icon. Never use real brand logos or trademarks (Apple, the App Store, Google and so on): image models distort them.
+
+ONE NAME, IF THE STORY HAS ONE: if the story names its own product, company or project (for example an app name), you may include that ONE word, handwritten clearly in large letters on a notepad or sticky note. Put the exact spelling in quotes in your prompt and say it must be spelled exactly as written. Any other notes or workings on paper must be wordless: wireframe boxes, arrows, tick marks, small sketches and doodles, never other words or numbers.
+
 COVER REQUIREMENTS:
 - Single cinematic image — NOT a collage
 - NO people, NO faces, NO bodies, NO silhouettes
-- NO text, words, letters or numbers anywhere in the image. Image models misspell lettering, so avoid anything that would normally carry writing: no documents, printed pages, slides, pitch decks, charts, labels, signs, book spines, packaging, clocks with numerals or readable screens
-- Any paper, notebook or page must be blank or closed; a screen may glow with a simple abstract shape or a single wordless graphic (like a pixel-art character or an app-style icon), never words or numbers
+- NO text, words, letters or numbers anywhere in the image, apart from the one story name allowed above. Image models misspell lettering, so avoid anything that would normally carry writing: no documents, printed pages, slides, pitch decks, charts, labels, signs, book spines, packaging, clocks with numerals or readable screens
+- Paper and notepads show only that one name (if used) and wordless workings (wireframes, arrows, ticks, sketches); a screen may glow with a simple abstract shape or a single wordless graphic (like a pixel-art character or a generic app icon), never words or numbers
 - Warm, inviting, premium light: golden hour, soft lamplight or warm morning sun; rich warm tones (amber, honey, cream, brass); the main subject clearly visible
 - Luminous overall: evening scenes are welcome, but the image must glow with warm mid-tones, never mostly shadow
 - NEVER cold, blue, grey, bleak or near-black; even urgent stories stay warm, with urgency shown through the subject and composition
@@ -192,7 +196,9 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
 
     // Always end with the no-text rule, whichever prompt is used: image models
     // misspell any lettering they draw (e.g. "PETICH DECK" on a pitch deck).
-    coverPrompt += ' Absolutely no text, words, letters, numbers or brand logos anywhere in the image; any paper or page is blank, and any screen shows at most a simple wordless shape or graphic.';
+    // The one exception is a single story name (e.g. the app's name) that the
+    // art director quotes with its exact spelling; one large word renders well.
+    coverPrompt += ' Apart from any single name quoted above (spelled exactly as given), absolutely no text, words, letters, numbers or brand logos anywhere in the image; any other marks on paper are wordless sketches, arrows or ticks, and any screen shows at most a simple wordless shape or generic icon.';
 
     // TEMPORARY (added 2026-10-21): logs the final cover prompt so we can see
     // why a cover misses. It contains story details, so remove it once covers
