@@ -80,7 +80,7 @@ export function SessionLeftPanel({
             <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, margin:0 }}>Report it live. Watch what your audience remembers.</p>
           </div>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Sixty seconds. A breaking story. A producer cutting your time. The AI becomes your audience — and reveals what actually landed.</p>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Two minutes. A breaking story. A producer cutting your time. The AI becomes your audience and reveals what actually landed.</p>
         </div>
       </div>
     );

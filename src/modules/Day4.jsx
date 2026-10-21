@@ -403,7 +403,13 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
 
 // ─── D4 Simulation Widget — Breaking News Live ───────────────────────────────
 const D4_SIMULATION_MAX_SEC = 120;
+// Coach intro audio outlives any one widget instance (same pattern as Day 3)
+// so a remount mid-narration can't orphan it.
+const d4SimCoachSlot = { current: null };
+
 export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
+  // Coach intro: plays on the intro and story screens, stops once a story is picked.
+  const coach = useCoachNarration({ src: "/day4-simulation.mp3", cues: [], sharedAudioRef: d4SimCoachSlot });
   const STORIES = [
     {cat:"💼 Business", items:["Four-Day Work Week Announced Nationwide","Major Cyber Attack Takes Down Global Tech Giant"]},
     {cat:"🔬 Science", items:["Scientists Confirm Evidence of Life on Mars","Asteroid Narrowly Misses Earth"]},
@@ -470,6 +476,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
   },[playing]);
 
   function doStart(){
+    coach.pause();
     setIsRec(true);setProducerMsg(null);setTranscript('');setAudioURL(null);setTimeElapsed(0);setTimeLeft(D4_SIMULATION_MAX_SEC);setMicError(false);
     audioChunksRef.current=[];
     if(navigator.mediaDevices?.getUserMedia){
@@ -614,7 +621,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
             </svg>
           </div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
-            Report a breaking story to the nation. As airtime shrinks, your sentences must get <strong style={{color:T.gold,fontWeight:700}}>shorter</strong> — and your message must get <strong style={{color:T.gold,fontWeight:700}}>clearer</strong>.
+            Report a breaking story to the nation. As airtime shrinks, your sentences must get <strong style={{color:T.gold,fontWeight:700}}>shorter</strong>, and your message must get <strong style={{color:T.gold,fontWeight:700}}>clearer</strong>.
           </p>
         </div>
         <div style={{height:1,background:T2.divider,margin:isDesktop?"18px 0":"14px 0"}}/>
@@ -631,12 +638,14 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
           </p>
         </div>
       </div>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={39} style={{ margin: 0 }} />
       <div style={{display:"flex",alignItems:"center",gap:8,padding:isDesktop?"12px 16px":"10px 14px",background:"rgba(138,158,132,0.06)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)"}}>
         <svg width="14" height="14" viewBox="0 0 20 20" fill="none" style={{flexShrink:0}}><circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/><line x1="10" y1="9" x2="10" y2="14" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/><circle cx="10" cy="6.3" r="1" fill="rgba(138,158,132,0.8)"/></svg>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.5,margin:0}}>This is a private practice simulation. Nothing is broadcast live or shared publicly — your recording is used only to generate your feedback.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text3,lineHeight:1.5,margin:0}}>This is a private practice simulation. Nothing is broadcast live or shared publicly. Your recording is used only to generate your feedback.</p>
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} />
+        <AICoachNote T={T} T2={T2} voice />
         <button onClick={()=>setPhase('choose')} style={cs.cta}>Choose Your Breaking Story →</button>
       </div>
     </div>
@@ -645,6 +654,8 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
   // ── CHOOSE STORY ─────────────────────────────────────────────────────────────
   if(phase==='choose') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={39} style={{ margin: 0 }} />
       <div style={cs.card}>
         <div style={cs.label}>Breaking News</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,marginBottom:16}}>Choose your story. You have up to 2 minutes to report it live to the nation.</p>
@@ -653,7 +664,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{cat.cat.replace(/^[^\s]+\s/,'')}</div>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {cat.items.map((item,ii)=>(
-                <button key={ii} onClick={()=>{setStory(item);setPhase('recording');}}
+                <button key={ii} onClick={()=>{coach.pause();setStory(item);setPhase('recording');}}
                   style={{padding:"14px 16px",borderRadius:4,border:"0.5px solid "+T2.border,background:"transparent",color:T2.text,fontSize:isDesktop?14:13,fontFamily:T.sans,textAlign:"left",cursor:"pointer",lineHeight:1.5,transition:"all 0.2s"}}>
                   {item}
                 </button>
@@ -771,7 +782,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
         <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)"}}>
           <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>Your Broadcast</div>
-          <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",marginBottom:14}}>You reported {totalFacts} facts — {tier1.length} essential, {tier2.length} supporting, {tier3.length} detail.</div>
+          <div style={{fontFamily:T.sans,fontSize:11,color:"rgba(245,239,230,0.4)",marginBottom:14}}>You reported {totalFacts} facts: {tier1.length} essential, {tier2.length} supporting, {tier3.length} detail.</div>
           {audioURL&&(
             <div>
               <div
@@ -838,7 +849,7 @@ export function D4SimWidget({T, T2, isDesktop, onRecordingChange}) {
         </div>
 
         <div style={{...cs.card,borderLeft:"3px solid "+T.gold,background:"rgba(138,158,132,0.05)"}}>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>The next time you're in a room where every second counts — a stand-up, a crisis call, an elevator pitch — this is the rep that makes getting to the point feel natural instead of rushed.</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>The next time you're in a room where every second counts, like a stand-up, a crisis call or an elevator pitch, this is the rep that makes getting to the point feel natural instead of rushed.</p>
         </div>
 
       </div>
