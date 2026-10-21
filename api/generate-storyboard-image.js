@@ -120,26 +120,27 @@ YOUR PROCESS:
 5. Choose the most resonant Visual Metaphor — something SPECIFIC to this story, not generic
 
 METAPHOR GUIDANCE (pick whichever fits, or invent a better one):
-- Crisis / urgency: a single red warning light glowing in a bright morning office, phone off the hook on a sunlit desk, a plain hourglass running out on a daylit desk, empty executive chair by a bright window
-- Career growth / change: closed leather notebook beside a packed suitcase, a single key on a desk, morning light through a train station window, open doorway with light beyond
-- Leadership / influence: conference room in morning light, empty podium in a bright hall, microphone stand on a well-lit stage, window overlooking a city at golden hour
-- Innovation / thinking: a prototype model on a light table, chess pieces mid-game, open sketchbook with wordless line drawings, workshop with tools laid out
-- Communication / storytelling: vintage typewriter with a blank page, a fountain pen resting on a closed journal, warmly lit empty stage, a pen on a blank notepad in morning light
-- Personal breakthrough: first light through a window, open road at sunrise, morning light flooding through a window, compass on a worn map
-- Trust / relationships: two coffee cups, a sealed envelope with no writing, two chairs angled towards each other
+- Crisis / urgency: a single red warning light glowing in a warmly lit office, phone off the hook on a polished desk in late-afternoon sun, a brass hourglass running out on an oak desk, empty executive chair by a window at golden hour
+- Career growth / change: closed leather notebook beside a packed suitcase, a single brass key on a desk, golden light through a train station window, open doorway with warm light beyond
+- Leadership / influence: conference room in warm morning light, empty podium in a softly lit hall, microphone stand on a warmly lit stage, window overlooking a city at golden hour
+- Innovation / thinking: a prototype model under a warm desk lamp, chess pieces mid-game, open sketchbook with wordless line drawings, laptop glowing with a simple pixel-art character on a styled oak desk
+- Communication / storytelling: vintage typewriter with a blank page, a fountain pen resting on a closed journal, warmly lit empty stage, a pen on a blank notepad in soft lamplight
+- Personal breakthrough: golden light through a window, open road at sunrise, a phone on a styled desk glowing with a single app-style icon, compass on a worn map
+- Trust / relationships: two coffee cups in warm light, a sealed envelope with no writing, two armchairs angled towards each other by a lamp
 
 COVER REQUIREMENTS:
 - Single cinematic image — NOT a collage
 - NO people, NO faces, NO bodies, NO silhouettes
 - NO text, words, letters or numbers anywhere in the image. Image models misspell lettering, so avoid anything that would normally carry writing: no documents, printed pages, slides, pitch decks, charts, labels, signs, book spines, packaging, clocks with numerals or readable screens
-- Any paper, notebook or page must be blank or closed; any screen must be off or show only soft abstract light
-- Bright, well-exposed image: warm natural daylight, mid-to-high-key lighting, the main subject clearly visible
-- Even for urgent or crisis stories, keep the scene clearly lit (morning daylight, a lit office): show urgency through the subject and composition, never through darkness
-- NO near-black backgrounds, NO night scenes, NO low-key or underexposed lighting
-- Shallow depth of field, film grain
+- Any paper, notebook or page must be blank or closed; a screen may glow with a simple abstract shape or a single wordless graphic (like a pixel-art character or an app-style icon), never words or numbers
+- Warm, inviting, premium light: golden hour, soft lamplight or warm morning sun; rich warm tones (amber, honey, cream, brass); evening scenes are welcome if warmly lit; the main subject clearly visible
+- NEVER cold, blue, grey, bleak or near-black; even urgent stories stay warm, with urgency shown through the subject and composition
+- Match the emotional arc: uplifting or triumphant stories should feel optimistic, aspirational and quietly celebratory
+- High-end lifestyle editorial styling: a considered, styled scene with rich textures (oak, linen, brass, plants) and a few personal details; never bare, austere, messy or cluttered (no crumbs, stains or dirt)
+- Shallow depth of field, soft cinematic glow
 - Generous negative space at the top
-- Style: Netflix documentary poster · Apple editorial · Kinfolk · Monocle · Penguin non-fiction
-- Minimal, sophisticated, emotionally resonant
+- Style: Apple editorial · Monocle · Cereal magazine · premium Penguin non-fiction cover
+- Sophisticated, aspirational, emotionally resonant
 - Portrait orientation (taller than wide)
 
 IMPORTANT: The image must be unique to this story. Someone should look at it and understand the subject, conflict, mood and stakes without reading any text.
@@ -192,25 +193,26 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
 
     // ── Fallback: story-aware prompt built from storyWorld data ───────────
     if (!coverPrompt) {
-      coverPrompt = `A premium editorial book cover image for a story titled "${title}". Theme: ${subject}. Emotional tone: ${emotion}. Setting: ${visualWorld}. Choose a single strong visual metaphor that captures the essence of this story — an object, a space, or a moment of anticipation. Style: Netflix documentary poster, Apple editorial, Kinfolk magazine, Penguin non-fiction. Cinematic, bright and well-exposed, warm natural daylight, shallow depth of field, film grain, generous negative space. NO people, NO faces, NO text, letters or numbers anywhere in the image: any paper or page is blank, any screen is off. Portrait orientation. Minimal, sophisticated, emotionally resonant.`;
+      coverPrompt = `A premium editorial book cover image for a story titled "${title}". Theme: ${subject}. Emotional tone: ${emotion}. Setting: ${visualWorld}. Choose a single strong visual metaphor that captures the essence of this story — an object, a space, or a moment of anticipation. Style: high-end lifestyle editorial, Apple editorial, Monocle, premium Penguin non-fiction. Warm, inviting light (golden hour, soft lamplight or warm morning sun), rich warm tones, a styled scene with rich textures, never cold, bleak, bare or messy. Shallow depth of field, soft cinematic glow, generous negative space. NO people, NO faces, NO text, letters or numbers anywhere in the image: any paper or page is blank. Portrait orientation. Sophisticated, aspirational, emotionally resonant.`;
     }
 
     // Always end with the no-text rule, whichever prompt is used: image models
     // misspell any lettering they draw (e.g. "PETICH DECK" on a pitch deck).
-    coverPrompt += ' Absolutely no text, words, letters, numbers or logos anywhere in the image; any paper or page is blank, any screen is off or shows only soft abstract light.';
+    coverPrompt += ' Absolutely no text, words, letters, numbers or brand logos anywhere in the image; any paper or page is blank, and any screen shows at most a simple wordless shape or graphic.';
 
     // ── Step 2: Generate image with OpenAI ────────────────────────────────
-    // High quality (medium was visibly softer); JPEG keeps the response small.
-    // The 100 s limit leaves room for high-quality generation times.
+    // Medium quality: about a quarter of high's generation work, and sharp
+    // enough now the app keeps a 1024px copy (the earlier softness was mostly
+    // a 640px copy stretched on 3x screens). JPEG keeps the response small.
     const tImage = Date.now();
     const imageCtl = new AbortController();
     const imageTimer = setTimeout(() => imageCtl.abort(), IMAGE_TIMEOUT_MS);
     try {
-      console.log('[cover-image] Calling gpt-image-1 (high quality)...');
+      console.log('[cover-image] Calling gpt-image-1 (medium quality)...');
       const response = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-        body: JSON.stringify({ model: 'gpt-image-1', prompt: coverPrompt, n: 1, size: '1024x1536', quality: 'high', output_format: 'jpeg' }),
+        body: JSON.stringify({ model: 'gpt-image-1', prompt: coverPrompt, n: 1, size: '1024x1536', quality: 'medium', output_format: 'jpeg' }),
         signal: imageCtl.signal,
       });
       const data = await response.json();
