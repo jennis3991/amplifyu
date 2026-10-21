@@ -4,6 +4,7 @@ import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { AICoachNote } from '../components/AICoachNote.jsx';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -89,7 +90,13 @@ const EI_TARGET  = EDIT_ICON(<><circle cx="12" cy="12" r="10"/><circle cx="12" c
 const EI_ARROW   = EDIT_ICON(<><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></>);
 const EI_PERSON  = EDIT_ICON(<><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></>);
 
+// Coach intro audio outlives any one widget instance (same pattern as Day 3)
+// so a remount mid-narration can't orphan it.
+const d4EditCoachSlot = { current: null };
+
 export function D4PracticeWidget({T, T2, isDesktop, onNavLabel, onNavFn, onSimulation}) {
+  // Coach intro: plays on the topic screens, stops when recording starts.
+  const coach = useCoachNarration({ src: "/day4-rehearsal.mp3", cues: [], sharedAudioRef: d4EditCoachSlot });
   const _roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
 
   const EDIT_TOPICS = [
@@ -228,6 +235,12 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
       <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text3, lineHeight:1.7, fontWeight:400, margin:'0 0 10px'}}>
         If your message still makes sense without a sentence, leave it out. Great communicators don't say more. They know when to stop.
       </p>
+      {(phase === 'select' || phase === 'pause') && (
+        <>
+          <CoachStyles />
+          <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={35} style={{ marginTop: 8, marginBottom: 14 }} />
+        </>
+      )}
       <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:14}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
           <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
@@ -262,7 +275,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
         })}
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} />
+        <AICoachNote T={T} T2={T2} voice />
         <button onClick={() => { if (topic) setPhase('pause'); }}
           disabled={!topic}
           style={{...cs.cta, opacity: topic ? 1 : 0.4, cursor: topic ? 'pointer' : 'default'}}>
@@ -285,7 +298,7 @@ JSON fields: compressionAchieved (boolean — true if attempt two was meaningful
       </p>
     </div>
     <button
-      onClick={() => setPhase('rec1')}
+      onClick={() => { coach.pause(); setPhase('rec1'); }}
       disabled={dotCount < 3}
       style={{...cs.cta, opacity: dotCount < 3 ? 0.3 : 1, cursor: dotCount < 3 ? 'default' : 'pointer'}}>
       Start Speaking →
