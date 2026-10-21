@@ -799,15 +799,14 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
     persistStories([entry, ...savedStories]);
   }
 
-  // Downscales + re-encodes a data: URI for storage. The saved copy is only
-  // ever displayed at up to ~340px tall in the reopened story view (never at
-  // the generated image's native 1024x1536), and localStorage has nowhere
-  // near the room for a full-quality PNG per story — so this trades quality
-  // that was never visible for a ~90%+ size cut, well before the quota-fallback
-  // below is ever needed. Falls back to the original url if canvas access
-  // fails for any reason (the quota-fallback still protects that path).
+  // Re-encodes a data: URI as a JPEG for display and storage. 1024px wide
+  // (the generated width) keeps the cover sharp on 3x iPhone screens, where a
+  // 640px copy looked visibly soft; at quality 0.85 each cover stays a few
+  // hundred KB, so four stories (STORY_CAP) fit well inside localStorage.
+  // Falls back to the original url if canvas access fails for any reason
+  // (the quota-fallback below still protects that path).
   // The JPEG is also tagged as AI-generated (XMP metadata, see aiImageTag.js).
-  async function compressImageForStorage(dataURI, maxWidth = 640, quality = 0.75) {
+  async function compressImageForStorage(dataURI, maxWidth = 1024, quality = 0.85) {
     const img = new Image();
     img.src = dataURI;
     if (img.decode) await img.decode();
