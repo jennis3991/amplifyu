@@ -874,6 +874,17 @@ export const D4_FACTS = [
     bullets:["\"I have a dream.\" \"Yes we can.\" \"Just do it.\" Brevity is not simplicity. It is precision.","Short sentences move people because they leave no room for doubt or distraction."] },
 ];
 
+export const D5_FACTS = [
+  { word:"Credibility",    sub:"Leading with your point signals clear thinking.",
+    bullets:["Structured communication creates immediate credibility. Your audience knows you have a clear perspective.","When you lead with your conclusion, you sound decisive and confident before you've even explained why."] },
+  { word:"Recall",         sub:"Structured messages are easier to remember.",
+    bullets:["A clear beginning, middle and end helps your audience store and retrieve your message with ease.","Without structure, ideas blur together. With PRE, each part reinforces the next."] },
+  { word:"Persuasion",     sub:"Great ideas rarely persuade on their own.",
+    bullets:["PRE helps you present a clear point, support it with logic, and reinforce it with proof.","Unstructured arguments make audiences work harder. Structured arguments make the next step obvious."] },
+  { word:"Decision Speed", sub:"Leaders decide faster when communication is structured.",
+    bullets:["Lead with your point and you cut the cognitive overhead for whoever is listening.","Every conversation you structure well ends faster, with the outcome you want."] },
+];
+
 export const D1_CLARITY_FACTS_DATA = [
   { word:"Cognitive Load",    sub:"The harder to process, the harder to absorb",    bullets:["The brain naturally prefers information that feels easy to process.","If people are working to decode your words, they're not fully absorbing your message."] },
   { word:"Retention",         sub:"If people can repeat it, they remember it",          bullets:["Clear ideas are easier for the brain to store, retrieve, and share.","Complexity gets forgotten. Simplicity gets repeated."] },
@@ -1016,6 +1027,7 @@ export const REVIEW_NARRATION = {
   1: { src: "/day1-review.mp3", secs: 18 },
   2: { src: "/day2-review.mp3", secs: 22 },
   3: { src: "/day3-review.mp3", secs: 23 },
+  4: { src: "/day4-review.mp3", secs: 20 },
 };
 
 // Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)
