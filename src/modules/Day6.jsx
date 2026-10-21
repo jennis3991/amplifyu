@@ -332,14 +332,18 @@ function DropDown({field, value, placeholder, options, onSelect, open, onToggle,
 
 // ─── D6 Simulation Widget — AI Conversation Prep ────────────────────────────
 const D6_SIMULATION_MAX_SEC = 120;
+const d6PrepCoachSlot = { current: null };
+
 export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
+  // Coach intro: plays on the setup screen, stops when questions are generated.
+  const coach = useCoachNarration({ src: "/day6-simulation.mp3", cues: [], sharedAudioRef: d6PrepCoachSlot });
   const INDUSTRIES = ['Technology','Finance','Healthcare','Education','Hospitality','Retail','Sales','Marketing','Legal','Consulting','Other'];
   const MEETING_OPTIONS = [
     {id:'manager',   label:'Manager',      icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>},
     {id:'colleague', label:'Colleague',    icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>},
-    {id:'client',    label:'Client',       icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg>},
     {id:'executive', label:'Executive',    icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><rect x="4" y="6" width="16" height="16"/><path d="M2 6l10-4 10 6"/><line x1="8" y1="22" x2="8" y2="12"/><line x1="12" y1="22" x2="12" y2="12"/><line x1="16" y1="22" x2="16" y2="12"/></svg>},
     {id:'stakeholder',label:'Stakeholder', icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>},
+    {id:'interviewer',label:'Interviewer', icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><line x1="9" y1="10" x2="15" y2="10"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="12" y2="18"/></svg>},
     {id:'other',     label:'Someone else', icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg>},
   ];
   const TOPIC_OPTIONS = [
@@ -347,7 +351,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
     {id:'budget',    label:'Budget approval',    icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v1m0 5v1M9.5 10a2.5 2.5 0 0 1 5 0c0 1.5-1 2-2.5 2.5S9.5 13 9.5 14a2.5 2.5 0 0 0 5 0"/></svg>},
     {id:'promotion', label:'Promotion',          icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>},
     {id:'feedback',  label:'Difficult feedback',   icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="15.5" r="0.5" fill="currentColor"/></svg>},
-    {id:'performance',label:'Performance review', icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>},
+    {id:'interview', label:'Interview',          icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>},
     {id:'other',     label:'Something else',      icon:<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>},
   ];
   const PRESSURES = [
@@ -676,8 +680,9 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
   if(phase==='setup') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?20:16}}>
       <div>
-        <h2 style={{fontFamily:T.serif,fontSize:isDesktop?26:22,fontWeight:600,color:T2.text,lineHeight:1.15,margin:"0 0 6px"}}>AI Conversation Prep</h2>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:0}}>Choose your scenario, add a few details, and get ready for high-stakes conversations. Your coach will generate tough questions and help you deliver with confidence.</p>
+        <CoachStyles />
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={44} style={{ marginTop: 14, marginBottom: 0 }} />
       </div>
 
       {myPreps.length>0 && (
@@ -799,8 +804,8 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
         </div>
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} />
-        <button onClick={generate} disabled={!canGenerate} style={{...cs.cta,opacity:canGenerate?1:0.4,fontSize:isDesktop?15:14,padding:isDesktop?"16px":"14px"}}>Generate My Questions →</button>
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={()=>{coach.pause();generate();}} disabled={!canGenerate} style={{...cs.cta,opacity:canGenerate?1:0.4,fontSize:isDesktop?15:14,padding:isDesktop?"16px":"14px"}}>Generate My Questions →</button>
       </div>
     </div>
   );
@@ -900,7 +905,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <button onClick={isListening?stopListening:startListening}
           style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center",gap:10,padding:"18px",borderRadius:4,border:`1.5px solid ${isListening?"#CC4444":T2.border}`,background:isListening?"rgba(204,68,68,0.06)":"transparent",cursor:"pointer",fontFamily:T.sans,fontSize:isDesktop?14:13,fontWeight:600,color:isListening?"#CC4444":T2.text3,transition:"all 0.2s"}}>
           <div style={{width:10,height:10,borderRadius:"50%",background:isListening?"#CC4444":"rgba(138,158,132,0.5)",animation:isListening?"glowPulse 1s ease infinite":"none",flexShrink:0}}/>
-          {isListening?`Recording… ${recTime}s / ${D6_SIMULATION_MAX_SEC}s — tap to pause`:mediaRecRef.current&&mediaRecRef.current.state==='paused'?"Tap to resume":"Tap to speak your answer"}
+          {isListening?`Recording… ${recTime}s / ${D6_SIMULATION_MAX_SEC}s · tap to pause`:mediaRecRef.current&&mediaRecRef.current.state==='paused'?"Tap to resume":"Tap to speak your answer"}
         </button>
         {micError && <p style={{fontFamily:T.sans,fontSize:12,color:"#B05C4A",margin:"10px 0 0"}}>Check your microphone permission, or type your response below instead.</p>}
       </div>
@@ -1068,7 +1073,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
         <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T.gold,lineHeight:1.65,margin:0}}>{result.recommendation}</p>
       </div>
       <div style={{...cs.card,borderLeft:"3px solid "+T.gold,background:"rgba(138,158,132,0.05)"}}>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>The prep you just did doesn't disappear when the real conversation starts — it becomes the calm you carry into it. That's what preparation is really for.</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>The prep you just did doesn't disappear when the real conversation starts. It becomes the calm you carry into it. That's what preparation is really for.</p>
       </div>
       {/* Repeat options */}
       <div style={{display:"flex",flexDirection:"column",gap:10,marginTop:4}}>
@@ -1080,7 +1085,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
           style={{width:"100%",padding:isDesktop?"13px":"12px",borderRadius:4,border:`0.5px solid ${T.gold}`,background:"transparent",color:T.gold,fontSize:isDesktop?14:13,fontWeight:600,cursor:"pointer",fontFamily:T.sans}}>
           Ask Me 5 New Questions →
         </button>
-        <button onClick={()=>{setPhase('intro');setForm({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging'});setStakeholderIsOther(false);setPurposeOther('');setProfile(null);setQuestions([]);setAnswers([]);setResult(null);setQIdx(0);setCurrentAnswer('');}}
+        <button onClick={()=>{setPhase('setup');setForm({industry:'',role:'',stakeholder:'',purpose:'',pressure:'challenging'});setStakeholderIsOther(false);setPurposeOther('');setProfile(null);setQuestions([]);setAnswers([]);setResult(null);setQIdx(0);setCurrentAnswer('');}}
           style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:12,cursor:"pointer",padding:"6px 0",textAlign:"center",width:"100%"}}>
           Prepare a Different Conversation
         </button>

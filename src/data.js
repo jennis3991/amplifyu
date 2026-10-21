@@ -157,8 +157,8 @@ export const FURTHER_READING = [
     { title: "The Minto Pyramid Principle", author: "Barbara Minto", quote: "The mind's natural tendency is to think in groups.", rating: "4.5", reviewCount: "5,200 reviews", why: "The complete system behind structured communication. If PRE gave you the skeleton, Minto gives you the full anatomy of a compelling argument.", connection: "The full method behind structured communication. Go deeper into the framework PRE draws from.", amazon: "https://www.amazon.co.uk/s?k=The+Minto+Pyramid+Principle+Barbara+Minto" },
   ]},
   { books: [ // Day 6
-    { title: "The Storyteller's Secret", author: "Carmine Gallo", quote: "Facts tell. Stories sell.", rating: "4.6", reviewCount: "9,100 reviews", why: "Gallo interviewed 50+ world-class communicators to uncover how they use story to move people. One of the most useful books on professional storytelling ever published.", connection: "Reveals how the world's most inspiring communicators use story as their primary instrument.", amazon: "https://www.amazon.co.uk/s?k=The+Storyteller%27s+Secret+Carmine+Gallo" },
-    { title: "Building a StoryBrand", author: "Donald Miller", quote: "Make your customer the hero, not your brand.", rating: "4.7", reviewCount: "18,000 reviews", why: "Miller's SB7 framework is the clearest model for professional storytelling available. Used by thousands of organisations to clarify their message instantly.", connection: "Miller's SB7 framework shows how to make your audience the hero, essential for professional storytelling.", amazon: "https://www.amazon.co.uk/s?k=Building+a+StoryBrand+Donald+Miller" },
+    { title: "Crucial Conversations", author: "Kerry Patterson, Joseph Grenny, Ron McMillan & Al Switzler", why: "A practical toolkit for the moments when opinions differ, emotions run high and the stakes matter.", connection: "A practical guide to staying calm and clear when opinions differ, emotions run high and the stakes matter.", amazon: "https://www.amazon.co.uk/s?k=Crucial+Conversations+Patterson+Grenny" },
+    { title: "Difficult Conversations", author: "Douglas Stone, Bruce Patton & Sheila Heen", why: "From the Harvard Negotiation Project: how to handle the conversations most people avoid.", connection: "From the Harvard Negotiation Project: how to listen first, stay steady and talk about what matters most.", amazon: "https://www.amazon.co.uk/s?k=Difficult+Conversations+Stone+Patton+Heen" },
   ]},
   { books: [ // Day 7
     { title: "Promoting Yourself", author: "Harvey Mackay", quote: "Your reputation is your most valuable asset.", rating: "4.3", reviewCount: "4,600 reviews", why: "The definitive guide to making your value visible without feeling inauthentic. Mackay's strategies have helped thousands build the professional presence they deserve.", connection: "The definitive guide to making your value visible, the heart of the PIE Framework.", amazon: "https://www.amazon.co.uk/s?k=Promoting+Yourself+Harvey+Mackay" },
@@ -218,7 +218,7 @@ export const REVIEW_BULLETS = [
   ["Filler words reduce perceived competence by up to 22%.", "A pause is not weakness. It is thought made visible.", "Replace 'um' and 'er' with breath, intention, and the next word."],
   ["One idea per sentence - always, without exception.", "Short sentences land harder and are remembered longer.", "Miller's Law: your listener's brain holds seven items at once. Respect that."],
   ["Lead with your conclusion, then earn it with evidence.", "Point → Reason → Example: the fastest path from idea to understanding.", "Structure is a gift to your listener, not a constraint on your thinking."],
-  ["The communicators who stay calm under pressure gain the room, every time.", "Composure is the foundation that holds clarity, structure, and story together when it counts most.", "Prepare your first sentence before every difficult conversation. It anchors you when pressure rises."],
+  ["Staying calm under pressure keeps your thinking clear and helps people trust what you say.", "Composure is the foundation that holds clarity, structure and brevity together when it counts most.", "Prepare your first sentence before every difficult conversation. It anchors you when pressure rises."],
   ["Six habits in six days: clarity, voice, no fillers, short sentences, PRE structure, and composure under pressure.", "Communication mastery is not one big insight. It is six small habits repeated until they become automatic.", "The skills you built this week are the foundation every great communicator stands on."],
   ["You learned why storytelling creates influence faster than information alone.", "You mastered the 6-beat story arc: Hook, Character, Problem, Turning Point, Resolution, Meaning.", "You built and rehearsed your own professional story with your AmplifyU Coach."],
   ["Genuine connection starts with curiosity, asking better questions, not delivering better answers.", "The 70/30 rule: listen 70% of the time. People feel most understood when they do most of the talking.", "Different people need different conversations. Adapting your style to theirs is the mark of a master communicator.", "Empathy is not agreement. It is the practice of making people feel genuinely heard before you respond."],
@@ -718,7 +718,7 @@ export const WORKPLACE_APPLICATION = [
     "Prepare three calm, confident responses to the toughest questions you expect this week.",
     "Before a difficult conversation, take three slow breaths to reset your nervous system.",
     "When challenged in a meeting, pause for two seconds before responding.",
-    "Practise composure in low-stakes conversations first, build the reflex before you need it.",
+    "Practise composure in low-stakes conversations first. Build the reflex before you need it.",
   ],
   // Day 7 — Week 1 Review
   [
@@ -1044,6 +1044,7 @@ export const REVIEW_NARRATION = {
   3: { src: "/day3-review.mp3", secs: 23 },
   4: { src: "/day4-review.mp3", secs: 20 },
   5: { src: "/day5-review.mp3", secs: 20 },
+  6: { src: "/day6-review.mp3", secs: 20 },
 };
 
 // Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)
