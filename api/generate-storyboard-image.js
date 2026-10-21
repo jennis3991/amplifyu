@@ -116,22 +116,20 @@ YOUR PROCESS:
 1. Identify the Core Theme and the Emotional Tone of the story
 2. Identify the Defining Moment, the single most pivotal point in the story
 3. Choose ONE setting for the scene, taken from the story (a place, a time of day)
-4. Pick 3 to 5 concrete details that come directly from this narrative: objects, small personal traces, signs of the people and life in the story (without showing the people themselves). Each detail should earn its place by pointing to something specific in the story
+4. Pick 3 to 5 concrete details that come directly from this narrative: objects, small personal traces, signs of the people and life in the story (without showing the people themselves). Each detail should earn its place by pointing to something specific in the story. PERSONAL DETAILS FIRST: at least two of them must be personal traces from the story (family, home life, the person's own world); product, work or launch elements are optional and at most one
 5. Compose these into one scene that captures the story's arc and its Defining Moment
 
 AVOID GENERIC IMAGES: a laptop, a mug and a lamp on their own (or any stock desk set-up) could be any story and are not acceptable. If an object would fit almost every story, replace it with one that only fits this one.
 
-SHOW THE STORY'S MILESTONES: if the story centres on launching something (an app, a product, a business), show that moment, e.g. a phone glowing with a simple, generic app icon. Never use real brand logos or trademarks (Apple, the App Store, Google and so on): image models distort them.
-
-ONE NAME, IF THE STORY HAS ONE: if the story names its own product, company or project (for example an app name), you may include that ONE word, handwritten clearly in large letters on a notepad or sticky note. Put the exact spelling in quotes in your prompt and say it must be spelled exactly as written. Any other notes or workings on paper must be wordless: wireframe boxes, arrows, tick marks, small sketches and doodles, never other words or numbers.
+OPTIONAL EXTRAS (only if they fit, never at the cost of the personal details): if the story centres on a launch, its one product or launch element may be a phone glowing with a simple, generic app icon. If the story names its own product, company or project (for example an app name), that ONE word may be handwritten clearly in large letters on a notepad or sticky note: put the exact spelling in quotes in your prompt and say it must be spelled exactly as written. Never use real brand logos or trademarks (Apple, the App Store, Google and so on): image models distort them.
 
 COVER REQUIREMENTS:
 - Single cinematic image — NOT a collage
 - NO people, NO faces, NO bodies, NO silhouettes
-- NO text, words, letters or numbers anywhere in the image, apart from the one story name allowed above. Image models misspell lettering, so avoid anything that would normally carry writing: no documents, printed pages, slides, pitch decks, charts, labels, signs, book spines, packaging, clocks with numerals or readable screens
-- Paper and notepads show only that one name (if used) and wordless workings (wireframes, arrows, ticks, sketches); a screen may glow with a simple abstract shape or a single wordless graphic (like a pixel-art character or a generic app icon), never words or numbers
-- Warm, inviting, premium light: golden hour, soft lamplight or warm morning sun; rich warm tones (amber, honey, cream, brass); the main subject clearly visible
-- Luminous overall: evening scenes are welcome, but the image must glow with warm mid-tones, never mostly shadow
+- NO text, words, letters or numbers anywhere in the image, apart from the one optional story name. Image models misspell lettering, so avoid anything that would normally carry writing: no documents, printed pages, slides, pitch decks, charts, labels, signs, book spines, packaging, clocks with numerals or readable screens
+- Notes on paper are wordless workings (wireframe boxes, arrows, ticks, small sketches) plus that one name if used; a screen may glow with a simple abstract shape or a single wordless graphic (like a pixel-art character or a generic app icon), never words or numbers
+- Warm, inviting, premium light: warm golden-hour or late-afternoon sunlight; rich warm tones (amber, honey, cream, brass); the main subject clearly visible
+- Bright mid-tones overall: NO night scenes, dark windows or black backgrounds, never mostly shadow
 - NEVER cold, blue, grey, bleak or near-black; even urgent stories stay warm, with urgency shown through the subject and composition
 - Match the emotional arc: uplifting or triumphant stories should feel optimistic, aspirational and quietly celebratory
 - High-end lifestyle editorial styling: a considered, styled scene with rich textures (oak, linen, brass, plants) and a few personal details; never bare, austere, messy or cluttered (no crumbs, stains or dirt)
@@ -191,7 +189,7 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
 
     // ── Fallback: story-aware prompt built from storyWorld data ───────────
     if (!coverPrompt) {
-      coverPrompt = `A premium editorial book cover image for a story titled "${title}". Theme: ${subject}. Emotional tone: ${emotion}. Setting: ${visualWorld}. Show one richly observed scene with 3 to 5 concrete details specific to this story (objects and personal traces, not a generic desk set-up). Style: high-end lifestyle editorial, Apple editorial, Monocle, premium Penguin non-fiction. Warm, inviting light (golden hour, soft lamplight or warm morning sun), rich warm tones, luminous overall rather than mostly shadow, a styled scene with rich textures, never cold, bleak, bare or messy. Shallow depth of field, soft cinematic glow, generous negative space. NO people, NO faces, NO text, letters or numbers anywhere in the image: any paper or page is blank. Portrait orientation. Sophisticated, aspirational, emotionally resonant.`;
+      coverPrompt = `A premium editorial book cover image for a story titled "${title}". Theme: ${subject}. Emotional tone: ${emotion}. Setting: ${visualWorld}. Show one richly observed scene with 3 to 5 concrete details specific to this story, at least two of them personal traces (family, home life), not a generic desk set-up. Style: high-end lifestyle editorial, Apple editorial, Monocle, premium Penguin non-fiction. Warm golden-hour or late-afternoon sunlight, rich warm tones, bright mid-tones overall (no night scene, dark windows or black background), a styled scene with rich textures, never cold, bleak, bare or messy. Shallow depth of field, soft cinematic glow, generous negative space. NO people, NO faces, NO text, letters or numbers anywhere in the image: any paper or page is blank. Portrait orientation. Sophisticated, aspirational, emotionally resonant.`;
     }
 
     // Always end with the no-text rule, whichever prompt is used: image models
