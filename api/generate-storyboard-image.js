@@ -1,4 +1,4 @@
-export const config = { maxDuration: 120 };
+export const config = { maxDuration: 150 };
 
 function validateAccessCode(req) {
   const expected = process.env.ACCESS_CODE || process.env.VITE_ACCESS_CODE || "";
@@ -145,7 +145,17 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
 
     let coverPrompt = null;
 
+    // Time limits, in order: art director (25 s) + image (100 s) stay inside
+    // maxDuration (150 s), and the app waits 160 s, so the route always
+    // answers or fails before the app gives up.
+    const ART_DIRECTOR_TIMEOUT_MS = 25000;
+    const IMAGE_TIMEOUT_MS = 100000;
+    const tStart = Date.now();
+
     if (anthropicKey) {
+      const tClaude = Date.now();
+      const claudeCtl = new AbortController();
+      const claudeTimer = setTimeout(() => claudeCtl.abort(), ART_DIRECTOR_TIMEOUT_MS);
       try {
         console.log('[cover-image] Calling Claude art director...');
         const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
@@ -161,12 +171,17 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
             system: artDirectorSystemPrompt,
             messages: [{ role: 'user', content: artDirectorUserPrompt }],
           }),
+          signal: claudeCtl.signal,
         });
         const claudeData = await claudeRes.json();
         coverPrompt = claudeData.content?.[0]?.text?.trim() || null;
         if (!coverPrompt) console.warn('[cover-image] Claude returned no content, falling back');
       } catch (err) {
-        console.warn('[cover-image] Claude art director failed, falling back:', err.message);
+        const why = err.name === 'AbortError' ? `timed out after ${ART_DIRECTOR_TIMEOUT_MS / 1000}s` : err.message;
+        console.warn('[cover-image] Claude art director failed, falling back:', why);
+      } finally {
+        clearTimeout(claudeTimer);
+        console.log(`[cover-image] Art director step took ${Date.now() - tClaude}ms`);
       }
     } else {
       console.warn('[cover-image] ANTHROPIC_KEY not set — skipping art director step');
@@ -178,12 +193,18 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
     }
 
     // ── Step 2: Generate image with OpenAI ────────────────────────────────
+    // Medium quality: the cover is shown and saved at 640px wide, so high
+    // quality only added generation time. JPEG keeps the response small.
+    const tImage = Date.now();
+    const imageCtl = new AbortController();
+    const imageTimer = setTimeout(() => imageCtl.abort(), IMAGE_TIMEOUT_MS);
     try {
-      console.log('[cover-image] Calling gpt-image-1 (high quality)...');
+      console.log('[cover-image] Calling gpt-image-1 (medium quality)...');
       const response = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-        body: JSON.stringify({ model: 'gpt-image-1', prompt: coverPrompt, n: 1, size: '1024x1536', quality: 'high' }),
+        body: JSON.stringify({ model: 'gpt-image-1', prompt: coverPrompt, n: 1, size: '1024x1536', quality: 'medium', output_format: 'jpeg' }),
+        signal: imageCtl.signal,
       });
       const data = await response.json();
       if (!response.ok) {
@@ -194,10 +215,17 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
       const b64 = data.data?.[0]?.b64_json;
       if (!b64) throw new Error('No image data returned');
       console.log('[cover-image] Success');
-      return res.status(200).json({ url: `data:image/png;base64,${b64}` });
+      return res.status(200).json({ url: `data:image/jpeg;base64,${b64}` });
     } catch (err) {
+      if (err.name === 'AbortError') {
+        console.error(`[cover-image] Image step timed out after ${IMAGE_TIMEOUT_MS / 1000}s`);
+        return res.status(504).json({ error: 'Cover took too long to generate. Tap Retry to try again.' });
+      }
       console.error('[cover-image] Caught error:', err.message);
       return res.status(500).json({ error: err.message });
+    } finally {
+      clearTimeout(imageTimer);
+      console.log(`[cover-image] Image step took ${Date.now() - tImage}ms; total ${Date.now() - tStart}ms`);
     }
   }
   // ── END COVER IMAGE MODE ─────────────────────────────────────────────────────

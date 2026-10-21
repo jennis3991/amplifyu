@@ -912,7 +912,9 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
   async function generateStoryImage(scenes, storyWorld, ctitle, csub) {
     try {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 90000);
+      // 160 s: longer than the route's own limits (25 s + 100 s, maxDuration 150 s),
+      // so the server always answers or reports its own timeout first.
+      const timeout = setTimeout(() => controller.abort(), 160000);
       let res;
       try {
         res = await fetch('/api/generate-storyboard-image', {
