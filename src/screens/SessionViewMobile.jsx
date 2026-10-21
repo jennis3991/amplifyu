@@ -34,6 +34,7 @@ import D2Theory from '../modules/D2Theory.jsx';
 import D3Insight from '../modules/D3Insight.jsx';
 import D4Insight from '../modules/D4Insight.jsx';
 import D5Insight from '../modules/D5Insight.jsx';
+import D5Theory from '../modules/D5Theory.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -1757,28 +1758,7 @@ T.goldDark : T2.text4,
         <D5Insight T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Theory"))}/>
       )}
       {isD5 && step==="Theory" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The architecture of every great professional answer</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Two powerful findings from memory science explain exactly why PRE works — and why it's one of the most reliable communication frameworks available.</p>
-          <div style={{background:T2.surface,borderLeft:"3px solid "+T.gold,padding:"18px 20px",marginBottom:20,borderRadius:4}}>
-            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:0,fontStyle:"italic"}}>People remember the beginning and end of information most clearly. The middle is forgotten.</p>
-          </div>
-          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
-            {[
-              {n:"Point",   role:"Strong opening anchor",   body:"Lead with your conclusion. The brain locks onto the first thing it hears — give it something worth remembering."},
-              {n:"Reason",  role:"Cognitive bridge",         body:"Connect your point to meaning. This is how you make the idea stick — not just land."},
-              {n:"Example", role:"Memorable closing proof",  body:"Finish with evidence. The recency effect means your example is the last thing heard — and the most recalled."},
-            ].map((b,i)=>(
-              <div key={i} style={{background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"16px 18px"}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,marginBottom:4,textTransform:"uppercase",letterSpacing:"1.5px"}}>{b.n}</div>
-                <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,marginBottom:6}}>{b.role}</div>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>{b.body}</p>
-              </div>
-            ))}
-          </div>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T.gold,lineHeight:1.7,fontWeight:400,fontStyle:"italic",marginTop:4}}>PRE isn't just structure — it's how the brain naturally wants to receive information.</p>
-        </>
+        <D5Theory T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
       )}
       {isD5 && step==="Example" && (()=>{
         const D5_EDITORIAL = [
