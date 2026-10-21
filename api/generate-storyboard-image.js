@@ -120,19 +120,21 @@ YOUR PROCESS:
 5. Choose the most resonant Visual Metaphor — something SPECIFIC to this story, not generic
 
 METAPHOR GUIDANCE (pick whichever fits, or invent a better one):
-- Crisis / urgency: security operations centre before dawn, incident dashboard with red alerts, phone off the hook, rain against glass, countdown clock, empty executive chair
+- Crisis / urgency: incident dashboard with red alerts in a bright morning office, phone off the hook on a sunlit desk, countdown clock on a daylit wall, empty executive chair by a bright window
 - Career growth / change: leather notebook beside a packed suitcase, offer letter on a desk, morning light through a train station window, open doorway with light beyond
-- Leadership / influence: conference room at dawn, empty podium with single spotlight, microphone stand on a darkened stage, window overlooking a city at golden hour
+- Leadership / influence: conference room in morning light, empty podium in a bright hall, microphone stand on a well-lit stage, window overlooking a city at golden hour
 - Innovation / thinking: architectural blueprint on a light table, chess pieces mid-game, open sketchbook with prototype drawings, workshop with tools laid out
-- Communication / storytelling: vintage typewriter with a single page, open journal on a wooden desk, theatre lights on an empty stage, notebook and pen in morning light
-- Personal breakthrough: single candle in a dark room, open road at sunrise, morning light flooding through a window, compass on a worn map
+- Communication / storytelling: vintage typewriter with a single page, open journal on a wooden desk, warmly lit empty stage, notebook and pen in morning light
+- Personal breakthrough: first light through a window, open road at sunrise, morning light flooding through a window, compass on a worn map
 - Trust / relationships: two coffee cups, handwritten letter, open notebook with sketches
 
 COVER REQUIREMENTS:
 - Single cinematic image — NOT a collage
 - NO people, NO faces, NO bodies, NO silhouettes
 - NO text, words, letters or numbers in the image
-- Warm natural light (unless the story is explicitly crisis/urgency-driven)
+- Bright, well-exposed image: warm natural daylight, mid-to-high-key lighting, the main subject clearly visible
+- Even for urgent or crisis stories, keep the scene clearly lit (morning daylight, a lit office): show urgency through the subject and composition, never through darkness
+- NO near-black backgrounds, NO night scenes, NO low-key or underexposed lighting
 - Shallow depth of field, film grain
 - Generous negative space at the top
 - Style: Netflix documentary poster · Apple editorial · Kinfolk · Monocle · Penguin non-fiction
@@ -189,7 +191,7 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
 
     // ── Fallback: story-aware prompt built from storyWorld data ───────────
     if (!coverPrompt) {
-      coverPrompt = `A premium editorial book cover image for a story titled "${title}". Theme: ${subject}. Emotional tone: ${emotion}. Setting: ${visualWorld}. Choose a single strong visual metaphor that captures the essence of this story — an object, a space, or a moment of anticipation. Style: Netflix documentary poster, Apple editorial, Kinfolk magazine, Penguin non-fiction. Cinematic, warm natural light, shallow depth of field, film grain, generous negative space. NO people, NO faces, NO text inside the image. Portrait orientation. Minimal, sophisticated, emotionally resonant.`;
+      coverPrompt = `A premium editorial book cover image for a story titled "${title}". Theme: ${subject}. Emotional tone: ${emotion}. Setting: ${visualWorld}. Choose a single strong visual metaphor that captures the essence of this story — an object, a space, or a moment of anticipation. Style: Netflix documentary poster, Apple editorial, Kinfolk magazine, Penguin non-fiction. Cinematic, bright and well-exposed, warm natural daylight, shallow depth of field, film grain, generous negative space. NO people, NO faces, NO text inside the image. Portrait orientation. Minimal, sophisticated, emotionally resonant.`;
     }
 
     // ── Step 2: Generate image with OpenAI ────────────────────────────────
