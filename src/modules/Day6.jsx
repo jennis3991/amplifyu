@@ -4,6 +4,7 @@ import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { AICoachNote } from '../components/AICoachNote.jsx';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -27,7 +28,13 @@ const S6_ARROW   = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" s
 const S6_STAR    = <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>;
 
 // ── D6 Rehearsal Widget — Find Your Words ────────────────────────────────────
+// Coach intro audio outlives any one widget instance (same pattern as Day 3)
+// so a remount mid-narration can't orphan it.
+const d6WordsCoachSlot = { current: null };
+
 export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingChange}) {
+  // Coach intro: plays on the scenario screen, stops when the user starts responding.
+  const coach = useCoachNarration({ src: "/day6-rehearsal.mp3", cues: [], sharedAudioRef: d6WordsCoachSlot });
   const _roleId = (() => { try { return localStorage.getItem("au1_role"); } catch(_) { return null; } })();
 
   const SCENARIOS = ({
@@ -120,11 +127,10 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
   if (phase === 'select') return (
     <div style={{display:'flex', flexDirection:'column', gap:isDesktop?16:14}}>
       <div>
-        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Rehearsal · Day 6</div>
+        <div style={{fontFamily:T.sans, fontSize:9, fontWeight:700, color:'rgba(138,158,132,0.55)', textTransform:'uppercase', letterSpacing:'2.5px', marginBottom:10}}>Rehearsal</div>
         <h2 style={{fontFamily:T.serif, fontSize:isDesktop?30:24, fontWeight:600, color:T2.text, lineHeight:1.15, margin:'0 0 10px', letterSpacing:'-0.5px'}}>Find Your Words</h2>
-        <div style={{height:2, background:T2.border, borderRadius:2, marginBottom:14}}>
-          <div style={{height:'100%', width:'0%', background:T.gold, borderRadius:2}}/>
-        </div>
+        <CoachStyles />
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={33} style={{ marginTop: 0, marginBottom: 14 }} />
         <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
           <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
             <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
@@ -152,8 +158,8 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
         })}
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} />
-        <button onClick={() => setPhase('ready')} disabled={!scenario}
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={() => { coach.pause(); setPhase('ready'); }} disabled={!scenario}
           style={{...cs.cta, opacity:scenario?1:0.4, cursor:scenario?'pointer':'not-allowed', fontSize:isDesktop?15:14, padding:isDesktop?'15px':'13px'}}>
           Respond Naturally →
         </button>
@@ -283,7 +289,7 @@ export function D6PracticeWidget({T, T2, isDesktop, onSimulation, onRecordingCha
             </div>
             <button onClick={() => onSimulation?.()}
               style={{...cs.cta, fontSize:isDesktop?15:14, padding:isDesktop?'15px':'13px'}}>
-              I've Said It — Enter the Simulation →
+              I've Said It. Enter the Simulation →
             </button>
           </div>
         )}
