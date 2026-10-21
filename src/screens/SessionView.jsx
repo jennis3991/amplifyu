@@ -2991,13 +2991,13 @@ setAmbitionSaved(true); } catch {}
         const D6_EDITORIAL = [
           { id:"hamilton", img:"/d6-hamilton.jpg", imgPos:"center 50%", name:"Lewis Hamilton", role:"Seven-time Formula 1 World Champion", superpower:"Master of Composure Under Pressure",
             superpowerText:"Calm when every reason says otherwise.",
-            summary:"Seven world championships — and his most powerful moment was how he handled losing one.",
+            summary:"Seven world championships, and his most powerful moment was how he handled losing one.",
             exploreLabel:"Explore his techniques",
             body1:"Throughout his career, Hamilton has faced criticism, controversy, public scrutiny, and championship-defining setbacks while performing on one of the world's biggest stages.",
-            body2:"Abu Dhabi 2021 — one lap from a record-breaking eighth world title. One of the most controversial endings in sporting history. With millions watching, his first public words were: \"Firstly, a big congratulations to Max.\" Extreme disappointment. Global audience. Massive controversy. Yet his first response was composure.",
-            body3:"Elite communicators aren't naturally calm. They learn how to manage their reactions. Years later, Hamilton admitted he felt wronged — but also said he had found peace with it.",
-            whyItWorks:"When everyone expects a reaction, composure is the most powerful response available. Hamilton's calm didn't signal indifference — it signalled control. That's what leadership looks like under the most intense public scrutiny imaginable.",
-            technique:"Before responding in a high-pressure moment, give yourself one breath. Ask: what do I want people to remember about how I handled this? Respond to that — not to the emotion in the room.",
+            body2:"Abu Dhabi 2021. One lap from a record-breaking eighth world title. One of the most controversial finishes in Formula 1 history. With millions watching, his first words in his post-race interview were: \"Firstly, a big congratulations to Max and to his team.\" Extreme disappointment. Global audience. Massive controversy. Yet his first response was composure.",
+            body3:"Composure isn't something you're simply born with. It can be learned. Years later, Hamilton admitted he felt wronged, but also said he had found peace with it.",
+            whyItWorks:"When everyone expects a reaction, composure is the most powerful response available. Hamilton's calm didn't signal indifference. It signalled control. That's what leadership looks like under intense public scrutiny.",
+            technique:"Before responding in a high-pressure moment, give yourself one breath. Ask: what do I want people to remember about how I handled this? Respond to that, not to the emotion in the room.",
             lesson:"Emotional control is often most visible when you have every reason to lose it. Pressure doesn't create character. It reveals it.",
           },
           { id:"amal", img:"/d6-amal.jpg", imgPos:"center 50%", name:"Amal Clooney", role:"Human rights barrister", superpower:"Master of Composure Under Pressure",
@@ -3028,7 +3028,27 @@ setAmbitionSaved(true); } catch {}
               Back to Gallery
             </button>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
-            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:14,marginBottom:28}}>
+              <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,margin:0}}>{reading.name}</h2>
+              {EXAMPLE_AUDIO[reading.id] && (() => {
+                const src = EXAMPLE_AUDIO[reading.id];
+                const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                return (
+                  <button
+                    onClick={() => toggleNarration(src)}
+                    aria-label={playing ? "Pause narration" : "Play narration"}
+                    style={{
+                      width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                      padding:0, background:"transparent", border:"none",
+                      display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                    }}>
+                    <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <PlayIcon playing={playing}/>
+                    </span>
+                  </button>
+                );
+              })()}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
             {reading.quote && (

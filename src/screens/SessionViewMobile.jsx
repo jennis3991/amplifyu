@@ -2006,12 +2006,12 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
         const D6_EDITORIAL = [
           { id:"hamilton", img:"/d6-hamilton.jpg", imgPos:"center 50%", name:"Lewis Hamilton", role:"Seven-time Formula 1 World Champion", superpower:"Master of Composure Under Pressure",
             superpowerText:"Calm when every reason says otherwise.",
-            summary:"Seven world championships — and his most powerful moment was how he handled losing one.",
+            summary:"Seven world championships, and his most powerful moment was how he handled losing one.",
             body1:"Throughout his career, Hamilton has faced criticism, controversy, public scrutiny, and championship-defining setbacks while performing on one of the world's biggest stages.",
-            body2:"Abu Dhabi 2021 — one lap from a record-breaking eighth world title. One of the most controversial endings in sporting history. With millions watching, his first public words were: \"Firstly, a big congratulations to Max.\" Extreme disappointment. Global audience. Massive controversy. Yet his first response was composure.",
-            body3:"Elite communicators aren't naturally calm. They learn how to manage their reactions. Years later, Hamilton admitted he felt wronged — but also said he had found peace with it.",
-            whyItWorks:"When everyone expects a reaction, composure is the most powerful response available. Hamilton's calm didn't signal indifference — it signalled control. That's what leadership looks like under the most intense public scrutiny imaginable.",
-            technique:"Before responding in a high-pressure moment, give yourself one breath. Ask: what do I want people to remember about how I handled this? Respond to that — not to the emotion in the room.",
+            body2:"Abu Dhabi 2021. One lap from a record-breaking eighth world title. One of the most controversial finishes in Formula 1 history. With millions watching, his first words in his post-race interview were: \"Firstly, a big congratulations to Max and to his team.\" Extreme disappointment. Global audience. Massive controversy. Yet his first response was composure.",
+            body3:"Composure isn't something you're simply born with. It can be learned. Years later, Hamilton admitted he felt wronged, but also said he had found peace with it.",
+            whyItWorks:"When everyone expects a reaction, composure is the most powerful response available. Hamilton's calm didn't signal indifference. It signalled control. That's what leadership looks like under intense public scrutiny.",
+            technique:"Before responding in a high-pressure moment, give yourself one breath. Ask: what do I want people to remember about how I handled this? Respond to that, not to the emotion in the room.",
             lesson:"Emotional control is often most visible when you have every reason to lose it. Pressure doesn't create character. It reveals it.",
           },
           { id:"amal", img:"/d6-amal.jpg", imgPos:"center 50%", name:"Amal Clooney", role:"Human rights barrister", superpower:"Master of Composure Under Pressure",
@@ -2043,7 +2043,28 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                   </div>}
                   <div style={{padding:"16px 16px 14px"}}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
-                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
+                    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,marginBottom:2}}>
+                      <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,margin:0}}>{card.name}</div>
+                      {EXAMPLE_AUDIO[card.id] && (() => {
+                        const src = EXAMPLE_AUDIO[card.id];
+                        const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                        return (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleNarration(src); }}
+                            aria-label={playing ? "Pause narration" : "Play narration"}
+                            style={{
+                              width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                              padding:0, WebkitAppearance:"none", appearance:"none",
+                              background:"transparent", border:"none",
+                              display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                            }}>
+                            <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                              <PlayIcon playing={playing}/>
+                            </span>
+                          </button>
+                        );
+                      })()}
+                    </div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
