@@ -46,6 +46,7 @@ import D9Insight from '../modules/D9Insight.jsx';
 import D9Theory from '../modules/D9Theory.jsx';
 import D10Insight from '../modules/D10Insight.jsx';
 import D10Theory from '../modules/D10Theory.jsx';
+import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -405,7 +406,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD5 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="The Setup" headline="Point. Reason. Example. Now make it yours." />;
         if(isD6 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Find Your Words" headline="The right words under pressure don't come from thinking faster. They come from having them ready." />;
         if(isD9 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Connection Habits" headline="The most connected people listen more than they speak." />;
-        if(isD10 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Your Work Visible" headline="Turn what you do into a story people remember." />;
+        if(isD10 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Day 10 · Impact" headline="Turn what you do into a story people remember." />;
         if(isD11 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Build Your Brand" headline="Every career has a reputation. The best careers have one by design." />;
         if(isD12 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Practice Presence" headline="Seven rounds. Every physical signal that shapes how communication lands." />;
         if(isD13 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Yourself Visible" headline="The moment will come. Show up — don't let it pass." />;
@@ -685,38 +686,13 @@ T.goldDark : T2.text4,
         );
       })()}
       {isD10 && step==="Rehearsal" && d10PracticePhase==='intro' && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Rehearsal · Day 10</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>Make Your Work Visible</h2>
-          <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:16}}>
-            <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
-              <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
-              <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
-          </div>
-          <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"16px 18px",marginBottom:12}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>The First Step</div>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:0,fontWeight:300}}>Think of something you did recently — a project, a problem you solved, a result you created. Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
-          </div>
-          <div style={{background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border,padding:"16px 18px",marginBottom:20}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Your AI Coach</div>
-            <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:6,fontWeight:300}}>Your AI coach takes your three inputs and sharpens them into a crisp performance statement — ready for any conversation.</p>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:0,fontStyle:"italic",fontWeight:300}}>Lead with the result. Make it specific. Own it.</p>
-          </div>
-          <div>
-            <AICoachNote T={T} T2={T2} />
-            <button onClick={()=>setD10PracticePhase('builder')} style={{width:"100%",padding:"14px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48}}>
-              Start the SAR Builder →
-            </button>
-          </div>
-        </>
+        <D10RehearsalIntro T={T} T2={T2} isDesktop={false} onStart={()=>setD10PracticePhase('builder')}/>
       )}
       {isD10 && step==="Rehearsal" && d10PracticePhase==='builder' && (
         <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Make Your Work Visible</div>
-          <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>SAR Builder</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Situation. Action. Result. Describe what you did — your AI coach sharpens it into your performance statement.</p>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>Rehearsal · Day 10</div>
+          <h2 style={{fontFamily:T.serif,fontSize:24,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Your Impact Story</h2>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Describe what you did, and your AI coach sharpens it into your performance statement.</p>
           <D10MobileSAR onComplete={()=>setD10SarDone(true)}/>
           {d10SarDone && (
             <button onClick={()=>setIdx(STEPS.indexOf('Simulation'))} style={{width:"100%",padding:"14px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:48,marginTop:12}}>

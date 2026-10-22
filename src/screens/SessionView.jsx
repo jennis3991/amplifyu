@@ -35,6 +35,7 @@ import D9Insight from '../modules/D9Insight.jsx';
 import D9Theory from '../modules/D9Theory.jsx';
 import D10Insight from '../modules/D10Insight.jsx';
 import D10Theory from '../modules/D10Theory.jsx';
+import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -749,64 +750,15 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Rehearsal" && d10PracticePhase==='intro') return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{marginBottom:24}}>
-            <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Rehearsal · Day 10</div>
-            <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:"0 0 16px"}}>Make Your Work Visible</h2>
-            <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
-              <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
-                <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
-                <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-              <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
-            </div>
-          </div>
-          <div style={{display:"flex",flexDirection:"column",gap:14}}>
-            <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>How It Works</div>
-              <h3 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 20px"}}>A 3-step story that makes your contribution impossible to ignore.</h3>
-              <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
-                {[
-                  {n:1,label:"Situation",desc:"Set the context",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M3 9h16" stroke={T.gold} strokeWidth="1.3"/></svg>},
-                  {n:2,label:"Action",   desc:"What you did",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke={T.gold} strokeWidth="1.3"/><path d="M4 19c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
-                  {n:3,label:"Result",   desc:"The outcome",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><path d="M4 16l4-4 3 3 4-5 3 3" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><rect x="3" y="3" width="16" height="16" rx="1.5" stroke={T.gold} strokeWidth="1.3"/></svg>},
-                ].map((s,i)=>(
-                  <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
-                    <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:1}}>
-                      <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:6}}>{s.icon}</div>
-                      <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,marginBottom:2}}>{s.n}</div>
-                      <div style={{fontFamily:T.sans,fontSize:12,color:T2.text,textAlign:"center",lineHeight:1.3,fontWeight:600}}>{s.label}</div>
-                      <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3,textAlign:"center",lineHeight:1.3}}>{s.desc}</div>
-                    </div>
-                    {i<2&&<div style={{height:1,width:16,background:"rgba(138,158,132,0.2)",flexShrink:0,marginBottom:32}}/>}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>The First Step</div>
-              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Think of something you did recently — a project, a problem you solved, a result you created. It doesn't need to be dramatic. It needs to be specific.</p>
-              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>Visibility isn't self-promotion. It's helping others understand your thinking, your ownership, and the results you create.</p>
-            </div>
-            <div style={{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your AI Coach</div>
-              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AI coach will take your three inputs and sharpen them into a crisp, powerful performance statement — ready to use in a review, conversation, or interview.</p>
-              <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic",fontWeight:300}}>Lead with the result. Make it specific. Own it.</p>
-            </div>
-            <div>
-              <AICoachNote T={T} T2={T2} />
-              <button onClick={()=>setD10PracticePhase('builder')} style={{width:"100%",padding:"16px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:16,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:52}}>
-                Start the SAR Builder →
-              </button>
-            </div>
-          </div>
+          <D10RehearsalIntro T={T} T2={T2} isDesktop onStart={()=>setD10PracticePhase('builder')}/>
         </div>
       );
 
       if (step === "Rehearsal" && d10PracticePhase==='builder') {
         const SAR_DEF = [
           {label:"Situation", prompt:"Set the context briefly. What was the challenge or starting point?"},
-          {label:"Action",    prompt:"What did YOU specifically do? Use 'I' — not 'we.'"},
-          {label:"Result",    prompt:"What was the measurable outcome? Be specific."},
+          {label:"Action",    prompt:"What did you do? Say 'I', so your part is clear."},
+          {label:"Result",    prompt:"What changed because of it? Use a number if you have one."},
         ];
         const sarParts = [sarS, sarA, sarR];
         const allCaptured = sarS.trim() && sarA.trim() && sarR.trim();
@@ -817,7 +769,7 @@ setAmbitionSaved(true); } catch {}
           <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
             <div style={{marginBottom:24}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Rehearsal · Day 10</div>
-              <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>SAR Builder</h2>
+              <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>Your Impact Story</h2>
             </div>
 
             {/* S → A → R step indicator */}
@@ -859,7 +811,7 @@ setAmbitionSaved(true); } catch {}
                   <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>When someone asks what you've achieved, you'll have a story ready.</p>
                 </div>
                 <button onClick={()=>setIdx(STEPS.indexOf("Simulation"))} style={{width:"100%",padding:"15px",borderRadius:4,border:"none",background:"rgba(82,112,96,0.85)",color:"white",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:T.sans,marginTop:20}}>
-                  Enter the Hot Seat →
+                  Go to Simulation →
                 </button>
               </div>
             )}
@@ -899,7 +851,7 @@ setAmbitionSaved(true); } catch {}
                       ))}
                     </div>
                     <div style={{fontFamily:T.sans,fontSize:12,color:T2.text3}}>
-                      {sarGuideTime>0?sarGuideTime+"s guide remaining":"Take your time — tap to stop when ready"}
+                      {sarGuideTime>0?sarGuideTime+"s guide remaining":"Take your time. Tap to stop when ready."}
                     </div>
                     <button onClick={sarStopRec} style={{width:60,height:60,borderRadius:"50%",border:"2px solid #B05C4A",background:"rgba(176,92,74,0.08)",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>
                       <svg width={18} height={18} viewBox="0 0 18 18" fill="#B05C4A"><rect x="4" y="4" width="10" height="10" rx="2"/></svg>

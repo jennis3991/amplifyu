@@ -63,7 +63,7 @@ export function D10SimFeedback({input, scenario}) {
 
       {error && (
         <p style={{fontFamily:T.sans,fontSize:12,color:"#B05C4A",margin:0}}>
-          {online?"Something went wrong coaching that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}
+          {online?"Something went wrong coaching that. Try again.":"You're offline. This needs a connection, so try again once you're back online."}
         </p>
       )}
 
@@ -145,7 +145,7 @@ export function D10MobileSAR({onComplete}) {
       {!res && !l && !err && (
         <div style={{marginBottom:4}}>
           <div style={{fontSize:10,fontWeight:700,color:"#8A9E84",textTransform:"uppercase",letterSpacing:"1.5px",fontFamily:"'Inter',sans-serif",marginBottom:8}}>Situation &middot; Action &middot; Result</div>
-          <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#6B5E44",lineHeight:1.6,margin:"0 0 18px"}}>Speak your whole story in one go: what was the challenge, what did YOU specifically do, and what was the measurable result?</p>
+          <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#6B5E44",lineHeight:1.6,margin:"0 0 18px"}}>Speak your whole story in one go: the situation, what you did (say "I", so your part is clear), and what changed because of it. Use a number if you have one.</p>
           <VoiceRecorder T={T} maxSeconds={120} onDone={go}/>
         </div>
       )}
@@ -157,7 +157,7 @@ export function D10MobileSAR({onComplete}) {
       )}
       {err && !l && (
         <div style={{display:"flex",flexDirection:"column",gap:12,alignItems:"center",padding:"12px 0"}}>
-          <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#B05C4A",margin:0,textAlign:"center"}}>{online?"Something went wrong sharpening that story. You can try again.":"You're offline — this needs a connection. Try again once you're back online."}</p>
+          <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#B05C4A",margin:0,textAlign:"center"}}>{online?"Something went wrong sharpening that story. You can try again.":"You're offline. This needs a connection, so try again once you're back online."}</p>
           <button onClick={()=>go(lastText)} style={{padding:"10px 24px",borderRadius:3,border:"none",background:"#2C2416",color:"#F7F3EC",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Try Again →</button>
         </div>
       )}
