@@ -221,7 +221,7 @@ export const REVIEW_BULLETS = [
   ["Staying calm under pressure keeps your thinking clear and helps people trust what you say.", "Composure is the foundation that holds clarity, structure and brevity together when it counts most.", "Prepare your first sentence before every difficult conversation. It anchors you when pressure rises."],
   ["Six habits in six days: clarity, voice, pausing instead of filling, short sentences, PRE structure, and composure under pressure.", "Communication mastery is not one big insight. It is six small habits repeated until they become automatic.", "The skills you built this week are the foundation for everything that comes next."],
   ["You learned why stories move people in a way facts alone rarely do.", "You learned the six-beat Pixar framework, from 'Once upon a time' to 'Until finally'.", "You built and rehearsed your own professional story with your AmplifyU Coach."],
-  ["Genuine connection starts with curiosity, asking better questions, not delivering better answers.", "The 70/30 rule: listen 70% of the time. People feel most understood when they do most of the talking.", "Different people need different conversations. Adapting your style to theirs is the mark of a master communicator.", "Empathy is not agreement. It is the practice of making people feel genuinely heard before you respond."],
+  ["Genuine connection starts with curiosity, asking better questions, not delivering better answers.", "The 70/30 rule: a simple rule of thumb. Listen 70% of the time and let the other person do most of the talking.", "Different people need different conversations. Adapting your style to theirs is the mark of a strong communicator.", "Empathy is not agreement. It is the practice of making people feel genuinely heard before you respond."],
   ["Invisible excellence does not scale. Visibility is a communication skill, not a personality trait.", "Performance without visibility is philanthropy. Your work needs a voice.", "The gap between actual and perceived contribution is where careers stall. Communication closes it."],
   ["Your brand is what people say about you when you leave the room.", "Consistency of voice and presence builds trust over years, not weeks.", "You cannot be known for everything. Choose your niche deliberately."],
   ["Give first, always. Generosity is the foundation of every lasting network.", "People remember how you made them feel, never just what you said.", "A warm, curious introduction is worth ten cold connections."],
@@ -738,7 +738,7 @@ export const WORKPLACE_APPLICATION = [
   [
     "Before your next one-to-one, prepare three genuine questions about the other person's work, priorities, or challenges, and ask them before you share your own agenda.",
     "In meetings this week, practise the 70/30 rule: listen more than you speak, and reflect back what you hear before you respond.",
-    "Identify one colleague whose communication style differs from yours - a Driver, Analytical, or Expressive - and consciously adapt your pace and approach to match theirs.",
+    "Identify one colleague whose communication style differs from yours (a Driver, Thinker, Connector or Visionary) and consciously adapt your pace and approach to match theirs.",
     "End every significant conversation this week with: 'Is there anything else on your mind?' Then stay silent and listen fully.",
   ],
   // Day 10 — Visibility
@@ -1058,6 +1058,7 @@ export const REVIEW_NARRATION = {
   6: { src: "/day6-review.mp3", secs: 20 },
   7: { src: "/day7-review.mp3", secs: 24 },
   8: { src: "/day8-review.mp3", secs: 19 },
+  9: { src: "/day9-review.mp3", secs: 18 },
 };
 
 // Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)
