@@ -45,6 +45,7 @@ import D8Theory from '../modules/D8Theory.jsx';
 import D9Insight from '../modules/D9Insight.jsx';
 import D9Theory from '../modules/D9Theory.jsx';
 import D10Insight from '../modules/D10Insight.jsx';
+import D10Theory from '../modules/D10Theory.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -580,55 +581,7 @@ T.goldDark : T2.text4,
         <D10Insight T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Theory"))}/>
       )}
       {isD10 && step==="Theory" && (
-        <>
-          {/* Label + Title — matches Day 1 style */}
-          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>The Performance Iceberg</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Most professionals assume their effort speaks for itself. It doesn't.</p>
-
-          {/* Attribution Theory */}
-          <div style={{padding:"16px 18px",background:"rgba(44,36,22,0.07)",borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:16}}>
-            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.4,margin:"0 0 5px",fontStyle:"italic"}}>"When people cannot directly observe your work, they attribute results to luck, team effort, or circumstance — not to you. Visibility closes this gap. It replaces assumption with evidence."</p>
-            <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,margin:0}}>— Fritz Heider, Attribution Theory, 1958</p>
-          </div>
-
-          {/* Above the waterline */}
-          <div style={{padding:"14px 16px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border,marginBottom:8}}>
-            <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,marginBottom:12}}>Above the waterline ↑</div>
-            {["Outcomes they hear about","Moments you speak up","Visible ownership of results","Strategic contributions you name"].map((b,i)=>(
-              <div key={i} style={{display:"flex",gap:8,marginBottom:i<3?6:0,alignItems:"flex-start"}}><span style={{color:T.gold,fontSize:11,marginTop:2}}>✦</span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.4}}>{b}</span></div>
-            ))}
-          </div>
-
-          {/* Below the waterline */}
-          <div style={{padding:"14px 16px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border,marginBottom:16}}>
-            <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,marginBottom:12}}>Below the waterline ↓</div>
-            {["Late nights and early starts","Quiet firefighting","Invisible support work","Emotional labour and relationship management"].map((b,i)=>(
-              <div key={i} style={{display:"flex",gap:8,marginBottom:i<3?6:0,alignItems:"flex-start"}}><span style={{color:T.gold,fontSize:11,marginTop:2}}>↓</span><span style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.4}}>{b}</span></div>
-            ))}
-          </div>
-
-          {/* 3 expandable principle cards */}
-          {[
-            {head:"Excellence is your foundation — not your ceiling.", body:"Performance earns you the right to be in the room. It does not earn you the promotion, the project, or the recognition. Visibility without substance is noise — but substance without visibility is invisibility."},
-            {head:"Visibility is a communication skill.", body:"It is NOT bragging, self-promotion, or ego. It IS creating clarity, helping others understand your impact, and making value legible to the people who need to see it. The most effective leaders do this instinctively."},
-            {head:"Focus on the vital few.", body:"Not all work is equal. The work that matters is the work visible to the people who shape your future. Spreading yourself across everything and excelling at things nobody notices is a common — and expensive — trap."},
-          ].map((p,i)=>{
-            const open = d10MobCard===("d10t"+i);
-            return (
-              <div key={i} onClick={()=>setD10MobCard(open?null:"d10t"+i)}
-                style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",marginBottom:i<2?8:0,transition:"border-color 0.2s"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:0}}>
-                  <div style={{fontFamily:T.serif,fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.3,flex:1}}>{p.head}</div>
-                  <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:8,flexShrink:0}}>{open?"▴":"▸"}</span>
-                </div>
-                {open && (
-                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>{p.body}</p>
-                )}
-              </div>
-            );
-          })}
-        </>
+        <D10Theory T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
       )}
       {isD10 && step==="Example" && (()=>{
         const D10_EDITORIAL = [
