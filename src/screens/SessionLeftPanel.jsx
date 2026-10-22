@@ -178,7 +178,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
           <div style={{ ...LP_LABEL, marginBottom:12 }}>DAY 10 · VISIBILITY</div>
           <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>Be Seen</h2>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Your work is only as good as people's awareness of it.</p>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Great work deserves to be seen.</p>
         </div>
       </div>
     );

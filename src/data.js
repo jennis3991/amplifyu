@@ -370,7 +370,7 @@ export const LESSONS = [
    scenarios:["Performance review, make your top contributions specific and outcome-led","A senior stakeholder asks what you've been focused on","Someone takes credit for your work in a meeting"],
    review:["Did I name my contribution or just describe my effort?","Did I connect my work to a measurable outcome?","Do the right people know what I delivered this week?"],
    promise:"Part of leadership is making value visible. You now have the language, the structure, and the mindset to do it with confidence.",
-   teaser:"Discover why 90% of career advancement depends on how visible your work is, not just how good it is.",
+   teaser:"Discover why great work alone isn't enough, and how to make sure yours is seen.",
    recap:"Yesterday you confronted a surprising truth: performance accounts for just 10% of career success. Making your work visible and getting credit for it is not optional. It is essential."},
 
   {day:11,week:2,mins:14,title:"Brand Identity",tag:"Presence",scene:"presence",
@@ -825,16 +825,16 @@ export const D7_INSIGHT_CARDS = [
 export const D10_FACTS = [
   { word:"Hard work is often invisible.",
     sub:"Your most valuable work is rarely seen by the people who decide your future.",
-    bullets:["That work - conversations, problem-solving, and crisis handling - creates real value that is never automatically visible to decision-makers.","If no one knows about it, it doesn't count toward your recognition or advancement."] },
+    bullets:["That work (conversations, problem-solving, crisis handling) creates real value that isn't automatically visible to decision-makers.","If no one knows about it, it's hard for it to count toward your recognition or advancement."] },
   { word:"People can only evaluate what they can see.",
-    sub:"Perceived contribution drives decisions, not actual contribution.",
-    bullets:["When your work is unclear, others fill in the gaps, and rarely in your favour.","Visibility replaces assumption with evidence."] },
+    sub:"Decisions often rest on perceived contribution, not just actual contribution.",
+    bullets:["When your work is unclear, others fill in the gaps, and not always in your favour.","Visibility replaces assumption with evidence."] },
   { word:"Visibility is not vanity. It is professional responsibility.",
     sub:"Making your impact clear is a leadership skill.",
     bullets:["Communicating what you deliver helps your team and organisation understand what is working.","That is clarity and leadership, not self-promotion."] },
   { word:"Being excellent and being recognised are different skills.",
-    sub:"You were taught one. No one taught you the other.",
-    bullets:["High performers are rarely recognised for their best work, because it lives below the waterline.","Until now."] },
+    sub:"Most of us were taught one, but not the other.",
+    bullets:["High performers often aren't recognised for their best work, because it sits below the waterline.","Until now."] },
 ];
 
 export const D3_FACTS = [

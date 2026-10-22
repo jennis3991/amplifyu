@@ -44,6 +44,7 @@ import D8Insight from '../modules/D8Insight.jsx';
 import D8Theory from '../modules/D8Theory.jsx';
 import D9Insight from '../modules/D9Insight.jsx';
 import D9Theory from '../modules/D9Theory.jsx';
+import D10Insight from '../modules/D10Insight.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -576,36 +577,7 @@ T.goldDark : T2.text4,
        <>
        {/* ── D10 Mobile Steps ────────────────────────────────────────────── */}
       {isD10 && step==="Insight" && (
-        <>
-          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12,fontFamily:T.sans}}>The uncomfortable truth</div>
-          <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:16}}>{lesson.quote}</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Harvey Coleman found Performance accounts for just 10% of career advancement. This module unlocks the other 90%.</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-            {D10_FACTS.map((n,i)=>{
-              const open = d10MobCard===("d10i"+i);
-              return (
-                <div key={i} onClick={()=>setD10MobCard(open?null:"d10i"+i)}
-                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
-                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
-                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
-                  </div>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
-                  {open && (
-                    <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
-                      {n.bullets.map((b,j)=>(
-                        <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-                          <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
-                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </>
+        <D10Insight T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Theory"))}/>
       )}
       {isD10 && step==="Theory" && (
         <>
