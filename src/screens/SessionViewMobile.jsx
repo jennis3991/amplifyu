@@ -2865,8 +2865,6 @@ strokeLinecap="round" strokeLinejoin="round"/></svg>
                           ? d13NavLabel
                           : isD14 && step==="Rehearsal" && d14NavLabel
                             ? d14NavLabel
-                            : isNT
-                            ? (idx===1?"Continue":idx===2?"See examples":idx===3?"Rehearsal":NAV_LABELS[idx])
                           : isD7 && idx===1
                           ? "See your foundations"
                           : NAV_LABELS[idx];
