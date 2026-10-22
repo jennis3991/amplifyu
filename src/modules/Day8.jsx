@@ -4,6 +4,7 @@ import { useOnlineStatus } from '../utils.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { tagJpegAsAI } from '../lib/aiImageTag.js';
 import { AICoachNote } from '../components/AICoachNote.jsx';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -1350,7 +1351,13 @@ const SC_MENTOR   = s => <svg width="22" height="22" viewBox="0 0 24 24" fill="n
 const BEAT_LABELS = ["Once upon a time…","Every day…","Until one day…","Because of that…","Because of that…","Until finally…"];
 
 const D8_REHEARSAL_MAX_SEC = 120;
+// Coach intro audio outlives any one widget instance (same pattern as Day 3)
+// so a remount mid-narration can't orphan it.
+const d8StoryLabCoachSlot = { current: null };
+
 export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulation, onNavLabel, onNavFn }) {
+  // Coach intro: plays on the story choice screen, stops when the user moves on to speak.
+  const coach = useCoachNarration({ src: "/day8-rehearsal.mp3", cues: [], sharedAudioRef: d8StoryLabCoachSlot });
   const T  = Tp  || Timport;
   const T2 = T2p || T2D;
 
@@ -1607,7 +1614,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
   if (phase === 'select') return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
       <div>
-        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>STORY LAB · DAY 8</div>
+        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>Rehearsal</div>
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>Story Lab</h2>
       </div>
 
@@ -1642,7 +1649,9 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         </div>
       )}
 
-      <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, margin:0 }}>Choose the story that feels most meaningful to you. Don't worry about telling it perfectly — just tell it naturally. Your AI coach will identify the strongest parts of your story and help shape it into one you can use again and again.</p>
+      <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, margin:0 }}>Choose the story that feels most meaningful to you. Don't worry about telling it perfectly. Just tell it naturally. Your AI coach will identify the strongest parts of your story and help shape it into one you can use again and again.</p>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={34} style={{ margin: 0 }} />
       <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
           <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
@@ -1664,9 +1673,9 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         })}
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} />
+        <AICoachNote T={T} T2={T2} voice />
         <button
-          onClick={() => selected !== null && setPhase('speak')}
+          onClick={() => { if (selected !== null) { coach.pause(); setPhase('speak'); } }}
           style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:selected!==null?T.ink:T2.border, color:selected!==null?(T2.bg||"#F7F3EC"):T2.text4, fontSize:15, fontWeight:600, cursor:selected!==null?"pointer":"default", fontFamily:T.sans, minHeight:50, transition:"all 0.2s" }}>
           Let's Find It →
         </button>
@@ -1678,7 +1687,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
   if (phase === 'speak') return (
     <div style={{ display:"flex", flexDirection:"column", gap:18 }}>
       <div>
-        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>STORY LAB · DAY 8</div>
+        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>Rehearsal</div>
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>Story Lab</h2>
       </div>
       <h3 style={{ fontFamily:T.serif, fontSize:isDesktop?26:22, fontWeight:600, color:T2.text, lineHeight:1.2, margin:0 }}>{STORY_CARDS[selected]?.title}</h3>
@@ -1688,7 +1697,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       </div>
       <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T2.text3, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:6 }}>As you speak, try to touch on</div>
-        {["The situation before everything changed","What disrupted things or created a turning point","How you responded and what shifted","Where you ended up — the outcome and what it meant"].map((beat, i) => (
+        {["The situation before everything changed","What disrupted things or created a turning point","How you responded and what shifted","Where you ended up: the outcome and what it meant"].map((beat, i) => (
           <div key={i} style={{ padding:"9px 0 9px 16px", borderLeft:"2px solid rgba(138,158,132,0.4)" }}>
             <span style={{ fontFamily:T.serif, fontSize:14, color:T2.text, lineHeight:1.5 }}>{beat}</span>
           </div>
@@ -1709,7 +1718,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
   if (phase === 'recording') return (
     <div style={{ display:"flex", flexDirection:"column", gap:18 }}>
       <div>
-        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>STORY LAB · DAY 8</div>
+        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>Rehearsal</div>
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>Story Lab</h2>
       </div>
       <p style={{ fontFamily:T.serif, fontSize:13, fontStyle:"italic", color:T2.text3, margin:0 }}>{STORY_CARDS[selected]?.title}</p>
@@ -1720,7 +1729,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         </span>
       </div>
       <div style={{ display:"flex", flexDirection:"column" }}>
-        {["The situation before everything changed","What disrupted things or created a turning point","How you responded and what shifted","Where you ended up — the outcome and what it meant"].map((beat, i) => (
+        {["The situation before everything changed","What disrupted things or created a turning point","How you responded and what shifted","Where you ended up: the outcome and what it meant"].map((beat, i) => (
           <div key={i} style={{ padding:"9px 0 9px 16px", borderLeft:"2px solid rgba(138,158,132,0.4)" }}>
             <span style={{ fontFamily:T.serif, fontSize:14, color:T2.text, lineHeight:1.5 }}>{beat}</span>
           </div>
@@ -1728,7 +1737,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
       </div>
       <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text4, margin:0, textAlign:"center" }}>Aim for around 60 seconds · 2 minute max</p>
       <button onClick={doStop} style={{ width:"100%", padding:"15px", borderRadius:4, border:"1px solid "+T2.border, background:"transparent", color:T2.text, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
-        Done — Stop Recording
+        Done. Stop Recording
       </button>
     </div>
   );
@@ -1777,7 +1786,7 @@ export function D8PracticeWidget({ T: Tp, T2: T2p, isDesktop = false, onSimulati
         {visCount >= 7 && (
           <div style={{ border:"0.5px solid "+T2.border, borderLeftWidth:3, borderLeftColor:"rgba(138,158,132,0.45)", borderRadius:"0 6px 6px 0", background:T2.surface, padding:"20px 22px", marginBottom:16, animation:"fadeUp 0.5s ease both" }}>
             <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:T2.text3, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>Behind the Scenes</div>
-            <p style={{ fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.75, margin:0, fontWeight:300 }}>Without realising it, you just built your story using the same narrative structure behind some of Pixar's most beloved films. The beats you spoke — once upon a time, until one day, until finally — are the backbone of the Pixar Story Framework. The same structure works in boardrooms, pitches, and conversations.</p>
+            <p style={{ fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, lineHeight:1.75, margin:0, fontWeight:300 }}>Without realising it, you just built your story using the six beats of the Pixar framework: once upon a time, until one day, until finally. The same structure works in boardrooms, pitches and conversations.</p>
           </div>
         )}
         {visCount >= 8 && (
