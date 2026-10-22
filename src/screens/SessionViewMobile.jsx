@@ -2836,7 +2836,7 @@ strokeLinecap="round"/></svg>
                   <span style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:1.5}}>Your Ambition Statement</span>
                   {ambitionSaved && <span style={{marginLeft:"auto",fontSize:10,color:T.gold,background:"rgba(138,158,132,0.12)",padding:"2px 8px",borderRadius:8}}>Saved ✓</span>}
                 </div>
-                <p style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.6,marginBottom:12}}>Complete this sentence. Say it as if you're telling a trusted senior leader — one sentence, direct, owned.</p>
+                <p style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.6,marginBottom:12}}>Complete this sentence. Say it as if you're telling a trusted senior leader: one sentence, direct, owned.</p>
                 <textarea value={ambitionDraft} onChange={e=>saveAmbition(e.target.value)} placeholder="...operating at director level, leading a team that matters..." rows={2} style={{width:"100%",padding:"10px 14px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,outline:"none",resize:"none",background:"rgba(255,255,255,0.05)",fontSize:13,color:"rgba(255,255,255,0.85)",lineHeight:1.55,fontFamily:T.sans,boxSizing:"border-box"}}/>
               </div>
             </div>

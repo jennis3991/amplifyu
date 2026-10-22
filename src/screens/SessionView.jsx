@@ -4072,7 +4072,7 @@ setAmbitionSaved(true); } catch {}
             {lesson.day >= 4 && lesson.day <= 7 && (
               <div style={{ borderTop: "0.5px solid " + T2.divider, paddingTop: 28 }}>
                 <div style={{ ...RP_LABEL, color: T.goldDark, marginBottom: 14 }}>Your Ambition Statement</div>
-                <p style={{ fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.65, marginBottom: 14, fontWeight: 300 }}>Complete this sentence. Say it as if telling a trusted senior leader — not writing a CV.</p>
+                <p style={{ fontFamily: T.sans, fontSize: 13, color: T2.text3, lineHeight: 1.65, marginBottom: 14, fontWeight: 300 }}>Complete this sentence. Say it as if telling a trusted senior leader, not writing a CV.</p>
                 <div style={{ padding: "14px 18px", background: T2.surface, borderRadius: 4, border: "0.5px solid " + T2.border, marginBottom: 10, borderLeft: "2px solid " + T.gold }}>
                   <span style={{ fontFamily: T.serif, fontSize: 15, color: T.goldDark, fontWeight: 500 }}>"In the next 18 months, I want to be </span>
                   <span style={{ fontFamily: T.serif, fontSize: 15, color: ambitionDraft ? T2.text : T2.text4, fontStyle: "italic" }}>{ambitionDraft || "your answer here…"}</span>
