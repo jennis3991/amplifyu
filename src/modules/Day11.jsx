@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useOnlineStatus } from '../utils.js';
 import { AICoachNote } from '../components/AICoachNote.jsx';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -12,6 +13,9 @@ function blobToB64(blob) {
 }
 
 // ─── D11 Rehearsal Widget — AmplifyU Coaching Conversation ───────────────────
+// Coach intro audio lives in a module-level slot so a remount mid-narration
+// can't orphan it. It plays on the intro and stops when the conversation starts.
+const d11RehearsalCoachSlot = { current: null };
 
 const D11_REHEARSAL_MAX_SEC = 120;
 const QUESTIONS = [
@@ -19,16 +23,16 @@ const QUESTIONS = [
     q:    "What do people consistently come to you for?",
     hint: "Think about the problems people ask you to solve, the advice they seek, or the situations where they naturally rely on you.",
     duration: D11_REHEARSAL_MAX_SEC,
-    ack:  "That's helpful. I'm starting to see a pattern.",
+    ack:  "Thanks. Next question.",
   },
   {
     q:    "What makes you different from other people in your role?",
     hint: "Imagine someone recommended you for an important project. What would they say about you? What makes you memorable?",
     duration: D11_REHEARSAL_MAX_SEC,
-    ack:  "Interesting. One more question.",
+    ack:  "One more question.",
   },
   {
-    q:    "Tell me about a piece of work you're genuinely proud of.",
+    q:    "Think of a piece of work you're genuinely proud of.",
     hint: "What happened? Why are you proud of it? What does that story reveal about you?",
     duration: D11_REHEARSAL_MAX_SEC,
     ack:  null,
@@ -46,6 +50,7 @@ export function D11PracticeWidget({ T, T2, isDesktop, onWordsChange, onSimulatio
   const SAGE = '#3D5940';
   const SAGE_CARD = '#0e0e0e';
   const [phase,          setPhase]         = useState('intro');
+  const coach = useCoachNarration({ src: "/day11-rehearsal.mp3", cues: [], sharedAudioRef: d11RehearsalCoachSlot });
   const [qIdx,           setQIdx]          = useState(0);
   const [transcripts,    setTranscripts]   = useState(['', '', '']);
   const [liveText,       setLiveText]      = useState('');
@@ -333,12 +338,14 @@ Never use em dashes anywhere in your response; use a comma or hyphen instead.`;
       <div>
         <div style={{ ...lbl, marginBottom: 11, letterSpacing: "2.5px" }}>ALL STRONG BRANDS ARE KNOWN FOR SOMETHING</div>
         <h2 style={{ ...sf, fontSize: isDesktop ? 30 : 24, fontWeight: 600, margin: "0 0 14px", lineHeight: 1.2 }}>Let's find yours.</h2>
-        <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
+        <CoachStyles />
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={45} style={{ marginTop: 0, marginBottom: 0 }} />
+        <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:18}}>
           <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
             <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
             <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
           </svg>
-          <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
+          <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>3 questions · about 3 min</span>
         </div>
       </div>
 
@@ -375,17 +382,17 @@ Never use em dashes anywhere in your response; use a comma or hyphen instead.`;
 
       <div style={{ borderLeft: "2px solid " + T.gold, paddingLeft: 15, display: "flex", flexDirection: "column", gap: 10 }}>
         <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.65, margin: 0 }}>Your personal brand isn't your job title. It's what people remember you for after you've left the room.</p>
-        <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.65, margin: 0 }}>I'll ask you three simple questions. Just speak naturally — I'll identify the patterns and uncover your unique professional signature.</p>
+        <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.65, margin: 0 }}>Three simple questions. Speak naturally, and your AI coach will look for the patterns and shape them into your professional signature.</p>
       </div>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, padding: isDesktop ? "26px 0" : "20px 0" }}>
-        <div style={{ width: isDesktop ? 80 : 68, height: isDesktop ? 80 : 68, borderRadius: "50%", background: SAGE_CARD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 0 14px rgba(61,89,64,0.1), 0 0 0 28px rgba(61,89,64,0.04)` }}>
+        <div aria-hidden="true" style={{ pointerEvents: "none", userSelect: "none", width: isDesktop ? 80 : 68, height: isDesktop ? 80 : 68, borderRadius: "50%", background: SAGE_CARD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 0 14px rgba(61,89,64,0.1), 0 0 0 28px rgba(61,89,64,0.04)` }}>
           <span style={{ fontSize: isDesktop ? 30 : 24 }}>🎙</span>
         </div>
-        {!recordingAvailable && <p style={{ ...sn, fontSize: 11, color: T2.text4, textAlign: "center", margin: 0 }}>Microphone access not available — you'll type your answers instead.</p>}
+        {!recordingAvailable && <p style={{ ...sn, fontSize: 11, color: T2.text4, textAlign: "center", margin: 0 }}>Microphone access isn't available, so you'll type your answers instead.</p>}
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} />
-        <button onClick={() => { setQIdx(0); setPhase('question'); }} style={cta(false)}>Start Conversation →</button>
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={() => { coach.pause(); setQIdx(0); setPhase('question'); }} style={cta(false)}>Start Conversation →</button>
       </div>
     </div>
   );

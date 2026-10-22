@@ -774,7 +774,7 @@ export function SessionLeftPanel({
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Build Your Brand</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.15, marginBottom:20 }}>Every career has a reputation. The best careers have one by design.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Today you'll define the professional you're becoming — and uncover the gap between how you're seen today and how you want to be remembered.</p>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Today you'll define the professional you're becoming, and uncover the gap between how you're seen today and how you want to be remembered.</p>
         </div>
       </div>
     );
