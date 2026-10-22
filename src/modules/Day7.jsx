@@ -231,7 +231,11 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
 
 // ─── D7 Simulation Widget — Week 1 Master Challenge ───────────────────────────
 const D7_SIMULATION_MAX_SEC = 120;
+const d7MasterCoachSlot = { current: null };
+
 export function D7SimWidget({ T, T2, isDesktop }) {
+  // Coach intro: plays on the brief screen, stops when the user is ready.
+  const coach = useCoachNarration({ src: "/day7-simulation.mp3", cues: [], sharedAudioRef: d7MasterCoachSlot });
   const [phase,      setPhase]     = useState('intro');
   const [timeLeft,   setTimeLeft]  = useState(D7_SIMULATION_MAX_SEC);
   const [transcript, setTranscript]= useState('');
@@ -436,36 +440,36 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   function explainSkill(key, score, signal){
     if(key==='pauses' && signal?.pausesPerMin!=null){
       const perMin=signal.pausesPerMin;
-      if(perMin<1) return `You paused almost never — about ${perMin.toFixed(1)} deliberate pauses a minute — so your listener had little time to absorb each idea before the next one arrived.`;
-      if(perMin<=4) return `You paused around ${perMin.toFixed(1)} times a minute, measured from your actual recording — enough space for your ideas to land without losing momentum.`;
-      if(perMin<=7) return `You paused fairly often — about ${perMin.toFixed(1)} times a minute — which is fine, but a few of those breaks could be tightened so your explanation keeps its drive.`;
-      return `You paused very frequently — about ${perMin.toFixed(1)} times a minute — enough to break your flow. Aim for fewer, more deliberate pauses rather than frequent small ones.`;
+      if(perMin<1) return `You paused almost never, about ${perMin.toFixed(1)} deliberate pauses a minute, so your listener had little time to absorb each idea before the next one arrived.`;
+      if(perMin<=4) return `You paused around ${perMin.toFixed(1)} times a minute, measured from your actual recording. That's enough space for your ideas to land without losing momentum.`;
+      if(perMin<=7) return `You paused fairly often, about ${perMin.toFixed(1)} times a minute, which is fine, but a few of those breaks could be tightened so your explanation keeps its drive.`;
+      return `You paused very frequently, about ${perMin.toFixed(1)} times a minute, enough to break your flow. Aim for fewer, more deliberate pauses rather than frequent small ones.`;
     }
     if(key==='voiceControl' && signal?.pitchScore!=null){
       if(score>=8) return "Measured from your recording: your pitch rose and fell naturally as you spoke, which is what made you sound engaged rather than flat.";
-      if(score>=5) return "Measured from your recording: your pitch varied some, but leaned flat in places — raising and lowering it more on your key points would add more contrast.";
-      return "Measured from your recording: your pitch stayed largely flat throughout — deliberately varying it on your most important words will make you sound more engaged.";
+      if(score>=5) return "Measured from your recording: your pitch varied some, but leaned flat in places. Raising and lowering it more on your key points would add more contrast.";
+      return "Measured from your recording: your pitch stayed largely flat throughout. Deliberately varying it on your most important words will make you sound more engaged.";
     }
     const TEXT={
       clarity:{
-        high:"Your explanation was easy to follow — ideas landed without needing to be re-read or re-explained.",
+        high:"Your explanation was easy to follow. Ideas landed without needing to be re-read or re-explained.",
         mid:"Your explanation was mostly clear, though a few ideas would land harder if simplified further.",
-        low:"Your explanation was hard to follow in places — aim for one idea per sentence, in plain language.",
+        low:"Your explanation was hard to follow in places. Aim for one idea per sentence, in plain language.",
       },
       precision:{
-        high:"You chose your words efficiently — there was little padding around the actual idea.",
-        mid:"Some of your sentences carried more words than the idea needed — a tighter edit would sharpen it.",
-        low:"Your answer had a lot of padding around the core idea — cut anything that isn't doing work.",
+        high:"You chose your words efficiently. There was little padding around the actual idea.",
+        mid:"Some of your sentences carried more words than the idea needed. A tighter edit would sharpen it.",
+        low:"Your answer had a lot of padding around the core idea. Cut anything that isn't doing work.",
       },
       structure:{
-        high:"Your explanation followed a clear order — point, then support — which made it easy to follow.",
+        high:"Your explanation followed a clear order, point then support, which made it easy to follow.",
         mid:"There was some structure to your answer, but the order of your ideas could be tightened.",
         low:"Your points came in no clear order, which made it harder to follow your logic.",
       },
       composure:{
         high:"You sounded steady and in control throughout, even while explaining live under time pressure.",
         mid:"You sounded mostly composed, with a few moments of hesitation under the pressure of explaining live.",
-        low:"There were clear signs of hesitation or rushing — the pressure of explaining live got to you a little.",
+        low:"There were some signs of hesitation or rushing. Explaining live under time pressure is hard, and that's exactly what practice builds.",
       },
       pauses:{
         high:"Your explanation had a good rhythm, based on what your coach could infer from the transcript.",
@@ -487,8 +491,13 @@ export function D7SimWidget({ T, T2, isDesktop }) {
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?16:14}}>
       {/* Header */}
       <div>
-        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Simulation · Day 7</div>
+        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Simulation</div>
         <h2 style={{fontFamily:T.serif,fontSize:isDesktop?40:28,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>Week 1 Master Challenge</h2>
+      </div>
+
+      <div>
+        <CoachStyles />
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={41} style={{ margin: 0 }} />
       </div>
 
       {/* HOW IT WORKS — step row */}
@@ -519,7 +528,7 @@ export function D7SimWidget({ T, T2, isDesktop }) {
       {/* The challenge */}
       <div style={cs.card}>
         <div style={cs.label}>The First Step</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:12,fontWeight:300}}>You've spent the last week learning communication — clarity, pauses, precision, structure, and composure.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:12,fontWeight:300}}>You've spent the last week learning communication: clarity, voice, pauses, precision, structure and composure.</p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:0,fontWeight:300}}>Now explain what you learned as if you were teaching someone else. Not as a student. <span style={{color:T.gold,fontWeight:500}}>As a communicator.</span></p>
       </div>
 
@@ -527,12 +536,12 @@ export function D7SimWidget({ T, T2, isDesktop }) {
       <div style={cs.card}>
         <div style={cs.label}>Your AI Coach</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AI coach will evaluate your explanation across all six Week 1 skills: Clarity, Voice Control, Pauses, Precision, Structure, and Composure.</p>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>This is not a test — it's a demonstration of everything you've built.</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?14:13,fontStyle:"italic",color:T.gold,lineHeight:1.6,margin:0}}>This is not a test. It's a demonstration of everything you've built.</p>
       </div>
 
       <div>
-        <AICoachNote T={T} T2={T2} />
-        <button onClick={()=>{setIsRec(false);setTimeLeft(D7_SIMULATION_MAX_SEC);setPhase('recording');}}
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={()=>{coach.pause();setIsRec(false);setTimeLeft(D7_SIMULATION_MAX_SEC);setPhase('recording');}}
           style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>
           I'm Ready →
         </button>
@@ -558,10 +567,10 @@ export function D7SimWidget({ T, T2, isDesktop }) {
         {/* Instruction */}
         <div style={{...cs.card,padding:isDesktop?"20px 24px":"16px 20px"}}>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.7,margin:"0 0 10px",fontWeight:400}}>
-            Now explain what you learned as if you were teaching someone else. Not as a student — <span style={{color:T.gold,fontWeight:500}}>as a communicator.</span>
+            Now explain what you learned as if you were teaching someone else. Not as a student. <span style={{color:T.gold,fontWeight:500}}>as a communicator.</span>
           </p>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.65,margin:0}}>
-            You have {D7_SIMULATION_MAX_SEC} seconds. Click start when you are ready.
+            You have 2 minutes. Click start when you are ready.
           </p>
         </div>
         {/* Text fallback — shown after a microphone failure */}
