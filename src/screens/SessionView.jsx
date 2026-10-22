@@ -618,9 +618,9 @@ setAmbitionSaved(true); } catch {}
             exploreLabel:"Explore his techniques",
             body1:"James Dyson didn't invent a breakthrough product on his first attempt. He famously built thousands of prototypes, refining, testing, and improving his designs over many years before achieving success. While others saw failure, he saw feedback.",
             body2:"His philosophy is simple: every iteration makes the next one better.",
-            whyItWorks:"Exceptional performance isn't the result of one brilliant idea — it's the result of relentless improvement. By treating mistakes as data rather than defeat, Dyson built a culture of experimentation where progress comes from refining the process, not chasing perfection.",
+            whyItWorks:"Exceptional performance isn't the result of one brilliant idea. It's the result of relentless improvement. By treating mistakes as data rather than defeat, Dyson built a culture of experimentation where progress comes from refining the process, not chasing perfection.",
             technique:"Stop aiming for perfect on the first attempt. Whether you're preparing a presentation, writing a proposal, or practising a difficult conversation, ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
-            lesson:"High performance isn't about talent alone. It's about showing up, testing, learning, and improving — again and again. The people who consistently excel aren't those who avoid failure; they're the ones who use every attempt to get better.",
+            lesson:"High performance isn't about talent alone. It's about showing up, testing, learning, and improving, again and again. The people who excel aren't those who avoid failure; they're the ones who use every attempt to get better.",
           },
           { id:"bezos", img:"/d10-bezos.jpg", imgPos:"center 50%", name:"Jeff Bezos", role:"Founder of Amazon", superpower:"Master of Repeatable Excellence",
             superpowerText:"Consistency beats occasional brilliance.",
@@ -649,7 +649,27 @@ setAmbitionSaved(true); } catch {}
               Back to Gallery
             </button>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
-            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:14,marginBottom:28}}>
+              <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,margin:0}}>{reading.name}</h2>
+              {EXAMPLE_AUDIO[reading.id] && (() => {
+                const src = EXAMPLE_AUDIO[reading.id];
+                const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                return (
+                  <button
+                    onClick={() => toggleNarration(src)}
+                    aria-label={playing ? "Pause narration" : "Play narration"}
+                    style={{
+                      width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                      padding:0, background:"transparent", border:"none",
+                      display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                    }}>
+                    <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <PlayIcon playing={playing}/>
+                    </span>
+                  </button>
+                );
+              })()}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
             {reading.quote && (

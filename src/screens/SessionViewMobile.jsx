@@ -590,9 +590,9 @@ T.goldDark : T2.text4,
             summary:"He built thousands of prototypes before success. While others saw failure, he saw feedback.",
             body1:"James Dyson didn't invent a breakthrough product on his first attempt. He famously built thousands of prototypes, refining, testing, and improving his designs over many years before achieving success. While others saw failure, he saw feedback.",
             body2:"His philosophy is simple: every iteration makes the next one better.",
-            whyItWorks:"Exceptional performance isn't the result of one brilliant idea — it's the result of relentless improvement. By treating mistakes as data rather than defeat, Dyson built a culture of experimentation where progress comes from refining the process, not chasing perfection.",
+            whyItWorks:"Exceptional performance isn't the result of one brilliant idea. It's the result of relentless improvement. By treating mistakes as data rather than defeat, Dyson built a culture of experimentation where progress comes from refining the process, not chasing perfection.",
             technique:"Stop aiming for perfect on the first attempt. Whether you're preparing a presentation, writing a proposal, or practising a difficult conversation, ask yourself: \"What's one thing I can improve before the next version?\" Small improvements, repeated consistently, compound into exceptional performance.",
-            lesson:"High performance isn't about talent alone. It's about showing up, testing, learning, and improving — again and again. The people who consistently excel aren't those who avoid failure; they're the ones who use every attempt to get better.",
+            lesson:"High performance isn't about talent alone. It's about showing up, testing, learning, and improving, again and again. The people who excel aren't those who avoid failure; they're the ones who use every attempt to get better.",
           },
           { id:"bezos", img:"/d10-bezos.jpg", imgPos:"center 50%", name:"Jeff Bezos", role:"Founder of Amazon", superpower:"Master of Repeatable Excellence",
             superpowerText:"Consistency beats occasional brilliance.",
@@ -622,7 +622,28 @@ T.goldDark : T2.text4,
                   </div>}
                   <div style={{padding:"16px 16px 14px"}}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
-                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
+                    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,marginBottom:2}}>
+                      <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,margin:0}}>{card.name}</div>
+                      {EXAMPLE_AUDIO[card.id] && (() => {
+                        const src = EXAMPLE_AUDIO[card.id];
+                        const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                        return (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleNarration(src); }}
+                            aria-label={playing ? "Pause narration" : "Play narration"}
+                            style={{
+                              width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                              padding:0, WebkitAppearance:"none", appearance:"none",
+                              background:"transparent", border:"none",
+                              display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                            }}>
+                            <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                              <PlayIcon playing={playing}/>
+                            </span>
+                          </button>
+                        );
+                      })()}
+                    </div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
