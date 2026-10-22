@@ -61,7 +61,7 @@ export function CoachCarousel({ T, T2, isDesktop: d, cards, carousel, litIndex, 
                 }}>
                   <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, color: n.tag ? T.gold : T2.text4, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: d ? 14 : 10 }}>{n.tag ? `${num} · ${n.tag}` : num}</div>
                   <div style={{ fontFamily: T.serif, fontSize: d ? 30 : 24, fontWeight: 600, color: T.gold, lineHeight: 1.2, marginBottom: d ? 14 : 12 }}>{n.word}</div>
-                  <p style={{ fontFamily: T.sans, fontSize: d ? 17 : 15, color: T2.text2, lineHeight: 1.55, fontWeight: 400, margin: 0, marginBottom: n.bullets?.length ? (d ? 20 : 16) : 0 }}>{n.sub}</p>
+                  {n.sub && <p style={{ fontFamily: T.sans, fontSize: d ? 17 : 15, color: T2.text2, lineHeight: 1.55, fontWeight: 400, margin: 0, marginBottom: n.bullets?.length ? (d ? 20 : 16) : 0 }}>{n.sub}</p>}
                   {n.bullets?.length > 0 && (
                     <div style={{ borderTop: "0.5px solid " + T2.divider, paddingTop: d ? 16 : 14, display: "flex", flexDirection: "column", gap: 10 }}>
                       {n.bullets.map((b, j) => (

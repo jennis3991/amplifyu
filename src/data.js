@@ -86,7 +86,7 @@ export const NT_NEURO = [
   { word:"Curiosity", sub:"Stories create open loops the brain wants to close.",
     bullets:["When you structure your message as a narrative, people lean in. They genuinely want to know what happens next.","Open loops hold attention. Data closes doors. Story opens them."] },
   { word:"Empathy",   sub:"A well-told story helps listeners picture it and feel it, as if they were there.",
-    bullets:["That shared experience builds trust faster than any data point.","When your audience feels inside the story, they're not just listening. They're experiencing."] },
+    bullets:["That shared experience builds trust in a way data rarely can.","When your audience feels inside the story, they're not just listening. They're experiencing."] },
   { word:"Memory",    sub:"Narrative makes your message far easier to remember.",
     bullets:["The stories you tell can stay with people for years, long after the facts have faded.","People forget statistics. They remember stories."] },
   { word:"Action",    sub:"Stories move people to act, not just agree.",
