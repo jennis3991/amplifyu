@@ -23,7 +23,7 @@ const CARDS = [
     sub: "When a story really draws us in, our attention, imagination and feelings all come together." },
   { tag: "Mental imagery", word: "Stories give us pictures, not just words.",
     sub: "Psychologist Allan Paivio found that we remember information better when it comes with pictures as well as words. Stories create those pictures for us." },
-  { tag: "Openness", word: "Absorbed listeners argue back less.",
+  { tag: "Openness", word: "When people are drawn in, they're more open.",
     sub: "In Green and Brock's research, people who were more absorbed in a story were more likely to take its message on board." },
   { tag: "The convergence", word: "Everything you built in Week 1 shows up here.",
     sub: "Clarity, voice, the pause, short sentences, structure and composure all come together the moment you tell a story." },
