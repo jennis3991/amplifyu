@@ -32,6 +32,7 @@ import D7Example from '../modules/D7Example.jsx';
 import D8Insight from '../modules/D8Insight.jsx';
 import D8Theory from '../modules/D8Theory.jsx';
 import D9Insight from '../modules/D9Insight.jsx';
+import D9Theory from '../modules/D9Theory.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -2264,49 +2265,8 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step === "Theory") return (
-        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science of Connection</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:20 }}>Why some people make everyone feel understood</h2>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:28 }}>
-            {[
-              { word:"The Likeability Principle", body:"People are more likely to trust, support and collaborate with people they like. Likeability isn't about being entertaining — it's about making others feel respected and understood." },
-              { word:"Active Listening", body:"Active listening means giving someone your full attention. Not preparing your next answer. Not waiting for your turn. Simply listening with the goal of understanding, not responding." },
-              { word:"The Curiosity Effect", body:"People enjoy conversations where they feel interesting. Great communicators ask questions that encourage reflection, storytelling and deeper thinking." },
-              { word:"Empathy", body:"Empathy is the ability to understand another person's perspective. You don't need to agree with someone to understand them. Understanding builds connection. Connection builds trust." },
-            ].map((n,i)=>{
-              const open=d9CardOpen===("t"+i);
-              return (
-                <div key={i} onClick={()=>setD9CardOpen(open?null:("t"+i))} style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`, cursor:"pointer", transition:"all 0.2s" }}>
-                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:open?8:4 }}>
-                    <div style={{ fontFamily:T.serif, fontSize:19, fontWeight:600, color:T.gold, lineHeight:1.3, flex:1 }}>{n.word}</div>
-                    <span style={{ fontFamily:T.sans, fontSize:16, color:open?T.gold:"rgba(138,158,132,0.6)", marginLeft:8 }}>{open?"▴":"▸"}</span>
-                  </div>
-                  {!open && <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text3, lineHeight:1.5, fontWeight:300, margin:"4px 0 0", overflow:"hidden", display:"-webkit-box", WebkitLineClamp:1, WebkitBoxOrient:"vertical" }}>{n.body}</p>}
-                  {open && <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, fontWeight:300, margin:0 }}>{n.body}</p>}
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:16 }}>The Four Communication Styles</div>
-          <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text3, lineHeight:1.6, marginBottom:16, fontWeight:300 }}>Different people value different things. The strongest communicators adapt — not because they're being fake, but because they're being effective.</p>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:24 }}>
-            {D9_COMM_STYLES.map((s,i)=>(
-              <div key={i} style={{ padding:"18px 20px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border }}>
-                <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:700, color:s.colour, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8 }}>{s.label}</div>
-                <div style={{ marginBottom:10 }}>
-                  <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T2.text4, textTransform:"uppercase", letterSpacing:"1px", marginBottom:4 }}>Values</div>
-                  {s.values.map((v,j)=><span key={j} style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, display:"block", lineHeight:1.6 }}>{v}</span>)}
-                </div>
-                <div>
-                  <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:600, color:T2.text4, textTransform:"uppercase", letterSpacing:"1px", marginBottom:4 }}>Connect through</div>
-                  {s.connect.map((v,j)=><span key={j} style={{ fontFamily:T.sans, fontSize:12, color:T.gold, display:"block", lineHeight:1.6 }}>{v}</span>)}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ padding:"16px 20px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
-            <p style={{ fontFamily:T.serif, fontSize:17, fontStyle:"italic", color:T.gold, margin:0, lineHeight:1.6 }}>"Speak to people the way they need to be spoken to, not the way you prefer to communicate."</p>
-          </div>
+        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
+          <D9Theory T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
         </div>
       );
 
