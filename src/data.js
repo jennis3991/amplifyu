@@ -1043,6 +1043,7 @@ export const EXAMPLE_AUDIO = {
   hamilton: "/day6-hamilton.mp3",
   amal: "/day6-amal.mp3",
   barack: "/day8-obama.mp3",
+  pixar: "/day8-pixar.mp3",
 };
 
 // End-of-day coach message on the Review step, keyed by day.
