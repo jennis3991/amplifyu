@@ -397,7 +397,11 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
 // ─── Story Architect Widget (Simulation) ──────────────────────────────────────
 
 
+const d8ArchitectCoachSlot = { current: null };
+
 export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordingChange }) {
+  // Coach intro: plays on the brief screen, stops when the user generates a story.
+  const coach = useCoachNarration({ src: "/day8-simulation.mp3", cues: [], sharedAudioRef: d8ArchitectCoachSlot });
   const T  = Tp  || Timport;
   const T2 = T2p || T2D;
 
@@ -904,8 +908,8 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
   }, []);
 
   const EXAMPLE_BRIEFS = [
-    "A TED-style pitch for a new product — emotional, direct, show real human impact",
-    "A cybersecurity risk presentation for our board — make it feel like breaking news, urgent and specific",
+    "A pitch for a new product: emotional, direct, showing real human impact",
+    "A cybersecurity risk presentation for our board. Make it feel like breaking news, urgent and specific",
   ];
 
 
@@ -929,7 +933,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
       const text = await res.text();
       let data;
       try { data = JSON.parse(text); } catch(_) {
-        setStoryImageErr('Server timed out — tap Retry to try again');
+        setStoryImageErr('Server timed out. Tap Retry to try again.');
         setStoryImage('error');
         return;
       }
@@ -946,7 +950,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
         setStoryImage('error');
       }
     } catch (err) {
-      const msg = err.name === 'AbortError' ? 'Timed out — tap Retry to try again' : (err.message || 'Network error');
+      const msg = err.name === 'AbortError' ? 'Timed out. Tap Retry to try again.' : (err.message || 'Network error');
       setStoryImageErr(msg);
       setStoryImage('error');
     }
@@ -1025,6 +1029,8 @@ Return ONLY valid JSON:
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Story Architect</div>
         <h2 style={{fontFamily:T.serif,fontSize:isDesktop?34:26,fontWeight:500,color:T2.text,lineHeight:1.1,letterSpacing:"-0.5px",marginBottom:8}}>Your AmplifyU Speechwriter.</h2>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Whether you're pitching to a board, leading your team, delivering a keynote, or telling a personal story, Story Architect transforms rough ideas into unforgettable narratives.</p>
+        <CoachStyles />
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={40} style={{ marginTop: 14, marginBottom: 0 }} />
       </div>
 
       {myStories.length>0 && (
@@ -1071,8 +1077,8 @@ Return ONLY valid JSON:
         </div>
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} />
-        <button onClick={generate} disabled={!brief.trim()} style={{width:"100%",padding:isDesktop?"16px":"15px",borderRadius:4,border:"none",background:brief.trim()?(T.ink||"#2C2416"):"rgba(44,36,22,0.25)",color:T2.bg||"#F7F3EC",fontSize:isDesktop?15:14,fontWeight:600,cursor:brief.trim()?"pointer":"default",fontFamily:T.sans,minHeight:50}}>
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={()=>{coach.pause();generate();}} disabled={!brief.trim()} style={{width:"100%",padding:isDesktop?"16px":"15px",borderRadius:4,border:"none",background:brief.trim()?(T.ink||"#2C2416"):"rgba(44,36,22,0.25)",color:T2.bg||"#F7F3EC",fontSize:isDesktop?15:14,fontWeight:600,cursor:brief.trim()?"pointer":"default",fontFamily:T.sans,minHeight:50}}>
           Generate My Story →
         </button>
       </div>
@@ -1113,37 +1119,20 @@ Return ONLY valid JSON:
     const COACH_INSIGHTS = [
       { heading:"The Status Quo Hook", body:"Every great story opens by making the familiar feel slightly wrong. This first scene plants a quiet unease that compels the audience to lean forward and ask: what happens next?" },
       { heading:"Raising the Stakes", body:"Tension is the engine of narrative transportation. By introducing a meaningful obstacle here, you create the emotional fuel that carries your audience through every scene that follows." },
-      { heading:"The Turning Point", body:"The most memorable talks pivot on a single reframe. This scene functions as your insight moment — the point where the audience's mental model shifts and they see the world differently." },
+      { heading:"The Turning Point", body:"The most memorable talks pivot on a single reframe. This scene functions as your insight moment: the point where the audience's mental model shifts and they see the world differently." },
       { heading:"The Path Forward", body:"After tension comes momentum. This scene shows your audience that movement is possible, converting abstract insight into concrete direction and building belief in the outcome." },
       { heading:"The Proof Point", body:"Stories convince only when they feel inevitable in hindsight. This scene provides the evidence — the real, specific detail that anchors the narrative in lived experience rather than theory." },
-      { heading:"The Call to Action", body:"The most powerful endings don't tell the audience what to do — they make the audience want to act. This scene uses emotional resolution to transfer ownership of the story to the listener." },
+      { heading:"The Call to Action", body:"The most powerful endings don't tell the audience what to do. They make the audience want to act. This scene uses emotional resolution to transfer ownership of the story to the listener." },
     ];
 
-    const SCORES = [
-      { label:"Story Flow",          stars:5 },
-      { label:"Emotional Journey",   stars:5 },
-      { label:"Audience Connection", stars:4 },
-      { label:"Visual Narrative",    stars:4 },
-    ];
 
-    const StarRow = ({ stars }) => (
-      <div style={{display:"flex",gap:3}}>
-        {[1,2,3,4,5].map(n=>(
-          <svg key={n} width="13" height="13" viewBox="0 0 14 14" fill="none">
-            <path d="M7 1.5l1.5 3 3.3.5-2.4 2.3.6 3.2L7 9l-3 1.5.6-3.2L2.2 5l3.3-.5z"
-              fill={n<=stars?"#B8964A":"none"} stroke="#B8964A"
-              strokeWidth="0.9" strokeLinejoin="round" opacity={n<=stars?1:0.3}/>
-          </svg>
-        ))}
-      </div>
-    );
 
     return (
       <div style={{display:"flex",flexDirection:"column",gap:0}}>
 
         {pendingStory&&(
           <div style={{background:"rgba(176,92,74,0.06)",borderRadius:6,border:"0.5px solid rgba(176,92,74,0.2)",padding:"10px 16px",marginBottom:20}}>
-            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You've reached your limit of {STORY_CAP} saved stories. This one is here to view now, but won't be saved — delete a story from My Stories (on the brief screen) to free up a slot.</span>
+            <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3,fontWeight:300}}>You've reached your limit of {STORY_CAP} saved stories. This one is here to view now, but won't be saved. Delete a story from My Stories (on the brief screen) to free up a slot.</span>
           </div>
         )}
 
@@ -1287,39 +1276,6 @@ Return ONLY valid JSON:
                 <button onClick={()=>setActiveScene(v=>Math.min(scenes.length-1,v+1))} disabled={activeScene===scenes.length-1} style={{background:"none",border:"0.5px solid "+T2.border,borderRadius:4,padding:"7px 14px",cursor:activeScene===scenes.length-1?"default":"pointer",fontFamily:T.sans,fontSize:12,color:activeScene===scenes.length-1?T2.text4:T2.text,opacity:activeScene===scenes.length-1?0.35:1}}>Next →</button>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* ── STORY STRENGTH ──────────────────────────────────────────────── */}
-        <div style={{marginBottom:isDesktop?28:22,background:T2.surface,borderRadius:10,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
-          <div style={{padding:isDesktop?"18px 24px 14px":"14px 18px 12px",borderBottom:"0.5px solid "+T2.border}}>
-            <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"2.5px"}}>Story Strength</div>
-          </div>
-          <div style={{display:"flex",flexWrap:"wrap"}}>
-            {SCORES.map((s,i)=>(
-              <div key={i} style={{flex:"1 1 0",minWidth:130,padding:isDesktop?"16px 24px":"13px 18px",borderRight:i%2===0&&isDesktop?"0.5px solid "+T2.border:"none",borderBottom:i<2&&!isDesktop?"0.5px solid "+T2.border:i<2&&isDesktop?"0.5px solid "+T2.border:i>=2&&!isDesktop&&i<3?"0.5px solid "+T2.border:"none"}}>
-                <div style={{fontFamily:T.sans,fontSize:11,color:T2.text,fontWeight:500,marginBottom:6}}>{s.label}</div>
-                <StarRow stars={s.stars}/>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── PREMIUM ACTIONS ─────────────────────────────────────────────── */}
-        <div style={{marginBottom:isDesktop?24:18}}>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"2.5px",marginBottom:12}}>Take it Further</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr",gap:8}}>
-            {[
-              {label:"Turn into TED Talk",       sub:"Restructure for a 15-minute keynote format",   action:null},
-            ].map((a,i)=>(
-              <button key={i} onClick={a.action||undefined} style={{padding:isDesktop?"13px 18px":"12px 16px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.surface,cursor:a.action?"pointer":"default",textAlign:"left",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,transition:"background 0.15s",opacity:a.action?1:0.45}}>
-                <div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,fontWeight:500,marginBottom:2}}>{a.label}</div>
-                  <div style={{fontFamily:T.sans,fontSize:isDesktop?11:10,color:T2.text3,fontWeight:300}}>{a.sub}</div>
-                </div>
-                <span style={{color:T2.text4,fontSize:14,flexShrink:0}}>→</span>
-              </button>
-            ))}
           </div>
         </div>
 
