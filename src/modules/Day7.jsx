@@ -4,6 +4,7 @@ import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { detectPitchHz, computeSignalMetrics } from './voiceSignal.js';
 import { AICoachNote } from '../components/AICoachNote.jsx';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -64,7 +65,13 @@ function RadarChart({ scores, gold, size = 200 }) {
 const SIX_SKILLS = ['Clarity','Pace','Fillers','Short Sentences','Structure','Composure'];
 
 // ─── D7 Practice Widget — The Six ─────────────────────────────────────────────
+// Coach intro audio outlives any one widget instance (same pattern as Day 3)
+// so a remount mid-narration can't orphan it.
+const d7SixCoachSlot = { current: null };
+
 export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, onNavFn }) {
+  // Coach intro: plays on the challenge screen, stops when the user enters the rehearsal.
+  const coach = useCoachNarration({ src: "/day7-rehearsal.mp3", cues: [], sharedAudioRef: d7SixCoachSlot });
   const [phase, setPhase] = useState('intro'); // 'intro' | 'ready' | 'analyzing' | 'coach'
   const [transcript, setTranscript] = useState('');
   const [coachResult, setCoachResult] = useState(null);
@@ -84,6 +91,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
   }, [phase]);
 
   function enterRehearsal() {
+    coach.pause();
     setPhase('ready');
   }
 
@@ -136,10 +144,12 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
   if (phase === 'intro') return (
     <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
       <div>
-        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>REHEARSAL · DAY 7</div>
+        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>Rehearsal</div>
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>The Six</h2>
       </div>
       {progressBar(0)}
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={34} style={{ margin: 0 }} />
       <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
           <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
@@ -149,10 +159,10 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
       </div>
       <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"22px 24px" }}>
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Challenge</div>
-        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:0, fontWeight:400 }}>Think of one real conversation coming up this week — a meeting, a presentation, a difficult discussion. Speak for 30 seconds about which of this week's skills you'll use in it — and why.</p>
+        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:0, fontWeight:400 }}>Think of one real conversation coming up this week: a meeting, a presentation, a difficult discussion. Speak for about 30 seconds about which of this week's skills you'll use in it, and why.</p>
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} />
+        <AICoachNote T={T} T2={T2} voice />
         <button onClick={enterRehearsal} style={{ width:"100%", padding:"15px", borderRadius:4, border:"none", background:T.ink, color:T.bg, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:T.sans, minHeight:50 }}>
           Enter rehearsal →
         </button>
@@ -163,13 +173,13 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
   if (phase === 'ready') return (
     <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
       <div>
-        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>REHEARSAL · DAY 7</div>
+        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>Rehearsal</div>
         <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>The Six</h2>
       </div>
       {progressBar(1)}
       <div style={{ background:T2.surface, borderRadius:8, border:"0.5px solid "+T2.border, padding:"22px 24px" }}>
         <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:12 }}>Your Challenge</div>
-        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:0, fontWeight:400 }}>Think of one real conversation coming up this week — a meeting, a presentation, a difficult discussion. Speak for 30 seconds about which of this week's skills you'll use in it — and why.</p>
+        <p style={{ fontFamily:T.sans, fontSize:14, color:T2.text, lineHeight:1.65, margin:0, fontWeight:400 }}>Think of one real conversation coming up this week: a meeting, a presentation, a difficult discussion. Speak for about 30 seconds about which of this week's skills you'll use in it, and why.</p>
       </div>
       <VoiceRecorder T={T} T2={T2} maxSeconds={120} onDone={onRecordingDone}/>
     </div>
@@ -196,7 +206,7 @@ export function D7PracticeWidget({ T, T2, isDesktop, onSimulation, onNavLabel, o
     return (
       <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
         <div>
-          <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>REHEARSAL · DAY 7</div>
+          <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:10 }}>Rehearsal</div>
           <h2 style={{ fontFamily:T.serif, fontSize:isDesktop?32:26, fontWeight:600, color:T2.text, lineHeight:1.1, margin:0 }}>The Six</h2>
         </div>
         <div style={{ background:"#0E0B08", borderRadius:8, padding:"24px 26px" }}>

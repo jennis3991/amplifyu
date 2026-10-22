@@ -82,7 +82,7 @@ export default function D7Example({ T, T2, isDesktop, sharedAudioRef, onNext }) 
       </div>
 
       {onNext && nextLit && (
-        <UpNextCard ref={nextRef} T={T} T2={T2} isDesktop={d} title="Teach It Forward" sub="Put the week into practice" onClick={onNext} />
+        <UpNextCard ref={nextRef} T={T} T2={T2} isDesktop={d} title="The Six" sub="Plan your next real conversation" onClick={onNext} />
       )}
     </>
   );

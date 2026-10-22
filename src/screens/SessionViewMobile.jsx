@@ -405,7 +405,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD13 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Yourself Visible" headline="The moment will come. Show up — don't let it pass." />;
         if(isD14 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Day 14 · Capstone" headline="You are not the communicator you were 14 days ago." />;
         if(isNT && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Story Lab" headline="The best communicators have a handful of go-to stories. Let's find one of yours." />;
-        if(isD7 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Teach It Forward" headline="The best test of what you know is whether you can teach it." />;
+        if(isD7 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="The Six" headline="Six skills. One real moment. Where will you use them?" />;
         const TABLET_IMGS={
           1:{Insight:{src:"/day1-insight.jpg"},Example:{src:"/day1-insight.jpg"}},
           2:{Insight:{src:"/d2-insight-tablet.jpg"},Practice:{src:"/d2-practice-tablet.jpg"}},

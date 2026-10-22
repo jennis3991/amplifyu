@@ -106,10 +106,10 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 40% 30%, rgba(138,158,132,0.05) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Communication in Action</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Every skill. One conversation.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Your Week 1 Foundations</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Six habits. One week.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>This is what a week of deliberate practice looks like when you put it all together.</p>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Each one is a skill you'll keep building.</p>
         </div>
       </div>
     );
@@ -122,7 +122,7 @@ export function SessionLeftPanel({
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Six</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Six skills. One real moment. Where will you use them?</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:20 }}/>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380, marginBottom:20 }}>Think of a real conversation coming up this week. Before you hit start — decide which skill you'll bring to it. Then say it out loud.</p>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380, marginBottom:20 }}>Think of a real conversation coming up this week. Before you hit start, decide which skill you'll bring to it. Then say it out loud.</p>
           <div style={{ background:"rgba(138,158,132,0.07)", borderRadius:4, border:"0.5px solid rgba(138,158,132,0.18)", padding:"16px 18px", marginBottom:20 }}>
             <div style={{ fontFamily:T.sans, fontSize:9, fontWeight:700, color:"rgba(138,158,132,0.7)", textTransform:"uppercase", letterSpacing:"2px", marginBottom:8 }}>Coach Tip</div>
             <p style={{ fontFamily:T.serif, fontSize:14, color:"rgba(245,239,230,0.7)", lineHeight:1.65, margin:0, fontStyle:"italic" }}>Skills become habits the moment you connect them to a real situation. This is that moment.</p>
