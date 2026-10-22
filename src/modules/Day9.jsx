@@ -31,13 +31,37 @@ export function D9PracticeWidget({T, T2, isDesktop}) {
 
   const TIPS = [
     { tag:"Ask Better Questions", word:"Lead with curiosity, not category.",
-      sub:`Replace "What do you do?" with "What's the most interesting thing you're working on right now?" Better still: "What's the biggest challenge you're facing at the moment?" or "What's something you're genuinely excited about?" These questions open real conversations. They show interest, invite depth, and build trust in a way small talk rarely does.` },
+      sub:`Swap "What do you do?" for questions that open real conversations:`,
+      bullets:[
+        `"What's the most interesting thing you're working on?"`,
+        `"What's the biggest challenge you're facing?"`,
+        `"What are you excited about right now?"`,
+        "They show interest, invite depth and build trust.",
+      ] },
     { tag:"The 70/30 Rule", word:"Listen 70%. Speak 30%.",
-      sub:"A simple rule of thumb for your next conversation: consciously hold back. Ask a question, then let the other person fill the space. The most memorable communicators don't dominate. They make others feel genuinely heard. Connection isn't a gift. It's a choice you make in every conversation." },
+      sub:"A simple rule of thumb for your next conversation:",
+      bullets:[
+        "Ask a question, then let the other person fill the space.",
+        "Don't dominate. Make others feel genuinely heard.",
+        "Connection isn't a gift. It's a choice you make in every conversation.",
+      ] },
     { tag:"Empathy in Practice", word:"Understand someone you disagree with.",
-      sub:"Before you respond to a differing view, pause to ask: what matters to this person, what pressures might they be under, and what might I be missing? Understanding first doesn't mean agreeing. It means connecting. The people who do this well are the ones others seek out." },
+      sub:"Before you respond to a different view, ask yourself:",
+      bullets:[
+        "What matters to this person?",
+        "What pressures might they be under?",
+        "What might I be missing?",
+        "Understanding isn't agreeing. It's connecting.",
+      ] },
     { tag:"Know Their Style", word:"Adapt to the person in front of you.",
-      sub:"One simple way to think about it is four styles: the Driver (results-focused), the Thinker (detail-focused), the Connector (relationship-focused) and the Visionary (ideas-focused). The best communicators notice which style they're working with, and flex to meet it rather than defaulting to their own." },
+      sub:"One simple way to think about it is four styles:",
+      bullets:[
+        "Driver: results-focused",
+        "Thinker: detail-focused",
+        "Connector: relationship-focused",
+        "Visionary: ideas-focused",
+        "Notice which style you're working with, and flex to meet it.",
+      ] },
   ];
 
   return (
@@ -51,8 +75,8 @@ export function D9PracticeWidget({T, T2, isDesktop}) {
         <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text3,lineHeight:1.7,margin:"0 0 14px"}}>
           The most connected communicators share four habits. Try them in your next real conversation.
         </p>
-        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={57} style={{ margin: 0, marginBottom: 14 }} />
-        <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(138,158,132,0.08)",borderRadius:20,padding:"7px 14px",border:"0.5px solid rgba(138,158,132,0.22)"}}>
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={57} style={{ marginTop: 0, marginBottom: 0 }} />
+        <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(138,158,132,0.08)",borderRadius:20,padding:"7px 14px",border:"0.5px solid rgba(138,158,132,0.22)",marginTop:18}}>
           <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
             <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
             <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
