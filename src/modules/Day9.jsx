@@ -68,14 +68,18 @@ export function D9PracticeWidget({T, T2, isDesktop}) {
 
 // ─── D9 Simulation Widget — The Rapport Builder ──────────────────────────
 const D9_SIMULATION_MAX_SEC = 120;
+const d9RapportCoachSlot = { current: null };
+
 export function D9SimWidget({T, T2, isDesktop, onRecordingChange}) {
+  // Coach intro: plays on the intro and character screens, stops when the conversation starts.
+  const coach = useCoachNarration({ src: "/day9-simulation.mp3", cues: [], sharedAudioRef: d9RapportCoachSlot });
   const CHARS = [
     {
       id:'driver', label:'The Driver',
       sub:'Senior leader. Results-focused. Zero tolerance for small talk.',
       difficulty:'High intensity',
       scenario:'The Corridor Ambush',
-      scenarioDesc:"You've been trying to get budget sign-off for a project. You catch your senior stakeholder between meetings — they're already walking.",
+      scenarioDesc:"You've been trying to get budget sign-off for a project. You catch your senior stakeholder between meetings. They're already walking.",
       opener:'Two minutes. What do you need?',
       mockBad:'"So as you know, we\'ve been working on this since Q1, and the team has spent a lot of time on the customer experience research..."',
       mockBadNote:'Context before the point. A Driver switches off within seconds.',
@@ -114,7 +118,7 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
       mockBad:'"So basically the data kind of suggests this could work, and most people on the team feel it\'s the right direction..."',
       mockBadNote:'"Kind of" and "feel like" are red flags for a Thinker. Vague language signals weak thinking.',
       mockGood:'"Ninety-day cohort analysis. Three segments, twenty-four hundred users. Confidence interval ninety-four percent. The interesting finding is in the middle cohort."',
-      mockGoodNote:'Specific numbers. Clear methodology. Invite their scrutiny — don\'t defend against it.',
+      mockGoodNote:'Specific numbers. Clear methodology. Invite their scrutiny. Don\'t defend against it.',
       scoreLabels:['Precision','Logic','Handling challenge'],
       scoreHints:['Were your answers specific and evidence-based?','Did your reasoning hold up under scrutiny?','Did you handle pushback with data, not defensiveness?'],
       sysPrompt(hist) {
@@ -143,7 +147,7 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
       sub:'Relationship-oriented leader. People and feelings come before outcomes.',
       difficulty:'Emotionally nuanced',
       scenario:'The Team Check-In',
-      scenarioDesc:"Your manager has noticed tension in the team and asked to talk. They lead with how people are feeling — not with tasks or targets.",
+      scenarioDesc:"Your manager has noticed tension in the team and asked to talk. They lead with how people are feeling, not with tasks or targets.",
       opener:"I've been thinking about the team lately. How are people really doing?",
       mockBad:'"Yeah the project\'s on track, we hit our targets last quarter, and productivity has been solid."',
       mockBadNote:'Jumping straight to metrics. A Connector needs to feel heard on the human level before they\'ll engage on outcomes.',
@@ -174,14 +178,14 @@ After your in-character response, add a new line with ONLY this JSON: {"quality"
     },
     {
       id:'visionary', label:'The Visionary',
-      sub:'Ideas-driven innovator. Big picture first, details later — if ever.',
+      sub:'Ideas-driven innovator. Big picture first, details later.',
       difficulty:'Keep up and land them',
       scenario:'The Big Idea Pitch',
-      scenarioDesc:"You're pitching an initiative to your most ideas-driven colleague. They love the concept — and keep expanding it. You need a decision.",
+      scenarioDesc:"You're pitching an initiative to your most ideas-driven colleague. They love the concept, and keep expanding it. You need a decision.",
       opener:'I love this. Where do you see this going in five years?',
       mockBad:'"Well we\'d need a feasibility study first and there are a few risks we should probably assess before committing to anything."',
       mockBadNote:'A Visionary experiences risk-talk as imagination-killing. They disengage immediately.',
-      mockGood:'"In five years this could change how the whole industry approaches this. But to get there — I need one decision from you today. Can we start the pilot?"',
+      mockGood:'"In five years this could change how the whole industry approaches this. But to get there, I need one decision from you today. Can we start the pilot?"',
       mockGoodNote:'Match their energy and vision first. Then bring it to one concrete ask.',
       scoreLabels:['Energy matching','Idea engagement','Landing the ask'],
       scoreHints:['Did you meet their enthusiasm rather than dampen it?','Did you engage with the ideas on their terms?','Did you bring it back to one concrete decision?'],
@@ -444,10 +448,12 @@ Return ONLY valid JSON:
   if(phase==='intro') return(
     <div style={{display:'flex',flexDirection:'column',gap:isDesktop?16:14}}>
       <div>
-        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:12}}>The Rapport Builder · Simulation</div>
+        <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:12}}>Simulation</div>
         <h2 style={{fontFamily:T.serif,fontSize:isDesktop?36:26,fontWeight:600,color:T2.text,lineHeight:1.1,margin:'0 0 14px'}}>
           Four conversations.<br/>Four personalities.
         </h2>
+        <CoachStyles />
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={41} style={{ margin: 0 }} />
       </div>
 
       {/* HOW IT WORKS — same 4-step icon format as Day 1's Simulation intro */}
@@ -488,7 +494,7 @@ Return ONLY valid JSON:
             </svg>
           </div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
-            Choose a connection habit, then navigate a realistic workplace conversation. Your AI Coach gives personalised feedback on your <strong style={{color:T.gold,fontWeight:700}}>listening, curiosity, empathy and rapport</strong>.
+            Choose a character, then navigate a realistic workplace conversation. Your AI Coach gives personalised feedback on your <strong style={{color:T.gold,fontWeight:700}}>listening, curiosity, empathy and rapport</strong>.
           </p>
         </div>
 
@@ -503,7 +509,7 @@ Return ONLY valid JSON:
             </svg>
           </div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
-            Each conversation runs <strong style={{color:T.gold,fontWeight:700}}>3 back-and-forth exchanges</strong> — record, wait for their in-character reply, then record again. You'll see "Start Recording" three times in total.
+            Each conversation runs <strong style={{color:T.gold,fontWeight:700}}>3 back-and-forth exchanges</strong>: record, wait for their in-character reply, then record again. You'll see "Start Recording" three times in total.
           </p>
         </div>
       </div>
@@ -511,7 +517,7 @@ Return ONLY valid JSON:
         <button onClick={()=>setExOpen(o=>!o)} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',padding:isDesktop?'18px 22px':'14px 18px',background:'transparent',border:'none',cursor:'pointer',textAlign:'left',gap:12}}>
           <div>
             <div style={cs.label}>Example · The Driver</div>
-            {!exOpen && <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,margin:0}}>See what works — and what doesn't — when a time-pressured Driver gives you two minutes.</p>}
+            {!exOpen && <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,margin:0}}>See what works, and what doesn't, when a time-pressured Driver gives you two minutes.</p>}
           </div>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{flexShrink:0,transform:exOpen?'rotate(180deg)':'rotate(0deg)',transition:'transform 0.25s',color:'rgba(138,158,132,0.7)'}}>
             <path d="M3 6l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -520,7 +526,7 @@ Return ONLY valid JSON:
         {exOpen && (
           <div style={{padding:isDesktop?'0 22px 20px':'0 18px 16px',borderTop:'0.5px solid rgba(138,158,132,0.15)'}}>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:'14px 0 14px'}}>
-              You've been trying to get budget sign-off. You catch your senior stakeholder between meetings — they're already walking.
+              You've been trying to get budget sign-off. You catch your senior stakeholder between meetings. They're already walking.
             </p>
             <div style={{padding:'12px 14px',background:T2.bg,borderRadius:4,marginBottom:12}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text4,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6}}>They say</div>
@@ -542,7 +548,7 @@ Return ONLY valid JSON:
         )}
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} characters />
+        <AICoachNote T={T} T2={T2} voice characters />
         <button onClick={()=>setPhase('select')} style={cs.cta}>Choose Your Character →</button>
       </div>
     </div>
@@ -553,7 +559,9 @@ Return ONLY valid JSON:
     <div style={{display:'flex',flexDirection:'column',gap:isDesktop?14:12}}>
       <div>
         <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:8}}>Choose Your Character</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:0}}>Pick the style you find most challenging — or the one you want to sharpen.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:0}}>Pick the style you find most challenging, or the one you want to sharpen.</p>
+        <CoachStyles />
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={41} style={{ marginTop: 12, marginBottom: 0 }} />
       </div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
         {CHARS.map(c=>{
@@ -568,8 +576,8 @@ Return ONLY valid JSON:
           );
         })}
       </div>
-      <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,textAlign:'center',margin:0}}>You'll be asked 3 questions in a row — record your answer, then wait a moment while they respond in character.</p>
-      <button onClick={()=>{if(char){resetSession();setPhase('turn1');}}} disabled={!char}
+      <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,textAlign:'center',margin:0}}>You'll be asked 3 questions in a row. Record your answer, then wait a moment while they respond in character.</p>
+      <button onClick={()=>{if(char){coach.pause();resetSession();setPhase('turn1');}}} disabled={!char}
         style={{...cs.cta,opacity:char?1:0.4,cursor:char?'pointer':'default'}}>
         Start the Conversation →
       </button>
@@ -611,7 +619,7 @@ Return ONLY valid JSON:
           {isRec&&(
             <div style={{display:'flex',alignItems:'center',gap:8,marginTop:4}}>
               <div style={{width:7,height:7,borderRadius:'50%',background:'#c0392b'}}/>
-              <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>Recording — {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D9_SIMULATION_MAX_SEC/60)}:{String(D9_SIMULATION_MAX_SEC%60).padStart(2,'0')}</span>
+              <span style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>Recording · {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D9_SIMULATION_MAX_SEC/60)}:{String(D9_SIMULATION_MAX_SEC%60).padStart(2,'0')}</span>
             </div>
           )}
         </div>
@@ -661,7 +669,7 @@ Return ONLY valid JSON:
       <div style={cs.label}>{online ? "Something Went Wrong" : "You're Offline"}</div>
       <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,color:T2.text,lineHeight:1.65,margin:'0 0 8px'}}>
         {online
-          ? `We lost the thread of your conversation with ${char?.label||'your character'} — rather than guess how they'd respond, we've ended the roleplay here.`
+          ? `We lost the thread of your conversation with ${char?.label||'your character'}. Rather than guess how they'd respond, we've ended the roleplay here.`
           : `Roleplay needs a connection, so we've ended it here rather than guess how ${char?.label||'your character'} would respond.`}
       </p>
       <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.6,margin:'0 0 16px'}}>
@@ -731,7 +739,7 @@ Return ONLY valid JSON:
           </div>
         </div>
         <div style={{...cs.card,borderLeft:'3px solid '+T.gold,background:'rgba(138,158,132,0.05)'}}>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:'italic',color:T2.text,lineHeight:1.6,margin:0}}>Every real person you talk to at work leans one of these ways — Driver, Thinker, Connector, Visionary. The more you practise reading that and adjusting to it here, the more naturally it'll happen when it actually counts.</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:'italic',color:T2.text,lineHeight:1.6,margin:0}}>The people you work with often lean towards one of these styles: Driver, Thinker, Connector or Visionary. The more you practise reading that here, the more naturally it'll happen when it counts.</p>
         </div>
         <button onClick={()=>{setChar(null);setPhase('select');}} style={cs.cta}>Practice Another Character →</button>
       </div>
