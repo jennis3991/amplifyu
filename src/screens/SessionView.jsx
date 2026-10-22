@@ -28,6 +28,7 @@ import D6Insight from '../modules/D6Insight.jsx';
 import D6Theory from '../modules/D6Theory.jsx';
 import D7Insight from '../modules/D7Insight.jsx';
 import D7Theory from '../modules/D7Theory.jsx';
+import D7Example from '../modules/D7Example.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -343,33 +344,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>Your Week 1 Foundations</div>
-          <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Six habits. Seven days. Here's what you built.</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:300,marginBottom:28}}>Each foundation is a permanent part of your communication toolkit. Not techniques to remember — behaviours to repeat.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:12}}>
-            {[
-              {day:"DAY 1",skill:"Clarity",science:"The Feynman Technique",line:"If you can't say it simply, you don't understand it well enough yet."},
-              {day:"DAY 2",skill:"Voice Control",science:"The 88 Keys",line:"Your voice has more range than you've been using. That changes from here."},
-              {day:"DAY 3",skill:"Filler-Free Speech",science:"The Pause Principle",line:"Leaders pause. Amateurs fill. Silence is control."},
-              {day:"DAY 4",skill:"Precision",science:"Miller's Law",line:"Every word must earn its place. Short sentences are a strategic choice."},
-              {day:"DAY 5",skill:"Structure",science:"The PRE Framework",line:"Point. Reason. Example. The architecture of every compelling answer."},
-              {day:"DAY 6",skill:"High-Stakes Conversations",science:"Calm Under Pressure",line:"The gap between good and great opens under pressure. You started closing it."},
-            ].map((f,i)=>(
-              <div key={i} style={{display:"flex",gap:16,alignItems:"flex-start",padding:"18px 20px",background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:6}}>
-                <div style={{background:T.gold,borderRadius:3,padding:"5px 10px",flexShrink:0,alignSelf:"flex-start"}}>
-                  <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"white",letterSpacing:"1px"}}>{f.day}</span>
-                </div>
-                <div style={{flex:1}}>
-                  <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,marginBottom:2}}>{f.skill}</div>
-                  <div style={{fontFamily:T.sans,fontSize:11,color:T.gold,fontWeight:600,letterSpacing:"0.5px",marginBottom:8}}>{f.science}</div>
-                  <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,margin:0,fontWeight:300,fontStyle:"italic"}}>"{f.line}"</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{marginTop:20,padding:"16px 20px",background:"rgba(138,158,132,0.08)",borderRadius:4,border:"0.5px solid rgba(138,158,132,0.2)",textAlign:"center"}}>
-            <p style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T.gold,lineHeight:1.4,margin:0}}>Skills compound.</p>
-          </div>
+          <D7Example T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Rehearsal"))}/>
         </div>
       );
 
