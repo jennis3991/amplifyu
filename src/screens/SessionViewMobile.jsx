@@ -352,7 +352,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
             7:{label:"WEEK 1 MASTER CHALLENGE",heading:"Teach It Forward. Prove what you know."},
             8:{label:"NARRATIVE IN ACTION",heading:"Tell the story. Transport your audience."},
             9:{label:"THE RAPPORT BUILDER",heading:"Adapt your style. Build genuine rapport."},
-            10:{label:"PERFORMANCE IN ACTION",heading:"Communicate your impact with conviction."},
+            10:{label:"Day 10 · Impact",heading:"Communicate your impact with conviction."},
             11:{label:"BRAND IN ACTION",heading:"Your brand is built in every room you enter. Shape it."},
             12:{label:"PRESENCE IN ACTION",heading:"Every signal you send shapes what people believe."},
           };

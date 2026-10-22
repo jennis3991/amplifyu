@@ -4,6 +4,7 @@ import { useWakeLock, useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { AICoachNote } from '../components/AICoachNote.jsx';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -214,10 +215,29 @@ export function explainD10Score(dim, score) {
 }
 
 // ─── Leadership Hot Seat — D10 Simulation (mobile) ───────────────────────────
-const D10_SIMULATION_MAX_SEC = 120;
+// Up to 2 minutes on mobile and desktop; recordings auto-stop at the cap.
+export const D10_SIMULATION_MAX_SEC = 120;
+
+// Coach intro: plays on the intro and scenario screens, stops when a scenario
+// is picked. Shared with the desktop Simulation in SessionView.jsx. The audio
+// lives in a module-level slot so a remount mid-narration can't orphan it.
+const d10SimCoachSlot = { current: null };
+export const D10_SIM_COACH_SECS = 49;
+export function useD10SimCoach() {
+  return useCoachNarration({ src: "/day10-simulation.mp3", cues: [], sharedAudioRef: d10SimCoachSlot });
+}
+
+// Same wording on mobile and desktop.
+export const D10_SCENARIO_TEXT = [
+  { id:2, title:"Promotion Calibration",   prompt:'"Why are you ready for the next level?"',                             tag:"Ownership · Evidence · Confidence" },
+  { id:4, title:"Credit Theft",            prompt:"A colleague presents your work as their own.",                        tag:"Composure · Ownership" },
+  { id:5, title:"Difficult Stakeholder",   prompt:'"I\'m still not convinced this made a difference."',                  tag:"Persuasion · Credibility" },
+  { id:6, title:"The Quiet Achiever Trap", prompt:'"You do great work, but I need more visibility into your impact."',    tag:"Self-advocacy · Reframing" },
+];
 export function D10MobileSim({T2: _T2, onRecordingChange}) {
   const T2 = _T2 || T;
   const [introSeen, setIntroSeen] = useState(false);
+  const coach = useD10SimCoach();
   const [scenario, setScenario] = useState(null);
   const [r, setR] = useState(null);
   const [expandedDim, setExpandedDim] = useState(null);
@@ -265,13 +285,13 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
   },[]);
 
   const SCENARIOS = [
-    {id:2, title:"Promotion Calibration",      prompt:'"Why are you ready for the next level?"',          tag:"Ownership · Evidence · Confidence",
+    {...D10_SCENARIO_TEXT[0],
      icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>},
-    {id:4, title:"Credit Theft",               prompt:"A colleague presents your work as their own.",      tag:"Composure · Ownership",
+    {...D10_SCENARIO_TEXT[1],
      icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>},
-    {id:5, title:"Difficult Stakeholder",      prompt:'"I\'m still not convinced this made a difference."', tag:"Persuasion · Credibility",
+    {...D10_SCENARIO_TEXT[2],
      icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>},
-    {id:6, title:"The Quiet Achiever Trap",    prompt:'"You do great work — but I need more visibility into your impact."', tag:"Self-advocacy · Reframing",
+    {...D10_SCENARIO_TEXT[3],
      icon:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A9E84" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>},
   ];
 
@@ -339,9 +359,17 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
     setScenario(null); setR(null); setExpandedDim(null); setMicError(false); setTranscribeFailed(false); setFallbackText(''); setIsRec(false); setScoreFailed(false);
   }
 
+  const coachBlock = (
+    <>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={false} narration={coach} duration={D10_SIM_COACH_SECS} style={{ marginTop: 0, marginBottom: 18 }} />
+    </>
+  );
+
   if (!introSeen) return (
     <div>
-      <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#A8998A",lineHeight:1.6,marginBottom:18,fontWeight:300}}>Four real scenarios. Up to 2 minutes each. Speak and get coached.</p>
+      {coachBlock}
+      <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#A8998A",lineHeight:1.6,marginBottom:18,fontWeight:300}}>Four real scenarios. Up to 2 minutes each, but aim for about 30 seconds.</p>
       <div style={{display:"flex",alignItems:"flex-start",marginBottom:20}}>
         {[
           {n:1,label:"Pick a\nscenario",icon:<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="14" height="16" rx="2" stroke="#8A9E84" strokeWidth="1.3"/><path d="M7 7h8M7 11h8M7 15h5" stroke="#8A9E84" strokeWidth="1.3" strokeLinecap="round"/></svg>},
@@ -361,14 +389,14 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
       </div>
       <div style={{padding:"16px",background:T2.surface,borderRadius:8,border:"0.5px solid rgba(138,158,132,0.15)",marginBottom:10}}>
         <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:"'Inter',sans-serif"}}>The First Step</div>
-        <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>Pick the scenario that feels most real to you. Frame the Situation, explain your Action, land the Result — then stop. Nobody wants your full backstory.</p>
+        <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>Pick the scenario that feels closest to your world. Set the situation, say what you did, and land the result. Then stop. You don't need the full backstory.</p>
       </div>
       <div style={{padding:"16px",background:T2.surface,borderRadius:8,border:"0.5px solid rgba(138,158,132,0.15)",marginBottom:20}}>
         <div style={{fontSize:9,fontWeight:700,color:"#527060",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8,fontFamily:"'Inter',sans-serif"}}>Your AI Coach</div>
-        <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>You'll be scored on Clarity, Structure, Confidence, Brevity and Impact — then shown exactly what a stronger version sounds like.</p>
+        <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T2.text,lineHeight:1.6,margin:0,fontWeight:300}}>You'll get feedback on clarity, structure, confidence, brevity and impact, then see what a stronger version could sound like.</p>
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} />
+        <AICoachNote T={T} T2={T2} voice />
         <button onClick={()=>setIntroSeen(true)} style={{width:"100%",padding:"15px",borderRadius:3,border:"none",background:"#2C2416",color:"#F7F3EC",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Start the Simulation →</button>
       </div>
     </div>
@@ -376,10 +404,11 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
 
   if (!scenario) return (
     <div>
+      {coachBlock}
       <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"#A8998A",marginBottom:12,fontWeight:300}}>Choose your scenario:</p>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
         {SCENARIOS.map(sc=>(
-          <div key={sc.id} onClick={()=>{setScenario(sc);setR(null);setMicError(false);setTranscribeFailed(false);setFallbackText('');setScoreFailed(false);}}
+          <div key={sc.id} onClick={()=>{coach.pause();setScenario(sc);setR(null);setMicError(false);setTranscribeFailed(false);setFallbackText('');setScoreFailed(false);}}
             style={{padding:"12px",background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:8,minHeight:110,textAlign:"center"}}>
             <div>{sc.icon}</div>
             <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontWeight:600,color:T2.text,lineHeight:1.25,flex:1}}>{sc.title}</div>
@@ -400,6 +429,9 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
         <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:600,color:"rgba(255,255,255,0.92)",lineHeight:1.4,margin:"0 0 8px"}}>{scenario.prompt}</p>
         <div style={{fontFamily:"'Inter',sans-serif",fontSize:11,color:"rgba(138,158,132,0.6)"}}>{scenario.tag}</div>
       </div>
+      {!r && !l && !scoreFailed && !isRec && (
+        <p style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:T2.text3,lineHeight:1.6,margin:"0 0 18px",fontWeight:300,textAlign:"center"}}>Set the situation, say what you did, and land the result. Aim for about 30 seconds.</p>
+      )}
 
       {!r && !l && !scoreFailed && (
         <>
@@ -415,7 +447,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
             <div style={{padding:"20px 16px",background:"#0E0B08",borderRadius:8,marginBottom:10,textAlign:"center"}}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginBottom:14}}>
                 <div style={{width:7,height:7,borderRadius:"50%",background:"#CC4444",animation:"glowPulse 1s ease infinite"}}/>
-                <span style={{fontFamily:"'Inter',sans-serif",fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.5)",textTransform:"uppercase",letterSpacing:"2px"}}>Recording — {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D10_SIMULATION_MAX_SEC/60)}:{String(D10_SIMULATION_MAX_SEC%60).padStart(2,'0')}</span>
+                <span style={{fontFamily:"'Inter',sans-serif",fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.5)",textTransform:"uppercase",letterSpacing:"2px"}}>Recording · {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D10_SIMULATION_MAX_SEC/60)}:{String(D10_SIMULATION_MAX_SEC%60).padStart(2,'0')}</span>
               </div>
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:3,height:34,marginBottom:16}}>
                 {waveVals.map((v,i)=><div key={i} style={{width:4,borderRadius:2,background:"#C9A84C",height:Math.max(3,v*30),transition:"height 0.1s ease"}}/>)}
@@ -496,7 +528,7 @@ export function D10MobileSim({T2: _T2, onRecordingChange}) {
           <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,color:"#2C2416",margin:0,lineHeight:1.6}}>{r.insight}</p>
         </div>
         <div style={{padding:"14px 16px",background:"rgba(138,158,132,0.08)",borderRadius:4,borderLeft:"2px solid #8A9E84"}}>
-          <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>Every time you rehearse landing your impact here, you're building the version of you who walks into a review, a promotion conversation, or a tough question already knowing exactly what to say.</p>
+          <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>Each time you practise landing your impact, you're getting ready for the review, the promotion conversation or the tough question.</p>
         </div>
         <button onClick={resetToScenarios} style={{padding:"11px",borderRadius:3,border:"0.5px solid #DDD5C4",background:"transparent",color:"#6B5E44",fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Try another scenario →</button>
       </div>}

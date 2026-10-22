@@ -11,7 +11,7 @@ import { MobileSessionView } from './SessionViewMobile.jsx';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
-import { D10SimFeedback, D10MobileSAR, D10MobileSim, explainD10Score } from '../modules/Day10.jsx';
+import { D10SimFeedback, D10MobileSAR, D10MobileSim, explainD10Score, useD10SimCoach, D10_SIM_COACH_SECS, D10_SCENARIO_TEXT, D10_SIMULATION_MAX_SEC } from '../modules/Day10.jsx';
 import { useSequentialDots, SequentialDots } from '../modules/SequentialDots.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
 import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidget } from '../modules/Day4.jsx';
@@ -38,7 +38,7 @@ import D10Theory from '../modules/D10Theory.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
-import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
+import { PlayIcon, CoachIntro, CoachButton, CoachStyles } from '../modules/CoachNarration.jsx';
 import { D2PracticeWidget, D2SimWidget } from '../modules/Day2.jsx';
 import { D5PracticeWidget, D5SimWidget } from '../modules/Day5.jsx';
 import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
@@ -452,7 +452,8 @@ setAmbitionSaved(true); } catch {}
       const [simResult, setSimResult] = useState(null);
       const [expandedSimDim, setExpandedSimDim] = useState(null);
       const [simIsRec, setSimIsRec] = useState(false);
-      const [simTimeLeft, setSimTimeLeft] = useState(30);
+      const [simTimeLeft, setSimTimeLeft] = useState(D10_SIMULATION_MAX_SEC);
+      const simCoach = useD10SimCoach();
       const [simWave, setSimWave] = useState(Array(10).fill(0.3));
       const [simMicError, setSimMicError] = useState(false);
       const [simTranscribeFailed, setSimTranscribeFailed] = useState(false);
@@ -493,7 +494,7 @@ setAmbitionSaved(true); } catch {}
           mr.ondataavailable=e=>{if(e.data.size>0)simChunksRef.current.push(e.data);};
           mr.start(250);
           simMediaRecRef.current=mr;
-          setSimIsRec(true); setSimTimeLeft(30); setSimPhase('recording');
+          setSimIsRec(true); setSimTimeLeft(D10_SIMULATION_MAX_SEC); setSimPhase('recording');
         }catch(err){ console.error("[D10 Sim] mic error",err); setSimMicError(true); }
       }
       function doSimStop(){
@@ -533,8 +534,10 @@ setAmbitionSaved(true); } catch {}
           setSimPhase('feedback');
         }catch{setSimPhase('scoreFailed');}
       }
+      // Hard cap: recordings auto-stop (and auto-submit) at 2 minutes, as on mobile.
+      useEffect(()=>{ if(simIsRec&&simTimeLeft<=0) doSimStop(); },[simIsRec,simTimeLeft]);
       function resetSim(){
-        setSimPhase('intro');setActiveScenario(null);setSimFallback('');setSimResult(null);setExpandedSimDim(null);setSimIsRec(false);setSimTimeLeft(30);setSimMicError(false);setSimTranscribeFailed(false);
+        setSimPhase('intro');setActiveScenario(null);setSimFallback('');setSimResult(null);setExpandedSimDim(null);setSimIsRec(false);setSimTimeLeft(D10_SIMULATION_MAX_SEC);setSimMicError(false);setSimTranscribeFailed(false);
         clearInterval(simWaveIntRef.current);
         if(simStreamRef.current){simStreamRef.current.getTracks().forEach(t=>t.stop());simStreamRef.current=null;}
         try{if(simCtxRef.current){simCtxRef.current.close();simCtxRef.current=null;}}catch{}
@@ -893,12 +896,7 @@ setAmbitionSaved(true); } catch {}
       }
 
       if (step === "Simulation") {
-        const HOT_SEAT_SCENARIOS = [
-          {id:2, title:"Promotion Calibration",     prompt:'"Why are you ready for the next level?"',                               tag:"Ownership · Evidence · Leadership language"},
-          {id:4, title:"Credit Theft",              prompt:"A colleague presents work you led as their own. Respond professionally.", tag:"Composure · Diplomacy · Ownership"},
-          {id:5, title:"The Difficult Stakeholder", prompt:'"I\'m still not convinced this made a difference."',                    tag:"Persuasion · Calm under pressure · Credibility"},
-          {id:6, title:"The Quiet Achiever Trap",   prompt:'"You do great work — but I need more visibility into your impact."',    tag:"Self-advocacy · Reframing · Strategic comms"},
-        ];
+        const HOT_SEAT_SCENARIOS = D10_SCENARIO_TEXT;
         const cs10={card:{background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,padding:"22px 24px"},label:{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10},cta:{width:"100%",padding:"16px",borderRadius:4,border:"none",background:T.ink,color:T.bg,fontSize:16,fontWeight:600,cursor:"pointer",fontFamily:T.sans,minHeight:52}};
 
         // ── INTRO ──
@@ -906,12 +904,14 @@ setAmbitionSaved(true); } catch {}
           <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
             <div style={{marginBottom:24}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Simulation · Day 10</div>
-              <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:0}}>The Leadership Hot Seat</h2>
+              <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,margin:"0 0 14px"}}>The Leadership Hot Seat</h2>
+              <CoachStyles />
+              <CoachButton T={T} T2={T2} isDesktop narration={simCoach} duration={D10_SIM_COACH_SECS} style={{ marginTop: 0, marginBottom: 0 }} />
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:14}}>
               <div style={{...cs10.card}}>
                 <div style={cs10.label}>How It Works</div>
-                <h3 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 20px"}}>Four real scenarios. 30 seconds each. Speak — get coached.</h3>
+                <h3 style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T2.text,lineHeight:1.3,margin:"0 0 20px"}}>Four real scenarios. Up to 2 minutes each, but aim for about 30 seconds.</h3>
                 <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
                   {[
                     {n:1,label:"Pick a\nscenario",icon:<svg width={22} height={22} viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="14" height="16" rx="2" stroke={T.gold} strokeWidth="1.3"/><path d="M7 7h8M7 11h8M7 15h5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg>},
@@ -932,16 +932,16 @@ setAmbitionSaved(true); } catch {}
               </div>
               <div style={{...cs10.card}}>
                 <div style={cs10.label}>The First Step</div>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Six scenarios that feel painfully real. In high-stakes moments, nobody asks for your full backstory. You'll be judged on how clearly you communicate your impact — fast.</p>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>Frame the Situation. Explain your Action. Land the Result. Then stop.</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Pick the scenario that feels closest to your world. What counts is how clearly you communicate your impact.</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,margin:0,fontWeight:300}}>Set the situation, say what you did, and land the result. Then stop. You don't need the full backstory.</p>
               </div>
               <div style={{...cs10.card}}>
                 <div style={cs10.label}>Your AI Coach</div>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>Your AI coach will assess your spoken response across Clarity, Structure, Confidence, Brevity, and Impact — then rewrite your answer to show you exactly what a stronger version sounds like.</p>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic",fontWeight:300}}>Your impact. 30 seconds. Speak it.</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.7,marginBottom:10,fontWeight:300}}>You'll get feedback on clarity, structure, confidence, brevity and impact, then see what a stronger version could sound like.</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.7,margin:0,fontStyle:"italic",fontWeight:300}}>Keep it short, and own it.</p>
               </div>
               <div>
-                <AICoachNote T={T} T2={T2} />
+                <AICoachNote T={T} T2={T2} voice />
                 <button onClick={()=>setSimPhase('picking')} style={cs10.cta}>Start the Simulation →</button>
               </div>
             </div>
@@ -954,15 +954,17 @@ setAmbitionSaved(true); } catch {}
             <div style={{marginBottom:24}}>
               <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Simulation · Day 10</div>
               <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Choose Your Scenario</h2>
-              <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,fontWeight:300}}>Pick the situation that feels most relevant to you right now.</p>
+              <p style={{fontFamily:T.sans,fontSize:15,color:T2.text3,fontWeight:300,marginBottom:14}}>Pick the one that feels closest to your world.</p>
+              <CoachStyles />
+              <CoachButton T={T} T2={T2} isDesktop narration={simCoach} duration={D10_SIM_COACH_SECS} style={{ marginTop: 0, marginBottom: 0 }} />
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-              {HOT_SEAT_SCENARIOS.map(sc=>(
-                <button key={sc.id} onClick={()=>{setActiveScenario(sc);setSimPhase('ready');setSimTranscript('');setSimFallback('');setSimResult(null);setSimTimeLeft(30);}}
+              {HOT_SEAT_SCENARIOS.map((sc,i)=>(
+                <button key={sc.id} onClick={()=>{simCoach.pause();setActiveScenario(sc);setSimPhase('ready');setSimFallback('');setSimResult(null);setSimTimeLeft(D10_SIMULATION_MAX_SEC);}}
                   style={{padding:"20px 22px",borderRadius:6,border:"0.5px solid "+T2.border,background:T2.surface,textAlign:"left",cursor:"pointer",transition:"all 0.2s ease"}}
                   onMouseEnter={e=>{e.currentTarget.style.borderColor=T.gold;e.currentTarget.style.background="rgba(138,158,132,0.04)";}}
                   onMouseLeave={e=>{e.currentTarget.style.borderColor=T2.border;e.currentTarget.style.background=T2.surface;}}>
-                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{sc.id}. {sc.title}</div>
+                  <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{i+1}. {sc.title}</div>
                   <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T2.text,lineHeight:1.4,marginBottom:8}}>{sc.prompt}</div>
                   <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>{sc.tag}</div>
                 </button>
@@ -979,10 +981,10 @@ setAmbitionSaved(true); } catch {}
               <div style={{...cs10.card,borderLeft:"3px solid "+T.gold,padding:"28px 32px"}}>
                 <div style={cs10.label}>{activeScenario.title}</div>
                 <p style={{fontFamily:T.serif,fontSize:26,fontWeight:600,color:T2.text,lineHeight:1.3,marginBottom:14}}>{activeScenario.prompt}</p>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Frame the Situation. Explain your Action. Land the Result. Speak for up to 30 seconds. Click start when you are ready.</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>Set the situation, say what you did, and land the result. Aim for about 30 seconds, up to 2 minutes. Start when you're ready.</p>
               </div>
               <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                {["Lead with the result","Use 'I' not 'we'","Be specific","~30 seconds"].map((h,i)=>(
+                {["Lead with the result","Say 'I', not 'we'","Be specific","About 30 seconds"].map((h,i)=>(
                   <span key={i} style={{padding:"5px 12px",borderRadius:20,background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",fontFamily:T.sans,fontSize:12,color:T.gold}}>{h}</span>
                 ))}
               </div>
@@ -1021,10 +1023,10 @@ setAmbitionSaved(true); } catch {}
                     <div style={{width:8,height:8,borderRadius:"50%",background:"#CC4444",animation:"glowPulse 1s ease infinite"}}/>
                     <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(245,239,230,0.5)",textTransform:"uppercase",letterSpacing:"2px"}}>Recording</span>
                   </div>
-                  <div style={{fontFamily:T.serif,fontSize:48,fontWeight:600,color:simTimeLeft<=10?"#CC4444":T.gold,lineHeight:1}}>{simTimeLeft}<span style={{fontFamily:T.sans,fontSize:14,color:"rgba(245,239,230,0.4)"}}>s</span></div>
+                  <div style={{fontFamily:T.serif,fontSize:48,fontWeight:600,color:simTimeLeft<=10?"#CC4444":T.gold,lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{Math.floor(simTimeLeft/60)}:{String(simTimeLeft%60).padStart(2,'0')}</div>
                 </div>
                 <div style={{height:2,background:"rgba(245,239,230,0.07)",borderRadius:1,marginBottom:16,overflow:"hidden"}}>
-                  <div style={{height:"100%",width:((30-simTimeLeft)/30*100)+"%",background:simTimeLeft<=10?"#CC4444":T.gold,borderRadius:1,transition:"width 1s linear"}}/>
+                  <div style={{height:"100%",width:((D10_SIMULATION_MAX_SEC-simTimeLeft)/D10_SIMULATION_MAX_SEC*100)+"%",background:simTimeLeft<=10?"#CC4444":T.gold,borderRadius:1,transition:"width 1s linear"}}/>
                 </div>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:3,height:40,marginBottom:14}}>
                   {simWave.map((v,i)=><div key={i} style={{width:4,borderRadius:2,background:T.gold,height:Math.max(3,v*36),transition:"height 0.1s ease"}}/>)}
@@ -1100,7 +1102,7 @@ setAmbitionSaved(true); } catch {}
                 <p style={{fontFamily:T.serif,fontSize:16,color:T2.text,lineHeight:1.7,margin:0}}>{simResult.insight}</p>
               </div>
               <div style={{...cs10.card,borderLeft:"2px solid "+T.gold,background:"rgba(138,158,132,0.04)"}}>
-                <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>Every time you rehearse landing your impact here, you're building the version of you who walks into a review, a promotion conversation, or a tough question already knowing exactly what to say.</p>
+                <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text,lineHeight:1.65,margin:0}}>Each time you practise landing your impact, you're getting ready for the review, the promotion conversation or the tough question.</p>
               </div>
               <button onClick={()=>{setSimPhase('picking');setExpandedSimDim(null);}} style={cs10.cta}>Try Another Scenario →</button>
               <button onClick={resetSim} style={{background:"none",border:"none",color:T2.text3,fontFamily:T.sans,fontSize:13,cursor:"pointer",padding:"4px 0",textAlign:"center"}}>← Start over</button>

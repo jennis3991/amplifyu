@@ -223,8 +223,8 @@ export function SessionLeftPanel({
         <img loading="lazy" src="/simulation-hero.jpg" alt="" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center" }}/>
         {d10Ol}
         <div style={{ position:"relative", zIndex:2, padding:"40px 48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Performance in Action</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Communicate your impact. Make it impossible to miss.</p>
+          <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>{`Day ${lesson.day} · ${lesson.tag}`}</div>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Communicate your impact with conviction.</p>
         </div>
       </div>
     );
