@@ -344,52 +344,6 @@ strengthens the loop.</text>
   );
 }
 
-export function D8() {
-  return (
-    <svg width="280" height="162" viewBox="0 0 280 162" fill="none">
-      <text x="0" y="12" fontSize="8" fill={C.dim} 
-fontFamily="Inter,sans-serif" letterSpacing="1.5">MEMORY ENCODING</text>
-      <text x="58" y="30" textAnchor="middle" fontSize="9" 
-fontWeight="700" fill={C.dim} fontFamily="Inter,sans-serif">FACTS 
-ONLY</text>
-      <rect x="8" y="36" width="100" height="58" rx="1" fill={C.faint} 
-stroke="rgba(255,255,255,0.08)" strokeWidth="0.5"/>
-      <text x="12" y="51" fontSize="8" fill={C.dim} 
-fontFamily="Inter,sans-serif">Verbal only</text>
-      <rect x="18" y="57" width="70" height="6" rx="1" fill={C.dim} 
-fillOpacity="0.28"/>
-      <rect x="18" y="69" width="50" height="6" rx="1" fill={C.dim} 
-fillOpacity="0.16"/>
-      <rect x="18" y="81" width="60" height="6" rx="1" fill={C.dim} 
-fillOpacity="0.09"/>
-      <text x="210" y="30" textAnchor="middle" fontSize="9" 
-fontWeight="700" fill={C.gold} fontFamily="Inter,sans-serif">STORY</text>
-      <rect x="160" y="36" width="108" height="58" rx="1" 
-fill="rgba(138,158,132,0.08)" stroke={C.gold} strokeWidth="0.8" 
-strokeOpacity="0.4"/>
-      <text x="164" y="51" fontSize="8" fill={C.gold} 
-fontFamily="Inter,sans-serif">Verbal + visual</text>
-      <rect x="170" y="57" width="86" height="6" rx="1" fill={C.gold} 
-fillOpacity="0.5"/>
-      <rect x="170" y="69" width="86" height="6" rx="1" fill={C.gold} 
-fillOpacity="0.35"/>
-      <rect x="170" y="81" width="86" height="6" rx="1" fill={C.gold} 
-fillOpacity="0.22"/>
-      <text x="58" y="112" textAnchor="middle" fontSize="13" 
-fontWeight="700" fill={C.dim} fontFamily="Georgia,serif">10%</text>
-      <text x="58" y="124" textAnchor="middle" fontSize="7" fill={C.dim} 
-fontFamily="Inter,sans-serif">retention</text>
-      <text x="214" y="112" textAnchor="middle" fontSize="13" 
-fontWeight="700" fill={C.gold} fontFamily="Georgia,serif">65%</text>
-      <text x="214" y="124" textAnchor="middle" fontSize="7" fill={C.gold} 
-fontFamily="Inter,sans-serif">retention</text>
-      <text x="0" y="148" fontSize="8" fill={C.dim} 
-fontFamily="Inter,sans-serif" fontStyle="italic">Story activates verbal 
-and visual memory channels.</text>
-    </svg>
-  );
-}
-
 export function D9() {
   return (
     <svg width="280" height="160" viewBox="0 0 280 160" fill="none">
@@ -718,7 +672,7 @@ you speak. The story is ready.</text>
 }
 
 export const DIAGRAMS = 
-[D1,D2,D3,D6,D4,D8,D7,D9,D_StoryKillers,D_ThreePoint,D10,D12,D11,D14];
+[D1,D2,D3,D6,D4,null,D7,D9,D_StoryKillers,D_ThreePoint,D10,D12,D11,D14]; // slot 6: every day using it has a theory photo
 
 
 
