@@ -85,12 +85,12 @@ export const NT_PIXAR = [
 export const NT_NEURO = [
   { word:"Curiosity", sub:"Stories create open loops the brain wants to close.",
     bullets:["When you structure your message as a narrative, people lean in. They genuinely want to know what happens next.","Open loops hold attention. Data closes doors. Story opens them."] },
-  { word:"Empathy",   sub:"A well-told story activates the listener's brain as if they're living it themselves.",
+  { word:"Empathy",   sub:"A well-told story helps listeners picture it and feel it, as if they were there.",
     bullets:["That shared experience builds trust faster than any data point.","When your audience feels inside the story, they're not just listening. They're experiencing."] },
   { word:"Memory",    sub:"Narrative makes your message far easier to remember.",
-    bullets:["The stories you tell can stay with people for years, long after the facts have faded.","People forget statistics. They remember stories. Always."] },
+    bullets:["The stories you tell can stay with people for years, long after the facts have faded.","People forget statistics. They remember stories."] },
   { word:"Action",    sub:"Stories move people to act, not just agree.",
-    bullets:["When your message creates an emotional connection, it leads to action, not just agreement, but real change.","The most influential professionals aren't the most knowledgeable. They're the best storytellers."] },
+    bullets:["When your message creates an emotional connection, it leads to action, not just agreement, but real change.","Knowledge informs people. Stories move them."] },
 ];
 export const NT_EXAMPLES = [
   { name: "Steve Jobs - iPhone Launch, 2007", story: '"An iPod… a phone… an internet communicator… Are you getting it? These are not three separate devices. This is one device."', lesson: "Build tension slowly through repetition. Then release it at exactly the right moment." },

@@ -361,9 +361,9 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"rgba(10,8,5,0.38)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.82) 0%, rgba(10,8,5,0.15) 55%, transparent 80%)" }}/>
         <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"40px 48px", zIndex:2, animation:"fadeUp 0.7s ease both" }}>
-          <div style={{ ...LP_LABEL, marginBottom:12 }}>DAY 8 · STORYTELLING</div>
-          <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>Make It Memorable</h2>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>The best communicators think in stories.</p>
+          <div style={{ ...LP_LABEL, marginBottom:12 }}>{`Day ${lesson.day} · ${lesson.tag}`}</div>
+          <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>{lesson.title}</h2>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>{lesson.quote}</p>
         </div>
       </div>
     );
