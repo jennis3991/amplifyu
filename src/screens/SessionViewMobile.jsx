@@ -402,7 +402,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD4 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Rehearsal · Day 4" headline="Say less. Mean more." />;
         if(isD5 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="The Setup" headline="Point. Reason. Example. Now make it yours." />;
         if(isD6 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Find Your Words" headline="The right words under pressure don't come from thinking faster. They come from having them ready." />;
-        if(isD9 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Rehearsal · Day 9" headline="The most connected people listen more than they speak." />;
+        if(isD9 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Connection Habits" headline="The most connected people listen more than they speak." />;
         if(isD10 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Make Your Work Visible" headline="Turn what you do into a story people remember." />;
         if(isD11 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Build Your Brand" headline="Every career has a reputation. The best careers have one by design." />;
         if(isD12 && step==="Rehearsal") return <TabHeroPane image="/rehearsal-hero.jpg" label="Practice Presence" headline="Seven rounds. Every physical signal that shapes how communication lands." />;
@@ -1578,18 +1578,7 @@ T.goldDark : T2.text4,
         );
       })()}
       {isD9 && step==="Rehearsal" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Rehearsal · Day 9</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:14}}>Build Your Connection Habits</h2>
-          <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginBottom:16}}>
-            <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
-              <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
-              <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-            <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
-          </div>
-          <D9PracticeWidget T={T} T2={T2} isDesktop={false}/>
-        </>
+        <D9PracticeWidget T={T} T2={T2} isDesktop={false}/>
       )}
       {isD9 && step==="Simulation" && (
         <>
