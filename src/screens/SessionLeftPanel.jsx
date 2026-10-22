@@ -646,7 +646,7 @@ export function SessionLeftPanel({
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Iconic Brands</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Brand isn't what you say about yourself. It's what others say when you're not there.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Three people whose personal brands became cultural forces — by design, not accident.</p>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Two brands that became cultural forces by design, not by accident.</p>
         </div>
       </div>
     );
