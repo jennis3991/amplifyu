@@ -37,6 +37,7 @@ import D5Insight from '../modules/D5Insight.jsx';
 import D5Theory from '../modules/D5Theory.jsx';
 import D6Insight from '../modules/D6Insight.jsx';
 import D6Theory from '../modules/D6Theory.jsx';
+import D7Insight from '../modules/D7Insight.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -782,42 +783,7 @@ T.goldDark : T2.text4,
       )}
       {/* ── D7 Mobile Steps — Week 1 Review ─────────────────────────────────── */}
       {isD7 && step==="Insight" && (
-        <>
-          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The wake-up call</div>
-          <h2 style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T2.text,lineHeight:1.15,marginBottom:8}}>Most people know how to communicate better. Very few practise until it's automatic.</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>This week, you did something different.</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-            {D7_INSIGHT_CARDS.map((n,i)=>{
-              const open = d7MobCard===("d7i"+i);
-              return (
-                <div key={i} onClick={()=>setD7MobCard(open?null:"d7i"+i)}
-                  style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s, box-shadow 0.2s",boxShadow:open?"0 2px 12px rgba(138,158,132,0.2)":"none"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
-                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
-                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0,transition:"color 0.2s"}}>{open?"▴":"▸"}</span>
-                  </div>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
-                  {open && (
-                    <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
-                      {n.bullets.map((b,j)=>(
-                        <div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-                          <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/>
-                          <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          <div style={{background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:8,padding:"16px",marginTop:4}}>
-            <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:8,fontFamily:T.sans}}>The Neuroscience</div>
-            <div style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:10}}>Why repetition works at a biological level</div>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.65,marginBottom:8,fontWeight:300}}>Every time you practise a skill deliberately, your brain wraps the relevant neural pathway in myelin — a sheath that makes the signal faster, stronger, and more automatic.</p>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T.gold,lineHeight:1.65,margin:0,fontStyle:"italic"}}>Skill is not talent. Skill is repetition. And repetition responds to practice, not intelligence. The six habits you trained this week are being written into your nervous system right now.</p>
-          </div>
-        </>
+        <D7Insight T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Theory"))}/>
       )}
       {isD7 && step==="Theory" && (
         <>

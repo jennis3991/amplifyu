@@ -785,32 +785,39 @@ export const NAV_LABELS = ["See the theory","See examples","Start rehearsal","Go
 
 // ─── Session constants (pure data, no JSX)
 export const D7_INSIGHT_CARDS = [
-  { word: "You've already done something most professionals never do.",
+  { word: "You've done something many people never do: practise on purpose.",
     sub: "Six communication habits. Seven days. Deliberately.",
     bullets: [
-      "Most people spend a career reacting. You spent a week conditioning. That gap is already opening.",
+      "Most people spend a career reacting. You spent a week practising with intention.",
       "The decision to practise deliberately is rarer than it looks.",
     ]
   },
-  { word: "Every rep this week physically changed your brain.",
-    sub: "Repetition doesn't just reinforce knowledge. It rewires how you communicate.",
+  { word: "Every rep this week strengthened your skills.",
+    sub: "Repetition doesn't just reinforce knowledge. It changes how you communicate.",
     bullets: [
-      "Each time you practised, your brain strengthened the neural pathway for that behaviour, making it faster, stronger, and more automatic.",
-      "This is biology, not motivation.",
+      "Each time you practised, that behaviour became a little faster, easier and more automatic.",
+      "What once felt like effort starts to feel natural.",
     ]
   },
   { word: "The hardest part of building any skill is starting.",
     sub: "Awareness without practice stays theoretical. Practice without awareness stays shallow.",
     bullets: [
-      "This week you had both. That combination is rarer than you think.",
-      "It's why what follows will feel progressively more natural.",
+      "This week you had both.",
+      "It's why what follows will feel more and more natural.",
     ]
   },
   { word: "What looks like effortless confidence is a deeply rehearsed habit.",
-    sub: "Elite communicators aren't naturally gifted. They've simply repeated their foundations enough times that the effort became invisible.",
+    sub: "Confident communicators aren't simply born that way. They've repeated their foundations until the effort became invisible.",
     bullets: [
       "That process is now in motion for you.",
-      "Repetition is the only path, and you've already started.",
+      "Repetition is the path, and you've already started.",
+    ]
+  },
+  { word: "Practice builds the pathways.",
+    sub: "Research suggests repetition strengthens the brain pathways behind a skill, helping signals travel faster and more automatically.",
+    bullets: [
+      "Skill isn't talent. Skill is repetition.",
+      "The six habits you practised this week are already becoming more natural.",
     ]
   },
 ];
