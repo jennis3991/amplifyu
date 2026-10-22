@@ -6,7 +6,8 @@ import { warmLift } from "./CoachNarration.jsx";
 // (the Week 1 review, Day 7). The coach moves it on at each card cue; the
 // arrows let the user browse in between. No swipe: it would clash with the
 // app's swipe between steps.
-// Cards: [{ word, sub, bullets?, tag? }]. Cues reference cards by index.
+// Cards: [{ word, sub, bullets?, tag?, foot? }]. foot is a takeaway line under
+// the bullets. Cues reference cards by index.
 
 // Follows the narration: jumps to the narrated card at each cue and brings
 // the carousel into view. Returns the slide state plus a ref for the region.
@@ -72,6 +73,7 @@ export function CoachCarousel({ T, T2, isDesktop: d, cards, carousel, litIndex, 
                       ))}
                     </div>
                   )}
+                  {n.foot && <div style={{ fontFamily: T.sans, fontSize: d ? 15 : 14, fontWeight: 600, color: T.gold, marginTop: d ? 18 : 14 }}>→ {n.foot}</div>}
                 </div>
               </div>
             );

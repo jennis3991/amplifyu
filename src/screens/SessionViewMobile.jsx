@@ -47,6 +47,7 @@ import D9Theory from '../modules/D9Theory.jsx';
 import D10Insight from '../modules/D10Insight.jsx';
 import D10Theory from '../modules/D10Theory.jsx';
 import D11Insight from '../modules/D11Insight.jsx';
+import D11Theory from '../modules/D11Theory.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
@@ -1870,56 +1871,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
         <D11Insight T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Theory"))}/>
       )}
       {isD11 && step==="Theory" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science of Personal Brand</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>The Halo Effect</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>When people notice one standout positive trait, they often assume other positive qualities must be true too.</p>
-          <div style={{display:"flex",flexWrap:"nowrap",gap:6,marginBottom:14}}>
-            {[["Clear","Intelligence"],["Calm","Competence"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([s,r],i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:4,padding:"5px 9px",background:T2.surface,borderRadius:20,border:"0.5px solid "+T2.border,flexShrink:0}}>
-                <span style={{fontFamily:T.sans,fontSize:11,fontWeight:500,color:T2.text}}>{s}</span>
-                <span style={{fontFamily:T.sans,fontSize:10,color:T.gold}}>→</span>
-                <span style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold}}>{r}</span>
-              </div>
-            ))}
-          </div>
-          <div style={{padding:"12px 14px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T2.border,marginBottom:20}}>
-            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T2.text2,lineHeight:1.6,margin:0}}>"People rarely remember everything about you. They remember the strongest signal you gave them."</p>
-          </div>
-           {/* Brand formula */}
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>The AmplifyU Brand Formula</div>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:12}}>Six components. Tap any to expand.</p>
-          {D11_INGREDIENTS.map((ing,i)=>{
-            const open = d11MobCard===("ing"+i);
-            return (
-              <div key={i} onClick={()=>setD11MobCard(open?null:"ing"+i)} style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"14px",marginBottom:8,cursor:"pointer",transition:"border-color 0.2s"}}>
-                <div style={{display:"flex",alignItems:"center",gap:10}}>
-                  <div style={{width:24,height:24,borderRadius:"50%",background:open?T.gold:"rgba(138,158,132,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
-                    <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:"white"}}>{i+1}</span>
-                  </div>
-                  <div style={{flex:1}}>
-                    <span style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text}}>{ing.n}</span>
-                    <span style={{fontFamily:T.sans,fontSize:12,color:T2.text4,marginLeft:8}}>{ing.tagline}</span>
-                  </div>
-                  <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:open?T.gold:T2.text4}}>{open?"▴":"▸"}</span>
-                </div>
-                {open && (
-                  <div style={{marginTop:12,paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text,lineHeight:1.65,fontWeight:300,margin:"0 0 10px"}}>{ing.body}</p>
-                    <div style={{padding:"8px 10px",background:T2.surface,borderRadius:3,marginBottom:8}}>
-                      <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.goldDark,textTransform:"uppercase",letterSpacing:"1px",marginBottom:3}}>{ing.psych}</div>
-                      <p style={{fontFamily:T.sans,fontSize:11,color:T2.text3,lineHeight:1.5,margin:0,fontWeight:300}}>{ing.psychBody}</p>
-                    </div>
-                    <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold}}>→ {ing.takeaway}</div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-           <div style={{padding:"14px 16px",background:T2.surface,borderLeft:"3px solid "+T.gold,borderRadius:4,marginTop:4}}>
-            <p style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.6}}>Your brand is the story people tell themselves about you after repeated exposure.</p>
-          </div>
-        </>
+        <D11Theory T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
       )}
       {isD11 && step==="Example" && (()=>{
         const D11_EDITORIAL = [

@@ -35,6 +35,7 @@ import D9Insight from '../modules/D9Insight.jsx';
 import D9Theory from '../modules/D9Theory.jsx';
 import D10Insight from '../modules/D10Insight.jsx';
 import D11Insight from '../modules/D11Insight.jsx';
+import D11Theory from '../modules/D11Theory.jsx';
 import D10Theory from '../modules/D10Theory.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
@@ -2949,66 +2950,11 @@ setAmbitionSaved(true); } catch {}
         </div>
       );
 
-      if (step === "Theory") {
-        return (
-          <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-            <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science of Personal Brand</div>
-
-            {/* Halo Effect — first */}
-            <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>The Halo Effect</h2>
-            <p style={{ fontFamily:T.sans, fontSize:16, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:20, maxWidth:640 }}>Whether intentional or not, people are constantly building a story about who you are. Psychologists call this the Halo Effect: one standout positive trait shapes how they judge everything else.</p>
-            <div style={{ display:"flex", flexWrap:"nowrap", gap:10, marginBottom:20 }}>
-              {[["Clear","Intelligence"],["Calm","Competence"],["Confident","Capability"],["Warm","Trustworthiness"]].map(([sig,res],i) => (
-                <div key={i} style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", background:T2.surface, borderRadius:20, border:"0.5px solid "+T2.border }}>
-                  <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:500, color:T2.text }}>{sig}</span>
-                  <span style={{ fontFamily:T.sans, fontSize:12, color:T.gold }}>→</span>
-                  <span style={{ fontFamily:T.sans, fontSize:13, fontWeight:600, color:T.gold }}>{res}</span>
-                </div>
-              ))}
-            </div>
-            <div style={{ padding:"16px 20px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T2.border, marginBottom:36 }}>
-              <p style={{ fontFamily:T.serif, fontSize:16, fontStyle:"italic", color:T2.text2, lineHeight:1.6, margin:0 }}>"People rarely remember everything about you. They remember the strongest signal you gave them."</p>
-            </div>
-
-            {/* Recipe heading */}
-            <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The AmplifyU Brand Formula</div>
-            <h3 style={{ fontFamily:T.serif, fontSize:28, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:10 }}>The Recipe for a Memorable Personal Brand</h3>
-            <p style={{ fontFamily:T.sans, fontSize:15, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:24, maxWidth:600 }}>Great personal brands don't happen accidentally. They are built through six repeated psychological signals. Tap any component to see the full explanation.</p>
-
-            {/* 6 expandable ingredient boxes */}
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginBottom:28 }}>
-              {D11_INGREDIENTS.map((ing,i) => (
-                <div key={i} onClick={()=>setD11CardOpen(d11CardOpen===i?null:i)}
-                  style={{ padding:"18px 20px", background:T2.surface, borderRadius:4, border:`0.5px solid ${d11CardOpen===i?T.gold:T2.border}`, cursor:"pointer", transition:"border-color 0.2s" }}>
-                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
-                    <div style={{ width:22, height:22, borderRadius:"50%", background:d11CardOpen===i?T.gold:"rgba(138,158,132,0.2)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, transition:"background 0.2s" }}>
-                      <span style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:"white" }}>{i+1}</span>
-                    </div>
-                    <span style={{ fontFamily:T.sans, fontSize:17, fontWeight:600, color:d11CardOpen===i?T.gold:T2.text4 }}>{d11CardOpen===i?"▴":"▸"}</span>
-                  </div>
-                  <div style={{ fontFamily:T.serif, fontSize:18, fontWeight:600, color:T2.text, marginBottom:4 }}>{ing.n}</div>
-                  <div style={{ fontFamily:T.sans, fontSize:12, color:T2.text3 }}>{ing.tagline}</div>
-                  {d11CardOpen===i && (
-                    <div style={{ marginTop:16, paddingTop:14, borderTop:"0.5px solid "+T2.divider }}>
-                      <p style={{ fontFamily:T.sans, fontSize:13, color:T2.text, lineHeight:1.65, fontWeight:300, margin:"0 0 12px" }}>{ing.body}</p>
-                      <div style={{ padding:"8px 12px", background:T2.bg, borderRadius:3, marginBottom:10 }}>
-                        <div style={{ fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.goldDark, textTransform:"uppercase", letterSpacing:"1px", marginBottom:3 }}>{ing.psych}</div>
-                        <p style={{ fontFamily:T.sans, fontSize:12, color:T2.text3, lineHeight:1.55, margin:0, fontWeight:300 }}>{ing.psychBody}</p>
-                      </div>
-                      <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold }}>→ {ing.takeaway}</div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Final quote */}
-            <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold }}>
-              <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T.gold, lineHeight:1.65, margin:0 }}>Your brand is the story people tell themselves about you after repeated exposure.</p>
-            </div>
-          </div>
-        );
-      }
+      if (step === "Theory") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <D11Theory T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
+        </div>
+      );
 
       if (step === "Rehearsal") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
