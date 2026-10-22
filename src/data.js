@@ -219,7 +219,7 @@ export const REVIEW_BULLETS = [
   ["One idea per sentence - always, without exception.", "Short sentences land harder and are remembered longer.", "Miller's Law: your listener's brain holds seven items at once. Respect that."],
   ["Lead with your conclusion, then earn it with evidence.", "Point → Reason → Example: the fastest path from idea to understanding.", "Structure is a gift to your listener, not a constraint on your thinking."],
   ["Staying calm under pressure keeps your thinking clear and helps people trust what you say.", "Composure is the foundation that holds clarity, structure and brevity together when it counts most.", "Prepare your first sentence before every difficult conversation. It anchors you when pressure rises."],
-  ["Six habits in six days: clarity, voice, no fillers, short sentences, PRE structure, and composure under pressure.", "Communication mastery is not one big insight. It is six small habits repeated until they become automatic.", "The skills you built this week are the foundation every great communicator stands on."],
+  ["Six habits in six days: clarity, voice, pausing instead of filling, short sentences, PRE structure, and composure under pressure.", "Communication mastery is not one big insight. It is six small habits repeated until they become automatic.", "The skills you built this week are the foundation for everything that comes next."],
   ["You learned why storytelling creates influence faster than information alone.", "You mastered the 6-beat story arc: Hook, Character, Problem, Turning Point, Resolution, Meaning.", "You built and rehearsed your own professional story with your AmplifyU Coach."],
   ["Genuine connection starts with curiosity, asking better questions, not delivering better answers.", "The 70/30 rule: listen 70% of the time. People feel most understood when they do most of the talking.", "Different people need different conversations. Adapting your style to theirs is the mark of a master communicator.", "Empathy is not agreement. It is the practice of making people feel genuinely heard before you respond."],
   ["Invisible excellence does not scale. Visibility is a communication skill, not a personality trait.", "Performance without visibility is philanthropy. Your work needs a voice.", "The gap between actual and perceived contribution is where careers stall. Communication closes it."],
@@ -326,7 +326,7 @@ export const LESSONS = [
    practice:"Have one high-stakes conversation today using all six habits: clarity, pace, no fillers, short sentences, PRE structure, and a story that proves your point. Notice which feels hardest.",
    scenarios:["A team meeting where you need to be heard","A 1:1 with your manager about your development","Any conversation that matters this week"],
    review:["Which of the six habits felt most natural?","Which one is hardest under pressure?","What story do you most want to be able to tell with confidence?"],
-   promise:"One week in. You communicate differently already. Week 2 takes everything you've built and turns it into a precision storytelling instrument.",
+   promise:"One week in, and you've built real foundations. Week 2 takes them further: storytelling, connection, visibility and presence.",
    teaser:"Bring together all six Week 1 habits and prepare for a storytelling deep-dive that will change how you show up in every professional room.",
    recap:"This week you built six core habits: clarity, voice control, no fillers, short sentences, PRE structure, and composure under pressure. These are the foundations everything else is built on."},
 
@@ -1052,6 +1052,7 @@ export const REVIEW_NARRATION = {
   4: { src: "/day4-review.mp3", secs: 20 },
   5: { src: "/day5-review.mp3", secs: 20 },
   6: { src: "/day6-review.mp3", secs: 20 },
+  7: { src: "/day7-review.mp3", secs: 24 },
 };
 
 // Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)

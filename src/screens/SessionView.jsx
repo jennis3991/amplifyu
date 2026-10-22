@@ -4239,7 +4239,7 @@ setAmbitionSaved(true); } catch {}
 
                       {/* Divider before books */}
                       <h2 style={{ fontFamily: T.serif, fontSize: "clamp(28px,2.5vw,36px)", fontWeight: 600, color: T2.text, letterSpacing: "-0.3px", lineHeight: 1.15, marginBottom: 12 }}>Go Deeper</h2>
-                      <p style={{ fontFamily: T.sans, fontSize: 15, fontWeight: 300, color: T2.text2, maxWidth: 500, marginBottom: 32, lineHeight: 1.65 }}>You've learned the techniques. These books will make you unstoppable.</p>
+                      <p style={{ fontFamily: T.sans, fontSize: 15, fontWeight: 300, color: T2.text2, maxWidth: 500, marginBottom: 32, lineHeight: 1.65 }}>You've learned the techniques. These books will take your skills further.</p>
 
                       {/* Book cards — mirrors the Reading List format in Toolkit */}
                       <div style={{ maxWidth: 500 }}>

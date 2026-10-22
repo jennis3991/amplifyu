@@ -2808,7 +2808,7 @@ strokeLinecap="round"/></svg>
           {/* Go Deeper heading */}
           <div style={{padding:"20px 24px 4px"}}>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.05,letterSpacing:"-0.5px",marginBottom:12}}>Go Deeper</h2>
-            <p style={{fontFamily:T.sans,fontSize:14,fontWeight:300,color:T2.text2,lineHeight:1.65,marginBottom:0}}>You've learned the techniques. These books will make you unstoppable.</p>
+            <p style={{fontFamily:T.sans,fontSize:14,fontWeight:300,color:T2.text2,lineHeight:1.65,marginBottom:0}}>You've learned the techniques. These books will take your skills further.</p>
           </div>
           {/* Book cards — mirrors the Reading List format in Toolkit */}
           {(()=>{
