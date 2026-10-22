@@ -42,6 +42,7 @@ import D7Theory from '../modules/D7Theory.jsx';
 import D7Example from '../modules/D7Example.jsx';
 import D8Insight from '../modules/D8Insight.jsx';
 import D8Theory from '../modules/D8Theory.jsx';
+import D9Insight from '../modules/D9Insight.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -1469,30 +1470,7 @@ T.goldDark : T2.text4,
        {/* ── D9 (Day 9) Mobile Steps ─────────────────────────────────────── */}
       {/* ── D9 Connection Mobile Steps ─────────────────────────────────── */}
       {isD9 && step==="Insight" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Missing Skill</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>How to make people feel understood.</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>Most people focus on what they want to say. Great communicators focus on understanding the person in front of them.</p>
-          <p style={{fontFamily:T.sans,fontSize:12,color:T.gold,lineHeight:1.5,fontWeight:500,marginBottom:14}}>Tap each card to explore →</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
-            {D9_INSIGHT_CARDS.map((n,i)=>{
-              const open=d9OpenCard===("d9i"+i);
-              return (
-                <div key={i} onClick={()=>setD9OpenCard(open?null:("d9i"+i))} style={{background:T2.surface,border:`1px solid ${open?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.15)"}`,borderRadius:8,padding:"14px",cursor:"pointer",transition:"border-color 0.2s"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:4}}>
-                    <div style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
-                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.7)",marginLeft:6,flexShrink:0}}>{open?"▴":"▸"}</span>
-                  </div>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.45,fontWeight:400,margin:open?"4px 0 8px":"4px 0 0"}}>{n.sub}</p>
-                  {open && <div style={{borderTop:"0.5px solid rgba(138,158,132,0.2)",paddingTop:10,display:"flex",flexDirection:"column",gap:7}}>
-                    {n.bullets.map((b,j)=><div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:5}}/><p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>{b}</p></div>)}
-                  </div>}
-                </div>
-              );
-            })}
-          </div>
-          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Connection is not about having the perfect thing to say. It's about creating an environment where others feel comfortable sharing theirs."</p>
-        </>
+        <D9Insight T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Theory"))}/>
       )}
       {isD9 && step==="Theory" && (
         <>

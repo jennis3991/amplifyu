@@ -7,11 +7,11 @@ export const D9_INSIGHT_CARDS = [
   { word:"People Remember How You Make Them Feel", sub:"Long after a conversation ends, people rarely remember every word. They remember how they felt.",
     bullets:["Connection creates emotional memory. Feelings outlast facts.","Relationships grow when people feel understood, not just heard."] },
   { word:"Listening Is a Competitive Advantage", sub:"Most people listen to reply. Few listen to understand.",
-    bullets:["Active listening builds trust faster than talking ever can.","People feel valued when they feel truly heard, not just acknowledged."] },
+    bullets:["Active listening builds trust.","People feel valued when they feel truly heard, not just acknowledged."] },
   { word:"Great Questions Create Great Conversations", sub:"The quality of a conversation is often determined by the quality of the questions.",
     bullets:["Curiosity creates connection. People feel interesting when someone is genuinely interested.","Questions reveal what matters most, and that's where real rapport lives."] },
   { word:"Empathy Builds Trust", sub:"People trust those who understand their perspective, even when they disagree.",
-    bullets:["Understanding comes before influence. You cannot move someone you don't understand.","Empathy is not agreement. It's the willingness to see the world through another person's eyes."] },
+    bullets:["Understanding comes before influence. It's hard to move someone you don't understand.","Empathy is not agreement. It's the willingness to see the world through another person's eyes."] },
 ];
 
 export const D9_COMM_STYLES = [
