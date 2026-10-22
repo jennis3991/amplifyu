@@ -17,7 +17,7 @@ function loadSavedWork() {
   try { toolkits = JSON.parse(localStorage.getItem("au1_toolkits") || "[]"); } catch {}
   return [...stories, ...toolkits].sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
 }
-export const SAVED_WORK_KEY = { 'speechwriter':'au1_stories', 'rehearsal':'au1_stories', 'brand-rehearsal':'au1_toolkits', 'linkedin-audit':'au1_toolkits', 'voice-analysis-day1':'au1_toolkits', 'voice-analysis-day2':'au1_toolkits', 'conversation-prep-day6':'au1_toolkits', 'week1-review-day7':'au1_toolkits', 'blueprint-day14':'au1_toolkits' };
+export const SAVED_WORK_KEY = { 'speechwriter':'au1_stories', 'rehearsal':'au1_stories', 'brand-rehearsal':'au1_toolkits', 'linkedin-audit':'au1_toolkits', 'voice-analysis-day1':'au1_toolkits', 'voice-analysis-day2':'au1_toolkits', 'conversation-prep-day6':'au1_toolkits', 'week1-review-day7':'au1_toolkits', 'performance-statement-day10':'au1_toolkits', 'blueprint-day14':'au1_toolkits' };
 export const SAVED_WORK_SOURCES = {
   'voice-analysis-day1': {
     dayLabel: "Day 1 · Clarity", clickable: true, day: 1, step: "Simulation",
@@ -39,6 +39,13 @@ export const SAVED_WORK_SOURCES = {
     getTitle: e => e.profile?.stakeholderLabel ? `Prep: ${e.profile.stakeholderLabel}` : (e.stakeholder || "Conversation prep"),
     getPreview: e => e.purpose || e.profile?.insight?.slice(0,140) || "",
     getBadge: e => Array.isArray(e.questions) ? `${e.questions.length} questions` : null,
+  },
+  'performance-statement-day10': {
+    dayLabel: "Day 10 · Performance Statement", clickable: false, day: 10, step: "Rehearsal",
+    icon: c => <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M4 16l4-4 3 3 4-5 3 3" stroke={c} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><rect x="3" y="3" width="16" height="16" rx="1.5" stroke={c} strokeWidth="1.3"/></svg>,
+    getTitle: () => "Your impact story",
+    getPreview: e => e.statement || "",
+    getBadge: () => null,
   },
   'brand-rehearsal': {
     dayLabel: "Day 11 · Rehearsal", clickable: true, day: 11, step: "Rehearsal",

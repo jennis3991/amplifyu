@@ -110,6 +110,18 @@ export function D10SimFeedback({input, scenario}) {
   );
 }
 
+// Saves the latest performance statement to My Saved Work (au1_toolkits), so
+// it shows on the Day 10 Review and in the Toolkit. Keeps the newest five.
+export function saveD10Statement(statement, input) {
+  try {
+    const existing = JSON.parse(localStorage.getItem('au1_toolkits') || '[]');
+    const mine = existing.filter(e => e.source === 'performance-statement-day10');
+    const others = existing.filter(e => e.source !== 'performance-statement-day10');
+    const entry = { id: Date.now(), source: 'performance-statement-day10', statement, input: input || '', timestamp: Date.now() };
+    localStorage.setItem('au1_toolkits', JSON.stringify([...others, ...[entry, ...mine].slice(0, 5)]));
+  } catch {}
+}
+
 // ─── SAR Builder — D10 Practice (mobile) ─────────────────────────────────────
 const D10_SAR_LOADING_MESSAGES = [
   "AmplifyU is carving your story…",
@@ -136,7 +148,7 @@ export function D10MobileSAR({onComplete}) {
       const d=await resp.json();
       const txt=(d.content||[]).map(b=>b.text||"").join("").trim();
       if(!txt) throw new Error();
-      setRes(txt);if(onComplete)onComplete();
+      setRes(txt);saveD10Statement(txt, text);if(onComplete)onComplete();
     }catch{setErr(true);}
     setL(false);
   }

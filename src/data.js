@@ -205,7 +205,7 @@ export const REVIEW_CLOSING = [
   "Performance is invisible until someone sees it.",
   "You've learned the framework. You've built your story. Now make it unforgettable.",
   "Connection is not a personality type. It is a learnable skill.",
-  "Performance without visibility is philanthropy.",
+  "Great work deserves to be seen.",
   "What you stand for is more powerful than what you do.",
   "Every relationship begins with genuine curiosity.",
   "Leaders speak from who they are, not what they want.",
@@ -222,7 +222,7 @@ export const REVIEW_BULLETS = [
   ["Six habits in six days: clarity, voice, pausing instead of filling, short sentences, PRE structure, and composure under pressure.", "Communication mastery is not one big insight. It is six small habits repeated until they become automatic.", "The skills you built this week are the foundation for everything that comes next."],
   ["You learned why stories move people in a way facts alone rarely do.", "You learned the six-beat Pixar framework, from 'Once upon a time' to 'Until finally'.", "You built and rehearsed your own professional story with your AmplifyU Coach."],
   ["Genuine connection starts with curiosity, asking better questions, not delivering better answers.", "The 70/30 rule: a simple rule of thumb. Listen 70% of the time and let the other person do most of the talking.", "Different people need different conversations. Adapting your style to theirs is the mark of a strong communicator.", "Empathy is not agreement. It is the practice of making people feel genuinely heard before you respond."],
-  ["Invisible excellence does not scale. Visibility is a communication skill, not a personality trait.", "Performance without visibility is philanthropy. Your work needs a voice.", "The gap between actual and perceived contribution is where careers stall. Communication closes it."],
+  ["Invisible excellence doesn't scale. Visibility is a communication skill, not a personality trait.", "Great work doesn't speak for itself. Your work needs a voice.", "When people can see your contribution clearly, your work gets the credit it deserves. Communication closes the gap."],
   ["Your brand is what people say about you when you leave the room.", "Consistency of voice and presence builds trust over years, not weeks.", "You cannot be known for everything. Choose your niche deliberately."],
   ["Give first, always. Generosity is the foundation of every lasting network.", "People remember how you made them feel, never just what you said.", "A warm, curious introduction is worth ten cold connections."],
   ["A leadership voice is earned through vulnerability, not volume.", "Brave language builds the psychological safety that makes teams great.", "The words you choose every day define the culture around you."],
@@ -745,8 +745,8 @@ export const WORKPLACE_APPLICATION = [
   [
     "Write down your three core professional strengths and look for opportunities to demonstrate them.",
     "Prepare one observation or insight to contribute in your next senior meeting.",
-    "Update your professional summary or LinkedIn using the clarity principles from Day 1.",
-    "Find one opportunity this week to make your work visible, a concise update, a shared result.",
+    "Use situation, action, result in your next update or one-to-one.",
+    "Find one opportunity this week to make your work visible: a short update or a shared result.",
   ],
   // Day 11 — Brand Identity
   [
@@ -1061,6 +1061,7 @@ export const REVIEW_NARRATION = {
   7: { src: "/day7-review.mp3", secs: 24 },
   8: { src: "/day8-review.mp3", secs: 19 },
   9: { src: "/day9-review.mp3", secs: 18 },
+  10: { src: "/day10-review.mp3", secs: 22 },
 };
 
 // Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)

@@ -11,7 +11,7 @@ import { MobileSessionView } from './SessionViewMobile.jsx';
 import { D9PracticeWidget, D9SimWidget } from '../modules/Day9.jsx';
 import { StoryBuilderWidget, StoryArchitectWidget, D8PracticeWidget } from '../modules/Day8.jsx';
 import { CoachWidget } from '../modules/CoachWidget.jsx';
-import { D10SimFeedback, D10MobileSAR, D10MobileSim, explainD10Score, useD10SimCoach, D10_SIM_COACH_SECS, D10_SCENARIO_TEXT, D10_SIMULATION_MAX_SEC } from '../modules/Day10.jsx';
+import { D10SimFeedback, D10MobileSAR, D10MobileSim, explainD10Score, saveD10Statement, useD10SimCoach, D10_SIM_COACH_SECS, D10_SCENARIO_TEXT, D10_SIMULATION_MAX_SEC } from '../modules/Day10.jsx';
 import { useSequentialDots, SequentialDots } from '../modules/SequentialDots.jsx';
 import { D3SimFeedback, D3MobileSim, D3PracticeWidget, D3SimWidget } from '../modules/Day3.jsx';
 import { D4SimFeedback, D4MobileSplit, D4MobileSim, D4PracticeWidget, D4SimWidget } from '../modules/Day4.jsx';
@@ -598,6 +598,7 @@ setAmbitionSaved(true); } catch {}
           const txt=(d.content||[]).map(b=>b.text||"").join("").trim();
           if(!txt) throw new Error();
           setSarResult(txt);
+          saveD10Statement(txt, parts.join(' '));
         }catch{setSarPolishFailed(true);}
         setSarLoading(false);
       }

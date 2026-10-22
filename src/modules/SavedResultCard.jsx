@@ -9,6 +9,7 @@ export function reviewSavedSources(day, isNT) {
   if (day === 2)  return [{ label: 'Simulation', source: 'voice-analysis-day2' }];
   if (day === 6)  return [{ label: 'Simulation', source: 'conversation-prep-day6' }];
   if (day === 7)  return [{ label: 'Simulation', source: 'week1-review-day7' }];
+  if (day === 10) return [{ label: 'Rehearsal', source: 'performance-statement-day10' }];
   if (isNT)       return [{ label: 'Rehearsal', source: 'rehearsal' }, { label: 'Simulation', source: 'speechwriter' }];
   if (day === 11) return [{ label: 'Rehearsal', source: 'brand-rehearsal' }, { label: 'Simulation', source: 'linkedin-audit' }];
   if (day === 14) return [{ label: 'Simulation', source: 'blueprint-day14' }];
