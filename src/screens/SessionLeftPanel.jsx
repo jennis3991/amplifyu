@@ -383,7 +383,7 @@ export function SessionLeftPanel({
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>Storytelling in the Wild</div>
           <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:380, marginBottom:28, lineHeight:1.2 }}>Stories create empathy. Empathy creates trust. Trust creates influence.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)", marginBottom:24 }}/>
-          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380, margin:0 }}>The same facts — told as a story — land 22x more powerfully in the human brain.</p>
+          <p style={{ ...LP_BODY, fontSize:16, maxWidth:380, margin:0 }}>The same facts, told as a story, are easier to remember and harder to ignore.</p>
         </div>
       </div>
     );

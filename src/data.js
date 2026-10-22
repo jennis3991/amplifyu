@@ -534,7 +534,7 @@ export const QUICK_PREP = [
 ];
 
 export const DAILY_INSIGHTS = [
-  {label:"Communication Science",headline:"People remember stories, not facts.",body:"The brain processes narrative 22x more effectively than data alone. Story is not decoration — it's the delivery mechanism."},
+  {label:"Communication Science",headline:"People remember stories more than facts.",body:"When information comes wrapped in a story, people picture it, feel it and remember it. Story is not decoration. It's the delivery mechanism."},
   {label:"Career Research",headline:"Performance is only 10% of career success.",body:"Research consistently shows that image and exposure carry more weight than performance alone. All three are required."},
   {label:"Neuroscience",headline:"The pause is more powerful than the word.",body:"Strategic silence signals control. When you pause before answering, you appear more thoughtful, more confident, and more senior."},
   {label:"Psychology",headline:"Replace one filler with a pause — your authority lifts instantly.",body:"Research shows a deliberate pause increases perceived competence by up to 22%. One habit. Immediate impact."},
@@ -1042,6 +1042,7 @@ export const EXAMPLE_AUDIO = {
   indra: "/day5-indra.mp3",
   hamilton: "/day6-hamilton.mp3",
   amal: "/day6-amal.mp3",
+  barack: "/day8-obama.mp3",
 };
 
 // End-of-day coach message on the Review step, keyed by day.

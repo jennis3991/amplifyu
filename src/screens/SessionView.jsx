@@ -2092,16 +2092,16 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Example") {
         const D8_EDITORIAL = [
-          { id:"obama", img:"/d8-obama.jpg", imgPos:"center 40%", name:"Barack Obama", role:"44th President of the United States", superpower:"Master of Human-First Storytelling",
+          { id:"barack", img:"/d8-obama.jpg", imgPos:"center 40%", name:"Barack Obama", role:"44th President of the United States", superpower:"Master of Human-First Storytelling",
             superpowerText:"Every policy begins with a person.",
-            summary:"When discussing healthcare, jobs, or education, Obama always started with a single human story — not a statistic.",
+            summary:"When discussing healthcare, jobs, or education, Obama often started with a single human story, not a statistic.",
             exploreLabel:"Explore his techniques",
             body1:"When discussing healthcare, jobs, or education, Barack Obama often began with a single person. Not a policy. Not a statistic. A person.",
             body2:"A mother struggling to pay bills. A worker trying to support a family. A student chasing a dream. The audience connected with the human story before hearing the argument.",
-            body3:"People care about people before they care about issues. By leading with one specific individual, Obama made abstract policy feel personal — and personal means memorable.",
-            whyItWorks:"Narrative transportation theory tells us that when we follow a character's story, we lower our defences. We stop arguing and start feeling. Obama used this to make audiences emotionally invested before making his case.",
+            body3:"People care about people before they care about issues. By leading with one specific individual, Obama made abstract policy feel personal, and personal means memorable.",
+            whyItWorks:"Narrative transportation theory tells us that when we follow a character's story, we argue back less and start feeling more. Obama used this to make audiences emotionally invested before making his case.",
             technique:"Start with a customer, colleague, or client before presenting the data. Give them a name. Give them a challenge. Then connect that story to your point.",
-            lesson:"Facts tell. Stories sell. The most persuasive communicators don't lead with data — they lead with a human being.",
+            lesson:"Facts tell. Stories sell. The most persuasive communicators don't lead with data. They lead with a human being.",
           },
           { id:"pixar", img:"/d8-pixar.jpg", imgPos:"center 45%", name:"The Pixar Framework", role:"Pixar Animation Studios", superpower:"The Most Replicable Story Structure Ever Invented",
             superpowerText:"Once upon a time... until finally.",
@@ -2131,7 +2131,27 @@ setAmbitionSaved(true); } catch {}
               Back to Gallery
             </button>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
-            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:14,marginBottom:28}}>
+              <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,margin:0}}>{reading.name}</h2>
+              {EXAMPLE_AUDIO[reading.id] && (() => {
+                const src = EXAMPLE_AUDIO[reading.id];
+                const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                return (
+                  <button
+                    onClick={() => toggleNarration(src)}
+                    aria-label={playing ? "Pause narration" : "Play narration"}
+                    style={{
+                      width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                      padding:0, background:"transparent", border:"none",
+                      display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                    }}>
+                    <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <PlayIcon playing={playing}/>
+                    </span>
+                  </button>
+                );
+              })()}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
             {reading.quote && (
