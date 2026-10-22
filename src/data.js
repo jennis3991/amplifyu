@@ -1044,6 +1044,7 @@ export const EXAMPLE_AUDIO = {
   amal: "/day6-amal.mp3",
   barack: "/day8-obama.mp3",
   pixar: "/day8-pixar.mp3",
+  william: "/day9-william.mp3",
 };
 
 // End-of-day coach message on the Review step, keyed by day.
