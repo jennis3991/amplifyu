@@ -1048,6 +1048,7 @@ export const EXAMPLE_AUDIO = {
   jacinda: "/day9-jacinda.mp3",
   dyson: "/day10-dyson.mp3",
   bezos: "/day10-bezos.mp3",
+  swift: "/day11-swift.mp3",
 };
 
 // End-of-day coach message on the Review step, keyed by day.

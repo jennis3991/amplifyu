@@ -1877,12 +1877,12 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
         const D11_EDITORIAL = [
           { id:"swift", img:"/d11-swift.jpg", imgPos:"center 40%", name:"Taylor Swift", role:"Singer-songwriter & cultural icon", superpower:"Master of Personal Brand",
             superpowerText:"Making people feel part of the journey.",
-            summary:"She didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel personally invested in her story.",
-            body1:"Taylor Swift didn't just build a music career — she built one of the most valuable personal brands in the world by making people feel like they were part of her journey. From teenage country songwriter to global cultural icon, her brand evolved without losing its emotional core: authenticity, storytelling, reinvention, and direct connection with her audience.",
-            body3:"Taylor made global fame feel personal. She openly shares heartbreak, ambition, growth, mistakes, reinvention, and vulnerability. People feel like they've grown alongside her. That's the most powerful form of personal branding: making your story feel like their story.",
-            whyItWorks:"Exceptional personal brands don't just broadcast achievement — they invite people into a journey. When audiences feel emotionally invested in someone's story, they become advocates, not just fans. Taylor Swift understood this intuitively, building a brand on authenticity, emotional honesty, and consistent reinvention.",
-            technique:"Before your next presentation or professional interaction, ask yourself: \"What part of my journey could I share that the audience would recognise in themselves?\" Vulnerability and honesty create connection faster than credentials ever will.",
-            lesson:"People didn't just buy Taylor Swift's music. They bought into her journey. The strongest personal brands make people feel like they are part of the story — not just observers of it.",
+            summary:"She built her brand by making people feel part of her story.",
+            body1:"Taylor Swift didn't just build a music career. She built one of the most recognisable personal brands in the world by making people feel like they were part of her journey. From teenage country songwriter to global cultural icon, her brand evolved without losing its emotional core: authenticity, storytelling, reinvention, and direct connection with her audience.",
+            body3:"Taylor made global fame feel personal. She writes openly about heartbreak, ambition, growth, mistakes, reinvention and vulnerability. People feel like they've grown alongside her. That's a powerful form of personal branding: making your story feel like their story.",
+            whyItWorks:"Great personal brands don't just broadcast achievement. They invite people into a journey. When audiences feel emotionally invested in someone's story, they become advocates, not just fans. She built her brand on authenticity, emotional honesty and consistent reinvention.",
+            technique:"Before your next presentation or conversation, ask yourself: \"What part of my journey could I share that the audience would recognise in themselves?\" Honesty often creates connection faster than credentials.",
+            lesson:"People didn't just buy Taylor Swift's music. They bought into her journey. The strongest personal brands make people feel part of the story, not just observers of it.",
           },
           { id:"disney", img:"/d11-disney.jpg", imgPos:"center 40%", name:"Disney", role:"Global entertainment company, est. 1923", superpower:"Master of Brand Consistency",
             superpowerText:"100 years of one word: Magic.",
@@ -1900,7 +1900,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
           <>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Iconic Brands. Intentional Choices.</h2>
-            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>A personal brand built by design — not by accident.</p>
+            <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:6}}>A personal brand built by design, not by accident.</p>
             <p style={{fontFamily:T.sans,fontSize:10,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:16}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             {D11_EDITORIAL.map(card=>{
               const open = d11MobCard===card.id;
@@ -1913,7 +1913,28 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
                   </div>}
                   <div style={{padding:"16px 16px 14px"}}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"1.8px",marginBottom:4}}>{card.superpower}</div>
-                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,marginBottom:2}}>{card.name}</div>
+                    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,marginBottom:2}}>
+                      <div style={{fontFamily:T.serif,fontSize:22,fontWeight:400,color:T2.text,lineHeight:1.15,margin:0}}>{card.name}</div>
+                      {EXAMPLE_AUDIO[card.id] && (() => {
+                        const src = EXAMPLE_AUDIO[card.id];
+                        const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                        return (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleNarration(src); }}
+                            aria-label={playing ? "Pause narration" : "Play narration"}
+                            style={{
+                              width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                              padding:0, WebkitAppearance:"none", appearance:"none",
+                              background:"transparent", border:"none",
+                              display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                            }}>
+                            <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                              <PlayIcon playing={playing}/>
+                            </span>
+                          </button>
+                        );
+                      })()}
+                    </div>
                     {card.role && <p style={{fontFamily:T.sans,fontSize:12,color:"rgba(160,128,90,0.7)",lineHeight:1.4,fontWeight:400,margin:"0 0 6px"}}>{card.role}</p>}
                     <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.55,fontWeight:300,margin:"0 0 10px"}}>{card.summary}</p>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
