@@ -27,6 +27,7 @@ import D5Theory from '../modules/D5Theory.jsx';
 import D6Insight from '../modules/D6Insight.jsx';
 import D6Theory from '../modules/D6Theory.jsx';
 import D7Insight from '../modules/D7Insight.jsx';
+import D7Theory from '../modules/D7Theory.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -336,39 +337,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Theory") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12,fontFamily:T.sans}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Habit Loop</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,fontWeight:300,marginBottom:8}}>Charles Duhigg — The Power of Habit, 2012</p>
-          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.6,marginBottom:24}}>Every habit — good or bad — follows the same loop:</p>
-          {/* CUE → ROUTINE → REWARD */}
-          <div style={{display:"flex",alignItems:"center",gap:0,marginBottom:28}}>
-            {[{label:"CUE",desc:"The trigger"},{label:"ROUTINE",desc:"The behaviour"},{label:"REWARD",desc:"The signal"}].map((n,i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
-                <div style={{flex:1,padding:"16px 12px",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",borderRadius:6,textAlign:"center"}}>
-                  <div style={{fontFamily:T.serif,fontSize:16,fontWeight:700,color:T.gold,marginBottom:4}}>{n.label}</div>
-                  <div style={{fontFamily:T.sans,fontSize:11,color:T2.text3}}>{n.desc}</div>
-                </div>
-                {i<2 && <div style={{fontSize:20,color:T.gold,padding:"0 10px",flexShrink:0}}>→</div>}
-              </div>
-            ))}
-          </div>
-          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.65,marginBottom:16}}>Repeat the loop often enough and behaviour becomes automatic. Not through willpower. Through repetition.</p>
-          <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.65,marginBottom:20}}>This week, every exercise you completed ran that loop:</p>
-          {[
-            {head:"CUE", body:"A moment of pressure, a conversation, a question you weren't expecting — that became the trigger."},
-            {head:"ROUTINE", body:"A new behaviour. Pausing instead of filling. Leading with your point. Slowing down. Simplifying. That became the response."},
-            {head:"REWARD", body:"A sense of clarity, control, or progress. That became the signal your brain learned to seek."},
-          ].map((p,i)=>(
-            <div key={i} style={{padding:"16px 20px",background:T2.surface,border:"0.5px solid "+T2.border,borderLeft:"2px solid "+T.gold,borderRadius:4,marginBottom:10}}>
-              <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,marginBottom:6}}>{p.head}</div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>{p.body}</p>
-            </div>
-          ))}
-          <div style={{height:"0.5px",background:T2.divider,margin:"28px 0"}}/>
-          <div style={{padding:"24px 28px",background:T2.cardDark,borderRadius:6}}>
-            <p style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.6,margin:"0 0 12px",fontStyle:"italic"}}>"You stop trying to communicate well. You simply do."</p>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(255,255,255,0.45)",lineHeight:1.5,margin:0,fontWeight:300}}>That is the difference between learning a technique and building a skill.</p>
-          </div>
+          <D7Theory T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
         </div>
       );
 

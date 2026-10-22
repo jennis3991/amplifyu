@@ -38,6 +38,7 @@ import D5Theory from '../modules/D5Theory.jsx';
 import D6Insight from '../modules/D6Insight.jsx';
 import D6Theory from '../modules/D6Theory.jsx';
 import D7Insight from '../modules/D7Insight.jsx';
+import D7Theory from '../modules/D7Theory.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
 import { PlayIcon, CoachIntro } from '../modules/CoachNarration.jsx';
@@ -786,41 +787,7 @@ T.goldDark : T2.text4,
         <D7Insight T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Theory"))}/>
       )}
       {isD7 && step==="Theory" && (
-        <>
-          <div style={{fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10,fontFamily:T.sans}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>The Habit Loop</h2>
-          <p style={{fontFamily:T.sans,fontSize:13,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Charles Duhigg — The Power of Habit, 2012</p>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,marginBottom:16}}>Every habit — good or bad — follows the same loop:</p>
-          {/* CUE → ROUTINE → REWARD visual */}
-          <div style={{display:"flex",alignItems:"center",gap:0,marginBottom:20}}>
-            {[{label:"CUE",desc:"The trigger"},{ label:"ROUTINE",desc:"The behaviour"},{label:"REWARD",desc:"The signal"}].map((n,i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",flex:1}}>
-                <div style={{flex:1,padding:"12px 10px",background:"rgba(138,158,132,0.1)",border:"0.5px solid rgba(138,158,132,0.3)",borderRadius:6,textAlign:"center"}}>
-                  <div style={{fontFamily:T.serif,fontSize:14,fontWeight:700,color:T.gold,marginBottom:2}}>{n.label}</div>
-                  <div style={{fontFamily:T.sans,fontSize:10,color:T2.text3}}>{n.desc}</div>
-                </div>
-                {i<2 && <div style={{fontSize:16,color:T.gold,padding:"0 6px",flexShrink:0}}>→</div>}
-              </div>
-            ))}
-          </div>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,marginBottom:16}}>Repeat the loop often enough and behaviour becomes automatic. Not through willpower. Through repetition.</p>
-          <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,marginBottom:12}}>This week, every exercise you completed ran that loop:</p>
-          {[
-            {head:"CUE", body:"A moment of pressure, a conversation, a question you weren't expecting — that became the trigger."},
-            {head:"ROUTINE", body:"A new behaviour. Pausing instead of filling. Leading with your point. Slowing down. Simplifying. That became the response."},
-            {head:"REWARD", body:"A sense of clarity, control, or progress. That became the signal your brain learned to seek."},
-          ].map((p,i)=>(
-            <div key={i} style={{padding:"12px 14px",background:T2.surface,border:"0.5px solid "+T2.border,borderLeft:"2px solid "+T.gold,borderRadius:4,marginBottom:8}}>
-              <div style={{fontFamily:T.serif,fontSize:14,fontWeight:600,color:T.gold,marginBottom:4}}>{p.head}</div>
-              <p style={{fontFamily:T.sans,fontSize:13,color:T2.text3,lineHeight:1.65,margin:0,fontWeight:300}}>{p.body}</p>
-            </div>
-          ))}
-          <div style={{height:"0.5px",background:T2.divider,margin:"20px 0"}}/>
-          <div style={{padding:"16px 18px",background:T2.cardDark,borderRadius:6}}>
-            <p style={{fontFamily:T.serif,fontSize:17,fontWeight:600,color:"rgba(255,255,255,0.9)",lineHeight:1.6,margin:"0 0 8px",fontStyle:"italic"}}>"You stop trying to communicate well. You simply do."</p>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(255,255,255,0.45)",lineHeight:1.5,margin:0,fontWeight:300}}>That is the difference between learning a technique and building a skill.</p>
-          </div>
-        </>
+        <D7Theory T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
       )}
       {isD7 && step==="Example" && (
         <>
