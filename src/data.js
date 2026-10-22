@@ -920,14 +920,14 @@ export const D1_FEYNMAN_DATA = [
  // ── D11 shared constants (used by both desktop + mobile) ──────────────────
 
 export const D11_FACTS = [
-  { word:"First Impressions Are Fast", sub:"People start forming judgements in 100 milliseconds, before you've said a word.",
-    bullets:["The signals you give off before you speak are already shaping how you're received.","You cannot not communicate. Every element of your presence is being decoded."] },
-  { word:"People Read Signals", sub:"Every signal you send is being judged, fast and unconsciously.",
-    bullets:["Humans make rapid judgments about confidence, competence, and trustworthiness from minimal cues.","The gap between how you think you come across and how you actually land is where reputations are shaped."] },
+  { word:"First Impressions Are Fast", sub:"Research suggests people start forming impressions within a fraction of a second, before you've said a word.",
+    bullets:["The signals you give before you speak already shape how you're received.","You cannot not communicate. Much of your presence is read without a word."] },
+  { word:"People Read Signals", sub:"People read your signals quickly, often without realising it.",
+    bullets:["They pick up cues of confidence, competence and trustworthiness from small details.","The gap between how you think you come across and how you actually land is where reputations are shaped."] },
   { word:"Stories Shape Reputation", sub:"Narrative becomes identity.",
-    bullets:["Stories are remembered far more effectively than disconnected information.","The most powerful brand-building tool you have is the story others tell about you when you're not in the room."] },
+    bullets:["Stories tend to stick better than facts on their own.","One of the most powerful brand-building tools you have is the story others tell about you when you're not in the room."] },
   { word:"Consistency Becomes Brand", sub:"Repeated signals become your brand.",
-    bullets:["Every interaction where you show up the same way adds to a pattern people trust and associate with you.","Consistency compounds. Each time you show up the same way, the impression deepens."] },
+    bullets:["Small, repeated habits add up to a pattern people trust.","Consistency compounds. Each time you show up the same way, the impression deepens."] },
 ];
 
 export const D11_INGREDIENTS = [
