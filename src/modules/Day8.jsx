@@ -739,6 +739,7 @@ export function StoryArchitectWidget({ T:Tp, T2:T2p, isDesktop=false, onRecordin
   // ── State ─────────────────────────────────────────────────────────────────
   const [phase,      setPhase]     = useState('brief');
   const [brief,      setBrief]     = useState('');
+  const [briefFocus, setBriefFocus] = useState(false);
   const [result,     setResult]    = useState(null);
   const online = useOnlineStatus();
 
@@ -1061,8 +1062,16 @@ Return ONLY valid JSON:
       <div style={{background:T2.surface,borderRadius:8,border:"1px solid rgba(44,36,22,0.3)",padding:isDesktop?"24px":"18px"}}>
         <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T2.text4,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>What to include</div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px",fontWeight:300}}>Describe the presentation, speech, meeting or story you need to tell. Include your audience, your goal, and anything you want people to remember.</p>
-        <div style={{borderTop:"0.5px solid "+T2.border,paddingTop:14}}>
-          <textarea value={brief} onChange={e=>setBrief(e.target.value)} placeholder={"Start typing…"} rows={isDesktop?5:4} style={{width:"100%",background:"transparent",border:"none",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.7,resize:"none",boxSizing:"border-box",fontWeight:300}}/>
+        <div>
+          {/* A clearly marked field: lighter fill than the card, a visible
+              border, and a highlighted border while typing. */}
+          <label htmlFor="d8-brief" style={{display:"flex",alignItems:"center",gap:6,fontFamily:T.sans,fontSize:11,fontWeight:600,color:T2.text2,marginBottom:8}}>
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M11 2.5l2.5 2.5L6 12.5H3.5V10L11 2.5z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/></svg>
+            Your brief
+          </label>
+          <textarea id="d8-brief" value={brief} onChange={e=>setBrief(e.target.value)} onFocus={()=>setBriefFocus(true)} onBlur={()=>setBriefFocus(false)}
+            placeholder={"Tap here and describe your story…"} rows={isDesktop?5:4}
+            style={{width:"100%",display:"block",background:T2.bg!==T.bg?T2.bg:"#FFFDF8",border:`1.5px solid ${briefFocus?T.gold:(T2.bg!==T.bg?"rgba(237,230,218,0.28)":"rgba(44,36,22,0.25)")}`,borderRadius:8,boxShadow:briefFocus?"0 0 0 3px rgba(138,158,132,0.18)":"inset 0 1px 2px rgba(44,36,22,0.06)",padding:isDesktop?"14px 16px":"12px 14px",outline:"none",fontFamily:T.sans,fontSize:isDesktop?15:16,color:T2.text,lineHeight:1.6,resize:"none",boxSizing:"border-box",fontWeight:400,transition:"border-color 0.2s, box-shadow 0.2s",WebkitAppearance:"none",appearance:"none"}}/>
           {brief.trim()&&<div style={{fontFamily:T.sans,fontSize:10,color:T2.text4,marginTop:6,textAlign:"right"}}>{brief.trim().split(/\s+/).length} words</div>}
         </div>
       </div>
