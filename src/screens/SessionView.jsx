@@ -3347,14 +3347,14 @@ setAmbitionSaved(true); } catch {}
           },
           { id:"jamie", img:"/d13-jamie.jpg", imgPos:"center center", name:"Jamie Oliver", role:"Celebrity chef & author", superpower:"Master of Approachable Authority",
             superpowerText:"People don't trust you because you sound clever. They trust you because they understand you.",
-            summary:"He built one of the world's most recognisable personal brands without trying to sound like the smartest person in the room.",
+            summary:"He built trust, and a global audience, by making complex ideas feel simple.",
             exploreLabel:"Explore his approach",
-            body1:"Jamie Oliver built one of the world's most recognisable personal brands without trying to sound like the smartest person in the room. He talked about food the way you'd talk to a friend — no jargon, no complicated language, just genuine enthusiasm and practical advice.",
+            body1:"Jamie Oliver built one of the world's most recognisable personal brands without trying to sound like the smartest person in the room. He talked about food the way you'd talk to a friend: no jargon, no complicated language, just genuine enthusiasm and practical advice.",
             body2:"Open about living with dyslexia and struggling at school, Jamie never hid behind technical language to sound credible. Instead, he built trust by making complex ideas simple. That same clear communication helped turn his campaign for healthier school meals into real government policy.",
             body3:"Visibility isn't about sounding impressive. It's about communicating in a way that people remember, trust, and want to share. People connect with communicators who make them feel capable, not intimidated.",
-            whyItWorks:"Simple language builds trust, and trust creates opportunities. When people understand your message, they're far more likely to remember it — and recommend you. Don't borrow complicated words to sound more credible. Explain ideas the way you'd naturally explain them to a colleague over coffee.",
+            whyItWorks:"Simple language builds trust, and trust creates opportunities. When people understand your message, they're more likely to remember it, and recommend you. Don't borrow complicated words to sound more credible. Explain ideas the way you'd naturally explain them to a colleague over coffee.",
             technique:"Before your next meeting or presentation, ask yourself: \"Am I trying to impress people, or help them understand?\" Strip out jargon. Use the words you'd use with a friend. The clearer your language, the stronger your authority.",
-            lesson:"Authority doesn't come from using bigger words — it comes from making ideas easier to understand. The communicators people remember are the ones who make complex things feel simple. When people understand you, they trust you. When they trust you, they recommend you.",
+            lesson:"Authority doesn't come from using bigger words. It comes from making ideas easier to understand. The communicators people remember are the ones who make complex things feel simple. When people understand you, they trust you. When they trust you, they recommend you.",
           },
         ];
         const openReading = (id) => {
