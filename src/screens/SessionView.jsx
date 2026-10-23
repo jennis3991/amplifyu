@@ -40,6 +40,7 @@ import D12Insight from '../modules/D12Insight.jsx';
 import D12Theory from '../modules/D12Theory.jsx';
 import D13Insight from '../modules/D13Insight.jsx';
 import D13Theory from '../modules/D13Theory.jsx';
+import D14Insight from '../modules/D14Insight.jsx';
 import D10Theory from '../modules/D10Theory.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
@@ -3492,32 +3493,9 @@ setAmbitionSaved(true); } catch {}
       const [d14Revealed, setD14Revealed] = useState(false);
       const d14Toggle = (id) => setD14Selected(prev => prev.includes(id) ? prev.filter(x=>x!==id) : [...prev, id]);
 
-      if (step==="Insight") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:16}}>Day 14 · The Final Chapter</div>
-          <h2 style={{fontFamily:T.serif,fontSize:isDesktop?"clamp(32px,3vw,52px)":40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>Amplified.</h2>
-          <p style={{fontFamily:T.sans,fontSize:18,color:"#A8998A",lineHeight:1.7,fontWeight:400,marginBottom:8,maxWidth:640}}>Over the last 14 days, you've developed skills that many people spend years trying to master.</p>
-          <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.7,fontWeight:400,marginBottom:32,maxWidth:640}}>Clarity. Voice. Storytelling. Presence. Brand. Exposure. These are not isolated techniques. Every story you tell supports your brand. Every conversation shapes your reputation. Every interaction contributes to your performance, image, and ambition.</p>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:28}}>
-            {D14_INSIGHT_CARDS.map((n,i)=>{
-              const open=d14CardOpen===i;
-              return (
-                <div key={i} onClick={()=>setD14CardOpen(open?null:i)} style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,cursor:"pointer",transition:"all 0.2s",boxShadow:open?"0 2px 16px rgba(138,158,132,0.15)":"none"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?10:6}}>
-                    <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
-                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.6)",marginLeft:8,flexShrink:0}}>{open?"▴":"▸"}</span>
-                  </div>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.5,fontWeight:400,margin:open?"0 0 14px":0}}>{n.sub}</p>
-                  {open && <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:14,display:"flex",flexDirection:"column",gap:8}}>
-                    {n.bullets.map((b,j)=><div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:4,height:4,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/><p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:400,margin:0}}>{b}</p></div>)}
-                  </div>}
-                </div>
-              );
-            })}
-          </div>
-          <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-            <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T.gold,lineHeight:1.65,margin:0}}>"Today is not about learning something new. It's about recognising how far you've come and creating a plan for where you go next."</p>
-          </div>
+      if (step === "Insight") return (
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <D14Insight T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Theory"))}/>
         </div>
       );
 

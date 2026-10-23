@@ -528,7 +528,7 @@ export function SessionLeftPanel({
       <div style={{ position: "absolute", inset: 0, background: lesson.day === 1 ? "rgba(10,8,5,0.50)" : "rgba(10,8,5,0.5)" }}/>
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,8,5,0.97) 0%, rgba(10,8,5,0.5) 40%, transparent 75%)" }}/>
       <div style={{ position: "relative", zIndex: 2, padding: "40px 48px", animation: "fadeUp 0.7s ease both" }}>
-        <div style={{ ...LP_LABEL, marginBottom:12 }}>{isD11?`Day ${lesson.day} · ${lesson.tag}`:isD12?`Day ${lesson.day} · ${lesson.tag}`:isD13?`Day ${lesson.day} · ${lesson.tag}`:isD14?"DAY 14 · MASTERY":`Day ${lesson.day} · ${lesson.tag}`}</div>
+        <div style={{ ...LP_LABEL, marginBottom:12 }}>{isD11?`Day ${lesson.day} · ${lesson.tag}`:isD12?`Day ${lesson.day} · ${lesson.tag}`:isD13?`Day ${lesson.day} · ${lesson.tag}`:isD14?`Day ${lesson.day} · ${lesson.tag}`:`Day ${lesson.day} · ${lesson.tag}`}</div>
         <h2 style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", marginBottom:14 }}>{isD11?lesson.title:isD12?lesson.title:isD13?lesson.title:isD14?"The Complete Communicator":lesson.title}</h2>
         <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>{isD11?lesson.quote:isD12?"Presence is the difference between being heard and being remembered.":isD13?lesson.quote:isD14?"Everything you've learned. Every day it compounds.":lesson.quote}</p>
       </div>

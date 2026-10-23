@@ -983,7 +983,7 @@ export const D14_INSIGHT_CARDS = [
     bullets:["Clear thinking creates clear communication, and you've trained both.","Small improvements compound into major transformation. You have already begun."] },
   { word:"Confidence Is Earned", sub:"Confidence does not arrive before action. It follows action, repetition, and practice.",
     bullets:["Confidence grows from competence. Competence grows from deliberate practice.","Every session you completed was a deposit into your confidence account."] },
-  { word:"Communication Changes Careers", sub:"Every major opportunity involves communication, interviews, presentations, leadership, networking, influence.",
+  { word:"Communication Changes Careers", sub:"Most major opportunities depend on communication: interviews, presentations, leadership, networking and influence.",
     bullets:["Communication amplifies capability. The clearest voice is often the most influential.","The skills you've built don't just help you perform. They help others see your performance."] },
   { word:"This Is Only The Beginning", sub:"The goal of AmplifyU was never perfection. The goal was momentum.",
     bullets:["Great communicators are built through repetition, not revelation.","Every future conversation becomes an opportunity to practise, improve, and amplify your impact."] },
