@@ -2469,6 +2469,7 @@ strokeLinecap="round"/></svg>
           {REVIEW_NARRATION[lesson.day] && (
             <CoachIntro T={T} T2={T2} isDesktop={false} src={REVIEW_NARRATION[lesson.day].src} duration={REVIEW_NARRATION[lesson.day].secs} sharedAudioRef={narrationAudioRef} style={{ marginBottom: 18 }}/>
           )}
+          {lesson.day === 14 && <ToolkitJourneyCard T={T} T2={T2} isDesktop={false} onExitToTab={onExitToTab}/>}
           {isNT && (()=>{ try { return JSON.parse(localStorage.getItem("au1_stories")||"[]").length>0; } catch { return false; } })() && (
             <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:16,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
               <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
@@ -2546,7 +2547,6 @@ strokeLinecap="round"/></svg>
               </div>
             </div>
           )}
-          {lesson.day === 14 && <ToolkitJourneyCard T={T} T2={T2} isDesktop={false} onExitToTab={onExitToTab}/>}
           {/* Next session CTA */}
           {(()=>{
             const nextDay = lesson.day < 14 ? lesson.day + 1 : null;

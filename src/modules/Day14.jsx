@@ -198,6 +198,25 @@ export function D14SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
   const coach = useCoachNarration({ src: "/day14-simulation.mp3", cues: [], sharedAudioRef: d14SimCoachSlot });
   const [blueprint, setBlueprint] = useState(null);
+
+  // Show a saved blueprint instead of the intro: the one tapped in My Saved
+  // Work (au1_pending_load, consumed once), otherwise the most recent one.
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('au1_toolkits') || '[]').filter(e => e.source === 'blueprint-day14' && e.blueprint);
+      if (!saved.length) return;
+      let entry = null;
+      const raw = localStorage.getItem('au1_pending_load');
+      const pending = raw ? JSON.parse(raw) : null;
+      if (pending?.source === 'blueprint-day14') {
+        localStorage.removeItem('au1_pending_load');
+        entry = saved.find(e => e.id === pending.id) || null;
+      }
+      if (!entry) entry = saved.slice().sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))[0];
+      setBlueprint(entry.blueprint);
+      setPhase('blueprint');
+    } catch {}
+  }, []);
   const [error, setError] = useState('');
   const dotCount = useSequentialDots(phase === 'generating');
 

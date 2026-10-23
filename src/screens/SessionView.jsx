@@ -3843,6 +3843,7 @@ setAmbitionSaved(true); } catch {}
                       {REVIEW_NARRATION[lesson.day] && (
                         <CoachIntro T={T} T2={T2} isDesktop={true} src={REVIEW_NARRATION[lesson.day].src} duration={REVIEW_NARRATION[lesson.day].secs} sharedAudioRef={narrationAudioRef} style={{ marginBottom: 28 }}/>
                       )}
+                      {lesson.day === 14 && <ToolkitJourneyCard T={T} T2={T2} isDesktop={true} onExitToTab={onExitToTab}/>}
 
                       {isNT && (() => { try { return JSON.parse(localStorage.getItem("au1_stories") || "[]").length > 0; } catch { return false; } })() && (
                         <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 32, padding: "16px 20px", background: T2.surface, borderRadius: 6, border: "0.5px solid " + T2.border }}>
@@ -3916,8 +3917,6 @@ setAmbitionSaved(true); } catch {}
                         ))}
                       </div>
 
-
-                      {lesson.day === 14 && <ToolkitJourneyCard T={T} T2={T2} isDesktop={true} onExitToTab={onExitToTab}/>}
 
                       {/* Next session button */}
                       <button onClick={onComplete} style={{ width: "100%", background: T.ink, color: T.bg, padding: "18px", borderRadius: 4, border: "none", fontFamily: T.sans, fontSize: 15, fontWeight: 600, cursor: "pointer", transition: "all 0.25s ease", textAlign: "center", marginBottom: 60 }}

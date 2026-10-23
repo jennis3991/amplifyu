@@ -246,6 +246,20 @@ export function D7SimWidget({ T, T2, isDesktop }) {
   const [signalMetrics, setSignalMetrics] = useState(null);
   const [expandedSkill, setExpandedSkill] = useState(null);
 
+  // Picks up a "My Saved Work" card click from the Toolkit tab: a pending
+  // load flag written just before navigation, consumed once here on mount.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('au1_pending_load');
+      if (!raw) return;
+      const pending = JSON.parse(raw);
+      if (pending?.source !== 'week1-review-day7') return;
+      localStorage.removeItem('au1_pending_load');
+      const entry = JSON.parse(localStorage.getItem('au1_toolkits') || '[]').find(e => e.id === pending.id && e.source === 'week1-review-day7');
+      if (entry?.result) { setResult(entry.result); setTranscript(entry.transcript || ''); setPhase('results'); }
+    } catch {}
+  }, []);
+
   const mediaRef  = useRef(null);
   const audioChunksRef = useRef([]);
   const timerRef  = useRef(null);
