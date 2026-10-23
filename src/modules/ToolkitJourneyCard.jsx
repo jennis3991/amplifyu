@@ -1,9 +1,10 @@
 // ─── "Your journey doesn't end here" — Day 14 Review ─────────────────────────
-// Points graduates to the Toolkit. Each row opens the matching Toolkit tab
-// (via au1_open_toolkit_tab, which ToolkitScreen picks up on mount).
+// Points graduates to the Toolkit. The two AI tools open the tool itself (the
+// same day/step the Toolkit launches); the others open the matching Toolkit
+// tab (via au1_open_toolkit_tab, which ToolkitScreen picks up on mount).
 const TOOLS = [
-  { tab: "aitools", name: "AI Conversation Prep", line: "Plan an important meeting or conversation." },
-  { tab: "aitools", name: "Story Architect", line: "Shape a story that lands." },
+  { tab: "aitools", day: 6, step: "Simulation", name: "AI Conversation Prep", line: "Plan an important meeting or conversation." },
+  { tab: "aitools", day: 8, step: "Simulation", name: "Story Architect", line: "Shape a story that lands." },
   { tab: "practice", name: "Practice Space", line: "Keep improving your communication." },
   { tab: "quickprep", name: "Quick Prep", line: "Get ready just before you walk in." },
 ];
@@ -13,7 +14,7 @@ function openToolkit(tab, onExitToTab) {
   onExitToTab && onExitToTab("toolkit");
 }
 
-export function ToolkitJourneyCard({ T, T2, isDesktop: d, onExitToTab }) {
+export function ToolkitJourneyCard({ T, T2, isDesktop: d, onExitToTab, onStartSession }) {
   return (
     <div style={{ background: T2.surface, borderRadius: d ? 6 : 8, border: "0.5px solid " + T2.border, padding: d ? "24px 26px" : "18px 18px", marginBottom: d ? 20 : 16 }}>
       <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 8 }}>Your journey doesn't end here</div>
@@ -21,7 +22,7 @@ export function ToolkitJourneyCard({ T, T2, isDesktop: d, onExitToTab }) {
       <p style={{ fontFamily: T.sans, fontSize: d ? 14 : 13, color: T2.text3, lineHeight: 1.55, margin: "0 0 14px" }}>Keep practising, keep showing up, and keep amplifying your voice.</p>
       <div style={{ display: "flex", flexDirection: "column" }}>
         {TOOLS.map((t, i) => (
-          <button key={t.name} onClick={() => openToolkit(t.tab, onExitToTab)}
+          <button key={t.name} onClick={() => (t.day && onStartSession ? onStartSession(t.day, t.step) : openToolkit(t.tab, onExitToTab))}
             style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", background: "transparent", border: "none", borderTop: i ? "0.5px solid " + T2.divider : "none", padding: "12px 0", cursor: "pointer", WebkitAppearance: "none", appearance: "none" }}>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontFamily: T.sans, fontSize: d ? 15 : 14, fontWeight: 600, color: T2.text, marginBottom: 2 }}>{t.name}</div>

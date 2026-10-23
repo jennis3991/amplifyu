@@ -339,9 +339,9 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
         <OfflineBanner />
         {cel && <Celebrate day={cel} rankUp={rankUp} onClose={() => { setCel(null); setRankUp(null); setView("main"); setTab("home"); }}/>}
         {isDesktop && <FloatingNav tab={tab} setTab={setTab} streak={streak} done={done} dark={dark} activeRole={activeRole} inSession={view==="session"} onExitToTab={(t)=>{setTab(t);setView("main");}} day={selDay}/>}
-        <SessionView lesson={LESSONS[Math.min(selDay-1,13)]}
+        <SessionView key={selDay} lesson={LESSONS[Math.min(selDay-1,13)]}
 isDone={done.includes(selDay)} onComplete={() => completeDay(selDay)}
-onBack={() => setView("main")} onExitToTab={(t)=>{setTab(t);setView("main");}} roleId={roleId} activeRole={activeRole}
+onBack={() => setView("main")} onExitToTab={(t)=>{setTab(t);setView("main");}} onStartSession={startSessionAtStep} roleId={roleId} activeRole={activeRole}
 dark={dark} toggleDark={toggleDark} DK={DK} isDesktop={isDesktop}/>
       </div>
     );

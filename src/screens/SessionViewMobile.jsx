@@ -82,7 +82,7 @@ function TabHeroPane({ label, headline, liveIndicator = false, image = null }) {
 }
 
 export function MobileSessionView({
-  T2, step, STEPS, idx, setIdx, dark, toggleDark, lesson, isDone, onComplete, onBack, onExitToTab, onExitClick,
+  T2, step, STEPS, idx, setIdx, dark, toggleDark, lesson, onStartSession, isDone, onComplete, onBack, onExitToTab, onExitClick,
   entitled, onEntitled, requiresEntitlement,
   isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD9, isD10, isD11, isD12, isD13, isD14, isNT,
   selSc, setSelSc, exitConfirm, setExitConfirm,
@@ -2469,7 +2469,7 @@ strokeLinecap="round"/></svg>
           {REVIEW_NARRATION[lesson.day] && (
             <CoachIntro T={T} T2={T2} isDesktop={false} src={REVIEW_NARRATION[lesson.day].src} duration={REVIEW_NARRATION[lesson.day].secs} sharedAudioRef={narrationAudioRef} style={{ marginBottom: 18 }}/>
           )}
-          {lesson.day === 14 && <ToolkitJourneyCard T={T} T2={T2} isDesktop={false} onExitToTab={onExitToTab}/>}
+          {lesson.day === 14 && <ToolkitJourneyCard T={T} T2={T2} isDesktop={false} onExitToTab={onExitToTab} onStartSession={onStartSession}/>}
           {isNT && (()=>{ try { return JSON.parse(localStorage.getItem("au1_stories")||"[]").length>0; } catch { return false; } })() && (
             <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:16,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
               <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>

@@ -79,7 +79,7 @@ import { AICoachNote } from '../components/AICoachNote.jsx';
 // same order for a given step.
 function PanelHost({ render }) { return render(); }
 
-export function SessionView({lesson, isDone, onComplete, onBack, onExitToTab, roleId,
+export function SessionView({lesson, isDone, onComplete, onBack, onExitToTab, onStartSession, roleId,
 activeRole, dark=false, toggleDark, DK={}, isDesktop=false}) {
   const T2 = Object.assign({}, T, DK);
   const online = useOnlineStatus();
@@ -3843,7 +3843,7 @@ setAmbitionSaved(true); } catch {}
                       {REVIEW_NARRATION[lesson.day] && (
                         <CoachIntro T={T} T2={T2} isDesktop={true} src={REVIEW_NARRATION[lesson.day].src} duration={REVIEW_NARRATION[lesson.day].secs} sharedAudioRef={narrationAudioRef} style={{ marginBottom: 28 }}/>
                       )}
-                      {lesson.day === 14 && <ToolkitJourneyCard T={T} T2={T2} isDesktop={true} onExitToTab={onExitToTab}/>}
+                      {lesson.day === 14 && <ToolkitJourneyCard T={T} T2={T2} isDesktop={true} onExitToTab={onExitToTab} onStartSession={onStartSession}/>}
 
                       {isNT && (() => { try { return JSON.parse(localStorage.getItem("au1_stories") || "[]").length > 0; } catch { return false; } })() && (
                         <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 32, padding: "16px 20px", background: T2.surface, borderRadius: 6, border: "0.5px solid " + T2.border }}>
@@ -4124,7 +4124,7 @@ setAmbitionSaved(true); } catch {}
     <MobileSessionView
       T2={T2} step={step} STEPS={STEPS} idx={idx} setIdx={setIdx} dark={dark} toggleDark={toggleDark}
       entitled={entitled} onEntitled={() => setEntitled(true)} requiresEntitlement={requiresEntitlement}
-      lesson={lesson} isDone={isDone} onComplete={onComplete} onBack={onBack} onExitToTab={onExitToTab} onExitClick={handleExit}
+      lesson={lesson} isDone={isDone} onComplete={onComplete} onBack={onBack} onExitToTab={onExitToTab} onStartSession={onStartSession} onExitClick={handleExit}
       isD1={isD1} isD2={isD2} isD3={isD3} isD4={isD4} isD5={isD5}
       isD6={isD6} isD7={isD7} isD9={isD9} isD10={isD10} isD11={isD11} isD12={isD12} isD13={isD13} isD14={isD14} isNT={isNT}
       selSc={selSc} setSelSc={setSelSc} exitConfirm={exitConfirm} setExitConfirm={setExitConfirm}
