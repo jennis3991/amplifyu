@@ -16,6 +16,8 @@ function blobToB64(blob) {
 // Coach intro audio lives in a module-level slot so a remount mid-narration
 // can't orphan it. It plays on the intro and stops when the conversation starts.
 const d11RehearsalCoachSlot = { current: null };
+// Same pattern for the Simulation (Brand Analysis) intro; stops when analysis starts.
+const d11SimCoachSlot = { current: null };
 
 const D11_REHEARSAL_MAX_SEC = 120;
 const QUESTIONS = [
@@ -548,6 +550,7 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
   const REWRITE_ITEMS = ["Headline", "About Section", "Experience Bullets"];
 
   const [phase,          setPhase]         = useState('import');
+  const coach = useCoachNarration({ src: "/day11-simulation.mp3", cues: [], sharedAudioRef: d11SimCoachSlot });
   const [inputMode,      setInputMode]     = useState(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("au1_toolkits") || "[]");
@@ -744,6 +747,7 @@ export function D11SimWidget({ T, T2, isDesktop, brandWords = [], onFinish }) {
   }
 
   async function runAnalysis() {
+    coach.pause();
     setPhase('analyzing');
     setCheckIdx(-1);
     if (!online) {
@@ -896,6 +900,16 @@ Keep it under 280 words. Make every word earn its place. Never use em dashes any
             so it goes near-invisible on a dark background unless overridden explicitly. */}
         <style>{`.d11-ph::placeholder{color:${T2.text4};opacity:1;}`}</style>
 
+        <div>
+          <div style={{ ...lbl, color: T.gold, marginBottom: 10, letterSpacing: "2px", fontSize: 10 }}>LINKEDIN AUDIT</div>
+          <h2 style={{ ...sf, fontSize: isDesktop ? 28 : 22, fontWeight: 600, margin: "0 0 8px", lineHeight: 1.15 }}>Bring your brand to life</h2>
+          <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.6, margin: 0 }}>
+            {"Your Professional Signature shows what makes you memorable. Now let's make sure your LinkedIn tells the same story."}
+          </p>
+          <CoachStyles />
+          <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={59} style={{ marginTop: 16, marginBottom: 0 }} />
+        </div>
+
         {/* HOW IT WORKS — dynamic progress indicator, checkmark style matches the top step-progress bar */}
         <div style={{ background: T2.surface || "rgba(255,255,255,0.025)", borderRadius: 4, border: "0.5px solid " + T2.border, padding: isDesktop ? "22px 24px" : "18px 20px" }}>
           <div style={{ fontFamily: T.sans, fontSize: 10, fontWeight: 700, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 6 }}>How it works</div>
@@ -935,13 +949,6 @@ Keep it under 280 words. Make every word earn its place. Never use em dashes any
           </div>
         </div>
 
-        <div>
-          <div style={{ ...lbl, color: T.gold, marginBottom: 10, letterSpacing: "2px", fontSize: 10 }}>LINKEDIN AUDIT</div>
-          <h2 style={{ ...sf, fontSize: isDesktop ? 28 : 22, fontWeight: 600, margin: "0 0 8px", lineHeight: 1.15 }}>Bring your brand to life</h2>
-          <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.6, margin: 0 }}>
-            {"We've discovered what makes you memorable. Now let's make sure your LinkedIn tells the same story."}
-          </p>
-        </div>
 
         {myToolkitsSim.length>0 && (
           <div style={{background:T2.surface||"rgba(255,255,255,0.025)",borderRadius:8,border:"0.5px solid "+T2.border,overflow:"hidden"}}>
@@ -1066,25 +1073,25 @@ Keep it under 280 words. Make every word earn its place. Never use em dashes any
           </div>
         )}
 
-        <AICoachNote T={T} T2={T2} />
+        <AICoachNote T={T} T2={T2} voice />
         <div style={{ display: "flex", gap: 10, alignItems: "stretch" }}>
           <button onClick={runAnalysis} disabled={!hasProfile} style={{ ...cta(!hasProfile), flex: 1 }}>
-            {"✦  Analyse My LinkedIn →"}
+            {"✦  Analyse My Profile →"}
           </button>
           <button onClick={() => setPrivacyOpen(v => !v)} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4, background: privacyOpen ? T2.surface : "transparent", border: "0.5px solid " + T2.border, borderRadius: 6, padding: "10px 16px", flexShrink: 0, cursor: "pointer", fontFamily: T.sans, color: T2.text3 }}>
             <svg width="16" height="18" viewBox="0 0 16 20" fill="none" style={{ opacity: 0.55 }}>
               <path d="M8 1L1 4v6c0 5 3.5 8.5 7 9.5C11.5 18.5 15 15 15 10V4L8 1Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
               <path d="M5 10l2.5 2.5L11 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            <span style={{ ...sn, fontSize: 10, color: T2.text3, fontWeight: 600, textAlign: "center", lineHeight: 1.3 }}>100% Private</span>
-            <span style={{ ...sn, fontSize: 10, color: T2.text4, textAlign: "center", lineHeight: 1.3 }}>{privacyOpen ? "Tap to close" : "Never shared."}</span>
+            <span style={{ ...sn, fontSize: 10, color: T2.text3, fontWeight: 600, textAlign: "center", lineHeight: 1.3 }}>Private</span>
+            <span style={{ ...sn, fontSize: 10, color: T2.text4, textAlign: "center", lineHeight: 1.3 }}>{privacyOpen ? "Tap to close" : "Not stored"}</span>
           </button>
         </div>
 
         {privacyOpen && (
           <div style={{ background: T2.surface, border: "0.5px solid " + T2.border, borderRadius: 6, padding: isDesktop ? "14px 16px" : "12px 14px", animation: "fadeUp 0.25s ease both" }}>
             <p style={{ ...sn, fontSize: isDesktop ? 12 : 11, color: T2.text3, lineHeight: 1.6, margin: 0 }}>
-              Your LinkedIn or CV content is only sent to generate your Brand Toolkit — it's never stored on our servers. Your finished toolkit is saved locally on your device only.
+              Your LinkedIn or CV content is sent securely to our AI provider only to create your Brand Toolkit. It isn't stored on our servers, and your finished toolkit is saved on your device only.
             </p>
           </div>
         )}
@@ -1276,7 +1283,7 @@ Keep it under 280 words. Make every word earn its place. Never use em dashes any
         {cvPhase === 'cvFailed' && (
           <div style={{ borderTop: "0.5px solid " + T2.divider, paddingTop: 14, display: "flex", flexDirection: "column", gap: 10 }}>
             <p style={{ ...sn, fontSize: isDesktop ? 13 : 12, color: "#B05C4A", margin: 0 }}>
-              {online ? "Something went wrong updating your CV. Try again." : "You're offline — this needs a connection. Try again once you're back online."}
+              {online ? "Something went wrong updating your CV. Try again." : "You're offline. This needs a connection, so try again once you're back online."}
             </p>
             <button onClick={runCvRewrite}
               style={{ padding: "11px 20px", borderRadius: 4, border: `0.5px solid ${T2.border}`, background: "transparent", fontFamily: T.sans, fontSize: isDesktop ? 13 : 12, color: T2.text3, cursor: "pointer", fontWeight: 500, transition: "all 0.2s", width: "fit-content" }}>
@@ -1300,7 +1307,7 @@ Keep it under 280 words. Make every word earn its place. Never use em dashes any
 
         <div style={{ borderLeft: "2px solid rgba(200,164,106,0.22)", paddingLeft: 14, marginTop: 4 }}>
           <p style={{ fontFamily: T.serif, fontSize: isDesktop ? 15 : 13, fontStyle: "italic", color: T2.text3, lineHeight: 1.75, margin: 0 }}>
-            Great brands are consistent — and now yours is. Whether someone reads your LinkedIn, your CV, or meets you face to face, they'll walk away with the same impression: the one you just built here.
+            Great brands are consistent, and now yours can be too. Whether someone reads your LinkedIn, your CV or meets you face to face, they'll see the same story: the one you just built here.
           </p>
         </div>
 
