@@ -55,6 +55,7 @@ import D13Theory from '../modules/D13Theory.jsx';
 import D14Insight from '../modules/D14Insight.jsx';
 import D14Theory from '../modules/D14Theory.jsx';
 import { ToolkitJourneyCard } from '../modules/ToolkitJourneyCard.jsx';
+import { CertificateCard } from '../modules/Certificate.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
@@ -2470,6 +2471,7 @@ strokeLinecap="round"/></svg>
             <CoachIntro T={T} T2={T2} isDesktop={false} src={REVIEW_NARRATION[lesson.day].src} duration={REVIEW_NARRATION[lesson.day].secs} sharedAudioRef={narrationAudioRef} style={{ marginBottom: 18 }}/>
           )}
           {lesson.day === 14 && <ToolkitJourneyCard T={T} T2={T2} isDesktop={false} onExitToTab={onExitToTab} onStartSession={onStartSession}/>}
+          {lesson.day === 14 && <CertificateCard T={T} T2={T2} isDesktop={false}/>}
           {isNT && (()=>{ try { return JSON.parse(localStorage.getItem("au1_stories")||"[]").length>0; } catch { return false; } })() && (
             <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:16,padding:"12px 14px",background:T2.surface,borderRadius:6,border:"0.5px solid "+T2.border}}>
               <div style={{width:18,height:18,borderRadius:"50%",background:"rgba(138,158,132,0.12)",border:"1px solid rgba(138,158,132,0.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
