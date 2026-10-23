@@ -2222,13 +2222,13 @@ strokeLinecap="round"/></svg>
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M2.5 9v0M5 6v6M8 3v12M11 6v6M14 8v2" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg> },
           { id:"pause", label:"The Pause", text:"Turns silence into emphasis.", personal:"You turn silence into emphasis.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><rect x="5" y="3.5" width="2.6" height="11" rx="1" stroke={T.gold} strokeWidth="1.15"/><rect x="10.4" y="3.5" width="2.6" height="11" rx="1" stroke={T.gold} strokeWidth="1.15"/></svg> },
-          { id:"brevity", label:"Brevity", text:"Every word earns its place — or it goes.", personal:"With you, every word earns its place — or it goes.",
+          { id:"brevity", label:"Brevity", text:"Makes every word earn its place.", personal:"You make every word earn its place.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M3 9l3-3M3 9l3 3M15 9l-3-3M15 9l-3 3" stroke={T.gold} strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-          { id:"structure", label:"Structure", text:"Point. Reason. Example. Every time.", personal:"You lead with point, reason, example — every time.",
+          { id:"structure", label:"Structure", text:"Point. Reason. Example.", personal:"You lead with point, reason and example.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M2.5 4.5h13M4.5 9h9M6.5 13.5h5" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/></svg> },
-          { id:"composure", label:"Composure", text:"Stay calm and focused when it matters most.", personal:"You stay calm and focused when it matters most.",
+          { id:"composure", label:"Composure", text:"Stays calm and focused when it matters most.", personal:"You stay calm and focused when it matters most.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M2.5 14.5L7 6l2.7 3.6L12.5 5l3 9.5H2.5z" stroke={T.gold} strokeWidth="1.15" strokeLinejoin="round"/></svg> },
-          { id:"storytelling", label:"Storytelling", text:"Inspire people through meaningful stories.", personal:"You inspire people through meaningful stories.",
+          { id:"storytelling", label:"Storytelling", text:"Inspires people through meaningful stories.", personal:"You inspire people through meaningful stories.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 4.5c-1.2-1-3-1.3-5.5-1v9c2.5-.3 4.3 0 5.5 1 1.2-1 3-1.3 5.5-1v-9c-2.5-.3-4.3 0-5.5 1z" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/><path d="M9 4.5v9" stroke={T.gold} strokeWidth="1.1"/></svg> },
           { id:"connection", label:"Connection", text:"Makes others feel heard, not just met.", personal:"You make others feel heard, not just met.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="6.5" cy="9" r="3.3" stroke={T.gold} strokeWidth="1.15"/><circle cx="11.5" cy="9" r="3.3" stroke={T.gold} strokeWidth="1.15"/></svg> },
@@ -2236,7 +2236,7 @@ strokeLinecap="round"/></svg>
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M2.5 13l4-4 3 3 6-6" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/><path d="M11.5 6h4v4" stroke={T.gold} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg> },
           { id:"brand", label:"Brand", text:"Makes people feel part of the journey.", personal:"You make people feel part of the journey.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 2.5l1.6 3.4 3.7.4-2.7 2.6.7 3.7L9 11l-3.3 1.6.7-3.7-2.7-2.6 3.7-.4L9 2.5z" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/></svg> },
-          { id:"presence", label:"Presence", text:"Show up with confidence and authenticity.", personal:"You show up with confidence and authenticity.",
+          { id:"presence", label:"Presence", text:"Shows up with confidence and authenticity.", personal:"You show up with confidence and authenticity.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="5" r="2.2" stroke={T.gold} strokeWidth="1.15"/><path d="M4.5 15c0-2.8 2-4.5 4.5-4.5s4.5 1.7 4.5 4.5" stroke={T.gold} strokeWidth="1.15" strokeLinecap="round"/></svg> },
           { id:"warmth", label:"Warmth", text:"Makes people feel safe enough to be human.", personal:"You make people feel safe enough to be human.",
             icon:<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.8" stroke={T.gold} strokeWidth="1.15"/><path d="M9 2v1.6M9 14.4V16M2 9h1.6M14.4 9H16M4 4l1.2 1.2M12.8 12.8L14 14M14 4l-1.2 1.2M5.2 12.8L4 14" stroke={T.gold} strokeWidth="1.1" strokeLinecap="round"/></svg> },
@@ -2245,14 +2245,15 @@ strokeLinecap="round"/></svg>
         const selectedTiles = D14_SUPERPOWERS.filter(sp=>d14Selected.includes(sp.id));
         const d14CountWord = NUM_WORDS[Math.max(0,selectedTiles.length-1)] || String(selectedTiles.length);
         const d14PersonalLine = selectedTiles.length===1
-          ? `${selectedTiles[0].personal} That's not a random pick. That's who you are, communicating. You didn't choose it because it sounded good. You chose it because you saw yourself in it — thirteen days of proof, not thirteen days of theory.`
-          : `${selectedTiles.map(t=>t.personal).join(" ")} That's not ${d14CountWord} separate skills. That's who you are, communicating. You didn't pick these because they sounded good. You picked them because you saw yourself in them — thirteen days of proof, not thirteen days of theory.`;
+          ? `${selectedTiles[0].personal} That's not a random pick. That's who you are, communicating. You didn't choose it because it sounded good. You chose it because you saw yourself in it. Thirteen days of proof, not thirteen days of theory.`
+          : `${selectedTiles.map(t=>t.personal).join(" ")} That's not ${d14CountWord} separate skills. That's who you are, communicating. You didn't pick these because they sounded good. You picked them because you saw yourself in them. Thirteen days of proof, not thirteen days of theory.`;
         return (
         <>
           <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>Day 14 · Example</div>
           <h2 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Make It Yours.</h2>
           <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.7,fontWeight:400,margin:"0 0 4px"}}>You've spent 13 days learning the superpowers of some leading communicators.</p>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.7,fontWeight:400,margin:"0 0 16px"}}>Now take what works — and build it into your own style.</p>
+          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.7,fontWeight:400,margin:"0 0 16px"}}>Now take what works, and build it into your own style.</p>
+          <CoachIntro T={T} T2={T2} isDesktop={false} src="/day14-example.mp3" duration={38} sharedAudioRef={narrationAudioRef} style={{ marginBottom: 18 }}/>
           <div style={{height:1,background:"rgba(138,158,132,0.2)",marginBottom:18}}/>
 
           {!d14Revealed ? (
@@ -2286,15 +2287,15 @@ strokeLinecap="round"/></svg>
                   <div style={{flex:1}}>
                     <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:5}}>{d14Selected.length>0?`You've selected ${d14Selected.length} superpower${d14Selected.length>1?"s":""}`:"Now It's Your Turn"}</div>
                     <h3 style={{fontFamily:T.serif,fontSize:19,fontWeight:600,color:T2.text,margin:"0 0 4px",lineHeight:1.15}}>What is your superpower?</h3>
-                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.45,fontWeight:300,margin:0}}>Focus on the strengths that feel most natural — and most powerful — for you.</p>
+                    <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.45,fontWeight:300,margin:0}}>Focus on the strengths that feel most natural, and most powerful, for you.</p>
                   </div>
                   {d14Selected.length===0 && (
                     <svg width="17" height="17" viewBox="0 0 20 20" fill="none" style={{flexShrink:0,opacity:0.3}}><path d="M4 10h11M11 5l5 5-5 5" stroke={T2.text3} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   )}
                 </div>
                 {d14Selected.length>0 && (
-                  <button onClick={()=>setD14Revealed(true)} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,width:"100%",padding:"12px 0",background:"rgba(200,164,106,0.1)",border:"1px solid "+T.gold,borderRadius:6,cursor:"pointer"}}>
-                    <span style={{fontFamily:T.sans,fontSize:13,fontWeight:700,color:T.gold}}>Reveal my superpower</span>
+                  <button onClick={()=>{narrationAudioRef.current?.pause();setD14Revealed(true);}} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,width:"100%",padding:"12px 0",background:"rgba(200,164,106,0.1)",border:"1px solid "+T.gold,borderRadius:6,cursor:"pointer"}}>
+                    <span style={{fontFamily:T.sans,fontSize:13,fontWeight:700,color:T.gold}}>{d14Selected.length>1?"Reveal my superpowers":"Reveal my superpower"}</span>
                     <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 10h11M11 5l5 5-5 5" stroke={T.gold} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </button>
                 )}
@@ -2302,7 +2303,7 @@ strokeLinecap="round"/></svg>
             </>
           ) : (
             <div style={{animation:"fadeUp 0.5s ease both"}}>
-              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>Your Superpower</div>
+              <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>{selectedTiles.length>1?"Your Superpowers":"Your Superpower"}</div>
               <div style={{fontFamily:T.serif,fontSize:18,fontWeight:600,color:T2.text,marginBottom:18}}>{selectedTiles.map(t=>t.label).join(" · ")}</div>
               <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:20}}>
                 {selectedTiles.map(sp=>(
