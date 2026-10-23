@@ -49,6 +49,7 @@ import D10Theory from '../modules/D10Theory.jsx';
 import D11Insight from '../modules/D11Insight.jsx';
 import D11Theory from '../modules/D11Theory.jsx';
 import D12Insight from '../modules/D12Insight.jsx';
+import D12Theory from '../modules/D12Theory.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
@@ -1990,28 +1991,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
         <D12Insight T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Theory"))}/>
       )}
       {isD12 && step==="Theory" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:10}}>Nonverbal Congruence</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:14}}>The brain constantly compares words with body language — when they align, communication feels more authentic and clear.</p>
-          <div style={{padding:"14px 16px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold,marginBottom:16}}>
-            <p style={{fontFamily:T.serif,fontSize:22,fontStyle:"italic",color:T2.text,lineHeight:1.4,margin:0}}>"When communication feels safe, the brain becomes more open to the message."</p>
-          </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
-            {[
-              {title:"Thin Slicing",      body:"The brain forms rapid impressions from nonverbal cues before language is fully processed."},
-              {title:"Visual Processing", body:"The brain processes visual signals faster than spoken words."},
-              {title:"Gesture & Memory",  body:"Purposeful gestures improve listener comprehension and information retention."},
-              {title:"Trust & Congruence",body:"Communication feels more believable when verbal and nonverbal signals align consistently."},
-            ].map((c,i)=>(
-              <div key={i} style={{background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"14px"}}>
-                <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:6}}>{c.title}</div>
-                <p style={{fontFamily:T.sans,fontSize:12,color:T2.text3,lineHeight:1.6,fontWeight:400,margin:0}}>{c.body}</p>
-              </div>
-            ))}
-          </div>
-          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic",marginTop:4}}>"The body helps people understand the message."</p>
-        </>
+        <D12Theory T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
       )}
       {isD12 && step==="Example" && (()=>{
         const D12_EDITORIAL = [

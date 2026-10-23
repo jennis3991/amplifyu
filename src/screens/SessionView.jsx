@@ -37,6 +37,7 @@ import D10Insight from '../modules/D10Insight.jsx';
 import D11Insight from '../modules/D11Insight.jsx';
 import D11Theory from '../modules/D11Theory.jsx';
 import D12Insight from '../modules/D12Insight.jsx';
+import D12Theory from '../modules/D12Theory.jsx';
 import D10Theory from '../modules/D10Theory.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
@@ -3123,37 +3124,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step === "Theory") return (
         <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
-          <div style={{ fontFamily:T.sans, fontSize:12, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>The Science</div>
-          <h2 style={{ fontFamily:T.serif, fontSize:40, fontWeight:600, color:T2.text, lineHeight:1.1, marginBottom:16 }}>Nonverbal Congruence</h2>
-          <p style={{ fontFamily:T.sans, fontSize:16, color:"#A8998A", lineHeight:1.6, fontWeight:400, marginBottom:20, maxWidth:640 }}>The brain constantly compares words with body language. When verbal and nonverbal signals align, communication feels more authentic and emotionally clear.</p>
-          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, borderLeft:"2px solid "+T.gold, marginBottom:28 }}>
-            <p style={{ fontFamily:T.serif, fontSize:22, fontStyle:"italic", color:T2.text, lineHeight:1.65, margin:0 }}>"When communication feels safe, the brain becomes more open to the message."</p>
-          </div>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:28 }}>
-            {[
-              {title:"Thin Slicing",      body:"Psychology research shows the brain forms rapid impressions from nonverbal cues before language is fully processed."},
-              {title:"Visual Processing", body:"The brain processes visual signals faster than spoken words."},
-              {title:"Gesture & Memory",  body:"Studies show purposeful gestures improve listener comprehension and information retention."},
-              {title:"Trust & Congruence",body:"Communication feels more believable when verbal and nonverbal communication align consistently."},
-            ].map((c,i)=>(
-              <div key={i} style={{padding:"20px 22px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{c.title}</div>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.65,fontWeight:300,margin:0}}>{c.body}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{ padding:"20px 24px", background:T2.surface, borderRadius:4, border:"0.5px solid "+T2.border, marginBottom:20 }}>
-            <div style={{ fontFamily:T.sans, fontSize:11, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:12 }}>Research Suggests</div>
-            <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-              {["Listeners retain more information when gestures reinforce meaning","Open body language increases emotional connection","Calm physical presence improves engagement","Visual signals strongly influence emotional interpretation"].map((pt,i)=>(
-                <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-                  <div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:300,margin:0}}>{pt}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <p style={{ fontFamily:T.serif, fontSize:18, fontStyle:"italic", color:T.gold, lineHeight:1.6 }}>"The body helps people understand the message."</p>
+          <D12Theory T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
         </div>
       );
 
