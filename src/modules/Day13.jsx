@@ -3,6 +3,7 @@ import { useOnlineStatus } from '../utils.js';
 import { VoiceRecorder } from './VoiceRecorder.jsx';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { AICoachNote } from '../components/AICoachNote.jsx';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -19,53 +20,58 @@ const SCENARIOS = [
     label: 'The Hallway Moment',
     sub: 'A senior leader walks past',
     context: 'A senior leader you respect is walking towards you. You have about 10 seconds before they pass.',
-    challenge: 'Most people look down, say nothing, and spend the rest of the day replaying the missed moment.',
+    challenge: 'It\'s easy to look down, say nothing, and let the moment pass.',
     promptLead: "They're about to walk past.",
-    promptDetail: "A senior leader you respect is a few steps away, moving quickly, phone in hand. Before they're gone, say one specific line that opens the door — their name, a genuine observation, and a question.",
+    promptDetail: "A senior leader you respect is a few steps away, moving quickly, phone in hand. Before they're gone, say one specific line that opens the door: their name, a genuine observation, and a question.",
     tips: [
-      "Use their name — it signals confidence, not presumption",
+      "Use their name. It signals confidence, not presumption",
       "One specific observation, not a generic compliment",
-      "End with a question — it invites a response and keeps the door open",
+      "End with a question. It invites a response and keeps the door open",
     ],
-    example: "[Name] — I'm [your name]. I've been following the [project] and had a thought about [X]. Worth five minutes this week?",
+    example: "[Name], I'm [your name]. I've been following the [project] and had a thought about [X]. Worth five minutes this week?",
   },
   {
     id: 'meeting',
     label: 'The Meeting Moment',
-    sub: 'You have an idea — the room is moving on',
+    sub: 'You have an idea, and the room is moving on',
     context: 'You have something worth saying. The conversation is about to close and move on.',
-    challenge: "Most people think \"I'll raise it later\" — and never do. The moment disappears in seconds.",
+    challenge: "It's easy to think \"I'll raise it later\", and the moment can disappear in seconds.",
     promptLead: "The meeting's about to move on.",
     promptDetail: "The team's been debating whether to hire externally or promote from within for the new lead role. Before it shifts to the next topic, say one specific point that makes clear the value you'd bring to that decision.",
     tips: [
-      "Don't apologise for contributing — \"Before we move on...\" is enough",
+      "Don't apologise for contributing. \"Before we move on...\" is enough",
       "Lead with the idea, not the build-up",
-      "Be brief — let the idea land before you explain it",
+      "Be brief. Let the idea land before you explain it",
     ],
-    example: "Before we move on — I think there's something worth naming here. [One sentence.] Happy to pick it up after if useful.",
+    example: "Before we move on, I think there's something worth naming here. [One sentence.] Happy to pick it up after if useful.",
   },
   {
     id: 'room',
     label: 'The Room Moment',
     sub: 'Someone worth knowing is standing nearby',
     context: "After a presentation or at an event. Someone you'd genuinely like to know is standing near you.",
-    challenge: 'Most people check their phone and leave wishing they had said something.',
+    challenge: 'It\'s easy to check your phone and leave wishing you\'d said something.',
     promptLead: "This is the moment to say something.",
-    promptDetail: "Someone you'd genuinely like to know is standing a few feet away, and no one's talking to them right now. Say one specific, curious line that opens a real conversation — reference something they actually said or did, not a generic compliment.",
+    promptDetail: "Someone you'd genuinely like to know is standing a few feet away, and no one's talking to them right now. Say one specific, curious line that opens a real conversation. Reference something they actually said or did, not a generic compliment.",
     tips: [
-      "Specific beats generic — reference something they actually said",
+      "Specific beats generic. Reference something they actually said",
       "Ask a question that shows you were genuinely paying attention",
-      "Don't pitch yourself — get curious about them first",
+      "Don't pitch yourself. Get curious about them first",
     ],
-    example: "You said something interesting about [X] — I hadn't thought about it that way. How did you arrive at that?",
+    example: "You said something interesting about [X]. I hadn't thought about it that way. How did you arrive at that?",
   },
 ];
 
 // ─── D13 Practice Widget ───────────────────────────────────────────────────
 function pickScenarioIdx() { return Math.floor(Math.random() * SCENARIOS.length); }
 
+// Coach intro audio lives in a module-level slot so a remount mid-narration
+// can't orphan it. It plays on the intro and stops when the practice starts.
+const d13RehearsalCoachSlot = { current: null };
+
 export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, onNavFn}) {
   const [phase, setPhase] = useState('intro');
+  const coach = useCoachNarration({ src: "/day13-rehearsal.mp3", cues: [], sharedAudioRef: d13RehearsalCoachSlot });
   const [scIdx, setScIdx] = useState(pickScenarioIdx);
   const [recDone, setRecDone] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
@@ -93,14 +99,25 @@ export function D13PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
 
   if (phase === 'intro') return (
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
+      <CoachStyles />
+      <div>
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={38} style={{ marginTop: 0, marginBottom: 0 }} />
+        <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:18}}>
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
+            <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
+          </svg>
+          <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
+        </div>
+      </div>
       <div style={cs.card}>
         <div style={cs.label}>Opportunities Travel Through People</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>Most career-defining moments come from conversations, not job boards.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>The problem is not knowing this — it's that most people freeze when the moment arrives. Quick warm-up: one real moment, 20 seconds. It will happen to you.</p>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 14px"}}>Many of the best opportunities come from conversations, not job adverts.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>It's easy to freeze when the moment arrives. Quick warm-up: one real moment, about 20 seconds.</p>
       </div>
       <div>
-        <AICoachNote T={T} T2={T2} />
-        <button onClick={() => { setRecDone(false); setAnalyzing(false); setFeedback(null); setPhase('practice'); }} style={cs.cta}>Let's Begin →</button>
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={() => { coach.pause(); setRecDone(false); setAnalyzing(false); setFeedback(null); setPhase('practice'); }} style={cs.cta}>Let's Begin →</button>
       </div>
     </div>
   );
@@ -164,8 +181,8 @@ Give brief, specific coaching. Never use em dashes anywhere in your response; us
 
         {recDone && analyzing && (
           <div style={{...cs.card, textAlign:"center", padding:isDesktop?"28px":"22px"}}>
-            <div style={cs.label}>Your coach is listening</div>
-            <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>Finding what worked — and what to sharpen.</p>
+            <div style={cs.label}>Your coach is reviewing your response</div>
+            <p style={{fontFamily:T.serif, fontSize:isDesktop?17:15, color:T2.text, lineHeight:1.55, margin:0}}>Finding what worked, and what to sharpen.</p>
           </div>
         )}
 
@@ -206,7 +223,7 @@ Give brief, specific coaching. Never use em dashes anywhere in your response; us
       <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px 28px":"26px 20px"}}>
         <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"2px", marginBottom:14}}>Warm-Up Done</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.35, margin:"0 0 12px"}}>You've rehearsed the moment.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Every time you practise out loud, the real moment gets easier. The next time one of these arrives, you'll be ready.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Each time you practise out loud, the real moment gets a little easier.</p>
       </div>
     </div>
   );
