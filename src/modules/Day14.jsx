@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ROLES, LESSONS } from '../data.js';
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { AICoachNote } from '../components/AICoachNote.jsx';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 // ─── D14 Practice Widget — Your Journey ─────────────────────────────────────
 // "What held you back most at the start?" restates the onboarding
@@ -15,7 +16,12 @@ const SHIFT_OPTIONS = [
 ];
 const normalizeForMatch = (s) => (s || '').toLowerCase().replace(/[—\-.,]/g, '').replace(/\s+/g, ' ').trim();
 
+// Coach intro audio lives in a module-level slot so a remount mid-narration
+// can't orphan it. It plays on the intro and stops when the questions start.
+const d14RehearsalCoachSlot = { current: null };
+
 export function D14PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, onNavFn}) {
+  const coach = useCoachNarration({ src: "/day14-rehearsal.mp3", cues: [], sharedAudioRef: d14RehearsalCoachSlot });
   const stored = (() => { try { return JSON.parse(localStorage.getItem('au1_d14_reflection') || '{}'); } catch { return {}; } })();
   const storedAmbition = (() => { try { return localStorage.getItem('au1_ambition') || ''; } catch { return ''; } })();
   const quiz = (() => { try { return JSON.parse(localStorage.getItem('au1_quiz') || '{}'); } catch { return {}; } })();
@@ -29,7 +35,8 @@ export function D14PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
   const [jobTitle, setJobTitle] = useState(stored.jobTitle || '');
   const [knownFor, setKnownFor] = useState(stored.knownFor || storedAmbition || '');
   const [shift, setShift] = useState(stored.shift || matchedShift || '');
-  const [proud, setProud] = useState(stored.proud || '');
+  // Earlier wording used an em dash; map saved answers onto the current option.
+  const [proud, setProud] = useState(stored.proud === 'Honestly — not much has changed yet' ? 'Honestly, not much has changed yet' : (stored.proud || ''));
   const [hard, setHard] = useState(stored.hard || '');
 
   const save = (s, p, h) => {
@@ -75,41 +82,47 @@ export function D14PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
     }
   }, [phase]);
 
+  // Blueprint contents, grouped into four parts. Cards are informational
+  // (no chevrons) since there's nothing to open.
+  const BLUEPRINT_PARTS = [
+    { title:"Your profile", desc:"Your Communication Archetype and personal profile.",
+      icon:c=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke={c} strokeWidth="1.4"/><path d="M4.5 20c0-4 3.4-6.5 7.5-6.5s7.5 2.5 7.5 6.5" stroke={c} strokeWidth="1.4" strokeLinecap="round"/></svg> },
+    { title:"Your progress", desc:"Your journey: where you started, what shifted, and your strengths and gaps to close.",
+      icon:c=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="13" width="3.5" height="7" rx="1" stroke={c} strokeWidth="1.4"/><rect x="10.25" y="9" width="3.5" height="11" rx="1" stroke={c} strokeWidth="1.4"/><rect x="16.5" y="4" width="3.5" height="16" rx="1" stroke={c} strokeWidth="1.4"/></svg> },
+    { title:"Your influence", desc:"Your Personal Brand Statement and the three conversations to have in the next 30 days.",
+      icon:c=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3.5 5.5h11a1.5 1.5 0 011.5 1.5v6a1.5 1.5 0 01-1.5 1.5H8l-3.5 3v-3h-1A1.5 1.5 0 012 13V7a1.5 1.5 0 011.5-1.5z" stroke={c} strokeWidth="1.4" strokeLinejoin="round"/><path d="M18 9h1.5A1.5 1.5 0 0121 10.5v6a1.5 1.5 0 01-1.5 1.5h-1v3l-3.5-3H10a1.5 1.5 0 01-1.5-1.5V16" stroke={c} strokeWidth="1.4" strokeLinejoin="round"/></svg> },
+    { title:"Your next steps", desc:"Your daily, weekly and monthly habits, three opportunities to create in the next 90 days, and your personalised 90-Day Action Plan.",
+      icon:c=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke={c} strokeWidth="1.4"/><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z" stroke={c} strokeWidth="1.4" strokeLinejoin="round"/></svg> },
+  ];
+
   if (phase === 'intro') return (
-    <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
-      <div style={cs.card}>
-        <div style={cs.label}>Your Communication Blueprint</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>14 days. One journey. Time to see how far you have come.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:'0 0 14px'}}>Most training is forgotten within 24 hours. AmplifyU works differently — 14 days of embedded practice, built into your routine, crystallising today into a blueprint that is yours to keep.</p>
-        <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)'}}>
-          <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
-            <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
-          </svg>
-          <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>1 min warm-up</span>
-        </div>
-      </div>
-      <div style={{...cs.card, background:"rgba(138,158,132,0.04)"}}>
-        <div style={cs.label}>Your Day 14 Blueprint includes</div>
-        <div style={{display:"flex", flexDirection:"column", gap:8}}>
-          {[
-            "Your Communication Archetype and personal profile",
-            "Your journey — where you started and what shifted",
-            "Strengths you have built and gaps to close",
-            "Your Personal Brand Statement",
-            "Daily, weekly and monthly communication habits",
-            "Three conversations to have in the next 30 days",
-            "Three opportunities to create in the next 90 days",
-            "Your personalised 90-Day Action Plan",
-          ].map((t,i) => (
-            <div key={i} style={{display:"flex", gap:10, alignItems:"flex-start"}}>
-              <span style={{color:T.gold, fontSize:12, flexShrink:0, marginTop:2}}>&#10022;</span>
-              <span style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text, lineHeight:1.5}}>{t}</span>
+    <div style={{display:"flex", flexDirection:"column"}}>
+      <div style={{fontFamily:T.sans, fontSize:isDesktop?12:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:isDesktop?12:10}}>Your Day 14 Blueprint</div>
+      <h2 style={{fontFamily:T.serif, fontSize:isDesktop?40:30, fontWeight:600, color:T2.text, lineHeight:1.1, margin:"0 0 "+(isDesktop?"14px":"12px")}}>Generate your 14-Day Blueprint</h2>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?18:16, color:T2.text3, lineHeight:1.55, margin:0, maxWidth:640}}>Based on everything you've learned and practised, your AI coach will create a personalised blueprint for your next chapter.</p>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={41} style={{ marginTop: isDesktop ? 20 : 18, marginBottom: 0 }} />
+
+      <div style={{height:1, background:T2.divider, margin:isDesktop?"26px 0":"22px 0"}}/>
+
+      <div style={{fontFamily:T.sans, fontSize:isDesktop?12:11, fontWeight:600, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:4}}>Your Day 14 Blueprint includes</div>
+      <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.5, margin:"0 0 "+(isDesktop?"16px":"14px")}}>A personalised summary of your progress and a clear plan for what comes next.</p>
+
+      <div style={{display:"flex", flexDirection:"column", gap:isDesktop?10:8, marginBottom:isDesktop?20:16}}>
+        {BLUEPRINT_PARTS.map((bp,i) => (
+          <div key={bp.title} style={{display:"flex", alignItems:"flex-start", gap:isDesktop?18:14, padding:isDesktop?"18px 20px":"14px 14px", background:T2.surface, border:"0.5px solid "+T2.border, borderRadius:8}}>
+            <div style={{width:isDesktop?52:44, height:isDesktop?52:44, borderRadius:"50%", background:"rgba(138,158,132,0.12)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0}}>{bp.icon(T.gold)}</div>
+            <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, fontWeight:600, color:T.gold, flexShrink:0, paddingTop:isDesktop?6:4, fontVariantNumeric:"tabular-nums"}}>{String(i+1).padStart(2,"0")}</div>
+            <div style={{flex:1, minWidth:0}}>
+              <div style={{fontFamily:T.serif, fontSize:isDesktop?22:19, fontWeight:600, color:T2.text, lineHeight:1.2, marginBottom:4}}>{bp.title}</div>
+              <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.55, margin:0}}>{bp.desc}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-      <button onClick={() => setPhase('form')} style={cs.cta}>Get Started</button>
+
+      <button onClick={() => { coach.pause(); setPhase('form'); }} style={{...cs.cta, fontFamily:T.serif, fontSize:isDesktop?19:17, fontWeight:500, padding:isDesktop?"16px":"15px"}}>Start my 14-Day Blueprint →</button>
+      <div style={{fontFamily:T.sans, fontSize:10, fontWeight:600, color:T2.text4, textTransform:"uppercase", letterSpacing:"2px", textAlign:"center", marginTop:12}}>Turn your progress into your next steps</div>
     </div>
   );
 
@@ -118,7 +131,7 @@ export function D14PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
 
       <div style={cs.card}>
         <div style={cs.label}>Your role</div>
-        <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} placeholder="Current job title — e.g. Head of Product, Senior Consultant" style={cs.input}/>
+        <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} placeholder="Current job title, e.g. Head of Product, Senior Consultant" style={cs.input}/>
         <div style={{marginTop:18}}>
           <div style={cs.label}>In 12 months, what do you most want to be known for?</div>
           <input value={knownFor} onChange={e => setKnownFor(e.target.value)} placeholder="e.g. Strategic clarity, inspiring leadership, visible expertise" style={cs.input}/>
@@ -138,7 +151,7 @@ export function D14PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
           "My confidence when I speak",
           "How I structure and land my points",
           "How I tell stories and make ideas stick",
-          "Honestly — not much has changed yet",
+          "Honestly, not much has changed yet",
         ]}
         value={proud}
         onChange={setProud}
