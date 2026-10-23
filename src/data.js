@@ -207,7 +207,7 @@ export const REVIEW_CLOSING = [
   "Connection is not a personality type. It is a learnable skill.",
   "Great work deserves to be seen.",
   "What you stand for is what people remember.",
-  "Every relationship begins with genuine curiosity.",
+  "Presence is how communication feels.",
   "Leaders speak from who they are, not what they want.",
   "Prepare so thoroughly that the pressure becomes fuel.",
 ];
@@ -224,7 +224,7 @@ export const REVIEW_BULLETS = [
   ["Genuine connection starts with curiosity, asking better questions, not delivering better answers.", "The 70/30 rule: a simple rule of thumb. Listen 70% of the time and let the other person do most of the talking.", "Different people need different conversations. Adapting your style to theirs is the mark of a strong communicator.", "Empathy is not agreement. It is the practice of making people feel genuinely heard before you respond."],
   ["Invisible excellence doesn't scale. Visibility is a communication skill, not a personality trait.", "Great work doesn't speak for itself. Your work needs a voice.", "When people can see your contribution clearly, your work gets the credit it deserves. Communication closes the gap."],
   ["Your brand is what people say about you when you leave the room.", "Consistency of voice and presence builds trust over years, not weeks.", "You cannot be known for everything. Choose your niche deliberately."],
-  ["Give first, always. Generosity is the foundation of every lasting network.", "People remember how you made them feel, never just what you said.", "A warm, curious introduction is worth ten cold connections."],
+  ["Presence isn't a personality trait. It's a set of physical habits you can build.", "Your message is strongest when your words, tone and body language say the same thing.", "Sometimes the most powerful body language is knowing when to stand still."],
   ["A leadership voice is earned through vulnerability, not volume.", "Brave language builds the psychological safety that makes teams great.", "The words you choose every day define the culture around you."],
   ["Thorough preparation turns high stakes into high performance.", "The Talk Like TED method: emotional, novel, and always memorable.", "Your best performance lives on the other side of genuine preparation."],
 ];
@@ -757,10 +757,10 @@ export const WORKPLACE_APPLICATION = [
   ],
   // Day 12 — Influence / Nonverbal
   [
-    "In your next presentation, plant your feet before you speak, a grounded posture signals authority instantly.",
+    "In your next presentation, plant your feet before you speak. A grounded posture helps you come across as composed.",
     "Make deliberate eye contact for three to five seconds when making your most important point.",
-    "Use open hand gestures when sharing ideas, closed body language signals defensiveness.",
-    "Before a high-stakes conversation, take two minutes to stand tall and breathe, presence is a physical state.",
+    "Use open hand gestures when sharing ideas. Crossed arms can come across as defensive.",
+    "Before a high-stakes conversation, take a moment to stand tall and breathe slowly.",
   ],
   // Day 13 — Exposure
   [
@@ -1067,6 +1067,7 @@ export const REVIEW_NARRATION = {
   9: { src: "/day9-review.mp3", secs: 18 },
   10: { src: "/day10-review.mp3", secs: 22 },
   11: { src: "/day11-review.mp3", secs: 28 },
+  12: { src: "/day12-review.mp3", secs: 31 },
 };
 
 // Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)
