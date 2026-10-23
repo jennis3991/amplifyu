@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { T } from '../theme.js';
-import { LESSONS, QUOTES, DAILY_INSIGHTS, POWER_PHRASES, FURTHER_READING } from '../data.js';
+import { LESSONS, QUOTES, FURTHER_READING } from '../data.js';
 import { MODULE_ICONS } from '../diagrams.jsx';
 import { PBar, NAV_H } from '../components/NavComponents.jsx';
 import { Scene } from '../scenes.jsx';
 import { HourglassIcon } from '../components/HourglassIcon.jsx';
-import { PhraseStrip } from '../components/PhraseStrip.jsx';
 import { PIECES, getPieceInfo, getCategoryProgress } from '../utils.js';
 
 const ICON_PATHS = {

@@ -18,11 +18,11 @@ function blobToB64(blob) {
 
 const SCENARIOS = [
   // Executive Communication
-  {id:1,  category:"Executive",   tag:"Brevity · Clarity",         title:"The Lift Encounter",         prompt:"Your CEO stops you in the lift. 'Quick question — what's the biggest risk facing your team right now?'"},
-  {id:2,  category:"Executive",   tag:"Confidence · Structure",    title:"Board Interruption",          prompt:"You're two minutes into your board presentation when the Chair interrupts: 'Can you cut to the chase — what's your recommendation and why?'"},
-  {id:3,  category:"Executive",   tag:"Presence · Brevity",        title:"Lunch Table",                 prompt:"Your CEO's boss visits the office and sits next to you at lunch. She asks: 'So — what do you actually do here?'"},
+  {id:1,  category:"Executive",   tag:"Brevity · Clarity",         title:"The Lift Encounter",         prompt:"Your CEO stops you in the lift. 'Quick question: what's the biggest risk facing your team right now?'"},
+  {id:2,  category:"Executive",   tag:"Confidence · Structure",    title:"Board Interruption",          prompt:"You're two minutes into your board presentation when the Chair interrupts: 'Can you cut to the chase? What's your recommendation and why?'"},
+  {id:3,  category:"Executive",   tag:"Presence · Brevity",        title:"Lunch Table",                 prompt:"Your CEO's boss visits the office and sits next to you at lunch. She asks: 'So, what do you actually do here?'"},
   {id:4,  category:"Executive",   tag:"Strategic Thinking",        title:"All-Hands Question",          prompt:"At the all-hands, the CEO asks the room: 'What's one thing we could do differently to make this company better?' She looks directly at you."},
-  {id:5,  category:"Executive",   tag:"Credibility · Composure",   title:"CFO Corridor Moment",         prompt:"The CFO stops you after a budget review: 'Honestly — do you think this project is worth the investment?'"},
+  {id:5,  category:"Executive",   tag:"Credibility · Composure",   title:"CFO Corridor Moment",         prompt:"The CFO stops you after a budget review: 'Honestly, do you think this project is worth the investment?'"},
   // Managing Up
   {id:6,  category:"Managing Up", tag:"Influence · Composure",     title:"Disagreeing Upward",          prompt:"Your manager presents a plan you believe is flawed. In the debrief they ask: 'Any thoughts?'"},
   {id:7,  category:"Managing Up", tag:"Ownership · Confidence",    title:"The Promotion Conversation",  prompt:"Your manager says they have five minutes before their next call. You decide this is the moment to make your case for promotion."},
@@ -36,19 +36,19 @@ const SCENARIOS = [
   {id:14, category:"Stakeholders",tag:"Composure · Structure",     title:"The Disappointing Numbers",   prompt:"The quarterly results are significantly below target. You're presenting to the steering committee and have 90 seconds to set the tone."},
   {id:15, category:"Stakeholders",tag:"Confidence · Persuasion",   title:"Senior Objection",            prompt:"After your presentation a senior leader says: 'I'm not convinced. We tried something like this before and it failed.' The room waits for your response."},
   // Team & Leadership
-  {id:16, category:"Leadership",  tag:"Clarity · Composure",       title:"The Honest Check-In",         prompt:"In a 1:1, a team member asks: 'How do you think I'm doing?' — and you know they're not meeting expectations."},
+  {id:16, category:"Leadership",  tag:"Clarity · Composure",       title:"The Honest Check-In",         prompt:"In a 1:1, a team member asks: 'How do you think I'm doing?' You know they're not meeting expectations."},
   {id:17, category:"Leadership",  tag:"Confidence · Presence",     title:"Leading Through Uncertainty",  prompt:"Your team has just been told there's a restructure coming. They look to you and ask: 'What does this mean for us?'"},
-  {id:18, category:"Leadership",  tag:"Composure · Ownership",     title:"Team Conflict",               prompt:"Two senior team members are in open conflict. In a team meeting it spills over — both look to you to resolve it."},
+  {id:18, category:"Leadership",  tag:"Composure · Ownership",     title:"Team Conflict",               prompt:"Two senior team members are in open conflict. In a team meeting it spills over, and both look to you to resolve it."},
   {id:19, category:"Leadership",  tag:"Clarity · Confidence",      title:"Difficult Feedback",          prompt:"A high-performer has been dismissing junior colleagues in meetings. It's affecting the team. It's time to address it directly."},
   {id:20, category:"Leadership",  tag:"Strategic Thinking",        title:"What Are We Even Doing?",     prompt:"A new team member asks you: 'What are we actually trying to achieve? What's the point of this team?'"},
   // Visibility & Career
   {id:21, category:"Visibility",  tag:"Brevity · Presence",        title:"Networking Introduction",     prompt:"You're at an industry event. Someone extends their hand and asks: 'So, what do you do?' You have 45 seconds."},
-  {id:22, category:"Visibility",  tag:"Confidence · Ownership",    title:"What Are You Proud Of?",      prompt:"A potential mentor asks: 'What are you working on right now that you're most proud of — and why?'"},
+  {id:22, category:"Visibility",  tag:"Confidence · Ownership",    title:"What Are You Proud Of?",      prompt:"A potential mentor asks: 'What are you working on right now that you're most proud of, and why?'"},
   {id:23, category:"Visibility",  tag:"Structure · Presence",      title:"Tell Me About Yourself",      prompt:"First-round interview. The panel says: 'Tell us about yourself.' You have 90 seconds."},
   {id:24, category:"Visibility",  tag:"Persuasion · Clarity",      title:"Your Team's Value",           prompt:"Your company is restructuring. HR is meeting all managers to understand what each team contributes. You have two minutes."},
   {id:25, category:"Visibility",  tag:"Confidence · Brevity",      title:"The Media Question",          prompt:"A journalist interviewing you asks: 'What's the most important thing professionals in your field need to understand right now?'"},
   // High-Stakes Moments
-  {id:26, category:"High Stakes", tag:"Composure · Ownership",     title:"Crisis Moment",               prompt:"Your product has a critical bug affecting customers. The CEO asks for your assessment in front of the leadership team — right now."},
+  {id:26, category:"High Stakes", tag:"Composure · Ownership",     title:"Crisis Moment",               prompt:"Your product has a critical bug affecting customers. The CEO asks for your assessment in front of the leadership team, right now."},
   {id:27, category:"High Stakes", tag:"Confidence · Persuasion",   title:"Make Your Case",              prompt:"You're negotiating a significant salary increase. The hiring manager leans back and says: 'Make your case.'"},
   {id:28, category:"High Stakes", tag:"Composure · Clarity",       title:"The Rumour Question",         prompt:"There's a rumour your team is being cut. A team member asks you directly: 'Is it true? What do you know?'"},
   {id:29, category:"High Stakes", tag:"Composure · Persuasion",    title:"The Hostile Room",            prompt:"Your proposal is met with immediate pushback from a senior leader: 'This won't work. We don't have the budget or bandwidth.' The room waits."},
@@ -209,7 +209,7 @@ export function PracticeSpace({T2, isDesktop}) {
 
   if (showPaywall) return (
     <Paywall
-      headline="You've used your free Today's Challenge — subscribe to keep practicing"
+      headline="You've used your free Today's Challenge. Subscribe to keep practising"
       onClose={() => setShowPaywall(false)}
       onSubscribed={() => setShowPaywall(false)}
     />
@@ -302,18 +302,18 @@ export function PracticeSpace({T2, isDesktop}) {
           </svg>
         </button>
         <div style={{fontFamily:T.sans,fontSize:12,color:isRec?'#8A9E84':'rgba(44,36,22,0.35)'}}>
-          {preparingMic ? 'Preparing microphone…' : isRec ? 'Recording — tap to stop' : 'Tap to speak'}
+          {preparingMic ? 'Preparing microphone…' : isRec ? 'Recording · tap to stop' : 'Tap to speak'}
         </div>
       </div>
 
       {(micError || transcribeFailed) && (
         <div style={{marginBottom:12,padding:'12px 14px',background:'rgba(180,60,60,0.07)',border:'0.5px solid rgba(180,60,60,0.2)',borderRadius:4,fontFamily:T.sans,fontSize:12,color:'#8B3A3A',textAlign:'center'}}>
-          {micError ? 'Check your microphone permission, or type your response below.' : (online ? "We couldn't quite hear that — type your response below, or tap the mic to try again." : "You're offline — this needs a connection. Type your response below, or try again once you're back online.")}
+          {micError ? 'Check your microphone permission, or type your response below.' : (online ? "We couldn't quite hear that. Type your response below, or tap the mic to try again." : "You're offline. This needs a connection. Type your response below, or try again once you're back online.")}
         </div>
       )}
 
       <textarea value={transcript||fallback} onChange={e=>{setFallback(e.target.value);setTranscript('');}}
-        placeholder="Respond clearly and confidently — aim for 30 to 60 seconds."
+        placeholder="Respond clearly and confidently. Aim for 30 to 60 seconds."
         style={{width:'100%',borderRadius:4,border:'0.5px solid #DDD5C4',padding:'12px 14px',fontSize:14,fontFamily:T.sans,resize:'none',height:130,boxSizing:'border-box',background:'rgba(247,243,236,0.8)',outline:'none',marginBottom:12}}/>
 
       <button onClick={submit} disabled={loading||(!transcript.trim()&&!fallback.trim())}
@@ -322,7 +322,7 @@ export function PracticeSpace({T2, isDesktop}) {
       </button>
       {submitError && (
         <div style={{marginTop:12,padding:'12px 14px',background:'rgba(180,60,60,0.07)',border:'0.5px solid rgba(180,60,60,0.2)',borderRadius:4,fontFamily:T.sans,fontSize:12,color:'#8B3A3A',textAlign:'center'}}>
-          Something went wrong — please check your connection and try again.
+          Something went wrong. Please check your connection and try again.
         </div>
       )}
     </div>
@@ -358,7 +358,7 @@ export function PracticeSpace({T2, isDesktop}) {
 
       {streak.current>0 && (
         <div style={{textAlign:'center',fontFamily:T.sans,fontSize:12,color:T.gold,marginBottom:16}}>
-          {streak.current}-day streak{streak.current===streak.longest&&streak.current>1?' — personal best!':''}
+          {streak.current}-day streak{streak.current===streak.longest&&streak.current>1?' · personal best!':''}
         </div>
       )}
 

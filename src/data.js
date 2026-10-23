@@ -506,49 +506,33 @@ export const ROLE_SCENARIOS = {
 
 export const PHRASES = [
   {cat:"Owning Your Ambition",phrases:["My ambition is…","What I'm building toward is…","What I want to be known for is…","In 18 months, I want to be…","I'm actively working toward…","The next step for me is…","I want to be in a position where…"]},
-  {cat:"Structure (PRE)",phrases:["My view is X, because Y — for example Z.","The point I want to make is…","Here's why that matters…","In short…","The three things I want you to remember are…"]},
-  {cat:"Storytelling (SAR)",phrases:["The situation was…","What I did was…","The result was…","Let me tell you what actually happened.","Here's what changed — and why it worked."]},
-  {cat:"PIE — Impact",phrases:["My specific contribution was…","The impact of that was…","What I delivered was…","I led the…","The result was measurable: …"]},
+  {cat:"Structure (PRE)",phrases:["My view is X, because Y. For example, Z.","The point I want to make is…","Here's why that matters…","In short…","The three things I want you to remember are…"]},
+  {cat:"Storytelling (SAR)",phrases:["The situation was…","What I did was…","The result was…","Let me tell you what actually happened.","Here's what changed, and why it worked."]},
+  {cat:"PIE: Impact",phrases:["My specific contribution was…","The impact of that was…","What I delivered was…","I led the…","The result was measurable: …"]},
   {cat:"Brand and Presence",phrases:["What I'm known for is…","The way I approach this is…","What I bring that others don't is…","My brand is built on…","I want to be remembered for…"]},
-  {cat:"Setting Boundaries",phrases:["That's not something I'm able to take on without…","Here's what I can commit to…","I'd need to deprioritise X to take this on.","Let me be clear about what's feasible.","I can do this — if we adjust the scope."]},
-  {cat:"Buying Time",phrases:["Let me think about that for a moment.","Before I answer — let me make sure I understand the question.","That's worth considering carefully.","Give me until [time] and I'll have a clear view.","I want to answer this well — can I have 24 hours?"]},
+  {cat:"Setting Boundaries",phrases:["That's not something I'm able to take on without…","Here's what I can commit to…","I'd need to deprioritise X to take this on.","Let me be clear about what's feasible.","I can do this if we adjust the scope."]},
+  {cat:"Buying Time",phrases:["Let me think about that for a moment.","Before I answer, let me make sure I understand the question.","That's worth considering carefully.","Give me until [time] and I'll have a clear view.","I want to answer this well. Can I have 24 hours?"]},
 ];
 
 export const SAY_THIS = [
   {ctx:"Buying time",bad:"I'll figure it out.",good:"I need more time before I can answer that properly."},
   {ctx:"Starting a conversation",bad:"Sorry to bother you, but…",good:"I have something I'd like to discuss with you."},
-  {ctx:"Sharing your view",bad:"Does that sound okay?",good:"Here's what I'm thinking — let me know your reaction."},
+  {ctx:"Sharing your view",bad:"Does that sound okay?",good:"Here's what I'm thinking. Let me know your reaction."},
   {ctx:"Handling conflict",bad:"I don't want to cause any trouble…",good:"This is important to me and I'd like us to address it."},
-  {ctx:"Asserting yourself",bad:"Maybe we could… if that's okay?",good:"Here's what would work best — and here's why."},
-  {ctx:"Disagreeing",bad:"I'm not sure that's a good idea.",good:"I see it differently — here's my thinking."},
+  {ctx:"Asserting yourself",bad:"Maybe we could… if that's okay?",good:"Here's what would work best, and here's why."},
+  {ctx:"Disagreeing",bad:"I'm not sure that's a good idea.",good:"I see it differently. Here's my thinking."},
   {ctx:"Showing confidence",bad:"I just wanted to check…",good:"I wanted to check…"},
   {ctx:"Showing impact",bad:"I've been working really hard on this.",good:"What I delivered was… and the impact was…"},
 ];
 
 export const QUICK_PREP = [
   {num:1,title:"Breathing Reset",desc:"In 4, Hold 2, Out 6. Repeat 3 times. Calm body = calm voice.",secs:30},
-  {num:2,title:"Set Your Brand",desc:"Say aloud: I want to be known for… — your intention for how you'll show up.",secs:30},
+  {num:2,title:"Set Your Brand",desc:"Say aloud: \"I want to be known for…\" This is your intention for how you'll show up.",secs:30},
   {num:3,title:"Your One Point",desc:"What's the one thing you'll contribute today? Say it in one sentence.",secs:20},
-  {num:4,title:"Opening Line",desc:"My take on this is… — say it once, slowly, with conviction.",secs:20},
+  {num:4,title:"Opening Line",desc:"Say \"My take on this is…\" once, slowly, with conviction.",secs:20},
   {num:5,title:"Anchor Word",desc:"Choose: Clear. Calm. Confident. Intentional. Say it three times.",secs:20},
 ];
 
-export const DAILY_INSIGHTS = [
-  {label:"Communication Science",headline:"People remember stories more than facts.",body:"When information comes wrapped in a story, people picture it, feel it and remember it. Story is not decoration. It's the delivery mechanism."},
-  {label:"Career Research",headline:"Performance is only 10% of career success.",body:"Research consistently shows that image and exposure carry more weight than performance alone. All three are required."},
-  {label:"Neuroscience",headline:"The pause is more powerful than the word.",body:"Strategic silence signals control. When you pause before answering, you appear more thoughtful, more confident, and more senior."},
-  {label:"Psychology",headline:"Replace one filler with a pause — your authority lifts instantly.",body:"Research shows a deliberate pause increases perceived competence by up to 22%. One habit. Immediate impact."},
-  {label:"Leadership Research",headline:"Your first 30 seconds set the entire tone.",body:"First impressions form within 7 seconds and are remarkably resistant to change. Your opening line matters more than everything that follows."},
-  {label:"Communication Science",headline:"Structured answers are 40% more persuasive.",body:"When information is presented with clear structure — point, reason, example — audiences retain it longer and are more likely to act on it."},
-  {label:"Organisational Psychology",headline:"Visible contributors get 3x more opportunities.",body:"Exposure isn't vanity — it's strategy. Leaders who are visible to decision-makers consistently get more high-value work."},
-  {label:"Behavioural Science",headline:"Confidence is a learned behaviour, not a trait.",body:"Research consistently shows that confidence is a skill built through deliberate practice, not a personality type you're born with."},
-  {label:"Influence Research",headline:"People trust calm voices far more than urgent ones.",body:"A measured, unhurried voice signals security and competence. Rushed speech signals anxiety — even when the content is strong."},
-  {label:"Brand Psychology",headline:"You are described in 3 words by people who matter.",body:"Whether you design it or not, your personal brand exists. The only question is whether those words are the ones you'd choose."},
-  {label:"Communication Science",headline:"Short sentences land 60% harder.",body:"Cognitive load research shows that shorter sentences dramatically improve comprehension and recall. Every word you cut increases impact."},
-  {label:"Neuroscience",headline:"Eye contact doubles perceived intelligence.",body:"Neuroimaging studies show that direct eye contact activates trust and engagement circuits in the listener's brain far more than averted gaze."},
-  {label:"Leadership Research",headline:"Questions reveal intelligence more than answers do.",body:"The ability to ask the right question signals strategic thinking. In senior rooms, a great question often lands harder than a great answer."},
-  {label:"Career Science",headline:"Exposure without performance is empty.",body:"The PIE model is the most validated framework for career advancement. All three components — performance, image, exposure — are required."},
-];
 
 export const QUOTES = [
   "Speak with intention. Listen with purpose.",
@@ -560,23 +544,6 @@ export const QUOTES = [
   "Presence is built one interaction at a time.",
 ];
 
-export const POWER_PHRASES = [
-  {phrase:"My view is…",category:"Taking a position",when:"Use this at the start of any response when you want to signal confident opinion, not tentative suggestion.",example:"My view is that we should move faster on this. Here's why.",avoid:"I suppose you could argue… or It's hard to say, but…"},
-  {phrase:"Let me be direct.",category:"Commanding attention",when:"Use this before delivering something important, uncomfortable, or often avoided. It signals courage and clarity.",example:"Let me be direct. This project is behind because we made the wrong call in January.",avoid:"Burying the point in qualifications until it disappears."},
-  {phrase:"What I'm responsible for is…",category:"Owning your territory",when:"Use this to define your ownership clearly — in performance conversations, introductions, and scope negotiations.",example:"What I'm responsible for is ensuring this decision gets made with the right information.",avoid:"I sort of look after… or It's a bit of everything really."},
-  {phrase:"The three things I want you to remember are…",category:"Structuring for impact",when:"Use this at the opening of any presentation or senior update. People only retain three things.",example:"The three things I want you to leave this room knowing: one, what changed. Two, why it matters. Three, what we're doing about it.",avoid:"Listing eight points and hoping something sticks."},
-  {phrase:"Here's what I've learned.",category:"Showing self-awareness",when:"Use this when reflecting on a challenge, a mistake, or a pivot. It signals intellectual honesty.",example:"The project didn't go as planned. Here's what I've learned — and what I'd do differently.",avoid:"Glossing over failure without the insight."},
-  {phrase:"I want to be known for…",category:"Owning your brand",when:"Use this deliberately in brand-building conversations — with sponsors, in introductions, in performance discussions.",example:"I want to be known for making complex things clear, and for moving things forward decisively.",avoid:"Waiting for someone else to describe you — and hoping they get it right."},
-  {phrase:"That's not something I'm able to take on without…",category:"Setting boundaries",when:"Use this when declining or negotiating scope — with senior stakeholders, in project conversations.",example:"That's not something I'm able to take on without deprioritising X. Which would you prefer?",avoid:"I'll figure it out somehow — then resenting it for three months."},
-  {phrase:"The reason this matters is…",category:"Making it land",when:"Use this after making any point in a senior room. It bridges the gap between what you said and why they should care.",example:"We're changing the process. The reason this matters is that every week we don't, we lose significant revenue.",avoid:"Stating facts without connecting them to consequence or significance."},
-  {phrase:"I made a deliberate choice to…",category:"Demonstrating leadership",when:"Use this in performance conversations, SAR stories, or any time you want to show that your actions were intentional.",example:"I made a deliberate choice to bring both teams into the room before the decision was made.",avoid:"Things just kind of happened and it worked out."},
-  {phrase:"My ambition is…",category:"Owning your direction",when:"Use this with sponsors, mentors, and senior leaders who can help shape your path.",example:"My ambition is to be operating at director level within 18 months. Here's what I'm doing to get there.",avoid:"Waiting to be asked, or answering vaguely to avoid seeming too bold."},
-  {phrase:"Let me tell you what actually happened.",category:"Storytelling",when:"Use this to shift from reporting to narrating. It signals a story is coming — and that the truth is worth hearing.",example:"Let me tell you what actually happened when we tried to launch this the first time.",avoid:"So, the data shows that… — leading with numbers before the story."},
-  {phrase:"I see it differently.",category:"Respectful challenge",when:"Use this to disagree with a senior voice without being dismissive. It signals confidence without confrontation.",example:"I see it differently. I think the risk isn't the timeline — it's the brief. Can I explain?",avoid:"I'm not sure that's quite right… — which sounds hesitant rather than considered."},
-  {phrase:"What I bring that others don't is…",category:"Differentiating yourself",when:"Use this in interviews, sponsor conversations, or whenever someone asks what makes you distinctive.",example:"What I bring that others don't is the ability to translate complex data into decisions that stick.",avoid:"I work hard and I'm a team player. Everyone says that."},
-  {phrase:"Before I answer — let me make sure I understand the question.",category:"Buying intelligent time",when:"Use this in high-stakes moments when you need a few seconds to think — without appearing unprepared.",example:"Before I answer — let me make sure I understand the question. Are you asking about the process, or the outcome?",avoid:"Um, yeah, so, I guess… while your brain catches up."},
-  {phrase:"The impact of that was…",category:"Articulating value",when:"Use this whenever you've described an action. The impact is the only part a senior leader truly cares about.",example:"I led the redesign of the onboarding process. The impact of that was a 40% reduction in drop-off.",avoid:"Describing effort without outcome."},
-];
 
 // ─── SCENES 
 // ─── PER-DAY SESSION CARD IMAGES 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 // (deploy retrigger touch — GitHub webhook missed the previous push)
 import { T, TK } from '../theme.js';
-import { FURTHER_READING, PHRASES, SAY_THIS, QUICK_PREP, DAILY_INSIGHTS, POWER_PHRASES, LESSONS } from '../data.js';
+import { FURTHER_READING, PHRASES, SAY_THIS, QUICK_PREP, LESSONS } from '../data.js';
 import { Scene } from '../scenes.jsx';
 import { PracticeSpace } from '../modules/PracticeSpace.jsx';
 import { StoryReel, DEFAULT_STORY_SCENES } from '../components/StoryReel.jsx';
@@ -101,10 +101,10 @@ export const SAVED_WORK_SOURCES = {
 // "Study a Master" reference — lives in the Practice Space tab (it's a
 // reflection exercise, not an AI tool, so it doesn't belong on AI Tools).
 const MASTER_COMMUNICATORS = [
-  {emoji:"🌍",name:"David Attenborough",role:"Master of Clarity",sub:"Known for explaining the most complex subjects in a way anyone can understand. His communication is calm, precise, and remarkably clear — never a word wasted.",watchFor:["Pace and deliberate pacing","Simplicity of language","Precision in word choice","Storytelling that draws you in"],connection:[["Day 1","Clarity"],["Day 4","Precision"]],reflection:"What makes his explanations so easy to follow?"},
-  {emoji:"🎙️",name:"Steven Bartlett",role:"Master of Listening",sub:"Known for creating conversations that reveal profound insight. He speaks less than almost any other interviewer — and gets more from his guests because of it.",watchFor:["Active listening over speaking","Follow-up questions that go deeper","Comfortable silence — he never fills it","Genuine curiosity over performance"],connection:[["Day 3","Pause Principle"],["Day 6","High-Stakes Conversations"]],reflection:"How often does he speak versus listen? What does the silence do?"},
-  {emoji:"⚖️",name:"Amal Clooney",role:"Master of Precision Under Pressure",sub:"Known for communicating on some of the world's most challenging issues — human rights, international justice. What makes her remarkable isn't volume or emotion. It's clarity, precision, and calm conviction.",watchFor:["Structured, evidence-based arguments","Deliberate and considered language","Composed delivery under scrutiny","Calm authority without aggression"],connection:[["Day 4","Precision"],["Day 5","PRE Framework"],["Day 6","Composure"]],reflection:"How does she remain calm while discussing emotionally charged topics?"},
-  {emoji:"🎤",name:"Simon Sinek",role:"Master of Structure",sub:"Known for turning complex ideas into memorable frameworks. His communication is simple, organised, and impossible to forget — because he builds the idea with you, not at you.",watchFor:["Clear beginning, middle, end","Strategic repetition of key phrases","Memorable, simple language","Pauses that let ideas land"],connection:[["Day 1","Feynman Technique"],["Day 5","PRE Framework"]],reflection:"How does he make complex ideas feel inevitable and simple?"},
+  {emoji:"🌍",name:"David Attenborough",role:"Master of Clarity",sub:"Known for explaining the most complex subjects in a way anyone can understand. His communication is calm, precise, and remarkably clear. Never a word wasted.",watchFor:["Pace and deliberate pacing","Simplicity of language","Precision in word choice","Storytelling that draws you in"],connection:[["Day 1","Clarity"],["Day 4","Precision"]],reflection:"What makes his explanations so easy to follow?"},
+  {emoji:"🎙️",name:"Steven Bartlett",role:"Master of Listening",sub:"Known for creating conversations that reveal profound insight. He speaks less than almost any other interviewer, and gets more from his guests because of it.",watchFor:["Active listening over speaking","Follow-up questions that go deeper","Comfortable silence: he never fills it","Genuine curiosity over performance"],connection:[["Day 3","Pause Principle"],["Day 6","High-Stakes Conversations"]],reflection:"How often does he speak versus listen? What does the silence do?"},
+  {emoji:"⚖️",name:"Amal Clooney",role:"Master of Precision Under Pressure",sub:"Known for communicating on some of the world's most challenging issues: human rights and international justice. What makes her remarkable isn't volume or emotion. It's clarity, precision, and calm conviction.",watchFor:["Structured, evidence-based arguments","Deliberate and considered language","Composed delivery under scrutiny","Calm authority without aggression"],connection:[["Day 4","Precision"],["Day 5","PRE Framework"],["Day 6","Composure"]],reflection:"How does she remain calm while discussing emotionally charged topics?"},
+  {emoji:"🎤",name:"Simon Sinek",role:"Master of Structure",sub:"Known for turning complex ideas into memorable frameworks. His communication is simple, organised, and easy to remember, because he builds the idea with you, not at you.",watchFor:["Clear beginning, middle, end","Strategic repetition of key phrases","Memorable, simple language","Pauses that let ideas land"],connection:[["Day 1","Feynman Technique"],["Day 5","PRE Framework"]],reflection:"How does he make complex ideas feel inevitable and simple?"},
 ];
 
 // TK (Toolkit colour system) now lives in theme.js so it can be shared with
@@ -571,7 +571,7 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
            icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14a1 1 0 011 1v7a1 1 0 01-1 1h-6l-4 3v-3H3a1 1 0 01-1-1V6a1 1 0 011-1z" stroke={TK.onDark} strokeWidth="1.3" strokeLinejoin="round"/><path d="M6 8h8M6 11h5" stroke={TK.onDark} strokeWidth="1.2" strokeLinecap="round"/></svg>},
           {id:"challenge", label:"Today's Challenge", desc:"A new scenario every day, scored by your AI coach.", tint:TK.sage,
            icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke={TK.onDark} strokeWidth="1.3"/><circle cx="10" cy="10" r="4" stroke={TK.onDark} strokeWidth="1.3"/><circle cx="10" cy="10" r="1.2" fill={TK.onDark}/></svg>},
-          {id:"master", label:"Study a Master", desc:"Observe how exceptional communicators do it — then borrow one habit.", tint:TK.taupe,
+          {id:"master", label:"Study a Master", desc:"Observe how exceptional communicators do it, then borrow one habit.", tint:TK.taupe,
            icon:<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><ellipse cx="10" cy="10" rx="7.5" ry="5" stroke={TK.onDark} strokeWidth="1.3"/><circle cx="10" cy="10" r="2.2" stroke={TK.onDark} strokeWidth="1.3"/></svg>},
         ];
 
@@ -614,7 +614,7 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
                     <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:TK.text,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>What To Expect</div>
                     <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
                       {[
-                        {n:1,title:"A stakeholder pushes back",desc:"A live, unscripted moment — a tense update, a hard question, pushback you didn't plan for."},
+                        {n:1,title:"A stakeholder pushes back",desc:"A live, unscripted moment: a tense update, a hard question, pushback you didn't plan for."},
                         {n:2,title:"You respond in the moment",desc:"No retakes, no scripting. Speak the way you would in the real room."},
                         {n:3,title:"Your AI coach scores it",desc:"Clarity, structure and presence, broken down immediately after you finish."},
                       ].map(step => (
@@ -649,7 +649,7 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
                     <div style={{background:"rgba(113,128,113,0.08)",borderRadius:8,border:"0.5px solid rgba(113,128,113,0.25)",padding:"18px 20px",marginBottom:24}}>
                       <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:TK.sageDark,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Your Task</div>
                       <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                        {["Choose someone you find compelling — a speaker, leader, interviewer, advocate, or anyone who communicates in a way you admire.","Watch them with intention. Notice how they speak, how they hold the room, and what specific habits make them effective.","Pick one thing you observed and bring it into a real conversation this week."].map((t,i)=>(
+                        {["Choose someone you find compelling: a speaker, leader, interviewer, advocate, or anyone who communicates in a way you admire.","Watch them with intention. Notice how they speak, how they hold the room, and what specific habits make them effective.","Pick one thing you observed and bring it into a real conversation this week."].map((t,i)=>(
                           <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
                             <div style={{width:20,height:20,borderRadius:"50%",background:"rgba(113,128,113,0.15)",border:"0.5px solid rgba(113,128,113,0.4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
                               <span style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:TK.sageDark}}>{i+1}</span>
@@ -660,7 +660,7 @@ setCopied(p); setTimeout(()=>setCopied(null),2000); }
                       </div>
                     </div>
                     <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:TK.text3,textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>Need Inspiration?</div>
-                    <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:TK.text3,lineHeight:1.6,fontWeight:300,marginBottom:16}}>Four exceptional communicators — each a master of a different skill. Expand a card for what to watch for.</p>
+                    <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:TK.text3,lineHeight:1.6,fontWeight:300,marginBottom:16}}>Four exceptional communicators, each a master of a different skill. Expand a card for what to watch for.</p>
                     <div style={{display:"grid",gridTemplateColumns:isDesktop?"1fr 1fr":"1fr",gap:10}}>
                       {MASTER_COMMUNICATORS.map((c,ci)=>{
                         const open=openMasterCard===ci;
@@ -754,9 +754,9 @@ could no longer afford to be anything less than precise. Every meeting,
 every conversation had to <strong>earn its place.</strong>
             </p>
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>
-              I quickly realised that my ability to communicate clearly — 
+              I quickly realised that my ability to communicate clearly: 
 to structure my thinking under pressure, to tell stories that landed, to 
-be visible to the right people — was the single highest-leverage skill I 
+be visible to the right people. That was the single highest-leverage skill I 
 could develop. Not just for my career, but for the whole shape of my life. 
 When I communicate well, I work faster, influence more, and come home with 
 something left to give.
@@ -768,27 +768,27 @@ solid ${T.gold}`,padding:"16px 18px"}}>
               <p 
 style={{fontFamily:T.serif,fontSize:15,fontStyle:"italic",color:dark?"rgba(255,255,255,0.85)":T.goldDark,lineHeight:1.65,margin:0}}>
                 "Communication is the skill that multiplies everything 
-else. And it can be built — deliberately, in fifteen minutes a day."
+else. And it can be built: deliberately, in fifteen minutes a day."
               </p>
             </div>
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>
-              I had always been good at storytelling. I understood the power of a well-placed narrative — how it changes the energy in a room, how it makes people lean in. I had strong instincts for communication and had built real credibility over my career. But coming back from leave, I wanted more than instinct. I wanted a <strong>system.</strong> Something I could call on when tired, when stretched, when operating across two very full worlds simultaneously.
+              I had always been good at storytelling. I understood the power of a well-placed narrative: how it changes the energy in a room, how it makes people lean in. I had strong instincts for communication and had built real credibility over my career. But coming back from leave, I wanted more than instinct. I wanted a <strong>system.</strong> Something I could call on when tired, when stretched, when operating across two very full worlds simultaneously.
             </p>
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>
-              I built AmplifyU because the tools I needed didn't exist. Something science-backed, practically structured, and designed for a real professional life — not a retreat, not a course, not a workshop. <strong>A daily platform that fits inside the life you already have.</strong>
+              I built AmplifyU because the tools I needed didn't exist. Something science-backed, practically structured, and designed for a real professional life, not a retreat, not a course, not a workshop. <strong>A daily platform that fits inside the life you already have.</strong>
             </p>
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>
-              The programme moves through fourteen deliberate modules — starting with the foundations: clarity, structure, and voice. Then the skills that separate good communicators from great ones: storytelling, connection, and managing pressure. Then the hardest work of all: building presence, communicating your ambition, and creating the kind of exposure that makes your value impossible to ignore.
+              The programme moves through fourteen deliberate modules, starting with the foundations: clarity, structure, and voice. Then the skills that separate good communicators from great ones: storytelling, connection, and managing pressure. Then the hardest work of all: building presence, communicating your ambition, and creating the kind of exposure that gets your value noticed.
             </p>
             {/* AI tools highlight */}
             <div style={{background:dark?T2.surface:T2.card,borderRadius:2,padding:"18px 20px"}}>
               <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:2,marginBottom:10}}>Built with AmplifyU Coaching</div>
               <p style={{fontSize:14,color:T2.text,lineHeight:1.7,margin:0}}>
-                Every session includes your AI Coach that responds to your specific words — not generic feedback, but personalised evaluation of your structure, reasoning, and delivery. Tools to help you rewrite, rehearse, and reflect. The kind of support that used to require an expensive coach is now available every day, inside sessions you can complete in under twenty minutes.
+                Every session includes your AI Coach that responds to your specific words. Not generic feedback, but personalised evaluation of your structure, reasoning, and delivery. Tools to help you rewrite, rehearse, and reflect. The kind of support that used to require an expensive coach is now available every day, inside sessions you can complete in under twenty minutes.
               </p>
             </div>
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>
-              I believe — genuinely, without qualification — that every person can become a better communicator. Not gifted. Not naturally smooth. But deliberate. Precise. Compelling. The professionals who have transformed their communication didn't do it through talent. They did it through practice, repetition, and a system that made their improvement visible to themselves and the people around them.
+              I believe, genuinely, without qualification, that every person can become a better communicator. Not gifted. Not naturally smooth. But deliberate. Precise. Compelling. The professionals who have transformed their communication didn't do it through talent. They did it through practice, repetition, and a system that made their improvement visible to themselves and the people around them.
             </p>
             {/* Pull quote 2 */}
             <div 
@@ -803,7 +803,7 @@ more, and come home with something left to give."
             <p style={{fontSize:14,color:T2.text,lineHeight:1.75}}>
               This platform was built in the margins of a full life. It is 
 designed to be used in exactly the same way. Because the professionals who 
-need these tools the most are also the ones with the least time to waste — 
+need these tools the most are also the ones with the least time to waste, 
 and the most to gain.
             </p>
             {/* Sign-off */}
@@ -812,7 +812,7 @@ and the most to gain.
 style={{height:1,background:`linear-gradient(90deg,${T.gold},rgba(138,158,132,0.1))`,marginBottom:16}}/>
               <p 
 style={{fontFamily:T.serif,fontSize:16,fontWeight:700,color:T2.text,lineHeight:1.5,margin:0}}>
-                Amplify your voice. Lead with confidence. Thrive — at work 
+                Amplify your voice. Lead with confidence. Thrive, at work 
 and at home.{" "}
                 <span style={{color:T.gold}}>AmplifyU.</span>
               </p>
