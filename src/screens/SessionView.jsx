@@ -3132,14 +3132,14 @@ setAmbitionSaved(true); } catch {}
         const D12_EDITORIAL = [
           { id:"kennedy", img:"/d12-kennedy.jpg", imgPos:"center 35%", name:"Kennedy vs Nixon", role:"1960 US Presidential Debate", superpower:"Master of Executive Presence",
             superpowerText:"People don't just hear confidence. They see it.",
-            summary:"The first televised presidential debate in 1960 changed communication forever. People who listened on the radio believed Nixon won. People who watched on television overwhelmingly believed Kennedy won. The difference wasn't their arguments — it was their presence.",
+            summary:"In the first televised presidential debate in 1960, some polls suggested radio listeners thought Nixon won, while many TV viewers favoured Kennedy. Historians still debate the size of that gap, but the debate is remembered for what viewers saw.",
             exploreLabel:"Explore the debate",
             body1:"Kennedy appeared calm, composed and confident. He looked directly into the camera, maintained steady eye contact, stood comfortably and projected quiet authority. Nixon, recovering from illness, appeared tense, perspired under the studio lights and avoided looking directly at viewers.",
-            body2:"Radio listeners could only judge the words being spoken, and many leaned toward Nixon's grasp of policy detail. Television viewers could also see the composure gap — and that visual impression outweighed the argument itself.",
+            body2:"Radio listeners could only judge the words being spoken, and many leaned toward Nixon's grasp of policy detail. Television viewers could also see the composure gap, and that visual impression may have mattered as much as the argument itself.",
             body3:"The debate became one of the clearest demonstrations that how you deliver a message can influence people just as much as the message itself.",
-            whyItWorks:"Before people evaluate your ideas, they evaluate you. Within seconds, your posture, eye contact, facial expression and composure shape how trustworthy, capable and confident you appear. When your non-verbal communication projects calm authority, people are more likely to listen, believe and remember what you say.",
+            whyItWorks:"Before people evaluate your ideas, they evaluate you. Within seconds, your posture, eye contact, facial expression and composure shape how trustworthy, capable and confident you appear. When your nonverbal communication projects calm authority, people are more likely to listen, believe and remember what you say.",
             technique:"Before your next important conversation, imagine the camera is already on you. Stand tall, relax your shoulders, make steady eye contact and pause before you begin speaking. Let people see confidence before they hear it.",
-            lesson:"The Kennedy–Nixon debate reminds us that communication is never just about words. Every movement, expression and pause tells its own story. Great communicators understand that presence begins long before the first sentence — and often determines how every sentence that follows is received.",
+            lesson:"The Kennedy–Nixon debate reminds us that communication is never just about words. Every movement, expression and pause tells its own story. Great communicators understand that presence begins long before the first sentence, and shapes how what follows is received.",
           },
           { id:"jobs", img:"/d12-jobs.jpg", imgPos:"center 40%", name:"Steve Jobs", role:"Co-founder & former CEO of Apple", superpower:"Master of Purposeful Presence",
             superpowerText:"When every movement has purpose, every message carries more weight.",
@@ -3168,7 +3168,27 @@ setAmbitionSaved(true); } catch {}
               Back to Gallery
             </button>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
-            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:14,marginBottom:28}}>
+              <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,margin:0}}>{reading.name}</h2>
+              {EXAMPLE_AUDIO[reading.id] && (() => {
+                const src = EXAMPLE_AUDIO[reading.id];
+                const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                return (
+                  <button
+                    onClick={() => toggleNarration(src)}
+                    aria-label={playing ? "Pause narration" : "Play narration"}
+                    style={{
+                      width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                      padding:0, background:"transparent", border:"none",
+                      display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                    }}>
+                    <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <PlayIcon playing={playing}/>
+                    </span>
+                  </button>
+                );
+              })()}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
             {reading.quote && (
@@ -3197,7 +3217,7 @@ setAmbitionSaved(true); } catch {}
           <div key={idx} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Presence in Action</h2>
-            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Two communicators who prove that how you carry yourself speaks louder than words.</p>
+            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Two communicators who show that how you carry yourself speaks louder than words.</p>
             <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:24,maxWidth:640}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
               {D12_EDITORIAL.map(card=>{
