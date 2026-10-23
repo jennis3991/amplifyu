@@ -109,7 +109,7 @@ export function WelcomeCard({ onDismiss }) {
           fontSize: 34, fontWeight: 600, color: "#2C2416",
           letterSpacing: "-0.5px", marginBottom: 16, lineHeight: 1.2,
         }}>
-          Excellent communicators aren't born—they're trained.
+          Excellent communicators aren't born. They're trained.
         </h2>
         <div style={{ width: 32, height: "0.5px", background: "#8A9E84", margin: "0 auto 20px", opacity: 0.7 }} />
         <p style={{
@@ -162,11 +162,8 @@ const DAY_BADGES = {
   14: { img:"/badge-knight.jpg", label:"Communication Master", sub:"14 sessions. A voice that commands rooms.",      color:"#C9A84C" },
 };
 
-export function Celebrate({day, onClose, rankUp}) {
+export function Celebrate({day, onClose, onSeeBlueprint, rankUp}) {
   const [phase, setPhase] = useState("burst");
-  const [notifyDone, setNotifyDone] = useState(() => {
-    try { return !!localStorage.getItem("au1_practiceSpaceNotify"); } catch { return false; }
-  });
   const [spotlight, setSpotlight] = useState(null);
   const rankUpImgRef = useRef(null);
   useEffect(() => {
@@ -191,11 +188,6 @@ export function Celebrate({day, onClose, rankUp}) {
   }, [rankUp]);
 
   const isComplete = day === 14;
-
-  function handleNotify() {
-    try { localStorage.setItem("au1_practiceSpaceNotify", "1"); } catch {}
-    setNotifyDone(true);
-  }
 
   return (
     <div style={{
@@ -332,7 +324,7 @@ strokeWidth="1.5"
                   ? "14 sessions. You set out to be " + amb + ". You now have the voice to match the ambition."
                   : "14 sessions. You now communicate with clarity, structure, and impact. This is just the beginning.";
               })()
-            ) : day === 1 ? "Today, you practised turning your thoughts into words that land. Keep going — it gets easier with practice." : "Each session is a rep. Every rep builds the habit. Keep going."}
+            ) : day === 1 ? "Today, you practised turning your thoughts into words that land. Keep going. It gets easier with practice." : "Each session is a rep. Every rep builds the habit. Keep going."}
           </p>
 
           {/* Rank up */}
@@ -374,7 +366,7 @@ strokeWidth="1.5"
           padding:"8px 28px 0",
           animation:"textFade 0.5s ease 0.55s both",
         }}>
-          <button onClick={onClose} style={{
+          <button onClick={isComplete && onSeeBlueprint ? onSeeBlueprint : onClose} style={{
             width:"100%",padding:"16px",
             borderRadius:12,border:"none",cursor:"pointer",
             background: isComplete
@@ -386,26 +378,9 @@ strokeWidth="1.5"
               : "0 4px 16px rgba(17,28,46,0.3)",
             letterSpacing:"0.2px",
           }}>
-            {isComplete ? "See your results" : "Keep going →"}
+            {isComplete ? "See your blueprint →" : "Keep going →"}
           </button>
         </div>
-
-        {/* What's Next — Practice Space (Day 14 only) */}
-        {isComplete && (
-          <div style={{padding:"28px 28px 0",animation:"textFade 0.5s ease 0.9s both"}}>
-            <div style={{height:1,background:"rgba(255,255,255,0.08)",marginBottom:24}}/>
-            <div style={{fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.75)",textTransform:"uppercase",letterSpacing:"3px",marginBottom:10,fontFamily:T.sans}}>What's Next</div>
-            <div style={{fontFamily:T.serif,fontSize:22,fontWeight:600,color:"rgba(245,239,230,0.92)",lineHeight:1.2,marginBottom:10}}>Your Practice Space is coming.</div>
-            <p style={{fontFamily:T.sans,fontSize:13,color:"rgba(255,255,255,0.48)",lineHeight:1.65,fontWeight:300,marginBottom:20}}>Once you've completed the programme, you'll have a dedicated space to practise before any real conversation — presentations, meetings, board updates, and more. We'll let you know when it's ready.</p>
-            {notifyDone ? (
-              <div style={{fontSize:13,color:T.gold,fontFamily:T.sans,fontWeight:500,letterSpacing:"0.02em"}}>✓ We'll let you know.</div>
-            ) : (
-              <button onClick={handleNotify} style={{width:"100%",padding:"13px 20px",border:"1px solid rgba(138,158,132,0.35)",borderRadius:8,background:"transparent",color:"rgba(245,239,230,0.7)",fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",letterSpacing:"0.02em"}}>
-                Notify Me When It's Ready
-              </button>
-            )}
-          </div>
-        )}
 
       </div>
     </div>
