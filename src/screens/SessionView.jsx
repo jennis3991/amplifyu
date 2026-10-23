@@ -3336,14 +3336,14 @@ setAmbitionSaved(true); } catch {}
         const D13_EDITORIAL = [
           { id:"obama", img:"/d13-obama.jpg", imgPos:"center 50%", name:"Michelle Obama", role:"Former First Lady of the United States", superpower:"Master of Warm Presence",
             superpowerText:"Making people feel safe enough to be human.",
-            summary:"Michelle Obama can speak to thousands or one person and make both feel like the only conversation in the room. She never performs confidence — she shares her own uncertainty instead, which is exactly why people trust her.",
+            summary:"Her reputation is built on warmth and honesty, and it travels through the people she connects with.",
             exploreLabel:"Explore her techniques",
-            body1:"Michelle Obama can speak to a stadium of thousands and somehow make it feel like a conversation between two people. She's built a reputation not on polish, but on presence — the sense that she's genuinely there with whoever she's talking to, whether it's a world leader or a teenager in a school gym.",
-            body2:"She does this by refusing to perform. In her memoir Becoming and countless public appearances, she's been open about self-doubt, about not always feeling like she belonged in the rooms she walked into — and that honesty is exactly what makes people trust her. She doesn't perform confidence. She shares it.",
-            body3:"People don't remember Michelle Obama for a perfect turn of phrase. They remember how she made them feel — seen, included, capable. That's presence: not commanding a room, but making everyone in it feel like they belong there too.",
-            whyItWorks:"Warmth builds trust faster than authority does. When someone feels safe enough to be honest about their own uncertainty, it gives everyone else permission to relax — and people open up, remember more, and connect harder with speakers who feel human rather than flawless.",
-            technique:"Before your next high-stakes conversation, ask: \"Am I trying to look confident, or trying to connect?\" Drop the armour. A moment of real honesty — even something small — does more for trust than a flawless delivery ever will.",
-            lesson:"Presence isn't about filling a room with your voice — it's about making the room feel safe enough for others to bring theirs. The most memorable communicators aren't the most polished. They're the most human.",
+            body1:"Michelle Obama can speak to a stadium of thousands and somehow make it feel like a conversation between two people. She's built a reputation not on polish, but on presence: the sense that she's genuinely there with whoever she's talking to, whether it's a world leader or a teenager in a school hall.",
+            body2:"She does this by refusing to perform. In her memoir Becoming and countless public appearances, she's been open about self-doubt, about not always feeling like she belonged in the rooms she walked into. That honesty is a big part of why people trust her. She doesn't perform confidence. She shares it.",
+            body3:"People don't remember Michelle Obama for a perfect turn of phrase. They remember how she made them feel: seen, included, capable. That's presence: not commanding a room, but making everyone in it feel like they belong there too.",
+            whyItWorks:"Warmth often builds trust faster than authority. When someone is honest about their own uncertainty, it gives others permission to relax, and people connect more easily with speakers who feel human rather than flawless.",
+            technique:"Before your next high-stakes conversation, ask: \"Am I trying to look confident, or trying to connect?\" Drop the armour. A moment of real honesty, even something small, can do more for trust than a flawless delivery.",
+            lesson:"Presence isn't about filling a room with your voice. It's about making the room feel safe enough for others to bring theirs. The most memorable communicators aren't the most polished. They're the most human.",
           },
           { id:"jamie", img:"/d13-jamie.jpg", imgPos:"center center", name:"Jamie Oliver", role:"Celebrity chef & author", superpower:"Master of Approachable Authority",
             superpowerText:"People don't trust you because you sound clever. They trust you because they understand you.",
@@ -3373,7 +3373,27 @@ setAmbitionSaved(true); } catch {}
               Back to Gallery
             </button>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:600,color:"rgba(160,128,90,0.85)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:8}}>{reading.superpower}</div>
-            <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,marginBottom:28}}>{reading.name}</h2>
+            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:14,marginBottom:28}}>
+              <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:400,color:T2.text,lineHeight:1.1,margin:0}}>{reading.name}</h2>
+              {EXAMPLE_AUDIO[reading.id] && (() => {
+                const src = EXAMPLE_AUDIO[reading.id];
+                const playing = narrationPlaying && narrationAudioRef.current?.dataset.src === src;
+                return (
+                  <button
+                    onClick={() => toggleNarration(src)}
+                    aria-label={playing ? "Pause narration" : "Play narration"}
+                    style={{
+                      width:44, height:44, minWidth:44, flexShrink:0, marginRight:-4,
+                      padding:0, background:"transparent", border:"none",
+                      display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer",
+                    }}>
+                    <span style={{width:36,height:36,borderRadius:"50%",background:T.gold,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <PlayIcon playing={playing}/>
+                    </span>
+                  </button>
+                );
+              })()}
+            </div>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body1}</p>
             <p style={{fontFamily:T.sans,fontSize:15,color:T2.text,lineHeight:1.8,fontWeight:300,margin:"0 0 14px"}}>{reading.body2}</p>
             {reading.quote && (
@@ -3400,7 +3420,7 @@ setAmbitionSaved(true); } catch {}
           <div key={idx} className="au-step-enter" style={{padding:"32px 52px",overflowY:"auto"}}>
             <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>Communication Collection</div>
             <h2 style={{fontFamily:T.serif,fontSize:36,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Exposure in Action</h2>
-            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Reputations that open doors — built through trust, not just talent.</p>
+            <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:8}}>Reputations that open doors, built through trust, not just talent.</p>
             <p style={{fontFamily:T.sans,fontSize:11,color:T2.text4,lineHeight:1.5,fontWeight:400,fontStyle:"italic",marginBottom:24,maxWidth:640}}>AmplifyU's independent analysis of public figures' communication styles. No affiliation or endorsement implied.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
               {D13_EDITORIAL.map(card=>{
