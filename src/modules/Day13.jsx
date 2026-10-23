@@ -237,27 +237,31 @@ const CIRCUIT_CHARS = [
     id: 'renata',
     name: 'Renata Ellis',
     role: 'VP, People & Culture',
-    vibe: 'Warm and instantly curious — makes you feel like the only person in the room',
+    vibe: 'Warm and instantly curious. Makes you feel like the only person in the room',
     listensFor: 'genuine warmth and honesty — whether the person opens up with something real rather than a polished, guarded answer',
     lead: "Renata catches your eye during a break in the townhall and comes straight over, warm and unhurried:",
-    quote: "I don't think we've properly met yet — I'd love to know, what's something you're proud of lately that most people around here probably don't know about?",
+    quote: "I don't think we've properly met yet. I'd love to know, what's something you're proud of lately that most people around here probably don't know about?",
     get question() { return `${this.lead} "${this.quote}" What do you say?`; },
   },
   {
     id: 'theo',
     name: 'Theo Brandt',
     role: 'Head of Product',
-    vibe: 'Enthusiastic and down-to-earth — genuinely lights up hearing what people are working on',
+    vibe: 'Enthusiastic and down-to-earth. Genuinely lights up hearing what people are working on',
     listensFor: 'genuine enthusiasm and plain language over jargon — whether the answer sounds like something a real person would say to a friend',
     lead: "Theo spots you by the coffee station after the townhall and grins:",
-    quote: "Okay, real talk — what's something you're working on right now that actually gets you excited?",
+    quote: "Okay, real talk: what's something you're working on right now that actually gets you excited?",
     get question() { return `${this.lead} "${this.quote}" What do you say?`; },
   },
 ];
 
 const D13_SIMULATION_MAX_SEC = 120;
+// Coach intro audio lives in a module-level slot; it plays on the intro and
+// stops when the circuit starts.
+const d13SimCoachSlot = { current: null };
 export function D13SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
+  const coach = useCoachNarration({ src: "/day13-simulation.mp3", cues: [], sharedAudioRef: d13SimCoachSlot });
   const [charIdx, setCharIdx] = useState(0);
   const [scores, setScores] = useState([null, null]);
   const [debrief, setDebrief] = useState(null);
@@ -468,10 +472,12 @@ export function D13SimWidget({T, T2, isDesktop}) {
 
   if (phase === 'intro') return (
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={44} style={{ marginTop: 0, marginBottom: 0 }} />
       <div style={cs.card}>
-        <div style={cs.label}>The Networking Circuit · Simulation</div>
+        <div style={cs.label}>The Scene</div>
         <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Two people at a company townhall. Two real conversations. One chance to make an impression.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AI Coach sets the scene and asks one question per person. Speak out loud what you would actually say — then get scored on your opening, connection, and the impression you leave.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your coach sets the scene, and each person asks you one question. Speak out loud what you would actually say, then get scored on your opening, connection, and the impression you leave.</p>
       </div>
       {CIRCUIT_CHARS.map((sc, i) => (
         <div key={sc.id} style={{...cs.card, display:"flex", alignItems:"flex-start", gap:14}}>
@@ -486,8 +492,8 @@ export function D13SimWidget({T, T2, isDesktop}) {
         </div>
       ))}
       <div>
-        <AICoachNote T={T} T2={T2} characters />
-        <button onClick={() => setPhase('question')} style={cs.cta}>Enter the Circuit →</button>
+        <AICoachNote T={T} T2={T2} voice characters />
+        <button onClick={() => { coach.pause(); setPhase('question'); }} style={cs.cta}>Enter the Circuit →</button>
       </div>
     </div>
   );
@@ -499,7 +505,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
         <div style={{...cs.card, display:"flex", alignItems:"center", justifyContent:"space-between", gap:12, padding:isDesktop?"14px 24px":"10px 16px"}}>
           <div>
             <div style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:T.gold, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:2}}>Person {charIdx+1} of {CIRCUIT_CHARS.length}</div>
-            <div style={{fontFamily:T.sans, fontSize:isDesktop?14:13, fontWeight:600, color:T2.text}}>{sc.name} — <span style={{fontWeight:400, color:T2.text4}}>{sc.role}</span></div>
+            <div style={{fontFamily:T.sans, fontSize:isDesktop?14:13, fontWeight:600, color:T2.text}}>{sc.name} · <span style={{fontWeight:400, color:T2.text4}}>{sc.role}</span></div>
           </div>
         </div>
 
@@ -516,9 +522,9 @@ export function D13SimWidget({T, T2, isDesktop}) {
             {recordState === 'idle' && (
               <div style={{...cs.card, textAlign:"center", padding:isDesktop?"32px 28px":"24px 20px"}}>
                 {captureFailed && (
-                  <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#B05C4A", marginBottom:10, lineHeight:1.5}}>{online ? "Didn't quite catch that — give it another go" : "You're offline — this needs a connection to score your answer"}</div>
+                  <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#B05C4A", marginBottom:10, lineHeight:1.5}}>{online ? "Didn't quite catch that. Give it another go" : "You're offline. This needs a connection to score your answer"}</div>
                 )}
-                <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, marginBottom:20, lineHeight:1.5}}>Speak your response out loud — tap when you're ready</div>
+                <div style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:T2.text3, marginBottom:20, lineHeight:1.5}}>Speak your response out loud. Tap when you're ready</div>
                 <button
                   onClick={startRecording}
                   style={{width:72, height:72, borderRadius:"50%", border:"1.5px solid "+T.gold, background:"rgba(138,158,132,0.08)", color:T.gold, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", transition:"all 0.2s"}}
@@ -534,10 +540,10 @@ export function D13SimWidget({T, T2, isDesktop}) {
               <div style={{...cs.card, padding:isDesktop?"24px":"18px"}}>
                 <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:16}}>
                   <div style={{width:8, height:8, borderRadius:"50%", background:"#C97B5A", animation:"glowPulse 1s ease infinite"}}/>
-                  <span style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:"#C97B5A", textTransform:"uppercase", letterSpacing:"1.5px"}}>Recording — {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D13_SIMULATION_MAX_SEC/60)}:{String(D13_SIMULATION_MAX_SEC%60).padStart(2,'0')}</span>
+                  <span style={{fontFamily:T.sans, fontSize:10, fontWeight:700, color:"#C97B5A", textTransform:"uppercase", letterSpacing:"1.5px"}}>Recording · {Math.floor(elapsed/60)}:{String(elapsed%60).padStart(2,'0')} / {Math.floor(D13_SIMULATION_MAX_SEC/60)}:{String(D13_SIMULATION_MAX_SEC%60).padStart(2,'0')}</span>
                 </div>
                 <div style={{minHeight:60, fontFamily:T.serif, fontSize:isDesktop?15:14, color:T2.text, lineHeight:1.65, marginBottom:16}}>
-                  <span style={{color:T2.text4, fontStyle:"italic"}}>Listening...</span>
+                  <span style={{color:T2.text4, fontStyle:"italic"}}>Recording…</span>
                 </div>
                 <button onClick={stopRecording} style={cs.cta}>Done Speaking →</button>
               </div>
@@ -546,7 +552,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
         ) : (
           <div style={cs.card}>
             <div style={cs.label}>Your Response</div>
-            <div style={{fontFamily:T.sans, fontSize:11, color:"#A8998A", marginBottom:10, fontStyle:"italic"}}>Voice not available in this browser — type your response below</div>
+            <div style={{fontFamily:T.sans, fontSize:11, color:"#A8998A", marginBottom:10, fontStyle:"italic"}}>Voice isn't available in this browser, so type your response below</div>
             <textarea
               value={fallbackInput}
               onChange={e => setFallbackInput(e.target.value)}
@@ -554,7 +560,7 @@ export function D13SimWidget({T, T2, isDesktop}) {
               style={{width:"100%", minHeight:isDesktop?80:70, background:"transparent", border:"none", borderBottom:"0.5px solid "+T2.divider, padding:"6px 0 10px", fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text, resize:"none", outline:"none", lineHeight:1.6, boxSizing:"border-box"}}
             />
             <button onClick={handleSubmit} disabled={!fallbackInput.trim()} style={{...cs.cta, marginTop:14, background:fallbackInput.trim()?T.ink:"rgba(44,36,22,0.2)", cursor:fallbackInput.trim()?"pointer":"not-allowed"}}>
-              Submit — Get Scored →
+              Submit and Get Scored →
             </button>
           </div>
         )}

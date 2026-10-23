@@ -847,10 +847,10 @@ export function SessionLeftPanel({
       <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.35) 55%, transparent 80%)", pointerEvents:"none" }}/>
       <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
       <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
-        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Networking Circuit</div>
-        <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Two people. Two real conversations. One chance to make an impression.</p>
+        <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>{`Day ${lesson.day} · ${lesson.tag}`}</div>
+        <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Two conversations. One first impression.</p>
         <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
-        <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Profile yourself, identify your exposure gaps, and build the strategy to make your value impossible to ignore.</p>
+        <p style={{ ...LP_BODY, fontSize:16, maxWidth:380 }}>Two conversations at a company townhall. Make a first impression that opens doors.</p>
       </div>
     </div>
   );
