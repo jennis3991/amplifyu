@@ -2105,7 +2105,7 @@ style={{margin:0,fontSize:14,color:T2.text2,fontStyle:"italic"}}>{ph}</p>
       {isD12 && step==="Simulation" && (
         <>
           <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:8}}>Presence is Visible</h2>
-          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Record yourself. Review your presence. Receive personalised coaching on how you communicate physically.</p>
+          <p style={{fontFamily:T.sans,fontSize:15,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:16}}>Record yourself, watch it back, and get a coaching note based on what you notice.</p>
           <D12SimWidget T={T} T2={T2} isDesktop={false}/>
         </>
       )}

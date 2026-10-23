@@ -237,18 +237,21 @@ function getSupportedVideoMime() {
 }
 
 // ─── D12 Simulation Widget — Video Presence Recorder ─────────────────────────
+// Coach intro plays on the intro and prompt screens; stops when recording starts.
+const d12SimCoachSlot = { current: null };
 const D12_SIMULATION_MAX_SEC = 120;
 export function D12SimWidget({T, T2, isDesktop}) {
   const PROMPTS = [
     {label:"Inspire",    text:"Tell a short story about something that genuinely changed how you see the world."},
-    {label:"Explain",    text:"Explain something you care about deeply — as if to someone who's never heard of it."},
-    {label:"Introduce",  text:"Introduce yourself confidently — as if walking into the most important room of your career."},
+    {label:"Explain",    text:"Explain something you care about deeply, as if to someone who's never heard of it."},
+    {label:"Introduce",  text:"Introduce yourself confidently, as if walking into the most important room of your career."},
     {label:"Encourage",  text:"Encourage someone who is doubting themselves. Speak directly to them."},
     {label:"Persuade",   text:"Make the case for one belief or idea you hold strongly. Convince the room."},
   ];
   const OBSERVE = ["Posture","Gestures","Eye contact","Facial expression","Energy level","Stillness vs movement"];
 
   const [phase, setPhase] = useState('intro');
+  const coach = useCoachNarration({ src: "/day12-simulation.mp3", cues: [], sharedAudioRef: d12SimCoachSlot });
   const [chosenPrompt, setChosenPrompt] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [countdown, setCountdown] = useState(null);
@@ -289,6 +292,7 @@ export function D12SimWidget({T, T2, isDesktop}) {
     setPermErr(false);
     setMediaErr(false);
     try {
+      coach.pause();
       const stream = await navigator.mediaDevices.getUserMedia({video:true,audio:true});
       streamRef.current = stream;
       setPhase('recording');
@@ -362,6 +366,8 @@ export function D12SimWidget({T, T2, isDesktop}) {
 
   if (phase === 'intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={46} style={{ marginTop: 0, marginBottom: 0 }} />
 
       {/* HOW IT WORKS — top, both desktop + mobile */}
       <div style={{...cs.card,padding:isDesktop?"22px 24px":"18px 20px"}}>
@@ -401,7 +407,7 @@ export function D12SimWidget({T, T2, isDesktop}) {
             </svg>
           </div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
-            Record yourself speaking naturally on camera. Watching it back reveals <strong style={{color:T.gold,fontWeight:700}}>posture, gestures, eye contact and energy</strong> you're completely unaware of in the moment.
+            Record yourself speaking naturally on camera. Watching it back reveals <strong style={{color:T.gold,fontWeight:700}}>posture, gestures, eye contact and energy</strong> you may not notice in the moment.
           </p>
         </div>
 
@@ -422,6 +428,9 @@ export function D12SimWidget({T, T2, isDesktop}) {
             <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text3,lineHeight:1.6,margin:isDesktop?"10px 0 0":"8px 0 0",fontStyle:"italic"}}>
               This is your baseline. Every session from here builds greater presence and confidence.
             </p>
+            <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:isDesktop?"10px 0 0":"8px 0 0"}}>
+              Your video stays on your device and is never uploaded.
+            </p>
           </div>
         </div>
       </div>
@@ -432,9 +441,11 @@ export function D12SimWidget({T, T2, isDesktop}) {
 
   if (phase === 'choose') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={46} style={{ marginTop: 0, marginBottom: 0 }} />
       <div style={cs.card}>
         <div style={cs.label}>Choose Your Prompt</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px"}}>Pick one. Speak naturally for 60–90 seconds. Don't rehearse — just talk.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.6,margin:"0 0 14px"}}>Pick one. Speak naturally for 60–90 seconds. Don't rehearse, just talk.</p>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {PROMPTS.map((p,i)=>(
             <button key={i} onClick={()=>setChosenPrompt(i)}
@@ -509,11 +520,11 @@ export function D12SimWidget({T, T2, isDesktop}) {
         <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
           <div style={{display:"flex",gap:10,alignItems:"flex-start"}}>
             <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,flexShrink:0,marginTop:2}}>1.</span>
-            <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>Watch with <strong>sound OFF</strong> — observe only body language, gestures, and expression.</span>
+            <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>Watch with <strong>sound OFF</strong>. Observe only body language, gestures and expression.</span>
           </div>
           <div style={{display:"flex",gap:10,alignItems:"flex-start"}}>
             <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,flexShrink:0,marginTop:2}}>2.</span>
-            <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>Watch again with <strong>sound ON</strong> — notice whether your non-verbal signals matched your words.</span>
+            <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>Watch again with <strong>sound ON</strong>. Notice whether your nonverbal signals matched your words.</span>
           </div>
         </div>
         <div style={cs.label}>What did you notice?</div>
@@ -541,9 +552,9 @@ export function D12SimWidget({T, T2, isDesktop}) {
           <p style={{fontFamily:T.serif,fontSize:isDesktop?16:14,color:T2.text,lineHeight:1.7,margin:"0 0 10px"}}>
             {Object.values(observations).filter(v=>v==="Needs work").length===0
               ? "Strong session. Your physical signals look well-aligned. Record again and look for one moment where you could create even more stillness or emphasis."
-              : `You flagged ${Object.entries(observations).filter(([,v])=>v==="Needs work").map(([k])=>k.toLowerCase()).join(" and ")} as areas to work on. These are the fastest wins — small, deliberate changes in ${Object.entries(observations).filter(([,v])=>v==="Needs work")[0]?.[0]?.toLowerCase()} can shift how you're perceived immediately.`}
+              : `You flagged ${Object.entries(observations).filter(([,v])=>v==="Needs work").map(([k])=>k.toLowerCase()).join(" and ")} as areas to work on. Small, deliberate changes in ${Object.entries(observations).filter(([,v])=>v==="Needs work")[0]?.[0]?.toLowerCase()} can make a noticeable difference.`}
           </p>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"Awareness is the first step. Confidence is what happens next."</p>
+          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>Awareness is the first step. Confidence is what happens next.</p>
         </div>
       )}
 
