@@ -940,14 +940,14 @@ export const D11_INGREDIENTS = [
 ];
 // ── D12 shared constants ──────────────────────────────────────────────────
 export const D12_FACTS = [
-  { word:"Psychological Safety", sub:"Calm, open communication helps people feel more comfortable and receptive.",
-    bullets:["Research shows people respond positively to warm expression, relaxed posture, and open body language.","Communication feels easier to connect with when physical signals feel calm and aligned."] },
+  { word:"Warmth & Ease", sub:"Calm, open communication helps people feel more comfortable and receptive.",
+    bullets:["People tend to respond well to warm expression, relaxed posture and open body language.","Communication feels easier to connect with when physical signals feel calm and aligned."] },
   { word:"Gestures", sub:"Purposeful gestures help ideas feel clearer and easier to remember.",
-    bullets:["Studies show hand gestures improve comprehension, engagement, and memory.","Visual communication helps the brain process information more effectively."] },
+    bullets:["Research suggests purposeful gestures can help people understand and remember what you say.","Visual communication helps the brain process information more effectively."] },
   { word:"Calm Presence", sub:"Calm movement helps communication feel grounded and engaging.",
-    bullets:["Controlled movement is associated with composure, confidence, and clarity.","Reducing unnecessary movement helps listeners focus more easily on the message."] },
-  { word:"Congruence", sub:"Communication feels strongest when words, tone, and body language align.",
-    bullets:["Aligned communication makes messages feel more natural, believable, and emotionally clear.","The brain naturally processes visual and verbal communication together."] },
+    bullets:["Controlled movement is associated with composure, confidence and clarity.","Reducing unnecessary movement helps listeners focus more easily on the message."] },
+  { word:"Congruence", sub:"Communication feels strongest when words, tone and body language align.",
+    bullets:["Aligned communication makes messages feel more natural, believable and emotionally clear.","The brain naturally processes visual and verbal communication together."] },
 ];
 
 export const D12_EXAMPLES = [
