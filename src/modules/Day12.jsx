@@ -1,8 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
+import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
 
 // ─── D12 Practice Widget ───────────────────────────────────────────────────
+// Coach intro audio lives in a module-level slot so a remount mid-narration
+// can't orphan it. It plays on the intro and stops when the practice starts.
+const d12RehearsalCoachSlot = { current: null };
+
 export function D12PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, onNavFn}) {
   const [phase, setPhase] = useState('intro');
+  const coach = useCoachNarration({ src: "/day12-rehearsal.mp3", cues: [], sharedAudioRef: d12RehearsalCoachSlot });
   const [round, setRound] = useState(0);
   const [selected, setSelected] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -47,7 +53,7 @@ export function D12PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
       title:"GESTURE THE MESSAGE",
       prompt:"Say this sentence out loud:",
       quote:'"The opportunity kept growing."',
-      instruction:"Practise using your hands to visually support the idea — begin with hands closer together, then gradually expand outward as you speak.",
+      instruction:"Practise using your hands to visually support the idea. Begin with your hands closer together, then gradually expand outward as you speak.",
       options:null,
       action:"I practised this",
       feedback:"Gestures help people visually process meaning.",
@@ -65,7 +71,7 @@ export function D12PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
       title:"EYE CONTACT",
       prompt:null,
       quote:null,
-      instruction:"Speak for 20 seconds while maintaining calm eye contact with the camera. Focus on: relaxed expression, steady gaze, natural blinking, calm breathing.",
+      instruction:"Speak for 20 seconds while maintaining calm eye contact with a point at eye level, like your phone's camera or a mirror. Focus on: relaxed expression, steady gaze, natural blinking, calm breathing.",
       options:null,
       action:"I completed this",
       feedback:"Relaxed eye contact helps communication feel more connected and present.",
@@ -98,11 +104,19 @@ export function D12PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
 
   if (phase === 'intro') return (
     <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
+      <CoachStyles />
+      <div>
+        <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={40} style={{ marginTop: 0, marginBottom: 0 }} />
+        <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(138,158,132,0.08)',borderRadius:20,padding:'7px 14px',border:'0.5px solid rgba(138,158,132,0.22)',marginTop:18}}>
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="8.5" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5"/>
+            <path d="M10 6v4l2.5 2" stroke="rgba(138,158,132,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
+          </svg>
+          <span style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:'rgba(138,158,132,0.8)',letterSpacing:'0.05em'}}>7 rounds · about 5 min</span>
+        </div>
+      </div>
       <div style={cs.card}>
         <div style={cs.label}>Your Focus</div>
-        <p style={{fontFamily:T.serif,fontSize:16,fontWeight:600,color:T.gold,lineHeight:1.3,margin:"0 0 8px"}}>
-          Build grounded physical confidence and expressive communication.
-        </p>
         <div style={{display:"flex",flexDirection:"column",gap:2}}>
           {["Practise gestures, posture, and eye contact.","Explore what open, grounded presence feels like.","Discover how physical signals shape how communication lands."].map((t,i)=>(
             <div key={i} style={{display:"flex",gap:6,alignItems:"flex-start"}}>
@@ -138,7 +152,7 @@ export function D12PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
         </div>
       </div>
 
-      <button onClick={()=>{setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start Practice Presence →</button>
+      <button onClick={()=>{coach.pause();setPhase('playing');setRound(0);setSelected(null);setShowFeedback(false);}} style={{...cs.cta,fontSize:isDesktop?16:15,padding:isDesktop?"18px":"16px"}}>Start the Practice →</button>
     </div>
   );
 
@@ -198,8 +212,8 @@ export function D12PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
       <div style={{...cs.card,textAlign:"center",padding:isDesktop?"32px":"24px"}}>
         <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"2px",marginBottom:12}}>Practice Complete</div>
         <div style={{fontFamily:T.serif,fontSize:isDesktop?30:24,fontWeight:600,color:T2.text,lineHeight:1.2,marginBottom:16}}>You're Building Presence</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 24px"}}>You've explored gestures, posture, eye contact, expression, and grounded energy. These physical signals shape how every conversation you have is experienced.</p>
-        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>"You don't need to perform presence. You already have it."</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:"#A8998A",lineHeight:1.65,margin:"0 0 24px"}}>You've explored gestures, posture, eye contact, expression, and grounded energy. These physical signals shape how your conversations are experienced.</p>
+        <p style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>You don't need to perform presence. You already have it.</p>
       </div>
     </div>
   );
