@@ -386,12 +386,7 @@ Never use em dashes anywhere in your response; use a comma or hyphen instead.`;
         <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.65, margin: 0 }}>Your personal brand isn't your job title. It's what people remember you for after you've left the room.</p>
         <p style={{ ...sn, fontSize: isDesktop ? 14 : 13, color: T2.text3, lineHeight: 1.65, margin: 0 }}>Three simple questions. Speak naturally, and your AI coach will look for the patterns and shape them into your professional signature.</p>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, padding: isDesktop ? "26px 0" : "20px 0" }}>
-        <div aria-hidden="true" style={{ pointerEvents: "none", userSelect: "none", width: isDesktop ? 80 : 68, height: isDesktop ? 80 : 68, borderRadius: "50%", background: SAGE_CARD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 0 14px rgba(61,89,64,0.1), 0 0 0 28px rgba(61,89,64,0.04)` }}>
-          <span style={{ fontSize: isDesktop ? 30 : 24 }}>🎙</span>
-        </div>
-        {!recordingAvailable && <p style={{ ...sn, fontSize: 11, color: T2.text4, textAlign: "center", margin: 0 }}>Microphone access isn't available, so you'll type your answers instead.</p>}
-      </div>
+      {!recordingAvailable && <p style={{ ...sn, fontSize: 11, color: T2.text4, textAlign: "center", margin: 0 }}>Microphone access isn't available, so you'll type your answers instead.</p>}
       <div>
         <AICoachNote T={T} T2={T2} voice />
         <button onClick={() => { coach.pause(); setQIdx(0); setPhase('question'); }} style={cta(false)}>Start Conversation →</button>
