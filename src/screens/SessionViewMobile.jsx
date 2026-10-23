@@ -348,7 +348,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         if(isD4 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Breaking News Live" headline="Report it live. Watch what your audience remembers." liveIndicator />;
         if(isD1 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Simulation · Day 1" headline="Awareness is where every great communicator begins." />;
         if(isD13 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Day 13 · Visibility" headline="Two conversations. One first impression." />;
-        if(isD14 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Your Communication Blueprint" headline="Build the system you'll use for the rest of your career." />;
+        if(isD14 && step==="Simulation") return <TabHeroPane image="/simulation-hero.jpg" label="Day 14 · Capstone" headline="Build the system you'll use for the rest of your career." />;
         if(step==="Simulation"){
           const SIM={
             1:{label:"SPEAK CLEARLY IN ACTION",heading:"Clarity under pressure. This is the real test."},

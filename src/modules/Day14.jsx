@@ -191,8 +191,12 @@ export function D14PracticeWidget({T, T2, isDesktop, onSimulation, onNavLabel, o
 }
 
 // ─── D14 Simulation Widget — AI Communication Blueprint ──────────────────────
+// Coach intro plays on the intro screen and stops when generation starts.
+const d14SimCoachSlot = { current: null };
+
 export function D14SimWidget({T, T2, isDesktop}) {
   const [phase, setPhase] = useState('intro');
+  const coach = useCoachNarration({ src: "/day14-simulation.mp3", cues: [], sharedAudioRef: d14SimCoachSlot });
   const [blueprint, setBlueprint] = useState(null);
   const [error, setError] = useState('');
   const dotCount = useSequentialDots(phase === 'generating');
@@ -220,6 +224,7 @@ export function D14SimWidget({T, T2, isDesktop}) {
   }
 
   const generate = async () => {
+    coach.pause();
     setPhase('generating');
     setError('');
 
@@ -312,16 +317,31 @@ export function D14SimWidget({T, T2, isDesktop}) {
     try { const r = JSON.parse(localStorage.getItem('au1_d14_reflection') || '{}'); return !!(r.shift || r.proud || r.hard); } catch { return false; }
   })();
 
+  const SIM_FEATURES = [
+    { title:"Personalised to you", desc:"Built from your role, goals and 14 days of practice.",
+      icon:c=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke={c} strokeWidth="1.4"/><path d="M4.5 20c0-4 3.4-6.5 7.5-6.5s7.5 2.5 7.5 6.5" stroke={c} strokeWidth="1.4" strokeLinecap="round"/></svg> },
+    { title:"Actionable and focused", desc:"Clear next steps you can use straight away.",
+      icon:c=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="13" width="3.5" height="7" rx="1" stroke={c} strokeWidth="1.4"/><rect x="10.25" y="9" width="3.5" height="11" rx="1" stroke={c} strokeWidth="1.4"/><rect x="16.5" y="4" width="3.5" height="16" rx="1" stroke={c} strokeWidth="1.4"/></svg> },
+    { title:"Powered by your progress", desc:"Recommendations based on your strengths and the areas you want to develop.",
+      icon:c=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke={c} strokeWidth="1.4"/><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z" stroke={c} strokeWidth="1.4" strokeLinejoin="round"/></svg> },
+  ];
+
   if (phase === 'intro') return (
     <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12}}>
-      <div style={cs.card}>
+      <CoachStyles />
+      <CoachButton T={T} T2={T2} isDesktop={isDesktop} narration={coach} duration={34} style={{ marginTop: 0, marginBottom: 0 }} />
+      <div style={{...cs.card, background:"rgba(138,158,132,0.06)"}}>
         <div style={cs.label}>Communication Blueprint</div>
-        <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Your personalised plan. Built from 14 days of work.</p>
-        <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.65, margin:0}}>Your AI Coach will analyse your role, your journey, your strengths and gaps — and generate a blueprint that is specific to you.</p>
+        <p style={{fontFamily:T.serif, fontSize:isDesktop?22:19, fontWeight:600, color:T2.text, lineHeight:1.3, margin:"0 0 12px"}}>Your personalised plan. Built from 14 days of work.</p>
+        <p style={{fontFamily:T.sans, fontSize:isDesktop?15:14, color:T2.text3, lineHeight:1.65, margin:0}}>Your AI coach will analyse your role, your journey, your strengths and the gaps you want to close, and generate a blueprint that is specific to you.</p>
       </div>
       {!hasReflection && (
-        <div style={{...cs.card, background:"rgba(201,120,70,0.06)", border:"0.5px solid rgba(201,120,70,0.25)"}}>
-          <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#C97846", lineHeight:1.6, margin:0}}>For a more personal blueprint, complete the Rehearsal tab first — your reflection answers make a significant difference.</p>
+        <div style={{display:"flex", alignItems:"flex-start", gap:12, padding:isDesktop?"16px 18px":"14px 16px", borderRadius:6, background:"rgba(201,120,70,0.06)", border:"0.5px solid rgba(201,120,70,0.25)"}}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{flexShrink:0, marginTop:1}} aria-hidden="true"><circle cx="12" cy="12" r="9.5" stroke="#C97846" strokeWidth="1.4"/><path d="M12 7v6" stroke="#C97846" strokeWidth="1.6" strokeLinecap="round"/><circle cx="12" cy="16.5" r="1" fill="#C97846"/></svg>
+          <div>
+            <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:"#C97846", lineHeight:1.5, margin:"0 0 2px"}}>For the most personal blueprint, complete the Rehearsal tab first.</p>
+            <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"rgba(201,120,70,0.8)", lineHeight:1.5, margin:0}}>Your reflection answers make a real difference.</p>
+          </div>
         </div>
       )}
       {error && (
@@ -329,19 +349,31 @@ export function D14SimWidget({T, T2, isDesktop}) {
           <p style={{fontFamily:T.sans, fontSize:isDesktop?13:12, color:"#C97846", lineHeight:1.6, margin:0}}>{error}</p>
         </div>
       )}
+      <div style={{display:"flex", flexDirection:"column", gap:isDesktop?14:12, padding:isDesktop?"4px 0":"2px 0"}}>
+        {SIM_FEATURES.map(f => (
+          <div key={f.title} style={{display:"flex", alignItems:"flex-start", gap:isDesktop?16:14}}>
+            <div style={{width:isDesktop?48:42, height:isDesktop?48:42, borderRadius:"50%", background:"rgba(138,158,132,0.12)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0}}>{f.icon(T.gold)}</div>
+            <div style={{flex:1, minWidth:0, paddingTop:2}}>
+              <div style={{fontFamily:T.serif, fontSize:isDesktop?19:17, fontWeight:600, color:T2.text, lineHeight:1.25, marginBottom:2}}>{f.title}</div>
+              <p style={{fontFamily:T.sans, fontSize:isDesktop?14:13, color:T2.text3, lineHeight:1.5, margin:0}}>{f.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{height:1, background:T2.divider, margin:"4px 0 0"}}/>
       <div>
-        <AICoachNote T={T} T2={T2} />
-        <button onClick={generate} style={cs.cta}>Generate My Blueprint</button>
+        <AICoachNote T={T} T2={T2} voice />
+        <button onClick={generate} style={{...cs.cta, fontFamily:T.serif, fontSize:isDesktop?19:17, fontWeight:500}}>Generate My Blueprint →</button>
       </div>
     </div>
   );
 
   if (phase === 'generating') return (
     <div style={{...cs.card, textAlign:"center", padding:isDesktop?"48px 32px":"32px 24px"}}>
-      <div style={cs.label}>Your AI Coach is Working</div>
+      <div style={cs.label}>Your AI coach is working</div>
       <p style={{fontFamily:T.serif, fontSize:isDesktop?20:17, fontWeight:600, color:T2.text, lineHeight:1.4, margin:"0 0 20px"}}>Building your personalised blueprint...</p>
       <SequentialDots dotCount={dotCount} activeColor={T.gold} inactiveColor={T2.border}
-        messages={["Analysing your journey, your role, and your reflection — this takes around 15 seconds.","Weighing your strengths against where you're headed.","Drafting the conversations worth having next.","Shaping your habits into a plan you'll actually keep.","Adding the final touches…"]}
+        messages={["Analysing your journey, your role, and your reflection. This takes around 15 seconds.","Weighing your strengths against where you're headed.","Drafting the conversations worth having next.","Shaping your habits into a plan you'll actually keep.","Adding the final touches…"]}
         textStyle={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text4,lineHeight:1.6}}/>
     </div>
   );
