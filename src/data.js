@@ -178,7 +178,7 @@ export const FURTHER_READING = [
   ]},
   { books: [ // Day 11
     { title: "Known", author: "Mark Schaefer", quote: "In a noisy world, be consistently useful.", rating: "4.5", reviewCount: "5,100 reviews", why: "Research-backed and practical, Schaefer's four-step framework shows exactly how to build the kind of visibility that creates real career leverage.", connection: "A methodical, research-backed roadmap to becoming known in your field - less hustle, more strategy.", amazon: "https://www.amazon.co.uk/s?k=Known+Mark+Schaefer" },
-    { title: "Crushing It!", author: "Gary Vaynerchuk", quote: "Document. Don't create. Show up every day.", rating: "4.4", reviewCount: "11,000 reviews", why: "The most energetic case for authentic personal brand building available. Whether you love or challenge his style, the principles of consistent visibility are undeniable.", connection: "The energetic case for showing up consistently and building a brand around your authentic voice.", amazon: "https://www.amazon.co.uk/s?k=Crushing+It+Gary+Vaynerchuk" },
+    { title: "Crushing It!", author: "Gary Vaynerchuk", quote: "Document. Don't create. Show up every day.", rating: "4.4", reviewCount: "11,000 reviews", why: "The most energetic case for authentic personal brand building available. Whether you love or challenge his style, the case for consistent visibility is a strong one.", connection: "The energetic case for showing up consistently and building a brand around your authentic voice.", amazon: "https://www.amazon.co.uk/s?k=Crushing+It+Gary+Vaynerchuk" },
   ]},
   { books: [ // Day 12
     { title: "What Every BODY Is Saying", author: "Joe Navarro", why: "A practical guide to body language from a former FBI agent.", connection: "A former FBI agent's guide to reading, and using, the body language that speaks before you do.", amazon: "https://www.amazon.co.uk/s?k=What+Every+Body+Is+Saying+Joe+Navarro" },
@@ -206,7 +206,7 @@ export const REVIEW_CLOSING = [
   "You've learned the framework. You've built your story. Now make it unforgettable.",
   "Connection is not a personality type. It is a learnable skill.",
   "Great work deserves to be seen.",
-  "What you stand for is more powerful than what you do.",
+  "What you stand for is what people remember.",
   "Every relationship begins with genuine curiosity.",
   "Leaders speak from who they are, not what they want.",
   "Prepare so thoroughly that the pressure becomes fuel.",
@@ -751,7 +751,7 @@ export const WORKPLACE_APPLICATION = [
   // Day 11 — Brand Identity
   [
     "Choose three words you want to be known for, then check whether your current presence signals them.",
-    "Audit your LinkedIn headline: does it reflect your brand, or just your job title?",
+    "Update your LinkedIn headline using your Brand Toolkit.",
     "In your next meeting, make one deliberate choice that aligns with the professional reputation you are building.",
     "Ask a trusted colleague: 'What three words would you use to describe how I communicate?'",
   ],
@@ -1064,6 +1064,7 @@ export const REVIEW_NARRATION = {
   8: { src: "/day8-review.mp3", secs: 19 },
   9: { src: "/day9-review.mp3", secs: 18 },
   10: { src: "/day10-review.mp3", secs: 22 },
+  11: { src: "/day11-review.mp3", secs: 28 },
 };
 
 // Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)
