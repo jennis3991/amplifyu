@@ -208,7 +208,7 @@ export const REVIEW_CLOSING = [
   "Great work deserves to be seen.",
   "What you stand for is what people remember.",
   "Presence is how communication feels.",
-  "Leaders speak from who they are, not what they want.",
+  "Performance gets you in the door. Exposure opens the next one.",
   "Prepare so thoroughly that the pressure becomes fuel.",
 ];
 
@@ -225,7 +225,7 @@ export const REVIEW_BULLETS = [
   ["Invisible excellence doesn't scale. Visibility is a communication skill, not a personality trait.", "Great work doesn't speak for itself. Your work needs a voice.", "When people can see your contribution clearly, your work gets the credit it deserves. Communication closes the gap."],
   ["Your brand is what people say about you when you leave the room.", "Consistency of voice and presence builds trust over years, not weeks.", "You cannot be known for everything. Choose your niche deliberately."],
   ["Presence isn't a personality trait. It's a set of physical habits you can build.", "Your message is strongest when your words, tone and body language say the same thing.", "Sometimes the most powerful body language is knowing when to stand still."],
-  ["A leadership voice is earned through vulnerability, not volume.", "Brave language builds the psychological safety that makes teams great.", "The words you choose every day define the culture around you."],
+  ["Great work needs to be seen. Exposure turns performance into opportunity.", "Opportunities often travel through people, including acquaintances you barely know.", "People can't support an ambition they've never heard. Make yours visible."],
   ["Thorough preparation turns high stakes into high performance.", "The Talk Like TED method: emotional, novel, and always memorable.", "Your best performance lives on the other side of genuine preparation."],
 ];
 
@@ -764,9 +764,9 @@ export const WORKPLACE_APPLICATION = [
   ],
   // Day 13 — Exposure
   [
-    "Name one senior person who influences your career but does not know your ambition, plan one sentence to tell them.",
+    "Name one senior person who influences your career but doesn't know your ambition. Plan one sentence to tell them.",
     "In your next skip-level or senior conversation, state one specific thing you are working toward.",
-    "Share a project win publicly this week, a team update, a message to a stakeholder, or a LinkedIn post.",
+    "Share a project win this week: a team update, a message to a stakeholder or a LinkedIn post.",
     "Find one room this week where you are not currently visible, and get in it.",
   ],
   // Day 14 — Communication System
@@ -1070,6 +1070,7 @@ export const REVIEW_NARRATION = {
   10: { src: "/day10-review.mp3", secs: 22 },
   11: { src: "/day11-review.mp3", secs: 28 },
   12: { src: "/day12-review.mp3", secs: 31 },
+  13: { src: "/day13-review.mp3", secs: 25 },
 };
 
 // Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)
