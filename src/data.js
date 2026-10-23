@@ -1051,6 +1051,7 @@ export const EXAMPLE_AUDIO = {
   swift: "/day11-swift.mp3",
   disney: "/day11-disney.mp3",
   kennedy: "/day12-kennedy.mp3",
+  jobs: "/day12-jobs.mp3",
 };
 
 // End-of-day coach message on the Review step, keyed by day.
