@@ -54,6 +54,7 @@ import D13Insight from '../modules/D13Insight.jsx';
 import D13Theory from '../modules/D13Theory.jsx';
 import D14Insight from '../modules/D14Insight.jsx';
 import D14Theory from '../modules/D14Theory.jsx';
+import { ToolkitJourneyCard } from '../modules/ToolkitJourneyCard.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
@@ -2545,6 +2546,7 @@ strokeLinecap="round"/></svg>
               </div>
             </div>
           )}
+          {lesson.day === 14 && <ToolkitJourneyCard T={T} T2={T2} isDesktop={false} onExitToTab={onExitToTab}/>}
           {/* Next session CTA */}
           {(()=>{
             const nextDay = lesson.day < 14 ? lesson.day + 1 : null;

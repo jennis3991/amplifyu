@@ -42,6 +42,7 @@ import D13Insight from '../modules/D13Insight.jsx';
 import D13Theory from '../modules/D13Theory.jsx';
 import D14Insight from '../modules/D14Insight.jsx';
 import D14Theory from '../modules/D14Theory.jsx';
+import { ToolkitJourneyCard } from '../modules/ToolkitJourneyCard.jsx';
 import D10Theory from '../modules/D10Theory.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
@@ -3915,6 +3916,8 @@ setAmbitionSaved(true); } catch {}
                         ))}
                       </div>
 
+
+                      {lesson.day === 14 && <ToolkitJourneyCard T={T} T2={T2} isDesktop={true} onExitToTab={onExitToTab}/>}
 
                       {/* Next session button */}
                       <button onClick={onComplete} style={{ width: "100%", background: T.ink, color: T.bg, padding: "18px", borderRadius: 4, border: "none", fontFamily: T.sans, fontSize: 15, fontWeight: 600, cursor: "pointer", transition: "all 0.25s ease", textAlign: "center", marginBottom: 60 }}

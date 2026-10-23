@@ -209,7 +209,7 @@ export const REVIEW_CLOSING = [
   "What you stand for is what people remember.",
   "Presence is how communication feels.",
   "Performance gets you in the door. Exposure opens the next one.",
-  "Prepare so thoroughly that the pressure becomes fuel.",
+  "Your journey doesn't end here.",
 ];
 
 export const REVIEW_BULLETS = [
@@ -226,7 +226,7 @@ export const REVIEW_BULLETS = [
   ["Your brand is what people say about you when you leave the room.", "Consistency of voice and presence builds trust over years, not weeks.", "You cannot be known for everything. Choose your niche deliberately."],
   ["Presence isn't a personality trait. It's a set of physical habits you can build.", "Your message is strongest when your words, tone and body language say the same thing.", "Sometimes the most powerful body language is knowing when to stand still."],
   ["Great work needs to be seen. Exposure turns performance into opportunity.", "Opportunities often travel through people, including acquaintances you barely know.", "People can't support an ambition they've never heard. Make yours visible."],
-  ["Thorough preparation turns high stakes into high performance.", "The Talk Like TED method: emotional, novel, and always memorable.", "Your best performance lives on the other side of genuine preparation."],
+  ["Clarity, structure, story and presence work best together. That's your communication system.", "Confidence is earned through practice, and it keeps growing with every conversation.", "Your blueprint turns fourteen days of work into a plan for what comes next."],
 ];
 
 // ─── LESSON DATA
@@ -423,7 +423,7 @@ export const LESSONS = [
    practice:"Have one conversation today where you use everything: PRE structure, a SAR story that passes the 3-Point Test, a confident phrase about your ambition, and deliberate presence.",
    scenarios:["A performance conversation that defines how this year is remembered","A pitch to leadership that needs to move people","Any conversation where you need to show up as the communicator you've become"],
    review:["Did I use structure under pressure?","Did my story pass the 3-Point Test?","Did I communicate my ambition as clearly as my work?"],
-   promise:"14 days. 6 storytelling tools. One clear direction. This is the beginning, not the end. AmplifyU.",
+   promise:"14 days. One communication system. One clear direction. This is the beginning, not the end.",
    teaser:"The final session. Everything comes together: clarity, structure, story, PIE, and your stated ambition, all working as one commanding, deliberate voice."},
 ];
 
@@ -773,7 +773,7 @@ export const WORKPLACE_APPLICATION = [
   [
     "Block 10 minutes each week to review and practise one communication habit.",
     "Set a 30-day challenge: pick one skill from the programme and practise it daily.",
-    "Pair with a colleague as an accountability partner, observe and give feedback on each other.",
+    "Pair with a colleague as an accountability partner. Observe each other and share feedback.",
     "Identify the one communication situation where everything you've learned will matter most, and prepare for it.",
   ],
 ];
@@ -1071,6 +1071,7 @@ export const REVIEW_NARRATION = {
   11: { src: "/day11-review.mp3", secs: 28 },
   12: { src: "/day12-review.mp3", secs: 31 },
   13: { src: "/day13-review.mp3", secs: 25 },
+  14: { src: "/day14-review.mp3", secs: 47 },
 };
 
 // Day 3 Theory — The Cognitive Load Principle (in the order the coach covers them)
