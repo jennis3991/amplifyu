@@ -39,6 +39,7 @@ import D11Theory from '../modules/D11Theory.jsx';
 import D12Insight from '../modules/D12Insight.jsx';
 import D12Theory from '../modules/D12Theory.jsx';
 import D13Insight from '../modules/D13Insight.jsx';
+import D13Theory from '../modules/D13Theory.jsx';
 import D10Theory from '../modules/D10Theory.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
@@ -3326,30 +3327,8 @@ setAmbitionSaved(true); } catch {}
       );
 
       if (step==="Theory") return (
-        <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Science of Exposure</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:16}}>Why visibility shapes careers</h2>
-          <p style={{fontFamily:T.sans,fontSize:16,color:"#A8998A",lineHeight:1.6,fontWeight:400,marginBottom:28,maxWidth:600}}>Four evidence-based principles that explain how exposure drives advancement.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:14,marginBottom:28}}>
-            {D13_THEORY_CARDS.map((n,i)=>{
-              const open=d13CardOpen===("t"+i);
-              return (
-                <div key={i} onClick={()=>setD13CardOpen(open?null:("t"+i))} style={{padding:"22px 24px",background:T2.surface,borderRadius:4,border:`0.5px solid ${open?"rgba(138,158,132,0.4)":T2.border}`,cursor:"pointer",transition:"all 0.2s",boxShadow:open?"0 2px 16px rgba(138,158,132,0.12)":"none"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:open?8:6}}>
-                    <div style={{fontFamily:T.serif,fontSize:20,fontWeight:600,color:T.gold,lineHeight:1.3,flex:1}}>{n.word}</div>
-                    <span style={{fontFamily:T.sans,fontSize:16,color:open?T.gold:"rgba(138,158,132,0.6)",marginLeft:8}}>{open?"▴":"▸"}</span>
-                  </div>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:open?"0 0 12px":0}}>{n.sub}</p>
-                  {open && <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:12,display:"flex",flexDirection:"column",gap:8}}>
-                    {n.bullets.map((b,j)=><div key={j} style={{display:"flex",gap:8,alignItems:"flex-start"}}><div style={{width:3,height:3,borderRadius:"50%",background:T.gold,flexShrink:0,marginTop:6}}/><p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.65,fontWeight:300,margin:0}}>{b}</p></div>)}
-                  </div>}
-                </div>
-              );
-            })}
-          </div>
-          <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-            <p style={{fontFamily:T.serif,fontSize:18,fontStyle:"italic",color:T.gold,lineHeight:1.65,margin:0}}>"Performance creates value. Brand creates reputation. Exposure creates opportunity."</p>
-          </div>
+        <div key={idx} className="au-step-enter" style={{ padding:"44px 52px", overflowY:"auto" }}>
+          <D13Theory T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
         </div>
       );
 

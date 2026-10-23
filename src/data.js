@@ -1003,13 +1003,13 @@ export const D13_INSIGHT_CARDS = [
 
 export const D13_THEORY_CARDS = [
   { word:"The PIE Model", sub:"Career success is shaped by three compounding forces.",
-    bullets:["Performance: Can you do the job? Image: How are you perceived? Exposure: Who knows what you're capable of?","Research consistently shows that visibility and relationships play a larger role in advancement than most people expect."] },
-  { word:"The Mere Exposure Effect", sub:"People naturally trust and prefer things they encounter repeatedly.",
-    bullets:["The more familiar you become, the more trusted and memorable you become.","Consistent presence builds the familiarity that creates opportunity, even before people consciously recognise it."] },
-  { word:"Weak Tie Theory", sub:"Most major opportunities come through acquaintances, not close friends.",
+    bullets:["Performance: Can you do the job? Image: How are you perceived? Exposure: Who knows what you're capable of?","Harvey Coleman's PIE model suggests image and exposure can matter as much as performance."] },
+  { word:"The Mere Exposure Effect", sub:"People tend to prefer things they encounter repeatedly.",
+    bullets:["The more familiar you become, the more people tend to like and remember you.","Consistent presence builds the familiarity that creates opportunity, even before people consciously recognise it."] },
+  { word:"Weak Tie Theory", sub:"Sociologist Mark Granovetter found people often hear about new jobs through acquaintances rather than close friends.",
     bullets:["Acquaintances connect you to new information, new networks, and new opportunities your close circle can't see.","Your next opportunity is often one conversation away, with someone you barely know."] },
   { word:"Sponsorship vs Mentorship", sub:"Mentors advise. Sponsors advocate.",
-    bullets:["Mentors speak to you. Sponsors speak about you when you're not in the room.","Exposure helps create sponsors, people who actively open doors and put your name forward without being asked."] },
+    bullets:["Mentors speak to you. Sponsors speak about you when you're not in the room.","Exposure helps create sponsors, people who actively open doors and put your name forward."] },
 ];
 
 export const D13_EXAMPLES = [
