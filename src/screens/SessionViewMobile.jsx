@@ -16,7 +16,7 @@ import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
 import { D11PracticeWidget, D11SimWidget } from '../modules/Day11.jsx';
 import { D12PracticeWidget, D12SimWidget } from '../modules/Day12.jsx';
 import { D13PracticeWidget, D13SimWidget } from '../modules/Day13.jsx';
-import { D14PracticeWidget, D14SimWidget, D14LoopDiagram } from '../modules/Day14.jsx';
+import { D14PracticeWidget, D14SimWidget } from '../modules/Day14.jsx';
 import { D7SimWidget, D7PracticeWidget } from '../modules/Day7.jsx';
 import { SavedResultSection } from '../modules/SavedResultCard.jsx';
 import AICoachTab from '../components/AICoachTab.jsx';
@@ -53,6 +53,7 @@ import D12Theory from '../modules/D12Theory.jsx';
 import D13Insight from '../modules/D13Insight.jsx';
 import D13Theory from '../modules/D13Theory.jsx';
 import D14Insight from '../modules/D14Insight.jsx';
+import D14Theory from '../modules/D14Theory.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
 import D3Theory from '../modules/D3Theory.jsx';
@@ -2211,22 +2212,7 @@ strokeLinecap="round"/></svg>
         <D14Insight T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Theory"))}/>
       )}
       {isD14 && step==="Theory" && (
-        <>
-          <div style={{fontFamily:T.sans,fontSize:11,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>The Science Behind Growth</div>
-          <h2 style={{fontFamily:T.serif,fontSize:28,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:12}}>The Competence–Confidence Loop</h2>
-          <p style={{fontFamily:T.sans,fontSize:14,color:"#A8998A",lineHeight:1.6,marginBottom:14}}>Many people believe confidence comes first. The reality is the opposite.</p>
-          <div style={{marginBottom:16,padding:"14px",background:T2.surface,borderRadius:8,border:"0.5px solid "+T2.border}}>
-            <D14LoopDiagram T={T} T2={T2} isDesktop={false}/>
-          </div>
-          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
-            {[["Clarity","organising ideas"],["Storytelling","emotional connection"],["Presence","influencing perception"],["Brand & Exposure","making value visible"]].map(([mod,out],i)=>(
-              <div key={i} style={{background:T2.surface,border:"1px solid rgba(138,158,132,0.15)",borderRadius:8,padding:"12px 14px"}}>
-                <p style={{fontFamily:T.sans,fontSize:13,color:T2.text,lineHeight:1.6,fontWeight:400,margin:0}}>When you learned <strong>{mod}</strong>, you practised {out}. Confidence followed.</p>
-              </div>
-            ))}
-          </div>
-          <p style={{fontFamily:T.serif,fontSize:15,color:T.gold,lineHeight:1.6,fontStyle:"italic"}}>"Competence creates confidence. Confidence creates action. Action creates growth."</p>
-        </>
+        <D14Theory T={T} T2={T2} isDesktop={false} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
       )}
       {isD14 && step==="Example" && (()=>{
         const D14_SUPERPOWERS = [

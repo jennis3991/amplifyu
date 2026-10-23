@@ -41,6 +41,7 @@ import D12Theory from '../modules/D12Theory.jsx';
 import D13Insight from '../modules/D13Insight.jsx';
 import D13Theory from '../modules/D13Theory.jsx';
 import D14Insight from '../modules/D14Insight.jsx';
+import D14Theory from '../modules/D14Theory.jsx';
 import D10Theory from '../modules/D10Theory.jsx';
 import D10RehearsalIntro from '../modules/D10Rehearsal.jsx';
 import D4Theory from '../modules/D4Theory.jsx';
@@ -52,7 +53,7 @@ import { D6PracticeWidget, D6SimWidget } from '../modules/Day6.jsx';
 import { D11PracticeWidget, D11SimWidget } from '../modules/Day11.jsx';
 import { D12PracticeWidget, D12SimWidget } from '../modules/Day12.jsx';
 import { D13PracticeWidget, D13SimWidget } from '../modules/Day13.jsx';
-import { D14PracticeWidget, D14SimWidget, D14LoopDiagram } from '../modules/Day14.jsx';
+import { D14PracticeWidget, D14SimWidget } from '../modules/Day14.jsx';
 import { DIAGRAMS, MODULE_ICONS } from '../diagrams.jsx';
 import { Scene, OBScene } from '../scenes.jsx';
 import { Timer } from '../components/Timer.jsx';
@@ -3501,40 +3502,7 @@ setAmbitionSaved(true); } catch {}
 
       if (step==="Theory") return (
         <div key={idx} className="au-step-enter" style={{padding:"44px 52px",overflowY:"auto"}}>
-          <div style={{fontFamily:T.sans,fontSize:12,fontWeight:600,color:T.gold,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>The Science Behind Growth</div>
-          <h2 style={{fontFamily:T.serif,fontSize:40,fontWeight:600,color:T2.text,lineHeight:1.1,marginBottom:20}}>The Competence–Confidence Loop</h2>
-          <div style={{padding:"24px",background:T2.surface,borderRadius:4,border:"0.5px solid "+T2.border,marginBottom:20}}>
-            <p style={{fontFamily:T.sans,fontSize:16,color:T2.text,lineHeight:1.75,fontWeight:300,margin:"0 0 16px"}}>Many people believe confidence comes first. The reality is the opposite.</p>
-            <D14LoopDiagram T={T} T2={T2} isDesktop={true}/>
-            <div style={{borderTop:"0.5px solid "+T2.divider,paddingTop:16,display:"flex",flexDirection:"column",gap:10}}>
-              {[
-                ["Clarity","practised organising ideas under pressure"],
-                ["Storytelling","practised creating emotional connection"],
-                ["Presence","practised influencing perception"],
-                ["Brand & Exposure","practised making value visible"],
-              ].map(([mod,out],i)=>(
-                <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-                  <span style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:T.gold,flexShrink:0,paddingTop:2}}>✦</span>
-                  <p style={{fontFamily:T.sans,fontSize:14,color:T2.text,lineHeight:1.6,fontWeight:300,margin:0}}>When you learned <strong>{mod}</strong>, you {out}. Each repetition strengthened capability. Confidence followed.</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:20}}>
-            {[
-              ["Borrowed confidence","It fades. It depends on external validation. It disappears under pressure."],
-              ["Earned confidence","It stays. It grows. It works hardest precisely when you need it most."],
-            ].map(([title,body],i)=>(
-              <div key={i} style={{padding:"20px 22px",background:T2.surface,borderRadius:4,border:`0.5px solid ${i===1?"rgba(138,158,132,0.4)":T2.border}`}}>
-                <div style={{fontFamily:T.sans,fontSize:11,fontWeight:700,color:i===1?T.gold:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:8}}>{title}</div>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,fontWeight:300,margin:0}}>{body}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{padding:"20px 24px",background:T2.surface,borderRadius:4,borderLeft:"2px solid "+T.gold}}>
-            <p style={{fontFamily:T.serif,fontSize:17,fontStyle:"italic",color:T.gold,lineHeight:1.65,margin:"0 0 4px"}}>Competence creates confidence. Confidence creates action. Action creates growth. Growth creates opportunity.</p>
-            <p style={{fontFamily:T.sans,fontSize:13,color:T2.text4,margin:0}}>The confidence you feel today is earned. And because it's earned, it will continue to grow.</p>
-          </div>
+          <D14Theory T={T} T2={T2} isDesktop={true} sharedAudioRef={narrationAudioRef} onNext={()=>setIdx(STEPS.indexOf("Example"))}/>
         </div>
       );
 
