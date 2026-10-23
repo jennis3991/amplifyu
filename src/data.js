@@ -992,11 +992,11 @@ export const D14_INSIGHT_CARDS = [
 // ── D13 shared constants ──────────────────────────────────────────────────
 export const D13_INSIGHT_CARDS = [
   { word:"Great Work Is Not Enough", sub:"People can only reward work they can see.",
-    bullets:["Performance is the foundation. Visibility is the multiplier.","Many talented people go unnoticed because they wait for their work to speak for itself. It rarely does."] },
-  { word:"Opportunities Travel Through People", sub:"Most career-defining opportunities come from conversations, not job boards.",
+    bullets:["Performance is the foundation. Visibility is the multiplier.","Many talented people go unnoticed because they wait for their work to speak for itself. It often doesn't."] },
+  { word:"Opportunities Travel Through People", sub:"Many of the best opportunities come from conversations, not job adverts.",
     bullets:["Networks create access. Relationships create opportunities.","The people who know your value become the doors to new possibilities."] },
   { word:"Visibility Compounds", sub:"One introduction leads to another. One opportunity creates another.",
-    bullets:["Exposure grows exponentially, the more people who know your value, the faster opportunities find you.","Early visibility investments pay compound returns over time."] },
+    bullets:["Visibility builds on itself. The more people who know your value, the more doors can open.","Early visibility investments pay compound returns over time."] },
   { word:"Ambition Must Be Visible", sub:"People cannot support ambitions they've never heard.",
     bullets:["Many people have goals. Few communicate them clearly to the right people.","The right people need to know where you're going to help you get there."] },
 ];
