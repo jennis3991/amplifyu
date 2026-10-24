@@ -18,7 +18,6 @@ import { FloatingNav, TabBar } from "./components/NavComponents.jsx";
 import { Celebrate } from "./components/Confetti.jsx";
 import { AccessGate } from "./components/AccessGate.jsx";
 import { Paywall } from "./components/Paywall.jsx";
-import { IntroVideo } from "./components/IntroVideo.jsx";
 
 // ── UpdateBanner ─────────────────────────────────────────────────────────────
 // Listens for 'sw-update-available' and renders a slim fixed bottom banner.
@@ -161,8 +160,6 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   // the whole screen fades out to reveal Home (same opacity fade as
   // AccessGate's exiting state) rather than the mark itself fading to
   // nothing.
-  // The coach's intro video plays once, between "Let's Begin" and the welcome mark.
-  const [showIntro, setShowIntro] = useState(false);
   const [showWelcomeMark, setShowWelcomeMark] = useState(false);
   const [welcomeMarkIn, setWelcomeMarkIn] = useState(false);
   const [welcomeMarkGlow, setWelcomeMarkGlow] = useState(false);
@@ -300,16 +297,12 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
             lsSet("au1_ob", true);
             setReflectionData(null);
             setJustBoarded(true);
-            setShowIntro(true);
+            setShowWelcomeMark(true);
             setTab("home");
           }}
         />
       </div>
     );
-  }
-
-  if (showIntro) {
-    return <IntroVideo onDone={() => { setShowIntro(false); setShowWelcomeMark(true); }} />;
   }
 
   if (showWelcomeMark) {

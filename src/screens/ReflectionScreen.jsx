@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { T } from '../theme.js';
 import { ROLES } from '../data.js';
 import { useIsDesktop } from '../utils.js';
@@ -16,6 +16,43 @@ function matchAnswer(map, answer) {
   const key = normAnswer(answer);
   for (const k in map) if (normAnswer(k) === key) return map[k];
   return undefined;
+}
+
+// "Meet your coach": the welcome video as a small portrait card. It plays
+// with sound on tap (nothing autoplays mid-page) and stops when the user
+// taps Let's Begin, since the screen unmounts.
+function MeetYourCoach({ d }) {
+  const ref = useRef(null);
+  const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const toggle = () => {
+    const v = ref.current;
+    if (!v) return;
+    if (v.paused) { if (v.ended) v.currentTime = 0; v.muted = false; v.play().catch(() => {}); } else v.pause();
+  };
+  const w = d ? 210 : 180;
+  return (
+    <div style={{ animation: "sectionFade 0.8s ease both" }}>
+      <div style={{ fontSize: 11, color: T.text2, textTransform: "uppercase", letterSpacing: "3px", fontFamily: T.sans, marginBottom: 6 }}>Meet your coach</div>
+      <div style={{ fontSize: d ? 14 : 13, color: T.text3, fontFamily: T.sans, lineHeight: 1.5, marginBottom: d ? 16 : 14 }}>A 30-second welcome to your 14 days.</div>
+      <div onClick={toggle} role="button" aria-label={playing ? "Pause video" : "Play video"} style={{ position: "relative", width: w, aspectRatio: "9 / 16", borderRadius: 12, overflow: "hidden", background: "#000", border: "1px solid " + T.border, boxShadow: "0 10px 30px rgba(44,36,22,0.18)", cursor: "pointer", margin: d ? 0 : "0 auto" }}>
+        <video ref={ref} src="/intro.mp4" poster="/intro-poster.jpg" playsInline preload="metadata"
+          onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)}
+          onTimeUpdate={e => { const v = e.currentTarget; if (v.duration) setProgress(v.currentTime / v.duration); }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        {!playing && (
+          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(13,11,8,0.18)" }}>
+            <div style={{ width: 52, height: 52, borderRadius: "50%", background: "rgba(247,243,236,0.92)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 16px rgba(0,0,0,0.25)" }}>
+              <svg width="18" height="18" viewBox="0 0 18 18"><path d="M5 3.5v11l9.5-5.5z" fill={T.ink} /></svg>
+            </div>
+          </div>
+        )}
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 3, background: "rgba(255,255,255,0.2)" }}>
+          <div style={{ height: "100%", width: (progress * 100) + "%", background: T.bg, transition: "width 0.25s linear" }} />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function ReflectionScreen({ answers, onContinue }) {
@@ -219,6 +256,7 @@ export function ReflectionScreen({ answers, onContinue }) {
             {header(true)}
             {section >= 2 && focusCard(true)}
             {section >= 2 && outcomes(true)}
+            {section >= 2 && <MeetYourCoach d />}
           </div>
         </div>
 
@@ -269,6 +307,7 @@ export function ReflectionScreen({ answers, onContinue }) {
         {header(false)}
         {section >= 2 && focusCard(false)}
         {section >= 2 && outcomes(false)}
+        {section >= 2 && <MeetYourCoach d={false} />}
       </div>
 
       {/* Let's Begin — mobile fixed bottom, dark Begin Session style */}
