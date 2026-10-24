@@ -462,7 +462,7 @@ color:T2.text3,fontSize:13,fontWeight:500,cursor:"pointer",
         <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
           <path d="M9 2L4 7l5 5" stroke="#2C2416" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-        <span style={{fontSize:13,fontWeight:500}}>← Exit</span>
+        <span style={{fontSize:13,fontWeight:500}}>Exit</span>
       </button>
       {/* Read aloud — Insight/Theory/Example only, top right over image.
           Button hidden for now (pending ElevenLabs audio) — everything it

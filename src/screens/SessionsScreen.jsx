@@ -130,7 +130,7 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
               fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase",
               color: "rgba(245,239,230,0.55)", fontFamily: T.sans,
               fontWeight: 500, marginBottom: 14,
-            }}>14 Sessions — 6 Steps Each</div>
+            }}>14 Sessions · 6 Steps Each</div>
             <h1 style={{
               fontFamily: T.serif, fontSize: 72, fontWeight: 600,
               color: "#F5EFE6", letterSpacing: "-3px", lineHeight: 0.92,
@@ -280,7 +280,7 @@ export function SessionsScreen({done, cur, onStart, roleId, dark=false, DK={}, i
         <div style={{position:"absolute",inset:0,background:"rgba(10,8,5,0.45)"}}/>
         <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(10,8,5,0.85) 0%,transparent 60%)"}}/>
         <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 24px"}}>
-          <div style={{fontSize:10,fontWeight:400,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>14 Sessions — 6 steps each</div>
+          <div style={{fontSize:10,fontWeight:400,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>14 Sessions · 6 steps each</div>
           <h1 style={{fontFamily:T.serif,fontSize:32,fontWeight:600,color:"white",letterSpacing:"-0.5px"}}>Your Programme</h1>
           {roleId && (()=>{const r=ROLES.find(x=>x.id===roleId);return r?(<div style={{marginTop:6,display:"inline-flex",alignItems:"center",gap:6,padding:"4px 10px",background:"rgba(138,158,132,0.15)",borderRadius:10,border:"1px solid rgba(138,158,132,0.25)"}}><span style={{color:T.gold,fontSize:11}}>{r.icon}</span><span style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.7)"}}>{r.label}</span></div>):null;})()}
         </div>

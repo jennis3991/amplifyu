@@ -311,8 +311,7 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
   if (showCoach) {
     return (
       <MeetCoachScreen
-        onStartDay1={() => { setShowCoach(false); startSession(1); }}
-        onSkip={() => { setShowCoach(false); setShowWelcomeMark(true); }}
+        onDone={() => { setShowCoach(false); setTab("sessions"); setShowWelcomeMark(true); }}
       />
     );
   }

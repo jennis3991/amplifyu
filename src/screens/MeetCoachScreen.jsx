@@ -4,9 +4,9 @@ import { T } from '../theme.js';
 // ─── MEET YOUR COACH — the welcome video, shown once after onboarding ───────
 // Comes straight after "Let's Begin" on the communication profile. That tap
 // lets the video autoplay with sound (iOS/Capacitor always allows it; browsers
-// that block it fall back to muted with a "Tap for sound" button). "Start
-// Day 1" goes straight into the first session; "Skip intro" goes to Home.
-export function MeetCoachScreen({ onStartDay1, onSkip }) {
+// that block it fall back to muted with a "Tap for sound" button). Both
+// buttons open the Programme tab, so the 14 days are the first thing seen.
+export function MeetCoachScreen({ onDone }) {
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -78,10 +78,10 @@ export function MeetCoachScreen({ onStartDay1, onSkip }) {
         </div>
 
         <div style={{ width: "100%", maxWidth: 420, marginTop: 26 }}>
-          <button onClick={() => leave(onStartDay1)} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 24px", borderRadius: 6, border: "none", background: T.ink, color: T.bg, fontSize: 14, fontFamily: T.sans, fontWeight: 600, cursor: "pointer" }}>
-            Start Day 1 →
+          <button onClick={() => leave(onDone)} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 24px", borderRadius: 6, border: "none", background: T.ink, color: T.bg, fontSize: 14, fontFamily: T.sans, fontWeight: 600, cursor: "pointer" }}>
+            See your programme →
           </button>
-          <button onClick={() => leave(onSkip)} style={{ marginTop: 6, background: "none", border: "none", padding: "12px 16px", minHeight: 44, color: T.text3, fontSize: 13, fontFamily: T.sans, cursor: "pointer" }}>
+          <button onClick={() => leave(onDone)} style={{ marginTop: 6, background: "none", border: "none", padding: "12px 16px", minHeight: 44, color: T.text3, fontSize: 13, fontFamily: T.sans, cursor: "pointer" }}>
             Skip intro
           </button>
         </div>
