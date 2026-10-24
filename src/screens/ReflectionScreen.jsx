@@ -22,7 +22,6 @@ export function ReflectionScreen({ answers, onContinue }) {
   const isDesktop = useIsDesktop();
   const [reflection, setReflection] = useState(null);
   const [section, setSection] = useState(0);
-  const [expanded, setExpanded] = useState(false);
   const [visible, setVisible] = useState(true);
   const role = ROLES.find(r => r.id === answers.role);
 
@@ -119,7 +118,7 @@ export function ReflectionScreen({ answers, onContinue }) {
   };
   const outcomeCards = focusAreas.slice(0, 4).map(area => ({
     area,
-    ...(outcomeMap[area] || { svg: svgLines, title: area, sub: "A skill you will master" }),
+    ...(outcomeMap[area] || { svg: svgLines, title: area, sub: "A skill you will build" }),
   }));
 
   // 2 goal cards for right panel
@@ -130,9 +129,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
   // Reflection text (quiz-derived, no API)
   const fallbackReflection = {
-    summary: "Here is what we are seeing: you want to " + contextLabel.toLowerCase().replace(/^telling /,"tell ").replace(/^building /,"build ").replace(/^influencing and communicating /,"influence and communicate ").replace(/^influencing /,"influence ").replace(/^navigating /,"navigate ").replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + ", but " + challengeLabel.toLowerCase().replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + " is standing in the way. That gap between your capability and how you're showing up is exactly where AmplifyU works. You already have more than most people start with.",
-    motivation: "The fact that you can name what's holding you back means you're thinking more clearly about this than most. " + (answers.role === "senior" ? "At your level, the difference between good and exceptional is almost never about knowledge. It's about how you land what you know." : "The skills you're building (clarity, presence and story) are the ones that open the doors that matter.") + " Your growth in this area will compound in ways you can't yet see.",
-    forward: "Here is where we will take you: 14 sessions built for someone at your stage, with scenarios drawn from your world as " + roleLabel + ". You will build the communication habits, personal brand, and visibility that turn your real capability into the career you are ready for.",
+    summary: "Here is what we are seeing: you want to " + contextLabel.toLowerCase().replace(/^telling /,"tell ").replace(/^building /,"build ").replace(/^influencing and communicating /,"influence and communicate ").replace(/^influencing /,"influence ").replace(/^navigating /,"navigate ").replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + ", but " + challengeLabel.toLowerCase().replace(/\.$/, "").replace(/\bmy\b/g,"your").replace(/\bmyself\b/g,"yourself") + " is standing in the way. That gap between your capability and how you're showing up is exactly where AmplifyU works. You already have a strong place to start from.",
   };
 
   useEffect(() => {
@@ -142,185 +139,102 @@ export function ReflectionScreen({ answers, onContinue }) {
   }, []);
 
 
+  // ── Shared pieces (mockup style) ──────────────────────────────────────────
+  // Programme Focus: one row per area with a round icon, a bar and the share.
+  const focusIcon = area => (outcomeMap[area] || {}).svg || svgLines;
+  const iconCircle = (svg, size, tint) => (
+    <div style={{ width: size, height: size, borderRadius: "50%", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: tint ? T.goldLight : T.surface, border: "1px solid " + (tint ? "rgba(138,158,132,0.3)" : T.border) }}>{svg}</div>
+  );
+  const eyebrow = { fontSize: 11, color: T.text3, textTransform: "uppercase", letterSpacing: "3px", fontFamily: T.sans };
+  const card = { background: "rgba(255,255,255,0.55)", borderRadius: 10, border: "1px solid " + T.border };
+
+  const header = (d) => (
+    <div>
+      {/* Desktop banner image already carries the "Your Communication Profile" title. */}
+      {!d && <div style={{ ...eyebrow, marginBottom: 12 }}>Your communication profile</div>}
+      <h1 style={{ fontFamily: T.serif, fontSize: d ? "clamp(38px,3.6vw,56px)" : 36, fontWeight: 500, color: T.ink, lineHeight: 1.05, letterSpacing: d ? "-1.5px" : "-1px", margin: 0 }}>{tendency.label}</h1>
+      {section >= 1 && reflection && (
+        <p style={{ fontFamily: T.serif, fontSize: d ? 19 : 17, color: T.text2, lineHeight: 1.6, margin: (d ? "20px" : "14px") + " 0 0", maxWidth: 620, animation: "sectionFade 0.6s ease both" }}>{reflection.summary}</p>
+      )}
+      {role && (
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginTop: d ? 22 : 18, padding: "9px 18px", background: "transparent", borderRadius: 3, border: "1px solid rgba(44,36,22,0.28)" }}>
+          <span style={{ width: 5, height: 5, transform: "rotate(45deg)", background: T.goldDark }} />
+          <span style={{ fontSize: 11, color: T.ink, textTransform: "uppercase", letterSpacing: "2.5px", fontFamily: T.sans, fontWeight: 500 }}>{role.label}</span>
+        </div>
+      )}
+    </div>
+  );
+
+  const focusCard = (d) => (
+    <div style={{ ...card, padding: d ? "24px 28px" : "20px 18px", animation: "sectionFade 0.6s ease both" }}>
+      <div style={{ ...eyebrow, color: T.text2, marginBottom: 6 }}>Programme Focus</div>
+      <div style={{ fontSize: d ? 14 : 13, color: T.text3, fontFamily: T.sans, lineHeight: 1.5, marginBottom: d ? 18 : 14 }}>Where your 14 sessions will focus, built around your goals.</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: d ? 14 : 12 }}>
+        {programmeWeights.map(({ area, weight }) => (
+          <div key={area} style={{ display: "flex", alignItems: "center", gap: d ? 16 : 12 }}>
+            {iconCircle(focusIcon(area), d ? 44 : 38)}
+            <span style={{ flex: "0 0 " + (d ? "38%" : "40%"), fontFamily: T.serif, fontSize: d ? 18 : 16, color: T.ink, lineHeight: 1.2 }}>{area}</span>
+            <div style={{ flex: 1, height: 4, background: T.border, borderRadius: 2, overflow: "hidden" }}>
+              <div style={{ height: "100%", width: weight + "%", background: T.goldDark, borderRadius: 2 }} />
+            </div>
+            <span style={{ width: 34, textAlign: "right", fontSize: d ? 13 : 12, color: T.text3, fontFamily: T.sans }}>{weight + "%"}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const outcomes = (d) => (
+    <div style={{ animation: "sectionFade 0.7s ease both" }}>
+      <div style={{ ...eyebrow, color: T.text2, marginBottom: d ? 16 : 12 }}>{"By Day 14, you'll be able to…"}</div>
+      <div style={{ display: "grid", gridTemplateColumns: d ? "repeat(4, 1fr)" : "1fr 1fr", gap: d ? 12 : 10 }}>
+        {outcomeCards.map((o, i) => (
+          <div key={i} style={{ ...card, padding: d ? "18px 18px 20px" : "14px 14px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
+            {iconCircle(o.svg, d ? 44 : 38, i === 0)}
+            <div style={{ fontFamily: T.serif, fontSize: d ? 19 : 17, color: T.ink, lineHeight: 1.15, marginTop: 4 }}>{o.title}</div>
+            <div style={{ fontSize: d ? 13 : 12, color: T.text3, fontFamily: T.sans, lineHeight: 1.45 }}>{o.sub}.</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const fadeKeyframes = <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>;
+
   // ── DESKTOP ───────────────────────────────────────────────────────────────
   if (isDesktop) {
     return (
       <div style={{ height: "100vh", display: "flex", fontFamily: T.sans, background: T.bg, overflow: "hidden", opacity:visible?1:0, transition:"opacity 0.38s ease" }}>
-        <style>{`
-          @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-        `}</style>
+        {fadeKeyframes}
 
         {/* LEFT: main content */}
         <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
 
           {/* Banner image — desktop only */}
-          <div style={{ width: "100%", height: 380, flexShrink: 0, overflow: "hidden" }}>
+          <div style={{ width: "100%", height: 300, flexShrink: 0, overflow: "hidden" }}>
             <img loading="lazy" src="/profile-banner-desktop-2.jpg" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "top" }}/>
           </div>
 
-          <div style={{ padding: "52px 72px 120px", display: "flex", flexDirection: "column" }}>
-
-          {/* Brand */}
-          <div style={{ fontSize: 11, color: T.gold, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 52, fontFamily: T.sans }}>AmplifyU</div>
-
-          {/* Two-column row: heading + text LEFT | programme focus RIGHT */}
-          <div style={{ display: "flex", gap: 56, alignItems: "flex-start", marginBottom: 44 }}>
-
-            {/* LEFT: heading + paragraph + read more */}
-            <div style={{ flex: "0 0 52%" }}>
-              <div style={{ fontSize: 11, color: T.text3, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 14, fontFamily: T.sans }}>Your communication profile</div>
-              <h1 style={{ fontFamily: T.serif, fontSize: "clamp(32px,3vw,52px)", fontWeight: 500, color: T.ink, lineHeight: 1.08, letterSpacing: "-1.5px", margin: "0 0 32px" }}>
-                {"Here's what"}
-                <br/>{"we're seeing."}
-              </h1>
-
-              {section >= 1 && reflection && (
-                <div style={{ marginBottom: 20, animation: "fadeUp 0.6s ease both" }}>
-                  <div style={{ width: 24, height: 1, background: T.gold, marginBottom: 20, opacity: 0.6 }}/>
-                  <p style={{ fontFamily: T.serif, fontSize: "clamp(15px,1.4vw,17px)", color: T.ink, lineHeight: 1.78, letterSpacing: "-0.1px", margin: 0 }}>
-                    {reflection.summary}
-                  </p>
-                </div>
-              )}
-
-              {section >= 1 && (
-                <div>
-                  <button
-                    onClick={() => setExpanded(!expanded)}
-                    style={{ background: "none", border: "none", cursor: "pointer", fontFamily: T.sans, fontSize: 13, color: T.gold, display: "flex", alignItems: "center", gap: 6, padding: "6px 0", letterSpacing: "0.2px" }}
-                  >
-                    {expanded ? "Read less ↑" : "Read more ↓"}
-                  </button>
-
-                  {expanded && reflection && (
-                    <div style={{ marginTop: 24 }}>
-                      <div style={{ position: "relative", marginBottom: 28 }}>
-                        <div style={{ fontFamily: T.serif, fontSize: 80, lineHeight: 0.6, color: "rgba(138,158,132,0.12)", position: "absolute", top: -8, left: -10, userSelect: "none" }}>{'"'}</div>
-                        <div style={{ borderLeft: "2px solid " + T.gold, position: "absolute", left: 0, top: 0, bottom: 0, opacity: 0.5 }}/>
-                        <div style={{ paddingLeft: 24, position: "relative", zIndex: 1 }}>
-                          <p style={{ fontFamily: T.serif, fontSize: "clamp(15px,1.5vw,18px)", fontStyle: "italic", color: T.text2, lineHeight: 1.78, margin: 0 }}>
-                            {reflection.motivation}
-                          </p>
-                        </div>
-                      </div>
-                      <div>
-                        <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 12, fontFamily: T.sans }}>The path ahead</div>
-                        <p style={{ fontFamily: T.serif, fontSize: "clamp(15px,1.4vw,17px)", color: T.ink, lineHeight: 1.78, margin: 0, letterSpacing: "-0.1px" }}>
-                          {reflection.forward}
-                        </p>
-                        <p style={{ fontFamily: T.sans, fontSize: 13, color: T.text2, lineHeight: 1.6, margin: "16px 0 0" }}>
-                          {AI_COACH_LINE}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* RIGHT: Communication Style + Programme Focus — compact */}
-            {section >= 2 && (
-              <div style={{ flex: 1, paddingTop: 4, animation: "fadeUp 0.6s ease both" }}>
-
-                {/* Communication Style card */}
-                <div style={{ padding: "14px 16px", background: T.surface, borderRadius: 7, border: "1px solid " + T.border, marginBottom: 24, textAlign: "center" }}>
-                  <div style={{ fontSize: 9, color: T.text3, textTransform: "uppercase", letterSpacing: "2.5px", marginBottom: 6, fontFamily: T.sans }}>Communication Style</div>
-                  <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, marginBottom: 3 }}>{tendency.label}</div>
-                  <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{tendency.sub}</div>
-                </div>
-
-                <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 6, fontFamily: T.sans }}>Programme Focus</div>
-                <div style={{ fontSize: 12, color: T.text2, marginBottom: 22, fontFamily: T.sans, lineHeight: 1.55 }}>Where your 14 sessions will focus, built around your goals and profile.</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                  {programmeWeights.map(({ area, weight }) => (
-                    <div key={area}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
-                        <span style={{ fontFamily: T.serif, fontSize: 13, color: T.ink, letterSpacing: "-0.1px" }}>{area}</span>
-                        <span style={{ fontSize: 10, color: T.text3, fontFamily: T.sans }}>{weight + "%"}</span>
-                      </div>
-                      <div style={{ height: 2, background: T.border, borderRadius: 2, overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: weight + "%", background: T.gold, borderRadius: 2 }}/>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
+          <div style={{ padding: "48px 72px 140px", display: "flex", flexDirection: "column", gap: 36 }}>
+            {header(true)}
+            {section >= 2 && focusCard(true)}
+            {section >= 2 && outcomes(true)}
           </div>
-
-          {/* Section divider */}
-          {section >= 2 && (
-            <div style={{ height: 1, background: T.border, marginBottom: 44, animation: "fadeUp 0.5s ease both" }}/>
-          )}
-
-          {/* By Day 14 outcome cards */}
-          {section >= 2 && (
-            <div style={{ marginBottom: 40, animation: "fadeUp 0.7s ease both" }}>
-              <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 8, fontFamily: T.sans }}>By Day 14</div>
-              <div style={{ fontSize: 13, color: T.text2, marginBottom: 20, fontFamily: T.sans }}>{"You'll understand how to..."}</div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                {outcomeCards.map((o, i) => (
-                  <div key={i} style={{ padding: "18px 20px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8, textAlign: "center" }}>
-                    <div style={{ width: 30, height: 30, borderRadius: 6, background: T.bg, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center", alignSelf: "center" }}>{o.svg}</div>
-                    <div style={{ fontFamily: T.serif, fontSize: 15, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{o.title}</div>
-                    <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{o.sub}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          </div>{/* end padded content */}
         </div>
 
         {/* RIGHT: profile panel — dark, static */}
         <div style={{ width: 360, flexShrink: 0, borderLeft: "1px solid rgba(255,255,255,0.08)", background: T.cardDark, overflow: "hidden", padding: "64px 40px 100px", display: "flex", flexDirection: "column", gap: 32 }}>
-
-          {/* Your Profile */}
-          <div>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 16, fontFamily: T.sans }}>Your Profile</div>
-            {role && (
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 14px", background: "rgba(138,158,132,0.12)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.1)" }}>
-                <div style={{ width: 26, height: 26, borderRadius: "50%", background: "rgba(138,158,132,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontSize: 13, filter: "brightness(0) invert(1)" }}>{role.icon}</span>
-                </div>
-                <span style={{ fontFamily: T.serif, fontSize: 15, color: "rgba(255,255,255,0.9)" }}>{role.label}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Your Goals — 2 cards */}
           <div>
             <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 14, fontFamily: T.sans }}>Your Goals</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {goalCards.map((g, i) => (
-                <div key={i} style={{ padding: "14px 16px", background: "rgba(255,255,255,0.04)", borderRadius: 7, borderLeft: "2px solid " + T.gold, border: "1px solid rgba(255,255,255,0.07)", borderLeftWidth: 2, borderLeftColor: T.gold }}>
+                <div key={i} style={{ padding: "14px 16px", background: "rgba(255,255,255,0.04)", borderRadius: 7, border: "1px solid rgba(255,255,255,0.07)", borderLeftWidth: 2, borderLeftColor: T.gold }}>
                   <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "2px", marginBottom: 6, fontFamily: T.sans }}>{g.label}</div>
                   <div style={{ fontFamily: T.serif, fontSize: 14, color: "rgba(255,255,255,0.82)", lineHeight: 1.6 }}>{g.text}</div>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Your Programme */}
-          <div>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3.5px", marginBottom: 14, fontFamily: T.sans }}>Your Programme</div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {[
-                { label: "14 sessions", sub: "One per day, ~15 minutes each" },
-              ].map((item, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "11px 0" }}>
-                  <div style={{ width: 4, height: 4, borderRadius: "50%", background: T.gold, flexShrink: 0, marginTop: 7, opacity: 0.75 }}/>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.85)", fontFamily: T.sans, marginBottom: 2 }}>{item.label}</div>
-                    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", fontFamily: T.sans, lineHeight: 1.4 }}>{item.sub}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
         </div>
         {/* AI notice — always visible, directly above the floating CTA */}
         <p style={{ position: "fixed", bottom: 100, right: 40, width: 280, zIndex: 200, fontFamily: T.sans, fontSize: 13, color: "rgba(255,255,255,0.72)", lineHeight: 1.5, margin: 0, textAlign: "center" }}>{AI_COACH_LINE}</p>
@@ -342,8 +256,8 @@ export function ReflectionScreen({ answers, onContinue }) {
 
   // ── MOBILE ────────────────────────────────────────────────────────────────
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 150, opacity:visible?1:0, transition:"opacity 0.38s ease" }}>
-      <style>{`@keyframes sectionFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: T.sans, display: "flex", flexDirection: "column", paddingBottom: 170, opacity:visible?1:0, transition:"opacity 0.38s ease" }}>
+      {fadeKeyframes}
 
       {/* Slim black banner */}
       <div style={{ background: "#0D0B08", height: `calc(52px + env(safe-area-inset-top, 0px))`, paddingTop: "env(safe-area-inset-top, 0px)", display: "flex", alignItems: "center", paddingLeft: 20, flexShrink: 0, boxSizing: "border-box" }}>
@@ -351,126 +265,10 @@ export function ReflectionScreen({ answers, onContinue }) {
         <span style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: "rgba(255,255,255,0.85)" }}>AmplifyU</span>
       </div>
 
-      {/* Header */}
-      <div style={{ padding: "28px 24px 0" }}>
-        <div style={{ fontSize: 11, color: T.text3, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 14, fontFamily: T.sans }}>Your communication profile</div>
-        <h1 style={{ fontFamily: T.serif, fontSize: 34, fontWeight: 500, color: T.ink, lineHeight: 1.08, letterSpacing: "-1px", margin: 0 }}>
-          {"Here's what"}
-          <br/>{"we're seeing."}
-        </h1>
-        {role && (
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 14, padding: "6px 12px", background: T.goldLight, borderRadius: 5, border: "1px solid " + T.border }}>
-            <span style={{ fontSize: 13 }}>{role.icon}</span>
-            <span style={{ fontSize: 11, color: T.goldDark, textTransform: "uppercase", letterSpacing: "2px", fontFamily: T.sans }}>{role.label}</span>
-          </div>
-        )}
-      </div>
-
-      <div style={{ padding: "28px 24px 0", display: "flex", flexDirection: "column", gap: 28 }}>
-
-        {/* First paragraph — always visible */}
-        {section >= 1 && reflection && (
-          <div style={{ animation: "sectionFade 0.6s ease both" }}>
-            <div style={{ width: 22, height: 1, background: T.gold, marginBottom: 18, opacity: 0.6 }}/>
-            <p style={{ fontFamily: T.serif, fontSize: 17, color: T.ink, lineHeight: 1.75, margin: 0, letterSpacing: "-0.1px" }}>{reflection.summary}</p>
-          </div>
-        )}
-
-        {/* Read more toggle */}
-        {section >= 1 && (
-          <div>
-            <button
-              onClick={() => setExpanded(!expanded)}
-              style={{ background: "none", border: "none", cursor: "pointer", fontFamily: T.sans, fontSize: 13, color: T.gold, display: "flex", alignItems: "center", gap: 5, padding: 0 }}
-            >
-              {expanded ? "Read less ↑" : "Read more ↓"}
-            </button>
-            {expanded && reflection && (
-              <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 20 }}>
-                <div style={{ borderLeft: "2px solid " + T.gold, paddingLeft: 18 }}>
-                  <p style={{ fontFamily: T.serif, fontSize: 16, fontStyle: "italic", color: T.text2, lineHeight: 1.75, margin: 0 }}>{reflection.motivation}</p>
-                </div>
-                <div>
-                  <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 10, fontFamily: T.sans }}>The path ahead</div>
-                  <p style={{ fontFamily: T.serif, fontSize: 17, color: T.ink, lineHeight: 1.75, margin: 0, letterSpacing: "-0.1px" }}>{reflection.forward}</p>
-                  <p style={{ fontFamily: T.sans, fontSize: 13, color: T.text2, lineHeight: 1.6, margin: "14px 0 0" }}>{AI_COACH_LINE}</p>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Divider */}
-        {section >= 2 && <div style={{ height: 1, background: T.border }}/>}
-
-        {/* Programme Focus bars */}
-        {section >= 2 && (
-          <div style={{ animation: "sectionFade 0.6s ease both" }}>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 8, fontFamily: T.sans }}>Programme Focus</div>
-            <div style={{ fontSize: 12, color: T.text2, marginBottom: 20, fontFamily: T.sans, lineHeight: 1.5 }}>Where your 14 sessions will focus, built around your goals.</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              {programmeWeights.map(({ area, weight }) => (
-                <div key={area}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
-                    <span style={{ fontFamily: T.serif, fontSize: 14, color: T.ink }}>{area}</span>
-                    <span style={{ fontSize: 11, color: T.text3, fontFamily: T.sans }}>{weight + "%"}</span>
-                  </div>
-                  <div style={{ height: 3, background: T.border, borderRadius: 2, overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: weight + "%", background: T.gold, borderRadius: 2 }}/>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* By Day 14 outcome cards */}
-        {section >= 2 && (
-          <div style={{ animation: "sectionFade 0.7s ease both" }}>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 6, fontFamily: T.sans }}>By Day 14</div>
-            <div style={{ fontSize: 12, color: T.text2, marginBottom: 16, fontFamily: T.sans }}>{"You'll understand how to..."}</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              {outcomeCards.map((o, i) => (
-                <div key={i} style={{ padding: "14px 16px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, display: "flex", flexDirection: "column", gap: 8, textAlign: "center" }}>
-                  <div style={{ width: 30, height: 30, borderRadius: 6, background: T.bg, border: "1px solid " + T.border, display: "flex", alignItems: "center", justifyContent: "center", alignSelf: "center" }}>
-                    {o.svg}
-                  </div>
-                  <div style={{ fontFamily: T.serif, fontSize: 14, color: T.ink, letterSpacing: "-0.2px", lineHeight: 1.2 }}>{o.title}</div>
-                  <div style={{ fontSize: 11, color: T.text2, fontFamily: T.sans, lineHeight: 1.45 }}>{o.sub}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-
-        {/* Communication Style card */}
-        {section >= 2 && (
-          <div style={{ padding: "16px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, animation: "sectionFade 0.9s ease both", textAlign: "center" }}>
-            <div style={{ fontSize: 9, color: T.text3, textTransform: "uppercase", letterSpacing: "2.5px", marginBottom: 8, fontFamily: T.sans }}>Communication Style</div>
-            <div style={{ fontFamily: T.serif, fontSize: 16, color: T.ink, marginBottom: 3 }}>{tendency.label}</div>
-            <div style={{ fontSize: 12, color: T.text2, fontFamily: T.sans, lineHeight: 1.5 }}>{tendency.sub}</div>
-          </div>
-        )}
-
-        {/* Programme stats */}
-        {section >= 2 && (
-          <div style={{ paddingBottom: 8, animation: "sectionFade 1s ease both" }}>
-            <div style={{ fontSize: 9, color: T.gold, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 14, fontFamily: T.sans }}>Your Programme</div>
-            <div style={{ display: "flex", gap: 10 }}>
-              {[
-                { label: "14", sub: "sessions" },
-                { label: "~15", sub: "min / day" },
-                { label: "AI", sub: "coaching" },
-              ].map((item, i) => (
-                <div key={i} style={{ flex: 1, padding: "14px 12px", background: T.surface, borderRadius: 8, border: "1px solid " + T.border, textAlign: "center" }}>
-                  <div style={{ fontFamily: T.serif, fontSize: 22, color: T.ink, fontWeight: 500 }}>{item.label}</div>
-                  <div style={{ fontSize: 10, color: T.text3, fontFamily: T.sans, marginTop: 2 }}>{item.sub}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+      <div style={{ padding: "28px 20px 0", display: "flex", flexDirection: "column", gap: 24 }}>
+        {header(false)}
+        {section >= 2 && focusCard(false)}
+        {section >= 2 && outcomes(false)}
       </div>
 
       {/* Let's Begin — mobile fixed bottom, dark Begin Session style */}
