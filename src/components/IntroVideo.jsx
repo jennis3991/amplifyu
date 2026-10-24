@@ -11,6 +11,13 @@ export function IntroVideo({ onDone }) {
   const [muted, setMuted] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [progress, setProgress] = useState(0);
+  // Skip fades in after a few seconds, up in the corner, so a quick second tap
+  // after "Let's Begin" can't dismiss the welcome by accident.
+  const [skipReady, setSkipReady] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setSkipReady(true), 4000);
+    return () => clearTimeout(t);
+  }, []);
 
   const finish = () => {
     if (leaving) return;
@@ -82,8 +89,13 @@ export function IntroVideo({ onDone }) {
         <div style={{ height: "100%", width: (progress * 100) + "%", background: "rgba(255,255,255,0.85)", transition: "width 0.25s linear" }} />
       </div>
 
-      <button onClick={finish} aria-label="Skip intro" style={{ ...pill, background: "transparent", backdropFilter: "none", WebkitBackdropFilter: "none", marginTop: 20, color: "rgba(255,255,255,0.8)", padding: "9px 28px" }}>
-        Skip
+      <button onClick={finish} disabled={!skipReady} aria-label="Skip intro" style={{
+        position: "absolute", top: "calc(env(safe-area-inset-top, 0px) + 14px)", right: 16,
+        background: "none", border: "none", padding: "10px 6px", minHeight: 40,
+        color: "rgba(255,255,255,0.5)", fontFamily: T.sans, fontSize: 13, fontWeight: 500, letterSpacing: "0.3px",
+        opacity: skipReady ? 1 : 0, pointerEvents: skipReady ? "auto" : "none", transition: "opacity 0.6s ease",
+      }}>
+        Skip intro
       </button>
     </div>
   );
