@@ -12,6 +12,7 @@ import { ProgressScreen } from "./screens/ProgressScreen.jsx";
 import { ToolkitScreen } from "./screens/ToolkitScreen.jsx";
 import { QuickPrepFlow } from "./screens/QuickPrepFlow.jsx";
 import { ReflectionScreen } from "./screens/ReflectionScreen.jsx";
+import { MeetCoachScreen } from "./screens/MeetCoachScreen.jsx";
 import { IdentityScreen } from "./screens/IdentityScreen.jsx";
 import { Onboarding } from "./screens/Onboarding.jsx";
 import { FloatingNav, TabBar } from "./components/NavComponents.jsx";
@@ -160,6 +161,8 @@ Math.min(Math.max(ls("au1_day",1),1),14));
   // the whole screen fades out to reveal Home (same opacity fade as
   // AccessGate's exiting state) rather than the mark itself fading to
   // nothing.
+  // "Meet your coach" video page, shown once between "Let's Begin" and Home.
+  const [showCoach, setShowCoach] = useState(false);
   const [showWelcomeMark, setShowWelcomeMark] = useState(false);
   const [welcomeMarkIn, setWelcomeMarkIn] = useState(false);
   const [welcomeMarkGlow, setWelcomeMarkGlow] = useState(false);
@@ -297,11 +300,20 @@ fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translat
             lsSet("au1_ob", true);
             setReflectionData(null);
             setJustBoarded(true);
-            setShowWelcomeMark(true);
+            setShowCoach(true);
             setTab("home");
           }}
         />
       </div>
+    );
+  }
+
+  if (showCoach) {
+    return (
+      <MeetCoachScreen
+        onStartDay1={() => { setShowCoach(false); startSession(1); }}
+        onSkip={() => { setShowCoach(false); setShowWelcomeMark(true); }}
+      />
     );
   }
 
