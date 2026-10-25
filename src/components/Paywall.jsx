@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { T, S, SI } from "../theme.js";
-import { getSubscriptionProduct, purchaseSubscription, restorePurchases } from "../lib/purchases.js";
+import { Capacitor } from "@capacitor/core";
+import { getSubscriptionProduct, purchaseSubscription, restorePurchases, redeemOfferCode } from "../lib/purchases.js";
 
 const INK = "#1A1510";
 const CREAM = "#F5EDE0";
@@ -58,11 +59,11 @@ const BENEFITS = [
 ];
 
 export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and beyond" }) {
-  const [status, setStatus] = useState("idle"); // idle | purchasing | restoring | subscribed | restored
-  const [priceString, setPriceString] = useState("£9.99");
+  const [status, setStatus] = useState("idle"); // idle | purchasing | restoring | redeeming | subscribed | restored | redeemed
+  const [priceString, setPriceString] = useState("£5.99");
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Best-effort: reflect the real store price once it resolves, fall back to £9.99.
+  // Best-effort: reflect the real store price once it resolves, fall back to £5.99.
   useEffect(() => {
     getSubscriptionProduct()
       .then((product) => { if (product?.priceString) setPriceString(product.priceString); })
@@ -104,8 +105,29 @@ export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and be
       });
   }
 
-  const busy = status === "purchasing" || status === "restoring";
-  const done = status === "subscribed" || status === "restored";
+  // Apple offer codes (e.g. a free trial code). Only the iOS app can open
+  // Apple's redeem sheet, so the link is hidden on the web.
+  function handleRedeem() {
+    if (busy || done) return;
+    setStatus("redeeming");
+    setErrorMessage("");
+    redeemOfferCode()
+      .then((found) => {
+        if (found) {
+          setStatus("redeemed");
+          setTimeout(() => { if (onSubscribed) onSubscribed(); else onClose?.(); }, 900);
+        } else {
+          setStatus("idle");
+        }
+      })
+      .catch(() => {
+        setStatus("idle");
+        setErrorMessage("We couldn't open code redemption. Please try again.");
+      });
+  }
+
+  const busy = status === "purchasing" || status === "restoring" || status === "redeeming";
+  const done = status === "subscribed" || status === "restored" || status === "redeemed";
 
   // Rendered via portal straight into <body>: this component is mounted deep
   // inside per-step wrappers that briefly animate their own `transform`
@@ -250,6 +272,20 @@ export function Paywall({ onClose, onSubscribed, headline = "Unlock Day 2 and be
           >
             {status === "restoring" ? "Restoring…" : status === "restored" ? "Restored ✓" : "Restore Purchases"}
           </span>
+          {Capacitor.isNativePlatform() && (
+            <>
+              {" · "}
+              <span
+                onClick={handleRedeem}
+                style={{
+                  textDecoration: "underline", cursor: busy || done ? "default" : "pointer",
+                  color: status === "redeemed" ? S : "rgba(245,237,224,0.4)",
+                }}
+              >
+                {status === "redeeming" ? "Opening…" : status === "redeemed" ? "Code redeemed ✓" : "Redeem a code"}
+              </span>
+            </>
+          )}
         </p>
         <p style={{ textAlign: "center", fontSize: 11.5, color: "rgba(245,237,224,0.3)", margin: 0 }}>
           <a href="https://www.amplifyu.app/privacy-policy" target="_blank" rel="noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>Privacy Policy</a>

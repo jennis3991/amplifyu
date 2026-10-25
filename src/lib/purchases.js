@@ -1,3 +1,4 @@
+import { Capacitor } from "@capacitor/core";
 import { NativePurchases, PURCHASE_TYPE } from "@capgo/native-purchases";
 
 const MONTHLY_PRODUCT_ID = "com.amplifyu.app.monthly2";
@@ -51,7 +52,43 @@ function fetchSubscriptionProduct() {
   });
 }
 
+// Ask StoreKit which subscriptions are active right now and mirror that in
+// the local unlock flag. StoreKit answers from its on-device copy, so this
+// works offline. It runs at launch so that a free trial from an offer code
+// (or any subscription) that has ended or been refunded locks again, and a
+// code redeemed outside the app (e.g. from a link) unlocks without a Restore.
+// The flag is only cleared on a successful answer, never on an error.
+export function syncEntitlement() {
+  if (!Capacitor.isNativePlatform()) return Promise.resolve(isEntitled());
+  return NativePurchases.getPurchases({ productType: PURCHASE_TYPE.SUBS, onlyCurrentEntitlements: true })
+    .then(({ purchases }) => {
+      const active = (purchases || []).some(
+        (p) => p.productIdentifier === MONTHLY_PRODUCT_ID && p.isActive !== false
+      );
+      setEntitled(active);
+      return active;
+    })
+    .catch((err) => {
+      console.error("[purchases] entitlement check failed:", err);
+      return isEntitled();
+    });
+}
+
+// Apple's own offer code sheet (e.g. a 2-week free trial code). Once it
+// closes, check a few times for the new subscription, since the redeemed
+// transaction can land a moment after the sheet is dismissed.
+export function redeemOfferCode() {
+  return NativePurchases.presentOfferCodeRedeemSheet().then(async () => {
+    for (let i = 0; i < 6; i++) {
+      if (await syncEntitlement()) return true;
+      await new Promise((r) => setTimeout(r, 1500));
+    }
+    return false;
+  });
+}
+
 export function initPurchases() {
+  syncEntitlement();
   if (!productPromise) {
     productPromise = fetchSubscriptionProduct().catch((err) => {
       console.error("[purchases] failed to fetch subscription product:", err);

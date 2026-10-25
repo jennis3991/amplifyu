@@ -5,8 +5,8 @@ import { useIsDesktop } from '../utils.js';
 
 // One-time notice at the start of the programme that the coach is AI (EU AI
 // Act Art. 50(1)); it also covers the pre-recorded coach voice heard on the
-// lesson tabs, which carry no notice of their own.
-const AI_COACH_LINE = "Your AmplifyU coach is AI. Its voice and feedback are generated automatically, not by a person.";
+// lesson tabs and the "Meet your coach" video that follows this screen.
+const AI_COACH_LINE = "Your AmplifyU coach is AI. Its video, voice and feedback are generated automatically, not by a person.";
 
 // Match a saved onboarding answer to a map key, ignoring case and
 // punctuation, so answers saved before a copy edit (e.g. with an em dash)
