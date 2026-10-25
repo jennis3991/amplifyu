@@ -509,14 +509,6 @@ Return ONLY valid JSON:
 
         {/* Point 1 — choose habit + navigate conversation */}
         <div style={{display:'flex',alignItems:'flex-start',gap:isDesktop?16:12}}>
-          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:'50%',background:'rgba(138,158,132,0.08)',border:'0.5px solid rgba(138,158,132,0.25)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
-              <circle cx="10" cy="9" r="3.2" stroke={T.gold} strokeWidth="1.3"/>
-              <path d="M4.5 19c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/>
-              <path d="M18 5.3l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7.7-1.6z" fill={T.gold}/>
-              <path d="M20.5 11.2l.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4.4-.9z" fill={T.gold}/>
-            </svg>
-          </div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
             Choose a character, then navigate a realistic workplace conversation. Your AI Coach gives personalised feedback on your <strong style={{color:T.gold,fontWeight:700}}>listening, curiosity, empathy and rapport</strong>.
           </p>
@@ -526,12 +518,6 @@ Return ONLY valid JSON:
 
         {/* Point 2 — the 3-exchange rhythm */}
         <div style={{display:'flex',alignItems:'flex-start',gap:isDesktop?16:12}}>
-          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:'50%',background:'rgba(138,158,132,0.08)',border:'0.5px solid rgba(138,158,132,0.25)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 22 22" fill="none">
-              <path d="M4 10a7 7 0 0112-4.5M18 5v4h-4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M18 12a7 7 0 01-12 4.5M4 17v-4h4" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?15:14,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
             Each conversation runs <strong style={{color:T.gold,fontWeight:700}}>3 back-and-forth exchanges</strong>: record, wait for their in-character reply, then record again. You'll see "Start Recording" three times in total.
           </p>

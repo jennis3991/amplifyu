@@ -595,14 +595,6 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
         {/* Point 1 — what changes today */}
         <div style={{display:"flex",alignItems:"flex-start",gap:isDesktop?16:12}}>
-          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
-              <circle cx="10" cy="9" r="3.2" stroke={T.gold} strokeWidth="1.3"/>
-              <path d="M4.5 19c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6" stroke={T.gold} strokeWidth="1.3" strokeLinecap="round"/>
-              <path d="M18 5.3l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7.7-1.6z" fill={T.gold}/>
-              <path d="M20.5 11.2l.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4.4-.9z" fill={T.gold}/>
-            </svg>
-          </div>
           <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0,flex:1}}>
             Yesterday measured <strong>what you said</strong>. Today measures <strong>how you sound</strong>.
           </p>
@@ -612,12 +604,6 @@ export function D2SimWidget({T, T2, isDesktop, onRecordingChange}) {
 
         {/* Point 2 — what the coach analyses + baseline note */}
         <div style={{display:"flex",alignItems:"flex-start",gap:isDesktop?16:12}}>
-          <div style={{width:isDesktop?48:36,height:isDesktop?48:36,borderRadius:"50%",background:"rgba(138,158,132,0.08)",border:"0.5px solid rgba(138,158,132,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-            <svg width={isDesktop?22:18} height={isDesktop?22:18} viewBox="0 0 24 24" fill="none">
-              <path d="M12 3l7 3v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z" stroke={T.gold} strokeWidth="1.3" strokeLinejoin="round"/>
-              <path d="M12 8.2l1 2.1 2.3.3-1.7 1.6.4 2.3-2-1.1-2 1.1.4-2.3-1.7-1.6 2.3-.3 1-2.1z" stroke={T.gold} strokeWidth="1.1" strokeLinejoin="round"/>
-            </svg>
-          </div>
           <div style={{flex:1}}>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?16:15,color:T2.text,lineHeight:1.6,margin:0}}>
               {"Your AI Coach measures six dimensions of your vocal delivery, directly from your recording: "}<strong>pace, pitch, pauses, vocal energy, range and confidence hedges</strong>{", to reveal how your voice shapes the way people experience your message."}
