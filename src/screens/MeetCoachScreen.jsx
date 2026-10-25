@@ -55,7 +55,7 @@ export function MeetCoachScreen({ onDone }) {
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px 20px calc(24px + env(safe-area-inset-bottom, 0px))", textAlign: "center", animation: "coachFade 0.6s ease both" }}>
         <div style={{ fontSize: 11, color: T.text3, textTransform: "uppercase", letterSpacing: "3px", marginBottom: 10 }}>Welcome to AmplifyU</div>
         <h1 style={{ fontFamily: T.serif, fontSize: 34, fontWeight: 500, color: T.ink, lineHeight: 1.08, letterSpacing: "-1px", margin: 0 }}>Meet your coach</h1>
-        <p style={{ fontSize: 14, color: T.text3, lineHeight: 1.5, margin: "8px 0 22px" }}>A 30-second welcome to your 14 days.</p>
+        <p style={{ fontSize: 14, color: T.text3, lineHeight: 1.5, margin: "8px 0 22px" }}>A short welcome to your 14 days.</p>
 
         <div onClick={tapVideo} role="button" aria-label={playing && !muted ? "Pause video" : "Play video"} style={{ position: "relative", width: frameW, aspectRatio: "9 / 16", borderRadius: 14, overflow: "hidden", background: "#000", border: "1px solid " + T.border, boxShadow: "0 14px 40px rgba(44,36,22,0.2)", cursor: "pointer" }}>
           <video ref={videoRef} src="/intro.mp4" poster="/intro-poster.jpg" playsInline autoPlay preload="auto"
