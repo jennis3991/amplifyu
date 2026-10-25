@@ -25,7 +25,7 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
   const T2 = T2p || T2D;
 
   const BEATS = [
-    { prompt:"Once Upon a Time…",  question:"Who is this story about?",                       hint:"Keep it simple.",                                        example:"I was leading a project at work.",            tip:"Set the scene. Just enough context — don't over-explain." },
+    { prompt:"Once Upon a Time…",  question:"Who is this story about?",                       hint:"Keep it simple.",                                        example:"I was leading a project at work.",            tip:"Set the scene. Just enough context. Don't over-explain." },
     { prompt:"Every Day…",         question:"What was normal before everything changed?",      hint:"",                                                       example:"We delivered projects the same way every time.",  tip:"Stories need contrast. Show what life looked like before the problem appeared." },
     { prompt:"One Day…",           question:"What changed? This is the moment your story begins.", hint:"",                                                   example:"A major client threatened to leave.",         tip:"The sharper the disruption, the stronger the story." },
     { prompt:"Because of That…",   question:"What did you do?",                               hint:"",                                                       example:"We redesigned our entire process.",           tip:"Show your thinking. What choice did you make?" },
@@ -262,7 +262,7 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
       </div>
 
       <button onClick={generateStory} style={cs.cta}>Generate My Story →</button>
-      <button onClick={()=>setPhase('insight')} style={{...cs.back,marginTop:2}}>Skip — Continue without AI →</button>
+      <button onClick={()=>setPhase('insight')} style={{...cs.back,marginTop:2}}>Skip and continue without AI →</button>
       <button onClick={restart} style={cs.back}>Start Over</button>
     </div>
   );
@@ -300,7 +300,7 @@ export function StoryBuilderWidget({ T:Tp, T2:T2p, isDesktop=false, onSave, onSi
       {/* Beat-by-beat comparison */}
       <div style={cs.card}>
         <div style={cs.label}>Your Draft → Expanded</div>
-        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,fontWeight:300,lineHeight:1.6,marginBottom:20}}>See what changed and why — each improvement is a storytelling lesson.</p>
+        <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,fontWeight:300,lineHeight:1.6,marginBottom:20}}>See what changed and why. Each improvement is a storytelling lesson.</p>
         <div style={{display:"flex",flexDirection:"column",gap:0}}>
           {BEATS.map((bt,i)=>(
             <div key={i} style={{paddingBottom:i<6?20:0,marginBottom:i<6?20:0,borderBottom:i<6?"0.5px solid "+T2.border:"none"}}>
@@ -1130,7 +1130,7 @@ Return ONLY valid JSON:
       { heading:"Raising the Stakes", body:"Tension is the engine of narrative transportation. By introducing a meaningful obstacle here, you create the emotional fuel that carries your audience through every scene that follows." },
       { heading:"The Turning Point", body:"The most memorable talks pivot on a single reframe. This scene functions as your insight moment: the point where the audience's mental model shifts and they see the world differently." },
       { heading:"The Path Forward", body:"After tension comes momentum. This scene shows your audience that movement is possible, converting abstract insight into concrete direction and building belief in the outcome." },
-      { heading:"The Proof Point", body:"Stories convince only when they feel inevitable in hindsight. This scene provides the evidence — the real, specific detail that anchors the narrative in lived experience rather than theory." },
+      { heading:"The Proof Point", body:"Stories convince only when they feel inevitable in hindsight. This scene provides the evidence: the real, specific detail that anchors the narrative in lived experience rather than theory." },
       { heading:"The Call to Action", body:"The most powerful endings don't tell the audience what to do. They make the audience want to act. This scene uses emotional resolution to transfer ownership of the story to the listener." },
     ];
 

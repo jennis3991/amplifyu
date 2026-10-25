@@ -373,7 +373,7 @@ strokeWidth="1.4"/></svg>
                     </div>
                     <span 
 style={{fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:1.5}}>Day 
-{lockedPreview.day} — Coming up</span>
+{lockedPreview.day} · Coming up</span>
                   </div>
                   <h2 
 style={{fontFamily:T.serif,fontSize:24,fontWeight:700,color:T2.text,lineHeight:1.2,margin:0}}>{lockedPreview.title}</h2>
@@ -420,7 +420,7 @@ strokeLinecap="round"/></svg>
                 <p 
 style={{fontSize:12,color:"rgba(255,255,255,0.65)",lineHeight:1.5,margin:0}}>
                   Complete Day {lockedPreview.day - 1} to unlock this 
-session. Keep going — you're building something that lasts.
+session. Keep going, you're building something that lasts.
                 </p>
               </div>
 

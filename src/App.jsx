@@ -4,7 +4,6 @@ import { applyUpdate } from "./pwa.js";
 import { T } from "./theme.js";
 import { LESSONS, ROLES } from "./data.js";
 import { useIsDesktop, useOnlineStatus, getStreak, ls, lsSet, getPieceInfo } from "./utils.js";
-import { SpeechTest } from "./screens/SpeechTest.jsx";
 import { SessionView } from "./screens/SessionView.jsx";
 import { HomeScreen } from "./screens/HomeScreen.jsx";
 import { SessionsScreen } from "./screens/SessionsScreen.jsx";
@@ -18,7 +17,6 @@ import { Onboarding } from "./screens/Onboarding.jsx";
 import { FloatingNav, TabBar } from "./components/NavComponents.jsx";
 import { Celebrate } from "./components/Confetti.jsx";
 import { AccessGate } from "./components/AccessGate.jsx";
-import { Paywall } from "./components/Paywall.jsx";
 
 // ── UpdateBanner ─────────────────────────────────────────────────────────────
 // Listens for 'sw-update-available' and renders a slim fixed bottom banner.
@@ -60,7 +58,7 @@ function UpdateBanner() {
       whiteSpace: "nowrap",
       maxWidth: "calc(100vw - 32px)",
     }}>
-      <span style={{ flex: 1 }}>Updated in the background — refresh to see it now</span>
+      <span style={{ flex: 1 }}>Updated in the background. Refresh to see it now</span>
       <button
         onClick={() => { applyUpdate(reg); window.location.reload(); }}
         style={{
@@ -129,7 +127,7 @@ function OfflineBanner() {
       maxWidth: "calc(100vw - 32px)",
       textAlign: "center",
     }}>
-      You're offline — lessons still work, but AI coaching needs a connection
+      You're offline. Lessons still work, but AI coaching needs a connection
     </div>
   );
 }
@@ -275,15 +273,6 @@ lsSet("au1_dark",d); }
   } : {};
 
   if (!authed) return <AccessGate onSuccess={() => setAuthed(true)} />;
-
-  // Speech test route — bypass all app state
-  if (window.location.pathname === '/speech-test') return <SpeechTest />;
-
-  // Paywall test route — bypass all app state, for manually previewing the
-  // Day 2 Simulation paywall before the real entitlement gate is wired up.
-  if (window.location.pathname === '/paywall-test') {
-    return <Paywall onClose={() => { window.location.href = '/'; }} />;
-  }
 
   // Reflection screen — check FIRST, before the !boarded onboarding check
   if (reflectionData) {

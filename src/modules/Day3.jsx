@@ -31,7 +31,7 @@ function q1Observation(text) {
   if (!text || text === '[No speech detected]') return "No response captured. On to the next one.";
   const n = countFillers(text);
   if (n === 0) return "No filler words in that one.";
-  if (n === 1) return "Just one filler word slipped in — barely noticeable.";
+  if (n === 1) return "Just one filler word slipped in, barely noticeable.";
   if (n <= 3) return `${n} filler words crept in there.`;
   return `${n} filler words in that one. Notice it, don't fight it.`;
 }
@@ -105,7 +105,7 @@ export function D3SimFeedback({input}) {
       </button>
       {error && (
         <p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#B05C4A",margin:0}}>
-          {online?"Something went wrong scoring that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}
+          {online?"Something went wrong scoring that. Try again.":"You're offline. This needs a connection, so try again once you're back online."}
         </p>
       )}
       {result && (
@@ -127,7 +127,7 @@ export function D3MobileSim() {
   const [err,setErr]=useState(false);
   const online = useOnlineStatus();
   async function go(){if(!v.trim())return;setL(true);setErr(false);if(!online){setErr(true);setL(false);return;}try{const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5",max_tokens:300,messages:[{role:"user",content:`Score for filler-free speech (1-10). Never use em dashes in your response; use a comma or hyphen instead. Return JSON: {score:number,fillerCount:number,rewrite:"cleaner version"}\n\n"${v}"`}]})});const d=await res.json();const raw=(d.content||[]).map(b=>b.text||"").join("").trim();const m=raw.match(/\{[\s\S]*\}/);if(!m)throw new Error();setR(JSON.parse(m[0]));}catch{setErr(true);}setL(false);}
-  return(<div><textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Write your 60-second response with no fillers…" style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:100,marginBottom:8,boxSizing:"border-box"}}/><button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:(r||err)?10:0}}>{l?"Analysing…":"Get Filler Score →"}</button>{err&&<p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#B05C4A",margin:0}}>{online?"Something went wrong scoring that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}</p>}{r&&<div style={{display:"flex",flexDirection:"column",gap:8}}><div style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"#EDE8DF",borderRadius:3}}><span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:36,fontWeight:600,color:"#2C2416",lineHeight:1}}>{r.score}<span style={{fontSize:16,color:"#8A9E84"}}>/10</span></span><span style={{fontSize:11,color:"#6B5E44",fontFamily:"'Inter',sans-serif"}}>{r.fillerCount} fillers detected</span></div>{r.rewrite&&<div style={{padding:"10px 12px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>{r.rewrite}</p></div>}</div>}</div>);
+  return(<div><textarea value={v} onChange={e=>setV(e.target.value)} placeholder="Write your 60-second response with no fillers…" style={{width:"100%",borderRadius:3,border:"0.5px solid #DDD5C4",padding:"10px 14px",fontSize:14,fontFamily:"'Inter',sans-serif",resize:"none",height:100,marginBottom:8,boxSizing:"border-box"}}/><button onClick={go} disabled={l||!v.trim()} style={{width:"100%",padding:"10px",borderRadius:3,border:"none",background:l||!v.trim()?"#DDD5C4":"#2C2416",color:l||!v.trim()?"#6B5E44":"#F7F3EC",fontSize:12,fontWeight:600,cursor:l||!v.trim()?"not-allowed":"pointer",fontFamily:"'Inter',sans-serif",marginBottom:(r||err)?10:0}}>{l?"Analysing…":"Get Filler Score →"}</button>{err&&<p style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:"#B05C4A",margin:0}}>{online?"Something went wrong scoring that. Try again.":"You're offline. This needs a connection, so try again once you're back online."}</p>}{r&&<div style={{display:"flex",flexDirection:"column",gap:8}}><div style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"#EDE8DF",borderRadius:3}}><span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:36,fontWeight:600,color:"#2C2416",lineHeight:1}}>{r.score}<span style={{fontSize:16,color:"#8A9E84"}}>/10</span></span><span style={{fontSize:11,color:"#6B5E44",fontFamily:"'Inter',sans-serif"}}>{r.fillerCount} fillers detected</span></div>{r.rewrite&&<div style={{padding:"10px 12px",background:"rgba(138,158,132,0.08)",borderRadius:3,borderLeft:"2px solid #8A9E84"}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:"#2C2416",margin:0,lineHeight:1.6}}>{r.rewrite}</p></div>}</div>}</div>);
 }
 
 // ─── D3 Practice Widget — The Pause Drill ────────────────────────────────────

@@ -857,7 +857,7 @@ export function D6SimWidget({T, T2, isDesktop, onRecordingChange}) {
           <div style={{display:"flex",flexDirection:"column",gap:6}}>
             {(p.concerns||[]).map((c,i)=>(
               <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"10px 12px",background:T2.bg,borderRadius:4,border:"0.5px solid "+T2.border}}>
-                <span style={{color:T.gold,fontSize:12,flexShrink:0,marginTop:1}}>—</span>
+                <span style={{color:T.gold,fontSize:12,flexShrink:0,marginTop:1}}>·</span>
                 <span style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text,lineHeight:1.5}}>{c}</span>
               </div>
             ))}

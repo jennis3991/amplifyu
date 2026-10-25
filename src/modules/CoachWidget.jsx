@@ -16,7 +16,7 @@ export function CoachWidget({ lesson, scenario }) {
     if (!txt || busy) return;
     setBusy(true); setCoaching(null); setErr(null);
     if (!online) {
-      setErr("You're offline — this needs a connection. Try again once you're back online.");
+      setErr("You're offline. This needs a connection, so try again once you're back online.");
       setBusy(false);
       return;
     }
@@ -42,7 +42,7 @@ export function CoachWidget({ lesson, scenario }) {
       if (!result.rephrased || !result.insight) throw new Error("incomplete");
       setCoaching({ rephrased: result.rephrased, insight: result.insight });
     } catch (e) {
-      setErr(online ? "Your coach is unavailable right now. Try again in a moment." : "You're offline — this needs a connection. Try again once you're back online.");
+      setErr(online ? "Your coach is unavailable right now. Try again in a moment." : "You're offline. This needs a connection, so try again once you're back online.");
     } finally {
       setBusy(false);
     }

@@ -30,12 +30,23 @@ window.fetch = function (url, opts = {}) {
 class ErrorBoundary extends Component {
   constructor(props) { super(props); this.state = { err: null }; }
   static getDerivedStateFromError(err) { return { err }; }
-  componentDidCatch(err, info) { console.error("ErrorBoundary caught:", err, info); }
+  componentDidCatch(err, info) {
+    console.error("ErrorBoundary caught:", err, info);
+    // LaunchMark normally removes the static boot logo, but a crash replaces
+    // it too, which would leave the logo covering this message for good.
+    document.getElementById("au-boot-mark")?.remove();
+    document.documentElement.style.background = "";
+  }
   render() {
     if (this.state.err) {
+      // A calm, branded fallback instead of the raw error and stack trace.
+      // The details still go to the console via componentDidCatch.
       return (
-        <div style={{ padding: 24, fontFamily: "monospace", color: "red", background: "white", whiteSpace: "pre-wrap", position: "fixed", inset: 0, overflow: "auto", zIndex: 9999 }}>
-          <strong>Runtime error:</strong>{"\n"}{String(this.state.err)}{"\n\n"}{this.state.err?.stack}
+        <div onClick={() => window.location.reload()} role="button" style={{ position: "fixed", inset: 0, zIndex: 10001, background: "#F7F3EC", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px", textAlign: "center", cursor: "pointer", fontFamily: "'Inter',-apple-system,sans-serif" }}>
+          <img src="/logo-mark.png" alt="" style={{ width: 44, height: 44, objectFit: "cover", borderRadius: 10, marginBottom: 22, background: "#0D0B08" }} />
+          <div style={{ fontFamily: "'Cormorant Garamond','Georgia',serif", fontSize: 28, fontWeight: 500, color: "#2C2416", marginBottom: 8 }}>Something went wrong.</div>
+          <div style={{ fontSize: 15, color: "#6B5E44", marginBottom: 24 }}>Your progress is saved on this device.</div>
+          <div style={{ padding: "13px 28px", borderRadius: 6, background: "#2C2416", color: "#F7F3EC", fontSize: 14, fontWeight: 600 }}>Tap to reload</div>
         </div>
       );
     }

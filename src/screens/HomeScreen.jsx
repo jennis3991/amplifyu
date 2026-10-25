@@ -157,7 +157,7 @@ Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});
     if (finished) return null;
     if (streak >= 5) return "At this pace, you\'ll finish by " + 
 finishDate + ".";
-    if (streak >= 2) return "Keep going — on track to finish by " + 
+    if (streak >= 2) return "Keep going, on track to finish by " + 
 finishDate + ".";
     if (done.length === 0) return "One session a day gets you there by " + 
 finishDate + ".";
@@ -186,7 +186,7 @@ finishDate + ".";
           {savedWorkCount>0 ? `${savedWorkCount} saved result${savedWorkCount!==1?"s":""} across your sessions` : "Nothing saved yet"}
         </div>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:T2.text3,lineHeight:1.5,margin:0}}>
-          {savedWorkCount>0 ? "Every day's saved work — Rehearsal, Simulation and results — lives in one place." : "Results you save from Day 1, as well as 2, 8, and 11's Simulation and Rehearsal steps will collect here."}
+          {savedWorkCount>0 ? "Every day's saved work, from Rehearsal and Simulation to results, lives in one place." : "Results you save from Day 1, as well as 2, 8, and 11's Simulation and Rehearsal steps will collect here."}
         </p>
       </div>
       <button onClick={()=>onOpenTab && onOpenTab("mywork")} style={{padding:isDesktop?"11px 20px":"10px 16px",borderRadius:6,border:"none",background:T.ink,color:T.bg,fontFamily:T.sans,fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>
@@ -224,7 +224,7 @@ finishDate + ".";
           </div>
         </div>
       </div>
-      {todayDone && <div style={{marginTop:10,padding:"12px 16px",borderRadius:6,background:T2.greenBg,border:"1px solid rgba(42,94,63,0.3)",color:T.green,fontSize:13,fontWeight:500}}>Session complete today — well done.</div>}
+      {todayDone && <div style={{marginTop:10,padding:"12px 16px",borderRadius:6,background:T2.greenBg,border:"1px solid rgba(42,94,63,0.3)",color:T.green,fontSize:13,fontWeight:500}}>Session complete today. Well done.</div>}
     </>
   );
   const ProgressCard = () => (

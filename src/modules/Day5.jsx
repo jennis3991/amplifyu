@@ -428,7 +428,7 @@ Return only valid JSON with all fields present.`,
   function statusIndicator(strength) {
     if (strength === 'strong' || strength === 'present') return <span style={{color:'rgba(82,112,96,0.9)', fontSize:16, fontWeight:700}}>✓</span>;
     if (strength === 'weak') return <span style={{color:T.gold, fontSize:14, fontWeight:700}}>△</span>;
-    return <span style={{color:T2.text3, fontSize:14}}>—</span>;
+    return <span style={{color:T2.text3, fontSize:14}}>–</span>;
   }
 
   const leftPanel = (

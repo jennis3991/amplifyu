@@ -55,7 +55,7 @@ export function D10SimFeedback({input, scenario}) {
       {input.trim().length > 0 && !result && (
         <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 16px",background:T.surface,borderRadius:4,border:"0.5px solid "+T.border,marginBottom:12}}>
           <span style={{fontFamily:T.sans,fontSize:13,color:rank.color,fontWeight:600}}>{rank.badge} {rank.label}</span>
-          <span style={{fontFamily:T.sans,fontSize:12,color:T.text3}}>{wordCount} words — {rank.note}</span>
+          <span style={{fontFamily:T.sans,fontSize:12,color:T.text3}}>{wordCount} words · {rank.note}</span>
         </div>
       )}
       <button onClick={analyse} disabled={loading||!input.trim()} style={{width:"100%",padding:"14px",borderRadius:3,border:"none",background:loading||!input.trim()?"#DDD5C4":T.ink,color:loading||!input.trim()?"#6B5E44":"#F7F3EC",fontSize:14,fontWeight:600,cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:T.sans,marginBottom:(result||error)?20:0}}>
@@ -198,29 +198,29 @@ export function explainD10Score(dim, score) {
   const tier = score>=80 ? 'high' : score>=65 ? 'mid' : 'low';
   const TEXT = {
     Clarity: {
-      high: "Your point came through immediately — no one had to work to understand what you meant.",
+      high: "Your point came through immediately. No one had to work to understand what you meant.",
       mid: "Your point mostly landed, but a clearer opening line would remove any doubt about what you meant.",
-      low: "Your point got lost in the response — lead with a single, unambiguous sentence that states your position.",
+      low: "Your point got lost in the response. Lead with a single, unambiguous sentence that states your position.",
     },
     Structure: {
-      high: "You built your answer in a clear order — the listener could follow your logic from start to finish.",
-      mid: "There was some structure here, but tightening the order — point, then evidence — would make it land harder.",
-      low: "Your answer didn't follow a clear order — decide your point first, then build the evidence around it.",
+      high: "You built your answer in a clear order. The listener could follow your logic from start to finish.",
+      mid: "There was some structure here, but tightening the order (point, then evidence) would make it land harder.",
+      low: "Your answer didn't follow a clear order. Decide your point first, then build the evidence around it.",
     },
     Confidence: {
-      high: "You spoke with real conviction — no hedging, no undercutting your own answer.",
-      mid: "You mostly sounded sure of yourself, but a few hedges softened the impact — own the statement fully.",
-      low: "Hedging language undercut your answer — say what you mean without qualifying it away.",
+      high: "You spoke with real conviction: no hedging, no undercutting your own answer.",
+      mid: "You mostly sounded sure of yourself, but a few hedges softened the impact. Own the statement fully.",
+      low: "Hedging language undercut your answer. Say what you mean without qualifying it away.",
     },
     Brevity: {
-      high: "You said exactly what needed saying and stopped — nothing wasted.",
-      mid: "Your answer ran a little long — cut anything that isn't doing work for your main point.",
-      low: "Your answer ran long — aim to make your point in half the time, then stop.",
+      high: "You said exactly what needed saying and stopped. Nothing wasted.",
+      mid: "Your answer ran a little long. Cut anything that isn't doing work for your main point.",
+      low: "Your answer ran long. Aim to make your point in half the time, then stop.",
     },
     Impact: {
-      high: "This answer would land in the room — memorable, specific, and hard to argue with.",
+      high: "This answer would land in the room: memorable, specific, and hard to argue with.",
       mid: "This answer would register, but sharpening the result you're claiming would make it unforgettable.",
-      low: "This answer wouldn't stick in the room — anchor it to a specific, memorable outcome.",
+      low: "This answer wouldn't stick in the room. Anchor it to a specific, memorable outcome.",
     },
   };
   return TEXT[dim]?.[tier] || '';

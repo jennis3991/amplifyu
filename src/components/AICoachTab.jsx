@@ -16,7 +16,7 @@ const TOPIC_PROMPTS = {
     "What makes a team truly effective?",
     "Describe the best leader you've worked with.",
     "Tell us about a difficult decision you made.",
-    "What frustrates you most at work — and why?",
+    "What frustrates you most at work, and why?",
     "Describe a project you're proud of.",
     "How do you handle disagreement with a colleague?",
     "What does success look like in your role?",
@@ -408,9 +408,9 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
       <div style={{ background: '#f7f5f0', borderRadius: 10, padding: '18px 20px', marginBottom: 20 }}>
         {[
           ['Choose a topic',       'Pick a prompt that feels relevant right now.'],
-          ['Speak naturally',      'Record yourself — no editing, no pressure.'],
+          ['Speak naturally',      'Record yourself. No editing, no pressure.'],
           ['Get your profile',     'Clarity, structure, brevity, simplicity, focus.'],
-          ['Hear it back',         'See the moments that stood out — good and not yet.'],
+          ['Hear it back',         'See the moments that stood out, good and not yet.'],
           ['Improve your score',   'One round of feedback changes everything.'],
         ].map(([title, desc], i, arr) => (
           <div key={i} style={{ display: 'flex', gap: 14, paddingBottom: i < arr.length - 1 ? 14 : 0, marginBottom: i < arr.length - 1 ? 14 : 0, borderBottom: i < arr.length - 1 ? `0.5px solid ${BORDER}` : 'none' }}>
@@ -521,12 +521,12 @@ export default function AICoachTab({ dayNumber = 1, dayTitle = '', isDesktop = f
         )}
         {err === 'transcribe' && (
           <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 8, padding: '11px 14px', marginBottom: 16, fontSize: 12, color: '#b91c1c', lineHeight: 1.5 }}>
-            We couldn't process that recording — please try again.
+            We couldn't process that recording. Please try again.
           </div>
         )}
         {err === 'api' && (
           <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 8, padding: '11px 14px', marginBottom: 16, fontSize: 12, color: '#b91c1c', lineHeight: 1.5, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-            <span>Your coach is taking a moment — please try again.</span>
+            <span>Your coach is taking a moment. Please try again.</span>
             <button onClick={() => { setErr(null); setStep('analysing'); callCoach(transcript, recDur); }} style={{ background: 'none', border: 'none', color: SAGE, fontWeight: 700, cursor: 'pointer', fontSize: 12, flexShrink: 0 }}>Retry</button>
           </div>
         )}

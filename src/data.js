@@ -581,7 +581,7 @@ export const NT_STORY_TYPES = [
     questions: [
       { key: "q1", q: "What's the core idea or change you're proposing?", ph: "A new approach, a product, a strategy shift…" },
       { key: "q2", q: "What's at stake if this doesn't happen?", ph: "The risk, the missed opportunity, the cost of inaction…" },
-      { key: "q3", q: "What's the opening hook — what will grab attention immediately?", ph: "A surprising fact, a vivid scenario, a bold statement…" },
+      { key: "q3", q: "What's the opening hook? What will grab attention immediately?", ph: "A surprising fact, a vivid scenario, a bold statement…" },
       { key: "q4", q: "What transformation or outcome are you offering?", ph: "What will be different when they say yes?…" },
       { key: "q5", q: "What action do you want the audience to take?", ph: "Approve, invest, adopt, champion…" },
     ],
@@ -594,7 +594,7 @@ export const NT_STORY_TYPES = [
       { key: "q2", q: "What's the tension or conflict?", ph: "The behaviour, the gap, the unspoken issue…" },
       { key: "q3", q: "What emotion is your audience feeling right now?", ph: "Defensive, uncertain, disengaged, anxious…" },
       { key: "q4", q: "What outcome are you hoping for?", ph: "A behaviour change, mutual understanding, a decision…" },
-      { key: "q5", q: "What's the human element — what do they care about?", ph: "Their reputation, their team, their growth…" },
+      { key: "q5", q: "What's the human element? What do they care about?", ph: "Their reputation, their team, their growth…" },
     ],
   },
   {
@@ -603,7 +603,7 @@ export const NT_STORY_TYPES = [
     questions: [
       { key: "q1", q: "What change are you leading people through?", ph: "A restructure, a new direction, a cultural shift…" },
       { key: "q2", q: "What resistance or fear might they be feeling?", ph: "Job security, loss of autonomy, uncertainty…" },
-      { key: "q3", q: "What's the vision — where are you taking them?", ph: "The better future, the shared mission…" },
+      { key: "q3", q: "What's the vision? Where are you taking them?", ph: "The better future, the shared mission…" },
       { key: "q4", q: "What's the first concrete step you want them to take?", ph: "A meeting, a decision, a new behaviour…" },
       { key: "q5", q: "What story humanizes this message?", ph: "A moment that captures why this matters…" },
     ],
@@ -626,7 +626,7 @@ export const NT_STORY_TYPES = [
       { key: "q1", q: "What's the key message or headline?", ph: "The one thing they must leave knowing…" },
       { key: "q2", q: "What's the most important thing the audience needs to know?", ph: "Progress, risk, decision needed…" },
       { key: "q3", q: "What's changed or what's new since last time?", ph: "Developments, surprises, course corrections…" },
-      { key: "q4", q: "What's at stake — why does this matter now?", ph: "Deadline, consequence, opportunity window…" },
+      { key: "q4", q: "What's at stake? Why does this matter now?", ph: "Deadline, consequence, opportunity window…" },
       { key: "q5", q: "What action or decision does this inform?", ph: "What do you need from them?…" },
     ],
   },
@@ -636,7 +636,7 @@ export const NT_STORY_TYPES = [
     questions: [
       { key: "q1", q: "What problem does your solution solve?", ph: "The specific pain point you remove…" },
       { key: "q2", q: "What's the pain your audience is experiencing right now?", ph: "Inefficiency, lost revenue, missed opportunity…" },
-      { key: "q3", q: "What transformation do you offer?", ph: "Before and after — what changes?…" },
+      { key: "q3", q: "What transformation do you offer?", ph: "Before and after: what changes?…" },
       { key: "q4", q: "What makes your approach different or better?", ph: "Your unique mechanism, proof, experience…" },
       { key: "q5", q: "What's the call to action?", ph: "A meeting, a trial, a decision…" },
     ],

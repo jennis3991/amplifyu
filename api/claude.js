@@ -105,6 +105,17 @@ function isRateLimited(req) {
   return bucket.count > RATE_LIMIT_MAX;
 }
 
+// AmplifyU copy never uses em dashes, and not every prompt can stop the
+// model from writing them, so they're swapped for commas in every reply
+// before it reaches the app (web and every iOS build). A dash that opens a
+// line (a list bullet) is dropped rather than turned into a comma.
+function stripEmDashes(text) {
+  return text
+    .replace(/(^|\n)[ \t]*—[ \t]*/g, '$1')
+    .replace(/[ \t]*—[ \t]*/g, ', ')
+    .replace(/,[ \t]*,/g, ',');
+}
+
 export default async function handler(req, res) {
   const origin = req.headers.origin;
   res.setHeader('Vary', 'Origin');
@@ -135,6 +146,11 @@ export default async function handler(req, res) {
       })
     });
     const data = await response.json();
+    if (Array.isArray(data?.content)) {
+      for (const block of data.content) {
+        if (block?.type === 'text' && typeof block.text === 'string') block.text = stripEmDashes(block.text);
+      }
+    }
     return res.status(response.status).json(data);
   } catch (err) {
     return res.status(500).json({ error: err.message });

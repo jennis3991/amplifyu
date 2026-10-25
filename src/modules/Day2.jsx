@@ -1056,31 +1056,31 @@ function _unused_D2SimScenarios() {
      starters:["I believe this is worth attention because…","The opportunity here is…","What makes this compelling is…"],
      hardPersona:"sceptical CEO who has heard many pitches before",
      defaultScript:{topic:"AI Productivity Assistant",context:"Your company wastes hours each week searching for documents, notes, and updates across disconnected systems.",
-       beginner:'"I believe we have an opportunity to significantly improve internal productivity. Teams currently lose valuable time searching for information across multiple systems. A lightweight AI assistant could centralise access, reduce friction, and save hours each week. The investment is modest. The return — in time, focus, and team performance — is measurable from week one."',
+       beginner:'"I believe we have an opportunity to significantly improve internal productivity. Teams currently lose valuable time searching for information across multiple systems. A lightweight AI assistant could centralise access, reduce friction, and save hours each week. The investment is modest. The return, in time, focus and team performance, is measurable from week one."',
        intermediate:["The problem: information is scattered across systems","The opportunity: a centralised AI assistant","The impact: measurable time savings from week one","Ask: 30 minutes to walk you through the proposal"]}},
     {id:1,label:"Deliver Difficult Feedback",sub:"A direct report has been underperforming.",goal:"Warmth + calm",
-     aiOpener:"I appreciate you taking the time. I have to say — I didn't expect this conversation.",
+     aiOpener:"I appreciate you taking the time. I have to say, I didn't expect this conversation.",
      followUps:["That's disappointing to hear.","What could I have done differently?","Is this about my future here?"],
      starters:["I want to start by saying I value what you bring…","This conversation is important because I care about your growth…","I want to be honest, and I want to do it with respect…"],
      hardPersona:"defensive and emotional team member",
      defaultScript:{topic:"Missed Deadlines",context:"Deadlines have slipped three times in the past month. You need to address it directly but empathetically.",
-       beginner:'"I wanted to speak with you because I\'ve noticed deadlines have slipped over the past few weeks, and I want to understand what\'s going on so we can address it together. I\'m not here to assign blame — I want to understand what\'s getting in the way, and how I can support you better."',
+       beginner:'"I wanted to speak with you because I\'ve noticed deadlines have slipped over the past few weeks, and I want to understand what\'s going on so we can address it together. I\'m not here to assign blame. I want to understand what\'s getting in the way, and how I can support you better."',
        intermediate:["Open: you value them and this is a supportive conversation","The pattern: three missed deadlines, what you've observed","The question: what's getting in the way?","The offer: what support looks like from your side"]}},
     {id:2,label:"Motivate Your Team",sub:"The team has had a tough quarter.",goal:"Energy + conviction",
      aiOpener:"Honestly, morale has been low. I'm not sure words are going to fix this.",
      followUps:["We've heard this before.","What's actually going to be different?","How do you expect us to stay motivated?"],
-     starters:["What we've built together matters, and here's why…","I want to be honest about where we are — and where we're going…","The work you've done this quarter has not gone unnoticed…"],
+     starters:["What we've built together matters, and here's why…","I want to be honest about where we are, and where we're going…","The work you've done this quarter has not gone unnoticed…"],
      hardPersona:"disengaged team who have lost faith in leadership",
      defaultScript:{topic:"Rallying the Team",context:"Q3 has been brutal. Missed targets, team fatigue, pressure from above. You need to re-energise without sounding hollow.",
-       beginner:'"We\'ve made meaningful progress, and I know this quarter has taken it out of us. But I want to be direct with you: the next phase will require focus and energy. I believe we\'re capable of delivering something exceptional — and I\'m committed to making sure you have everything you need to do your best work."',
-       intermediate:["Acknowledge the difficulty honestly — don't minimise it","State what's still true: the work matters, the team matters","Name what the next phase requires","Commit to what you'll do differently as their leader"]}},
+       beginner:'"We\'ve made meaningful progress, and I know this quarter has taken it out of us. But I want to be direct with you: the next phase will require focus and energy. I believe we\'re capable of delivering something exceptional, and I\'m committed to making sure you have everything you need to do your best work."',
+       intermediate:["Acknowledge the difficulty honestly. Don't minimise it","State what's still true: the work matters, the team matters","Name what the next phase requires","Commit to what you'll do differently as their leader"]}},
     {id:3,label:"Interview Question",sub:"Senior panel interview for a leadership role.",goal:"Executive presence",
-     aiOpener:"Tell me — in your own words — what makes you the right person for this role?",
+     aiOpener:"Tell me, in your own words, what makes you the right person for this role?",
      followUps:["Tell me about a time you led through uncertainty.","What's your biggest leadership failure?","How do you handle conflict at exec level?"],
      starters:["What I bring to this role is…","Throughout my career, the thread has always been…","What sets me apart is…"],
      hardPersona:"hostile interviewer testing under pressure",
      defaultScript:{topic:"Leadership Through Uncertainty",context:"The interviewer asks: 'Tell me about a time you led through uncertainty.'",
-       beginner:'"Early in my career, I was asked to lead a programme that had already failed once. The team was demoralised, the brief was unclear, and senior stakeholders had lost confidence. I started by being honest — I didn\'t have all the answers. What I did have was a process. I focused the team on what we could control, created clarity where there wasn\'t any, and rebuilt confidence one small win at a time. We delivered. What I learned is that leadership in uncertainty isn\'t about having the answers. It\'s about creating enough stability for others to do their best work."',
+       beginner:'"Early in my career, I was asked to lead a programme that had already failed once. The team was demoralised, the brief was unclear, and senior stakeholders had lost confidence. I started by being honest: I didn\'t have all the answers. What I did have was a process. I focused the team on what we could control, created clarity where there wasn\'t any, and rebuilt confidence one small win at a time. We delivered. What I learned is that leadership in uncertainty isn\'t about having the answers. It\'s about creating enough stability for others to do their best work."',
        intermediate:["Set the scene: what made it uncertain","What you chose to do and why","The outcome","The lesson you carried forward"]}},
   ];
 
@@ -1183,7 +1183,7 @@ function _unused_D2SimScenarios() {
           </div>
           <div onClick={()=>setMode('own')} style={{background:mode==='own'?"rgba(138,158,132,0.10)":T2.surface,border:`1px solid ${mode==='own'?"rgba(138,158,132,0.5)":T2.border}`,borderRadius:8,padding:isDesktop?"20px 24px":"16px 18px",cursor:"pointer",transition:"all 0.2s"}}>
             <div style={{fontFamily:T.serif,fontSize:isDesktop?17:15,fontWeight:600,color:cream,marginBottom:6}}>Practise With My Own Response</div>
-            <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:creamDim,marginBottom:8}}>Use your own words — real content from your work or improvise freely.</div>
+            <div style={{fontFamily:T.sans,fontSize:isDesktop?13:12,color:creamDim,marginBottom:8}}>Use your own words: real content from your work, or improvise freely.</div>
             <div style={{fontFamily:T.sans,fontSize:11,color:T.gold}}>Best for: real-world rehearsal · advanced practice</div>
           </div>
         </div>

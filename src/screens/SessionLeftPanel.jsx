@@ -63,7 +63,7 @@ export function SessionLeftPanel({
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at 30% 30%, rgba(138,158,132,0.06) 0%, transparent 60%)", pointerEvents:"none" }}/>
         <div style={{ position:"relative", zIndex:2, animation:"fadeUp 0.6s ease both" }}>
           <div style={{ ...LP_LABEL, color:T.gold, marginBottom:16 }}>The Miller's Law Challenge™</div>
-          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Feel why short sentences win — in your own brain.</p>
+          <p style={{ ...LP_HEADING, fontSize:"clamp(28px,3vw,42px)", maxWidth:360, lineHeight:1.2, marginBottom:16 }}>Feel why short sentences win, in your own brain.</p>
           <div style={{ width:40, height:1.5, background:"rgba(138,158,132,0.5)" }}/>
         </div>
       </div>
@@ -370,7 +370,7 @@ export function SessionLeftPanel({
     if (step === "Theory") return (
       <div style={{ height:"100%", position:"relative", overflow:"hidden", display:"flex", alignItems:"center", justifyContent:"center" }}>
         <img loading="lazy" src="/d8-theory.jpg" alt="" style={{ position:"absolute", inset:"-20px", width:"calc(100% + 40px)", height:"calc(100% + 40px)", objectFit:"cover", filter:"blur(24px) brightness(0.4)", pointerEvents:"none" }}/>
-        <img loading="lazy" src="/d8-theory.jpg" alt="Words and Images — Dual Coding" style={{ position:"relative", zIndex:1, width:"100%", height:"100%", objectFit:"contain", display:"block", transform:"scale(1.5)" }}/>
+        <img loading="lazy" src="/d8-theory.jpg" alt="Words and Images: Dual Coding" style={{ position:"relative", zIndex:1, width:"100%", height:"100%", objectFit:"contain", display:"block", transform:"scale(1.5)" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(10,8,5,0.5) 0%, transparent 40%)", zIndex:2, pointerEvents:"none" }}/>
       </div>
     );

@@ -77,7 +77,7 @@ export function QuickPrepFlow({ onBack, isDesktop=false }) {
             <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M11 3L5 9l6 6" stroke={TK.onDark} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
             <span style={{fontFamily:T.sans,fontSize:13,fontWeight:500,color:TK.onDark}}>Exit</span>
           </button>
-          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:TK.sage,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Pre-Meeting Ritual — Step {step+1} of {QUICK_PREP.length}</div>
+          <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:TK.sage,textTransform:"uppercase",letterSpacing:"2px",marginBottom:10}}>Pre-Meeting Ritual · Step {step+1} of {QUICK_PREP.length}</div>
           <div style={{display:"flex",gap:5}}>
             {QUICK_PREP.map((_,i) => <div key={i} style={{flex:1,height:2,borderRadius:1,background:i<=step?TK.sage:"rgba(248,246,241,0.15)"}}/>)}
           </div>

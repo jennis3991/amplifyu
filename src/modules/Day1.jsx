@@ -94,7 +94,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
        'Gravity is a universal attractive interaction between physical bodies.',
      ],
      correct:1,
-     feedback:"Simple doesn't mean simplistic — it means understandable. Option B creates a picture. That's the Feynman test."},
+     feedback:"Simple doesn't mean simplistic. It means understandable. Option B creates a picture. That's the Feynman test."},
     {id:2, type:'cardsort', label:'Round 2', name:'The Feynman Formula', pts:25,
      task:"Ella is explaining the Moon's phases to her nephew. Sort each of her statements into the right step.",
      cards:[
@@ -104,12 +104,12 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
        {text:"Ella turns her explanation into a short, memorable summary.", bucket:'refine'},
      ],
      buckets:['understand','explain','simplify','refine'],
-     feedback:"The ability to explain something simply is one of the clearest signs of mastery. The Feynman Technique helps you move beyond memorisation and build real understanding. Because when you can make a complex idea feel simple, people don't just hear you — they understand you."},
+     feedback:"The ability to explain something simply is one of the clearest signs of mastery. The Feynman Technique helps you move beyond memorisation and build real understanding. Because when you can make a complex idea feel simple, people don't just hear you, they understand you."},
     {id:3, type:'mcq', label:'Round 3', name:"What's Missing?", pts:25,
      task:"What's missing from this explanation?",
      statement:'"Exercise makes you healthier."',
      options:[
-       "Nothing — it's clear.",
+       "Nothing, it's clear.",
        "It explains the result, but not why.",
        "It needs bigger words.",
      ],
@@ -378,15 +378,15 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
   if (phase === 'final') {
     const badge = getBadge(pct);
     const headline = pct>=85?"Your explanation instinct is sharp.":pct>=70?"You understand the principle. Now make it a habit.":"Every rep builds the instinct.";
-    const subtitle = pct>=85?"You think like a great teacher — clear, vivid, audience-first.":pct>=70?"Good instincts. Keep simplifying until it feels effortless.":"Each attempt strengthens your clarity muscle.";
-    const coachNote = pct>=85?"You consistently chose clarity over complexity — that's the mark of a brilliant communicator. Keep using the Feynman test before every message: if a 10-year-old couldn't follow it, simplify further.":pct>=70?"Good foundation. The ordering round showed the Feynman loop in action: understand, explain, find the gap, refine. Keep asking 'what's the simplest version?' before every explanation.":"Clarity is a learned skill, not a talent. The best communicators got there through exactly this kind of deliberate practice. Every explanation you simplify builds the instinct.";
+    const subtitle = pct>=85?"You think like a great teacher: clear, vivid, audience-first.":pct>=70?"Good instincts. Keep simplifying until it feels effortless.":"Each attempt strengthens your clarity muscle.";
+    const coachNote = pct>=85?"You consistently chose clarity over complexity. That's the mark of a brilliant communicator. Keep using the Feynman test before every message: if a 10-year-old couldn't follow it, simplify further.":pct>=70?"Good foundation. The ordering round showed the Feynman loop in action: understand, explain, find the gap, refine. Keep asking 'what's the simplest version?' before every explanation.":"Clarity is a learned skill, not a talent. The best communicators got there through exactly this kind of deliberate practice. Every explanation you simplify builds the instinct.";
     const FOCUS_CHIPS = ["Ask: could a 10-year-old follow this?","Find the one key idea","Cut every word that doesn't earn its place"];
     return (
       <div style={{display:"flex",flexDirection:"column",gap:isDesktop?14:12}}>
         {/* HERO */}
         <div style={{background:"#0A0804",borderRadius:8,padding:isDesktop?"28px 32px":"22px 20px",border:"0.5px solid rgba(138,158,132,0.15)",position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",top:-40,right:-40,width:160,height:160,borderRadius:"50%",background:"radial-gradient(circle,rgba(138,158,132,0.07) 0%,transparent 70%)",pointerEvents:"none"}}/>
-          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>The Feynman Challenge™ — Your Results</div>
+          <div style={{fontFamily:T.sans,fontSize:9,fontWeight:700,color:"rgba(138,158,132,0.7)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:16}}>The Feynman Challenge™ · Your Results</div>
           <div style={{display:"flex",gap:isDesktop?32:20,alignItems:"flex-start"}}>
             <div style={{flexShrink:0}}>
               <div style={{fontFamily:T.serif,fontSize:isDesktop?80:64,fontWeight:600,color:T.gold,lineHeight:1}}>{pct}</div>
@@ -464,7 +464,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
         </div>
         <div style={cs.card}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
-            <div style={cs.label}>{round.label} — {round.name}</div>
+            <div style={cs.label}>{round.label} · {round.name}</div>
           </div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.4,marginBottom:round.statement?8:16,fontWeight:500}}>{round.task}</p>
           {round.statement && (
@@ -536,14 +536,14 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
         </div>
         {/* Task card */}
         <div style={cs.card}>
-          <div style={cs.label}>{round.label} — {round.name}</div>
+          <div style={cs.label}>{round.label} · {round.name}</div>
           <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,color:T2.text,lineHeight:1.4,margin:0,fontWeight:500}}>{round.task}</p>
         </div>
         {/* Unplaced card tray */}
         {unplaced.length > 0 && (
           <div style={{display:"flex",flexDirection:"column",gap:7}}>
             <div style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T2.text3,textTransform:"uppercase",letterSpacing:"1.5px"}}>
-              {sortSelected===null ? "Tap a card to select it" : "Card selected — tap a bucket below to place it"}
+              {sortSelected===null ? "Tap a card to select it" : "Card selected. Tap a bucket below to place it"}
             </div>
             {unplaced.map(i=>(
               <div key={i} onClick={()=>tapSortCard(i)}
@@ -579,7 +579,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
         {sortChecked && (
           <div style={{...cs.card,borderLeft:`2px solid ${allCorrect?T.gold:"rgba(176,92,74,0.5)"}`}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-              <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:allCorrect?T.gold:"#B05C4A",textTransform:"uppercase",letterSpacing:"1px"}}>{allCorrect?`Perfect — +${round.pts} points`:`${correctCount}/4 correct — +${Math.round(round.pts*(correctCount/4))} points`}</div>
+              <div style={{fontFamily:T.sans,fontSize:12,fontWeight:700,color:allCorrect?T.gold:"#B05C4A",textTransform:"uppercase",letterSpacing:"1px"}}>{allCorrect?`Perfect · +${round.pts} points`:`${correctCount}/4 correct · +${Math.round(round.pts*(correctCount/4))} points`}</div>
             </div>
             <p style={{fontFamily:T.sans,fontSize:isDesktop?14:13,color:T2.text,lineHeight:1.65,margin:0}}>{round.feedback}</p>
           </div>
@@ -601,7 +601,7 @@ export function D1ClarityChallenge({T, T2, isDesktop, onSimulation, onNavLabel, 
         <div style={cs.pts}>{totalPts} pts</div>
       </div>
       <div style={cs.card}>
-        <div style={cs.label}>{round.label} — {round.name}</div>
+        <div style={cs.label}>{round.label} · {round.name}</div>
         <p style={{fontFamily:T.serif,fontSize:isDesktop?20:17,color:T2.text,lineHeight:1.4,marginBottom:12,fontWeight:500}}>{round.task}</p>
         <p style={{fontFamily:T.sans,fontSize:isDesktop?12:11,color:T2.text4,margin:0,lineHeight:1.5}}>{round.hint}</p>
       </div>

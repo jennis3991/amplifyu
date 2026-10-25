@@ -416,7 +416,7 @@ setAmbitionSaved(true); } catch {}
             {[
               "Invisible excellence does not scale. Visibility is a communication skill.",
               "Awareness creates intentions. Repetition creates habits. Only one shows up under pressure.",
-              "Confidence is clarity — not performance.",
+              "Confidence is clarity, not performance.",
               "Mastery is conditioned, not studied.",
             ].map((q,i)=>(
               <div key={i} style={{padding:"18px 20px",background:T2.surface,border:"0.5px solid "+T2.border,borderRadius:6}}>
@@ -1682,7 +1682,7 @@ setAmbitionSaved(true); } catch {}
               </p>
             </div>
             <label style={{fontFamily:T.sans,fontSize:13,fontWeight:600,color:T2.text2,marginBottom:8,display:"block"}}>Your Turn:</label>
-            {sentInput && <p style={{fontFamily:T.sans,fontSize:12,color:wordCount(sentInput)>15?"#B05C4A":T.gold,marginBottom:8,fontWeight:500}}>{wordCount(sentInput)} words — {wordCount(sentInput)>15?"too long":"good length"}</p>}
+            {sentInput && <p style={{fontFamily:T.sans,fontSize:12,color:wordCount(sentInput)>15?"#B05C4A":T.gold,marginBottom:8,fontWeight:500}}>{wordCount(sentInput)} words · {wordCount(sentInput)>15?"too long":"good length"}</p>}
             <textarea value={sentInput} onChange={e=>setSentInput(e.target.value)} placeholder="Paste a long sentence from your work..." className="au-input" style={{height:100,marginBottom:8,resize:"vertical"}}/>
             <p style={{fontFamily:T.sans,fontSize:13,color:T2.text2,marginBottom:20,fontStyle:"italic"}}>Rule: If a sentence has more than one verb, split it.</p>
             <button onClick={splitSentence} disabled={sentLoading||!sentInput.trim()} style={{padding:"13px 28px",borderRadius:4,border:"none",background:sentLoading||!sentInput.trim()?"rgba(138,158,132,0.2)":T.ink,color:sentLoading||!sentInput.trim()?T2.text3:T.bg,fontSize:14,fontWeight:600,cursor:sentLoading||!sentInput.trim()?"not-allowed":"pointer",fontFamily:T.sans,transition:"all 0.2s ease"}}>
@@ -1696,7 +1696,7 @@ setAmbitionSaved(true); } catch {}
             )}
             {sentFailed && (
               <div style={{background:"rgba(180,80,60,0.08)",borderLeft:"4px solid #B05C4A",borderRadius:4,padding:"20px 24px",marginTop:20}}>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong splitting that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong splitting that. Try again.":"You're offline. This needs a connection, so try again once you're back online."}</p>
               </div>
             )}
           </div>
@@ -1729,7 +1729,7 @@ setAmbitionSaved(true); } catch {}
             )}
             {connFailed && (
               <div style={{background:"rgba(180,80,60,0.08)",borderLeft:"4px solid #B05C4A",borderRadius:4,padding:"20px 24px",marginTop:20}}>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong analysing that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong analysing that. Try again.":"You're offline. This needs a connection, so try again once you're back online."}</p>
               </div>
             )}
           </div>
@@ -1783,7 +1783,7 @@ setAmbitionSaved(true); } catch {}
             )}
             {hemFailed && (
               <div style={{background:"rgba(180,80,60,0.08)",borderLeft:"4px solid #B05C4A",borderRadius:4,padding:"20px 24px",marginTop:20}}>
-                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong trimming that. Try again.":"You're offline — this needs a connection. Try again once you're back online."}</p>
+                <p style={{fontFamily:T.sans,fontSize:14,color:T2.text3,lineHeight:1.6,margin:0}}>{online?"Something went wrong trimming that. Try again.":"You're offline. This needs a connection, so try again once you're back online."}</p>
               </div>
             )}
           </div>
