@@ -150,8 +150,7 @@ export function ReflectionScreen({ answers, onContinue }) {
 
   const header = (d) => (
     <div>
-      {/* Desktop banner image already carries the "Your Communication Profile" title. */}
-      {!d && <div style={{ ...eyebrow, marginBottom: 12 }}>Your communication profile</div>}
+      <div style={{ ...eyebrow, marginBottom: 12 }}>Your communication profile</div>
       <h1 style={{ fontFamily: T.serif, fontSize: d ? "clamp(38px,3.6vw,56px)" : 36, fontWeight: 500, color: T.ink, lineHeight: 1.05, letterSpacing: d ? "-1.5px" : "-1px", margin: 0 }}>{tendency.label}</h1>
       {section >= 1 && reflection && (
         <p style={{ fontFamily: T.serif, fontSize: d ? 19 : 17, color: T.text2, lineHeight: 1.6, margin: (d ? "20px" : "14px") + " 0 0", maxWidth: 620, animation: "sectionFade 0.6s ease both" }}>{reflection.summary}</p>
@@ -210,9 +209,10 @@ export function ReflectionScreen({ answers, onContinue }) {
         {/* LEFT: main content */}
         <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
 
-          {/* Banner image — desktop only */}
-          <div style={{ width: "100%", height: 300, flexShrink: 0, overflow: "hidden" }}>
-            <img loading="lazy" src="/profile-banner-desktop-2.jpg" alt="" style={{ width: "100%", height: "100%", display: "block", objectFit: "cover", objectPosition: "top" }}/>
+          {/* Slim black banner, as on mobile */}
+          <div style={{ background: "#0D0B08", height: 64, display: "flex", alignItems: "center", paddingLeft: 40, flexShrink: 0 }}>
+            <img src="/logo-mark.png" alt="AmplifyU" style={{ width: 32, height: 32, objectFit: "cover", mixBlendMode: "screen", filter: "brightness(3) contrast(1.2)", marginRight: 12 }}/>
+            <span style={{ fontFamily: T.sans, fontSize: 12, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", color: "rgba(255,255,255,0.85)" }}>AmplifyU</span>
           </div>
 
           <div style={{ padding: "48px 72px 140px", display: "flex", flexDirection: "column", gap: 36 }}>
