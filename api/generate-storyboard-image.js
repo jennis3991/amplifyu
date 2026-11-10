@@ -30,7 +30,7 @@ const ALLOWED_ORIGINS = ['capacitor://localhost', 'https://localhost', 'https://
 // handles them (resets on cold start, isn't a hard global cap under heavy
 // horizontal scaling), but it's enough to stop a single client — or a
 // leaked access code — hammering this endpoint.
-// 30/min: this is the most expensive call (gpt-image-1 generation), and
+// 30/min: this is the most expensive call (OpenAI image generation), and
 // naturally the lowest-volume — one story tops out around 1 cover + 6 scene
 // panels. Doubled from the original 15 alongside the other two endpoints
 // after a legitimate full-app QA sweep tripped this family of limits —
@@ -39,6 +39,13 @@ const ALLOWED_ORIGINS = ['capacitor://localhost', 'https://localhost', 'https://
 // margins consistent is simpler to reason about than tuning each in
 // isolation. Still a tight cap relative to the other two endpoints given
 // the cost per call.
+// gpt-image-1 was shut down by OpenAI on 23 Oct 2026; 2.6 Sunburst is its
+// quality-focused replacement. One constant so the next change is one line.
+const IMAGE_MODEL = 'gpt-image-2.6-sunburst';
+// Shown in place of raw OpenAI errors; the detail still goes to the logs.
+const FRIENDLY_COVER_ERROR = 'The cover couldn\'t be created this time. Tap Retry to try again.';
+const FRIENDLY_IMAGE_ERROR = 'The image couldn\'t be created this time. Tap Retry to try again.';
+
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 30;
 const rateLimitBuckets = new Map();
@@ -206,18 +213,18 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
     const imageCtl = new AbortController();
     const imageTimer = setTimeout(() => imageCtl.abort(), IMAGE_TIMEOUT_MS);
     try {
-      console.log('[cover-image] Calling gpt-image-1 (medium quality)...');
+      console.log('[cover-image] Calling ' + IMAGE_MODEL + ' (medium quality)...');
       const response = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-        body: JSON.stringify({ model: 'gpt-image-1', prompt: coverPrompt, n: 1, size: '1024x1536', quality: 'medium', output_format: 'jpeg' }),
+        body: JSON.stringify({ model: IMAGE_MODEL, prompt: coverPrompt, n: 1, size: '1024x1536', quality: 'medium', output_format: 'jpeg' }),
         signal: imageCtl.signal,
       });
       const data = await response.json();
       if (!response.ok) {
         const msg = data.error?.message || JSON.stringify(data);
         console.error('[cover-image] OpenAI error:', msg);
-        return res.status(500).json({ error: msg });
+        return res.status(500).json({ error: FRIENDLY_COVER_ERROR });
       }
       const b64 = data.data?.[0]?.b64_json;
       if (!b64) throw new Error('No image data returned');
@@ -229,7 +236,7 @@ Output ONLY the image generation prompt. No preamble. No analysis. No headers. J
         return res.status(504).json({ error: 'Cover took too long to generate. Tap Retry to try again.' });
       }
       console.error('[cover-image] Caught error:', err.message);
-      return res.status(500).json({ error: err.message });
+      return res.status(500).json({ error: FRIENDLY_COVER_ERROR });
     } finally {
       clearTimeout(imageTimer);
       console.log(`[cover-image] Image step took ${Date.now() - tImage}ms; total ${Date.now() - tStart}ms`);
@@ -346,7 +353,7 @@ AVOID
 Human faces or bodies in panels 1, 2, 4, or 5 under any circumstances. Shots from behind. Silhouettes. People blurred in backgrounds. Portraits in photo frames on walls. Reflections of people in glass or mirrors. ANY text, words, letters, numbers, or captions rendered inside a panel photograph — panels must be pure photography with zero overlaid text. Long captions below panels. Dark or sinister panels for positive stories. Cold blue or green colour casts. Cream or yellow document background. Oil painting or illustration look. Anime, cartoon, manga. All panels looking compositionally identical.`;
 
   try {
-    console.log('[storyboard-image] Calling gpt-image-1 (high quality)...');
+    console.log('[storyboard-image] Calling ' + IMAGE_MODEL + ' (high quality)...');
     const response = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
       headers: {
@@ -354,7 +361,7 @@ Human faces or bodies in panels 1, 2, 4, or 5 under any circumstances. Shots fro
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-image-1',
+        model: IMAGE_MODEL,
         prompt,
         n: 1,
         size: '1536x1024',
@@ -366,7 +373,7 @@ Human faces or bodies in panels 1, 2, 4, or 5 under any circumstances. Shots fro
     if (!response.ok) {
       const msg = data.error?.message || JSON.stringify(data);
       console.error('[storyboard-image] OpenAI error:', msg);
-      return res.status(500).json({ error: msg });
+      return res.status(500).json({ error: FRIENDLY_IMAGE_ERROR });
     }
     const b64 = data.data?.[0]?.b64_json;
     if (!b64) throw new Error('No image data returned');
@@ -374,6 +381,6 @@ Human faces or bodies in panels 1, 2, 4, or 5 under any circumstances. Shots fro
     return res.status(200).json({ url: `data:image/png;base64,${b64}` });
   } catch (err) {
     console.error('[storyboard-image] Caught error:', err.message);
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: FRIENDLY_IMAGE_ERROR });
   }
 }
