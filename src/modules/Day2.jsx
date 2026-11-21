@@ -4,6 +4,7 @@ import { useWakeLock, localStorageUsageRatio, useOnlineStatus } from '../utils.j
 import { useSequentialDots, SequentialDots } from './SequentialDots.jsx';
 import { detectPitchHz, computeSignalMetrics } from './voiceSignal.js';
 import { useCoachNarration, CoachButton, CoachStyles } from './CoachNarration.jsx';
+import { CoachCarousel } from './CoachCarousel.jsx';
 import { AICoachNote } from '../components/AICoachNote.jsx';
 
 function blobToB64(blob) {
@@ -53,46 +54,28 @@ export function D2PracticeWidget({T, T2, isDesktop}) {
      modes:["Higher pitch: start energised","Neutral pitch: controlled and clear","Lower pitch: authority and conviction"],
      lesson:"Lower pitch signals authority. Higher pitch signals energy or uncertainty."},
   ];
-  const [openEx, setOpenEx] = useState(null);
-  const [viewed, setViewed] = useState(() => new Set());
+  // One exercise per card, in the same carousel as the Insight and Theory tabs.
+  // The exercise name is the small label, the line to say is the heading.
+  const cards = EXERCISES.map(ex => ({ tag: ex.title, word: ex.sentence, sub: ex.instruction, bullets: ex.modes, foot: ex.lesson }));
+  const [slide, setSlide] = useState(0);
+  const carouselRef = useRef(null);
+  const [viewed, setViewed] = useState(() => new Set([0]));
+  useEffect(() => { setViewed(prev => prev.has(slide) ? prev : new Set(prev).add(slide)); }, [slide]);
   const allViewed = viewed.size >= EXERCISES.length;
 
-  const card=(ex,i)=>(
-    <div key={ex.id} onClick={()=>{setOpenEx(openEx===i?null:i); setViewed(prev => prev.has(ex.id) ? prev : new Set(prev).add(ex.id));}}
-      style={isDesktop
-        ?{background:T2.surface,borderRadius:4,border:`0.5px solid ${openEx===i?T.gold:T2.border}`,padding:"20px 24px",cursor:"pointer",transition:"border-color 0.2s",marginBottom:14}
-        :{background:T2.surface,border:`1px solid ${openEx===i?"rgba(138,158,132,0.4)":"rgba(138,158,132,0.18)"}`,borderRadius:8,padding:"16px",cursor:"pointer",transition:"border-color 0.2s"}}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:openEx===i?12:0}}>
-        <div style={{fontFamily:T.serif,fontSize:isDesktop?18:15,fontWeight:600,color:T2.text}}>{ex.title}</div>
-        <span style={{fontFamily:T.sans,fontSize:17,fontWeight:600,color:openEx===i?T.gold:T2.text3,marginLeft:10,flexShrink:0}}>{openEx===i?"▴":"▸"}</span>
-      </div>
-      {openEx===i&&(
-        <div style={{paddingTop:12,borderTop:"0.5px solid rgba(138,158,132,0.2)"}}>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?18:16,fontWeight:600,color:T2.text,fontStyle:"italic",marginBottom:8}}>{ex.sentence}</p>
-          <p style={{fontFamily:T.sans,fontSize:isDesktop?14:12,color:T2.text3,lineHeight:1.6,marginBottom:12}}>{ex.instruction}</p>
-          <div style={{display:"flex",flexDirection:"column",gap:0,marginBottom:12}}>
-            {ex.modes.map((m,j,arr)=>(
-              <div key={j} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:j<arr.length-1?"0.5px solid rgba(138,158,132,0.15)":"none"}}>
-                <span style={{fontFamily:T.sans,fontSize:10,fontWeight:700,color:T.gold,width:14,flexShrink:0}}>{j+1}.</span>
-                <span style={{fontFamily:T.sans,fontSize:isDesktop?13:13,color:T2.text,fontWeight:400}}>{m}</span>
-              </div>
-            ))}
-          </div>
-          <p style={{fontFamily:T.serif,fontSize:isDesktop?15:13,fontStyle:"italic",color:T.gold,margin:0,lineHeight:1.5}}>{ex.lesson}</p>
-        </div>
-      )}
-    </div>
-  );
-
   const closingCard = allViewed && (
-    <div style={{background:T2.surface,borderRadius:isDesktop?4:8,border:"0.5px solid "+T2.border,borderLeft:"3px solid "+T.gold,padding:isDesktop?"20px 24px":"16px",marginTop:isDesktop?0:10}}>
+    <div style={{background:T2.surface,borderRadius:isDesktop?4:8,border:"0.5px solid "+T2.border,borderLeft:"3px solid "+T.gold,padding:isDesktop?"20px 24px":"16px",}}>
       <p style={{fontFamily:T.serif,fontSize:isDesktop?15:14,fontStyle:"italic",color:T2.text,lineHeight:1.6,margin:0}}>Every time you play with your pace, your pauses, and your pitch out loud, you're building a voice you can actually direct, not one that just happens to you. The next time it matters, you'll hear the difference.</p>
     </div>
   );
 
-  return isDesktop
-    ? <>{EXERCISES.map((ex,i)=>card(ex,i))}{closingCard}</>
-    : <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{EXERCISES.map((ex,i)=>card(ex,i))}{closingCard && <div style={{gridColumn:"1 / -1"}}>{closingCard}</div>}</div>;
+  return (
+    <>
+      <CoachCarousel T={T} T2={T2} isDesktop={isDesktop} cards={cards} carousel={{ slide, setSlide, ref: carouselRef }}
+        litIndex={null} label="Voice exercises" style={{ marginBottom: isDesktop ? 20 : 16 }} />
+      {closingCard}
+    </>
+  );
 }
 
 // ─── D2 SIM WIDGET — voice recording + AI vocal coach ────────────────────────

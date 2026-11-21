@@ -33,7 +33,8 @@ const TEST_OPTIONS = [
 let testAnswer = null;
 
 // Big statement on each card, idea name as the small label (as Week 2).
-const CARDS = D1_CLARITY_FACTS_DATA.map(n => ({ tag: n.word, word: n.sub, bullets: n.bullets, foot: n.note }));
+// Credibility's note becomes its second bullet.
+const CARDS = D1_CLARITY_FACTS_DATA.map(n => ({ tag: n.word, word: n.sub, bullets: n.note ? [...n.bullets, n.note] : n.bullets }));
 
 export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
   const narration = useCoachNarration({

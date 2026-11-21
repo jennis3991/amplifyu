@@ -1,12 +1,13 @@
 import { useEffect, useRef } from "react";
 import { D2_SCIENCE_CARDS, D2_LEVERS } from "../data.js";
-import { useCoachNarration, useCueCards, useClipPlayer, stopClips, CoachButton, CoachCardGrid, CoachStyles, PlayIcon, warmLift, fmt } from "./CoachNarration.jsx";
+import { useCoachNarration, useClipPlayer, stopClips, CoachButton, CoachStyles, PlayIcon, warmLift, fmt } from "./CoachNarration.jsx";
+import { CoachCarousel, useCueCarousel } from "./CoachCarousel.jsx";
 
 // ─── DAY 2 THEORY — The 88 Keys, guided by the coach ─────────────────────────
-// Shared by SessionView (desktop/tablet) and SessionViewMobile. The science
-// cards open as the coach explains each one, then the four levers light up in
-// rhythm with "Pace. Pitch. Pause. Power.", and the coach hands over to a
-// demo: the same sentence played flat, then deliberately. Cue times: see
+// Shared by SessionView (desktop/tablet) and SessionViewMobile. Two one-card
+// carousels (see CoachCarousel.jsx): the science carousel moves as the coach
+// explains each idea, then the levers carousel steps through in rhythm with
+// "Pace. Pitch. Pause. Power.", and the coach hands over to a demo: the same sentence played flat, then deliberately. Cue times: see
 // CoachNarration.jsx.
 const SRC = "/day2-theory.mp3";
 const DURATION = 71;
@@ -37,26 +38,31 @@ const DEMO_LEVERS = [
   { lever: "Power", what: "weight on \"most\"" },
 ];
 
+// Big statement on each science card, idea name as the small label (as Week 2).
+const SCIENCE = D2_SCIENCE_CARDS.map(n => ({ tag: n.word, word: n.sub, bullets: n.bullets }));
+const LEVERS = D2_LEVERS.map(n => ({ word: n.word, sub: n.body }));
+
 export default function D2Theory({ T, T2, isDesktop, sharedAudioRef }) {
   const narration = useCoachNarration({ src: SRC, cues: CUES, sharedAudioRef, onBeforePlay: stopClips, onLeave: stopClips });
   const clips = useClipPlayer(narration);
   const demoRef = useRef(null);
   const { playing, cueIdx, cue } = narration;
-  const cueCards = useCueCards(cueIdx, cue);
-  const leversRef = useRef(null);
+  const science = useCueCarousel(narration);
+  // The levers carousel follows the lever cues: "Which brings us to your four
+  // levers" opens on Pace; "all" stays on Power.
+  const leverCard = cue?.levers ? 0 : typeof cue?.lever === "number" ? cue.lever : undefined;
+  const levers = useCueCarousel({ playing, cueIdx, cue: leverCard === undefined ? null : { card: leverCard } });
 
-  // Bring the narrated card or the levers into view as each cue fires.
+  // Bring the demo into view at the hand-off (the carousels follow their own cues).
   useEffect(() => {
-    if (!playing || !cue) return;
-    const el = cue.card !== undefined ? cueCards.refs.current[cue.card] : (cue.levers || cue.lever !== undefined) ? leversRef.current : cue.demo ? demoRef.current : null;
-    el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (playing && cue?.demo) demoRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [cueIdx, playing]);
 
   const d = isDesktop;
   const lift = warmLift(T, T2);
   const demoLit = playing && cue?.demo;
   const heardBoth = DEMO.every(c => clips.heard(c.src));
-  const leverLit = i => cue?.lever === "all" || cue?.lever === i;
+  const leversOn = playing && (cue?.levers || cue?.lever !== undefined);
   const label = { fontFamily: T.sans, fontSize: d ? 11 : 10, fontWeight: 600, color: T2.goldDark, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: d ? 14 : 10 };
 
   return (
@@ -72,28 +78,12 @@ export default function D2Theory({ T, T2, isDesktop, sharedAudioRef }) {
       <CoachButton T={T} T2={T2} isDesktop={d} narration={narration} duration={DURATION} style={{ marginBottom: d ? 28 : 22 }} />
 
       <div style={label}>The Science of Vocal Influence</div>
-      <CoachCardGrid T={T} T2={T2} isDesktop={d} cards={D2_SCIENCE_CARDS} cueCards={cueCards} columns={1} style={{ marginBottom: d ? 28 : 20 }} />
+      <CoachCarousel T={T} T2={T2} isDesktop={d} cards={SCIENCE} carousel={science}
+        litIndex={playing && cue?.card === science.slide ? science.slide : null} label="The science of vocal influence" />
 
-      <div ref={leversRef} className="au-coach-lit">
-        <div style={label}>The Four Levers</div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: d ? 14 : 10, marginBottom: d ? 32 : 20 }}>
-          {D2_LEVERS.map((n, i) => {
-            const on = leverLit(i);
-            return (
-              <div key={n.word} className="au-coach-lit"
-                style={{
-                  padding: d ? "18px 20px" : "14px", borderRadius: d ? 4 : 8,
-                  background: on ? lift.bg : T2.surface,
-                  border: "1px solid " + (on ? lift.border : T2.border),
-                  boxShadow: on ? lift.shadow : "none",
-                }}>
-                <div style={{ fontFamily: T.serif, fontSize: d ? 20 : 16, fontWeight: 600, color: on ? T2.goldDark : T.gold, lineHeight: 1.3, marginBottom: d ? 8 : 6 }}>{n.word}</div>
-                <p style={{ fontFamily: T.sans, fontSize: d ? 14 : 13, color: T2.text, lineHeight: 1.6, fontWeight: d ? 300 : 400, margin: 0 }}>{n.body}</p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <div style={label}>The Four Levers</div>
+      <CoachCarousel T={T} T2={T2} isDesktop={d} cards={LEVERS} carousel={levers}
+        litIndex={leversOn ? levers.slide : null} label="The four levers" />
 
       {/* Hear the difference — the coach's hand-off */}
       <div ref={demoRef} className={"au-coach-lit" + (demoLit ? " au-coach-pulse" : "")}
