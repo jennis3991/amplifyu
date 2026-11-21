@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { D1_CLARITY_FACTS_DATA } from "../data.js";
-import { useCoachNarration, useCueCards, useClipPlayer, stopClips, CoachButton, CoachCardGrid, CoachStyles, PlayIcon, warmLift, fmt } from "./CoachNarration.jsx";
+import { useCoachNarration, useClipPlayer, stopClips, CoachButton, CoachStyles, PlayIcon, warmLift, fmt } from "./CoachNarration.jsx";
+import { CoachCarousel, useCueCarousel } from "./CoachCarousel.jsx";
 
 // ─── DAY 1 INSIGHT — guided, voice-synced clarity cards ──────────────────────
-// Shared by SessionView (desktop/tablet) and SessionViewMobile. The coach
-// narration drives the screen: as the voice reaches each card it opens and
-// glows, then the hand-off line ("Now let me show you the difference")
+// Shared by SessionView (desktop/tablet) and SessionViewMobile. Same one-card
+// carousel as Week 2 (see CoachCarousel.jsx): the coach moves to each card at
+// its cue, then the hand-off line ("Now let me show you the difference")
 // highlights the quick test underneath.
 // Cue times: see CoachNarration.jsx.
 const SRC = "/day1-insight.mp3";
@@ -15,7 +16,7 @@ const CUES = [
   { t: 24.4, card: 1 },   // Retention — "Clear ideas stick…"
   { t: 33.3, card: 2 },   // Credibility — "It makes you sound like you know your stuff…"
   { t: 41.0, card: 3 },   // Decision-Making — "And it moves things forward…"
-  { t: 48.5, card: null, test: true }, // Hand-off — "Now let me show you the difference."
+  { t: 48.5, test: true }, // Hand-off — "Now let me show you the difference."
 ];
 
 // Both options are read by the same second voice (not the coach), so the
@@ -31,6 +32,9 @@ const TEST_OPTIONS = [
 // quick-test answer lives at module level where a remount can't wipe it.
 let testAnswer = null;
 
+// Big statement on each card, idea name as the small label (as Week 2).
+const CARDS = D1_CLARITY_FACTS_DATA.map(n => ({ tag: n.word, word: n.sub, bullets: n.bullets, foot: n.note }));
+
 export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
   const narration = useCoachNarration({
     src: SRC, cues: CUES, sharedAudioRef,
@@ -38,18 +42,17 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
     onLeave: stopClips,
   });
   const { playing, cueIdx, cue } = narration;
-  const cueCards = useCueCards(cueIdx, cue);
+  const carousel = useCueCarousel(narration);
   const [answer, setAnswer] = useState(testAnswer);
   const clips = useClipPlayer(narration);
   const testRef = useRef(null);
 
   const testLit = playing && cue?.test;
 
-  // Bring the narrated card (or the quick test) into view as each cue fires.
+  // Bring the quick test into view at the hand-off (the carousel follows
+  // its own card cues).
   useEffect(() => {
-    if (!playing || !cue) return;
-    const el = cue.test ? testRef.current : cueCards.refs.current[cue.card];
-    el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (playing && cue?.test) testRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [cueIdx, playing]);
 
   function choose(id) {
@@ -71,7 +74,8 @@ export default function D1Insight({ T, T2, isDesktop, sharedAudioRef }) {
 
       <CoachButton T={T} T2={T2} isDesktop={d} narration={narration} duration={DURATION} />
 
-      <CoachCardGrid T={T} T2={T2} isDesktop={d} cards={D1_CLARITY_FACTS_DATA} cueCards={cueCards} />
+      <CoachCarousel T={T} T2={T2} isDesktop={d} cards={CARDS} carousel={carousel}
+        litIndex={playing && cue?.card === carousel.slide ? carousel.slide : null} label="Why clarity wins" />
 
       {/* Quick test — the "show you the difference" moment */}
       <div ref={testRef} className={"au-coach-lit" + (testLit && !answer ? " au-coach-pulse" : "")}
