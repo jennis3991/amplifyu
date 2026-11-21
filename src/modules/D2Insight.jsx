@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { D2_INSIGHT_CARDS } from "../data.js";
-import { useCoachNarration, useCueCards, CoachButton, CoachCardGrid, CoachStyles, UpNextCard } from "./CoachNarration.jsx";
+import { useCoachNarration, CoachButton, CoachStyles, UpNextCard } from "./CoachNarration.jsx";
+import { CoachCarousel, useCueCarousel } from "./CoachCarousel.jsx";
 
 // ─── DAY 2 INSIGHT — voice and delivery, guided by the coach ─────────────────
-// Shared by SessionView (desktop/tablet) and SessionViewMobile. Each card opens
-// as the coach reaches it; the closing lines bring in an Up next card for the
-// Theory tab (The 88 Keys). Cue times: see CoachNarration.jsx.
+// Shared by SessionView (desktop/tablet) and SessionViewMobile. Same one-card
+// carousel as Week 2 (see CoachCarousel.jsx): the coach moves to each card at
+// its cue; the closing lines bring in an Up next card for the Theory tab
+// (The 88 Keys). Cue times: see CoachNarration.jsx.
 const SRC = "/day2-insight.mp3";
 const DURATION = 74;
 const CUES = [
@@ -18,18 +20,20 @@ const CUES = [
   { t: 65.0, next: true },  // "Your voice is one of your most powerful communication tools…"
 ];
 
+// Big statement on each card, idea name as the small label (as Week 2).
+const CARDS = D2_INSIGHT_CARDS.map(n => ({ tag: n.word, word: n.sub, bullets: n.bullets }));
+
 export default function D2Insight({ T, T2, isDesktop, sharedAudioRef, onNext }) {
   const narration = useCoachNarration({ src: SRC, cues: CUES, sharedAudioRef });
   const { playing, cueIdx, cue } = narration;
-  const cueCards = useCueCards(cueIdx, cue);
+  const carousel = useCueCarousel(narration);
   const nextRef = useRef(null);
   const nextLit = playing && cue?.next;
 
-  // Bring the narrated card (or the Up next card) into view as each cue fires.
+  // Bring the Up next card into view at the hand-off (the carousel follows
+  // its own card cues).
   useEffect(() => {
-    if (!playing || !cue) return;
-    const el = cue.next ? nextRef.current : cueCards.refs.current[cue.card];
-    el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (nextLit) nextRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [cueIdx, playing]);
 
   const d = isDesktop;
@@ -43,7 +47,8 @@ export default function D2Insight({ T, T2, isDesktop, sharedAudioRef, onNext }) 
 
       <CoachButton T={T} T2={T2} isDesktop={d} narration={narration} duration={DURATION} />
 
-      <CoachCardGrid T={T} T2={T2} isDesktop={d} cards={D2_INSIGHT_CARDS} cueCards={cueCards} />
+      <CoachCarousel T={T} T2={T2} isDesktop={d} cards={CARDS} carousel={carousel}
+        litIndex={playing && cue?.card === carousel.slide ? carousel.slide : null} label="Why your voice matters" />
 
       {onNext && nextLit && (
         <UpNextCard ref={nextRef} T={T} T2={T2} isDesktop={d} title="The 88 Keys" sub="The science of vocal influence" onClick={onNext} />
