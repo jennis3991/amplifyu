@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { D3_THEORY_CARDS } from "../data.js";
-import { useCoachNarration, useCueCards, CoachButton, CoachCardGrid, CoachStyles, UpNextCard } from "./CoachNarration.jsx";
+import { useCoachNarration, CoachButton, CoachStyles, UpNextCard } from "./CoachNarration.jsx";
+import { CoachCarousel, useCueCarousel } from "./CoachCarousel.jsx";
 
 // ─── DAY 3 THEORY — The Cognitive Load Principle, guided by the coach ────────
-// Shared by SessionView (desktop/tablet) and SessionViewMobile. Each card opens
-// as the coach explains it; the closing lines bring in an Up next card for the
-// Example tab (Masters of the Pause). Cue times: see CoachNarration.jsx.
+// Shared by SessionView (desktop/tablet) and SessionViewMobile. Same one-card
+// carousel as Week 2 (see CoachCarousel.jsx): the coach moves to each card as
+// it explains it; the closing lines bring in an Up next card for the Example
+// tab (Masters of the Pause). Cue times: see CoachNarration.jsx.
 const SRC = "/day3-theory.mp3";
 const DURATION = 68;
 const CUES = [
@@ -16,18 +18,20 @@ const CUES = [
   { t: 58.9, next: true },  // "You don't need to speak faster…" → "Let's meet two masters…"
 ];
 
+// Big statement on each card, idea name as the small label (as Week 2).
+const CARDS = D3_THEORY_CARDS.map(n => ({ tag: n.word, word: n.sub, bullets: n.bullets }));
+
 export default function D3Theory({ T, T2, isDesktop, sharedAudioRef, onNext }) {
   const narration = useCoachNarration({ src: SRC, cues: CUES, sharedAudioRef });
   const { playing, cueIdx, cue } = narration;
-  const cueCards = useCueCards(cueIdx, cue);
+  const carousel = useCueCarousel(narration);
   const nextRef = useRef(null);
   const nextLit = playing && cue?.next;
 
-  // Bring the narrated card (or the Up next card) into view as each cue fires.
+  // Bring the Up next card into view at the hand-off (the carousel follows
+  // its own card cues).
   useEffect(() => {
-    if (!playing || !cue) return;
-    const el = cue.next ? nextRef.current : cueCards.refs.current[cue.card];
-    el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (nextLit) nextRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [cueIdx, playing]);
 
   const d = isDesktop;
@@ -44,7 +48,8 @@ export default function D3Theory({ T, T2, isDesktop, sharedAudioRef, onNext }) {
 
       <CoachButton T={T} T2={T2} isDesktop={d} narration={narration} duration={DURATION} />
 
-      <CoachCardGrid T={T} T2={T2} isDesktop={d} cards={D3_THEORY_CARDS} cueCards={cueCards} />
+      <CoachCarousel T={T} T2={T2} isDesktop={d} cards={CARDS} carousel={carousel}
+        litIndex={playing && cue?.card === carousel.slide ? carousel.slide : null} label="The cognitive load principle" />
 
       {onNext && nextLit && (
         <UpNextCard ref={nextRef} T={T} T2={T2} isDesktop={d} title="Masters of the Pause" sub="Morgan Freeman & Anna Wintour" onClick={onNext} />
