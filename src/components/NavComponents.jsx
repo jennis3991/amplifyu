@@ -66,12 +66,11 @@ export function TabBar({ tab, setTab, done=[], dark }) {
   const piece = getPieceInfo(done.length).current;
   const identityActive = tab === "identity";
   // Order: first two sit left of the chess-piece medallion, last two right.
-  // Progress and Programme swapped (2026-10) so Programme isn't mistaken for
-  // Progress.
+  // Same order as the desktop nav: Programme sits next to Home.
   const NAV_ITEMS = [
     { id:"home",     label:"Home"      },
-    { id:"progress", label:"Progress"  },
     { id:"sessions", label:"Programme" },
+    { id:"progress", label:"My Stats"  },
     { id:"toolkit",  label:"Toolkit"   },
   ];
 
@@ -180,7 +179,7 @@ export function FloatingNav({ tab, setTab, streak, done, dark, activeRole, inSes
   const ITEMS = [
     { id: "home",     label: "Home" },
     { id: "sessions", label: "Programme" },
-    { id: "progress", label: "Progress" },
+    { id: "progress", label: "My Stats" },
     { id: "toolkit",  label: "Toolkit" },
   ];
 
